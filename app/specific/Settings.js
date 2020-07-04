@@ -597,11 +597,9 @@ function Settings_SetDefautls() {
     }
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
-    PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
     Settings_notification_background();
     Settings_notification_position();
     Settings_notification_repeat();
-    Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
@@ -677,13 +675,11 @@ function Settings_SetarrowsKey(key) {
 
 function Settings_SetDefault(position) {
 
-    if (position === "clip_auto_play_next") PlayClip_All_Forced = Settings_Obj_default("clip_auto_play_next");
-    else if (position === "live_notification") Settings_notification();
+    if (position === "live_notification") Settings_notification();
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "repeat_notification") Settings_notification_repeat();
     else if (position === "ping_warn") Settings_SetPingWarning();
-    else if (position === "single_click_exit") Play_SingleClickExit = Settings_Obj_default("single_click_exit");
     else if (position === "app_animations") Settings_SetAnimations();
     else if (position === "buffer_live") Settings_SetBuffers(1);
     else if (position === "key_up_timeout") Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");

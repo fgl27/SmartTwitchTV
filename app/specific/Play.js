@@ -34,7 +34,6 @@ var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_PLAYING = 1;
 var Play_state = 0;
-var Play_SingleClickExit = 0;
 var Play_MultiEnable = false;
 var Play_MultiArray = [];
 var Play_LowLatency = false;

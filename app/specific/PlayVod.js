@@ -940,7 +940,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                     Play_CleanHideExit();
                     PlayVod_shutdownStream();
                 } else {

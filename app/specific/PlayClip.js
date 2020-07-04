@@ -39,7 +39,6 @@ var PlayClip_HasBack = false;
 var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
 var PlayClip_EnterPos = 0;
 var PlayClip_All = false;
-var PlayClip_All_Forced = true;
 var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
@@ -653,7 +652,7 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                     Play_CleanHideExit();
                     PlayClip_shutdownStream();
                 } else {
@@ -804,7 +803,7 @@ function PlayClip_handleKeyDown(e) {
                         UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else UserLiveFeed_Hide();
                 } else {
-                    if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                    if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                         PlayClip_CheckPreview();
                         Play_CleanHideExit();
                         PlayClip_shutdownStream();

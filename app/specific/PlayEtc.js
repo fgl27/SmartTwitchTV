@@ -300,7 +300,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     if (!Play_IsWarning) Play_HideWarningDialog();
     Play_HideBufferDialog();
     Play_CleanHideExit();
-    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) {
+    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = -1;
     }
@@ -378,7 +378,7 @@ function Play_EndText(PlayVodClip) {
     }
 
     Main_innerHTML("dialog_end_stream_text", Play_DialogEndText + STR_IS_OFFLINE + STR_BR +
-        ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
+        ((PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) ? STR_PLAY_NEXT_IN : STR_STREAM_END) + Play_EndTextCounter + '...');
 
     if (Play_isEndDialogVisible()) {
         Play_EndTextCounter--;
@@ -400,7 +400,7 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && (PlayClip_All || PlayClip_All_Forced)) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
 
@@ -949,11 +949,11 @@ function Play_KeyReturn(is_vod) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
-        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Play_SingleClickExit)) {
+        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit"))) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
-        } else if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+        } else if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
@@ -1147,7 +1147,7 @@ function Play_handleKeyDown(e) {
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Play_ExitDialogVisible() || Play_SingleClickExit) {
+                if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
                     Play_Exit();
                 } else {
                     Play_showExitDialog();
