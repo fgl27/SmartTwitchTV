@@ -448,16 +448,17 @@ function Settings_SetSettings() {
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-
     div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
-    //Dialog settings
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
+
+    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
+
+    //Dialog settings
+    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     // Prepare the bitrates
@@ -878,7 +879,7 @@ function Settings_ScrollTable() {
     var doc,
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (14 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
         doc = document.getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -886,7 +887,7 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (13 + offset)) {
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
         doc = document.getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;

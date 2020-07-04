@@ -232,9 +232,19 @@ function Play_PreStart() {
     Play_SetChatFont();
 }
 
+function Play_ResetDefaultQuality() {
+    if ((Main_A_includes_B(Play_data.quality, 'Auto') || Main_A_includes_B(PlayVod_quality, 'Auto')) &&
+        !Main_A_includes_B(Settings_Obj_values('default_quality'), 'Auto')) {
+        Play_SetQuality();
+    }
+}
+
 function Play_SetQuality() {
     Play_data.quality = Settings_Obj_values('default_quality').replace(STR_SOURCE, "source");
     Play_data.qualityPlaying = Play_data.quality;
+
+    Play_data_base.quality = Play_data.quality;
+    Play_data_base.qualityPlaying = Play_data.qualityPlaying;
 
     PlayVod_quality = Play_data.quality;
     PlayVod_qualityPlaying = Play_data.quality;
@@ -284,7 +294,7 @@ function Play_Start(offline_chat) {
         Play_loadDataSuccessend(Play_PreviewResponseText, true);
 
         Play_CheckIfIsLiveCleanEnd();
-        Play_getQualities(1, true);
+        Play_getQualities(1, false);
     }
 
     Play_CurrentSpeed = 3;
@@ -979,6 +989,9 @@ function Play_qualityChanged() {
     Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
     Play_data.qualityPlaying = Play_data.quality;
 
+    Play_data_base.quality = Play_data.quality;
+    Play_data_base.qualityPlaying = Play_data.qualityPlaying;
+
     Play_SetHtmlQuality('stream_quality');
     if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
     else Play_onPlayer();
@@ -999,13 +1012,36 @@ function Play_getQualities(position, skipchange) {
         if (result.length > 1) result[1].id += " | source";
 
         if (position === 1) {
+
             Play_data.qualities = result;
-            if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable && !Main_A_includes_B(Play_data.quality, 'Auto')) Play_qualityChanged();
-            if (Play_data.playlist) Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+
+            if (!skipchange && !PlayExtra_PicturePicture && !Play_MultiEnable) {
+
+                Play_ResetDefaultQuality();
+
+                if (!Main_A_includes_B(Play_data.quality, 'Auto'))
+                    Play_qualityChanged();
+            }
+
+            if (Play_data.playlist) {
+                Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+            }
+
         } else {
+
             PlayVod_qualities = result;
-            if (!skipchange && !Main_A_includes_B(PlayVod_quality, 'Auto')) PlayVod_qualityChanged();
-            if (PlayVod_playlist) Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+
+            if (!skipchange) {
+
+                Play_ResetDefaultQuality();
+                if (!Main_A_includes_B(PlayVod_quality, 'Auto'))
+                    PlayVod_qualityChanged();
+
+            }
+
+            if (PlayVod_playlist) {
+                Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+            }
         }
     } else Play_getQualitiesFail = true;
 }
@@ -1092,6 +1128,7 @@ function Play_SetHtmlQuality(element) {
     if (!Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
 
     Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
+    Play_data_base.quality = Play_data.quality;
 
     var quality_string = '';
 
@@ -1108,6 +1145,10 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
 
         Play_data.quality = "Auto";
         Play_data.qualityPlaying = Play_data.quality;
+
+        Play_data_base.quality = Play_data.quality;
+        Play_data_base.qualityPlaying = Play_data.qualityPlaying;
+
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(1, 0, 0);
         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
@@ -1247,6 +1288,9 @@ function Play_ClearPlayer() {
         if (Play_data.qualities[1].hasOwnProperty('id')) {
             Play_data.quality = Play_data.qualities[1].id;
             Play_data.qualityPlaying = Play_data.quality;
+
+            Play_data_base.quality = Play_data.quality;
+            Play_data_base.qualityPlaying = Play_data.qualityPlaying;
         }
     }
 
@@ -1375,6 +1419,7 @@ function Play_hidePanel() {
     Play_clearHidePanel();
     Play_ForceHidePannel();
     Play_data.quality = Play_data.qualityPlaying;
+    Play_data_base.quality = Play_data.quality;
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
@@ -1840,7 +1885,7 @@ function Play_CloseSmall() {
     }
     PlayExtra_UnSetPanel();
     Play_CleanHideExit();
-    Play_getQualities(1, true);
+    Play_getQualities(1, false);
 }
 
 function Play_EndDialogUpDown(adder) {

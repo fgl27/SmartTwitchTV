@@ -299,8 +299,8 @@ function en_USLang() {
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
-    STR_DEF_QUALITY = "Default player start quality";
-    STR_DEF_QUALITY_SUMMARY = "Used when the app is first opened, after the user change the quality that becomes default for that section, a section ends when the apps is closed";
+    STR_DEF_QUALITY = "Default player quality";
+    STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to be in auto mode, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
@@ -318,7 +318,7 @@ function en_USLang() {
     STR_PLAYER_WINDOW = "Window ";
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-    STR_PLAYER_BITRATE_SUMMARY = "The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing a vod or live stream (very useful in picture and picture mode), also helps to limit internet bandwidth use, the recommended is 3 Mbps for small and unlimited for main for most low end devices.";
+    STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate for small players (small player also applyes to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
@@ -404,8 +404,8 @@ function en_USLang() {
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-    STR_PP_WORKAROUND_SUMMARY = "For devices running android N or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
-    STR_PP_WARNIG = 'For some devices most running android N or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
+    STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
+    STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
         STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     STR_HISTORY = "History";
     STR_WATCHED = "Watched on ";

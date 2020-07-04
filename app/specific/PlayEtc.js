@@ -1926,7 +1926,7 @@ function Play_MakeControls() {
                 OSInterface_DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
                 Play_CleanHideExit();
-                Play_getQualities(1, true);
+                Play_getQualities(1, PlayExtra_PicturePicture);
             }
         }
     };
