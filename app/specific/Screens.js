@@ -29,6 +29,7 @@ var Screens_ScrollAnimationTimeout = 300; //Same time as animate_height_transiti
 var Screens_ChangeFocusAnimationFinished = true;
 var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
+var Screens_Some_Screen_Is_Refreshing = false;
 //Start the app in async mode by default
 
 //Initiate all Secondary screens obj and they properties
@@ -201,6 +202,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].idObject = {};
     ScreenObj[key].Cells = [];
     ScreenObj[key].FirstLoad = true;
+    Screens_Some_Screen_Is_Refreshing = true;
     ScreenObj[key].itemsCount = 0;
     ScreenObj[key].posX = 0;
     ScreenObj[key].posY = 0;
@@ -324,6 +326,7 @@ function Screens_loadDatafail(key) {
     ScreenObj[key].loadingDataTry = 0;
     if (!ScreenObj[key].itemsCount) {
         ScreenObj[key].FirstLoad = false;
+        Screens_Some_Screen_Is_Refreshing = false;
         if (key === Screens_Current_Key) {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             ScreenObj[key].key_exit();
@@ -557,6 +560,7 @@ function Screens_loadDataSuccessFinish(key) {
 
         }
         ScreenObj[key].FirstLoad = false;
+        Screens_Some_Screen_Is_Refreshing = false;
         Screens_SetAutoRefresh(key);
 
         if (Main_FirstRun) {
@@ -672,7 +676,6 @@ function Screens_SetAutoRefresh(key) {
 
 }
 
-
 function Screens_CheckAutoRefresh(key, timeout) {
 
     ScreenObj[key].AutoRefreshId = Main_setTimeout(
@@ -683,7 +686,9 @@ function Screens_CheckAutoRefresh(key, timeout) {
                     ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                         (key !== Main_values.Main_Go))) {//the screen is not selected
 
-                    Screens_StartLoad(key);
+                    if (!Screens_Some_Screen_Is_Refreshing) {
+                        Screens_StartLoad(key);
+                    } else Screens_CheckAutoRefresh(key, 5000);
 
                 } else Screens_SetAutoRefresh(key);
 

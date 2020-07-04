@@ -104,6 +104,7 @@ function UserLiveFeedobj_CheckToken() {
 
 function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingData[pos] = true;
+    Screens_Some_Screen_Is_Refreshing = true;
     UserLiveFeed_loadingDataTry[pos] = 0;
 }
 
@@ -133,6 +134,7 @@ function UserLiveFeedobj_loadDataError(pos) {
         if (!UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_loadingDataTry[pos] = 0;
             UserLiveFeed_loadingData[pos] = false;
+            Screens_Some_Screen_Is_Refreshing = false;
             UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
 

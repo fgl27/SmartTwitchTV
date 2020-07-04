@@ -237,6 +237,7 @@ function UserLiveFeed_CounterDialog(pos, total) {
 
 function UserLiveFeed_loadDataSuccessFinish(pos) {
     UserLiveFeed_loadingData[pos] = false;
+    Screens_Some_Screen_Is_Refreshing = false;
     UserLiveFeed_status[pos] = true;
 
     var len = UserLiveFeed_cell[pos].length;
@@ -341,9 +342,11 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
                 ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
                     (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
 
-                UserLiveFeed_CounterDialogRst();
-                UserLiveFeedobj_loadDataPrepare(pos);
-                UserLiveFeed_obj[pos].load();
+                if (!Screens_Some_Screen_Is_Refreshing) {
+                    UserLiveFeed_CounterDialogRst();
+                    UserLiveFeedobj_loadDataPrepare(pos);
+                    UserLiveFeed_obj[pos].load();
+                } else UserLiveFeed_CheckRefresh(pos, 5000);
 
             } else UserLiveFeed_SetRefresh(pos);
 
