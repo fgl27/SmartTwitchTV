@@ -106,16 +106,24 @@ function ChannelContent_loadDataPrepare() {
 }
 
 function ChannelContent_loadDataRequest() {
-    var theUrl = Main_kraken_api + 'streams/' +
+    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' +
         encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
-        Main_TwithcV5Flag_I;
+        Main_TwithcV5Flag;
 
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        ChannelContent_loadDataRequestSuccess,
+        ChannelContent_loadDataError
+    );
 }
 
 function ChannelContent_loadDataRequestSuccess(response) {
-    if (JSON.parse(response).stream !== null) {
-        ChannelContent_responseText = response;
+    var obj = JSON.parse(response);
+    if (obj.streams && obj.streams.length) {
+        ChannelContent_responseText = obj.streams;
         ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
     } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
@@ -258,21 +266,18 @@ function ChannelContent_loadDataSuccess() {
 
     Main_innerHTML("channel_content_infodiv0_1", streamer_bio);
 
-    if (ChannelContent_responseText !== null) {
-        var response = JSON.parse(ChannelContent_responseText);
-        if (response.stream !== null) {
+    if (ChannelContent_responseText) {
 
-            var stream = response.stream;
+        var stream = ChannelContent_responseText[0];
 
-            if (ChannelContent_TargetId !== undefined) {
-                stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
-                    STR_USER_HOSTING + stream.channel.display_name;
-            }
+        if (ChannelContent_TargetId !== undefined) {
+            stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
+                STR_USER_HOSTING + stream.channel.display_name;
+        }
 
-            ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
+        ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
-            ChannelContent_cursorX = 1;
-        } else ChannelContent_createCellOffline();
+        ChannelContent_cursorX = 1;
     } else ChannelContent_createCellOffline();
 
     ChannelContent_loadDataSuccessFinish();

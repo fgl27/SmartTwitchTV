@@ -504,7 +504,6 @@ function Play_ResumeAfterOnline() {
 
                 }
             }
-
         } else {
             Play_data.watching_time = new Date().getTime();
             Play_state = Play_STATE_LOADING_TOKEN;
@@ -516,7 +515,6 @@ function Play_ResumeAfterOnline() {
             if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
             Play_loadData();
         }
-        Play_updateStreamInfo();
     }
     Play_ResumeAfterOnlineCounter++;
 }
@@ -573,7 +571,7 @@ function Play_UpdateMainStream(startChat, refreshInfo) {
 function Play_updateStreamInfoStart() {
     if (!Play_data.data[14]) return;
 
-    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag;
 
     BasexmlHttpGet(
         theUrl,
@@ -588,16 +586,18 @@ function Play_updateStreamInfoStart() {
 function Play_updateStreamInfoStartValues(response) {
     Play_CheckFollow();
 
-    response = JSON.parse(response);
-    if (response.stream !== null) {
-        Play_updateStreamInfoEnd(response);
+    var obj = JSON.parse(response);
+
+    if (obj.streams && obj.streams.length) {
+
+        Play_updateStreamInfoEnd(obj.streams[0]);
         Play_loadingInfoDataTry = 0;
-        Play_updateVodInfo(response.stream.channel._id, response.stream._id, 0);
+        Play_updateVodInfo(obj.streams[0].channel._id, obj.streams[0]._id, 0);
     }
 }
 
 function Play_updateStreamInfoEnd(response) {
-    Play_data.data = ScreensObj_LiveCellArray(response.stream);
+    Play_data.data = ScreensObj_LiveCellArray(response);
 
     Play_UpdateMainStreamDiv();
 
@@ -691,7 +691,7 @@ function Play_updateStreamInfo() {
     } else {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(
-            Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I,
+            Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag,
             0,
             true
         );
@@ -721,19 +721,19 @@ function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
 }
 
 function Play_updateStreamInfoValues(response, Is_play) {
-    response = JSON.parse(response);
+    var obj = JSON.parse(response);
 
-    if (response.stream !== null) {
+    if (obj.streams && obj.streams.length) {
 
         if (Is_play) {
-            Play_updateStreamInfoEnd(response);
+            Play_updateStreamInfoEnd(obj.streams[0]);
 
             if (PlayExtra_PicturePicture) {
                 PlayExtra_updateStreamInfo();
             }
 
         } else {
-            var tempData = ScreensObj_LiveCellArray(response.stream);
+            var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
             if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive

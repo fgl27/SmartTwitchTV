@@ -25,7 +25,7 @@ function Play_updateStreamInfoMulti(pos) {
         function() {
             if (Play_MultiArray[pos].data.length > 0) {
                 Play_RefreshMultiGet(
-                    Main_kraken_api + 'streams/' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag_I,
+                    Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
                     0,
                     pos
                 );
@@ -58,9 +58,11 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
 }
 
 function Play_updateStreamInfoMultiValues(response, pos) {
-    response = JSON.parse(response);
-    if (response.stream !== null) {
-        Play_MultiArray[pos].data = ScreensObj_LiveCellArray(response.stream);
+    var obj = JSON.parse(response);
+
+    if (obj.streams && obj.streams.length) {
+
+        Play_MultiArray[pos].data = ScreensObj_LiveCellArray(obj.streams[0]);
 
         if (!pos) {
             Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
@@ -69,9 +71,9 @@ function Play_updateStreamInfoMultiValues(response, pos) {
 
         Play_MultiUpdateinfo(
             (pos + (4 - Play_Multi_Offset)) % 4,
-            response.stream.game,
-            response.stream.viewers,
-            twemoji.parse(response.stream.channel.status, false, true),
+            obj.streams[0].game,
+            obj.streams[0].viewers,
+            twemoji.parse(obj.streams[0].channel.status, false, true),
             (Play_Multi_MainBig ? '_big' : '')
         );
 
@@ -421,6 +423,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
     Play_MultiCheckLiveFeed(pos);
+    Play_updateStreamInfoMulti(pos);
 }
 
 function Play_MultiUpdateMain() {
