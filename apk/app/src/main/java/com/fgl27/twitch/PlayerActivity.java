@@ -74,7 +74,6 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
