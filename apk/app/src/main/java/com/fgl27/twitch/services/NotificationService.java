@@ -123,28 +123,29 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startNotification();
-        String action = intent.getAction();
+        try {
+            String action = intent.getAction();
 
-        if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
-            StopService();
-        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_PAUSE)) {//Just pause it
-            isRunning = false;
-            if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
-        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
-            startService();
-        } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
-            screenOn = false;
-            if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
-        } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
-            screenOn = true;
-            if (isRunning) InitHandler(10 * 1000);
-        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_CHECK)) {
-            if (isRunning) {
-                CheckUserChanged();
-                InitHandler(0);
+            if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
+                StopService();
+            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_PAUSE)) {//Just pause it
+                isRunning = false;
+                if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
+                startService();
+            } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
+                screenOn = false;
+                if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+            } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
+                screenOn = true;
+                if (isRunning) InitHandler(10 * 1000);
+            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_CHECK)) {
+                if (isRunning) {
+                    CheckUserChanged();
+                    InitHandler(0);
+                }
             }
-        }
-
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
         return START_NOT_STICKY;
     }
 
@@ -230,18 +231,22 @@ public class NotificationService extends Service {
     }
 
     private void InitHandler(int timeout) {
-        if (NotificationHandler != null) {
-            NotificationHandler.removeCallbacksAndMessages(null);
+        try {
+            if (NotificationHandler != null) {
+                NotificationHandler.removeCallbacksAndMessages(null);
 
-            long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
-            if (delay > 0) delay = delay - System.currentTimeMillis();
+                long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+                if (delay > 0) delay = delay - System.currentTimeMillis();
 
-            NotificationHandler.postDelayed(() -> {
-                if (screenOn && isRunning) DoNotifications();
+                NotificationHandler.postDelayed(() -> {
+                    try {
+                        if (screenOn && isRunning) DoNotifications();
 
-                InitHandler(1000 * 60 * 3);//it 3 min refresh
-            }, timeout + (delay > 0 ? delay : 0));
-        }
+                        InitHandler(1000 * 60 * 3);//it 3 min refresh
+                    } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+                }, timeout + (delay > 0 ? delay : 0));
+            }
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
     }
 
     private boolean CheckUserChanged() {
@@ -261,110 +266,245 @@ public class NotificationService extends Service {
     }
 
     private void DoNotifications() {
-        if (CheckUserChanged() || !Tools.isConnected(context)) return;
+        try {
+            if (CheckUserChanged() || !Tools.isConnected(context)) return;
 
-        ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
-        Channels = "";
-        ChannelsOffset = 0;
-        String url;
-        boolean hasChannels = true;
+            ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
+            Channels = "";
+            ChannelsOffset = 0;
+            String url;
+            boolean hasChannels = true;
 
-        while (hasChannels) {//Get all user fallowed channels
-            url = String.format(
-                    Locale.US,
-                    "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=created_at&api_version=5",
-                    UserId,
-                    ChannelsOffset
+            while (hasChannels) {//Get all user fallowed channels
+                url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=created_at&api_version=5",
+                        UserId,
+                        ChannelsOffset
+                );
+
+                hasChannels = GetChannels(url);
+            }
+            if (Channels.equals("")) return;
+
+            Channels = Channels.substring(0, Channels.length() - 1);
+
+            Tools.ResponseObj response = null;
+            JsonObject obj;
+            JsonArray streams;
+            int StreamsSize;
+            int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
+            NotifyList tempNotifyList;
+            String id;
+            String game;
+            boolean isLive;
+            ArrayList<NotifyList> result = new ArrayList<>();
+            ArrayList<String> currentLive = new ArrayList<>();
+
+            boolean hasLiveChannels = true;
+            ChannelsOffset = 0;
+            while (hasLiveChannels) {
+
+                url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
+                        Channels,
+                        ChannelsOffset
+                );
+
+                StreamsSize = 0;
+                for (int i = 0; i < 3; i++) {
+
+                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+
+                    if (response != null) {
+
+                        if (response.getStatus() == 200) {
+                            obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                            if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+
+                                streams = obj.get("streams").getAsJsonArray();//Get the follows array
+                                StreamsSize = streams.size();
+
+                                if (StreamsSize > 0) {
+
+                                    ChannelsOffset += StreamsSize;
+
+                                } else {
+
+                                    hasLiveChannels = false;
+                                    break;
+
+                                }
+
+                                for (int j = 0; j < StreamsSize; j++) {
+
+                                    obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
+
+                                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+
+                                        game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
+                                        isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
+                                        id = obj.get("_id").getAsString();//Broadcast id
+                                        obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                                        if (obj.isJsonObject()) {
+
+                                            currentLive.add(id);
+
+                                            if (Notify && !oldLive.contains(id)) {
+
+                                                Bitmap bmp = null;
+                                                if (!obj.get("logo").isJsonNull())
+                                                    bmp = GetBitmap(obj.get("logo").getAsString());
+
+                                                tempNotifyList = new NotifyList(
+                                                        game,
+                                                        !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
+                                                        bmp,
+                                                        !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
+                                                        isLive
+                                                );
+                                                //Toast can only run for about 3s allow the user to repeat same notification
+                                                for (int x = 0; x < Repeat; x++) {
+                                                    result.add(tempNotifyList);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+                            break;
+                        }
+
+                    }
+                }
+
+                if (StreamsSize == 0) break;//break out of the while
+            }
+
+            //Prevent run service if last response is not successful or user has changed durring check
+            if (CheckUserChanged() || response == null || response.getStatus() != 200) return;
+
+            if (Notify && result.size() > 0) {
+
+                for (int i = 0; i < result.size(); i++) {
+                    DoNotification(result.get(i), i);
+                }
+
+                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (result.size() * 5000)));
+            } else {
+                Notify = true;
+                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+            }
+
+            oldLive = new ArrayList<>();
+            oldLive.addAll(currentLive);
+
+            appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+    }
+
+    private void DoNotification(NotifyList result, int delay) {
+        ToastHandler.postDelayed(() -> {
+            try {
+                if (isRunning) DoToast(result);
+            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+        }, 5000 * delay);
+    }
+
+    @SuppressLint("InflateParams")
+    private void DoToast(NotifyList result) {
+        try {
+            setWidth();
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            View layout;
+            if (inflater != null) {
+                layout = inflater.inflate(R.layout.custom_toast, null);
+            } else return;
+
+            LinearLayout layout_text = layout.findViewById(R.id.text_holder);
+            if (LayoutWidth > 0) layout_text.getLayoutParams().width = LayoutWidth;
+            layout_text.requestLayout();
+
+            TextView name = layout.findViewById(R.id.name);
+            name.setCompoundDrawablesWithIntrinsicBounds(
+                    result.isLive() ? R.drawable.circle : R.drawable.ic_refresh,
+                    0,
+                    0,
+                    0
             );
+            name.setText(result.getName());
 
-            hasChannels = GetChannels(url);
-        }
-        if (Channels.equals("")) return;
+            TextView title = layout.findViewById(R.id.title);
+            title.setText(result.getTitle().trim());
 
-        Channels = Channels.substring(0, Channels.length() - 1);
+            TextView game = layout.findViewById(R.id.game);
+            game.setText(result.getGame());
 
-        Tools.ResponseObj response = null;
-        JsonObject obj;
-        JsonArray streams;
-        int StreamsSize;
-        int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
-        NotifyList tempNotifyList;
-        String id;
-        String game;
-        boolean isLive;
-        ArrayList<NotifyList> result = new ArrayList<>();
-        ArrayList<String> currentLive = new ArrayList<>();
+            ImageView image = layout.findViewById(R.id.image);
+            Bitmap bmp = result.getLogo();
+            if (bmp != null) {
+                if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
 
-        boolean hasLiveChannels = true;
-        ChannelsOffset = 0;
-        while (hasLiveChannels) {
+                image.setImageBitmap(bmp);
+            } else image.setImageResource(android.R.color.transparent);
 
-            url = String.format(
-                    Locale.US,
-                    "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
-                    Channels,
-                    ChannelsOffset
-            );
+            if (LayoutWidth > 0) {
+                TextView now_live = layout.findViewById(R.id.now_live);
 
-            StreamsSize = 0;
+                now_live.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
+                name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
+
+                title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
+                game.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
+            }
+
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(ToastPositions[ToastPosition], 0, 0);
+            toast.setDuration(Toast.LENGTH_LONG);
+            toast.setView(layout);
+            toast.show();
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+    }
+
+    private boolean GetChannels(String url)  {
+        try {
+            Tools.ResponseObj response;
+            JsonObject obj;
+            JsonArray follows;
+            StringBuilder values = new StringBuilder();
+
             for (int i = 0; i < 3; i++) {
 
-                response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
 
                 if (response != null) {
 
                     if (response.getStatus() == 200) {
                         obj = parseString(response.getResponseText()).getAsJsonObject();
 
-                        if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+                        if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
 
-                            streams = obj.get("streams").getAsJsonArray();//Get the follows array
-                            StreamsSize = streams.size();
+                            follows = obj.get("follows").getAsJsonArray();//Get the follows array
 
-                            if (StreamsSize > 0) {
+                            if (follows.size() > 0)
+                                ChannelsOffset += follows.size();
+                            else return false;
 
-                                ChannelsOffset += StreamsSize;
+                            for (int j = 0; j < follows.size(); j++) {
 
-                            } else {
-
-                                hasLiveChannels = false;
-                                break;
-
-                            }
-
-                            for (int j = 0; j < StreamsSize; j++) {
-
-                                obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
+                                obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
 
                                 if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
 
-                                    game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                                    isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                                    id = obj.get("_id").getAsString();//Broadcast id
                                     obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
-                                    if (obj.isJsonObject()) {
-
-                                        currentLive.add(id);
-
-                                        if (Notify && !oldLive.contains(id)) {
-
-                                            Bitmap bmp = null;
-                                            if (!obj.get("logo").isJsonNull())
-                                                bmp = GetBitmap(obj.get("logo").getAsString());
-
-                                            tempNotifyList = new NotifyList(
-                                                    game,
-                                                    !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                    bmp,
-                                                    !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                                    isLive
-                                            );
-                                            //Toast can only run for about 3s allow the user to repeat same notification
-                                            for (int x = 0; x < Repeat; x++) {
-                                                result.add(tempNotifyList);
-                                            }
-                                        }
+                                    if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
+                                        values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
                                     }
                                 }
                             }
@@ -376,140 +516,13 @@ public class NotificationService extends Service {
                 }
             }
 
-            if (StreamsSize == 0) break;//break out of the while
-        }
-
-        //Prevent run service if last response is not successful or user has changed durring check
-        if (CheckUserChanged() || response == null || response.getStatus() != 200) return;
-
-        if (Notify && result.size() > 0) {
-
-            for (int i = 0; i < result.size(); i++) {
-                DoNotification(result.get(i), i);
+            if (values.length() > 0) {
+                Channels += values.toString();
+                return true;
             }
-
-            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (result.size() * 5000)));
-        } else {
-            Notify = true;
-            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-        }
-
-        oldLive = new ArrayList<>();
-        oldLive.addAll(currentLive);
-
-        appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
-    }
-
-    private void DoNotification(NotifyList result, int delay) {
-        ToastHandler.postDelayed(() -> {
-            if (isRunning) DoToast(result);
-        }, 5000 * delay);
-    }
-
-    @SuppressLint("InflateParams")
-    private void DoToast(NotifyList result) {
-        setWidth();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View layout;
-        if (inflater != null) {
-            layout = inflater.inflate(R.layout.custom_toast, null);
-        } else return;
-
-        LinearLayout layout_text = layout.findViewById(R.id.text_holder);
-        if (LayoutWidth > 0) layout_text.getLayoutParams().width = LayoutWidth;
-        layout_text.requestLayout();
-
-        TextView name = layout.findViewById(R.id.name);
-        name.setCompoundDrawablesWithIntrinsicBounds(
-                result.isLive() ? R.drawable.circle : R.drawable.ic_refresh,
-                0,
-                0,
-                0
-        );
-        name.setText(result.getName());
-
-        TextView title = layout.findViewById(R.id.title);
-        title.setText(result.getTitle().trim());
-
-        TextView game = layout.findViewById(R.id.game);
-        game.setText(result.getGame());
-
-        ImageView image = layout.findViewById(R.id.image);
-        Bitmap bmp = result.getLogo();
-        if (bmp != null) {
-            if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
-
-            image.setImageBitmap(bmp);
-        } else image.setImageResource(android.R.color.transparent);
-
-        if (LayoutWidth > 0) {
-            TextView now_live = layout.findViewById(R.id.now_live);
-
-            now_live.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
-            name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
-
-            title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
-            game.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
-        }
-
-        Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(ToastPositions[ToastPosition], 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
-    }
-
-    private boolean GetChannels(String url) {
-        Tools.ResponseObj response;
-        JsonObject obj;
-        JsonArray follows;
-        StringBuilder values = new StringBuilder();
-
-        for (int i = 0; i < 3; i++) {
-
-            response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
-
-            if (response != null) {
-
-                if (response.getStatus() == 200) {
-                    obj = parseString(response.getResponseText()).getAsJsonObject();
-
-                    if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
-
-                        follows = obj.get("follows").getAsJsonArray();//Get the follows array
-
-                        if (follows.size() > 0)
-                            ChannelsOffset += follows.size();
-                        else return false;
-
-                        for (int j = 0; j < follows.size(); j++) {
-
-                            obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
-
-                            if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-
-                                obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                                if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
-                                    values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
-                                }
-                            }
-                        }
-
-                    }
-                    break;
-                }
-
-            }
-        }
-
-        if (values.length() > 0) {
-            Channels += values.toString();
-            return true;
-        }
-
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
         return false;
+
     }
 
     private static class NotifyList {

@@ -864,9 +864,11 @@ public final class Tools {
     }
 
     public static void SendNotificationIntent(String action, Context context) {
-        Intent intent = new Intent(context, NotificationService.class);
-        intent.setAction(action);
-        ContextCompat.startForegroundService(context, intent);
+        try {
+            Intent intent = new Intent(context, NotificationService.class);
+            intent.setAction(action);
+            ContextCompat.startForegroundService(context, intent);
+        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
     }
 
     public static boolean isConnected(Context context) {
