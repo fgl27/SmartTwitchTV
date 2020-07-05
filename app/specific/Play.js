@@ -1510,6 +1510,7 @@ function Play_RefreshWatchingtime() {
         Main_textContent("stream_watching_time", '');
         Main_innerHTML("stream_live_viewers", '');
 
+        return;
     } else {
         Main_innerHTML("stream_watching_time", "," +
             STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
