@@ -1110,7 +1110,7 @@
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
         STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
         STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status as quality, network activity, skipped frame etc.";
-        STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always", "Never"];
+        STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
         STR_SINGLE_EXIT = "Single return key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
         STR_NOW_LIVE = "Now Live";
@@ -11454,8 +11454,10 @@
     }
 
     function PlayClip_showPanel() {
-        PlayVod_RefreshProgressBarr();
-        PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
+        if (!Play_StayDialogVisible()) {
+            PlayVod_RefreshProgressBarr();
+            PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
+        }
         Play_CleanHideExit();
         PlayVod_IconsBottonResetFocus();
         PlayClip_qualityIndexReset();
@@ -16128,7 +16130,7 @@
     var Play_ShowPanelStatusId;
 
     function Play_ShowPanelStatus(mwhocall) {
-        if (Settings_Obj_default("keep_panel_info_visible") === 1 && Play_StayDialogVisible()) {
+        if (Settings_Obj_default("keep_panel_info_visible") === 1 && !Play_StayDialogVisible()) {
 
             if (Main_IsOn_OSInterface) {
                 Play_ShowPanelStatusId = Main_setInterval(
@@ -16206,6 +16208,7 @@
             Main_textContent("stream_watching_time", '');
             Main_innerHTML("stream_live_viewers", '');
 
+            return;
         } else {
             Main_innerHTML("stream_watching_time", "," +
                 STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
@@ -18009,15 +18012,17 @@
 
     function PlayVod_showPanel(autoHide) {
         if (Play_getQualitiesFail) Play_getQualities(2, true);
-        PlayVod_RefreshProgressBarr(autoHide);
+        if (!Play_StayDialogVisible()) {
+            PlayVod_RefreshProgressBarr(autoHide);
+            PlayVod_RefreshProgressBarrID = Main_setInterval(
+                function() {
+                    PlayVod_RefreshProgressBarr(autoHide);
+                },
+                1000,
+                PlayVod_RefreshProgressBarrID
+            );
+        }
         Play_CleanHideExit();
-        PlayVod_RefreshProgressBarrID = Main_setInterval(
-            function() {
-                PlayVod_RefreshProgressBarr(autoHide);
-            },
-            1000,
-            PlayVod_RefreshProgressBarrID
-        );
 
         if (autoHide) {
             PlayVod_IconsBottonResetFocus();
@@ -18033,6 +18038,7 @@
     }
 
     function PlayVod_RefreshProgressBarr(show) {
+
         if (!Settings_Obj_default("keep_panel_info_visible")) {
             if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
                 OSInterface_getVideoQuality(1);
