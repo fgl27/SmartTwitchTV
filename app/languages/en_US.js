@@ -246,7 +246,7 @@ function en_USLang() {
     STR_DISABLE = "Disabled";
     STR_DARK_MODE = "Dark mode";
     STR_BRIGHT_MODE = "Bright mode";
-    STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring playback";
+    STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring the playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
     STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it or force closed by the user on those cases the app will restores what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
