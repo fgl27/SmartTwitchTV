@@ -599,15 +599,17 @@ function PlayVod_hidePanel() {
 
 function PlayVod_showPanel(autoHide) {
     if (Play_getQualitiesFail) Play_getQualities(2, true);
-    PlayVod_RefreshProgressBarr(autoHide);
+    if (!Play_StayDialogVisible()) {
+        PlayVod_RefreshProgressBarr(autoHide);
+        PlayVod_RefreshProgressBarrID = Main_setInterval(
+            function() {
+                PlayVod_RefreshProgressBarr(autoHide);
+            },
+            1000,
+            PlayVod_RefreshProgressBarrID
+        );
+    }
     Play_CleanHideExit();
-    PlayVod_RefreshProgressBarrID = Main_setInterval(
-        function() {
-            PlayVod_RefreshProgressBarr(autoHide);
-        },
-        1000,
-        PlayVod_RefreshProgressBarrID
-    );
 
     if (autoHide) {
         PlayVod_IconsBottonResetFocus();
@@ -623,7 +625,6 @@ function PlayVod_showPanel(autoHide) {
 }
 
 function PlayVod_RefreshProgressBarr(show) {
-    if (Play_StayDialogVisible()) return;
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
         if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)

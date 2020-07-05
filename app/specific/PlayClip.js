@@ -529,8 +529,10 @@ function PlayClip_hidePanel() {
 }
 
 function PlayClip_showPanel() {
-    PlayVod_RefreshProgressBarr();
-    PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
+    if (!Play_StayDialogVisible()) {
+        PlayVod_RefreshProgressBarr();
+        PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
+    }
     Play_CleanHideExit();
     PlayVod_IconsBottonResetFocus();
     PlayClip_qualityIndexReset();
