@@ -7992,8 +7992,8 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.213';
-    var Main_version_java = 7; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.215';
+    var Main_version_java = 8; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 04, 2020';
     var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
@@ -10059,7 +10059,7 @@
     //Android specific: false
     //Allows to change the main player quality
     function OSInterface_SetQuality(position) {
-        Android.SetQuality(position);
+        if (Main_IsOn_OSInterface) Android.SetQuality(position);
     }
 
     //public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout)
@@ -15691,7 +15691,7 @@
 
     var Play_getQualitiesFail = false;
 
-    function Play_getQualities(position, skipchange) {
+    function Play_getQualities(Who_Called, skipchange) {
         if (!Main_IsOn_OSInterface) return;
 
         var baseQualities = OSInterface_getQualities();
@@ -15703,7 +15703,7 @@
 
             if (result.length > 1) result[1].id += " | source";
 
-            if (position === 1) {
+            if (Who_Called === 1) {
 
                 Play_data.qualities = result;
 
@@ -15717,6 +15717,7 @@
 
                 if (Play_data.playlist) {
                     Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+                    Main_Log('Play_data.playlist\n' + Play_data.playlist);
                 }
 
             } else {
@@ -15733,6 +15734,7 @@
 
                 if (PlayVod_playlist) {
                     Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+                    Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
                 }
             }
         } else Play_getQualitiesFail = true;
