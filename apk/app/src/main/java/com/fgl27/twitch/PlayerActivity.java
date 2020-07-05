@@ -129,6 +129,7 @@ public class PlayerActivity extends Activity {
     public String[] BLACKLISTEDCODECS = null;
     public PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
+    public PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccount];
     public DefaultRenderersFactory renderersFactory;
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
@@ -410,10 +411,13 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            player[position].addListener(new PlayerEventListener(position, Who_Called));
+            playerListener[position] = new PlayerEventListener(position, Who_Called);
+            player[position].addListener(playerListener[position]);
             player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
+        } else {
+            playerListener[position].UpdateWho_Called(Who_Called);
         }
 
         PlayerView[position].setPlaybackPreparer(null);
@@ -2571,12 +2575,16 @@ public class PlayerActivity extends Activity {
 
         private final int position;
         private final int Delay_ms;
-        private final int Who_Called;
+        private int Who_Called;
 
         private PlayerEventListener(int position, int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
             this.position = position;
             this.Delay_ms = BUFFER_SIZE[m_Who_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
+        }
+
+        public void UpdateWho_Called(int m_Who_Called) {
+            this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
         }
 
         @Override

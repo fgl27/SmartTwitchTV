@@ -75,7 +75,7 @@ function OSInterface_Settings_SetPingWarning(warning) {
 //Android specific: false
 //Allows to change the main player quality
 function OSInterface_SetQuality(position) {
-    Android.SetQuality(position);
+    if (Main_IsOn_OSInterface) Android.SetQuality(position);
 }
 
 //public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout)

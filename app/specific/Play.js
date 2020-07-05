@@ -998,7 +998,7 @@ function Play_qualityChanged() {
 }
 
 var Play_getQualitiesFail = false;
-function Play_getQualities(position, skipchange) {
+function Play_getQualities(Who_Called, skipchange) {
     if (!Main_IsOn_OSInterface) return;
 
     var baseQualities = OSInterface_getQualities();
@@ -1010,7 +1010,7 @@ function Play_getQualities(position, skipchange) {
 
         if (result.length > 1) result[1].id += " | source";
 
-        if (position === 1) {
+        if (Who_Called === 1) {
 
             Play_data.qualities = result;
 
@@ -1024,6 +1024,7 @@ function Play_getQualities(position, skipchange) {
 
             if (Play_data.playlist) {
                 Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+                Main_Log('Play_data.playlist\n' + Play_data.playlist);
             }
 
         } else {
@@ -1040,6 +1041,7 @@ function Play_getQualities(position, skipchange) {
 
             if (PlayVod_playlist) {
                 Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
+                Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
             }
         }
     } else Play_getQualitiesFail = true;
