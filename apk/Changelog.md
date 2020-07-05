@@ -7,6 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen
 
+Apk Version 3.0.214 - July 05 2020
+==============
+
+* Fix wrong qualities be display on player controls when switching between VODs and Lives
+
 Apk Version 3.0.213 & Web Version July 04 2020
 ==============
 
