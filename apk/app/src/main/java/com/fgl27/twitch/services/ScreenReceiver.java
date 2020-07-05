@@ -27,8 +27,6 @@ import android.content.Intent;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
 
-import net.grandcentrix.tray.AppPreferences;
-
 public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
