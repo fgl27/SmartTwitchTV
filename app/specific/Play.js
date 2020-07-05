@@ -1433,7 +1433,7 @@ function Play_ForceHidePannel() {
 
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
-    if (Settings_Obj_default("keep_panel_info_visible") === 1 && Play_StayDialogVisible()) {
+    if (Settings_Obj_default("keep_panel_info_visible") === 1 && !Play_StayDialogVisible()) {
 
         if (Main_IsOn_OSInterface) {
             Play_ShowPanelStatusId = Main_setInterval(

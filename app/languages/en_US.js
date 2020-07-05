@@ -339,7 +339,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
     STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
     STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status as quality, network activity, skipped frame etc.";
-    STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always", "Never"];
+    STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
     STR_NOW_LIVE = "Now Live";
