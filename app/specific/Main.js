@@ -152,7 +152,7 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.214';
+var Main_stringVersion_Min = '.215';
 var Main_version_java = 8;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'July 04, 2020';
 var Main_version_web = 10;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
