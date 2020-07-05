@@ -1641,6 +1641,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void CheckNotificationService() {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_CHECK, mWebViewContext);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void upNotificationState(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_BACKGROUND, Notify);
         }
@@ -1648,12 +1654,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationId(String id) {
-            //Reset old list to prevent showing a long list of notifications
-            if (id != null && !Objects.equals(Tools.getString(Constants.PREF_USER_ID, null, appPreferences), id))
-                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
-
             appPreferences.put(Constants.PREF_USER_ID, id);
-
         }
 
         @SuppressWarnings("unused")//called by JS

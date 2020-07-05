@@ -138,6 +138,11 @@ public class NotificationService extends Service {
         } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
             screenOn = true;
             if (isRunning) InitHandler(10 * 1000);
+        } else if (Objects.equals(action, Constants.ACTION_NOTIFY_CHECK)) {
+            if (isRunning) {
+                CheckUserChanged();
+                InitHandler(0);
+            }
         }
 
         return START_NOT_STICKY;
@@ -146,9 +151,7 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
-        isRunning = false;
-        mUnRegisterReceiver();
+        DestroyService();
     }
 
     @Override
@@ -157,10 +160,16 @@ public class NotificationService extends Service {
         startNotification();
     }
 
-    private void StopService() {
+    private void DestroyService() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+        if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
+        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
         isRunning = false;
         mUnRegisterReceiver();
+    }
+
+    private void StopService() {
+        DestroyService();
         stopForeground(true);
         stopSelf();
     }
@@ -242,6 +251,9 @@ public class NotificationService extends Service {
             StopService();
             return true;
         } else if (!Objects.equals(tempUserId, UserId)) {
+            //Stop all toast
+            if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
+            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
             Notify = false;
         }
         UserId = tempUserId;
@@ -389,7 +401,9 @@ public class NotificationService extends Service {
     }
 
     private void DoNotification(NotifyList result, int delay) {
-        ToastHandler.postDelayed(() -> DoToast(result), 5000 * delay);
+        ToastHandler.postDelayed(() -> {
+            if (isRunning) DoToast(result);
+        }, 5000 * delay);
     }
 
     @SuppressLint("InflateParams")

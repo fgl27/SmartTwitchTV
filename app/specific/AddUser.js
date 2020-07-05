@@ -360,6 +360,7 @@ function AddUser_removeUser(position) {
         if (!position) {
             AddUser_UpdateSidepanel();
             OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+            if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
         }
         Users_status = false;
         Users_init();
@@ -408,6 +409,7 @@ function AddUser_UserMakeOne(position) {
 
     if (Main_IsOn_OSInterface) {
         OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+        if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
     }
 
     //Reset user emotes on chage

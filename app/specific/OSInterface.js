@@ -54,6 +54,16 @@ function OSInterface_RunNotificationService() {
     if (Main_IsOn_OSInterface) Android.RunNotificationService();
 }
 
+//public void CheckNotificationService()
+//Android specific: true
+//Allows to reset current running notifications
+function OSInterface_CheckNotificationService() {
+    //TODO remove the try after some apps updates
+    try {
+        if (Main_IsOn_OSInterface) Android.CheckNotificationService();
+    } catch (e) {}
+}
+
 //public void upNotificationState(boolean Notify)
 //Notify  background notification are enable
 //Android specific: true
