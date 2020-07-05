@@ -129,7 +129,7 @@ public class PlayerActivity extends Activity {
     public String[] BLACKLISTEDCODECS = null;
     public PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
-    public PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccount];
+    public PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
     public DefaultRenderersFactory renderersFactory;
     public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
     public DefaultTrackSelector.Parameters trackSelectorParameters;
@@ -416,7 +416,7 @@ public class PlayerActivity extends Activity {
             player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
-        } else {
+        } else if (playerListener[position] != null) {
             playerListener[position].UpdateWho_Called(Who_Called);
         }
 
@@ -566,7 +566,8 @@ public class PlayerActivity extends Activity {
                         .build();
             }
 
-            player[position].addListener(new PlayerEventListener(position, mWho_Called));
+            playerListener[position] = new PlayerEventListener(position, mWho_Called);
+            player[position].addListener(playerListener[position]);
             player[position].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[position].setPlayer(player[position]);
@@ -645,6 +646,7 @@ public class PlayerActivity extends Activity {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
+            playerListener[position] = null;
         }
 
         if (BuildConfig.DEBUG) {
