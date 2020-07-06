@@ -3930,6 +3930,7 @@
             if (!position) {
                 AddUser_UpdateSidepanel();
                 OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+                if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
             }
             Users_status = false;
             Users_init();
@@ -3978,6 +3979,7 @@
 
         if (Main_IsOn_OSInterface) {
             OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+            if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
         }
 
         //Reset user emotes on chage
@@ -7992,9 +7994,9 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.215';
-    var Main_version_java = 8; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 04, 2020';
+    var Main_stringVersion_Min = '.216';
+    var Main_version_java = 9; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 06, 2020';
     var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
@@ -10036,6 +10038,16 @@
     //Allows to run the notification service once
     function OSInterface_RunNotificationService() {
         if (Main_IsOn_OSInterface) Android.RunNotificationService();
+    }
+
+    //public void CheckNotificationService()
+    //Android specific: true
+    //Allows to reset current running notifications
+    function OSInterface_CheckNotificationService() {
+        //TODO remove the try after some apps updates
+        try {
+            if (Main_IsOn_OSInterface) Android.CheckNotificationService();
+        } catch (e) {}
     }
 
     //public void upNotificationState(boolean Notify)
