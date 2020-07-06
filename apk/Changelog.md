@@ -13,7 +13,7 @@ Apk Version 3.0.216 & Web Version July 06 2020
 * Improve notification service
 * General performance improves and bug fixes
 
-Apk Version 3.0.215 - July 05 2020
+Apk Version 3.0.214 and up - July 05 2020
 ==============
 
 * Fix wrong qualities be display on player controls when switching between VODs and Lives
@@ -146,14 +146,12 @@ Version 3.0.200 and up & Web Version June 3 2020
 Version 3.0.195 and up & Web Version May 18 2020
 ==============
 
-* Add a player control to open the Main player on a external player, this is very useful with a popup external player.
 * General performance improves and bug fixes
-
 
 Version 3.0.194 & Web Version May 18 2020
 ==============
 
-* Add a option to open Main player on a external player, this is very useful with a popup external player.
+* Add a player control to open the Main player on a external player, this is very useful with a popup external player.
 * General performance improves and bug fixes
 
 Version 3.0.177 and up & Web Version April 28 2020
@@ -165,7 +163,7 @@ Version 3.0.177 and up & Web Version April 28 2020
 Version 3.0.172 and up & Web Version April 20 2020
 ==============
 
-* Add a write to chat option, plus fully customizable emoticons and emojis in app keyboards
+* Add a write to chat option included to the player controls, on it added fully customizable keyboards, a keyboard for it type of emote from Twitch, BetterTTV, FrankerFaceZ and another for Unicode emojis
 * General performance improves and bug fixes
 
 Version 3.0.168 and up & Web Version April 11 2020
@@ -182,7 +180,7 @@ Version 3.0.164 and up & Web Version April 1 2020
 Version 3.0.163 & Web Version March 30 2020
 ==============
 
-* Add preview thumbnail to VODs SeekBar (only available for VODs that have this featuring working on twitch website)
+* Add preview thumbnail to VODs SeekBar (only available for VODs that have this featuring working on twitch website), as you scroll to the SeekBar you see a preview of the content is on that position in time, the number of preview images is limited to 200 by Twitch, meaning that on stream that are very long the preview image is responsible for a long part of the video meaning_2 that when you press to seek to a position the playback maybe a little before or after the preview
 
 Version 3.0.155 and up & Web Version March 25 2020
 ==============
@@ -209,7 +207,7 @@ Version 3.0.146 and up & Web Version March 17 2020
 Version 3.0.145 & Web Version March 16 2020
 ==============
 
-* Click left/right on Multistream main window bigger mode to change with is the main window and it's chat
+* Click left/right on Multistream main window bigger mode to change with is the main window, it's chat
 * Update controls related to audio changes on PP and Multistream, check controls
 * General performance improves and bug fixes
 
@@ -222,7 +220,7 @@ Version 3.0.144 and up & Web Version March 14 2020
 Version 3.0.143 & Web Version March 13 2020
 ==============
 
-* Add a new mode for Multistream that makes the main window bigger and show it's chat, press key down to enable/disable
+* Add a new mode for Multistream that makes the main window bigger show it's chat on the side and makes all other widows smaller, press key down to enable/disable
 
 Version 3.0.122 and up & Web Version February 27 2020
 ==============
@@ -232,7 +230,7 @@ Version 3.0.122 and up & Web Version February 27 2020
 Version 3.0.119 and up & Web Version February 25 2020
 ==============
 
-* Add a side panel player and a small player to the player live feed (auto-plays when select a tile, similar to netflix autoplay when hover, small player can be disable in settings)
+* Add a side panel player and a small player to the player live feed (auto-plays when select a tile, similar to Netflix autoplay when hover featuring, small player can be disable in settings)
 
 
 Version 3.0.110 and up & Web Version February 4 2020
@@ -244,12 +242,12 @@ Version 3.0.109 and up & Web Version January 31 2020
 ==============
 
 * Major version update from 2.0.X to 3.0.X
-* Add 4 way multistream for user live content
+* Add 4 way Multistream for user live content
 
 Version 2.0.107 and up & Web Version January 6 2020
 ==============
 
-* New User history screen for Live, VOD and clips history
+* New User history screen for Live, VOD and clip histories
 
 Version 2.0.105 and up & Web Version December 29 2020
 ==============
@@ -275,9 +273,9 @@ Version 2.0.52 and up & Web Version August 15 2020
 Version 2.0.51 & Web Version August 13 2020
 ==============
 
-* MultiStream Mode two live stream and two chats at the same time
+* 50/50 Mode two live stream and two chats at the same time
 
-Version 2.0.46 & Web Version August 11 2020
+Version 2.0.46 and up & Web Version August 11 2020
 ==============
 
 * Major version update from 1.0.X to 2.0.X
