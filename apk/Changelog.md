@@ -7,10 +7,17 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.217 - July 06 2020
+==============
+
+* Notification service, force closing the app (by holding return key) will now stop all running notifications
+* Update ExoPlayer to latest version
+* General performance improves and bug fixes
+
 Apk Version 3.0.216 & Web Version July 06 2020
 ==============
 
-* Improve notification service
+* Improve notification service to be more reliable
 * General performance improves and bug fixes
 
 Apk Version 3.0.214 and up - July 05 2020
