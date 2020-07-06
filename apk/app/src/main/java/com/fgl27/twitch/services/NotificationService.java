@@ -129,8 +129,7 @@ public class NotificationService extends Service {
             if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
                 StopService();
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_PAUSE)) {//Just pause it
-                isRunning = false;
-                if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+                PauseService();
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
                 startService();
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
@@ -145,6 +144,7 @@ public class NotificationService extends Service {
                     InitHandler(0);
                 }
             }
+
         } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
         return START_NOT_STICKY;
     }
@@ -152,7 +152,7 @@ public class NotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DestroyService();
+        PauseService();
     }
 
     @Override
@@ -161,7 +161,7 @@ public class NotificationService extends Service {
         startNotification();
     }
 
-    private void DestroyService() {
+    private void PauseService() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
         appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
@@ -170,7 +170,7 @@ public class NotificationService extends Service {
     }
 
     private void StopService() {
-        DestroyService();
+        PauseService();
         stopForeground(true);
         stopSelf();
     }

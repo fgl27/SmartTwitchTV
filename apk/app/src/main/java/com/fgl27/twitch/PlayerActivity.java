@@ -1253,7 +1253,7 @@ public class PlayerActivity extends Activity {
 
     //Close the app
     private void closeThis() {
-        CheckService();
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
         finishAndRemoveTask();
     }
 
