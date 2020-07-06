@@ -1112,7 +1112,7 @@
         STR_PLAYER_INFO_VISIBILITY_SUMMARY = "The player status show the current video status as quality, network activity, skipped frame etc.";
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
         STR_SINGLE_EXIT = "Single return key press";
-        STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture or 50/50 mode with a single key return click";
+        STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture, 50/50 or Multistream mode with a single key return click";
         STR_NOW_LIVE = "Now Live";
         STR_NOTIFICATION_OPT = "Notification options";
         STR_NOW_LIVE_SHOW = "Show Now Live notification";
@@ -1175,8 +1175,8 @@
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
         STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-        STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need as it will result is a lower image quality";
-        STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in setings "<div class="class_bold" style="display: inline-block">' +
+        STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need it, as it will result in a lower image quality";
+        STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in settings "<div class="class_bold" style="display: inline-block">' +
             STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
         STR_HISTORY = "History";
         STR_WATCHED = "Watched on ";
@@ -1273,13 +1273,13 @@
         STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
         STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview player screen the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
         STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
-        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this option is enable, the auto refresh will happen on background when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
+        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
         STR_ENABLE_MAIN_MULTI = "Enable main or top left corner player first";
         STR_MAIN_WINDOW = "Main window";
         STR_MULTI_MAIN_WINDOW = "MultiStream main window";
         STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big window";
         STR_SOURCE_CHECK = "Auto change player quality from Source to Auto when the player lags";
-        STR_SOURCE_CHECK_SUMMARY = 'When this option is enable and you are not using Auto quality if the player is lagging it will switch to Auto quality and warn about it, a player lag is when the player if buffering for over 15 seconds, after this change the player will automatic go back to source when a you start a new stream of vod';
+        STR_SOURCE_CHECK_SUMMARY = 'When this option is enable and you are not using Auto quality if the player is lagging it will switch to Auto quality and warn about it, a player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex then just time of course), after this change the player will automatic go back to source when a you start a new stream of vod';
         STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
         STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
         STR_TOO_ERRORS = " or too many errors";
@@ -24663,10 +24663,10 @@
         //Individual settings
         div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
 
-        div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
-
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
+
+        div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
         div += Settings_Content('keep_panel_info_visible', STR_PLAYER_INFO_VISIBILITY_ARRAY, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
 
