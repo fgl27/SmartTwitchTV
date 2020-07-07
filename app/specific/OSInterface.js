@@ -529,7 +529,7 @@ function OSInterface_keyEvent(key, keyaction) {
 //Bitrate = set mainPlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
 //Android specific: true
 //Sets small player max Bitrate
-function OSInterface_SetSmallPlayerBandwidth(Bitrate) {
+function OSInterface_SetSmallPlayerBitrate(Bitrate) {
     if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
 }
 

@@ -171,9 +171,7 @@ public class PlayerActivity extends Activity {
     public String[][] ExtraPlayerHandlerResult = new String[25][100];
     public HandlerThread ExtraPlayerHandlerThread;
     public HandlerThread SaveBackupJsonThread;
-    public HandlerThread PreviewsThread;
     public Handler SaveBackupJsonHandler;
-    public Handler PreviewsHandler;
     public HandlerThread RuntimeThread;
     public Handler RuntimeHandler;
     public Runtime runtime;
@@ -246,6 +244,10 @@ public class PlayerActivity extends Activity {
             CurrentPositionHandler[0] = new Handler(Looper.getMainLooper());
             CurrentPositionHandler[1] = new Handler(Looper.getMainLooper());
 
+            for (int i = 0; i < PlayerAccountPlus; i++) {
+                PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
+            }
+
             ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
             ExtraPlayerHandlerThread.start();
             ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
@@ -253,15 +255,6 @@ public class PlayerActivity extends Activity {
             SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
             SaveBackupJsonThread.start();
             SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
-
-            PreviewsThread = new HandlerThread("PreviewsThread");
-            PreviewsThread.start();
-            PreviewsHandler = new Handler(PreviewsThread.getLooper());
-
-            RuntimeThread = new HandlerThread("RuntimeThread");
-            RuntimeThread.start();
-            RuntimeHandler = new Handler(RuntimeThread.getLooper());
-            runtime = Runtime.getRuntime();
 
             for (int i = 0; i < PlayerAccount; i++) {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
@@ -272,32 +265,7 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
             appPreferences = new AppPreferences(this);
 
-            GetPing();
-
-            for (int i = 0; i < PlayerAccountPlus; i++) {
-                PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
-            }
-
             userAgent = Util.getUserAgent(this, getString(R.string.app_name));
-            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(this);
-
-            // Prevent small window causing lag to the device
-            // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
-            // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
-            trackSelectorParametersPP = trackSelectorParameters
-                    .buildUpon()
-                    .setMaxVideoBitrate(PP_PlayerBitrate)
-                    .build();
-
-            trackSelectorParameters = trackSelectorParameters
-                    .buildUpon()
-                    .setMaxVideoBitrate(mainPlayerBitrate)
-                    .build();
-
-            trackSelectorParametersExtraSmall = trackSelectorParameters
-                    .buildUpon()
-                    .setMaxVideoBitrate(ExtraSmallPlayerBitrate)
-                    .build();
 
             VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
@@ -308,6 +276,12 @@ public class PlayerActivity extends Activity {
             if (DeviceRam < 0) DeviceRam = 196000000;
 
             initializeWebview();
+
+            RuntimeThread = new HandlerThread("RuntimeThread");
+            RuntimeThread.start();
+            RuntimeHandler = new Handler(RuntimeThread.getLooper());
+            runtime = Runtime.getRuntime();
+            GetPing();
         }
     }
 
@@ -2117,7 +2091,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
             mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
-            trackSelectorParameters = trackSelectorParameters
+            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBitrate)
                     .build();
@@ -2128,12 +2102,15 @@ public class PlayerActivity extends Activity {
         public void SetSmallPlayerBitrate(int Bitrate) {
             PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
-            trackSelectorParametersPP = trackSelectorParameters
+            // Prevent small window causing lag to the device
+            // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
+            // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
+            trackSelectorParametersPP = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
-            trackSelectorParametersExtraSmall = trackSelectorParameters
+            trackSelectorParametersExtraSmall = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
                             Math.min(PP_PlayerBitrate, ExtraSmallPlayerBitrate)
@@ -2375,7 +2352,7 @@ public class PlayerActivity extends Activity {
         public void GetPreviews(String url) {
             PreviewsResult = null;
 
-            PreviewsHandler.post(() -> {
+            DataResultHandler[2].post(() -> {
                 Tools.ResponseObj response;
                 for (int i = 0; i < 3; i++) {
                     response = Tools.GetResponseObj(url, 15000 + (2500 * i));

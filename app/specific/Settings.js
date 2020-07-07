@@ -840,7 +840,7 @@ function Settings_SetBitRateMin() {
         value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
     else value = 0;
 
-    OSInterface_SetSmallPlayerBandwidth(value);
+    OSInterface_SetSmallPlayerBitrate(value);
 }
 
 function Settings_SetBuffers(whocall) {

@@ -416,7 +416,7 @@ function Main_initWindows() {
                 //bitrate to max possible
                 Settings_value.bitrate_min.defaultValue = 0;
                 Main_setItem('bitrate_min', 1);
-                OSInterface_SetSmallPlayerBandwidth(0);
+                OSInterface_SetSmallPlayerBitrate(0);
 
                 //enable small player over feed on multi
                 Settings_value.disable_feed_player_multi.defaultValue = 0;
