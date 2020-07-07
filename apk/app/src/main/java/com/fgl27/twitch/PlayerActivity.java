@@ -144,7 +144,6 @@ public class PlayerActivity extends Activity {
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
-    public String PreviewsResult;
     public String[] DataResult = new String[PlayerAccount];
     public Handler[] DataResultHandler = new Handler[PlayerAccount];
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
@@ -2346,33 +2345,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mhideSystemUI() {
             MainThreadHandler.post(PlayerActivity.this::hideSystemUI);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void GetPreviews(String url) {
-            PreviewsResult = null;
-
-            DataResultHandler[2].post(() -> {
-                Tools.ResponseObj response;
-                for (int i = 0; i < 3; i++) {
-                    response = Tools.GetResponseObj(url, 15000 + (2500 * i));
-
-                    if (response != null) {
-                        if (response.getStatus() == 200) {
-                            PreviewsResult = response.getResponseText();
-                            LoadUrlWebview("javascript:smartTwitchTV.PlayVod_previews_success(Android.GetPreviewsResult())");
-                        }
-                        break;
-                    }
-                }
-            });
-        }
-
-        @SuppressWarnings("unused")//called by GetPreviews
-        @JavascriptInterface
-        public String GetPreviewsResult() {
-            return PreviewsResult;
         }
 
         @SuppressWarnings("unused")//called by JS

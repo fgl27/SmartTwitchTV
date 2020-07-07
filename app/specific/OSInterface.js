@@ -436,14 +436,6 @@ function OSInterface_PlayPause(state) {
     Android.PlayPause(state);
 }
 
-//public void GetPreviews(String url)
-//url = the url that contains the vod previews
-//Android specific: false
-//Allows to get the vod previews in a async function, need to call this as the url may not work do to CORS
-function OSInterface_GetPreviews(url) {
-    Android.GetPreviews(url);
-}
-
 //public String getversion()
 //Android specific: true
 //Allows to get app version

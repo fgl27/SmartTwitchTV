@@ -1142,7 +1142,20 @@ function PlayVod_previews_pre_start(seek_previews_url) {
     PlayVod_previews_url = seek_previews_url;
     PlayVod_previews_clear();
 
-    if (Main_IsOn_OSInterface) OSInterface_GetPreviews(PlayVod_previews_url);
+    if (Main_IsOn_OSInterface) {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            PlayVod_previews_url,//urlString
+            DefaultHttpGetTimeout * 2,//timeout
+            null,//postMessage, null for get
+            null,//Method, null for get
+            JSON.stringify([]),//JsonString
+            'PlayVod_previews_success',//callback
+            0,//checkResult
+            0,//key
+            2//thread
+        );
+    }
     //else PlayVod_previews_start_test();
 }
 
@@ -1172,19 +1185,29 @@ function PlayVod_previews_show() {
 }
 
 function PlayVod_previews_success(result) {
-    if (!result) {
-        PlayVod_previews_hide();
-        return;
-    }
 
-    result = JSON.parse(result);
+    if (PlayVod_isOn && result) {
 
-    if (result.length) {
-        PlayVod_previews_obj = result[result.length - 1];
+        var resultObj = JSON.parse(result);
 
-        if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) PlayVod_previews_success_end();
-        else PlayVod_previews_clear();
-    }
+        if (resultObj.status === 200) {
+
+            resultObj = JSON.parse(resultObj.responseText);
+
+            if (resultObj.length) {
+                PlayVod_previews_obj = resultObj[resultObj.length - 1];
+
+                if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
+                    PlayVod_previews_success_end();
+                } else PlayVod_previews_clear();
+
+            }
+        } else {
+            PlayVod_previews_hide();
+        }
+
+    } else PlayVod_previews_hide();
+
 }
 
 function PlayVod_previews_success_end() {
@@ -1212,7 +1235,7 @@ function PlayVod_previews_success_end() {
 }
 
 function PlayVod_previews_move(position) {
-    if (!PlayVod_previews_obj.images.length || !PlayVod_isOn) {
+    if (!PlayVod_previews_obj.images.length) {
         PlayVod_previews_hide();
         return;
     }
