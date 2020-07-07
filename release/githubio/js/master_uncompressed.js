@@ -7996,8 +7996,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.217';
     var Main_version_java = 10; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 06, 2020';
-    var Main_version_web = 11; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 07, 2020';
+    var Main_version_web = 12; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8258,7 +8258,7 @@
                     //bitrate to max possible
                     Settings_value.bitrate_min.defaultValue = 0;
                     Main_setItem('bitrate_min', 1);
-                    OSInterface_SetSmallPlayerBandwidth(0);
+                    OSInterface_SetSmallPlayerBitrate(0);
 
                     //enable small player over feed on multi
                     Settings_value.disable_feed_player_multi.defaultValue = 0;
@@ -10515,7 +10515,7 @@
     //Bitrate = set mainPlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
     //Android specific: true
     //Sets small player max Bitrate
-    function OSInterface_SetSmallPlayerBandwidth(Bitrate) {
+    function OSInterface_SetSmallPlayerBitrate(Bitrate) {
         if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
     }
 
@@ -22317,7 +22317,8 @@
             set_url: function() {
                 this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
                     (this.cursor ? '&cursor=' + this.cursor : '') +
-                    (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+                    (Main_ContentLang !== "" ?
+                        ('&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)) : '');
             },
             SetPeriod: function() {
                 Main_setItem('Clip_periodPos', this.periodPos);
@@ -22386,7 +22387,8 @@
             set_url: function() {
                 this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                     '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
-                    (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+                    (Main_ContentLang !== "" ?
+                        ('&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)) : '');
             },
             SetPeriod: function() {
                 Main_setItem('AGameClip_periodPos', this.periodPos);
@@ -25056,7 +25058,7 @@
             value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
         else value = 0;
 
-        OSInterface_SetSmallPlayerBandwidth(value);
+        OSInterface_SetSmallPlayerBitrate(value);
     }
 
     function Settings_SetBuffers(whocall) {
@@ -26123,6 +26125,13 @@
         }
     };
 
+    //For clips the api accept a coma and extra languages
+    var Languages_Extra = {
+        "en": "en,en-gb",
+        "es": "es,es-mx",
+        "pt": "pt,pt-br"
+    };
+
     var Languages_value_keys = [];
     var Languages_positions_length = 0;
     //Variable initialization end
@@ -26177,7 +26186,7 @@
                 if (Languages_Obj_default(key)) Main_ContentLang += ',' + Languages_value[key].set_values;
             }
             Main_ContentLang = Main_ContentLang.slice(1);
-            //the app allowed more then one language but twitch api block it now
+            //the app allowed more then one language but twitch api blocks it now for all api minus clips one
             if (Main_A_includes_B(Main_ContentLang, ',')) {
                 Languages_ResetAll();
                 Main_ContentLang = "";
