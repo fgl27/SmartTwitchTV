@@ -7994,10 +7994,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.217';
-    var Main_version_java = 10; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.218';
+    var Main_version_java = 11; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 07, 2020';
-    var Main_version_web = 12; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 13; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10420,14 +10420,6 @@
     //Allows to set the playback state
     function OSInterface_PlayPause(state) {
         Android.PlayPause(state);
-    }
-
-    //public void GetPreviews(String url)
-    //url = the url that contains the vod previews
-    //Android specific: false
-    //Allows to get the vod previews in a async function, need to call this as the url may not work do to CORS
-    function OSInterface_GetPreviews(url) {
-        Android.GetPreviews(url);
     }
 
     //public String getversion()
@@ -18562,6 +18554,7 @@
     }
 
     var PlayVod_previews_url;
+    var PlayVod_previewsId;
 
     function PlayVod_previews_pre_start(seek_previews_url) {
         if (!seek_previews_url) return;
@@ -18569,7 +18562,22 @@
         PlayVod_previews_url = seek_previews_url;
         PlayVod_previews_clear();
 
-        if (Main_IsOn_OSInterface) OSInterface_GetPreviews(PlayVod_previews_url);
+        if (Main_IsOn_OSInterface) {
+
+            PlayVod_previewsId = new Date().getTime();
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                PlayVod_previews_url, //urlString
+                DefaultHttpGetTimeout * 2, //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                JSON.stringify([]), //JsonString
+                'PlayVod_previews_success', //callback
+                PlayVod_previewsId, //checkResult
+                0, //key
+                2 //thread
+            );
+        }
         //else PlayVod_previews_start_test();
     }
 
@@ -18599,19 +18607,33 @@
     }
 
     function PlayVod_previews_success(result) {
-        if (!result) {
-            PlayVod_previews_hide();
-            return;
-        }
 
-        result = JSON.parse(result);
+        if (PlayVod_isOn && result) {
 
-        if (result.length) {
-            PlayVod_previews_obj = result[result.length - 1];
+            var resultObj = JSON.parse(result);
 
-            if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) PlayVod_previews_success_end();
-            else PlayVod_previews_clear();
-        }
+            if (resultObj.checkResult > 0 && resultObj.checkResult === PlayVod_previewsId) {
+
+                if (resultObj.status === 200) {
+
+                    resultObj = JSON.parse(resultObj.responseText);
+
+                    if (resultObj.length) {
+                        PlayVod_previews_obj = resultObj[resultObj.length - 1];
+
+                        if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
+                            PlayVod_previews_success_end();
+                        } else PlayVod_previews_clear();
+
+                    }
+                } else {
+                    PlayVod_previews_hide();
+                }
+
+            }
+
+        } else PlayVod_previews_hide();
+
     }
 
     function PlayVod_previews_success_end() {
@@ -18640,7 +18662,7 @@
     }
 
     function PlayVod_previews_move(position) {
-        if (!PlayVod_previews_obj.images.length || !PlayVod_isOn) {
+        if (!PlayVod_previews_obj.images.length) {
             PlayVod_previews_hide();
             return;
         }
@@ -19068,18 +19090,25 @@
     }
 
     function Screens_loadDatafail(key) {
+
         ScreenObj[key].loadingData = false;
         ScreenObj[key].loadingDataTry = 0;
+
         if (!ScreenObj[key].itemsCount) {
+
             ScreenObj[key].FirstLoad = false;
             Screens_Some_Screen_Is_Refreshing = false;
-            if (key === Screens_Current_Key) {
+
+            if (key === Main_values.Main_Go) {
                 Main_showWarningDialog(STR_REFRESH_PROBLEM);
                 ScreenObj[key].key_exit();
             } //esle the user has alredy exit the screen
+
             if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
             else Main_HideLoadDialog();
+
         } else ScreenObj[key].dataEnded = true;
+
     }
 
     function Screens_concatenate(responseText, key) {
