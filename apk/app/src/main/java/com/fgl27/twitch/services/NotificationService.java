@@ -128,8 +128,6 @@ public class NotificationService extends Service {
 
             if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
                 StopService();
-            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_PAUSE)) {//Just pause it
-                PauseService();
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
                 startService();
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {

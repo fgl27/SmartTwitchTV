@@ -273,7 +273,6 @@ public class PlayerActivity extends Activity {
             appPreferences = new AppPreferences(this);
 
             GetPing();
-            StopService();
 
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
@@ -1039,14 +1038,6 @@ public class PlayerActivity extends Activity {
         }, 500);
     }
 
-    private void StopService() {
-        if (!IsStopped && CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
-    }
-
-    private void StartService() {
-        if (IsStopped && CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
-    }
-
     private boolean CheckService() {
         if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
@@ -1132,9 +1123,8 @@ public class PlayerActivity extends Activity {
 
     private void DoResume() {
         if (mWebView != null && AlreadyStarted) {
-            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
             GetPing();
-            StopService();
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
         }
     }
 
@@ -1176,7 +1166,9 @@ public class PlayerActivity extends Activity {
         if (!WebviewLoaded) return;
 
         ClearWebViewChache();
-        StartService();
+
+        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+
         int temp_AudioMulti = AudioMulti;
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
@@ -1253,7 +1245,7 @@ public class PlayerActivity extends Activity {
 
     //Close the app
     private void closeThis() {
-        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_PAUSE, this);
+        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
         finishAndRemoveTask();
     }
 
@@ -1617,7 +1609,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StopNotificationService() {
-            MainThreadHandler.post(PlayerActivity.this::StopService);
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
