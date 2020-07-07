@@ -37,6 +37,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -304,9 +305,9 @@ public class PlayerActivity extends Activity {
         loadingView[5].setLayoutParams(DefaultLoadingLayout);
 
         //Set default warning text size base on screen size
-        float textSize = ScreenSize.y / 100.0f * 2;
+        float textSize = (ScreenSize.y / 100.0f) * ScaleDensity * 2;
         TextView warning = findViewById(R.id.warning);
-        warning.setTextSize(textSize);
+        warning.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSize);
     }
 
     public void setPlayerSurface(boolean surface_view) {
