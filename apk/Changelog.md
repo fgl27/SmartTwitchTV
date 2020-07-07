@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Apk Version 3.0.217 - July 06 2020
 ==============
 
-* Notification service, force closing the app (by holding return key) will now stop all running notifications
+* Notification service, closing the app (by holding return key or using the exit dialog -> close) will now stop all running notifications and prevent notification until the app is re-open or the device is rebooted
 * Update ExoPlayer to latest version
 * General performance improves and bug fixes
 
