@@ -1135,6 +1135,7 @@ function PlayVod_FastBackForward(position) {
 }
 
 var PlayVod_previews_url;
+var PlayVod_previewsId;
 
 function PlayVod_previews_pre_start(seek_previews_url) {
     if (!seek_previews_url) return;
@@ -1144,6 +1145,8 @@ function PlayVod_previews_pre_start(seek_previews_url) {
 
     if (Main_IsOn_OSInterface) {
 
+        PlayVod_previewsId = new Date().getTime();
+
         OSInterface_GetMethodUrlHeadersAsync(
             PlayVod_previews_url,//urlString
             DefaultHttpGetTimeout * 2,//timeout
@@ -1151,7 +1154,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             null,//Method, null for get
             JSON.stringify([]),//JsonString
             'PlayVod_previews_success',//callback
-            0,//checkResult
+            PlayVod_previewsId,//checkResult
             0,//key
             2//thread
         );
@@ -1190,22 +1193,25 @@ function PlayVod_previews_success(result) {
 
         var resultObj = JSON.parse(result);
 
-        if (resultObj.status === 200) {
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_previewsId) {
 
-            resultObj = JSON.parse(resultObj.responseText);
+            if (resultObj.status === 200) {
 
-            if (resultObj.length) {
-                PlayVod_previews_obj = resultObj[resultObj.length - 1];
+                resultObj = JSON.parse(resultObj.responseText);
 
-                if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
-                    PlayVod_previews_success_end();
-                } else PlayVod_previews_clear();
+                if (resultObj.length) {
+                    PlayVod_previews_obj = resultObj[resultObj.length - 1];
 
+                    if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
+                        PlayVod_previews_success_end();
+                    } else PlayVod_previews_clear();
+
+                }
+            } else {
+                PlayVod_previews_hide();
             }
-        } else {
-            PlayVod_previews_hide();
-        }
 
+        }
     } else PlayVod_previews_hide();
 
 }
