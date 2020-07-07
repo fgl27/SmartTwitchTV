@@ -322,18 +322,25 @@ function Screens_loadDataError(key) {
 }
 
 function Screens_loadDatafail(key) {
+
     ScreenObj[key].loadingData = false;
     ScreenObj[key].loadingDataTry = 0;
+
     if (!ScreenObj[key].itemsCount) {
+
         ScreenObj[key].FirstLoad = false;
         Screens_Some_Screen_Is_Refreshing = false;
-        if (key === Screens_Current_Key) {
+
+        if (key === Main_values.Main_Go) {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             ScreenObj[key].key_exit();
         }//esle the user has alredy exit the screen
+
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
         else Main_HideLoadDialog();
+
     } else ScreenObj[key].dataEnded = true;
+
 }
 
 function Screens_concatenate(responseText, key) {
