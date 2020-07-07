@@ -1193,7 +1193,7 @@ function PlayVod_previews_success(result) {
 
         var resultObj = JSON.parse(result);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_previewsId) {
+        if (resultObj.checkResult > 0 && resultObj.checkResult === PlayVod_previewsId) {
 
             if (resultObj.status === 200) {
 
