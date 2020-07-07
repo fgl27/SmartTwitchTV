@@ -1212,6 +1212,7 @@ function PlayVod_previews_success(result) {
             }
 
         }
+
     } else PlayVod_previews_hide();
 
 }
