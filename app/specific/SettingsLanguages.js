@@ -180,6 +180,13 @@ var Languages_value = {
     }
 };
 
+//For clips the api accept a coma and extra languages
+var Languages_Extra = {
+    "en": "en,en-gb",
+    "es": "es,es-mx",
+    "pt": "pt,pt-br"
+};
+
 var Languages_value_keys = [];
 var Languages_positions_length = 0;
 //Variable initialization end
@@ -234,7 +241,7 @@ function Languages_SetLang() {
             if (Languages_Obj_default(key)) Main_ContentLang += ',' + Languages_value[key].set_values;
         }
         Main_ContentLang = Main_ContentLang.slice(1);
-        //the app allowed more then one language but twitch api block it now
+        //the app allowed more then one language but twitch api blocks it now for all api minus clips one
         if (Main_A_includes_B(Main_ContentLang, ',')) {
             Languages_ResetAll();
             Main_ContentLang = "";

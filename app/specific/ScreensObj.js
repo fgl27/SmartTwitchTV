@@ -906,7 +906,8 @@ function ScreensObj_InitClip() {
         set_url: function() {
             this.url = this.base_url + '&period=' + this.period[this.periodPos - 1] +
                 (this.cursor ? '&cursor=' + this.cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+                (Main_ContentLang !== "" ?
+                    ('&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)) : '');
         },
         SetPeriod: function() {
             Main_setItem('Clip_periodPos', this.periodPos);
@@ -975,7 +976,8 @@ function ScreensObj_InitAGameClip() {
         set_url: function() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
                 '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
+                (Main_ContentLang !== "" ?
+                    ('&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)) : '');
         },
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
