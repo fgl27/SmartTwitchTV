@@ -266,7 +266,7 @@ public class PlayerActivity extends Activity {
             deviceIsTV = Tools.deviceIsTV(this);
             appPreferences = new AppPreferences(this);
 
-            userAgent = Util.getUserAgent(this, getString(R.string.app_name));
+            userAgent = Util.getUserAgent(this, TAG);
 
             VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
