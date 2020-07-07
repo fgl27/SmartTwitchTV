@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version July 07 2020
 ==============
 
-* Display extra languages as EN-GB for EN or ES-MX for ES for clips, only the clips Twitch API has support for this extra languages
+* Display extra languages EN-GB for EN, ES-MX for ES and PT-BR for PT only for clips, only the clips Twitch API has support for this extra languages
 
 Apk Version 3.0.217 - July 06 2020
 ==============
