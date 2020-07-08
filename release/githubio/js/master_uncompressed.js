@@ -7993,10 +7993,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.218';
-    var Main_version_java = 11; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 07, 2020';
-    var Main_version_web = 13; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.219';
+    var Main_version_java = 12; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 08, 2020';
+    var Main_version_web = 14; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9747,6 +9747,11 @@
     function Main_CheckStop() { // Called only by JAVA
         Main_isStoped = true;
         Main_PreventClick(true);
+
+        if (Settings_Obj_default("live_notification")) {
+            if (Settings_Obj_default("live_notification_background")) OSInterface_RunNotificationService();
+            else OSInterface_StopNotificationService();
+        }
 
         //Player related
         ChatLive_Clear(0);
