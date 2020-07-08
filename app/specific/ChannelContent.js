@@ -413,7 +413,7 @@ function ChannelContent_keyEnter() {
                 '',//11
                 0,//12
                 0,//13
-                null//14
+                Main_values.Main_selectedChannel_id//14
             ];
             Play_data.isHost = false;
             Main_values.Play_isHost = false;
