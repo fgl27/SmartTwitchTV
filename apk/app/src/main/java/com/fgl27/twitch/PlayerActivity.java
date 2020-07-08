@@ -1012,17 +1012,6 @@ public class PlayerActivity extends Activity {
         }, 500);
     }
 
-    private boolean CheckService() {
-        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
-                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
-
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
-            return false;
-        }
-
-        return true;
-    }
-
     private void ShowNoNetworkWarning() {
         ShowWarningText(getString(R.string.no_network));
         NetworkCheck();
@@ -1141,8 +1130,6 @@ public class PlayerActivity extends Activity {
 
         ClearWebViewChache();
 
-        if (CheckService()) Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
-
         int temp_AudioMulti = AudioMulti;
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
@@ -1182,7 +1169,12 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        CheckService();
+        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
+                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
+
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        }
+
         for (int i = 0; i < PlayerAccountPlus; i++) {
             ClearPlayer(i);
         }
@@ -1217,7 +1209,7 @@ public class PlayerActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
-    //Close the app
+    //Force close the app
     private void closeThis() {
         Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
         finishAndRemoveTask();
@@ -1582,12 +1574,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void StopNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, mWebViewContext);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void SetNotificationPosition(int position) {
             appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
         }
@@ -1608,6 +1594,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void CheckNotificationService() {
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_CHECK, mWebViewContext);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void StopNotificationService() {
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS

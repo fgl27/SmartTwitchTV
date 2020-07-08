@@ -126,21 +126,40 @@ public class NotificationService extends Service {
         try {
             String action = intent.getAction();
 
-            if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {//Fully stop the service as is not enable or is not TV
+            if (Objects.equals(action, Constants.ACTION_NOTIFY_STOP)) {
+
+                //Fully stop the service
                 StopService();
-            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {//Start or restart the service
+
+            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_START)) {
+
+                //Start or restart the service
                 startService();
+
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_OFF)) {
+
                 screenOn = false;
+
+                //Stop all current running notification
                 if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
+                if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
+                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
+
                 screenOn = true;
+                //Small delay as the device just wakeup and may need some time to connect to the internet
                 if (isRunning) InitHandler(10 * 1000);
+
             } else if (Objects.equals(action, Constants.ACTION_NOTIFY_CHECK)) {
+
                 if (isRunning) {
+
                     CheckUserChanged();
                     InitHandler(0);
+
                 }
+
             }
 
         } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
