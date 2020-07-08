@@ -15956,10 +15956,6 @@
 
     function Play_exitMain() {
         //Main_Log('Play_exitMain');
-        if (AddUser_UserIsSet()) {
-            AddCode_IsFollowing = false;
-            Play_setFollow();
-        } else Play_hideFollow();
 
         PlayExtra_HideChat();
         UserLiveFeed_PreventHide = false;
