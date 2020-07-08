@@ -645,6 +645,15 @@ function Play_CheckFollow() {
     } else Play_hideFollow();
 }
 
+function Play_hideFollow() {
+    Play_controls[Play_controlsFollow].setLable(STR_NOKEY);
+    AddCode_IsFollowing = false;
+}
+
+function Play_setFollow() {
+    Play_controls[Play_controlsFollow].setLable(AddCode_IsFollowing ? STR_FOLLOWING : STR_FOLLOW, AddCode_IsFollowing);
+}
+
 function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
     var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time',
         xmlHttp = new XMLHttpRequest();
@@ -1309,11 +1318,6 @@ function Play_ClearPlay(clearChat) {
     Play_IsWarning = false;
 }
 
-function Play_hideFollow() {
-    Play_controls[Play_controlsFollow].setLable(STR_NOKEY);
-    AddCode_IsFollowing = false;
-}
-
 function Play_showBufferDialog() {
     if (Main_IsOn_OSInterface) OSInterface_mshowLoading(true);
     else Main_ShowElement('dialog_loading_play');
@@ -1839,10 +1843,6 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
         if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
         if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
     }
-}
-
-function Play_setFollow() {
-    Play_controls[Play_controlsFollow].setLable(AddCode_IsFollowing ? STR_FOLLOWING : STR_FOLLOW, AddCode_IsFollowing);
 }
 
 function Play_CloseBigAndSwich(error_410) {
