@@ -842,7 +842,6 @@ function Main_ThumbNull(y, x, thumbnail) {
 }
 
 function Main_ReStartScreens(preventRefresh) {
-    Main_updateclock();
     if (Sidepannel_isShowing()) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
         if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
@@ -1185,8 +1184,8 @@ function Main_OPenAsVod(index) {
 
     if (Play_isOn) {
         Main_OPenAsVod_shutdownStream();
-
     }
+
     if (!Play_PreviewId) Play_showWarningDialog(STR_LIVE_VOD + Play_timeMs(Main_vodOffset * 1000));
     Main_openVod();
 
@@ -1202,15 +1201,7 @@ function Main_OPenAsVod_shutdownStream() {
     Main_OPenAsVod_PreshutdownStream(true);
     Play_data.qualities = [];
     Main_values.Play_WasPlaying = 0;
-
-    if (AddUser_UserIsSet()) {
-        AddCode_IsFollowing = false;
-        Play_setFollow();
-    } else Play_hideFollow();
-
-    PlayExtra_HideChat();
     UserLiveFeed_PreventHide = false;
-    PlayVod_ProgresBarrUpdate(0, 0);
 }
 
 function Main_OPenAsVod_PreshutdownStream() {
@@ -1381,7 +1372,6 @@ function Main_updateclock() {
     Main_textContent("stream_clock", clock);
     Main_textContent('label_clock', clock);
 
-    if (Main_RunningTime) Main_AboutDialogUpdateTime();
     Main_randomimg = '?' + parseInt(Math.random() * 100000);
 
     Screens_SetLastRefresh(Screens_Current_Key);

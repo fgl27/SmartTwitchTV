@@ -1268,9 +1268,7 @@ function Play_PreshutdownStream(closePlayer) {
 function Play_exitMain() {
     //Main_Log('Play_exitMain');
 
-    PlayExtra_HideChat();
     UserLiveFeed_PreventHide = false;
-    PlayVod_ProgresBarrUpdate(0, 0);
     Play_HideBufferDialog();
     Main_showScene1Doc();
     Main_hideScene2Doc();
@@ -1284,7 +1282,6 @@ function Play_ClearPlayer() {
     Play_hidePanel();
     Play_HideWarningDialog();
     if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Main_updateclock();
 
     if (Play_data.qualities[1] && Play_data.qualityIndex === (Play_getQualitiesCount() - 1)) {
         if (Play_data.qualities[1].hasOwnProperty('id')) {

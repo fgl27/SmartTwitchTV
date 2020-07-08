@@ -58,6 +58,7 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     //Play_SupportsSource = true;
     PlayVod_currentTime = 0;
+    PlayVod_ProgresBarrUpdate(0, 0);
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = " VOD";

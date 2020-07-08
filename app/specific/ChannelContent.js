@@ -81,7 +81,6 @@ function ChannelContent_exit() {
 
 function ChannelContent_StartLoad() {
     ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname);
-    Main_updateclock();
     Main_innerHTML("label_last_refresh", '');
     Main_HideElement('channel_content_scroll');
     ChannelContent_offline_image = null;

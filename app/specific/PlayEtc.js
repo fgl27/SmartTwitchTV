@@ -775,7 +775,6 @@ function Play_OpenSearch(PlayVodClip) {
 
     Play_PreviewVideoEnded = false;
     Main_values.Play_WasPlaying = 0;
-    PlayVod_ProgresBarrUpdate(0, 0);
     Main_showScene1Doc();
     Main_hideScene2Doc();
     Main_OpenSearch();

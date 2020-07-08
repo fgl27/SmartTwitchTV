@@ -53,6 +53,7 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
+    PlayVod_ProgresBarrUpdate(0, 0);
 
     document.getElementById('next_button_img').src = IMG_404_BANNER;
     document.getElementById('back_button_img').src = IMG_404_BANNER;
