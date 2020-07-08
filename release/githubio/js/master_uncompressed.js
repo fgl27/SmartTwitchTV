@@ -2743,16 +2743,16 @@
         "tags": "japanese-celebration"
     }, {
         "unicode": "🏴",
-        "tags": "waving"
+        "tags": "flag-black"
     }, {
         "unicode": "🏳️",
-        "tags": "waving"
+        "tags": "flag-white"
     }, {
         "unicode": "🏳️‍🌈",
-        "tags": "pride-flag"
+        "tags": "flag-pride"
     }, {
         "unicode": "🏴‍☠️",
-        "tags": "pirate-flag"
+        "tags": "flag-pirate"
     }, {
         "unicode": "🇦🇨",
         "tags": "AC",
