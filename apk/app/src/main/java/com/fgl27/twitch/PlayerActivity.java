@@ -56,6 +56,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.fgl27.twitch.channels.ChannelsUtils;
+import com.fgl27.twitch.channels.SyncChannelJobService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -75,15 +77,16 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    //public final String PageUrl = "file:///android_asset/app/index.html";
-    //public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    public final String PageUrl = "file:///android_asset/app/index.html";
+    public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
 
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-    public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    //public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
 
     public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
@@ -227,12 +230,27 @@ public class PlayerActivity extends Activity {
 
     public Point ScreenSize;
 
+    public String IntentObj;
+    public String LastIntent;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
+            Intent intent = getIntent();
+            boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
+            intent.setAction(null);
+            setIntent(intent);
+
             setContentView(R.layout.activity_player);
             SetDefaultLoadingLayout();
 
@@ -264,6 +282,7 @@ public class PlayerActivity extends Activity {
 
             deviceIsTV = Tools.deviceIsTV(this);
             appPreferences = new AppPreferences(this);
+            if (isChannelIntent) SaveIntent(intent);
 
             userAgent = Util.getUserAgent(this, TAG);
 
@@ -1070,39 +1089,112 @@ public class PlayerActivity extends Activity {
     public void onResume() {
         super.onResume();
         if (!IsStopped) return;//Prevent onResume call after startActivityForResult() from OpenExternal()
-
         IsStopped = false;
+
         if (!WebviewLoaded) return;
 
-        if (Tools.isConnected(this)) DoResume();
-        else if (AlreadyStarted) {
-            ShowNoNetworkResumeWarning();
+        Intent intent = getIntent();
+        Log.i(TAG, "onResume intent " + intent);
+        boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
+        intent.setAction(null);
+        setIntent(intent);
+
+        if (Tools.isConnected(this)) {
+            if (isChannelIntent && AlreadyStarted) CheckIntent(intent);
+            DoResume(isChannelIntent);
+        } else if (AlreadyStarted) {
+            ShowNoNetworkResumeWarning(isChannelIntent);
         }
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "onResume");
+            Log.i(TAG, "onResume end");
         }
     }
 
-    private void DoResume() {
+    private void SaveIntent(Intent intent) {
+        String IntentObj = intent.getStringExtra(Constants.CHANNEL_OBJ);
+        //IntentObj == null the channel content is empty or user clicked on the refresh opt
+        LastIntent = IntentObj != null ? IntentObj : String.valueOf(intent.getIntExtra(Constants.CHANNEL_TYPE, 0));
+    }
+
+    private void CheckIntent(Intent intent) {
+
+        IntentObj = intent.getStringExtra(Constants.CHANNEL_OBJ);
+
+        if (IntentObj != null) {
+
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_onNewIntent(Android.GetIntentObj())");
+
+        } else {
+
+            CheckRefresh(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false);
+            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
+
+        }
+
+    }
+
+    public void CheckRefresh(int Type, boolean skipToast) {
+        if (Type == Constants.CHANNEL_TYPE_LIVE) {
+
+            DataResultHandler[2].post(() ->
+                    SyncChannelJobService.StartLive(this)
+            );
+
+        } else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) {
+
+            if (appPreferences != null) {
+
+                DataResultHandler[2].post(() ->
+                        SyncChannelJobService.SetUserLive(
+                                this,
+                                Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                        )
+                );
+
+
+            }
+
+        } else if (Type == Constants.CHANNEL_TYPE_FEATURED) {
+
+            DataResultHandler[2].post(() ->
+                    SyncChannelJobService.StartFeatured(this)
+            );
+
+        }
+
+        if (!skipToast) CheckRefreshToast(Type, this);
+    }
+
+    public void CheckRefreshToast(int Type, Context context) {
+        if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Refreshing Live home screen channel", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "Refreshing User Live home screen channel", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Refreshing Featured home screen channel", Toast.LENGTH_LONG).show();
+    }
+
+    private void DoResume(boolean skipResumeJS) {
         if (mWebView != null && AlreadyStarted) {
             GetPing();
-            mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
+
+            if (!skipResumeJS) {
+                mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
+            }
+
         }
     }
 
-    private void ShowNoNetworkResumeWarning() {
+    private void ShowNoNetworkResumeWarning(boolean skipResumeJS) {
         ShowWarningText(getString(R.string.no_network));
-        NetworkResumeCheck();
+        NetworkResumeCheck(skipResumeJS);
     }
 
-    private void NetworkResumeCheck() {
+    private void NetworkResumeCheck(boolean skipResumeJS) {
         MainThreadHandler.postDelayed(() -> {
             if (Tools.isConnected(this)){
                 HideWarningText();
-                DoResume();
+                DoResume(skipResumeJS);
             } else {
-                if (!IsStopped) NetworkResumeCheck();
+                if (!IsStopped) NetworkResumeCheck(skipResumeJS);
                 else HideWarningText();
             }
         }, 250);
@@ -1114,6 +1206,8 @@ public class PlayerActivity extends Activity {
             CookieManager.getInstance().flush();
             mWebView.clearCache(true);
             mWebView.clearHistory();
+
+            SaveBackupJsonHandler.post(() -> Tools.deleteCache(this));
         }
     }
 
@@ -1350,6 +1444,10 @@ public class PlayerActivity extends Activity {
         WebviewLoaded = true;
         mWebView.requestFocus();
 
+        //The recommendation is to start this on BroadcastReceiver action ACTION_INITIALIZE_PROGRAMS
+        //But that process is bugged the BroadcastReceiver gets called too many times some times 3 plus under a second after the
+        //app gets installed... so do it here, as is a better option as the user will not get the default channel added unless the app is opened
+        ChannelsUtils.scheduleSyncingChannel(this);
     }
 
     private void initializeWebViewKey() {
@@ -1415,6 +1513,37 @@ public class PlayerActivity extends Activity {
          */
         WebAppInterface(Context context) {
             mWebViewContext = context;
+        }
+
+        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
+        @JavascriptInterface
+        public String GetIntentObj() {
+            return IntentObj;
+        }
+
+        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
+        @JavascriptInterface
+        public String GetLastIntentObj() {
+            String tempLastIntent = LastIntent;
+            LastIntent = null;
+
+            return tempLastIntent;
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mCheckRefreshToast(int type) {
+
+            CheckRefreshToast(type, mWebViewContext);
+
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void mCheckRefresh(int type) {
+
+            CheckRefresh(type, true);
+
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1612,6 +1741,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void upNotificationId(String id) {
             appPreferences.put(Constants.PREF_USER_ID, id);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upDateLang(String lang) {
+            appPreferences.put(Constants.CHANNEL_LANGUAGE, lang);
         }
 
         @SuppressWarnings("unused")//called by JS

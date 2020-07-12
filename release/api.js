@@ -72,6 +72,7 @@
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,// Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
         'Main_checkWebVersion': Main_checkWebVersion,// Main_checkWebVersion() func from app/specific/Main.js
+        'Main_onNewIntent': Main_onNewIntent,// Main_onNewIntent() func from app/specific/Main.js
     };
 
     /** Expose `smartTwitchTV` */

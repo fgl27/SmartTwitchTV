@@ -36,6 +36,7 @@ function AddUser_init() {
 }
 
 function AddUser_exit() {
+    Main_values.Main_Go = Main_values.Main_Before !== Main_Users ? Main_values.Main_Before : Main_Live;
     AddUser_RemoveinputFocus(false);
     Main_removeEventListener("keydown", AddUser_handleKeyDown);
     Main_removeEventListener("keydown", AddUser_KeyboardEvent);
@@ -50,8 +51,6 @@ function AddUser_handleKeyDown(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                else Main_values.Main_Go = Main_Live;
                 AddUser_exit();
                 Main_SwitchScreen();
             }
@@ -119,8 +118,6 @@ function AddUser_KeyboardEvent(event) {
             if (Main_isAboutDialogShown()) Main_HideAboutDialog();
             else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
             else {
-                if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                else Main_values.Main_Go = Main_Live;
                 AddUser_exit();
                 Main_SwitchScreen();
             }
@@ -361,6 +358,7 @@ function AddUser_removeUser(position) {
             AddUser_UpdateSidepanel();
             OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
             if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
+            OSInterface_mCheckRefresh(2);
         }
         Users_status = false;
         Users_init();
@@ -371,6 +369,7 @@ function AddUser_removeUser(position) {
         if (Main_IsOn_OSInterface) {
             OSInterface_upNotificationId(null);
             OSInterface_StopNotificationService();
+            OSInterface_mCheckRefresh(2);
         }
     }
 }
@@ -410,6 +409,7 @@ function AddUser_UserMakeOne(position) {
     if (Main_IsOn_OSInterface) {
         OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
         if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
+        OSInterface_mCheckRefresh(2);
     }
 
     //Reset user emotes on chage

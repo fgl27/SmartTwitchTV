@@ -110,11 +110,6 @@ public class NotificationService extends Service {
     private float textSizeSmall;
     private float textSizeBig;
 
-    private String[][] DEFAULT_HEADERS = {
-            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
-            {"Accept", "application/vnd.twitchtv.v5+json"}
-    };
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -320,6 +315,7 @@ public class NotificationService extends Service {
 
             boolean hasLiveChannels = true;
             ChannelsOffset = 0;
+
             while (hasLiveChannels) {
 
                 url = String.format(
@@ -332,7 +328,7 @@ public class NotificationService extends Service {
                 StreamsSize = 0;
                 for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
                     if (response != null) {
 
@@ -407,7 +403,8 @@ public class NotificationService extends Service {
 
             if (Notify && result.size() > 0) {
 
-                for (int i = 0; i < result.size(); i++) {
+                StreamsSize = result.size();
+                for (int i = 0; i < StreamsSize; i++) {
                     DoNotification(result.get(i), i);
                 }
 
@@ -497,7 +494,7 @@ public class NotificationService extends Service {
 
             for (int i = 0; i < 3; i++) {
 
-                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
                 if (response != null) {
 

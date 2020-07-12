@@ -572,22 +572,42 @@ function Screens_loadDataSuccessFinish(key) {
 
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
-            //Force reset some values as I have reset the Never_run_new value and some things may crash
-            if (Main_values.Never_run_new) {
-                Main_GoBefore = Main_Live;
-                Main_values.Play_WasPlaying = 0;
+
+            var Last_obj = OSInterface_GetLastIntentObj(),
+                obj, home_channel_call;
+
+            if (Last_obj) {
+                obj = JSON.parse(Last_obj);
+                home_channel_call = Main_A_equals_B(obj.type, "LIVE");
+
+                if (!home_channel_call) {
+                    OSInterface_mCheckRefreshToast(parseInt(obj));
+                }
             }
 
-            //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
+            var StartUser = Settings_value.start_user_screen.defaultValue;
+            var restore_playback = Settings_value.restor_playback.defaultValue;
+
+            if (home_channel_call) {
+
+                Main_values.Play_WasPlaying = 1;
+
+                Play_data = JSON.parse(JSON.stringify(Play_data_base));
+                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+                StartUser = false;
+                restore_playback = true;
+
+            }
+
             Main_values.warning_extra = false;
             var tempGame;
 
-            if (Main_values.Play_WasPlaying !== 1) {
+            if (Main_values.Play_WasPlaying !== 1 || StartUser) {
                 tempGame = Play_data.data[3];
                 Play_data = JSON.parse(JSON.stringify(Play_data_base));
             }
 
-            if (Settings_value.start_user_screen.defaultValue) {
+            if (StartUser) {
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Users_beforeUser = Main_GoBefore;
@@ -597,12 +617,12 @@ function Screens_loadDataSuccessFinish(key) {
                 Main_SwitchScreen(false);
                 Screens_loadDataSuccessFinishEnd();
 
-            } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) {// && ScreenObj[key].status
+            } else if (restore_playback && Main_values.Play_WasPlaying) {// && ScreenObj[key].status
                 //Main_Log('Play_WasPlaying');
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
-                Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+                if (!home_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
                 //History vod is so fast to load that this need to be set here to prevent a vod reset
                 Main_FirstRun = false;

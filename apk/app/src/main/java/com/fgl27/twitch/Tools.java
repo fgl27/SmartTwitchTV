@@ -103,6 +103,11 @@ public final class Tools {
 
     private static final String TAG = "STTV_Tools";
 
+    public static final String[][] DEFAULT_HEADERS = {
+            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
+            {"Accept", "application/vnd.twitchtv.v5+json"}
+    };
+
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
             "1", "1.1", "1.2", "1.3", "1.b",
@@ -220,7 +225,7 @@ public final class Tools {
                     hls_url,
                     URLEncoder.encode(StreamToken, "UTF-8"),
                     StreamSig,
-                    ThreadLocalRandom.current().nextInt(1, 1000)
+                    ThreadLocalRandom.current().nextInt(1, 100000)
             );
 
             for (i = 0; i < ReTryMax; i++) {
@@ -944,5 +949,33 @@ public final class Tools {
         //Log.i(TAG, "height " + height + " bottomMargin " + bottomMargin + " bottomMargin + height " + (height + bottomMargin) + " ScreenSize.y " + ScreenSize.y);
 
         return PlayerViewSidePanel;
+    }
+
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            deleteDir(dir);
+        } catch (Exception e) {
+            Log.d(TAG, "deleteCache e " + e);
+        }
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String child : children) {
+                    boolean success = deleteDir(new File(dir, child));
+                    if (!success) {
+                        return false;
+                    }
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
     }
 }

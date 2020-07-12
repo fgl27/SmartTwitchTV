@@ -1018,11 +1018,11 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 
         if (Main_values.Main_Go === Main_ChannelContent) {
             restorePreview = ChannelContent_RestoreThumb(Play_data);
-        } else if (ScreenObj[Screens_Current_Key].screenType === 0 && ScreenObj[Screens_Current_Key].posY > -1 &&
-            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+        } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
+            !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             restorePreview = Sidepannel_RestoreThumb(
-                document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
+                document.getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
                 Play_data
             );
 

@@ -63,4 +63,6 @@ dependencies {
     implementation 'androidx.webkit:webkit:' + versions.webkit
     implementation 'com.google.code.gson:gson:' + versions.googlegson
     implementation 'net.grandcentrix.tray:tray:' + versions.tray
+    implementation 'androidx.tvprovider:tvprovider:' + versions.tvprovider
+
 }

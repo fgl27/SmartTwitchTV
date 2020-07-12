@@ -35,4 +35,13 @@ public interface Constants {
     String ACTION_NOTIFY_STOP = "action_StopService";
     String ACTION_NOTIFY_CHECK = "action_CheckUser";
 
+    String CHANNEL_OBJ = "channel_obj";
+    String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
+    String CHANNEL_LANGUAGE = "channel_lang";
+
+    String CHANNEL_TYPE = "channel_type";
+    int CHANNEL_TYPE_LIVE = 1;
+    int CHANNEL_TYPE_USER_LIVE = 2;
+    int CHANNEL_TYPE_FEATURED = 3;
+
 }
