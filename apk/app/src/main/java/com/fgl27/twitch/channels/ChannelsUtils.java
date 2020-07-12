@@ -352,6 +352,7 @@ public final class ChannelsUtils {
     }
 
     public static void scheduleSyncingChannel(Context context) {
+
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
         scheduler.cancel(1);
@@ -387,5 +388,4 @@ public final class ChannelsUtils {
         );
 
     }
-
 }

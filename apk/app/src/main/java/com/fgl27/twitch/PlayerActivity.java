@@ -234,6 +234,7 @@ public class PlayerActivity extends Activity {
 
     public String IntentObj;
     public String LastIntent;
+    public boolean canRunChannel;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -283,8 +284,10 @@ public class PlayerActivity extends Activity {
             }
 
             deviceIsTV = Tools.deviceIsTV(this);
+            canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= 26;
+
             appPreferences = new AppPreferences(this);
-            if (isChannelIntent) SaveIntent(intent);
+            if (canRunChannel && isChannelIntent) SaveIntent(intent);
 
             userAgent = Util.getUserAgent(this, TAG);
 
@@ -1120,6 +1123,7 @@ public class PlayerActivity extends Activity {
     }
 
     private void CheckIntent(Intent intent) {
+        if (!canRunChannel) return;
 
         IntentObj = intent.getStringExtra(Constants.CHANNEL_OBJ);
 
@@ -1138,6 +1142,7 @@ public class PlayerActivity extends Activity {
 
     public void CheckRefresh(int Type, boolean skipToast) {
         Context context = this;
+        if (!canRunChannel) return;
 
         DataResultHandler[4].post(() -> {
 
@@ -1173,6 +1178,8 @@ public class PlayerActivity extends Activity {
     }
 
     public void CheckRefreshToast(int Type, Context context) {
+        if (!canRunChannel) return;
+
         if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Live home screen channel refreshed", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "User Live home screen channel  refreshed", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Featured home screen channel  refreshed", Toast.LENGTH_LONG).show();
@@ -1455,7 +1462,7 @@ public class PlayerActivity extends Activity {
         //The recommendation is to start this on BroadcastReceiver action ACTION_INITIALIZE_PROGRAMS
         //But that process is bugged the BroadcastReceiver gets called too many times some times 3 plus under a second after the
         //app gets installed... so do it here, as is a better option as the user will not get the default channel added unless the app is opened
-        ChannelsUtils.scheduleSyncingChannel(this);
+        if (canRunChannel) ChannelsUtils.scheduleSyncingChannel(this);
     }
 
     private void initializeWebViewKey() {
