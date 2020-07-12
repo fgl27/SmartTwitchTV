@@ -28,6 +28,7 @@ public interface Constants {
     String PREF_NOTIFICATION_POSITION = "notification_position";
     String PREF_NOTIFICATION_WILL_END = "notification_end_time";
     String PREF_USER_ID = "user_id";
+    String PREF_USER_NAME = "user_name";
 
     String ACTION_SCREEN_ON = "action_screenOn";
     String ACTION_SCREEN_OFF = "action_screenOff";
@@ -44,5 +45,6 @@ public interface Constants {
     int CHANNEL_TYPE_USER_LIVE = 2;
     int CHANNEL_TYPE_FEATURED = 3;
     int CHANNEL_TYPE_GAMES = 4;
+    int CHANNEL_TYPE_USER_GAMES = 5;
 
 }

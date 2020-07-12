@@ -346,12 +346,14 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
-//public void upNotificationId(String id)
+//public void upNotificationId(String id, String name)
 //id =  the user id
 //Android specific: true
 //Sets the user id used by the notification services
-function OSInterface_upNotificationId(id) {
-    Android.upNotificationId(id);
+function OSInterface_upNotificationId(id, name) {
+    try {
+        Android.upNotificationId(id, name);
+    } catch (e) {}
 }
 
 //public void BackupFile(String file, String file_content)
@@ -916,9 +918,10 @@ function OSInterface_mCheckRefreshToast(type) {//Not be used
 //public void mCheckRefresh()
 //Android specific: true
 //returns the webview version
-function OSInterface_mCheckRefresh(type) {
+function OSInterface_mCheckRefresh() {
     try {
-        Android.mCheckRefresh(type);
+        Android.mCheckRefresh(2);
+        Android.mCheckRefresh(5);
     } catch (e) {}
 }
 
@@ -932,7 +935,7 @@ function OSInterface_GetLastIntentObj() {
     return null;
 }
 
-//public void upNotificationId(String id)
+//public void upDateLang(String id)
 //id =  the user id
 //Android specific: true
 //Sets the user id used by the notification services

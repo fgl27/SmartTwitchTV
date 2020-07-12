@@ -362,7 +362,7 @@ function Main_initRestoreBackups() {
                     if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
-                    if (AddUser_UserIsSet()) OSInterface_mCheckRefresh(2);
+                    if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
                 }
             }
 

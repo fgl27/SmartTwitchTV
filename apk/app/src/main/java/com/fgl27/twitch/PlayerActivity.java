@@ -76,6 +76,8 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -1155,6 +1157,12 @@ public class PlayerActivity extends Activity {
                 case Constants.CHANNEL_TYPE_GAMES:
                     SyncChannelJobService.StartGames(context);
                     break;
+                case Constants.CHANNEL_TYPE_USER_GAMES:
+                    SyncChannelJobService.StartUserGames(
+                            context,
+                            Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+                    );
+                    break;
                 default:
                     break;
             }
@@ -1169,6 +1177,7 @@ public class PlayerActivity extends Activity {
         else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "User Live home screen channel  refreshed", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Featured home screen channel  refreshed", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_GAMES) Toast.makeText(context, "Games home screen channel  refreshed", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_USER_GAMES) Toast.makeText(context, "User Games home screen channel  refreshed", Toast.LENGTH_LONG).show();
     }
 
     private void DoResume(boolean skipResumeJS) {
@@ -1738,8 +1747,13 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void upNotificationId(String id) {
+        public void upNotificationId(String id, String name) {
+
             appPreferences.put(Constants.PREF_USER_ID, id);
+            try {
+                appPreferences.put(Constants.PREF_USER_NAME, name != null ? URLEncoder.encode(name, "UTF-8") : null);
+            } catch (UnsupportedEncodingException ignored) {}
+
         }
 
         @SuppressWarnings("unused")//called by JS

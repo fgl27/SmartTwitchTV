@@ -81,7 +81,14 @@
                  StartLive(context);
                  StartFeatured(context);
                  StartGames(context);
-                 SetUserLive(context, Tools.getString(Constants.PREF_USER_ID, null, appPreferences));
+                 SetUserLive(
+                         context,
+                         Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                 );
+                 SyncChannelJobService.StartUserGames(
+                         context,
+                         Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+                 );
 
              } catch (Exception e) {
                  Log.d(TAG, "updateChannels e " + e.getMessage());
@@ -169,6 +176,33 @@
                          R.mipmap.ic_launcher, "Games",
                          Constants.CHANNEL_TYPE_GAMES,
                          GetGamesContent("https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5", "top", Tools.DEFAULT_HEADERS)
+                 )
+         );
+     }
+
+     public static void StartUserGames(Context context, String name) {
+         List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
+
+         if (name != null ) {
+
+             String url = String.format(
+                     Locale.US,
+                     "https://api.twitch.tv/api/users/%s/follows/games/live?limit=250",
+                     name
+             );
+
+             content = GetGamesContent(url, "follows", new String[0][2]);
+         } else {
+             content.add(ChannelsUtils.NoUserContent);
+             StartUserLive(context, content);
+         }
+
+         ChannelsUtils.StartChannel(
+                 context,
+                 new ChannelsUtils.ChannelObj(
+                         R.mipmap.ic_launcher, "User Games",
+                         Constants.CHANNEL_TYPE_USER_GAMES,
+                         content
                  )
          );
      }
