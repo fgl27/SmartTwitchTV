@@ -148,8 +148,8 @@ public class PlayerActivity extends Activity {
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
     public String[] DataResult = new String[PlayerAccount];
-    public Handler[] DataResultHandler = new Handler[PlayerAccount];
-    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccount];
+    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
+    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
     public WebView mWebView;
     public WebView mWebViewKey;
     public boolean PicturePicture;
@@ -274,7 +274,7 @@ public class PlayerActivity extends Activity {
             SaveBackupJsonThread.start();
             SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
 
-            for (int i = 0; i < PlayerAccount; i++) {
+            for (int i = 0; i < PlayerAccountPlus; i++) {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
@@ -1135,49 +1135,40 @@ public class PlayerActivity extends Activity {
     }
 
     public void CheckRefresh(int Type, boolean skipToast) {
-        if (Type == Constants.CHANNEL_TYPE_LIVE) {
+        Context context = this;
 
-            DataResultHandler[2].post(() ->
-                    SyncChannelJobService.StartLive(this)
-            );
+        DataResultHandler[4].post(() -> {
 
-        } else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) {
-
-            if (appPreferences != null) {
-
-                DataResultHandler[2].post(() ->
-                        SyncChannelJobService.SetUserLive(
-                                this,
-                                Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
-                        )
-                );
-
-
+            switch (Type) {
+                case Constants.CHANNEL_TYPE_LIVE:
+                    SyncChannelJobService.StartLive(context);
+                    break;
+                case Constants.CHANNEL_TYPE_USER_LIVE:
+                    SyncChannelJobService.SetUserLive(
+                            context,
+                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                    );
+                    break;
+                case Constants.CHANNEL_TYPE_FEATURED:
+                    SyncChannelJobService.StartFeatured(context);
+                    break;
+                case Constants.CHANNEL_TYPE_GAMES:
+                    SyncChannelJobService.StartGames(context);
+                    break;
+                default:
+                    break;
             }
 
-        } else if (Type == Constants.CHANNEL_TYPE_FEATURED) {
+            if (!skipToast) CheckRefreshToast(Type, context);
+        });
 
-            DataResultHandler[2].post(() ->
-                    SyncChannelJobService.StartFeatured(this)
-            );
-
-        } else if (Type == Constants.CHANNEL_TYPE_GAMES) {
-
-            DataResultHandler[2].post(() ->
-                    SyncChannelJobService.StartGames(this)
-            );
-
-        }
-
-
-        if (!skipToast) CheckRefreshToast(Type, this);
     }
 
     public void CheckRefreshToast(int Type, Context context) {
-        if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Refreshing Live home screen channel", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "Refreshing User Live home screen channel", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Refreshing Featured home screen channel", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_GAMES) Toast.makeText(context, "Refreshing Games home screen channel", Toast.LENGTH_LONG).show();
+        if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Live home screen channel refreshed", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "User Live home screen channel  refreshed", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Featured home screen channel  refreshed", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_GAMES) Toast.makeText(context, "Games home screen channel  refreshed", Toast.LENGTH_LONG).show();
     }
 
     private void DoResume(boolean skipResumeJS) {
@@ -1215,7 +1206,7 @@ public class PlayerActivity extends Activity {
             mWebView.clearCache(true);
             mWebView.clearHistory();
 
-            SaveBackupJsonHandler.post(() -> Tools.deleteCache(this));
+            DataResultHandler[4].post(() -> Tools.deleteCache(this));
         }
     }
 
