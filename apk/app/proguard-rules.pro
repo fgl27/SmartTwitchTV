@@ -31,6 +31,16 @@
     *;
 }
 
+-keep class com.fgl27.twitch.BlackListMediaCodecSelector**
+-keepclassmembers class com.fgl27.twitch.BlackListMediaCodecSelector** {
+    *;
+}
+
+-keep class com.fgl27.twitch.Constants**
+-keepclassmembers class com.fgl27.twitch.Constants** {
+    *;
+}
+
 -keep class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory**
 -keepclassmembers class com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory** {
     *;
@@ -53,5 +63,15 @@
 
 -keep class com.fgl27.twitch.services.ScreenReceiver**
 -keepclassmembers class com.fgl27.twitch.services.ScreenReceiver** {
+    *;
+}
+
+-keep class com.fgl27.twitch.channels.ChannelsUtils**
+-keepclassmembers class com.fgl27.twitch.channels.ChannelsUtils** {
+    *;
+}
+
+-keep class com.fgl27.twitch.channels.SyncChannelJobService**
+-keepclassmembers class com.fgl27.twitch.channels.SyncChannelJobService** {
     *;
 }
