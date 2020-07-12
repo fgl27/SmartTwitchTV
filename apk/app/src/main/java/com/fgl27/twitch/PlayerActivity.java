@@ -244,7 +244,6 @@ public class PlayerActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         //On create is called onResume so prevent it if already set
@@ -1099,7 +1098,6 @@ public class PlayerActivity extends Activity {
         if (!WebviewLoaded) return;
 
         Intent intent = getIntent();
-        Log.i(TAG, "onResume intent " + intent);
         boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
         intent.setAction(null);
         setIntent(intent);
