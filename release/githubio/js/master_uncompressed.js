@@ -11262,7 +11262,7 @@
     //Sets the user id used by the notification services
     function OSInterface_upNotificationId(id, name) {
         try {
-            Android.upNotificationId(id, name);
+            if (Main_IsOn_OSInterface) Android.upNotificationId(id, name);
         } catch (e) {}
     }
 
@@ -11811,7 +11811,7 @@
     //Android specific: true
     //Allows to control individual player volume
     function OSInterface_showToast(toast) { //Not be used
-        Android.showToast(toast);
+        if (Main_IsOn_OSInterface) Android.showToast(toast);
     }
 
     //public void mCheckRefreshToast(String type)
@@ -11821,7 +11821,7 @@
     //Allows to control individual player volume
     function OSInterface_mCheckRefreshToast(type) { //Not be used
         try {
-            Android.mCheckRefreshToast(type);
+            if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
         } catch (e) {}
     }
 
@@ -11830,8 +11830,10 @@
     //returns the webview version
     function OSInterface_mCheckRefresh() {
         try {
-            Android.mCheckRefresh(2);
-            Android.mCheckRefresh(5);
+            if (Main_IsOn_OSInterface) {
+                Android.mCheckRefresh(2);
+                Android.mCheckRefresh(5);
+            }
         } catch (e) {}
     }
 
@@ -11840,7 +11842,7 @@
     //returns the webview version
     function OSInterface_GetLastIntentObj() {
         try {
-            return Android.GetLastIntentObj();
+            if (Main_IsOn_OSInterface) return Android.GetLastIntentObj();
         } catch (e) {}
         return null;
     }
@@ -11851,7 +11853,7 @@
     //Sets the user id used by the notification services
     function OSInterface_upDateLang(lang) {
         try {
-            Android.upDateLang(lang);
+            if (Main_IsOn_OSInterface) Android.upDateLang(lang);
         } catch (e) {}
     }
 
