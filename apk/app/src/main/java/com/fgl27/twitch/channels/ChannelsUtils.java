@@ -359,6 +359,7 @@ public final class ChannelsUtils {
         scheduler.schedule(
                 new JobInfo.Builder(1, new ComponentName(context, SyncChannelJobService.class))
                         .setPeriodic(TimeUnit.MINUTES.toMillis(30))
+                        .setPersisted(true)
                         .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                         .setRequiresDeviceIdle(false)
                         .setRequiresCharging(false)
