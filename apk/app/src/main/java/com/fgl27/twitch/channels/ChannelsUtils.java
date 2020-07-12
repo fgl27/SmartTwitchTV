@@ -379,7 +379,7 @@ public final class ChannelsUtils {
 
         return new ChannelContentObj(
                 "Last refresh " + String.format(Locale.US, "%02d:%02d", rightNow.get(Calendar.HOUR_OF_DAY), rightNow.get(Calendar.MINUTE)),
-                "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel will auto refresh it 30 minutes",
+                "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refresh it 30 minutes",
                 "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                 TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
                 null,

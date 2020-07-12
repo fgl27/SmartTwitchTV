@@ -56,9 +56,6 @@
 
      private static final String TAG = "STTV_ChannelJobService";
 
-     public static int ChannelsOffset;
-     public static String Channels;
-
      public Context context;
 
      public Handler MainJobHandler;
@@ -80,20 +77,11 @@
          UpdateHandler.post(() -> {
 
              try {
-                 String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-                 //The first channel added will be the default
-                 if (tempUserId != null) {
-                     SetUserLive(context, tempUserId);
-                     StartLive(context);
-                     StartFeatured(context);
-                     StartGames(context);
-                 } else {
-                     StartLive(context);
-                     StartFeatured(context);
-                     StartGames(context);
-                     SetUserLive(context, null);
-                 }
+                 StartLive(context);
+                 StartFeatured(context);
+                 StartGames(context);
+                 SetUserLive(context, Tools.getString(Constants.PREF_USER_ID, null, appPreferences));
 
              } catch (Exception e) {
                  Log.d(TAG, "updateChannels e " + e.getMessage());
@@ -114,30 +102,20 @@
      public static void SetUserLive(Context context, String userId) {
 
          if (userId != null ) {
-             Channels = "";
-             ChannelsOffset = 0;
-             String url;
-             boolean hasChannels = true;
 
-             while (hasChannels) {//Get all user fallowed channels
-                 url = String.format(
+             String Channels = GetChannels(userId);
+
+             if (Channels.equals("")) StartUserLive(context, null);
+             else {
+
+                 String url = String.format(
                          Locale.US,
-                         "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=created_at&api_version=5",
-                         userId,
-                         ChannelsOffset
+                         "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
+                         Channels
                  );
 
-                 hasChannels = GetChannels(url);
+                 StartUserLive(context, GetLiveContent(url, "streams", null));
              }
-             if (Channels.equals("")) StartUserLive(context, null);
-
-             url = String.format(
-                     Locale.US,
-                     "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
-                     Channels
-             );
-
-             StartUserLive(context, GetLiveContent(url, "streams", null));
          } else {
              List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
              content.add(ChannelsUtils.NoUserContent);
@@ -190,7 +168,7 @@
                  new ChannelsUtils.ChannelObj(
                          R.mipmap.ic_launcher, "Games",
                          Constants.CHANNEL_TYPE_GAMES,
-                         GetGamesContent("https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5", "top")
+                         GetGamesContent("https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5", "top", Tools.DEFAULT_HEADERS)
                  )
          );
      }
@@ -249,7 +227,7 @@
                                                      objPreview.get("large").getAsString() + "?" + radomInt,
                                                      TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                                      new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
-                                                     true
+                                                     !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
                                              )
                                      );
 
@@ -271,7 +249,7 @@
 
      }
 
-     private static List<ChannelsUtils.ChannelContentObj> GetGamesContent(String url, String object)  {
+     private static List<ChannelsUtils.ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS)  {
          try {
              Tools.ResponseObj response;
              JsonObject obj;
@@ -288,7 +266,7 @@
 
              for (int i = 0; i < 3; i++) {
 
-                 response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                 response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, HEADERS);
 
                  if (response != null) {
 
@@ -341,57 +319,84 @@
 
      }
 
-     public static boolean GetChannels(String url)  {
+     public static String GetChannels(String userId)  {
+         StringBuilder values = new StringBuilder();
+
          try {
+             boolean hasChannels = true;
+             String url;
+             int ChannelsOffset = 0;
+             int arraySize = 0;
+
              Tools.ResponseObj response;
              JsonObject obj;
              JsonArray follows;
-             StringBuilder values = new StringBuilder();
 
-             for (int i = 0; i < 3; i++) {
+             while (hasChannels) {//Get all user fallowed channels
 
-                 response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                 url = String.format(
+                         Locale.US,
+                         "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=created_at&api_version=5",
+                         userId,
+                         ChannelsOffset
+                 );
 
-                 if (response != null) {
+                 for (int i = 0; i < 3; i++) {
 
-                     if (response.getStatus() == 200) {
-                         obj = parseString(response.getResponseText()).getAsJsonObject();
+                     response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
-                         if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
+                     if (response != null) {
 
-                             follows = obj.get("follows").getAsJsonArray();//Get the follows array
+                         if (response.getStatus() == 200) {
+                             obj = parseString(response.getResponseText()).getAsJsonObject();
 
-                             if (follows.size() > 0)
-                                 ChannelsOffset += follows.size();
-                             else return false;
+                             if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
 
-                             for (int j = 0; j < follows.size(); j++) {
+                                 follows = obj.get("follows").getAsJsonArray();//Get the follows array
+                                 arraySize = follows.size();
 
-                                 obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
+                                 if (arraySize > 0) {
 
-                                 if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                                     ChannelsOffset += arraySize;
 
-                                     obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                                 } else {
 
-                                     if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
-                                         values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
+                                     hasChannels = false;
+                                     break;
+
+                                 }
+
+                                 for (int j = 0; j < arraySize; j++) {
+
+                                     obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
+
+                                     if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+
+                                         obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                                         if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
+                                             values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
+                                         }
                                      }
                                  }
+
                              }
-
+                             break;
                          }
-                         break;
+
                      }
-
                  }
-             }
 
-             if (values.length() > 0) {
-                 Channels += values.toString();
-                 return true;
+                 if (arraySize == 0) break;//break out of the while
+
              }
          } catch (Exception ignored) {}//silent Exception
-         return false;
+
+         String result = (values.length() > 0 ? values.toString() : "");
+
+         if (result.endsWith(",")) result = result.substring(0, result.length() - 1);
+
+         return result;
 
      }
  }
