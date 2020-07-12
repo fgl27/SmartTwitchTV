@@ -12,7 +12,7 @@ Apk Version 3.0.220 & Web Version July 12 2020
 
 * Update ExoPlayer to latest version
 * General performance improves and bug fixes
-* Add new feature [Channels on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel) added Live, User Live, Featured, Games and User games home screen channels
+* Add new feature [Channels on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel) added Live, User Live, Featured, Games and User games home screen channels, the channels only show up after the new app is installed and open
 * **Obs.1:** This featuring is only available on AndroidTV 8 Oreo and newer OS
 * **Obs.2:** Technically this featuring is just a simpler version of the in app implementation of previews over the player, but this works from the home screen and has way less features than the in app player one, this is the main reason it wasn't added before, after all the app has a way easier and better form to navigate and find what to play next...
 * **Obs.3:** With the in app preview one can simply press up that is it press up noting else, and you will be able to navigate on the preview and find what play next, not just that before press enter to play if you have preview enable you can see the preview and see what is going on on the stream, so in a easy step of just pressing up then right/left one can find the next content on the other hand using the **Channels on the home screen** is very different...
