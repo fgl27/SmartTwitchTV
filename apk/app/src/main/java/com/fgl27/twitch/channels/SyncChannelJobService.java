@@ -152,7 +152,8 @@
                          Constants.CHANNEL_TYPE_LIVE,
                          GetLiveContent(
                                  "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
-                                 "streams", null
+                                 "streams",
+                                 null
                          )
                  )
          );
@@ -164,7 +165,11 @@
                  new ChannelsUtils.ChannelObj(
                          R.mipmap.ic_launcher, "Featured",
                          Constants.CHANNEL_TYPE_FEATURED,
-                         GetLiveContent("https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5", "featured", "stream")
+                         GetLiveContent(
+                                 "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
+                                 "featured",
+                                 "stream"
+                         )
                  )
          );
      }
@@ -175,7 +180,11 @@
                  new ChannelsUtils.ChannelObj(
                          R.mipmap.ic_launcher, "Games",
                          Constants.CHANNEL_TYPE_GAMES,
-                         GetGamesContent("https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5", "top", Tools.DEFAULT_HEADERS)
+                         GetGamesContent(
+                                 "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
+                                 "top",
+                                 Tools.DEFAULT_HEADERS
+                         )
                  )
          );
      }
