@@ -340,7 +340,14 @@ function AddUser_SaveNewUser(responseText) {
     AddUser_exit();
     Main_values.Main_Go = Main_Users;
     Main_HideLoadDialog();
-    if (AddUser_UsernameArray.length === 1) AddUser_UpdateSidepanel();
+    if (AddUser_UsernameArray.length === 1) {
+        AddUser_UpdateSidepanel();
+        OSInterface_upNotificationId(
+            AddUser_UsernameArray[0].id,
+            AddUser_UsernameArray[0].name
+        );
+        OSInterface_mCheckRefresh();
+    }
     Main_SwitchScreen();
     AddUser_loadingData = false;
 }
