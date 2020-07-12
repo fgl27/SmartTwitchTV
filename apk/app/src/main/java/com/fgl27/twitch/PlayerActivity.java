@@ -84,11 +84,11 @@ import java.util.Objects;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    public final String PageUrl = "file:///android_asset/app/index.html";
-    public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    //public final String PageUrl = "file:///android_asset/app/index.html";
+    //public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
 
-    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-    //public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
+    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
 
     public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
