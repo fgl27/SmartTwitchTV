@@ -175,7 +175,7 @@ public class NotificationService extends Service {
     private void PauseService() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
-        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+        if (appPreferences != null) appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
         isRunning = false;
         mUnRegisterReceiver();
     }
