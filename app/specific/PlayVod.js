@@ -442,7 +442,7 @@ function PlayVod_loadDataErrorFinish() {
     if (Main_IsOn_OSInterface) {
         Play_HideBufferDialog();
 
-        Play_showWarningDialog(STR_410_ERROR + ((ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) ? STR_PREVIEW_VOD_DELETED : ''), 2000);
+        Play_showWarningDialog(STR_410_ERROR + ((ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) ? STR_PREVIEW_VOD_DELETED : ''), 2000);
 
         Main_setTimeout(
             function() {
@@ -881,9 +881,9 @@ function PlayVod_OpenLiveStream() {
 
 function PlayVod_CheckPreview() {
     if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && Main_values.Main_Go !== Main_ChannelContent &&
-        (ScreenObj[Screens_Current_Key].screenType === 1 || ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) &&
+        (ScreenObj[Main_values.Main_Go].screenType === 1 || ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) &&
         !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
-        !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+        !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
         if (PlayVod_CheckPreviewVod()) PlayVod_SetPreview();
     }
@@ -894,20 +894,20 @@ function PlayVod_CheckPreviewVod() {
 
     var doc =
         document.getElementById(
-            ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX
+            ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
         );
 
     if (doc) {
         var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-        if (ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) {
+        if (ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) {
 
             var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
             if (index > -1) {
 
                 if ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) &&
+                    Main_A_includes_B(document.getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
                     Main_A_equals_B(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid, Main_values.ChannelVod_vodId)) {
 
                     restorePreview = true;

@@ -52,6 +52,7 @@ import androidx.core.app.NotificationCompat;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
+import com.fgl27.twitch.channels.SyncChannelJobService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -101,19 +102,12 @@ public class NotificationService extends Service {
     private Context context;
 
     private String UserId;
-    private String Channels;
 
-    private int ChannelsOffset;
     private int LayoutWidth;
     private int ImageSize;
 
     private float textSizeSmall;
     private float textSizeBig;
-
-    private String[][] DEFAULT_HEADERS = {
-            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
-            {"Accept", "application/vnd.twitchtv.v5+json"}
-    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -181,7 +175,7 @@ public class NotificationService extends Service {
     private void PauseService() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
-        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+        if (appPreferences != null) appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
         isRunning = false;
         mUnRegisterReceiver();
     }
@@ -286,27 +280,12 @@ public class NotificationService extends Service {
         try {
             if (CheckUserChanged() || !Tools.isConnected(context)) return;
 
-            ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
-            Channels = "";
-            ChannelsOffset = 0;
-            String url;
-            boolean hasChannels = true;
-
-            while (hasChannels) {//Get all user fallowed channels
-                url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=created_at&api_version=5",
-                        UserId,
-                        ChannelsOffset
-                );
-
-                hasChannels = GetChannels(url);
-            }
+            String Channels = SyncChannelJobService.GetChannels(UserId);
             if (Channels.equals("")) return;
 
-            Channels = Channels.substring(0, Channels.length() - 1);
-
+            ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
             Tools.ResponseObj response = null;
+            String url;
             JsonObject obj;
             JsonArray streams;
             int StreamsSize;
@@ -319,7 +298,8 @@ public class NotificationService extends Service {
             ArrayList<String> currentLive = new ArrayList<>();
 
             boolean hasLiveChannels = true;
-            ChannelsOffset = 0;
+            int ChannelsOffset = 0;
+
             while (hasLiveChannels) {
 
                 url = String.format(
@@ -332,7 +312,7 @@ public class NotificationService extends Service {
                 StreamsSize = 0;
                 for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, DEFAULT_HEADERS);
+                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
                     if (response != null) {
 
@@ -407,7 +387,8 @@ public class NotificationService extends Service {
 
             if (Notify && result.size() > 0) {
 
-                for (int i = 0; i < result.size(); i++) {
+                StreamsSize = result.size();
+                for (int i = 0; i < StreamsSize; i++) {
                     DoNotification(result.get(i), i);
                 }
 
@@ -486,60 +467,6 @@ public class NotificationService extends Service {
             toast.setView(layout);
             toast.show();
         } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-    }
-
-    private boolean GetChannels(String url)  {
-        try {
-            Tools.ResponseObj response;
-            JsonObject obj;
-            JsonArray follows;
-            StringBuilder values = new StringBuilder();
-
-            for (int i = 0; i < 3; i++) {
-
-                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, DEFAULT_HEADERS);
-
-                if (response != null) {
-
-                    if (response.getStatus() == 200) {
-                        obj = parseString(response.getResponseText()).getAsJsonObject();
-
-                        if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
-
-                            follows = obj.get("follows").getAsJsonArray();//Get the follows array
-
-                            if (follows.size() > 0)
-                                ChannelsOffset += follows.size();
-                            else return false;
-
-                            for (int j = 0; j < follows.size(); j++) {
-
-                                obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
-
-                                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-
-                                    obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                                    if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
-                                        values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
-                                    }
-                                }
-                            }
-
-                        }
-                        break;
-                    }
-
-                }
-            }
-
-            if (values.length() > 0) {
-                Channels += values.toString();
-                return true;
-            }
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-        return false;
-
     }
 
     private static class NotifyList {

@@ -429,7 +429,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
     } else if (Main_isScene1DocShown()) {
 
-        if (ScreenObj[Screens_Current_Key].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
+        if (ScreenObj[Main_values.Main_Go].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
             if (PlayClip_getIdNext(1, 0)) {
                 //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
@@ -444,7 +444,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             } else {
                 Sidepannel_CheckIfIsLiveSTop();
                 Main_RemoveClass(
-                    ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
+                    ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
                     'opacity_zero'
                 );
             }
@@ -452,7 +452,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
         } else {
             Screens_LoadPreviewWarn(
                 reason,
-                Screens_Current_Key,
+                Main_values.Main_Go,
                 fail_type ? 5000 : 2000
             );
         }
@@ -479,6 +479,7 @@ function Play_CheckResume() {
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
     else if (Sidepannel_isShowing()) {
+        Sidepannel_UpdateThumbDiv();
         Play_CheckIfIsLiveCleanEnd();
         Sidepannel_ShowFeed();
     }

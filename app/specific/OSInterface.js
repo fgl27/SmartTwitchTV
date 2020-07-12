@@ -346,12 +346,14 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
-//public void upNotificationId(String id)
+//public void upNotificationId(String id, String name)
 //id =  the user id
 //Android specific: true
 //Sets the user id used by the notification services
-function OSInterface_upNotificationId(id) {
-    Android.upNotificationId(id);
+function OSInterface_upNotificationId(id, name) {
+    try {
+        Android.upNotificationId(id, name);
+    } catch (e) {}
 }
 
 //public void BackupFile(String file, String file_content)
@@ -890,10 +892,7 @@ function OSInterface_SetKeysPosition(Position) {
 //Android specific: true
 //Allows to reset back to auto playback if is with source enable and lagging
 function OSInterface_SetCheckSource(mCheckSource) {
-    //TODO remove the try after some apps updates
-    try {
-        if (Main_IsOn_OSInterface) Android.SetCheckSource(mCheckSource);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetCheckSource(mCheckSource);
 }
 
 //public void showToast(String toast)
@@ -903,6 +902,47 @@ function OSInterface_SetCheckSource(mCheckSource) {
 //Allows to control individual player volume
 function OSInterface_showToast(toast) {//Not be used
     Android.showToast(toast);
+}
+
+//public void mCheckRefreshToast(String type)
+//position player position
+//volume the player volume
+//Android specific: true
+//Allows to control individual player volume
+function OSInterface_mCheckRefreshToast(type) {//Not be used
+    try {
+        Android.mCheckRefreshToast(type);
+    } catch (e) {}
+}
+
+//public void mCheckRefresh()
+//Android specific: true
+//returns the webview version
+function OSInterface_mCheckRefresh() {
+    try {
+        Android.mCheckRefresh(2);
+        Android.mCheckRefresh(5);
+    } catch (e) {}
+}
+
+//public String GetLastIntentObj()
+//Android specific: true
+//returns the webview version
+function OSInterface_GetLastIntentObj() {
+    try {
+        return Android.GetLastIntentObj();
+    } catch (e) {}
+    return null;
+}
+
+//public void upDateLang(String id)
+//id =  the user id
+//Android specific: true
+//Sets the user id used by the notification services
+function OSInterface_upDateLang(lang) {
+    try {
+        Android.upDateLang(lang);
+    } catch (e) {}
 }
 
 //public boolean isKeyboardConnected()

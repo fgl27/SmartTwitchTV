@@ -247,8 +247,14 @@ function Languages_SetLang() {
             Main_ContentLang = "";
         }
     }
-    if (Main_ContentLang === "") Languages_Selected = STR_LANG_ALL;
-    else Languages_Selected = Main_ContentLang.toUpperCase();
+
+    if (Main_ContentLang === "") {
+        Languages_Selected = STR_LANG_ALL;
+        OSInterface_upDateLang(null);
+    } else {
+        Languages_Selected = Main_ContentLang.toUpperCase();
+        OSInterface_upDateLang(Main_ContentLang);
+    }
 }
 
 // The order in Languages_SetSettings is the display order

@@ -420,10 +420,11 @@ function Sidepannel_StartMain() {
     Sidepannel_FixDiv.style.marginLeft = '';
     Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
     Sidepannel_AddFocusMain();
+    Sidepannel_MainisShowing();
 }
 
 function Sidepannel_MainisShowing() {
-    return Sidepannel_FixDiv.style.marginLeft !== '';
+    return Main_A_equals_B(Sidepannel_MovelDiv.style.transform, 'translateX(' + Sidepannel_FixdefaultMargin + '%)');
 }
 
 function Sidepannel_HideMain(hideAll) {
@@ -436,6 +437,7 @@ function Sidepannel_HideMain(hideAll) {
         (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
 
     Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
+    Sidepannel_MainisShowing();
 }
 
 function Sidepannel_Hide(PreventcleanQuailities) {
@@ -645,15 +647,9 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
             if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
-                Sidepannel_SidepannelDoc.style.transition = 'none';
                 Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
-                Main_ready(
-                    function() {
-                        Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                        if (Settings_Obj_default("app_animations")) Sidepannel_SidepannelDoc.style.transition = '';
-                    }
-                );
+                Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
             }
             break;
         case KEY_PAUSE://key s

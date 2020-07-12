@@ -228,7 +228,8 @@ function Main_loadTranslations(language) {
                     'Play_StayCheckHostResult': Play_StayCheckHostResult,
                     'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                     'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-                    'Main_checkWebVersion': Main_checkWebVersion
+                    'Main_checkWebVersion': Main_checkWebVersion,
+                    'Main_onNewIntent': Main_onNewIntent
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -361,6 +362,7 @@ function Main_initRestoreBackups() {
                     if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
+                    if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
                 }
             }
 
@@ -1980,7 +1982,7 @@ function Main_CheckStop() { // Called only by JAVA
 
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
-function Main_CheckResume() { // Called only by JAVA
+function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_PreventClick(false);
     Main_isStoped = false;
 
@@ -2003,7 +2005,7 @@ function Main_CheckResume() { // Called only by JAVA
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
+    if (!skipPlay && (Main_isScene2DocShown() || Sidepannel_isShowing())) Play_CheckResume();
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
@@ -2021,7 +2023,7 @@ function Main_CheckResume() { // Called only by JAVA
     UserLiveFeed_CheckRefreshAfterResume();
     Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
-    Main_CheckAccessibility();
+    if (!skipPlay) Main_CheckAccessibility();
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
@@ -2123,4 +2125,88 @@ function Main_setInterval(fun, timeout, id) {
 
 function Main_clearInterval(id) {
     window.clearInterval(id);
+}
+
+function Main_onNewIntent(mobj) {
+    var obj = JSON.parse(mobj);
+
+    //TODO check more cases for problems
+    if (Main_A_equals_B(obj.type, "LIVE")) {
+
+        Play_showBufferDialog();
+        Main_CheckResume(true);
+
+        if (Main_isScene2DocShown()) {
+            Play_ClearPlayer();
+            Main_removeEventListener("keydown", Play_handleKeyDown);
+            Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+            Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+        } else if (Sidepannel_MainisShowing()) {
+            Sidepannel_Hide(false);
+        } else if (Sidepannel_isShowingSide()) {
+            Sidepannel_Hide(true);
+        } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+        Main_openStream();
+
+    } else if (Main_A_equals_B(obj.type, "USER")) {
+
+        Main_CheckResume(true);
+
+        //TODO check when side panel is open
+        if (Main_isScene2DocShown()) {
+            Play_ClearPlayer();
+            Main_removeEventListener("keydown", Play_handleKeyDown);
+            Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+            Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+
+            Main_hideScene2Doc();
+            Main_isScene1DocShown();
+        } else if (Sidepannel_MainisShowing()) {
+            Sidepannel_Hide(false);
+        }
+
+        if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+        Main_values.Main_Before = Main_values.Main_Go;
+
+        AddUser_init();
+    } else if (Main_A_equals_B(obj.type, "GAME")) {
+
+        Main_CheckResume(true);
+
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+        Play_data.data[3] = obj.obj.name;
+
+        if (Main_isScene2DocShown()) {
+            var PlayVodClip = 1;
+
+            if (PlayVod_isOn) PlayVodClip = 2;
+            else if (PlayClip_isOn) PlayVodClip = 3;
+
+            Play_OpenGame(PlayVodClip);
+        } else {
+
+            if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+                Sidepannel_Hide(false);
+            }
+
+            if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+                Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+                Main_values.Main_BeforeAgameisSet = true;
+            }
+
+            Main_ExitCurrent(Main_values.Main_Go);
+            Main_values.Main_Go = Main_aGame;
+
+            Main_values.Main_gameSelected = Play_data.data[3];
+            Main_ReStartScreens();
+
+        }
+
+
+
+    } else Main_CheckResume();
+
 }
