@@ -2127,6 +2127,21 @@ function Main_clearInterval(id) {
     window.clearInterval(id);
 }
 
+function Main_onNewIntentClearPlay() {
+    Play_ClearPlayer();
+    Main_removeEventListener("keydown", Play_handleKeyDown);
+    Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+
+    if (Play_MultiEnable) {
+        Play_controls[Play_MultiStream].enterKey();
+        PlayExtra_PicturePicture = false;
+    } else if (PlayExtra_PicturePicture) {
+        PlayExtra_UnSetPanel();
+        PlayExtra_PicturePicture = false;
+    }
+}
+
 function Main_onNewIntent(mobj) {
     var obj = JSON.parse(mobj);
 
@@ -2137,10 +2152,9 @@ function Main_onNewIntent(mobj) {
         Main_CheckResume(true);
 
         if (Main_isScene2DocShown()) {
-            Play_ClearPlayer();
-            Main_removeEventListener("keydown", Play_handleKeyDown);
-            Main_removeEventListener("keydown", PlayVod_handleKeyDown);
-            Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+
+            Main_onNewIntentClearPlay();
+
         } else if (Sidepannel_MainisShowing()) {
             Sidepannel_Hide(false);
         } else if (Sidepannel_isShowingSide()) {
@@ -2157,10 +2171,7 @@ function Main_onNewIntent(mobj) {
 
         //TODO check when side panel is open
         if (Main_isScene2DocShown()) {
-            Play_ClearPlayer();
-            Main_removeEventListener("keydown", Play_handleKeyDown);
-            Main_removeEventListener("keydown", PlayVod_handleKeyDown);
-            Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+            Main_onNewIntentClearPlay();
 
             Main_hideScene2Doc();
             Main_isScene1DocShown();
@@ -2184,6 +2195,10 @@ function Main_onNewIntent(mobj) {
 
             if (PlayVod_isOn) PlayVodClip = 2;
             else if (PlayClip_isOn) PlayVodClip = 3;
+
+            if (Play_MultiEnable) {
+                Play_MultiArray[0] = JSON.parse(JSON.stringify(Play_data));
+            }
 
             Play_OpenGame(PlayVodClip);
         } else {
