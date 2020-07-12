@@ -1139,9 +1139,9 @@ public class PlayerActivity extends Activity {
     }
 
     public void CheckRefresh(int Type, boolean skipToast) {
-        Context context = this;
         if (!canRunChannel) return;
 
+        Context context = this;
         DataResultHandler[4].post(() -> {
 
             switch (Type) {
