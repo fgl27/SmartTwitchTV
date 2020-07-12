@@ -4426,6 +4426,7 @@
     }
 
     function AddUser_exit() {
+        Main_values.Main_Go = Main_values.Main_Before !== Main_Users ? Main_values.Main_Before : Main_Live;
         AddUser_RemoveinputFocus(false);
         Main_removeEventListener("keydown", AddUser_handleKeyDown);
         Main_removeEventListener("keydown", AddUser_KeyboardEvent);
@@ -4440,8 +4441,6 @@
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
                 else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
                 else {
-                    if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                    else Main_values.Main_Go = Main_Live;
                     AddUser_exit();
                     Main_SwitchScreen();
                 }
@@ -4510,8 +4509,6 @@
                 if (Main_isAboutDialogShown()) Main_HideAboutDialog();
                 else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
                 else {
-                    if (AddUser_UsernameArray.length > 0 && Main_values.Main_Go !== Main_Users) Main_values.Main_Go = Main_values.Main_Before;
-                    else Main_values.Main_Go = Main_Live;
                     AddUser_exit();
                     Main_SwitchScreen();
                 }
@@ -4599,7 +4596,12 @@
         if (AddUser_UsernameArray.length > 0) {
 
             if (Main_IsOn_OSInterface) {
-                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+
+                OSInterface_upNotificationId(
+                    AddUser_UsernameArray[0].id,
+                    AddUser_UsernameArray[0].name
+                );
+
             }
 
             AddUser_UpdateSidepanel();
@@ -4751,8 +4753,14 @@
             //Reset main user if user is 0
             if (!position) {
                 AddUser_UpdateSidepanel();
-                OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+
+                OSInterface_upNotificationId(
+                    AddUser_UsernameArray[0].id,
+                    AddUser_UsernameArray[0].name
+                );
+
                 if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
+                OSInterface_mCheckRefresh();
             }
             Users_status = false;
             Users_init();
@@ -4761,8 +4769,9 @@
             AddUser_init();
 
             if (Main_IsOn_OSInterface) {
-                OSInterface_upNotificationId(null);
+                OSInterface_upNotificationId(null, null);
                 OSInterface_StopNotificationService();
+                OSInterface_mCheckRefresh();
             }
         }
     }
@@ -4800,8 +4809,14 @@
         Users_init();
 
         if (Main_IsOn_OSInterface) {
-            OSInterface_upNotificationId(AddUser_UsernameArray[0].id);
+
+            OSInterface_upNotificationId(
+                AddUser_UsernameArray[0].id,
+                AddUser_UsernameArray[0].name
+            );
+
             if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
+            OSInterface_mCheckRefresh();
         }
 
         //Reset user emotes on chage
@@ -8815,10 +8830,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.219';
-    var Main_version_java = 12; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 09, 2020';
-    var Main_version_web = 15; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.220';
+    var Main_version_java = 13; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 12, 2020';
+    var Main_version_web = 16; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8891,7 +8906,8 @@
                         'Play_StayCheckHostResult': Play_StayCheckHostResult,
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-                        'Main_checkWebVersion': Main_checkWebVersion
+                        'Main_checkWebVersion': Main_checkWebVersion,
+                        'Main_onNewIntent': Main_onNewIntent
                     };
                 }
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -9024,6 +9040,7 @@
                         if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
 
                         AddUser_RestoreUsers();
+                        if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
                     }
                 }
 
@@ -10654,7 +10671,7 @@
     var Main_CheckResumeFeedId;
     var Main_CheckResumeVodsId;
 
-    function Main_CheckResume() { // Called only by JAVA
+    function Main_CheckResume(skipPlay) { // Called only by JAVA
         Main_PreventClick(false);
         Main_isStoped = false;
 
@@ -10677,7 +10694,7 @@
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_updateclock();
 
-        if (Main_isScene2DocShown() || Sidepannel_isShowing()) Play_CheckResume();
+        if (!skipPlay && (Main_isScene2DocShown() || Sidepannel_isShowing())) Play_CheckResume();
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
@@ -10695,7 +10712,7 @@
         UserLiveFeed_CheckRefreshAfterResume();
         Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
-        Main_CheckAccessibility();
+        if (!skipPlay) Main_CheckAccessibility();
     }
 
     function Main_CheckAccessibility(skipRefresCheck) {
@@ -10799,6 +10816,90 @@
 
     function Main_clearInterval(id) {
         window.clearInterval(id);
+    }
+
+    function Main_onNewIntent(mobj) {
+        var obj = JSON.parse(mobj);
+
+        //TODO check more cases for problems
+        if (Main_A_equals_B(obj.type, "LIVE")) {
+
+            Play_showBufferDialog();
+            Main_CheckResume(true);
+
+            if (Main_isScene2DocShown()) {
+                Play_ClearPlayer();
+                Main_removeEventListener("keydown", Play_handleKeyDown);
+                Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+                Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+            } else if (Sidepannel_MainisShowing()) {
+                Sidepannel_Hide(false);
+            } else if (Sidepannel_isShowingSide()) {
+                Sidepannel_Hide(true);
+            } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+
+            Play_data = JSON.parse(JSON.stringify(Play_data_base));
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+            Main_openStream();
+
+        } else if (Main_A_equals_B(obj.type, "USER")) {
+
+            Main_CheckResume(true);
+
+            //TODO check when side panel is open
+            if (Main_isScene2DocShown()) {
+                Play_ClearPlayer();
+                Main_removeEventListener("keydown", Play_handleKeyDown);
+                Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+                Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+
+                Main_hideScene2Doc();
+                Main_isScene1DocShown();
+            } else if (Sidepannel_MainisShowing()) {
+                Sidepannel_Hide(false);
+            }
+
+            if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+            Main_values.Main_Before = Main_values.Main_Go;
+
+            AddUser_init();
+        } else if (Main_A_equals_B(obj.type, "GAME")) {
+
+            Main_CheckResume(true);
+
+            Play_data = JSON.parse(JSON.stringify(Play_data_base));
+            Play_data.data[3] = obj.obj.name;
+
+            if (Main_isScene2DocShown()) {
+                var PlayVodClip = 1;
+
+                if (PlayVod_isOn) PlayVodClip = 2;
+                else if (PlayClip_isOn) PlayVodClip = 3;
+
+                Play_OpenGame(PlayVodClip);
+            } else {
+
+                if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+                    Sidepannel_Hide(false);
+                }
+
+                if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+                    Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+                    Main_values.Main_BeforeAgameisSet = true;
+                }
+
+                Main_ExitCurrent(Main_values.Main_Go);
+                Main_values.Main_Go = Main_aGame;
+
+                Main_values.Main_gameSelected = Play_data.data[3];
+                Main_ReStartScreens();
+
+            }
+
+
+
+        } else Main_CheckResume();
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -11148,12 +11249,14 @@
         Android.mhideSystemUI();
     }
 
-    //public void upNotificationId(String id)
+    //public void upNotificationId(String id, String name)
     //id =  the user id
     //Android specific: true
     //Sets the user id used by the notification services
-    function OSInterface_upNotificationId(id) {
-        Android.upNotificationId(id);
+    function OSInterface_upNotificationId(id, name) {
+        try {
+            Android.upNotificationId(id, name);
+        } catch (e) {}
     }
 
     //public void BackupFile(String file, String file_content)
@@ -11692,10 +11795,7 @@
     //Android specific: true
     //Allows to reset back to auto playback if is with source enable and lagging
     function OSInterface_SetCheckSource(mCheckSource) {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.SetCheckSource(mCheckSource);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetCheckSource(mCheckSource);
     }
 
     //public void showToast(String toast)
@@ -11705,6 +11805,47 @@
     //Allows to control individual player volume
     function OSInterface_showToast(toast) { //Not be used
         Android.showToast(toast);
+    }
+
+    //public void mCheckRefreshToast(String type)
+    //position player position
+    //volume the player volume
+    //Android specific: true
+    //Allows to control individual player volume
+    function OSInterface_mCheckRefreshToast(type) { //Not be used
+        try {
+            Android.mCheckRefreshToast(type);
+        } catch (e) {}
+    }
+
+    //public void mCheckRefresh()
+    //Android specific: true
+    //returns the webview version
+    function OSInterface_mCheckRefresh() {
+        try {
+            Android.mCheckRefresh(2);
+            Android.mCheckRefresh(5);
+        } catch (e) {}
+    }
+
+    //public String GetLastIntentObj()
+    //Android specific: true
+    //returns the webview version
+    function OSInterface_GetLastIntentObj() {
+        try {
+            return Android.GetLastIntentObj();
+        } catch (e) {}
+        return null;
+    }
+
+    //public void upDateLang(String id)
+    //id =  the user id
+    //Android specific: true
+    //Sets the user id used by the notification services
+    function OSInterface_upDateLang(lang) {
+        try {
+            Android.upDateLang(lang);
+        } catch (e) {}
     }
 
     //public boolean isKeyboardConnected()
@@ -13637,11 +13778,11 @@
 
             if (Main_values.Main_Go === Main_ChannelContent) {
                 restorePreview = ChannelContent_RestoreThumb(Play_data);
-            } else if (ScreenObj[Screens_Current_Key].screenType === 0 && ScreenObj[Screens_Current_Key].posY > -1 &&
-                !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+            } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
+                !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
                 restorePreview = Sidepannel_RestoreThumb(
-                    document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX),
+                    document.getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
                     Play_data
                 );
 
@@ -15938,7 +16079,7 @@
 
         } else if (Main_isScene1DocShown()) {
 
-            if (ScreenObj[Screens_Current_Key].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
+            if (ScreenObj[Main_values.Main_Go].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
                 if (PlayClip_getIdNext(1, 0)) {
                     //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
@@ -15953,7 +16094,7 @@
                 } else {
                     Sidepannel_CheckIfIsLiveSTop();
                     Main_RemoveClass(
-                        ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
+                        ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
                         'opacity_zero'
                     );
                 }
@@ -15961,7 +16102,7 @@
             } else {
                 Screens_LoadPreviewWarn(
                     reason,
-                    Screens_Current_Key,
+                    Main_values.Main_Go,
                     fail_type ? 5000 : 2000
                 );
             }
@@ -15988,6 +16129,7 @@
         else if (PlayVod_isOn) PlayVod_Resume();
         else if (PlayClip_isOn) PlayClip_Resume();
         else if (Sidepannel_isShowing()) {
+            Sidepannel_UpdateThumbDiv();
             Play_CheckIfIsLiveCleanEnd();
             Sidepannel_ShowFeed();
         }
@@ -18669,7 +18811,7 @@
         if (Main_IsOn_OSInterface) {
             Play_HideBufferDialog();
 
-            Play_showWarningDialog(STR_410_ERROR + ((ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) ? STR_PREVIEW_VOD_DELETED : ''), 2000);
+            Play_showWarningDialog(STR_410_ERROR + ((ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) ? STR_PREVIEW_VOD_DELETED : ''), 2000);
 
             Main_setTimeout(
                 function() {
@@ -19110,9 +19252,9 @@
 
     function PlayVod_CheckPreview() {
         if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && Main_values.Main_Go !== Main_ChannelContent &&
-            (ScreenObj[Screens_Current_Key].screenType === 1 || ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) &&
+            (ScreenObj[Main_values.Main_Go].screenType === 1 || ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) &&
             !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
-            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+            !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             if (PlayVod_CheckPreviewVod()) PlayVod_SetPreview();
         }
@@ -19123,20 +19265,20 @@
 
         var doc =
             document.getElementById(
-                ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX
+                ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
             );
 
         if (doc) {
             var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-            if (ScreenObj[Screens_Current_Key].screen === Main_HistoryLive) {
+            if (ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) {
 
                 var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
                 if (index > -1) {
 
                     if ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) &&
+                            Main_A_includes_B(document.getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
                         Main_A_equals_B(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid, Main_values.ChannelVod_vodId)) {
 
                         restorePreview = true;
@@ -20150,22 +20292,52 @@
 
             if (Main_FirstRun) {
                 //Main_Log('Main_FirstRun ' + Main_FirstRun);
-                //Force reset some values as I have reset the Never_run_new value and some things may crash
-                if (Main_values.Never_run_new) {
-                    Main_GoBefore = Main_Live;
-                    Main_values.Play_WasPlaying = 0;
+
+                //TODO check more cases for problems
+                var Last_obj = OSInterface_GetLastIntentObj(),
+                    obj, live_channel_call, game_channel_call, tempGame;
+
+                if (Last_obj) {
+                    obj = JSON.parse(Last_obj);
+                    live_channel_call = Main_A_equals_B(obj.type, "LIVE");
+
+                    if (!live_channel_call) {
+                        game_channel_call = Main_A_equals_B(obj.type, "GAME");
+
+                        if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+                    }
                 }
 
-                //if (!Main_values.Never_run_new && Main_values.warning_extra) Main_showWarningExtra(STR_WARNING_NEW);
-                Main_values.warning_extra = false;
-                var tempGame;
+                var StartUser = Settings_value.start_user_screen.defaultValue;
+                var restore_playback = Settings_value.restor_playback.defaultValue;
 
-                if (Main_values.Play_WasPlaying !== 1) {
+                if (live_channel_call) {
+
+                    Main_values.Play_WasPlaying = 1;
+
+                    Play_data = JSON.parse(JSON.stringify(Play_data_base));
+                    Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+                    StartUser = false;
+                    restore_playback = true;
+
+                } else if (game_channel_call) {
+                    Main_values.Play_WasPlaying = 0;
+                    Main_GoBefore = Main_aGame;
+                    Play_data = JSON.parse(JSON.stringify(Play_data_base));
+                    Play_data.data[3] = obj.obj.name;
+                    StartUser = false;
+                    Main_values.Main_gameSelected = Play_data.data[3];
+                }
+
+                Main_values.warning_extra = false;
+
+
+                if (Main_values.Play_WasPlaying !== 1 || StartUser) {
                     tempGame = Play_data.data[3];
                     Play_data = JSON.parse(JSON.stringify(Play_data_base));
                 }
 
-                if (Settings_value.start_user_screen.defaultValue) {
+                if (StartUser) {
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Users_beforeUser = Main_GoBefore;
@@ -20175,12 +20347,12 @@
                     Main_SwitchScreen(false);
                     Screens_loadDataSuccessFinishEnd();
 
-                } else if (Settings_value.restor_playback.defaultValue && Main_values.Play_WasPlaying) { // && ScreenObj[key].status
+                } else if (restore_playback && Main_values.Play_WasPlaying) { // && ScreenObj[key].status
                     //Main_Log('Play_WasPlaying');
 
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
-                    Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+                    if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
                     //History vod is so fast to load that this need to be set here to prevent a vod reset
                     Main_FirstRun = false;
@@ -27031,8 +27203,14 @@
                 Main_ContentLang = "";
             }
         }
-        if (Main_ContentLang === "") Languages_Selected = STR_LANG_ALL;
-        else Languages_Selected = Main_ContentLang.toUpperCase();
+
+        if (Main_ContentLang === "") {
+            Languages_Selected = STR_LANG_ALL;
+            OSInterface_upDateLang(null);
+        } else {
+            Languages_Selected = Main_ContentLang.toUpperCase();
+            OSInterface_upDateLang(Main_ContentLang);
+        }
     }
 
     // The order in Languages_SetSettings is the display order
@@ -27623,10 +27801,11 @@
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
         Sidepannel_AddFocusMain();
+        Sidepannel_MainisShowing();
     }
 
     function Sidepannel_MainisShowing() {
-        return Sidepannel_FixDiv.style.marginLeft !== '';
+        return Main_A_equals_B(Sidepannel_MovelDiv.style.transform, 'translateX(' + Sidepannel_FixdefaultMargin + '%)');
     }
 
     function Sidepannel_HideMain(hideAll) {
@@ -27639,6 +27818,7 @@
             (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
 
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
+        Sidepannel_MainisShowing();
     }
 
     function Sidepannel_Hide(PreventcleanQuailities) {
@@ -27848,15 +28028,9 @@
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
                 if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
-                    Sidepannel_SidepannelDoc.style.transition = 'none';
                     Sidepannel_Hide(true);
                     Main_values.Play_isHost = false;
-                    Main_ready(
-                        function() {
-                            Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
-                            if (Settings_Obj_default("app_animations")) Sidepannel_SidepannelDoc.style.transition = '';
-                        }
-                    );
+                    Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
                 }
                 break;
             case KEY_PAUSE: //key s
@@ -32018,6 +32192,7 @@
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult, // Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
         'Main_checkWebVersion': Main_checkWebVersion, // Main_checkWebVersion() func from app/specific/Main.js
+        'Main_onNewIntent': Main_onNewIntent, // Main_onNewIntent() func from app/specific/Main.js
     };
 
     /** Expose `smartTwitchTV` */
