@@ -188,7 +188,7 @@ public final class ChannelsUtils {
                 TvContractCompat.buildChannelUri(channelId), builder.build().toContentValues(), null, null);
 
         if (rowsUpdated < 1) {
-            Log.e(TAG, "Update channel failed " + channel.getName());
+            Log.w(TAG, "Update channel failed " + channel.getName());
         }
     }
 
@@ -206,11 +206,11 @@ public final class ChannelsUtils {
                     );
 
         } catch (Exception e) { // channels not supported
-            Log.d(TAG, "createChannel e " + e.getMessage());
+            Log.w(TAG, "createChannel e " + e.getMessage());
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
-            Log.e(TAG, "Insert channel failed " + channel.getName());
+            Log.w(TAG, "Insert channel failed " + channel.getName());
             return -1L;
         }
 
@@ -262,11 +262,11 @@ public final class ChannelsUtils {
                     builder.build().toContentValues()
             );
         } catch (Exception e) {
-            Log.e(TAG, "programUri e " + e.getMessage());
+            Log.w(TAG, "programUri e " + e.getMessage());
         }
 
         if (programUri == null || programUri.equals(Uri.EMPTY)) {
-            Log.e(TAG, "Insert program failed " + ContentObj.getTitle());
+            Log.w(TAG, "Insert program failed " + ContentObj.getTitle());
         }
     }
 

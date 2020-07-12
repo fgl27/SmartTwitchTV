@@ -577,8 +577,6 @@ function Screens_loadDataSuccessFinish(key) {
             var Last_obj = OSInterface_GetLastIntentObj(),
                 obj, live_channel_call, game_channel_call, tempGame;
 
-            console.log(Last_obj);
-
             if (Last_obj) {
                 obj = JSON.parse(Last_obj);
                 live_channel_call = Main_A_equals_B(obj.type, "LIVE");

@@ -91,7 +91,7 @@
                  );
 
              } catch (Exception e) {
-                 Log.d(TAG, "updateChannels e " + e.getMessage());
+                 Log.w(TAG, "updateChannels e " + e.getMessage());
              }
 
              MainJobHandler.post(() -> jobFinished(jobParameters, false));
