@@ -1983,7 +1983,6 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume(skipPlay) { // Called only by JAVA
-    console.log('Main_CheckResume ' + skipPlay);
     Main_PreventClick(false);
     Main_isStoped = false;
 
@@ -2142,17 +2141,21 @@ function Main_onNewIntent(mobj) {
             Main_removeEventListener("keydown", Play_handleKeyDown);
             Main_removeEventListener("keydown", PlayVod_handleKeyDown);
             Main_removeEventListener("keydown", PlayClip_handleKeyDown);
-        }
+        } else if (Sidepannel_MainisShowing()) {
+            Sidepannel_Hide(false);
+        } else if (Sidepannel_isShowingSide()) {
+            Sidepannel_Hide(true);
+        } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-        if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
         Main_openStream();
 
     } else if (Main_A_equals_B(obj.type, "USER")) {
 
         Main_CheckResume(true);
 
+        //TODO check when side panel is open
         if (Main_isScene2DocShown()) {
             Play_ClearPlayer();
             Main_removeEventListener("keydown", Play_handleKeyDown);
@@ -2161,12 +2164,48 @@ function Main_onNewIntent(mobj) {
 
             Main_hideScene2Doc();
             Main_isScene1DocShown();
+        } else if (Sidepannel_MainisShowing()) {
+            Sidepannel_Hide(false);
         }
 
         if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
         Main_values.Main_Before = Main_values.Main_Go;
 
         AddUser_init();
+    } else if (Main_A_equals_B(obj.type, "GAME")) {
+
+        Main_CheckResume(true);
+
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+        Play_data.data[3] = obj.obj.name;
+
+        if (Main_isScene2DocShown()) {
+            var PlayVodClip = 1;
+
+            if (PlayVod_isOn) PlayVodClip = 2;
+            else if (PlayClip_isOn) PlayVodClip = 3;
+
+            Play_OpenGame(PlayVodClip);
+        } else {
+
+            if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+                Sidepannel_Hide(false);
+            }
+
+            if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
+                Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+                Main_values.Main_BeforeAgameisSet = true;
+            }
+
+            Main_ExitCurrent(Main_values.Main_Go);
+            Main_values.Main_Go = Main_aGame;
+
+            Main_values.Main_gameSelected = Play_data.data[3];
+            Main_ReStartScreens();
+
+        }
+
+
 
     } else Main_CheckResume();
 

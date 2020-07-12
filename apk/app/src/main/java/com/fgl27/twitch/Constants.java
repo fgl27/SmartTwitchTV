@@ -43,5 +43,6 @@ public interface Constants {
     int CHANNEL_TYPE_LIVE = 1;
     int CHANNEL_TYPE_USER_LIVE = 2;
     int CHANNEL_TYPE_FEATURED = 3;
+    int CHANNEL_TYPE_GAMES = 4;
 
 }

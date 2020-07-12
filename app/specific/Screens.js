@@ -573,22 +573,27 @@ function Screens_loadDataSuccessFinish(key) {
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
 
+            //TODO check more cases for problems
             var Last_obj = OSInterface_GetLastIntentObj(),
-                obj, home_channel_call;
+                obj, live_channel_call, game_channel_call, tempGame;
+
+            console.log(Last_obj);
 
             if (Last_obj) {
                 obj = JSON.parse(Last_obj);
-                home_channel_call = Main_A_equals_B(obj.type, "LIVE");
+                live_channel_call = Main_A_equals_B(obj.type, "LIVE");
 
-                if (!home_channel_call) {
-                    OSInterface_mCheckRefreshToast(parseInt(obj));
+                if (!live_channel_call) {
+                    game_channel_call = Main_A_equals_B(obj.type, "GAME");
+
+                    if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
                 }
             }
 
             var StartUser = Settings_value.start_user_screen.defaultValue;
             var restore_playback = Settings_value.restor_playback.defaultValue;
 
-            if (home_channel_call) {
+            if (live_channel_call) {
 
                 Main_values.Play_WasPlaying = 1;
 
@@ -597,10 +602,17 @@ function Screens_loadDataSuccessFinish(key) {
                 StartUser = false;
                 restore_playback = true;
 
+            } else if (game_channel_call) {
+                Main_values.Play_WasPlaying = 0;
+                Main_GoBefore = Main_aGame;
+                Play_data = JSON.parse(JSON.stringify(Play_data_base));
+                Play_data.data[3] = obj.obj.name;
+                StartUser = false;
+                Main_values.Main_gameSelected = Play_data.data[3];
             }
 
             Main_values.warning_extra = false;
-            var tempGame;
+
 
             if (Main_values.Play_WasPlaying !== 1 || StartUser) {
                 tempGame = Play_data.data[3];
@@ -622,7 +634,7 @@ function Screens_loadDataSuccessFinish(key) {
 
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
-                if (!home_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+                if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
                 //History vod is so fast to load that this need to be set here to prevent a vod reset
                 Main_FirstRun = false;

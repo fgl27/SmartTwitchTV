@@ -87,9 +87,11 @@
                      SetUserLive(context, tempUserId);
                      StartLive(context);
                      StartFeatured(context);
+                     StartGames(context);
                  } else {
                      StartLive(context);
                      StartFeatured(context);
+                     StartGames(context);
                      SetUserLive(context, null);
                  }
 
@@ -135,7 +137,7 @@
                      Channels
              );
 
-             StartUserLive(context, GetContent(url, "streams", null));
+             StartUserLive(context, GetLiveContent(url, "streams", null));
          } else {
              List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
              content.add(ChannelsUtils.NoUserContent);
@@ -163,7 +165,7 @@
                  new ChannelsUtils.ChannelObj(
                          R.mipmap.ic_launcher, "Live",
                          Constants.CHANNEL_TYPE_LIVE,
-                         GetContent(
+                         GetLiveContent(
                                  "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
                                  "streams", null
                          )
@@ -177,12 +179,23 @@
                  new ChannelsUtils.ChannelObj(
                          R.mipmap.ic_launcher, "Featured",
                          Constants.CHANNEL_TYPE_FEATURED,
-                         GetContent("https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5", "featured", "stream")
+                         GetLiveContent("https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5", "featured", "stream")
                  )
          );
      }
 
-     private static List<ChannelsUtils.ChannelContentObj> GetContent(String url, String object, String object2)  {
+     public static void StartGames(Context context) {
+         ChannelsUtils.StartChannel(
+                 context,
+                 new ChannelsUtils.ChannelObj(
+                         R.mipmap.ic_launcher, "Games",
+                         Constants.CHANNEL_TYPE_GAMES,
+                         GetGamesContent("https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5", "top")
+                 )
+         );
+     }
+
+     private static List<ChannelsUtils.ChannelContentObj> GetLiveContent(String url, String object, String object2)  {
          try {
              Tools.ResponseObj response;
              JsonObject obj;
@@ -237,6 +250,76 @@
                                                      TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                                      new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
                                                      true
+                                             )
+                                     );
+
+                                 }
+                             }
+
+                         }
+                         break;
+                     }
+
+                 }
+             }
+
+             if (content.size() > 0) return content;
+
+         } catch (Exception ignored) {}//silent Exception
+
+         return null;
+
+     }
+
+     private static List<ChannelsUtils.ChannelContentObj> GetGamesContent(String url, String object)  {
+         try {
+             Tools.ResponseObj response;
+             JsonObject obj;
+             JsonObject objGame;
+             JsonObject objPreview;
+             JsonArray Games;
+             String description;
+             int objSize;
+             List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
+
+             DecimalFormat decimalFormat = new DecimalFormat("#.##");
+             decimalFormat.setGroupingUsed(true);
+             decimalFormat.setGroupingSize(3);
+
+             for (int i = 0; i < 3; i++) {
+
+                 response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+
+                 if (response != null) {
+
+                     if (response.getStatus() == 200) {
+                         obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                         if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
+
+                             Games = obj.get(object).getAsJsonArray();//Get the follows array
+                             objSize = Games.size();
+
+                             if (objSize < 1) return null;
+                             else content.add(ChannelsUtils.getRefreshContent());
+
+                             for (int j = 0; j < objSize; j++) {
+
+                                 obj = Games.get(j).getAsJsonObject();
+
+                                 if (obj.isJsonObject() && !obj.get("game").isJsonNull()) {
+                                     objGame = obj.get("game").getAsJsonObject(); //Get the channel obj in position
+                                     objPreview = objGame.get("box").getAsJsonObject();
+                                     description = decimalFormat.format(obj.get("channels").getAsInt()) + " Channels\nFor " + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers";
+
+                                     content.add(
+                                             new ChannelsUtils.ChannelContentObj(
+                                                     objGame.get("name").getAsString(),
+                                                     description,
+                                                     objPreview.get("large").getAsString(),
+                                                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
+                                                     new Gson().toJson(new ChannelsUtils.PreviewObj(objGame, "GAME")),
+                                                     false
                                              )
                                      );
 

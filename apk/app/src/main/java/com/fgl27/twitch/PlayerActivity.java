@@ -1161,7 +1161,14 @@ public class PlayerActivity extends Activity {
                     SyncChannelJobService.StartFeatured(this)
             );
 
+        } else if (Type == Constants.CHANNEL_TYPE_GAMES) {
+
+            DataResultHandler[2].post(() ->
+                    SyncChannelJobService.StartGames(this)
+            );
+
         }
+
 
         if (!skipToast) CheckRefreshToast(Type, this);
     }
@@ -1170,6 +1177,7 @@ public class PlayerActivity extends Activity {
         if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Refreshing Live home screen channel", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "Refreshing User Live home screen channel", Toast.LENGTH_LONG).show();
         else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Refreshing Featured home screen channel", Toast.LENGTH_LONG).show();
+        else if (Type == Constants.CHANNEL_TYPE_GAMES) Toast.makeText(context, "Refreshing Games home screen channel", Toast.LENGTH_LONG).show();
     }
 
     private void DoResume(boolean skipResumeJS) {
