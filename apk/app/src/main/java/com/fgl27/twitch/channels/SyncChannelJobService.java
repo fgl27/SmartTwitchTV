@@ -64,7 +64,7 @@
 
      @Override
      public boolean onStartJob(final JobParameters jobParameters) {
-         context = this;
+         context = getApplicationContext();
 
          MainJobHandler = new Handler(Looper.getMainLooper());
          UpdateThread = new HandlerThread("UpdateThread");
