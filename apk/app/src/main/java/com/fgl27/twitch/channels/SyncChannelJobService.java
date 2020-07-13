@@ -21,32 +21,31 @@
  package com.fgl27.twitch.channels;
 
  import android.app.job.JobParameters;
- import android.app.job.JobService;
- import android.content.Context;
- import android.os.Handler;
- import android.os.HandlerThread;
- import android.os.Looper;
- import android.util.Log;
+import android.app.job.JobService;
+import android.content.Context;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.util.Log;
 
- import androidx.tvprovider.media.tv.TvContractCompat;
+import androidx.tvprovider.media.tv.TvContractCompat;
 
- import com.fgl27.twitch.Constants;
- import com.fgl27.twitch.R;
- import com.fgl27.twitch.Tools;
- import com.google.gson.Gson;
- import com.google.gson.JsonArray;
- import com.google.gson.JsonObject;
+import com.fgl27.twitch.Constants;
+import com.fgl27.twitch.R;
+import com.fgl27.twitch.Tools;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
- import net.grandcentrix.tray.AppPreferences;
+import net.grandcentrix.tray.AppPreferences;
 
- import java.text.DecimalFormat;
- import java.util.ArrayList;
- import java.util.List;
- import java.util.Locale;
- import java.util.Objects;
- import java.util.concurrent.ThreadLocalRandom;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
- import static com.google.gson.JsonParser.parseString;
+import static com.google.gson.JsonParser.parseString;
 
  /**
   * A service that will populate the TV provider with channels that every user should have. Once a
@@ -225,7 +224,6 @@
              JsonArray Streams;
              String description;
              int objSize;
-             int radomInt = ThreadLocalRandom.current().nextInt(1, 100000);
              List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
 
              DecimalFormat decimalFormat = new DecimalFormat("#.##");
@@ -267,7 +265,7 @@
                                              new ChannelsUtils.ChannelContentObj(
                                                      objChannel.get("display_name").getAsString(),
                                                      description + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers\n" + objChannel.get("status").getAsString(),
-                                                     objPreview.get("large").getAsString() + "?" + radomInt,
+                                                     objPreview.get("large").getAsString(),
                                                      TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                                      new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
                                                      !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")

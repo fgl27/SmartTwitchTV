@@ -51,6 +51,7 @@ import com.google.gson.JsonObject;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public final class ChannelsUtils {
@@ -225,6 +226,7 @@ public final class ChannelsUtils {
         DeleteProgram(context, channelId);
 
         int channel_type = channel.getType();
+        String randomImg = "?" + ThreadLocalRandom.current().nextInt(1, 1000000);
         List<ChannelContentObj> Content = channel.getContent();
 
         if (Content != null) {
@@ -232,21 +234,21 @@ public final class ChannelsUtils {
             int weight = ContentSize;
 
             for (int i = 0; i < ContentSize; i++, --weight) {
-                PreviewProgramAdd(context, channelId, Content.get(i), weight, channel_type);
+                PreviewProgramAdd(context, channelId, Content.get(i), weight, channel_type, randomImg);
             }
 
         } else {
-            PreviewProgramAdd(context, channelId, emptyContent, 0, channel_type);
+            PreviewProgramAdd(context, channelId, emptyContent, 0, channel_type, randomImg);
         }
 
     }
 
-    public static void PreviewProgramAdd(Context context, long channelId, ChannelContentObj ContentObj, int weight, int channel_type) {
+    public static void PreviewProgramAdd(Context context, long channelId, ChannelContentObj ContentObj, int weight, int channel_type, String randomImg) {
         PreviewProgram.Builder builder =
                 new PreviewProgram.Builder()
                         .setTitle(ContentObj.getTitle())
                         .setDescription(ContentObj.getDescription())
-                        .setPosterArtUri(Uri.parse(ContentObj.getImgUrl()))
+                        .setPosterArtUri(Uri.parse(ContentObj.getImgUrl() + randomImg))
                         .setPosterArtAspectRatio(ContentObj.getPreviewSize())
                         .setIntent(createAppIntent(context, ContentObj.getObj(), channel_type))
                         .setType(TvContractCompat.PreviewPrograms.TYPE_MOVIE)
