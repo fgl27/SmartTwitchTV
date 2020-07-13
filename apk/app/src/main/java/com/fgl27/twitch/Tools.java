@@ -851,7 +851,6 @@ public final class Tools {
         );
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean getBoolean(String name, boolean defaults, AppPreferences appPreferences) {
         return appPreferences.getBoolean(name, defaults);
     }
