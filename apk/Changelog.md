@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version July 13 2020
 ==============
 
-* Fix VOD not playing sometimes after changing apps and going back to the app
+* Fix VOD not playing sometimes after exit the app playing a VOD and going back to the app
 
 Apk Version 3.0.221 and up & Web Version July 12 2020
 ==============
