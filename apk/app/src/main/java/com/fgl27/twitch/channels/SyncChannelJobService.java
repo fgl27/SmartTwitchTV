@@ -226,9 +226,10 @@ public class SyncChannelJobService extends JobService {
             int objSize;
             List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
 
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            decimalFormat.setGroupingUsed(true);
-            decimalFormat.setGroupingSize(3);
+            String channelId;
+            ArrayList<String> TempArray = new ArrayList<>();
+
+            DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
 
             for (int i = 0; i < 3; i++) {
 
@@ -257,20 +258,27 @@ public class SyncChannelJobService extends JobService {
 
                                 if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
                                     objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-                                    objPreview = obj.get("preview").getAsJsonObject();
-                                    description = obj.get("game").getAsString();
-                                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
 
-                                    content.add(
-                                            new ChannelsUtils.ChannelContentObj(
-                                                    objChannel.get("display_name").getAsString(),
-                                                    description + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers\n" + objChannel.get("status").getAsString(),
-                                                    objPreview.get("large").getAsString(),
-                                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                                    new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
-                                                    !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
-                                            )
-                                    );
+                                    channelId = objChannel.get("_id").getAsString();
+
+                                    if (!TempArray.contains(channelId)) {//Prevent add duplicated
+                                        TempArray.add(channelId);
+
+                                        objPreview = obj.get("preview").getAsJsonObject();
+                                        description = obj.get("game").getAsString();
+                                        if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
+
+                                        content.add(
+                                                new ChannelsUtils.ChannelContentObj(
+                                                        objChannel.get("display_name").getAsString(),
+                                                        description + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers\n" + objChannel.get("status").getAsString(),
+                                                        objPreview.get("large").getAsString(),
+                                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
+                                                        new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
+                                                        !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
+                                                )
+                                        );
+                                    }
 
                                 }
                             }
@@ -284,7 +292,9 @@ public class SyncChannelJobService extends JobService {
 
             if (content.size() > 0) return content;
 
-        } catch (Exception ignored) {}//silent Exception
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
 
         return null;
 
@@ -299,11 +309,11 @@ public class SyncChannelJobService extends JobService {
             JsonArray Games;
             String description;
             int objSize;
+            ArrayList<String> TempArray = new ArrayList<>();
+            String gameId;
             List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
 
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            decimalFormat.setGroupingUsed(true);
-            decimalFormat.setGroupingSize(3);
+            DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
 
             for (int i = 0; i < 3; i++) {
 
@@ -327,20 +337,28 @@ public class SyncChannelJobService extends JobService {
                                 obj = Games.get(j).getAsJsonObject();
 
                                 if (obj.isJsonObject() && !obj.get("game").isJsonNull()) {
-                                    objGame = obj.get("game").getAsJsonObject(); //Get the channel obj in position
-                                    objPreview = objGame.get("box").getAsJsonObject();
-                                    description = decimalFormat.format(obj.get("channels").getAsInt()) + " Channels\nFor " + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers";
 
-                                    content.add(
-                                            new ChannelsUtils.ChannelContentObj(
-                                                    objGame.get("name").getAsString(),
-                                                    description,
-                                                    objPreview.get("large").getAsString(),
-                                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
-                                                    new Gson().toJson(new ChannelsUtils.PreviewObj(objGame, "GAME")),
-                                                    false
-                                            )
-                                    );
+                                    objGame = obj.get("game").getAsJsonObject(); //Get the channel obj in position
+                                    gameId = objGame.get("_id").getAsString();
+
+                                    if (!TempArray.contains(gameId)) {//Prevent add duplicated
+                                        TempArray.add(gameId);
+
+                                        objPreview = objGame.get("box").getAsJsonObject();
+                                        description = decimalFormat.format(obj.get("channels").getAsInt()) +
+                                                " Channels\nFor " + decimalFormat.format(obj.get("viewers").getAsInt()) + " viewers";
+
+                                        content.add(
+                                                new ChannelsUtils.ChannelContentObj(
+                                                        objGame.get("name").getAsString(),
+                                                        description,
+                                                        objPreview.get("large").getAsString(),
+                                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
+                                                        new Gson().toJson(new ChannelsUtils.PreviewObj(objGame, "GAME")),
+                                                        false
+                                                )
+                                        );
+                                    }
 
                                 }
                             }
@@ -354,7 +372,9 @@ public class SyncChannelJobService extends JobService {
 
             if (content.size() > 0) return content;
 
-        } catch (Exception ignored) {}//silent Exception
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
 
         return null;
 
@@ -364,16 +384,19 @@ public class SyncChannelJobService extends JobService {
         StringBuilder values = new StringBuilder();
 
         try {
-            boolean hasChannels = true;
             String url;
             int ChannelsOffset = 0;
+
             int arraySize;
+            int AddedToArray;
+            String channelId;
+            ArrayList<String> TempArray = new ArrayList<>();
 
             Tools.ResponseObj response;
             JsonObject obj;
             JsonArray follows;
 
-            while (hasChannels) {//Get all user fallowed channels
+            do {//Get all user fallowed channels
 
                 url = String.format(
                         Locale.US,
@@ -383,9 +406,11 @@ public class SyncChannelJobService extends JobService {
                 );
 
                 arraySize = 0;
+                AddedToArray = 0;
+
                 for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
                     if (response != null) {
 
@@ -403,7 +428,6 @@ public class SyncChannelJobService extends JobService {
 
                                 } else {
 
-                                    hasChannels = false;
                                     break;
 
                                 }
@@ -417,7 +441,17 @@ public class SyncChannelJobService extends JobService {
                                         obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
                                         if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
-                                            values.append(obj.get("_id").getAsString()).append(","); //Get the channel id
+
+                                            channelId = obj.get("_id").getAsString();//Get the channel id
+
+                                            if (!TempArray.contains(channelId)) {//Prevent add duplicated
+
+                                                AddedToArray++;
+                                                TempArray.add(channelId);
+                                                values.append(channelId).append(",");
+
+                                            }
+
                                         }
                                     }
                                 }
@@ -429,14 +463,20 @@ public class SyncChannelJobService extends JobService {
                     }
                 }
 
-                if (arraySize == 0) break;//break out of the while
+            } while (arraySize != 0 && AddedToArray != 0);//last array was empty or didn't had noting new
 
-            }
-        } catch (Exception ignored) {}//silent Exception
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
 
-        String result = (values.length() > 0 ? values.toString() : "");
+        String result = "";
 
-        if (result.endsWith(",")) result = result.substring(0, result.length() - 1);
+        if (values.length() > 0) {
+
+            result =  values.toString() ;
+            result = result.substring(0, result.length() - 1);//-1 as is only a comma
+
+        }
 
         return result;
 

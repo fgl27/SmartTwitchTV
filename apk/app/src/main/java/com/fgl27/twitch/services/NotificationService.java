@@ -297,89 +297,93 @@ public class NotificationService extends Service {
             ArrayList<NotifyList> result = new ArrayList<>();
             ArrayList<String> currentLive = new ArrayList<>();
 
-            boolean hasLiveChannels = true;
             int ChannelsOffset = 0;
+            int AddedTocurrentLive;
 
-            while (hasLiveChannels) {
+            try {
+                do {
 
-                url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
-                        Channels,
-                        ChannelsOffset
-                );
+                    url = String.format(
+                            Locale.US,
+                            "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
+                            Channels,
+                            ChannelsOffset
+                    );
 
-                StreamsSize = 0;
-                for (int i = 0; i < 3; i++) {
+                    StreamsSize = 0;
+                    AddedTocurrentLive = 0;
+                    for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                        response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
 
-                    if (response != null) {
+                        if (response != null) {
 
-                        if (response.getStatus() == 200) {
-                            obj = parseString(response.getResponseText()).getAsJsonObject();
+                            if (response.getStatus() == 200) {
+                                obj = parseString(response.getResponseText()).getAsJsonObject();
 
-                            if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+                                if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
 
-                                streams = obj.get("streams").getAsJsonArray();//Get the follows array
-                                StreamsSize = streams.size();
+                                    streams = obj.get("streams").getAsJsonArray();//Get the follows array
+                                    StreamsSize = streams.size();
 
-                                if (StreamsSize > 0) {
+                                    if (StreamsSize > 0) {
 
-                                    ChannelsOffset += StreamsSize;
+                                        ChannelsOffset += StreamsSize;
 
-                                } else {
+                                    } else {
 
-                                    hasLiveChannels = false;
-                                    break;
+                                        break;
 
-                                }
+                                    }
 
-                                for (int j = 0; j < StreamsSize; j++) {
+                                    for (int j = 0; j < StreamsSize; j++) {
 
-                                    obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
+                                        obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
 
-                                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                                        if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
 
-                                        game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                                        isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                                        id = obj.get("_id").getAsString();//Broadcast id
-                                        obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                                            game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
+                                            isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
+                                            id = obj.get("_id").getAsString();//Broadcast id
+                                            obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
 
-                                        if (obj.isJsonObject()) {
+                                            if (!currentLive.contains(id)) {//Prevent add duplicated or empty obj
+                                                AddedTocurrentLive++;
+                                                currentLive.add(id);
 
-                                            currentLive.add(id);
+                                                if (Notify && !oldLive.contains(id)) {
 
-                                            if (Notify && !oldLive.contains(id)) {
+                                                    Bitmap bmp = null;
+                                                    if (!obj.get("logo").isJsonNull())
+                                                        bmp = GetBitmap(obj.get("logo").getAsString());
 
-                                                Bitmap bmp = null;
-                                                if (!obj.get("logo").isJsonNull())
-                                                    bmp = GetBitmap(obj.get("logo").getAsString());
-
-                                                tempNotifyList = new NotifyList(
-                                                        game,
-                                                        !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                        bmp,
-                                                        !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                                        isLive
-                                                );
-                                                //Toast can only run for about 3s allow the user to repeat same notification
-                                                for (int x = 0; x < Repeat; x++) {
-                                                    result.add(tempNotifyList);
+                                                    tempNotifyList = new NotifyList(
+                                                            game,
+                                                            !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
+                                                            bmp,
+                                                            !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
+                                                            isLive
+                                                    );
+                                                    //Toast can only run for about 3s allow the user to repeat same notification
+                                                    for (int x = 0; x < Repeat; x++) {
+                                                        result.add(tempNotifyList);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
+
                                 }
-
+                                break;
                             }
-                            break;
+
                         }
-
                     }
-                }
 
-                if (StreamsSize == 0) break;//break out of the while
+                } while (StreamsSize != 0 && AddedTocurrentLive != 0); //last array was empty or didn't had noting new
+                
+            } catch (Exception e) {
+                Log.w(TAG, "updateChannels e " + e.getMessage());
             }
 
             //Prevent run service if last response is not successful or user has changed durring check
@@ -512,14 +516,12 @@ public class NotificationService extends Service {
 
         try {
             newUrl = new URL(url);
-        } catch (MalformedURLException ignored) {
-        }
+        } catch (MalformedURLException ignored) { }
 
         if (newUrl != null) {
             try {
                 bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {
-            }
+            } catch (IOException ignored) {}
         }
 
         return bmp;
@@ -532,18 +534,14 @@ public class NotificationService extends Service {
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mReceiver = new ScreenReceiver();
             registerReceiver(mReceiver, filter);
-        } catch (Exception e) {
-            Log.w(TAG, "mregisterReceiver Exception ", e);
-        }
+        } catch (Exception ignored) {}
     }
 
     private void mUnRegisterReceiver() {
         try {
             if (mReceiver != null) unregisterReceiver(mReceiver);
             mReceiver = null;
-        } catch (Exception e) {
-            Log.w(TAG, "munregisterReceiver Exception ", e);
-        }
+        } catch (Exception ignored) {}
     }
 
     @TargetApi(26)

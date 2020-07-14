@@ -48,6 +48,7 @@ import com.fgl27.twitch.PlayerActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -389,5 +390,13 @@ public final class ChannelsUtils {
                 false
         );
 
+    }
+
+    public static DecimalFormat getDecimalFormat() {
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        decimalFormat.setGroupingUsed(true);
+        decimalFormat.setGroupingSize(3);
+
+        return decimalFormat;
     }
 }
