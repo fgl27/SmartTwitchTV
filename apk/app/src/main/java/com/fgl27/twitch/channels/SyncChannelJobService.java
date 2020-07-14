@@ -367,7 +367,7 @@ public class SyncChannelJobService extends JobService {
             boolean hasChannels = true;
             String url;
             int ChannelsOffset = 0;
-            int arraySize = 0;
+            int arraySize;
 
             Tools.ResponseObj response;
             JsonObject obj;
@@ -382,6 +382,7 @@ public class SyncChannelJobService extends JobService {
                         ChannelsOffset
                 );
 
+                arraySize = 0;
                 for (int i = 0; i < 3; i++) {
 
                     response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
