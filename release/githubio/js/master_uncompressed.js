@@ -8837,10 +8837,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.224';
-    var Main_version_java = 15; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 13, 2020';
-    var Main_version_web = 17; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.225';
+    var Main_version_java = 16; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 14, 2020';
+    var Main_version_web = 18; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9897,7 +9897,7 @@
     function Main_OPenAsVod_PreshutdownStream() {
         if (Main_IsOn_OSInterface) {
             OSInterface_mClearSmallPlayer();
-            OSInterface_stopVideo(1);
+            OSInterface_stopVideo();
         }
 
         Play_isOn = false;
@@ -11332,8 +11332,10 @@
     //who_called = 0 live, 1 vod, 2 clip
     //Android specific: false
     //Allows to stop the player when the user chooses to end the playback
-    function OSInterface_stopVideo(who_called) {
-        Android.stopVideo(who_called);
+    function OSInterface_stopVideo() {
+        try {
+            Android.stopVideo();
+        } catch (e) {}
     }
 
     //public void mClearSmallPlayer()
@@ -12328,7 +12330,7 @@
         Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
         PlayClip_hidePanel();
         if (Main_IsOn_OSInterface && !Play_PreviewId) {
-            if (closePlayer) OSInterface_stopVideo(3);
+            if (closePlayer) OSInterface_stopVideo();
             else OSInterface_PlayPause(false);
         }
         if (closePlayer) PlayClip_isOn = false;
@@ -16929,7 +16931,7 @@
             if (closePlayer) {
                 //We are closing the player on error or on end
                 OSInterface_mClearSmallPlayer();
-                if (!Play_PreviewId) OSInterface_stopVideo(1);
+                if (!Play_PreviewId) OSInterface_stopVideo();
             }
         }
 
@@ -18956,7 +18958,7 @@
                 PlayVod_SaveVodIds(time);
             }
         }
-        if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo(2);
+        if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
         Main_ShowElement('controls_holder');
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
@@ -20323,7 +20325,9 @@
 
                 //TODO check more cases for problems
                 var Last_obj = OSInterface_GetLastIntentObj(),
-                    obj, live_channel_call, game_channel_call, tempGame;
+                    obj,
+                    live_channel_call, game_channel_call,
+                    tempGame;
 
                 if (Last_obj) {
                     obj = JSON.parse(Last_obj);

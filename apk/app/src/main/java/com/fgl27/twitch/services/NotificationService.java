@@ -381,7 +381,7 @@ public class NotificationService extends Service {
                     }
 
                 } while (StreamsSize != 0 && AddedTocurrentLive != 0); //last array was empty or didn't had noting new
-                
+
             } catch (Exception e) {
                 Log.w(TAG, "updateChannels e " + e.getMessage());
             }
