@@ -1247,7 +1247,7 @@ function Play_PreshutdownStream(closePlayer) {
         if (closePlayer) {
             //We are closing the player on error or on end
             OSInterface_mClearSmallPlayer();
-            if (!Play_PreviewId) OSInterface_stopVideo(1);
+            if (!Play_PreviewId) OSInterface_stopVideo();
         }
     }
 

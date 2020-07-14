@@ -105,6 +105,25 @@ import static com.google.gson.JsonParser.parseString;
          return true;
      }
 
+     public static void StartLive(Context context) {
+         AppPreferences appPreferences = new AppPreferences(context);
+         String lang = Tools.getString(Constants.CHANNEL_LANGUAGE, null, appPreferences);
+
+         ChannelsUtils.StartChannel(
+                 context,
+                 new ChannelsUtils.ChannelObj(
+                         R.mipmap.ic_launcher,
+                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
+                         Constants.CHANNEL_TYPE_LIVE,
+                         GetLiveContent(
+                                 "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
+                                 "streams",
+                                 null
+                         )
+                 )
+         );
+     }
+
      public static void SetUserLive(Context context, String userId) {
 
          if (userId != null ) {
@@ -133,27 +152,10 @@ import static com.google.gson.JsonParser.parseString;
          ChannelsUtils.StartChannel(
                  context,
                  new ChannelsUtils.ChannelObj(
-                         R.mipmap.ic_launcher, "User Live",
+                         R.mipmap.ic_launcher,
+                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                          Constants.CHANNEL_TYPE_USER_LIVE,
                          contentObj
-                 )
-         );
-     }
-
-     public static void StartLive(Context context) {
-         AppPreferences appPreferences = new AppPreferences(context);
-         String lang = Tools.getString(Constants.CHANNEL_LANGUAGE, null, appPreferences);
-
-         ChannelsUtils.StartChannel(
-                 context,
-                 new ChannelsUtils.ChannelObj(
-                         R.mipmap.ic_launcher, "Live",
-                         Constants.CHANNEL_TYPE_LIVE,
-                         GetLiveContent(
-                                 "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
-                                 "streams",
-                                 null
-                         )
                  )
          );
      }
@@ -162,7 +164,8 @@ import static com.google.gson.JsonParser.parseString;
          ChannelsUtils.StartChannel(
                  context,
                  new ChannelsUtils.ChannelObj(
-                         R.mipmap.ic_launcher, "Featured",
+                         R.mipmap.ic_launcher,
+                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
                          Constants.CHANNEL_TYPE_FEATURED,
                          GetLiveContent(
                                  "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
@@ -177,7 +180,8 @@ import static com.google.gson.JsonParser.parseString;
          ChannelsUtils.StartChannel(
                  context,
                  new ChannelsUtils.ChannelObj(
-                         R.mipmap.ic_launcher, "Games",
+                         R.mipmap.ic_launcher,
+                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
                          Constants.CHANNEL_TYPE_GAMES,
                          GetGamesContent(
                                  "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
@@ -208,7 +212,8 @@ import static com.google.gson.JsonParser.parseString;
          ChannelsUtils.StartChannel(
                  context,
                  new ChannelsUtils.ChannelObj(
-                         R.mipmap.ic_launcher, "User Games",
+                         R.mipmap.ic_launcher,
+                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES],
                          Constants.CHANNEL_TYPE_USER_GAMES,
                          content
                  )

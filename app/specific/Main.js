@@ -1209,7 +1209,7 @@ function Main_OPenAsVod_shutdownStream() {
 function Main_OPenAsVod_PreshutdownStream() {
     if (Main_IsOn_OSInterface) {
         OSInterface_mClearSmallPlayer();
-        OSInterface_stopVideo(1);
+        OSInterface_stopVideo();
     }
 
     Play_isOn = false;

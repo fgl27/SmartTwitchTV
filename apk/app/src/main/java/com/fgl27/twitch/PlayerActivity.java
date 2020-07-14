@@ -419,7 +419,8 @@ public class PlayerActivity extends Activity {
         player[position].setPlayWhenReady(true);
         player[position].setMediaSource(
                 mediaSources[position],
-                ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET);
+                ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET
+        );
 
         player[position].prepare();
 
@@ -502,31 +503,6 @@ public class PlayerActivity extends Activity {
         if (IsVod) GetCurrentPositionSmall();
     }
 
-    private void ClearSmallPlayer() {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "ClearSmallPlayer");
-        }
-
-        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
-        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-        PlayerView[4].setVisibility(View.GONE);
-        SmallPlayerCurrentPosition = 0L;
-
-        if (player[4] != null) {
-            player[4].setPlayWhenReady(false);
-            releasePlayer(4);
-        }
-
-        mSetPreviewOthersAudio();
-
-        PlayerCheckCounter[4] = 0;
-
-        if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
-            KeepScreenOn(false);
-        }
-
-    }
-
     private void initializePlayerMulti(int position, MediaSource NewMediaSource) {
         if (IsStopped) {
             monStop();
@@ -593,43 +569,41 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "ClearPlayer position " + position);
         }
 
-        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-        PlayerView[position].setVisibility(View.GONE);
-        PlayerIsPlaying[position] = false;
-        PlayerCurrentPosition = 0L;
-
-        if (player[position] != null) {
-            player[position].setPlayWhenReady(false);
-            releasePlayer(position);
-        }
-
-        PlayerCheckCounter[position] = 0;
-
+        releasePlayer(position);
         //Multi audio is deal on js side when a player closes
         if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
 
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
+        PlayerCurrentPosition = 0L;
+        CheckKeepScreenOn();
+    }
+
+    private void ClearSmallPlayer() {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "ClearSmallPlayer");
+        }
+
+        releasePlayer(4);
+        mSetPreviewOthersAudio();
+
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+        SmallPlayerCurrentPosition = 0L;
+        CheckKeepScreenOn();
+    }
+
+    private void CheckKeepScreenOn() {
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
         }
-
     }
 
     //Stop the player called from js, clear it all
-    private void PreResetPlayer(int who_called, int position) {
+    private void PreResetPlayer(int position) {
         if (mainPlayer == 1) SwitchPlayer();
 
         PicturePicture = false;
         AudioSource = 1;
-
-        for (int i = 0; i < PlayerAccountPlus; i++) {
-            PlayerCheckHandler[i].removeCallbacksAndMessages(null);
-            mediaSources[i] = null;
-        }
-
-        mWho_Called = who_called;
-        mResumePosition = 0;
 
         ClearPlayer(position);
         clearResumePosition();
@@ -637,12 +611,18 @@ public class PlayerActivity extends Activity {
 
     //Main release function
     private void releasePlayer(int position) {
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+        PlayerView[position].setVisibility(View.GONE);
+
         if (player[position] != null) {
             player[position].release();
             player[position] = null;
             trackSelector[position] = null;
             playerListener[position] = null;
         }
+
+        PlayerCheckCounter[position] = 0;
+        PlayerIsPlaying[position] = false;
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "releasePlayer position " + position);
@@ -655,11 +635,9 @@ public class PlayerActivity extends Activity {
     }
 
     private void updateResumePosition(int position) {
-        if (player[position] == null) return;
-
         // If PlayerCheckCounter > 1 we alredy have restarted the player so the value of getCurrentPosition
         // is already gone and we alredy saved the correct mResumePosition
-        if (PlayerCheckCounter[position] < 2) {
+        if (player[position] != null && PlayerCheckCounter[position] < 2) {
             mResumePosition = player[position].isCurrentWindowSeekable() ?
                     Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
         }
@@ -1178,11 +1156,7 @@ public class PlayerActivity extends Activity {
     public void CheckRefreshToast(int Type, Context context) {
         if (!canRunChannel) return;
 
-        if (Type == Constants.CHANNEL_TYPE_LIVE) Toast.makeText(context, "Live home screen channel refreshed", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_USER_LIVE) Toast.makeText(context, "User Live home screen channel  refreshed", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_FEATURED) Toast.makeText(context, "Featured home screen channel  refreshed", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_GAMES) Toast.makeText(context, "Games home screen channel  refreshed", Toast.LENGTH_LONG).show();
-        else if (Type == Constants.CHANNEL_TYPE_USER_GAMES) Toast.makeText(context, "User Games home screen channel  refreshed", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
     }
 
     private void DoResume(boolean skipResumeJS) {
@@ -1235,15 +1209,15 @@ public class PlayerActivity extends Activity {
         IsStopped = true;
         if (!WebviewLoaded) return;
 
-        ClearWebViewChache();
-
         int temp_AudioMulti = AudioMulti;
 
-        for (int i = 0; i < PlayerAccountPlus; i++) {
-            PlayerCheckHandler[i].removeCallbacksAndMessages(null);
-            updateResumePosition(i);
+        updateResumePosition(mainPlayer);//VOD only uses mainPlayer
+        for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
         }
+        ClearSmallPlayer();
+
+        ClearWebViewChache();
 
         //Prevent java timeout and related on background
         if (mWebView != null && AlreadyStarted) {
@@ -1282,9 +1256,11 @@ public class PlayerActivity extends Activity {
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
         }
 
-        for (int i = 0; i < PlayerAccountPlus; i++) {
+        for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
         }
+
+        ClearSmallPlayer();
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onDestroy");
@@ -2128,7 +2104,7 @@ public class PlayerActivity extends Activity {
                 MainThreadHandler.post(() -> {
 
                     VideoWebHolder.bringChildToFront(mWebView);
-                    PreResetPlayer(4, mainPlayer);
+                    ClearPlayer(mainPlayer);
 
                 });
 
@@ -2141,10 +2117,17 @@ public class PlayerActivity extends Activity {
             mLowLatency = LowLatency;
         }
 
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo(int who_called) {
-            MainThreadHandler.post(() -> PreResetPlayer(who_called, mainPlayer));
+            stopVideo();
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void stopVideo() {
+            MainThreadHandler.post(() -> PreResetPlayer(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2812,7 +2795,7 @@ public class PlayerActivity extends Activity {
         }
 
         if (ClearResumePosition || Who_Called == 1) clearResumePosition();
-        else updateResumePosition(position);
+        else if (Who_Called == 2) updateResumePosition(position);//VOD
 
         if (Who_Called == 1) {
 

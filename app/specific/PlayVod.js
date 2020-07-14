@@ -558,7 +558,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
             PlayVod_SaveVodIds(time);
         }
     }
-    if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo(2);
+    if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
     Main_ShowElement('controls_holder');
     Main_ShowElement('progress_pause_holder');
     PlayVod_isOn = false;

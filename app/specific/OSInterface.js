@@ -404,8 +404,10 @@ function OSInterface_gettimepreview() {
 //who_called = 0 live, 1 vod, 2 clip
 //Android specific: false
 //Allows to stop the player when the user chooses to end the playback
-function OSInterface_stopVideo(who_called) {
-    Android.stopVideo(who_called);
+function OSInterface_stopVideo() {
+    try {
+        Android.stopVideo();
+    } catch (e) {}
 }
 
 //public void mClearSmallPlayer()

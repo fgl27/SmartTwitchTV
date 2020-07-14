@@ -40,6 +40,15 @@ public interface Constants {
     String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
     String CHANNEL_LANGUAGE = "channel_lang";
 
+    String[] CHANNELS_NAMES = {
+            "",//Default reserved getIntExtra (String name, int defaultValue : 0)
+            "Live",
+            "User Live",
+            "Featured",
+            "Games",
+            "User Games"
+    };
+
     String CHANNEL_TYPE = "channel_type";
     int CHANNEL_TYPE_LIVE = 1;
     int CHANNEL_TYPE_USER_LIVE = 2;
