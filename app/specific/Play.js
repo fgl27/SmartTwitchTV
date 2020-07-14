@@ -1917,6 +1917,7 @@ function Play_OpenFeed(keyfun) {
         Main_clearInterval(Play_ShowPanelStatusId);
         Main_values.Play_WasPlaying = 0;
         Play_ClearPlay(true);
+        Play_isOn = false;
 
         if (!Play_PreviewOffset) Play_PreviewOffset = UserLiveFeed_PreviewOffset;
 
