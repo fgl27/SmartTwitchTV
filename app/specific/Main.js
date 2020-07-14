@@ -2132,6 +2132,9 @@ function Main_onNewIntentClearPlay() {
     Main_removeEventListener("keydown", Play_handleKeyDown);
     Main_removeEventListener("keydown", PlayVod_handleKeyDown);
     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+    Play_isOn = false;
+    PlayVod_isOn = false;
+    PlayClip_isOn = false;
 
     if (Play_MultiEnable) {
         Play_controls[Play_MultiStream].enterKey();
