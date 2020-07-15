@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -98,15 +99,6 @@ public class NotificationService extends Service {
                 screenOn = true;
                 //Small delay as the device just wakeup and may need some time to connect to the internet
                 if (isRunning) InitHandler(10 * 1000);
-
-            } else if (Objects.equals(action, Constants.ACTION_NOTIFY_CHECK)) {
-
-                if (isRunning) {
-
-                    CheckUserChanged();
-                    InitHandler(0);
-
-                }
 
             }
 
@@ -187,7 +179,7 @@ public class NotificationService extends Service {
         UserId = tempUserId;
         mRegisterReceiver();
 
-        InitHandler(5 * 1000);
+        InitHandler(0);
     }
 
     private void InitHandler(int timeout) {
@@ -206,7 +198,9 @@ public class NotificationService extends Service {
                     } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
                 }, timeout + (delay > 0 ? delay : 0));
             }
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+        } catch (Exception e) {
+            Log.w(TAG, "InitHandler e " + e.getMessage());
+        }
     }
 
     private void RunNotifications() {
@@ -230,6 +224,7 @@ public class NotificationService extends Service {
             //Stop all toast
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
             appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+            appPreferences.put(tempUserId + Constants.PREF_NOTIFY_OLD_LIST, null);
         }
         UserId = tempUserId;
         return false;

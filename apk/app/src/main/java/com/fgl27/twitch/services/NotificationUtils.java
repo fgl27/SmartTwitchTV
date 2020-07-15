@@ -376,7 +376,7 @@ public final class NotificationUtils {
         toast.show();
     }
 
-    public static void ShowNotification(NotificationUtils.NotifyList NotifyListResult, int delay,
+    public static void ShowNotification(NotifyList NotifyListResult, int delay,
                                         Handler ToastHandler, Context context, AppPreferences appPreferences) {
 
         ToastHandler.postDelayed(() -> {
@@ -439,5 +439,10 @@ public final class NotificationUtils {
         } catch (Exception e) {
             Log.w(TAG, "CheckNotifications e " + e.getMessage());
         }
+    }
+
+    public static boolean StartNotificationService(AppPreferences appPreferences) {
+        return Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
+                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null;
     }
 }

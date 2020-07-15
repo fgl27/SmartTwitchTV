@@ -39,7 +39,9 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            if (Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, new AppPreferences(context)))
+            AppPreferences appPreferences = new AppPreferences(context);
+
+            if (NotificationUtils.StartNotificationService(appPreferences))
                 Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
 
             if (Tools.deviceIsTV(context) && Build.VERSION.SDK_INT >= 26)

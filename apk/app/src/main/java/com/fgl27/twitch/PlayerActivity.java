@@ -58,6 +58,7 @@ import androidx.annotation.NonNull;
 
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.channels.SyncChannelJobService;
+import com.fgl27.twitch.services.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -236,6 +237,11 @@ public class PlayerActivity extends Activity {
     public String LastIntent;
     public boolean canRunChannel;
 
+    public HandlerThread NotificationThread;
+    public Handler NotificationHandler;
+    public HandlerThread ToastThread;
+    public Handler ToastHandler;
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -281,6 +287,14 @@ public class PlayerActivity extends Activity {
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
+
+            NotificationThread = new HandlerThread("NotificationThread");
+            NotificationThread.start();
+            NotificationHandler = new Handler(NotificationThread.getLooper());
+
+            ToastThread = new HandlerThread("ToastThread");
+            ToastThread.start();
+            ToastHandler = new Handler(ToastThread.getLooper());
 
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= 26;
@@ -1087,6 +1101,9 @@ public class PlayerActivity extends Activity {
             ShowNoNetworkResumeWarning(isChannelIntent);
         }
 
+        if (NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onResume end");
         }
@@ -1223,6 +1240,10 @@ public class PlayerActivity extends Activity {
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
+
+        if (NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
 
@@ -1250,11 +1271,12 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
-                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
+        if (!AlreadyStarted) return;
 
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
-        }
+        StopNotifications();
+
+        if (NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
 
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
@@ -1265,6 +1287,49 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onDestroy");
         }
+    }
+
+    public void StopNotifications() {
+        NotificationHandler.removeCallbacksAndMessages(null);
+        ToastHandler.removeCallbacksAndMessages(null);
+        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+    }
+
+    private void InitNotifications(int timeout, Context context) {
+        try {
+
+            NotificationHandler.removeCallbacksAndMessages(null);
+
+            long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+            if (delay > 0) delay = delay - System.currentTimeMillis();
+
+            NotificationHandler.postDelayed(() -> {
+
+                if (!IsStopped) RunNotifications(context);
+                else InitNotifications(1000 * 60 * 3, context);//it 3 min refresh
+
+            }, timeout + (delay > 0 ? delay : 0));
+
+        } catch (Exception e) {
+            Log.w(TAG, "InitNotifications e " + e.getMessage());
+        }
+    }
+
+    private void RunNotifications(Context context) {
+        if (!Tools.isConnected(context)) return;
+
+        String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+
+        if (UserId != null) {
+
+            NotificationUtils.CheckNotifications(
+                    UserId,
+                    appPreferences,
+                    ToastHandler,
+                    context
+            );
+
+        } else NotificationHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -1294,7 +1359,7 @@ public class PlayerActivity extends Activity {
 
     //Force close the app
     private void closeThis() {
-        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        StopNotifications();
         finishAndRemoveTask();
     }
 
@@ -1705,19 +1770,22 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void RunNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext);
+            InitNotifications(0, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_CHECK, mWebViewContext);
+            //User has changed stop notifications and reset list
+            if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
+            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+            appPreferences.put(Tools.getString(Constants.PREF_USER_ID, null, appPreferences) + Constants.PREF_NOTIFY_OLD_LIST, null);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StopNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, mWebViewContext);
+            StopNotifications();
         }
 
         @SuppressWarnings("unused")//called by JS
