@@ -1900,8 +1900,6 @@ function Main_CheckStop() { // Called only by JAVA
     Main_isStoped = true;
     Main_PreventClick(true);
 
-    if (Settings_Obj_default("live_notification")) OSInterface_StopNotificationService();
-
     //Player related
     ChatLive_Clear(0);
     ChatLive_Clear(1);
