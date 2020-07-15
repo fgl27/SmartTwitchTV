@@ -18,35 +18,28 @@
  *
  */
 
-package com.fgl27.twitch.services;
+package com.fgl27.twitch.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
-import com.fgl27.twitch.channels.ChannelsUtils;
 
-import net.grandcentrix.tray.AppPreferences;
-
-public class BootBroadcastReceiver extends BroadcastReceiver {
+public class ScreenReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         String action = intent.getAction();
+        boolean screenOff = Intent.ACTION_SCREEN_OFF.equals(action);
+        boolean screenOn = Intent.ACTION_SCREEN_ON.equals(action);
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            AppPreferences appPreferences = new AppPreferences(context);
-
-            if (NotificationUtils.StartNotificationService(appPreferences))
-                Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
-
-            if (Tools.deviceIsTV(context) && Build.VERSION.SDK_INT >= 26)
-                ChannelsUtils.scheduleSyncingChannel(context);
+        if ((screenOff || screenOn)) {
+            Tools.SendNotificationIntent(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON, context);
         }
+
     }
 
 }

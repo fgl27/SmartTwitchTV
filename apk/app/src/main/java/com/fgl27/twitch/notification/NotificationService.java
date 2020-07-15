@@ -18,7 +18,7 @@
  *
  */
 
-package com.fgl27.twitch.services;
+package com.fgl27.twitch.notification;
 
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;

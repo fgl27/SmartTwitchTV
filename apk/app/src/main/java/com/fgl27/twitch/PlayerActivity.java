@@ -58,7 +58,7 @@ import androidx.annotation.NonNull;
 
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.channels.SyncChannelJobService;
-import com.fgl27.twitch.services.NotificationUtils;
+import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;

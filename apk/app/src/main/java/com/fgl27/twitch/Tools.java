@@ -49,7 +49,7 @@ import androidx.core.content.ContextCompat;
 import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
-import com.fgl27.twitch.services.NotificationService;
+import com.fgl27.twitch.notification.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;

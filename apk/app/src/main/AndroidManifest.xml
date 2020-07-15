@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".services.BootBroadcastReceiver">
+        <receiver android:name=".BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -76,7 +76,7 @@
         <service
             android:enabled="true"
             android:process=":background"
-            android:name=".services.NotificationService" />
+            android:name=".notification.NotificationService" />
 
         <service
             android:name=".channels.SyncChannelJobService"

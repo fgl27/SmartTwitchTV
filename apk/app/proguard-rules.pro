@@ -51,23 +51,23 @@
     *;
 }
 
--keep class com.fgl27.twitch.services.BootBroadcastReceiver**
--keepclassmembers class com.fgl27.twitch.services.BootBroadcastReceiver** {
+-keep class com.fgl27.twitch.notification.BootBroadcastReceiver**
+-keepclassmembers class com.fgl27.twitch.notification.BootBroadcastReceiver** {
     *;
 }
 
--keep class com.fgl27.twitch.services.NotificationService**
--keepclassmembers class com.fgl27.twitch.services.NotificationService** {
+-keep class com.fgl27.twitch.notification.NotificationService**
+-keepclassmembers class com.fgl27.twitch.notification.NotificationService** {
     *;
 }
 
--keep class com.fgl27.twitch.services.NotificationUtils**
--keepclassmembers class com.fgl27.twitch.services.NotificationUtils** {
+-keep class com.fgl27.twitch.notification.NotificationUtils**
+-keepclassmembers class com.fgl27.twitch.notification.NotificationUtils** {
     *;
 }
 
--keep class com.fgl27.twitch.services.ScreenReceiver**
--keepclassmembers class com.fgl27.twitch.services.ScreenReceiver** {
+-keep class com.fgl27.twitch.notification.ScreenReceiver**
+-keepclassmembers class com.fgl27.twitch.notification.ScreenReceiver** {
     *;
 }
 
