@@ -217,15 +217,21 @@ public class NotificationService extends Service {
     private boolean CheckUserChanged() {
         //If user changed don't Notify
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+
         if (tempUserId == null) {
+
             StopService();
             return true;
+
         } else if (!Objects.equals(tempUserId, UserId)) {
+
             //Stop all toast
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
             appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
             appPreferences.put(tempUserId + Constants.PREF_NOTIFY_OLD_LIST, null);
+
         }
+
         UserId = tempUserId;
         return false;
     }

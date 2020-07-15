@@ -120,7 +120,7 @@ public final class NotificationUtils {
             JsonObject obj;
             JsonArray TempStreams;
             String id;
-            ArrayList<String> currentLive = new ArrayList<>();
+            ArrayList<String> TempArray = new ArrayList<>();
             int AddedToArray;
 
             do {
@@ -163,8 +163,8 @@ public final class NotificationUtils {
                                     obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
                                     id = obj.get("_id").getAsString();//Broadcast id
 
-                                    if (!currentLive.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
-                                        currentLive.add(id);
+                                    if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
+                                        TempArray.add(id);
                                         AddedToArray++;
 
                                         StreamsResult.add(obj);
@@ -212,6 +212,7 @@ public final class NotificationUtils {
                     isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
                     id = obj.get("_id").getAsString();//Broadcast id
                     obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                    currentLive.add(id);
 
                     if (!oldLive.contains(id)) {
 
@@ -246,7 +247,6 @@ public final class NotificationUtils {
     public static void SetOldList(JsonArray streams, String UserId, AppPreferences appPreferences) {
         ArrayList<String> currentLive = new ArrayList<>();
         JsonObject obj;
-        String id;
         int StreamsSize = streams.size();
 
         try {
@@ -256,9 +256,7 @@ public final class NotificationUtils {
 
                 if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
 
-                    id = obj.get("_id").getAsString();//Broadcast id
-
-                    if (!currentLive.contains(id)) currentLive.add(id);
+                    currentLive.add(obj.get("_id").getAsString());//Broadcast id
 
                 }
             }
@@ -432,7 +430,9 @@ public final class NotificationUtils {
                     }
 
                 } else {
+
                     SetOldList(streams, UserId, appPreferences);
+
                 }
             }
 
