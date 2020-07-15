@@ -1241,7 +1241,7 @@ public class PlayerActivity extends Activity {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
 
-        //Clear activity notification check
+        //Clear activity notification check and start background service if enable
         NotificationHandler.removeCallbacksAndMessages(null);
         if (NotificationUtils.StartNotificationService(appPreferences))
             Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
