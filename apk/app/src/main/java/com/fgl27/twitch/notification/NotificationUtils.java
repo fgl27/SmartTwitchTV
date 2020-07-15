@@ -70,7 +70,7 @@ public final class NotificationUtils {
             Gravity.RIGHT | Gravity.BOTTOM//5
     };
 
-    public static class NotifyList {
+    private static class NotifyList {
         private final String game;
         private final String name;
         private final Bitmap logo;
@@ -106,7 +106,7 @@ public final class NotificationUtils {
         }
     }
 
-    public static JsonArray GetLiveStreamsList(String UserId) {
+    private static JsonArray GetLiveStreamsList(String UserId) {
         JsonArray StreamsResult = new JsonArray();
 
         try {
@@ -188,7 +188,7 @@ public final class NotificationUtils {
         return StreamsResult.size() > 0 ? StreamsResult : null;
     }
 
-    public static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
+    private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
 
         ArrayList<NotifyList> result = new ArrayList<>();
         int StreamsSize = streams.size();
@@ -244,7 +244,7 @@ public final class NotificationUtils {
         return result.size() > 0 ? result : null;
     }
 
-    public static void SetOldList(JsonArray streams, String UserId, AppPreferences appPreferences) {
+    private static void SetOldList(JsonArray streams, String UserId, AppPreferences appPreferences) {
         ArrayList<String> currentLive = new ArrayList<>();
         JsonObject obj;
         int StreamsSize = streams.size();
@@ -290,7 +290,7 @@ public final class NotificationUtils {
     }
 
     @SuppressLint("InflateParams")
-    public static void DoToast(NotifyList result, Context context, int ToastPosition) {
+    private static void DoToast(NotifyList result, Context context, int ToastPosition) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View layout;
@@ -349,14 +349,6 @@ public final class NotificationUtils {
         TextView game = layout.findViewById(R.id.game);
         game.setText(result.getGame());
 
-        ImageView image = layout.findViewById(R.id.image);
-        Bitmap bmp = result.getLogo();
-        if (bmp != null) {
-            if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
-
-            image.setImageBitmap(bmp);
-        } else image.setImageResource(android.R.color.transparent);
-
         if (LayoutWidth > 0) {
             TextView now_live = layout.findViewById(R.id.now_live);
 
@@ -367,26 +359,19 @@ public final class NotificationUtils {
             game.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
         }
 
+        ImageView image = layout.findViewById(R.id.image);
+        Bitmap bmp = result.getLogo();
+        if (bmp != null) {
+            if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
+
+            image.setImageBitmap(bmp);
+        } else image.setImageResource(android.R.color.transparent);
+
         Toast toast = new Toast(context);
         toast.setGravity(ToastPositions[ToastPosition], 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
-    }
-
-    public static void ShowNotification(NotifyList NotifyListResult, int delay,
-                                        Handler ToastHandler, Context context, AppPreferences appPreferences) {
-
-        ToastHandler.postDelayed(() -> {
-            try {
-                DoToast(
-                        NotifyListResult,
-                        context,
-                        Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences)
-                );
-            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-        }, 5000 * delay);
-
     }
 
     public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
@@ -439,6 +424,21 @@ public final class NotificationUtils {
         } catch (Exception e) {
             Log.w(TAG, "CheckNotifications e " + e.getMessage());
         }
+    }
+
+    private static void ShowNotification(NotifyList NotifyListResult, int delay,
+                                        Handler ToastHandler, Context context, AppPreferences appPreferences) {
+
+        ToastHandler.postDelayed(() -> {
+            try {
+                DoToast(
+                        NotifyListResult,
+                        context,
+                        Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences)
+                );
+            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+        }, 5000 * delay);
+
     }
 
     public static boolean StartNotificationService(AppPreferences appPreferences) {
