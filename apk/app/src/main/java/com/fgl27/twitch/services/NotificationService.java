@@ -20,7 +20,6 @@
 
 package com.fgl27.twitch.services;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,85 +28,40 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
-import com.fgl27.twitch.channels.SyncChannelJobService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
-
-import static com.google.gson.JsonParser.parseString;
 
 public class NotificationService extends Service {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final String TAG = "STTV_Notification";
-
-    private final int[] ToastPositions = {
-            Gravity.RIGHT | Gravity.TOP,//0
-            Gravity.CENTER | Gravity.TOP,//1
-            Gravity.LEFT | Gravity.TOP,//2
-            Gravity.LEFT | Gravity.BOTTOM,//3
-            Gravity.CENTER | Gravity.BOTTOM,//4
-            Gravity.RIGHT | Gravity.BOTTOM//5
-    };
-
-    private int ToastPosition = 1;
 
     private HandlerThread NotificationThread;
     private Handler NotificationHandler;
     private HandlerThread ToastThread;
     private Handler ToastHandler;
 
-    private ArrayList<String> oldLive = new ArrayList<>();
-
     private BroadcastReceiver mReceiver = null;
     private AppPreferences appPreferences;
 
     private boolean isRunning;
-    private boolean Notify;
     private boolean screenOn = true;
 
     private Context context;
 
     private String UserId;
-
-    private int LayoutWidth;
-    private int ImageSize;
-
-    private float textSizeSmall;
-    private float textSizeBig;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -227,15 +181,6 @@ public class NotificationService extends Service {
 
         isRunning = true;
         UserId = tempUserId;
-        oldLive = new ArrayList<>();
-        String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
-
-        if (tempOldLive != null) {
-            oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
-        }
-
-        Notify = oldLive.size() > 0;
-
         mRegisterReceiver();
 
         InitHandler(5 * 1000);
@@ -251,7 +196,7 @@ public class NotificationService extends Service {
 
                 NotificationHandler.postDelayed(() -> {
                     try {
-                        if (screenOn && isRunning) DoNotifications();
+                        if (screenOn && isRunning) RunNotifications();
 
                         InitHandler(1000 * 60 * 3);//it 3 min refresh
                     } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
@@ -260,8 +205,19 @@ public class NotificationService extends Service {
         } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
     }
 
+    private void RunNotifications() {
+        if (CheckUserChanged() || !Tools.isConnected(context)) return;
+
+        NotificationUtils.CheckNotifications(
+                UserId,
+                appPreferences,
+                ToastHandler,
+                context
+        );
+    }
+
     private boolean CheckUserChanged() {
-        //If user changed don't Notify this run only next
+        //If user changed don't Notify
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
         if (tempUserId == null) {
             StopService();
@@ -270,261 +226,9 @@ public class NotificationService extends Service {
             //Stop all toast
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
             appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-            Notify = false;
         }
         UserId = tempUserId;
         return false;
-    }
-
-    private void DoNotifications() {
-        try {
-            if (CheckUserChanged() || !Tools.isConnected(context)) return;
-
-            String Channels = SyncChannelJobService.GetChannels(UserId);
-            if (Channels.equals("")) return;
-
-            ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
-            Tools.ResponseObj response = null;
-            String url;
-            JsonObject obj;
-            JsonArray streams;
-            int StreamsSize;
-            int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
-            NotifyList tempNotifyList;
-            String id;
-            String game;
-            boolean isLive;
-            ArrayList<NotifyList> result = new ArrayList<>();
-            ArrayList<String> currentLive = new ArrayList<>();
-
-            int ChannelsOffset = 0;
-            int AddedTocurrentLive;
-
-            try {
-                do {
-
-                    url = String.format(
-                            Locale.US,
-                            "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
-                            Channels,
-                            ChannelsOffset
-                    );
-
-                    StreamsSize = 0;
-                    AddedTocurrentLive = 0;
-                    for (int i = 0; i < 3; i++) {
-
-                        response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
-
-                        if (response != null) {
-
-                            if (response.getStatus() == 200) {
-                                obj = parseString(response.getResponseText()).getAsJsonObject();
-
-                                if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
-
-                                    streams = obj.get("streams").getAsJsonArray();//Get the follows array
-                                    StreamsSize = streams.size();
-
-                                    if (StreamsSize > 0) {
-
-                                        ChannelsOffset += StreamsSize;
-
-                                    } else {
-
-                                        break;
-
-                                    }
-
-                                    for (int j = 0; j < StreamsSize; j++) {
-
-                                        obj = streams.get(j).getAsJsonObject();//Get the position in the follows array
-
-                                        if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-
-                                            game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                                            isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                                            id = obj.get("_id").getAsString();//Broadcast id
-                                            obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                                            if (!currentLive.contains(id)) {//Prevent add duplicated or empty obj
-                                                AddedTocurrentLive++;
-                                                currentLive.add(id);
-
-                                                if (Notify && !oldLive.contains(id)) {
-
-                                                    Bitmap bmp = null;
-                                                    if (!obj.get("logo").isJsonNull())
-                                                        bmp = GetBitmap(obj.get("logo").getAsString());
-
-                                                    tempNotifyList = new NotifyList(
-                                                            game,
-                                                            !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                                            bmp,
-                                                            !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                                            isLive
-                                                    );
-                                                    //Toast can only run for about 3s allow the user to repeat same notification
-                                                    for (int x = 0; x < Repeat; x++) {
-                                                        result.add(tempNotifyList);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                }
-                                break;
-                            }
-
-                        }
-                    }
-
-                } while (StreamsSize != 0 && AddedTocurrentLive != 0); //last array was empty or didn't had noting new
-
-            } catch (Exception e) {
-                Log.w(TAG, "updateChannels e " + e.getMessage());
-            }
-
-            //Prevent run service if last response is not successful or user has changed durring check
-            if (CheckUserChanged() || response == null || response.getStatus() != 200) return;
-
-            if (Notify && result.size() > 0) {
-
-                StreamsSize = result.size();
-                for (int i = 0; i < StreamsSize; i++) {
-                    DoNotification(result.get(i), i);
-                }
-
-                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (result.size() * 5000)));
-            } else {
-                Notify = true;
-                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-            }
-
-            oldLive = new ArrayList<>();
-            oldLive.addAll(currentLive);
-
-            appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(oldLive));
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-    }
-
-    private void DoNotification(NotifyList result, int delay) {
-        ToastHandler.postDelayed(() -> {
-            try {
-                if (isRunning) DoToast(result);
-            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-        }, 5000 * delay);
-    }
-
-    @SuppressLint("InflateParams")
-    private void DoToast(NotifyList result) {
-        try {
-            setWidth();
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            View layout;
-            if (inflater != null) {
-                layout = inflater.inflate(R.layout.custom_toast, null);
-            } else return;
-
-            LinearLayout layout_text = layout.findViewById(R.id.text_holder);
-            if (LayoutWidth > 0) layout_text.getLayoutParams().width = LayoutWidth;
-            layout_text.requestLayout();
-
-            TextView name = layout.findViewById(R.id.name);
-            name.setCompoundDrawablesWithIntrinsicBounds(
-                    result.isLive() ? R.drawable.circle : R.drawable.ic_refresh,
-                    0,
-                    0,
-                    0
-            );
-            name.setText(result.getName());
-
-            TextView title = layout.findViewById(R.id.title);
-            title.setText(result.getTitle().trim());
-
-            TextView game = layout.findViewById(R.id.game);
-            game.setText(result.getGame());
-
-            ImageView image = layout.findViewById(R.id.image);
-            Bitmap bmp = result.getLogo();
-            if (bmp != null) {
-                if (LayoutWidth > 0) bmp = Bitmap.createScaledBitmap(bmp, ImageSize, ImageSize, true);
-
-                image.setImageBitmap(bmp);
-            } else image.setImageResource(android.R.color.transparent);
-
-            if (LayoutWidth > 0) {
-                TextView now_live = layout.findViewById(R.id.now_live);
-
-                now_live.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
-                name.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeBig);
-
-                title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
-                game.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeSmall);
-            }
-
-            Toast toast = new Toast(getApplicationContext());
-            toast.setGravity(ToastPositions[ToastPosition], 0, 0);
-            toast.setDuration(Toast.LENGTH_LONG);
-            toast.setView(layout);
-            toast.show();
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-    }
-
-    private static class NotifyList {
-        private final String game;
-        private final String name;
-        private final Bitmap logo;
-        private final String title;
-        private final boolean live;
-
-        public NotifyList(String game, String name, Bitmap logo, String title, boolean live) {
-            this.game = game;
-            this.name = name;
-            this.logo = logo;
-            this.title = title;
-            this.live = live;
-        }
-
-        public String getGame() {
-            return game;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Bitmap getLogo() {
-            return logo;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public boolean isLive() {
-            return live;
-        }
-    }
-
-    private Bitmap GetBitmap(String url) {
-
-        URL newUrl = null;
-        Bitmap bmp = null;
-
-        try {
-            newUrl = new URL(url);
-        } catch (MalformedURLException ignored) { }
-
-        if (newUrl != null) {
-            try {
-                bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {}
-        }
-
-        return bmp;
     }
 
     private void mRegisterReceiver() {
@@ -558,38 +262,4 @@ public class NotificationService extends Service {
                 .setSmallIcon(R.drawable.ic_refresh)
                 .setChannelId(TAG);
     }
-
-    private void setWidth() {
-        WindowManager window = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-
-        if (window != null) {
-
-            Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-
-            //The device may be a phone that changes from landscape to portrait
-            //Get the bigger value at the time ou the notification
-            int max = Math.max(ScreenSize.x, ScreenSize.y);
-            int min = Math.min(ScreenSize.x, ScreenSize.y);
-
-            float width = max / 100.0f;
-            int NewLayoutWidth = (int) (width * 40.0f);
-
-            //Prevent notification bigger then the screen
-            NewLayoutWidth = Math.min(NewLayoutWidth, (min - (min / 100)));
-
-            if (LayoutWidth != NewLayoutWidth) {//if changed change the other values
-
-                LayoutWidth = NewLayoutWidth;
-                ImageSize = (int) (NewLayoutWidth / 5.0f);
-
-                //Scale the text to screen size and density
-                float ScaleDensity = width / (context.getResources().getDisplayMetrics().density / 2.0f);
-                textSizeSmall = 0.62f * ScaleDensity;
-                textSizeBig = 0.68f * ScaleDensity;
-
-            }
-
-        }
-    }
-
 }

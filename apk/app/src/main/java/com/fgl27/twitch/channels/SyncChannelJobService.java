@@ -125,7 +125,7 @@ public class SyncChannelJobService extends JobService {
 
             String Channels = GetChannels(userId);
 
-            if (Channels.equals("")) StartUserLive(context, null);
+            if (Channels == null) StartUserLive(context, null);
             else {
 
                 String url = String.format(
@@ -463,22 +463,21 @@ public class SyncChannelJobService extends JobService {
                     }
                 }
 
-            } while (arraySize != 0 && AddedToArray != 0);//last array was empty or didn't had noting new
+            } while (arraySize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
 
         } catch (Exception e) {
             Log.w(TAG, "updateChannels e " + e.getMessage());
         }
 
-        String result = "";
+
 
         if (values.length() > 0) {
 
-            result =  values.toString() ;
+            String result =  values.toString() ;
             result = result.substring(0, result.length() - 1);//-1 as is only a comma
+            return result;
 
-        }
-
-        return result;
+        } else return null;
 
     }
 }

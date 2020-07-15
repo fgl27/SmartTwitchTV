@@ -61,6 +61,11 @@
     *;
 }
 
+-keep class com.fgl27.twitch.services.NotificationUtils**
+-keepclassmembers class com.fgl27.twitch.services.NotificationUtils** {
+    *;
+}
+
 -keep class com.fgl27.twitch.services.ScreenReceiver**
 -keepclassmembers class com.fgl27.twitch.services.ScreenReceiver** {
     *;
