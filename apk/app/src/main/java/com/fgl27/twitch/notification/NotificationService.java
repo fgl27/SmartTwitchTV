@@ -90,15 +90,14 @@ public class NotificationService extends Service {
                 screenOn = false;
 
                 //Stop all current running notification
-                if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
-                if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
-                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+                StopRunningNotifications();
 
             } else if (Objects.equals(action, Constants.ACTION_SCREEN_ON)) {
 
                 screenOn = true;
                 //Small delay as the device just wakeup and may need some time to connect to the internet
-                if (isRunning) InitHandler(10 * 1000);
+                if (isRunning) InitNotifications(10 * 1000);
+                else StopService();
 
             }
 
@@ -119,11 +118,15 @@ public class NotificationService extends Service {
     }
 
     private void PauseService() {
+        StopRunningNotifications();
+        isRunning = false;
+        mUnRegisterReceiver();
+    }
+
+    private void StopRunningNotifications() {
         if (NotificationHandler != null) NotificationHandler.removeCallbacksAndMessages(null);
         if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
         if (appPreferences != null) appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-        isRunning = false;
-        mUnRegisterReceiver();
     }
 
     private void StopService() {
@@ -157,7 +160,7 @@ public class NotificationService extends Service {
         // During !isRunning user may change
         if (isRunning || tempUserId == null) {
             //After a refresh of user live feed js will call the service to refresh notifications
-            if (tempUserId != null) InitHandler(0);
+            if (tempUserId != null) InitNotifications(0);
             else StopService();
 
             return;
@@ -179,10 +182,10 @@ public class NotificationService extends Service {
         UserId = tempUserId;
         mRegisterReceiver();
 
-        InitHandler(0);
+        InitNotifications(0);
     }
 
-    private void InitHandler(int timeout) {
+    private void InitNotifications(int timeout) {
         try {
             if (NotificationHandler != null) {
                 NotificationHandler.removeCallbacksAndMessages(null);
@@ -191,11 +194,10 @@ public class NotificationService extends Service {
                 if (delay > 0) delay = delay - System.currentTimeMillis();
 
                 NotificationHandler.postDelayed(() -> {
-                    try {
-                        if (screenOn && isRunning) RunNotifications();
-
-                        InitHandler(1000 * 60 * 3);//it 3 min refresh
-                    } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+                        if (screenOn && isRunning) {
+                            RunNotifications();
+                            InitNotifications(1000 * 60 * 3);//it 3 min refresh
+                        }
                 }, timeout + (delay > 0 ? delay : 0));
             }
         } catch (Exception e) {

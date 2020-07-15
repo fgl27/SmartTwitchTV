@@ -1307,8 +1307,10 @@ public class PlayerActivity extends Activity {
 
             NotificationHandler.postDelayed(() -> {
 
-                if (!IsStopped) RunNotifications(context);
-                else InitNotifications(1000 * 60 * 3, context);//it 3 min refresh
+                if (!IsStopped)  {
+                    RunNotifications(context);
+                    InitNotifications(1000 * 60 * 3, context);//it 3 min refresh
+                }
 
             }, timeout + (delay > 0 ? delay : 0));
 
