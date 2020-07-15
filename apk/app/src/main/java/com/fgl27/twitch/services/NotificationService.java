@@ -144,7 +144,11 @@ public class NotificationService extends Service {
         context = getApplicationContext();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder = NotificationBuilder(getString(R.string.notification), context);
+            NotificationCompat.Builder builder = NotificationBuilder(
+                    getString(R.string.notification),
+                    getString(R.string.notification_text),
+                    context
+            );
 
             startForeground(100, builder.build());
         }
@@ -249,7 +253,7 @@ public class NotificationService extends Service {
     }
 
     @TargetApi(26)
-    private NotificationCompat.Builder NotificationBuilder(String title, Context context) {
+    private NotificationCompat.Builder NotificationBuilder(String title, String text, Context context) {
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (mNotifyManager != null) {
@@ -258,6 +262,7 @@ public class NotificationService extends Service {
 
         return new NotificationCompat.Builder(context, TAG)
                 .setContentTitle(title)
+                .setContentText(text)
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.ic_refresh)
                 .setChannelId(TAG);
