@@ -54,16 +54,6 @@ function OSInterface_RunNotificationService() {
     if (Main_IsOn_OSInterface) Android.RunNotificationService();
 }
 
-//public void CheckNotificationService()
-//Android specific: true
-//Allows to reset current running notifications
-function OSInterface_CheckNotificationService() {
-    //TODO remove the try after some apps updates
-    try {
-        if (Main_IsOn_OSInterface) Android.CheckNotificationService();
-    } catch (e) {}
-}
-
 //public void upNotificationState(boolean Notify)
 //Notify  background notification are enable
 //Android specific: true
@@ -346,13 +336,14 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
-//public void upNotificationId(String id, String name)
+//public void UpdateUserId(String id, String name)
 //id =  the user id
+//name =  the user name
 //Android specific: true
 //Sets the user id used by the notification services
-function OSInterface_upNotificationId(id, name) {
+function OSInterface_UpdateUserId(id, name) {
     try {
-        if (Main_IsOn_OSInterface) Android.upNotificationId(id, name);
+        if (Main_IsOn_OSInterface) Android.UpdateUserId(id, name);
     } catch (e) {}
 }
 

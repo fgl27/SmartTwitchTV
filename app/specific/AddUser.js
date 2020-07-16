@@ -204,14 +204,10 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
-        if (Main_IsOn_OSInterface) {
-
-            OSInterface_upNotificationId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
-
-        }
+        OSInterface_UpdateUserId(
+            AddUser_UsernameArray[0].id,
+            AddUser_UsernameArray[0].name
+        );
 
         AddUser_UpdateSidepanel();
 
@@ -342,11 +338,12 @@ function AddUser_SaveNewUser(responseText) {
     Main_HideLoadDialog();
     if (AddUser_UsernameArray.length === 1) {
         AddUser_UpdateSidepanel();
-        OSInterface_upNotificationId(
+        OSInterface_UpdateUserId(
             AddUser_UsernameArray[0].id,
             AddUser_UsernameArray[0].name
         );
         OSInterface_mCheckRefresh();
+        if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
     }
     Main_SwitchScreen();
     AddUser_loadingData = false;
@@ -369,13 +366,11 @@ function AddUser_removeUser(position) {
         if (!position) {
             AddUser_UpdateSidepanel();
 
-            OSInterface_upNotificationId(
+            OSInterface_UpdateUserId(
                 AddUser_UsernameArray[0].id,
                 AddUser_UsernameArray[0].name
             );
 
-            if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-            OSInterface_mCheckRefresh();
         }
         Users_status = false;
         Users_init();
@@ -383,11 +378,7 @@ function AddUser_removeUser(position) {
         AddUser_UpdateSidepanelDefault();
         AddUser_init();
 
-        if (Main_IsOn_OSInterface) {
-            OSInterface_upNotificationId(null, null);
-            OSInterface_StopNotificationService();
-            OSInterface_mCheckRefresh();
-        }
+        OSInterface_UpdateUserId(null, null);
     }
 }
 
@@ -423,16 +414,10 @@ function AddUser_UserMakeOne(position) {
     AddUser_UpdateSidepanel();
     Users_init();
 
-    if (Main_IsOn_OSInterface) {
-
-        OSInterface_upNotificationId(
-            AddUser_UsernameArray[0].id,
-            AddUser_UsernameArray[0].name
-        );
-
-        if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-        OSInterface_mCheckRefresh();
-    }
+    OSInterface_UpdateUserId(
+        AddUser_UsernameArray[0].id,
+        AddUser_UsernameArray[0].name
+    );
 
     //Reset user emotes on chage
     userEmote = {};

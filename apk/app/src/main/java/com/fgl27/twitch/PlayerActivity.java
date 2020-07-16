@@ -1594,17 +1594,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefreshToast(int type) {
-
             CheckRefreshToast(type, mWebViewContext);
-
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefresh(int type) {
-
             CheckRefresh(type, true);
-
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1782,15 +1778,6 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void CheckNotificationService() {
-            //User has changed stop notifications and reset list
-            if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
-            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-            appPreferences.put(Tools.getString(Constants.PREF_USER_ID, null, appPreferences) + Constants.PREF_NOTIFY_OLD_LIST, null);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
         public void StopNotificationService() {
             StopNotifications();
         }
@@ -1803,13 +1790,37 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void upNotificationId(String id, String name) {
+        public void UpdateUserId(String id, String name) {
+            String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
             try {
                 appPreferences.put(Constants.PREF_USER_NAME, name != null ? URLEncoder.encode(name, "UTF-8") : null);
             } catch (UnsupportedEncodingException ignored) {}
 
+            if (id == null) {
+
+                StopNotifications();
+                CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
+                CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+
+            } else if (!Objects.equals(tempUserId, id)) {
+
+                //User has changed stop notifications and reset list
+                ToastHandler.removeCallbacksAndMessages(null);
+                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
+
+                CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
+                CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+            }
+        }
+
+        //TODO remove this after some app updates
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationId(String id, String name) {
+            UpdateUserId(id, name);
         }
 
         @SuppressWarnings("unused")//called by JS
