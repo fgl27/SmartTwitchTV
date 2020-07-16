@@ -77,8 +77,6 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -1794,9 +1792,7 @@ public class PlayerActivity extends Activity {
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
-            try {
-                appPreferences.put(Constants.PREF_USER_NAME, name != null ? URLEncoder.encode(name, "UTF-8") : null);
-            } catch (UnsupportedEncodingException ignored) {}
+            appPreferences.put(Constants.PREF_USER_NAME, name);
 
             if (id == null) {
 

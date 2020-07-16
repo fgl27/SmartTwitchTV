@@ -343,7 +343,11 @@ function OSInterface_mhideSystemUI() {
 //Sets the user id used by the notification services
 function OSInterface_UpdateUserId(id, name) {
     try {
-        if (Main_IsOn_OSInterface) Android.UpdateUserId(id, name);
+        if (Main_IsOn_OSInterface)
+            Android.UpdateUserId(
+                id,
+                name ? encodeURIComponent(name) : name
+            );
     } catch (e) {}
 }
 
