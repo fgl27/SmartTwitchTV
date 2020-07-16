@@ -150,9 +150,6 @@ public class PlayerActivity extends Activity {
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
-    public String[] DataResult = new String[PlayerAccount];
-    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
-    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
     public WebView mWebView;
     public WebView mWebViewKey;
     public boolean PicturePicture;
@@ -171,16 +168,6 @@ public class PlayerActivity extends Activity {
     public int AudioMulti = 0;//window 0
     public float PreviewOthersAudio = 0.3f;//window 0
     public float PreviewAudio = 1f;//window 0
-    public Handler MainThreadHandler;
-    public Handler[] CurrentPositionHandler = new Handler[2];
-    public Handler ExtraPlayerHandler;
-    public String[][] ExtraPlayerHandlerResult = new String[25][100];
-    public HandlerThread ExtraPlayerHandlerThread;
-    public HandlerThread SaveBackupJsonThread;
-    public Handler SaveBackupJsonHandler;
-    public HandlerThread RuntimeThread;
-    public Handler RuntimeHandler;
-    public Runtime runtime;
     public float PingValue = 0f;
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
@@ -237,10 +224,26 @@ public class PlayerActivity extends Activity {
     public String LastIntent;
     public boolean canRunChannel;
 
-    public HandlerThread NotificationThread;
+    public String[][] PreviewFeedHandlerResult = new String[25][100];
+    public String[] DataResult = new String[PlayerAccount];
+
+    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
+    public HandlerThread PreviewFeedHandlerThread;
+    public HandlerThread BackGroundThreadEtc;
+
+    public Handler MainThreadHandler;
+    public Handler[] CurrentPositionHandler = new Handler[2];
+    public Handler SaveBackupJsonHandler;
+    public Handler RuntimeHandler;
     public Handler NotificationHandler;
-    public HandlerThread ToastThread;
     public Handler ToastHandler;
+    public Handler ChannelHandler;
+    public Handler DeleteHandler;
+
+    public Handler PreviewFeedHandler;
+    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
+
+    public Runtime runtime;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -266,35 +269,38 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
-            MainThreadHandler = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler[0] = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler[1] = new Handler(Looper.getMainLooper());
+            //Main loop threads
+            Looper MainLooper = Looper.getMainLooper();
+            MainThreadHandler = new Handler(MainLooper);
+            CurrentPositionHandler[0] = new Handler(MainLooper);
+            CurrentPositionHandler[1] = new Handler(MainLooper);
 
             for (int i = 0; i < PlayerAccountPlus; i++) {
-                PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
+                PlayerCheckHandler[i] = new Handler(MainLooper);
             }
 
-            ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
-            ExtraPlayerHandlerThread.start();
-            ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
+            //BackGroundThreadEtc loop threads
+            BackGroundThreadEtc = new HandlerThread("BackGroundThread");
+            BackGroundThreadEtc.start();
+            Looper BackGroundThreadEtcLooper = BackGroundThreadEtc.getLooper();
 
-            SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
-            SaveBackupJsonThread.start();
-            SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
+            NotificationHandler = new Handler(BackGroundThreadEtcLooper);
+            ToastHandler = new Handler(BackGroundThreadEtcLooper);
+            SaveBackupJsonHandler = new Handler(BackGroundThreadEtcLooper);
+            RuntimeHandler = new Handler(BackGroundThreadEtcLooper);
+            ChannelHandler = new Handler(BackGroundThreadEtcLooper);
+            DeleteHandler = new Handler(BackGroundThreadEtcLooper);
 
-            for (int i = 0; i < PlayerAccountPlus; i++) {
+            //Other loop threads
+            PreviewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
+            PreviewFeedHandlerThread.start();
+            PreviewFeedHandler = new Handler(PreviewFeedHandlerThread.getLooper());
+
+            for (int i = 0; i < PlayerAccount; i++) {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
-
-            NotificationThread = new HandlerThread("NotificationThread");
-            NotificationThread.start();
-            NotificationHandler = new Handler(NotificationThread.getLooper());
-
-            ToastThread = new HandlerThread("ToastThread");
-            ToastThread.start();
-            ToastHandler = new Handler(ToastThread.getLooper());
 
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= 26;
@@ -314,9 +320,6 @@ public class PlayerActivity extends Activity {
 
             initializeWebview();
 
-            RuntimeThread = new HandlerThread("RuntimeThread");
-            RuntimeThread.start();
-            RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
             GetPing();
         }
@@ -1137,7 +1140,7 @@ public class PlayerActivity extends Activity {
         if (!canRunChannel) return;
 
         Context context = this;
-        DataResultHandler[4].post(() -> {
+        ChannelHandler.post(() -> {
 
             switch (Type) {
                 case Constants.CHANNEL_TYPE_LIVE:
@@ -1211,7 +1214,7 @@ public class PlayerActivity extends Activity {
             mWebView.clearCache(true);
             mWebView.clearHistory();
 
-            DataResultHandler[4].post(() -> Tools.deleteCache(this));
+            DeleteHandler.post(() -> Tools.deleteCache(this));
         }
     }
 
@@ -1931,24 +1934,24 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
-            return ExtraPlayerHandlerResult[x][y];
+            return PreviewFeedHandlerResult[x][y];
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            ExtraPlayerHandlerResult[x][y] = null;
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandlerResult[x][y] = null;
 
-            ExtraPlayerHandler.postDelayed(() -> {
+            PreviewFeedHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+                    PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
                 } catch (Exception e) {
                     Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
                 }
 
-                if (ExtraPlayerHandlerResult[x][y] != null)
+                if (PreviewFeedHandlerResult[x][y] != null)
                     LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
         }
@@ -2049,7 +2052,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
@@ -2170,7 +2173,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer(boolean CleanPlayer) {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
             if (CleanPlayer) {
 
                 MainThreadHandler.post(() -> {
