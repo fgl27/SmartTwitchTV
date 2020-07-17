@@ -252,9 +252,9 @@ function AddUser_UpdateSidepanelSize(logo, username) {
         logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
     Sidepannel_SetUserlable(username);
 
-    var size = username.lengthdoc = document.getElementById('side_panel_movel');
+    var size = username.length;
 
-    size = (size > 11 ? size - 11 : 0);
+    size = (size > 9 ? size - 9 : 0);
 
     Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
 
