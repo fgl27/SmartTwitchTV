@@ -85,7 +85,7 @@ function UserLiveFeedobj_CheckToken() {
     document.getElementById('side_panel_warn').style.display = 'none';
 
     UserLiveFeed_loadChannelOffsset = 0;
-    UserLiveFeed_followerChannels = '';
+    UserLiveFeed_followerChannels = [];
 
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
 
@@ -166,15 +166,37 @@ function UserLiveFeedobj_HolderDiv(pos, text) {
 }
 
 function UserLiveFeedobj_loadChannels() {
-    //Main_Log('UserLiveFeedobj_loadChannels');
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadChannelLive,
-        false,
-        UserLiveFeedobj_UserLivePos
-    );
+    var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+
+    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState === 4) {
+            if (xmlHttp.status === 200) {
+                UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
+            } else {
+                UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+            }
+        }
+    };
+
+    xmlHttp.send(null);
+}
+
+function UserLiveFeedobj_loadChannelsError(pos) {
+    UserLiveFeed_loadingDataTry[pos]++;
+    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
+        UserLiveFeedobj_loadChannels();
+    } else {
+        if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataErrorElse(pos);
+        else UserLiveFeedobj_loadChannelLiveEnd();
+    }
 }
 
 function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -184,22 +206,34 @@ function UserLiveFeedobj_loadChannelLive(responseText) {
         response_items = response.length;
 
     if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-        var ChannelTemp = '',
-            x = 0;
+        var x = 0,
+            max = UserLiveFeed_followerChannels.length + response_items,
+            end = false;
 
-        for (x; x < response_items; x++) {
-            ChannelTemp = response[x].channel._id + ',';
-            if (!Main_A_includes_B(UserLiveFeed_followerChannels, ChannelTemp)) UserLiveFeed_followerChannels += ChannelTemp;
+        if (max > UserLiveFeed_maxChannels) {
+            end = true;
+            response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
         }
 
-        UserLiveFeed_loadChannelOffsset += response_items;
-        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-        UserLiveFeedobj_loadChannels();
+        for (x; x < response_items; x++) {
+            UserLiveFeed_followerChannels.push(response[x].channel._id);
+        }
+
+        if (end) {
+            UserLiveFeedobj_loadChannelLiveEnd();
+        } else {
+            UserLiveFeed_loadChannelOffsset += response_items;
+            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
+            UserLiveFeedobj_loadChannels();
+        }
     } else { // end
-        UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-        UserLiveFeedobj_loadChannelUserLive();
+        UserLiveFeedobj_loadChannelLiveEnd();
     }
+}
+
+function UserLiveFeedobj_loadChannelLiveEnd() {
+    UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
+    UserLiveFeedobj_loadChannelUserLive();
 }
 
 function UserLiveFeedobj_loadChannelUserLive() {
@@ -209,7 +243,7 @@ function UserLiveFeedobj_loadChannelUserLive() {
     if (UserLiveFeed_token) {
         theUrl += 'followed?';
     } else {
-        theUrl += '?channel=' + UserLiveFeed_followerChannels + '&';
+        theUrl += '?channel=' + UserLiveFeed_followerChannels.join() + '&';
     }
     theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 

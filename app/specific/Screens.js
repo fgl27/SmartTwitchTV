@@ -209,7 +209,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].row_id = 0;
     ScreenObj[key].currY = 0;
     ScreenObj[key].loadChannelOffsset = 0;
-    ScreenObj[key].followerChannels = '';
+    ScreenObj[key].followerChannels = [];
     ScreenObj[key].followerChannelsDone = false;
     ScreenObj[key].coloumn_id = 0;
     ScreenObj[key].data = null;

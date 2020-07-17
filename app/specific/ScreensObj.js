@@ -591,7 +591,7 @@ function ScreensObj_InitUserLive() {
         key_pgUp: Main_HistoryLive,
         base_url: Main_kraken_api + 'streams/',
         loadChannelOffsset: 0,
-        followerChannels: '',
+        followerChannels: [],
         followerChannelsDone: false,
         set_url: function() {
             this.check_offset();
@@ -608,14 +608,14 @@ function ScreensObj_InitUserLive() {
                 this.token = null;
                 if (this.followerChannelsDone) {
                     //User followed channels list is done, load live channels
-                    this.url = this.base_url + '?channel=' + encodeURIComponent(this.followerChannels) + '&' +
+                    this.url = this.base_url + '?channel=' + this.followerChannels.join() + '&' +
                         'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
                 } else {
                     //User followed channels list is not done, load followed channels
                     this.url = Main_kraken_api + 'users/' +
                         encodeURIComponent(AddUser_UsernameArray[0].id) +
                         '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
-                        '&sortby=created_at';
+                        '&sortby=last_broadcast';
                 }
             }
         },
@@ -665,18 +665,22 @@ function ScreensObj_InitUserLive() {
 
             if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
                 //User followed channels list is not done, load followed channels
-                var ChannelTemp = '',
-                    x = 0;
+                var x = 0,
+                    max = this.followerChannels.length + response_items;
+
+                if (max > UserLiveFeed_maxChannels) {
+                    this.followerChannelsDone = true;
+                    response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
+                }
 
                 for (x; x < response_items; x++) {
-                    ChannelTemp = response[x].channel._id + ',';
-                    if (!Main_A_includes_B(this.followerChannels, ChannelTemp)) this.followerChannels += ChannelTemp;
+                    this.followerChannels.push(response[x].channel._id);
                 }
 
                 this.loadChannelOffsset += response_items;
+
             } else { // end
                 //User followed channels list is done, load live channels
-                this.followerChannels = this.followerChannels.slice(0, -1);
                 this.followerChannelsDone = true;
             }
             Screens_loadDataRequest(this.screen);
