@@ -537,16 +537,16 @@ function Sidepannel_SetDefaultLables() {
     Main_HideElement('side_panel_new_8');
     Main_HideElement('side_panel_movel_user_text_holder');
 
-    Main_innerHTML('side_panel_movel_new_1', STR_SPACE + STR_SEARCH);
+    Main_innerHTML('side_panel_movel_new_1', STR_SEARCH);
 
-    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_USER_MENU);
-    Main_innerHTML('side_panel_movel_new_3', STR_SPACE + STR_LIVE);
-    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_FEATURED);
-    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
-    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
-    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CLIPS);
-    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
-    Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_HISTORY);
+    Main_innerHTML('side_panel_movel_new_2', STR_USER_MENU);
+    Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
+    Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
+    Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
+    Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
+    Main_innerHTML('side_panel_movel_new_8', STR_USER_MY_CHANNEL);
+    Main_innerHTML('side_panel_movel_new_9', STR_HISTORY);
 
     Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_SETTINGS);
     Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_ABOUT);
@@ -564,8 +564,8 @@ function Sidepannel_SetDefaultLables() {
 }
 
 function Sidepannel_SetUserlable(text) {
-    Main_innerHTML('side_panel_movel_new_0', STR_SPACE + text + STR_BR +
-        '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_SPACE + STR_SPACE + STR_USER_EXTRAS + '</div>');
+    Main_innerHTML('side_panel_movel_new_0', text + STR_BR +
+        '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>');
 }
 
 function Sidepannel_SetIcons(div, icon) {
