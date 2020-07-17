@@ -94,7 +94,6 @@ function UserLiveFeedobj_CheckToken() {
         UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
         UserLiveFeedobj_loadChannelUserLive();
     } else {
-        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeed_token = null;
         UserLiveFeedobj_loadChannels();
     }
@@ -131,25 +130,29 @@ function UserLiveFeedobj_loadDataError(pos) {
     if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
         UserLiveFeed_obj[pos].load();
     } else {
-        if (!UserLiveFeed_obj[pos].loadingMore) {
-            UserLiveFeed_loadingDataTry[pos] = 0;
-            UserLiveFeed_loadingData[pos] = false;
-            Screens_Some_Screen_Is_Refreshing = false;
-            UserLiveFeed_Showloading(false);
-            Main_HideElement('dialog_loading_side_feed');
+        UserLiveFeedobj_loadDataErrorElse(pos);
+    }
+}
 
-            if (UserLiveFeed_isFeedShow()) {
-                UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
-            }
+function UserLiveFeedobj_loadDataErrorElse(pos) {
+    if (!UserLiveFeed_obj[pos].loadingMore) {
+        UserLiveFeed_loadingDataTry[pos] = 0;
+        UserLiveFeed_loadingData[pos] = false;
+        Screens_Some_Screen_Is_Refreshing = false;
+        UserLiveFeed_Showloading(false);
+        Main_HideElement('dialog_loading_side_feed');
 
-            if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
-                Main_HideWarningDialog();
-                Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
-            }
-        } else {
-            UserLiveFeed_obj[pos].loadingMore = false;
-            UserLiveFeed_obj[pos].dataEnded = true;
+        if (UserLiveFeed_isFeedShow()) {
+            UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
         }
+
+        if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+            Main_HideWarningDialog();
+            Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
+        }
+    } else {
+        UserLiveFeed_obj[pos].loadingMore = false;
+        UserLiveFeed_obj[pos].dataEnded = true;
     }
 }
 
@@ -206,7 +209,7 @@ function UserLiveFeedobj_loadChannelUserLive() {
     if (UserLiveFeed_token) {
         theUrl += 'followed?';
     } else {
-        theUrl += '?channel=' + encodeURIComponent(UserLiveFeed_followerChannels) + '&';
+        theUrl += '?channel=' + UserLiveFeed_followerChannels + '&';
     }
     theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 
@@ -231,7 +234,6 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
-    //Main_Log('UserLiveFeedobj_loadChannelUserLiveGetEnd ' + xmlHttp.status);
     if (xmlHttp.status === 200) {
         UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
@@ -239,7 +241,16 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
         AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
     } else {
-        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+        UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
+    }
+}
+
+function UserLiveFeedobj_loadChannelUserLiveGetEndError(pos) {
+    UserLiveFeed_loadingDataTry[pos]++;
+    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
+        UserLiveFeedobj_loadChannelUserLive();
+    } else {
+        UserLiveFeedobj_loadDataErrorElse(pos);
     }
 }
 
