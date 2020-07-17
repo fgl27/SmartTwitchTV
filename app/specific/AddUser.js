@@ -247,6 +247,9 @@ function AddUser_UpdateSidepanelAfterShow() {
 }
 
 function AddUser_UpdateSidepanelSize(logo, username) {
+    //remove transition to change size
+    Sidepannel_MovelDiv.style.transition = 'none';
+
     Main_innerHTML("side_panel_new_0_img",
         '<img class="side_panel_new_img" alt="" src="' +
         logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
@@ -267,16 +270,10 @@ function AddUser_UpdateSidepanelSize(logo, username) {
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
     }
 
-    var Rect = document.getElementById('side_panel_fix_center').getBoundingClientRect();
+    Main_ready(function() {
+        if (Settings_Obj_default("app_animations")) Sidepannel_MovelDiv.style.transition = '';
+    });
 
-    if (Rect.left > 0) {
-        var array = document.getElementsByClassName('side_panel_new_icons_text_holder'),
-            i = 0,
-            len = array.length;
-
-        for (i; i < len; i++)
-            array[i].style.paddingLeft = Rect.left + "px";
-    }
 }
 
 function AddUser_UserIsSet() {

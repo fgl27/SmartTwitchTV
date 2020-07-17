@@ -83,7 +83,6 @@ var Main_values = {
     "ChatBackground": 12,
     "IsRerun": false,
     "Main_selectedChannelPartner": false,
-    "Sidepannel_Pos": 2,
     "Sidepannel_IsUser": false,
     "My_channel": false,
     "DeviceCheckNew": false,

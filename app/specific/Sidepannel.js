@@ -20,6 +20,7 @@
 
 //Spacing for reease maker not trow erros frm jshint
 var Sidepannel_PosFeed = 0;
+var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;
 var Sidepannel_UpdateThumbDoc;
 var Sidepannel_IsMain = true;
@@ -39,11 +40,11 @@ var Sidepannel_Positions = {};
 var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
 
 function Sidepannel_AddFocusMain() {
-    Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+    Main_AddClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_RemoveFocusMain() {
-    Main_RemoveClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+    Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 function Sidepannel_AddFocusFeed(skipAnimation) {
@@ -267,24 +268,24 @@ function Sidepannel_GetSize() {
 }
 
 function Sidepannel_KeyEnterUser() {
-    if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
+    if (Sidepannel_Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }
 
-    if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
+    if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
 
-    if (Main_values.Sidepannel_Pos === 2) {
+    if (Sidepannel_Sidepannel_Pos === 2) {
         Main_values.Sidepannel_IsUser = false;
         Sidepannel_SetDefaultLables();
         Sidepannel_UnSetTopOpacity();
 
-    } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
-    else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
-    else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
-    else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
-    else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
-    else if (Main_values.Sidepannel_Pos === 8) {
+    } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
+    else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
+    else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
+    else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
+    else if (Sidepannel_Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
+    else if (Sidepannel_Sidepannel_Pos === 8) {
         Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
         Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
         Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
@@ -297,31 +298,31 @@ function Sidepannel_KeyEnterUser() {
         Main_ExitCurrent(Main_values.Main_BeforeChannel);
         Main_values.My_channel = true;
         Main_SwitchScreen();
-    } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
+    } else if (Sidepannel_Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
     else Sidepannel_KeyEnterBase();
 
 }
 
 function Sidepannel_KeyEnterBase() {
-    if (!Main_values.Sidepannel_Pos) {
+    if (!Sidepannel_Sidepannel_Pos) {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_ExitCurrent(Main_values.Main_Go);
         if (AddUser_UserIsSet()) Users_init();
         else AddUser_init();
-    } else if (Main_values.Sidepannel_Pos === 1) {
+    } else if (Sidepannel_Sidepannel_Pos === 1) {
         if (Main_values.Main_Go !== Main_Search) {
             if (!Main_values.Search_isSearching &&
                 (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                 ChannelContent_SetChannelValue();
             Main_OpenSearch();
         } else Main_addEventListener("keydown", Sidepannel_Callback);
-    } else if (Main_values.Sidepannel_Pos === 10) {
+    } else if (Sidepannel_Sidepannel_Pos === 10) {
         Main_showSettings();
-    } else if (Main_values.Sidepannel_Pos === 11)
+    } else if (Sidepannel_Sidepannel_Pos === 11)
         Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
-    else if (Main_values.Sidepannel_Pos === 12)
+    else if (Sidepannel_Sidepannel_Pos === 12)
         Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
-    else if (Main_values.Sidepannel_Pos === 13) Main_showExitDialog();
+    else if (Sidepannel_Sidepannel_Pos === 13) Main_showExitDialog();
 }
 
 function Sidepannel_KeyEnter() {
@@ -330,9 +331,9 @@ function Sidepannel_KeyEnter() {
         return;
     }
 
-    if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
+    if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
 
-    if (Main_values.Sidepannel_Pos === 2) {
+    if (Sidepannel_Sidepannel_Pos === 2) {
         if (AddUser_IsUserSet()) {
             Sidepannel_SetUserLables();
             Sidepannel_UnSetTopOpacity();
@@ -340,11 +341,11 @@ function Sidepannel_KeyEnter() {
         } else {
             Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
         }
-    } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
-    else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
-    else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
-    else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
-    else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
+    } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
+    else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
+    else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
+    else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
+    else if (Sidepannel_Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
     else Sidepannel_KeyEnterBase();
 }
 
@@ -461,10 +462,10 @@ function Sidepannel_HideEle(PreventcleanQuailities) {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
-    if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+    if (Sidepannel_Pos_Screens[Main_Go]) Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
     Sidepannel_UnSetTopOpacity();
 
-    if (Main_values.Sidepannel_Pos && Main_values.Sidepannel_Pos < 10) Main_AddClass('side_panel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+    if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 10) Main_AddClass('side_panel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
 var Sidepannel_Pos_Screens = [
@@ -696,19 +697,19 @@ function Sidepannel_handleKeyDownMain(event) {
             break;
         case KEY_PG_UP:
         case KEY_UP:
-            if (Main_values.Sidepannel_Pos) {
+            if (Sidepannel_Sidepannel_Pos) {
                 Sidepannel_RemoveFocusMain();
-                Main_values.Sidepannel_Pos--;
-                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos -= 2;
+                Sidepannel_Sidepannel_Pos--;
+                if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 9) Sidepannel_Sidepannel_Pos -= 2;
                 Sidepannel_AddFocusMain();
             }
             break;
         case KEY_PG_DOWN:
         case KEY_DOWN:
-            if (Main_values.Sidepannel_Pos < 13) {
+            if (Sidepannel_Sidepannel_Pos < 13) {
                 Sidepannel_RemoveFocusMain();
-                Main_values.Sidepannel_Pos++;
-                if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos += 2;
+                Sidepannel_Sidepannel_Pos++;
+                if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += 2;
                 Sidepannel_AddFocusMain();
             }
             break;
