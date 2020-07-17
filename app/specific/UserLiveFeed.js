@@ -592,7 +592,10 @@ var UserLiveFeed_CheckIfIsLiveResultThumb;
 var UserLiveFeed_PreviewOffset = 0;
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && UserLiveFeed_isFeedShow() && UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+    if (!Main_isStoped && UserLiveFeed_isFeedShow() &&
+        (!Play_isEndDialogVisible() || !Play_EndFocus) &&
+        UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+
         var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
         if (StreamData && doc) {
