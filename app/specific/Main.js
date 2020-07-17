@@ -81,7 +81,6 @@ var Main_values = {
     "warning_extra": true,
     "Chat_font_size_new": 75,
     "ChatBackground": 12,
-    "IsRerun": false,
     "Main_selectedChannelPartner": false,
     "Sidepannel_IsUser": false,
     "My_channel": false,
