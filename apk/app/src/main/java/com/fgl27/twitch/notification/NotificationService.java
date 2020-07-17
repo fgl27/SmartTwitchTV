@@ -20,9 +20,6 @@
 
 package com.fgl27.twitch.notification;
 
-import android.annotation.TargetApi;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -139,11 +136,13 @@ public class NotificationService extends Service {
         context = getApplicationContext();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationCompat.Builder builder = NotificationBuilder(
-                    getString(R.string.notification),
-                    getString(R.string.notification_text),
-                    context
-            );
+            NotificationCompat.Builder builder =
+                    NotificationUtils.NotificationBuilder(
+                            getString(R.string.notification),
+                            getString(R.string.notification_text),
+                            TAG,
+                            context
+                    );
 
             startForeground(100, builder.build());
         }
@@ -189,10 +188,10 @@ public class NotificationService extends Service {
                 if (delay > 0) delay = delay - System.currentTimeMillis();
 
                 NotificationHandler.postDelayed(() -> {
-                        if (screenOn && isRunning) {
-                            RunNotifications();
-                            InitNotifications(1000 * 60 * 3);//it 3 min refresh
-                        }
+                    if (screenOn && isRunning) {
+                        RunNotifications();
+                        InitNotifications(1000 * 60 * 3);//it 3 min refresh
+                    }
                 }, timeout + (delay > 0 ? delay : 0));
             }
         } catch (Exception e) {
@@ -201,7 +200,7 @@ public class NotificationService extends Service {
     }
 
     private void RunNotifications() {
-        if (CheckUserChanged() || !Tools.isConnected(context)) return;
+        if (CheckCanRun() || !Tools.isConnected(context)) return;
 
         NotificationUtils.CheckNotifications(
                 UserId,
@@ -211,7 +210,7 @@ public class NotificationService extends Service {
         );
     }
 
-    private boolean CheckUserChanged() {
+    private boolean CheckCanRun() {
         //If user changed don't Notify
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
@@ -222,7 +221,8 @@ public class NotificationService extends Service {
 
         } else if (!Objects.equals(tempUserId, UserId)) {
 
-            //Stop all toast
+            //Stop all toast as user has changed
+            //Technical can't happen after the service has started but just in case one is so fast that can change user during a off and on of the service
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
             appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
             appPreferences.put(tempUserId + Constants.PREF_NOTIFY_OLD_LIST, null);
@@ -250,19 +250,4 @@ public class NotificationService extends Service {
         } catch (Exception ignored) {}
     }
 
-    @TargetApi(26)
-    private NotificationCompat.Builder NotificationBuilder(String title, String text, Context context) {
-        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (mNotifyManager != null) {
-            mNotifyManager.createNotificationChannel(new NotificationChannel(TAG, title, NotificationManager.IMPORTANCE_NONE));
-        }
-
-        return new NotificationCompat.Builder(context, TAG)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_refresh)
-                .setChannelId(TAG);
-    }
 }

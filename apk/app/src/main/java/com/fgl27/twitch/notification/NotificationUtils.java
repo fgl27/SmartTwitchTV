@@ -21,6 +21,9 @@
 package com.fgl27.twitch.notification;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,6 +39,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
@@ -444,5 +449,27 @@ public final class NotificationUtils {
     public static boolean StartNotificationService(AppPreferences appPreferences) {
         return Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null;
+    }
+
+    @TargetApi(26)
+    public static NotificationCompat.Builder NotificationBuilder(String title, String text, String id, Context context) {
+        NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (mNotifyManager != null) {
+            mNotifyManager.createNotificationChannel(
+                    new NotificationChannel(
+                            id,
+                            title,
+                            NotificationManager.IMPORTANCE_NONE
+                    )
+            );
+        }
+
+        return new NotificationCompat.Builder(context, id)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_refresh)
+                .setChannelId(id);
     }
 }
