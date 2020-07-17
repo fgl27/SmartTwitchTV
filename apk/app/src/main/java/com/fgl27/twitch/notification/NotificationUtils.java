@@ -45,7 +45,6 @@ import androidx.core.app.NotificationCompat;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
-import com.fgl27.twitch.channels.SyncChannelJobService;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -111,34 +110,46 @@ public final class NotificationUtils {
         }
     }
 
-    private static JsonArray GetLiveStreamsList(String UserId) {
+    //There is a faster way to do this??? yes but that is needed the user authorization key
+    //So this function runs witout it is slower even more as the user follows more channels but works
+    //The service that run this functions aren't time dependent so no problem
+    public static JsonArray GetLiveStreamsList(String UserId) {
         JsonArray StreamsResult = new JsonArray();
 
         try {
-            String Channels = SyncChannelJobService.GetChannels(UserId);
-            if (Channels == null) return null;
+            ArrayList<String> ChannelsList = GetChannels(UserId);
+            if (ChannelsList == null) return null;
 
             String url;
-            int Offset = 0;
             int StreamsSize;
             Tools.ResponseObj response;
             JsonObject obj;
             JsonArray TempStreams;
             String id;
             ArrayList<String> TempArray = new ArrayList<>();
-            int AddedToArray;
+            int ChannelsSize = ChannelsList.size();
+            int LoopSize = (ChannelsSize / 100) + 1;
+            int len;
+            StringBuilder Channels;
 
-            do {
+            for (int x = 0; x < LoopSize; x++) {
+
+                //The list may contains 1000+ channels run 100 at a time
+                Channels = new StringBuilder();
+                len = Math.min(ChannelsSize, ((x + 1) * 100));
+
+                for (int j = x * 100; j < len; j++) {
+                    Channels.append(ChannelsList.get(j)).append(",");
+                }
+
+                Channels = new StringBuilder(Channels.substring(0, Channels.length() - 1));
 
                 url = String.format(
                         Locale.US,
-                        "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=%d&stream_type=all&api_version=5",
-                        Channels,
-                        Offset
+                        "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
+                        Channels.toString()
                 );
 
-                StreamsSize = 0;
-                AddedToArray = 0;
                 for (int i = 0; i < 3; i++) {
 
                     response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
@@ -153,14 +164,8 @@ public final class NotificationUtils {
                                 TempStreams = obj.get("streams").getAsJsonArray();//Get the follows array
                                 StreamsSize = TempStreams.size();
 
-                                if (StreamsSize > 0) {
-
-                                    Offset += StreamsSize;
-
-                                } else {
-
+                                if (StreamsSize < 1) {
                                     break;
-
                                 }
 
                                 for (int j = 0; j < StreamsSize; j++) {
@@ -170,8 +175,6 @@ public final class NotificationUtils {
 
                                     if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
                                         TempArray.add(id);
-                                        AddedToArray++;
-
                                         StreamsResult.add(obj);
                                     }
 
@@ -182,15 +185,106 @@ public final class NotificationUtils {
                         }
 
                     }
+
                 }
+            }
 
-            } while (StreamsSize > 0 && AddedToArray > 0); //last array was empty or didn't had noting new
-
-        } catch (Exception e) {
+        } catch(Exception e){
             Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
         }
 
         return StreamsResult.size() > 0 ? StreamsResult : null;
+    }
+
+    public static ArrayList<String> GetChannels(String userId)  {
+        ArrayList<String> Result = new ArrayList<>();
+
+        try {
+            String url;
+            int ChannelsOffset = 0;
+
+            int arraySize;
+            int AddedToArray;
+            String channelId;
+
+            Tools.ResponseObj response;
+            JsonObject obj;
+            JsonArray follows;
+
+            do {//Get all user fallowed channels
+
+                url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/kraken/users/%s/follows/channels?limit=100&offset=%d&sortby=last_broadcast&api_version=5",
+                        userId,
+                        ChannelsOffset
+                );
+
+                arraySize = 0;
+                AddedToArray = 0;
+
+                for (int i = 0; i < 3; i++) {
+
+                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+
+                    if (response != null) {
+
+                        if (response.getStatus() == 200) {
+                            obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                            if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
+
+                                follows = obj.get("follows").getAsJsonArray();//Get the follows array
+                                arraySize = follows.size();
+
+                                if (arraySize > 0) {
+
+                                    ChannelsOffset += arraySize;
+
+                                } else {
+
+                                    break;
+
+                                }
+
+                                for (int j = 0; j < arraySize; j++) {
+
+                                    obj = follows.get(j).getAsJsonObject();//Get the position in the follows array
+
+                                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+
+                                        obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                                        if (obj.isJsonObject() && !obj.get("_id").isJsonNull()) {
+
+                                            channelId = obj.get("_id").getAsString();//Get the channel id
+
+                                            if (!Result.contains(channelId)) {//Prevent add duplicated
+
+                                                AddedToArray++;
+                                                Result.add(channelId);
+
+                                            }
+
+                                        }
+                                    }
+                                }
+
+                            }
+                            break;
+                        }
+
+                    }
+                }
+
+            } while (arraySize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
+
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
+
+        return Result.size() > 0 ? Result : null;
+
     }
 
     private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
@@ -432,7 +526,7 @@ public final class NotificationUtils {
     }
 
     private static void ShowNotification(NotifyList NotifyListResult, int delay,
-                                        Handler ToastHandler, Context context, AppPreferences appPreferences) {
+                                         Handler ToastHandler, Context context, AppPreferences appPreferences) {
 
         ToastHandler.postDelayed(() -> {
             try {

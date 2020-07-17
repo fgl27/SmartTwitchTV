@@ -50,6 +50,7 @@ import com.google.gson.JsonObject;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ThreadLocalRandom;
@@ -69,6 +70,7 @@ public final class ChannelsUtils {
                     "Is necessary to add a user first to load this content",
                     "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
+                    1,
                     new Gson().toJson(new PreviewObj(null, "USER")),
                     false
             );
@@ -79,6 +81,7 @@ public final class ChannelsUtils {
                     "Connection failed, unable to load content. Press enter to refresh this (refresh only happens when the app is visible, so click here will open the app)",
                     "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
+                    1,
                     null,
                     false
             );
@@ -99,14 +102,16 @@ public final class ChannelsUtils {
         private final String description;
         private final String imgUrl;
         private final int previewSize;
+        private final int viewers;
         private final String obj;
         private final boolean isLive;
 
-        public ChannelContentObj(String title, String description, String imgUrl, int previewSize, String obj, boolean isLive) {
+        public ChannelContentObj(String title, String description, String imgUrl, int previewSize, int viewers, String obj, boolean isLive) {
             this.title = title;
             this.description = description;
             this.imgUrl = imgUrl;
             this.previewSize = previewSize;
+            this.viewers = viewers;
             this.obj = obj;
             this.isLive = isLive;
         }
@@ -133,6 +138,17 @@ public final class ChannelsUtils {
 
         public boolean getIsLive() {
             return isLive;
+        }
+
+        public int getViewers() {
+            return viewers;
+        }
+    }
+
+    public static class SortLiveViews implements Comparator<ChannelContentObj> {
+        @Override
+        public int compare(ChannelContentObj obj1, ChannelContentObj obj2) {
+            return obj2.getViewers() - obj1.getViewers();
         }
     }
 
@@ -386,7 +402,7 @@ public final class ChannelsUtils {
                 "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refresh it 30 minutes",
                 "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                 TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
-                null,
+                1, null,
                 false
         );
 
