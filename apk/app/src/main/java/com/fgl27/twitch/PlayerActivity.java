@@ -2040,7 +2040,7 @@ public class PlayerActivity extends Activity {
 
                             response = Tools.MethodUrlHeaders(
                                     urlString,
-                                    (timeout + (i * 2500)),
+                                    (timeout + (i * Constants.DEFAULT_HTTP_EXTRA_TIMEOUT)),
                                     postMessage,
                                     Method,
                                     checkResult,

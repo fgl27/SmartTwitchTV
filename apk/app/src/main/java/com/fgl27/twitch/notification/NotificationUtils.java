@@ -152,7 +152,14 @@ public final class NotificationUtils {
 
                 for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                    response = Tools.Internal_MethodUrl(
+                            url,
+                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            null,
+                            null,
+                            0,
+                            Tools.DEFAULT_HEADERS
+                    );
 
                     if (response != null) {
 
@@ -225,7 +232,14 @@ public final class NotificationUtils {
 
                 for (int i = 0; i < 3; i++) {
 
-                    response = Tools.Internal_MethodUrl(url, 25000 + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                    response = Tools.Internal_MethodUrl(
+                            url,
+                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            null,
+                            null,
+                            0,
+                            Tools.DEFAULT_HEADERS
+                    );
 
                     if (response != null) {
 

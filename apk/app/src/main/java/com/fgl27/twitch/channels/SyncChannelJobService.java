@@ -106,26 +106,18 @@ public class SyncChannelJobService extends JobService {
         AppPreferences appPreferences = new AppPreferences(context);
         String lang = Tools.getString(Constants.CHANNEL_LANGUAGE, null, appPreferences);
 
-        List<ChannelsUtils.ChannelContentObj> content = GetLiveContent(
-                "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
-                "streams",
-                null
-        );
-
-        if (content != null) {
-            int contentSize = content.size();
-            if (contentSize > 1) {
-                Collections.sort(content.subList(1, contentSize), new ChannelsUtils.SortLiveViews());
-            }
-        }
-
         ChannelsUtils.StartChannel(
                 context,
                 new ChannelsUtils.ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
                         Constants.CHANNEL_TYPE_LIVE,
-                        content
+                        GetLiveContent(
+                                "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
+                                "streams",
+                                null,
+                                true
+                        )
                 )
         );
     }
@@ -138,59 +130,16 @@ public class SyncChannelJobService extends JobService {
 
             if (Streams == null) StartUserLive(context, null);
             else {
-                JsonObject obj;
-                JsonObject objChannel;
-                JsonObject objPreview;
-                String description;
-                int StreamsSize = Streams.size();
-                int viewers;
-                List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
-                String channelId;
-                ArrayList<String> TempArray = new ArrayList<>();
 
-                DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
+                StartUserLive(
+                        context,
+                        ProcessLiveArray(
+                                Streams,//Get the follows array
+                                null,
+                                true
+                        )
+                );
 
-                content.add(ChannelsUtils.getRefreshContent());
-
-                for (int j = 0; j < StreamsSize; j++) {
-
-                    obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
-
-                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-                        objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                        channelId = objChannel.get("_id").getAsString();
-
-                        if (!TempArray.contains(channelId)) {//Prevent add duplicated
-                            TempArray.add(channelId);
-
-                            objPreview = obj.get("preview").getAsJsonObject();
-                            description = obj.get("game").getAsString();
-                            if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
-                            viewers = obj.get("viewers").getAsInt();
-
-                            content.add(
-                                    new ChannelsUtils.ChannelContentObj(
-                                            objChannel.get("display_name").getAsString(),
-                                            description + decimalFormat.format(viewers) + " viewers\n" + objChannel.get("status").getAsString(),
-                                            objPreview.get("large").getAsString(),
-                                            TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                            viewers,
-                                            new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
-                                            !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
-                                    )
-                            );
-                        }
-
-                    }
-                }
-
-                int contentSize = content.size();
-                if (contentSize > 1) {
-                    Collections.sort(content.subList(1, contentSize), new ChannelsUtils.SortLiveViews());
-
-                    StartUserLive(context, content);
-                } else StartUserLive(context, null);
             }
         } else {
             List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
@@ -221,7 +170,8 @@ public class SyncChannelJobService extends JobService {
                         GetLiveContent(
                                 "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
                                 "featured",
-                                "stream"
+                                "stream",
+                                false
                         )
                 )
         );
@@ -281,85 +231,42 @@ public class SyncChannelJobService extends JobService {
         );
     }
 
-    private static List<ChannelsUtils.ChannelContentObj> GetLiveContent(String url, String object, String object2)  {
+    private static List<ChannelsUtils.ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort)  {
+
         try {
             Tools.ResponseObj response;
-            JsonObject obj;
-            JsonObject objChannel;
-            JsonObject objPreview;
-            JsonArray Streams;
-            String description;
-            int objSize;
-            int viewers;
-            List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
-
-            String channelId;
-            ArrayList<String> TempArray = new ArrayList<>();
-
-            DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
 
             for (int i = 0; i < 3; i++) {
 
-                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, Tools.DEFAULT_HEADERS);
+                response = Tools.Internal_MethodUrl(
+                        url,
+                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        null,
+                        null,
+                        0,
+                        Tools.DEFAULT_HEADERS
+                );
 
                 if (response != null) {
 
                     if (response.getStatus() == 200) {
-                        obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                        JsonObject obj = parseString(response.getResponseText()).getAsJsonObject();
 
                         if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
 
-                            Streams = obj.get(object).getAsJsonArray();//Get the follows array
-                            objSize = Streams.size();
-
-                            if (objSize < 1) return null;
-                            else content.add(ChannelsUtils.getRefreshContent());
-
-                            for (int j = 0; j < objSize; j++) {
-
-                                obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
-
-                                if (object2 != null) {
-                                    obj = obj.get(object2).getAsJsonObject();//Featured holds the featured stream inside another level
-                                }
-
-                                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-                                    objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                                    channelId = objChannel.get("_id").getAsString();
-
-                                    if (!TempArray.contains(channelId)) {//Prevent add duplicated
-                                        TempArray.add(channelId);
-
-                                        objPreview = obj.get("preview").getAsJsonObject();
-                                        description = obj.get("game").getAsString();
-                                        if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
-                                        viewers = obj.get("viewers").getAsInt();
-
-                                        content.add(
-                                                new ChannelsUtils.ChannelContentObj(
-                                                        objChannel.get("display_name").getAsString(),
-                                                        description + decimalFormat.format(viewers) + " viewers\n" + objChannel.get("status").getAsString(),
-                                                        objPreview.get("large").getAsString(),
-                                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                                        viewers,
-                                                        new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
-                                                        !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
-                                                )
-                                        );
-                                    }
-
-                                }
-                            }
-
+                            return ProcessLiveArray(
+                                    obj.get(object).getAsJsonArray(),//Get the follows array
+                                    object2,
+                                    sort
+                            );
                         }
+
                         break;
                     }
 
                 }
             }
-
-            if (content.size() > 0) return content;
 
         } catch (Exception e) {
             Log.w(TAG, "updateChannels e " + e.getMessage());
@@ -367,6 +274,71 @@ public class SyncChannelJobService extends JobService {
 
         return null;
 
+    }
+
+    private static List<ChannelsUtils.ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort)  {
+        List<ChannelsUtils.ChannelContentObj> content = new ArrayList<>();
+        ArrayList<String> TempArray = new ArrayList<>();
+
+        JsonObject obj;
+        JsonObject objChannel;
+        JsonObject objPreview;
+
+        String channelId;
+        String description;
+
+        int viewers;
+        int objSize = Streams.size();
+
+        DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
+
+        if (objSize < 1) return null;
+        else content.add(ChannelsUtils.getRefreshContent());
+
+        for (int j = 0; j < objSize; j++) {
+
+            obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
+
+            if (object2 != null) {
+                obj = obj.get(object2).getAsJsonObject();//Featured holds the featured stream inside another level
+            }
+
+            if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                channelId = objChannel.get("_id").getAsString();
+
+                if (!TempArray.contains(channelId)) {//Prevent add duplicated
+                    TempArray.add(channelId);
+
+                    objPreview = obj.get("preview").getAsJsonObject();
+                    description = obj.get("game").getAsString();
+                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
+                    viewers = obj.get("viewers").getAsInt();
+
+                    content.add(
+                            new ChannelsUtils.ChannelContentObj(
+                                    objChannel.get("display_name").getAsString(),
+                                    description + decimalFormat.format(viewers) + " viewers\n" + objChannel.get("status").getAsString(),
+                                    objPreview.get("large").getAsString(),
+                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
+                                    viewers,
+                                    new Gson().toJson(new ChannelsUtils.PreviewObj(obj, "LIVE")),
+                                    !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
+                            )
+                    );
+                }
+
+            }
+        }
+
+        int contentSize = content.size();
+
+        if (sort && contentSize > 1) {
+            Collections.sort(content.subList(1, contentSize), new ChannelsUtils.SortLiveViews());
+        }
+
+        return contentSize > 0 ? content : null;
     }
 
     private static List<ChannelsUtils.ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS)  {
@@ -387,7 +359,14 @@ public class SyncChannelJobService extends JobService {
 
             for (int i = 0; i < 3; i++) {
 
-                response = Tools.Internal_MethodUrl(url, 25000  + (2500 * i), null, null, 0, HEADERS);
+                response = Tools.Internal_MethodUrl(
+                        url,
+                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        null,
+                        null,
+                        0,
+                        HEADERS
+                );
 
                 if (response != null) {
 
