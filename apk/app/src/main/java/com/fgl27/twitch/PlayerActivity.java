@@ -301,7 +301,7 @@ public class PlayerActivity extends Activity {
             }
 
             deviceIsTV = Tools.deviceIsTV(this);
-            canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= 26;
+            canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
             appPreferences = new AppPreferences(this);
             if (canRunChannel && isChannelIntent) SaveIntent(intent);

@@ -43,7 +43,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
             if (NotificationUtils.StartNotificationService(appPreferences))
                 Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, context);
 
-            if (Tools.deviceIsTV(context) && Build.VERSION.SDK_INT >= 26)
+            if (Tools.deviceIsTV(context) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 ChannelsUtils.scheduleSyncingChannel(context);
         }
     }

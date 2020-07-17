@@ -151,18 +151,16 @@ public class NotificationService extends Service {
 
     private void startService() {
         super.onCreate();
+
         appPreferences = new AppPreferences(context);
 
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        //tempUserId == null user not set
-        // !isRunning resume/stop scenario change the value
-        // During !isRunning user may change
-        if (isRunning || tempUserId == null) {
-            //After a refresh of user live feed js will call the service to refresh notifications
-            if (tempUserId != null) InitNotifications(0);
-            else StopService();
-
+        if (tempUserId == null || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
+            StopService();
+            return;
+        } else if (isRunning) {
+            InitNotifications(0);
             return;
         }
 
@@ -182,6 +180,7 @@ public class NotificationService extends Service {
     }
 
     private void InitNotifications(int timeout) {
+
         try {
             if (NotificationHandler != null) {
                 NotificationHandler.removeCallbacksAndMessages(null);
@@ -216,7 +215,7 @@ public class NotificationService extends Service {
         //If user changed don't Notify
         String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
-        if (tempUserId == null) {
+        if (tempUserId == null || !Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences)) {
 
             StopService();
             return true;

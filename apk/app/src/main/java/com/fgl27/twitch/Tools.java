@@ -480,7 +480,7 @@ public final class Tools {
                         MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
                         MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
 
-                        if (Build.VERSION.SDK_INT >= 23) instances = codecCapabilities.getMaxSupportedInstances();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) instances = codecCapabilities.getMaxSupportedInstances();
                         else instances = -1;
 
                         MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
@@ -686,7 +686,7 @@ public final class Tools {
     }
 
     public static boolean WR_storage(Context context) {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED;
         } else return true;
