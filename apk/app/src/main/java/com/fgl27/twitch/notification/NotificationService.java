@@ -69,6 +69,7 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startNotification();
+
         try {
             String action = intent.getAction();
 

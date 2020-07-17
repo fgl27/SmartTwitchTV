@@ -221,6 +221,7 @@ public class PlayerActivity extends Activity {
     public String IntentObj;
     public String LastIntent;
     public boolean canRunChannel;
+    public boolean closeThisCalled;
 
     public String[][] PreviewFeedHandlerResult = new String[25][100];
     public String[] DataResult = new String[PlayerAccount];
@@ -320,6 +321,7 @@ public class PlayerActivity extends Activity {
 
             runtime = Runtime.getRuntime();
             GetPing();
+            StopNotificationService();
         }
     }
 
@@ -1102,8 +1104,7 @@ public class PlayerActivity extends Activity {
             ShowNoNetworkResumeWarning(isChannelIntent);
         }
 
-        if (NotificationUtils.StartNotificationService(appPreferences))
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        StopNotificationService();
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onResume end");
@@ -1244,8 +1245,7 @@ public class PlayerActivity extends Activity {
 
         //Clear activity notification check and start background service if enable
         NotificationHandler.removeCallbacksAndMessages(null);
-        if (NotificationUtils.StartNotificationService(appPreferences))
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+        StartNotificationService();
 
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
@@ -1278,8 +1278,7 @@ public class PlayerActivity extends Activity {
 
         StopNotifications();
 
-        if (NotificationUtils.StartNotificationService(appPreferences))
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+        StartNotificationService();
 
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
@@ -1296,6 +1295,18 @@ public class PlayerActivity extends Activity {
         NotificationHandler.removeCallbacksAndMessages(null);
         ToastHandler.removeCallbacksAndMessages(null);
         appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+    }
+
+    public void StartNotificationService() {
+        //closeThisCalled... If the user force close the app using closeThis() the service can't run
+        if (appPreferences != null && !closeThisCalled && NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+    }
+
+    public void StopNotificationService() {
+        //closeThisCalled... If the user force close the app using closeThis() the service can't run
+        if (appPreferences != null && NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
     }
 
     private void InitNotifications(int timeout, Context context) {
@@ -1364,6 +1375,7 @@ public class PlayerActivity extends Activity {
 
     //Force close the app
     private void closeThis() {
+        closeThisCalled = true;
         StopNotifications();
         finishAndRemoveTask();
     }
