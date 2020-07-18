@@ -227,7 +227,7 @@ public class PlayerActivity extends Activity {
 
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
     public HandlerThread PreviewFeedHandlerThread;
-    public HandlerThread BackGroundThreadEtc;
+    public HandlerThread BackGroundThread;
 
     public Handler MainThreadHandler;
     public Handler[] CurrentPositionHandler = new Handler[2];
@@ -278,9 +278,9 @@ public class PlayerActivity extends Activity {
             }
 
             //BackGroundThreadEtc loop threads
-            BackGroundThreadEtc = new HandlerThread("BackGroundThread");
-            BackGroundThreadEtc.start();
-            Looper BackGroundThreadEtcLooper = BackGroundThreadEtc.getLooper();
+            BackGroundThread = new HandlerThread("BackGroundThread");
+            BackGroundThread.start();
+            Looper BackGroundThreadEtcLooper = BackGroundThread.getLooper();
 
             NotificationHandler = new Handler(BackGroundThreadEtcLooper);
             ToastHandler = new Handler(BackGroundThreadEtcLooper);
