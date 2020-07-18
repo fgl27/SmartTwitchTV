@@ -209,7 +209,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].row_id = 0;
     ScreenObj[key].currY = 0;
     ScreenObj[key].loadChannelOffsset = 0;
-    ScreenObj[key].followerChannels = '';
+    ScreenObj[key].followerChannels = [];
     ScreenObj[key].followerChannelsDone = false;
     ScreenObj[key].coloumn_id = 0;
     ScreenObj[key].data = null;
@@ -656,17 +656,17 @@ function Screens_loadDataSuccessFinish(key) {
                     Main_SwitchScreen(true);
                 }
 
-                Screens_loadDataSuccessFinishEnd();
+                Screens_loadDataSuccessFinishEnd(true);
 
             } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
                 //Main_Log('!Play_WasPlaying');
-
                 Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
                 Main_ExitCurrent(Main_values.Main_Go);
                 Main_values.Main_Go = Main_GoBefore;
                 Screens_RemoveAllFocus(key);
                 Main_SwitchScreen();
-                if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
+
+                if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd(true);
                 else {
                     Main_FirstRun = false;
                     Main_HideLoadDialog();
@@ -698,7 +698,7 @@ function Screens_loadDataSuccessFinish(key) {
         } else {
             Screens_addFocus(true, key);
             Main_SaveValues();
-            Main_HideLoadDialog();
+            if (Main_isScene1DocShown()) Main_HideLoadDialog();
         }
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
@@ -801,9 +801,9 @@ function Screens_handleKeyControls(key, event) {
     }
 }
 
-function Screens_loadDataSuccessFinishEnd() {
+function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_FirstRun = false;
-    Main_HideLoadDialog();
+    if (!SkipHidedialog) Main_HideLoadDialog();
     Main_ShowElement('topbar');
     Main_ShowElement('side_panel_new_holder');
     AddUser_UpdateSidepanelAfterShow();

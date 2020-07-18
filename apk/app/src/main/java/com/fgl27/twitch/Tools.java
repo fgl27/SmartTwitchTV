@@ -49,7 +49,7 @@ import androidx.core.content.ContextCompat;
 import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
-import com.fgl27.twitch.services.NotificationService;
+import com.fgl27.twitch.notification.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -480,7 +480,7 @@ public final class Tools {
                         MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
                         MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
 
-                        if (Build.VERSION.SDK_INT >= 23) instances = codecCapabilities.getMaxSupportedInstances();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) instances = codecCapabilities.getMaxSupportedInstances();
                         else instances = -1;
 
                         MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
@@ -686,7 +686,7 @@ public final class Tools {
     }
 
     public static boolean WR_storage(Context context) {
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED;
         } else return true;
@@ -976,5 +976,79 @@ public final class Tools {
         } else {
             return false;
         }
+    }
+
+    public static boolean refreshTokens(String refresh_token, AppPreferences appPreferences) {
+        if (refresh_token == null) {
+            eraseTokens(appPreferences);
+            return false;
+        }
+
+        try {
+            String urlString = String.format(
+                    Locale.US,
+                    "https://id.twitch.tv/oauth2/token?grant_type=refresh_token&client_id=5seja5ptej058mxqy7gh5tcudjqtm9&client_secret=elsu5d09k0xomu7cggx3qg5ybdwu7g&refresh_token=%s&redirect_uri=https://fgl27.github.io/SmartTwitchTV/release/index.min.html",
+                    refresh_token
+            );
+
+            JsonObject obj;
+            String ResponseText;
+            ResponseObj response;
+
+            for (int i = 0; i < 3; i++) {
+
+                response =
+                        Internal_MethodUrl(
+                                urlString,
+                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                                null,
+                                "POST",
+                                0,
+                                new String[0][2]
+                        );
+
+                if (response != null) {
+
+                    ResponseText = response.getResponseText();
+
+                    if (response.getStatus() == 200) {
+                        obj = parseString(ResponseText).getAsJsonObject();
+
+                        appPreferences.put(
+                                Constants.PREF_REFRESH_TOKEN,
+                                !obj.get("refresh_token").isJsonNull() ? obj.get("refresh_token").getAsString() : null
+                        );
+
+                        appPreferences.put(
+                                Constants.PREF_USER_TOKEN,
+                                !obj.get("access_token").isJsonNull() ? obj.get("access_token").getAsString() : null
+                        );
+
+                        appPreferences.put(
+                                Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
+                                !obj.get("expires_in").isJsonNull() ? (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) : 0
+                        );
+
+                        return true;
+                    } else if (ResponseText.contains("Invalid refresh token")){
+
+                        eraseTokens(appPreferences);
+
+                        return false;
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
+        return false;
+    }
+
+    public static void eraseTokens(AppPreferences appPreferences) {
+        appPreferences.put(Constants.PREF_REFRESH_TOKEN, null);
+        appPreferences.put(Constants.PREF_USER_TOKEN, null);
+        appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
     }
 }

@@ -57,7 +57,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.fgl27.twitch.channels.ChannelsUtils;
-import com.fgl27.twitch.channels.SyncChannelJobService;
+import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -76,8 +76,6 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -149,9 +147,6 @@ public class PlayerActivity extends Activity {
     public int mWho_Called = 1;
     public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
     public String userAgent;
-    public String[] DataResult = new String[PlayerAccount];
-    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
-    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
     public WebView mWebView;
     public WebView mWebViewKey;
     public boolean PicturePicture;
@@ -170,16 +165,6 @@ public class PlayerActivity extends Activity {
     public int AudioMulti = 0;//window 0
     public float PreviewOthersAudio = 0.3f;//window 0
     public float PreviewAudio = 1f;//window 0
-    public Handler MainThreadHandler;
-    public Handler[] CurrentPositionHandler = new Handler[2];
-    public Handler ExtraPlayerHandler;
-    public String[][] ExtraPlayerHandlerResult = new String[25][100];
-    public HandlerThread ExtraPlayerHandlerThread;
-    public HandlerThread SaveBackupJsonThread;
-    public Handler SaveBackupJsonHandler;
-    public HandlerThread RuntimeThread;
-    public Handler RuntimeHandler;
-    public Runtime runtime;
     public float PingValue = 0f;
     public float PingValueAVG = 0f;
     public long PingCounter = 0L;
@@ -235,6 +220,28 @@ public class PlayerActivity extends Activity {
     public String IntentObj;
     public String LastIntent;
     public boolean canRunChannel;
+    public boolean closeThisCalled;
+
+    public String[][] PreviewFeedHandlerResult = new String[25][100];
+    public String[] DataResult = new String[PlayerAccount];
+
+    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
+    public HandlerThread PreviewFeedHandlerThread;
+    public HandlerThread BackGroundThread;
+
+    public Handler MainThreadHandler;
+    public Handler[] CurrentPositionHandler = new Handler[2];
+    public Handler SaveBackupJsonHandler;
+    public Handler RuntimeHandler;
+    public Handler NotificationHandler;
+    public Handler ToastHandler;
+    public Handler ChannelHandler;
+    public Handler DeleteHandler;
+
+    public Handler PreviewFeedHandler;
+    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
+
+    public Runtime runtime;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -260,30 +267,41 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
-            MainThreadHandler = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler[0] = new Handler(Looper.getMainLooper());
-            CurrentPositionHandler[1] = new Handler(Looper.getMainLooper());
+            //Main loop threads
+            Looper MainLooper = Looper.getMainLooper();
+            MainThreadHandler = new Handler(MainLooper);
+            CurrentPositionHandler[0] = new Handler(MainLooper);
+            CurrentPositionHandler[1] = new Handler(MainLooper);
 
             for (int i = 0; i < PlayerAccountPlus; i++) {
-                PlayerCheckHandler[i] = new Handler(Looper.getMainLooper());
+                PlayerCheckHandler[i] = new Handler(MainLooper);
             }
 
-            ExtraPlayerHandlerThread = new HandlerThread("ExtraPlayerHandlerThread");
-            ExtraPlayerHandlerThread.start();
-            ExtraPlayerHandler = new Handler(ExtraPlayerHandlerThread.getLooper());
+            //BackGroundThreadEtc loop threads
+            BackGroundThread = new HandlerThread("BackGroundThread");
+            BackGroundThread.start();
+            Looper BackGroundThreadEtcLooper = BackGroundThread.getLooper();
 
-            SaveBackupJsonThread = new HandlerThread("SaveBackupJsonThread");
-            SaveBackupJsonThread.start();
-            SaveBackupJsonHandler = new Handler(SaveBackupJsonThread.getLooper());
+            NotificationHandler = new Handler(BackGroundThreadEtcLooper);
+            ToastHandler = new Handler(BackGroundThreadEtcLooper);
+            SaveBackupJsonHandler = new Handler(BackGroundThreadEtcLooper);
+            RuntimeHandler = new Handler(BackGroundThreadEtcLooper);
+            ChannelHandler = new Handler(BackGroundThreadEtcLooper);
+            DeleteHandler = new Handler(BackGroundThreadEtcLooper);
 
-            for (int i = 0; i < PlayerAccountPlus; i++) {
+            //Other loop threads
+            PreviewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
+            PreviewFeedHandlerThread.start();
+            PreviewFeedHandler = new Handler(PreviewFeedHandlerThread.getLooper());
+
+            for (int i = 0; i < PlayerAccount; i++) {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
 
             deviceIsTV = Tools.deviceIsTV(this);
-            canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= 26;
+            canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
 
             appPreferences = new AppPreferences(this);
             if (canRunChannel && isChannelIntent) SaveIntent(intent);
@@ -300,11 +318,9 @@ public class PlayerActivity extends Activity {
 
             initializeWebview();
 
-            RuntimeThread = new HandlerThread("RuntimeThread");
-            RuntimeThread.start();
-            RuntimeHandler = new Handler(RuntimeThread.getLooper());
             runtime = Runtime.getRuntime();
             GetPing();
+            StopNotificationService();
         }
     }
 
@@ -599,7 +615,7 @@ public class PlayerActivity extends Activity {
     }
 
     //Stop the player called from js, clear it all
-    private void PreResetPlayer(int position) {
+    private void ResetPlayerState(int position) {
         if (mainPlayer == 1) SwitchPlayer();
 
         PicturePicture = false;
@@ -1087,6 +1103,8 @@ public class PlayerActivity extends Activity {
             ShowNoNetworkResumeWarning(isChannelIntent);
         }
 
+        StopNotificationService();
+
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onResume end");
         }
@@ -1109,37 +1127,37 @@ public class PlayerActivity extends Activity {
 
         } else {
 
-            CheckRefresh(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false);
+            RefreshChannel(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false, this);
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
 
         }
 
     }
 
-    public void CheckRefresh(int Type, boolean skipToast) {
+    public void RefreshChannel(int Type, boolean skipToast, Context context) {
         if (!canRunChannel) return;
 
-        Context context = this;
-        DataResultHandler[4].post(() -> {
+        ChannelHandler.post(() -> {
 
             switch (Type) {
                 case Constants.CHANNEL_TYPE_LIVE:
-                    SyncChannelJobService.StartLive(context);
+                    ChannelsUtils.StartLive(context);
                     break;
                 case Constants.CHANNEL_TYPE_USER_LIVE:
-                    SyncChannelJobService.SetUserLive(
+                    ChannelsUtils.SetUserLive(
                             context,
-                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                            appPreferences
                     );
                     break;
                 case Constants.CHANNEL_TYPE_FEATURED:
-                    SyncChannelJobService.StartFeatured(context);
+                    ChannelsUtils.StartFeatured(context);
                     break;
                 case Constants.CHANNEL_TYPE_GAMES:
-                    SyncChannelJobService.StartGames(context);
+                    ChannelsUtils.StartGames(context);
                     break;
                 case Constants.CHANNEL_TYPE_USER_GAMES:
-                    SyncChannelJobService.StartUserGames(
+                    ChannelsUtils.StartUserGames(
                             context,
                             Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
                     );
@@ -1148,12 +1166,12 @@ public class PlayerActivity extends Activity {
                     break;
             }
 
-            if (!skipToast) CheckRefreshToast(Type, context);
+            if (!skipToast) RefreshChannelToast(Type, context);
         });
 
     }
 
-    public void CheckRefreshToast(int Type, Context context) {
+    public void RefreshChannelToast(int Type, Context context) {
         if (!canRunChannel) return;
 
         Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
@@ -1194,7 +1212,7 @@ public class PlayerActivity extends Activity {
             mWebView.clearCache(true);
             mWebView.clearHistory();
 
-            DataResultHandler[4].post(() -> Tools.deleteCache(this));
+            DeleteHandler.post(() -> Tools.deleteCache(this));
         }
     }
 
@@ -1223,6 +1241,11 @@ public class PlayerActivity extends Activity {
         if (mWebView != null && AlreadyStarted) {
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckStop()");
         }
+
+        //Clear activity notification check and start background service if enable
+        NotificationHandler.removeCallbacksAndMessages(null);
+        StartNotificationService();
+
         //ClearPlayer will reset audio position
         AudioMulti = temp_AudioMulti;
 
@@ -1250,11 +1273,11 @@ public class PlayerActivity extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!Tools.getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) ||
-                Tools.getString(Constants.PREF_USER_ID, null, appPreferences) == null) {
+        if (!AlreadyStarted) return;
 
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
-        }
+        StopNotifications();
+
+        StartNotificationService();
 
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
@@ -1265,6 +1288,66 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onDestroy");
         }
+    }
+
+    public void StopNotifications() {
+        NotificationHandler.removeCallbacksAndMessages(null);
+        ToastHandler.removeCallbacksAndMessages(null);
+        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+    }
+
+    public void StartNotificationService() {
+        //closeThisCalled... If the user force close the app using closeThis() the service can't run
+        if (appPreferences != null && !closeThisCalled && NotificationUtils.StartNotificationService(appPreferences))
+            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, this);
+    }
+
+    public void StopNotificationService() {
+        long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+
+        if (appPreferences != null && NotificationUtils.StartNotificationService(appPreferences)) {
+            ChannelHandler.postDelayed(() -> Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this), delay > 0 ? delay : 0);
+        }
+
+    }
+
+    private void InitNotifications(int timeout, Context context) {
+        try {
+
+            NotificationHandler.removeCallbacksAndMessages(null);
+
+            long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+            if (delay > 0) delay = delay - System.currentTimeMillis();
+
+            NotificationHandler.postDelayed(() -> {
+
+                if (!IsStopped)  {
+                    RunNotifications(context);
+                    InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL, context);//it 3 min refresh
+                }
+
+            }, timeout + (delay > 0 ? delay : 0));
+
+        } catch (Exception e) {
+            Log.w(TAG, "InitNotifications e " + e.getMessage());
+        }
+    }
+
+    private void RunNotifications(Context context) {
+        if (!Tools.isConnected(context)) return;
+
+        String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+
+        if (UserId != null) {
+
+            NotificationUtils.CheckNotifications(
+                    UserId,
+                    appPreferences,
+                    ToastHandler,
+                    context
+            );
+
+        } else NotificationHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -1294,7 +1377,8 @@ public class PlayerActivity extends Activity {
 
     //Force close the app
     private void closeThis() {
-        Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        closeThisCalled = true;
+        StopNotifications();
         finishAndRemoveTask();
     }
 
@@ -1522,17 +1606,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefreshToast(int type) {
-
-            CheckRefreshToast(type, mWebViewContext);
-
+            RefreshChannelToast(type, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefresh(int type) {
-
-            CheckRefresh(type, true);
-
+            RefreshChannel(type, true, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1705,19 +1785,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void RunNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_START, mWebViewContext);
-        }
-
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void CheckNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_CHECK, mWebViewContext);
+            InitNotifications(0, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StopNotificationService() {
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, mWebViewContext);
+            StopNotifications();
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1728,19 +1802,63 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void upNotificationId(String id, String name) {
+        public void UpdateUserId(String id, String name, String refresh_token) {
+
+            String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+            String temp_refresh_token = Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
-            try {
-                appPreferences.put(Constants.PREF_USER_NAME, name != null ? URLEncoder.encode(name, "UTF-8") : null);
-            } catch (UnsupportedEncodingException ignored) {}
+            appPreferences.put(Constants.PREF_USER_NAME, name);
+            appPreferences.put(Constants.PREF_REFRESH_TOKEN, refresh_token);
 
+            if (id == null) {
+
+                appPreferences.put(Constants.PREF_USER_TOKEN, null);
+                appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
+                StopNotifications();
+
+                ChannelHandler.post(() -> ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences));
+
+            } else if (!Objects.equals(tempUserId, id)) {
+                //User has changed stop notifications and reset list
+                ToastHandler.removeCallbacksAndMessages(null);
+                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
+                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
+
+                ChannelHandler.post(() -> {
+
+                    if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
+                    else Tools.eraseTokens(appPreferences);
+
+                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+
+                });
+            } else if (refresh_token != null) {
+
+                if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) == null || !Objects.equals(temp_refresh_token, refresh_token)) {
+
+                    ChannelHandler.post(() -> Tools.refreshTokens(refresh_token, appPreferences));
+
+                }
+
+            } else {
+
+                Tools.eraseTokens(appPreferences);
+
+            }
+        }
+
+        //TODO remove this after some app updates
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void upNotificationId(String id, String name) {
+            UpdateUserId(id, name, null);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upDateLang(String lang) {
-            appPreferences.put(Constants.CHANNEL_LANGUAGE, lang);
+            appPreferences.put(Constants.PREF_USER_LANGUAGE, lang);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1859,24 +1977,24 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
-            return ExtraPlayerHandlerResult[x][y];
+            return PreviewFeedHandlerResult[x][y];
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
-            ExtraPlayerHandlerResult[x][y] = null;
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandlerResult[x][y] = null;
 
-            ExtraPlayerHandler.postDelayed(() -> {
+            PreviewFeedHandler.postDelayed(() -> {
 
                 try {
-                    ExtraPlayerHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+                    PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
                 } catch (Exception e) {
                     Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
                 }
 
-                if (ExtraPlayerHandlerResult[x][y] != null)
+                if (PreviewFeedHandlerResult[x][y] != null)
                     LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
             }, 50 + Delay_ms);
         }
@@ -1946,7 +2064,7 @@ public class PlayerActivity extends Activity {
 
                             response = Tools.MethodUrlHeaders(
                                     urlString,
-                                    (timeout + (i * 2500)),
+                                    (timeout + (i * Constants.DEFAULT_HTTP_EXTRA_TIMEOUT)),
                                     postMessage,
                                     Method,
                                     checkResult,
@@ -1977,7 +2095,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
@@ -2098,7 +2216,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer(boolean CleanPlayer) {
-            ExtraPlayerHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
             if (CleanPlayer) {
 
                 MainThreadHandler.post(() -> {
@@ -2127,7 +2245,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo() {
-            MainThreadHandler.post(() -> PreResetPlayer(mainPlayer));
+            MainThreadHandler.post(() -> ResetPlayerState(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS

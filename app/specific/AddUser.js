@@ -204,14 +204,7 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
-        if (Main_IsOn_OSInterface) {
-
-            OSInterface_upNotificationId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
-
-        }
+        OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
         AddUser_UpdateSidepanel();
 
@@ -251,14 +244,17 @@ function AddUser_UpdateSidepanelAfterShow() {
 }
 
 function AddUser_UpdateSidepanelSize(logo, username) {
+    //remove transition to change size
+    Sidepannel_MovelDiv.style.transition = 'none';
+
     Main_innerHTML("side_panel_new_0_img",
         '<img class="side_panel_new_img" alt="" src="' +
         logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
     Sidepannel_SetUserlable(username);
 
-    var size = username.lengthdoc = document.getElementById('side_panel_movel');
+    var size = username.length;
 
-    size = (size > 11 ? size - 11 : 0);
+    size = (size > 9 ? size - 9 : 0);
 
     Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
 
@@ -270,6 +266,11 @@ function AddUser_UpdateSidepanelSize(logo, username) {
         newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
     }
+
+    Main_ready(function() {
+        if (Settings_Obj_default("app_animations")) Sidepannel_MovelDiv.style.transition = '';
+    });
+
 }
 
 function AddUser_UserIsSet() {
@@ -342,11 +343,9 @@ function AddUser_SaveNewUser(responseText) {
     Main_HideLoadDialog();
     if (AddUser_UsernameArray.length === 1) {
         AddUser_UpdateSidepanel();
-        OSInterface_upNotificationId(
-            AddUser_UsernameArray[0].id,
-            AddUser_UsernameArray[0].name
-        );
+        OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         OSInterface_mCheckRefresh();
+        if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
     }
     Main_SwitchScreen();
     AddUser_loadingData = false;
@@ -369,13 +368,8 @@ function AddUser_removeUser(position) {
         if (!position) {
             AddUser_UpdateSidepanel();
 
-            OSInterface_upNotificationId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
+            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
-            if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-            OSInterface_mCheckRefresh();
         }
         Users_status = false;
         Users_init();
@@ -383,11 +377,7 @@ function AddUser_removeUser(position) {
         AddUser_UpdateSidepanelDefault();
         AddUser_init();
 
-        if (Main_IsOn_OSInterface) {
-            OSInterface_upNotificationId(null, null);
-            OSInterface_StopNotificationService();
-            OSInterface_mCheckRefresh();
-        }
+        OSInterface_UpdateUserId(null);
     }
 }
 
@@ -423,16 +413,7 @@ function AddUser_UserMakeOne(position) {
     AddUser_UpdateSidepanel();
     Users_init();
 
-    if (Main_IsOn_OSInterface) {
-
-        OSInterface_upNotificationId(
-            AddUser_UsernameArray[0].id,
-            AddUser_UsernameArray[0].name
-        );
-
-        if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-        OSInterface_mCheckRefresh();
-    }
+    OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
     //Reset user emotes on chage
     userEmote = {};

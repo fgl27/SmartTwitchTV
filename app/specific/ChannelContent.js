@@ -55,7 +55,7 @@ function ChannelContent_init() {
     Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
 
     if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
-        Main_values.Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
+        Sidepannel_Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
         Sidepannel_SetUserLables();
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
     }

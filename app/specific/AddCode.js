@@ -103,9 +103,9 @@ function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncN
     } else {
 
         try {
-            var response = JSON.parse(xmlHttp.responseText);
-            if (response.message) {
-                if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
+            var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
+            if (response) {
+                if (Main_A_includes_B(response, 'Invalid refresh token')) {
 
                     AddCode_requestTokensFailRunning(position);
                     if (callbackFuncNOK) callbackFuncNOK(key);

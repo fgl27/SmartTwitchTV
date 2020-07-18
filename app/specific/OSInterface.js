@@ -54,16 +54,6 @@ function OSInterface_RunNotificationService() {
     if (Main_IsOn_OSInterface) Android.RunNotificationService();
 }
 
-//public void CheckNotificationService()
-//Android specific: true
-//Allows to reset current running notifications
-function OSInterface_CheckNotificationService() {
-    //TODO remove the try after some apps updates
-    try {
-        if (Main_IsOn_OSInterface) Android.CheckNotificationService();
-    } catch (e) {}
-}
-
 //public void upNotificationState(boolean Notify)
 //Notify  background notification are enable
 //Android specific: true
@@ -346,14 +336,30 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
-//public void upNotificationId(String id, String name)
+//public void UpdateUserId(String id, String name, String refresh_token)
 //id =  the user id
+//name =  the user name
 //Android specific: true
 //Sets the user id used by the notification services
-function OSInterface_upNotificationId(id, name) {
+function OSInterface_UpdateUserId(user) {
     try {
-        if (Main_IsOn_OSInterface) Android.upNotificationId(id, name);
-    } catch (e) {}
+        if (Main_IsOn_OSInterface)
+            if (user) {
+                Android.UpdateUserId(
+                    user.id,
+                    user.name ? encodeURIComponent(user.name) : user.name,
+                    user.refresh_token ? user.refresh_token : null
+                );
+            } else {
+                Android.UpdateUserId(
+                    null,
+                    null,
+                    null
+                );
+            }
+    } catch (e) {
+        console.log('OSInterface_UpdateUserId e' + e);
+    }
 }
 
 //public void BackupFile(String file, String file_content)
