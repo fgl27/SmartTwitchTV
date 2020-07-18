@@ -114,7 +114,7 @@ public final class NotificationUtils {
 
         if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) != null) {
 
-            if (System.currentTimeMillis() < Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences)||
+            if (System.currentTimeMillis() < Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
                     Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
 
                 return GetLiveStreamsListToken(UserId, appPreferences);

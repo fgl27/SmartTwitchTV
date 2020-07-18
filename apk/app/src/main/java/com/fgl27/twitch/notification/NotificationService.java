@@ -191,7 +191,7 @@ public class NotificationService extends Service {
                 NotificationHandler.postDelayed(() -> {
                     if (screenOn && isRunning) {
                         RunNotifications();
-                        InitNotifications(1000 * 60 * 3);//it 3 min refresh
+                        InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL);//it 3 min refresh
                     }
                 }, timeout + (delay > 0 ? delay : 0));
             }

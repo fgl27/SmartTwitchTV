@@ -58,6 +58,7 @@ public interface Constants {
     int CHANNEL_TYPE_GAMES = 4;
     int CHANNEL_TYPE_USER_GAMES = 5;
 
+    int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
     int DEFAULT_HTTP_TIMEOUT = 30000;
     int DEFAULT_HTTP_EXTRA_TIMEOUT = 3000;
 
