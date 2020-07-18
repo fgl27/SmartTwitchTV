@@ -1816,8 +1816,8 @@ public class PlayerActivity extends Activity {
                 appPreferences.put(Constants.PREF_USER_TOKEN, null);
                 appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
                 StopNotifications();
-                RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true, mWebViewContext);
-                RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true, mWebViewContext);
+
+                ChannelHandler.post(() -> ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences));
 
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
@@ -1830,8 +1830,7 @@ public class PlayerActivity extends Activity {
                     if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
                     else Tools.eraseTokens(appPreferences);
 
-                    RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true, mWebViewContext);
-                    RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true, mWebViewContext);
+                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
 
                 });
             } else if (refresh_token != null) {

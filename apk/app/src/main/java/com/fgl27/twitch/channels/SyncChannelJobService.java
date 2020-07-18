@@ -27,9 +27,6 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
-import com.fgl27.twitch.Constants;
-import com.fgl27.twitch.Tools;
-
 import net.grandcentrix.tray.AppPreferences;
 
 public class SyncChannelJobService extends JobService {
@@ -60,15 +57,7 @@ public class SyncChannelJobService extends JobService {
                 ChannelsUtils.StartLive(context);
                 ChannelsUtils.StartFeatured(context);
                 ChannelsUtils.StartGames(context);
-                ChannelsUtils.SetUserLive(
-                        context,
-                        Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
-                        appPreferences
-                );
-                ChannelsUtils.StartUserGames(
-                        context,
-                        Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                );
+                ChannelsUtils.UpdateUserChannels(context, appPreferences);
 
             } catch (Exception e) {
                 Log.w(TAG, "updateChannels e " + e.getMessage());

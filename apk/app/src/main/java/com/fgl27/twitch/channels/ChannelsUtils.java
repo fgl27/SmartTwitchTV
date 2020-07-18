@@ -427,6 +427,18 @@ public final class ChannelsUtils {
         return decimalFormat;
     }
 
+    public static void UpdateUserChannels(Context context, AppPreferences appPreferences) {
+        ChannelsUtils.SetUserLive(
+                context,
+                Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                appPreferences
+        );
+        ChannelsUtils.StartUserGames(
+                context,
+                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+        );
+    }
+
     public static void StartLive(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
         String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
