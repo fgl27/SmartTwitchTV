@@ -336,19 +336,30 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
-//public void UpdateUserId(String id, String name)
+//public void UpdateUserId(String id, String name, String refresh_token)
 //id =  the user id
 //name =  the user name
 //Android specific: true
 //Sets the user id used by the notification services
-function OSInterface_UpdateUserId(id, name) {
+function OSInterface_UpdateUserId(user) {
     try {
         if (Main_IsOn_OSInterface)
-            Android.UpdateUserId(
-                id,
-                name ? encodeURIComponent(name) : name
-            );
-    } catch (e) {}
+            if (user) {
+                Android.UpdateUserId(
+                    user.id,
+                    user.name ? encodeURIComponent(user.name) : user.name,
+                    user.refresh_token ? user.refresh_token : null
+                );
+            } else {
+                Android.UpdateUserId(
+                    null,
+                    null,
+                    null
+                );
+            }
+    } catch (e) {
+        console.log('OSInterface_UpdateUserId e' + e);
+    }
 }
 
 //public void BackupFile(String file, String file_content)

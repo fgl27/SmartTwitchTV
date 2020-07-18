@@ -447,11 +447,11 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void SetUserLive(Context context, String userId) {
+    public static void SetUserLive(Context context, String userId, AppPreferences appPreferences) {
 
         if (userId != null ) {
 
-            JsonArray Streams = NotificationUtils.GetLiveStreamsList(userId);
+            JsonArray Streams = NotificationUtils.GetLiveStreamsList(userId, appPreferences);
 
             if (Streams == null) StartUserLive(context, null);
             else {

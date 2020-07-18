@@ -110,10 +110,137 @@ public final class NotificationUtils {
         }
     }
 
+    public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
+        String token = Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences);
+
+        if (token != null && (System.currentTimeMillis() > Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
+                Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences))) {
+
+            return GetLiveStreamsListToken(token, UserId, appPreferences);
+
+        } else {
+
+            return GetLiveStreamsListNoToken(UserId);
+
+
+        }
+
+    }
+
+    public static JsonArray GetLiveStreamsListToken(String token, String UserId, AppPreferences appPreferences) {
+        JsonArray StreamsResult = new JsonArray();
+
+        try {
+            ArrayList<String> TempArray = new ArrayList<>();
+            JsonArray TempStreams;
+            Tools.ResponseObj response;
+            JsonObject obj;
+            JsonObject objChannel;
+
+            int Offset = 0;
+            int StreamsSize;
+            int AddedToArray;
+            int status;
+
+            String id;
+            String url;
+            String[][] DEFAULT_HEADERS = {
+                    {Tools.DEFAULT_HEADERS[0][0], Tools.DEFAULT_HEADERS[0][1]},
+                    {Tools.DEFAULT_HEADERS[1][0], Tools.DEFAULT_HEADERS[1][1]},
+                    {"Authorization", "OAuth " + token}
+            };
+
+            do {//Get all user fallowed live channels
+
+                url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/kraken/streams/followed?limit=100&offset=%d&stream_type=all&api_version=5",
+                        Offset
+                );
+
+                StreamsSize = 0;
+                AddedToArray = 0;
+
+                for (int i = 0; i < 3; i++) {
+
+                    response = Tools.Internal_MethodUrl(
+                            url,
+                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            null,
+                            null,
+                            0,
+                            DEFAULT_HEADERS
+                    );
+
+                    if (response != null) {
+                        status = response.getStatus();
+
+                        if (status == 200) {
+
+                            obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                            if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+
+                                TempStreams = obj.get("streams").getAsJsonArray();//Get the follows array
+                                StreamsSize = TempStreams.size();
+
+                                if (StreamsSize > 0) {
+
+                                    Offset += StreamsSize;
+
+                                } else {
+
+                                    break;
+
+                                }
+
+                                for (int j = 0; j < StreamsSize; j++) {
+
+                                    obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
+
+                                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+
+                                        objChannel = obj.get("channel").getAsJsonObject();
+                                        id = objChannel.get("_id").getAsString();//Broadcast id
+
+                                        if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
+                                            TempArray.add(id);
+                                            AddedToArray++;
+                                            StreamsResult.add(obj);
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        } else if (status == 401 || status == 403) {
+
+                            if (Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
+                                return GetLiveStreamsListToken(Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences), UserId, appPreferences);
+                            } else {
+                                return GetLiveStreamsListNoToken(UserId);
+                            }
+
+                        }
+
+                    }
+                }
+
+            } while (StreamsSize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
+
+        } catch (Exception e) {
+            Log.w(TAG, "GetLiveStreamsListToken e " + e.getMessage());
+        }
+
+        return StreamsResult.size() > 0 ? StreamsResult : null;
+    }
+
     //There is a faster way to do this??? yes but that is needed the user authorization key
     //So this function runs witout it is slower even more as the user follows more channels but works
     //The service that run this functions aren't time dependent so no problem
-    public static JsonArray GetLiveStreamsList(String UserId) {
+    public static JsonArray GetLiveStreamsListNoToken(String UserId) {
         JsonArray StreamsResult = new JsonArray();
 
         try {
@@ -197,7 +324,7 @@ public final class NotificationUtils {
             }
 
         } catch(Exception e){
-            Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
+            Log.w(TAG, "GetLiveStreamsListNoToken e " + e.getMessage());
         }
 
         return StreamsResult.size() > 0 ? StreamsResult : null;
@@ -487,9 +614,11 @@ public final class NotificationUtils {
         toast.show();
     }
 
+
     public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
         try {
-            JsonArray streams = GetLiveStreamsList(UserId);
+
+            JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
 
             if (streams != null) {
 

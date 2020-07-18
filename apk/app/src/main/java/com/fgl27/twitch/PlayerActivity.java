@@ -1147,7 +1147,8 @@ public class PlayerActivity extends Activity {
                 case Constants.CHANNEL_TYPE_USER_LIVE:
                     ChannelsUtils.SetUserLive(
                             context,
-                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                            appPreferences
                     );
                     break;
                 case Constants.CHANNEL_TYPE_FEATURED:
@@ -1799,27 +1800,42 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void UpdateUserId(String id, String name) {
+        public void UpdateUserId(String id, String name, String refresh_token) {
+
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+            String temp_refresh_token = Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
             appPreferences.put(Constants.PREF_USER_NAME, name);
+            appPreferences.put(Constants.PREF_REFRESH_TOKEN, refresh_token);
 
             if (id == null) {
 
+                appPreferences.put(Constants.PREF_USER_TOKEN, null);
+                appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
                 StopNotifications();
                 CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
                 CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
 
             } else if (!Objects.equals(tempUserId, id)) {
-
                 //User has changed stop notifications and reset list
                 ToastHandler.removeCallbacksAndMessages(null);
                 appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
                 appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
 
-                CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
-                CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+                ChannelHandler.post(() -> {
+
+                    if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
+
+                    CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
+                    CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+
+                });
+            } else if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
+                    !Objects.equals(temp_refresh_token, refresh_token) || (refresh_token != null)) {
+
+                ChannelHandler.post(() -> Tools.refreshTokens(refresh_token, appPreferences));
+
             }
         }
 
@@ -1827,7 +1843,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationId(String id, String name) {
-            UpdateUserId(id, name);
+            UpdateUserId(id, name, null);
         }
 
         @SuppressWarnings("unused")//called by JS

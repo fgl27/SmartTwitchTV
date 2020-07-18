@@ -204,10 +204,7 @@ function AddUser_RestoreUsers() {
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {
 
-        OSInterface_UpdateUserId(
-            AddUser_UsernameArray[0].id,
-            AddUser_UsernameArray[0].name
-        );
+        OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
         AddUser_UpdateSidepanel();
 
@@ -346,10 +343,7 @@ function AddUser_SaveNewUser(responseText) {
     Main_HideLoadDialog();
     if (AddUser_UsernameArray.length === 1) {
         AddUser_UpdateSidepanel();
-        OSInterface_UpdateUserId(
-            AddUser_UsernameArray[0].id,
-            AddUser_UsernameArray[0].name
-        );
+        OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         OSInterface_mCheckRefresh();
         if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
     }
@@ -374,10 +368,7 @@ function AddUser_removeUser(position) {
         if (!position) {
             AddUser_UpdateSidepanel();
 
-            OSInterface_UpdateUserId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
+            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
         }
         Users_status = false;
@@ -386,7 +377,7 @@ function AddUser_removeUser(position) {
         AddUser_UpdateSidepanelDefault();
         AddUser_init();
 
-        OSInterface_UpdateUserId(null, null);
+        OSInterface_UpdateUserId(null);
     }
 }
 
@@ -422,10 +413,7 @@ function AddUser_UserMakeOne(position) {
     AddUser_UpdateSidepanel();
     Users_init();
 
-    OSInterface_UpdateUserId(
-        AddUser_UsernameArray[0].id,
-        AddUser_UsernameArray[0].name
-    );
+    OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
     //Reset user emotes on chage
     userEmote = {};

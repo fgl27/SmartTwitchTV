@@ -62,7 +62,8 @@ public class SyncChannelJobService extends JobService {
                 ChannelsUtils.StartGames(context);
                 ChannelsUtils.SetUserLive(
                         context,
-                        Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
+                        Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                        appPreferences
                 );
                 ChannelsUtils.StartUserGames(
                         context,
