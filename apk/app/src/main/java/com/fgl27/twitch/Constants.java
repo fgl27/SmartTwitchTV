@@ -29,10 +29,12 @@ public interface Constants {
     String PREF_NOTIFICATION_WILL_END = "notification_end_time";
     String PREF_USER_ID = "user_id";
     String PREF_USER_NAME = "user_name";
-    String PREF_REFRESH_TOKEN = "refresh_token";
+    String PREF_USER_LANGUAGE = "user_lang";
+
+    String PREF_USER_REFRESH_TOKEN = "refresh_token";
     String PREF_USER_TOKEN = "user_token";
     String PREF_USER_TOKEN_EXPIRES_WHEN = "toke_expires_when";
-    String PREF_USER_LANGUAGE = "user_lang";
+
 
     String ACTION_SCREEN_ON = "action_screenOn";
     String ACTION_SCREEN_OFF = "action_screenOff";

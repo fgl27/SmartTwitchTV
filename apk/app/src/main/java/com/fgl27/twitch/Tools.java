@@ -978,9 +978,70 @@ public final class Tools {
         }
     }
 
-    public static boolean refreshTokens(String refresh_token, AppPreferences appPreferences) {
+    public static void checkTokens(String UserId, AppPreferences appPreferences) {
+        String token = Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences);
+
+        try {
+            String urlString = "https://id.twitch.tv/oauth2/validate";
+
+            String[][] HEADERS = {
+                    {"Authorization", "OAuth " + token}
+            };
+
+            JsonObject obj;
+            int status;
+            ResponseObj response;
+
+            for (int i = 0; i < 3; i++) {
+
+                response =
+                        Internal_MethodUrl(
+                                urlString,
+                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                                null,
+                                null,
+                                0,
+                                HEADERS
+                        );
+
+                if (response != null) {
+
+                    status = response.getStatus();
+
+                    if (status == 200) {
+                        obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                        if (obj.get("expires_in").isJsonNull()) {
+
+                            appPreferences.put(
+                                    UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
+                                    (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
+                            );
+
+                        }
+                        break;
+                    } else if (status == 401 || status == 403) {
+
+                        Tools.refreshTokens(
+                                UserId,
+                                appPreferences
+                        );
+                        break;
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "updateChannels e " + e.getMessage());
+        }
+    }
+
+    public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
+        String refresh_token = Tools.getString(UserId + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
+
         if (refresh_token == null) {
-            eraseTokens(appPreferences);
+            eraseTokens(UserId, appPreferences);
             return false;
         }
 
@@ -1015,24 +1076,24 @@ public final class Tools {
                         obj = parseString(ResponseText).getAsJsonObject();
 
                         appPreferences.put(
-                                Constants.PREF_REFRESH_TOKEN,
+                                UserId + Constants.PREF_USER_REFRESH_TOKEN,
                                 !obj.get("refresh_token").isJsonNull() ? obj.get("refresh_token").getAsString() : null
                         );
 
                         appPreferences.put(
-                                Constants.PREF_USER_TOKEN,
+                                UserId + Constants.PREF_USER_TOKEN,
                                 !obj.get("access_token").isJsonNull() ? obj.get("access_token").getAsString() : null
                         );
 
                         appPreferences.put(
-                                Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
+                                UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
                                 !obj.get("expires_in").isJsonNull() ? (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) : 0
                         );
 
                         return true;
                     } else if (ResponseText.contains("Invalid refresh token")){
 
-                        eraseTokens(appPreferences);
+                        eraseTokens(UserId, appPreferences);
 
                         return false;
                     }
@@ -1043,12 +1104,13 @@ public final class Tools {
         } catch (Exception e) {
             Log.w(TAG, "updateChannels e " + e.getMessage());
         }
+
         return false;
     }
 
-    public static void eraseTokens(AppPreferences appPreferences) {
-        appPreferences.put(Constants.PREF_REFRESH_TOKEN, null);
-        appPreferences.put(Constants.PREF_USER_TOKEN, null);
-        appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
+    public static void eraseTokens(String UserId, AppPreferences appPreferences) {
+        appPreferences.put(UserId + Constants.PREF_USER_REFRESH_TOKEN, null);
+        appPreferences.put(UserId + Constants.PREF_USER_TOKEN, null);
+        appPreferences.put(UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
     }
 }

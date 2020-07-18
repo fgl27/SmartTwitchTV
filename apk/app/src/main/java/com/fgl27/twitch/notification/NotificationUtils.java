@@ -112,10 +112,10 @@ public final class NotificationUtils {
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
 
-        if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) != null) {
+        if (Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences) != null) {
 
-            if (System.currentTimeMillis() < Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
-                    Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
+            if (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
+                    Tools.refreshTokens(UserId, appPreferences)) {
 
                 return GetLiveStreamsListToken(UserId, appPreferences);
 
@@ -156,7 +156,7 @@ public final class NotificationUtils {
             String[][] DEFAULT_HEADERS = {
                     {Tools.DEFAULT_HEADERS[0][0], Tools.DEFAULT_HEADERS[0][1]},
                     {Tools.DEFAULT_HEADERS[1][0], Tools.DEFAULT_HEADERS[1][1]},
-                    {"Authorization", "OAuth " + Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences)}
+                    {"Authorization", "OAuth " + Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences)}
             };
 
             do {//Get all user fallowed live channels
@@ -226,7 +226,7 @@ public final class NotificationUtils {
                             break;
                         } else if (status == 401 || status == 403) {
 
-                            if (Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
+                            if (Tools.refreshTokens(UserId, appPreferences)) {
 
                                 return GetLiveStreamsListToken(UserId, appPreferences);
 
@@ -246,6 +246,10 @@ public final class NotificationUtils {
         } catch (Exception e) {
             Log.w(TAG, "GetLiveStreamsListToken e " + e.getMessage());
         }
+
+//        if (BuildConfig.DEBUG) {
+//            Log.i(TAG, "GetLiveStreamsListToken size " + StreamsResult.size());
+//        }
 
         return StreamsResult.size() > 0 ? StreamsResult : null;
     }
@@ -343,6 +347,10 @@ public final class NotificationUtils {
         } catch(Exception e){
             Log.w(TAG, "GetLiveStreamsListNoToken e " + e.getMessage());
         }
+
+//        if (BuildConfig.DEBUG) {
+//            Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
+//        }
 
         return StreamsResult.size() > 0 ? StreamsResult : null;
     }

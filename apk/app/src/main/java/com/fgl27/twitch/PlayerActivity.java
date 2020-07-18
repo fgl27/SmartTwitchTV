@@ -1805,16 +1805,14 @@ public class PlayerActivity extends Activity {
         public void UpdateUserId(String id, String name, String refresh_token) {
 
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
-            String temp_refresh_token = Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences);
+            String temp_refresh_token = Tools.getString(id + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
             appPreferences.put(Constants.PREF_USER_NAME, name);
-            appPreferences.put(Constants.PREF_REFRESH_TOKEN, refresh_token);
+            if (id != null) appPreferences.put(id + Constants.PREF_USER_REFRESH_TOKEN, refresh_token);
 
             if (id == null) {
 
-                appPreferences.put(Constants.PREF_USER_TOKEN, null);
-                appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
                 StopNotifications();
 
                 ChannelHandler.post(() -> ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences));
@@ -1827,23 +1825,42 @@ public class PlayerActivity extends Activity {
 
                 ChannelHandler.post(() -> {
 
-                    if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
-                    else Tools.eraseTokens(appPreferences);
+                    if (refresh_token != null) {
+
+                        if (temp_refresh_token == null ||
+                                Tools.getString(id + Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
+                                !Objects.equals(temp_refresh_token, refresh_token)) {
+
+                            Tools.refreshTokens(id, appPreferences);
+
+                        } else {
+
+                            Tools.checkTokens(id, appPreferences);
+
+                        }
+
+                    } else Tools.eraseTokens(id, appPreferences);
 
                     ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
 
                 });
             } else if (refresh_token != null) {
 
-                if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) == null || !Objects.equals(temp_refresh_token, refresh_token)) {
+                if (temp_refresh_token == null ||
+                        Tools.getString(id + Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
+                        !Objects.equals(temp_refresh_token, refresh_token)) {
 
-                    ChannelHandler.post(() -> Tools.refreshTokens(refresh_token, appPreferences));
+                    ChannelHandler.post(() -> Tools.refreshTokens(id, appPreferences));
+
+                } else {
+
+                    ChannelHandler.post(() -> Tools.checkTokens(id, appPreferences));
 
                 }
 
             } else {
 
-                Tools.eraseTokens(appPreferences);
+                Tools.eraseTokens(id, appPreferences);
 
             }
         }
