@@ -51,8 +51,8 @@
     *;
 }
 
--keep class com.fgl27.twitch.notification.BootBroadcastReceiver**
--keepclassmembers class com.fgl27.twitch.notification.BootBroadcastReceiver** {
+-keep class com.fgl27.twitch.BootBroadcastReceiver**
+-keepclassmembers class com.fgl27.twitch.BootBroadcastReceiver** {
     *;
 }
 
