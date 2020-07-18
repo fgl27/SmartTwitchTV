@@ -1859,7 +1859,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upDateLang(String lang) {
-            appPreferences.put(Constants.CHANNEL_LANGUAGE, lang);
+            appPreferences.put(Constants.PREF_USER_LANGUAGE, lang);
         }
 
         @SuppressWarnings("unused")//called by JS

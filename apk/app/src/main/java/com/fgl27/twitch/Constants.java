@@ -32,6 +32,7 @@ public interface Constants {
     String PREF_REFRESH_TOKEN = "refresh_token";
     String PREF_USER_TOKEN = "user_token";
     String PREF_USER_TOKEN_EXPIRES_WHEN = "toke_expires_when";
+    String PREF_USER_LANGUAGE = "user_lang";
 
     String ACTION_SCREEN_ON = "action_screenOn";
     String ACTION_SCREEN_OFF = "action_screenOff";
@@ -40,7 +41,7 @@ public interface Constants {
 
     String CHANNEL_OBJ = "channel_obj";
     String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
-    String CHANNEL_LANGUAGE = "channel_lang";
+    String CHANNEL_TYPE = "channel_type";
 
     String[] CHANNELS_NAMES = {
             "",//Default reserved getIntExtra (String name, int defaultValue : 0)
@@ -51,7 +52,6 @@ public interface Constants {
             "User Games"
     };
 
-    String CHANNEL_TYPE = "channel_type";
     int CHANNEL_TYPE_LIVE = 1;
     int CHANNEL_TYPE_USER_LIVE = 2;
     int CHANNEL_TYPE_FEATURED = 3;
@@ -61,5 +61,4 @@ public interface Constants {
     int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
     int DEFAULT_HTTP_TIMEOUT = 30000;
     int DEFAULT_HTTP_EXTRA_TIMEOUT = 3000;
-
 }

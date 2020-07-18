@@ -429,7 +429,7 @@ public final class ChannelsUtils {
 
     public static void StartLive(Context context) {
         AppPreferences appPreferences = new AppPreferences(context);
-        String lang = Tools.getString(Constants.CHANNEL_LANGUAGE, null, appPreferences);
+        String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
 
         StartChannel(
                 context,
