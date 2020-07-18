@@ -150,10 +150,10 @@ var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.225';
-var Main_version_java = 16;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'July 17, 2020';
-var Main_version_web = 20;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.226';
+var Main_version_java = 17;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'July 18, 2020';
+var Main_version_web = 21;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_update_show_toast = false;
 var Main_IsOn_OSInterfaceVersion = '';
