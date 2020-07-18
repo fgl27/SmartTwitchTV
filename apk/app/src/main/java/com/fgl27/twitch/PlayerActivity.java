@@ -1829,15 +1829,23 @@ public class PlayerActivity extends Activity {
                 ChannelHandler.post(() -> {
 
                     if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
+                    else Tools.eraseTokens(appPreferences);
 
                     CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
                     CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
 
                 });
-            } else if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
-                    !Objects.equals(temp_refresh_token, refresh_token) || (refresh_token != null)) {
+            } else if (refresh_token != null) {
 
-                ChannelHandler.post(() -> Tools.refreshTokens(refresh_token, appPreferences));
+                if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) == null || !Objects.equals(temp_refresh_token, refresh_token)) {
+
+                    ChannelHandler.post(() -> Tools.refreshTokens(refresh_token, appPreferences));
+
+                }
+
+            } else {
+
+                Tools.eraseTokens(appPreferences);
 
             }
         }
