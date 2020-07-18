@@ -12,7 +12,7 @@ Apk Version 3.0.226 and up & Web Version July 18 2020
 
 * Fix notification not showing for users that follow over 800 channels
 * Fix home screen channel **User Live** not showing content for users that follow over 800 channels
-* Fix in app **User Live** not showing content for users that didn't added a authorization key and follow over 800 channels
+* Fix in app **User Live** content not showing for users that didn't added a authorization key and follow over 800 channels
 * Improve side panel looks, to properly show big usernames and general side panel improves
 * General performance improves and bug fixes
 
