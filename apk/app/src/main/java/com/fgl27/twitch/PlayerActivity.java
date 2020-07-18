@@ -82,11 +82,11 @@ import java.util.Objects;
 public class PlayerActivity extends Activity {
     public final String TAG = "STTV_PlayerActivity";
 
-    //public final String PageUrl = "file:///android_asset/app/index.html";
-    //public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    public final String PageUrl = "file:///android_asset/app/index.html";
+    public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
 
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-    public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
+    //public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
+    //public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
 
     public final int DefaultDelayPlayerCheck = 8000;
     public final int PlayerAccount = 4;
@@ -1304,9 +1304,12 @@ public class PlayerActivity extends Activity {
     }
 
     public void StopNotificationService() {
-        //closeThisCalled... If the user force close the app using closeThis() the service can't run
-        if (appPreferences != null && NotificationUtils.StartNotificationService(appPreferences))
-            Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this);
+        long delay = Tools.getLong(Constants.PREF_NOTIFICATION_WILL_END, 0, appPreferences);
+
+        if (appPreferences != null && NotificationUtils.StartNotificationService(appPreferences)) {
+            ChannelHandler.postDelayed(() -> Tools.SendNotificationIntent(Constants.ACTION_NOTIFY_STOP, this), delay > 0 ? delay : 0);
+        }
+
     }
 
     private void InitNotifications(int timeout, Context context) {
