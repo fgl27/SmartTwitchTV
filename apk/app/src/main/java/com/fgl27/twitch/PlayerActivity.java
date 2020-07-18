@@ -57,7 +57,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.fgl27.twitch.channels.ChannelsUtils;
-import com.fgl27.twitch.channels.SyncChannelJobService;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -1143,22 +1142,22 @@ public class PlayerActivity extends Activity {
 
             switch (Type) {
                 case Constants.CHANNEL_TYPE_LIVE:
-                    SyncChannelJobService.StartLive(context);
+                    ChannelsUtils.StartLive(context);
                     break;
                 case Constants.CHANNEL_TYPE_USER_LIVE:
-                    SyncChannelJobService.SetUserLive(
+                    ChannelsUtils.SetUserLive(
                             context,
                             Tools.getString(Constants.PREF_USER_ID, null, appPreferences)
                     );
                     break;
                 case Constants.CHANNEL_TYPE_FEATURED:
-                    SyncChannelJobService.StartFeatured(context);
+                    ChannelsUtils.StartFeatured(context);
                     break;
                 case Constants.CHANNEL_TYPE_GAMES:
-                    SyncChannelJobService.StartGames(context);
+                    ChannelsUtils.StartGames(context);
                     break;
                 case Constants.CHANNEL_TYPE_USER_GAMES:
-                    SyncChannelJobService.StartUserGames(
+                    ChannelsUtils.StartUserGames(
                             context,
                             Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
                     );
