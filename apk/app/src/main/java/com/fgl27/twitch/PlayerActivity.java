@@ -1127,17 +1127,16 @@ public class PlayerActivity extends Activity {
 
         } else {
 
-            RefreshChannel(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false);
+            RefreshChannel(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false, this);
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
 
         }
 
     }
 
-    public void RefreshChannel(int Type, boolean skipToast) {
+    public void RefreshChannel(int Type, boolean skipToast, Context context) {
         if (!canRunChannel) return;
 
-        Context context = this;
         ChannelHandler.post(() -> {
 
             switch (Type) {
@@ -1613,7 +1612,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefresh(int type) {
-            RefreshChannel(type, true);
+            RefreshChannel(type, true, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1817,8 +1816,8 @@ public class PlayerActivity extends Activity {
                 appPreferences.put(Constants.PREF_USER_TOKEN, null);
                 appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
                 StopNotifications();
-                RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true);
-                RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true);
+                RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true, mWebViewContext);
+                RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true, mWebViewContext);
 
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
@@ -1831,8 +1830,8 @@ public class PlayerActivity extends Activity {
                     if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
                     else Tools.eraseTokens(appPreferences);
 
-                    RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true);
-                    RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true);
+                    RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true, mWebViewContext);
+                    RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true, mWebViewContext);
 
                 });
             } else if (refresh_token != null) {
