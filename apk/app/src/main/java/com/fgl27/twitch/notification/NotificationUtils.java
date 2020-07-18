@@ -111,29 +111,38 @@ public final class NotificationUtils {
     }
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
-        String token = Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences);
 
-        if (token != null && (System.currentTimeMillis() > Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
-                Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences))) {
+        if (Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences) != null) {
 
-            return GetLiveStreamsListToken(token, UserId, appPreferences);
+            if (System.currentTimeMillis() < Tools.getLong(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences)||
+                    Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
+
+                return GetLiveStreamsListToken(UserId, appPreferences);
+
+            } else {
+
+                return GetLiveStreamsListNoToken(UserId);
+
+            }
 
         } else {
 
             return GetLiveStreamsListNoToken(UserId);
 
-
         }
 
     }
 
-    public static JsonArray GetLiveStreamsListToken(String token, String UserId, AppPreferences appPreferences) {
+    public static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences) {
         JsonArray StreamsResult = new JsonArray();
 
         try {
             ArrayList<String> TempArray = new ArrayList<>();
+
             JsonArray TempStreams;
+
             Tools.ResponseObj response;
+
             JsonObject obj;
             JsonObject objChannel;
 
@@ -147,7 +156,7 @@ public final class NotificationUtils {
             String[][] DEFAULT_HEADERS = {
                     {Tools.DEFAULT_HEADERS[0][0], Tools.DEFAULT_HEADERS[0][1]},
                     {Tools.DEFAULT_HEADERS[1][0], Tools.DEFAULT_HEADERS[1][1]},
-                    {"Authorization", "OAuth " + token}
+                    {"Authorization", "OAuth " + Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences)}
             };
 
             do {//Get all user fallowed live channels
@@ -218,9 +227,13 @@ public final class NotificationUtils {
                         } else if (status == 401 || status == 403) {
 
                             if (Tools.refreshTokens(Tools.getString(Constants.PREF_REFRESH_TOKEN, null, appPreferences), appPreferences)) {
-                                return GetLiveStreamsListToken(Tools.getString(Constants.PREF_USER_TOKEN, null, appPreferences), UserId, appPreferences);
+
+                                return GetLiveStreamsListToken(UserId, appPreferences);
+
                             } else {
+
                                 return GetLiveStreamsListNoToken(UserId);
+
                             }
 
                         }
@@ -247,16 +260,20 @@ public final class NotificationUtils {
             ArrayList<String> ChannelsList = GetChannels(UserId);
             if (ChannelsList == null) return null;
 
-            String url;
-            int StreamsSize;
+            ArrayList<String> TempArray = new ArrayList<>();
+
             Tools.ResponseObj response;
             JsonObject obj;
             JsonArray TempStreams;
+
+            String url;
             String id;
-            ArrayList<String> TempArray = new ArrayList<>();
+
+            int StreamsSize;
             int ChannelsSize = ChannelsList.size();
             int LoopSize = (ChannelsSize / 100) + 1;
             int len;
+
             StringBuilder Channels;
 
             for (int x = 0; x < LoopSize; x++) {
@@ -334,11 +351,11 @@ public final class NotificationUtils {
         ArrayList<String> Result = new ArrayList<>();
 
         try {
-            String url;
             int ChannelsOffset = 0;
-
             int arraySize;
             int AddedToArray;
+
+            String url;
             String channelId;
 
             Tools.ResponseObj response;
@@ -431,13 +448,17 @@ public final class NotificationUtils {
     private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
 
         ArrayList<NotifyList> result = new ArrayList<>();
+        ArrayList<String> currentLive = new ArrayList<>();
+
         int StreamsSize = streams.size();
-        JsonObject obj;
-        NotifyList tempNotifyList;
+
         String id;
         String game;
+
         boolean isLive;
-        ArrayList<String> currentLive = new ArrayList<>();
+
+        JsonObject obj;
+        NotifyList tempNotifyList;
 
         int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
 
@@ -529,46 +550,124 @@ public final class NotificationUtils {
         return bmp;
     }
 
+    public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
+        try {
+
+            JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
+
+            if (streams != null) {
+
+                ArrayList<String> oldLive = new ArrayList<>();
+                String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
+
+                if (tempOldLive != null) {
+                    oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
+                }
+
+                if (oldLive.size() > 0) {
+
+                    ArrayList<NotifyList> NotifyListResult =
+                            GetNotifications(
+                                    oldLive,
+                                    streams,
+                                    UserId,
+                                    appPreferences
+                            );
+
+                    if (NotifyListResult != null) {
+
+                        int ResultSize = NotifyListResult.size();
+                        int ToastPosition = Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences);
+
+                        //Get the width base on screen size and position
+                        WindowManager window = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                        int LayoutWidth = 0;
+                        int ImageSize = 0;
+                        float textSizeSmall = 0;
+                        float textSizeBig = 0;
+
+                        if (window != null) {
+
+                            Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
+
+                            //The device may be a phone that changes from landscape to portrait
+                            //Get the bigger value at the time ou the notification
+                            int max = Math.max(ScreenSize.x, ScreenSize.y);
+                            int min = Math.min(ScreenSize.x, ScreenSize.y);
+
+                            float width = max / 100.0f;
+                            LayoutWidth = (int) (width * 40.0f);
+
+                            //Prevent notification bigger then the screen
+                            LayoutWidth = Math.min(LayoutWidth, (min - (min / 100)));
+
+                            ImageSize = (int) (LayoutWidth / 5.0f);
+
+                            //Scale the text to screen size and density
+                            float ScaleDensity = width / (context.getResources().getDisplayMetrics().density / 2.0f);
+                            textSizeSmall = 0.62f * ScaleDensity;
+                            textSizeBig = 0.68f * ScaleDensity;
+                        }
+
+                        for (int i = 0; i < ResultSize; i++) {
+                            ShowNotification(
+                                    NotifyListResult.get(i),
+                                    i,
+                                    ToastHandler,
+                                    context,
+                                    ToastPosition,
+                                    LayoutWidth,
+                                    ImageSize,
+                                    textSizeSmall,
+                                    textSizeBig
+                            );
+                        }
+
+                        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (ResultSize * 5000)));
+                    }
+
+                } else {
+
+                    SetOldList(streams, UserId, appPreferences);
+
+                }
+            }
+
+        } catch (Exception e) {
+            Log.w(TAG, "CheckNotifications e " + e.getMessage());
+        }
+    }
+
+    private static void ShowNotification(NotifyList NotifyListResult, int delay,
+                                         Handler ToastHandler, Context context, int ToastPosition,
+                                         int LayoutWidth, int ImageSize, float textSizeSmall, float textSizeBig) {
+
+        ToastHandler.postDelayed(() -> {
+            try {
+                DoToast(
+                        NotifyListResult,
+                        context,
+                        ToastPosition,
+                        LayoutWidth,
+                        ImageSize,
+                        textSizeSmall,
+                        textSizeBig
+                );
+            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+        }, 5000 * delay);
+
+    }
+
     @SuppressLint("InflateParams")
-    private static void DoToast(NotifyList result, Context context, int ToastPosition) {
+    private static void DoToast(NotifyList result, Context context, int ToastPosition, int LayoutWidth, int ImageSize, float textSizeSmall, float textSizeBig) {
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View layout;
+
         if (inflater != null) {
             layout = inflater.inflate(R.layout.custom_toast, null);
         } else return;
-
-        //Get the width base on screen size and position
-        WindowManager window = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int LayoutWidth = 0;
-        int ImageSize = 0;
-        float textSizeSmall = 0;
-        float textSizeBig = 0;
-        float width;
-
-        if (window != null) {
-
-            Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
-
-            //The device may be a phone that changes from landscape to portrait
-            //Get the bigger value at the time ou the notification
-            int max = Math.max(ScreenSize.x, ScreenSize.y);
-            int min = Math.min(ScreenSize.x, ScreenSize.y);
-
-            width = max / 100.0f;
-            LayoutWidth = (int) (width * 40.0f);
-
-            //Prevent notification bigger then the screen
-            LayoutWidth = Math.min(LayoutWidth, (min - (min / 100)));
-
-            ImageSize = (int) (LayoutWidth / 5.0f);
-
-            //Scale the text to screen size and density
-            float ScaleDensity = width / (context.getResources().getDisplayMetrics().density / 2.0f);
-            textSizeSmall = 0.62f * ScaleDensity;
-            textSizeBig = 0.68f * ScaleDensity;
-        }
-
 
         LinearLayout layout_text = layout.findViewById(R.id.text_holder);
         if (LayoutWidth > 0) layout_text.getLayoutParams().width = LayoutWidth;
@@ -612,75 +711,6 @@ public final class NotificationUtils {
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(layout);
         toast.show();
-    }
-
-
-    public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
-        try {
-
-            JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
-
-            if (streams != null) {
-
-                ArrayList<String> oldLive = new ArrayList<>();
-                String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
-
-                if (tempOldLive != null) {
-                    oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
-                }
-
-                if (oldLive.size() > 0) {
-
-                    ArrayList<NotifyList> NotifyListResult =
-                            GetNotifications(
-                                    oldLive,
-                                    streams,
-                                    UserId,
-                                    appPreferences
-                            );
-
-                    if (NotifyListResult != null) {
-
-                        int ResultSize = NotifyListResult.size();
-
-                        for (int i = 0; i < ResultSize; i++) {
-                            ShowNotification(
-                                    NotifyListResult.get(i),
-                                    i,
-                                    ToastHandler,
-                                    context,
-                                    appPreferences
-                            );
-                        }
-
-                        appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, (System.currentTimeMillis() + (ResultSize * 5000)));
-                    }
-
-                } else {
-
-                    SetOldList(streams, UserId, appPreferences);
-
-                }
-            }
-
-        } catch (Exception e) {
-            Log.w(TAG, "CheckNotifications e " + e.getMessage());
-        }
-    }
-
-    private static void ShowNotification(NotifyList NotifyListResult, int delay,
-                                         Handler ToastHandler, Context context, AppPreferences appPreferences) {
-
-        ToastHandler.postDelayed(() -> {
-            try {
-                DoToast(
-                        NotifyListResult,
-                        context,
-                        Tools.getInt(Constants.PREF_NOTIFICATION_POSITION, 0, appPreferences)
-                );
-            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
-        }, 5000 * delay);
-
     }
 
     public static boolean StartNotificationService(AppPreferences appPreferences) {
