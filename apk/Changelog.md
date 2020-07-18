@@ -7,6 +7,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.226 and up & Web Version July 18 2020
+==============
+
+* Fix notification not showing for users that follow over 800 channels
+* Fix home screen channel **User Live** not showing content for users that follow over 800 channels
+* Fix in app **User Live** not showing content for users that didn't added a authorization key and follow over 800 channels
+* Improve side panel looks, to properly show big usernames and general side panel improves
+* General performance improves and bug fixes
+
 Web Version July 17 2020
 ==============
 

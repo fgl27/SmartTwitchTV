@@ -3795,9 +3795,9 @@
         } else {
 
             try {
-                var response = JSON.parse(xmlHttp.responseText);
-                if (response.message) {
-                    if (Main_A_includes_B(response.message, 'Invalid refresh token')) {
+                var response = JSON.stringify(JSON.parse(xmlHttp.responseText));
+                if (response) {
+                    if (Main_A_includes_B(response, 'Invalid refresh token')) {
 
                         AddCode_requestTokensFailRunning(position);
                         if (callbackFuncNOK) callbackFuncNOK(key);
@@ -4595,14 +4595,7 @@
         AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
         if (AddUser_UsernameArray.length > 0) {
 
-            if (Main_IsOn_OSInterface) {
-
-                OSInterface_upNotificationId(
-                    AddUser_UsernameArray[0].id,
-                    AddUser_UsernameArray[0].name
-                );
-
-            }
+            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
             AddUser_UpdateSidepanel();
 
@@ -4643,14 +4636,17 @@
     }
 
     function AddUser_UpdateSidepanelSize(logo, username) {
+        //remove transition to change size
+        Sidepannel_MovelDiv.style.transition = 'none';
+
         Main_innerHTML("side_panel_new_0_img",
             '<img class="side_panel_new_img" alt="" src="' +
             logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
         Sidepannel_SetUserlable(username);
 
-        var size = username.lengthdoc = document.getElementById('side_panel_movel');
+        var size = username.length;
 
-        size = (size > 11 ? size - 11 : 0);
+        size = (size > 9 ? size - 9 : 0);
 
         Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
 
@@ -4662,6 +4658,11 @@
             newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
             Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
         }
+
+        Main_ready(function() {
+            if (Settings_Obj_default("app_animations")) Sidepannel_MovelDiv.style.transition = '';
+        });
+
     }
 
     function AddUser_UserIsSet() {
@@ -4734,11 +4735,9 @@
         Main_HideLoadDialog();
         if (AddUser_UsernameArray.length === 1) {
             AddUser_UpdateSidepanel();
-            OSInterface_upNotificationId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
+            OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
             OSInterface_mCheckRefresh();
+            if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
         }
         Main_SwitchScreen();
         AddUser_loadingData = false;
@@ -4761,13 +4760,8 @@
             if (!position) {
                 AddUser_UpdateSidepanel();
 
-                OSInterface_upNotificationId(
-                    AddUser_UsernameArray[0].id,
-                    AddUser_UsernameArray[0].name
-                );
+                OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
-                if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-                OSInterface_mCheckRefresh();
             }
             Users_status = false;
             Users_init();
@@ -4775,11 +4769,7 @@
             AddUser_UpdateSidepanelDefault();
             AddUser_init();
 
-            if (Main_IsOn_OSInterface) {
-                OSInterface_upNotificationId(null, null);
-                OSInterface_StopNotificationService();
-                OSInterface_mCheckRefresh();
-            }
+            OSInterface_UpdateUserId(null);
         }
     }
 
@@ -4815,16 +4805,7 @@
         AddUser_UpdateSidepanel();
         Users_init();
 
-        if (Main_IsOn_OSInterface) {
-
-            OSInterface_upNotificationId(
-                AddUser_UsernameArray[0].id,
-                AddUser_UsernameArray[0].name
-            );
-
-            if (Settings_Obj_default("live_notification")) OSInterface_CheckNotificationService();
-            OSInterface_mCheckRefresh();
-        }
+        OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
         //Reset user emotes on chage
         userEmote = {};
@@ -4902,7 +4883,7 @@
         Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
 
         if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
-            Main_values.Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
+            Sidepannel_Sidepannel_Pos = Main_values.My_channel ? 8 : 7;
             Sidepannel_SetUserLables();
             Sidepannel_SetTopOpacity(Main_values.Main_Go);
         }
@@ -8766,9 +8747,7 @@
         "warning_extra": true,
         "Chat_font_size_new": 75,
         "ChatBackground": 12,
-        "IsRerun": false,
         "Main_selectedChannelPartner": false,
-        "Sidepannel_Pos": 2,
         "Sidepannel_IsUser": false,
         "My_channel": false,
         "DeviceCheckNew": false,
@@ -8837,10 +8816,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.225';
-    var Main_version_java = 16; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 17, 2020';
-    var Main_version_web = 20; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.226';
+    var Main_version_java = 17; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 18, 2020';
+    var Main_version_web = 21; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10594,11 +10573,6 @@
         Main_isStoped = true;
         Main_PreventClick(true);
 
-        if (Settings_Obj_default("live_notification")) {
-            if (Settings_Obj_default("live_notification_background")) OSInterface_RunNotificationService();
-            else OSInterface_StopNotificationService();
-        }
-
         //Player related
         ChatLive_Clear(0);
         ChatLive_Clear(1);
@@ -10982,16 +10956,6 @@
         if (Main_IsOn_OSInterface) Android.RunNotificationService();
     }
 
-    //public void CheckNotificationService()
-    //Android specific: true
-    //Allows to reset current running notifications
-    function OSInterface_CheckNotificationService() {
-        //TODO remove the try after some apps updates
-        try {
-            if (Main_IsOn_OSInterface) Android.CheckNotificationService();
-        } catch (e) {}
-    }
-
     //public void upNotificationState(boolean Notify)
     //Notify  background notification are enable
     //Android specific: true
@@ -11274,14 +11238,30 @@
         Android.mhideSystemUI();
     }
 
-    //public void upNotificationId(String id, String name)
+    //public void UpdateUserId(String id, String name, String refresh_token)
     //id =  the user id
+    //name =  the user name
     //Android specific: true
     //Sets the user id used by the notification services
-    function OSInterface_upNotificationId(id, name) {
+    function OSInterface_UpdateUserId(user) {
         try {
-            if (Main_IsOn_OSInterface) Android.upNotificationId(id, name);
-        } catch (e) {}
+            if (Main_IsOn_OSInterface)
+                if (user) {
+                    Android.UpdateUserId(
+                        user.id,
+                        user.name ? encodeURIComponent(user.name) : user.name,
+                        user.refresh_token ? user.refresh_token : null
+                    );
+                } else {
+                    Android.UpdateUserId(
+                        null,
+                        null,
+                        null
+                    );
+                }
+        } catch (e) {
+            console.log('OSInterface_UpdateUserId e' + e);
+        }
     }
 
     //public void BackupFile(String file, String file_content)
@@ -19959,7 +19939,7 @@
         ScreenObj[key].row_id = 0;
         ScreenObj[key].currY = 0;
         ScreenObj[key].loadChannelOffsset = 0;
-        ScreenObj[key].followerChannels = '';
+        ScreenObj[key].followerChannels = [];
         ScreenObj[key].followerChannelsDone = false;
         ScreenObj[key].coloumn_id = 0;
         ScreenObj[key].data = null;
@@ -20406,17 +20386,17 @@
                         Main_SwitchScreen(true);
                     }
 
-                    Screens_loadDataSuccessFinishEnd();
+                    Screens_loadDataSuccessFinishEnd(true);
 
                 } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
                     //Main_Log('!Play_WasPlaying');
-
                     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
                     Main_ExitCurrent(Main_values.Main_Go);
                     Main_values.Main_Go = Main_GoBefore;
                     Screens_RemoveAllFocus(key);
                     Main_SwitchScreen();
-                    if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd();
+
+                    if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd(true);
                     else {
                         Main_FirstRun = false;
                         Main_HideLoadDialog();
@@ -20448,7 +20428,7 @@
             } else {
                 Screens_addFocus(true, key);
                 Main_SaveValues();
-                Main_HideLoadDialog();
+                if (Main_isScene1DocShown()) Main_HideLoadDialog();
             }
         } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
             Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
@@ -20556,9 +20536,9 @@
         }
     }
 
-    function Screens_loadDataSuccessFinishEnd() {
+    function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
         Main_FirstRun = false;
-        Main_HideLoadDialog();
+        if (!SkipHidedialog) Main_HideLoadDialog();
         Main_ShowElement('topbar');
         Main_ShowElement('side_panel_new_holder');
         AddUser_UpdateSidepanelAfterShow();
@@ -23045,7 +23025,7 @@
             key_pgUp: Main_HistoryLive,
             base_url: Main_kraken_api + 'streams/',
             loadChannelOffsset: 0,
-            followerChannels: '',
+            followerChannels: [],
             followerChannelsDone: false,
             set_url: function() {
                 this.check_offset();
@@ -23062,14 +23042,14 @@
                     this.token = null;
                     if (this.followerChannelsDone) {
                         //User followed channels list is done, load live channels
-                        this.url = this.base_url + '?channel=' + encodeURIComponent(this.followerChannels) + '&' +
+                        this.url = this.base_url + '?channel=' + this.followerChannels.join() + '&' +
                             'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
                     } else {
                         //User followed channels list is not done, load followed channels
                         this.url = Main_kraken_api + 'users/' +
                             encodeURIComponent(AddUser_UsernameArray[0].id) +
                             '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
-                            '&sortby=created_at';
+                            '&sortby=last_broadcast';
                     }
                 }
             },
@@ -23119,18 +23099,22 @@
 
                 if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
                     //User followed channels list is not done, load followed channels
-                    var ChannelTemp = '',
-                        x = 0;
+                    var x = 0,
+                        max = this.followerChannels.length + response_items;
+
+                    if (max > UserLiveFeed_maxChannels) {
+                        this.followerChannelsDone = true;
+                        response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
+                    }
 
                     for (x; x < response_items; x++) {
-                        ChannelTemp = response[x].channel._id + ',';
-                        if (!Main_A_includes_B(this.followerChannels, ChannelTemp)) this.followerChannels += ChannelTemp;
+                        this.followerChannels.push(response[x].channel._id);
                     }
 
                     this.loadChannelOffsset += response_items;
+
                 } else { // end
                     //User followed channels list is done, load live channels
-                    this.followerChannels = this.followerChannels.slice(0, -1);
                     this.followerChannelsDone = true;
                 }
                 Screens_loadDataRequest(this.screen);
@@ -27432,6 +27416,7 @@
 
     //Spacing for reease maker not trow erros frm jshint
     var Sidepannel_PosFeed = 0;
+    var Sidepannel_Sidepannel_Pos = 2;
     var Sidepannel_Callback;
     var Sidepannel_UpdateThumbDoc;
     var Sidepannel_IsMain = true;
@@ -27451,11 +27436,11 @@
     var Sidepannel_AnimationTimeout = 200; //Same value as side_panel_holder_ani
 
     function Sidepannel_AddFocusMain() {
-        Main_AddClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+        Main_AddClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
     }
 
     function Sidepannel_RemoveFocusMain() {
-        Main_RemoveClass('side_panel_movel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+        Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
     }
 
     function Sidepannel_AddFocusFeed(skipAnimation) {
@@ -27680,24 +27665,24 @@
     }
 
     function Sidepannel_KeyEnterUser() {
-        if (Main_values.Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
+        if (Sidepannel_Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
             Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
             return;
         }
 
-        if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
+        if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
 
-        if (Main_values.Sidepannel_Pos === 2) {
+        if (Sidepannel_Sidepannel_Pos === 2) {
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetDefaultLables();
             Sidepannel_UnSetTopOpacity();
 
-        } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
-        else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
-        else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
-        else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
-        else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
-        else if (Main_values.Sidepannel_Pos === 8) {
+        } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
+        else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_UserHost);
+        else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_usergames);
+        else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_UserVod);
+        else if (Sidepannel_Sidepannel_Pos === 7) Sidepannel_Go(Main_UserChannels);
+        else if (Sidepannel_Sidepannel_Pos === 8) {
             Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
             Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
             Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
@@ -27710,31 +27695,31 @@
             Main_ExitCurrent(Main_values.Main_BeforeChannel);
             Main_values.My_channel = true;
             Main_SwitchScreen();
-        } else if (Main_values.Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
+        } else if (Sidepannel_Sidepannel_Pos === 9) Sidepannel_Go(Main_History[Main_HistoryPos]);
         else Sidepannel_KeyEnterBase();
 
     }
 
     function Sidepannel_KeyEnterBase() {
-        if (!Main_values.Sidepannel_Pos) {
+        if (!Sidepannel_Sidepannel_Pos) {
             Main_values.Main_Before = Main_values.Main_Go;
             Main_ExitCurrent(Main_values.Main_Go);
             if (AddUser_UserIsSet()) Users_init();
             else AddUser_init();
-        } else if (Main_values.Sidepannel_Pos === 1) {
+        } else if (Sidepannel_Sidepannel_Pos === 1) {
             if (Main_values.Main_Go !== Main_Search) {
                 if (!Main_values.Search_isSearching &&
                     (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
                     ChannelContent_SetChannelValue();
                 Main_OpenSearch();
             } else Main_addEventListener("keydown", Sidepannel_Callback);
-        } else if (Main_values.Sidepannel_Pos === 10) {
+        } else if (Sidepannel_Sidepannel_Pos === 10) {
             Main_showSettings();
-        } else if (Main_values.Sidepannel_Pos === 11)
+        } else if (Sidepannel_Sidepannel_Pos === 11)
             Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
-        else if (Main_values.Sidepannel_Pos === 12)
+        else if (Sidepannel_Sidepannel_Pos === 12)
             Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
-        else if (Main_values.Sidepannel_Pos === 13) Main_showExitDialog();
+        else if (Sidepannel_Sidepannel_Pos === 13) Main_showExitDialog();
     }
 
     function Sidepannel_KeyEnter() {
@@ -27743,9 +27728,9 @@
             return;
         }
 
-        if (Main_values.Sidepannel_Pos !== 2) Sidepannel_Hide();
+        if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
 
-        if (Main_values.Sidepannel_Pos === 2) {
+        if (Sidepannel_Sidepannel_Pos === 2) {
             if (AddUser_IsUserSet()) {
                 Sidepannel_SetUserLables();
                 Sidepannel_UnSetTopOpacity();
@@ -27753,11 +27738,11 @@
             } else {
                 Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
-        } else if (Main_values.Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
-        else if (Main_values.Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
-        else if (Main_values.Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
-        else if (Main_values.Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
-        else if (Main_values.Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
+        } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
+        else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
+        else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_games);
+        else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_Vod);
+        else if (Sidepannel_Sidepannel_Pos === 7) Sidepannel_Go(Main_Clip);
         else Sidepannel_KeyEnterBase();
     }
 
@@ -27874,10 +27859,10 @@
     }
 
     function Sidepannel_SetTopOpacity(Main_Go) {
-        if (Sidepannel_Pos_Screens[Main_Go]) Main_values.Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+        if (Sidepannel_Pos_Screens[Main_Go]) Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
         Sidepannel_UnSetTopOpacity();
 
-        if (Main_values.Sidepannel_Pos && Main_values.Sidepannel_Pos < 10) Main_AddClass('side_panel_new_' + Main_values.Sidepannel_Pos, 'side_panel_new_icons_text');
+        if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 10) Main_AddClass('side_panel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
     }
 
     var Sidepannel_Pos_Screens = [
@@ -27950,16 +27935,16 @@
         Main_HideElement('side_panel_new_8');
         Main_HideElement('side_panel_movel_user_text_holder');
 
-        Main_innerHTML('side_panel_movel_new_1', STR_SPACE + STR_SEARCH);
+        Main_innerHTML('side_panel_movel_new_1', STR_SEARCH);
 
-        Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_USER_MENU);
-        Main_innerHTML('side_panel_movel_new_3', STR_SPACE + STR_LIVE);
-        Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_FEATURED);
-        Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
-        Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
-        Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CLIPS);
-        Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
-        Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_HISTORY);
+        Main_innerHTML('side_panel_movel_new_2', STR_USER_MENU);
+        Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
+        Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
+        Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
+        Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+        Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
+        Main_innerHTML('side_panel_movel_new_8', STR_USER_MY_CHANNEL);
+        Main_innerHTML('side_panel_movel_new_9', STR_HISTORY);
 
         Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_SETTINGS);
         Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_ABOUT);
@@ -27977,8 +27962,8 @@
     }
 
     function Sidepannel_SetUserlable(text) {
-        Main_innerHTML('side_panel_movel_new_0', STR_SPACE + text + STR_BR +
-            '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_SPACE + STR_SPACE + STR_USER_EXTRAS + '</div>');
+        Main_innerHTML('side_panel_movel_new_0', text + STR_BR +
+            '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>');
     }
 
     function Sidepannel_SetIcons(div, icon) {
@@ -28109,19 +28094,19 @@
                 break;
             case KEY_PG_UP:
             case KEY_UP:
-                if (Main_values.Sidepannel_Pos) {
+                if (Sidepannel_Sidepannel_Pos) {
                     Sidepannel_RemoveFocusMain();
-                    Main_values.Sidepannel_Pos--;
-                    if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos -= 2;
+                    Sidepannel_Sidepannel_Pos--;
+                    if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 9) Sidepannel_Sidepannel_Pos -= 2;
                     Sidepannel_AddFocusMain();
                 }
                 break;
             case KEY_PG_DOWN:
             case KEY_DOWN:
-                if (Main_values.Sidepannel_Pos < 13) {
+                if (Sidepannel_Sidepannel_Pos < 13) {
                     Sidepannel_RemoveFocusMain();
-                    Main_values.Sidepannel_Pos++;
-                    if (!Main_values.Sidepannel_IsUser && Main_values.Sidepannel_Pos === 8) Main_values.Sidepannel_Pos += 2;
+                    Sidepannel_Sidepannel_Pos++;
+                    if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += 2;
                     Sidepannel_AddFocusMain();
                 }
                 break;
@@ -28180,7 +28165,8 @@
     var UserLiveFeed_loadingData = [];
     var UserLiveFeed_loadingDataTry = [];
     var UserLiveFeed_loadChannelOffsset = 0;
-    var UserLiveFeed_followerChannels = '';
+    var UserLiveFeed_followerChannels = [];
+    var UserLiveFeed_maxChannels = 825;
     var UserLiveFeed_idObject = [];
     var UserLiveFeed_status = [];
     var UserLiveFeed_LastPos = [];
@@ -29345,7 +29331,7 @@
         document.getElementById('side_panel_warn').style.display = 'none';
 
         UserLiveFeed_loadChannelOffsset = 0;
-        UserLiveFeed_followerChannels = '';
+        UserLiveFeed_followerChannels = [];
 
         UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
 
@@ -29426,15 +29412,37 @@
     }
 
     function UserLiveFeedobj_loadChannels() {
-        //Main_Log('UserLiveFeedobj_loadChannels');
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-            '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=created_at' + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadChannelLive,
-            false,
-            UserLiveFeedobj_UserLivePos
-        );
+        var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+            '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
+
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+
+        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
+        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                if (xmlHttp.status === 200) {
+                    UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
+                } else {
+                    UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+                }
+            }
+        };
+
+        xmlHttp.send(null);
+    }
+
+    function UserLiveFeedobj_loadChannelsError(pos) {
+        UserLiveFeed_loadingDataTry[pos]++;
+        if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
+            UserLiveFeedobj_loadChannels();
+        } else {
+            if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataErrorElse(pos);
+            else UserLiveFeedobj_loadChannelLiveEnd();
+        }
     }
 
     function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -29444,22 +29452,34 @@
             response_items = response.length;
 
         if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-            var ChannelTemp = '',
-                x = 0;
+            var x = 0,
+                max = UserLiveFeed_followerChannels.length + response_items,
+                end = false;
 
-            for (x; x < response_items; x++) {
-                ChannelTemp = response[x].channel._id + ',';
-                if (!Main_A_includes_B(UserLiveFeed_followerChannels, ChannelTemp)) UserLiveFeed_followerChannels += ChannelTemp;
+            if (max > UserLiveFeed_maxChannels) {
+                end = true;
+                response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
             }
 
-            UserLiveFeed_loadChannelOffsset += response_items;
-            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-            UserLiveFeedobj_loadChannels();
+            for (x; x < response_items; x++) {
+                UserLiveFeed_followerChannels.push(response[x].channel._id);
+            }
+
+            if (end) {
+                UserLiveFeedobj_loadChannelLiveEnd();
+            } else {
+                UserLiveFeed_loadChannelOffsset += response_items;
+                UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
+                UserLiveFeedobj_loadChannels();
+            }
         } else { // end
-            UserLiveFeed_followerChannels = UserLiveFeed_followerChannels.slice(0, -1);
-            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-            UserLiveFeedobj_loadChannelUserLive();
+            UserLiveFeedobj_loadChannelLiveEnd();
         }
+    }
+
+    function UserLiveFeedobj_loadChannelLiveEnd() {
+        UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
+        UserLiveFeedobj_loadChannelUserLive();
     }
 
     function UserLiveFeedobj_loadChannelUserLive() {
@@ -29469,7 +29489,7 @@
         if (UserLiveFeed_token) {
             theUrl += 'followed?';
         } else {
-            theUrl += '?channel=' + UserLiveFeed_followerChannels + '&';
+            theUrl += '?channel=' + UserLiveFeed_followerChannels.join() + '&';
         }
         theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
 
