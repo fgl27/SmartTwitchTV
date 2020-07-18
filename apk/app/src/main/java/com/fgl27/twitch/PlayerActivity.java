@@ -615,7 +615,7 @@ public class PlayerActivity extends Activity {
     }
 
     //Stop the player called from js, clear it all
-    private void PreResetPlayer(int position) {
+    private void ResetPlayerState(int position) {
         if (mainPlayer == 1) SwitchPlayer();
 
         PicturePicture = false;
@@ -1127,14 +1127,14 @@ public class PlayerActivity extends Activity {
 
         } else {
 
-            CheckRefresh(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false);
+            RefreshChannel(intent.getIntExtra(Constants.CHANNEL_TYPE, 0), false);
             mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
 
         }
 
     }
 
-    public void CheckRefresh(int Type, boolean skipToast) {
+    public void RefreshChannel(int Type, boolean skipToast) {
         if (!canRunChannel) return;
 
         Context context = this;
@@ -1167,12 +1167,12 @@ public class PlayerActivity extends Activity {
                     break;
             }
 
-            if (!skipToast) CheckRefreshToast(Type, context);
+            if (!skipToast) RefreshChannelToast(Type, context);
         });
 
     }
 
-    public void CheckRefreshToast(int Type, Context context) {
+    public void RefreshChannelToast(int Type, Context context) {
         if (!canRunChannel) return;
 
         Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
@@ -1607,13 +1607,13 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefreshToast(int type) {
-            CheckRefreshToast(type, mWebViewContext);
+            RefreshChannelToast(type, mWebViewContext);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefresh(int type) {
-            CheckRefresh(type, true);
+            RefreshChannel(type, true);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -1817,8 +1817,8 @@ public class PlayerActivity extends Activity {
                 appPreferences.put(Constants.PREF_USER_TOKEN, null);
                 appPreferences.put(Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
                 StopNotifications();
-                CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
-                CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+                RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true);
+                RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true);
 
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
@@ -1831,8 +1831,8 @@ public class PlayerActivity extends Activity {
                     if (refresh_token != null) Tools.refreshTokens(refresh_token, appPreferences);
                     else Tools.eraseTokens(appPreferences);
 
-                    CheckRefresh(Constants.CHANNEL_TYPE_USER_LIVE, true);
-                    CheckRefresh(Constants.CHANNEL_TYPE_USER_GAMES, true);
+                    RefreshChannel(Constants.CHANNEL_TYPE_USER_LIVE, true);
+                    RefreshChannel(Constants.CHANNEL_TYPE_USER_GAMES, true);
 
                 });
             } else if (refresh_token != null) {
@@ -2247,7 +2247,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo() {
-            MainThreadHandler.post(() -> PreResetPlayer(mainPlayer));
+            MainThreadHandler.post(() -> ResetPlayerState(mainPlayer));
         }
 
         @SuppressWarnings("unused")//called by JS
