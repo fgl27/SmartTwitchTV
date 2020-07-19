@@ -2170,8 +2170,6 @@ function Main_onNewIntent(mobj) {
         }
 
         Main_openStream();
-    } else if (Main_A_equals_B(obj.type, "HOST")) {
-        console.log(obj);
     } else if (Main_A_equals_B(obj.type, "USER")) {
 
         Main_CheckResume(true);
