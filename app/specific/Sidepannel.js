@@ -511,13 +511,13 @@ function Sidepannel_SetUserLables() {
     Main_ShowElement('side_panel_movel_new_9');
     Main_ShowElement('side_panel_new_9');
 
-    Main_innerHTML('side_panel_movel_new_2', STR_SPACE + STR_MAIN_MENU);
-    Main_innerHTML('side_panel_movel_new_4', STR_SPACE + STR_LIVE_HOSTS);
-    Main_innerHTML('side_panel_movel_new_5', STR_SPACE + STR_GAMES);
-    Main_innerHTML('side_panel_movel_new_6', STR_SPACE + STR_VIDEOS);
-    Main_innerHTML('side_panel_movel_new_7', STR_SPACE + STR_CHANNELS);
-    Main_innerHTML('side_panel_movel_new_8', STR_SPACE + STR_USER_MY_CHANNEL);
-    Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_HISTORY);
+    Main_innerHTML('side_panel_movel_new_2', STR_MAIN_MENU);
+    Main_innerHTML('side_panel_movel_new_4', STR_LIVE_HOSTS);
+    Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
+    Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+    Main_innerHTML('side_panel_movel_new_7', STR_CHANNELS);
+    Main_innerHTML('side_panel_movel_new_8', STR_USER_MY_CHANNEL);
+    Main_innerHTML('side_panel_movel_new_9', STR_HISTORY);
 
     Sidepannel_SetIcons('side_panel_new_2', 'arrow-left');
     Sidepannel_SetIcons('side_panel_new_4', 'users');
