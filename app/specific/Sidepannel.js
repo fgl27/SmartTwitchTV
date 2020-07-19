@@ -53,7 +53,9 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
     } else {
-        document.getElementById('side_panel_warn').style.display = 'inline-block';
+        if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos])
+            document.getElementById('side_panel_warn').style.display = 'inline-block';
+
         Main_HideElement('side_panel_feed_thumb');
         if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
     }
