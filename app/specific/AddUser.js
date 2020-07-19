@@ -36,7 +36,9 @@ function AddUser_init() {
 }
 
 function AddUser_exit() {
-    Main_values.Main_Go = Main_values.Main_Before !== Main_Users ? Main_values.Main_Before : Main_Live;
+    if (AddUser_UsernameArray.length > 0) Main_values.Main_Go = Main_values.Main_Before;
+    else Main_values.Main_Go = Main_values.Main_Before !== Main_Users ? Main_values.Main_Before : Main_Live;
+
     AddUser_RemoveinputFocus(false);
     Main_removeEventListener("keydown", AddUser_handleKeyDown);
     Main_removeEventListener("keydown", AddUser_KeyboardEvent);
