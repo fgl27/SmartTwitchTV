@@ -8818,10 +8818,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.227';
-    var Main_version_java = 18; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.228';
+    var Main_version_java = 19; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 19, 2020';
-    var Main_version_web = 22; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 23; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9750,7 +9750,7 @@
 
         if (Main_values.Play_isHost) {
             Play_data.DisplaynameHost = Play_data.data[1];
-            Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+            Play_data.data[1] = Play_data.data[15];
         }
 
         if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
@@ -10821,9 +10821,11 @@
 
     function Main_onNewIntent(mobj) {
         var obj = JSON.parse(mobj);
+        var isLive = Main_A_equals_B(obj.type, "LIVE");
+        var isHost = Main_A_equals_B(obj.type, "HOST");
 
         //TODO check more cases for problems
-        if (Main_A_equals_B(obj.type, "LIVE")) {
+        if (isLive || isHost) {
 
             Play_showBufferDialog();
             Main_CheckResume(true);
@@ -10839,9 +10841,16 @@
             } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-            Main_openStream();
+            if (isLive) {
+                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+            } else {
+                Play_data.data = ScreensObj_HostCellArray(obj.obj);
+                Main_values.Play_isHost = true;
+                Play_data.DisplaynameHost = Play_data.data[1];
+                Play_data.data[1] = Play_data.data[15];
+            }
 
+            Main_openStream();
         } else if (Main_A_equals_B(obj.type, "USER")) {
 
             Main_CheckResume(true);
@@ -16653,6 +16662,8 @@
         Play_state = Play_STATE_PLAYING;
         if (Play_isOn) Play_qualityChanged();
         if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
+
+        Main_setTimeout(Play_HideBufferDialog, 1000);
     }
 
     function Play_qualityChanged() {
@@ -20238,7 +20249,7 @@
 
         if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
-        var ishosting = Main_A_includes_B(valuesArray[1], STR_USER_HOSTING),
+        var ishosting = valuesArray[16],
             image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
         return Screens_createCell(
@@ -20328,14 +20339,17 @@
                 //TODO check more cases for problems
                 var Last_obj = OSInterface_GetLastIntentObj(),
                     obj,
-                    live_channel_call, game_channel_call,
+                    live_channel_call,
+                    host_channel_call,
+                    game_channel_call,
                     tempGame;
 
                 if (Last_obj) {
                     obj = JSON.parse(Last_obj);
                     live_channel_call = Main_A_equals_B(obj.type, "LIVE");
+                    host_channel_call = Main_A_equals_B(obj.type, "HOST");
 
-                    if (!live_channel_call) {
+                    if (!live_channel_call && !host_channel_call) {
                         game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
                         if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
@@ -20345,12 +20359,21 @@
                 var StartUser = Settings_value.start_user_screen.defaultValue;
                 var restore_playback = Settings_value.restor_playback.defaultValue;
 
-                if (live_channel_call) {
+                if (live_channel_call || host_channel_call) {
 
                     Main_values.Play_WasPlaying = 1;
 
                     Play_data = JSON.parse(JSON.stringify(Play_data_base));
-                    Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+
+                    if (live_channel_call) {
+                        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+                    } else {
+                        Play_data.data = ScreensObj_HostCellArray(obj.obj);
+                        Main_values.Play_isHost = true;
+                        Play_data.DisplaynameHost = Play_data.data[1];
+                        Play_data.data[1] = Play_data.data[15];
+                    }
+
                     StartUser = false;
                     restore_playback = true;
 
@@ -24229,7 +24252,9 @@
             '', //11 stream creat at string
             '', //12 stream creat at
             cell.target.viewers, //13
-            cell.target._id //14
+            cell.target._id, //14
+            cell.target.channel.display_name, //15
+            true //16 is hosting
         ];
     }
 
@@ -29670,7 +29695,6 @@
                             UserLiveFeedobj_CreatFeed(
                                 pos + '_' + itemsCount,
                                 cell.data,
-                                false,
                                 cell.date,
                                 cell.vodimg,
                                 (streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
@@ -30075,7 +30099,7 @@
         return div;
     }
 
-    function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg, force_VOD) {
+    function UserLiveFeedobj_CreatFeed(id, data, Extra_when, Extra_vodimg, force_VOD) {
         if (!data[1]) data[1] = data[6];
         var div = document.createElement('div');
 
@@ -30084,7 +30108,8 @@
 
         div.className = 'user_feed_thumb';
 
-        var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
+        var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)),
+            ishosting = data[16];
 
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
             UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
@@ -30627,8 +30652,7 @@
                     UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
                             UserLiveFeedobj_UserHostPos + '_' + itemsCount,
-                            ScreensObj_HostCellArray(stream),
-                            true
+                            ScreensObj_HostCellArray(stream)
                         );
 
                     itemsCount++;
