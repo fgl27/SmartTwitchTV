@@ -973,14 +973,16 @@ function Play_KeyReturn(is_vod) {
             Main_clearTimeout(Play_showWarningDialogId);
             Play_HideWarningDialog();
             Play_HideWarningMidleDialog();
-            Play_showExitDialog();
-        } else {
-            var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
-            text = Play_MultiEnable ? STR_EXIT_AGAIN_MULTI : text;
-            Main_textContent("play_dialog_exit_text", text);
-            Play_showExitDialog();
-        }
+            Play_KeyReturSetExit();
+        } else Play_KeyReturSetExit();
     }
+}
+
+function Play_KeyReturSetExit() {
+    var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
+    text = Play_MultiEnable ? STR_EXIT_AGAIN_MULTI : text;
+    Main_textContent("play_dialog_exit_text", text);
+    Play_showExitDialog();
 }
 
 function Play_CheckPreview() {
