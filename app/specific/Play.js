@@ -985,6 +985,8 @@ function Play_loadDataSuccessFake() {
     Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_qualityChanged();
     if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
+
+    Main_setTimeout(Play_HideBufferDialog, 1000);
 }
 
 function Play_qualityChanged() {
