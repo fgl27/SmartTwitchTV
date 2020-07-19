@@ -8820,8 +8820,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.227';
     var Main_version_java = 18; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 18, 2020';
-    var Main_version_web = 21; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 19, 2020';
+    var Main_version_web = 22; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -13773,6 +13773,8 @@
 
         //Side panel
         if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
+
+            if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) return false;
 
             //if side panel is showing, try to find if current stream is on side panel to keep player open
             if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
@@ -28440,18 +28442,19 @@
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-                // if (!Main_isScene2DocShown()) {
-                //     Main_Scene2Doc.style.transform = 'translateY(-1000%)';
-                //     Main_ShowElementWithEle(Main_Scene2Doc);
+                if (!Main_isScene2DocShown()) {
+                    Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+                    Main_showScene2Doc();
 
-                //     UserLiveFeed_obj[pos].AddCellsize =
-                //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+                    UserLiveFeed_obj[pos].AddCellsize =
+                        UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
-                //     Main_HideElementWithEle(Main_Scene2Doc);
-                //     Main_Scene2Doc.style.transform = 'translateY(0px)';
-                // } else
-                UserLiveFeed_obj[pos].AddCellsize =
-                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+                    Main_hideScene2Doc();
+                    Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+                } else {
+                    UserLiveFeed_obj[pos].AddCellsize =
+                        UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+                }
 
                 // if (!feedShow) {
                 //     UserLiveFeed_HideAfter();
