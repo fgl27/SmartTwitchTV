@@ -1772,7 +1772,9 @@ function ScreensObj_HostCellArray(cell) {
         '',//11 stream creat at string
         '',//12 stream creat at
         cell.target.viewers,//13
-        cell.target._id//14
+        cell.target._id,//14
+        cell.target.channel.display_name,//15
+        true//16 is hosting
     ];
 }
 

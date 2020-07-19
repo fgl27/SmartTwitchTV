@@ -51,7 +51,8 @@ public interface Constants {
             "User Live",
             "Featured",
             "Games",
-            "User Games"
+            "User Games",
+            "User Hosts",
     };
 
     int CHANNEL_TYPE_LIVE = 1;
@@ -59,6 +60,7 @@ public interface Constants {
     int CHANNEL_TYPE_FEATURED = 3;
     int CHANNEL_TYPE_GAMES = 4;
     int CHANNEL_TYPE_USER_GAMES = 5;
+    int CHANNEL_TYPE_USER_HOST = 6;
 
     int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
     int DEFAULT_HTTP_TIMEOUT = 30000;

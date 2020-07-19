@@ -1162,6 +1162,12 @@ public class PlayerActivity extends Activity {
                             Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
                     );
                     break;
+                case Constants.CHANNEL_TYPE_USER_HOST:
+                    ChannelsUtils.StartUserHost(
+                            context,
+                            Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+                    );
+                    break;
                 default:
                     break;
             }

@@ -502,7 +502,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
 
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
-    var ishosting = Main_A_includes_B(valuesArray[1], STR_USER_HOSTING),
+    var ishosting = valuesArray[16],
         image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     return Screens_createCell(
@@ -592,14 +592,17 @@ function Screens_loadDataSuccessFinish(key) {
             //TODO check more cases for problems
             var Last_obj = OSInterface_GetLastIntentObj(),
                 obj,
-                live_channel_call, game_channel_call,
+                live_channel_call,
+                host_channel_call,
+                game_channel_call,
                 tempGame;
 
             if (Last_obj) {
                 obj = JSON.parse(Last_obj);
                 live_channel_call = Main_A_equals_B(obj.type, "LIVE");
+                host_channel_call = Main_A_equals_B(obj.type, "HOST");
 
-                if (!live_channel_call) {
+                if (!live_channel_call && !host_channel_call) {
                     game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
                     if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
@@ -609,12 +612,21 @@ function Screens_loadDataSuccessFinish(key) {
             var StartUser = Settings_value.start_user_screen.defaultValue;
             var restore_playback = Settings_value.restor_playback.defaultValue;
 
-            if (live_channel_call) {
+            if (live_channel_call || host_channel_call) {
 
                 Main_values.Play_WasPlaying = 1;
 
                 Play_data = JSON.parse(JSON.stringify(Play_data_base));
-                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+
+                if (live_channel_call) {
+                    Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+                } else {
+                    Play_data.data = ScreensObj_HostCellArray(obj.obj);
+                    Main_values.Play_isHost = true;
+                    Play_data.DisplaynameHost = Play_data.data[1];
+                    Play_data.data[1] = Play_data.data[15];
+                }
+
                 StartUser = false;
                 restore_playback = true;
 

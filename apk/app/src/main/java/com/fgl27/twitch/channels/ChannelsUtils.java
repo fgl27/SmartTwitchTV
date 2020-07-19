@@ -437,6 +437,10 @@ public final class ChannelsUtils {
                 context,
                 Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
         );
+        ChannelsUtils.StartUserHost(
+                context,
+                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+        );
     }
 
     public static void StartLive(Context context) {
@@ -493,6 +497,34 @@ public final class ChannelsUtils {
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                         Constants.CHANNEL_TYPE_USER_LIVE,
                         contentObj
+                )
+        );
+    }
+
+    public static void StartUserHost(Context context, String name) {
+        List<ChannelContentObj> content = new ArrayList<>();
+
+        if (name != null) {
+
+            String url = String.format(
+                    Locale.US,
+                    "https://api.twitch.tv/api/users/%s/followed/hosting?limit=100",
+                    name
+            );
+
+            content = GetHostContent(url);
+        } else {
+            content.add(NoUserContent);
+            StartUserLive(context, content);
+        }
+
+        StartChannel(
+                context,
+                new ChannelObj(
+                        R.mipmap.ic_launcher,
+                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST],
+                        Constants.CHANNEL_TYPE_USER_HOST,
+                        content
                 )
         );
     }
@@ -568,6 +600,47 @@ public final class ChannelsUtils {
         );
     }
 
+    private static List<ChannelContentObj> GetHostContent(String url)  {
+
+        try {
+            Tools.ResponseObj response;
+
+            for (int i = 0; i < 3; i++) {
+
+                response = Tools.Internal_MethodUrl(
+                        url,
+                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        null,
+                        null,
+                        0,
+                        new String[0][2]
+                );
+
+                if (response != null) {
+
+                    if (response.getStatus() == 200) {
+
+                        JsonObject obj = parseString(response.getResponseText()).getAsJsonObject();
+
+                        if (obj.isJsonObject() && !obj.get("hosts").isJsonNull()) {
+
+                            return ProcessHostArray(obj.get("hosts").getAsJsonArray());
+                        }
+
+                        break;
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            Log.w(TAG, "GetHostContent e " + e.getMessage());
+        }
+
+        return null;
+
+    }
+
     private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort)  {
 
         try {
@@ -611,6 +684,69 @@ public final class ChannelsUtils {
 
         return null;
 
+    }
+
+    private static List<ChannelContentObj> ProcessHostArray(JsonArray Streams)  {
+        List<ChannelContentObj> content = new ArrayList<>();
+        ArrayList<String> TempArray = new ArrayList<>();
+
+        JsonObject obj;
+        JsonObject objTarget;
+        JsonObject objChannel;
+        JsonObject objPreview;
+
+        String channelId;
+        String description;
+
+        int viewers;
+        int objSize = Streams.size();
+
+        DecimalFormat decimalFormat = getDecimalFormat();
+
+        if (objSize < 1) return null;
+        else content.add(getRefreshContent());
+
+        for (int j = 0; j < objSize; j++) {
+
+            obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
+
+            if (obj.isJsonObject() && !obj.get("target").isJsonNull()) {
+                objTarget = obj.get("target").getAsJsonObject(); //Get the channel obj in position
+
+                channelId = objTarget.get("_id").getAsString();
+
+                if (!TempArray.contains(channelId)) {//Prevent add duplicated
+                    TempArray.add(channelId);
+
+                    objPreview = objTarget.get("preview_urls").getAsJsonObject();
+                    description = objTarget.get("meta_game").getAsString();
+                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
+                    viewers = objTarget.get("viewers").getAsInt();
+                    objChannel = objTarget.get("channel").getAsJsonObject();
+
+                    content.add(
+                            new ChannelContentObj(
+                                    obj.get("display_name").getAsString() + " hosting " + objChannel.get("display_name").getAsString(),
+                                    description + decimalFormat.format(viewers) + " viewers\n" + objTarget.get("title").getAsString(),
+                                    objPreview.get("large").getAsString(),
+                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
+                                    viewers,
+                                    new Gson().toJson(new PreviewObj(obj, "HOST")),
+                                    true
+                            )
+                    );
+                }
+
+            }
+        }
+
+        int contentSize = content.size();
+
+        if (contentSize > 1) {
+            Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+        }
+
+        return contentSize > 0 ? content : null;
     }
 
     private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort)  {
