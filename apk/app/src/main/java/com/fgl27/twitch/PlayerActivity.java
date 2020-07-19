@@ -1135,7 +1135,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void RefreshChannel(int Type, boolean skipToast, Context context) {
-        if (!canRunChannel) return;
+        if (!canRunChannel || Type == 0) return;
 
         ChannelHandler.post(() -> {
 
@@ -1178,7 +1178,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void RefreshChannelToast(int Type, Context context) {
-        if (!canRunChannel) return;
+        if (!canRunChannel || Type == 0) return;
 
         Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
     }
