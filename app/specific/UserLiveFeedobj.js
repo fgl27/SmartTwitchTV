@@ -397,7 +397,6 @@ function UserLiveFeedobj_History() {
                         UserLiveFeedobj_CreatFeed(
                             pos + '_' + itemsCount,
                             cell.data,
-                            false,
                             cell.date,
                             cell.vodimg,
                             (streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
@@ -794,7 +793,7 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
     return div;
 }
 
-function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg, force_VOD) {
+function UserLiveFeedobj_CreatFeed(id, data, Extra_when, Extra_vodimg, force_VOD) {
     if (!data[1]) data[1] = data[6];
     var div = document.createElement('div');
 
@@ -803,7 +802,8 @@ function UserLiveFeedobj_CreatFeed(id, data, ishosting, Extra_when, Extra_vodimg
 
     div.className = 'user_feed_thumb';
 
-    var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
+    var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)),
+        ishosting = data[16];
 
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
         UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
@@ -1344,8 +1344,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
                 UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserHostPos + '_' + itemsCount,
-                        ScreensObj_HostCellArray(stream),
-                        true
+                        ScreensObj_HostCellArray(stream)
                     );
 
                 itemsCount++;
