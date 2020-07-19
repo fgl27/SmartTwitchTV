@@ -11,7 +11,7 @@ The app has a building update check function, so whenever there is a update a re
 Apk Version 3.0.228 and up & Web Version July 19 2020
 ==============
 
-* Add **User Hosting** [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel) only for devices running Android TV 8 Oreo and up
+* Add **User Hosting** [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), this feature only works on devices running Android TV 8 Oreo and up, after install the app open it at least once so the new channel shows up on the available list.
 * General performance improves and bug fixes
 
 Apk Version 3.0.227 - July 18 2020
