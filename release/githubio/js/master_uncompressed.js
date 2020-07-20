@@ -6886,22 +6886,25 @@
 
     function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
-        var url;
+        var url, chat_div;
 
         try {
             data.forEach(function(emote) {
 
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
+                chat_div = emoteTemplate(url);
 
                 extraEmotes[emote.code] = {
                     code: emote.code,
                     id: emote.id,
+                    chat_div: chat_div,
                     '4x': url
                 };
 
                 extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                     code: emote.code,
                     id: emote.id,
+                    chat_div: chat_div,
                     '4x': url,
                     div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
                 };
@@ -6949,7 +6952,7 @@
 
                     action.tiers.forEach(
                         function(tier) {
-                            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
+                            cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(tier.images.light.animated['4']);
                         }
                     );
                 }
@@ -6968,6 +6971,7 @@
             extraEmotes[property] = {
                 code: obj[property].code,
                 id: obj[property].id,
+                chat_div: obj[property].chat_div,
                 '4x': obj[property]['4x']
             };
         }
@@ -7004,7 +7008,7 @@
         if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
         else extraEmotesDone.ffzGlobal = {};
 
-        var url, Div;
+        var url, Div, chat_div;
         try {
             Object.keys(data.sets).forEach(function(set) {
                 set = data.sets[set];
@@ -7021,10 +7025,11 @@
                         if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
                         url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+                        chat_div = emoteTemplate(url);
 
                         extraEmotes[emoticon.name] = {
                             code: emoticon.name,
-                            id: emoticon.id,
+                            chat_div: chat_div,
                             '4x': url
                         };
 
@@ -7035,6 +7040,7 @@
                             extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                                 code: emoticon.name,
                                 id: emoticon.id,
+                                chat_div: chat_div,
                                 '4x': url,
                                 div: Div
                             };
@@ -7042,6 +7048,7 @@
                             extraEmotesDone.ffzGlobal[emoticon.name] = {
                                 code: emoticon.name,
                                 id: emoticon.id,
+                                chat_div: chat_div,
                                 '4x': url,
                                 div: Div
                             };
@@ -8254,22 +8261,25 @@
     function Chat_loadEmotesbttvGlobal(data) {
         extraEmotesDone.bttvGlobal = {};
 
-        var url;
+        var url, chat_div;
 
         try {
             data.forEach(function(emote) {
 
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
+                chat_div = emoteTemplate(url);
 
                 extraEmotes[emote.code] = {
                     code: emote.code,
                     id: emote.id,
+                    chat_div: chat_div,
                     '4x': url
                 };
 
                 extraEmotesDone.bttvGlobal[emote.code] = {
                     code: emote.code,
                     id: emote.id,
+                    chat_div: chat_div,
                     '4x': url,
                     div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
                 };
@@ -31414,13 +31424,6 @@
         return message;
     }; // The bellow are some function or adaptations of function from
     // © NightDev 2016 https://www.nightdev.com/kapchat/
-    function extraEmoticonize(message, emote) {
-        return message.replace(emote.code, extraEmoteTemplate(emote));
-    }
-
-    function extraEmoteTemplate(emote) {
-        return '<img class="emoticon" alt="" src="' + emote['4x'] + '"/>';
-    }
 
     function emoteURL(id) {
         return 'https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0'; //emotes 3.0 === 4.0
@@ -31435,51 +31438,31 @@
     }
 
     function extraMessageTokenize(message, chat_number, bits) {
-        var tokenizedString = message.split(' '),
+        var SplittedMessage = message.split(' '),
             emote,
             cheer,
             i = 0,
-            len = tokenizedString.length;
+            len = SplittedMessage.length;
 
         for (i; i < len; i++) {
-            message = tokenizedString[i];
 
-            cheer = bits ? findCheerInToken(message, chat_number) : 0;
+            cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
 
             if (cheer) {
-                tokenizedString[i] = emoteTemplate(cheer);
-                continue;
+
+                SplittedMessage[i] = cheer;
+
+            } else {
+
+                emote = extraEmotes[SplittedMessage[i]];
+                SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+
             }
 
-            emote = extraEmotes[message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '')] || extraEmotes[message];
-
-            tokenizedString[i] = emote ? extraEmoticonize(message, emote) : mescape(message);
         }
 
-        return tokenizedString.join(' ') + (bits ? (' ' + bits + ' bits') : '');
+        return SplittedMessage.join(' ') + (bits ? (' ' + bits + ' bits') : '');
     }
-
-    // function calculateColorReplacement(color) {
-    //     // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-    //     var rgb = "#",
-    //         brightness = "0.5", c, i;
-
-    //     if (color === '#000000') return "#2cffa2";//Black can't be see on a black background
-
-    //     color = String(color).replace(/[^0-9a-f]/gi, '');
-    //     if (color.length < 6) {
-    //         color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-    //     }
-
-    //     for (i = 0; i < 3; i++) {
-    //         c = parseInt(color.substr(i * 2, 2), 16);
-    //         if (c < 10) c = 10;
-    //         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
-    //         rgb += ("00" + c).substr(c.length);
-    //     }
-
-    //     return rgb;
-    // }
 
     function findCheerInToken(message, chat_number) {
         var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
@@ -31565,7 +31548,30 @@
         tokenizedMessage.unshift(punycode.ucs2.encode(message));
 
         return tokenizedMessage;
-    } /*! https://mths.be/punycode v1.4.1 by @mathias */
+    }
+
+    // function calculateColorReplacement(color) {
+    //     // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+    //     var rgb = "#",
+    //         brightness = "0.5", c, i;
+
+    //     if (color === '#000000') return "#2cffa2";//Black can't be see on a black background
+
+    //     color = String(color).replace(/[^0-9a-f]/gi, '');
+    //     if (color.length < 6) {
+    //         color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+    //     }
+
+    //     for (i = 0; i < 3; i++) {
+    //         c = parseInt(color.substr(i * 2, 2), 16);
+    //         if (c < 10) c = 10;
+    //         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
+    //         rgb += ("00" + c).substr(c.length);
+    //     }
+
+    //     return rgb;
+    // }
+    /*! https://mths.be/punycode v1.4.1 by @mathias */
 
     // https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
     // https://cdnjs.com/libraries/punycode
