@@ -392,22 +392,25 @@ function ChatLive_loadEmotesbttv(data, chat_number) {
 
 function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
-    var url;
+    var url, chat_div;
 
     try {
         data.forEach(function(emote) {
 
             url = ChatLive_Base_BTTV_url + emote.id + '/3x';
+            chat_div = emoteTemplate(url);
 
             extraEmotes[emote.code] = {
                 code: emote.code,
                 id: emote.id,
+                chat_div: chat_div,
                 '4x': url
             };
 
             extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                 code: emote.code,
                 id: emote.id,
+                chat_div: chat_div,
                 '4x': url,
                 div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
             };
@@ -455,7 +458,7 @@ function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
 
                 action.tiers.forEach(
                     function(tier) {
-                        cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = tier.images.light.animated['4'];
+                        cheers[ChatLive_selectedChannel_id[chat_number]][action.prefix][tier.min_bits] = emoteTemplate(tier.images.light.animated['4']);
                     }
                 );
             }
@@ -474,6 +477,7 @@ function ChatLive_updateExtraEmotes(obj) {
         extraEmotes[property] = {
             code: obj[property].code,
             id: obj[property].id,
+            chat_div: obj[property].chat_div,
             '4x': obj[property]['4x']
         };
     }
@@ -510,7 +514,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
     if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
     else extraEmotesDone.ffzGlobal = {};
 
-    var url, Div;
+    var url, Div, chat_div;
     try {
         Object.keys(data.sets).forEach(function(set) {
             set = data.sets[set];
@@ -527,10 +531,11 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                     if (emoticon.urls[2] && typeof emoticon.urls[2] !== 'string') return;
 
                     url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
+                    chat_div = emoteTemplate(url);
 
                     extraEmotes[emoticon.name] = {
                         code: emoticon.name,
-                        id: emoticon.id,
+                        chat_div: chat_div,
                         '4x': url
                     };
 
@@ -541,6 +546,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                         extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                             code: emoticon.name,
                             id: emoticon.id,
+                            chat_div: chat_div,
                             '4x': url,
                             div: Div
                         };
@@ -548,6 +554,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                         extraEmotesDone.ffzGlobal[emoticon.name] = {
                             code: emoticon.name,
                             id: emoticon.id,
+                            chat_div: chat_div,
                             '4x': url,
                             div: Div
                         };

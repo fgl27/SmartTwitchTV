@@ -181,22 +181,25 @@ function Chat_loadEmotesSuccessBttv(data) {
 function Chat_loadEmotesbttvGlobal(data) {
     extraEmotesDone.bttvGlobal = {};
 
-    var url;
+    var url, chat_div;
 
     try {
         data.forEach(function(emote) {
 
             url = ChatLive_Base_BTTV_url + emote.id + '/3x';
+            chat_div = emoteTemplate(url);
 
             extraEmotes[emote.code] = {
                 code: emote.code,
                 id: emote.id,
+                chat_div: chat_div,
                 '4x': url
             };
 
             extraEmotesDone.bttvGlobal[emote.code] = {
                 code: emote.code,
                 id: emote.id,
+                chat_div: chat_div,
                 '4x': url,
                 div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
             };

@@ -1,12 +1,5 @@
 // The bellow are some function or adaptations of function from
 // © NightDev 2016 https://www.nightdev.com/kapchat/
-function extraEmoticonize(message, emote) {
-    return message.replace(emote.code, extraEmoteTemplate(emote));
-}
-
-function extraEmoteTemplate(emote) {
-    return '<img class="emoticon" alt="" src="' + emote['4x'] + '"/>';
-}
 
 function emoteURL(id) {
     return 'https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0';//emotes 3.0 === 4.0
@@ -21,51 +14,31 @@ function mescape(message) {
 }
 
 function extraMessageTokenize(message, chat_number, bits) {
-    var tokenizedString = message.split(' '),
+    var SplittedMessage = message.split(' '),
         emote,
         cheer,
         i = 0,
-        len = tokenizedString.length;
+        len = SplittedMessage.length;
 
     for (i; i < len; i++) {
-        message = tokenizedString[i];
 
-        cheer = bits ? findCheerInToken(message, chat_number) : 0;
+        cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
 
         if (cheer) {
-            tokenizedString[i] = emoteTemplate(cheer);
-            continue;
+
+            SplittedMessage[i] = cheer;
+
+        } else {
+
+            emote = extraEmotes[SplittedMessage[i]];
+            SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
+
         }
 
-        emote = extraEmotes[message.replace(/(^[~!@#$%\^&\*\(\)]+|[~!@#$%\^&\*\(\)]+$)/g, '')] || extraEmotes[message];
-
-        tokenizedString[i] = emote ? extraEmoticonize(message, emote) : mescape(message);
     }
 
-    return tokenizedString.join(' ') + (bits ? (' ' + bits + ' bits') : '');
+    return SplittedMessage.join(' ') + (bits ? (' ' + bits + ' bits') : '');
 }
-
-// function calculateColorReplacement(color) {
-//     // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-//     var rgb = "#",
-//         brightness = "0.5", c, i;
-
-//     if (color === '#000000') return "#2cffa2";//Black can't be see on a black background
-
-//     color = String(color).replace(/[^0-9a-f]/gi, '');
-//     if (color.length < 6) {
-//         color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-//     }
-
-//     for (i = 0; i < 3; i++) {
-//         c = parseInt(color.substr(i * 2, 2), 16);
-//         if (c < 10) c = 10;
-//         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
-//         rgb += ("00" + c).substr(c.length);
-//     }
-
-//     return rgb;
-// }
 
 function findCheerInToken(message, chat_number) {
     var cheerPrefixes = Object.keys(cheers[ChatLive_selectedChannel_id[chat_number]]),
@@ -151,3 +124,25 @@ function emoticonize(message, emotes) {
 
     return tokenizedMessage;
 }
+
+// function calculateColorReplacement(color) {
+//     // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+//     var rgb = "#",
+//         brightness = "0.5", c, i;
+
+//     if (color === '#000000') return "#2cffa2";//Black can't be see on a black background
+
+//     color = String(color).replace(/[^0-9a-f]/gi, '');
+//     if (color.length < 6) {
+//         color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+//     }
+
+//     for (i = 0; i < 3; i++) {
+//         c = parseInt(color.substr(i * 2, 2), 16);
+//         if (c < 10) c = 10;
+//         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
+//         rgb += ("00" + c).substr(c.length);
+//     }
+
+//     return rgb;
+// }
