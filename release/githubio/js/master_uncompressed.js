@@ -5315,7 +5315,7 @@
             emojis[i].id = i;
             emojis[i].div =
                 ChatLiveControls_SetEmoteDiv(
-                    i + emojis[i].tags, //Add i + ... to make sure is uniq and easy sorting
+                    i + emojis[i].tags, //Add i + ... to make sure is uniq and don't combine id and tag to make easy sorting
                     emojis[i].unicode,
                     twemoji.parseIcon(emojis[i].unicode),
                     emojis[i].tags
@@ -6138,11 +6138,12 @@
                         if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
                         url = emoteURL(emoticon.id);
-                        id = emoticon.code + emoticon.id;
+                        id = emoticon.code + emoticon.id; //combine code and id to make t uniq
 
                         extraEmotes[emoticon.code] = {
                             code: emoticon.code,
                             id: id,
+                            chat_div: emoteTemplate(url),
                             '4x': url
                         };
 
@@ -8178,7 +8179,7 @@
     var Main_stringVersion_Min = '.229';
     var Main_version_java = 20; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 21, 2020';
-    var Main_version_web = 24; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 25; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
