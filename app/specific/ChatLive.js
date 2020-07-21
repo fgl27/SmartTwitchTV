@@ -328,7 +328,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
                     if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
                     url = emoteURL(emoticon.id);
-                    id = emoticon.code + emoticon.id;
+                    id = emoticon.code + emoticon.id;//combine code and id to make t uniq
 
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,

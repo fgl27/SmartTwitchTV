@@ -5231,11 +5231,14 @@
         ChatLiveControls_EmotesTotal = array.length;
         ChatLiveControls_EmotesPos = 0;
         ChatLiveControls_EmotesArray = [];
+        var innerHTML = '';
 
         for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-            ChatLiveControls_EmotesArray.push(array[i].code + array[i].id);
-            div_holder.appendChild(array[i].div);
+            ChatLiveControls_EmotesArray.push(array[i].id);
+            innerHTML += array[i].div;
         }
+
+        div_holder.innerHTML = innerHTML;
 
         ChatLiveControls_ShowEmotes();
     }
@@ -5280,51 +5283,27 @@
         ChatLiveControls_EmotesTotal = array.length;
         ChatLiveControls_EmotesPos = 0;
         ChatLiveControls_EmotesArray = [];
+        var innerHTML = '';
 
         for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
             ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
-            div_holder.appendChild(array[i].div);
+            innerHTML += array[i].div;
         }
+
+        div_holder.innerHTML = innerHTML;
 
         ChatLiveControls_ShowEmotes();
     }
 
-    function ChatLiveControls_SetEmoteDiv(obj) {
+    function ChatLiveControls_SetEmoteDiv(id, data, url, code) {
 
-        var div = document.createElement('div'),
-            id = obj.code + obj.id;
-
-        div.setAttribute('id', 'chat_emotes' + id);
-        div.setAttribute(Main_DataAttribute, obj.code);
-        div.classList.add('chat_emotes_img_holder');
-
-        div.innerHTML = '<div ><div id="chat_emotes_img' + id +
-            '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + obj['4x'] +
-            '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
-            '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
-            '" class="chat_emotes_name opacity_zero">' + obj.code + '</div></div></div>';
-
-        return div;
-    }
-
-    function ChatLiveControls_SetEmojiDiv(obj) {
-
-        var div = document.createElement('div'),
-            id = obj.id + obj.tags;
-
-        div.setAttribute('id', 'chat_emotes' + id);
-        div.setAttribute(Main_DataAttribute, obj.unicode);
-        div.classList.add('chat_emotes_img_holder');
-
-        var url = twemoji.parseIcon(obj.unicode);
-
-        div.innerHTML = '<div ><div id="chat_emotes_img' + id +
+        return '<div id="' + 'chat_emotes' + id + '" ' + Main_DataAttribute + '="' + data +
+            '" class="chat_emotes_img_holder" ><div id="chat_emotes_img' + id +
             '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
             '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
-            '" class="chat_emotes_name opacity_zero">' + obj.tags + '</div></div></div>';
+            '" class="chat_emotes_name opacity_zero">' + code + '</div></div></div>';
 
-        return div;
     }
 
     function ChatLiveControls_SetEmojisObj() {
@@ -5334,7 +5313,13 @@
             len = emojis.length;
         for (i; i < len; i++) {
             emojis[i].id = i;
-            emojis[i].div = ChatLiveControls_SetEmojiDiv(emojis[i]);
+            emojis[i].div =
+                ChatLiveControls_SetEmoteDiv(
+                    i + emojis[i].tags, //Add i + ... to make sure is uniq and easy sorting
+                    emojis[i].unicode,
+                    twemoji.parseIcon(emojis[i].unicode),
+                    emojis[i].tags
+                );
         }
     }
 
@@ -6137,7 +6122,7 @@
             data = JSON.parse(data);
             if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
 
-            var url;
+            var url, id;
 
             Object.keys(data.emoticon_sets).forEach(function(set) {
                 set = data.emoticon_sets[set];
@@ -6153,18 +6138,24 @@
                         if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
                         url = emoteURL(emoticon.id);
+                        id = emoticon.code + emoticon.id;
 
                         extraEmotes[emoticon.code] = {
                             code: emoticon.code,
-                            id: emoticon.id,
+                            id: id,
                             '4x': url
                         };
 
                         userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                             code: emoticon.code,
-                            id: emoticon.id,
+                            id: id,
                             '4x': url,
-                            div: ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code])
+                            div: ChatLiveControls_SetEmoteDiv(
+                                id,
+                                emoticon.code,
+                                url,
+                                emoticon.code
+                            )
                         };
 
                     });
@@ -6217,27 +6208,33 @@
 
     function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
-        var url, chat_div;
+        var url, chat_div, id;
 
         try {
             data.forEach(function(emote) {
 
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
                 chat_div = emoteTemplate(url);
+                id = emote.code + emote.id;
 
                 extraEmotes[emote.code] = {
                     code: emote.code,
-                    id: emote.id,
+                    id: id,
                     chat_div: chat_div,
                     '4x': url
                 };
 
                 extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                     code: emote.code,
-                    id: emote.id,
+                    id: id,
                     chat_div: chat_div,
                     '4x': url,
-                    div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
+                    div: ChatLiveControls_SetEmoteDiv(
+                        id,
+                        emote.code,
+                        url,
+                        emote.code
+                    )
                 };
 
             });
@@ -6339,7 +6336,8 @@
         if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
         else extraEmotesDone.ffzGlobal = {};
 
-        var url, Div, chat_div;
+        var url, Div, chat_div, id;
+
         try {
             Object.keys(data.sets).forEach(function(set) {
                 set = data.sets[set];
@@ -6357,20 +6355,27 @@
 
                         url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
                         chat_div = emoteTemplate(url);
+                        id = emoticon.name + emoticon.id;
 
                         extraEmotes[emoticon.name] = {
                             code: emoticon.name,
+                            id: id,
                             chat_div: chat_div,
                             '4x': url
                         };
 
-                        Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
+                        Div = ChatLiveControls_SetEmoteDiv(
+                            id,
+                            emoticon.name,
+                            url,
+                            emoticon.name
+                        );
 
                         //Don't copy to prevent shallow clone
                         if (!skipChannel) {
                             extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                                 code: emoticon.name,
-                                id: emoticon.id,
+                                id: id,
                                 chat_div: chat_div,
                                 '4x': url,
                                 div: Div
@@ -6378,7 +6383,7 @@
                         } else {
                             extraEmotesDone.ffzGlobal[emoticon.name] = {
                                 code: emoticon.name,
-                                id: emoticon.id,
+                                id: id,
                                 chat_div: chat_div,
                                 '4x': url,
                                 div: Div
@@ -7592,27 +7597,33 @@
     function Chat_loadEmotesbttvGlobal(data) {
         extraEmotesDone.bttvGlobal = {};
 
-        var url, chat_div;
+        var url, chat_div, id;
 
         try {
             data.forEach(function(emote) {
 
                 url = ChatLive_Base_BTTV_url + emote.id + '/3x';
                 chat_div = emoteTemplate(url);
+                id = emote.code + emote.id;
 
                 extraEmotes[emote.code] = {
                     code: emote.code,
-                    id: emote.id,
+                    id: id,
                     chat_div: chat_div,
                     '4x': url
                 };
 
                 extraEmotesDone.bttvGlobal[emote.code] = {
                     code: emote.code,
-                    id: emote.id,
+                    id: id,
                     chat_div: chat_div,
                     '4x': url,
-                    div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
+                    div: ChatLiveControls_SetEmoteDiv(
+                        id,
+                        emote.code,
+                        url,
+                        emote.code
+                    )
                 };
             });
         } catch (e) {
@@ -8166,8 +8177,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.229';
     var Main_version_java = 20; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 19, 2020';
-    var Main_version_web = 23; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 21, 2020';
+    var Main_version_web = 24; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
