@@ -423,7 +423,7 @@ function ChatLiveControls_SetEmojisObj() {
         emojis[i].id = i;
         emojis[i].div =
             ChatLiveControls_SetEmoteDiv(
-                i + emojis[i].tags,//Add i + ... to make sure is uniq and easy sorting
+                i + emojis[i].tags,//Add i + ... to make sure is uniq and don't combine id and tag to make easy sorting
                 emojis[i].unicode,
                 twemoji.parseIcon(emojis[i].unicode),
                 emojis[i].tags
