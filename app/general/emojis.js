@@ -1372,188 +1372,29 @@ var emojis = [
 		"unicode": "🏴‍☠️",
 		"tags": "flag-pirate"
 	}, {
-		"unicode": "🇦🇨",
-		"tags": "AC",
-	}, {
-		"unicode": "🇦🇩",
-		"tags": "AD",
-	}, {
-		"unicode": "🇦🇪",
-		"tags": "AE",
-	}, {
-		"unicode": "🇦🇫",
-		"tags": "AF",
-	}, {
-		"unicode": "🇦🇬",
-		"tags": "AG",
-	}, {
-		"unicode": "🇦🇮",
-		"tags": "AI",
-	}, {
-		"unicode": "🇦🇱",
-		"tags": "AL",
-	}, {
-		"unicode": "🇦🇲",
-		"tags": "AM",
-	}, {
-		"unicode": "🇦🇴",
-		"tags": "AO",
-	}, {
-		"unicode": "🇦🇶",
-		"tags": "AQ",
-	}, {
 		"unicode": "🇦🇷",
 		"tags": "AR",
-	}, {
-		"unicode": "🇦🇸",
-		"tags": "AS",
-	}, {
-		"unicode": "🇦🇹",
-		"tags": "AT",
 	}, {
 		"unicode": "🇦🇺",
 		"tags": "AU",
 	}, {
-		"unicode": "🇦🇼",
-		"tags": "AW",
-	}, {
-		"unicode": "🇦🇽",
-		"tags": "AX",
-	}, {
-		"unicode": "🇦🇿",
-		"tags": "AZ",
-	}, {
-		"unicode": "🇧🇦",
-		"tags": "BA",
-	}, {
-		"unicode": "🇧🇧",
-		"tags": "BB",
-	}, {
-		"unicode": "🇧🇩",
-		"tags": "BD",
-	}, {
-		"unicode": "🇧🇪",
-		"tags": "BE",
-	}, {
-		"unicode": "🇧🇫",
-		"tags": "BF",
-	}, {
 		"unicode": "🇧🇬",
 		"tags": "BG",
-	}, {
-		"unicode": "🇧🇭",
-		"tags": "BH",
-	}, {
-		"unicode": "🇧🇮",
-		"tags": "BI",
-	}, {
-		"unicode": "🇧🇯",
-		"tags": "BJ",
-	}, {
-		"unicode": "🇧🇱",
-		"tags": "BL",
-	}, {
-		"unicode": "🇧🇲",
-		"tags": "BM",
-	}, {
-		"unicode": "🇧🇳",
-		"tags": "BN",
-	}, {
-		"unicode": "🇧🇴",
-		"tags": "BO",
-	}, {
-		"unicode": "🇧🇶",
-		"tags": "BQ",
 	}, {
 		"unicode": "🇧🇷",
 		"tags": "BR",
 	}, {
-		"unicode": "🇧🇸",
-		"tags": "BS",
-	}, {
-		"unicode": "🇧🇹",
-		"tags": "BT",
-	}, {
-		"unicode": "🇧🇻",
-		"tags": "BV",
-	}, {
-		"unicode": "🇧🇼",
-		"tags": "BW",
-	}, {
-		"unicode": "🇧🇾",
-		"tags": "BY",
-	}, {
-		"unicode": "🇧🇿",
-		"tags": "BZ",
-	}, {
 		"unicode": "🇨🇦",
 		"tags": "CA",
 	}, {
-		"unicode": "🇨🇨",
-		"tags": "CC",
-	}, {
-		"unicode": "🇨🇩",
-		"tags": "CD",
-	}, {
-		"unicode": "🇨🇫",
-		"tags": "CF",
-	}, {
-		"unicode": "🇨🇬",
-		"tags": "CG",
-	}, {
-		"unicode": "🇨🇭",
-		"tags": "CH",
-	}, {
-		"unicode": "🇨🇮",
-		"tags": "CI",
-	}, {
-		"unicode": "🇨🇰",
-		"tags": "CK",
-	}, {
-		"unicode": "🇨🇱",
-		"tags": "CL",
-	}, {
-		"unicode": "🇨🇲",
-		"tags": "CM",
-	}, {
 		"unicode": "🇨🇳",
 		"tags": "CN",
-	}, {
-		"unicode": "🇨🇴",
-		"tags": "CO",
-	}, {
-		"unicode": "🇨🇵",
-		"tags": "CP",
-	}, {
-		"unicode": "🇨🇷",
-		"tags": "CR",
-	}, {
-		"unicode": "🇨🇺",
-		"tags": "CU",
-	}, {
-		"unicode": "🇨🇻",
-		"tags": "CV",
-	}, {
-		"unicode": "🇨🇼",
-		"tags": "CW",
-	}, {
-		"unicode": "🇨🇽",
-		"tags": "CX",
-	}, {
-		"unicode": "🇨🇾",
-		"tags": "CY",
 	}, {
 		"unicode": "🇨🇿",
 		"tags": "CZ",
 	}, {
 		"unicode": "🇩🇪",
 		"tags": "DE",
-	}, {
-		"unicode": "🇩🇬",
-		"tags": "DG",
-	}, {
-		"unicode": "🇩🇯",
-		"tags": "DJ",
 	}, {
 		"unicode": "🇩🇰",
 		"tags": "DK",
@@ -1573,182 +1414,29 @@ var emojis = [
 		"unicode": "🇪🇨",
 		"tags": "EC",
 	}, {
-		"unicode": "🇪🇪",
-		"tags": "EE",
-	}, {
-		"unicode": "🇪🇬",
-		"tags": "EG",
-	}, {
-		"unicode": "🇪🇭",
-		"tags": "EH",
-	}, {
-		"unicode": "🇪🇷",
-		"tags": "ER",
-	}, {
 		"unicode": "🇪🇸",
 		"tags": "ES",
-	}, {
-		"unicode": "🇪🇹",
-		"tags": "ET",
-	}, {
-		"unicode": "🇪🇺",
-		"tags": "EU",
 	}, {
 		"unicode": "🇫🇮",
 		"tags": "FI",
 	}, {
-		"unicode": "🇫🇯",
-		"tags": "FJ",
-	}, {
-		"unicode": "🇫🇰",
-		"tags": "FK",
-	}, {
-		"unicode": "🇫🇲",
-		"tags": "FM",
-	}, {
-		"unicode": "🇫🇴",
-		"tags": "FO",
-	}, {
 		"unicode": "🇫🇷",
 		"tags": "FR",
-	}, {
-		"unicode": "🇬🇦",
-		"tags": "GA",
 	}, {
 		"unicode": "🇬🇧",
 		"tags": "GB",
 	}, {
-		"unicode": "🇬🇩",
-		"tags": "GD",
-	}, {
-		"unicode": "🇬🇪",
-		"tags": "GE",
-	}, {
-		"unicode": "🇬🇫",
-		"tags": "GF",
-	}, {
-		"unicode": "🇬🇬",
-		"tags": "GG",
-	}, {
-		"unicode": "🇬🇭",
-		"tags": "GH",
-	}, {
-		"unicode": "🇬🇮",
-		"tags": "GI",
-	}, {
-		"unicode": "🇬🇱",
-		"tags": "GL",
-	}, {
-		"unicode": "🇬🇲",
-		"tags": "GM",
-	}, {
-		"unicode": "🇬🇳",
-		"tags": "GN",
-	}, {
-		"unicode": "🇬🇵",
-		"tags": "GP",
-	}, {
-		"unicode": "🇬🇶",
-		"tags": "GQ",
-	}, {
-		"unicode": "🇬🇷",
-		"tags": "GR",
-	}, {
-		"unicode": "🇬🇸",
-		"tags": "GS",
-	}, {
-		"unicode": "🇬🇹",
-		"tags": "GT",
-	}, {
-		"unicode": "🇬🇺",
-		"tags": "GU",
-	}, {
-		"unicode": "🇬🇼",
-		"tags": "GW",
-	}, {
-		"unicode": "🇬🇾",
-		"tags": "GY",
-	}, {
 		"unicode": "🇭🇰",
 		"tags": "HK",
-	}, {
-		"unicode": "🇭🇲",
-		"tags": "HM",
-	}, {
-		"unicode": "🇭🇳",
-		"tags": "HN",
-	}, {
-		"unicode": "🇭🇷",
-		"tags": "HR",
-	}, {
-		"unicode": "🇭🇹",
-		"tags": "HT",
-	}, {
-		"unicode": "🇭🇺",
-		"tags": "HU",
-	}, {
-		"unicode": "🇮🇨",
-		"tags": "IC",
-	}, {
-		"unicode": "🇮🇩",
-		"tags": "ID",
-	}, {
-		"unicode": "🇮🇪",
-		"tags": "IE",
 	}, {
 		"unicode": "🇮🇱",
 		"tags": "IL",
 	}, {
-		"unicode": "🇮🇲",
-		"tags": "IM",
-	}, {
-		"unicode": "🇮🇳",
-		"tags": "IN",
-	}, {
-		"unicode": "🇮🇴",
-		"tags": "IO",
-	}, {
-		"unicode": "🇮🇶",
-		"tags": "IQ",
-	}, {
-		"unicode": "🇮🇷",
-		"tags": "IR",
-	}, {
-		"unicode": "🇮🇸",
-		"tags": "IS",
-	}, {
 		"unicode": "🇮🇹",
 		"tags": "IT",
 	}, {
-		"unicode": "🇯🇪",
-		"tags": "JE",
-	}, {
-		"unicode": "🇯🇲",
-		"tags": "JM",
-	}, {
-		"unicode": "🇯🇴",
-		"tags": "JO",
-	}, {
 		"unicode": "🇯🇵",
-		"tags": "JP",
-	}, {
-		"unicode": "🇰🇪",
-		"tags": "KE",
-	}, {
-		"unicode": "🇰🇬",
-		"tags": "KG",
-	}, {
-		"unicode": "🇰🇭",
-		"tags": "KH",
-	}, {
-		"unicode": "🇰🇮",
-		"tags": "KI",
-	}, {
-		"unicode": "🇰🇲",
-		"tags": "KM",
-	}, {
-		"unicode": "🇰🇳",
-		"tags": "KN",
+		"tags": "JA",
 	}, {
 		"unicode": "🇰🇵",
 		"tags": "KP",
@@ -1756,394 +1444,37 @@ var emojis = [
 		"unicode": "🇰🇷",
 		"tags": "KR",
 	}, {
-		"unicode": "🇰🇼",
-		"tags": "KW",
-	}, {
-		"unicode": "🇰🇾",
-		"tags": "KY",
-	}, {
-		"unicode": "🇰🇿",
-		"tags": "KZ",
-	}, {
-		"unicode": "🇱🇦",
-		"tags": "LA",
-	}, {
-		"unicode": "🇱🇧",
-		"tags": "LB",
-	}, {
-		"unicode": "🇱🇨",
-		"tags": "LC",
-	}, {
-		"unicode": "🇱🇮",
-		"tags": "LI",
-	}, {
-		"unicode": "🇱🇰",
-		"tags": "LK",
-	}, {
-		"unicode": "🇱🇷",
-		"tags": "LR",
-	}, {
-		"unicode": "🇱🇸",
-		"tags": "LS",
-	}, {
-		"unicode": "🇱🇹",
-		"tags": "LT",
-	}, {
-		"unicode": "🇱🇺",
-		"tags": "LU",
-	}, {
-		"unicode": "🇱🇻",
-		"tags": "LV",
-	}, {
-		"unicode": "🇱🇾",
-		"tags": "LY",
-	}, {
-		"unicode": "🇲🇦",
-		"tags": "MA",
-	}, {
-		"unicode": "🇲🇨",
-		"tags": "MC",
-	}, {
-		"unicode": "🇲🇩",
-		"tags": "MD",
-	}, {
-		"unicode": "🇲🇪",
-		"tags": "ME",
-	}, {
-		"unicode": "🇲🇫",
-		"tags": "MF",
-	}, {
-		"unicode": "🇲🇬",
-		"tags": "MG",
-	}, {
-		"unicode": "🇲🇭",
-		"tags": "MH",
-	}, {
-		"unicode": "🇲🇰",
-		"tags": "MK",
-	}, {
-		"unicode": "🇲🇱",
-		"tags": "ML",
-	}, {
-		"unicode": "🇲🇲",
-		"tags": "MM",
-	}, {
-		"unicode": "🇲🇳",
-		"tags": "MN",
-	}, {
-		"unicode": "🇲🇴",
-		"tags": "MO",
-	}, {
-		"unicode": "🇲🇵",
-		"tags": "MP",
-	}, {
-		"unicode": "🇲🇶",
-		"tags": "MQ",
-	}, {
-		"unicode": "🇲🇷",
-		"tags": "MR",
-	}, {
-		"unicode": "🇲🇸",
-		"tags": "MS",
-	}, {
-		"unicode": "🇲🇹",
-		"tags": "MT",
-	}, {
-		"unicode": "🇲🇺",
-		"tags": "MU",
-	}, {
-		"unicode": "🇲🇻",
-		"tags": "MV",
-	}, {
-		"unicode": "🇲🇼",
-		"tags": "MW",
-	}, {
-		"unicode": "🇲🇽",
-		"tags": "MX",
-	}, {
-		"unicode": "🇲🇾",
-		"tags": "MY",
-	}, {
-		"unicode": "🇲🇿",
-		"tags": "MZ",
-	}, {
-		"unicode": "🇳🇦",
-		"tags": "NA",
-	}, {
-		"unicode": "🇳🇨",
-		"tags": "NC",
-	}, {
-		"unicode": "🇳🇪",
-		"tags": "NE",
-	}, {
-		"unicode": "🇳🇫",
-		"tags": "NF",
-	}, {
-		"unicode": "🇳🇬",
-		"tags": "NG",
-	}, {
-		"unicode": "🇳🇮",
-		"tags": "NI",
-	}, {
 		"unicode": "🇳🇱",
 		"tags": "NL",
 	}, {
 		"unicode": "🇳🇴",
 		"tags": "NO",
 	}, {
-		"unicode": "🇳🇵",
-		"tags": "NP",
-	}, {
-		"unicode": "🇳🇷",
-		"tags": "NR",
-	}, {
-		"unicode": "🇳🇺",
-		"tags": "NU",
-	}, {
-		"unicode": "🇳🇿",
-		"tags": "NZ",
-	}, {
-		"unicode": "🇴🇲",
-		"tags": "OM",
-	}, {
-		"unicode": "🇵🇦",
-		"tags": "PA",
-	}, {
-		"unicode": "🇵🇪",
-		"tags": "PE",
-	}, {
-		"unicode": "🇵🇫",
-		"tags": "PF",
-	}, {
-		"unicode": "🇵🇬",
-		"tags": "PG",
-	}, {
-		"unicode": "🇵🇭",
-		"tags": "PH",
-	}, {
-		"unicode": "🇵🇰",
-		"tags": "PK",
-	}, {
 		"unicode": "🇵🇱",
 		"tags": "PL",
-	}, {
-		"unicode": "🇵🇲",
-		"tags": "PM",
-	}, {
-		"unicode": "🇵🇳",
-		"tags": "PN",
-	}, {
-		"unicode": "🇵🇷",
-		"tags": "PR",
-	}, {
-		"unicode": "🇵🇸",
-		"tags": "PS",
 	}, {
 		"unicode": "🇵🇹",
 		"tags": "PT",
 	}, {
-		"unicode": "🇵🇼",
-		"tags": "PW",
-	}, {
-		"unicode": "🇵🇾",
-		"tags": "PY",
-	}, {
-		"unicode": "🇶🇦",
-		"tags": "QA",
-	}, {
-		"unicode": "🇷🇪",
-		"tags": "RE",
-	}, {
 		"unicode": "🇷🇴",
 		"tags": "RO",
-	}, {
-		"unicode": "🇷🇸",
-		"tags": "RS",
 	}, {
 		"unicode": "🇷🇺",
 		"tags": "RU",
 	}, {
-		"unicode": "🇷🇼",
-		"tags": "RW",
-	}, {
-		"unicode": "🇸🇦",
-		"tags": "SA",
-	}, {
-		"unicode": "🇸🇧",
-		"tags": "SB",
-	}, {
-		"unicode": "🇸🇨",
-		"tags": "SC",
-	}, {
-		"unicode": "🇸🇩",
-		"tags": "SD",
-	}, {
-		"unicode": "🇸🇪",
-		"tags": "SE",
-	}, {
-		"unicode": "🇸🇬",
-		"tags": "SG",
-	}, {
-		"unicode": "🇸🇭",
-		"tags": "SH",
-	}, {
-		"unicode": "🇸🇮",
-		"tags": "SI",
-	}, {
-		"unicode": "🇸🇯",
-		"tags": "SJ",
-	}, {
 		"unicode": "🇸🇰",
 		"tags": "SK",
-	}, {
-		"unicode": "🇸🇱",
-		"tags": "SL",
-	}, {
-		"unicode": "🇸🇲",
-		"tags": "SM",
-	}, {
-		"unicode": "🇸🇳",
-		"tags": "SN",
-	}, {
-		"unicode": "🇸🇴",
-		"tags": "SO",
-	}, {
-		"unicode": "🇸🇷",
-		"tags": "SR",
-	}, {
-		"unicode": "🇸🇸",
-		"tags": "SS",
-	}, {
-		"unicode": "🇸🇹",
-		"tags": "ST",
 	}, {
 		"unicode": "🇸🇻",
 		"tags": "SV",
 	}, {
-		"unicode": "🇸🇽",
-		"tags": "SX",
-	}, {
-		"unicode": "🇸🇾",
-		"tags": "SY",
-	}, {
-		"unicode": "🇸🇿",
-		"tags": "SZ",
-	}, {
-		"unicode": "🇹🇦",
-		"tags": "TA",
-	}, {
-		"unicode": "🇹🇨",
-		"tags": "TC",
-	}, {
-		"unicode": "🇹🇩",
-		"tags": "TD",
-	}, {
-		"unicode": "🇹🇫",
-		"tags": "TF",
-	}, {
-		"unicode": "🇹🇬",
-		"tags": "TG",
-	}, {
 		"unicode": "🇹🇭",
 		"tags": "TH",
-	}, {
-		"unicode": "🇹🇯",
-		"tags": "TJ",
-	}, {
-		"unicode": "🇹🇰",
-		"tags": "TK",
-	}, {
-		"unicode": "🇹🇱",
-		"tags": "TL",
-	}, {
-		"unicode": "🇹🇲",
-		"tags": "TM",
-	}, {
-		"unicode": "🇹🇳",
-		"tags": "TN",
-	}, {
-		"unicode": "🇹🇴",
-		"tags": "TO",
 	}, {
 		"unicode": "🇹🇷",
 		"tags": "TR",
 	}, {
-		"unicode": "🇹🇹",
-		"tags": "TT",
-	}, {
-		"unicode": "🇹🇻",
-		"tags": "TV",
-	}, {
-		"unicode": "🇹🇼",
-		"tags": "TW",
-	}, {
-		"unicode": "🇹🇿",
-		"tags": "TZ",
-	}, {
-		"unicode": "🇺🇦",
-		"tags": "UA",
-	}, {
-		"unicode": "🇺🇬",
-		"tags": "UG",
-	}, {
-		"unicode": "🇺🇲",
-		"tags": "UM",
-	}, {
-		"unicode": "🇺🇳",
-		"tags": "UN",
-	}, {
-		"unicode": "🇺🇸",
-		"tags": "US",
-	}, {
-		"unicode": "🇺🇾",
-		"tags": "UY",
-	}, {
-		"unicode": "🇺🇿",
-		"tags": "UZ",
-	}, {
-		"unicode": "🇻🇦",
-		"tags": "VA",
-	}, {
-		"unicode": "🇻🇨",
-		"tags": "VC",
-	}, {
-		"unicode": "🇻🇪",
-		"tags": "VE",
-	}, {
-		"unicode": "🇻🇬",
-		"tags": "VG",
-	}, {
 		"unicode": "🇻🇮",
 		"tags": "VI",
-	}, {
-		"unicode": "🇻🇳",
-		"tags": "VN",
-	}, {
-		"unicode": "🇻🇺",
-		"tags": "VU",
-	}, {
-		"unicode": "🇼🇫",
-		"tags": "WF",
-	}, {
-		"unicode": "🇼🇸",
-		"tags": "WS",
-	}, {
-		"unicode": "🇽🇰",
-		"tags": "XK",
-	}, {
-		"unicode": "🇾🇪",
-		"tags": "YE",
-	}, {
-		"unicode": "🇾🇹",
-		"tags": "YT",
-	}, {
-		"unicode": "🇿🇦",
-		"tags": "ZA",
-	}, {
-		"unicode": "🇿🇲",
-		"tags": "ZM",
-	}, {
-		"unicode": "🇿🇼",
-		"tags": "ZW",
 	}
 ];
