@@ -333,6 +333,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,
                         id: id,
+                        chat_div: emoteTemplate(url),
                         '4x': url
                     };
 
