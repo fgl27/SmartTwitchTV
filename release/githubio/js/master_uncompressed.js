@@ -7115,6 +7115,10 @@
             // }
 
             switch (message.command) {
+                case "PRIVMSG":
+                    //Main_Log(JSON.stringify(message));
+                    ChatLive_loadChatSuccess(message, chat_number);
+                    break;
                 case "PING":
                     //Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
                     //Main_Log(message);
@@ -7166,10 +7170,6 @@
                     }
                     ChatLive_CheckRoomState(message, chat_number, true);
 
-                    break;
-                case "PRIVMSG":
-                    //Main_Log(JSON.stringify(message));
-                    ChatLive_loadChatSuccess(message, chat_number);
                     break;
                 case "USERNOTICE":
                     ChatLive_CheckIfSub(message, chat_number);
