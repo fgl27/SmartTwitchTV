@@ -549,30 +549,31 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
             //Show screen to calculated Screens_setOffset as display none doesn't allow calculation
-            var SceneNotShowing = !Main_isScene1DocShown();
+            //var SceneNotShowing = !Main_isScene1DocShown();
             var ScrollDocNotShowing = !Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc);
 
-            if (SceneNotShowing || ScrollDocNotShowing) {
-                if (SceneNotShowing) {
-                    Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
-                    Main_showScene1Doc();
-                }
-                if (ScrollDocNotShowing) {
-                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
-                    Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
-                }
+            //if (SceneNotShowing || ScrollDocNotShowing) {
+            if (ScrollDocNotShowing) {
+                // if (SceneNotShowing) {
+                //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                //     Main_showScene1Doc();
+                // }
+                //if (ScrollDocNotShowing) {
+                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
+                //}
 
                 Screens_setOffset(1, 0, key);
 
-                if (ScrollDocNotShowing) {
-                    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
-                }
+                //if (ScrollDocNotShowing) {
+                Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
+                //}
                 Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
 
-                if (SceneNotShowing) {
-                    Main_hideScene1Doc();
-                }
-                Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+                // if (SceneNotShowing) {
+                //     Main_hideScene1Doc();
+                // }
+                // Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
             } else Screens_setOffset(1, 0, key);
 
             for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {

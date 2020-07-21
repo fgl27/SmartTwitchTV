@@ -263,38 +263,38 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
         }
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
-            var feedtypeshow = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
+            var feedtypeNotshow = !Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
             //feedShow = UserLiveFeed_isFeedShow();
 
             // if (!feedShow) {
             //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             //     UserLiveFeed_Show();
             // }
-            if (!feedtypeshow) {
+            if (feedtypeNotshow) {
                 Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            if (!Main_isScene2DocShown()) {
-                Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
-                Main_showScene2Doc();
+            // if (!Main_isScene2DocShown()) {
+            //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+            //     Main_showScene2Doc();
 
-                UserLiveFeed_obj[pos].AddCellsize =
-                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+            //     UserLiveFeed_obj[pos].AddCellsize =
+            //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
-                Main_hideScene2Doc();
-                Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
-            } else {
-                UserLiveFeed_obj[pos].AddCellsize =
-                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
-            }
+            //     Main_hideScene2Doc();
+            //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+            // } else {
+            UserLiveFeed_obj[pos].AddCellsize =
+                UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+            //}
 
             // if (!feedShow) {
             //     UserLiveFeed_HideAfter();
             //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             // }
-            if (!feedtypeshow) {
+            if (feedtypeNotshow) {
                 Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
             }
