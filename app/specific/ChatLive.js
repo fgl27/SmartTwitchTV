@@ -312,7 +312,7 @@ function ChatLive_loadEmotesUserSuccess(data) {
         data = JSON.parse(data);
         if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
 
-        var url;
+        var url, id;
 
         Object.keys(data.emoticon_sets).forEach(function(set) {
             set = data.emoticon_sets[set];
@@ -328,18 +328,24 @@ function ChatLive_loadEmotesUserSuccess(data) {
                     if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
                     url = emoteURL(emoticon.id);
+                    id = emoticon.code + emoticon.id;
 
                     extraEmotes[emoticon.code] = {
                         code: emoticon.code,
-                        id: emoticon.id,
+                        id: id,
                         '4x': url
                     };
 
                     userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                         code: emoticon.code,
-                        id: emoticon.id,
+                        id: id,
                         '4x': url,
-                        div: ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.code])
+                        div: ChatLiveControls_SetEmoteDiv(
+                            id,
+                            emoticon.code,
+                            url,
+                            emoticon.code
+                        )
                     };
 
                 });
@@ -392,27 +398,33 @@ function ChatLive_loadEmotesbttv(data, chat_number) {
 
 function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
-    var url, chat_div;
+    var url, chat_div, id;
 
     try {
         data.forEach(function(emote) {
 
             url = ChatLive_Base_BTTV_url + emote.id + '/3x';
             chat_div = emoteTemplate(url);
+            id = emote.code + emote.id;
 
             extraEmotes[emote.code] = {
                 code: emote.code,
-                id: emote.id,
+                id: id,
                 chat_div: chat_div,
                 '4x': url
             };
 
             extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]][emote.code] = {
                 code: emote.code,
-                id: emote.id,
+                id: id,
                 chat_div: chat_div,
                 '4x': url,
-                div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
+                div: ChatLiveControls_SetEmoteDiv(
+                    id,
+                    emote.code,
+                    url,
+                    emote.code
+                )
             };
 
         });
@@ -514,7 +526,8 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
     if (!skipChannel) extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]] = {};
     else extraEmotesDone.ffzGlobal = {};
 
-    var url, Div, chat_div;
+    var url, Div, chat_div, id;
+
     try {
         Object.keys(data.sets).forEach(function(set) {
             set = data.sets[set];
@@ -532,20 +545,27 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 
                     url = 'https:' + (emoticon.urls[4] || emoticon.urls[2] || emoticon.urls[1]);
                     chat_div = emoteTemplate(url);
+                    id = emoticon.name + emoticon.id;
 
                     extraEmotes[emoticon.name] = {
                         code: emoticon.name,
+                        id: id,
                         chat_div: chat_div,
                         '4x': url
                     };
 
-                    Div = ChatLiveControls_SetEmoteDiv(extraEmotes[emoticon.name]);
+                    Div = ChatLiveControls_SetEmoteDiv(
+                        id,
+                        emoticon.name,
+                        url,
+                        emoticon.name
+                    );
 
                     //Don't copy to prevent shallow clone
                     if (!skipChannel) {
                         extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]][emoticon.name] = {
                             code: emoticon.name,
-                            id: emoticon.id,
+                            id: id,
                             chat_div: chat_div,
                             '4x': url,
                             div: Div
@@ -553,7 +573,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
                     } else {
                         extraEmotesDone.ffzGlobal[emoticon.name] = {
                             code: emoticon.name,
-                            id: emoticon.id,
+                            id: id,
                             chat_div: chat_div,
                             '4x': url,
                             div: Div

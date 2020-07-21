@@ -181,27 +181,33 @@ function Chat_loadEmotesSuccessBttv(data) {
 function Chat_loadEmotesbttvGlobal(data) {
     extraEmotesDone.bttvGlobal = {};
 
-    var url, chat_div;
+    var url, chat_div, id;
 
     try {
         data.forEach(function(emote) {
 
             url = ChatLive_Base_BTTV_url + emote.id + '/3x';
             chat_div = emoteTemplate(url);
+            id = emote.code + emote.id;
 
             extraEmotes[emote.code] = {
                 code: emote.code,
-                id: emote.id,
+                id: id,
                 chat_div: chat_div,
                 '4x': url
             };
 
             extraEmotesDone.bttvGlobal[emote.code] = {
                 code: emote.code,
-                id: emote.id,
+                id: id,
                 chat_div: chat_div,
                 '4x': url,
-                div: ChatLiveControls_SetEmoteDiv(extraEmotes[emote.code])
+                div: ChatLiveControls_SetEmoteDiv(
+                    id,
+                    emote.code,
+                    url,
+                    emote.code
+                )
             };
         });
     } catch (e) {
