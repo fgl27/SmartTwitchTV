@@ -9815,33 +9815,33 @@
     }
 
     function Main_showScene1Doc() {
-        Main_ShowElementWithEle(Main_Scene1Doc);
-        //Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+        //Main_ShowElementWithEle(Main_Scene1Doc);
+        Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
     }
 
     function Main_hideScene1Doc() {
-        Main_HideElementWithEle(Main_Scene1Doc);
-        //Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+        //Main_HideElementWithEle(Main_Scene1Doc);
+        Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
     }
 
     function Main_isScene1DocShown() {
-        return Main_isElementShowingWithEle(Main_Scene1Doc);
-        //return !Main_A_includes_B(Main_Scene1Doc.className, 'opacity_zero');
+        //return Main_isElementShowingWithEle(Main_Scene1Doc);
+        return !Main_A_includes_B(Main_Scene1Doc.className, 'opacity_zero');
     }
 
     function Main_showScene2Doc() {
-        Main_ShowElementWithEle(Main_Scene2Doc);
-        //Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+        //Main_ShowElementWithEle(Main_Scene2Doc);
+        Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
     }
 
     function Main_hideScene2Doc() {
-        Main_HideElementWithEle(Main_Scene2Doc);
-        //Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+        //Main_HideElementWithEle(Main_Scene2Doc);
+        Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
     }
 
     function Main_isScene2DocShown() {
-        return Main_isElementShowingWithEle(Main_Scene2Doc);
-        //return !Main_A_includes_B(Main_Scene2Doc.className, 'opacity_zero');
+        //return Main_isElementShowingWithEle(Main_Scene2Doc);
+        return !Main_A_includes_B(Main_Scene2Doc.className, 'opacity_zero');
     }
 
     function Main_OPenAsVod(index) {
@@ -20306,30 +20306,31 @@
                 }
 
                 //Show screen to calculated Screens_setOffset as display none doesn't allow calculation
-                var SceneNotShowing = !Main_isScene1DocShown();
+                //var SceneNotShowing = !Main_isScene1DocShown();
                 var ScrollDocNotShowing = !Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc);
 
-                if (SceneNotShowing || ScrollDocNotShowing) {
-                    if (SceneNotShowing) {
-                        Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
-                        Main_showScene1Doc();
-                    }
-                    if (ScrollDocNotShowing) {
-                        Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
-                        Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
-                    }
+                //if (SceneNotShowing || ScrollDocNotShowing) {
+                if (ScrollDocNotShowing) {
+                    // if (SceneNotShowing) {
+                    //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                    //     Main_showScene1Doc();
+                    // }
+                    //if (ScrollDocNotShowing) {
+                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                    Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
+                    //}
 
                     Screens_setOffset(1, 0, key);
 
-                    if (ScrollDocNotShowing) {
-                        Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
-                    }
+                    //if (ScrollDocNotShowing) {
+                    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
+                    //}
                     Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
 
-                    if (SceneNotShowing) {
-                        Main_hideScene1Doc();
-                    }
-                    Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+                    // if (SceneNotShowing) {
+                    //     Main_hideScene1Doc();
+                    // }
+                    // Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
                 } else Screens_setOffset(1, 0, key);
 
                 for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
@@ -28466,38 +28467,38 @@
             }
 
             if (!UserLiveFeed_obj[pos].AddCellsize) {
-                var feedtypeshow = Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
+                var feedtypeNotshow = !Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
                 //feedShow = UserLiveFeed_isFeedShow();
 
                 // if (!feedShow) {
                 //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 //     UserLiveFeed_Show();
                 // }
-                if (!feedtypeshow) {
+                if (feedtypeNotshow) {
                     Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-                if (!Main_isScene2DocShown()) {
-                    Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
-                    Main_showScene2Doc();
+                // if (!Main_isScene2DocShown()) {
+                //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+                //     Main_showScene2Doc();
 
-                    UserLiveFeed_obj[pos].AddCellsize =
-                        UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+                //     UserLiveFeed_obj[pos].AddCellsize =
+                //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
-                    Main_hideScene2Doc();
-                    Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
-                } else {
-                    UserLiveFeed_obj[pos].AddCellsize =
-                        UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
-                }
+                //     Main_hideScene2Doc();
+                //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+                // } else {
+                UserLiveFeed_obj[pos].AddCellsize =
+                    UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
+                //}
 
                 // if (!feedShow) {
                 //     UserLiveFeed_HideAfter();
                 //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 // }
-                if (!feedtypeshow) {
+                if (feedtypeNotshow) {
                     Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 }
