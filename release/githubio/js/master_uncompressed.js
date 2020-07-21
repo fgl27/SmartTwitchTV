@@ -8669,11 +8669,16 @@
 
     function Chat_Clean(chat_number) {
         //delete old lines out of view
-        var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line");
-        if ((linesToDelete.length - Chat_CleanMax) > 0) {
-            for (var i = 0; i < (linesToDelete.length - Chat_CleanMax); i++) {
+        var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line"),
+            i = 0,
+            len = (linesToDelete.length - Chat_CleanMax);
+
+        if (len > 0) {
+
+            for (i; i < len; i++) {
                 Chat_div[chat_number].removeChild(linesToDelete[0]);
             }
+
         }
     }
     /*
