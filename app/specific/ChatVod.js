@@ -156,9 +156,13 @@ function Chat_BasetagCSSUrl(url) {
 }
 
 function Chat_tagCSS(content, doc) {
-    var style = document.createElement('style');
-    style.innerHTML = content;
-    doc.appendChild(style);
+    Main_ready(function() {
+
+        var style = document.createElement('style');
+        style.innerHTML = content;
+        doc.appendChild(style);
+
+    });
 }
 
 function Chat_loadBTTVGlobalEmotes(tryes) {
@@ -201,13 +205,7 @@ function Chat_loadEmotesbttvGlobal(data) {
                 code: emote.code,
                 id: id,
                 chat_div: chat_div,
-                '4x': url,
-                div: ChatLiveControls_SetEmoteDiv(
-                    id,
-                    emote.code,
-                    url,
-                    emote.code
-                )
+                '4x': url
             };
         });
     } catch (e) {

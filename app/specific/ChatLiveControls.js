@@ -335,28 +335,66 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
         );
     }
 
-    var div_holder = document.getElementById('chat_emotes');
+    var div_holder = document.getElementById('chat_emotes'), i;
     Main_emptyWithEle(div_holder);
 
     ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
     ChatLiveControls_EmotesArray = [];
-    var innerHTML = '';
 
-    for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-        ChatLiveControls_EmotesArray.push(array[i].id);
-        innerHTML += array[i].div;
+    if (!array[0].hasOwnProperty('div')) {
+        ChatLiveControls_EmotesArray.push(array[0].id);
+
+        array[0].div = ChatLiveControls_SetEmoteDiv(
+            array[0]['4x'],
+            array[0].id,
+            array[0].code,
+            array[0].code
+        );
+
+        div_holder.appendChild(
+            array[0].div
+        );
+
+        ChatLiveControls_ShowEmotes();
+
+        Main_ready(function() {
+
+            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
+                ChatLiveControls_EmotesArray.push(array[i].id);
+                array[i].div = ChatLiveControls_SetEmoteDiv(
+                    array[i]['4x'],
+                    array[i].id,
+                    array[i].code,
+                    array[i].code
+                );
+                div_holder.appendChild(
+                    array[i].div
+                );
+            }
+
+        });
+
+    } else {
+
+        for (i = 0; i < ChatLiveControls_EmotesTotal; i++) {
+
+            ChatLiveControls_EmotesArray.push(array[i].id);
+
+            div_holder.appendChild(
+                array[i].div
+            );
+
+        }
+
+        ChatLiveControls_ShowEmotes();
     }
-
-    div_holder.innerHTML = innerHTML;
-
-    ChatLiveControls_ShowEmotes();
 }
 
 function ChatLiveControls_SetEmojisDiv() {
     var array = emojis;
 
-    if (array[0].hasOwnProperty('div')) {
+    if (array[0].hasOwnProperty('id')) {
         Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
     } else {
         ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
@@ -386,48 +424,87 @@ function ChatLiveControls_SetEmojisDiv() {
         );
     }
 
-    var div_holder = document.getElementById('chat_emotes');
+    var div_holder = document.getElementById('chat_emotes'), i;
     Main_emptyWithEle(div_holder);
 
     ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
     ChatLiveControls_EmotesArray = [];
-    var innerHTML = '';
 
-    for (var i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-        ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
-        innerHTML += array[i].div;
+    if (!array[0].hasOwnProperty('div')) {
+        ChatLiveControls_EmotesArray.push(array[0].id + array[0].tags);
+
+        array[0].div = ChatLiveControls_SetEmoteDiv(
+            twemoji.parseIcon(array[0].unicode),
+            array[0].id + array[0].tags,
+            array[0].unicode,
+            array[0].tags
+        );
+
+        div_holder.appendChild(
+            array[0].div
+        );
+
+        ChatLiveControls_ShowEmotes();
+
+        Main_ready(function() {
+
+            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
+                ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
+
+                array[i].div = ChatLiveControls_SetEmoteDiv(
+                    twemoji.parseIcon(array[i].unicode),
+                    array[i].id + array[i].tags,
+                    array[i].unicode,
+                    array[i].tags
+                );
+
+                div_holder.appendChild(
+                    array[i].div
+                );
+
+            }
+
+        });
+    } else {
+
+        for (i = 0; i < ChatLiveControls_EmotesTotal; i++) {
+
+            ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
+
+            div_holder.appendChild(
+                array[i].div
+            );
+
+        }
+
+        ChatLiveControls_ShowEmotes();
     }
 
-    div_holder.innerHTML = innerHTML;
-
-    ChatLiveControls_ShowEmotes();
 }
 
-function ChatLiveControls_SetEmoteDiv(id, data, url, code) {
+function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
 
-    return '<div id="' + 'chat_emotes' + id + '" ' + Main_DataAttribute + '="' + data +
-        '" class="chat_emotes_img_holder" ><div id="chat_emotes_img' + id +
+    var div = document.createElement('div');
+    div.setAttribute('id', 'chat_emotes' + id);
+    div.setAttribute(Main_DataAttribute, code);
+    div.classList.add('chat_emotes_img_holder');
+
+    div.innerHTML = '<div id="chat_emotes_img' + id +
         '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
         '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
-        '" class="chat_emotes_name opacity_zero">' + code + '</div></div></div>';
+        '" class="chat_emotes_name opacity_zero">' + name + '</div></div>';
 
+    return div;
 }
 
 function ChatLiveControls_SetEmojisObj() {
-    if (emojis[0].hasOwnProperty('div') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
+    if (emojis[0].hasOwnProperty('id') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
     var i = 0, len = emojis.length;
     for (i; i < len; i++) {
         emojis[i].id = i;
-        emojis[i].div =
-            ChatLiveControls_SetEmoteDiv(
-                i + emojis[i].tags,//Add i + ... to make sure is uniq and don't combine id and tag to make easy sorting
-                emojis[i].unicode,
-                twemoji.parseIcon(emojis[i].unicode),
-                emojis[i].tags
-            );
     }
 }
 
