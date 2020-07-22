@@ -532,7 +532,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
 function Screens_loadDataSuccessFinish(key) {
     //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
     if (!ScreenObj[key].status) {
-        if (Main_values.Main_Go === Main_aGame) AGame_Checkfollow();
+        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
         if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
         else {
