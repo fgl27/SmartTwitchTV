@@ -158,6 +158,7 @@ function Screens_init(key, preventRefresh) {
         else Main_showLoadDialog();// the FirstLoad is running so just show the loading dialog prevent reload the screen
 
     } else {
+        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
         Screens_SetLastRefresh(key);
