@@ -8234,8 +8234,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.229';
     var Main_version_java = 20; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 21, 2020';
-    var Main_version_web = 26; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 22, 2020';
+    var Main_version_web = 27; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -19319,6 +19319,7 @@
             else Main_showLoadDialog(); // the FirstLoad is running so just show the loading dialog prevent reload the screen
 
         } else {
+            if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
             Main_YRst(ScreenObj[key].posY);
             Screens_addFocus(true, key);
             Screens_SetLastRefresh(key);
@@ -21007,6 +21008,8 @@
     }
 
     function AGame_setFollow() {
+        if (Main_values.Main_Go !== Main_aGame) return;
+
         if (AGame_following) {
             Main_innerHTML(
                 ScreenObj[Main_aGame].ids[2] + "y_2",
