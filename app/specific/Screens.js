@@ -1840,6 +1840,8 @@ function AGame_Checkfollow() {
 }
 
 function AGame_setFollow() {
+    if (Main_values.Main_Go !== Main_aGame) return;
+
     if (AGame_following) {
         Main_innerHTML(
             ScreenObj[Main_aGame].ids[2] + "y_2",
