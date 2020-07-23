@@ -89,7 +89,7 @@ public final class ChannelsUtils {
     private static final ChannelContentObj emptyContent =
             new ChannelContentObj(
                     "Empty list",
-                    "Connection failed, unable to load content. Press enter to refresh this (refresh only happens when the app is visible, so click here will open the app)",
+                    "This channel was disabled or on last refresh it failed to load content. Press enter to refresh this (refresh only happens when the app is visible, so click here will open the app)",
                     "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
                     1,
@@ -193,9 +193,7 @@ public final class ChannelsUtils {
         }
     }
 
-    public static void StartChannel(Context context, ChannelObj channel) {
-        // Checks if our subscription has been added to the channels before.
-        long channelId = getChannelIdFromTvProvider(context, channel.getName());
+    public static void StartChannel(Context context, ChannelObj channel, long channelId) {
 
         if (channelId != -1L) {//Channel already created just update
             updateChannel(context, channelId, channel);
@@ -389,6 +387,24 @@ public final class ChannelsUtils {
         return -1L;
     }
 
+    private static boolean getChannelIsBrowsable(Context context, long channelId) {
+        try (Cursor cursor =
+                     context.getContentResolver()
+                             .query(
+                                     TvContractCompat.buildChannelUri(channelId),
+                                     null,
+                                     null,
+                                     null,
+                                     null)) {
+            if (cursor != null && cursor.moveToNext()) {
+                Channel channel = Channel.fromCursor(cursor);
+                return channel.isBrowsable();
+            }
+        }
+
+        return false;
+    }
+
     public static void scheduleSyncingChannel(Context context) {
 
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
@@ -452,8 +468,26 @@ public final class ChannelsUtils {
     }
 
     public static void StartLive(Context context) {
-        AppPreferences appPreferences = new AppPreferences(context);
-        String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
+
+        String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, new AppPreferences(context));
+
+        List<ChannelContentObj> content = null;
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]
+        );
+
+        //this is the default channel add content without check for getChannelIsBrowsable
+        if (channelId == -1L || getChannelIsBrowsable(context, channelId)) {
+
+            content = GetLiveContent(
+                    "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
+                    "streams",
+                    null,
+                    true
+            );
+
+        }
 
         StartChannel(
                 context,
@@ -461,43 +495,51 @@ public final class ChannelsUtils {
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
                         Constants.CHANNEL_TYPE_LIVE,
-                        GetLiveContent(
-                                "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
-                                "streams",
-                                null,
-                                true
-                        )
-                )
+                        content
+                ),
+                channelId
         );
     }
 
     public static void SetUserLive(Context context, String userId, AppPreferences appPreferences) {
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE]
+        );
 
-        if (userId != null ) {
+        if (userId != null) {
 
-            JsonArray Streams = NotificationUtils.GetLiveStreamsList(userId, appPreferences);
+            if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
+                JsonArray Streams = NotificationUtils.GetLiveStreamsList(userId, appPreferences);
 
-            if (Streams == null) StartUserLive(context, null);
-            else {
+                if (Streams != null) {
 
-                StartUserLive(
-                        context,
-                        ProcessLiveArray(
-                                Streams,//Get the follows array
-                                null,
-                                true
-                        )
-                );
+                    StartUserLive(
+                            context,
+                            ProcessLiveArray(
+                                    Streams,//Get the follows array
+                                    null,
+                                    true
+                            ),
+                            channelId
+                    );
 
+                }
+
+                return;
             }
+
+            StartUserLive(context, null, channelId);
         } else {
+
             List<ChannelContentObj> content = new ArrayList<>();
             content.add(NoUserContent);
-            StartUserLive(context, content);
+            StartUserLive(context, content, channelId);
+
         }
     }
 
-    public static void StartUserLive(Context context, List<ChannelContentObj> contentObj) {
+    public static void StartUserLive(Context context, List<ChannelContentObj> contentObj, long channelId) {
         StartChannel(
                 context,
                 new ChannelObj(
@@ -505,25 +547,37 @@ public final class ChannelsUtils {
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                         Constants.CHANNEL_TYPE_USER_LIVE,
                         contentObj
-                )
+                ),
+                channelId
         );
     }
 
     public static void StartUserHost(Context context, String name) {
-        List<ChannelContentObj> content = new ArrayList<>();
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST]
+        );
+
+        List<ChannelContentObj> content = null;
 
         if (name != null) {
 
-            String url = String.format(
-                    Locale.US,
-                    "https://api.twitch.tv/api/users/%s/followed/hosting?limit=100",
-                    name
-            );
+            if (channelId == -1L && getChannelIsBrowsable(context, channelId)) {
 
-            content = GetHostContent(url);
+                String url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/api/users/%s/followed/hosting?limit=100",
+                        name
+                );
+
+                content = GetHostContent(url);
+
+            }
         } else {
+
+            content = new ArrayList<>();
             content.add(NoUserContent);
-            StartUserLive(context, content);
+
         }
 
         StartChannel(
@@ -533,39 +587,68 @@ public final class ChannelsUtils {
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST],
                         Constants.CHANNEL_TYPE_USER_HOST,
                         content
-                )
+                ),
+                channelId
         );
     }
 
     public static void StartFeatured(Context context) {
+        Log.d("ChannelsBroadcast", "StartFeatured ");
+        List<ChannelContentObj> content = null;
+
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED]
+        );
+
+        if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
+            Log.d("ChannelsBroadcast", "StartFeatured if ");
+            content = GetLiveContent(
+                    "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
+                    "featured",
+                    "stream",
+                    false
+            );
+
+        }
+
+        Log.d("ChannelsBroadcast", "StartFeatured channelId " + channelId);
+
         StartChannel(
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
                         Constants.CHANNEL_TYPE_FEATURED,
-                        GetLiveContent(
-                                "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
-                                "featured",
-                                "stream",
-                                false
-                        )
-                )
+                        content
+                ),
+                channelId
         );
     }
 
     public static void StartGames(Context context) {
-
-        List<ChannelContentObj> content = GetGamesContent(
-                "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
-                "top",
-                Tools.DEFAULT_HEADERS
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES]
         );
+        List<ChannelContentObj> content = null;
 
-        if (content != null) {
-            int contentSize = content.size();
-            if (contentSize > 1) {
-                Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+        if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
+
+            content = GetGamesContent(
+                    "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
+                    "top",
+                    Tools.DEFAULT_HEADERS
+            );
+
+            if (content != null) {
+
+                int contentSize = content.size();
+
+                if (contentSize > 1) {
+                    Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+                }
+
             }
         }
 
@@ -576,25 +659,35 @@ public final class ChannelsUtils {
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
                         Constants.CHANNEL_TYPE_GAMES,
                         content
-                )
+                ),
+                channelId
         );
     }
 
     public static void StartUserGames(Context context, String name) {
-        List<ChannelContentObj> content = new ArrayList<>();
+        long channelId = getChannelIdFromTvProvider(
+                context,
+                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES]
+        );
+
+        List<ChannelContentObj> content = null;
 
         if (name != null) {
 
-            String url = String.format(
-                    Locale.US,
-                    "https://api.twitch.tv/api/users/%s/follows/games/live?limit=250",
-                    name
-            );
+            if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
+                String url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/api/users/%s/follows/games/live?limit=250",
+                        name
+                );
 
-            content = GetGamesContent(url, "follows", new String[0][2]);
+                content = GetGamesContent(url, "follows", new String[0][2]);
+            }
         } else {
+
+            content = new ArrayList<>();
             content.add(NoUserContent);
-            StartUserLive(context, content);
+
         }
 
         StartChannel(
@@ -604,7 +697,8 @@ public final class ChannelsUtils {
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES],
                         Constants.CHANNEL_TYPE_USER_GAMES,
                         content
-                )
+                ),
+                channelId
         );
     }
 
