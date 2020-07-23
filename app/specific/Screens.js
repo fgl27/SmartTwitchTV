@@ -369,7 +369,7 @@ function Screens_loadDataSuccess(key) {
 
         if (!ScreenObj[key].row_id) {
             ScreenObj[key].row = document.createElement('div');
-            if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+            if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
             ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
         }
 
@@ -381,7 +381,7 @@ function Screens_loadDataSuccess(key) {
 
             if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
                 ScreenObj[key].row = document.createElement('div');
-                if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+                if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
                 ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
                 ScreenObj[key].coloumn_id = 0;
             }
@@ -410,8 +410,7 @@ function Screens_createCell(id_attribute, Data_content, html_content, key) {
 
     div.setAttribute('id', id_attribute);
     div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-    div.classList.add(ScreenObj[key].thumbclass);
-
+    div.className = ScreenObj[key].thumbclass;
     div.innerHTML = html_content;
 
     return div;
