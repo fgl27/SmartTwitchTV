@@ -19528,41 +19528,54 @@
         if (response_items) {
 
             if (!ScreenObj[key].row_id) {
-                ScreenObj[key].row = document.createElement('div');
-                if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
-                ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
+
+                Screens_createRow(key);
+
             }
 
-            var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount);
-
-            var max_row = ScreenObj[key].row_id + response_rows;
+            var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount),
+                max_row = ScreenObj[key].row_id + response_rows;
 
             for (ScreenObj[key].row_id; ScreenObj[key].row_id < max_row;) {
 
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
-                    ScreenObj[key].row = document.createElement('div');
-                    if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
-                    ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
+
+                    Screens_createRow(key);
                     ScreenObj[key].coloumn_id = 0;
+
                 }
 
                 for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
-                    //TODO understand and fix before the code reaches this point way a cell is undefined some times
-                    if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
+
+                    if (ScreenObj[key].data[ScreenObj[key].data_cursor])
+                        ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
+
                 }
 
-                //doc.appendChild(ScreenObj[key].row);
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
+
                     ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
                     ScreenObj[key].row_id++;
+
                 } else if (ScreenObj[key].data_cursor >= data_length) {
+
                     if (ScreenObj[key].row.innerHTML !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
                     break;
+
                 }
             }
         }
         ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
         Screens_loadDataSuccessFinish(key);
+    }
+
+
+    function Screens_createRow(key) {
+
+        ScreenObj[key].row = document.createElement('div');
+        if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
+        ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
+
     }
 
     function Screens_createCell(id_attribute, Data_content, html_content, key) {
