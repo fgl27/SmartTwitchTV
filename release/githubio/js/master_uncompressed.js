@@ -7390,7 +7390,6 @@
         Chat_div[messageObj.chat_number].appendChild(elem);
     }
 
-
     function ChatLive_MessagesRunAfterPause() {
         var i, j,
             Temp_Messages = [];
@@ -19530,7 +19529,7 @@
 
             if (!ScreenObj[key].row_id) {
                 ScreenObj[key].row = document.createElement('div');
-                if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+                if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
                 ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
             }
 
@@ -19542,7 +19541,7 @@
 
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
                     ScreenObj[key].row = document.createElement('div');
-                    if (ScreenObj[key].rowClass) ScreenObj[key].row.classList.add(ScreenObj[key].rowClass);
+                    if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
                     ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
                     ScreenObj[key].coloumn_id = 0;
                 }
@@ -19571,8 +19570,7 @@
 
         div.setAttribute('id', id_attribute);
         div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-        div.classList.add(ScreenObj[key].thumbclass);
-
+        div.className = ScreenObj[key].thumbclass;
         div.innerHTML = html_content;
 
         return div;
