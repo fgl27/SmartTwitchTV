@@ -652,7 +652,10 @@ function Play_hideFollow() {
 }
 
 function Play_setFollow() {
-    Play_controls[Play_controlsFollow].setLable(AddCode_IsFollowing ? STR_FOLLOWING : STR_FOLLOW, AddCode_IsFollowing);
+    Play_controls[Play_controlsFollow].setLable(
+        (AddCode_IsFollowing ? STR_FOLLOWING : STR_FOLLOW) + ' - ' + (Play_isOn ? Play_data.data[1] : Main_values.Main_selectedChannelDisplayname),
+        AddCode_IsFollowing
+    );
 }
 
 function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
