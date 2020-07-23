@@ -1305,11 +1305,18 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     }
 
     if (ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[chat_number].test(mmessage)) {
+
         atstreamer = true;
+
     } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
+
         atuser = true;
-    } else if (ChatLive_Highlight_User_send && Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].name).toLowerCase())) {
+
+    } else if (ChatLive_Highlight_User_send &&
+        Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
+
         atuser = true;
+
     }
 
     hasbits = (tags.hasOwnProperty('bits') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[chat_number]));
@@ -1317,21 +1324,26 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     //Add nick
     nick = tags['display-name'];
     if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+
         nickColor = chat_Line_highlight_green;
+
     } else if (atuser) {
+
         nickColor = chat_Line_highlight_blue;
+
     } else {
 
         if (!ChatLive_Custom_Nick_Color && (typeof tags.color !== "boolean")) {
+
             nickColor = 'style="color: ' + tags.color + ';"';
+
         } else {
+
             nickColor = 'style="color: ' + (defaultColors[(nick).charCodeAt(0) % defaultColorsLength]) + ';"';
+
         }
     }
-
-    div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' +
-        nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
-
+    div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
     //Add default emotes
     if (tags.hasOwnProperty('emotes')) {
@@ -1410,6 +1422,23 @@ function ChatLive_LineAddSimple(message) {
     return '<span class="message">' + message + '</span>';
 }
 
+function ChatLive_LineAdd(messageObj) {
+    if (ChatLive_Playing) {
+
+        ChatLive_ElemntAdd(messageObj);
+
+        if (ChatLive_LineAddCounter[messageObj.chat_number]++ > Chat_CleanMax) {
+            ChatLive_LineAddCounter[messageObj.chat_number] = 0;
+            Chat_Clean(messageObj.chat_number);
+        }
+
+    } else {
+
+        ChatLive_Messages[messageObj.chat_number].push(messageObj);
+
+    }
+}
+
 //Full messageObj current is
 // messageObj = {
 //     chat_number: chat_number,
@@ -1423,73 +1452,68 @@ function ChatLive_LineAddSimple(message) {
 //     message_id: message_id
 // };
 
-function ChatLive_LineAdd(messageObj) {
-    if (ChatLive_Playing) {
-        var elem = document.createElement('div');
-        var classname = 'chat_line';
+function ChatLive_ElemntAdd(messageObj) {
 
-        if (messageObj.atstreamer) {
+    var elem = document.createElement('div');
+    var classname = 'chat_line';
 
-            classname += ' chat_atstreamer';
+    if (messageObj.atstreamer) {
 
-            messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        classname += ' chat_atstreamer';
 
-        } else if (messageObj.atuser) {
+        messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
-            classname += ' chat_atuser';
+    } else if (messageObj.atuser) {
 
-            messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        classname += ' chat_atuser';
 
-        } else if (ChatLive_Highlight_Bits && messageObj.hasbits) {
+        messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
-            classname += ' chat_bits';
+    } else if (messageObj.hasbits) {
 
-        } else if (messageObj.sub) {
+        classname += ' chat_bits';
 
-            classname += ' chat_sub';
+    } else if (messageObj.sub) {
 
-        } else if (ChatLive_Individual_Background) {
+        classname += ' chat_sub';
 
-            if (ChatLive_Individual_Background_flip[messageObj.chat_number]) {
+    } else if (ChatLive_Individual_Background) {
 
-                if (ChatLive_Individual_Background === 1) {
+        if (ChatLive_Individual_Background_flip[messageObj.chat_number]) {
 
-                    var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
-                    elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+            if (ChatLive_Individual_Background === 1) {
 
-                } else if (ChatLive_Individual_Background === 2) {
+                var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
+                elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
 
-                    elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+            } else if (ChatLive_Individual_Background === 2) {
 
-                } else if (ChatLive_Individual_Background === 3) {
+                elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
 
-                    elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+            } else if (ChatLive_Individual_Background === 3) {
 
-                }
+                elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+
             }
-
-            ChatLive_Individual_Background_flip[messageObj.chat_number] = ChatLive_Individual_Background_flip[messageObj.chat_number] ^ 1;
         }
 
-        if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
-        else classname += ' chat_line_slim';
-
-        elem.className = classname + (messageObj.user_id ? ' ' + messageObj.user_id : '');
-        if (messageObj.message_id) elem.setAttribute('id', messageObj.message_id);
-
-        elem.innerHTML = messageObj.message;
-
-        Chat_div[messageObj.chat_number].appendChild(elem);
-
-        ChatLive_LineAddCounter[messageObj.chat_number]++;
-        if (ChatLive_LineAddCounter[messageObj.chat_number] > Chat_CleanMax) {
-            ChatLive_LineAddCounter[messageObj.chat_number] = 0;
-            Chat_Clean(messageObj.chat_number);
-        }
-    } else {
-        ChatLive_Messages[messageObj.chat_number].push(messageObj);
+        ChatLive_Individual_Background_flip[messageObj.chat_number] = ChatLive_Individual_Background_flip[messageObj.chat_number] ^ 1;
     }
+
+    if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
+    else classname += ' chat_line_slim';
+
+    if (messageObj.message_id) {
+        elem.setAttribute('id', messageObj.message_id);
+        classname += ' ' + messageObj.user_id;
+    }
+
+    elem.className = classname;
+    elem.innerHTML = messageObj.message;
+
+    Chat_div[messageObj.chat_number].appendChild(elem);
 }
+
 
 function ChatLive_MessagesRunAfterPause() {
     var i, j,
