@@ -197,7 +197,7 @@ public final class ChannelsUtils {
         // Checks if our subscription has been added to the channels before.
         long channelId = getChannelIdFromTvProvider(context, channel.getName());
 
-        if (channelId != -1L) {
+        if (channelId != -1L) {//Channel already created just update
             updateChannel(context, channelId, channel);
             createChannelContent(context, channelId, channel);
             return;
@@ -205,7 +205,15 @@ public final class ChannelsUtils {
 
         channelId = createChannel(context, channel);
 
-        if (channelId != -1L) createChannelContent(context, channelId, channel);
+        if (channelId != -1L) {
+
+            createChannelContent(context, channelId, channel);
+
+            //Default channel
+            if (Objects.equals(channel.getName(), Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]))
+                TvContractCompat.requestChannelBrowsable(context, channelId);
+
+        }
     }
 
     private static void updateChannel(Context context, long channelId, ChannelObj channel) {
