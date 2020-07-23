@@ -1514,7 +1514,6 @@ function ChatLive_ElemntAdd(messageObj) {
     Chat_div[messageObj.chat_number].appendChild(elem);
 }
 
-
 function ChatLive_MessagesRunAfterPause() {
     var i, j,
         Temp_Messages = [];
