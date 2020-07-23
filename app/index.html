@@ -97,6 +97,7 @@
             overflow: hidden;
             letter-spacing: 0.075ch;
             font-kerning: none;
+            transform: translate3d(0, 0, 0);
         }
 
         div.feed_screen_new {
@@ -1743,6 +1744,7 @@
         .controls_button_holder {
             display: inline-block;
             width: 5.1%;
+            transform: translate3d(0, 0, 0);
         }
 
         .controls_button {
@@ -1936,6 +1938,7 @@
         .message {
             word-wrap: break-word;
             line-height: 1.25em;
+            transform: translate3d(0, 0, 0);
         }
 
         .chat_line_ind {
@@ -2223,6 +2226,10 @@
             100% {
                 transform: rotate(360deg);
             }
+        }
+
+        .force_gpu_rendering {
+            transform: translate3d(0, 0, 0);
         }
 
         /* Simple way to see center of screen
@@ -2923,10 +2930,10 @@
         </div>
         <div id="scene2" class="screen_size opacity_zero">
             <div id="chat_container" class="chat_container hide avoidclicks">
-                <div id="chat_inner_container" class="chat_size">
+                <div id="chat_inner_container" class="chat_size force_gpu_rendering">
                     <div class="chat_box_holder">
                         <div style="transform: rotate(180deg);">
-                            <div id="chat_box0" class="chat_box"></div>
+                            <div id="chat_box0" class="chat_box force_gpu_rendering"></div>
                         </div>
                     </div>
                     <div id="play_chat_dialog"
@@ -2938,10 +2945,10 @@
                 </div>
             </div>
             <div id="chat_container2" class="chat_container2 hide avoidclicks">
-                <div id="chat_inner_container2" class="chat_size">
+                <div id="chat_inner_container2" class="chat_size force_gpu_rendering">
                     <div class="chat_box_holder">
                         <div style="transform: rotate(180deg);">
-                            <div id="chat_box1" class="chat_box"></div>
+                            <div id="chat_box1" class="chat_box force_gpu_rendering"></div>
                         </div>
                     </div>
                 </div>
@@ -2966,7 +2973,7 @@
                     <i class="icon-volume strokicon"></i>
                 </div>
             </div>
-            <div id="scene_channel_panel" class="screen_size scene_channel_panel hide avoidclicks">
+            <div id="scene_channel_panel" class="screen_size scene_channel_panel hide force_gpu_rendering avoidclicks">
                 <div class="playerinfo">
                     <div id="stream_clock" class="playclock"></div>
                     <div id="stream_info" class="shadow_text">
@@ -3304,9 +3311,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="controls_holder" class="controls_holder avoidclicks">
+                <div id="controls_holder" class="controls_holder force_gpu_rendering avoidclicks">
                 </div>
-                <div id="progress_pause_holder" class="progress_pause_holder shadow_text avoidclicks">
+                <div id="progress_pause_holder"
+                    class="progress_pause_holder force_gpu_rendering shadow_text avoidclicks">
                     <div id="progress_bar_div" class="progress_bar_div">
                         <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"
                             style="transform: translateY(-25%);"></div>
@@ -3693,7 +3701,7 @@
             <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
                 <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
-            <div id="user_feed" class="avoidclicks user_feed opacity_zero">
+            <div id="user_feed" class="avoidclicks user_feed force_gpu_rendering opacity_zero">
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                     <div class="loading">
                         <div></div>
