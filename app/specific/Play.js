@@ -1556,7 +1556,8 @@ function Play_ShowVideoStatus(showLatency, Who_Called) {
         STR_BR + STR_PING + value[6]);
 
     if (Who_Called > 1) {
-        Play_BufferSize = parseInt(value[7]);
+        Play_BufferSize = parseFloat(value[7]);
+        if (Who_Called === 3) Play_BufferSize = Math.ceil(Play_BufferSize);
         PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
     }
 }

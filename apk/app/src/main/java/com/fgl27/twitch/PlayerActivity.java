@@ -2601,7 +2601,7 @@ public class PlayerActivity extends Activity {
                 ret.add(Tools.getTime(LiveOffset));//5
 
                 ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
-                ret.add(String.valueOf(Math.ceil(buffer / 1000.0)));//7
+                ret.add(String.valueOf(buffer / 1000.0));//7
 
                 getVideoStatusResult = new Gson().toJson(ret);
 
