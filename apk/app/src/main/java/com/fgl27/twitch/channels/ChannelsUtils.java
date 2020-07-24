@@ -362,8 +362,6 @@ public final class ChannelsUtils {
     }
 
     public static void DeleteProgram(Context context, long channelId) {
-        //long channelId = getChannelIdFromTvProvider(context, name);
-
         if (channelId != -1L) {
 
             context.getContentResolver().delete(

@@ -977,7 +977,7 @@ public final class Tools {
     }
 
     public static void checkTokens(String UserId, AppPreferences appPreferences) {
-        String token = Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences);
+        String token = getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences);
 
         try {
             String urlString = "https://id.twitch.tv/oauth2/validate";
@@ -1020,7 +1020,7 @@ public final class Tools {
                         break;
                     } else if (status == 401 || status == 403) {
 
-                        Tools.refreshTokens(
+                        refreshTokens(
                                 UserId,
                                 appPreferences
                         );
@@ -1036,7 +1036,7 @@ public final class Tools {
     }
 
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
-        String refresh_token = Tools.getString(UserId + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
+        String refresh_token = getString(UserId + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
 
         if (refresh_token == null) {
             eraseTokens(UserId, appPreferences);
