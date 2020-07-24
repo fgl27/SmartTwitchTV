@@ -57,7 +57,7 @@ public class SyncChannelJobService extends JobService {
                 ChannelsUtils.UpdateAllChannels(context, appPreferences);
 
             } catch (Exception e) {
-                Log.w(TAG, "updateChannels e " + e.getMessage());
+                Log.w(TAG, "updateChannels e ", e);
             }
 
             MainJobHandler.post(() -> jobFinished(jobParameters, false));

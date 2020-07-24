@@ -1139,37 +1139,42 @@ public class PlayerActivity extends Activity {
 
         ChannelHandler.post(() -> {
 
-            switch (Type) {
-                case Constants.CHANNEL_TYPE_LIVE:
-                    ChannelsUtils.StartLive(context);
-                    break;
-                case Constants.CHANNEL_TYPE_USER_LIVE:
-                    ChannelsUtils.SetUserLive(
-                            context,
-                            Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
-                            appPreferences
-                    );
-                    break;
-                case Constants.CHANNEL_TYPE_FEATURED:
-                    ChannelsUtils.StartFeatured(context);
-                    break;
-                case Constants.CHANNEL_TYPE_GAMES:
-                    ChannelsUtils.StartGames(context);
-                    break;
-                case Constants.CHANNEL_TYPE_USER_GAMES:
-                    ChannelsUtils.StartUserGames(
-                            context,
-                            Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                    );
-                    break;
-                case Constants.CHANNEL_TYPE_USER_HOST:
-                    ChannelsUtils.StartUserHost(
-                            context,
-                            Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                    );
-                    break;
-                default:
-                    break;
+            try {
+                switch (Type) {
+                    case Constants.CHANNEL_TYPE_LIVE:
+                        ChannelsUtils.StartLive(context);
+                        break;
+                    case Constants.CHANNEL_TYPE_USER_LIVE:
+                        ChannelsUtils.SetUserLive(
+                                context,
+                                Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                                appPreferences
+                        );
+                        break;
+                    case Constants.CHANNEL_TYPE_FEATURED:
+                        ChannelsUtils.StartFeatured(context);
+                        break;
+                    case Constants.CHANNEL_TYPE_GAMES:
+                        ChannelsUtils.StartGames(context);
+                        break;
+                    case Constants.CHANNEL_TYPE_USER_GAMES:
+                        ChannelsUtils.StartUserGames(
+                                context,
+                                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+                        );
+                        break;
+                    case Constants.CHANNEL_TYPE_USER_HOST:
+                        ChannelsUtils.StartUserHost(
+                                context,
+                                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
+                        );
+                        break;
+                    default:
+                        break;
+                }
+
+            } catch (Exception e) {
+                Log.w(TAG, "RefreshChannel Type" + Type + " Exception ", e);
             }
 
             if (!skipToast) RefreshChannelToast(Type, context);
@@ -1526,7 +1531,28 @@ public class PlayerActivity extends Activity {
         //The recommendation is to start this on BroadcastReceiver action ACTION_INITIALIZE_PROGRAMS
         //But that process is bugged the BroadcastReceiver gets called too many times some times 3 plus under a second after the
         //app gets installed... so do it here, as is a better option as the user will not get the default channel added unless the app is opened
-        if (canRunChannel) ChannelsUtils.scheduleSyncingChannel(this);
+        if (canRunChannel) {
+
+                ChannelHandler.postDelayed(() -> {
+
+                    if (ChannelsUtils.isJobServiceNotSchedule(this)) {
+
+                        ChannelsUtils.scheduleSyncingChannel(this);
+
+                    } else {
+
+                        try {
+                            ChannelsUtils.UpdateAllChannels(this, appPreferences);
+                        } catch (Exception e) {
+                            Log.w(TAG, "UpdateAllChannels Exception ", e);
+                        }
+
+                    }
+
+                }, 3000);
+
+        }
+
     }
 
     private void initializeWebViewKey() {
@@ -1821,7 +1847,15 @@ public class PlayerActivity extends Activity {
 
                 StopNotifications();
 
-                ChannelHandler.post(() -> ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences));
+                ChannelHandler.post(() -> {
+
+                    try {
+                        ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+                    } catch (Exception e) {
+                        Log.w(TAG, "UpdateUserChannels Exception ", e);
+                    }
+
+                });
 
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
@@ -1847,7 +1881,11 @@ public class PlayerActivity extends Activity {
 
                     } else Tools.eraseTokens(id, appPreferences);
 
-                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+                    try {
+                        ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+                    } catch (Exception e) {
+                        Log.w(TAG, "UpdateUserChannels Exception ", e);
+                    }
 
                 });
             } else if (refresh_token != null) {

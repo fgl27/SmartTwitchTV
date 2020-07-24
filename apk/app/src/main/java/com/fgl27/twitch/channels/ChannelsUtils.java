@@ -68,6 +68,9 @@ import java.util.concurrent.TimeUnit;
 import static com.google.gson.JsonParser.parseString;
 
 public final class ChannelsUtils {
+
+    private static final int JOB_ID = 1;
+
     private static final String TAG = "STTV_ChannelsUtils";
 
     private static final String[] TV_CONTRACT_ARRAY = {
@@ -241,7 +244,7 @@ public final class ChannelsUtils {
                     );
 
         } catch (Exception e) { // channels not supported
-            Log.w(TAG, "createChannel e " + e.getMessage());
+            Log.w(TAG, "createChannel e " , e);
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
@@ -298,7 +301,7 @@ public final class ChannelsUtils {
                     builder.build().toContentValues()
             );
         } catch (Exception e) {
-            Log.w(TAG, "programUri e " + e.getMessage());
+            Log.w(TAG, "programUri e ", e);
         }
 
         if (programUri == null || programUri.equals(Uri.EMPTY)) {
@@ -416,17 +419,35 @@ public final class ChannelsUtils {
 
     public static void scheduleSyncingChannel(Context context) {
 
+        try {
+
+            JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+
+            scheduler.schedule(
+                    new JobInfo.Builder(JOB_ID, new ComponentName(context, SyncChannelJobService.class))
+                            .setPeriodic(TimeUnit.MINUTES.toMillis(30))
+                            .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+                            .setRequiresDeviceIdle(false)
+                            .setRequiresCharging(false)
+                            .build()
+            );
+
+        } catch (Exception e) {
+            Log.w(TAG, "scheduleSyncingChannel Exception ", e);
+        }
+
+    }
+
+    public static boolean isJobServiceNotSchedule(Context context) {
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
-        scheduler.cancel(1);
-        scheduler.schedule(
-                new JobInfo.Builder(1, new ComponentName(context, SyncChannelJobService.class))
-                        .setPeriodic(TimeUnit.MINUTES.toMillis(30))
-                        .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                        .setRequiresDeviceIdle(false)
-                        .setRequiresCharging(false)
-                        .build()
-        );
+        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
+            if ( jobInfo.getId() == JOB_ID ) {
+                return false;
+            }
+        }
+
+        return true ;
     }
 
     public static ChannelContentObj getRefreshContent() {
@@ -743,7 +764,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetHostContent e " + e.getMessage());
+            Log.w(TAG, "GetHostContent e " , e);
         }
 
         return null;
@@ -788,7 +809,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " + e.getMessage());
+            Log.w(TAG, "updateChannels e " , e);
         }
 
         return null;
@@ -1006,7 +1027,7 @@ public final class ChannelsUtils {
             if (content.size() > 0) return content;
 
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " + e.getMessage());
+            Log.w(TAG, "updateChannels e ", e);
         }
 
         return null;
