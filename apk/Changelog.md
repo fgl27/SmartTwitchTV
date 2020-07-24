@@ -7,6 +7,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.230 & Web Version July 24 2020
+==============
+
+* General improves to [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), this feature only works on devices running Android TV 8 Oreo and up
+* Home screen Channel will no longer have content if they were never used or have be disable for over 30 minutes, Use the refresh option right after enable a channel to update it
+* Clicking on the app icon of a home screen channel takes you to that in app screen
+* Update ExoPlayer to latest version
+* General performance improves and bug fixes
+
 Web Version July 22 2020
 ==============
 

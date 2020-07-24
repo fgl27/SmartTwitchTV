@@ -8231,10 +8231,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.229';
-    var Main_version_java = 20; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 22, 2020';
-    var Main_version_web = 27; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.230';
+    var Main_version_java = 21; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 24, 2020';
+    var Main_version_web = 28; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10273,7 +10273,7 @@
                 Main_onNewIntentClearPlay();
 
                 Main_hideScene2Doc();
-                Main_isScene1DocShown();
+                Main_showScene1Doc();
             } else if (Sidepannel_MainisShowing()) {
                 Sidepannel_Hide(false);
             }
@@ -10319,10 +10319,62 @@
 
             }
 
+        } else if (Main_A_equals_B(obj.type, "SCREEN")) {
 
+            Main_CheckResume(true);
 
+            if (Main_isScene2DocShown()) {
+
+                Main_onNewIntentClearPlay();
+
+                Main_hideScene2Doc();
+                Main_showScene1Doc();
+
+            } else if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+                Sidepannel_Hide(false);
+            }
+
+            var goTo = Main_onNewIntentGetSCreen(obj);
+
+            if (Main_values.Main_Go !== goTo) {
+                if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+                Main_values.Main_Before = goTo;
+            }
+            Main_values.Main_Go = goTo;
+
+            Main_ReStartScreens();
         } else Main_CheckResume();
 
+    }
+
+    function Main_onNewIntentGetSCreen(obj) {
+        var goTo = Main_values.Main_Go;
+        var UserIsSet = AddUser_UserIsSet();
+
+        switch (obj.screen) { //In relateton to java CHANNEL_TYPE_*
+            case 1:
+                goTo = Main_Live;
+                break;
+            case 2:
+                if (UserIsSet) goTo = Main_UserLive;
+                break;
+            case 3:
+                goTo = Main_Featured;
+                break;
+            case 4:
+                goTo = Main_games;
+                break;
+            case 5:
+                if (UserIsSet) goTo = Main_usergames;
+                break;
+            case 6:
+                if (UserIsSet) goTo = Main_UserHost;
+                break;
+            default:
+                break;
+        }
+
+        return goTo;
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -16653,7 +16705,8 @@
             STR_BR + STR_PING + value[6]);
 
         if (Who_Called > 1) {
-            Play_BufferSize = parseInt(value[7]);
+            Play_BufferSize = parseFloat(value[7]);
+            if (Who_Called === 3) Play_BufferSize = Math.ceil(Play_BufferSize);
             PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
         }
     }
@@ -19772,6 +19825,7 @@
                     live_channel_call,
                     host_channel_call,
                     game_channel_call,
+                    screen_channel_call,
                     tempGame;
 
                 if (Last_obj) {
@@ -19782,7 +19836,13 @@
                     if (!live_channel_call && !host_channel_call) {
                         game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
-                        if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+                        if (!game_channel_call) {
+                            screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
+
+                            if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+
+                        }
+
                     }
                 }
 
@@ -19814,6 +19874,10 @@
                     Play_data.data[3] = obj.obj.name;
                     StartUser = false;
                     Main_values.Main_gameSelected = Play_data.data[3];
+                } else if (screen_channel_call) {
+                    Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+                    Main_values.Play_WasPlaying = 0;
+                    StartUser = false;
                 }
 
                 Main_values.warning_extra = false;
