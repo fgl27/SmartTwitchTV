@@ -621,7 +621,6 @@ public final class ChannelsUtils {
     }
 
     public static void StartFeatured(Context context) {
-        Log.d("ChannelsBroadcast", "StartFeatured ");
         List<ChannelContentObj> content = null;
 
         long channelId = getChannelIdFromTvProvider(
@@ -630,7 +629,7 @@ public final class ChannelsUtils {
         );
 
         if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
-            Log.d("ChannelsBroadcast", "StartFeatured if ");
+
             content = GetLiveContent(
                     "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
                     "featured",
@@ -639,8 +638,6 @@ public final class ChannelsUtils {
             );
 
         }
-
-        Log.d("ChannelsBroadcast", "StartFeatured channelId " + channelId);
 
         StartChannel(
                 context,

@@ -435,9 +435,7 @@ public final class Tools {
             if (closeable != null) {
                 closeable.close();
             }
-        } catch (IOException e) {
-            // Ignore.
-        }
+        } catch (IOException ignored) {}
     }
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -955,7 +953,7 @@ public final class Tools {
             File dir = context.getCacheDir();
             deleteDir(dir);
         } catch (Exception e) {
-            Log.d(TAG, "deleteCache e " + e);
+            Log.w(TAG, "deleteCache e ", e);
         }
     }
 
@@ -1033,7 +1031,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " + e.getMessage());
+            Log.w(TAG, "updateChannels e ", e);
         }
     }
 
@@ -1102,7 +1100,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " + e.getMessage());
+            Log.w(TAG, "updateChannels e ", e);
         }
 
         return false;

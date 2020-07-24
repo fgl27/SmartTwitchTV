@@ -601,9 +601,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         if (connection != null) {
             try {
                 connection.disconnect();
-            } catch (Exception e) {
-                Log.e(TAG, "Unexpected error while disconnecting", e);
-            }
+            } catch (Exception ignored) {}
             connection = null;
         }
     }
