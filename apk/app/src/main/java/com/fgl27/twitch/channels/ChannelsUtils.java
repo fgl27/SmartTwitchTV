@@ -451,6 +451,13 @@ public final class ChannelsUtils {
         return decimalFormat;
     }
 
+    public static void UpdateAllChannels(Context context, AppPreferences appPreferences) {
+        StartLive(context);
+        StartFeatured(context);
+        StartGames(context);
+        UpdateUserChannels(context, appPreferences);
+    }
+
     public static void UpdateUserChannels(Context context, AppPreferences appPreferences) {
         ChannelsUtils.SetUserLive(
                 context,

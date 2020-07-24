@@ -54,10 +54,7 @@ public class SyncChannelJobService extends JobService {
 
             try {
 
-                ChannelsUtils.StartLive(context);
-                ChannelsUtils.StartFeatured(context);
-                ChannelsUtils.StartGames(context);
-                ChannelsUtils.UpdateUserChannels(context, appPreferences);
+                ChannelsUtils.UpdateAllChannels(context, appPreferences);
 
             } catch (Exception e) {
                 Log.w(TAG, "updateChannels e " + e.getMessage());
