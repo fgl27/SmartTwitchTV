@@ -306,6 +306,15 @@ public final class ChannelsUtils {
         }
     }
 
+    private static Channel.Builder createChannelBuilder(String name, Context context) {
+
+        return new Channel.Builder()
+                .setDisplayName(name)
+                .setAppLinkIntent(createAppIntent(context, null, 0))
+                .setType(TvContractCompat.Channels.TYPE_PREVIEW);
+
+    }
+
     public static Intent createAppIntent(Context context, String channel_obj, int channel_type) {
 
         Intent intent = new Intent(context, PlayerActivity.class);
@@ -418,15 +427,6 @@ public final class ChannelsUtils {
                         .setRequiresCharging(false)
                         .build()
         );
-    }
-
-    private static Channel.Builder createChannelBuilder(String name, Context context) {
-
-        return new Channel.Builder()
-                .setDisplayName(name)
-                .setAppLinkIntent(createAppIntent(context, null, 0))
-                .setType(TvContractCompat.Channels.TYPE_PREVIEW);
-
     }
 
     public static ChannelContentObj getRefreshContent() {
