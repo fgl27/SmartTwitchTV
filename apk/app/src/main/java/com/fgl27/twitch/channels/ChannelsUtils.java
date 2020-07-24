@@ -104,10 +104,18 @@ public final class ChannelsUtils {
     public static class PreviewObj {
         private final JsonObject obj;
         private final String type;
+        private final int screen;
 
         public PreviewObj(JsonObject obj, String type) {
             this.obj = obj;
             this.type = type;
+            this.screen = 0;
+        }
+
+        public PreviewObj(int screen, String type) {
+            this.obj = null;
+            this.type = type;
+            this.screen = screen;
         }
     }
 
@@ -220,7 +228,7 @@ public final class ChannelsUtils {
     private static void updateChannel(Context context, long channelId, ChannelObj channel) {
         writeChannelLogo(context, channelId, channel.getDrawable());
 
-        Channel.Builder builder = createChannelBuilder(channel.getName(), context);
+        Channel.Builder builder = createChannelBuilder(channel.getName(), channel.getType(), context);
 
         int rowsUpdated = context.getContentResolver().update(
                 TvContractCompat.buildChannelUri(channelId), builder.build().toContentValues(), null, null);
@@ -231,7 +239,7 @@ public final class ChannelsUtils {
     }
 
     private static long createChannel(Context context, ChannelObj channel) {
-        Channel.Builder builder = createChannelBuilder(channel.getName(), context);
+        Channel.Builder builder = createChannelBuilder(channel.getName(), channel.getType(), context);
 
         Uri channelUri = null;
 
@@ -309,11 +317,11 @@ public final class ChannelsUtils {
         }
     }
 
-    private static Channel.Builder createChannelBuilder(String name, Context context) {
+    private static Channel.Builder createChannelBuilder(String name, int channel_screen, Context context) {
 
         return new Channel.Builder()
                 .setDisplayName(name)
-                .setAppLinkIntent(createAppIntent(context, null, 0))
+                .setAppLinkIntent(createAppIntent(context, new Gson().toJson(new PreviewObj(channel_screen, "SCREEN")), 0))
                 .setType(TvContractCompat.Channels.TYPE_PREVIEW);
 
     }
@@ -588,7 +596,7 @@ public final class ChannelsUtils {
 
         if (name != null) {
 
-            if (channelId == -1L && getChannelIsBrowsable(context, channelId)) {
+            if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
 
                 String url = String.format(
                         Locale.US,

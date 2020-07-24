@@ -609,6 +609,7 @@ function Screens_loadDataSuccessFinish(key) {
                 live_channel_call,
                 host_channel_call,
                 game_channel_call,
+                screen_channel_call,
                 tempGame;
 
             if (Last_obj) {
@@ -619,7 +620,13 @@ function Screens_loadDataSuccessFinish(key) {
                 if (!live_channel_call && !host_channel_call) {
                     game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
-                    if (!game_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+                    if (!game_channel_call) {
+                        screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
+
+                        if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+
+                    }
+
                 }
             }
 
@@ -651,6 +658,10 @@ function Screens_loadDataSuccessFinish(key) {
                 Play_data.data[3] = obj.obj.name;
                 StartUser = false;
                 Main_values.Main_gameSelected = Play_data.data[3];
+            } else if (screen_channel_call) {
+                Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+                Main_values.Play_WasPlaying = 0;
+                StartUser = false;
             }
 
             Main_values.warning_extra = false;

@@ -2179,7 +2179,7 @@ function Main_onNewIntent(mobj) {
             Main_onNewIntentClearPlay();
 
             Main_hideScene2Doc();
-            Main_isScene1DocShown();
+            Main_showScene1Doc();
         } else if (Sidepannel_MainisShowing()) {
             Sidepannel_Hide(false);
         }
@@ -2225,8 +2225,60 @@ function Main_onNewIntent(mobj) {
 
         }
 
+    } else if (Main_A_equals_B(obj.type, "SCREEN")) {
 
+        Main_CheckResume(true);
 
+        if (Main_isScene2DocShown()) {
+
+            Main_onNewIntentClearPlay();
+
+            Main_hideScene2Doc();
+            Main_showScene1Doc();
+
+        } else if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+            Sidepannel_Hide(false);
+        }
+
+        var goTo = Main_onNewIntentGetSCreen(obj);
+
+        if (Main_values.Main_Go !== goTo) {
+            if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
+            Main_values.Main_Before = goTo;
+        }
+        Main_values.Main_Go = goTo;
+
+        Main_ReStartScreens();
     } else Main_CheckResume();
 
+}
+
+function Main_onNewIntentGetSCreen(obj) {
+    var goTo = Main_values.Main_Go;
+    var UserIsSet = AddUser_UserIsSet();
+
+    switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
+        case 1:
+            goTo = Main_Live;
+            break;
+        case 2:
+            if (UserIsSet) goTo = Main_UserLive;
+            break;
+        case 3:
+            goTo = Main_Featured;
+            break;
+        case 4:
+            goTo = Main_games;
+            break;
+        case 5:
+            if (UserIsSet) goTo = Main_usergames;
+            break;
+        case 6:
+            if (UserIsSet) goTo = Main_UserHost;
+            break;
+        default:
+            break;
+    }
+
+    return goTo;
 }
