@@ -228,11 +228,12 @@ public class PlayerActivity extends Activity {
     public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
     public HandlerThread PreviewFeedHandlerThread;
     public HandlerThread BackGroundThread;
+    public HandlerThread RuntimeThread;
 
+    public Handler RuntimeHandler;
     public Handler MainThreadHandler;
     public Handler[] CurrentPositionHandler = new Handler[2];
     public Handler SaveBackupJsonHandler;
-    public Handler RuntimeHandler;
     public Handler NotificationHandler;
     public Handler ToastHandler;
     public Handler ChannelHandler;
@@ -280,14 +281,13 @@ public class PlayerActivity extends Activity {
             //BackGroundThreadEtc loop threads
             BackGroundThread = new HandlerThread("BackGroundThread");
             BackGroundThread.start();
-            Looper BackGroundThreadEtcLooper = BackGroundThread.getLooper();
+            Looper BackGroundThreadLooper = BackGroundThread.getLooper();
 
-            NotificationHandler = new Handler(BackGroundThreadEtcLooper);
-            ToastHandler = new Handler(BackGroundThreadEtcLooper);
-            SaveBackupJsonHandler = new Handler(BackGroundThreadEtcLooper);
-            RuntimeHandler = new Handler(BackGroundThreadEtcLooper);
-            ChannelHandler = new Handler(BackGroundThreadEtcLooper);
-            DeleteHandler = new Handler(BackGroundThreadEtcLooper);
+            NotificationHandler = new Handler(BackGroundThreadLooper);
+            ToastHandler = new Handler(BackGroundThreadLooper);
+            SaveBackupJsonHandler = new Handler(BackGroundThreadLooper);
+            ChannelHandler = new Handler(BackGroundThreadLooper);
+            DeleteHandler = new Handler(BackGroundThreadLooper);
 
             //Other loop threads
             PreviewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
@@ -299,6 +299,11 @@ public class PlayerActivity extends Activity {
                 DataResultThread[i].start();
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
+
+            RuntimeThread = new HandlerThread("RuntimeThread");
+            RuntimeThread.start();
+            RuntimeHandler = new Handler(RuntimeThread.getLooper());
+            runtime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
@@ -318,8 +323,6 @@ public class PlayerActivity extends Activity {
 
             initializeWebview();
 
-            runtime = Runtime.getRuntime();
-            GetPing();
             StopNotificationService();
         }
     }
@@ -1553,6 +1556,7 @@ public class PlayerActivity extends Activity {
 
         }
 
+        GetPing();
     }
 
     private void initializeWebViewKey() {
