@@ -587,7 +587,7 @@ public final class Tools {
         if (who_called == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
-                    .setLowLatency(LowLatency ? 3000 : 0)//3000 is a safe value the implementation will calculate the proper value
+                    .setLowLatency(LowLatency)
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
