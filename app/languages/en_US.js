@@ -609,4 +609,6 @@ function en_USLang() {
     STR_CHAT_100_ARRAY = ['Right', 'Center', 'Left'];
     STR_NOTIFICATION_POS = "Notification position on the screen";
     STR_NOTIFICATION_POS_ARRAY = ['Top right', 'Top center', 'Top left', 'Bottom left', 'Bottom center', 'Bottom right'];
+    STR_LOWLATENCY_ENABLE = "Enabled normal mode, may cause re-buffers";
+    STR_LOWLATENCY_LOW = "Enabled lowest mode, may cause even more re-buffers";
 }

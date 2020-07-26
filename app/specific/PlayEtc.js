@@ -1723,15 +1723,15 @@ function Play_MakeControls() {
     Play_controls[Play_controlsLowLatency] = { //quality
         icons: "history",
         string: STR_LOW_LATENCY,
-        values: null,
-        defaultValue: 0,
+        values: [STR_DISABLE, STR_LOWLATENCY_ENABLE, STR_LOWLATENCY_LOW],
+        defaultValue: Play_LowLatency,
         opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
             Play_hidePanel();
 
-            Play_LowLatency = !Play_LowLatency;
+            Play_LowLatency = this.defaultValue;
 
             if (Main_IsOn_OSInterface) {
                 OSInterface_mSetlatency(Play_LowLatency);
@@ -1757,10 +1757,23 @@ function Play_MakeControls() {
             if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
             Main_setItem('Play_LowLatency', Play_LowLatency);
+            //this.setLable();
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('extra_button_' + this.position, "(" + (Play_LowLatency ? STR_ENABLE : STR_DISABLE) + ")");
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
         },
     };
 

@@ -583,7 +583,7 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, boolean LowLatency, String masterPlaylist, String userAgent) {
+    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String masterPlaylist, String userAgent) {
         if (who_called == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)

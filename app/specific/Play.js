@@ -36,7 +36,7 @@ var Play_STATE_PLAYING = 1;
 var Play_state = 0;
 var Play_MultiEnable = false;
 var Play_MultiArray = [];
-var Play_LowLatency = false;
+var Play_LowLatency = 0;
 var Play_EndUpclear = false;
 var Play_EndUpclearID;
 var Play_EndUpclearCalback;
@@ -196,7 +196,7 @@ function Play_PreStart() {
     Play_FullScreenSize = Main_getItemInt('Play_FullScreenSize', 3);
     Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
 
-    Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
+    Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
 
     if (Main_IsOn_OSInterface) {
         //TODO remove this after some app updates

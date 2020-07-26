@@ -188,7 +188,7 @@ public class PlayerActivity extends Activity {
     public float NetActivityAVG = 0f;
     public long NetCounter = 0L;
     public long SpeedCounter = 0L;
-    public boolean mLowLatency = false;
+    public int mLowLatency = 0;
     public boolean AlreadyStarted;
     public boolean onCreateReady;
     public boolean IsStopped;
@@ -2173,7 +2173,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         isVod ? 2 : 1,
-                        false,
+                        0,
                         masterPlaylistString,
                         userAgent
                 );
@@ -2296,7 +2296,7 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
-        public void mSetlatency(boolean LowLatency) {
+        public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
         }
 

@@ -268,12 +268,15 @@ function OSInterface_SetBuffer(who_called, buffer_size) {
     if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
 }
 
-//public void mSetlatency(boolean LowLatency)
-//LowLatency = if true LowLatency is enable
+//public void mSetlatency(int LowLatency)
+//LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Changes small player size
 function OSInterface_mSetlatency(LowLatency) {
-    Android.mSetlatency(LowLatency);
+    var low_latency_array = [0, 2, 1];
+    try {
+        Android.mSetlatency(low_latency_array[LowLatency]);
+    } catch (e) {}
 }
 
 //public void mSwitchPlayerSize(int mPicturePictureSize)
