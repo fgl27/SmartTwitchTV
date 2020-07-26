@@ -1919,13 +1919,6 @@ public class PlayerActivity extends Activity {
             }
         }
 
-        //TODO remove this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void upNotificationId(String id, String name) {
-            UpdateUserId(id, name, null);
-        }
-
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upDateLang(String lang) {
@@ -2304,13 +2297,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
-        }
-
-        //TODO remove this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void stopVideo(int who_called) {
-            stopVideo();
         }
 
         @SuppressWarnings("unused")//called by JS

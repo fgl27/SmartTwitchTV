@@ -424,9 +424,7 @@ function OSInterface_gettimepreview() {
 //Android specific: false
 //Allows to stop the player when the user chooses to end the playback
 function OSInterface_stopVideo() {
-    try {
-        Android.stopVideo();
-    } catch (e) {}
+    Android.stopVideo();
 }
 
 //public void mClearSmallPlayer()
@@ -931,30 +929,25 @@ function OSInterface_showToast(toast) {//Not be used
 //Android specific: true
 //Allows to control individual player volume
 function OSInterface_mCheckRefreshToast(type) {//Not be used
-    try {
-        if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
 }
 
 //public void mCheckRefresh()
 //Android specific: true
 //returns the webview version
 function OSInterface_mCheckRefresh() {
-    try {
-        if (Main_IsOn_OSInterface) {
-            Android.mCheckRefresh(2);
-            Android.mCheckRefresh(5);
-        }
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) {
+        Android.mCheckRefresh(2);
+        Android.mCheckRefresh(5);
+    }
 }
 
 //public String GetLastIntentObj()
 //Android specific: true
 //returns the webview version
 function OSInterface_GetLastIntentObj() {
-    try {
-        if (Main_IsOn_OSInterface) return Android.GetLastIntentObj();
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) return Android.GetLastIntentObj();
+
     return null;
 }
 
@@ -963,9 +956,7 @@ function OSInterface_GetLastIntentObj() {
 //Android specific: true
 //Sets the user id used by the notification services
 function OSInterface_upDateLang(lang) {
-    try {
-        if (Main_IsOn_OSInterface) Android.upDateLang(lang);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.upDateLang(lang);
 }
 
 //public boolean isKeyboardConnected()
