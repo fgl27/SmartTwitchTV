@@ -147,7 +147,6 @@ public final class NotificationUtils {
             Tools.ResponseObj response;
 
             JsonObject obj;
-            JsonObject objChannel;
 
             int Offset = 0;
             int StreamsSize;
@@ -210,10 +209,9 @@ public final class NotificationUtils {
 
                                     obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
 
-                                    if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                                    if (obj.isJsonObject() && !obj.get("_id").isJsonNull() && !obj.get("channel").isJsonNull()) {//Prevent null channelObj or Broadcast id
 
-                                        objChannel = obj.get("channel").getAsJsonObject();
-                                        id = objChannel.get("_id").getAsString();//Broadcast id
+                                        id = obj.get("_id").getAsString();//Broadcast id
 
                                         if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
                                             TempArray.add(id);
@@ -258,7 +256,7 @@ public final class NotificationUtils {
     }
 
     //There is a faster way to do this??? yes but that is needed the user authorization key
-    //So this function runs witout it is slower even more as the user follows more channels but works
+    //So this function runs without it is slower even more as the user follows more channels but works
     //The service that run this functions aren't time dependent so no problem
     public static JsonArray GetLiveStreamsListNoToken(String UserId) {
         JsonArray StreamsResult = new JsonArray();
@@ -329,11 +327,16 @@ public final class NotificationUtils {
                                 for (int j = 0; j < StreamsSize; j++) {
 
                                     obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
-                                    id = obj.get("_id").getAsString();//Broadcast id
 
-                                    if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
-                                        TempArray.add(id);
-                                        StreamsResult.add(obj);
+                                    if (obj.isJsonObject() && !obj.get("_id").isJsonNull() && !obj.get("channel").isJsonNull()) {//Prevent null channelObj or Broadcast id
+
+                                        id = obj.get("_id").getAsString();//Broadcast id
+
+                                        if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
+                                            TempArray.add(id);
+                                            StreamsResult.add(obj);
+                                        }
+
                                     }
 
                                 }
@@ -500,62 +503,61 @@ public final class NotificationUtils {
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         input.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date;
+        long timeMsNow = new Date().getTime();
 
         String StreamCreated_at;
-        long timeNow = new Date().getTime();
         boolean NotifyTime;
 
         try {
+            //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() and etc here as was already checked before reaching here
             for (int i = 0; i < StreamsSize; i++) {
 
                 obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
 
-                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                NotifyTime = true;
 
-                    NotifyTime = true;
+                if (NotifySinceTimeMs > 0) {//NotifySinceTimeMs == 0 check is disable
+                    StreamCreated_at = !obj.get("created_at").isJsonNull() ? obj.get("created_at").getAsString() : null;
 
-                    if (NotifySinceTimeMs > 0) {
-                        StreamCreated_at = !obj.get("created_at").isJsonNull() ? obj.get("created_at").getAsString() : null;
+                    if (StreamCreated_at != null) {
 
-                        if (StreamCreated_at != null) {
+                        date = input.parse(StreamCreated_at);
 
-                            date = input.parse(StreamCreated_at);
+                        if (date != null) {
 
-                            if (date != null) {
+                            NotifyTime = NotifySinceTimeMs > (timeMsNow - date.getTime());
 
-                                NotifyTime = NotifySinceTimeMs > (timeNow - date.getTime());
-
-                            }
                         }
-
                     }
 
-                    game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                    isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                    id = !obj.get("_id").isJsonNull() ? obj.get("_id").getAsString() : null;//Broadcast id
-                    obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-                    currentLive.add(id);
-
-                    if (NotifyTime && id != null && !oldLive.contains(id)) {
-
-                        Bitmap bmp = null;
-                        if (!obj.get("logo").isJsonNull())
-                            bmp = GetBitmap(obj.get("logo").getAsString());
-
-                        tempNotifyList = new NotifyList(
-                                game,
-                                !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
-                                bmp,
-                                !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
-                                isLive
-                        );
-                        //Toast can only run for about 3s allow the user to repeat same notification
-                        for (int x = 0; x < Repeat; x++) {
-                            result.add(tempNotifyList);
-                        }
-
-                    }
                 }
+
+                game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
+                isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
+                id = obj.get("_id").getAsString();//Broadcast id
+                obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                currentLive.add(id);
+
+                if (NotifyTime && !oldLive.contains(id)) {
+
+                    Bitmap bmp = null;
+                    if (!obj.get("logo").isJsonNull())
+                        bmp = GetBitmap(obj.get("logo").getAsString());
+
+                    tempNotifyList = new NotifyList(
+                            game,
+                            !obj.get("display_name").isJsonNull() ? obj.get("display_name").getAsString() : "",
+                            bmp,
+                            !obj.get("status").isJsonNull() ? obj.get("status").getAsString() : "",
+                            isLive
+                    );
+                    //Toast can only run for about 3s allow the user to repeat same notification
+                    for (int x = 0; x < Repeat; x++) {
+                        result.add(tempNotifyList);
+                    }
+
+                }
+
             }
         } catch (Exception e) {
             Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
@@ -574,13 +576,10 @@ public final class NotificationUtils {
         try {
             for (int i = 0; i < StreamsSize; i++) {
 
+                //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() here as was already checked before reaching here
                 obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
+                currentLive.add(obj.get("_id").getAsString());//Broadcast id
 
-                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-
-                    currentLive.add(obj.get("_id").getAsString());//Broadcast id
-
-                }
             }
         } catch (Exception e) {
             Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
