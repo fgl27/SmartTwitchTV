@@ -55,9 +55,12 @@ import net.grandcentrix.tray.AppPreferences;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.google.gson.JsonParser.parseString;
 
@@ -453,6 +456,29 @@ public final class NotificationUtils {
 
     }
 
+//    public static String getTimeFromMs(long millis) {
+//        if(millis < 0) {
+//            millis = 0;
+//        }
+//
+//        long days = TimeUnit.MILLISECONDS.toDays(millis);
+//        millis -= TimeUnit.DAYS.toMillis(days);
+//        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+//        millis -= TimeUnit.HOURS.toMillis(hours);
+//        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+//        millis -= TimeUnit.MINUTES.toMillis(minutes);
+//        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+//
+//        return(days +
+//                " Days " +
+//                hours +
+//                " Hours " +
+//                minutes +
+//                " Minutes " +
+//                seconds +
+//                " Seconds");
+//    }
+
     private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
 
         ArrayList<NotifyList> result = new ArrayList<>();
@@ -469,6 +495,15 @@ public final class NotificationUtils {
         NotifyList tempNotifyList;
 
         int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
+        long NotifySinceTimeMs = Tools.getLong(Constants.PREF_NOTIFICATION_SINCE_TIME, 0, appPreferences);
+
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        input.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date;
+
+        String StreamCreated_at;
+        long timeNow = new Date().getTime();
+        boolean NotifyTime;
 
         try {
             for (int i = 0; i < StreamsSize; i++) {
@@ -477,13 +512,31 @@ public final class NotificationUtils {
 
                 if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
 
+                    NotifyTime = true;
+
+                    if (NotifySinceTimeMs > 0) {
+                        StreamCreated_at = !obj.get("created_at").isJsonNull() ? obj.get("created_at").getAsString() : null;
+
+                        if (StreamCreated_at != null) {
+
+                            date = input.parse(StreamCreated_at);
+
+                            if (date != null) {
+
+                                NotifyTime = NotifySinceTimeMs > (timeNow - date.getTime());
+
+                            }
+                        }
+
+                    }
+
                     game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
                     isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
-                    id = obj.get("_id").getAsString();//Broadcast id
+                    id = !obj.get("_id").isJsonNull() ? obj.get("_id").getAsString() : null;//Broadcast id
                     obj = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
                     currentLive.add(id);
 
-                    if (!oldLive.contains(id)) {
+                    if (NotifyTime && id != null && !oldLive.contains(id)) {
 
                         Bitmap bmp = null;
                         if (!obj.get("logo").isJsonNull())

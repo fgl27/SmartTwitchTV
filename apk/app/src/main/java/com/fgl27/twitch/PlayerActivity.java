@@ -1820,6 +1820,12 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetNotificationSinceTime(long time) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_SINCE_TIME, time);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void RunNotificationService() {
             InitNotifications(0, mWebViewContext);
         }

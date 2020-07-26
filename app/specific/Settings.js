@@ -173,6 +173,10 @@ var Settings_value = {
         "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "defaultValue": 1
     },
+    "since_notification": {//Migrated to dialog
+        "values": Settings_GetnotificationTime(),
+        "defaultValue": 1
+    },
     "global_font_offset": {//Migrated to dialog
         "values": [-3, -2, -1, 0, 1, 2, 3],
         "defaultValue": 4
@@ -396,6 +400,17 @@ function Settings_GetVolumes() {
     return array;
 }
 
+function Settings_GetnotificationTime() {
+    var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
+        i = 0;
+
+    for (i = 2; i < 25; i++) {
+        array.push(i + ' Hours');
+    }
+
+    return array;
+}
+
 var Settings_value_keys = [];
 var Settings_positions_length = 0;
 //Variable initialization end
@@ -612,6 +627,7 @@ function Settings_SetDefautls() {
     Settings_notification_background();
     Settings_notification_position();
     Settings_notification_repeat();
+    Settings_notification_sicetime();
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
@@ -692,6 +708,7 @@ function Settings_SetDefault(position) {
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "repeat_notification") Settings_notification_repeat();
+    else if (position === "since_notification") Settings_notification_sicetime();
     else if (position === "ping_warn") Settings_SetPingWarning();
     else if (position === "app_animations") Settings_SetAnimations();
     else if (position === "buffer_live") Settings_SetBuffers(1);
@@ -731,6 +748,22 @@ function Settings_notification_position() {
 
 function Settings_notification_repeat() {
     OSInterface_SetNotificationRepeat(Settings_Obj_values("repeat_notification"));
+}
+
+function Settings_notification_sicetime() {
+    var time = Settings_Obj_default("since_notification");
+
+    if (time) {
+        var value = Settings_Obj_values("since_notification").split(' ');
+
+        if (Main_A_includes_B(value[1], 'min')) {
+            time = parseInt(value[0]) * 60 * 1000;
+        } else {
+            time = parseInt(value[0]) * 60 * 60 * 1000;
+        }
+    }
+
+    OSInterface_SetNotificationSinceTime(time);
 }
 
 function Settings_notification() {
@@ -1308,6 +1341,7 @@ function Settings_DialogShowNotification() {
     Settings_value.live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_background.values = [STR_NO, STR_YES];
     Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
+    Settings_value.since_notification.values[0] = STR_DISABLE;
 
     var obj = {
         live_notification: {
@@ -1333,6 +1367,12 @@ function Settings_DialogShowNotification() {
             values: Settings_value.repeat_notification.values,
             title: STR_NOTIFICATION_REPEAT,
             summary: STR_NOTIFICATION_REPEAT_SUMMARY
+        },
+        since_notification: {
+            defaultValue: Settings_value.since_notification.defaultValue,
+            values: Settings_value.since_notification.values,
+            title: STR_NOTIFICATION_SINCE,
+            summary: STR_NOTIFICATION_SINCE_SUMMARY
         }
     };
 

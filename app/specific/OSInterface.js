@@ -47,6 +47,16 @@ function OSInterface_SetNotificationRepeat(times) {
     if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
 }
 
+//public void SetNotificationSinceTime(long time)
+//time im ms how long a stream is live
+//Android specific: true
+//Allows to Set Notification Since time check
+function OSInterface_SetNotificationSinceTime(time) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
+    } catch (e) {}
+}
+
 //public void RunNotificationService()
 //Android specific: true
 //Allows to run the notification service once
