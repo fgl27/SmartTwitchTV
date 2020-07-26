@@ -55,13 +55,16 @@ import com.google.gson.JsonObject;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +75,9 @@ public final class ChannelsUtils {
     private static final int JOB_ID = 1;
 
     private static final String TAG = "STTV_ChannelsUtils";
+
+    private static final String VIDEO_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_video.png";
+    private static final String GAME_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_game.png";
 
     private static final String[] TV_CONTRACT_ARRAY = {
             TvContractCompat.Channels._ID,
@@ -478,6 +484,18 @@ public final class ChannelsUtils {
         return decimalFormat;
     }
 
+    public static String getTimeFromMs(long millis) {
+        if(millis < 0) return null;
+
+        long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        millis -= TimeUnit.HOURS.toMillis(hours);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
+        millis -= TimeUnit.MINUTES.toMillis(minutes);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        return String.format(Locale.US, "since %02d:%02d:%02d", hours, minutes, seconds);
+    }
+
     public static void UpdateAllChannels(Context context, AppPreferences appPreferences) {
         StartLive(context);
         StartFeatured(context);
@@ -848,26 +866,34 @@ public final class ChannelsUtils {
 
                 channelId = objTarget.get("_id").getAsString();
 
-                if (!TempArray.contains(channelId)) {//Prevent add duplicated
+                if (!TempArray.contains(channelId) && !obj.get("display_name").isJsonNull()) {//Prevent add duplicated
+
                     TempArray.add(channelId);
 
-                    objPreview = objTarget.get("preview_urls").getAsJsonObject();
-                    description = objTarget.get("meta_game").getAsString();
-                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
-                    viewers = objTarget.get("viewers").getAsInt();
-                    objChannel = objTarget.get("channel").getAsJsonObject();
+                    objPreview = !objTarget.get("preview_urls").isJsonNull() ? objTarget.get("preview_urls").getAsJsonObject() : null;
 
-                    content.add(
-                            new ChannelContentObj(
-                                    obj.get("display_name").getAsString() + " hosting " + objChannel.get("display_name").getAsString(),
-                                    description + decimalFormat.format(viewers) + " viewers\n" + objTarget.get("title").getAsString(),
-                                    objPreview.get("large").getAsString(),
-                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                    viewers,
-                                    new Gson().toJson(new PreviewObj(obj, "HOST")),
-                                    true
-                            )
-                    );
+                    description = !objTarget.get("meta_game").isJsonNull() ? objTarget.get("meta_game").getAsString() : "";
+                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
+
+                    viewers = !objTarget.get("viewers").isJsonNull() ? objTarget.get("viewers").getAsInt() : 0;
+
+                    objChannel = !objTarget.get("channel").isJsonNull() ? objTarget.get("channel").getAsJsonObject() : null;
+
+                    if (objChannel != null && !objChannel.get("display_name").isJsonNull()) {
+
+                        content.add(
+                                new ChannelContentObj(
+                                        obj.get("display_name").getAsString() + " hosting " + objChannel.get("display_name").getAsString(),
+                                        description + decimalFormat.format(viewers) + " viewers\n" + (!objTarget.get("title").isJsonNull() ? objTarget.get("title").getAsString() : ""),
+                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
+                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
+                                        viewers,
+                                        new Gson().toJson(new PreviewObj(obj, "HOST")),
+                                        true
+                                )
+                        );
+
+                    }
                 }
 
             }
@@ -884,6 +910,11 @@ public final class ChannelsUtils {
 
     private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort)  {
         List<ChannelContentObj> content = new ArrayList<>();
+
+        int objSize = Streams.size();
+        if (objSize < 1) return null;
+        else content.add(getRefreshContent());
+
         ArrayList<String> TempArray = new ArrayList<>();
 
         JsonObject obj;
@@ -892,56 +923,90 @@ public final class ChannelsUtils {
 
         String channelId;
         String description;
+        String game;
+        String StreamCreated_at;
 
+        boolean emptyGame;
+
+        int contentSize = 0;
         int viewers;
-        int objSize = Streams.size();
 
         DecimalFormat decimalFormat = getDecimalFormat();
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        input.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date;
+        long timeMsNow = new Date().getTime();
+        try {
 
-        if (objSize < 1) return null;
-        else content.add(getRefreshContent());
+            for (int j = 0; j < objSize; j++) {
 
-        for (int j = 0; j < objSize; j++) {
+                obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
 
-            obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
-
-            if (object2 != null) {
-                obj = obj.get(object2).getAsJsonObject();//Featured holds the featured stream inside another level
-            }
-
-            if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-                objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
-
-                channelId = objChannel.get("_id").getAsString();
-
-                if (!TempArray.contains(channelId)) {//Prevent add duplicated
-                    TempArray.add(channelId);
-
-                    objPreview = obj.get("preview").getAsJsonObject();
-                    description = obj.get("game").getAsString();
-                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
-                    viewers = obj.get("viewers").getAsInt();
-
-                    content.add(
-                            new ChannelContentObj(
-                                    objChannel.get("display_name").getAsString(),
-                                    description + decimalFormat.format(viewers) + " viewers\n" + objChannel.get("status").getAsString(),
-                                    objPreview.get("large").getAsString(),
-                                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                    viewers,
-                                    new Gson().toJson(new PreviewObj(obj, "LIVE")),
-                                    !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
-                            )
-                    );
+                if (object2 != null) {
+                    obj = obj.get(object2).getAsJsonObject();//Featured holds the featured stream inside another level
                 }
 
+                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
+                    objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+
+                    channelId = objChannel.get("_id").getAsString();
+
+                    if (!TempArray.contains(channelId) && //Prevent add duplicated
+                            !objChannel.get("display_name").isJsonNull()) {
+
+                        TempArray.add(channelId);
+
+                        objPreview = !obj.get("preview").isJsonNull() ? obj.get("preview").getAsJsonObject() : null;
+                        game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
+                        viewers = !obj.get("viewers").isJsonNull() ? obj.get("viewers").getAsInt() : 0;
+                        StreamCreated_at = !obj.get("created_at").isJsonNull() ? obj.get("created_at").getAsString() : null;
+
+                        if (StreamCreated_at != null) {
+
+                            date = input.parse(StreamCreated_at);
+
+                            if (date != null) {
+
+                                StreamCreated_at = getTimeFromMs(timeMsNow - date.getTime());
+
+                            }
+                        }
+
+                        emptyGame = Objects.equals(game, "");
+
+                        description = String.format(Locale.US,
+                                "%s %s %s for %s viewers\n%s",
+                                emptyGame ? "Streaming" : "Playing",
+                                game + (emptyGame ? "" : ","),
+                                StreamCreated_at != null ? StreamCreated_at : "",
+                                decimalFormat.format(viewers),
+                                !objChannel.get("status").isJsonNull() ? objChannel.get("status").getAsString() : ""
+                        );
+
+                        content.add(
+                                new ChannelContentObj(
+                                        objChannel.get("display_name").getAsString(),
+                                        description,
+                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
+                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
+                                        viewers,
+                                        new Gson().toJson(new PreviewObj(obj, "LIVE")),
+                                        !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
+                                )
+                        );
+                    }
+
+                }
             }
-        }
 
-        int contentSize = content.size();
+            contentSize = content.size();
 
-        if (sort && contentSize > 1) {
-            Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+            if (sort && contentSize > 1) {
+                Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+            }
+
+        } catch (Exception e) {
+            Log.w(TAG, "ProcessLiveArray e " + e.getMessage());
         }
 
         return contentSize > 0 ? content : null;
@@ -954,9 +1019,9 @@ public final class ChannelsUtils {
             JsonObject objGame;
             JsonObject objPreview;
             JsonArray Games;
-            String description;
             int objSize;
             int viewers;
+            int channels;
             ArrayList<String> TempArray = new ArrayList<>();
             String gameId;
             List<ChannelContentObj> content = new ArrayList<>();
@@ -994,27 +1059,31 @@ public final class ChannelsUtils {
                                 if (obj.isJsonObject() && !obj.get("game").isJsonNull()) {
 
                                     objGame = obj.get("game").getAsJsonObject(); //Get the channel obj in position
-                                    gameId = objGame.get("_id").getAsString();
+                                    gameId = !objGame.get("_id").isJsonNull() ? objGame.get("_id").getAsString() : null;
 
-                                    if (!TempArray.contains(gameId)) {//Prevent add duplicated
+                                    if (gameId != null && !TempArray.contains(gameId)) {//Prevent add duplicated
+
                                         TempArray.add(gameId);
 
-                                        viewers =obj.get("viewers").getAsInt();
-                                        objPreview = objGame.get("box").getAsJsonObject();
-                                        description = decimalFormat.format(obj.get("channels").getAsInt()) +
-                                                " Channels\nFor " + decimalFormat.format(viewers) + " viewers";
+                                        viewers = !obj.get("viewers").isJsonNull() ? obj.get("viewers").getAsInt() : 0;
+                                        channels = !obj.get("channels").isJsonNull() ? obj.get("channels").getAsInt() : 0;
+                                        objPreview = !objGame.get("box").isJsonNull() ? objGame.get("box").getAsJsonObject() : null;
 
-                                        content.add(
-                                                new ChannelContentObj(
-                                                        objGame.get("name").getAsString(),
-                                                        description,
-                                                        objPreview.get("large").getAsString(),
-                                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
-                                                        viewers,
-                                                        new Gson().toJson(new PreviewObj(objGame, "GAME")),
-                                                        false
-                                                )
-                                        );
+                                        if (!objGame.get("name").isJsonNull()) {
+
+                                            content.add(
+                                                    new ChannelContentObj(
+                                                            objGame.get("name").getAsString(),
+                                                            decimalFormat.format(channels) + " Channels\nFor " + decimalFormat.format(viewers) + " viewers",
+                                                            objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : GAME_404,
+                                                            TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
+                                                            viewers,
+                                                            new Gson().toJson(new PreviewObj(objGame, "GAME")),
+                                                            false
+                                                    )
+                                            );
+
+                                        }
                                     }
 
                                 }
@@ -1036,4 +1105,5 @@ public final class ChannelsUtils {
         return null;
 
     }
+
 }

@@ -459,29 +459,6 @@ public final class NotificationUtils {
 
     }
 
-//    public static String getTimeFromMs(long millis) {
-//        if(millis < 0) {
-//            millis = 0;
-//        }
-//
-//        long days = TimeUnit.MILLISECONDS.toDays(millis);
-//        millis -= TimeUnit.DAYS.toMillis(days);
-//        long hours = TimeUnit.MILLISECONDS.toHours(millis);
-//        millis -= TimeUnit.HOURS.toMillis(hours);
-//        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis);
-//        millis -= TimeUnit.MINUTES.toMillis(minutes);
-//        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
-//
-//        return(days +
-//                " Days " +
-//                hours +
-//                " Hours " +
-//                minutes +
-//                " Minutes " +
-//                seconds +
-//                " Seconds");
-//    }
-
     private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
 
         ArrayList<NotifyList> result = new ArrayList<>();
