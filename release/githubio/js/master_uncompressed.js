@@ -606,6 +606,10 @@
     var STR_SOURCE_CHECK_SUMMARY;
     var STR_AUTO_REFRESH_BACKGROUND;
     var STR_AUTO_REFRESH_BACKGROUND_SUMMARY;
+    var STR_LOWLATENCY_ENABLE;
+    var STR_LOWLATENCY_LOW;
+    var STR_NOTIFICATION_SINCE;
+    var STR_NOTIFICATION_SINCE_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1120,6 +1124,8 @@
         STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";
         STR_NOTIFICATION_REPEAT = "How many times to show it individual notification";
         STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show";
+        STR_NOTIFICATION_SINCE = "Prevent notification of streams that are live for over";
+        STR_NOTIFICATION_SINCE_SUMMARY = "This is usefully to prevent the app showing a long list of notification when the app is not used for some time, example when you turn off the device or the screen is off (the app will not show notification when the device is on but screen is off)";
         STR_GLOBAL_FONT = "Global app font size offset";
         STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
         STR_MAIN_MENU = "Main Menu";
@@ -1380,6 +1386,8 @@
         STR_CHAT_100_ARRAY = ['Right', 'Center', 'Left'];
         STR_NOTIFICATION_POS = "Notification position on the screen";
         STR_NOTIFICATION_POS_ARRAY = ['Top right', 'Top center', 'Top left', 'Bottom left', 'Bottom center', 'Bottom right'];
+        STR_LOWLATENCY_ENABLE = "Enabled normal mode, may cause re-buffers";
+        STR_LOWLATENCY_LOW = "Enabled lowest mode, may cause even more re-buffers";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -8231,10 +8239,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.232';
-    var Main_version_java = 23; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 25, 2020';
-    var Main_version_web = 28; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.233';
+    var Main_version_java = 24; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'July 27, 2020';
+    var Main_version_web = 29; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10425,6 +10433,16 @@
         if (Main_IsOn_OSInterface) Android.SetNotificationRepeat(times);
     }
 
+    //public void SetNotificationSinceTime(long time)
+    //time im ms how long a stream is live
+    //Android specific: true
+    //Allows to Set Notification Since time check
+    function OSInterface_SetNotificationSinceTime(time) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
+        } catch (e) {}
+    }
+
     //public void RunNotificationService()
     //Android specific: true
     //Allows to run the notification service once
@@ -10646,12 +10664,15 @@
         if (Main_IsOn_OSInterface) Android.SetBuffer(who_called, buffer_size);
     }
 
-    //public void mSetlatency(boolean LowLatency)
-    //LowLatency = if true LowLatency is enable
+    //public void mSetlatency(int LowLatency)
+    //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Changes small player size
     function OSInterface_mSetlatency(LowLatency) {
-        Android.mSetlatency(LowLatency);
+        var low_latency_array = [0, 2, 1];
+        try {
+            Android.mSetlatency(low_latency_array[LowLatency]);
+        } catch (e) {}
     }
 
     //public void mSwitchPlayerSize(int mPicturePictureSize)
@@ -10789,9 +10810,7 @@
     //Android specific: false
     //Allows to stop the player when the user chooses to end the playback
     function OSInterface_stopVideo() {
-        try {
-            Android.stopVideo();
-        } catch (e) {}
+        Android.stopVideo();
     }
 
     //public void mClearSmallPlayer()
@@ -11296,30 +11315,25 @@
     //Android specific: true
     //Allows to control individual player volume
     function OSInterface_mCheckRefreshToast(type) { //Not be used
-        try {
-            if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
     }
 
     //public void mCheckRefresh()
     //Android specific: true
     //returns the webview version
     function OSInterface_mCheckRefresh() {
-        try {
-            if (Main_IsOn_OSInterface) {
-                Android.mCheckRefresh(2);
-                Android.mCheckRefresh(5);
-            }
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) {
+            Android.mCheckRefresh(2);
+            Android.mCheckRefresh(5);
+        }
     }
 
     //public String GetLastIntentObj()
     //Android specific: true
     //returns the webview version
     function OSInterface_GetLastIntentObj() {
-        try {
-            if (Main_IsOn_OSInterface) return Android.GetLastIntentObj();
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) return Android.GetLastIntentObj();
+
         return null;
     }
 
@@ -11328,9 +11342,7 @@
     //Android specific: true
     //Sets the user id used by the notification services
     function OSInterface_upDateLang(lang) {
-        try {
-            if (Main_IsOn_OSInterface) Android.upDateLang(lang);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.upDateLang(lang);
     }
 
     //public boolean isKeyboardConnected()
@@ -13970,15 +13982,15 @@
         Play_controls[Play_controlsLowLatency] = { //quality
             icons: "history",
             string: STR_LOW_LATENCY,
-            values: null,
-            defaultValue: 0,
+            values: [STR_DISABLE, STR_LOWLATENCY_ENABLE, STR_LOWLATENCY_LOW],
+            defaultValue: Play_LowLatency,
             opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
                 Play_hidePanel();
 
-                Play_LowLatency = !Play_LowLatency;
+                Play_LowLatency = this.defaultValue;
 
                 if (Main_IsOn_OSInterface) {
                     OSInterface_mSetlatency(Play_LowLatency);
@@ -14005,10 +14017,23 @@
                 if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
                 Main_setItem('Play_LowLatency', Play_LowLatency);
+                //this.setLable();
+            },
+            updown: function(adder) {
+
+                this.defaultValue += adder;
+                if (this.defaultValue < 0) this.defaultValue = 0;
+                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+                this.bottomArrows();
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('extra_button_' + this.position, "(" + (Play_LowLatency ? STR_ENABLE : STR_DISABLE) + ")");
+                Main_textContent('controls_name_' + this.position,
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+            },
+            bottomArrows: function() {
+                Play_BottomArrows(this.position);
             },
         };
 
@@ -15174,7 +15199,7 @@
     var Play_state = 0;
     var Play_MultiEnable = false;
     var Play_MultiArray = [];
-    var Play_LowLatency = false;
+    var Play_LowLatency = 0;
     var Play_EndUpclear = false;
     var Play_EndUpclearID;
     var Play_EndUpclearCalback;
@@ -15334,7 +15359,7 @@
         Play_FullScreenSize = Main_getItemInt('Play_FullScreenSize', 3);
         Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
 
-        Play_LowLatency = Main_getItemBool('Play_LowLatency', false);
+        Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
 
         if (Main_IsOn_OSInterface) {
             //TODO remove this after some app updates
@@ -24960,6 +24985,10 @@
             "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             "defaultValue": 1
         },
+        "since_notification": { //Migrated to dialog
+            "values": Settings_GetnotificationTime(),
+            "defaultValue": 1
+        },
         "global_font_offset": { //Migrated to dialog
             "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
@@ -25184,6 +25213,17 @@
         return array;
     }
 
+    function Settings_GetnotificationTime() {
+        var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
+            i = 0;
+
+        for (i = 2; i < 25; i++) {
+            array.push(i + ' Hours');
+        }
+
+        return array;
+    }
+
     var Settings_value_keys = [];
     var Settings_positions_length = 0;
     //Variable initialization end
@@ -25401,6 +25441,7 @@
         Settings_notification_background();
         Settings_notification_position();
         Settings_notification_repeat();
+        Settings_notification_sicetime();
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
@@ -25481,6 +25522,7 @@
         else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_position") Settings_notification_position();
         else if (position === "repeat_notification") Settings_notification_repeat();
+        else if (position === "since_notification") Settings_notification_sicetime();
         else if (position === "ping_warn") Settings_SetPingWarning();
         else if (position === "app_animations") Settings_SetAnimations();
         else if (position === "buffer_live") Settings_SetBuffers(1);
@@ -25519,6 +25561,22 @@
 
     function Settings_notification_repeat() {
         OSInterface_SetNotificationRepeat(Settings_Obj_values("repeat_notification"));
+    }
+
+    function Settings_notification_sicetime() {
+        var time = Settings_Obj_default("since_notification");
+
+        if (time) {
+            var value = Settings_Obj_values("since_notification").split(' ');
+
+            if (Main_A_includes_B(value[1], 'min')) {
+                time = parseInt(value[0]) * 60 * 1000;
+            } else {
+                time = parseInt(value[0]) * 60 * 60 * 1000;
+            }
+        }
+
+        OSInterface_SetNotificationSinceTime(time);
     }
 
     function Settings_notification() {
@@ -26121,6 +26179,7 @@
         Settings_value.live_notification.values = [STR_NO, STR_YES];
         Settings_value.live_notification_background.values = [STR_NO, STR_YES];
         Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
+        Settings_value.since_notification.values[0] = STR_DISABLE;
 
         var obj = {
             live_notification: {
@@ -26146,6 +26205,12 @@
                 values: Settings_value.repeat_notification.values,
                 title: STR_NOTIFICATION_REPEAT,
                 summary: STR_NOTIFICATION_REPEAT_SUMMARY
+            },
+            since_notification: {
+                defaultValue: Settings_value.since_notification.defaultValue,
+                values: Settings_value.since_notification.values,
+                title: STR_NOTIFICATION_SINCE,
+                summary: STR_NOTIFICATION_SINCE_SUMMARY
             }
         };
 
