@@ -350,7 +350,7 @@ function en_USLang() {
     STR_NOTIFICATION_REPEAT = "How many times to show it individual notification";
     STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show";
     STR_NOTIFICATION_SINCE = "Prevent notification of streams that are live for over";
-    STR_NOTIFICATION_SINCE_SUMMARY = "Before notify, check how much time the streamer is live and only notify if the live since time is less then what is set here, this is usefully to prevent the app showing a long list of notification when the app is not used for some time, example when you turn off the device or the screen is off (the app will not show notification when the device is on but screen is off), set this to disabled the app will not check for time all available notification will show";
+    STR_NOTIFICATION_SINCE_SUMMARY = "This is usefully to prevent the app showing a long list of notification when the app is not used for some time, example when you turn off the device or the screen is off (the app will not show notification when the device is on but screen is off)";
     STR_GLOBAL_FONT = "Global app font size offset";
     STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, change this will refresh all screens";
     STR_MAIN_MENU = "Main Menu";
