@@ -7,6 +7,16 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.233 & Web Version July 27 2020
+==============
+
+* Add three modes for low latency (press enter no enable after change) Disable and normal mode are the older modes the new is lowest mode, that can cause some more re-buffers but allows lower latency
+* Add a settings options to prevent notification of streams that are live for over
+* Improve [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), add more information to the thumbnails and improve some things related
+* General performance improves and bug fixes
+
+Apk Version 3.0.230 & Web Version July 24 2020
+
 Apk Version 3.0.232 - July 25 2020
 ==============
 
