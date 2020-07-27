@@ -12,7 +12,7 @@ Apk Version 3.0.233 & Web Version July 27 2020
 
 * Add three modes for low latency (press enter no enable after change) Disable and normal mode are the older modes the new is lowest mode, that can cause some more re-buffers but allows lower latency
 * Add a settings options to prevent notification of streams that are live for over a mouth of time
-* Improve [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), add more information to the thumbnails and improve some things related
+* Improve [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), add more information to the thumbnails and improve some things related layout and performance
 * General performance improves and bug fixes
 
 Apk Version 3.0.230 & Web Version July 24 2020
