@@ -54,6 +54,7 @@ import com.google.gson.JsonObject;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -464,9 +465,33 @@ public final class ChannelsUtils {
 
     public static ChannelContentObj getRefreshContent() {
         Calendar rightNow = Calendar.getInstance();
+        String month = rightNow.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        String day = String.valueOf(rightNow.get(Calendar.DAY_OF_MONTH));
+        String dayMonth;
+
+//        @RequiresApi(api = Build.VERSION_CODES.O)
+//        String pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
+//                FormatStyle.SHORT,
+//                FormatStyle.SHORT,
+//                IsoChronology.INSTANCE,
+//                Locale.getDefault()
+//        ).replaceAll("[^Md]|(?<=(.))\\1", "").toUpperCase();
+
+        String dateFormat = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
+                .toPattern().replaceAll("[^Md]|(?<=(.))\\1", "").toUpperCase();
+
+        if (dateFormat.startsWith("M")) dayMonth = month + " " + day;
+        else dayMonth = day + " " + month;
 
         return new ChannelContentObj(
-                "Last refresh " + String.format(Locale.US, "%02d:%02d", rightNow.get(Calendar.HOUR_OF_DAY), rightNow.get(Calendar.MINUTE)),
+                String.format(
+                        Locale.US,
+                        "Last refresh - %s %s %02d:%02d",
+                        rightNow.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()),
+                        dayMonth,
+                        rightNow.get(Calendar.HOUR_OF_DAY),
+                        rightNow.get(Calendar.MINUTE)
+                ),
                 "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refresh it 30 minutes",
                 "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                 TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
