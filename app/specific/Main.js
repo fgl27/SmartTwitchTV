@@ -172,27 +172,6 @@ var Main_vodOffset = 0;
 var Main_body = document.body;
 //Variable initialization end
 
-//FireBase support
-var firebaseConfig = {
-    apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
-    authDomain: "smarttv-twitch-web-android.firebaseapp.com",
-    databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
-    projectId: "smarttv-twitch-web-android",
-    storageBucket: "smarttv-twitch-web-android.appspot.com",
-    messagingSenderId: "871032203366",
-    appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
-    measurementId: "G-8YQ2JGNYDP"
-};
-
-function Main_Startfirebase() {
-    try {
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-    } catch (e) {
-        console.log("Main_Startfirebase e " + e);
-    }
-}
-
 // this function will be called only once the first time the app startup
 if (!Main_isReleased) Main_Start();
 
@@ -526,7 +505,6 @@ function Main_initWindows() {
 
     Main_SetStringsSecondary();
     Main_checkVersion();
-    Main_Startfirebase();
 }
 
 function Main_SetStringsMain(isStarting) {
@@ -786,6 +764,7 @@ function Main_showAboutDialog(removeEventListener, addEventListener) {
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
+    Main_EventScreen('About');
 }
 
 function Main_HideAboutDialog() {
@@ -824,6 +803,7 @@ function Main_showControlsDialog(removeEventListener, addEventListener) {
     Main_addEventListener("keydown", addEventListener);
     Main_HideAboutDialog();
     Main_ShowElement('dialog_controls');
+    Main_EventScreen('Controls');
 }
 
 function Main_HideControlsDialog() {
@@ -2306,4 +2286,45 @@ function Main_onNewIntentGetSCreen(obj) {
     }
 
     return goTo;
+}
+
+window.dataLayer = window.dataLayer || [];
+function gtag() {
+    dataLayer.push(arguments);
+}
+
+function Main_Startfirebase() {
+    try {
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        gtag('js', new Date());
+    } catch (e) {
+        console.log("Main_Startfirebase e " + e);
+    }
+}
+
+function Main_EventScreen(screen) {
+    try {
+
+        gtag('event', 'screen_view', {
+            'screen_name': screen
+        });
+
+    } catch (e) {
+        console.log("Main_EventScreen e " + e);
+    }
+}
+
+function Main_EventAgame(game) {
+
+    try {
+
+        gtag('event', 'game_view', {
+            'game_name': game
+        });
+
+    } catch (e) {
+        console.log("Main_EventScreen e " + e);
+    }
 }

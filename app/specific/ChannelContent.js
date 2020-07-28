@@ -68,6 +68,7 @@ function ChannelContent_init() {
         ChannelContent_removeAllFollowFocus();
         ChannelContent_addFocus();
         Main_SaveValues();
+        Main_EventScreen('ChannelContent');
     } else ChannelContent_StartLoad();
 }
 
@@ -97,6 +98,7 @@ function ChannelContent_StartLoad() {
     ChannelContent_TargetId = undefined;
     ChannelContent_loadDataPrepare();
     ChannelContent_loadDataRequest();
+    Main_EventScreen('ChannelContent');
 }
 
 function ChannelContent_loadDataPrepare() {

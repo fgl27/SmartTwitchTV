@@ -351,6 +351,14 @@ function AddUser_SaveNewUser(responseText) {
     }
     Main_SwitchScreen();
     AddUser_loadingData = false;
+
+    try {
+
+        firebase.analytics().logEvent('New_User_Added');
+
+    } catch (e) {
+        console.log("AddUser_SaveNewUser firebase e " + e);
+    }
 }
 
 function AddUser_removeUser(position) {

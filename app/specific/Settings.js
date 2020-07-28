@@ -424,6 +424,7 @@ function Settings_init() {
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
     Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
+    Main_EventScreen('Settings');
 }
 
 function Settings_exit() {

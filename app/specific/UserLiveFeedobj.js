@@ -333,6 +333,8 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     }
 
     UserLiveFeedobj_SetLastRefresh(pos);
+    if (UserLiveFeed_obj[pos].Screen)
+        Main_EventScreen(UserLiveFeed_obj[pos].Screen);
 }
 
 function UserLiveFeedobj_SetLastRefresh(pos) {
@@ -653,6 +655,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
     Main_RemoveClass('icon_feed_back', 'opacity_zero');
+    Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
@@ -732,6 +735,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
     Main_RemoveClass('icon_feed_back', 'opacity_zero');
+    Main_EventAgame(UserLiveFeedobj_CurrentAGameName);
 }
 
 function UserLiveFeedobj_HideCurrentAGame() {

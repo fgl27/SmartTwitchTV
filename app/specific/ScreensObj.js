@@ -145,7 +145,11 @@ var Base_obj = {
             this.loadDataSuccess();
         }
         this.loadingData = false;
-    }
+    },
+    screen_view: function() {
+        if (this.ScreenName)
+            Main_EventScreen(this.ScreenName);
+    },
 };
 
 var Base_Vod_obj = {
@@ -205,6 +209,7 @@ function ScreensObj_InitVod() {
         key_pgUp: Main_games,
         object: 'vods',
         ids: Screens_ScreenIds('Vod'),
+        ScreenName: 'Vod',
         table: 'stream_table_vod',
         screen: Main_Vod,
         highlightSTR: 'Vod_highlight',
@@ -260,6 +265,7 @@ function ScreensObj_InitChannelVod() {
         key_pgDown: Main_ChannelClip,
         object: 'videos',
         ids: Screens_ScreenIds('ChannelVod'),
+        ScreenName: 'ChannelVod',
         table: 'stream_table_channel_vod',
         screen: Main_ChannelVod,
         time: ['time', 'views'],
@@ -339,6 +345,7 @@ function ScreensObj_InitAGameVod() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         ids: Screens_ScreenIds('AGameVod'),
+        ScreenName: 'AGameVod',
         table: 'stream_table_a_game_vod',
         screen: Main_AGameVod,
         highlightSTR: 'AGameVod_highlight',
@@ -398,6 +405,7 @@ function ScreensObj_InitUserVod() {
         key_pgDown: Main_UserChannels,
         key_pgUp: Main_usergames,
         ids: Screens_ScreenIds('UserVod'),
+        ScreenName: 'UserVod',
         table: 'stream_table_user_vod',
         screen: Main_UserVod,
         IsUser: true,
@@ -519,6 +527,7 @@ function ScreensObj_InitLive() {
         table: 'stream_table_live',
         screen: Main_Live,
         object: 'streams',
+        ScreenName: 'Live',
         key_pgDown: Main_Featured,
         key_pgUp: Main_Clip,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
@@ -545,6 +554,7 @@ function ScreensObj_InitSearchLive() {
     ScreenObj[Main_SearchLive] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('SearchLive'),
+        ScreenName: 'SearchLive',
         table: 'stream_table_search_live',
         screen: Main_SearchLive,
         object: 'streams',
@@ -583,6 +593,7 @@ function ScreensObj_InitUserLive() {
     ScreenObj[Main_UserLive] = Screens_assign({
         HeaderQuatity: 3,
         ids: Screens_ScreenIds('UserLive'),
+        ScreenName: 'UserLive',
         table: 'stream_table_user_live',
         screen: Main_UserLive,
         object: 'streams',
@@ -693,6 +704,7 @@ function ScreensObj_InitUserHost() {
     ScreenObj[Main_UserHost] = Screens_assign({
         HeaderQuatity: 1,
         ids: Screens_ScreenIds('UserHost'),
+        ScreenName: 'UserHost',
         table: 'stream_table_user_host',
         screen: Main_UserHost,
         object: 'hosts',
@@ -743,6 +755,7 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('AGame'),
+        ScreenName: 'AGame',
         table: 'stream_table_a_game',
         screen: Main_aGame,
         object: 'streams',
@@ -796,6 +809,7 @@ function ScreensObj_InitFeatured() {
     ScreenObj[Main_Featured] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('Featured'),
+        ScreenName: 'Featured',
         table: 'stream_table_featured',
         screen: Main_Featured,
         key_pgDown: Main_games,
@@ -901,6 +915,7 @@ var Base_Clip_obj = {
 function ScreensObj_InitClip() {
     ScreenObj[Main_Clip] = Screens_assign({
         ids: Screens_ScreenIds('Clip'),
+        ScreenName: 'Clip',
         table: 'stream_table_clip',
         screen: Main_Clip,
         key_pgDown: Main_Live,
@@ -936,6 +951,7 @@ function ScreensObj_InitClip() {
 function ScreensObj_InitChannelClip() {
     ScreenObj[Main_ChannelClip] = Screens_assign({
         ids: Screens_ScreenIds('ChannelClip'),
+        ScreenName: 'ChannelClip',
         table: 'stream_table_channel_clip',
         screen: Main_ChannelClip,
         key_pgUp: Main_ChannelVod,
@@ -971,6 +987,7 @@ function ScreensObj_InitChannelClip() {
 function ScreensObj_InitAGameClip() {
     ScreenObj[Main_AGameClip] = Screens_assign({
         ids: Screens_ScreenIds('AGameClip'),
+        ScreenName: 'AGameClip',
         table: 'stream_table_a_game_clip',
         screen: Main_AGameClip,
         key_pgDown: Main_Vod,
@@ -1070,6 +1087,7 @@ var Base_Game_obj = {
 function ScreensObj_InitGame() {
     ScreenObj[Main_games] = Screens_assign({
         ids: Screens_ScreenIds('Game'),
+        ScreenName: 'Game',
         table: 'stream_table_games',
         screen: Main_games,
         key_pgDown: Main_Vod,
@@ -1096,6 +1114,7 @@ function ScreensObj_InitGame() {
 function ScreensObj_InitUserGames() {
     ScreenObj[Main_usergames] = Screens_assign({
         ids: Screens_ScreenIds('UserGames'),
+        ScreenName: 'UserGames',
         table: 'stream_table_user_games',
         screen: Main_usergames,
         key_pgDownNext: Main_UserChannels,
@@ -1146,6 +1165,7 @@ function ScreensObj_InitUserGames() {
 function ScreensObj_InitSearchGames() {
     ScreenObj[Main_SearchGames] = Screens_assign({
         ids: Screens_ScreenIds('SearchGames'),
+        ScreenName: 'SearchGames',
         table: 'stream_table_search_game',
         screen: Main_SearchGames,
         isLive: false,
@@ -1241,6 +1261,7 @@ function ScreensObj_InitUserChannels() {
     ScreenObj[Main_UserChannels] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('UserChannels'),
+        ScreenName: 'UserChannels',
         table: 'stream_table_user_channels',
         screen: Main_UserChannels,
         object: 'follows',
@@ -1278,6 +1299,7 @@ function ScreensObj_InitSearchChannels() {
     ScreenObj[Main_SearchChannels] = Screens_assign({
         HeaderQuatity: 2,
         ids: Screens_ScreenIds('SearchChannels'),
+        ScreenName: 'SearchChannels',
         table: 'stream_table_search_channel',
         screen: Main_SearchChannels,
         object: 'channels',
@@ -1414,6 +1436,7 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive] = Screens_assign({
         Type: 'live',
         ids: Screens_ScreenIds('HistoryLive'),
+        ScreenName: 'HistoryLive',
         table: 'stream_table_historylive',
         screen: Main_HistoryLive,
         img_404: IMG_404_VIDEO,
@@ -1506,6 +1529,7 @@ function ScreensObj_HistoryVod() {
     ScreenObj[Main_HistoryVod] = Screens_assign({
         Type: 'vod',
         ids: Screens_ScreenIds('HistoryVod'),
+        ScreenName: 'HistoryVod',
         table: 'stream_table_historyvod',
         screen: Main_HistoryVod,
         screenType: 1,
@@ -1599,6 +1623,7 @@ function ScreensObj_HistoryClip() {
     ScreenObj[Main_HistoryClip] = Screens_assign({
         Type: 'clip',
         ids: Screens_ScreenIds('HistoryClip'),
+        ScreenName: 'HistoryClip',
         table: 'stream_table_historyclip',
         screen: Main_HistoryClip,
         img_404: IMG_404_VOD,
@@ -1716,6 +1741,8 @@ function ScreensObj_TopLableAgameInit(key) {
     else Sidepannel_SetDefaultLables();
 
     Sidepannel_SetTopOpacity(ScreenObj[key].screen);
+
+    Main_EventAgame(Main_values.Main_gameSelected);
 }
 
 function ScreensObj_TopLableAgameExit(key) {

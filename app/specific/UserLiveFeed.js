@@ -109,18 +109,21 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].hide = UserLiveFeedobj_HideUserVod;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = document.getElementById('user_vod_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].Screen = 'preview_user_vod';
 
     //User vod history
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].load = UserLiveFeedobj_UserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].show = UserLiveFeedobj_ShowUserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].hide = UserLiveFeedobj_HideUserVodHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = document.getElementById('user_vod_history_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].Screen = 'preview_user_vod_history';
 
     //User live
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Screen = 'preview_user_live';
 
     //User live history
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
@@ -128,12 +131,14 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_live_history_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
     //User Host
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
     UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = document.getElementById('user_host_scroll');
+    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].Screen = 'preview_user_host';
 
     //User a game
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
@@ -143,6 +148,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
 
     //a game
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
@@ -152,6 +158,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
@@ -163,6 +170,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
     //Games
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
@@ -175,6 +183,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_GamesPos].checkPreview = false;
+    UserLiveFeed_obj[UserLiveFeedobj_GamesPos].Screen = 'preview_games';
 
     //Live
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -184,6 +193,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
@@ -193,6 +203,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
@@ -201,6 +212,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = document.getElementById('featured_feed_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
