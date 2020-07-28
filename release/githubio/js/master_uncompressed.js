@@ -8250,10 +8250,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.233';
-    var Main_version_java = 24; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.234';
+    var Main_version_java = 25; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 28, 2020';
-    var Main_version_web = 31; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 32; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8327,7 +8327,8 @@
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
                         'Main_checkWebVersion': Main_checkWebVersion,
-                        'Main_onNewIntent': Main_onNewIntent
+                        'Main_onNewIntent': Main_onNewIntent,
+                        'Main_EventChannelRefresh': Main_EventChannelRefresh
                     };
                 }
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -10512,12 +10513,46 @@
         }
     }
 
+    function Main_EventChannelRefresh(screen) {
+        Main_EventChannel({
+            screen: screen,
+            type: 'REFRESH'
+
+        });
+    }
+
     function Main_EventChannel(obj) {
         try {
-            if (!obj || !obj.type) return;
+            if (!obj || !obj.type || !obj.screen) return;
+
+            var SCREEN = 'CHANNEL_UNKNOWN';
+
+            switch (obj.screen) { //In relateton to java CHANNEL_TYPE_*
+                case 1:
+                    SCREEN = 'CHANNEL_LIVE';
+                    break;
+                case 2:
+                    SCREEN = 'CHANNEL_USER_LIVE';
+                    break;
+                case 3:
+                    SCREEN = 'CHANNEL_FEATURED';
+                    break;
+                case 4:
+                    SCREEN = 'CHANNEL_GAMES';
+                    break;
+                case 5:
+                    SCREEN = 'CHANNEL_USER_GAMES';
+                    break;
+                case 6:
+                    SCREEN = 'CHANNEL_USER_HOSTS';
+                    break;
+                default:
+                    break;
+            }
 
             gtag('event', 'channel', {
                 'type': obj.type,
+                'screen': SCREEN
             });
 
         } catch (e) {
@@ -20048,6 +20083,9 @@
                         }
 
                     }
+
+                    if (obj.type && obj.screen) Main_EventChannel(obj);
+
                 }
 
                 var StartUser = Settings_value.start_user_screen.defaultValue;
@@ -20169,7 +20207,6 @@
                     Screens_loadDataSuccessFinishEnd();
                 }
 
-                Main_EventChannel(Last_obj);
             } else {
                 Screens_addFocus(true, key);
                 Main_SaveValues();
@@ -32093,6 +32130,7 @@
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
         'Main_checkWebVersion': Main_checkWebVersion, // Main_checkWebVersion() func from app/specific/Main.js
         'Main_onNewIntent': Main_onNewIntent, // Main_onNewIntent() func from app/specific/Main.js
+        'Main_EventChannelRefresh': Main_EventChannelRefresh, // Main_EventChannelRefresh() func from app/specific/Main.js
     };
 
     /** Expose `smartTwitchTV` */
