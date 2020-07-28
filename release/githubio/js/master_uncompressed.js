@@ -3260,6 +3260,7 @@
     function AddCode_CheckOauthTokenSucess(response) {
         var token = JSON.parse(response);
         if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
+            Main_Eventsimple('New_User_Token_Added');
             AddUser_SaveUserArray();
             Main_newUsercode = 0;
             Main_HideLoadDialog();
@@ -4083,13 +4084,7 @@
         Main_SwitchScreen();
         AddUser_loadingData = false;
 
-        try {
-
-            firebase.analytics().logEvent('New_User_Added');
-
-        } catch (e) {
-            console.log("AddUser_SaveNewUser firebase e " + e);
-        }
+        Main_Eventsimple('New_User_Added');
     }
 
     function AddUser_removeUser(position) {
@@ -8257,8 +8252,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.233';
     var Main_version_java = 24; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 27, 2020';
-    var Main_version_web = 30; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 28, 2020';
+    var Main_version_web = 31; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9034,6 +9029,8 @@
 
             if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
             else Main_checkWebVersionRun();
+
+            Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, Webviewversion, device);
         }
 
         var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
@@ -10316,6 +10313,13 @@
             }
 
             Main_openStream();
+
+            Main_EventPlay(
+                'live',
+                Play_data.data[6],
+                Play_data.data[3],
+                isLive ? Play_data.data[15] : 'HOSTING'
+            );
         } else if (Main_A_equals_B(obj.type, "USER")) {
 
             Main_CheckResume(true);
@@ -10397,6 +10401,7 @@
             Main_ReStartScreens();
         } else Main_CheckResume();
 
+        Main_EventChannel(obj);
     }
 
     function Main_onNewIntentGetSCreen(obj) {
@@ -10479,12 +10484,52 @@
 
             gtag('event', type, {
                 'name': name,
-                'lang': lang.toUpperCase(),
+                'lang': lang ? lang.toUpperCase() : 'UNKNOWN',
                 'game': game
             });
 
         } catch (e) {
             console.log("Main_EventPlay e " + e);
+        }
+    }
+
+
+    function Main_EventVersion(apk, web, webview, device) {
+
+        try {
+
+            gtag('event', 'version', {
+                'apk': apk,
+                'web': web,
+                'webview': webview,
+                'device': device
+            });
+
+        } catch (e) {
+            console.log("Main_EventVersion e " + e);
+        }
+    }
+
+    function Main_EventChannel(obj) {
+        try {
+            if (!obj || !obj.type) return;
+
+            gtag('event', 'channel', {
+                'type': obj.type,
+            });
+
+        } catch (e) {
+            console.log("Main_EventVersion e " + e);
+        }
+    }
+
+    function Main_Eventsimple(event) {
+        try {
+
+            firebase.analytics().logEvent(event);
+
+        } catch (e) {
+            console.log("Main_Eventsimple event " + event + " e " + e);
         }
     }
     /*
@@ -20121,6 +20166,8 @@
                     Main_SaveValues();
                     Screens_loadDataSuccessFinishEnd();
                 }
+
+                Main_EventChannel(Last_obj);
             } else {
                 Screens_addFocus(true, key);
                 Main_SaveValues();
