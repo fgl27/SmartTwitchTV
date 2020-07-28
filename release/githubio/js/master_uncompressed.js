@@ -8335,7 +8335,7 @@
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
             } catch (e) {
-                Main_IsOn_OSInterfaceVersion = '1.0.0';
+                Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;
                 Main_IsOn_OSInterface = 0;
                 Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)"; //default rgba(0, 0, 0, 1)
                 Main_isDebug = true;
@@ -9031,6 +9031,8 @@
             else Main_checkWebVersionRun();
 
             Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, Webviewversion, device);
+        } else {
+            Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, navigator.appVersion, navigator.platform);
         }
 
         var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
@@ -10519,7 +10521,7 @@
             });
 
         } catch (e) {
-            console.log("Main_EventVersion e " + e);
+            console.log("Main_EventChannel e " + e);
         }
     }
 
