@@ -1190,13 +1190,14 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 }
 
             } else {
-                var error = STR_PREVIEW_ERROR_LOAD + STR_SPACE;
 
-                if (!ScreenObj[x].screenType) error = StreamInfo[6] + STR_SPACE + STR_LIVE + STR_IS_OFFLINE;
-                else if (ScreenObj[x].screenType === 1) error += 'VOD' + STR_PREVIEW_ERROR_LINK;
-                else if (ScreenObj[x].screenType === 2) error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+                var error = StreamInfo[1] + STR_SPACE;
 
-                if (ScreenObj[x].screen === Main_HistoryLive) {
+                if (ScreenObj[x].screenType === 2) {
+
+                    error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
+                } else if (ScreenObj[x].screen === Main_HistoryLive && StreamData.status !== 1 && StreamData.status !== 403) {
 
                     index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
@@ -1211,10 +1212,14 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                     }
 
+                } else {
+
+                    error += Play_CheckIfIsLiveGetEror(StreamData, ScreenObj[x].screenType === 1);
+
                 }
 
                 Screens_LoadPreviewWarn(
-                    ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : error),
+                    error,
                     x,
                     4000
                 );

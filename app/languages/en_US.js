@@ -64,6 +64,7 @@ function en_USLang() {
     STR_IS_OFFLINE = " has ended";
     STR_CHECK_HOST = ", checking host";
     STR_IS_SUB_ONLY = "This video is only available to subscribers.";
+    STR_IS_SUB_ONLY_ERROR = " is subscribers only content.";
     STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
     STR_NO = "No";
     STR_FOR_THIS = " for this ";
@@ -255,7 +256,7 @@ function en_USLang() {
     STR_SIDE_PANEL = "Side panel: D-pad left or return key";
     STR_SIZE = "Size ";
     STR_BRIGHTNESS = "Brightness ";
-    STR_FORBIDDEN = "Forbidden content, this is restricted in yours region or is restrained to the official Twitch app only";
+    STR_FORBIDDEN = "Forbidden content, this is restricted on yours region or restrained to official Twitch app";
     STR_JUMPING_STEP = "Jump step ";
     STR_SECOND = " second";
     STR_SECONDS = STR_SECOND + "s";

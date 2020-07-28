@@ -342,14 +342,9 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
                 callback();
                 return;
 
-            } else if (responseObj.status === 1 || responseObj.status === 403) {
-
-                error += (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
-
             } else {
 
-                if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+                error += Play_CheckIfIsLiveGetEror(response, isVod);
 
             }
 
@@ -361,6 +356,27 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
 
     }
 
+}
+
+function Play_CheckIfIsLiveGetEror(response, isVod) {
+    var error;
+
+    if (response.status === 1) {
+
+        error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+
+    } else if (response.status === 403) {
+
+        error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
+
+    } else {
+
+        if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+        else error = STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+
+    }
+
+    return error;
 }
 
 var Play_PreviewURL = '';
