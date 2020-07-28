@@ -85,17 +85,6 @@ public final class ChannelsUtils {
             TvContract.Channels.COLUMN_DISPLAY_NAME
     };
 
-    public static final ChannelContentObj NoUserContent =
-            new ChannelContentObj(
-                    "Add User",
-                    "Is necessary to add a user first to load this content",
-                    "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
-                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
-                    1,
-                    new Gson().toJson(new PreviewObj(null, "USER")),
-                    false
-            );
-
     private static final ChannelContentObj emptyContent =
             new ChannelContentObj(
                     "Empty list",
@@ -113,10 +102,10 @@ public final class ChannelsUtils {
         private final String type;
         private final int screen;
 
-        public PreviewObj(JsonObject obj, String type) {
+        public PreviewObj(JsonObject obj, String type, int screen) {
             this.obj = obj;
             this.type = type;
-            this.screen = 0;
+            this.screen = screen;
         }
 
         public PreviewObj(int screen, String type) {
@@ -463,6 +452,19 @@ public final class ChannelsUtils {
         return true ;
     }
 
+    public static ChannelContentObj getNoUserContent(int screen) {
+        return
+                new ChannelContentObj(
+                        "Add User",
+                        "Is necessary to add a user first to load this content",
+                        "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
+                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
+                        1,
+                        new Gson().toJson(new PreviewObj(null, "USER", screen)),
+                        false
+                );
+    }
+
     public static ChannelContentObj getRefreshContent() {
         Calendar rightNow = Calendar.getInstance();
         String month = rightNow.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
@@ -495,7 +497,8 @@ public final class ChannelsUtils {
                 "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refresh it 30 minutes",
                 "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                 TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
-                1, null,
+                1,
+                null,
                 false
         );
 
@@ -561,7 +564,8 @@ public final class ChannelsUtils {
                     "https://api.twitch.tv/kraken/streams?limit=100&offset=0&api_version=5" + (lang != null ? "&language=" + lang : ""),
                     "streams",
                     null,
-                    true
+                    true,
+                    Constants.CHANNEL_TYPE_LIVE
             );
 
         }
@@ -596,7 +600,8 @@ public final class ChannelsUtils {
                             ProcessLiveArray(
                                     Streams,//Get the follows array
                                     null,
-                                    true
+                                    true,
+                                    Constants.CHANNEL_TYPE_USER_LIVE
                             ),
                             channelId
                     );
@@ -610,7 +615,7 @@ public final class ChannelsUtils {
         } else {
 
             List<ChannelContentObj> content = new ArrayList<>();
-            content.add(NoUserContent);
+            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_LIVE));
             StartUserLive(context, content, channelId);
 
         }
@@ -653,7 +658,7 @@ public final class ChannelsUtils {
         } else {
 
             content = new ArrayList<>();
-            content.add(NoUserContent);
+            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_HOST));
 
         }
 
@@ -683,7 +688,8 @@ public final class ChannelsUtils {
                     "https://api.twitch.tv/kraken/streams/featured?limit=100&offset=0&api_version=5",
                     "featured",
                     "stream",
-                    false
+                    false,
+                    Constants.CHANNEL_TYPE_FEATURED
             );
 
         }
@@ -712,7 +718,8 @@ public final class ChannelsUtils {
             content = GetGamesContent(
                     "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
                     "top",
-                    Tools.DEFAULT_HEADERS
+                    Tools.DEFAULT_HEADERS,
+                    Constants.CHANNEL_TYPE_GAMES
             );
 
             if (content != null) {
@@ -755,12 +762,17 @@ public final class ChannelsUtils {
                         name
                 );
 
-                content = GetGamesContent(url, "follows", new String[0][2]);
+                content = GetGamesContent(
+                        url,
+                        "follows",
+                        new String[0][2],
+                        Constants.CHANNEL_TYPE_USER_GAMES
+                );
             }
         } else {
 
             content = new ArrayList<>();
-            content.add(NoUserContent);
+            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_GAMES));
 
         }
 
@@ -817,7 +829,7 @@ public final class ChannelsUtils {
 
     }
 
-    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort)  {
+    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen)  {
 
         try {
             Tools.ResponseObj response;
@@ -844,7 +856,8 @@ public final class ChannelsUtils {
                             return ProcessLiveArray(
                                     obj.get(object).getAsJsonArray(),//Get the follows array
                                     object2,
-                                    sort
+                                    sort,
+                                    screen
                             );
                         }
 
@@ -913,7 +926,7 @@ public final class ChannelsUtils {
                                         objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
                                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                         viewers,
-                                        new Gson().toJson(new PreviewObj(obj, "HOST")),
+                                        new Gson().toJson(new PreviewObj(obj, "HOST", Constants.CHANNEL_TYPE_USER_HOST)),
                                         true
                                 )
                         );
@@ -933,7 +946,7 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort)  {
+    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen)  {
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Streams.size();
@@ -1015,7 +1028,7 @@ public final class ChannelsUtils {
                                         objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
                                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                         viewers,
-                                        new Gson().toJson(new PreviewObj(obj, "LIVE")),
+                                        new Gson().toJson(new PreviewObj(obj, "LIVE", screen)),
                                         !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
                                 )
                         );
@@ -1037,7 +1050,7 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS)  {
+    private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS, int screen)  {
         try {
             Tools.ResponseObj response;
             JsonObject obj;
@@ -1103,7 +1116,7 @@ public final class ChannelsUtils {
                                                             objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : GAME_404,
                                                             TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
                                                             viewers,
-                                                            new Gson().toJson(new PreviewObj(objGame, "GAME")),
+                                                            new Gson().toJson(new PreviewObj(objGame, "GAME", screen)),
                                                             false
                                                     )
                                             );

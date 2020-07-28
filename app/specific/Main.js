@@ -227,7 +227,8 @@ function Main_loadTranslations(language) {
                     'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                     'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
                     'Main_checkWebVersion': Main_checkWebVersion,
-                    'Main_onNewIntent': Main_onNewIntent
+                    'Main_onNewIntent': Main_onNewIntent,
+                    'Main_EventChannelRefresh': Main_EventChannelRefresh
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -2398,12 +2399,48 @@ function Main_EventVersion(apk, web, webview, device) {
     }
 }
 
+function Main_EventChannelRefresh(screen) {
+    Main_EventChannel(
+        {
+            screen: screen,
+            type: 'REFRESH'
+
+        }
+    );
+}
+
 function Main_EventChannel(obj) {
     try {
-        if (!obj || !obj.type) return;
+        if (!obj || !obj.type || !obj.screen) return;
+
+        var SCREEN = 'CHANNEL_UNKNOWN';
+
+        switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
+            case 1:
+                SCREEN = 'CHANNEL_LIVE';
+                break;
+            case 2:
+                SCREEN = 'CHANNEL_USER_LIVE';
+                break;
+            case 3:
+                SCREEN = 'CHANNEL_FEATURED';
+                break;
+            case 4:
+                SCREEN = 'CHANNEL_GAMES';
+                break;
+            case 5:
+                SCREEN = 'CHANNEL_USER_GAMES';
+                break;
+            case 6:
+                SCREEN = 'CHANNEL_USER_HOSTS';
+                break;
+            default:
+                break;
+        }
 
         gtag('event', 'channel', {
             'type': obj.type,
+            'screen': SCREEN
         });
 
     } catch (e) {

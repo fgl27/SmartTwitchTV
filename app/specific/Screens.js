@@ -644,6 +644,9 @@ function Screens_loadDataSuccessFinish(key) {
                     }
 
                 }
+
+                if (obj.type && obj.screen) Main_EventChannel(obj);
+
             }
 
             var StartUser = Settings_value.start_user_screen.defaultValue;
@@ -765,7 +768,6 @@ function Screens_loadDataSuccessFinish(key) {
                 Screens_loadDataSuccessFinishEnd();
             }
 
-            Main_EventChannel(Last_obj);
         } else {
             Screens_addFocus(true, key);
             Main_SaveValues();

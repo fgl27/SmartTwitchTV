@@ -1189,6 +1189,8 @@ public class PlayerActivity extends Activity {
         if (!canRunChannel || Type == 0) return;
 
         Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
+
+        LoadUrlWebview("javascript:smartTwitchTV.Main_EventChannelRefresh(" + Type + ")");
     }
 
     private void DoResume(boolean skipResumeJS) {
