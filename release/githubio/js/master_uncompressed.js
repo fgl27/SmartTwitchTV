@@ -19654,7 +19654,7 @@
 
             Screens_RemoveFocus(key);
             Main_showLoadDialog();
-            ScreenObj[key].screen_view();
+            if (!Main_FirstRun) ScreenObj[key].screen_view();
 
         }
 
