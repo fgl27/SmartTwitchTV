@@ -11,7 +11,7 @@ Apk Version 3.0.234 & Web Version July 28 2020
 ==============
 
 * General improve on the warning information when a video fail to play
-* Fix show all latest viewed VOD on the player preview VOD history, duplicate channels was be removed by mistake
+* Fix show all latest viewed VOD on the player preview VOD history, VODs from the same channels wasn't showing by mistake
 * General performance improves and bug fixes
 
 Apk Version 3.0.233 & Web Version July 27 2020
