@@ -764,6 +764,8 @@ function Screens_loadDataSuccessFinish(key) {
                 Main_SaveValues();
                 Screens_loadDataSuccessFinishEnd();
             }
+
+            Main_EventChannel(Last_obj);
         } else {
             Screens_addFocus(true, key);
             Main_SaveValues();

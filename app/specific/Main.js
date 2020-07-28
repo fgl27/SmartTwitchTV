@@ -926,6 +926,8 @@ function Main_checkVersion() {
 
         if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
         else Main_checkWebVersionRun();
+
+        Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, Webviewversion, device);
     }
 
     var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
@@ -2198,6 +2200,13 @@ function Main_onNewIntent(mobj) {
         }
 
         Main_openStream();
+
+        Main_EventPlay(
+            'live',
+            Play_data.data[6],
+            Play_data.data[3],
+            isLive ? Play_data.data[15] : 'HOSTING'
+        );
     } else if (Main_A_equals_B(obj.type, "USER")) {
 
         Main_CheckResume(true);
@@ -2279,6 +2288,7 @@ function Main_onNewIntent(mobj) {
         Main_ReStartScreens();
     } else Main_CheckResume();
 
+    Main_EventChannel(obj);
 }
 
 function Main_onNewIntentGetSCreen(obj) {
@@ -2360,11 +2370,51 @@ function Main_EventPlay(type, name, game, lang) {
 
         gtag('event', type, {
             'name': name,
-            'lang': lang.toUpperCase(),
+            'lang': lang ? lang.toUpperCase() : 'UNKNOWN',
             'game': game
         });
 
     } catch (e) {
         console.log("Main_EventPlay e " + e);
+    }
+}
+
+
+function Main_EventVersion(apk, web, webview, device) {
+
+    try {
+
+        gtag('event', 'version', {
+            'apk': apk,
+            'web': web,
+            'webview': webview,
+            'device': device
+        });
+
+    } catch (e) {
+        console.log("Main_EventVersion e " + e);
+    }
+}
+
+function Main_EventChannel(obj) {
+    try {
+        if (!obj || !obj.type) return;
+
+        gtag('event', 'channel', {
+            'type': obj.type,
+        });
+
+    } catch (e) {
+        console.log("Main_EventVersion e " + e);
+    }
+}
+
+function Main_Eventsimple(event) {
+    try {
+
+        firebase.analytics().logEvent(event);
+
+    } catch (e) {
+        console.log("Main_Eventsimple event " + event + " e " + e);
     }
 }
