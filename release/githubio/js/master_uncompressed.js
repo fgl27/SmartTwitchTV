@@ -20637,7 +20637,7 @@
                 } else {
                     var error = STR_PREVIEW_ERROR_LOAD + STR_SPACE;
 
-                    if (!ScreenObj[x].screenType) error = STR_LIVE + STR_IS_OFFLINE;
+                    if (!ScreenObj[x].screenType) error = StreamInfo[6] + STR_SPACE + STR_LIVE + STR_IS_OFFLINE;
                     else if (ScreenObj[x].screenType === 1) error += 'VOD' + STR_PREVIEW_ERROR_LINK;
                     else if (ScreenObj[x].screenType === 2) error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
 
@@ -28696,7 +28696,7 @@
                 } else {
 
                     if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                    else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+                    else error += StreamInfo[6] + STR_SPACE + STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
 
                 }
 
