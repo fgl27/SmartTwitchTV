@@ -1,5 +1,5 @@
 /* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */
-/*globals Android, punycode, smartTwitchTV, firebase */
+/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */
 /* exported Play_CheckResume */
 (function(root) {
 
@@ -4082,6 +4082,14 @@
         }
         Main_SwitchScreen();
         AddUser_loadingData = false;
+
+        try {
+
+            firebase.analytics().logEvent('New_User_Added');
+
+        } catch (e) {
+            console.log("AddUser_SaveNewUser firebase e " + e);
+        }
     }
 
     function AddUser_removeUser(position) {
@@ -4237,6 +4245,7 @@
             ChannelContent_removeAllFollowFocus();
             ChannelContent_addFocus();
             Main_SaveValues();
+            Main_EventScreen('ChannelContent');
         } else ChannelContent_StartLoad();
     }
 
@@ -4266,6 +4275,7 @@
         ChannelContent_TargetId = undefined;
         ChannelContent_loadDataPrepare();
         ChannelContent_loadDataRequest();
+        Main_EventScreen('ChannelContent');
     }
 
     function ChannelContent_loadDataPrepare() {
@@ -8261,27 +8271,6 @@
     var Main_body = document.body;
     //Variable initialization end
 
-    //FireBase support
-    var firebaseConfig = {
-        apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
-        authDomain: "smarttv-twitch-web-android.firebaseapp.com",
-        databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
-        projectId: "smarttv-twitch-web-android",
-        storageBucket: "smarttv-twitch-web-android.appspot.com",
-        messagingSenderId: "871032203366",
-        appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
-        measurementId: "G-8YQ2JGNYDP"
-    };
-
-    function Main_Startfirebase() {
-        try {
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
-        } catch (e) {
-            console.log("Main_Startfirebase e " + e);
-        }
-    }
-
     // this function will be called only once the first time the app startup
     if (!Main_isReleased) Main_Start();
 
@@ -8616,7 +8605,6 @@
 
         Main_SetStringsSecondary();
         Main_checkVersion();
-        Main_Startfirebase();
     }
 
     function Main_SetStringsMain(isStarting) {
@@ -8878,6 +8866,7 @@
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
         Main_ShowElement('dialog_about');
+        Main_EventScreen('About');
     }
 
     function Main_HideAboutDialog() {
@@ -8916,6 +8905,7 @@
         Main_addEventListener("keydown", addEventListener);
         Main_HideAboutDialog();
         Main_ShowElement('dialog_controls');
+        Main_EventScreen('Controls');
     }
 
     function Main_HideControlsDialog() {
@@ -10408,6 +10398,48 @@
         }
 
         return goTo;
+    }
+
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    function Main_Startfirebase() {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+
+            gtag('js', new Date());
+        } catch (e) {
+            console.log("Main_Startfirebase e " + e);
+        }
+    }
+
+    function Main_EventScreen(screen) {
+        try {
+
+            gtag('event', 'screen_view', {
+                'screen_name': screen
+            });
+
+        } catch (e) {
+            console.log("Main_EventScreen e " + e);
+        }
+    }
+
+    function Main_EventAgame(game) {
+
+        try {
+
+            gtag('event', 'game_view', {
+                'game_name': game
+            });
+
+        } catch (e) {
+            console.log("Main_EventScreen e " + e);
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -19298,6 +19330,18 @@
     var Screens_Some_Screen_Is_Refreshing = false;
     //Start the app in async mode by default
 
+    //FireBase support
+    var firebaseConfig = {
+        apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
+        authDomain: "smarttv-twitch-web-android.firebaseapp.com",
+        databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
+        projectId: "smarttv-twitch-web-android",
+        storageBucket: "smarttv-twitch-web-android.appspot.com",
+        messagingSenderId: "871032203366",
+        appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
+        measurementId: "G-8YQ2JGNYDP"
+    };
+
     //Initiate all Secondary screens obj and they properties
     function Screens_InitScreens() {
         //Live screens
@@ -19365,6 +19409,7 @@
             exit_fun: ChannelContent_exit
         };
 
+        Main_Startfirebase();
     }
 
     //TODO cleanup not used when finished migrate all
@@ -19430,6 +19475,7 @@
             Screens_SetLastRefresh(key);
             Main_HideLoadDialog();
             Main_SaveValues();
+            ScreenObj[key].screen_view();
         }
     }
 
@@ -19449,6 +19495,7 @@
 
             Screens_RemoveFocus(key);
             Main_showLoadDialog();
+            ScreenObj[key].screen_view();
 
         }
 
@@ -22171,7 +22218,11 @@
                 this.loadDataSuccess();
             }
             this.loadingData = false;
-        }
+        },
+        screen_view: function() {
+            if (this.ScreenName)
+                Main_EventScreen(this.ScreenName);
+        },
     };
 
     var Base_Vod_obj = {
@@ -22231,6 +22282,7 @@
             key_pgUp: Main_games,
             object: 'vods',
             ids: Screens_ScreenIds('Vod'),
+            ScreenName: 'Vod',
             table: 'stream_table_vod',
             screen: Main_Vod,
             highlightSTR: 'Vod_highlight',
@@ -22286,6 +22338,7 @@
             key_pgDown: Main_ChannelClip,
             object: 'videos',
             ids: Screens_ScreenIds('ChannelVod'),
+            ScreenName: 'ChannelVod',
             table: 'stream_table_channel_vod',
             screen: Main_ChannelVod,
             time: ['time', 'views'],
@@ -22365,6 +22418,7 @@
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             ids: Screens_ScreenIds('AGameVod'),
+            ScreenName: 'AGameVod',
             table: 'stream_table_a_game_vod',
             screen: Main_AGameVod,
             highlightSTR: 'AGameVod_highlight',
@@ -22424,6 +22478,7 @@
             key_pgDown: Main_UserChannels,
             key_pgUp: Main_usergames,
             ids: Screens_ScreenIds('UserVod'),
+            ScreenName: 'UserVod',
             table: 'stream_table_user_vod',
             screen: Main_UserVod,
             IsUser: true,
@@ -22545,6 +22600,7 @@
             table: 'stream_table_live',
             screen: Main_Live,
             object: 'streams',
+            ScreenName: 'Live',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
             base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
@@ -22571,6 +22627,7 @@
         ScreenObj[Main_SearchLive] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('SearchLive'),
+            ScreenName: 'SearchLive',
             table: 'stream_table_search_live',
             screen: Main_SearchLive,
             object: 'streams',
@@ -22609,6 +22666,7 @@
         ScreenObj[Main_UserLive] = Screens_assign({
             HeaderQuatity: 3,
             ids: Screens_ScreenIds('UserLive'),
+            ScreenName: 'UserLive',
             table: 'stream_table_user_live',
             screen: Main_UserLive,
             object: 'streams',
@@ -22719,6 +22777,7 @@
         ScreenObj[Main_UserHost] = Screens_assign({
             HeaderQuatity: 1,
             ids: Screens_ScreenIds('UserHost'),
+            ScreenName: 'UserHost',
             table: 'stream_table_user_host',
             screen: Main_UserHost,
             object: 'hosts',
@@ -22769,6 +22828,7 @@
         ScreenObj[Main_aGame] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('AGame'),
+            ScreenName: 'AGame',
             table: 'stream_table_a_game',
             screen: Main_aGame,
             object: 'streams',
@@ -22822,6 +22882,7 @@
         ScreenObj[Main_Featured] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('Featured'),
+            ScreenName: 'Featured',
             table: 'stream_table_featured',
             screen: Main_Featured,
             key_pgDown: Main_games,
@@ -22927,6 +22988,7 @@
     function ScreensObj_InitClip() {
         ScreenObj[Main_Clip] = Screens_assign({
             ids: Screens_ScreenIds('Clip'),
+            ScreenName: 'Clip',
             table: 'stream_table_clip',
             screen: Main_Clip,
             key_pgDown: Main_Live,
@@ -22962,6 +23024,7 @@
     function ScreensObj_InitChannelClip() {
         ScreenObj[Main_ChannelClip] = Screens_assign({
             ids: Screens_ScreenIds('ChannelClip'),
+            ScreenName: 'ChannelClip',
             table: 'stream_table_channel_clip',
             screen: Main_ChannelClip,
             key_pgUp: Main_ChannelVod,
@@ -22997,6 +23060,7 @@
     function ScreensObj_InitAGameClip() {
         ScreenObj[Main_AGameClip] = Screens_assign({
             ids: Screens_ScreenIds('AGameClip'),
+            ScreenName: 'AGameClip',
             table: 'stream_table_a_game_clip',
             screen: Main_AGameClip,
             key_pgDown: Main_Vod,
@@ -23096,6 +23160,7 @@
     function ScreensObj_InitGame() {
         ScreenObj[Main_games] = Screens_assign({
             ids: Screens_ScreenIds('Game'),
+            ScreenName: 'Game',
             table: 'stream_table_games',
             screen: Main_games,
             key_pgDown: Main_Vod,
@@ -23122,6 +23187,7 @@
     function ScreensObj_InitUserGames() {
         ScreenObj[Main_usergames] = Screens_assign({
             ids: Screens_ScreenIds('UserGames'),
+            ScreenName: 'UserGames',
             table: 'stream_table_user_games',
             screen: Main_usergames,
             key_pgDownNext: Main_UserChannels,
@@ -23172,6 +23238,7 @@
     function ScreensObj_InitSearchGames() {
         ScreenObj[Main_SearchGames] = Screens_assign({
             ids: Screens_ScreenIds('SearchGames'),
+            ScreenName: 'SearchGames',
             table: 'stream_table_search_game',
             screen: Main_SearchGames,
             isLive: false,
@@ -23267,6 +23334,7 @@
         ScreenObj[Main_UserChannels] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('UserChannels'),
+            ScreenName: 'UserChannels',
             table: 'stream_table_user_channels',
             screen: Main_UserChannels,
             object: 'follows',
@@ -23304,6 +23372,7 @@
         ScreenObj[Main_SearchChannels] = Screens_assign({
             HeaderQuatity: 2,
             ids: Screens_ScreenIds('SearchChannels'),
+            ScreenName: 'SearchChannels',
             table: 'stream_table_search_channel',
             screen: Main_SearchChannels,
             object: 'channels',
@@ -23440,6 +23509,7 @@
         ScreenObj[Main_HistoryLive] = Screens_assign({
             Type: 'live',
             ids: Screens_ScreenIds('HistoryLive'),
+            ScreenName: 'HistoryLive',
             table: 'stream_table_historylive',
             screen: Main_HistoryLive,
             img_404: IMG_404_VIDEO,
@@ -23532,6 +23602,7 @@
         ScreenObj[Main_HistoryVod] = Screens_assign({
             Type: 'vod',
             ids: Screens_ScreenIds('HistoryVod'),
+            ScreenName: 'HistoryVod',
             table: 'stream_table_historyvod',
             screen: Main_HistoryVod,
             screenType: 1,
@@ -23625,6 +23696,7 @@
         ScreenObj[Main_HistoryClip] = Screens_assign({
             Type: 'clip',
             ids: Screens_ScreenIds('HistoryClip'),
+            ScreenName: 'HistoryClip',
             table: 'stream_table_historyclip',
             screen: Main_HistoryClip,
             img_404: IMG_404_VOD,
@@ -23743,6 +23815,8 @@
         else Sidepannel_SetDefaultLables();
 
         Sidepannel_SetTopOpacity(ScreenObj[key].screen);
+
+        Main_EventAgame(Main_values.Main_gameSelected);
     }
 
     function ScreensObj_TopLableAgameExit(key) {
@@ -25263,6 +25337,7 @@
         Settings_cursorY = 0;
         Settings_inputFocus(Settings_cursorY);
         Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
+        Main_EventScreen('Settings');
     }
 
     function Settings_exit() {
@@ -27889,18 +27964,21 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].hide = UserLiveFeedobj_HideUserVod;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = document.getElementById('user_vod_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].Screen = 'preview_user_vod';
 
         //User vod history
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].load = UserLiveFeedobj_UserVodHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].show = UserLiveFeedobj_ShowUserVodHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].hide = UserLiveFeedobj_HideUserVodHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = document.getElementById('user_vod_history_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].Screen = 'preview_user_vod_history';
 
         //User live
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Screen = 'preview_user_live';
 
         //User live history
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
@@ -27908,12 +27986,14 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_live_history_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
         //User Host
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = document.getElementById('user_host_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].Screen = 'preview_user_host';
 
         //User a game
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
@@ -27923,6 +28003,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
 
         //a game
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
@@ -27932,6 +28013,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
@@ -27943,6 +28025,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
+        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
         //Games
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
@@ -27955,6 +28038,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].IsGame = true;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].checkPreview = false;
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].Screen = 'preview_games';
 
         //Live
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
@@ -27964,6 +28048,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
 
         //Current Game
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
@@ -27973,6 +28058,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
@@ -27981,6 +28067,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = document.getElementById('featured_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
@@ -29217,6 +29304,8 @@
         }
 
         UserLiveFeedobj_SetLastRefresh(pos);
+        if (UserLiveFeed_obj[pos].Screen)
+            Main_EventScreen(UserLiveFeed_obj[pos].Screen);
     }
 
     function UserLiveFeedobj_SetLastRefresh(pos) {
@@ -29543,6 +29632,7 @@
         UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
         Main_RemoveClass('icon_feed_back', 'opacity_zero');
+        Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
     }
 
     function UserLiveFeedobj_HideCurrentUserAGame() {
@@ -29624,6 +29714,7 @@
         UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
         Main_RemoveClass('icon_feed_back', 'opacity_zero');
+        Main_EventAgame(UserLiveFeedobj_CurrentAGameName);
     }
 
     function UserLiveFeedobj_HideCurrentAGame() {
