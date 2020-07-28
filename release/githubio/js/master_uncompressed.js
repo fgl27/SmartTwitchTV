@@ -610,6 +610,7 @@
     var STR_LOWLATENCY_LOW;
     var STR_NOTIFICATION_SINCE;
     var STR_NOTIFICATION_SINCE_SUMMARY;
+    var STR_IS_SUB_ONLY_ERROR;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -839,6 +840,7 @@
         STR_IS_OFFLINE = " has ended";
         STR_CHECK_HOST = ", checking host";
         STR_IS_SUB_ONLY = "This video is only available to subscribers.";
+        STR_IS_SUB_ONLY_ERROR = " is subscribers only content.";
         STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
         STR_NO = "No";
         STR_FOR_THIS = " for this ";
@@ -1030,7 +1032,7 @@
         STR_SIDE_PANEL = "Side panel: D-pad left or return key";
         STR_SIZE = "Size ";
         STR_BRIGHTNESS = "Brightness ";
-        STR_FORBIDDEN = "Forbidden content, this is restricted in yours region or is restrained to the official Twitch app only";
+        STR_FORBIDDEN = "Forbidden content, this is restricted on yours region or restrained to official Twitch app";
         STR_JUMPING_STEP = "Jump step ";
         STR_SECOND = " second";
         STR_SECONDS = STR_SECOND + "s";
@@ -15698,14 +15700,9 @@
                     callback();
                     return;
 
-                } else if (responseObj.status === 1 || responseObj.status === 403) {
-
-                    error += (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
-
                 } else {
 
-                    if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                    else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+                    error += Play_CheckIfIsLiveGetEror(response, isVod);
 
                 }
 
@@ -15717,6 +15714,27 @@
 
         }
 
+    }
+
+    function Play_CheckIfIsLiveGetEror(response, isVod) {
+        var error;
+
+        if (response.status === 1) {
+
+            error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+
+        } else if (response.status === 403) {
+
+            error = (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
+
+        } else {
+
+            if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+            else error = STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+
+        }
+
+        return error;
     }
 
     var Play_PreviewURL = '';
@@ -20635,13 +20653,14 @@
                     }
 
                 } else {
-                    var error = STR_PREVIEW_ERROR_LOAD + STR_SPACE;
 
-                    if (!ScreenObj[x].screenType) error = StreamInfo[6] + STR_SPACE + STR_LIVE + STR_IS_OFFLINE;
-                    else if (ScreenObj[x].screenType === 1) error += 'VOD' + STR_PREVIEW_ERROR_LINK;
-                    else if (ScreenObj[x].screenType === 2) error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+                    var error = StreamInfo[1] + STR_SPACE;
 
-                    if (ScreenObj[x].screen === Main_HistoryLive) {
+                    if (ScreenObj[x].screenType === 2) {
+
+                        error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
+                    } else if (ScreenObj[x].screen === Main_HistoryLive && StreamData.status !== 1 && StreamData.status !== 403) {
 
                         index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
@@ -20656,10 +20675,14 @@
 
                         }
 
+                    } else {
+
+                        error += Play_CheckIfIsLiveGetEror(StreamData, ScreenObj[x].screenType === 1);
+
                     }
 
                     Screens_LoadPreviewWarn(
-                        ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : error),
+                        error,
                         x,
                         4000
                     );
@@ -28689,14 +28712,9 @@
 
                     return;
 
-                } else if (StreamData.status === 1 || StreamData.status === 403) {
-
-                    error += (isVod ? 'VOD' : STR_LIVE) + STR_BR + STR_FORBIDDEN;
-
                 } else {
 
-                    if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                    else error += StreamInfo[6] + STR_SPACE + STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+                    error += Play_CheckIfIsLiveGetEror(StreamData, isVod);
 
                 }
 
@@ -30295,7 +30313,7 @@
 
             for (i; i < response_items; i++) {
                 cell = response[i];
-                id = cell.data[14];
+                id = cell.data[7];
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
