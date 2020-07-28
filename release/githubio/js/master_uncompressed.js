@@ -4617,7 +4617,8 @@
                     'live',
                     Main_values_Play_data[6],
                     Main_values_Play_data[3],
-                    Main_values_Play_data[15]
+                    Main_values_Play_data[15],
+                    'ChannelContent'
                 );
             }
         }
@@ -8255,7 +8256,7 @@
     var Main_stringVersion_Min = '.234';
     var Main_version_java = 25; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 28, 2020';
-    var Main_version_web = 32; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 33; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9158,7 +9159,7 @@
         return document.getElementById(thumbnail + id) === null;
     }
 
-    function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
+    function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         var isHosting = false;
 
@@ -9181,7 +9182,19 @@
                 } else { //is live check if is the same BroadcastID
 
                     if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
-                    else Main_openStream();
+                    else {
+
+                        Main_EventPlay(
+                            'live',
+                            Main_values_Play_data[6],
+                            Main_values_Play_data[3],
+                            !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+                            screen
+                        );
+
+                        Main_openStream();
+                    }
+
 
                     return;
                 }
@@ -9205,7 +9218,8 @@
             'live',
             Main_values_Play_data[6],
             Main_values_Play_data[3],
-            !isHosting ? Main_values_Play_data[15] : 'HOSTING'
+            !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+            screen
         );
     }
 
@@ -9351,7 +9365,7 @@
         Play_Start();
     }
 
-    function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
+    function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_hideScene1Doc();
         Main_removeEventListener("keydown", handleKeyDownFunction);
@@ -9385,17 +9399,19 @@
         Play_hideChat();
         Play_HideWarningDialog();
         Play_CleanHideExit();
+
         PlayClip_Start();
 
         Main_EventPlay(
             'clip',
             Main_values_Play_data[6],
             Main_values_Play_data[3],
-            Main_values_Play_data[17]
+            Main_values_Play_data[17],
+            screen
         );
     }
 
-    function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
+    function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
@@ -9428,7 +9444,8 @@
             'vod',
             Main_values_Play_data[6],
             Main_values_Play_data[3],
-            Main_values_Play_data[9]
+            Main_values_Play_data[9],
+            screen
         );
     }
 
@@ -10323,7 +10340,8 @@
                 'live',
                 Play_data.data[6],
                 Play_data.data[3],
-                isLive ? Play_data.data[15] : 'HOSTING'
+                isLive ? Play_data.data[15] : 'HOSTING',
+                Main_EventGetChannelScreen(obj)
             );
         } else if (Main_A_equals_B(obj.type, "USER")) {
 
@@ -10483,14 +10501,17 @@
         }
     }
 
-    function Main_EventPlay(type, name, game, lang) {
+    var UNKNOWN = 'UNKNOWN';
+
+    function Main_EventPlay(type, name, game, lang, screen) {
 
         try {
 
             gtag('event', type, {
                 'name': name,
-                'lang': lang ? lang.toUpperCase() : 'UNKNOWN',
-                'game': game
+                'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                'game': game,
+                'screen': screen ? screen : UNKNOWN
             });
 
         } catch (e) {
@@ -10527,39 +10548,43 @@
         try {
             if (!obj || !obj.type || !obj.screen) return;
 
-            var SCREEN = 'CHANNEL_UNKNOWN';
-
-            switch (obj.screen) { //In relateton to java CHANNEL_TYPE_*
-                case 1:
-                    SCREEN = 'CHANNEL_LIVE';
-                    break;
-                case 2:
-                    SCREEN = 'CHANNEL_USER_LIVE';
-                    break;
-                case 3:
-                    SCREEN = 'CHANNEL_FEATURED';
-                    break;
-                case 4:
-                    SCREEN = 'CHANNEL_GAMES';
-                    break;
-                case 5:
-                    SCREEN = 'CHANNEL_USER_GAMES';
-                    break;
-                case 6:
-                    SCREEN = 'CHANNEL_USER_HOSTS';
-                    break;
-                default:
-                    break;
-            }
-
             gtag('event', 'channel', {
                 'type': obj.type,
-                'screen': SCREEN
+                'screen': Main_EventGetChannelScreen(obj)
             });
 
         } catch (e) {
             console.log("Main_EventChannel e " + e);
         }
+    }
+
+    function Main_EventGetChannelScreen(obj) {
+        var SCREEN = 'CHANNEL_' + UNKNOWN;
+
+        switch (obj.screen) { //In relateton to java CHANNEL_TYPE_*
+            case 1:
+                SCREEN = 'CHANNEL_LIVE';
+                break;
+            case 2:
+                SCREEN = 'CHANNEL_USER_LIVE';
+                break;
+            case 3:
+                SCREEN = 'CHANNEL_FEATURED';
+                break;
+            case 4:
+                SCREEN = 'CHANNEL_GAMES';
+                break;
+            case 5:
+                SCREEN = 'CHANNEL_USER_GAMES';
+                break;
+            case 6:
+                SCREEN = 'CHANNEL_USER_HOSTS';
+                break;
+            default:
+                break;
+        }
+
+        return SCREEN;
     }
 
     function Main_Eventsimple(event) {
@@ -12081,7 +12106,12 @@
         Main_ready(function() {
             PlayClip_replayOrNext = true;
             PlayClip_PreshutdownStream(false);
-            Main_OpenClip(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids, ScreenObj[Screens_Current_Key].key_fun);
+            Main_OpenClip(
+                ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
+                ScreenObj[Screens_Current_Key].ids,
+                ScreenObj[Screens_Current_Key].key_fun,
+                ScreenObj[Screens_Current_Key].ScreenName
+            );
         });
     }
 
@@ -12326,12 +12356,7 @@
                                 Play_EndDialogEnter = 3;
                                 Play_EndUpclearCalback = PlayClip_handleKeyDown;
                                 Play_SavePlayData();
-                                Main_OpenLiveStream(
-                                    UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-                                    UserLiveFeed_ids,
-                                    PlayClip_handleKeyDown,
-                                    !UserLiveFeed_CheckVod()
-                                );
+                                Play_OpenLiveStream(PlayClip_handleKeyDown);
                             }
                         }
                     } else if (Play_isPanelShown()) {
@@ -14981,7 +15006,8 @@
                 'live',
                 PlayExtra_data.data[6],
                 PlayExtra_data.data[3],
-                !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING'
+                !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
 
         }
@@ -17313,21 +17339,27 @@
             Main_OpenVodStart(
                 UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
                 UserLiveFeed_ids,
-                keyfun
+                keyfun,
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
 
         } else {
             UserLiveFeed_Hide(true);
 
-            Main_OpenLiveStream(
-                UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-                UserLiveFeed_ids,
-                keyfun,
-                !UserLiveFeed_CheckVod()
-            );
+            Play_OpenLiveStream(keyfun);
         }
 
         Play_StopStay();
+    }
+
+    function Play_OpenLiveStream(keyfun) {
+        Main_OpenLiveStream(
+            UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+            UserLiveFeed_ids,
+            keyfun,
+            !UserLiveFeed_CheckVod(),
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+        );
     }
 
     function Play_RestorePlayData(error_410, Isforbiden) {
@@ -17713,7 +17745,8 @@
                 'live',
                 Play_MultiArray[position].data[6],
                 Play_MultiArray[position].data[3],
-                !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING'
+                !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
         }
     }
@@ -19153,12 +19186,7 @@
                                 Play_EndDialogEnter = 2;
                                 Play_EndUpclearCalback = PlayVod_handleKeyDown;
                                 Play_SavePlayData();
-                                Main_OpenLiveStream(
-                                    UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-                                    UserLiveFeed_ids,
-                                    PlayVod_handleKeyDown,
-                                    !UserLiveFeed_CheckVod()
-                                );
+                                Play_OpenLiveStream(PlayVod_handleKeyDown);
                             }
                         }
                     } else if (Play_isPanelShown()) {
@@ -22470,7 +22498,7 @@
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -22535,7 +22563,7 @@
                         this.SetPeriod();
                         Screens_StartLoad(this.screen);
                     } else Screens_OffSetStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
             },
             SwitchesIcons: ['movie-play', 'history', 'offset'],
             addSwitches: function() {
@@ -22607,7 +22635,7 @@
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -22674,7 +22702,7 @@
                         this.SetPeriod();
                         Screens_StartLoad(this.screen);
                     }
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -22756,8 +22784,10 @@
             }
         },
         key_play: function() {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            if (this.itemsCount) {
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
+            }
         }
     };
 
@@ -23039,9 +23069,17 @@
         ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
         ScreenObj[Main_aGame].Set_Scroll();
         ScreenObj[Main_aGame].key_play = function() {
-            if (this.posY !== -1) {
+            if (this.itemsCount && this.posY !== -1) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+
+                Main_OpenLiveStream(
+                    this.posY + '_' + this.posX,
+                    this.ids,
+                    this.key_fun,
+                    false,
+                    Main_values.Main_BeforeAgameisSet && ScreenObj[Main_values.Main_BeforeAgame].ScreenName ? ScreenObj[Main_values.Main_BeforeAgame].ScreenName : this.ScreenName
+                );
+
             } else AGame_headerOptions(this.screen);
         };
     }
@@ -23128,10 +23166,10 @@
                         Screens_removeFocusFollow(this.screen);
                         this.posX = 0;
                         this.posY = 0;
-                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
                     }
                 }
-            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
         },
         Cells: [],
         addCell: function(cell) {
@@ -23760,8 +23798,10 @@
                     Main_SwitchScreen();
                 } else Screens_histStart(this.screen);
             } else {
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
+                if (this.itemsCount) {
+                    Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                    Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
+                }
             }
         };
     }
@@ -23814,7 +23854,7 @@
                         this.history_exit();
                         Main_SwitchScreen();
                     } else Screens_histStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
 
             },
             addCell: function(cell) {
@@ -23906,7 +23946,7 @@
                         this.history_exit();
                         Main_SwitchScreen();
                     } else Screens_histStart(this.screen);
-                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
 
             },
             addCell: function(cell) {
@@ -27930,7 +27970,14 @@
                 if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                     Sidepannel_Hide(true);
                     Main_values.Play_isHost = false;
-                    Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
+
+                    Main_OpenLiveStream(
+                        Sidepannel_PosFeed,
+                        UserLiveFeed_side_ids,
+                        Sidepannel_handleKeyDown,
+                        false,
+                        'Side_Panel'
+                    );
                 }
                 break;
             case KEY_PAUSE: //key s
