@@ -1353,8 +1353,11 @@ function Main_ready(func) {
 }
 
 var Main_clock_H_M = '';
+var Main_date_Ms = 0;
 function Main_getclock() {
-    var date = new Date().getTime() + Main_ClockOffset,
+    Main_date_Ms = new Date().getTime();
+
+    var date = Main_date_Ms + Main_ClockOffset,
         dayMonth;
 
     date = new Date(date);

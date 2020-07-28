@@ -186,6 +186,7 @@ function Screens_StartLoad(key) {
 
     }
 
+    Main_date_Ms = new Date().getTime();
     Main_empty(ScreenObj[key].table);
     ScreenObj[key].ScrollDoc.style.transform = '';
     ScreenObj[key].lastRefresh = new Date().getTime();

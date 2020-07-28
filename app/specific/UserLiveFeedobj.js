@@ -49,6 +49,7 @@ function UserLiveFeedobj_StartDefault(pos) {
         UserLiveFeed_LastPos[pos] = null;
     }
 
+    Main_date_Ms = new Date().getTime();
     UserLiveFeed_lastRefresh[pos] = new Date().getTime();
     UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
     UserLiveFeed_cell[pos] = [];

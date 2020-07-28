@@ -1218,7 +1218,7 @@ function Play_timeMs(time) {
 }
 
 function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
-    return Play_timeMs((new Date().getTime()) - (new Date(time).getTime()));
+    return Play_timeMs(Main_date_Ms - (new Date(time).getTime()));
 }
 
 function Play_timeDay(time) {
