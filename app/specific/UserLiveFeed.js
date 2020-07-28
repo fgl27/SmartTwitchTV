@@ -689,7 +689,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             } else {
 
                 if (isVod) error += STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                else error += STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+                else error += StreamInfo[6] + STR_SPACE + STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
 
             }
 
