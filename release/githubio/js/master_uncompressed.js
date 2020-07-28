@@ -1,5 +1,5 @@
 /* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */
-/*globals Android, punycode, smartTwitchTV */
+/*globals Android, punycode, smartTwitchTV, firebase */
 /* exported Play_CheckResume */
 (function(root) {
 
@@ -8261,6 +8261,27 @@
     var Main_body = document.body;
     //Variable initialization end
 
+    //FireBase support
+    var firebaseConfig = {
+        apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
+        authDomain: "smarttv-twitch-web-android.firebaseapp.com",
+        databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
+        projectId: "smarttv-twitch-web-android",
+        storageBucket: "smarttv-twitch-web-android.appspot.com",
+        messagingSenderId: "871032203366",
+        appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
+        measurementId: "G-8YQ2JGNYDP"
+    };
+
+    function Main_Startfirebase() {
+        try {
+            firebase.initializeApp(firebaseConfig);
+            firebase.analytics();
+        } catch (e) {
+            console.log("Main_Startfirebase e " + e);
+        }
+    }
+
     // this function will be called only once the first time the app startup
     if (!Main_isReleased) Main_Start();
 
@@ -8276,6 +8297,7 @@
 
     function Main_loadTranslations(language) {
         Main_Checktylesheet();
+        Main_Startfirebase();
 
         Main_ready(function() {
 
