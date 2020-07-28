@@ -10463,12 +10463,20 @@
         dataLayer.push(arguments);
     }
 
+    var skipfirebase = false;
+
     function Main_Startfirebase() {
         try {
-            firebase.initializeApp(firebaseConfig);
-            firebase.analytics();
 
-            gtag('js', new Date());
+            if (!Main_A_includes_B(window.location.href, 'code')) {
+
+                firebase.initializeApp(firebaseConfig);
+                firebase.analytics();
+
+                gtag('js', new Date());
+
+            } else skipfirebase = true;
+
         } catch (e) {
             console.log("Main_Startfirebase e " + e);
         }
@@ -10489,6 +10497,8 @@
     }
 
     function Main_EventShowScreen(type, name) {
+        if (skipfirebase) return;
+
         try {
 
             gtag('event', type, {
@@ -10521,6 +10531,7 @@
 
 
     function Main_EventVersion(apk, web, webview, device) {
+        if (skipfirebase) return;
 
         try {
 
@@ -10545,6 +10556,8 @@
     }
 
     function Main_EventChannel(obj) {
+        if (skipfirebase) return;
+
         try {
             if (!obj || !obj.type || !obj.screen) return;
 
@@ -10588,6 +10601,8 @@
     }
 
     function Main_Eventsimple(event) {
+        if (skipfirebase) return;
+
         try {
 
             firebase.analytics().logEvent(event);
