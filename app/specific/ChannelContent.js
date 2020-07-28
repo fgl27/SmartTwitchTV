@@ -427,8 +427,7 @@ function ChannelContent_keyEnter() {
 
         } else {
 
-            Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
-                .getAttribute(Main_DataAttribute));
+            Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
 
             Play_data.data = Main_values_Play_data;
             Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
@@ -440,6 +439,13 @@ function ChannelContent_keyEnter() {
             } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 
             Main_openStream();
+
+            Main_EventPlay(
+                'live',
+                Main_values_Play_data[6],
+                Main_values_Play_data[3],
+                Main_values_Play_data[15]
+            );
         }
     }
 }

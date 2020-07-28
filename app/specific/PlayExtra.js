@@ -83,6 +83,13 @@ function PlayExtra_KeyEnter() {
             Play_CheckIfIsLiveCleanEnd();
         }
 
+        Main_EventPlay(
+            'live',
+            PlayExtra_data.data[6],
+            PlayExtra_data.data[3],
+            !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING'
+        );
+
     }
 }
 

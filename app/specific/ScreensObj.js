@@ -1778,7 +1778,8 @@ function ScreensObj_LiveCellArray(cell) {
         STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
         cell.created_at,//12
         cell.viewers,//13
-        cell.channel._id//14
+        cell.channel._id,//14
+        cell.channel.broadcaster_language//15
     ];
 }
 
@@ -1848,6 +1849,7 @@ function ScreensObj_ClipCellArray(cell) {
         Main_addCommas(cell.views) + STR_VIEWS,//14
         cell.thumbnails.medium,//15
         STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
+        cell.language//17
     ];
 }
 

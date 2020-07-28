@@ -1049,6 +1049,8 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+    var isHosting = false;
+
     Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
     Play_data.data = Main_values_Play_data;
@@ -1076,7 +1078,8 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         }
     }
 
-    Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+    isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+    Main_values.Play_isHost = isHosting;
 
     if (Main_values.Play_isHost) {
         Play_data.DisplaynameHost = Play_data.data[1];
@@ -1086,6 +1089,13 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
     Main_openStream();
+
+    Main_EventPlay(
+        'live',
+        Main_values_Play_data[6],
+        Main_values_Play_data[3],
+        !isHosting ? Main_values_Play_data[15] : 'HOSTING'
+    );
 }
 
 var Main_CheckBroadcastIDex;
@@ -1266,6 +1276,13 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_HideWarningDialog();
     Play_CleanHideExit();
     PlayClip_Start();
+
+    Main_EventPlay(
+        'clip',
+        Main_values_Play_data[6],
+        Main_values_Play_data[3],
+        Main_values_Play_data[17]
+    );
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -1296,6 +1313,13 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
     Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
 
     Main_openVod();
+
+    Main_EventPlay(
+        'vod',
+        Main_values_Play_data[6],
+        Main_values_Play_data[3],
+        Main_values_Play_data[9]
+    );
 }
 
 function Main_openVod() {
@@ -1617,7 +1641,6 @@ function Main_Set_history(type, Data, skipUpdateDate) {
     }
 
     Main_setHistoryItem();
-
 }
 
 function Main_history_Exist(type, id) {
@@ -2305,26 +2328,43 @@ function Main_Startfirebase() {
 }
 
 function Main_EventScreen(screen) {
-    try {
-
-        gtag('event', 'screen_view', {
-            'screen_name': screen
-        });
-
-    } catch (e) {
-        console.log("Main_EventScreen e " + e);
-    }
+    Main_EventShowScreen(
+        'screen_view',
+        screen
+    );
 }
 
 function Main_EventAgame(game) {
+    Main_EventShowScreen(
+        'game_view',
+        game
+    );
+}
 
+function Main_EventShowScreen(type, name) {
     try {
 
-        gtag('event', 'game_view', {
-            'game_name': game
+        gtag('event', type, {
+            'name': name,
+            'lang': Languages_Selected
         });
 
     } catch (e) {
-        console.log("Main_EventScreen e " + e);
+        console.log("Main_EventPlay e " + e);
+    }
+}
+
+function Main_EventPlay(type, name, game, lang) {
+
+    try {
+
+        gtag('event', type, {
+            'name': name,
+            'lang': lang.toUpperCase(),
+            'game': game
+        });
+
+    } catch (e) {
+        console.log("Main_EventPlay e " + e);
     }
 }
