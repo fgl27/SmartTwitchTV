@@ -4603,8 +4603,7 @@
 
             } else {
 
-                Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1')
-                    .getAttribute(Main_DataAttribute));
+                Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
 
                 Play_data.data = Main_values_Play_data;
                 Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
@@ -4616,6 +4615,13 @@
                 } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 
                 Main_openStream();
+
+                Main_EventPlay(
+                    'live',
+                    Main_values_Play_data[6],
+                    Main_values_Play_data[3],
+                    Main_values_Play_data[15]
+                );
             }
         }
     }
@@ -8252,7 +8258,7 @@
     var Main_stringVersion_Min = '.233';
     var Main_version_java = 24; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 27, 2020';
-    var Main_version_web = 29; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 30; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9152,6 +9158,8 @@
 
     function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
+        var isHosting = false;
+
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
         Play_data.data = Main_values_Play_data;
@@ -9179,7 +9187,8 @@
             }
         }
 
-        Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+        isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+        Main_values.Play_isHost = isHosting;
 
         if (Main_values.Play_isHost) {
             Play_data.DisplaynameHost = Play_data.data[1];
@@ -9189,6 +9198,13 @@
         if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
         Main_openStream();
+
+        Main_EventPlay(
+            'live',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            !isHosting ? Main_values_Play_data[15] : 'HOSTING'
+        );
     }
 
     var Main_CheckBroadcastIDex;
@@ -9368,6 +9384,13 @@
         Play_HideWarningDialog();
         Play_CleanHideExit();
         PlayClip_Start();
+
+        Main_EventPlay(
+            'clip',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            Main_values_Play_data[17]
+        );
     }
 
     function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
@@ -9398,6 +9421,13 @@
         Main_values.Main_selectedChannelPartner = Main_values_Play_data[16];
 
         Main_openVod();
+
+        Main_EventPlay(
+            'vod',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            Main_values_Play_data[9]
+        );
     }
 
     function Main_openVod() {
@@ -9718,7 +9748,6 @@
         }
 
         Main_setHistoryItem();
-
     }
 
     function Main_history_Exist(type, id) {
@@ -10418,27 +10447,44 @@
     }
 
     function Main_EventScreen(screen) {
-        try {
-
-            gtag('event', 'screen_view', {
-                'screen_name': screen
-            });
-
-        } catch (e) {
-            console.log("Main_EventScreen e " + e);
-        }
+        Main_EventShowScreen(
+            'screen_view',
+            screen
+        );
     }
 
     function Main_EventAgame(game) {
+        Main_EventShowScreen(
+            'game_view',
+            game
+        );
+    }
 
+    function Main_EventShowScreen(type, name) {
         try {
 
-            gtag('event', 'game_view', {
-                'game_name': game
+            gtag('event', type, {
+                'name': name,
+                'lang': Languages_Selected
             });
 
         } catch (e) {
-            console.log("Main_EventScreen e " + e);
+            console.log("Main_EventPlay e " + e);
+        }
+    }
+
+    function Main_EventPlay(type, name, game, lang) {
+
+        try {
+
+            gtag('event', type, {
+                'name': name,
+                'lang': lang.toUpperCase(),
+                'game': game
+            });
+
+        } catch (e) {
+            console.log("Main_EventPlay e " + e);
         }
     }
     /*
@@ -14847,6 +14893,13 @@
                 Play_CheckIfIsLiveCleanEnd();
             }
 
+            Main_EventPlay(
+                'live',
+                PlayExtra_data.data[6],
+                PlayExtra_data.data[3],
+                !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING'
+            );
+
         }
     }
 
@@ -17556,6 +17609,12 @@
 
             Play_MultiStart(position);
 
+            Main_EventPlay(
+                'live',
+                Play_MultiArray[position].data[6],
+                Play_MultiArray[position].data[3],
+                !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING'
+            );
         }
     }
 
@@ -23852,7 +23911,8 @@
             STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE, //11
             cell.created_at, //12
             cell.viewers, //13
-            cell.channel._id //14
+            cell.channel._id, //14
+            cell.channel.broadcaster_language //15
         ];
     }
 
@@ -23922,6 +23982,7 @@
             Main_addCommas(cell.views) + STR_VIEWS, //14
             cell.thumbnails.medium, //15
             STR_CREATED_AT + Main_videoCreatedAt(cell.created_at), //16
+            cell.language //17
         ];
     }
 

@@ -7,6 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version July 28 2020
+==============
+
+* General performance improves and bug fixes
+
 Apk Version 3.0.233 & Web Version July 27 2020
 ==============
 
@@ -14,8 +19,6 @@ Apk Version 3.0.233 & Web Version July 27 2020
 * Add a settings options to prevent notification of streams that are live for over a mouth of time
 * Improve [Channel on the home screen](https://developer.android.com/training/tv/discovery/recommendations-channel), add more information to the thumbnails and improve some things related layout and performance
 * General performance improves and bug fixes
-
-Apk Version 3.0.230 & Web Version July 24 2020
 
 Apk Version 3.0.232 - July 25 2020
 ==============
@@ -41,7 +44,6 @@ Web Version July 22 2020
 ==============
 
 * General performance improves and bug fixes
-
 
 Web Version July 21 2020
 ==============
