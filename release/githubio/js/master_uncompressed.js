@@ -9445,9 +9445,12 @@
     }
 
     var Main_clock_H_M = '';
+    var Main_date_Ms = 0;
 
     function Main_getclock() {
-        var date = new Date().getTime() + Main_ClockOffset,
+        Main_date_Ms = new Date().getTime();
+
+        var date = Main_date_Ms + Main_ClockOffset,
             dayMonth;
 
         date = new Date(date);
@@ -16387,7 +16390,7 @@
     }
 
     function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
-        return Play_timeMs((new Date().getTime()) - (new Date(time).getTime()));
+        return Play_timeMs(Main_date_Ms - (new Date(time).getTime()));
     }
 
     function Play_timeDay(time) {
@@ -19427,6 +19430,7 @@
 
         }
 
+        Main_date_Ms = new Date().getTime();
         Main_empty(ScreenObj[key].table);
         ScreenObj[key].ScrollDoc.style.transform = '';
         ScreenObj[key].lastRefresh = new Date().getTime();
@@ -28906,6 +28910,7 @@
             UserLiveFeed_LastPos[pos] = null;
         }
 
+        Main_date_Ms = new Date().getTime();
         UserLiveFeed_lastRefresh[pos] = new Date().getTime();
         UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
         UserLiveFeed_cell[pos] = [];
