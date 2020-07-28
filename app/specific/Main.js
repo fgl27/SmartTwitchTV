@@ -208,7 +208,6 @@ function Main_Start() {
 
 function Main_loadTranslations(language) {
     Main_Checktylesheet();
-    Main_Startfirebase();
 
     Main_ready(function() {
 
@@ -527,6 +526,7 @@ function Main_initWindows() {
 
     Main_SetStringsSecondary();
     Main_checkVersion();
+    Main_Startfirebase();
 }
 
 function Main_SetStringsMain(isStarting) {
