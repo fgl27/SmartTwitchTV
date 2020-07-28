@@ -654,7 +654,14 @@ function Sidepannel_handleKeyDown(event) {
             if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
-                Main_OpenLiveStream(Sidepannel_PosFeed, UserLiveFeed_side_ids, Sidepannel_handleKeyDown);
+
+                Main_OpenLiveStream(
+                    Sidepannel_PosFeed,
+                    UserLiveFeed_side_ids,
+                    Sidepannel_handleKeyDown,
+                    false,
+                    'Side_Panel'
+                );
             }
             break;
         case KEY_PAUSE://key s

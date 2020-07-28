@@ -1946,21 +1946,27 @@ function Play_OpenFeed(keyfun) {
         Main_OpenVodStart(
             UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
             UserLiveFeed_ids,
-            keyfun
+            keyfun,
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
         );
 
     } else {
         UserLiveFeed_Hide(true);
 
-        Main_OpenLiveStream(
-            UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-            UserLiveFeed_ids,
-            keyfun,
-            !UserLiveFeed_CheckVod()
-        );
+        Play_OpenLiveStream(keyfun);
     }
 
     Play_StopStay();
+}
+
+function Play_OpenLiveStream(keyfun) {
+    Main_OpenLiveStream(
+        UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
+        UserLiveFeed_ids,
+        keyfun,
+        !UserLiveFeed_CheckVod(),
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+    );
 }
 
 function Play_RestorePlayData(error_410, Isforbiden) {

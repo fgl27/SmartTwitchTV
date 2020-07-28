@@ -1052,7 +1052,7 @@ function Main_ThumbOpenIsNull(id, thumbnail) {
     return document.getElementById(thumbnail + id) === null;
 }
 
-function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) {
+function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     var isHosting = false;
 
@@ -1075,7 +1075,19 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
             } else {//is live check if is the same BroadcastID
 
                 if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
-                else Main_openStream();
+                else {
+
+                    Main_EventPlay(
+                        'live',
+                        Main_values_Play_data[6],
+                        Main_values_Play_data[3],
+                        !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+                        screen
+                    );
+
+                    Main_openStream();
+                }
+
 
                 return;
             }
@@ -1099,7 +1111,8 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory) 
         'live',
         Main_values_Play_data[6],
         Main_values_Play_data[3],
-        !isHosting ? Main_values_Play_data[15] : 'HOSTING'
+        !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+        screen
     );
 }
 
@@ -1246,7 +1259,7 @@ function Main_openStream() {
     Play_Start();
 }
 
-function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
+function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
     Main_removeEventListener("keydown", handleKeyDownFunction);
@@ -1280,17 +1293,19 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction) {
     Play_hideChat();
     Play_HideWarningDialog();
     Play_CleanHideExit();
+
     PlayClip_Start();
 
     Main_EventPlay(
         'clip',
         Main_values_Play_data[6],
         Main_values_Play_data[3],
-        Main_values_Play_data[17]
+        Main_values_Play_data[17],
+        screen
     );
 }
 
-function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
+function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
@@ -1323,7 +1338,8 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction) {
         'vod',
         Main_values_Play_data[6],
         Main_values_Play_data[3],
-        Main_values_Play_data[9]
+        Main_values_Play_data[9],
+        screen
     );
 }
 
@@ -2208,7 +2224,8 @@ function Main_onNewIntent(mobj) {
             'live',
             Play_data.data[6],
             Play_data.data[3],
-            isLive ? Play_data.data[15] : 'HOSTING'
+            isLive ? Play_data.data[15] : 'HOSTING',
+            Main_EventGetChannelScreen(obj)
         );
     } else if (Main_A_equals_B(obj.type, "USER")) {
 
@@ -2367,14 +2384,17 @@ function Main_EventShowScreen(type, name) {
     }
 }
 
-function Main_EventPlay(type, name, game, lang) {
+var UNKNOWN = 'UNKNOWN';
+
+function Main_EventPlay(type, name, game, lang, screen) {
 
     try {
 
         gtag('event', type, {
             'name': name,
-            'lang': lang ? lang.toUpperCase() : 'UNKNOWN',
-            'game': game
+            'lang': lang ? lang.toUpperCase() : UNKNOWN,
+            'game': game,
+            'screen': screen ? screen : UNKNOWN
         });
 
     } catch (e) {
@@ -2413,39 +2433,43 @@ function Main_EventChannel(obj) {
     try {
         if (!obj || !obj.type || !obj.screen) return;
 
-        var SCREEN = 'CHANNEL_UNKNOWN';
-
-        switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
-            case 1:
-                SCREEN = 'CHANNEL_LIVE';
-                break;
-            case 2:
-                SCREEN = 'CHANNEL_USER_LIVE';
-                break;
-            case 3:
-                SCREEN = 'CHANNEL_FEATURED';
-                break;
-            case 4:
-                SCREEN = 'CHANNEL_GAMES';
-                break;
-            case 5:
-                SCREEN = 'CHANNEL_USER_GAMES';
-                break;
-            case 6:
-                SCREEN = 'CHANNEL_USER_HOSTS';
-                break;
-            default:
-                break;
-        }
-
         gtag('event', 'channel', {
             'type': obj.type,
-            'screen': SCREEN
+            'screen': Main_EventGetChannelScreen(obj)
         });
 
     } catch (e) {
         console.log("Main_EventChannel e " + e);
     }
+}
+
+function Main_EventGetChannelScreen(obj) {
+    var SCREEN = 'CHANNEL_' + UNKNOWN;
+
+    switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
+        case 1:
+            SCREEN = 'CHANNEL_LIVE';
+            break;
+        case 2:
+            SCREEN = 'CHANNEL_USER_LIVE';
+            break;
+        case 3:
+            SCREEN = 'CHANNEL_FEATURED';
+            break;
+        case 4:
+            SCREEN = 'CHANNEL_GAMES';
+            break;
+        case 5:
+            SCREEN = 'CHANNEL_USER_GAMES';
+            break;
+        case 6:
+            SCREEN = 'CHANNEL_USER_HOSTS';
+            break;
+        default:
+            break;
+    }
+
+    return SCREEN;
 }
 
 function Main_Eventsimple(event) {

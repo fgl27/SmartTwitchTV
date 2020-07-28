@@ -229,7 +229,7 @@ function ScreensObj_InitVod() {
                     Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -294,7 +294,7 @@ function ScreensObj_InitChannelVod() {
                     this.SetPeriod();
                     Screens_StartLoad(this.screen);
                 } else Screens_OffSetStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
         },
         SwitchesIcons: ['movie-play', 'history', 'offset'],
         addSwitches: function() {
@@ -366,7 +366,7 @@ function ScreensObj_InitAGameVod() {
                     Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -433,7 +433,7 @@ function ScreensObj_InitUserVod() {
                     this.SetPeriod();
                     Screens_StartLoad(this.screen);
                 }
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -515,8 +515,10 @@ var Base_Live_obj = {
         }
     },
     key_play: function() {
-        Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-        Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+        if (this.itemsCount) {
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
+        }
     }
 };
 
@@ -798,9 +800,17 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
     ScreenObj[Main_aGame].key_play = function() {
-        if (this.posY !== -1) {
+        if (this.itemsCount && this.posY !== -1) {
             Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun);
+
+            Main_OpenLiveStream(
+                this.posY + '_' + this.posX,
+                this.ids,
+                this.key_fun,
+                false,
+                Main_values.Main_BeforeAgameisSet && ScreenObj[Main_values.Main_BeforeAgame].ScreenName ? ScreenObj[Main_values.Main_BeforeAgame].ScreenName : this.ScreenName
+            );
+
         } else AGame_headerOptions(this.screen);
     };
 }
@@ -887,10 +897,10 @@ var Base_Clip_obj = {
                     Screens_removeFocusFollow(this.screen);
                     this.posX = 0;
                     this.posY = 0;
-                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
                 }
             }
-        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
     },
     Cells: [],
     addCell: function(cell) {
@@ -1519,8 +1529,10 @@ function ScreensObj_HistoryLive() {
                 Main_SwitchScreen();
             } else Screens_histStart(this.screen);
         } else {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true);
+            if (this.itemsCount) {
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
+            }
         }
     };
 }
@@ -1573,7 +1585,7 @@ function ScreensObj_HistoryVod() {
                     this.history_exit();
                     Main_SwitchScreen();
                 } else Screens_histStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
 
         },
         addCell: function(cell) {
@@ -1665,7 +1677,7 @@ function ScreensObj_HistoryClip() {
                     this.history_exit();
                     Main_SwitchScreen();
                 } else Screens_histStart(this.screen);
-            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun);
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
 
         },
         addCell: function(cell) {

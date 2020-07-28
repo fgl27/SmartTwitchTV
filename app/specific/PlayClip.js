@@ -511,7 +511,12 @@ function PlayClip_PlayNextPreviously() {
     Main_ready(function() {
         PlayClip_replayOrNext = true;
         PlayClip_PreshutdownStream(false);
-        Main_OpenClip(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids, ScreenObj[Screens_Current_Key].key_fun);
+        Main_OpenClip(
+            ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
+            ScreenObj[Screens_Current_Key].ids,
+            ScreenObj[Screens_Current_Key].key_fun,
+            ScreenObj[Screens_Current_Key].ScreenName
+        );
     });
 }
 
@@ -755,12 +760,7 @@ function PlayClip_handleKeyDown(e) {
                             Play_EndDialogEnter = 3;
                             Play_EndUpclearCalback = PlayClip_handleKeyDown;
                             Play_SavePlayData();
-                            Main_OpenLiveStream(
-                                UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-                                UserLiveFeed_ids,
-                                PlayClip_handleKeyDown,
-                                !UserLiveFeed_CheckVod()
-                            );
+                            Play_OpenLiveStream(PlayClip_handleKeyDown);
                         }
                     }
                 } else if (Play_isPanelShown()) {

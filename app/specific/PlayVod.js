@@ -1045,12 +1045,7 @@ function PlayVod_handleKeyDown(e) {
                             Play_EndDialogEnter = 2;
                             Play_EndUpclearCalback = PlayVod_handleKeyDown;
                             Play_SavePlayData();
-                            Main_OpenLiveStream(
-                                UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
-                                UserLiveFeed_ids,
-                                PlayVod_handleKeyDown,
-                                !UserLiveFeed_CheckVod()
-                            );
+                            Play_OpenLiveStream(PlayVod_handleKeyDown);
                         }
                     }
                 } else if (Play_isPanelShown()) {
