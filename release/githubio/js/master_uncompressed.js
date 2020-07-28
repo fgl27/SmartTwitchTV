@@ -10479,7 +10479,7 @@
             });
 
         } catch (e) {
-            console.log("Main_EventPlay e " + e);
+            console.log("Main_EventShowScreen e " + e);
         }
     }
 
@@ -27680,6 +27680,7 @@
         }
 
         Sidepannel_SetLastRefresh();
+        Main_EventScreen('Side_panel_user_live');
     }
 
     function Sidepannel_SetLastRefresh() {
@@ -27700,6 +27701,7 @@
         Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
         Sidepannel_AddFocusMain();
         Sidepannel_MainisShowing();
+        Main_EventScreen('Side_panel_main');
     }
 
     function Sidepannel_MainisShowing() {
@@ -29469,6 +29471,7 @@
         }
 
         UserLiveFeedobj_SetLastRefresh(pos);
+
         if (UserLiveFeed_obj[pos].Screen)
             Main_EventScreen(UserLiveFeed_obj[pos].Screen);
     }
@@ -30698,6 +30701,8 @@
             Users_addFocus();
             Main_SaveValues();
         } else Users_StartLoad();
+
+        Main_EventScreen('Users');
     }
 
     function Users_exit() {
@@ -30722,6 +30727,7 @@
         Users_loadingData = true;
         Main_CounterDialogRst();
         Main_ready(Users_loadData);
+        Main_EventScreen('Users');
     }
 
     function Users_loadData() {
