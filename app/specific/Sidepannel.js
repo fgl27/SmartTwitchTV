@@ -404,6 +404,7 @@ function Sidepannel_ShowFeed() {
     }
 
     Sidepannel_SetLastRefresh();
+    Main_EventScreen('Side_panel_user_live');
 }
 
 function Sidepannel_SetLastRefresh() {
@@ -424,6 +425,7 @@ function Sidepannel_StartMain() {
     Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
     Sidepannel_AddFocusMain();
     Sidepannel_MainisShowing();
+    Main_EventScreen('Side_panel_main');
 }
 
 function Sidepannel_MainisShowing() {

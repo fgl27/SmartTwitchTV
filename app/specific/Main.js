@@ -2363,7 +2363,7 @@ function Main_EventShowScreen(type, name) {
         });
 
     } catch (e) {
-        console.log("Main_EventPlay e " + e);
+        console.log("Main_EventShowScreen e " + e);
     }
 }
 

@@ -333,6 +333,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     }
 
     UserLiveFeedobj_SetLastRefresh(pos);
+
     if (UserLiveFeed_obj[pos].Screen)
         Main_EventScreen(UserLiveFeed_obj[pos].Screen);
 }
