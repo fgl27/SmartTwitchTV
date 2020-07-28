@@ -1166,7 +1166,7 @@ function UserLiveFeedobj_UserVodHistory() {
 
         for (i; i < response_items; i++) {
             cell = response[i];
-            id = cell.data[14];
+            id = cell.data[7];
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
