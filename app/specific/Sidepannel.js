@@ -162,6 +162,14 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
+                Main_EventPreview(
+                    'Preview_sidepanel',
+                    StreamInfo[6],
+                    StreamInfo[3],
+                    StreamInfo[15],
+                    'sidepanel'
+                );
+
             } else {
 
                 Sidepannel_CheckIfIsLiveWarn(

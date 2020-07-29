@@ -680,6 +680,14 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
                     );
                 }
 
+                Main_EventPreview(
+                    'Preview_player',
+                    StreamInfo[6],
+                    StreamInfo[3],
+                    isVod ? StreamInfo[9] : (StreamInfo[16] ? 'HOSTING' : StreamInfo[15]),
+                    UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                );
+
                 return;
 
             } else {

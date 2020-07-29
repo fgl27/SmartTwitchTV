@@ -1106,13 +1106,16 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 Play_PreviewURL = StreamData.url;
                 Play_PreviewResponseText = StreamData.responseText;
 
-                var offset = 0, PreviewResponseText = Play_PreviewResponseText;
+                var offset = 0,
+                    PreviewResponseText = Play_PreviewResponseText,
+                    lang;
 
                 if (ScreenObj[x].screenType === 2) {//clip
 
                     Play_PreviewId = StreamInfo[0];
                     Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
                     Play_PreviewURL = Play_PreviewResponseText[0].url;
+                    lang = StreamInfo[17];
 
                 } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
@@ -1137,6 +1140,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                         }
                     }
 
+                    lang = StreamInfo[9];
+
                 } else {//live
 
                     if (ScreenObj[x].screen === Main_HistoryLive) {
@@ -1155,13 +1160,15 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                             } else {
 
                                 Play_PreviewId = StreamInfo[14];
-
                             }
 
                         }
 
-                    } else Play_PreviewId = StreamInfo[14];
+                    } else {
+                        Play_PreviewId = StreamInfo[14];
+                    }
 
+                    lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
                 }
 
                 var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
@@ -1188,6 +1195,14 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                         !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
                     );
                 }
+
+                Main_EventPreview(
+                    'Preview_screen',
+                    StreamInfo[6],
+                    StreamInfo[3],
+                    lang,
+                    ScreenObj[x].ScreenName
+                );
 
             } else {
 

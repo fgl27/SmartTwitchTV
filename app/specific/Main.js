@@ -1081,7 +1081,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
                         'live',
                         Main_values_Play_data[6],
                         Main_values_Play_data[3],
-                        !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+                        Main_values_Play_data[15],
                         screen
                     );
 
@@ -2417,6 +2417,27 @@ function Main_EventPlay(type, name, game, lang, screen, mode) {
 
     } catch (e) {
         console.log("Main_EventPlay e " + e);
+    }
+}
+
+function Main_EventPreview(type, name, game, lang, screen) {
+    if (skipfirebase) return;
+
+    try {
+
+        gtag(
+            'event',
+            type,
+            {
+                'name': name,
+                'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                'game': game ? game : UNKNOWN,
+                'screen': screen ? screen : UNKNOWN
+            }
+        );
+
+    } catch (e) {
+        console.log("Main_EventPreview e " + e);
     }
 }
 
