@@ -2440,6 +2440,17 @@ function Main_EventVersion(apk, web, webview, device) {
                     }
                 );
 
+                gtag(
+                    'event',
+                    'app_version_test',
+                    {
+                        'apk_version': apk,
+                        'web_version': web,
+                        'webview_version': webview,
+                        'device_model': device
+                    }
+                );
+
             },
             15000
         );
