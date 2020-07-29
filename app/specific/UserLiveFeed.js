@@ -617,7 +617,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                error = StreamInfo[1] + STR_SPACE;
+                error = StreamInfo[6] + STR_SPACE;
 
             if (StreamData.status === 200) {
 

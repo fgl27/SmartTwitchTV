@@ -333,7 +333,7 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
 
             var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                error = StreamInfo[1] + STR_SPACE;
+                error = StreamInfo[6] + STR_SPACE;
 
             if (responseObj.status === 200) {
 

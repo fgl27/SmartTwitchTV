@@ -1191,7 +1191,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                var error = StreamInfo[1] + STR_SPACE;
+                var error = StreamInfo[6] + STR_SPACE;
 
                 if (ScreenObj[x].screenType === 2) {
 
