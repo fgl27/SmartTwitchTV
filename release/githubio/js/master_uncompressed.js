@@ -4623,7 +4623,7 @@
 
                 Main_EventPlay(
                     'live',
-                    Main_values_Play_data[1],
+                    Main_values_Play_data[6],
                     Main_values_Play_data[3],
                     Main_values_Play_data[15],
                     'ChannelContent'
@@ -9194,7 +9194,7 @@
 
                         Main_EventPlay(
                             'live',
-                            Main_values_Play_data[1],
+                            Main_values_Play_data[6],
                             Main_values_Play_data[3],
                             !isHosting ? Main_values_Play_data[15] : 'HOSTING',
                             screen
@@ -9224,7 +9224,7 @@
 
         Main_EventPlay(
             'live',
-            Main_values_Play_data[1],
+            Main_values_Play_data[6],
             Main_values_Play_data[3],
             !isHosting ? Main_values_Play_data[15] : 'HOSTING',
             screen
@@ -9412,7 +9412,7 @@
 
         Main_EventPlay(
             'clip',
-            Main_values_Play_data[1],
+            Main_values_Play_data[6],
             Main_values_Play_data[3],
             Main_values_Play_data[17],
             screen
@@ -9450,7 +9450,7 @@
 
         Main_EventPlay(
             'vod',
-            Main_values_Play_data[1],
+            Main_values_Play_data[6],
             Main_values_Play_data[3],
             Main_values_Play_data[9],
             screen
@@ -10346,7 +10346,7 @@
 
             Main_EventPlay(
                 'live',
-                Play_data.data[1],
+                Play_data.data[6],
                 Play_data.data[3],
                 isLive ? Play_data.data[15] : 'HOSTING',
                 Main_EventGetChannelScreen(obj)
@@ -10543,13 +10543,45 @@
 
         try {
 
-            gtag('event', 'app_version', {
-                'apk_version': apk.replace(/\./g, '_'),
-                'web_version': web.replace(/\./g, '_'),
-                'webview_version': webview.replace(/\./g, '_'),
-                'device_model': device
+            gtag('event', 'screen_vac', {
+                'name': 'last'
             });
 
+            gtag(
+                'event',
+                'screen_apk', {
+                    'name': apk.replace(/\./g, '_')
+                }
+            );
+
+            gtag(
+                'event',
+                'screen_web', {
+                    'name': web.replace(/\./g, '_')
+                }
+            );
+
+            gtag(
+                'event',
+                'screen_webview', {
+                    'name': webview.replace(/\./g, '_')
+                }
+            );
+
+            gtag(
+                'event',
+                'screen_device', {
+                    'name': device
+                }
+            );
+
+            // gtag('event', 'app_version', {
+            //     'apk_version': apk.replace(/\./g, '_'),
+            //     'web_version': web.replace(/\./g, '_'),
+            //     'webview_version': webview.replace(/\./g, '_'),
+            //     'device_model': device
+            // });
+            console.log("Main_EventVersion");
         } catch (e) {
             console.log("Main_EventVersion e " + e);
         }
@@ -15014,7 +15046,7 @@
 
             Main_EventPlay(
                 'live',
-                PlayExtra_data.data[1],
+                PlayExtra_data.data[6],
                 PlayExtra_data.data[3],
                 !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
@@ -17754,7 +17786,7 @@
 
             Main_EventPlay(
                 'live',
-                Play_MultiArray[position].data[1],
+                Play_MultiArray[position].data[6],
                 Play_MultiArray[position].data[3],
                 !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
