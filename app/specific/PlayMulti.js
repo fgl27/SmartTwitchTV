@@ -301,10 +301,11 @@ function Play_MultiStartPrestart(position) {
 
         Main_EventPlay(
             'live',
-            Play_MultiArray[position].data[6],
+            Play_MultiArray[position].data[1],
             Play_MultiArray[position].data[3],
             !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
+            'MULTI'
         );
     }
 }

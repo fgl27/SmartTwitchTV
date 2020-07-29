@@ -425,6 +425,14 @@ function ChannelContent_keyEnter() {
             Play_hidePanel();
             Play_Start(true);
 
+            Main_EventPlay(
+                'offline',
+                Main_values.Main_selectedChannelDisplayname,
+                'offline',
+                'offline',
+                'ChannelContent'
+            );
+
         } else {
 
             Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
@@ -442,7 +450,7 @@ function ChannelContent_keyEnter() {
 
             Main_EventPlay(
                 'live',
-                Main_values_Play_data[6],
+                Main_values_Play_data[1],
                 Main_values_Play_data[3],
                 Main_values_Play_data[15],
                 'ChannelContent'

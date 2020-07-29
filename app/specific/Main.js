@@ -1079,7 +1079,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
 
                     Main_EventPlay(
                         'live',
-                        Main_values_Play_data[6],
+                        Main_values_Play_data[1],
                         Main_values_Play_data[3],
                         !isHosting ? Main_values_Play_data[15] : 'HOSTING',
                         screen
@@ -1109,7 +1109,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
 
     Main_EventPlay(
         'live',
-        Main_values_Play_data[6],
+        Main_values_Play_data[1],
         Main_values_Play_data[3],
         !isHosting ? Main_values_Play_data[15] : 'HOSTING',
         screen
@@ -1298,7 +1298,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
 
     Main_EventPlay(
         'clip',
-        Main_values_Play_data[6],
+        Main_values_Play_data[1],
         Main_values_Play_data[3],
         Main_values_Play_data[17],
         screen
@@ -1336,7 +1336,7 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
 
     Main_EventPlay(
         'vod',
-        Main_values_Play_data[6],
+        Main_values_Play_data[1],
         Main_values_Play_data[3],
         Main_values_Play_data[9],
         screen
@@ -2222,11 +2222,12 @@ function Main_onNewIntent(mobj) {
 
         Main_EventPlay(
             'live',
-            Play_data.data[6],
+            Play_data.data[1],
             Play_data.data[3],
             isLive ? Play_data.data[15] : 'HOSTING',
             Main_EventGetChannelScreen(obj)
         );
+
     } else if (Main_A_equals_B(obj.type, "USER")) {
 
         Main_CheckResume(true);
@@ -2393,7 +2394,7 @@ function Main_EventShowScreen(type, name) {
     }
 }
 
-function Main_EventPlay(type, name, game, lang, screen) {
+function Main_EventPlay(type, name, game, lang, screen, mode) {
     if (skipfirebase) return;
 
     try {
@@ -2401,8 +2402,9 @@ function Main_EventPlay(type, name, game, lang, screen) {
         gtag('event', type, {
             'name': name,
             'lang': lang ? lang.toUpperCase() : UNKNOWN,
-            'game': game ? game.replace(/,/g, ' ') : UNKNOWN,
-            'screen': screen ? screen : UNKNOWN
+            'game': game ? game.replace(/,/g, ' ').replace(/:/g, '').replace(/'/g, '').replace(/-/g, '_') : UNKNOWN,
+            'screen': screen ? screen : UNKNOWN,
+            'mode': mode ? mode : 'NORMAL'
         });
 
     } catch (e) {
@@ -2416,9 +2418,9 @@ function Main_EventVersion(apk, web, webview, device) {
     try {
 
         gtag('event', 'app_version', {
-            'apk': apk,
-            'web': web,
-            'webview': webview,
+            'apk': apk.replace(/\./g, '_'),
+            'web': web.replace(/\./g, '_'),
+            'webview': webview.replace(/\./g, '_'),
             'device': device
         });
 
