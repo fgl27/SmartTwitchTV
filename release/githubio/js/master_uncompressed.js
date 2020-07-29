@@ -9196,7 +9196,7 @@
                             'live',
                             Main_values_Play_data[6],
                             Main_values_Play_data[3],
-                            !isHosting ? Main_values_Play_data[15] : 'HOSTING',
+                            Main_values_Play_data[15],
                             screen
                         );
 
@@ -10541,6 +10541,26 @@
 
         } catch (e) {
             console.log("Main_EventPlay e " + e);
+        }
+    }
+
+    function Main_EventPreview(type, name, game, lang, screen) {
+        if (skipfirebase) return;
+
+        try {
+
+            gtag(
+                'event',
+                type, {
+                    'name': name,
+                    'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                    'game': game ? game : UNKNOWN,
+                    'screen': screen ? screen : UNKNOWN
+                }
+            );
+
+        } catch (e) {
+            console.log("Main_EventPreview e " + e);
         }
     }
 
@@ -20629,13 +20649,15 @@
                     Play_PreviewResponseText = StreamData.responseText;
 
                     var offset = 0,
-                        PreviewResponseText = Play_PreviewResponseText;
+                        PreviewResponseText = Play_PreviewResponseText,
+                        lang;
 
                     if (ScreenObj[x].screenType === 2) { //clip
 
                         Play_PreviewId = StreamInfo[0];
                         Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
                         Play_PreviewURL = Play_PreviewResponseText[0].url;
+                        lang = StreamInfo[17];
 
                     } else if (ScreenObj[x].screenType === 1) { //vod
                         Play_PreviewId = StreamInfo[7];
@@ -20660,6 +20682,8 @@
                             }
                         }
 
+                        lang = StreamInfo[9];
+
                     } else { //live
 
                         if (ScreenObj[x].screen === Main_HistoryLive) {
@@ -20678,13 +20702,15 @@
                                 } else {
 
                                     Play_PreviewId = StreamInfo[14];
-
                                 }
 
                             }
 
-                        } else Play_PreviewId = StreamInfo[14];
+                        } else {
+                            Play_PreviewId = StreamInfo[14];
+                        }
 
+                        lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
                     }
 
                     var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
@@ -20711,6 +20737,14 @@
                             !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
                         );
                     }
+
+                    Main_EventPreview(
+                        'Preview_screen',
+                        StreamInfo[6],
+                        StreamInfo[3],
+                        lang,
+                        ScreenObj[x].ScreenName
+                    );
 
                 } else {
 
@@ -27509,6 +27543,14 @@
 
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
 
+                    Main_EventPreview(
+                        'Preview_sidepanel',
+                        StreamInfo[6],
+                        StreamInfo[3],
+                        StreamInfo[15],
+                        'sidepanel'
+                    );
+
                 } else {
 
                     Sidepannel_CheckIfIsLiveWarn(
@@ -28790,6 +28832,14 @@
                             2000
                         );
                     }
+
+                    Main_EventPreview(
+                        'Preview_player',
+                        StreamInfo[6],
+                        StreamInfo[3],
+                        isVod ? StreamInfo[9] : (StreamInfo[16] ? 'HOSTING' : StreamInfo[15]),
+                        UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                    );
 
                     return;
 
