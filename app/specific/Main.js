@@ -152,7 +152,7 @@ var Main_DataAttribute = 'data-array';
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.234';
 var Main_version_java = 25;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'July 28, 2020';
+var Main_minversion = 'July 28 2020';
 var Main_version_web = 33;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 var Main_update_show_toast = false;
@@ -2401,7 +2401,7 @@ function Main_EventPlay(type, name, game, lang, screen) {
         gtag('event', type, {
             'name': name,
             'lang': lang ? lang.toUpperCase() : UNKNOWN,
-            'game': game,
+            'game': game ? game.replace(/,/g, ' ') : UNKNOWN,
             'screen': screen ? screen : UNKNOWN
         });
 
