@@ -4598,6 +4598,14 @@
                 Play_hidePanel();
                 Play_Start(true);
 
+                Main_EventPlay(
+                    'offline',
+                    Main_values.Main_selectedChannelDisplayname,
+                    'offline',
+                    'offline',
+                    'ChannelContent'
+                );
+
             } else {
 
                 Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
@@ -4615,7 +4623,7 @@
 
                 Main_EventPlay(
                     'live',
-                    Main_values_Play_data[6],
+                    Main_values_Play_data[1],
                     Main_values_Play_data[3],
                     Main_values_Play_data[15],
                     'ChannelContent'
@@ -8255,8 +8263,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.234';
     var Main_version_java = 25; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 28 2020';
-    var Main_version_web = 33; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 29 2020';
+    var Main_version_web = 34; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -9186,7 +9194,7 @@
 
                         Main_EventPlay(
                             'live',
-                            Main_values_Play_data[6],
+                            Main_values_Play_data[1],
                             Main_values_Play_data[3],
                             !isHosting ? Main_values_Play_data[15] : 'HOSTING',
                             screen
@@ -9216,7 +9224,7 @@
 
         Main_EventPlay(
             'live',
-            Main_values_Play_data[6],
+            Main_values_Play_data[1],
             Main_values_Play_data[3],
             !isHosting ? Main_values_Play_data[15] : 'HOSTING',
             screen
@@ -9404,7 +9412,7 @@
 
         Main_EventPlay(
             'clip',
-            Main_values_Play_data[6],
+            Main_values_Play_data[1],
             Main_values_Play_data[3],
             Main_values_Play_data[17],
             screen
@@ -9442,7 +9450,7 @@
 
         Main_EventPlay(
             'vod',
-            Main_values_Play_data[6],
+            Main_values_Play_data[1],
             Main_values_Play_data[3],
             Main_values_Play_data[9],
             screen
@@ -10338,11 +10346,12 @@
 
             Main_EventPlay(
                 'live',
-                Play_data.data[6],
+                Play_data.data[1],
                 Play_data.data[3],
                 isLive ? Play_data.data[15] : 'HOSTING',
                 Main_EventGetChannelScreen(obj)
             );
+
         } else if (Main_A_equals_B(obj.type, "USER")) {
 
             Main_CheckResume(true);
@@ -10511,7 +10520,7 @@
         }
     }
 
-    function Main_EventPlay(type, name, game, lang, screen) {
+    function Main_EventPlay(type, name, game, lang, screen, mode) {
         if (skipfirebase) return;
 
         try {
@@ -10519,8 +10528,9 @@
             gtag('event', type, {
                 'name': name,
                 'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                'game': game ? game.replace(/,/g, ' ') : UNKNOWN,
-                'screen': screen ? screen : UNKNOWN
+                'game': game ? game.replace(/,/g, ' ').replace(/:/g, '').replace(/'/g, '').replace(/-/g, '_') : UNKNOWN,
+                'screen': screen ? screen : UNKNOWN,
+                'mode': mode ? mode : 'NORMAL'
             });
 
         } catch (e) {
@@ -10534,9 +10544,9 @@
         try {
 
             gtag('event', 'app_version', {
-                'apk': apk,
-                'web': web,
-                'webview': webview,
+                'apk': apk.replace(/\./g, '_'),
+                'web': web.replace(/\./g, '_'),
+                'webview': webview.replace(/\./g, '_'),
                 'device': device
             });
 
@@ -15004,10 +15014,11 @@
 
             Main_EventPlay(
                 'live',
-                PlayExtra_data.data[6],
+                PlayExtra_data.data[1],
                 PlayExtra_data.data[3],
                 !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
+                'PP'
             );
 
         }
@@ -17743,10 +17754,11 @@
 
             Main_EventPlay(
                 'live',
-                Play_MultiArray[position].data[6],
+                Play_MultiArray[position].data[1],
                 Play_MultiArray[position].data[3],
                 !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
+                'MULTI'
             );
         }
     }
