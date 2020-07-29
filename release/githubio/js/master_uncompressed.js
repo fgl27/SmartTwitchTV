@@ -10511,8 +10511,6 @@
         }
     }
 
-    var UNKNOWN = 'UNKNOWN';
-
     function Main_EventPlay(type, name, game, lang, screen) {
 
         try {
@@ -10528,7 +10526,6 @@
             console.log("Main_EventPlay e " + e);
         }
     }
-
 
     function Main_EventVersion(apk, web, webview, device) {
         if (skipfirebase) return;
@@ -10571,33 +10568,20 @@
         }
     }
 
+    var UNKNOWN = 'UNKNOWN';
+    var Main_EventChannelScreens = [
+        'CHANNEL_' + UNKNOWN,
+        'CHANNEL_LIVE',
+        'CHANNEL_USER_LIVE',
+        'CHANNEL_FEATURED',
+        'CHANNEL_GAMES',
+        'CHANNEL_USER_GAMES',
+        'CHANNEL_USER_HOSTS'
+    ];
+
     function Main_EventGetChannelScreen(obj) {
-        var SCREEN = 'CHANNEL_' + UNKNOWN;
-
-        switch (obj.screen) { //In relateton to java CHANNEL_TYPE_*
-            case 1:
-                SCREEN = 'CHANNEL_LIVE';
-                break;
-            case 2:
-                SCREEN = 'CHANNEL_USER_LIVE';
-                break;
-            case 3:
-                SCREEN = 'CHANNEL_FEATURED';
-                break;
-            case 4:
-                SCREEN = 'CHANNEL_GAMES';
-                break;
-            case 5:
-                SCREEN = 'CHANNEL_USER_GAMES';
-                break;
-            case 6:
-                SCREEN = 'CHANNEL_USER_HOSTS';
-                break;
-            default:
-                break;
-        }
-
-        return SCREEN;
+        return obj.screen && Main_EventChannelScreens[obj.screen] ?
+            Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];
     }
 
     function Main_Eventsimple(event) {
