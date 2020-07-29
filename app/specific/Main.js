@@ -2394,6 +2394,7 @@ function Main_EventShowScreen(type, name) {
 }
 
 function Main_EventPlay(type, name, game, lang, screen) {
+    if (skipfirebase) return;
 
     try {
 
@@ -2414,7 +2415,7 @@ function Main_EventVersion(apk, web, webview, device) {
 
     try {
 
-        gtag('event', 'version', {
+        gtag('event', 'app_version', {
             'apk': apk,
             'web': web,
             'webview': webview,
