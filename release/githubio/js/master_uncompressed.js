@@ -10512,6 +10512,7 @@
     }
 
     function Main_EventPlay(type, name, game, lang, screen) {
+        if (skipfirebase) return;
 
         try {
 
@@ -10532,7 +10533,7 @@
 
         try {
 
-            gtag('event', 'version', {
+            gtag('event', 'app_version', {
                 'apk': apk,
                 'web': web,
                 'webview': webview,
