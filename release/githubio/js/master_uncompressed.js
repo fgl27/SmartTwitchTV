@@ -10544,10 +10544,10 @@
         try {
 
             gtag('event', 'app_version', {
-                'apk': apk.replace(/\./g, '_'),
-                'web': web.replace(/\./g, '_'),
-                'webview': webview.replace(/\./g, '_'),
-                'device': device
+                'apk_version': apk.replace(/\./g, '_'),
+                'web_version': web.replace(/\./g, '_'),
+                'webview_version': webview.replace(/\./g, '_'),
+                'device_model': device
             });
 
         } catch (e) {
