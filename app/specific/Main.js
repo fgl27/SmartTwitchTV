@@ -2409,7 +2409,7 @@ function Main_EventPlay(type, name, game, lang, screen, mode) {
             {
                 'name': name,
                 'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                'game': game ? game.replace(/,/g, ' ').replace(/:/g, '').replace(/'/g, '').replace(/-/g, '_') : UNKNOWN,
+                'game': game ? game : UNKNOWN,
                 'screen': screen ? screen : UNKNOWN,
                 'mode': mode ? mode : 'NORMAL'
             }
