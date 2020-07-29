@@ -2433,17 +2433,6 @@ function Main_EventVersion(apk, web, webview, device) {
                     'event',
                     'app_version',
                     {
-                        'apk_version': apk.replace(/\./g, '_'),
-                        'web_version': web.replace(/\./g, '_'),
-                        'webview_version': webview.replace(/\./g, '_'),
-                        'device_model': device
-                    }
-                );
-
-                gtag(
-                    'event',
-                    'app_version_test',
-                    {
                         'apk_version': apk,
                         'web_version': web,
                         'webview_version': webview,
