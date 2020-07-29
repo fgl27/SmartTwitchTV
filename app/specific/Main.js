@@ -2384,10 +2384,14 @@ function Main_EventShowScreen(type, name) {
 
     try {
 
-        gtag('event', type, {
-            'name': name,
-            'lang': Languages_Selected
-        });
+        gtag(
+            'event',
+            type,
+            {
+                'name': name,
+                'lang': Languages_Selected
+            }
+        );
 
     } catch (e) {
         console.log("Main_EventShowScreen e " + e);
@@ -2399,13 +2403,17 @@ function Main_EventPlay(type, name, game, lang, screen, mode) {
 
     try {
 
-        gtag('event', type, {
-            'name': name,
-            'lang': lang ? lang.toUpperCase() : UNKNOWN,
-            'game': game ? game.replace(/,/g, ' ').replace(/:/g, '').replace(/'/g, '').replace(/-/g, '_') : UNKNOWN,
-            'screen': screen ? screen : UNKNOWN,
-            'mode': mode ? mode : 'NORMAL'
-        });
+        gtag(
+            'event',
+            type,
+            {
+                'name': name,
+                'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                'game': game ? game.replace(/,/g, ' ').replace(/:/g, '').replace(/'/g, '').replace(/-/g, '_') : UNKNOWN,
+                'screen': screen ? screen : UNKNOWN,
+                'mode': mode ? mode : 'NORMAL'
+            }
+        );
 
     } catch (e) {
         console.log("Main_EventPlay e " + e);
@@ -2417,49 +2425,25 @@ function Main_EventVersion(apk, web, webview, device) {
 
     try {
 
-        gtag('event', 'screen_vac', {
-            'name': 'last'
-        });
+        //Delay the event if it is call too sone will not work
+        Main_setTimeout(
+            function() {
 
-        gtag(
-            'event',
-            'screen_apk',
-            {
-                'name': apk.replace(/\./g, '_')
-            }
+                gtag(
+                    'event',
+                    'app_version',
+                    {
+                        'apk_version': apk.replace(/\./g, '_'),
+                        'web_version': web.replace(/\./g, '_'),
+                        'webview_version': webview.replace(/\./g, '_'),
+                        'device_model': device
+                    }
+                );
+
+            },
+            15000
         );
 
-        gtag(
-            'event',
-            'screen_web',
-            {
-                'name': web.replace(/\./g, '_')
-            }
-        );
-
-        gtag(
-            'event',
-            'screen_webview',
-            {
-                'name': webview.replace(/\./g, '_')
-            }
-        );
-
-        gtag(
-            'event',
-            'screen_device',
-            {
-                'name': device
-            }
-        );
-
-        // gtag('event', 'app_version', {
-        //     'apk_version': apk.replace(/\./g, '_'),
-        //     'web_version': web.replace(/\./g, '_'),
-        //     'webview_version': webview.replace(/\./g, '_'),
-        //     'device_model': device
-        // });
-        console.log("Main_EventVersion");
     } catch (e) {
         console.log("Main_EventVersion e " + e);
     }
@@ -2481,10 +2465,14 @@ function Main_EventChannel(obj) {
     try {
         if (!obj || !obj.type || !obj.screen) return;
 
-        gtag('event', 'channel', {
-            'type': obj.type,
-            'screen': Main_EventGetChannelScreen(obj)
-        });
+        gtag(
+            'event',
+            'channel',
+            {
+                'type': obj.type,
+                'screen': Main_EventGetChannelScreen(obj)
+            }
+        );
 
     } catch (e) {
         console.log("Main_EventChannel e " + e);
