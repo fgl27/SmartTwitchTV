@@ -85,7 +85,7 @@ function PlayExtra_KeyEnter() {
 
         Main_EventPlay(
             'live',
-            PlayExtra_data.data[1],
+            PlayExtra_data.data[6],
             PlayExtra_data.data[3],
             !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,

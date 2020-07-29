@@ -1079,7 +1079,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
 
                     Main_EventPlay(
                         'live',
-                        Main_values_Play_data[1],
+                        Main_values_Play_data[6],
                         Main_values_Play_data[3],
                         !isHosting ? Main_values_Play_data[15] : 'HOSTING',
                         screen
@@ -1109,7 +1109,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
 
     Main_EventPlay(
         'live',
-        Main_values_Play_data[1],
+        Main_values_Play_data[6],
         Main_values_Play_data[3],
         !isHosting ? Main_values_Play_data[15] : 'HOSTING',
         screen
@@ -1298,7 +1298,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
 
     Main_EventPlay(
         'clip',
-        Main_values_Play_data[1],
+        Main_values_Play_data[6],
         Main_values_Play_data[3],
         Main_values_Play_data[17],
         screen
@@ -1336,7 +1336,7 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
 
     Main_EventPlay(
         'vod',
-        Main_values_Play_data[1],
+        Main_values_Play_data[6],
         Main_values_Play_data[3],
         Main_values_Play_data[9],
         screen
@@ -2222,7 +2222,7 @@ function Main_onNewIntent(mobj) {
 
         Main_EventPlay(
             'live',
-            Play_data.data[1],
+            Play_data.data[6],
             Play_data.data[3],
             isLive ? Play_data.data[15] : 'HOSTING',
             Main_EventGetChannelScreen(obj)
@@ -2417,13 +2417,49 @@ function Main_EventVersion(apk, web, webview, device) {
 
     try {
 
-        gtag('event', 'app_version', {
-            'apk_version': apk.replace(/\./g, '_'),
-            'web_version': web.replace(/\./g, '_'),
-            'webview_version': webview.replace(/\./g, '_'),
-            'device_model': device
+        gtag('event', 'screen_vac', {
+            'name': 'last'
         });
 
+        gtag(
+            'event',
+            'screen_apk',
+            {
+                'name': apk.replace(/\./g, '_')
+            }
+        );
+
+        gtag(
+            'event',
+            'screen_web',
+            {
+                'name': web.replace(/\./g, '_')
+            }
+        );
+
+        gtag(
+            'event',
+            'screen_webview',
+            {
+                'name': webview.replace(/\./g, '_')
+            }
+        );
+
+        gtag(
+            'event',
+            'screen_device',
+            {
+                'name': device
+            }
+        );
+
+        // gtag('event', 'app_version', {
+        //     'apk_version': apk.replace(/\./g, '_'),
+        //     'web_version': web.replace(/\./g, '_'),
+        //     'webview_version': webview.replace(/\./g, '_'),
+        //     'device_model': device
+        // });
+        console.log("Main_EventVersion");
     } catch (e) {
         console.log("Main_EventVersion e " + e);
     }

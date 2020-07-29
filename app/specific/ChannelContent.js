@@ -450,7 +450,7 @@ function ChannelContent_keyEnter() {
 
             Main_EventPlay(
                 'live',
-                Main_values_Play_data[1],
+                Main_values_Play_data[6],
                 Main_values_Play_data[3],
                 Main_values_Play_data[15],
                 'ChannelContent'
