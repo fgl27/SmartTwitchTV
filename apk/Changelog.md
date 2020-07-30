@@ -7,6 +7,19 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version July 30 2020
+==============
+
+* Update how VOD fast backwards/forward
+* Add Minimum (starting) step time for VOD fast backwards/forward
+* Add Maximum step time for VOD fast backwards/forward
+* Add Increase timeout after for VOD fast backwards/forward
+* Add a way to look the step, press up to lock the step value when locked press up to change the value
+* VOD fast backwards/forward: when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.
+* VOD fast backwards/forward: Doing single clicks without hold the key will not increase the time
+* Clip fast backwards/forward didn't changed the step is always 5 seconds
+* Chat purged messages: replace content with "Message purged" and change background color to blue, the color change happens whether the message was removed or not
+
 Web Version July 29 2020
 ==============
 

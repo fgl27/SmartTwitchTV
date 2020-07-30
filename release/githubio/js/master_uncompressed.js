@@ -611,6 +611,14 @@
     var STR_NOTIFICATION_SINCE;
     var STR_NOTIFICATION_SINCE_SUMMARY;
     var STR_IS_SUB_ONLY_ERROR;
+    var STR_VOD_SEEK;
+    var STR_VOD_SEEK_SUMMARY;
+    var STR_VOD_SEEK_MIN;
+    var STR_VOD_SEEK_MAX;
+    var STR_VOD_SEEK_TIME;
+    var STR_UP_LOCKED;
+    var STR_LOCKED;
+    var STR_PURGED_MESSAGE;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1357,7 +1365,8 @@
         STR_CHAT_NICK_COLOR = "Readable nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
         STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
-        STR_CHAT_CLEAR_MSG_SUMMARY = "Purges chat messages from a specific user (typically after a timeout or ban)";
+        STR_PURGED_MESSAGE = "Message purged";
+        STR_CHAT_CLEAR_MSG_SUMMARY = 'Purges chat messages from a specific user (typically after a timeout or ban), purged messages will always have a blue background, the message will be replaced with "' + STR_PURGED_MESSAGE + '" if this is set to yes';
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
         STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
         STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
@@ -1390,6 +1399,13 @@
         STR_NOTIFICATION_POS_ARRAY = ['Top right', 'Top center', 'Top left', 'Bottom left', 'Bottom center', 'Bottom right'];
         STR_LOWLATENCY_ENABLE = "Enabled normal mode, may cause re-buffers";
         STR_LOWLATENCY_LOW = "Enabled lowest mode, may cause even more re-buffers";
+        STR_VOD_SEEK = "VOD fast backwards/forward controls";
+        STR_VOD_SEEK_SUMMARY = "Controls how fast backwards/forward steps will work, when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.<br><br>Pressing up will overwrite the mim/max value allowing you to go thru all possible steps and will lock the value until the progress bar is dismissed<br><br>Doing single clicks without hold the key will not increase the time<br><br>This options only work on VODs for Clip the step is always 5 seconds";
+        STR_VOD_SEEK_MIN = "Minimum (starting) step time";
+        STR_VOD_SEEK_MAX = "Maximum step time";
+        STR_VOD_SEEK_TIME = "Increase timeout after";
+        STR_UP_LOCKED = ", press up to lock the step value";
+        STR_LOCKED = ", locked press up to change";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -6672,7 +6688,7 @@
                     break;
                 case "CLEARMSG":
                     //Main_Log(JSON.stringify(message));
-                    ChatLive_CleanMessage(chat_number, message);
+                    ChatLive_CleanMessage(message);
                     break;
                 default:
                     break;
@@ -7418,6 +7434,30 @@
         elem.innerHTML = messageObj.message;
 
         Chat_div[messageObj.chat_number].appendChild(elem);
+
+        // Main_setTimeout(
+        //     function() {
+        //         if (messageObj.message_id) {
+        //             var objss = {
+        //                 tags: {
+        //                     'target-msg-id': messageObj.message_id
+        //                 }
+        //             }
+        //             ChatLive_CleanMessage(objss);
+        //         }
+        //     }, 1000);
+
+        // Main_setTimeout(
+        //     function() {
+        //         if (messageObj.message_id) {
+        //             var objss = {
+        //                 tags: {
+        //                     'target-user-id': messageObj.user_id
+        //                 }
+        //             }
+        //             ChatLive_CleanUser(0, objss);
+        //         }
+        //     }, 1000);
     }
 
     function ChatLive_MessagesRunAfterPause() {
@@ -7498,7 +7538,7 @@
     }
 
     function ChatLive_CleanUser(chat_number, message) {
-        if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-user-id')) {
+        if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
             var array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']); //The user id is added as a class
 
@@ -7506,10 +7546,10 @@
                 //Array.prototype maybe not supported by all browsers
                 Array.prototype.forEach.call(array,
                     function(el) {
-                        Chat_div[chat_number].removeChild(el);
-                        // console.log('ChatLive_CleanUser');
-                        // console.log(JSON.stringify(message));
-                        // console.log(el);
+                        if (el) {
+                            if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
+                            Main_AddClassWitEle(el, 'chat_purged');
+                        }
                     }
                 );
             } catch (e) {
@@ -7518,11 +7558,14 @@
         }
     }
 
-    function ChatLive_CleanMessage(chat_number, message) {
-        if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-msg-id')) {
+    function ChatLive_CleanMessage(message) {
+        if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
             //Elem may not be there anymore
             var el = document.getElementById(message.tags['target-msg-id']);
-            if (el) Chat_div[chat_number].removeChild(el);
+            if (el) {
+                if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
+                Main_AddClassWitEle(el, 'chat_purged');
+            }
         }
     }
     /*
@@ -8263,8 +8306,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.234';
     var Main_version_java = 25; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 29 2020';
-    var Main_version_web = 35; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 30 2020';
+    var Main_version_web = 36; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10297,6 +10340,7 @@
         Play_ClearPlayer();
         Main_removeEventListener("keydown", Play_handleKeyDown);
         Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+        Main_removeEventListener("keyup", PlayVod_SeekClear);
         Main_removeEventListener("keydown", PlayClip_handleKeyDown);
         Play_isOn = false;
         PlayVod_isOn = false;
@@ -11677,7 +11721,7 @@
     var PlayClip_Buffer = 2000;
     var PlayClip_loadData410 = false;
 
-    var PlayClip_jumpTimers = [0, 5];
+    var PlayClip_jumpTimers = [5];
 
     var PlayClip_HasNext = false;
     var PlayClip_HasBack = false;
@@ -11726,8 +11770,10 @@
         Main_textContent("stream_watching_time", '');
 
         Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
+        PlayVod_jumpStepsIncreaseLock = false;
         Play_DefaultjumpTimers = PlayClip_jumpTimers;
-        PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+        PlayVod_jump_max_step = 0;
+        PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
         Main_replaceClassEmoji('stream_info_title');
         Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
@@ -18229,14 +18275,14 @@
     var PlayVod_addToJump = 0;
     var PlayVod_IsJumping = false;
     var PlayVod_jumpCount = 0;
+    var PlayVod_jump_max_step = 10;
     var PlayVod_currentTime = 0;
     var PlayVod_VodPositions = 0;
     var PlayVod_PanelY = 0;
     var PlayVod_ProgressBaroffset = 0;
-    var PlayVod_StepsCount = 0;
+    var PlayVod_OldTime = 0;
     var PlayVod_TimeToJump = 0;
     var PlayVod_replay = false;
-    var PlayVod_jumpTimers = [0, 5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800];
 
     var PlayVod_RefreshProgressBarrID;
     var PlayVod_SaveOffsetId;
@@ -18270,9 +18316,10 @@
         UserLiveFeed_Unset();
         Play_ShowPanelStatus(2);
 
-        PlayVod_StepsCount = 0;
-        Play_DefaultjumpTimers = PlayVod_jumpTimers;
-        PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+        PlayVod_OldTime = 0;
+        Play_DefaultjumpTimers = Settings_jumpTimers;
+        PlayVod_jump_max_step = Settings_value.vod_seek_max.defaultValue;
+        PlayVod_jumpSteps(Settings_value.vod_seek_min.defaultValue);
         PlayVod_state = Play_STATE_LOADING_TOKEN;
         PlayClip_HasVOD = true;
         UserLiveFeed_PreventHide = false;
@@ -18382,7 +18429,7 @@
         PlayVod_SaveOffsetId = Main_setInterval(PlayVod_SaveOffset, 60000, PlayVod_SaveOffsetId);
 
         Play_IsWarning = false;
-        PlayVod_jumpCount = 0;
+        PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
         PlayVod_IsJumping = false;
         Play_jumping = false;
         PlayVod_isOn = true;
@@ -18771,13 +18818,14 @@
         //Main_Log('PlayVod_ClearVod');
 
         Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+        Main_removeEventListener("keyup", PlayVod_SeekClear);
         Main_vodOffset = 0;
         Play_DurationSeconds = 0;
     }
 
     function PlayVod_hidePanel() {
         //return;//return;
-        PlayVod_jumpCount = 0;
+        PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
         PlayVod_IsJumping = false;
         PlayVod_addToJump = 0;
         Play_clearHidePanel();
@@ -18788,6 +18836,7 @@
         PlayVod_previews_hide();
         PlayVod_quality = PlayVod_qualityPlaying;
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
+        PlayVod_jumpStepsIncreaseLock = false;
     }
 
     function PlayVod_showPanel(autoHide) {
@@ -18933,7 +18982,7 @@
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
         document.getElementById('progress_bar_steps').style.display = 'none';
         Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
-        PlayVod_jumpCount = 0;
+        PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
         PlayVod_IsJumping = false;
         Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
         PlayVod_addToJump = 0;
@@ -18941,46 +18990,91 @@
     }
 
     function PlayVod_SizeClear() {
-        PlayVod_jumpCount = 0;
-        PlayVod_StepsCount = 0;
-        PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+        PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
+        PlayVod_OldTime = 0;
+        PlayVod_last_multiplier = '';
+        PlayVod_jumpSteps(Settings_value.vod_seek_min.defaultValue);
+        Main_removeEventListener("keyup", PlayVod_SeekClear);
     }
 
-    function PlayVod_jumpSteps(duration_seconds) {
+    var PlayVod_last_multiplier = '';
+
+    function PlayVod_jumpSteps(pos, signal) {
         if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
-        if (Math.abs(duration_seconds) > 60)
-            Main_textContent('progress_bar_steps', STR_JUMPING_STEP + (duration_seconds / 60) + STR_MINUTES);
-        else if (duration_seconds)
-            Main_textContent('progress_bar_steps', STR_JUMPING_STEP + duration_seconds + STR_SECONDS);
-        else
-            Main_textContent('progress_bar_steps', STR_JUMPING_STEP + Play_DefaultjumpTimers[1] + STR_SECONDS);
+
+        Main_innerHTML(
+            'progress_bar_steps',
+            STR_JUMPING_STEP + (signal ? signal : '') + Settings_jumpTimers_String[pos] +
+            (PlayVod_isOn ? (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
+        );
+
+        PlayVod_last_multiplier = signal;
+    }
+
+    var PlayVod_jumpStepsIncreaseLock = false;
+
+    function PlayVod_jumpStepsIncrease() {
+        Main_clearTimeout(PlayVod_SizeClearID);
+
+        if (PlayVod_jumpStepsIncreaseLock) {
+            if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1)) {
+
+                PlayVod_jumpCount++;
+
+            } else PlayVod_jumpCount = 0;
+        }
+
+        PlayVod_jumpStepsIncreaseLock = true;
+        PlayVod_jumpSteps(PlayVod_jumpCount, PlayVod_last_multiplier);
     }
 
     function PlayVod_jumpTime() {
         Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
     }
 
+    function PlayVod_SeekClear() {
+        PlayVod_OldTime = 0;
+    }
+
     function PlayVod_jumpStart(multiplier, duration_seconds) {
         var currentTime = OSInterface_gettime() / 1000;
 
+        Main_addEventListener("keyup", PlayVod_SeekClear);
         Main_clearTimeout(PlayVod_SizeClearID);
         PlayVod_IsJumping = true;
 
-        if (PlayVod_jumpCount < (Play_DefaultjumpTimers.length - 1) && (PlayVod_StepsCount++ % 6) === 0) PlayVod_jumpCount++;
+        var timeNow = new Date().getTime();
+
+        if (!PlayVod_jumpStepsIncreaseLock && PlayVod_jumpCount < PlayVod_jump_max_step && PlayVod_OldTime && timeNow > PlayVod_OldTime) {
+
+            PlayVod_jumpCount++;
+            PlayVod_OldTime = timeNow + Settings_Time[Settings_value.vod_seek_time.defaultValue];
+
+        } else if (!PlayVod_OldTime) {
+
+            PlayVod_OldTime = timeNow;
+
+        }
 
         PlayVod_addToJump += Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier;
         PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
 
         if (PlayVod_TimeToJump > (duration_seconds - 1)) {
+
             PlayVod_addToJump = duration_seconds - currentTime - 1;
             PlayVod_TimeToJump = currentTime + PlayVod_addToJump;
-            PlayVod_jumpCount = 0;
-            PlayVod_StepsCount = 0;
+            PlayVod_OldTime = 0;
+            if (!PlayVod_jumpStepsIncreaseLock)
+                PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
+
         } else if (PlayVod_TimeToJump < 0) {
+
             PlayVod_addToJump = 0 - currentTime;
-            PlayVod_jumpCount = 0;
-            PlayVod_StepsCount = 0;
+            PlayVod_OldTime = 0;
             PlayVod_TimeToJump = 0;
+            if (!PlayVod_jumpStepsIncreaseLock)
+                PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
+
         }
 
         PlayVod_jumpTime();
@@ -18989,9 +19083,13 @@
 
         PlayVod_previews_move(position);
 
-        PlayVod_jumpSteps(Play_DefaultjumpTimers[PlayVod_jumpCount] * multiplier);
+        PlayVod_jumpSteps(PlayVod_jumpCount, (multiplier < 0 ? '-' : ''));
 
-        PlayVod_SizeClearID = Main_setTimeout(PlayVod_SizeClear, 1000, PlayVod_SizeClearID);
+        if (!PlayVod_jumpStepsIncreaseLock) {
+
+            PlayVod_SizeClearID = Main_setTimeout(PlayVod_SizeClear, 1000, PlayVod_SizeClearID);
+
+        }
     }
 
     function PlayVod_SaveVodIds(time) {
@@ -19207,10 +19305,23 @@
                         Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
-                        if (PlayVod_PanelY < 2) {
+
+                        if (!PlayVod_PanelY) {
+
+                            PlayVod_jumpStepsIncrease();
+                            PlayVod_ProgressBaroffset = 2500;
+
+                        } else if (PlayVod_PanelY < 2) {
+
                             PlayVod_PanelY--;
                             PlayVod_IconsBottonFocus();
-                        } else Play_BottomUpDown(2, 1);
+
+                        } else {
+
+                            Play_BottomUpDown(2, 1);
+
+                        }
+
                         PlayVod_setHidePanel();
                     } else if (!UserLiveFeed_isFeedShow() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
                     else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
@@ -25207,6 +25318,17 @@
 
     //Variable initialization
     var Settings_cursorY = 0;
+    var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
+    var Settings_jumpTimers_String = [
+        '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
+        '5 minutes', '10 minutes', '15 minutes', '20 minutes', '30 minutes', '1 hour',
+    ];
+    var Settings_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+    var Settings_Time_String = [
+        '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
+        '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
+    ];
+
     var Settings_value = {
         "restor_playback": {
             "values": ["no", "yes"],
@@ -25473,6 +25595,23 @@
             "set_values": [""],
             "defaultValue": 1
         },
+        "vod_seek": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "vod_seek_min": { //Migrated to dialog
+            "values": Settings_jumpTimers_String,
+            "defaultValue": 1
+        },
+        "vod_seek_max": { //Migrated to dialog
+            "values": Settings_jumpTimers_String,
+            "defaultValue": 11
+        },
+        "vod_seek_time": { //Migrated to dialog
+            "values": Settings_Time_String,
+            "defaultValue": 3
+        },
         "dpad_position": { //Migrated to dialog
             "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
             "defaultValue": 1
@@ -25670,6 +25809,7 @@
         div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
         //Dialog settings
+        div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
         div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
         div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
         div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
@@ -25926,6 +26066,31 @@
         else if (position === "dpad_opacity") Settings_DpadOpacity();
         else if (position === "dpad_position") Settings_DpadPOsition();
         else if (position === "pp_workaround") Settings_PP_Workaround();
+        else if (position === "vod_seek_min") Settings_check_min_seek();
+        else if (position === "vod_seek_max") Settings_check_max_seek();
+    }
+
+    function Settings_check_min_seek() {
+        if (Settings_value.vod_seek_min.defaultValue >= Settings_value.vod_seek_max.defaultValue) {
+            Settings_value.vod_seek_min.defaultValue = Settings_value.vod_seek_max.defaultValue;
+
+            var key = 'vod_seek_min';
+            Main_setItem(key, Settings_Obj_default(key) + 1);
+            Main_textContent(key, Settings_Obj_values(key));
+            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        }
+    }
+
+    function Settings_check_max_seek() {
+        if (Settings_value.vod_seek_max.defaultValue <= Settings_value.vod_seek_min.defaultValue) {
+            Settings_value.vod_seek_max.defaultValue = Settings_value.vod_seek_min.defaultValue;
+
+            var key = 'vod_seek_max';
+            Main_setItem(key, Settings_Obj_default(key) + 1);
+            Main_textContent(key, Settings_Obj_values(key));
+            document.getElementById(key + "arrow_left").style.opacity = "0.2";
+        }
+
     }
 
     function Settings_notification_background() {
@@ -26208,6 +26373,7 @@
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
@@ -26459,6 +26625,31 @@
         };
 
         Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+    }
+
+    function Settings_vod_seek() {
+        var obj = {
+            vod_seek_min: {
+                defaultValue: Settings_value.vod_seek_min.defaultValue,
+                values: Settings_value.vod_seek_min.values,
+                title: STR_VOD_SEEK_MIN,
+                summary: null
+            },
+            vod_seek_max: {
+                defaultValue: Settings_value.vod_seek_max.defaultValue,
+                values: Settings_value.vod_seek_max.values,
+                title: STR_VOD_SEEK_MAX,
+                summary: null
+            },
+            vod_seek_time: {
+                defaultValue: Settings_value.vod_seek_time.defaultValue,
+                values: Settings_value.vod_seek_time.values,
+                title: STR_VOD_SEEK_TIME,
+                summary: null
+            },
+        };
+
+        Settings_DialogShow(obj, STR_VOD_SEEK + STR_BR + STR_BR + STR_VOD_SEEK_SUMMARY);
     }
 
     function Settings_DialogShowSmallPayer() {
