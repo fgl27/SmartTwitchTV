@@ -2173,6 +2173,7 @@ function Main_onNewIntentClearPlay() {
     Play_ClearPlayer();
     Main_removeEventListener("keydown", Play_handleKeyDown);
     Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+    Main_removeEventListener("keyup", PlayVod_SeekClear);
     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
     Play_isOn = false;
     PlayVod_isOn = false;

@@ -32,7 +32,7 @@ var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
 var PlayClip_loadData410 = false;
 
-var PlayClip_jumpTimers = [0, 5];
+var PlayClip_jumpTimers = [5];
 
 var PlayClip_HasNext = false;
 var PlayClip_HasBack = false;
@@ -82,7 +82,8 @@ function PlayClip_Start() {
 
     Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[1]);
+    PlayVod_jump_max_step = 0;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
     Main_replaceClassEmoji('stream_info_title');
     Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 

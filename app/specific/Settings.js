@@ -20,6 +20,17 @@
 
 //Variable initialization
 var Settings_cursorY = 0;
+var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
+var Settings_jumpTimers_String = [
+    '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
+    '5 minutes', '10 minutes', '15 minutes', '20 minutes', '30 minutes', '1 hour',
+];
+var Settings_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+var Settings_Time_String = [
+    '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
+    '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
+];
+
 var Settings_value = {
     "restor_playback": {
         "values": ["no", "yes"],
@@ -285,6 +296,23 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
+    "vod_seek": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "vod_seek_min": {//Migrated to dialog
+        "values": Settings_jumpTimers_String,
+        "defaultValue": 1
+    },
+    "vod_seek_max": {//Migrated to dialog
+        "values": Settings_jumpTimers_String,
+        "defaultValue": 11
+    },
+    "vod_seek_time": {//Migrated to dialog
+        "values": Settings_Time_String,
+        "defaultValue": 3
+    },
     "dpad_position": {//Migrated to dialog
         "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
         "defaultValue": 1
@@ -481,6 +509,7 @@ function Settings_SetSettings() {
     div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
+    div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
@@ -737,6 +766,31 @@ function Settings_SetDefault(position) {
     else if (position === "dpad_opacity") Settings_DpadOpacity();
     else if (position === "dpad_position") Settings_DpadPOsition();
     else if (position === "pp_workaround") Settings_PP_Workaround();
+    else if (position === "vod_seek_min") Settings_check_min_seek();
+    else if (position === "vod_seek_max") Settings_check_max_seek();
+}
+
+function Settings_check_min_seek() {
+    if (Settings_value.vod_seek_min.defaultValue >= Settings_value.vod_seek_max.defaultValue) {
+        Settings_value.vod_seek_min.defaultValue = Settings_value.vod_seek_max.defaultValue;
+
+        var key = 'vod_seek_min';
+        Main_setItem(key, Settings_Obj_default(key) + 1);
+        Main_textContent(key, Settings_Obj_values(key));
+        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+    }
+}
+
+function Settings_check_max_seek() {
+    if (Settings_value.vod_seek_max.defaultValue <= Settings_value.vod_seek_min.defaultValue) {
+        Settings_value.vod_seek_max.defaultValue = Settings_value.vod_seek_min.defaultValue;
+
+        var key = 'vod_seek_max';
+        Main_setItem(key, Settings_Obj_default(key) + 1);
+        Main_textContent(key, Settings_Obj_values(key));
+        document.getElementById(key + "arrow_left").style.opacity = "0.2";
+    }
+
 }
 
 function Settings_notification_background() {
@@ -1019,6 +1073,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
@@ -1245,6 +1300,31 @@ function Settings_DialogShowBitrate() {
     };
 
     Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+}
+
+function Settings_vod_seek() {
+    var obj = {
+        vod_seek_min: {
+            defaultValue: Settings_value.vod_seek_min.defaultValue,
+            values: Settings_value.vod_seek_min.values,
+            title: STR_VOD_SEEK_MIN,
+            summary: null
+        },
+        vod_seek_max: {
+            defaultValue: Settings_value.vod_seek_max.defaultValue,
+            values: Settings_value.vod_seek_max.values,
+            title: STR_VOD_SEEK_MAX,
+            summary: null
+        },
+        vod_seek_time: {
+            defaultValue: Settings_value.vod_seek_time.defaultValue,
+            values: Settings_value.vod_seek_time.values,
+            title: STR_VOD_SEEK_TIME,
+            summary: null
+        },
+    };
+
+    Settings_DialogShow(obj, STR_VOD_SEEK + STR_BR + STR_BR + STR_VOD_SEEK_SUMMARY);
 }
 
 function Settings_DialogShowSmallPayer() {
