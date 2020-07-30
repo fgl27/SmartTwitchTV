@@ -759,7 +759,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 break;
             case "CLEARMSG":
                 //Main_Log(JSON.stringify(message));
-                ChatLive_CleanMessage(chat_number, message);
+                ChatLive_CleanMessage(message);
                 break;
             default:
                 break;
@@ -1512,6 +1512,30 @@ function ChatLive_ElemntAdd(messageObj) {
     elem.innerHTML = messageObj.message;
 
     Chat_div[messageObj.chat_number].appendChild(elem);
+
+    // Main_setTimeout(
+    //     function() {
+    //         if (messageObj.message_id) {
+    //             var objss = {
+    //                 tags: {
+    //                     'target-msg-id': messageObj.message_id
+    //                 }
+    //             }
+    //             ChatLive_CleanMessage(objss);
+    //         }
+    //     }, 1000);
+
+    // Main_setTimeout(
+    //     function() {
+    //         if (messageObj.message_id) {
+    //             var objss = {
+    //                 tags: {
+    //                     'target-user-id': messageObj.user_id
+    //                 }
+    //             }
+    //             ChatLive_CleanUser(0, objss);
+    //         }
+    //     }, 1000);
 }
 
 function ChatLive_MessagesRunAfterPause() {
@@ -1592,7 +1616,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
 }
 
 function ChatLive_CleanUser(chat_number, message) {
-    if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-user-id')) {
+    if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
         var array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']);//The user id is added as a class
 
@@ -1600,10 +1624,10 @@ function ChatLive_CleanUser(chat_number, message) {
             //Array.prototype maybe not supported by all browsers
             Array.prototype.forEach.call(array,
                 function(el) {
-                    Chat_div[chat_number].removeChild(el);
-                    // console.log('ChatLive_CleanUser');
-                    // console.log(JSON.stringify(message));
-                    // console.log(el);
+                    if (el) {
+                        if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
+                        Main_AddClassWitEle(el, 'chat_purged');
+                    }
                 }
             );
         } catch (e) {
@@ -1612,10 +1636,13 @@ function ChatLive_CleanUser(chat_number, message) {
     }
 }
 
-function ChatLive_CleanMessage(chat_number, message) {
-    if (ChatLive_ClearChat && message.tags && message.tags.hasOwnProperty('target-msg-id')) {
+function ChatLive_CleanMessage(message) {
+    if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
         //Elem may not be there anymore
         var el = document.getElementById(message.tags['target-msg-id']);
-        if (el) Chat_div[chat_number].removeChild(el);
+        if (el) {
+            if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
+            Main_AddClassWitEle(el, 'chat_purged');
+        }
     }
 }
