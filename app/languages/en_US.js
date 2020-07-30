@@ -615,8 +615,10 @@ function en_USLang() {
     STR_LOWLATENCY_ENABLE = "Enabled normal mode, may cause re-buffers";
     STR_LOWLATENCY_LOW = "Enabled lowest mode, may cause even more re-buffers";
     STR_VOD_SEEK = "VOD fast backwards/forward controls";
-    STR_VOD_SEEK_SUMMARY = "Controls how fast backwards/forward steps will work, when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.<br><br>Doing single clicks without hold the key will not increase the time<br><br>This options only work on VODs for Clip the step is always 5 seconds";
+    STR_VOD_SEEK_SUMMARY = "Controls how fast backwards/forward steps will work, when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.<br><br>Pressing up will overwrite the mim/max value allowing you to go thru all possible steps and will lock the value until the progress bar is dismissed<br><br>Doing single clicks without hold the key will not increase the time<br><br>This options only work on VODs for Clip the step is always 5 seconds";
     STR_VOD_SEEK_MIN = "Minimum (starting) step time";
     STR_VOD_SEEK_MAX = "Maximum step time";
     STR_VOD_SEEK_TIME = "Increase timeout after";
+    STR_UP_LOCKED = ", press up to lock the step value";
+    STR_LOCKED = ", locked press up to change";
 }

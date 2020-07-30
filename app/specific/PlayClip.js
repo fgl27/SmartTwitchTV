@@ -81,6 +81,7 @@ function PlayClip_Start() {
     Main_textContent("stream_watching_time", '');
 
     Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
+    PlayVod_jumpStepsIncreaseLock = false;
     Play_DefaultjumpTimers = PlayClip_jumpTimers;
     PlayVod_jump_max_step = 0;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
