@@ -10,11 +10,11 @@ The app has a building update check function, so whenever there is a update a re
 Web Version July 30 2020
 ==============
 
-* Update how VOD fast backwards/forward
-* Add Minimum (starting) step time for VOD fast backwards/forward
-* Add Maximum step time for VOD fast backwards/forward
-* Add Increase timeout after for VOD fast backwards/forward
-* Add a way to look the step, press up to lock the step value when locked press up to change the value
+* Update how VOD fast backwards/forward works with a new settings options
+* Add new settings options, **Minimum (starting) step time** for VOD fast backwards/forward
+* Add new settings options, **Maximum step time** for VOD fast backwards/forward
+* Add new settings options, **Increase timeout after** for VOD fast backwards/forward
+* Add a way to lock the step, press up to lock the step value when locked press up to change the value
 * VOD fast backwards/forward: when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.
 * VOD fast backwards/forward: Doing single clicks without hold the key will not increase the time
 * Clip fast backwards/forward didn't changed the step is always 5 seconds
