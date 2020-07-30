@@ -607,6 +607,7 @@ public class PlayerActivity extends Activity {
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
+        mResumePositionSmallPlayer = 0L;
         CheckKeepScreenOn();
     }
 
@@ -654,12 +655,16 @@ public class PlayerActivity extends Activity {
     }
 
     private void updateResumePosition(int position) {
-        // If PlayerCheckCounter > 1 we alredy have restarted the player so the value of getCurrentPosition
-        // is already gone and we alredy saved the correct mResumePosition
+        // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+        // is already gone and we already saved the correct mResumePosition
         if (player[position] != null && PlayerCheckCounter[position] < 2) {
-            mResumePosition = player[position].isCurrentWindowSeekable() ?
-                    Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
+            mResumePosition = GetResumePosition(position);
         }
+    }
+
+    private long GetResumePosition(int position) {
+        return player[position].isCurrentWindowSeekable() ?
+                Math.max(0, player[position].getCurrentPosition()) : C.TIME_UNSET;
     }
 
     public void KeepScreenOn(boolean keepOn) {
@@ -1345,7 +1350,7 @@ public class PlayerActivity extends Activity {
             }, timeout + (delay > 0 ? delay : 0));
 
         } catch (Exception e) {
-            Log.w(TAG, "InitNotifications e " + e.getMessage());
+            Log.w(TAG, "InitNotifications e ", e);
         }
     }
 
@@ -1538,23 +1543,23 @@ public class PlayerActivity extends Activity {
         //app gets installed... so do it here, as is a better option as the user will not get the default channel added unless the app is opened
         if (canRunChannel) {
 
-                ChannelHandler.postDelayed(() -> {
+            ChannelHandler.postDelayed(() -> {
 
-                    if (ChannelsUtils.isJobServiceNotSchedule(this)) {
+                if (ChannelsUtils.isJobServiceNotSchedule(this)) {
 
-                        ChannelsUtils.scheduleSyncingChannel(this);
+                    ChannelsUtils.scheduleSyncingChannel(this);
 
-                    } else {
+                } else {
 
-                        try {
-                            ChannelsUtils.UpdateAllChannels(this, appPreferences);
-                        } catch (Exception e) {
-                            Log.w(TAG, "UpdateAllChannels Exception ", e);
-                        }
-
+                    try {
+                        ChannelsUtils.UpdateAllChannels(this, appPreferences);
+                    } catch (Exception e) {
+                        Log.w(TAG, "UpdateAllChannels Exception ", e);
                     }
 
-                }, 3000);
+                }
+
+            }, 3000);
 
         }
 
@@ -2685,7 +2690,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void requestWr() {
-            MainThreadHandler.post(PlayerActivity.this::check_writeexternalstorage);
+            MainThreadHandler.post(PlayerActivity.this::Check_WriteExternalStorage);
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2742,7 +2747,7 @@ public class PlayerActivity extends Activity {
                 ) == 1;
 
             } catch (Settings.SettingNotFoundException e) {
-                Log.w(TAG, "isAccessibilitySettingsOn SettingNotFoundException "  + e);
+                Log.w(TAG, "isAccessibilitySettingsOn SettingNotFoundException ", e);
             }
 
             return false;
@@ -2881,7 +2886,7 @@ public class PlayerActivity extends Activity {
                     if (player[position] == null || !player[position].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, false, Who_Called, Player_Lag);
+                    PlayerEventListenerCheckCounter(position, Who_Called, Player_Lag);
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
@@ -2916,32 +2921,30 @@ public class PlayerActivity extends Activity {
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
-            boolean isBehindLiveWindow = Tools.isBehindLiveWindow(e);
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, isBehindLiveWindow, Who_Called, Player_Erro);
+            PlayerEventListenerCheckCounter(position, Who_Called, Player_Erro);
 
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "onPlaybackStateChanged onPlayerError position " + position + " isBehindLiveWindow " + isBehindLiveWindow);
-                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e);
-                Log.i(TAG, "onPlaybackStateChanged onPlayerError e " + e.type);
-            }
+            Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
+
         }
 
     }
 
-    public void PlayerEventListenerCheckCounter(int position, boolean mclearResumePosition, int Who_Called, int fail_type) {
+    public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
         //Pause to things run smother and prevent odd behavior during the checks
         if (player[position] != null) {
+
             player[position].setPlayWhenReady(false);
+
         }
 
         PlayerCheckCounter[position]++;
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " mclearResumePosition " + mclearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
         if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
@@ -2949,7 +2952,7 @@ public class PlayerActivity extends Activity {
             if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
             else//already on auto just restart the player
-                PlayerEventListenerCheckCounterEnd(position, mclearResumePosition, Who_Called);
+                PlayerEventListenerCheckCounterEnd(position, Who_Called);
 
         } else if (PlayerCheckCounter[position] > 3) {
 
@@ -2961,17 +2964,16 @@ public class PlayerActivity extends Activity {
             // Second check drop quality as it freezes too much
             LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
 
-        } else PlayerEventListenerCheckCounterEnd(position, mclearResumePosition, Who_Called);//first check just reset
+        } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
     }
 
     //First check only reset the player as it may be stuck
-    public void PlayerEventListenerCheckCounterEnd(int position, boolean ClearResumePosition, int Who_Called) {
+    public void PlayerEventListenerCheckCounterEnd(int position, int Who_Called) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position +
-                    " ClearResumePosition " + ClearResumePosition + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
-        if (ClearResumePosition || Who_Called == 1) clearResumePosition();
+        if (Who_Called == 1) clearResumePosition();
         else if (Who_Called == 2) updateResumePosition(position);//VOD
 
         if (Who_Called == 1) {
@@ -3050,23 +3052,23 @@ public class PlayerActivity extends Activity {
                 }, BUFFER_SIZE[1] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
 
             } else if (playbackState == Player.STATE_READY) {
+
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 PlayerCheckCounter[4] = 0;
                 mSetPreviewOthersAudio();
+
             }
 
         }
 
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
+
             PlayerCheckHandler[4].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounterSmall(Player_Erro, IsVod);
 
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
-                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e);
-                Log.i(TAG, "PlayerEventListenerSmall onPlayerError e " + e.type);
-            }
+            Log.w(TAG, "onPlayerError Small isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
+
         }
 
     }
@@ -3076,29 +3078,35 @@ public class PlayerActivity extends Activity {
 
         //Pause so things run smother and prevent odd behavior during the checks
         if (player[4] != null) {
+
             player[4].setPlayWhenReady(false);
+
         }
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         PlayerCheckCounter[4]++;
-        mResumePositionSmallPlayer = 0L;
 
         if (IsVod) {
             // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
             // is already gone and we already saved the correct mResumePositionSmallPlayer
             if (PlayerCheckCounter[4] < 2 && player[4] != null) {
 
-                mResumePositionSmallPlayer = player[4].isCurrentWindowSeekable() ?
-                        Math.max(0, player[4].getCurrentPosition()) : C.TIME_UNSET;
+                mResumePositionSmallPlayer = GetResumePosition(4);
 
             }
-        }
+
+        } else mResumePositionSmallPlayer = 0L;
+
 
         if (PlayerCheckCounter[4] < 4) {
+
             initializeSmallPlayer(mediaSources[4], mResumePositionSmallPlayer, IsVod);
+
         } else {
+
             ClearSmallPlayer();
             LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
+
         }
     }
 
@@ -3138,7 +3146,7 @@ public class PlayerActivity extends Activity {
     }
 
     @TargetApi(23)
-    private void check_writeexternalstorage() {
+    private void Check_WriteExternalStorage() {
         if (!Tools.WR_storage(this)) {
             requestPermissions(new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
