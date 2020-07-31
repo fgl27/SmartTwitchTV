@@ -6241,7 +6241,7 @@
 
             Main_innerHTML(
                 "chat_loggedin" + chat_number,
-                STR_IN_CHAT + '...'
+                '...' + STR_IN_CHAT
             );
             Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
             document.getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
