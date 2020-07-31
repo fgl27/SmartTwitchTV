@@ -1108,7 +1108,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                 var offset = 0,
                     PreviewResponseText = Play_PreviewResponseText,
-                    lang;
+                    lang,
+                    who_called;
 
                 if (ScreenObj[x].screenType === 2) {//clip
 
@@ -1116,6 +1117,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
                     Play_PreviewURL = Play_PreviewResponseText[0].url;
                     lang = StreamInfo[17];
+                    who_called = 3;
 
                 } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
@@ -1141,14 +1143,17 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     }
 
                     lang = StreamInfo[9];
+                    who_called = 2;
 
                 } else {//live
+                    who_called = 1;
 
                     if (ScreenObj[x].screen === Main_HistoryLive) {
                         index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
                         if (index > -1) {
 
+                            //Live that is now a vod
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
                                 Main_A_includes_B(document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
 
@@ -1157,15 +1162,18 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                                 offset =
                                     ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(StreamInfo[12]).getTime())) / 1000);
 
-                            } else {
+                                who_called = 2;
+                            } else {//Live
 
                                 Play_PreviewId = StreamInfo[14];
+
                             }
 
                         }
 
                     } else {
                         Play_PreviewId = StreamInfo[14];
+
                     }
 
                     lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
@@ -1182,7 +1190,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     Rect.right,
                     Rect.left,
                     window.innerHeight,
-                    ScreenObj[x].screenType + 1
+                    who_called
                 );
 
                 Screens_ClearAnimation(x);
