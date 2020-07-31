@@ -8306,8 +8306,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 30 2020';
-    var Main_version_web = 36; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'July 31 2020';
+    var Main_version_web = 37; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -20761,7 +20761,8 @@
 
                     var offset = 0,
                         PreviewResponseText = Play_PreviewResponseText,
-                        lang;
+                        lang,
+                        who_called;
 
                     if (ScreenObj[x].screenType === 2) { //clip
 
@@ -20769,6 +20770,7 @@
                         Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
                         Play_PreviewURL = Play_PreviewResponseText[0].url;
                         lang = StreamInfo[17];
+                        who_called = 3;
 
                     } else if (ScreenObj[x].screenType === 1) { //vod
                         Play_PreviewId = StreamInfo[7];
@@ -20794,14 +20796,17 @@
                         }
 
                         lang = StreamInfo[9];
+                        who_called = 2;
 
                     } else { //live
+                        who_called = 1;
 
                         if (ScreenObj[x].screen === Main_HistoryLive) {
                             index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
                             if (index > -1) {
 
+                                //Live that is now a vod
                                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
                                     Main_A_includes_B(document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
 
@@ -20810,15 +20815,18 @@
                                     offset =
                                         ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(StreamInfo[12]).getTime())) / 1000);
 
-                                } else {
+                                    who_called = 2;
+                                } else { //Live
 
                                     Play_PreviewId = StreamInfo[14];
+
                                 }
 
                             }
 
                         } else {
                             Play_PreviewId = StreamInfo[14];
+
                         }
 
                         lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
@@ -20835,7 +20843,7 @@
                         Rect.right,
                         Rect.left,
                         window.innerHeight,
-                        ScreenObj[x].screenType + 1
+                        who_called
                     );
 
                     Screens_ClearAnimation(x);
