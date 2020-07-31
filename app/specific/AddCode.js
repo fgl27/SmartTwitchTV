@@ -228,7 +228,7 @@ function AddCode_CheckOauthTokenReady(xmlHttp, position, tryes) {
 function AddCode_CheckOauthTokenSucess(response) {
     var token = JSON.parse(response);
     if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
-        Main_Eventsimple('New_User_Token_Added');
+        Main_setItem('New_User_Token_Added', 1);
         AddUser_SaveUserArray();
         Main_newUsercode = 0;
         Main_HideLoadDialog();
