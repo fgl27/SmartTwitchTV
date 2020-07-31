@@ -3278,7 +3278,7 @@
     function AddCode_CheckOauthTokenSucess(response) {
         var token = JSON.parse(response);
         if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
-            Main_Eventsimple('New_User_Token_Added');
+            Main_setItem('New_User_Token_Added', 1);
             AddUser_SaveUserArray();
             Main_newUsercode = 0;
             Main_HideLoadDialog();
@@ -8307,7 +8307,7 @@
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 31 2020';
-    var Main_version_web = 37; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 38; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10630,6 +10630,12 @@
                 },
                 15000
             );
+
+            //Te app willsend this from when the token is added just save a refrecen and use later
+            if (Main_getItemInt('New_User_Token_Added', 0)) {
+                Main_setItem('New_User_Token_Added', 0);
+                Main_Eventsimple('New_User_Token_Added');
+            }
 
         } catch (e) {
             console.log("Main_EventVersion e " + e);
