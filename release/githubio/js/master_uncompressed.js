@@ -619,6 +619,8 @@
     var STR_UP_LOCKED;
     var STR_LOCKED;
     var STR_PURGED_MESSAGE;
+    var STR_IN_CHAT;
+    var STR_SHOW_IN_CHAT;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1406,6 +1408,8 @@
         STR_VOD_SEEK_TIME = "Increase timeout after holding for";
         STR_UP_LOCKED = "press up to lock the step value";
         STR_LOCKED = "locked press up to change";
+        STR_IN_CHAT = " In chat";
+        STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -5980,6 +5984,7 @@
     var cheers = {};
 
     var ChatLive_selectedChannel_id = [];
+    var ChatLive_loadChattersId = [];
     var ChatLive_selectedChannel = [];
 
     var emoteReplace = {
@@ -6028,6 +6033,7 @@
 
         ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
+        ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesUser(0);
         ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
         ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
@@ -6220,6 +6226,81 @@
 
     function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
         if (tryes < DefaultHttpGetReTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
+    }
+
+    function ChatLive_resetChatters(chat_number) {
+        Main_textContent('chat_loggedin' + chat_number, '');
+        Main_AddClass('chat_loggedin' + chat_number, 'hide');
+        document.getElementById('chat_box_holder' + chat_number).style.height = '';
+        document.getElementById('chat_container_name' + chat_number).style.top = '';
+    }
+
+    function ChatLive_loadChatters(chat_number, id) {
+
+        if (Main_IsOn_OSInterface && Settings_value.show_chatters.defaultValue) {
+
+            Main_innerHTML(
+                "chat_loggedin" + chat_number,
+                STR_IN_CHAT + '...'
+            );
+            Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
+            document.getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
+            if (!chat_number) document.getElementById('chat_container_name' + chat_number).style.top = '3vh';
+
+            ChatLive_loadChattersLoad(chat_number, id);
+
+            ChatLive_loadChattersId[chat_number] = Main_setInterval(
+                function() {
+                    ChatLive_loadChattersLoad(chat_number, id);
+                },
+                5 * 60 * 1000, //5 min
+                ChatLive_loadChattersId[chat_number]
+            );
+
+        }
+
+    }
+
+    function ChatLive_loadChattersLoad(chat_number, id) {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number] + '/chatters',
+            DefaultHttpGetTimeout, //timeout
+            null, //postMessage, null for get
+            null, //Method, null for get
+            JSON.stringify(
+                [
+                    [Main_clientIdHeader, Main_clientId]
+                ]
+            ), //JsonString
+            'ChatLive_loadChattersSuccess', //callback
+            id, //checkResult
+            chat_number, //key
+            3 //thread
+        );
+
+    }
+
+    function ChatLive_loadChattersSuccess(result, chat_number, id) {
+        try {
+            if (result && id === Chat_Id[chat_number]) {
+
+                var resultObj = JSON.parse(result);
+
+                if (resultObj.status === 200) {
+                    resultObj = JSON.parse(resultObj.responseText);
+
+                    Main_innerHTML(
+                        "chat_loggedin" + chat_number,
+                        Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
+                    );
+
+                }
+
+            }
+        } catch (e) {
+            Main_Log('ChatLive_loadChattersSuccess ' + e);
+        }
     }
 
     function ChatLive_loadEmotesUser(tryes) {
@@ -7481,6 +7562,7 @@
         ChatLive_CheckClear(chat_number);
         Main_clearTimeout(ChatLive_socketSendCheckID);
         Main_clearTimeout(ChatLive_loadBadgesChannelId);
+        Main_clearInterval(ChatLive_loadChattersId[chat_number]);
     }
 
     function ChatLive_Clear(chat_number) {
@@ -8030,6 +8112,9 @@
         Chat_Messages = [];
         Chat_MessagesNext = [];
         Chat_Position = 0;
+        ChatLive_ClearIds(0);
+        ChatLive_ClearIds(1);
+        ChatLive_resetChatters(0);
     }
 
     function Main_Addline(id) {
@@ -8307,7 +8392,7 @@
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'July 31 2020';
-    var Main_version_web = 38; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 39; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8382,7 +8467,8 @@
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
                         'Main_checkWebVersion': Main_checkWebVersion,
                         'Main_onNewIntent': Main_onNewIntent,
-                        'Main_EventChannelRefresh': Main_EventChannelRefresh
+                        'Main_EventChannelRefresh': Main_EventChannelRefresh,
+                        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess
                     };
                 }
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -14835,20 +14921,20 @@
 
     function Play_SetAudioIcon() {
         if (Play_controlsAudioPos === 2) {
-            Main_innerHTML("chat_container_sound_icon", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("chat_container2_sound_icon", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
 
             Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
             Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
         } else if (Play_controlsAudioPos === 1) {
-            Main_innerHTML("chat_container_sound_icon", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("chat_container2_sound_icon", '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-mute strokicon" ></i>');
 
             Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
             Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
         } else {
-            Main_innerHTML("chat_container_sound_icon", '<i class="icon-mute strokicon" ></i>');
-            Main_innerHTML("chat_container2_sound_icon", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
 
             Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
             Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
@@ -15084,7 +15170,7 @@
 
             PlayExtra_PicturePicture = true;
 
-            Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+            Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 
             if (Main_IsOn_OSInterface) {
                 //Not on auto mode for change to auto before start picture in picture
@@ -15242,21 +15328,21 @@
         Main_SaveValues();
 
         Play_UpdateMainStream(true, false);
-        Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
-        Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
     }
 
     function PlayExtra_ShowChat() {
-        Main_ShowElement('chat_container2');
-        Main_ShowElement('chat_container_name');
-        Main_ShowElement('chat_container2_name');
+        Main_ShowElement('chat_container1');
+        Main_ShowElement('chat_container_name0');
+        Main_ShowElement('chat_container_name1');
     }
 
     function PlayExtra_HideChat() {
-        Main_HideElement('chat_container2');
-        Main_HideElement('chat_container_name');
-        Main_HideElement('chat_container2_name');
+        Main_HideElement('chat_container1');
+        Main_HideElement('chat_container_name0');
+        Main_HideElement('chat_container_name1');
     }
 
     function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
@@ -15306,6 +15392,7 @@
             doSwitch, //key
             3 //thread
         );
+
     }
 
     function PlayExtra_CheckHostResult(result, doSwitch) {
@@ -15469,7 +15556,7 @@
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             ChatLive_Clear(1);
-            Main_HideElement('chat_container2');
+            Main_HideElement('chat_container1');
             if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
             PlayExtra_UnSetPanel();
             Play_HideBufferDialog();
@@ -15664,7 +15751,7 @@
     function Play_PreStart() {
         Play_seek_previews = document.getElementById("seek_previews");
         Play_seek_previews_img = new Image();
-        Play_chat_container = document.getElementById("chat_container");
+        Play_chat_container = document.getElementById("chat_container0");
         Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
         Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");
         Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
@@ -16069,7 +16156,7 @@
         Play_created = Play_data.data[12];
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-        Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
 
         if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
     }
@@ -17721,7 +17808,7 @@
                 }
 
                 if (!Play_isFullScreen) {
-                    Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+                    Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                     ChatLive_Init(1);
                     PlayExtra_ShowChat();
                 }
@@ -25669,6 +25756,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "show_chatters": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "individual_lines": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -26985,6 +27076,7 @@
         Settings_value.chat_nickcolor.values = yes_no;
         Settings_value.chat_timestamp.values = yes_no;
         Settings_value.clear_chat.values = yes_no;
+        Settings_value.show_chatters.values = yes_no;
 
         var obj = {
             chat_logging: {
@@ -27009,6 +27101,12 @@
                 defaultValue: Settings_value.chat_timestamp.defaultValue,
                 values: Settings_value.chat_timestamp.values,
                 title: STR_CHAT_TIMESTAMP,
+                summary: null
+            },
+            show_chatters: {
+                defaultValue: Settings_value.chat_timestamp.defaultValue,
+                values: Settings_value.chat_timestamp.values,
+                title: STR_SHOW_IN_CHAT,
                 summary: null
             },
             chat_nickcolor: {
@@ -32489,6 +32587,7 @@
         'Main_checkWebVersion': Main_checkWebVersion, // Main_checkWebVersion() func from app/specific/Main.js
         'Main_onNewIntent': Main_onNewIntent, // Main_onNewIntent() func from app/specific/Main.js
         'Main_EventChannelRefresh': Main_EventChannelRefresh, // Main_EventChannelRefresh() func from app/specific/Main.js
+        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess, // ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
     };
 
     /** Expose `smartTwitchTV` */

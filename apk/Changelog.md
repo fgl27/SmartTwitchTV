@@ -11,6 +11,7 @@ Web Version July 31 2020
 ==============
 
 * Fix VOD chat not working when opening a VOD from the live history screen using the preview
+* Add a new settings chat option: Show total logged in user on top of the chat (disable by default)
 
 Apk Version 3.0.235 - July 30 2020
 ==============
