@@ -620,6 +620,6 @@ function en_USLang() {
     STR_VOD_SEEK_MIN = "Minimum (starting) step time";
     STR_VOD_SEEK_MAX = "Maximum step time";
     STR_VOD_SEEK_TIME = "Increase timeout after holding for";
-    STR_UP_LOCKED = ", press up to lock the step value";
-    STR_LOCKED = ", locked press up to change";
+    STR_UP_LOCKED = "press up to lock the step value";
+    STR_LOCKED = "locked press up to change";
 }

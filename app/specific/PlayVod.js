@@ -766,7 +766,7 @@ function PlayVod_jumpSteps(pos, signal) {
     Main_innerHTML(
         'progress_bar_steps',
         STR_JUMPING_STEP + (signal ? signal : '') + Settings_jumpTimers_String[pos] +
-        (PlayVod_isOn ? (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
+        (PlayVod_isOn ? STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
     );
 
     PlayVod_last_multiplier = signal;
