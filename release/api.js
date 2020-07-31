@@ -74,6 +74,7 @@
         'Main_checkWebVersion': Main_checkWebVersion,// Main_checkWebVersion() func from app/specific/Main.js
         'Main_onNewIntent': Main_onNewIntent,// Main_onNewIntent() func from app/specific/Main.js
         'Main_EventChannelRefresh': Main_EventChannelRefresh,// Main_EventChannelRefresh() func from app/specific/Main.js
+        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,// ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
     };
 
     /** Expose `smartTwitchTV` */

@@ -622,4 +622,6 @@ function en_USLang() {
     STR_VOD_SEEK_TIME = "Increase timeout after holding for";
     STR_UP_LOCKED = "press up to lock the step value";
     STR_LOCKED = "locked press up to change";
+    STR_IN_CHAT = " In chat";
+    STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
 }

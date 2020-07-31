@@ -178,7 +178,7 @@ var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 function Play_PreStart() {
     Play_seek_previews = document.getElementById("seek_previews");
     Play_seek_previews_img = new Image();
-    Play_chat_container = document.getElementById("chat_container");
+    Play_chat_container = document.getElementById("chat_container0");
     Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
     Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");
     Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
@@ -581,7 +581,7 @@ function Play_UpdateMainStreamDiv() {
     Play_created = Play_data.data[12];
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-    Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+    Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
 
     if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
 }

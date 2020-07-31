@@ -45,6 +45,7 @@ var extraEmotes = {};
 var cheers = {};
 
 var ChatLive_selectedChannel_id = [];
+var ChatLive_loadChattersId = [];
 var ChatLive_selectedChannel = [];
 
 var emoteReplace = {
@@ -93,6 +94,7 @@ function ChatLive_Init(chat_number) {
 
     ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
+    ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser(0);
     ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
@@ -285,6 +287,81 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
 
 function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
     if (tryes < DefaultHttpGetReTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
+}
+
+function ChatLive_resetChatters(chat_number) {
+    Main_textContent('chat_loggedin' + chat_number, '');
+    Main_AddClass('chat_loggedin' + chat_number, 'hide');
+    document.getElementById('chat_box_holder' + chat_number).style.height = '';
+    document.getElementById('chat_container_name' + chat_number).style.top = '';
+}
+
+function ChatLive_loadChatters(chat_number, id) {
+
+    if (Main_IsOn_OSInterface && Settings_value.show_chatters.defaultValue) {
+
+        Main_innerHTML(
+            "chat_loggedin" + chat_number,
+            STR_IN_CHAT + '...'
+        );
+        Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
+        document.getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
+        if (!chat_number) document.getElementById('chat_container_name' + chat_number).style.top = '3vh';
+
+        ChatLive_loadChattersLoad(chat_number, id);
+
+        ChatLive_loadChattersId[chat_number] = Main_setInterval(
+            function() {
+                ChatLive_loadChattersLoad(chat_number, id);
+            },
+            5 * 60 * 1000,//5 min
+            ChatLive_loadChattersId[chat_number]
+        );
+
+    }
+
+}
+
+function ChatLive_loadChattersLoad(chat_number, id) {
+
+    OSInterface_GetMethodUrlHeadersAsync(
+        'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number] + '/chatters',
+        DefaultHttpGetTimeout,//timeout
+        null,//postMessage, null for get
+        null,//Method, null for get
+        JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_clientId]
+            ]
+        ),//JsonString
+        'ChatLive_loadChattersSuccess',//callback
+        id,//checkResult
+        chat_number,//key
+        3//thread
+    );
+
+}
+
+function ChatLive_loadChattersSuccess(result, chat_number, id) {
+    try {
+        if (result && id === Chat_Id[chat_number]) {
+
+            var resultObj = JSON.parse(result);
+
+            if (resultObj.status === 200) {
+                resultObj = JSON.parse(resultObj.responseText);
+
+                Main_innerHTML(
+                    "chat_loggedin" + chat_number,
+                    Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
+                );
+
+            }
+
+        }
+    } catch (e) {
+        Main_Log('ChatLive_loadChattersSuccess ' + e);
+    }
 }
 
 function ChatLive_loadEmotesUser(tryes) {
@@ -1559,6 +1636,7 @@ function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
     Main_clearTimeout(ChatLive_socketSendCheckID);
     Main_clearTimeout(ChatLive_loadBadgesChannelId);
+    Main_clearInterval(ChatLive_loadChattersId[chat_number]);
 }
 
 function ChatLive_Clear(chat_number) {

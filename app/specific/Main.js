@@ -228,7 +228,8 @@ function Main_loadTranslations(language) {
                     'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
                     'Main_checkWebVersion': Main_checkWebVersion,
                     'Main_onNewIntent': Main_onNewIntent,
-                    'Main_EventChannelRefresh': Main_EventChannelRefresh
+                    'Main_EventChannelRefresh': Main_EventChannelRefresh,
+                    'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();

@@ -179,7 +179,7 @@ function Play_Multi_UnSetPanel(shutdown) {
             }
 
             if (!Play_isFullScreen) {
-                Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+                Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
             }

@@ -463,6 +463,9 @@ function Chat_Clear() {
     Chat_Messages = [];
     Chat_MessagesNext = [];
     Chat_Position = 0;
+    ChatLive_ClearIds(0);
+    ChatLive_ClearIds(1);
+    ChatLive_resetChatters(0);
 }
 
 function Main_Addline(id) {

@@ -63,7 +63,7 @@ function PlayExtra_KeyEnter() {
 
         PlayExtra_PicturePicture = true;
 
-        Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
 
         if (Main_IsOn_OSInterface) {
             //Not on auto mode for change to auto before start picture in picture
@@ -220,21 +220,21 @@ function PlayExtra_SwitchPlayer() {
     Main_SaveValues();
 
     Play_UpdateMainStream(true, false);
-    Main_innerHTML('chat_container2_name_text', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
-    Main_innerHTML('chat_container_name_text', STR_SPACE + Play_data.data[1] + STR_SPACE);
+    Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+    Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
     Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
 }
 
 function PlayExtra_ShowChat() {
-    Main_ShowElement('chat_container2');
-    Main_ShowElement('chat_container_name');
-    Main_ShowElement('chat_container2_name');
+    Main_ShowElement('chat_container1');
+    Main_ShowElement('chat_container_name0');
+    Main_ShowElement('chat_container_name1');
 }
 
 function PlayExtra_HideChat() {
-    Main_HideElement('chat_container2');
-    Main_HideElement('chat_container_name');
-    Main_HideElement('chat_container2_name');
+    Main_HideElement('chat_container1');
+    Main_HideElement('chat_container_name0');
+    Main_HideElement('chat_container_name1');
 }
 
 function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
@@ -284,6 +284,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
         doSwitch,//key
         3//thread
     );
+
 }
 
 function PlayExtra_CheckHostResult(result, doSwitch) {
@@ -447,7 +448,7 @@ function PlayExtra_loadDataFail(Reason) {
         PlayExtra_PicturePicture = false;
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
-        Main_HideElement('chat_container2');
+        Main_HideElement('chat_container1');
         if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
