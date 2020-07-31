@@ -1404,8 +1404,8 @@
         STR_VOD_SEEK_MIN = "Minimum (starting) step time";
         STR_VOD_SEEK_MAX = "Maximum step time";
         STR_VOD_SEEK_TIME = "Increase timeout after holding for";
-        STR_UP_LOCKED = ", press up to lock the step value";
-        STR_LOCKED = ", locked press up to change";
+        STR_UP_LOCKED = "press up to lock the step value";
+        STR_LOCKED = "locked press up to change";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -19005,7 +19005,7 @@
         Main_innerHTML(
             'progress_bar_steps',
             STR_JUMPING_STEP + (signal ? signal : '') + Settings_jumpTimers_String[pos] +
-            (PlayVod_isOn ? (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
+            (PlayVod_isOn ? STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
         );
 
         PlayVod_last_multiplier = signal;
