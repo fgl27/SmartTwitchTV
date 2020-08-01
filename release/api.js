@@ -75,6 +75,7 @@
         'Main_onNewIntent': Main_onNewIntent,// Main_onNewIntent() func from app/specific/Main.js
         'Main_EventChannelRefresh': Main_EventChannelRefresh,// Main_EventChannelRefresh() func from app/specific/Main.js
         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,// ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
+        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,// PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
     };
 
     /** Expose `smartTwitchTV` */

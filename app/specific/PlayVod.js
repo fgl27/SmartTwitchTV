@@ -51,6 +51,7 @@ var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
 //Variable initialization end
+var PlayVod_postChapters = '{"query":"{video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS){edges{node{durationMilliseconds positionMilliseconds description}}}}}"}';
 
 function PlayVod_Start() {
     //Main_Log('PlayVod_Start');
@@ -58,6 +59,8 @@ function PlayVod_Start() {
     Play_HideEndDialog();
     //Play_SupportsSource = true;
     PlayVod_currentTime = 0;
+    PlayVod_previewsId = 0;
+    PlayVod_updateChaptersId = 0;
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -175,6 +178,7 @@ function PlayVod_SetStart() {
     PlayVod_previews_clear();
     PlayVod_PrepareLoad();
     PlayVod_updateVodInfo();
+    //PlayVod_updateChapters();
 }
 
 function PlayVod_PosStart() {
@@ -1212,7 +1216,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             DefaultHttpGetTimeout * 2,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify([]),//JsonString
+            '[]',//JsonString
             'PlayVod_previews_success',//callback
             PlayVod_previewsId,//checkResult
             0,//key
@@ -1401,4 +1405,43 @@ function PlayVod_muted_WarningDialog() {
         5000,
         PlayVod_muted_WarningDialogId
     );
+}
+
+var PlayVod_updateChaptersId;
+function PlayVod_updateChapters() {
+
+    if (Main_IsOn_OSInterface) {
+
+        PlayVod_updateChaptersId = (new Date().getTime());
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            PlayClip_BaseUrl,//urlString
+            DefaultHttpGetTimeout,//timeout
+            PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId),//postMessage, null for get
+            'POST',//Method, null for get
+            Play_base_back_headers,//JsonString
+            'PlayVod_updateChaptersResult',//callback
+            PlayVod_updateChaptersId,//checkResult
+            0,//key
+            3//thread
+        );
+
+    }
+
+}
+
+function PlayVod_updateChaptersResult(response) {
+    if (PlayVod_isOn && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_updateChaptersId) {
+
+            if (responseObj.status === 200) {
+                console.log(responseObj.responseText);
+            }
+        }
+
+    }
+
 }

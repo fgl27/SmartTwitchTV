@@ -67,7 +67,7 @@ var Base_obj = {
     itemsCountCheck: false,
     FirstLoad: false,
     row: 0,
-    Headers: Main_Headers,
+    Headers: [],
     data: null,
     token: null,
     data_cursor: 0,

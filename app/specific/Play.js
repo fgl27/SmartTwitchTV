@@ -85,6 +85,9 @@ var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s
 var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
 var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
+var Play_base_back_headers = '';
+var Play_base_headers = '';
+
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
 var Play_ChatPositionVal = [{
@@ -229,6 +232,34 @@ function Play_PreStart() {
 
     Play_ChatBackgroundChange(false);
     Play_SetChatFont();
+    //set base strings that don't change
+
+    Main_Headers = [
+        [Main_clientIdHeader, Main_clientId],
+        [Main_AcceptHeader, Main_TwithcV5Json],
+        [Main_Authorization, null]
+    ];
+
+    Main_Headers_Back = [
+        [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
+        [Main_AcceptHeader, Main_TwithcV5Json],
+        [Main_Authorization, null]
+    ];
+
+    Base_obj.Headers = Main_Headers;
+
+    Play_base_back_headers = JSON.stringify(
+        [
+            [Main_clientIdHeader, Main_Headers_Back[0][1]]
+        ]
+    );
+
+    Play_base_headers = JSON.stringify(
+        [
+            [Main_clientIdHeader, Main_clientId]
+        ]
+    );
+
 }
 
 function Play_ResetDefaultQuality() {
@@ -1800,11 +1831,7 @@ function Play_loadDataCheckHost() {
                 DefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
-                JSON.stringify(
-                    [
-                        [Main_clientIdHeader, Main_clientId]
-                    ]
-                ),//JsonString
+                Play_base_headers,//JsonString
                 'Play_CheckHostResult',//callback
                 0,//checkResult
                 0,//key

@@ -43,7 +43,7 @@ var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
-var PlayClip_postMessage = '{"query":"\\n {\\n clip(slug: \\"%x\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+var PlayClip_postMessage = '{"query":"{clip(slug: \\"%x\\") {videoQualities {frameRate quality sourceURL}}}"}';
 
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
@@ -219,11 +219,7 @@ function PlayClip_loadDataRequest() {
         DefaultHttpGetTimeout,//timeout
         PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
-        JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_Headers_Back[0][1]]
-            ]
-        ),//JsonString
+        Play_base_back_headers,//JsonString
         'PlayClip_loadDataResult',//callback
         PlayClip_loadDataRequestId,//checkResult
         0,//key

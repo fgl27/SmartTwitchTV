@@ -329,11 +329,7 @@ function ChatLive_loadChattersLoad(chat_number, id) {
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_clientId]
-            ]
-        ),//JsonString
+        Play_base_headers,//JsonString
         'ChatLive_loadChattersSuccess',//callback
         id,//checkResult
         chat_number,//key

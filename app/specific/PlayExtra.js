@@ -274,11 +274,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_clientId]
-            ]
-        ),//JsonString
+        Play_base_headers,//JsonString
         'PlayExtra_CheckHostResult',//callback
         0,//checkResult
         doSwitch,//key

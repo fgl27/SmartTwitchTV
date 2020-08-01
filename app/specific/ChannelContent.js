@@ -156,11 +156,7 @@ function ChannelContent_loadDataCheckHost() {
         DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_clientId]
-            ]
-        ),//JsonString
+        Play_base_headers,//JsonString
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
         0,//key

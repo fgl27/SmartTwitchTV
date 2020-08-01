@@ -1013,11 +1013,7 @@ function Screens_LoadPreviewStart(key, obj) {
             DefaultHttpGetTimeout,//timeout
             PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
             'POST',//Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                ]
-            ),//JsonString
+            Play_base_back_headers,//JsonString
             'Screens_LoadPreviewResult',//callback
             (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
             key,//key

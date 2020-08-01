@@ -613,11 +613,7 @@ function Play_StayCheckHost() {
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_clientId]
-            ]
-        ),//JsonString
+        Play_base_headers,//JsonString
         'Play_StayCheckHostResult',//callback
         0,//checkResult
         0,//key

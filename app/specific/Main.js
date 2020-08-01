@@ -136,6 +136,8 @@ var Main_ItemsLimitChannel = 48;
 var Main_ColoumnsCountChannel = 6;
 var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
+var Main_Headers = [];
+var Main_Headers_Back = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
 var Main_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";
 var Main_clientIdHeader = 'Client-ID';
@@ -229,7 +231,8 @@ function Main_loadTranslations(language) {
                     'Main_checkWebVersion': Main_checkWebVersion,
                     'Main_onNewIntent': Main_onNewIntent,
                     'Main_EventChannelRefresh': Main_EventChannelRefresh,
-                    'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess
+                    'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
+                    'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                 };
             }
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -954,7 +957,7 @@ function Main_checkWebVersionRun(web) {
             DefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify([]),//JsonString
+            '[]',//JsonString
             'Main_checkWebVersion',//callback
             0,//checkResult
             web ? 1 : 0,//key
@@ -1574,18 +1577,6 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
 
     xmlHttp.send(null);
 }
-
-var Main_Headers = [
-    [Main_clientIdHeader, Main_clientId],
-    [Main_AcceptHeader, Main_TwithcV5Json],
-    [Main_Authorization, null]
-];
-
-var Main_Headers_Back = [
-    [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
-    [Main_AcceptHeader, Main_TwithcV5Json],
-    [Main_Authorization, null]
-];
 
 function Main_SetThumb() {
     Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
