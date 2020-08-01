@@ -1869,6 +1869,7 @@ function Play_MakeControls() {
 
             PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
             PlayVod_jump();
+            PlayVod_previews_move(PlayVod_TimeToJump / Play_DurationSeconds);
 
         },
         updown: function(adder) {

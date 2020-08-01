@@ -1475,7 +1475,7 @@ function PlayVod_ProcessChapters(obj) {
 
             game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
             name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) +
-                ' at ' + Play_timeMs(obj[i].node.positionMilliseconds);
+                STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
 
             PlayVod_ChaptersArray.push(
                 {
