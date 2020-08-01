@@ -623,6 +623,7 @@
     var STR_SHOW_IN_CHAT;
     var STR_PLAYED;
     var STR_CHAPTERS;
+    var STR_FROM_SIMPLE;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1414,6 +1415,7 @@
         STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
         STR_PLAYED = "Played ";
         STR_CHAPTERS = "Chapters";
+        STR_FROM_SIMPLE = " from ";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -14513,6 +14515,7 @@
 
                 PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
                 PlayVod_jump();
+                PlayVod_previews_move(PlayVod_TimeToJump / Play_DurationSeconds);
 
             },
             updown: function(adder) {
@@ -19854,7 +19857,7 @@
 
                 game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
                 name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) +
-                    ' at ' + Play_timeMs(obj[i].node.positionMilliseconds);
+                    STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
 
                 PlayVod_ChaptersArray.push({
                     name: name,
