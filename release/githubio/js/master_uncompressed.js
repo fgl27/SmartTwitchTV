@@ -621,6 +621,8 @@
     var STR_PURGED_MESSAGE;
     var STR_IN_CHAT;
     var STR_SHOW_IN_CHAT;
+    var STR_PLAYED;
+    var STR_CHAPTERS;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1410,6 +1412,8 @@
         STR_LOCKED = "locked press up to change";
         STR_IN_CHAT = " In chat";
         STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
+        STR_PLAYED = "Played ";
+        STR_CHAPTERS = "Chapters";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4350,11 +4354,7 @@
             DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_clientId]
-                ]
-            ), //JsonString
+            Play_base_headers, //JsonString
             'ChannelContent_CheckHostResult', //callback
             0, //checkResult
             0, //key
@@ -6268,11 +6268,7 @@
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_clientId]
-                ]
-            ), //JsonString
+            Play_base_headers, //JsonString
             'ChatLive_loadChattersSuccess', //callback
             id, //checkResult
             chat_number, //key
@@ -8375,6 +8371,8 @@
     var Main_ColoumnsCountChannel = 6;
     var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
+    var Main_Headers = [];
+    var Main_Headers_Back = [];
     var Main_kraken_api = 'https://api.twitch.tv/kraken/';
     var Main_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";
     var Main_clientIdHeader = 'Client-ID';
@@ -8391,8 +8389,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'July 31 2020';
-    var Main_version_web = 39; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'August 01 2020';
+    var Main_version_web = 40; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -8468,7 +8466,8 @@
                         'Main_checkWebVersion': Main_checkWebVersion,
                         'Main_onNewIntent': Main_onNewIntent,
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
-                        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess
+                        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
+                        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                     };
                 }
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -9197,7 +9196,7 @@
                 DefaultHttpGetTimeout, //timeout
                 null, //postMessage, null for get
                 null, //Method, null for get
-                JSON.stringify([]), //JsonString
+                '[]', //JsonString
                 'Main_checkWebVersion', //callback
                 0, //checkResult
                 web ? 1 : 0, //key
@@ -9817,18 +9816,6 @@
 
         xmlHttp.send(null);
     }
-
-    var Main_Headers = [
-        [Main_clientIdHeader, Main_clientId],
-        [Main_AcceptHeader, Main_TwithcV5Json],
-        [Main_Authorization, null]
-    ];
-
-    var Main_Headers_Back = [
-        [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
-        [Main_AcceptHeader, Main_TwithcV5Json],
-        [Main_Authorization, null]
-    ];
 
     function Main_SetThumb() {
         Main_VideoSize = Main_VideoSizeAll[Settings_value.thumb_quality.defaultValue];
@@ -11824,7 +11811,7 @@
     //Variable initialization end
 
     var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
-    var PlayClip_postMessage = '{"query":"\\n {\\n clip(slug: \\"%x\\") {\\n videoQualities {\\n frameRate\\n quality\\n sourceURL\\n }\\n }\\n }\\n"}';
+    var PlayClip_postMessage = '{"query":"{clip(slug: \\"%x\\") {videoQualities {frameRate quality sourceURL}}}"}';
 
     function PlayClip_Start() {
         //Main_Log('PlayClip_Start');
@@ -11875,6 +11862,7 @@
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
         document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
@@ -12000,11 +11988,7 @@
             DefaultHttpGetTimeout, //timeout
             PlayClip_postMessage.replace('%x', ChannelClip_playUrl), //postMessage, null for get
             'POST', //Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                ]
-            ), //JsonString
+            Play_base_back_headers, //JsonString
             'PlayClip_loadDataResult', //callback
             PlayClip_loadDataRequestId, //checkResult
             0, //key
@@ -13271,11 +13255,7 @@
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_clientId]
-                ]
-            ), //JsonString
+            Play_base_headers, //JsonString
             'Play_StayCheckHostResult', //callback
             0, //checkResult
             0, //key
@@ -14078,18 +14058,19 @@
     var Play_controlsQualityMini = 8;
     var Play_controlsQualityMulti = 9;
     var Play_controlsLowLatency = 10;
-    var Play_MultiStream = 11;
-    var Play_controlsAudio = 12;
-    var Play_controlsAudioMulti = 13;
-    var Play_controlsChat = 14;
-    var Play_controlsChatSend = 15;
-    var Play_controlsChatSide = 16;
-    var Play_controlsChatForceDis = 17;
-    var Play_controlsChatPos = 18;
-    var Play_controlsChatSize = 19;
-    var Play_controlsChatBright = 20;
-    var Play_controlsChatFont = 21;
-    var Play_controlsChatDelay = 22;
+    var Play_controlsChapters = 11;
+    var Play_MultiStream = 12;
+    var Play_controlsAudio = 13;
+    var Play_controlsAudioMulti = 14;
+    var Play_controlsChat = 15;
+    var Play_controlsChatSend = 16;
+    var Play_controlsChatSide = 17;
+    var Play_controlsChatForceDis = 18;
+    var Play_controlsChatPos = 19;
+    var Play_controlsChatSize = 20;
+    var Play_controlsChatBright = 21;
+    var Play_controlsChatFont = 22;
+    var Play_controlsChatDelay = 23;
 
     var Play_controlsDefault = Play_controlsChat;
     var Play_Panelcounter = Play_controlsDefault;
@@ -14503,6 +14484,36 @@
                         2000
                     );
                 }
+            },
+            updown: function(adder) {
+
+                this.defaultValue += adder;
+                if (this.defaultValue < 0) this.defaultValue = 0;
+                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+                this.bottomArrows();
+                this.setLable();
+            },
+            setLable: function() {
+                Main_textContent('controls_name_' + this.position,
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+            },
+            bottomArrows: function() {
+                Play_BottomArrows(this.position);
+            },
+        };
+
+        Play_controls[Play_controlsChapters] = { //Audio multi
+            icons: "feed",
+            string: STR_CHAPTERS,
+            values: [],
+            defaultValue: 0,
+            opacity: 0,
+            enterKey: function() {
+
+                PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
+                PlayVod_jump();
+
             },
             updown: function(adder) {
 
@@ -15382,11 +15393,7 @@
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            JSON.stringify(
-                [
-                    [Main_clientIdHeader, Main_clientId]
-                ]
-            ), //JsonString
+            Play_base_headers, //JsonString
             'PlayExtra_CheckHostResult', //callback
             0, //checkResult
             doSwitch, //key
@@ -15658,6 +15665,9 @@
     var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
     var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
+    var Play_base_back_headers = '';
+    var Play_base_headers = '';
+
     //counterclockwise movement, Vertical/horizontal Play_ChatPositions
     //sizeOffset in relation to the size
     var Play_ChatPositionVal = [{
@@ -15803,6 +15813,34 @@
 
         Play_ChatBackgroundChange(false);
         Play_SetChatFont();
+        //set base strings that don't change
+
+        Main_Headers = [
+            [Main_clientIdHeader, Main_clientId],
+            [Main_AcceptHeader, Main_TwithcV5Json],
+            [Main_Authorization, null]
+        ];
+
+        Main_Headers_Back = [
+            [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
+            [Main_AcceptHeader, Main_TwithcV5Json],
+            [Main_Authorization, null]
+        ];
+
+        Base_obj.Headers = Main_Headers;
+
+        Play_base_back_headers = JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_Headers_Back[0][1]]
+            ]
+        );
+
+        Play_base_headers = JSON.stringify(
+            [
+                [Main_clientIdHeader, Main_clientId]
+            ]
+        );
+
     }
 
     function Play_ResetDefaultQuality() {
@@ -15836,6 +15874,7 @@
 
         document.getElementById('controls_' + Play_MultiStream).style.display = '';
         document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
         document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
@@ -17156,9 +17195,15 @@
             STR_BR + STR_PING + value[6]);
 
         if (Who_Called > 1) {
+
+            var timeMs = OSInterface_gettime();
             Play_BufferSize = parseFloat(value[7]);
+
             if (Who_Called === 3) Play_BufferSize = Math.ceil(Play_BufferSize);
-            PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+            else PlayVod_ChaptersSetGame(timeMs);
+
+            PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+
         }
     }
 
@@ -17384,11 +17429,7 @@
                     DefaultHttpGetTimeout, //timeout
                     null, //postMessage, null for get
                     null, //Method, null for get
-                    JSON.stringify(
-                        [
-                            [Main_clientIdHeader, Main_clientId]
-                        ]
-                    ), //JsonString
+                    Play_base_headers, //JsonString
                     'Play_CheckHostResult', //callback
                     0, //checkResult
                     0, //key
@@ -18380,6 +18421,8 @@
     var PlayVod_RefreshProgressBarrID;
     var PlayVod_SaveOffsetId;
     var PlayVod_VodOffset;
+    var PlayVod_ChaptersArray = [];
+    var PlayVod_postChapters = '{"query":"{ video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
     //Variable initialization end
 
     function PlayVod_Start() {
@@ -18388,6 +18431,9 @@
         Play_HideEndDialog();
         //Play_SupportsSource = true;
         PlayVod_currentTime = 0;
+        PlayVod_previewsId = 0;
+        PlayVod_updateChaptersId = 0;
+        PlayVod_ChaptersArray = [];
         PlayVod_ProgresBarrUpdate(0, 0);
         Main_textContent("stream_live_time", '');
         Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -18403,6 +18449,7 @@
         document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
         document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
         document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
+        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_IconsResetFocus();
@@ -18505,6 +18552,7 @@
         PlayVod_previews_clear();
         PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
+        PlayVod_updateChapters();
     }
 
     function PlayVod_PosStart() {
@@ -18607,8 +18655,10 @@
         );
 
         Main_innerHTML("stream_info_title", ChannelVod_title);
-        Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
-            response.game : ""));
+        Main_innerHTML(
+            "stream_info_game",
+            (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
+        );
 
         Main_innerHTML("stream_live_time", STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
         Main_textContent("stream_live_viewers", '');
@@ -18934,7 +18984,9 @@
 
     function PlayVod_showPanel(autoHide) {
         if (Play_getQualitiesFail) Play_getQualities(2, true);
+
         if (!Play_StayDialogVisible()) {
+            PlayVod_SetChapters();
             PlayVod_RefreshProgressBarr(autoHide);
             PlayVod_RefreshProgressBarrID = Main_setInterval(
                 function() {
@@ -18944,6 +18996,7 @@
                 PlayVod_RefreshProgressBarrID
             );
         }
+
         Play_CleanHideExit();
 
         if (autoHide) {
@@ -19061,15 +19114,19 @@
         if (!Play_isEndDialogVisible()) {
 
             if (PlayVod_isOn) {
+
                 Chat_Pause();
                 Chat_offset = PlayVod_TimeToJump;
                 Main_setItem('Main_vodOffset', PlayVod_TimeToJump);
+                PlayVod_SaveVodIds(PlayVod_TimeToJump);
+                PlayVod_ChaptersSetGame(PlayVod_TimeToJump * 1000);
+
             } else Chat_offset = ChannelVod_vodOffset;
 
             if (Main_IsOn_OSInterface) {
                 OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
             }
-            Main_setTimeout(PlayVod_SaveOffset, 1000);
+
             if (PlayClip_HasVOD) Chat_Init();
         }
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -19544,7 +19601,7 @@
                 DefaultHttpGetTimeout * 2, //timeout
                 null, //postMessage, null for get
                 null, //Method, null for get
-                JSON.stringify([]), //JsonString
+                '[]', //JsonString
                 'PlayVod_previews_success', //callback
                 PlayVod_previewsId, //checkResult
                 0, //key
@@ -19738,6 +19795,189 @@
             5000,
             PlayVod_muted_WarningDialogId
         );
+    }
+
+    var PlayVod_updateChaptersId;
+
+    function PlayVod_updateChapters() {
+
+        if (Main_IsOn_OSInterface) {
+
+            PlayVod_updateChaptersId = (new Date().getTime());
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                PlayClip_BaseUrl, //urlString
+                DefaultHttpGetTimeout, //timeout
+                PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId), //postMessage, null for get
+                'POST', //Method, null for get
+                Play_base_back_headers, //JsonString
+                'PlayVod_updateChaptersResult', //callback
+                PlayVod_updateChaptersId, //checkResult
+                0, //key
+                3 //thread
+            );
+
+        } else PlayVod_ProcessChaptersFake();
+
+    }
+
+    function PlayVod_updateChaptersResult(response) {
+        if (PlayVod_isOn && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_updateChaptersId) {
+
+                if (responseObj.status === 200) {
+                    PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
+                }
+            }
+
+        }
+
+    }
+
+    function PlayVod_ProcessChapters(obj) {
+        obj = obj.data.video.moments.edges;
+
+        var i = 0,
+            len = obj.length,
+            game,
+            name;
+
+        PlayVod_ChaptersArray = [];
+        Play_controls[Play_controlsChapters].values = [];
+        Play_controls[Play_controlsChapters].defaultValue = 0;
+
+        for (i; i < len; i++) {
+            if (obj[i].node.type === "GAME_CHANGE") {
+
+                game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
+                name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) +
+                    ' at ' + Play_timeMs(obj[i].node.positionMilliseconds);
+
+                PlayVod_ChaptersArray.push({
+                    name: name,
+                    posMs: obj[i].node.positionMilliseconds,
+                    gameId: obj[i].node.details.game ? obj[i].node.details.game.id : null,
+                    game: game
+                });
+
+                Play_controls[Play_controlsChapters].values.push(name);
+            }
+        }
+
+        len = PlayVod_ChaptersArray.length;
+
+
+        if (len) {
+            document.getElementById('controls_' + Play_controlsChapters).style.display = '';
+            Play_controls[Play_controlsChapters].setLable();
+            Play_controls[Play_controlsChapters].bottomArrows();
+            PlayVod_SetChapters();
+        }
+    }
+
+    function PlayVod_SetChapters() {
+        var timeMs = 0; //Chane the time to test diferent position on browser
+        if (Main_IsOn_OSInterface) timeMs = OSInterface_gettime();
+        PlayVod_ChaptersSetGame(timeMs);
+    }
+
+    function PlayVod_ChaptersSetGame(timeMs) {
+
+        var len = PlayVod_ChaptersArray.length;
+
+        if (len) {
+
+            while (len--) {
+
+                if (timeMs >= PlayVod_ChaptersArray[len].posMs) {
+
+                    if (PlayVod_ChaptersArray[len].game) {
+                        Main_innerHTML(
+                            "stream_info_game",
+                            STR_PLAYING + PlayVod_ChaptersArray[len].game);
+
+                        Play_data.data[3] = PlayVod_ChaptersArray[len].game;
+                        Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+                        if (!Play_isPanelShown() || Play_Panelcounter !== Play_controlsChapters) {
+                            Play_controls[Play_controlsChapters].defaultValue = len;
+                            Play_controls[Play_controlsChapters].setLable();
+                            Play_controls[Play_controlsChapters].bottomArrows();
+                        }
+                    }
+
+                    break;
+
+                }
+
+            }
+
+        }
+    }
+
+    function PlayVod_ProcessChaptersFake() {
+        var obj = {
+            "data": {
+                "video": {
+                    "moments": {
+                        "edges": [{
+                            "node": {
+                                "durationMilliseconds": 67000,
+                                "positionMilliseconds": 0,
+                                "type": "GAME_CHANGE",
+                                "description": "Barotrauma",
+                                "details": {
+                                    "game": {
+                                        "id": "496735",
+                                        "displayName": "Barotrauma"
+                                    }
+                                }
+                            }
+                        }, {
+                            "node": {
+                                "durationMilliseconds": 5422000,
+                                "positionMilliseconds": 67000,
+                                "type": "GAME_CHANGE",
+                                "description": "Just Chatting",
+                                "details": {
+                                    "game": {
+                                        "id": "509658",
+                                        "displayName": "Just Chatting"
+                                    }
+                                }
+                            }
+                        }, {
+                            "node": {
+                                "durationMilliseconds": 3658000,
+                                "positionMilliseconds": 5489000,
+                                "type": "GAME_CHANGE",
+                                "description": "Bad Guys at School",
+                                "details": {
+                                    "game": null
+                                }
+                            }
+                        }, {
+                            "node": {
+                                "durationMilliseconds": 5505000,
+                                "positionMilliseconds": 9147000,
+                                "type": "GAME_CHANGE",
+                                "description": "Grounded",
+                                "details": {
+                                    "game": {
+                                        "id": "516086",
+                                        "displayName": "Grounded"
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                }
+            }
+        };
+        PlayVod_ProcessChapters(obj);
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -20759,11 +20999,7 @@
                 DefaultHttpGetTimeout, //timeout
                 PlayClip_postMessage.replace('%x', obj[0]), //postMessage, null for get
                 'POST', //Method, null for get
-                JSON.stringify(
-                    [
-                        [Main_clientIdHeader, Main_Headers_Back[0][1]]
-                    ]
-                ), //JsonString
+                Play_base_back_headers, //JsonString
                 'Screens_LoadPreviewResult', //callback
                 (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100), //checkResult
                 key, //key
@@ -22614,7 +22850,7 @@
         itemsCountCheck: false,
         FirstLoad: false,
         row: 0,
-        Headers: Main_Headers,
+        Headers: [],
         data: null,
         token: null,
         data_cursor: 0,
@@ -32588,6 +32824,7 @@
         'Main_onNewIntent': Main_onNewIntent, // Main_onNewIntent() func from app/specific/Main.js
         'Main_EventChannelRefresh': Main_EventChannelRefresh, // Main_EventChannelRefresh() func from app/specific/Main.js
         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess, // ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
+        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult, // PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
     };
 
     /** Expose `smartTwitchTV` */
