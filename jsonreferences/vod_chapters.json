@@ -1,0 +1,78 @@
+{
+    "url" : "{"operationName":"VideoPlayer_ChapterSelectButtonVideo","variables":{"videoID":"695738275"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b63c615e4fec1fbc3e6dd2d471c818886c4cf528c0cf99c136ba3981024f5e98"}}}",
+	"data": {
+		"video": {
+			"id": "694419173",
+			"moments": {
+				"edges": [{
+					"node": {
+						"moments": {
+							"edges": [],
+							"__typename": "VideoMomentConnection"
+						},
+						"id": "3fae1d3d9fa0ffdd2c0698d840de8101",
+						"durationMilliseconds": 28544000,
+						"positionMilliseconds": 0,
+						"type": "GAME_CHANGE",
+						"description": "Grand Theft Auto V",
+						"subDescription": "",
+						"thumbnailURL": "https://giantbomb1.cbsistatic.com/uploads/scale_avatar/0/3699/2463980-grand%20theft%20auto%20v.jpg",
+						"details": {
+							"game": {
+								"id": "32982",
+								"displayName": "Grand Theft Auto V",
+								"boxArtURL": "https://static-cdn.jtvnw.net/ttv-boxart/Grand%20Theft%20Auto%20V-40x53.jpg",
+								"__typename": "Game"
+							},
+							"__typename": "GameChangeMomentDetails"
+						},
+						"video": {
+							"id": "694419173",
+							"lengthSeconds": 34640,
+							"__typename": "Video"
+						},
+						"__typename": "VideoMoment"
+					},
+					"__typename": "VideoMomentEdge"
+				}, {
+					"node": {
+						"moments": {
+							"edges": [],
+							"__typename": "VideoMomentConnection"
+						},
+						"id": "d7db2799b6e64bf1690d3b1abdb62b00",
+						"durationMilliseconds": 6096000,
+						"positionMilliseconds": 28544000,
+						"type": "GAME_CHANGE",
+						"description": "Final Fantasy X",
+						"subDescription": "",
+						"thumbnailURL": "https://www.giantbomb.com/api/image/scale_avatar/2167105-box_ff10.png",
+						"details": {
+							"game": {
+								"id": "10322",
+								"displayName": "Final Fantasy X",
+								"boxArtURL": "https://static-cdn.jtvnw.net/ttv-boxart/Final%20Fantasy%20X-40x53.jpg",
+								"__typename": "Game"
+							},
+							"__typename": "GameChangeMomentDetails"
+						},
+						"video": {
+							"id": "694419173",
+							"lengthSeconds": 34640,
+							"__typename": "Video"
+						},
+						"__typename": "VideoMoment"
+					},
+					"__typename": "VideoMomentEdge"
+				}],
+				"__typename": "VideoMomentConnection"
+			},
+			"__typename": "Video"
+		}
+	},
+	"extensions": {
+		"durationMilliseconds": 22,
+		"operationName": "VideoPlayer_ChapterSelectButtonVideo",
+		"requestID": "01EEM342B7WYJN7YVPYP0BP3KB"
+	}
+}

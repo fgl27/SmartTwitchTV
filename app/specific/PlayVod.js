@@ -50,8 +50,9 @@ var PlayVod_replay = false;
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
+var PlayVod_ChaptersArray = [];
+var PlayVod_postChapters = '{"query":"{ video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
 //Variable initialization end
-var PlayVod_postChapters = '{"query":"{video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS){edges{node{durationMilliseconds positionMilliseconds description}}}}}"}';
 
 function PlayVod_Start() {
     //Main_Log('PlayVod_Start');
@@ -61,6 +62,7 @@ function PlayVod_Start() {
     PlayVod_currentTime = 0;
     PlayVod_previewsId = 0;
     PlayVod_updateChaptersId = 0;
+    PlayVod_ChaptersArray = [];
     PlayVod_ProgresBarrUpdate(0, 0);
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
@@ -76,6 +78,7 @@ function PlayVod_Start() {
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
@@ -178,7 +181,7 @@ function PlayVod_SetStart() {
     PlayVod_previews_clear();
     PlayVod_PrepareLoad();
     PlayVod_updateVodInfo();
-    //PlayVod_updateChapters();
+    PlayVod_updateChapters();
 }
 
 function PlayVod_PosStart() {
@@ -281,8 +284,10 @@ function PlayVod_updateVodInfoPannel(response) {
     );
 
     Main_innerHTML("stream_info_title", ChannelVod_title);
-    Main_innerHTML("stream_info_game", (response.game !== "" && response.game !== null ? STR_STARTED + STR_PLAYING +
-        response.game : ""));
+    Main_innerHTML(
+        "stream_info_game",
+        (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
+    );
 
     Main_innerHTML("stream_live_time", STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
     Main_textContent("stream_live_viewers", '');
@@ -607,7 +612,9 @@ function PlayVod_hidePanel() {
 
 function PlayVod_showPanel(autoHide) {
     if (Play_getQualitiesFail) Play_getQualities(2, true);
+
     if (!Play_StayDialogVisible()) {
+        PlayVod_SetChapters();
         PlayVod_RefreshProgressBarr(autoHide);
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
@@ -617,6 +624,7 @@ function PlayVod_showPanel(autoHide) {
             PlayVod_RefreshProgressBarrID
         );
     }
+
     Play_CleanHideExit();
 
     if (autoHide) {
@@ -734,15 +742,19 @@ function PlayVod_jump() {
     if (!Play_isEndDialogVisible()) {
 
         if (PlayVod_isOn) {
+
             Chat_Pause();
             Chat_offset = PlayVod_TimeToJump;
             Main_setItem('Main_vodOffset', PlayVod_TimeToJump);
+            PlayVod_SaveVodIds(PlayVod_TimeToJump);
+            PlayVod_ChaptersSetGame(PlayVod_TimeToJump * 1000);
+
         } else Chat_offset = ChannelVod_vodOffset;
 
         if (Main_IsOn_OSInterface) {
             OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         }
-        Main_setTimeout(PlayVod_SaveOffset, 1000);
+
         if (PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
@@ -1426,7 +1438,7 @@ function PlayVod_updateChapters() {
             3//thread
         );
 
-    }
+    } else PlayVod_ProcessChaptersFake();
 
 }
 
@@ -1438,10 +1450,155 @@ function PlayVod_updateChaptersResult(response) {
         if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_updateChaptersId) {
 
             if (responseObj.status === 200) {
-                console.log(responseObj.responseText);
+                PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
             }
         }
 
     }
 
+}
+
+function PlayVod_ProcessChapters(obj) {
+    obj = obj.data.video.moments.edges;
+
+    var i = 0,
+        len = obj.length,
+        game,
+        name;
+
+    PlayVod_ChaptersArray = [];
+    Play_controls[Play_controlsChapters].values = [];
+    Play_controls[Play_controlsChapters].defaultValue = 0;
+
+    for (i; i < len; i++) {
+        if (obj[i].node.type === "GAME_CHANGE") {
+
+            game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
+            name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) +
+                ' at ' + Play_timeMs(obj[i].node.positionMilliseconds);
+
+            PlayVod_ChaptersArray.push(
+                {
+                    name: name,
+                    posMs: obj[i].node.positionMilliseconds,
+                    gameId: obj[i].node.details.game ? obj[i].node.details.game.id : null,
+                    game: game
+                }
+            );
+
+            Play_controls[Play_controlsChapters].values.push(name);
+        }
+    }
+
+    len = PlayVod_ChaptersArray.length;
+
+
+    if (len) {
+        document.getElementById('controls_' + Play_controlsChapters).style.display = '';
+        Play_controls[Play_controlsChapters].setLable();
+        Play_controls[Play_controlsChapters].bottomArrows();
+        PlayVod_SetChapters();
+    }
+}
+
+function PlayVod_SetChapters() {
+    var timeMs = 0;//Chane the time to test diferent position on browser
+    if (Main_IsOn_OSInterface) timeMs = OSInterface_gettime();
+    PlayVod_ChaptersSetGame(timeMs);
+}
+
+function PlayVod_ChaptersSetGame(timeMs) {
+
+    var len = PlayVod_ChaptersArray.length;
+
+    if (len) {
+
+        while (len--) {
+
+            if (timeMs >= PlayVod_ChaptersArray[len].posMs) {
+
+                if (PlayVod_ChaptersArray[len].game) {
+                    Main_innerHTML(
+                        "stream_info_game",
+                        STR_PLAYING + PlayVod_ChaptersArray[len].game);
+
+                    Play_data.data[3] = PlayVod_ChaptersArray[len].game;
+                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+                    if (!Play_isPanelShown() || Play_Panelcounter !== Play_controlsChapters) {
+                        Play_controls[Play_controlsChapters].defaultValue = len;
+                        Play_controls[Play_controlsChapters].setLable();
+                        Play_controls[Play_controlsChapters].bottomArrows();
+                    }
+                }
+
+                break;
+
+            }
+
+        }
+
+    }
+}
+
+function PlayVod_ProcessChaptersFake() {
+    var obj = {
+        "data": {
+            "video": {
+                "moments": {
+                    "edges": [{
+                        "node": {
+                            "durationMilliseconds": 67000,
+                            "positionMilliseconds": 0,
+                            "type": "GAME_CHANGE",
+                            "description": "Barotrauma",
+                            "details": {
+                                "game": {
+                                    "id": "496735",
+                                    "displayName": "Barotrauma"
+                                }
+                            }
+                        }
+                    }, {
+                        "node": {
+                            "durationMilliseconds": 5422000,
+                            "positionMilliseconds": 67000,
+                            "type": "GAME_CHANGE",
+                            "description": "Just Chatting",
+                            "details": {
+                                "game": {
+                                    "id": "509658",
+                                    "displayName": "Just Chatting"
+                                }
+                            }
+                        }
+                    }, {
+                        "node": {
+                            "durationMilliseconds": 3658000,
+                            "positionMilliseconds": 5489000,
+                            "type": "GAME_CHANGE",
+                            "description": "Bad Guys at School",
+                            "details": {
+                                "game": null
+                            }
+                        }
+                    }, {
+                        "node": {
+                            "durationMilliseconds": 5505000,
+                            "positionMilliseconds": 9147000,
+                            "type": "GAME_CHANGE",
+                            "description": "Grounded",
+                            "details": {
+                                "game": {
+                                    "id": "516086",
+                                    "displayName": "Grounded"
+                                }
+                            }
+                        }
+                    }]
+                }
+            }
+        }
+    };
+    PlayVod_ProcessChapters(obj);
 }

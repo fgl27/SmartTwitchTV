@@ -293,6 +293,7 @@ function Play_Start(offline_chat) {
 
     document.getElementById('controls_' + Play_MultiStream).style.display = '';
     document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
     document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
@@ -1603,9 +1604,15 @@ function Play_ShowVideoStatus(showLatency, Who_Called) {
         STR_BR + STR_PING + value[6]);
 
     if (Who_Called > 1) {
+
+        var timeMs = OSInterface_gettime();
         Play_BufferSize = parseFloat(value[7]);
+
         if (Who_Called === 3) Play_BufferSize = Math.ceil(Play_BufferSize);
-        PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+        else PlayVod_ChaptersSetGame(timeMs);
+
+        PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+
     }
 }
 

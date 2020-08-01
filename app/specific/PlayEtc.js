@@ -1416,18 +1416,19 @@ var Play_controlsQuality = 7;
 var Play_controlsQualityMini = 8;
 var Play_controlsQualityMulti = 9;
 var Play_controlsLowLatency = 10;
-var Play_MultiStream = 11;
-var Play_controlsAudio = 12;
-var Play_controlsAudioMulti = 13;
-var Play_controlsChat = 14;
-var Play_controlsChatSend = 15;
-var Play_controlsChatSide = 16;
-var Play_controlsChatForceDis = 17;
-var Play_controlsChatPos = 18;
-var Play_controlsChatSize = 19;
-var Play_controlsChatBright = 20;
-var Play_controlsChatFont = 21;
-var Play_controlsChatDelay = 22;
+var Play_controlsChapters = 11;
+var Play_MultiStream = 12;
+var Play_controlsAudio = 13;
+var Play_controlsAudioMulti = 14;
+var Play_controlsChat = 15;
+var Play_controlsChatSend = 16;
+var Play_controlsChatSide = 17;
+var Play_controlsChatForceDis = 18;
+var Play_controlsChatPos = 19;
+var Play_controlsChatSize = 20;
+var Play_controlsChatBright = 21;
+var Play_controlsChatFont = 22;
+var Play_controlsChatDelay = 23;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -1839,6 +1840,36 @@ function Play_MakeControls() {
                     2000
                 );
             }
+        },
+        updown: function(adder) {
+
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            Main_textContent('controls_name_' + this.position,
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsChapters] = { //Audio multi
+        icons: "feed",
+        string: STR_CHAPTERS,
+        values: [],
+        defaultValue: 0,
+        opacity: 0,
+        enterKey: function() {
+
+            PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
+            PlayVod_jump();
+
         },
         updown: function(adder) {
 

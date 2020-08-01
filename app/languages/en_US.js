@@ -624,4 +624,6 @@ function en_USLang() {
     STR_LOCKED = "locked press up to change";
     STR_IN_CHAT = " In chat";
     STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
+    STR_PLAYED = "Played ";
+    STR_CHAPTERS = "Chapters";
 }

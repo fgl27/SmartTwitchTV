@@ -94,6 +94,7 @@ function PlayClip_Start() {
     document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
     document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
     document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
+    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
