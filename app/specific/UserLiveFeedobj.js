@@ -163,7 +163,7 @@ function UserLiveFeedobj_Empty(pos) {
 
 function UserLiveFeedobj_HolderDiv(pos, text) {
     Main_innerHTMLWithEle(UserLiveFeed_obj[pos].div,
-        '<div style="color: #FFFFFF;text-align: center;vertical-align: middle;margin-bottom: 7%;font-size: 150%;"> ' + text + '</div>');
+        '<div class="strokicon" style="color: #FFFFFF;text-align: center;vertical-align: middle;transform: translateY(20vh);font-size: 150%;"> ' + text + '</div>');
 }
 
 function UserLiveFeedobj_loadChannels() {
