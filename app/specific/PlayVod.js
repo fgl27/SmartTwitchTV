@@ -764,6 +764,7 @@ function PlayVod_jump() {
     PlayVod_IsJumping = false;
     Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
     PlayVod_addToJump = 0;
+    if (PlayVod_isOn) PlayVod_ProgresBarrUpdate(PlayVod_TimeToJump, Play_DurationSeconds, true);
     PlayVod_TimeToJump = 0;
 }
 
