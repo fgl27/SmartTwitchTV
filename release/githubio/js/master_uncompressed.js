@@ -624,7 +624,6 @@
     var STR_PLAYED;
     var STR_CHAPTERS;
     var STR_FROM_SIMPLE;
-    var STR_SHOW_IN_CHAT_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1414,7 +1413,6 @@
         STR_LOCKED = "locked press up to change";
         STR_IN_CHAT = " In chat";
         STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
-        STR_SHOW_IN_CHAT_SUMMARY = "If the chat ROOM has too many connected users this may now work";
         STR_PLAYED = "Played ";
         STR_CHAPTERS = "Chapters";
         STR_FROM_SIMPLE = " from ";
@@ -6268,8 +6266,8 @@
     function ChatLive_loadChattersLoad(chat_number, id) {
 
         OSInterface_GetMethodUrlHeadersAsync(
-            'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number] + '/chatters',
-            25000, //timeout
+            'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number],
+            DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
             Play_base_headers, //JsonString
@@ -8394,7 +8392,7 @@
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'August 01 2020';
-    var Main_version_web = 42; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 43; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -27350,7 +27348,7 @@
                 defaultValue: Settings_value.chat_timestamp.defaultValue,
                 values: Settings_value.chat_timestamp.values,
                 title: STR_SHOW_IN_CHAT,
-                summary: STR_SHOW_IN_CHAT_SUMMARY
+                summary: null
             },
             chat_nickcolor: {
                 defaultValue: Settings_value.chat_nickcolor.defaultValue,
