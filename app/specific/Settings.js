@@ -1703,7 +1703,7 @@ function Settings_DialogShowChat() {
             defaultValue: Settings_value.chat_timestamp.defaultValue,
             values: Settings_value.chat_timestamp.values,
             title: STR_SHOW_IN_CHAT,
-            summary: null
+            summary: STR_SHOW_IN_CHAT_SUMMARY
         },
         chat_nickcolor: {
             defaultValue: Settings_value.chat_nickcolor.defaultValue,
