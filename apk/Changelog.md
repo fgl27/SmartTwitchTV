@@ -7,7 +7,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Web Version August 31 2020
+Web Version August 02 2020
+==============
+
+* Improve settings order and strings, separate Interface customizations and Content customizations
+* Add a separate preview games sorting options
+* General performance improves and bug fixes
+
+
+Web Version August 01 2020
 ==============
 
 * Add VOD chapters controls, chapters are available for VODs that the streamer played multiple games, click on a chapter go to the start of that game on the VOD

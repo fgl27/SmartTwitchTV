@@ -486,7 +486,7 @@
     var STR_SIDE_PANEL_PLAYER;
     var STR_NOTIFICATION_OPT;
     var STR_DPAD_OPT;
-    var STR_ANIMATIONS;
+    var STR_UI_SETTINGS;
     var STR_APP_ANIMATIONS_SUMMARY;
     var STR_VIDEOS_ANIMATION_SUMMARY;
     var STR_SETTINGS_ACCESSIBILITY_SUMMARY;
@@ -624,6 +624,11 @@
     var STR_PLAYED;
     var STR_CHAPTERS;
     var STR_FROM_SIMPLE;
+    var STR_GENERAL_CUSTOM;
+    var STR_CHANNELS_MOST;
+    var STR_CHANNELS_LOWEST;
+    var STR_GAME_SORT;
+    var STR_CLOCK_OFFSET_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1051,9 +1056,10 @@
         STR_SECONDS = STR_SECOND + "s";
         STR_MINUTES = " minutes";
         STR_CLOCK_OFFSET = "Clock offset";
+        STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
         STR_APP_LANG = "Application language";
         STR_CONTENT_LANG = "Content language";
-        STR_CONTENT_LANG_SUMMARY = "Press enter to change";
+        STR_CONTENT_LANG_SUMMARY = "Press enter to access";
         STR_LANG_ALL = "All";
         STR_NO_GAME = "No game from this";
         STR_EMPTY = "Empty";
@@ -1115,7 +1121,7 @@
         STR_AUDIO_SOURCE = "Audio source";
         STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
         STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show preview feed choose a stream then hold key enter or press key 1 to start";
-        STR_PICTURE_CONTROLS2 = "Change a video content: From player preview feed, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
+        STR_PICTURE_CONTROLS2 = "Change a video content: From player preview, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
         STR_PICTURE_CONTROLS4 = "Change content between videos (Picture in Picture only): D-pad down big becomes small and vice versa";
         STR_PICTURE_CONTROLS5 = "Change small video position (Picture in Picture only): D-pad left";
         STR_PICTURE_CONTROLS6 = "Change small video size (Picture in Picture only): D-pad right";
@@ -1157,13 +1163,15 @@
         STR_LOW_LATENCY = "Low Latency";
         STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
             "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
-        STR_LIVE_FEED_SORT = "Side panel or player Preview feed sorting";
-        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview feed (not all option apply to all feeds types)";
+        STR_GAME_SORT = "Games Preview sorting";
+        STR_LIVE_FEED_SORT = "Side panel or player Preview sorting";
+        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview, apply to user live, hosting (who is hosting) and featured (all others, lives and a games are views base, history is last watched first, and vod is most recent)";
         STR_A_Z = "Alphabetical A - Z";
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-        STR_ANIMATIONS = "Customizations, Style, Animations, Timeouts and related";
+        STR_UI_SETTINGS = "Interface customizations, color style, animations and related";
+        STR_GENERAL_CUSTOM = "Content customizations, sorting, auto refresh, timeouts and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get video link";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -1210,6 +1218,8 @@
         STR_GAME_Z_A = "Game Z - A";
         STR_VIWES_MOST = "Views highest";
         STR_VIWES_LOWEST = "Views lowest";
+        STR_CHANNELS_MOST = "Channels quantity highest";
+        STR_CHANNELS_LOWEST = "Channels quantity lowest";
         STR_NEWEST = "Watched newest";
         STR_OLDEST = "Watched Oldest";
         STR_PRESS_ENTER_D = "Press enter to delete";
@@ -1258,7 +1268,7 @@
         STR_SHOW_CLIP_PLAYER = 'Show CLIP preview player';
         STR_PREVIEW_CLIP_NEXT = 'When a preview end automatic switch next available clip';
         STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
-        STR_SHOW_FEED_PLAYER = 'Show preview player on player preview feed';
+        STR_SHOW_FEED_PLAYER = 'Show preview player on player preview';
         STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
         STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
         STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
@@ -8391,8 +8401,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.235';
     var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 01 2020';
-    var Main_version_web = 43; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'August 02 2020';
+    var Main_version_web = 44; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -25801,6 +25811,17 @@
             ],
             "defaultValue": 1
         },
+        "game_feed_sort": { //Migrated to dialog
+            "values": [
+                "views_more",
+                "views_less",
+                "name_a-z",
+                "name_z-a",
+                "channel_more",
+                "channel_less"
+            ],
+            "defaultValue": 1
+        },
         "open_host": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -25887,7 +25908,12 @@
             "set_values": [""],
             "defaultValue": 1
         },
-        "animations_opt": {
+        "ui_opt": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "custom_opt": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
@@ -26023,25 +26049,6 @@
         }
     };
 
-    var Settings_FeedSort = [
-        [null, 'viewers', 0],
-        [null, 'viewers', 1],
-        ['channel', 'name', 1],
-        ['channel', 'name', 0],
-        [null, 'game', 1],
-        [null, 'game', 0],
-        [null, 'created_at', 0],
-        [null, 'created_at', 1]
-    ];
-
-    var Settings_FeedSortHost = JSON.parse(JSON.stringify(Settings_FeedSort));
-    Settings_FeedSortHost[4][1] = 'meta_game';
-    Settings_FeedSortHost[5][1] = 'meta_game';
-
-    var Settings_FeedSortGames = JSON.parse(JSON.stringify(Settings_FeedSort));
-    Settings_FeedSortGames[2][0] = 'game';
-    Settings_FeedSortGames[3][0] = 'game';
-
     function Settings_GenerateClock() {
         var clock = [],
             time = 43200,
@@ -26126,7 +26133,8 @@
         //Dialog settings
         div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
         div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
-        div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
+        div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
+        div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
         div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
         div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
@@ -26723,7 +26731,8 @@
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
-                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'custom_opt')) Settings_DialogShowCustomOpt();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
                 break;
@@ -27152,24 +27161,11 @@
         Settings_DialogShow(obj, STR_DPAD_OPT);
     }
 
-    function Settings_DialogShowAnimation() {
+    function Settings_DialogShowUIOpt() {
         Settings_value.app_animations.values = [STR_NO, STR_YES];
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
         Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
-        Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
-        Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-
-        Settings_value.live_feed_sort.values = [
-            STR_VIWES_MOST,
-            STR_VIWES_LOWEST,
-            STR_NAME_A_Z,
-            STR_NAME_Z_A,
-            STR_GAME_A_Z,
-            STR_GAME_Z_A,
-            STR_CREATED_NEWEST,
-            STR_CREATED_OLDEST
-        ];
 
         var obj = {
             thumb_background: {
@@ -27179,23 +27175,11 @@
                 summary: null,
                 keyenter: true
             },
-            show_screen_counter: {
-                defaultValue: Settings_value.show_screen_counter.defaultValue,
-                values: Settings_value.show_screen_counter.values,
-                title: STR_SCREEN_COUNTER,
-                summary: STR_SCREEN_COUNTER_SUMMARY
-            },
             thumb_quality: {
                 defaultValue: Settings_value.thumb_quality.defaultValue,
                 values: Settings_value.thumb_quality.values,
                 title: STR_THUMB_RESOLUTION,
                 summary: STR_THUMB_RESOLUTION_SUMMARY
-            },
-            global_font_offset: {
-                defaultValue: Settings_value.global_font_offset.defaultValue,
-                values: Settings_value.global_font_offset.values,
-                title: STR_GLOBAL_FONT,
-                summary: STR_GLOBAL_FONT_SUMMARY
             },
             app_animations: {
                 defaultValue: Settings_value.app_animations.defaultValue,
@@ -27209,11 +27193,65 @@
                 title: STR_VIDEOS_ANIMATION,
                 summary: STR_VIDEOS_ANIMATION_SUMMARY
             },
+            global_font_offset: {
+                defaultValue: Settings_value.global_font_offset.defaultValue,
+                values: Settings_value.global_font_offset.values,
+                title: STR_GLOBAL_FONT,
+                summary: STR_GLOBAL_FONT_SUMMARY
+            },
+            show_screen_counter: {
+                defaultValue: Settings_value.show_screen_counter.defaultValue,
+                values: Settings_value.show_screen_counter.values,
+                title: STR_SCREEN_COUNTER,
+                summary: STR_SCREEN_COUNTER_SUMMARY
+            },
+            clock_offset: {
+                defaultValue: Settings_value.clock_offset.defaultValue,
+                values: Settings_value.clock_offset.values,
+                title: STR_CLOCK_OFFSET,
+                summary: STR_CLOCK_OFFSET_SUMMARY
+            },
+        };
+
+        Settings_DialogShow(obj, STR_UI_SETTINGS);
+    }
+
+    function Settings_DialogShowCustomOpt() {
+        Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
+        Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+
+        Settings_value.live_feed_sort.values = [
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST,
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_GAME_A_Z,
+            STR_GAME_Z_A,
+            STR_CREATED_NEWEST,
+            STR_CREATED_OLDEST
+        ];
+
+        Settings_value.game_feed_sort.values = [
+            STR_VIWES_MOST,
+            STR_VIWES_LOWEST,
+            STR_NAME_A_Z,
+            STR_NAME_Z_A,
+            STR_CHANNELS_MOST,
+            STR_CHANNELS_LOWEST
+        ];
+
+        var obj = {
             live_feed_sort: {
                 defaultValue: Settings_value.live_feed_sort.defaultValue,
                 values: Settings_value.live_feed_sort.values,
                 title: STR_LIVE_FEED_SORT,
                 summary: STR_LIVE_FEED_SORT_SUMMARY
+            },
+            game_feed_sort: {
+                defaultValue: Settings_value.game_feed_sort.defaultValue,
+                values: Settings_value.game_feed_sort.values,
+                title: STR_GAME_SORT,
+                summary: null
             },
             auto_refresh_screen: {
                 defaultValue: Settings_value.auto_refresh_screen.defaultValue,
@@ -27232,16 +27270,10 @@
                 values: Settings_value.key_up_timeout.values,
                 title: STR_KEY_UP_TIMEOUT,
                 summary: STR_KEY_UP_TIMEOUT_SUMMARY
-            },
-            clock_offset: {
-                defaultValue: Settings_value.clock_offset.defaultValue,
-                values: Settings_value.clock_offset.values,
-                title: STR_CLOCK_OFFSET,
-                summary: null
-            },
+            }
         };
 
-        Settings_DialogShow(obj, STR_ANIMATIONS);
+        Settings_DialogShow(obj, STR_GENERAL_CUSTOM);
     }
 
     function Settings_DialogShowWarnings() {
@@ -29843,6 +29875,37 @@
     var UserLiveFeedobj_UserVodPos = 10;
     var UserLiveFeedobj_UserVodHistoryPos = 11;
 
+    var UserLiveFeedobj_FeedSort = [
+        [null, 'viewers', 0], //0
+        [null, 'viewers', 1], //1
+        ['channel', 'name', 1], //2
+        ['channel', 'name', 0], //3
+        [null, 'game', 1], //4
+        [null, 'game', 0], //5
+        [null, 'created_at', 0], //6
+        [null, 'created_at', 1] //7
+    ];
+
+    var UserLiveFeedobj_FeedSortGames = [
+        [null, 'viewers', 0], //0
+        [null, 'viewers', 1], //2
+        ['game', 'name', 1], //3
+        ['game', 'name', 0], //4
+        [null, 'channels', 0], //5
+        [null, 'channels', 1] //6
+    ];
+
+    var UserLiveFeedobj_FeedSortHost = [
+        [null, 'viewers', 0], //0
+        [null, 'viewers', 1], //1
+        ['channel', 'name', 1], //2
+        ['channel', 'name', 0], //3
+        [null, 'meta_game', 1], //4
+        [null, 'meta_game', 0], //5
+        [null, 'created_at', 0], //6
+        [null, 'created_at', 1] //7
+    ];
+
     //Check bellow java before define more current max is 0 to 24, 1 is used by the side panel
     //public String[][] ExtraPlayerHandlerResult = new String[25][100];
 
@@ -30715,9 +30778,9 @@
 
         if (response_items) {
 
-            var sorting_type1 = Settings_FeedSort[sorting][0],
-                sorting_type2 = Settings_FeedSort[sorting][1],
-                sorting_direction = Settings_FeedSort[sorting][2];
+            var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
+                sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
+                sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
 
             if (sorting_direction) {
                 //A-Z
@@ -31034,9 +31097,9 @@
             if (pos === UserLiveFeedobj_FeaturedPos) {
                 var sorting = Settings_Obj_default('live_feed_sort');
 
-                var sorting_type1 = Settings_FeedSort[sorting][0],
-                    sorting_type2 = Settings_FeedSort[sorting][1],
-                    sorting_direction = Settings_FeedSort[sorting][2];
+                var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
+                    sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
+                    sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
 
                 if (sorting_direction) {
                     //A-Z
@@ -31129,9 +31192,9 @@
 
         if (response.length) {
 
-            var sorting_type1 = Settings_FeedSortHost[sorting][0],
-                sorting_type2 = Settings_FeedSortHost[sorting][1],
-                sorting_direction = Settings_FeedSortHost[sorting][2];
+            var sorting_type1 = UserLiveFeedobj_FeedSortHost[sorting][0],
+                sorting_type2 = UserLiveFeedobj_FeedSortHost[sorting][1],
+                sorting_direction = UserLiveFeedobj_FeedSortHost[sorting][2];
 
             if (sorting_direction) {
                 //A-Z
@@ -31211,11 +31274,11 @@
         if (response_items) {
 
             if (pos === UserLiveFeedobj_UserGamesPos) {
-                var sorting = Settings_Obj_default('live_feed_sort');
+                var sorting = Settings_Obj_default('game_feed_sort');
 
-                var sorting_type1 = Settings_FeedSortGames[sorting][0],
-                    sorting_type2 = Settings_FeedSortGames[sorting][1],
-                    sorting_direction = Settings_FeedSortGames[sorting][2];
+                var sorting_type1 = UserLiveFeedobj_FeedSortGames[sorting][0],
+                    sorting_type2 = UserLiveFeedobj_FeedSortGames[sorting][1],
+                    sorting_direction = UserLiveFeedobj_FeedSortGames[sorting][2];
 
                 if (sorting_direction) {
                     //A-Z
