@@ -397,30 +397,6 @@ var Settings_value = {
     }
 };
 
-var Settings_FeedSort = [
-    [null, 'viewers', 0],
-    [null, 'viewers', 1],
-    ['channel', 'name', 1],
-    ['channel', 'name', 0],
-    [null, 'game', 1],
-    [null, 'game', 0],
-    [null, 'created_at', 0],
-    [null, 'created_at', 1]
-];
-
-var Settings_FeedSortGames = [
-    [null, 'viewers', 0],
-    [null, 'viewers', 1],
-    ['game', 'name', 1],
-    ['game', 'name', 0],
-    [null, 'channels', 0],
-    [null, 'channels', 1]
-];
-
-var Settings_FeedSortHost = JSON.parse(JSON.stringify(Settings_FeedSort));
-Settings_FeedSortHost[4][1] = 'meta_game';
-Settings_FeedSortHost[5][1] = 'meta_game';
-
 function Settings_GenerateClock() {
     var clock = [],
         time = 43200,

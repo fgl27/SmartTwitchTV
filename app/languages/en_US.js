@@ -371,7 +371,7 @@ function en_USLang() {
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
     STR_GAME_SORT = "Games Preview sorting";
     STR_LIVE_FEED_SORT = "Side panel or player Preview sorting";
-    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview, apply to user live, hosting and featured (all others, lives/games are views base, history is last watched first, and vod is most recent)";
+    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview, apply to user live, hosting (who is hosting) and featured (all others, lives and a games are views base, history is last watched first, and vod is most recent)";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";

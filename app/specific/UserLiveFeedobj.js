@@ -33,6 +33,37 @@ var UserLiveFeedobj_UserAGamesPos = 9;
 var UserLiveFeedobj_UserVodPos = 10;
 var UserLiveFeedobj_UserVodHistoryPos = 11;
 
+var UserLiveFeedobj_FeedSort = [
+    [null, 'viewers', 0],//0
+    [null, 'viewers', 1],//1
+    ['channel', 'name', 1],//2
+    ['channel', 'name', 0],//3
+    [null, 'game', 1],//4
+    [null, 'game', 0],//5
+    [null, 'created_at', 0],//6
+    [null, 'created_at', 1]//7
+];
+
+var UserLiveFeedobj_FeedSortGames = [
+    [null, 'viewers', 0],//0
+    [null, 'viewers', 1],//2
+    ['game', 'name', 1],//3
+    ['game', 'name', 0],//4
+    [null, 'channels', 0],//5
+    [null, 'channels', 1]//6
+];
+
+var UserLiveFeedobj_FeedSortHost = [
+    [null, 'viewers', 0],//0
+    [null, 'viewers', 1],//1
+    ['channel', 'name', 1],//2
+    ['channel', 'name', 0],//3
+    [null, 'meta_game', 1],//4
+    [null, 'meta_game', 0],//5
+    [null, 'created_at', 0],//6
+    [null, 'created_at', 1]//7
+];
+
 //Check bellow java before define more current max is 0 to 24, 1 is used by the side panel
 //public String[][] ExtraPlayerHandlerResult = new String[25][100];
 
@@ -895,9 +926,9 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     if (response_items) {
 
-        var sorting_type1 = Settings_FeedSort[sorting][0],
-            sorting_type2 = Settings_FeedSort[sorting][1],
-            sorting_direction = Settings_FeedSort[sorting][2];
+        var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
+            sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
+            sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
 
         if (sorting_direction) {
             //A-Z
@@ -1212,9 +1243,9 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
         if (pos === UserLiveFeedobj_FeaturedPos) {
             var sorting = Settings_Obj_default('live_feed_sort');
 
-            var sorting_type1 = Settings_FeedSort[sorting][0],
-                sorting_type2 = Settings_FeedSort[sorting][1],
-                sorting_direction = Settings_FeedSort[sorting][2];
+            var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
+                sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
+                sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
 
             if (sorting_direction) {
                 //A-Z
@@ -1307,9 +1338,9 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
     if (response.length) {
 
-        var sorting_type1 = Settings_FeedSortHost[sorting][0],
-            sorting_type2 = Settings_FeedSortHost[sorting][1],
-            sorting_direction = Settings_FeedSortHost[sorting][2];
+        var sorting_type1 = UserLiveFeedobj_FeedSortHost[sorting][0],
+            sorting_type2 = UserLiveFeedobj_FeedSortHost[sorting][1],
+            sorting_direction = UserLiveFeedobj_FeedSortHost[sorting][2];
 
         if (sorting_direction) {
             //A-Z
@@ -1391,9 +1422,9 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
         if (pos === UserLiveFeedobj_UserGamesPos) {
             var sorting = Settings_Obj_default('game_feed_sort');
 
-            var sorting_type1 = Settings_FeedSortGames[sorting][0],
-                sorting_type2 = Settings_FeedSortGames[sorting][1],
-                sorting_direction = Settings_FeedSortGames[sorting][2];
+            var sorting_type1 = UserLiveFeedobj_FeedSortGames[sorting][0],
+                sorting_type2 = UserLiveFeedobj_FeedSortGames[sorting][1],
+                sorting_direction = UserLiveFeedobj_FeedSortGames[sorting][2];
 
             if (sorting_direction) {
                 //A-Z
