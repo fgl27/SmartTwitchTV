@@ -4361,14 +4361,15 @@
     }
 
     function ChannelContent_loadDataCheckHost() {
-        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+        var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
+        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl, //urlString
             DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            Play_base_headers, //JsonString
+            '[]', //JsonString
             'ChannelContent_CheckHostResult', //callback
             0, //checkResult
             0, //key
@@ -6030,6 +6031,7 @@
     var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/;
 
     var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
+    var ChatLive_Base_chat_url = 'https://tmi.twitch.tv/';
     //Variable initialization end
 
     function ChatLive_Init(chat_number) {
@@ -6275,14 +6277,15 @@
 
     }
 
-    function ChatLive_loadChattersLoad(chat_number, id) {
 
+    function ChatLive_loadChattersLoad(chat_number, id) {
+        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
-            'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number],
+            ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            Play_base_headers, //JsonString
+            '[]', //JsonString
             'ChatLive_loadChattersSuccess', //callback
             id, //checkResult
             chat_number, //key
@@ -9205,6 +9208,7 @@
         if (Main_IsOn_OSInterface) {
             var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
+            //TODO replace all '[]' with null for performance after some app updates
             OSInterface_GetMethodUrlHeadersAsync(
                 baseUrl + (web ? 'webversion' : 'javaversion'), //urlString
                 DefaultHttpGetTimeout, //timeout
@@ -13262,14 +13266,15 @@
     }
 
     function Play_StayCheckHost() {
-        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+        var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
+        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl, //urlString
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            Play_base_headers, //JsonString
+            '[]', //JsonString
             'Play_StayCheckHostResult', //callback
             0, //checkResult
             0, //key
@@ -15403,13 +15408,13 @@
     }
 
     function PlayExtra_loadDataCheckHost(doSwitch) {
-
+        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
-            'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]), //urlString
+            ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]), //urlString
             DefaultHttpGetTimeout, //timeout
             null, //postMessage, null for get
             null, //Method, null for get
-            Play_base_headers, //JsonString
+            '[]', //JsonString
             'PlayExtra_CheckHostResult', //callback
             0, //checkResult
             doSwitch, //key
@@ -15682,7 +15687,6 @@
     var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
     var Play_base_back_headers = '';
-    var Play_base_headers = '';
 
     //counterclockwise movement, Vertical/horizontal Play_ChatPositions
     //sizeOffset in relation to the size
@@ -15848,12 +15852,6 @@
         Play_base_back_headers = JSON.stringify(
             [
                 [Main_clientIdHeader, Main_Headers_Back[0][1]]
-            ]
-        );
-
-        Play_base_headers = JSON.stringify(
-            [
-                [Main_clientIdHeader, Main_clientId]
             ]
         );
 
@@ -17435,17 +17433,17 @@
     }
 
     function Play_loadDataCheckHost() {
-        var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+        var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
         Main_setTimeout(
             function() {
-
+                //TODO replace all '[]' with null for performance after some app updates
                 OSInterface_GetMethodUrlHeadersAsync(
                     theUrl, //urlString
                     DefaultHttpGetTimeout, //timeout
                     null, //postMessage, null for get
                     null, //Method, null for get
-                    Play_base_headers, //JsonString
+                    '[]', //JsonString
                     'Play_CheckHostResult', //callback
                     0, //checkResult
                     0, //key
