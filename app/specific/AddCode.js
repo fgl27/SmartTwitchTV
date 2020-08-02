@@ -65,7 +65,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
             'POST',
             null,
             0,
-            JSON.stringify([])
+            '[]'
         );
 
         if (xmlHttp) {
