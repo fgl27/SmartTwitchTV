@@ -10,8 +10,8 @@ The app has a building update check function, so whenever there is a update a re
 Web Version August 31 2020
 ==============
 
-* Add VOD chapters controls, chapter are available on VODs that the streamer played multiple games, click on a chapter go to start of that game on the VOD
-* Fix Show total logged in user on top of the chat when the channel has too many connected users to chat
+* Add VOD chapters controls, chapters are available for VODs that the streamer played multiple games, click on a chapter go to the start of that game on the VOD
+* Fix Show total logged in user in chat when the channel has too many connected users
 * General performance improves and bug fixes
 
 Web Version July 31 2020
