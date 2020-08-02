@@ -629,6 +629,7 @@
     var STR_CHANNELS_LOWEST;
     var STR_GAME_SORT;
     var STR_CLOCK_OFFSET_SUMMARY;
+    var STR_SHOW_IN_CHAT_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1423,6 +1424,7 @@
         STR_LOCKED = "locked press up to change";
         STR_IN_CHAT = " In chat";
         STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat";
+        STR_SHOW_IN_CHAT_SUMMARY = "This is very helpfully to know for example if the offline chat has any user to talk to, also let the user know the difference from total viewer VS total chat user";
         STR_PLAYED = "Played ";
         STR_CHAPTERS = "Chapters";
         STR_FROM_SIMPLE = " from ";
@@ -27380,7 +27382,7 @@
                 defaultValue: Settings_value.chat_timestamp.defaultValue,
                 values: Settings_value.chat_timestamp.values,
                 title: STR_SHOW_IN_CHAT,
-                summary: null
+                summary: STR_SHOW_IN_CHAT_SUMMARY
             },
             chat_nickcolor: {
                 defaultValue: Settings_value.chat_nickcolor.defaultValue,
