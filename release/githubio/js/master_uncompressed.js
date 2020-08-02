@@ -3136,7 +3136,7 @@
                 'POST',
                 null,
                 0,
-                JSON.stringify([])
+                '[]'
             );
 
             if (xmlHttp) {
