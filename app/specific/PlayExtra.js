@@ -268,7 +268,7 @@ function PlayExtra_End_success(doSwitch, fail_type) {
 }
 
 function PlayExtra_loadDataCheckHost(doSwitch) {
-
+    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
         DefaultHttpGetTimeout,//timeout

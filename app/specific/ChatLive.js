@@ -323,8 +323,9 @@ function ChatLive_loadChatters(chat_number, id) {
 
 }
 
-function ChatLive_loadChattersLoad(chat_number, id) {
 
+function ChatLive_loadChattersLoad(chat_number, id) {
+    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
         DefaultHttpGetTimeout,//timeout

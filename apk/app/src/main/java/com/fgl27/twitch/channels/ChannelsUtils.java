@@ -765,7 +765,7 @@ public final class ChannelsUtils {
                 content = GetGamesContent(
                         url,
                         "follows",
-                        new String[0][2],
+                        new String[0][0],
                         Constants.CHANNEL_TYPE_USER_GAMES
                 );
             }
@@ -801,7 +801,7 @@ public final class ChannelsUtils {
                         null,
                         null,
                         0,
-                        new String[0][2]
+                        new String[0][0]
                 );
 
                 if (response != null) {

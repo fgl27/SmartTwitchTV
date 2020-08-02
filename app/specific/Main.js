@@ -952,6 +952,7 @@ function Main_checkWebVersionRun(web) {
     if (Main_IsOn_OSInterface) {
         var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
+        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
             baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
             DefaultHttpGetTimeout,//timeout

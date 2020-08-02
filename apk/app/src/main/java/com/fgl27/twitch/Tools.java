@@ -69,9 +69,9 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -84,6 +84,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -102,6 +103,8 @@ import static com.google.gson.JsonParser.parseString;
 public final class Tools {
 
     private static final String TAG = "STTV_Tools";
+
+    private static final Type ArrayType = new TypeToken<String[][]>() {}.getType();
 
     public static final String[][] DEFAULT_HEADERS = {
             {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
@@ -342,21 +345,17 @@ public final class Tools {
     public static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
                                                String Method, long checkResult, String JsonHeadersArray) {
 
-        JsonArray DEFAULT_HEADERS = parseString(JsonHeadersArray).getAsJsonArray();
-        JsonArray temp_array;
+        return Internal_MethodUrl(
+                urlString,
+                timeout,
+                postMessage,
+                Method,
+                checkResult,
+                JsonHeadersArray == null ?
+                        new String[0][0] :
+                        new Gson().fromJson(parseString(JsonHeadersArray).getAsJsonArray(), ArrayType)
+        );
 
-        String[][] HEADERS = new String[DEFAULT_HEADERS.size()][2];
-
-        for(int i = 0; i< HEADERS.length; i++) {
-
-            temp_array = DEFAULT_HEADERS.get(i).getAsJsonArray();
-
-            HEADERS[i][0] = temp_array.get(0).getAsString();
-            HEADERS[i][1] = temp_array.get(1).getAsString();
-
-        }
-
-        return Internal_MethodUrl(urlString, timeout, postMessage, Method, checkResult, HEADERS);
     }
 
     //For other then get methods

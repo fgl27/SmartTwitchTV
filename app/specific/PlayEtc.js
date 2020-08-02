@@ -608,6 +608,7 @@ function Play_StartStayStartCheck() {
 function Play_StayCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
+    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout,//timeout

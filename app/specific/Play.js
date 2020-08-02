@@ -1825,7 +1825,7 @@ function Play_loadDataCheckHost() {
 
     Main_setTimeout(
         function() {
-
+            //TODO replace all '[]' with null for performance after some app updates
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
                 DefaultHttpGetTimeout,//timeout

@@ -53,6 +53,7 @@ import com.google.gson.reflect.TypeToken;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -67,6 +68,8 @@ import static com.google.gson.JsonParser.parseString;
 public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
+
+    private static final Type ListStringType = new TypeToken<List<String>>() {}.getType();
 
     private static final int[] ToastPositions = {
             Gravity.RIGHT | Gravity.TOP,//0
@@ -598,7 +601,7 @@ public final class NotificationUtils {
                 String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
 
                 if (tempOldLive != null) {
-                    oldLive = new Gson().fromJson(tempOldLive, new TypeToken<List<String>>() {}.getType());
+                    oldLive = new Gson().fromJson(tempOldLive, ListStringType);
                 }
 
                 if (oldLive.size() > 0) {

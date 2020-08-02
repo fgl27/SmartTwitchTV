@@ -151,6 +151,7 @@ function ChannelContent_loadDataError() {
 function ChannelContent_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
+    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
