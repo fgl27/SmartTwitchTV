@@ -1522,23 +1522,11 @@ function Settings_DialogShowUIOpt() {
             summary: null,
             keyenter: true
         },
-        show_screen_counter: {
-            defaultValue: Settings_value.show_screen_counter.defaultValue,
-            values: Settings_value.show_screen_counter.values,
-            title: STR_SCREEN_COUNTER,
-            summary: STR_SCREEN_COUNTER_SUMMARY
-        },
         thumb_quality: {
             defaultValue: Settings_value.thumb_quality.defaultValue,
             values: Settings_value.thumb_quality.values,
             title: STR_THUMB_RESOLUTION,
             summary: STR_THUMB_RESOLUTION_SUMMARY
-        },
-        global_font_offset: {
-            defaultValue: Settings_value.global_font_offset.defaultValue,
-            values: Settings_value.global_font_offset.values,
-            title: STR_GLOBAL_FONT,
-            summary: STR_GLOBAL_FONT_SUMMARY
         },
         app_animations: {
             defaultValue: Settings_value.app_animations.defaultValue,
@@ -1552,11 +1540,23 @@ function Settings_DialogShowUIOpt() {
             title: STR_VIDEOS_ANIMATION,
             summary: STR_VIDEOS_ANIMATION_SUMMARY
         },
+        global_font_offset: {
+            defaultValue: Settings_value.global_font_offset.defaultValue,
+            values: Settings_value.global_font_offset.values,
+            title: STR_GLOBAL_FONT,
+            summary: STR_GLOBAL_FONT_SUMMARY
+        },
+        show_screen_counter: {
+            defaultValue: Settings_value.show_screen_counter.defaultValue,
+            values: Settings_value.show_screen_counter.values,
+            title: STR_SCREEN_COUNTER,
+            summary: STR_SCREEN_COUNTER_SUMMARY
+        },
         clock_offset: {
             defaultValue: Settings_value.clock_offset.defaultValue,
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
-            summary: null
+            summary: STR_CLOCK_OFFSET_SUMMARY
         },
     };
 
