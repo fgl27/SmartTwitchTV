@@ -1389,7 +1389,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     if (response_items) {
 
         if (pos === UserLiveFeedobj_UserGamesPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
+            var sorting = Settings_Obj_default('game_feed_sort');
 
             var sorting_type1 = Settings_FeedSortGames[sorting][0],
                 sorting_type2 = Settings_FeedSortGames[sorting][1],

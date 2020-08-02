@@ -264,7 +264,7 @@ function en_USLang() {
     STR_CLOCK_OFFSET = "Clock offset";
     STR_APP_LANG = "Application language";
     STR_CONTENT_LANG = "Content language";
-    STR_CONTENT_LANG_SUMMARY = "Press enter to change";
+    STR_CONTENT_LANG_SUMMARY = "Press enter to access";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "No game from this";
     STR_EMPTY = "Empty";
@@ -326,7 +326,7 @@ function en_USLang() {
     STR_AUDIO_SOURCE = "Audio source";
     STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
     STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show preview feed choose a stream then hold key enter or press key 1 to start";
-    STR_PICTURE_CONTROLS2 = "Change a video content: From player preview feed, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
+    STR_PICTURE_CONTROLS2 = "Change a video content: From player preview, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
     STR_PICTURE_CONTROLS4 = "Change content between videos (Picture in Picture only): D-pad down big becomes small and vice versa";
     STR_PICTURE_CONTROLS5 = "Change small video position (Picture in Picture only): D-pad left";
     STR_PICTURE_CONTROLS6 = "Change small video size (Picture in Picture only): D-pad right";
@@ -368,13 +368,15 @@ function en_USLang() {
     STR_LOW_LATENCY = "Low Latency";
     STR_LOW_LATENCY_SUMMARY = "If start getting buffers issue disable " + STR_LOW_LATENCY +
         "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or bellow to 1 for this to have effect";
-    STR_LIVE_FEED_SORT = "Side panel or player Preview feed sorting";
-    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview feed (not all option apply to all feeds types)";
+    STR_GAME_SORT = "Games Preview sorting";
+    STR_LIVE_FEED_SORT = "Side panel or player Preview sorting";
+    STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview, apply to user live, hosting and featured (all others, lives/games are views base, history is last watched first, and vod is most recent)";
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_ANIMATIONS = "Customizations, Style, Animations, Timeouts and related";
+    STR_UI_SETTINGS = "User interface customizations, color style, animations and related";
+    STR_GENERAL_CUSTOM = "User content customizations, sorting, auto refresh, timeouts and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get video link";
     STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -421,6 +423,8 @@ function en_USLang() {
     STR_GAME_Z_A = "Game Z - A";
     STR_VIWES_MOST = "Views highest";
     STR_VIWES_LOWEST = "Views lowest";
+    STR_CHANNELS_MOST = "Channels quantity highest";
+    STR_CHANNELS_LOWEST = "Channels quantity lowest";
     STR_NEWEST = "Watched newest";
     STR_OLDEST = "Watched Oldest";
     STR_PRESS_ENTER_D = "Press enter to delete";
@@ -469,7 +473,7 @@ function en_USLang() {
     STR_SHOW_CLIP_PLAYER = 'Show CLIP preview player';
     STR_PREVIEW_CLIP_NEXT = 'When a preview end automatic switch next available clip';
     STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
-    STR_SHOW_FEED_PLAYER = 'Show preview player on player preview feed';
+    STR_SHOW_FEED_PLAYER = 'Show preview player on player preview';
     STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
     STR_DISABLE_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
     STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';

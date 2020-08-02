@@ -160,6 +160,17 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
+    "game_feed_sort": {//Migrated to dialog
+        "values": [
+            "views_more",
+            "views_less",
+            "name_a-z",
+            "name_z-a",
+            "channel_more",
+            "channel_less"
+        ],
+        "defaultValue": 1
+    },
     "open_host": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -246,7 +257,12 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
-    "animations_opt": {
+    "ui_opt": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "custom_opt": {
         "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
@@ -392,13 +408,18 @@ var Settings_FeedSort = [
     [null, 'created_at', 1]
 ];
 
+var Settings_FeedSortGames = [
+    [null, 'viewers', 0],
+    [null, 'viewers', 1],
+    ['game', 'name', 1],
+    ['game', 'name', 0],
+    [null, 'channels', 0],
+    [null, 'channels', 1]
+];
+
 var Settings_FeedSortHost = JSON.parse(JSON.stringify(Settings_FeedSort));
 Settings_FeedSortHost[4][1] = 'meta_game';
 Settings_FeedSortHost[5][1] = 'meta_game';
-
-var Settings_FeedSortGames = JSON.parse(JSON.stringify(Settings_FeedSort));
-Settings_FeedSortGames[2][0] = 'game';
-Settings_FeedSortGames[3][0] = 'game';
 
 function Settings_GenerateClock() {
     var clock = [],
@@ -484,7 +505,8 @@ function Settings_SetSettings() {
     //Dialog settings
     div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
     div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
-    div += Settings_Content('animations_opt', [STR_CONTENT_LANG_SUMMARY], STR_ANIMATIONS, null);
+    div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
+    div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
     div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
@@ -1081,7 +1103,8 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
-            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'animations_opt')) Settings_DialogShowAnimation();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'custom_opt')) Settings_DialogShowCustomOpt();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
             break;
@@ -1485,24 +1508,11 @@ function Settings_DialogShowDpad() {
     Settings_DialogShow(obj, STR_DPAD_OPT);
 }
 
-function Settings_DialogShowAnimation() {
+function Settings_DialogShowUIOpt() {
     Settings_value.app_animations.values = [STR_NO, STR_YES];
     Settings_value.videos_animation.values = [STR_NO, STR_YES];
     Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
-    Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
-    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
-
-    Settings_value.live_feed_sort.values = [
-        STR_VIWES_MOST,
-        STR_VIWES_LOWEST,
-        STR_NAME_A_Z,
-        STR_NAME_Z_A,
-        STR_GAME_A_Z,
-        STR_GAME_Z_A,
-        STR_CREATED_NEWEST,
-        STR_CREATED_OLDEST
-    ];
 
     var obj = {
         thumb_background: {
@@ -1542,11 +1552,53 @@ function Settings_DialogShowAnimation() {
             title: STR_VIDEOS_ANIMATION,
             summary: STR_VIDEOS_ANIMATION_SUMMARY
         },
+        clock_offset: {
+            defaultValue: Settings_value.clock_offset.defaultValue,
+            values: Settings_value.clock_offset.values,
+            title: STR_CLOCK_OFFSET,
+            summary: null
+        },
+    };
+
+    Settings_DialogShow(obj, STR_UI_SETTINGS);
+}
+
+function Settings_DialogShowCustomOpt() {
+    Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
+    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+
+    Settings_value.live_feed_sort.values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_GAME_A_Z,
+        STR_GAME_Z_A,
+        STR_CREATED_NEWEST,
+        STR_CREATED_OLDEST
+    ];
+
+    Settings_value.game_feed_sort.values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_CHANNELS_MOST,
+        STR_CHANNELS_LOWEST
+    ];
+
+    var obj = {
         live_feed_sort: {
             defaultValue: Settings_value.live_feed_sort.defaultValue,
             values: Settings_value.live_feed_sort.values,
             title: STR_LIVE_FEED_SORT,
             summary: STR_LIVE_FEED_SORT_SUMMARY
+        },
+        game_feed_sort: {
+            defaultValue: Settings_value.game_feed_sort.defaultValue,
+            values: Settings_value.game_feed_sort.values,
+            title: STR_GAME_SORT,
+            summary: null
         },
         auto_refresh_screen: {
             defaultValue: Settings_value.auto_refresh_screen.defaultValue,
@@ -1565,16 +1617,10 @@ function Settings_DialogShowAnimation() {
             values: Settings_value.key_up_timeout.values,
             title: STR_KEY_UP_TIMEOUT,
             summary: STR_KEY_UP_TIMEOUT_SUMMARY
-        },
-        clock_offset: {
-            defaultValue: Settings_value.clock_offset.defaultValue,
-            values: Settings_value.clock_offset.values,
-            title: STR_CLOCK_OFFSET,
-            summary: null
-        },
+        }
     };
 
-    Settings_DialogShow(obj, STR_ANIMATIONS);
+    Settings_DialogShow(obj, STR_GENERAL_CUSTOM);
 }
 
 function Settings_DialogShowWarnings() {
