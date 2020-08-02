@@ -77,6 +77,7 @@ var emoteReplace = {
 var ChatLive_ROOMSTATE_Regex = /emote-only=(\d+).*followers-only=(-1|\d+).*r9k=(\d+).*slow=(\d+).*subs-only=(\d+).*/;
 
 var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
+var ChatLive_Base_chat_url = 'https://tmi.twitch.tv/';
 //Variable initialization end
 
 function ChatLive_Init(chat_number) {
@@ -325,11 +326,11 @@ function ChatLive_loadChatters(chat_number, id) {
 function ChatLive_loadChattersLoad(chat_number, id) {
 
     OSInterface_GetMethodUrlHeadersAsync(
-        'https://tmi.twitch.tv/group/user/' + ChatLive_selectedChannel[chat_number],
+        ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        Play_base_headers,//JsonString
+        '[]',//JsonString
         'ChatLive_loadChattersSuccess',//callback
         id,//checkResult
         chat_number,//key

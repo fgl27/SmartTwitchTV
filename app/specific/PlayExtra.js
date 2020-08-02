@@ -270,11 +270,11 @@ function PlayExtra_End_success(doSwitch, fail_type) {
 function PlayExtra_loadDataCheckHost(doSwitch) {
 
     OSInterface_GetMethodUrlHeadersAsync(
-        'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
+        ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        Play_base_headers,//JsonString
+        '[]',//JsonString
         'PlayExtra_CheckHostResult',//callback
         0,//checkResult
         doSwitch,//key

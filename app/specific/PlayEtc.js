@@ -606,14 +606,14 @@ function Play_StartStayStartCheck() {
 }
 
 function Play_StayCheckHost() {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+    var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        Play_base_headers,//JsonString
+        '[]',//JsonString
         'Play_StayCheckHostResult',//callback
         0,//checkResult
         0,//key

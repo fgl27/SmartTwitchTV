@@ -86,7 +86,6 @@ var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_"
 var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
 var Play_base_back_headers = '';
-var Play_base_headers = '';
 
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
@@ -251,12 +250,6 @@ function Play_PreStart() {
     Play_base_back_headers = JSON.stringify(
         [
             [Main_clientIdHeader, Main_Headers_Back[0][1]]
-        ]
-    );
-
-    Play_base_headers = JSON.stringify(
-        [
-            [Main_clientIdHeader, Main_clientId]
         ]
     );
 
@@ -1828,7 +1821,7 @@ function Play_CheckHostStart(error_410) {
 }
 
 function Play_loadDataCheckHost() {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+    var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
     Main_setTimeout(
         function() {
@@ -1838,7 +1831,7 @@ function Play_loadDataCheckHost() {
                 DefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
-                Play_base_headers,//JsonString
+                '[]',//JsonString
                 'Play_CheckHostResult',//callback
                 0,//checkResult
                 0,//key

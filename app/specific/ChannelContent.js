@@ -149,14 +149,14 @@ function ChannelContent_loadDataError() {
 }
 
 function ChannelContent_loadDataCheckHost() {
-    var theUrl = 'https://tmi.twitch.tv/hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+    var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        Play_base_headers,//JsonString
+        '[]',//JsonString
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
         0,//key
