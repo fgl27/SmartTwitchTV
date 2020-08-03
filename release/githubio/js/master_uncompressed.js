@@ -14523,10 +14523,8 @@
             opacity: 0,
             enterKey: function() {
 
-                var TempTime = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
-                PlayVod_TimeToJump = TempTime;
+                PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
                 PlayVod_jump();
-                PlayVod_previews_move(TempTime / Play_DurationSeconds);
 
             },
             updown: function(adder) {
@@ -19491,6 +19489,7 @@
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
                             PlayVod_IconsBottonFocus();
+                            PlayVod_previews_hide();
                         } else Play_BottomUpDown(2, -1);
                         PlayVod_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
