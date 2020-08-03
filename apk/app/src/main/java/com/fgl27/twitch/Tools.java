@@ -353,7 +353,7 @@ public final class Tools {
                 checkResult,
                 JsonHeadersArray == null ?
                         new String[0][0] :
-                        new Gson().fromJson(parseString(JsonHeadersArray).getAsJsonArray(), ArrayType)
+                        new Gson().fromJson(JsonHeadersArray, ArrayType)
         );
 
     }
