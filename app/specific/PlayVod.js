@@ -1110,6 +1110,7 @@ function PlayVod_handleKeyDown(e) {
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
                         PlayVod_IconsBottonFocus();
+                        PlayVod_previews_hide();
                     } else Play_BottomUpDown(2, -1);
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);

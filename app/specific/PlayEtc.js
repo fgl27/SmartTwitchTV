@@ -1868,10 +1868,8 @@ function Play_MakeControls() {
         opacity: 0,
         enterKey: function() {
 
-            var TempTime = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
-            PlayVod_TimeToJump = TempTime;
+            PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
             PlayVod_jump();
-            PlayVod_previews_move(TempTime / Play_DurationSeconds);
 
         },
         updown: function(adder) {
