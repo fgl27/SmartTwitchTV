@@ -52,9 +52,7 @@ function OSInterface_SetNotificationRepeat(times) {
 //Android specific: true
 //Allows to Set Notification Since time check
 function OSInterface_SetNotificationSinceTime(time) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
 }
 
 //public void RunNotificationService()
@@ -282,11 +280,9 @@ function OSInterface_SetBuffer(who_called, buffer_size) {
 //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Changes small player size
+var low_latency_array = [0, 2, 1];
 function OSInterface_mSetlatency(LowLatency) {
-    var low_latency_array = [0, 2, 1];
-    try {
-        Android.mSetlatency(low_latency_array[LowLatency]);
-    } catch (e) {}
+    Android.mSetlatency(low_latency_array[LowLatency]);
 }
 
 //public void mSwitchPlayerSize(int mPicturePictureSize)
@@ -355,24 +351,20 @@ function OSInterface_mhideSystemUI() {
 //Android specific: true
 //Sets the user id used by the notification services
 function OSInterface_UpdateUserId(user) {
-    try {
-        if (Main_IsOn_OSInterface)
-            if (user) {
-                Android.UpdateUserId(
-                    user.id,
-                    user.name ? encodeURIComponent(user.name) : user.name,
-                    user.refresh_token ? user.refresh_token : null
-                );
-            } else {
-                Android.UpdateUserId(
-                    null,
-                    null,
-                    null
-                );
-            }
-    } catch (e) {
-        console.log('OSInterface_UpdateUserId e' + e);
-    }
+    if (Main_IsOn_OSInterface)
+        if (user) {
+            Android.UpdateUserId(
+                user.id,
+                user.name ? encodeURIComponent(user.name) : user.name,
+                user.refresh_token ? user.refresh_token : null
+            );
+        } else {
+            Android.UpdateUserId(
+                null,
+                null,
+                null
+            );
+        }
 }
 
 //public void BackupFile(String file, String file_content)
