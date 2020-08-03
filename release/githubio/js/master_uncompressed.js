@@ -8404,10 +8404,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.235';
-    var Main_version_java = 26; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 02 2020';
-    var Main_version_web = 44; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.236';
+    var Main_version_java = 27; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 03 2020';
+    var Main_version_web = 45; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10841,9 +10841,7 @@
     //Android specific: true
     //Allows to Set Notification Since time check
     function OSInterface_SetNotificationSinceTime(time) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationSinceTime(time);
     }
 
     //public void RunNotificationService()
@@ -11071,11 +11069,10 @@
     //LowLatency... 0 = disable, 2 = enable, 1 enable close as possible of live window
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Changes small player size
+    var low_latency_array = [0, 2, 1];
+
     function OSInterface_mSetlatency(LowLatency) {
-        var low_latency_array = [0, 2, 1];
-        try {
-            Android.mSetlatency(low_latency_array[LowLatency]);
-        } catch (e) {}
+        Android.mSetlatency(low_latency_array[LowLatency]);
     }
 
     //public void mSwitchPlayerSize(int mPicturePictureSize)
@@ -11144,24 +11141,20 @@
     //Android specific: true
     //Sets the user id used by the notification services
     function OSInterface_UpdateUserId(user) {
-        try {
-            if (Main_IsOn_OSInterface)
-                if (user) {
-                    Android.UpdateUserId(
-                        user.id,
-                        user.name ? encodeURIComponent(user.name) : user.name,
-                        user.refresh_token ? user.refresh_token : null
-                    );
-                } else {
-                    Android.UpdateUserId(
-                        null,
-                        null,
-                        null
-                    );
-                }
-        } catch (e) {
-            console.log('OSInterface_UpdateUserId e' + e);
-        }
+        if (Main_IsOn_OSInterface)
+            if (user) {
+                Android.UpdateUserId(
+                    user.id,
+                    user.name ? encodeURIComponent(user.name) : user.name,
+                    user.refresh_token ? user.refresh_token : null
+                );
+            } else {
+                Android.UpdateUserId(
+                    null,
+                    null,
+                    null
+                );
+            }
     }
 
     //public void BackupFile(String file, String file_content)
