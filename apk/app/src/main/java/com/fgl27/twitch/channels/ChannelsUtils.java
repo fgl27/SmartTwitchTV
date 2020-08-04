@@ -165,12 +165,7 @@ public final class ChannelsUtils {
         }
     }
 
-    public static class SortLiveViews implements Comparator<ChannelContentObj> {
-        @Override
-        public int compare(ChannelContentObj obj1, ChannelContentObj obj2) {
-            return obj2.getViewers() - obj1.getViewers();
-        }
-    }
+    public static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.getViewers() - Obj1.getViewers();
 
     public static class ChannelObj {
         private final int drawable;
@@ -729,7 +724,10 @@ public final class ChannelsUtils {
                 int contentSize = content.size();
 
                 if (contentSize > 1) {
-                    Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+                    Collections.sort(
+                            content.subList(1, contentSize),
+                            compareViewers
+                    );
                 }
 
             }
@@ -942,7 +940,10 @@ public final class ChannelsUtils {
         int contentSize = content.size();
 
         if (contentSize > 1) {
-            Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+            Collections.sort(
+                    content.subList(1, contentSize),
+                    compareViewers
+            );
         }
 
         return contentSize > 0 ? content : null;
@@ -1042,7 +1043,10 @@ public final class ChannelsUtils {
             contentSize = content.size();
 
             if (sort && contentSize > 1) {
-                Collections.sort(content.subList(1, contentSize), new SortLiveViews());
+                Collections.sort(
+                        content.subList(1, contentSize),
+                        compareViewers
+                );
             }
 
         } catch (Exception e) {
