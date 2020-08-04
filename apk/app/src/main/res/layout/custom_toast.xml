@@ -44,11 +44,10 @@
         android:paddingEnd="10dp">
 
         <TextView
-            android:id="@+id/now_live"
+            android:id="@+id/not_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/notification"
             android:textColor="#FFFFFF"
             android:textSize="13sp"
             android:textStyle="bold" />

@@ -347,7 +347,7 @@ function AddUser_SaveNewUser(responseText) {
         AddUser_UpdateSidepanel();
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
         OSInterface_mCheckRefresh();
-        if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
+        if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
     }
     Main_SwitchScreen();
     AddUser_loadingData = false;

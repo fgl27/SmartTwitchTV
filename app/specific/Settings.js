@@ -183,6 +183,18 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "title_notification": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "game_notification": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "game_live_notification": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "live_notification_background": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -671,6 +683,7 @@ function Settings_SetDefautls() {
     OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
+    Settings_set_all_notification();
 }
 
 function Settings_Obj_values(key) {
@@ -737,6 +750,9 @@ function Settings_SetarrowsKey(key) {
 function Settings_SetDefault(position) {
 
     if (position === "live_notification") Settings_notification();
+    else if (position === "title_notification") Settings_notification_title();
+    else if (position === "game_notification") Settings_notification_game();
+    else if (position === "game_live_notification") Settings_notification_game_live();
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "repeat_notification") Settings_notification_repeat();
@@ -795,8 +811,48 @@ function Settings_check_max_seek() {
 
 }
 
+function Settings_notification_check_any_enable() {
+
+    if (!Settings_Obj_default("live_notification") &&
+        !Settings_Obj_default("title_notification") &&
+        !Settings_Obj_default("game_notification") &&
+        !Settings_Obj_default("game_live_notification")) {
+        OSInterface_StopNotificationService();
+        return false;
+    }
+
+    return true;
+}
+
+function Settings_set_all_notification() {
+    OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
+    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+    OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+}
+
+function Settings_notification() {
+    OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
+    Settings_notification_background();
+}
+
+function Settings_notification_title() {
+    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+    Settings_notification_background();
+}
+
+function Settings_notification_game() {
+    OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+    Settings_notification_background();
+}
+
+function Settings_notification_game_live() {
+    OSInterface_SetNotificationGameLive(Settings_Obj_default("game_live_notification") === 1);
+    Settings_notification_background();
+}
+
 function Settings_notification_background() {
-    OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_Obj_default("live_notification") === 1);
+    OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_notification_check_any_enable());
 }
 
 function Settings_notification_position() {
@@ -821,11 +877,6 @@ function Settings_notification_sicetime() {
     }
 
     OSInterface_SetNotificationSinceTime(time);
-}
-
-function Settings_notification() {
-    if (!Settings_Obj_default("live_notification")) OSInterface_StopNotificationService();
-    Settings_notification_background();
 }
 
 function Settings_SetPingWarning() {
@@ -1424,6 +1475,9 @@ function Settings_DialogShowSmallPayer() {
 function Settings_DialogShowNotification() {
     Settings_value.live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_background.values = [STR_NO, STR_YES];
+    Settings_value.title_notification.values = [STR_NO, STR_YES];
+    Settings_value.game_notification.values = [STR_NO, STR_YES];
+    Settings_value.game_live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
     Settings_value.since_notification.values[0] = STR_DISABLE;
 
@@ -1432,6 +1486,24 @@ function Settings_DialogShowNotification() {
             defaultValue: Settings_value.live_notification.defaultValue,
             values: Settings_value.live_notification.values,
             title: STR_NOW_LIVE_SHOW,
+            summary: null
+        },
+        title_notification: {
+            defaultValue: Settings_value.title_notification.defaultValue,
+            values: Settings_value.title_notification.values,
+            title: STR_TITLE_CHANGE_SHOW,
+            summary: null
+        },
+        game_notification: {
+            defaultValue: Settings_value.game_notification.defaultValue,
+            values: Settings_value.game_notification.values,
+            title: STR_GAME_CHANGE_SHOW,
+            summary: null
+        },
+        game_live_notification: {
+            defaultValue: Settings_value.game_live_notification.defaultValue,
+            values: Settings_value.game_live_notification.values,
+            title: STR_NOW_LIVE_GAME_SHOW,
             summary: null
         },
         live_notification_background: {

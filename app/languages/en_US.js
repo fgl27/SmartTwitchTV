@@ -344,10 +344,12 @@ function en_USLang() {
     STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture, 50/50 or Multistream mode with a single key return click";
-    STR_NOW_LIVE = "Now Live";
     STR_NOTIFICATION_OPT = "Notification options";
-    STR_NOW_LIVE_SHOW = "Show Now Live notification";
-    STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
+    STR_NOW_LIVE_SHOW = "Show now live notification for followed channels";
+    STR_TITLE_CHANGE_SHOW = "Show title change notification for followed channels";
+    STR_GAME_CHANGE_SHOW = "Show game change notification for followed channels";
+    STR_NOW_LIVE_GAME_SHOW = "Show now live notification for followed games";
+    STR_NOW_BACKGROUND = "Notification over other apps, when the app is on background";
     STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";
     STR_NOTIFICATION_REPEAT = "How many times to show it individual notification";
     STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show";

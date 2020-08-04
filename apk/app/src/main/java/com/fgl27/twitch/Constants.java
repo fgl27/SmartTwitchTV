@@ -22,12 +22,18 @@ package com.fgl27.twitch;
 
 public interface Constants {
 
-    String PREF_NOTIFY_OLD_LIST = "not_list";
+    String PREF_NOTIFY_OLD_STREAM_LIST = "stream_list";
+    String PREF_NOTIFY_OLD_GAME_LIST = "game_list";
     String PREF_NOTIFICATION_BACKGROUND = "notification_background";
     String PREF_NOTIFICATION_REPEAT = "notification_repeat";
     String PREF_NOTIFICATION_SINCE_TIME = "notification_since";
     String PREF_NOTIFICATION_POSITION = "notification_position";
     String PREF_NOTIFICATION_WILL_END = "notification_end_time";
+    String PREF_NOTIFICATION_STREAM_LIVE = "notification_live";
+    String PREF_NOTIFICATION_STREAM_TITLE = "notification_title";
+    String PREF_NOTIFICATION_STREAM_GAME = "notification_game";
+    String PREF_NOTIFICATION_GAME = "notification_game_live";
+
     String PREF_USER_ID = "user_id";
     String PREF_USER_NAME = "user_name";
     String PREF_USER_LANGUAGE = "user_lang";

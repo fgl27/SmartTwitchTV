@@ -1851,6 +1851,30 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void SetNotificationLive(boolean Notify) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_LIVE, Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetNotificationTitle(boolean Notify) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_TITLE, Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetNotificationGame(boolean Notify) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_GAME, Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void SetNotificationGameLive(boolean Notify) {
+            appPreferences.put(Constants.PREF_NOTIFICATION_GAME, Notify);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void UpdateUserId(String id, String name, String refresh_token) {
 
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
@@ -1877,8 +1901,7 @@ public class PlayerActivity extends Activity {
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
                 ToastHandler.removeCallbacksAndMessages(null);
-                appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-                appPreferences.put(id + Constants.PREF_NOTIFY_OLD_LIST, null);
+                NotificationUtils.ResetNotificationList(appPreferences, id);
 
                 ChannelHandler.post(() -> {
 

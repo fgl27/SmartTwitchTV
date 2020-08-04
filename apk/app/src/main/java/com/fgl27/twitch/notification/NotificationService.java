@@ -139,7 +139,7 @@ public class NotificationService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationCompat.Builder builder =
                     NotificationUtils.NotificationBuilder(
-                            getString(R.string.notification),
+                            getString(R.string.notification_service),
                             getString(R.string.notification_text),
                             TAG,
                             context
@@ -225,8 +225,7 @@ public class NotificationService extends Service {
             //Stop all toast as user has changed
             //Technical can't happen after the service has started but just in case one is so fast that can change user during a off and on of the service
             if (ToastHandler != null) ToastHandler.removeCallbacksAndMessages(null);
-            appPreferences.put(Constants.PREF_NOTIFICATION_WILL_END, 0);
-            appPreferences.put(tempUserId + Constants.PREF_NOTIFY_OLD_LIST, null);
+            NotificationUtils.ResetNotificationList(appPreferences, tempUserId);
 
         }
 

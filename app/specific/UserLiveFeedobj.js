@@ -1022,7 +1022,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             Sidepannel_PreloadImgs();
             UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
 
-            if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
+            if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
         },
         25
     );

@@ -70,6 +70,46 @@ function OSInterface_upNotificationState(Notify) {
     if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
 }
 
+//public void SetNotificationLive(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Set if live notifications are enable
+function OSInterface_SetNotificationLive(Notify) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
+    } catch (e) {}
+}
+
+//public void SetNotificationLive(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Set if live title change notifications are enable
+function OSInterface_SetNotificationTitle(Notify) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
+    } catch (e) {}
+}
+
+//public void SetNotificationLive(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Set if live game change notifications are enable
+function OSInterface_SetNotificationGame(Notify) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
+    } catch (e) {}
+}
+
+//public void SetNotificationLive(boolean Notify)
+//Notify  background notification are enable
+//Android specific: true
+//Set if live games notifications are enable
+function OSInterface_SetNotificationGameLive(Notify) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
+    } catch (e) {}
+}
+
 //public void Settings_SetPingWarning(boolean warning)
 //warning enable or not the warning if ping fail for too long
 //Android specific: true
