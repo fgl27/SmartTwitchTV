@@ -62,9 +62,11 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
@@ -435,7 +437,7 @@ public final class ChannelsUtils {
             );
 
         } catch (Exception e) {
-            Log.w(TAG, "scheduleSyncingChannel Exception ", e);
+            Log.w(TAG, "scheduleSyncingChannel ", e);
         }
 
     }
@@ -868,7 +870,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " , e);
+            Log.w(TAG, "GetLiveContent e " , e);
         }
 
         return null;
@@ -877,7 +879,7 @@ public final class ChannelsUtils {
 
     private static List<ChannelContentObj> ProcessHostArray(JsonArray Streams)  {
         List<ChannelContentObj> content = new ArrayList<>();
-        ArrayList<String> TempArray = new ArrayList<>();
+        Set<String> TempArray = new HashSet<>();
 
         JsonObject obj;
         JsonObject objTarget;
@@ -953,7 +955,7 @@ public final class ChannelsUtils {
         if (objSize < 1) return null;
         else content.add(getRefreshContent());
 
-        ArrayList<String> TempArray = new ArrayList<>();
+        Set<String> TempArray = new HashSet<>();
 
         JsonObject obj;
         JsonObject objChannel;
@@ -1060,7 +1062,7 @@ public final class ChannelsUtils {
             int objSize;
             int viewers;
             int channels;
-            ArrayList<String> TempArray = new ArrayList<>();
+            Set<String> TempArray = new HashSet<>();
             String gameId;
             List<ChannelContentObj> content = new ArrayList<>();
 
@@ -1137,7 +1139,7 @@ public final class ChannelsUtils {
             if (content.size() > 0) return content;
 
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e ", e);
+            Log.w(TAG, "GetGamesContent e ", e);
         }
 
         return null;

@@ -59,8 +59,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
 
 import static com.google.gson.JsonParser.parseString;
@@ -69,7 +71,7 @@ public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
 
-    private static final Type ListStringType = new TypeToken<List<String>>() {}.getType();
+    private static final Type ListStringType = new TypeToken<Set<String>>() {}.getType();
 
     private static final int[] ToastPositions = {
             Gravity.RIGHT | Gravity.TOP,//0
@@ -143,7 +145,7 @@ public final class NotificationUtils {
         JsonArray StreamsResult = new JsonArray();
 
         try {
-            ArrayList<String> TempArray = new ArrayList<>();
+            Set<String> TempArray = new HashSet<>();
 
             JsonArray TempStreams;
 
@@ -248,7 +250,7 @@ public final class NotificationUtils {
             } while (StreamsSize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveStreamsListToken e " + e.getMessage());
+            Log.w(TAG, "GetLiveStreamsListToken e ", e);
         }
 
 //        if (BuildConfig.DEBUG) {
@@ -262,13 +264,14 @@ public final class NotificationUtils {
     //So this function runs without it is slower even more as the user follows more channels but works
     //The service that run this functions aren't time dependent so no problem
     public static JsonArray GetLiveStreamsListNoToken(String UserId) {
+
         JsonArray StreamsResult = new JsonArray();
 
         try {
-            ArrayList<String> ChannelsList = GetChannels(UserId);
+            Set<String> ChannelsList = GetChannels(UserId);
             if (ChannelsList == null) return null;
 
-            ArrayList<String> TempArray = new ArrayList<>();
+            Set<String> TempArray = new HashSet<>();
 
             Tools.ResponseObj response;
             JsonObject obj;
@@ -280,18 +283,20 @@ public final class NotificationUtils {
             int StreamsSize;
             int ChannelsSize = ChannelsList.size();
             int LoopSize = (ChannelsSize / 100) + 1;
-            int len;
 
             StringBuilder Channels;
-
+            Iterator<String> iterator = ChannelsList.iterator();
+            int len;
+            
             for (int x = 0; x < LoopSize; x++) {
 
                 //The list may contains 1000+ channels run 100 at a time
                 Channels = new StringBuilder();
-                len = Math.min(ChannelsSize, ((x + 1) * 100));
+                len = 100;
 
-                for (int j = x * 100; j < len; j++) {
-                    Channels.append(ChannelsList.get(j)).append(",");
+                while(iterator.hasNext() && len > 0){
+                    Channels.append(iterator.next()).append(",");
+                    len--;
                 }
 
                 Channels = new StringBuilder(Channels.substring(0, Channels.length() - 1));
@@ -354,7 +359,7 @@ public final class NotificationUtils {
             }
 
         } catch(Exception e){
-            Log.w(TAG, "GetLiveStreamsListNoToken e " + e.getMessage());
+            Log.w(TAG, "GetLiveStreamsListNoToken e ", e);
         }
 
 //        if (BuildConfig.DEBUG) {
@@ -364,8 +369,8 @@ public final class NotificationUtils {
         return StreamsResult.size() > 0 ? StreamsResult : null;
     }
 
-    public static ArrayList<String> GetChannels(String userId)  {
-        ArrayList<String> Result = new ArrayList<>();
+    public static Set<String> GetChannels(String userId)  {
+        Set<String> Result = new HashSet<>();
 
         try {
             int ChannelsOffset = 0;
@@ -455,17 +460,17 @@ public final class NotificationUtils {
             } while (arraySize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
 
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e " + e.getMessage());
+            Log.w(TAG, "GetChannels e ", e);
         }
 
         return Result.size() > 0 ? Result : null;
 
     }
 
-    private static ArrayList<NotifyList> GetNotifications(ArrayList<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
+    private static ArrayList<NotifyList> GetNotifications(Set<String> oldLive, JsonArray streams, String UserId, AppPreferences appPreferences) {
 
         ArrayList<NotifyList> result = new ArrayList<>();
-        ArrayList<String> currentLive = new ArrayList<>();
+        Set<String> currentLive = new HashSet<>();
 
         int StreamsSize = streams.size();
 
@@ -540,7 +545,7 @@ public final class NotificationUtils {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
+            Log.w(TAG, "GetNotifications e ", e);
         }
 
         SaveOldList(currentLive, UserId, appPreferences);
@@ -549,7 +554,7 @@ public final class NotificationUtils {
     }
 
     private static void SetOldList(JsonArray streams, String UserId, AppPreferences appPreferences) {
-        ArrayList<String> currentLive = new ArrayList<>();
+        Set<String> currentLive = new HashSet<>();
         JsonObject obj;
         int StreamsSize = streams.size();
 
@@ -562,13 +567,13 @@ public final class NotificationUtils {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveStreamsList e " + e.getMessage());
+            Log.w(TAG, "SetOldList e ", e);
         }
 
         SaveOldList(currentLive, UserId, appPreferences);
     }
 
-    private static void SaveOldList(ArrayList<String> currentLive, String UserId, AppPreferences appPreferences) {
+    private static void SaveOldList(Set<String> currentLive, String UserId, AppPreferences appPreferences) {
         appPreferences.put(UserId + Constants.PREF_NOTIFY_OLD_LIST, new Gson().toJson(currentLive));
     }
 
@@ -597,7 +602,7 @@ public final class NotificationUtils {
 
             if (streams != null) {
 
-                ArrayList<String> oldLive = new ArrayList<>();
+                Set<String> oldLive = new HashSet<>();
                 String tempOldLive = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_LIST, null, appPreferences);
 
                 if (tempOldLive != null) {
@@ -674,7 +679,7 @@ public final class NotificationUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "CheckNotifications e " + e.getMessage());
+            Log.w(TAG, "CheckNotifications e ", e);
         }
     }
 

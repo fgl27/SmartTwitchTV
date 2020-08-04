@@ -308,7 +308,7 @@ public final class Tools {
                 return null;
             }
         } catch (Exception e) {
-            Log.w(TAG, "getStreamData Exception ", e);
+            Log.w(TAG, "GetResponseObj ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -407,7 +407,7 @@ public final class Tools {
                 return null;
             }
         } catch (Exception e) {
-            Log.w(TAG, "postUrl Exception ", e);
+            Log.w(TAG, "Internal_MethodUrl ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -1030,7 +1030,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e ", e);
+            Log.w(TAG, "checkTokens e ", e);
         }
     }
 
@@ -1099,7 +1099,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "updateChannels e ", e);
+            Log.w(TAG, "refreshTokens e ", e);
         }
 
         return false;
