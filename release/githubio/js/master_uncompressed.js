@@ -306,7 +306,6 @@
     var STR_SINGLE_EXIT;
     var STR_SINGLE_EXIT_SUMMARY;
     var STR_USER_MY_CHANNEL;
-    var STR_NOW_LIVE;
     var STR_NOW_LIVE_SHOW;
     var STR_GLOBAL_FONT;
     var STR_GLOBAL_FONT_SUMMARY;
@@ -630,6 +629,9 @@
     var STR_GAME_SORT;
     var STR_CLOCK_OFFSET_SUMMARY;
     var STR_SHOW_IN_CHAT_SUMMARY;
+    var STR_NOW_LIVE_GAME_SHOW;
+    var STR_TITLE_CHANGE_SHOW;
+    var STR_GAME_CHANGE_SHOW;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1139,10 +1141,12 @@
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
         STR_SINGLE_EXIT = "Single return key press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture, 50/50 or Multistream mode with a single key return click";
-        STR_NOW_LIVE = "Now Live";
         STR_NOTIFICATION_OPT = "Notification options";
-        STR_NOW_LIVE_SHOW = "Show Now Live notification";
-        STR_NOW_BACKGROUND = "Now Live notification over other apps, when the app is on background";
+        STR_NOW_LIVE_SHOW = 'Show "Streamer is live" notification for followed channels';
+        STR_TITLE_CHANGE_SHOW = 'Show "Streamer changed title" notification for followed channels';
+        STR_GAME_CHANGE_SHOW = 'Show "Streamer changed game" notification for followed channels';
+        STR_NOW_LIVE_GAME_SHOW = 'Show "Game is Live" notification for followed games';
+        STR_NOW_BACKGROUND = "Notification over other apps, when the app is on background";
         STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";
         STR_NOTIFICATION_REPEAT = "How many times to show it individual notification";
         STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed because this timeout is control by the system, but you can set the number of times the same notification will show";
@@ -4119,7 +4123,7 @@
             AddUser_UpdateSidepanel();
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
             OSInterface_mCheckRefresh();
-            if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
+            if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
         }
         Main_SwitchScreen();
         AddUser_loadingData = false;
@@ -8404,10 +8408,10 @@
     var Main_DataAttribute = 'data-array';
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.236';
-    var Main_version_java = 27; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 03 2020';
-    var Main_version_web = 45; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.237';
+    var Main_version_java = 28; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 05 2020';
+    var Main_version_web = 46; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
@@ -10857,6 +10861,46 @@
     //Allows to stop the notification service from js side
     function OSInterface_upNotificationState(Notify) {
         if (Main_IsOn_OSInterface) Android.upNotificationState(Notify);
+    }
+
+    //public void SetNotificationLive(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Set if live notifications are enable
+    function OSInterface_SetNotificationLive(Notify) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
+        } catch (e) {}
+    }
+
+    //public void SetNotificationLive(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Set if live title change notifications are enable
+    function OSInterface_SetNotificationTitle(Notify) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
+        } catch (e) {}
+    }
+
+    //public void SetNotificationLive(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Set if live game change notifications are enable
+    function OSInterface_SetNotificationGame(Notify) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
+        } catch (e) {}
+    }
+
+    //public void SetNotificationLive(boolean Notify)
+    //Notify  background notification are enable
+    //Android specific: true
+    //Set if live games notifications are enable
+    function OSInterface_SetNotificationGameLive(Notify) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
+        } catch (e) {}
     }
 
     //public void Settings_SetPingWarning(boolean warning)
@@ -13349,6 +13393,8 @@
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessend(responseObj.responseText, false, true);
             Play_ShowPanelStatus(1);
+            Main_values.Play_WasPlaying = 1;
+            Main_SaveValues();
             return;
 
         } else if (responseObj.status === 1 || responseObj.status === 403 ||
@@ -25826,6 +25872,18 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "title_notification": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "game_notification": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "game_live_notification": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "live_notification_background": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -26316,6 +26374,7 @@
         OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
+        Settings_set_all_notification();
     }
 
     function Settings_Obj_values(key) {
@@ -26382,6 +26441,9 @@
     function Settings_SetDefault(position) {
 
         if (position === "live_notification") Settings_notification();
+        else if (position === "title_notification") Settings_notification_title();
+        else if (position === "game_notification") Settings_notification_game();
+        else if (position === "game_live_notification") Settings_notification_game_live();
         else if (position === "live_notification_background") Settings_notification_background();
         else if (position === "live_notification_position") Settings_notification_position();
         else if (position === "repeat_notification") Settings_notification_repeat();
@@ -26439,8 +26501,48 @@
 
     }
 
+    function Settings_notification_check_any_enable() {
+
+        if (!Settings_Obj_default("live_notification") &&
+            !Settings_Obj_default("title_notification") &&
+            !Settings_Obj_default("game_notification") &&
+            !Settings_Obj_default("game_live_notification")) {
+            OSInterface_StopNotificationService();
+            return false;
+        }
+
+        return true;
+    }
+
+    function Settings_set_all_notification() {
+        OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
+        OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+        OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+        OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+    }
+
+    function Settings_notification() {
+        OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
+        Settings_notification_background();
+    }
+
+    function Settings_notification_title() {
+        OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+        Settings_notification_background();
+    }
+
+    function Settings_notification_game() {
+        OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+        Settings_notification_background();
+    }
+
+    function Settings_notification_game_live() {
+        OSInterface_SetNotificationGameLive(Settings_Obj_default("game_live_notification") === 1);
+        Settings_notification_background();
+    }
+
     function Settings_notification_background() {
-        OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_Obj_default("live_notification") === 1);
+        OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_notification_check_any_enable());
     }
 
     function Settings_notification_position() {
@@ -26465,11 +26567,6 @@
         }
 
         OSInterface_SetNotificationSinceTime(time);
-    }
-
-    function Settings_notification() {
-        if (!Settings_Obj_default("live_notification")) OSInterface_StopNotificationService();
-        Settings_notification_background();
     }
 
     function Settings_SetPingWarning() {
@@ -27093,6 +27190,9 @@
     function Settings_DialogShowNotification() {
         Settings_value.live_notification.values = [STR_NO, STR_YES];
         Settings_value.live_notification_background.values = [STR_NO, STR_YES];
+        Settings_value.title_notification.values = [STR_NO, STR_YES];
+        Settings_value.game_notification.values = [STR_NO, STR_YES];
+        Settings_value.game_live_notification.values = [STR_NO, STR_YES];
         Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
         Settings_value.since_notification.values[0] = STR_DISABLE;
 
@@ -27101,6 +27201,24 @@
                 defaultValue: Settings_value.live_notification.defaultValue,
                 values: Settings_value.live_notification.values,
                 title: STR_NOW_LIVE_SHOW,
+                summary: null
+            },
+            title_notification: {
+                defaultValue: Settings_value.title_notification.defaultValue,
+                values: Settings_value.title_notification.values,
+                title: STR_TITLE_CHANGE_SHOW,
+                summary: null
+            },
+            game_notification: {
+                defaultValue: Settings_value.game_notification.defaultValue,
+                values: Settings_value.game_notification.values,
+                title: STR_GAME_CHANGE_SHOW,
+                summary: null
+            },
+            game_live_notification: {
+                defaultValue: Settings_value.game_live_notification.defaultValue,
+                values: Settings_value.game_live_notification.values,
+                title: STR_NOW_LIVE_GAME_SHOW,
                 summary: null
             },
             live_notification_background: {
@@ -30866,7 +30984,7 @@
                 Sidepannel_PreloadImgs();
                 UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
 
-                if (Settings_Obj_default("live_notification")) OSInterface_RunNotificationService();
+                if (Settings_notification_check_any_enable()) OSInterface_RunNotificationService();
             },
             25
         );
