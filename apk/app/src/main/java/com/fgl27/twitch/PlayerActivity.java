@@ -80,19 +80,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class PlayerActivity extends Activity {
-    public final String TAG = "STTV_PlayerActivity";
+    private final String TAG = "STTV_PlayerActivity";
 
-    //public final String PageUrl = "file:///android_asset/app/index.html";
-    //public final String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    private final int DefaultDelayPlayerCheck = 8000;
+    private final int PlayerAccount = 4;
+    private final int PlayerAccountPlus = PlayerAccount + 1;
 
-    public final String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.min.html";
-    public final String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.min.html";
-
-    public final int DefaultDelayPlayerCheck = 8000;
-    public final int PlayerAccount = 4;
-    public final int PlayerAccountPlus = PlayerAccount + 1;
-
-    public final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
+    private final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,//0
             KeyEvent.KEYCODE_DPAD_DOWN,//1
             KeyEvent.KEYCODE_DPAD_LEFT,//2
@@ -104,12 +98,12 @@ public class PlayerActivity extends Activity {
             KeyEvent.KEYCODE_3//8
     };
 
-    public final int[] keysAction = {
+    private final int[] keysAction = {
             KeyEvent.ACTION_DOWN,//0
             KeyEvent.ACTION_UP//1
     };
 
-    public final int[] idsurface = {
+    private final int[] idsurface = {
             R.id.player_view,//0
             R.id.player_view2,//1
             R.id.player_view3,//2
@@ -117,85 +111,83 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e//4
     };
 
-    public final int[] idtexture = {
+    private final int[] idtexture = {
             R.id.player_view_texture_view,//0
             R.id.player_view2_texture_view,//1
             R.id.player_view3_texture_view,//2
             R.id.player_view4_texture_view,//3
             R.id.player_view_e_texture_view//4
     };
-    public final int Player_Ended = 0;
-    public final int Player_Erro = 1;
-    public final int Player_Lag = 2;
 
-    public int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
-    public String[] BLACKLISTEDCODECS = null;
-    public PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
-    public SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
-    public PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
-    public DefaultRenderersFactory renderersFactory;
-    public DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
-    public DefaultTrackSelector.Parameters trackSelectorParameters;
-    public DefaultTrackSelector.Parameters trackSelectorParametersPP;
-    public DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
-    public TrackGroupArray lastSeenTrackGroupArray;
-    public int mainPlayerBitrate = Integer.MAX_VALUE;
-    public int PP_PlayerBitrate = 3000000;
-    public final int ExtraSmallPlayerBitrate = 4000000;
-    public long mResumePosition;
-    public long mResumePositionSmallPlayer;
-    public int mWho_Called = 1;
-    public MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
-    public String userAgent;
-    public WebView mWebView;
-    public WebView mWebViewKey;
-    public boolean PicturePicture;
-    public boolean deviceIsTV;
-    public boolean MultiStreamEnable;
-    public boolean isFullScreen = true;
-    public boolean CheckSource = true;
-    public int mainPlayer = 0;
-    public int MultiMainPlayer = 0;
-    public int PicturePicturePosition = 0;
-    public int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
-    public int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
-    public int FullScreenSize = 3;//sizes are 0 , 1 , 2, 3, 4 ... 2 default 75%
-    public int FullScreenPosition = 1;//0 right 1 left
-    public int AudioSource = 1;
-    public int AudioMulti = 0;//window 0
-    public float PreviewOthersAudio = 0.3f;//window 0
-    public float PreviewAudio = 1f;//window 0
-    public float PingValue = 0f;
-    public float PingValueAVG = 0f;
-    public long PingCounter = 0L;
-    public long PingErrorCounter = 0L;
-    public boolean warningShowing = false;
-    public boolean WebviewLoaded = false;
-    public boolean mWebViewKeyIsShowing = false;
-    public long PlayerCurrentPosition = 0L;
-    public long SmallPlayerCurrentPosition = 0L;
-    public boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
-    public Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
-    public int[] PlayerCheckCounter = new int[PlayerAccountPlus];
-    public int droppedFrames = 0;
-    public float conSpeed = 0f;
-    public float netActivity = 0f;
-    public long DroppedFramesTotal = 0L;
-    public int DeviceRam = 0;
-    public String VideoQualityResult = null;
-    public String getVideoStatusResult = null;
-    public float conSpeedAVG = 0f;
-    public float NetActivityAVG = 0f;
-    public long NetCounter = 0L;
-    public long SpeedCounter = 0L;
-    public int mLowLatency = 0;
-    public boolean AlreadyStarted;
-    public boolean onCreateReady;
-    public boolean IsStopped;
-    public boolean IsInAutoMode = true;
-    public boolean PingWarning = true;
-    public AppPreferences appPreferences;
-    public LoadControl[] loadControl = new LoadControl[PlayerAccount];
+    private final int Player_Ended = 0;
+    private final int Player_Erro = 1;
+    private final int Player_Lag = 2;
+
+    private int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
+    private String[] BLACKLISTEDCODECS = null;
+    private PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
+    private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
+    private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
+    private DefaultRenderersFactory renderersFactory;
+    private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
+    private DefaultTrackSelector.Parameters trackSelectorParameters;
+    private DefaultTrackSelector.Parameters trackSelectorParametersPP;
+    private DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
+    private TrackGroupArray lastSeenTrackGroupArray;
+    private long mResumePosition;
+    private long mResumePositionSmallPlayer;
+    private int mWho_Called = 1;
+    private MediaSource[] mediaSources = new MediaSource[PlayerAccountPlus];
+    private String userAgent;
+    private WebView mWebView;
+    private WebView mWebViewKey;
+    private boolean PicturePicture;
+    private boolean deviceIsTV;
+    private boolean MultiStreamEnable;
+    private boolean isFullScreen = true;
+    private boolean CheckSource = true;
+    private int mainPlayer = 0;
+    private int MultiMainPlayer = 0;
+    private int PicturePicturePosition = 0;
+    private int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
+    private int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
+    private int FullScreenSize = 3;//sizes are 0 , 1 , 2, 3, 4 ... 2 default 75%
+    private int FullScreenPosition = 1;//0 right 1 left
+    private int AudioSource = 1;
+    private int AudioMulti = 0;//window 0
+    private float PreviewOthersAudio = 0.3f;//window 0
+    private float PreviewAudio = 1f;//window 0
+    private float PingValue = 0f;
+    private float PingValueAVG = 0f;
+    private long PingCounter = 0L;
+    private long PingErrorCounter = 0L;
+    private boolean warningShowing = false;
+    private boolean WebviewLoaded = false;
+    private boolean mWebViewKeyIsShowing = false;
+    private long PlayerCurrentPosition = 0L;
+    private long SmallPlayerCurrentPosition = 0L;
+    private boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
+    private Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
+    private int[] PlayerCheckCounter = new int[PlayerAccountPlus];
+    private int droppedFrames = 0;
+    private float conSpeed = 0f;
+    private float netActivity = 0f;
+    private long DroppedFramesTotal = 0L;
+    private int DeviceRam = 0;
+    private String VideoQualityResult = null;
+    private String getVideoStatusResult = null;
+    private float conSpeedAVG = 0f;
+    private float NetActivityAVG = 0f;
+    private long NetCounter = 0L;
+    private long SpeedCounter = 0L;
+    private int mLowLatency = 0;
+    private boolean AlreadyStarted;
+    private boolean onCreateReady;
+    private boolean IsStopped;
+    private boolean IsInAutoMode = true;
+    private boolean PingWarning = true;
+    private AppPreferences appPreferences;
+    private LoadControl[] loadControl = new LoadControl[PlayerAccount];
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -209,40 +201,37 @@ public class PlayerActivity extends Activity {
     //the default size for the players of multistream 4 player two modes
     private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
     //the default size for the side panel players
-    public FrameLayout.LayoutParams PlayerViewSidePanel;
-    public FrameLayout.LayoutParams PlayerViewScreensPanel;
+    private FrameLayout.LayoutParams PlayerViewSidePanel;
+    private FrameLayout.LayoutParams PlayerViewScreensPanel;
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
-    public Point ScreenSize;
+    private Point ScreenSize;
 
-    public String IntentObj;
-    public String LastIntent;
-    public boolean canRunChannel;
-    public boolean closeThisCalled;
+    private String IntentObj;
+    private String LastIntent;
+    private boolean canRunChannel;
+    private boolean closeThisCalled;
 
-    public String[][] PreviewFeedHandlerResult = new String[25][100];
-    public String[] DataResult = new String[PlayerAccount];
+    private String[][] PreviewFeedHandlerResult = new String[25][100];
+    private String[] DataResult = new String[PlayerAccount];
 
-    public HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
-    public HandlerThread PreviewFeedHandlerThread;
-    public HandlerThread BackGroundThread;
-    public HandlerThread RuntimeThread;
+    private HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
 
-    public Handler RuntimeHandler;
-    public Handler MainThreadHandler;
-    public Handler[] CurrentPositionHandler = new Handler[2];
-    public Handler SaveBackupJsonHandler;
-    public Handler NotificationHandler;
-    public Handler ToastHandler;
-    public Handler ChannelHandler;
-    public Handler DeleteHandler;
+    private Handler RuntimeHandler;
+    private Handler MainThreadHandler;
+    private Handler[] CurrentPositionHandler = new Handler[2];
+    private Handler SaveBackupJsonHandler;
+    private Handler NotificationHandler;
+    private Handler ToastHandler;
+    private Handler ChannelHandler;
+    private Handler DeleteHandler;
 
-    public Handler PreviewFeedHandler;
-    public Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
+    private Handler PreviewFeedHandler;
+    private Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
 
-    public Runtime runtime;
+    private Runtime runtime;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -279,9 +268,9 @@ public class PlayerActivity extends Activity {
             }
 
             //BackGroundThreadEtc loop threads
-            BackGroundThread = new HandlerThread("BackGroundThread");
-            BackGroundThread.start();
-            Looper BackGroundThreadLooper = BackGroundThread.getLooper();
+            HandlerThread backGroundThread = new HandlerThread("BackGroundThread");
+            backGroundThread.start();
+            Looper BackGroundThreadLooper = backGroundThread.getLooper();
 
             NotificationHandler = new Handler(BackGroundThreadLooper);
             ToastHandler = new Handler(BackGroundThreadLooper);
@@ -290,9 +279,9 @@ public class PlayerActivity extends Activity {
             DeleteHandler = new Handler(BackGroundThreadLooper);
 
             //Other loop threads
-            PreviewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
-            PreviewFeedHandlerThread.start();
-            PreviewFeedHandler = new Handler(PreviewFeedHandlerThread.getLooper());
+            HandlerThread previewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
+            previewFeedHandlerThread.start();
+            PreviewFeedHandler = new Handler(previewFeedHandlerThread.getLooper());
 
             for (int i = 0; i < PlayerAccount; i++) {
                 DataResultThread[i] = new HandlerThread("DataResultThread" + i);
@@ -300,9 +289,9 @@ public class PlayerActivity extends Activity {
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
 
-            RuntimeThread = new HandlerThread("RuntimeThread");
-            RuntimeThread.start();
-            RuntimeHandler = new Handler(RuntimeThread.getLooper());
+            HandlerThread runtimeThread = new HandlerThread("RuntimeThread");
+            runtimeThread.start();
+            RuntimeHandler = new Handler(runtimeThread.getLooper());
             runtime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
@@ -1534,7 +1523,7 @@ public class PlayerActivity extends Activity {
             mWebViewKey.setVisibility(View.GONE);
         }
 
-        mWebView.loadUrl(PageUrl);
+        mWebView.loadUrl(Constants.PageUrl);
         WebviewLoaded = true;
         mWebView.requestFocus();
 
@@ -1618,7 +1607,7 @@ public class PlayerActivity extends Activity {
         });
 
         mWebViewKeyIsShowing = true;
-        mWebViewKey.loadUrl(KeyPageUrl);
+        mWebViewKey.loadUrl(Constants.KeyPageUrl);
     }
 
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
@@ -1661,7 +1650,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mPageUrl() {
-            return PageUrl;
+            return Constants.PageUrl;
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2423,7 +2412,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
-            mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            int mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
             trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBitrate)
@@ -2433,7 +2422,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetSmallPlayerBitrate(int Bitrate) {
-            PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            int PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
@@ -2443,10 +2432,11 @@ public class PlayerActivity extends Activity {
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
+            int extraSmallPlayerBitrate = 4000000;
             trackSelectorParametersExtraSmall = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
-                            Math.min(PP_PlayerBitrate, ExtraSmallPlayerBitrate)
+                            Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate)
                     ).build();
         }
 
@@ -2860,7 +2850,7 @@ public class PlayerActivity extends Activity {
             this.Delay_ms = BUFFER_SIZE[m_Who_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
         }
 
-        public void UpdateWho_Called(int m_Who_Called) {
+        private void UpdateWho_Called(int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
         }
 

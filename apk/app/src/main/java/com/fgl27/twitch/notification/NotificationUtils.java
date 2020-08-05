@@ -109,7 +109,7 @@ public final class NotificationUtils {
         private final String title;
         private final boolean live;
 
-        public NotifyList(boolean isGame, String notificationTitle, String game, String name, Bitmap logo, String title, boolean live) {
+        NotifyList(boolean isGame, String notificationTitle, String game, String name, Bitmap logo, String title, boolean live) {
             this.isGame = isGame;
             this.notificationTitle = notificationTitle;
             this.game = game;
@@ -144,7 +144,7 @@ public final class NotificationUtils {
 
     }
 
-    public static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences) {
+    private static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences) {
         JsonArray StreamsResult = new JsonArray();
         boolean HttpRequestSuccess = false;
 
@@ -165,8 +165,8 @@ public final class NotificationUtils {
             String id;
             String url;
             String[][] DEFAULT_HEADERS = {
-                    {Tools.DEFAULT_HEADERS[0][0], Tools.DEFAULT_HEADERS[0][1]},
-                    {Tools.DEFAULT_HEADERS[1][0], Tools.DEFAULT_HEADERS[1][1]},
+                    {Constants.DEFAULT_HEADERS[0][0], Constants.DEFAULT_HEADERS[0][1]},
+                    {Constants.DEFAULT_HEADERS[1][0], Constants.DEFAULT_HEADERS[1][1]},
                     {"Authorization", "OAuth " + Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences)}
             };
 
@@ -264,7 +264,7 @@ public final class NotificationUtils {
     //There is a faster way to do this??? yes but that is needed the user authorization key
     //So this function runs without it is slower even more as the user follows more channels but works
     //The service that run this functions aren't time dependent so no problem
-    public static JsonArray GetLiveStreamsListNoToken(String UserId) {
+    private static JsonArray GetLiveStreamsListNoToken(String UserId) {
 
         JsonArray StreamsResult = new JsonArray();
         boolean HttpRequestSuccess = false;
@@ -317,7 +317,7 @@ public final class NotificationUtils {
                             null,
                             null,
                             0,
-                            Tools.DEFAULT_HEADERS
+                            Constants.DEFAULT_HEADERS
                     );
 
                     if (response != null) {
@@ -373,7 +373,7 @@ public final class NotificationUtils {
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
-    public static Set<String> GetChannels(String userId)  {
+    private static Set<String> GetChannels(String userId)  {
         Set<String> Result = new HashSet<>();
         boolean HttpRequestSuccess = false;
 
@@ -409,7 +409,7 @@ public final class NotificationUtils {
                             null,
                             null,
                             0,
-                            Tools.DEFAULT_HEADERS
+                            Constants.DEFAULT_HEADERS
                     );
 
                     if (response != null) {
@@ -588,7 +588,7 @@ public final class NotificationUtils {
                                         game,
                                         display_name,
                                         GetBitmap(
-                                                !ChannelObj.get("logo").isJsonNull() ? ChannelObj.get("logo").getAsString() : ChannelsUtils.LOGO_404
+                                                !ChannelObj.get("logo").isJsonNull() ? ChannelObj.get("logo").getAsString() : Constants.LOGO_404
                                         ),
                                         title,
                                         isLive
@@ -663,7 +663,7 @@ public final class NotificationUtils {
                                         GetBitmap(
                                                 objPreview != null && !objPreview.get("large").isJsonNull() ?
                                                         objPreview.get("large").getAsString() :
-                                                        ChannelsUtils.GAME_404
+                                                        Constants.GAME_404
                                         ),
                                         decimalFormat.format(channels) + " Channels",
                                         false
@@ -1039,7 +1039,7 @@ public final class NotificationUtils {
     }
 
     @TargetApi(26)
-    public static NotificationCompat.Builder NotificationBuilder(String title, String text, String id, Context context) {
+    static NotificationCompat.Builder NotificationBuilder(String title, String text, @SuppressWarnings("SameParameterValue") String id, Context context) {
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (mNotifyManager != null) {
