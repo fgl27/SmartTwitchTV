@@ -7,6 +7,16 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.237 & Web Version August 05 2020
+==============
+
+* Add new notification options on settings.. Notifications options
+* Add **"Streamer changed title"** notification for followed channels, disable by defaults
+* Add **"Streamer changed game"** notification for followed channels, disable by defaults
+* Add **"Game is Live"** notification for followed games, disable by defaults
+* General improves to reliability and performance of notifications
+* General performance improves and bug fixes
+
 Apk Version 3.0.236 - August 03 2020
 ==============
 
