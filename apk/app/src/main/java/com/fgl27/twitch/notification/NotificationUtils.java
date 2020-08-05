@@ -492,7 +492,6 @@ public final class NotificationUtils {
 
         JsonObject obj;
         JsonObject ChannelObj;
-        NotifyList tempNotifyList;
 
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
         input.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -506,7 +505,7 @@ public final class NotificationUtils {
         String title_title = context.getString(R.string.notification_title);
         String game_title = context.getString(R.string.notification_game);
         String game_and_title = context.getString(R.string.notification_title_game);
-        String ExtraTitle;
+        String NotificationTitle;
 
         boolean gameChange;
         boolean titleChange;
@@ -536,6 +535,8 @@ public final class NotificationUtils {
                     );
                     isLive = !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live");
 
+                    NotificationTitle = null;
+
                     if (!oldLive.containsKey(id)) {
 
                         if (DoStreamLive) {
@@ -558,11 +559,32 @@ public final class NotificationUtils {
 
                             }
 
-                            if (NotifyTime) {
+                            if (NotifyTime) NotificationTitle = live_title;
 
-                                tempNotifyList = new NotifyList(
+                        }
+
+                    } else if (DoStreamTitle || DoStreamGame) {
+
+                        TempObj = oldLive.get(id);
+                        gameChange = DoStreamGame && TempObj != null && !Objects.equals(TempObj.game, game);
+                        titleChange = DoStreamTitle && TempObj != null && !Objects.equals(TempObj.title, title);
+
+                        if (gameChange || titleChange) {
+
+                            if (gameChange && titleChange) NotificationTitle = game_and_title;
+                            else if (gameChange) NotificationTitle = game_title;
+                            else NotificationTitle = title_title;
+
+                        }
+
+                    }
+
+                    if (NotificationTitle != null) {
+
+                        NotifyListResultAdd(
+                                new NotifyList(
                                         false,
-                                        live_title,
+                                        NotificationTitle,
                                         game,
                                         display_name,
                                         GetBitmap(
@@ -570,47 +592,10 @@ public final class NotificationUtils {
                                         ),
                                         title,
                                         isLive
-                                );
-
-                                //Toast can only run for about 3s allow the user to repeat same notification
-                                for (int x = 0; x < Repeat; x++) {
-                                    result.add(tempNotifyList);
-                                }
-
-                            }
-
-                        }
-
-                    } else if (DoStreamTitle || DoStreamGame) {
-
-                        TempObj = oldLive.get(id);
-                        gameChange = TempObj != null && !Objects.equals(TempObj.game, game) && DoStreamGame;
-                        titleChange = TempObj != null && !Objects.equals(TempObj.title, title) && DoStreamTitle;
-
-                        if (gameChange || titleChange) {
-
-                            if (gameChange && titleChange) ExtraTitle = game_and_title;
-                            else if (gameChange) ExtraTitle = game_title;
-                            else ExtraTitle = title_title;
-
-                            tempNotifyList = new NotifyList(
-                                    false,
-                                    ExtraTitle,
-                                    game,
-                                    display_name,
-                                    GetBitmap(
-                                            !ChannelObj.get("logo").isJsonNull() ? ChannelObj.get("logo").getAsString() : ChannelsUtils.LOGO_404
-                                    ),
-                                    title,
-                                    isLive
-                            );
-
-                            //Toast can only run for about 3s allow the user to repeat same notification
-                            for (int x = 0; x < Repeat; x++) {
-                                result.add(tempNotifyList);
-                            }
-
-                        }
+                                ),
+                                Repeat,
+                                result
+                        );
 
                     }
 
@@ -646,8 +631,6 @@ public final class NotificationUtils {
         JsonObject objGame;
         JsonObject objPreview;
 
-        NotifyList tempNotifyList;
-
         String game_notification_title = context.getString(R.string.notification_live_game);
         DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
 
@@ -671,24 +654,23 @@ public final class NotificationUtils {
 
                     if (!oldLive.contains(id)) {
 
-                        tempNotifyList = new NotifyList(
-                                true,
-                                game_notification_title,
-                                decimalFormat.format(viewers) + " viewers",
-                                name,
-                                GetBitmap(
-                                        objPreview != null && !objPreview.get("large").isJsonNull() ?
-                                                objPreview.get("large").getAsString() :
-                                                ChannelsUtils.GAME_404
+                        NotifyListResultAdd(
+                                new NotifyList(
+                                        true,
+                                        game_notification_title,
+                                        decimalFormat.format(viewers) + " viewers",
+                                        name,
+                                        GetBitmap(
+                                                objPreview != null && !objPreview.get("large").isJsonNull() ?
+                                                        objPreview.get("large").getAsString() :
+                                                        ChannelsUtils.GAME_404
+                                        ),
+                                        decimalFormat.format(channels) + " Channels",
+                                        false
                                 ),
-                                decimalFormat.format(channels) + " Channels",
-                                false
+                                Repeat,
+                                result
                         );
-
-                        //Toast can only run for about 3s allow the user to repeat same notification
-                        for (int x = 0; x < Repeat; x++) {
-                            result.add(tempNotifyList);
-                        }
 
                     }
 
@@ -704,6 +686,13 @@ public final class NotificationUtils {
                 UserId
         );
 
+    }
+
+    private static void NotifyListResultAdd(NotifyList notifyList, int Repeat, ArrayList<NotifyList> result) {
+        //Toast can only run for about 3s allow the user to repeat same notification
+        for (int x = 0; x < Repeat; x++) {
+            result.add(notifyList);
+        }
     }
 
     private static void SetOldLiveList(JsonArray streams, String UserId, AppPreferences appPreferences) {
