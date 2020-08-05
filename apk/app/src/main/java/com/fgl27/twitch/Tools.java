@@ -94,9 +94,6 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.google.gson.JsonParser.parseString;
 
@@ -144,8 +141,6 @@ public final class Tools {
             1440,
             2160
     };
-
-    private static final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     public static class ResponseObj {
@@ -304,32 +299,6 @@ public final class Tools {
         }
     }
 
-    static String GetPing(Runtime runtime) {
-        Process process = null;
-        try {
-
-            process = runtime.exec("ping -c 1 api.twitch.tv");
-
-            //TODO find a solution for older api
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if(!process.waitFor(5, TimeUnit.SECONDS)) {
-                    process.destroy();
-                    return null;
-                }
-            }
-
-            Matcher matcher = TIME_NAME.matcher(readFullyString(process.getInputStream()));
-
-            return matcher.find() ? matcher.group(1) : null;
-        } catch (Exception e) {
-            Log.w(TAG, "GetPing Exception ", e);
-        } finally {
-            if (process != null) process.destroy();
-        }
-
-        return null;
-    }
-
     static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
                                         String Method, long checkResult, String JsonHeadersArray) {
 
@@ -403,7 +372,7 @@ public final class Tools {
         }
     }
 
-    private static String readFullyString(InputStream in) throws Exception {//IOException and or NullPointerException
+    static String readFullyString(InputStream in) throws Exception {//IOException and or NullPointerException
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];

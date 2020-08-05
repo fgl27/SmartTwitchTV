@@ -78,10 +78,13 @@ import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
-
+    private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
     private final int DefaultDelayPlayerCheck = 8000;
     private final int PlayerAccount = 4;
     private final int PlayerAccountPlus = PlayerAccount + 1;
@@ -219,7 +222,7 @@ public class PlayerActivity extends Activity {
 
     private HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
 
-    private Handler RuntimeHandler;
+    private Handler[] RuntimeHandler = new Handler[2];
     private Handler MainThreadHandler;
     private Handler[] CurrentPositionHandler = new Handler[2];
     private Handler SaveBackupJsonHandler;
@@ -231,7 +234,8 @@ public class PlayerActivity extends Activity {
     private Handler PreviewFeedHandler;
     private Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
 
-    private Runtime runtime;
+    private Process PingProcess;
+    private Runtime PingRuntime;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -289,10 +293,14 @@ public class PlayerActivity extends Activity {
                 DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
             }
 
-            HandlerThread runtimeThread = new HandlerThread("RuntimeThread");
-            runtimeThread.start();
-            RuntimeHandler = new Handler(runtimeThread.getLooper());
-            runtime = Runtime.getRuntime();
+            HandlerThread[] runtimeThread = new HandlerThread[2];
+            for (int i = 0; i < 2; i++) {
+                runtimeThread[i] = new HandlerThread("RuntimeThread" + i);
+                runtimeThread[i].start();
+                RuntimeHandler[i] = new Handler(runtimeThread[i].getLooper());
+            }
+
+            PingRuntime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
@@ -1035,7 +1043,7 @@ public class PlayerActivity extends Activity {
         MainThreadHandler.postDelayed(() -> {
             if (Tools.isConnected(this)){
                 HideWarningText();
-                initializeWebviewEnd();
+                initializeWebViewEnd();
             } else NetworkCheck();
         }, 250);
     }
@@ -1053,11 +1061,12 @@ public class PlayerActivity extends Activity {
         warningShowing = false;
     }
 
-    private void GetPing() {
-        RuntimeHandler.removeCallbacksAndMessages(null);
+    private void StartPing() {
+        RuntimeHandler[0].removeCallbacksAndMessages(null);
 
-        RuntimeHandler.postDelayed(() -> {
-            String TempPing = Tools.GetPing(runtime);
+        RuntimeHandler[0].postDelayed(() -> {
+            String TempPing = DoGetPing();
+            RuntimeHandler[1].removeCallbacksAndMessages(null);
 
             if (TempPing != null) {
                 PingValue = Float.parseFloat(TempPing);
@@ -1069,15 +1078,49 @@ public class PlayerActivity extends Activity {
                 if (warningShowing) MainThreadHandler.post(this::HideWarningText);
             } else if (!warningShowing && PingWarning && player[mainPlayer] == null) {//Prevent showing if playing or disabled by user
                 PingErrorCounter++;
-                if (PingErrorCounter > 2) {//> 0 1 2 = 30s... 5 seconds of postDelayed plus 5 seconds of postDelayed times 3 = 30s
+                if (PingErrorCounter > 3) {//> 0 1 2 3 = 32s... 5 seconds of postDelayed plus 3 seconds of waitFor/postDelayed times 4 = 32s
                     PingErrorCounter = 0L;
                     MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
                     MainThreadHandler.postDelayed(this::HideWarningText, 30000);
                 }
             }
 
-            if (!IsStopped) GetPing();
+            if (!IsStopped) StartPing();
         }, 5000);
+    }
+
+    private void DestroyGetPing() {
+        try {
+            if (PingProcess != null) PingProcess.destroy();
+        } catch (Exception ignore) {}
+    }
+
+    private String DoGetPing() {
+        RuntimeHandler[1].removeCallbacksAndMessages(null);
+        PingProcess = null;
+        try {
+
+            PingProcess = PingRuntime.exec("ping -c 1 api.twitch.tv");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if(!PingProcess.waitFor(3, TimeUnit.SECONDS)) {
+                    PingProcess.destroy();
+                    return null;
+                }
+            } else {
+                RuntimeHandler[1].postDelayed(this::DestroyGetPing, 3000);
+            }
+
+            Matcher pingMatcher = TIME_NAME.matcher(Tools.readFullyString(PingProcess.getInputStream()));
+            PingProcess.getErrorStream();
+
+            return pingMatcher.find() ? pingMatcher.group(1) : null;
+
+        } catch (Exception ignore) {
+        } finally {
+            if (PingProcess != null) PingProcess.destroy();
+        }
+
+        return null;
     }
 
     @Override
@@ -1189,7 +1232,7 @@ public class PlayerActivity extends Activity {
 
     private void DoResume(boolean skipResumeJS) {
         if (mWebView != null && AlreadyStarted) {
-            GetPing();
+            StartPing();
 
             if (!skipResumeJS) {
                 mWebView.loadUrl("javascript:smartTwitchTV.Main_CheckResume()");
@@ -1508,13 +1551,13 @@ public class PlayerActivity extends Activity {
 
         });
 
-        if (Tools.isConnected(this)) initializeWebviewEnd();
+        if (Tools.isConnected(this)) initializeWebViewEnd();
         else ShowNoNetworkWarning();
 
         mWebView.requestFocus();
     }
 
-    private void initializeWebviewEnd() {
+    private void initializeWebViewEnd() {
 
         //Run on screen key and notification on a separated WebView
         if(!deviceIsTV) initializeWebViewKey();
@@ -1552,7 +1595,7 @@ public class PlayerActivity extends Activity {
 
         }
 
-        GetPing();
+        StartPing();
     }
 
     private void initializeWebViewKey() {
