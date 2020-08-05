@@ -24,10 +24,10 @@
     <string name="app_name" translatable="false">SmartTV for Twitch</string>
     <string name="notification_service">Notification service running</string>
     <string name="notification_live_game">Game is Live</string>
-    <string name="notification_live">Stream is Live</string>
-    <string name="notification_title">Stream changed title</string>
-    <string name="notification_game">Stream changed game</string>
-    <string name="notification_title_game">Stream changed title and game</string>
+    <string name="notification_live">Streamer is Live</string>
+    <string name="notification_title">Streamer changed title</string>
+    <string name="notification_game">Streamer changed game</string>
+    <string name="notification_title_game">Streamer changed game and title</string>
     <string name="notification_text">Without this background notifications will not show</string>
     <string name="no_network">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
     <string name="no_internet">Ping to Twitch fail for the last 30 seconds!\n\nIf the app is not working properly revise yours local internet connection\n\nHold return key to close the app in case it freeze or stop working.\n\nThis will auto hide in 30 seconds or if the connection return\n\nThis warning can be disabled in settings</string>

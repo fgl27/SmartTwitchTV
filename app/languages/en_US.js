@@ -345,9 +345,9 @@ function en_USLang() {
     STR_SINGLE_EXIT = "Single return key press";
     STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture, 50/50 or Multistream mode with a single key return click";
     STR_NOTIFICATION_OPT = "Notification options";
-    STR_NOW_LIVE_SHOW = 'Show "Stream is live" notification for followed channels';
-    STR_TITLE_CHANGE_SHOW = 'Show "Stream changed title" notification for followed channels';
-    STR_GAME_CHANGE_SHOW = 'Show "Stream changed game" notification for followed channels';
+    STR_NOW_LIVE_SHOW = 'Show "Streamer is live" notification for followed channels';
+    STR_TITLE_CHANGE_SHOW = 'Show "Streamer changed title" notification for followed channels';
+    STR_GAME_CHANGE_SHOW = 'Show "Streamer changed game" notification for followed channels';
     STR_NOW_LIVE_GAME_SHOW = 'Show "Game is Live" notification for followed games';
     STR_NOW_BACKGROUND = "Notification over other apps, when the app is on background";
     STR_NOW_BACKGROUND_SUMMARY = "If you prevent notification for this app in system settings this featuring will not work, if the app notifications are already running and you exit the app the notification will show over other apps even if this is disable";

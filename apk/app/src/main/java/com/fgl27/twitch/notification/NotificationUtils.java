@@ -509,9 +509,9 @@ public final class NotificationUtils {
     }
 
     private static void GetStreamNotifications(Map<String, StreamObj> oldLive, JsonArray streams, String UserId,
-                                                                AppPreferences appPreferences, int Repeat, long NotifySinceTimeMs,
-                                                                Context context, boolean DoLive, boolean DoTitle, boolean DoGame,
-                                                                ArrayList<NotifyList> result) {
+                                               AppPreferences appPreferences, int Repeat, long NotifySinceTimeMs,
+                                               Context context, boolean DoStreamLive, boolean DoStreamTitle, boolean DoStreamGame,
+                                               ArrayList<NotifyList> result) {
 
         Map<String, StreamObj> currentLive = new HashMap<>();
 
@@ -572,7 +572,7 @@ public final class NotificationUtils {
 
                     if (!oldLive.containsKey(id)) {
 
-                        if (DoLive) {
+                        if (DoStreamLive) {
 
                             NotifyTime = true;
 
@@ -615,11 +615,11 @@ public final class NotificationUtils {
 
                         }
 
-                    } else if (DoTitle || DoGame) {
+                    } else if (DoStreamTitle || DoStreamGame) {
 
                         TempObj = oldLive.get(id);
-                        gameChange = TempObj != null && !Objects.equals(TempObj.getGame(), game) && DoGame;
-                        titleChange = TempObj != null && !Objects.equals(TempObj.getTitle(), title) && DoTitle;
+                        gameChange = TempObj != null && !Objects.equals(TempObj.getGame(), game) && DoStreamGame;
+                        titleChange = TempObj != null && !Objects.equals(TempObj.getTitle(), title) && DoStreamTitle;
 
                         if (gameChange || titleChange) {
 
@@ -663,9 +663,9 @@ public final class NotificationUtils {
     }
 
     private static void GetGamesNotifications(Set<String> oldLive, JsonArray games, String UserId,
-                                                               AppPreferences appPreferences, int Repeat,
-                                                               Context context,
-                                                               ArrayList<NotifyList> result) {
+                                              AppPreferences appPreferences, int Repeat,
+                                              Context context,
+                                              ArrayList<NotifyList> result) {
 
         Set<String> currentLive = new HashSet<>();
 
@@ -836,47 +836,44 @@ public final class NotificationUtils {
     public static void CheckNotifications(String UserId, AppPreferences appPreferences, Handler ToastHandler, Context context) {
         try {
 
-            boolean DoLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_LIVE, false, appPreferences);
-            boolean DoTitle = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_TITLE, false, appPreferences);
-            boolean DoGame = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_GAME, false, appPreferences);
-            boolean DoGameLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_GAME, false, appPreferences);
-
             ArrayList<NotifyList> NotifyListResult = new ArrayList<>();
 
+            boolean DoStreamLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_LIVE, false, appPreferences);
+            boolean DoStreamTitle = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_TITLE, false, appPreferences);
+            boolean DoStreamGame = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_GAME, false, appPreferences);
+            boolean DoGameLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_GAME, false, appPreferences);
+
             int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
+
             long NotifySinceTimeMs = Tools.getLong(Constants.PREF_NOTIFICATION_SINCE_TIME, 0, appPreferences);
 
             String tempOldLiveList;
 
-            if (DoLive || DoTitle || DoGame) {
+            if (DoStreamLive || DoStreamTitle || DoStreamGame) {
 
                 JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
 
                 //If stream result is null the http request fail else even streams.size() < 1 that is the result
                 if (streams != null) {
 
-                    Map<String, StreamObj> oldLive = new HashMap<>();
                     tempOldLiveList = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST, null, appPreferences);
 
+                    //Null list was never created or user changed
                     if (tempOldLiveList != null) {
-                        oldLive = new Gson().fromJson(tempOldLiveList, MapStringType);
-                    }
-
-                    if (oldLive.size() > 0) {
 
                         GetStreamNotifications(
-                                        oldLive,
-                                        streams,
-                                        UserId,
-                                        appPreferences,
-                                        Repeat,
-                                        NotifySinceTimeMs,
-                                        context,
-                                        DoLive,
-                                        DoTitle,
-                                        DoGame,
-                                        NotifyListResult
-                                );
+                                new Gson().fromJson(tempOldLiveList, MapStringType),
+                                streams,
+                                UserId,
+                                appPreferences,
+                                Repeat,
+                                NotifySinceTimeMs,
+                                context,
+                                DoStreamLive,
+                                DoStreamTitle,
+                                DoStreamGame,
+                                NotifyListResult
+                        );
 
                     } else {
 
@@ -902,17 +899,13 @@ public final class NotificationUtils {
                 //If Games result is null the http request fail else even if Games.size() < 1 that is the result
                 if (Games != null) {
 
-                    Set<String> oldLiveGames = new HashSet<>();
                     tempOldLiveList = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST, null, appPreferences);
 
+                    //Null list was never created or user changed
                     if (tempOldLiveList != null) {
-                        oldLiveGames = new Gson().fromJson(tempOldLiveList, ListStringType);
-                    }
-
-                    if (oldLiveGames.size() > 0) {
 
                         GetGamesNotifications(
-                                oldLiveGames,
+                                new Gson().fromJson(tempOldLiveList, ListStringType),
                                 Games,
                                 UserId,
                                 appPreferences,
