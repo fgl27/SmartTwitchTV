@@ -42,7 +42,6 @@ public interface Constants {
     String PREF_USER_TOKEN = "user_token";
     String PREF_USER_TOKEN_EXPIRES_WHEN = "toke_expires_when";
 
-
     String ACTION_SCREEN_ON = "action_screenOn";
     String ACTION_SCREEN_OFF = "action_screenOff";
     String ACTION_NOTIFY_START = "action_StartService";
