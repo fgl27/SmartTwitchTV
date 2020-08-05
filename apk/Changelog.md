@@ -14,7 +14,7 @@ Apk Version 3.0.237 & Web Version August 05 2020
 * Add **"Streamer changed title"** notification for followed channels, disable by defaults
 * Add **"Streamer changed game"** notification for followed channels, disable by defaults
 * Add **"Game is Live"** notification for followed games, disable by defaults
-* General improves to reliability and performance of notifications
+* General improves to the reliability and performance of notifications
 * General performance improves and bug fixes
 
 Apk Version 3.0.236 - August 03 2020
