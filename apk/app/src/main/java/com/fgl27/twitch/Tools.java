@@ -154,10 +154,10 @@ public final class Tools {
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     public static class ResponseObj {
-        private final int status;
-        private final String responseText;
-        private final long checkResult;
-        private final String url;
+        public final int status;
+        public final String responseText;
+        public final long checkResult;
+        public final String url;
 
         public ResponseObj(int status, String responseText) {
             this.status = status;
@@ -180,13 +180,6 @@ public final class Tools {
             this.url = url;
         }
 
-        public int getStatus() {
-            return status;
-        }
-
-        public String getResponseText() {
-            return responseText;
-        }
     }
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
@@ -204,10 +197,10 @@ public final class Tools {
 
             if (response != null) {
 
-                status = response.getStatus();
+                status = response.status;
 
                 if (status == 200) {
-                    Token = parseString(response.getResponseText()).getAsJsonObject();
+                    Token = parseString(response.responseText).getAsJsonObject();
 
                     if(Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
                         StreamToken = Token.get("token").getAsString();
@@ -237,7 +230,7 @@ public final class Tools {
 
                 if (response != null) {
 
-                    status = response.getStatus();
+                    status = response.status;
 
                     //404 = off line
                     //403 = forbidden access
@@ -247,7 +240,7 @@ public final class Tools {
                                 new ResponseObj(
                                         status,
                                         url,
-                                        response.getResponseText(),
+                                        response.responseText,
                                         checkResult
                                 )
                         );
@@ -1003,10 +996,10 @@ public final class Tools {
 
                 if (response != null) {
 
-                    status = response.getStatus();
+                    status = response.status;
 
                     if (status == 200) {
-                        obj = parseString(response.getResponseText()).getAsJsonObject();
+                        obj = parseString(response.responseText).getAsJsonObject();
 
                         if (obj.get("expires_in").isJsonNull()) {
 
@@ -1067,9 +1060,9 @@ public final class Tools {
 
                 if (response != null) {
 
-                    ResponseText = response.getResponseText();
+                    ResponseText = response.responseText;
 
-                    if (response.getStatus() == 200) {
+                    if (response.status == 200) {
                         obj = parseString(ResponseText).getAsJsonObject();
 
                         appPreferences.put(

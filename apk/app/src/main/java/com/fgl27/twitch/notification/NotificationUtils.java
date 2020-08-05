@@ -98,13 +98,6 @@ public final class NotificationUtils {
             this.title = title;
         }
 
-        public String getTitle() {
-            return title;
-        }
-
-        public String getGame() {
-            return game;
-        }
     }
 
     private static class NotifyList {
@@ -126,33 +119,6 @@ public final class NotificationUtils {
             this.live = live;
         }
 
-        public String getGame() {
-            return game;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public Bitmap getLogo() {
-            return logo;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public boolean isLive() {
-            return live;
-        }
-
-        public boolean getType() {
-            return isGame;
-        }
-
-        public String getNotificationTitle() {
-            return notificationTitle;
-        }
     }
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
@@ -227,12 +193,12 @@ public final class NotificationUtils {
                     );
 
                     if (response != null) {
-                        status = response.getStatus();
+                        status = response.status;
 
                         if (status == 200) {
                             HttpRequestSuccess = true;
 
-                            obj = parseString(response.getResponseText()).getAsJsonObject();
+                            obj = parseString(response.responseText).getAsJsonObject();
 
                             if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
 
@@ -356,10 +322,10 @@ public final class NotificationUtils {
 
                     if (response != null) {
 
-                        if (response.getStatus() == 200) {
+                        if (response.status == 200) {
                             HttpRequestSuccess = true;
 
-                            obj = parseString(response.getResponseText()).getAsJsonObject();
+                            obj = parseString(response.responseText).getAsJsonObject();
 
                             if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
 
@@ -448,10 +414,10 @@ public final class NotificationUtils {
 
                     if (response != null) {
 
-                        if (response.getStatus() == 200) {
+                        if (response.status == 200) {
                             HttpRequestSuccess = true;
 
-                            obj = parseString(response.getResponseText()).getAsJsonObject();
+                            obj = parseString(response.responseText).getAsJsonObject();
 
                             if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
 
@@ -618,8 +584,8 @@ public final class NotificationUtils {
                     } else if (DoStreamTitle || DoStreamGame) {
 
                         TempObj = oldLive.get(id);
-                        gameChange = TempObj != null && !Objects.equals(TempObj.getGame(), game) && DoStreamGame;
-                        titleChange = TempObj != null && !Objects.equals(TempObj.getTitle(), title) && DoStreamTitle;
+                        gameChange = TempObj != null && !Objects.equals(TempObj.game, game) && DoStreamGame;
+                        titleChange = TempObj != null && !Objects.equals(TempObj.title, title) && DoStreamTitle;
 
                         if (gameChange || titleChange) {
 
@@ -1030,10 +996,10 @@ public final class NotificationUtils {
         TextView title = layout.findViewById(R.id.title);
         TextView game = layout.findViewById(R.id.game);
 
-        if (!result.getType()) {
+        if (!result.isGame) {
 
             name.setCompoundDrawablesWithIntrinsicBounds(
-                    result.isLive() ? R.drawable.circle : R.drawable.ic_refresh,
+                    result.live ? R.drawable.circle : R.drawable.ic_refresh,
                     0,
                     0,
                     0
@@ -1041,10 +1007,10 @@ public final class NotificationUtils {
 
         }
 
-        not_title.setText(result.getNotificationTitle());
-        name.setText(result.getName());
-        title.setText(result.getTitle().trim());
-        game.setText(result.getGame());
+        not_title.setText(result.notificationTitle);
+        name.setText(result.name);
+        title.setText(result.title.trim());
+        game.setText(result.game);
 
         if (LayoutWidth > 0) {
 
@@ -1055,14 +1021,14 @@ public final class NotificationUtils {
         }
 
         ImageView image = layout.findViewById(R.id.image);
-        Bitmap bmp = result.getLogo();
+        Bitmap bmp = result.logo;
         if (bmp != null) {
             if (LayoutWidth > 0) {
 
                 bmp = Bitmap.createScaledBitmap(
                         bmp,
                         ImageSize,
-                        result.getType() ? ImageSizeHeight : ImageSize,
+                        result.isGame ? ImageSizeHeight : ImageSize,
                         true
                 );
 

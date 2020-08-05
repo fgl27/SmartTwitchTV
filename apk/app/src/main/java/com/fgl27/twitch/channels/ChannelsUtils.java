@@ -137,36 +137,9 @@ public final class ChannelsUtils {
             this.isLive = isLive;
         }
 
-        public String getObj() {
-            return obj;
-        }
-
-        public String getImgUrl() {
-            return imgUrl;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public int getPreviewSize() {
-            return previewSize;
-        }
-
-        public boolean getIsLive() {
-            return isLive;
-        }
-
-        public int getViewers() {
-            return viewers;
-        }
     }
 
-    public static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.getViewers() - Obj1.getViewers();
+    public static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.viewers - Obj1.viewers;
 
     public static class ChannelObj {
         private final int drawable;
@@ -181,21 +154,6 @@ public final class ChannelsUtils {
             this.Content = content;
         }
 
-        public String getName() {
-            return name;
-        }
-
-        public int getDrawable() {
-            return drawable;
-        }
-
-        public List<ChannelContentObj> getContent() {
-            return Content;
-        }
-
-        public int getType() {
-            return type;
-        }
     }
 
     public static void StartChannel(Context context, ChannelObj channel, long channelId) {
@@ -213,27 +171,27 @@ public final class ChannelsUtils {
             createChannelContent(context, channelId, channel);
 
             //Default channel
-            if (Objects.equals(channel.getName(), Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]))
+            if (Objects.equals(channel.name, Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]))
                 TvContractCompat.requestChannelBrowsable(context, channelId);
 
         }
     }
 
     private static void updateChannel(Context context, long channelId, ChannelObj channel) {
-        writeChannelLogo(context, channelId, channel.getDrawable());
+        writeChannelLogo(context, channelId, channel.drawable);
 
-        Channel.Builder builder = createChannelBuilder(channel.getName(), channel.getType(), context);
+        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
 
         int rowsUpdated = context.getContentResolver().update(
                 TvContractCompat.buildChannelUri(channelId), builder.build().toContentValues(), null, null);
 
         if (rowsUpdated < 1) {
-            Log.w(TAG, "Update channel failed " + channel.getName());
+            Log.w(TAG, "Update channel failed " + channel.name);
         }
     }
 
     private static long createChannel(Context context, ChannelObj channel) {
-        Channel.Builder builder = createChannelBuilder(channel.getName(), channel.getType(), context);
+        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
 
         Uri channelUri = null;
 
@@ -250,13 +208,13 @@ public final class ChannelsUtils {
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
-            Log.w(TAG, "Insert channel failed " + channel.getName());
+            Log.w(TAG, "Insert channel failed " + channel.name);
             return -1L;
         }
 
         long channelId = ContentUris.parseId(channelUri);
 
-        writeChannelLogo(context, channelId, channel.getDrawable());
+        writeChannelLogo(context, channelId, channel.drawable);
 
         return channelId;
     }
@@ -264,9 +222,9 @@ public final class ChannelsUtils {
     public static void createChannelContent(Context context, long channelId, ChannelObj channel) {
         DeleteProgram(context, channelId);
 
-        int channel_type = channel.getType();
+        int channel_type = channel.type;
         String randomImg = "?" + ThreadLocalRandom.current().nextInt(1, 1000000);
-        List<ChannelContentObj> Content = channel.getContent();
+        List<ChannelContentObj> Content = channel.Content;
 
         if (Content != null) {
             int ContentSize = Content.size();
@@ -285,13 +243,13 @@ public final class ChannelsUtils {
     public static void PreviewProgramAdd(Context context, long channelId, ChannelContentObj ContentObj, int weight, int channel_type, String randomImg) {
         PreviewProgram.Builder builder =
                 new PreviewProgram.Builder()
-                        .setTitle(ContentObj.getTitle())
-                        .setDescription(ContentObj.getDescription())
-                        .setPosterArtUri(Uri.parse(ContentObj.getImgUrl() + randomImg))
-                        .setPosterArtAspectRatio(ContentObj.getPreviewSize())
-                        .setIntent(createAppIntent(context, ContentObj.getObj(), channel_type))
+                        .setTitle(ContentObj.title)
+                        .setDescription(ContentObj.description)
+                        .setPosterArtUri(Uri.parse(ContentObj.imgUrl + randomImg))
+                        .setPosterArtAspectRatio(ContentObj.previewSize)
+                        .setIntent(createAppIntent(context, ContentObj.obj, channel_type))
                         .setType(TvContractCompat.PreviewPrograms.TYPE_MOVIE)
-                        .setLive(ContentObj.getIsLive())
+                        .setLive(ContentObj.isLive)
                         .setWeight(weight)
                         .setChannelId(channelId);
 
@@ -307,7 +265,7 @@ public final class ChannelsUtils {
         }
 
         if (programUri == null || programUri.equals(Uri.EMPTY)) {
-            Log.w(TAG, "Insert program failed " + ContentObj.getTitle());
+            Log.w(TAG, "Insert program failed " + ContentObj.title);
         }
     }
 
@@ -807,9 +765,9 @@ public final class ChannelsUtils {
 
                 if (response != null) {
 
-                    if (response.getStatus() == 200) {
+                    if (response.status == 200) {
 
-                        JsonObject obj = parseString(response.getResponseText()).getAsJsonObject();
+                        JsonObject obj = parseString(response.responseText).getAsJsonObject();
 
                         if (obj.isJsonObject() && !obj.get("hosts").isJsonNull()) {
 
@@ -848,9 +806,9 @@ public final class ChannelsUtils {
 
                 if (response != null) {
 
-                    if (response.getStatus() == 200) {
+                    if (response.status == 200) {
 
-                        JsonObject obj = parseString(response.getResponseText()).getAsJsonObject();
+                        JsonObject obj = parseString(response.responseText).getAsJsonObject();
 
                         if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
 
@@ -1143,11 +1101,11 @@ public final class ChannelsUtils {
                 );
 
                 if (response != null) {
-                    status = response.getStatus();
+                    status = response.status;
 
                     if (status == 200) {
 
-                        obj = parseString(response.getResponseText()).getAsJsonObject();
+                        obj = parseString(response.responseText).getAsJsonObject();
 
                         if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
 
