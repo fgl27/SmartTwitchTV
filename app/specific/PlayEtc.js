@@ -697,6 +697,8 @@ function Play_StayCheckLiveResultEnd(responseObj) {
         Play_data.AutoUrl = responseObj.url;
         Play_loadDataSuccessend(responseObj.responseText, false, true);
         Play_ShowPanelStatus(1);
+        Main_values.Play_WasPlaying = 1;
+        Main_SaveValues();
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403 ||
