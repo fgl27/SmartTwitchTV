@@ -180,6 +180,7 @@ public final class NotificationUtils {
 
     public static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences) {
         JsonArray StreamsResult = new JsonArray();
+        boolean HttpRequestSuccess = false;
 
         try {
             Set<String> TempArray = new HashSet<>();
@@ -229,6 +230,7 @@ public final class NotificationUtils {
                         status = response.getStatus();
 
                         if (status == 200) {
+                            HttpRequestSuccess = true;
 
                             obj = parseString(response.getResponseText()).getAsJsonObject();
 
@@ -290,11 +292,7 @@ public final class NotificationUtils {
             Log.w(TAG, "GetLiveStreamsListToken e ", e);
         }
 
-//        if (BuildConfig.DEBUG) {
-//            Log.i(TAG, "GetLiveStreamsListToken size " + StreamsResult.size());
-//        }
-
-        return StreamsResult.size() > 0 ? StreamsResult : null;
+        return HttpRequestSuccess ? StreamsResult : null;
     }
 
     //There is a faster way to do this??? yes but that is needed the user authorization key
@@ -303,6 +301,7 @@ public final class NotificationUtils {
     public static JsonArray GetLiveStreamsListNoToken(String UserId) {
 
         JsonArray StreamsResult = new JsonArray();
+        boolean HttpRequestSuccess = false;
 
         try {
             Set<String> ChannelsList = GetChannels(UserId);
@@ -358,6 +357,8 @@ public final class NotificationUtils {
                     if (response != null) {
 
                         if (response.getStatus() == 200) {
+                            HttpRequestSuccess = true;
+
                             obj = parseString(response.getResponseText()).getAsJsonObject();
 
                             if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
@@ -403,11 +404,12 @@ public final class NotificationUtils {
 //            Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
 //        }
 
-        return StreamsResult.size() > 0 ? StreamsResult : null;
+        return HttpRequestSuccess ? StreamsResult : null;
     }
 
     public static Set<String> GetChannels(String userId)  {
         Set<String> Result = new HashSet<>();
+        boolean HttpRequestSuccess = false;
 
         try {
             int ChannelsOffset = 0;
@@ -447,6 +449,8 @@ public final class NotificationUtils {
                     if (response != null) {
 
                         if (response.getStatus() == 200) {
+                            HttpRequestSuccess = true;
+
                             obj = parseString(response.getResponseText()).getAsJsonObject();
 
                             if (obj.isJsonObject() && !obj.get("follows").isJsonNull()) {
@@ -500,15 +504,15 @@ public final class NotificationUtils {
             Log.w(TAG, "GetChannels e ", e);
         }
 
-        return Result.size() > 0 ? Result : null;
+        return HttpRequestSuccess ? Result : null;
 
     }
 
-    private static ArrayList<NotifyList> GetStreamNotifications(Map<String, StreamObj> oldLive, JsonArray streams, String UserId,
+    private static void GetStreamNotifications(Map<String, StreamObj> oldLive, JsonArray streams, String UserId,
                                                                 AppPreferences appPreferences, int Repeat, long NotifySinceTimeMs,
-                                                                Context context, boolean DoLive, boolean DoTitle, boolean DoGame) {
+                                                                Context context, boolean DoLive, boolean DoTitle, boolean DoGame,
+                                                                ArrayList<NotifyList> result) {
 
-        ArrayList<NotifyList> result = new ArrayList<>();
         Map<String, StreamObj> currentLive = new HashMap<>();
 
         int StreamsSize = streams.size();
@@ -653,13 +657,12 @@ public final class NotificationUtils {
         SaveOldStreamList(
                 currentLive,
                 appPreferences,
-                UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST
+                UserId
         );
 
-        return result;
     }
 
-    private static ArrayList<NotifyList> GetGamesNotifications(Set<String> oldLive, JsonArray games, String UserId,
+    private static void GetGamesNotifications(Set<String> oldLive, JsonArray games, String UserId,
                                                                AppPreferences appPreferences, int Repeat,
                                                                Context context,
                                                                ArrayList<NotifyList> result) {
@@ -729,9 +732,12 @@ public final class NotificationUtils {
             Log.w(TAG, "GetGamesNotifications e ", e);
         }
 
-        SaveOldGamesList(currentLive, appPreferences, UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST);
+        SaveOldGamesList(
+                currentLive,
+                appPreferences,
+                UserId
+        );
 
-        return result;
     }
 
     private static void SetOldLiveList(JsonArray streams, String UserId, AppPreferences appPreferences) {
@@ -760,7 +766,11 @@ public final class NotificationUtils {
             Log.w(TAG, "SetOldList e ", e);
         }
 
-        SaveOldStreamList(currentLive, appPreferences,UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST);
+        SaveOldStreamList(
+                currentLive,
+                appPreferences,
+                UserId
+        );
     }
 
     private static void SetOldGamesList(JsonArray games, String UserId, AppPreferences appPreferences) {
@@ -780,15 +790,29 @@ public final class NotificationUtils {
             Log.w(TAG, "SetOldList e ", e);
         }
 
-        SaveOldGamesList(currentLive, appPreferences,UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST);
+        SaveOldGamesList(
+                currentLive,
+                appPreferences,
+                UserId
+        );
     }
 
-    private static void SaveOldGamesList(Set<String> currentLive, AppPreferences appPreferences, String list) {
-        appPreferences.put(list, new Gson().toJson(currentLive));
+    private static void SaveOldGamesList(Set<String> currentLive, AppPreferences appPreferences, String UserId) {
+
+        appPreferences.put(
+                UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST,
+                new Gson().toJson(currentLive)
+        );
+
     }
 
-    private static void SaveOldStreamList(Map<String, StreamObj> currentLive, AppPreferences appPreferences, String list) {
-        appPreferences.put(list, new Gson().toJson(currentLive));
+    private static void SaveOldStreamList(Map<String, StreamObj> currentLive, AppPreferences appPreferences, String UserId) {
+
+        appPreferences.put(
+                UserId + Constants.PREF_NOTIFY_OLD_STREAM_LIST,
+                new Gson().toJson(currentLive)
+        );
+
     }
 
     private static Bitmap GetBitmap(String url) {
@@ -828,6 +852,7 @@ public final class NotificationUtils {
 
                 JsonArray streams = GetLiveStreamsList(UserId, appPreferences);
 
+                //If stream result is null the http request fail else even streams.size() < 1 that is the result
                 if (streams != null) {
 
                     Map<String, StreamObj> oldLive = new HashMap<>();
@@ -839,8 +864,7 @@ public final class NotificationUtils {
 
                     if (oldLive.size() > 0) {
 
-                        NotifyListResult =
-                                GetStreamNotifications(
+                        GetStreamNotifications(
                                         oldLive,
                                         streams,
                                         UserId,
@@ -850,7 +874,8 @@ public final class NotificationUtils {
                                         context,
                                         DoLive,
                                         DoTitle,
-                                        DoGame
+                                        DoGame,
+                                        NotifyListResult
                                 );
 
                     } else {
@@ -874,6 +899,7 @@ public final class NotificationUtils {
                         new String[0][0]
                 );
 
+                //If Games result is null the http request fail else even if Games.size() < 1 that is the result
                 if (Games != null) {
 
                     Set<String> oldLiveGames = new HashSet<>();
@@ -885,8 +911,7 @@ public final class NotificationUtils {
 
                     if (oldLiveGames.size() > 0) {
 
-                        //noinspection ConstantConditions
-                        NotifyListResult = GetGamesNotifications(
+                        GetGamesNotifications(
                                 oldLiveGames,
                                 Games,
                                 UserId,

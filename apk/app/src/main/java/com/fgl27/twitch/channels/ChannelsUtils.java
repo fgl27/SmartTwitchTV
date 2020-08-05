@@ -1061,12 +1061,12 @@ public final class ChannelsUtils {
     private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS, int screen)  {
 
         JsonArray Games = GetLiveGames(url, object, HEADERS);//Get the Games array
-
         List<ChannelContentObj> content = new ArrayList<>();
-        int objSize = Games.size();
 
-        if (objSize < 1) return null;
-        else content.add(getRefreshContent());
+        int objSize = Games != null ? Games.size() : 0;
+
+        if (objSize > 0) content.add(getRefreshContent());
+        else return null;
 
         JsonObject obj;
         JsonObject objGame;
@@ -1118,6 +1118,7 @@ public final class ChannelsUtils {
 
     public static JsonArray GetLiveGames(String url, String object, String[][] HEADERS)  {
         JsonArray Result = new JsonArray();
+        int status = 0;
 
         try {
             Set<String> TempArray = new HashSet<>();
@@ -1127,6 +1128,7 @@ public final class ChannelsUtils {
             JsonObject objGame;
             JsonArray Games;
             int objSize;
+
             String gameId;
 
             for (int i = 0; i < 3; i++) {
@@ -1141,8 +1143,9 @@ public final class ChannelsUtils {
                 );
 
                 if (response != null) {
+                    status = response.getStatus();
 
-                    if (response.getStatus() == 200) {
+                    if (status == 200) {
 
                         obj = parseString(response.getResponseText()).getAsJsonObject();
 
@@ -1183,7 +1186,7 @@ public final class ChannelsUtils {
             Log.w(TAG, "GetLiveGames e ", e);
         }
 
-        return Result;
+        return status == 200 ? Result : null;
 
     }
 
