@@ -77,7 +77,7 @@ public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
 
-    private static final Type ListStringType = new TypeToken<Set<String>>() {}.getType();
+    private static final Type SetStringType = new TypeToken<Set<String>>() {}.getType();
     private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {}.getType();
 
     private static final int[] ToastPositions = {
@@ -905,7 +905,7 @@ public final class NotificationUtils {
                     if (tempOldLiveList != null) {
 
                         GetGamesNotifications(
-                                new Gson().fromJson(tempOldLiveList, ListStringType),
+                                new Gson().fromJson(tempOldLiveList, SetStringType),
                                 Games,
                                 UserId,
                                 appPreferences,
