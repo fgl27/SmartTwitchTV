@@ -38,7 +38,7 @@ public class BlackListMediaCodecSelector implements MediaCodecSelector {
 
     private final String[] BLACKLISTEDCODECS;
 
-    public BlackListMediaCodecSelector(String[] BLACKLISTEDCODECS) {
+    BlackListMediaCodecSelector(String[] BLACKLISTEDCODECS) {
         this.BLACKLISTEDCODECS = BLACKLISTEDCODECS;
     }
 

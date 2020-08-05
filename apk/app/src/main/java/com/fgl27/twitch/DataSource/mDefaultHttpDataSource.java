@@ -91,7 +91,7 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
     private long bytesSkipped;
     private long bytesRead;
 
-    public mDefaultHttpDataSource(
+    mDefaultHttpDataSource(
             String userAgent,
             int connectTimeoutMillis,
             int readTimeoutMillis,

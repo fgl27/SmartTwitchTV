@@ -79,10 +79,6 @@ public final class ChannelsUtils {
 
     private static final String TAG = "STTV_ChannelsUtils";
 
-    private static final String VIDEO_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_video.png";
-    public static final String LOGO_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_logo.png";
-    public static final String GAME_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_game.png";
-
     private static final String[] TV_CONTRACT_ARRAY = {
             TvContractCompat.Channels._ID,
             TvContract.Channels.COLUMN_DISPLAY_NAME
@@ -105,13 +101,13 @@ public final class ChannelsUtils {
         private final String type;
         private final int screen;
 
-        public PreviewObj(JsonObject obj, String type, int screen) {
+        PreviewObj(JsonObject obj, String type, int screen) {
             this.obj = obj;
             this.type = type;
             this.screen = screen;
         }
 
-        public PreviewObj(int screen, String type) {
+        PreviewObj(int screen, String type) {
             this.obj = null;
             this.type = type;
             this.screen = screen;
@@ -127,7 +123,7 @@ public final class ChannelsUtils {
         private final String obj;
         private final boolean isLive;
 
-        public ChannelContentObj(String title, String description, String imgUrl, int previewSize, int viewers, String obj, boolean isLive) {
+        ChannelContentObj(String title, String description, String imgUrl, int previewSize, int viewers, String obj, boolean isLive) {
             this.title = title;
             this.description = description;
             this.imgUrl = imgUrl;
@@ -139,7 +135,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.viewers - Obj1.viewers;
+    private static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.viewers - Obj1.viewers;
 
     public static class ChannelObj {
         private final int drawable;
@@ -147,7 +143,7 @@ public final class ChannelsUtils {
         private final int type;
         private final List<ChannelContentObj> Content;
 
-        public ChannelObj(int drawable, String name, int type, List<ChannelContentObj> content) {
+        ChannelObj(int drawable, String name, int type, List<ChannelContentObj> content) {
             this.drawable = drawable;
             this.name = name;
             this.type = type;
@@ -156,7 +152,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static void StartChannel(Context context, ChannelObj channel, long channelId) {
+    private static void StartChannel(Context context, ChannelObj channel, long channelId) {
 
         if (channelId != -1L) {//Channel already created just update
             updateChannel(context, channelId, channel);
@@ -219,7 +215,7 @@ public final class ChannelsUtils {
         return channelId;
     }
 
-    public static void createChannelContent(Context context, long channelId, ChannelObj channel) {
+    private static void createChannelContent(Context context, long channelId, ChannelObj channel) {
         DeleteProgram(context, channelId);
 
         int channel_type = channel.type;
@@ -240,7 +236,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static void PreviewProgramAdd(Context context, long channelId, ChannelContentObj ContentObj, int weight, int channel_type, String randomImg) {
+    private static void PreviewProgramAdd(Context context, long channelId, ChannelContentObj ContentObj, int weight, int channel_type, String randomImg) {
         PreviewProgram.Builder builder =
                 new PreviewProgram.Builder()
                         .setTitle(ContentObj.title)
@@ -278,7 +274,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static Intent createAppIntent(Context context, String channel_obj, int channel_type) {
+    private static Intent createAppIntent(Context context, String channel_obj, int channel_type) {
 
         Intent intent = new Intent(context, PlayerActivity.class);
         intent.setAction(Constants.CHANNEL_INTENT);
@@ -301,7 +297,7 @@ public final class ChannelsUtils {
     }
 
     @NonNull
-    public static Bitmap convertToBitmap(Context context, int resourceId) {
+    private static Bitmap convertToBitmap(Context context, int resourceId) {
         Drawable drawable = context.getDrawable(resourceId);
         if (drawable instanceof VectorDrawable) {
 
@@ -321,7 +317,7 @@ public final class ChannelsUtils {
         return BitmapFactory.decodeResource(context.getResources(), resourceId);
     }
 
-    public static void DeleteProgram(Context context, long channelId) {
+    private static void DeleteProgram(Context context, long channelId) {
         if (channelId != -1L) {
 
             context.getContentResolver().delete(
@@ -408,7 +404,7 @@ public final class ChannelsUtils {
         return true ;
     }
 
-    public static ChannelContentObj getNoUserContent(int screen) {
+    private static ChannelContentObj getNoUserContent(int screen) {
         return
                 new ChannelContentObj(
                         "Add User",
@@ -421,7 +417,7 @@ public final class ChannelsUtils {
                 );
     }
 
-    public static ChannelContentObj getRefreshContent() {
+    private static ChannelContentObj getRefreshContent() {
         Calendar rightNow = Calendar.getInstance();
         String month = rightNow.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
         String day = String.valueOf(rightNow.get(Calendar.DAY_OF_MONTH));
@@ -468,7 +464,7 @@ public final class ChannelsUtils {
         return decimalFormat;
     }
 
-    public static String getTimeFromMs(long millis) {
+    private static String getTimeFromMs(long millis) {
         if(millis < 0) return null;
 
         long hours = TimeUnit.MILLISECONDS.toHours(millis);
@@ -577,7 +573,7 @@ public final class ChannelsUtils {
         }
     }
 
-    public static void StartUserLive(Context context, List<ChannelContentObj> contentObj, long channelId) {
+    private static void StartUserLive(Context context, List<ChannelContentObj> contentObj, long channelId) {
         StartChannel(
                 context,
                 new ChannelObj(
@@ -674,7 +670,7 @@ public final class ChannelsUtils {
             content = GetGamesContent(
                     "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
                     "top",
-                    Tools.DEFAULT_HEADERS,
+                    Constants.DEFAULT_HEADERS,
                     Constants.CHANNEL_TYPE_GAMES
             );
 
@@ -801,7 +797,7 @@ public final class ChannelsUtils {
                         null,
                         null,
                         0,
-                        Tools.DEFAULT_HEADERS
+                        Constants.DEFAULT_HEADERS
                 );
 
                 if (response != null) {
@@ -882,7 +878,7 @@ public final class ChannelsUtils {
                                 new ChannelContentObj(
                                         obj.get("display_name").getAsString() + " hosting " + objChannel.get("display_name").getAsString(),
                                         description + decimalFormat.format(viewers) + " viewers\n" + (!objTarget.get("title").isJsonNull() ? objTarget.get("title").getAsString() : ""),
-                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
+                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.VIDEO_404,
                                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                         viewers,
                                         new Gson().toJson(new PreviewObj(obj, "HOST", Constants.CHANNEL_TYPE_USER_HOST)),
@@ -988,7 +984,7 @@ public final class ChannelsUtils {
                                 new ChannelContentObj(
                                         objChannel.get("display_name").getAsString(),
                                         description,
-                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : VIDEO_404,
+                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.VIDEO_404,
                                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                         viewers,
                                         new Gson().toJson(new PreviewObj(obj, "LIVE", screen)),
@@ -1052,7 +1048,7 @@ public final class ChannelsUtils {
                             new ChannelContentObj(
                                     objGame.get("name").getAsString(),
                                     decimalFormat.format(channels) + " Channels\nFor " + decimalFormat.format(viewers) + " viewers",
-                                    objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : GAME_404,
+                                    objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.GAME_404,
                                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
                                     viewers,
                                     new Gson().toJson(new PreviewObj(objGame, "GAME", screen)),

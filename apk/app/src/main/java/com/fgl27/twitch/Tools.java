@@ -106,11 +106,6 @@ public final class Tools {
 
     private static final Type ArrayType = new TypeToken<String[][]>() {}.getType();
 
-    public static final String[][] DEFAULT_HEADERS = {
-            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
-            {"Accept", "application/vnd.twitchtv.v5+json"}
-    };
-
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
             "1", "1.1", "1.2", "1.3", "1.b",
@@ -128,7 +123,7 @@ public final class Tools {
             16384, 32768, 65536,
             131072, 262144, 524288};
 
-    public static final Integer[] resolutionsWidth = {
+    private static final Integer[] resolutionsWidth = {
             240,
             480,
             640,
@@ -139,7 +134,7 @@ public final class Tools {
             3840
     };
 
-    public static final Integer[] resolutionsHeight = {
+    private static final Integer[] resolutionsHeight = {
             160,
             360,
             480,
@@ -159,21 +154,21 @@ public final class Tools {
         public final long checkResult;
         public final String url;
 
-        public ResponseObj(int status, String responseText) {
+        ResponseObj(int status, String responseText) {
             this.status = status;
             this.responseText = responseText;
             this.checkResult = 0L;
             this.url = null;
         }
 
-        public ResponseObj(int status, String responseText, long checkResult) {
+        ResponseObj(int status, String responseText, long checkResult) {
             this.status = status;
             this.responseText = responseText;
             this.checkResult = checkResult;
             this.url = null;
         }
 
-        public ResponseObj(int status, String url, String responseText, long checkResult) {
+        ResponseObj(int status, String url, String responseText, long checkResult) {
             this.status = status;
             this.responseText = responseText;
             this.checkResult = checkResult;
@@ -184,7 +179,7 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    public static String getStreamData(String token_url, String hls_url, long checkResult, int ReTryMax, int Timeout) throws Exception {
+    static String getStreamData(String token_url, String hls_url, long checkResult, int ReTryMax, int Timeout) throws Exception {
         ResponseObj response;
         int i, status;
         JsonObject Token;
@@ -267,7 +262,7 @@ public final class Tools {
         return false;
     }
 
-    public static String ResponseObjToString(int status, String responseText, long checkResult) {
+    static String ResponseObjToString(int status, String responseText, long checkResult) {
         return new Gson().toJson(
                 new ResponseObj(
                         status,
@@ -278,7 +273,7 @@ public final class Tools {
     }
 
     //TODO add a header version of this fun
-    public static ResponseObj GetResponseObj(String urlString, int Timeout) {
+    private static ResponseObj GetResponseObj(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
         try {
@@ -309,7 +304,7 @@ public final class Tools {
         }
     }
 
-    public static String GetPing(Runtime runtime) {
+    static String GetPing(Runtime runtime) {
         Process process = null;
         try {
 
@@ -335,8 +330,8 @@ public final class Tools {
         return null;
     }
 
-    public static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
-                                               String Method, long checkResult, String JsonHeadersArray) {
+    static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
+                                        String Method, long checkResult, String JsonHeadersArray) {
 
         return Internal_MethodUrl(
                 urlString,
@@ -440,7 +435,7 @@ public final class Tools {
         private final int instances;
         private final String resolutions;
 
-        public CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
+        CodecList(String type, String name, String maxresolution, String maxbitrate, String maxlevel, int instances, String resolutions) {
             this.type = type;
             this.name = name;
             this.maxresolution = maxresolution;
@@ -453,7 +448,7 @@ public final class Tools {
 
     //Returns a stringify json obj contain
     //[{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}]
-    public static String codecCapabilities(String CodecType) {
+    static String codecCapabilities(String CodecType) {
         int lowerWidth;
         int UperWidth;
         int instances;
@@ -531,7 +526,7 @@ public final class Tools {
         return new Gson().toJson(result);
     }
 
-    public static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
+    private static String codecframeRate(MediaCodecInfo.VideoCapabilities videoCapabilities, int width, int height, int lowerWidth, int UperWidth) {
         try {
             //Check if is bigger then smallest and smaller then the biggest
             return (width >= lowerWidth && width <= UperWidth) ?
@@ -548,7 +543,7 @@ public final class Tools {
         }
     }
 
-    public static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
+    static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))
                 .setBufferDurationsMs(
@@ -561,7 +556,7 @@ public final class Tools {
                 .build();
     }
 
-    public static boolean isBehindLiveWindow(ExoPlaybackException e) {
+    static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
         }
@@ -575,7 +570,7 @@ public final class Tools {
         return false;
     }
 
-    public static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String masterPlaylist, String userAgent) {
+    static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String masterPlaylist, String userAgent) {
         if (who_called == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
@@ -608,7 +603,7 @@ public final class Tools {
         );
     }
 
-    public static boolean deviceIsTV(@NonNull Context context) {
+    static boolean deviceIsTV(@NonNull Context context) {
         UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
         return (uiModeManager != null ? uiModeManager.getCurrentModeType() : 0) == Configuration.UI_MODE_TYPE_TELEVISION;
     }
@@ -616,11 +611,11 @@ public final class Tools {
     //Deprecated in API level 29 but gives the path that I need and works on API 29
     //as long one adds android:requestLegacyExternalStorage="true"to manifest
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
-    public static File getExternalSD() {
+    private static File getExternalSD() {
         return Environment.getExternalStorageDirectory();
     }
 
-    public static void BackupJson(String app_name, String file, String file_content) {
+    static void BackupJson(String app_name, String file, String file_content) {
         File Dir = new File(
                 getExternalSD(),
                 String.format(Locale.US, "data/%s/Backup", app_name)
@@ -642,7 +637,7 @@ public final class Tools {
         }
     }
 
-    public static boolean HasBackupFile(String file, Context context) {
+    static boolean HasBackupFile(String file, Context context) {
 
         File mFile = new File(
                 getExternalSD(),
@@ -652,7 +647,7 @@ public final class Tools {
         return mFile.exists();
     }
 
-    public static String RestoreBackupFile(String file, Context context) {
+    static String RestoreBackupFile(String file, Context context) {
         try {
             File mFile = new File(
                     getExternalSD(),
@@ -675,7 +670,7 @@ public final class Tools {
         return null;
     }
 
-    public static boolean WR_storage(Context context) {
+    static boolean WR_storage(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED;
@@ -695,7 +690,7 @@ public final class Tools {
         return new MediaItem.Builder().setUri(uri).build();
     }
 
-    public static int DeviceRam(Context context) {
+    static int DeviceRam(Context context) {
         ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         if (actManager != null) {
@@ -705,7 +700,7 @@ public final class Tools {
         return (int) (memInfo.totalMem / 18);
     }
 
-    public static String getWebviewVersion(Context context) {
+    static String getWebviewVersion(Context context) {
         PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(context);
 
         return pInfo != null ? pInfo.versionName: null;
@@ -718,7 +713,7 @@ public final class Tools {
         return size;
     }
 
-    public static String getQualities(DefaultTrackSelector trackSelector) {
+    static String getQualities(DefaultTrackSelector trackSelector) {
         if (trackSelector != null) {
             MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
 
@@ -772,7 +767,7 @@ public final class Tools {
         private final String band;
         private final String codec;
 
-        public QualitiesObj(String id, int band, String codec) {
+        QualitiesObj(String id, int band, String codec) {
             this.id = id;
             this.band = extractBand(band);
             this.codec = extractCodec(codec);
@@ -783,7 +778,7 @@ public final class Tools {
         return band > 0 ? String.format(Locale.US, " | %.02fMbps", ((float) band / 1000000)) : "";
     }
 
-    public static String GetVideoQuality(Format format) {
+    static String GetVideoQuality(Format format) {
         if (format == null) {
             return null;
         }
@@ -816,7 +811,7 @@ public final class Tools {
         return (int) Math.ceil(fps);
     }
 
-    public static String GetCounters(float FullValue, float FullValueAVG, long Counter, String end) {
+    static String GetCounters(float FullValue, float FullValueAVG, long Counter, String end) {
         FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
 
         return String.format(
@@ -873,21 +868,21 @@ public final class Tools {
         return activeNetwork != null && activeNetwork.isConnected();
     }
 
-    public static void hideKeyboardFrom(Context context, View view) {
+    static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public static void showKeyboardFrom(Context context, View view) {
+    static void showKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
         }
     }
 
-    public static void LongLog(String TAG, String veryLongString) {
+    static void LongLog(@SuppressWarnings("SameParameterValue") String TAG, String veryLongString) {
         int maxLogSize = 1000;
         int len = veryLongString.length();
 
@@ -903,7 +898,7 @@ public final class Tools {
 
     }
 
-    public static FrameLayout.LayoutParams BasePreviewLayout(float bottom, float right, float left, int web_height, Point ScreenSize, boolean bigger) {
+    static FrameLayout.LayoutParams BasePreviewLayout(float bottom, float right, float left, int web_height, Point ScreenSize, boolean bigger) {
         float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
 
         float width = (int)((right - left) * scale);
@@ -940,7 +935,7 @@ public final class Tools {
         return PlayerViewSidePanel;
     }
 
-    public static void deleteCache(Context context) {
+    static void deleteCache(Context context) {
         try {
             File dir = context.getCacheDir();
             deleteDir(dir);
@@ -949,7 +944,7 @@ public final class Tools {
         }
     }
 
-    public static boolean deleteDir(File dir) {
+    private static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             if (children != null) {
@@ -968,7 +963,7 @@ public final class Tools {
         }
     }
 
-    public static void checkTokens(String UserId, AppPreferences appPreferences) {
+    static void checkTokens(String UserId, AppPreferences appPreferences) {
         String token = getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences);
 
         try {
@@ -1098,7 +1093,7 @@ public final class Tools {
         return false;
     }
 
-    public static void eraseTokens(String UserId, AppPreferences appPreferences) {
+    static void eraseTokens(String UserId, AppPreferences appPreferences) {
         appPreferences.put(UserId + Constants.PREF_USER_REFRESH_TOKEN, null);
         appPreferences.put(UserId + Constants.PREF_USER_TOKEN, null);
         appPreferences.put(UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
