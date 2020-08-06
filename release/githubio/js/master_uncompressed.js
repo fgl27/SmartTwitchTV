@@ -1408,7 +1408,7 @@
         STR_STYLES = "Styles";
         STR_ENTER = "Press enter";
         STR_COLOR_ARRAY = "Background,Text,Border";
-        STR_STYLES_ARRAY = "Default,Custom,Black,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
+        STR_STYLES_ARRAY = "Default,Custom,White,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
         STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
         STR_THUMB_STYLE = "Selected thumbnail style";
         STR_OPEN_EXTERNAL_PLAYER = "Open in a external player";
@@ -8280,6 +8280,13 @@
     var Main_isReleased = false;
     var Main_isDebug = false;
 
+    var Main_stringVersion = '3.0';
+    var Main_stringVersion_Min = '.238';
+    var Main_version_java = 29; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 06 2020';
+    var Main_version_web = 46; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
+
     var Main_cursorYAddFocus = -1;
 
     var Main_Search = 0;
@@ -8407,12 +8414,6 @@
     var Main_classThumb = 'stream_thumbnail_focused';
     var Main_DataAttribute = 'data-array';
 
-    var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.238';
-    var Main_version_java = 29; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 05 2020';
-    var Main_version_web = 46; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
-    var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
     var Main_AndroidSDK = 1000;
@@ -24965,14 +24966,14 @@
     //Add a new Theme add the array pos + a name on STR_STYLES_ARRAY that is it
     var SettingsColor_DefaultColors = [
         [ //Default
-            'rgba(235,235,235,1)', //background
-            'rgba(0,0,0,1)', //TextColor
+            'rgba(0,0,0,1)', //background
+            'rgba(255,255,255,1)', //TextColor
             'rgba(235,235,235,1)' //border
         ],
         [], //Custom
-        [ //Black
-            'rgba(0,0,0,1)',
+        [ //White
             'rgba(235,235,235,1)',
+            'rgba(0,0,0,1)',
             'rgba(235,235,235,1)'
         ],
         [ //Grey
@@ -25301,6 +25302,15 @@
 
     function SettingsColor_SetAnimationStyleRestore() {
         SettingsColor_DefaultColorsPos = Main_getItemInt('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, 0);
+
+        //Workaround to fix color as default changed to black that was pos 2 now 0
+        if (!Main_getItemInt('SettingsColor_DefaultColorsPos_check', 0) && SettingsColor_DefaultColorsPos === 2) {
+
+            SettingsColor_DefaultColorsPos = 0;
+            Main_setItem('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, SettingsColor_DefaultColorsPos);
+            Main_setItem('SettingsColor_DefaultColorsPos_check', 1);
+
+        }
 
         SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
         //Restore custom color
@@ -26327,23 +26337,7 @@
         Languages_SetLang();
     }
 
-    var Settings_check_refresh_change = 0;
-
     function Settings_SetDefautls() {
-
-        //Workaround to fix Settings_check_refresh_change remove after some app updates
-        Settings_check_refresh_change = Main_getItemInt('Settings_check_refresh_change', 0);
-        if (!Settings_check_refresh_change) {
-
-            var tempRefresh = Main_getItemInt('auto_refresh_screen', 0);
-
-            if (tempRefresh) {
-                Main_setItem('auto_refresh_screen', (tempRefresh > 5) ? (tempRefresh - 4) : 2);
-            }
-
-            Main_setItem('Settings_check_refresh_change', 1);
-            Settings_check_refresh_change = 1;
-        }
 
         for (var key in Settings_value) {
             Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);

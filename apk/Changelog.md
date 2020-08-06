@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version August 06 2020
 ==============
 
-* Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style
+* Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter
 
 Apk Version 3.0.238 - August 05 2020
 ==============
