@@ -22,14 +22,14 @@ var SettingsColor_DefaultColorsPos = 0;
 //Add a new Theme add the array pos + a name on STR_STYLES_ARRAY that is it
 var SettingsColor_DefaultColors = [
     [//Default
-        'rgba(235,235,235,1)', //background
-        'rgba(0,0,0,1)',       //TextColor
-        'rgba(235,235,235,1)'  //border
+        'rgba(0,0,0,1)',        //background
+        'rgba(235,235,235,1)',  //TextColor
+        'rgba(235,235,235,1)'   //border
     ],
     [],//Custom
     [//Black
-        'rgba(0,0,0,1)',
         'rgba(235,235,235,1)',
+        'rgba(0,0,0,1)',
         'rgba(235,235,235,1)'
     ],
     [//Grey
@@ -355,6 +355,15 @@ function SettingsColor_ColorExtrackRGB(DefaultColorsPos) {
 
 function SettingsColor_SetAnimationStyleRestore() {
     SettingsColor_DefaultColorsPos = Main_getItemInt('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, 0);
+
+    //Workaround to fix color as default changed to black that was pos 2 now 0
+    if (!Main_getItemInt('SettingsColor_DefaultColorsPos_check', 0) && SettingsColor_DefaultColorsPos === 2) {
+
+        SettingsColor_DefaultColorsPos = 0;
+        Main_setItem('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, SettingsColor_DefaultColorsPos);
+        Main_setItem('SettingsColor_DefaultColorsPos_check', 1);
+
+    }
 
     SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
     //Restore custom color

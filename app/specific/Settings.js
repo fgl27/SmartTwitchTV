@@ -636,23 +636,7 @@ function Settings_SetStrings() {
     Languages_SetLang();
 }
 
-var Settings_check_refresh_change = 0;
-
 function Settings_SetDefautls() {
-
-    //Workaround to fix Settings_check_refresh_change remove after some app updates
-    Settings_check_refresh_change = Main_getItemInt('Settings_check_refresh_change', 0);
-    if (!Settings_check_refresh_change) {
-
-        var tempRefresh = Main_getItemInt('auto_refresh_screen', 0);
-
-        if (tempRefresh) {
-            Main_setItem('auto_refresh_screen', (tempRefresh > 5) ? (tempRefresh - 4) : 2);
-        }
-
-        Main_setItem('Settings_check_refresh_change', 1);
-        Settings_check_refresh_change = 1;
-    }
 
     for (var key in Settings_value) {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
