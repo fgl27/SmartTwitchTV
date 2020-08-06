@@ -23,11 +23,11 @@ var SettingsColor_DefaultColorsPos = 0;
 var SettingsColor_DefaultColors = [
     [//Default
         'rgba(0,0,0,1)',        //background
-        'rgba(235,235,235,1)',  //TextColor
+        'rgba(255,255,255,1)',  //TextColor
         'rgba(235,235,235,1)'   //border
     ],
     [],//Custom
-    [//Black
+    [//White
         'rgba(235,235,235,1)',
         'rgba(0,0,0,1)',
         'rgba(235,235,235,1)'
