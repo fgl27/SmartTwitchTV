@@ -146,8 +146,8 @@ public final class Tools {
     public static class ResponseObj {
         public final int status;
         public final String responseText;
-        public final long checkResult;
-        public final String url;
+        final long checkResult;
+        final String url;
 
         ResponseObj(int status, String responseText) {
             this.status = status;
@@ -267,7 +267,6 @@ public final class Tools {
         );
     }
 
-    //TODO add a header version of this fun
     private static ResponseObj GetResponseObj(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
@@ -794,7 +793,7 @@ public final class Tools {
         );
     }
 
-    public static String getTime(float time) {
+    static String getTime(float time) {
         time = time > 0 ? time / 1000 : 0;
 
         return String.format(

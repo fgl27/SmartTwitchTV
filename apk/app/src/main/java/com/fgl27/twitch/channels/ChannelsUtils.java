@@ -484,16 +484,16 @@ public final class ChannelsUtils {
     }
 
     public static void UpdateUserChannels(Context context, AppPreferences appPreferences) {
-        ChannelsUtils.SetUserLive(
+        SetUserLive(
                 context,
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
                 appPreferences
         );
-        ChannelsUtils.StartUserGames(
+        StartUserGames(
                 context,
                 Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
         );
-        ChannelsUtils.StartUserHost(
+        StartUserHost(
                 context,
                 Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
         );

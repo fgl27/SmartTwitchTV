@@ -34,9 +34,8 @@ public class ScreenReceiver extends BroadcastReceiver {
 
         String action = intent.getAction();
         boolean screenOff = Intent.ACTION_SCREEN_OFF.equals(action);
-        boolean screenOn = Intent.ACTION_SCREEN_ON.equals(action);
 
-        if ((screenOff || screenOn)) {
+        if ((screenOff || Intent.ACTION_SCREEN_ON.equals(action))) {
             Tools.SendNotificationIntent(screenOff ? Constants.ACTION_SCREEN_OFF : Constants.ACTION_SCREEN_ON, context);
         }
 
