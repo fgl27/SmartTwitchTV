@@ -279,24 +279,24 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //feedShow = UserLiveFeed_isFeedShow();
 
             // if (!feedShow) {
-            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
             //     UserLiveFeed_Show();
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
             // if (!Main_isScene2DocShown()) {
-            //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+            //     Main_AddClassWitEle(Main_Scene2Doc, 'visibility_hidden');
             //     Main_showScene2Doc();
 
             //     UserLiveFeed_obj[pos].AddCellsize =
             //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
             //     Main_hideScene2Doc();
-            //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+            //     Main_RemoveClassWithEle(Main_Scene2Doc, 'visibility_hidden');
             // } else {
             UserLiveFeed_obj[pos].AddCellsize =
                 UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
@@ -304,11 +304,11 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
             // if (!feedShow) {
             //     UserLiveFeed_HideAfter();
-            //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+            //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
             // }
             if (feedtypeNotshow) {
                 Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
-                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
+                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
             }
         }
 
@@ -400,11 +400,11 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'opacity_zero');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'visibility_hidden');
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
 }
 
 function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -416,7 +416,7 @@ function UserLiveFeed_Hide(PreventcleanQuailities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -1049,7 +1049,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
             return;
         }
 
-        Main_AddClass('icon_feed_back', 'opacity_zero');
+        Main_AddClass('icon_feed_back', 'visibility_hidden');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
 }
@@ -1071,7 +1071,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_UserAGamesPos) {
 
-        Main_AddClass('icon_feed_back', 'opacity_zero');
+        Main_AddClass('icon_feed_back', 'visibility_hidden');
         UserLiveFeedobj_CurrentUserAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
@@ -1093,7 +1093,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_AGamesPos) {
 
-        Main_AddClass('icon_feed_back', 'opacity_zero');
+        Main_AddClass('icon_feed_back', 'visibility_hidden');
         UserLiveFeedobj_CurrentAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;

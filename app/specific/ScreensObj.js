@@ -516,7 +516,7 @@ var Base_Live_obj = {
     },
     key_play: function() {
         if (this.itemsCount) {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
             Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
         }
     }
@@ -801,7 +801,7 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame].Set_Scroll();
     ScreenObj[Main_aGame].key_play = function() {
         if (this.itemsCount && this.posY !== -1) {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
 
             Main_OpenLiveStream(
                 this.posY + '_' + this.posX,
@@ -1530,7 +1530,7 @@ function ScreensObj_HistoryLive() {
             } else Screens_histStart(this.screen);
         } else {
             if (this.itemsCount) {
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
                 Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
             }
         }
@@ -1874,7 +1874,7 @@ function ScreensObj_AnimateThumbId(screen) {
     // This prevent starting animating before it has loaded or animated a empty image
     screen.Vod_newImg.onload = function() {
         this.onload = null;
-        Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
+        Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'visibility_hidden');
         div.style.backgroundSize = div.offsetWidth + "px";
         var frame = 0;
         screen.AnimateThumbId = Main_setInterval(

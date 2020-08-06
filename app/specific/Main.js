@@ -1171,32 +1171,32 @@ function Main_CheckBroadcastIDStartError() {
 
 function Main_showScene1Doc() {
     //Main_ShowElementWithEle(Main_Scene1Doc);
-    Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+    Main_RemoveClassWithEle(Main_Scene1Doc, 'visibility_hidden');
 }
 
 function Main_hideScene1Doc() {
     //Main_HideElementWithEle(Main_Scene1Doc);
-    Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+    Main_AddClassWitEle(Main_Scene1Doc, 'visibility_hidden');
 }
 
 function Main_isScene1DocShown() {
     //return Main_isElementShowingWithEle(Main_Scene1Doc);
-    return !Main_A_includes_B(Main_Scene1Doc.className, 'opacity_zero');
+    return !Main_A_includes_B(Main_Scene1Doc.className, 'visibility_hidden');
 }
 
 function Main_showScene2Doc() {
     //Main_ShowElementWithEle(Main_Scene2Doc);
-    Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+    Main_RemoveClassWithEle(Main_Scene2Doc, 'visibility_hidden');
 }
 
 function Main_hideScene2Doc() {
     //Main_HideElementWithEle(Main_Scene2Doc);
-    Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+    Main_AddClassWitEle(Main_Scene2Doc, 'visibility_hidden');
 }
 
 function Main_isScene2DocShown() {
     //return Main_isElementShowingWithEle(Main_Scene2Doc);
-    return !Main_A_includes_B(Main_Scene2Doc.className, 'opacity_zero');
+    return !Main_A_includes_B(Main_Scene2Doc.className, 'visibility_hidden');
 }
 
 function Main_OPenAsVod(index) {
@@ -1269,7 +1269,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
+    Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -1314,7 +1314,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
+    Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
     Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -1362,7 +1362,7 @@ function Main_openVod() {
 function Main_removeFocus(id, idArray) {
     Sidepannel_CheckIfIsLiveSTop();
     Main_HideWarningDialog();
-    Main_RemoveClass(idArray[1] + id, 'opacity_zero');
+    Main_RemoveClass(idArray[1] + id, 'visibility_hidden');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
@@ -2010,9 +2010,9 @@ function Main_CheckStop() { // Called only by JAVA
 
     //Reset Screen img if hiden
     var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
+    if (doc) Main_RemoveClassWithEle(doc, 'visibility_hidden');
     else if (ChannelContent_Isfocused()) {
-        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+        Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     }
 }
 

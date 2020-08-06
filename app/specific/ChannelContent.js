@@ -354,7 +354,7 @@ function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
         Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
         Sidepannel_CheckIfIsLiveSTop();
-        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+        Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
 
@@ -632,7 +632,7 @@ function ChannelContent_LoadPreviewRestore() {
         4
     );
 
-    Main_AddClassWitEle(img, 'opacity_zero');
+    Main_AddClassWitEle(img, 'visibility_hidden');
 }
 
 function ChannelContent_LoadPreviewStart(obj) {
@@ -695,7 +695,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
                     1
                 );
 
-                Main_AddClassWitEle(img, 'opacity_zero');
+                Main_AddClassWitEle(img, 'visibility_hidden');
 
             } else {
 
@@ -712,7 +712,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
     Sidepannel_CheckIfIsLiveSTop();
-    Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+    Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     Main_showWarningDialog(
         ErrorText,
         time

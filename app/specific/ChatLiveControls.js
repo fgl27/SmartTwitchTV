@@ -494,7 +494,7 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
         '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
         '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
-        '" class="chat_emotes_name opacity_zero">' + name + '</div></div>';
+        '" class="chat_emotes_name visibility_hidden">' + name + '</div></div>';
 
     return div;
 }
@@ -566,12 +566,12 @@ function ChatLiveControls_AddToChat(position) {
 function ChatLiveControls_EmotesAddFocus(position) {
     Main_AddClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
     ChatLiveControls_EmotesUpdateCounter(ChatLiveControls_EmotesPos);
-    Main_RemoveClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
+    Main_RemoveClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'visibility_hidden');
 }
 
 function ChatLiveControls_EmotesRemoveFocus(position) {
     Main_RemoveClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
-    Main_AddClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
+    Main_AddClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'visibility_hidden');
 }
 
 function ChatLiveControls_EmotesChangeFocus(position, adder) {

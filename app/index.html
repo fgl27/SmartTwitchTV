@@ -1004,10 +1004,6 @@
 
         }
 
-        .opacity_zero {
-            opacity: 0;
-        }
-
         div.playsideinfostatus {
             word-wrap: break-word;
             line-height: 2.1ch
@@ -1485,6 +1481,10 @@
             right: 1%;
             /* 1vh offset to hide content that may show benhide it*/
             top: calc(1vh + 5%);
+        }
+
+        .visibility_hidden {
+            visibility: hidden;
         }
 
         .hide {
@@ -2941,7 +2941,7 @@
             <p>Test Text</p>
         </div>-->
         </div>
-        <div id="scene2" class="screen_size opacity_zero">
+        <div id="scene2" class="screen_size visibility_hidden">
             <div id="chat_container0" class="chat_container hide avoidclicks">
                 <div id="chat_inner_container" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>
@@ -3714,7 +3714,7 @@
             <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
                 <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
-            <div id="user_feed" class="avoidclicks user_feed opacity_zero">
+            <div id="user_feed" class="avoidclicks user_feed visibility_hidden">
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                     <div class="loading">
                         <div></div>
@@ -3736,7 +3736,7 @@
                 <div id="user_vod_scroll" class="user_feed_scroll hide"></div>
                 <div id="user_vod_history_scroll" class="user_feed_scroll hide"></div>
                 <div style="position: absolute; bottom: 0; width: 100%;height: 7.6vh;">
-                    <div id="icon_feed_back" class="icon_feed_refresh opacity_zero">
+                    <div id="icon_feed_back" class="icon_feed_refresh visibility_hidden">
                     </div>
                     <div id="feed_end" class="icon_feed_refresh strokedelinebig">
                         <div id="feed_end_0" class="feed_end_name" style="margin-left: 0;"></div>

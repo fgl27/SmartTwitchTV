@@ -584,11 +584,11 @@ function Screens_loadDataSuccessFinish(key) {
             //if (SceneNotShowing || ScrollDocNotShowing) {
             if (ScrollDocNotShowing) {
                 // if (SceneNotShowing) {
-                //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+                //     Main_AddClassWitEle(Main_Scene1Doc, 'visibility_hidden');
                 //     Main_showScene1Doc();
                 // }
                 //if (ScrollDocNotShowing) {
-                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'visibility_hidden');
                 Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                 //}
 
@@ -597,12 +597,12 @@ function Screens_loadDataSuccessFinish(key) {
                 //if (ScrollDocNotShowing) {
                 Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
                 //}
-                Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
+                Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'visibility_hidden');
 
                 // if (SceneNotShowing) {
                 //     Main_hideScene1Doc();
                 // }
-                // Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+                // Main_RemoveClassWithEle(Main_Scene1Doc, 'visibility_hidden');
             } else Screens_setOffset(1, 0, key);
 
             for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
@@ -994,7 +994,7 @@ function Screens_LoadPreviewRestore(key) {
     );
 
     Screens_ClearAnimation(key);
-    Main_AddClassWitEle(img, 'opacity_zero');
+    Main_AddClassWitEle(img, 'visibility_hidden');
 }
 
 function Screens_LoadPreviewStart(key, obj) {
@@ -1190,7 +1190,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 );
 
                 Screens_ClearAnimation(x);
-                Main_AddClassWitEle(img, 'opacity_zero');
+                Main_AddClassWitEle(img, 'visibility_hidden');
 
                 if (offset) {
                     Main_showWarningDialog(
@@ -1251,7 +1251,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
 function Screens_LoadPreviewWarn(ErrorText, x, time) {
     Sidepannel_CheckIfIsLiveSTop();
-    Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
+    Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'visibility_hidden');
     Main_showWarningDialog(
         ErrorText,
         time
@@ -1650,7 +1650,7 @@ function Screens_ClearAnimation(key) {
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
         if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
             document.getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
-            Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+            Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
         }
     }
 }
@@ -2313,7 +2313,7 @@ var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
     Sidepannel_CheckIfIsLiveSTop();
-    Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+    Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
 
     Screens_clear = true;
 
