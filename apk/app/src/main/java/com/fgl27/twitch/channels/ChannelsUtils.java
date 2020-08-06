@@ -200,7 +200,7 @@ public final class ChannelsUtils {
                     );
 
         } catch (Exception e) { // channels not supported
-            Log.w(TAG, "createChannel e " , e);
+            Log.w(TAG, "createChannel e ", e);
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
@@ -395,13 +395,13 @@ public final class ChannelsUtils {
     public static boolean isJobServiceNotSchedule(Context context) {
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
-        for ( JobInfo jobInfo : scheduler.getAllPendingJobs() ) {
-            if ( jobInfo.getId() == JOB_ID ) {
+        for (JobInfo jobInfo : scheduler.getAllPendingJobs()) {
+            if (jobInfo.getId() == JOB_ID) {
                 return false;
             }
         }
 
-        return true ;
+        return true;
     }
 
     private static ChannelContentObj getNoUserContent(int screen) {
@@ -465,7 +465,7 @@ public final class ChannelsUtils {
     }
 
     private static String getTimeFromMs(long millis) {
-        if(millis < 0) return null;
+        if (millis < 0) return null;
 
         long hours = TimeUnit.MILLISECONDS.toHours(millis);
         millis -= TimeUnit.HOURS.toMillis(hours);
@@ -743,7 +743,7 @@ public final class ChannelsUtils {
         );
     }
 
-    private static List<ChannelContentObj> GetHostContent(String url)  {
+    private static List<ChannelContentObj> GetHostContent(String url) {
 
         try {
             Tools.ResponseObj response;
@@ -752,7 +752,7 @@ public final class ChannelsUtils {
 
                 response = Tools.Internal_MethodUrl(
                         url,
-                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                         null,
                         null,
                         0,
@@ -777,14 +777,14 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetHostContent e " , e);
+            Log.w(TAG, "GetHostContent e ", e);
         }
 
         return null;
 
     }
 
-    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen)  {
+    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen) {
 
         try {
             Tools.ResponseObj response;
@@ -793,7 +793,7 @@ public final class ChannelsUtils {
 
                 response = Tools.Internal_MethodUrl(
                         url,
-                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                         null,
                         null,
                         0,
@@ -823,14 +823,14 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveContent e " , e);
+            Log.w(TAG, "GetLiveContent e ", e);
         }
 
         return null;
 
     }
 
-    private static List<ChannelContentObj> ProcessHostArray(JsonArray Streams)  {
+    private static List<ChannelContentObj> ProcessHostArray(JsonArray Streams) {
         List<ChannelContentObj> content = new ArrayList<>();
         Set<String> TempArray = new HashSet<>();
 
@@ -866,7 +866,8 @@ public final class ChannelsUtils {
                     objPreview = !objTarget.get("preview_urls").isJsonNull() ? objTarget.get("preview_urls").getAsJsonObject() : null;
 
                     description = !objTarget.get("meta_game").isJsonNull() ? objTarget.get("meta_game").getAsString() : "";
-                    if (!Objects.equals(description, "")) description = "Playing " + description + ", for ";
+                    if (!Objects.equals(description, ""))
+                        description = "Playing " + description + ", for ";
 
                     viewers = !objTarget.get("viewers").isJsonNull() ? objTarget.get("viewers").getAsInt() : 0;
 
@@ -904,7 +905,7 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen)  {
+    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen) {
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Streams.size();
@@ -1012,7 +1013,7 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS, int screen)  {
+    private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS, int screen) {
 
         JsonArray Games = GetLiveGames(url, object, HEADERS);//Get the Games array
         List<ChannelContentObj> content = new ArrayList<>();
@@ -1062,7 +1063,7 @@ public final class ChannelsUtils {
 
             if (content.size() > 0) return content;
 
-        } catch(Exception e){
+        } catch (Exception e) {
             Log.w(TAG, "GetGamesContent e ", e);
         }
 
@@ -1070,7 +1071,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static JsonArray GetLiveGames(String url, String object, String[][] HEADERS)  {
+    public static JsonArray GetLiveGames(String url, String object, String[][] HEADERS) {
         JsonArray Result = new JsonArray();
         int status = 0;
 
@@ -1089,7 +1090,7 @@ public final class ChannelsUtils {
 
                 response = Tools.Internal_MethodUrl(
                         url,
-                        Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                         null,
                         null,
                         0,

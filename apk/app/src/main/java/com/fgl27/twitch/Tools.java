@@ -192,7 +192,7 @@ public final class Tools {
                 if (status == 200) {
                     Token = parseString(response.responseText).getAsJsonObject();
 
-                    if(Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
+                    if (Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
                         StreamToken = Token.get("token").getAsString();
                         StreamSig = Token.get("sig").getAsString();
                         break;
@@ -248,7 +248,7 @@ public final class Tools {
     private static boolean CheckToken(String token) {
         JsonObject Token = parseString(token).getAsJsonObject();
 
-        if(Token.isJsonObject() && !Token.get("chansub").isJsonNull()) {
+        if (Token.isJsonObject() && !Token.get("chansub").isJsonNull()) {
             JsonElement restricted_bitrates = Token.get("chansub").getAsJsonObject().get("restricted_bitrates");
 
             return !restricted_bitrates.isJsonNull() && restricted_bitrates.getAsJsonArray().size() > 0;
@@ -390,7 +390,8 @@ public final class Tools {
             if (closeable != null) {
                 closeable.close();
             }
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
@@ -433,7 +434,8 @@ public final class Tools {
                         MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
                         MediaCodecInfo.VideoCapabilities videoCapabilities = codecCapabilities.getVideoCapabilities();
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) instances = codecCapabilities.getMaxSupportedInstances();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            instances = codecCapabilities.getMaxSupportedInstances();
                         else instances = -1;
 
                         MediaCodecInfo.CodecProfileLevel[] profile = codecCapabilities.profileLevels;
@@ -555,7 +557,8 @@ public final class Tools {
     }
 
     private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri, String userAgent) {
-        if (masterPlaylist == null) masterPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
+        if (masterPlaylist == null)
+            masterPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
 
         return new DefaultDataSourceFactory(
                 context,
@@ -671,7 +674,7 @@ public final class Tools {
     static String getWebviewVersion(Context context) {
         PackageInfo pInfo = WebViewCompat.getCurrentWebViewPackage(context);
 
-        return pInfo != null ? pInfo.versionName: null;
+        return pInfo != null ? pInfo.versionName : null;
     }
 
     public static Point ScreenSize(Display display) {
@@ -709,7 +712,7 @@ public final class Tools {
                                 format = groupIndex.getFormat(trackIndex);
                                 result.add(
                                         new QualitiesObj(
-                                                String.format(Locale.US,"%dp%d", format.height, extractFPS(format.frameRate)),
+                                                String.format(Locale.US, "%dp%d", format.height, extractFPS(format.frameRate)),
                                                 format.bitrate,
                                                 format.codecs
                                         )
@@ -825,7 +828,8 @@ public final class Tools {
             Intent intent = new Intent(context, NotificationService.class);
             intent.setAction(action);
             ContextCompat.startForegroundService(context, intent);
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
+        } catch (Exception ignored) {
+        }//silent Exception caused on android 8.1 and up when notification fail to
     }
 
     public static boolean isConnected(Context context) {
@@ -854,7 +858,7 @@ public final class Tools {
         int maxLogSize = 1000;
         int len = veryLongString.length();
 
-        for(int i = 0; i <= len / maxLogSize; i++) {
+        for (int i = 0; i <= len / maxLogSize; i++) {
             Log.i(
                     TAG,
                     veryLongString.substring(
@@ -869,7 +873,7 @@ public final class Tools {
     static FrameLayout.LayoutParams BasePreviewLayout(float bottom, float right, float left, int web_height, Point ScreenSize, boolean bigger) {
         float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
 
-        float width = (int)((right - left) * scale);
+        float width = (int) ((right - left) * scale);
         float offset = width / 135; //Minor offset to make it feet inside the box without overflowing
         width -= offset;
 
@@ -877,7 +881,7 @@ public final class Tools {
         float leftMargin = (left * scale) + (offset / 1.8f);
 
         if (bigger) {
-            bottomMargin =  (ScreenSize.y - bottomMargin) - (offset / 2.2f);
+            bottomMargin = (ScreenSize.y - bottomMargin) - (offset / 2.2f);
             float OldWidth = width;
 
             width = width * 1.26f;
@@ -889,7 +893,7 @@ public final class Tools {
             else if ((leftMargin + width) > ScreenSize.x) leftMargin = ScreenSize.x - width;
 
             //Log.i(TAG, "leftMargin after " + leftMargin);
-        } else bottomMargin =  (ScreenSize.y - bottomMargin) + (offset / 1.8f);
+        } else bottomMargin = (ScreenSize.y - bottomMargin) + (offset / 1.8f);
 
         float height = width * 9 / 16;//16 by 9 box
         FrameLayout.LayoutParams PlayerViewSidePanel = new FrameLayout.LayoutParams((int) width, (int) height, Gravity.LEFT | Gravity.BOTTOM);
@@ -924,7 +928,7 @@ public final class Tools {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
@@ -1044,7 +1048,7 @@ public final class Tools {
                         );
 
                         return true;
-                    } else if (ResponseText.contains("Invalid refresh token")){
+                    } else if (ResponseText.contains("Invalid refresh token")) {
 
                         eraseTokens(UserId, appPreferences);
 

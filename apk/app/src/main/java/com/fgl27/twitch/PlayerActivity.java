@@ -573,7 +573,8 @@ public class PlayerActivity extends Activity {
         mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
-        if (AudioMulti == 4 || AudioMulti == position) player[position].setVolume(player[4] == null ? 1f : PreviewOthersAudio);
+        if (AudioMulti == 4 || AudioMulti == position)
+            player[position].setVolume(player[4] == null ? 1f : PreviewOthersAudio);
         else player[position].setVolume(0f);
 
         KeepScreenOn(true);
@@ -871,8 +872,10 @@ public class PlayerActivity extends Activity {
     //Used in side-by-side mode chat plus video
     private void updateVideSize(boolean FullScreen) {
         isFullScreen = FullScreen;
-        if (FullScreen) PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
-        else PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
+        if (FullScreen)
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
+        else
+            PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
@@ -1041,7 +1044,7 @@ public class PlayerActivity extends Activity {
 
     private void NetworkCheck() {
         MainThreadHandler.postDelayed(() -> {
-            if (Tools.isConnected(this)){
+            if (Tools.isConnected(this)) {
                 HideWarningText();
                 initializeWebViewEnd();
             } else NetworkCheck();
@@ -1092,7 +1095,8 @@ public class PlayerActivity extends Activity {
     private void DestroyGetPing() {
         try {
             if (PingProcess != null) PingProcess.destroy();
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
     }
 
     private String DoGetPing() {
@@ -1102,7 +1106,7 @@ public class PlayerActivity extends Activity {
 
             PingProcess = PingRuntime.exec("ping -c 1 api.twitch.tv");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if(!PingProcess.waitFor(3, TimeUnit.SECONDS)) {
+                if (!PingProcess.waitFor(3, TimeUnit.SECONDS)) {
                     PingProcess.destroy();
                     return null;
                 }
@@ -1126,7 +1130,8 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!IsStopped) return;//Prevent onResume call after startActivityForResult() from OpenExternal()
+        if (!IsStopped)
+            return;//Prevent onResume call after startActivityForResult() from OpenExternal()
         IsStopped = false;
 
         if (!WebviewLoaded) return;
@@ -1248,7 +1253,7 @@ public class PlayerActivity extends Activity {
 
     private void NetworkResumeCheck(boolean skipResumeJS) {
         MainThreadHandler.postDelayed(() -> {
-            if (Tools.isConnected(this)){
+            if (Tools.isConnected(this)) {
                 HideWarningText();
                 DoResume(skipResumeJS);
             } else {
@@ -1374,7 +1379,7 @@ public class PlayerActivity extends Activity {
 
             NotificationHandler.postDelayed(() -> {
 
-                if (!IsStopped)  {
+                if (!IsStopped) {
                     RunNotifications(context);
                     InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL, context);//it 3 min refresh
                 }
@@ -1504,7 +1509,7 @@ public class PlayerActivity extends Activity {
         return super.dispatchKeyEvent(event);
     }
 
-    public  void LoadUrlWebview(String LoadUrlString) {
+    public void LoadUrlWebview(String LoadUrlString) {
         MainThreadHandler.post(() -> mWebView.loadUrl(LoadUrlString));
     }
 
@@ -1535,7 +1540,7 @@ public class PlayerActivity extends Activity {
 
         //When we request a full url change on autentication key request 
         //prevent open it on a external browser
-        mWebView.setWebViewClient(new WebViewClient(){
+        mWebView.setWebViewClient(new WebViewClient() {
 
             @SuppressWarnings({"deprecation", "RedundantSuppression"})
             @Override
@@ -1560,7 +1565,7 @@ public class PlayerActivity extends Activity {
     private void initializeWebViewEnd() {
 
         //Run on screen key and notification on a separated WebView
-        if(!deviceIsTV) initializeWebViewKey();
+        if (!deviceIsTV) initializeWebViewKey();
         else {
             mWebViewKey = findViewById(R.id.WebViewKey);
             mWebViewKey.setVisibility(View.GONE);
@@ -1624,7 +1629,7 @@ public class PlayerActivity extends Activity {
 
         //When we request a full url change on autentication key request
         //prevent open it on a external browser
-        mWebViewKey.setWebViewClient(new WebViewClient(){
+        mWebViewKey.setWebViewClient(new WebViewClient() {
 
             @SuppressWarnings({"deprecation", "RedundantSuppression"})
             @Override
@@ -1656,6 +1661,7 @@ public class PlayerActivity extends Activity {
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
     public class WebAppInterface {
         final Context mWebViewContext;
+
         /**
          * Instantiate the interface and set the context
          */
@@ -1785,7 +1791,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void AvoidClicks(boolean Avoid) {
-            if(deviceIsTV) return;
+            if (deviceIsTV) return;
 
             MainThreadHandler.post(() -> {
                 if (Avoid) {
@@ -1803,7 +1809,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initbodyClickSet() {
-            if(deviceIsTV) return;
+            if (deviceIsTV) return;
 
             MainThreadHandler.post(() -> {
                 mWebViewKeyIsShowing = true;
@@ -1816,14 +1822,14 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysOpacity(int Opacity) {
-            if(deviceIsTV) return;
+            if (deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysPosition(int Position) {
-            if(deviceIsTV) return;
+            if (deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
         }
 
@@ -1914,7 +1920,8 @@ public class PlayerActivity extends Activity {
 
             appPreferences.put(Constants.PREF_USER_ID, id);
             appPreferences.put(Constants.PREF_USER_NAME, name);
-            if (id != null) appPreferences.put(id + Constants.PREF_USER_REFRESH_TOKEN, refresh_token);
+            if (id != null)
+                appPreferences.put(id + Constants.PREF_USER_REFRESH_TOKEN, refresh_token);
 
             if (id == null) {
 
@@ -2156,7 +2163,7 @@ public class PlayerActivity extends Activity {
                         if (result != null) DataResult[position] = result;
                         else DataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
 
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position +")");
+                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
                     }
             );
 
@@ -2197,7 +2204,7 @@ public class PlayerActivity extends Activity {
                                     JsonHeadersArray
                             );
 
-                            if (response != null)  {
+                            if (response != null) {
                                 DataResult[thread] = new Gson().toJson(response);
                                 LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                                 return;
@@ -2619,7 +2626,8 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null) VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
+                if (player[playerPos] != null)
+                    VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
                 else VideoQualityResult = null;
 
                 mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ")");
@@ -2738,7 +2746,8 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String RestoreBackupFile(String file) {
-            if (Tools.WR_storage(mWebViewContext)) return Tools.RestoreBackupFile(file, mWebViewContext);
+            if (Tools.WR_storage(mWebViewContext))
+                return Tools.RestoreBackupFile(file, mWebViewContext);
 
             return null;
         }
@@ -2839,7 +2848,7 @@ public class PlayerActivity extends Activity {
         if (trackSelector[mainPlayer] != null) {
             IsInAutoMode = position == -1;
 
-            if(IsInAutoMode){
+            if (IsInAutoMode) {
                 trackSelector[mainPlayer].setParameters(trackSelectorParameters);
                 return;
             }
@@ -2854,7 +2863,7 @@ public class PlayerActivity extends Activity {
                         DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
-                        if(position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
+                        if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
 
                             builder.setSelectionOverride(
                                     rendererIndex,
@@ -2876,7 +2885,7 @@ public class PlayerActivity extends Activity {
     public void RequestGetQualities(int Who_Called) {
 
         if (!PicturePicture && !MultiStreamEnable && Who_Called < 3) {
-            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called +  ")");
+            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
         }
     }
 
@@ -3053,15 +3062,15 @@ public class PlayerActivity extends Activity {
         if (MultiStreamEnable) {
 
             ClearPlayer(position);
-            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type  +")";
+            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
 
         } else if (PicturePicture) {
 
             ClearPlayer(position);
-            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type  +")";
+            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type + ")";
 
-        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type  +")";
-        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type  +")";
+        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
 
         LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }

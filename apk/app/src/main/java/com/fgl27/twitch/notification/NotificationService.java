@@ -99,7 +99,8 @@ public class NotificationService extends Service {
 
             }
 
-        } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to
+        } catch (Exception ignored) {
+        }//silent Exception caused on android 8.1 and up when notification fail to
         return START_NOT_STICKY;
     }
 
@@ -240,14 +241,16 @@ public class NotificationService extends Service {
             filter.addAction(Intent.ACTION_SCREEN_OFF);
             mReceiver = new ScreenReceiver();
             registerReceiver(mReceiver, filter);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     private void mUnRegisterReceiver() {
         try {
             if (mReceiver != null) unregisterReceiver(mReceiver);
             mReceiver = null;
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
 }

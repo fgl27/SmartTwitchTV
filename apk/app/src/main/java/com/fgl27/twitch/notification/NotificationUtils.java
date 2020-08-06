@@ -185,7 +185,7 @@ public final class NotificationUtils {
 
                     response = Tools.Internal_MethodUrl(
                             url,
-                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                             null,
                             null,
                             0,
@@ -296,7 +296,7 @@ public final class NotificationUtils {
                 Channels = new StringBuilder();
                 len = 100;
 
-                while(iterator.hasNext() && len > 0){
+                while (iterator.hasNext() && len > 0) {
                     Channels.append(iterator.next()).append(",");
                     len--;
                 }
@@ -313,7 +313,7 @@ public final class NotificationUtils {
 
                     response = Tools.Internal_MethodUrl(
                             url,
-                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                             null,
                             null,
                             0,
@@ -362,7 +362,7 @@ public final class NotificationUtils {
                 }
             }
 
-        } catch(Exception e){
+        } catch (Exception e) {
             Log.w(TAG, "GetLiveStreamsListNoToken e ", e);
         }
 
@@ -373,7 +373,7 @@ public final class NotificationUtils {
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
-    private static Set<String> GetChannels(String userId)  {
+    private static Set<String> GetChannels(String userId) {
         Set<String> Result = new HashSet<>();
         boolean HttpRequestSuccess = false;
 
@@ -405,7 +405,7 @@ public final class NotificationUtils {
 
                     response = Tools.Internal_MethodUrl(
                             url,
-                            Constants.DEFAULT_HTTP_TIMEOUT  + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                             null,
                             null,
                             0,
@@ -777,12 +777,14 @@ public final class NotificationUtils {
 
         try {
             newUrl = new URL(url);
-        } catch (MalformedURLException ignored) { }
+        } catch (MalformedURLException ignored) {
+        }
 
         if (newUrl != null) {
             try {
                 bmp = BitmapFactory.decodeStream(newUrl.openConnection().getInputStream());
-            } catch (IOException ignored) {}
+            } catch (IOException ignored) {
+            }
         }
 
         return bmp;
@@ -955,7 +957,8 @@ public final class NotificationUtils {
                         textSizeSmall,
                         textSizeBig
                 );
-            } catch (Exception ignored) {}//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+            } catch (Exception ignored) {
+            }//silent Exception caused on android 8.1 and up when notification fail to show or user block it
         }, 5000 * delay);
 
     }
