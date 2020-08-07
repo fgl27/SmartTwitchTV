@@ -27,8 +27,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.238';
 var Main_version_java = 29;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'August 06 2020';
-var Main_version_web = 46;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'August 07 2020';
+var Main_version_web = 47;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -380,6 +380,41 @@ function Main_initRestoreBackups() {
 
 function Main_initWindows() {
     //Main_Log('Main_initWindows');
+    Main_CheckBackup();
+
+    Users_RemoveCursor = 0;
+    Users_RemoveCursorSet();
+    Main_CheckDevice();
+
+    Main_SetStringsMain(true);
+
+    Main_GoBefore = Main_values.Main_Go;
+
+    Chat_Preinit();
+    Play_PreStart();
+    UserLiveFeed_Prepare();
+
+    Screens_InitScreens();
+
+    document.getElementById("side_panel").style.transform = '';
+
+    Screens_init(Main_Live);
+
+    if (AddUser_UserIsSet()) {
+        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+    }
+    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
+    Main_SetHistoryworker();
+    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
+
+    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
+
+    Main_SetStringsSecondary();
+    Main_checkVersion();
+}
+
+function Main_CheckBackup() {
     try {
         if (Main_IsOn_OSInterface) {
             Main_CanBackup = OSInterface_canBackupFile();
@@ -401,10 +436,9 @@ function Main_initWindows() {
     } catch (e) {
         Main_CanBackup = false;
     }
+}
 
-    Users_RemoveCursor = 0;
-    Users_RemoveCursorSet();
-
+function Main_CheckDevice() {
     if (Main_IsOn_OSInterface) {
 
         if (!Main_values.DeviceCheckNew) {
@@ -484,33 +518,6 @@ function Main_initWindows() {
         }
 
     } else Settings_ForceEnableAimations();
-
-    Main_SetStringsMain(true);
-
-    Main_GoBefore = Main_values.Main_Go;
-
-    Chat_Preinit();
-    Play_PreStart();
-    UserLiveFeed_Prepare();
-
-    Screens_InitScreens();
-
-    document.getElementById("side_panel").style.transform = '';
-
-    Screens_init(Main_Live);
-
-    if (AddUser_UserIsSet()) {
-        Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-    }
-    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
-    Main_SetHistoryworker();
-    Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
-
-    Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
-
-    Main_SetStringsSecondary();
-    Main_checkVersion();
 }
 
 function Main_SetStringsMain(isStarting) {

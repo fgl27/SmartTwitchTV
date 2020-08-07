@@ -632,6 +632,8 @@
     var STR_NOW_LIVE_GAME_SHOW;
     var STR_TITLE_CHANGE_SHOW;
     var STR_GAME_CHANGE_SHOW;
+    var STR_CHANGELOG;
+    var STR_CHANGELOG_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -879,6 +881,8 @@
         STR_EXIT_AGAIN_MULTI = "Click again to exit MultiStream!";
         STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
         STR_EXIT = "Exit";
+        STR_CHANGELOG = "Changelog";
+        STR_CHANGELOG_SUMMARY = "Resume of the latest changes to read the full changelog check bellow link:";
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
@@ -8283,8 +8287,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.238';
     var Main_version_java = 29; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 06 2020';
-    var Main_version_web = 46; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'August 07 2020';
+    var Main_version_web = 47; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8636,6 +8640,41 @@
 
     function Main_initWindows() {
         //Main_Log('Main_initWindows');
+        Main_CheckBackup();
+
+        Users_RemoveCursor = 0;
+        Users_RemoveCursorSet();
+        Main_CheckDevice();
+
+        Main_SetStringsMain(true);
+
+        Main_GoBefore = Main_values.Main_Go;
+
+        Chat_Preinit();
+        Play_PreStart();
+        UserLiveFeed_Prepare();
+
+        Screens_InitScreens();
+
+        document.getElementById("side_panel").style.transform = '';
+
+        Screens_init(Main_Live);
+
+        if (AddUser_UserIsSet()) {
+            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
+        }
+        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+        Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
+        Main_SetHistoryworker();
+        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
+
+        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
+
+        Main_SetStringsSecondary();
+        Main_checkVersion();
+    }
+
+    function Main_CheckBackup() {
         try {
             if (Main_IsOn_OSInterface) {
                 Main_CanBackup = OSInterface_canBackupFile();
@@ -8657,10 +8696,9 @@
         } catch (e) {
             Main_CanBackup = false;
         }
+    }
 
-        Users_RemoveCursor = 0;
-        Users_RemoveCursorSet();
-
+    function Main_CheckDevice() {
         if (Main_IsOn_OSInterface) {
 
             if (!Main_values.DeviceCheckNew) {
@@ -8741,33 +8779,6 @@
             }
 
         } else Settings_ForceEnableAimations();
-
-        Main_SetStringsMain(true);
-
-        Main_GoBefore = Main_values.Main_Go;
-
-        Chat_Preinit();
-        Play_PreStart();
-        UserLiveFeed_Prepare();
-
-        Screens_InitScreens();
-
-        document.getElementById("side_panel").style.transform = '';
-
-        Screens_init(Main_Live);
-
-        if (AddUser_UserIsSet()) {
-            Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
-        }
-        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-        Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
-        Main_SetHistoryworker();
-        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
-
-        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
-
-        Main_SetStringsSecondary();
-        Main_checkVersion();
     }
 
     function Main_SetStringsMain(isStarting) {
@@ -8787,7 +8798,6 @@
         Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
         Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
         Main_textContent("dialog_end_game_text", STR_GAME_CONT);
-        Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
 
         Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
@@ -8796,6 +8806,7 @@
             Settings_SetStrings();
             Main_checkVersion();
         }
+        Main_Changelog();
     }
 
     function Main_SetStringsSecondary() {
@@ -8870,6 +8881,68 @@
         Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
         Main_textContent("chat_result", STR_CHAT_RESULT);
         ChatLiveControls_OptionsUpdate_defautls();
+    }
+
+    function Main_Changelog() {
+
+        var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+        var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
+            STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
+
+        var changelogObj = [{
+                title: "Web Version August 07 2020",
+                changes: ["Add a in app Changelog on the side panel bottom options, just a resume of the latest changes"]
+            },
+            {
+                title: "Web Version August 06 2020",
+                changes: ["Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter"]
+            },
+            {
+                title: "Apk Version 3.0.238 - August 05 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
+                title: "Apk Version 3.0.237 & Web Version August 05 2020",
+                changes: [
+                    "Add new notification options on settings.. Notifications options",
+                    'Add <span class="class_bold">"Streamer changed title"</span> notification for followed channels, disable by defaults',
+                    'Add <span class="class_bold">"Streamer changed game"</span> notification for followed channels, disable by defaults',
+                    'Add <span class="class_bold">"Game is Live"</span> notification for followed games, disable by defaults',
+                    "General improves to the reliability and performance of notifications",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
+                title: "Apk Version 3.0.236 - August 03 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
+                title: "Web Version August 02 2020",
+                changes: [
+                    "Improve settings order and strings, separate Interface customizations and Content customizations",
+                    "Add a separate preview games sorting options",
+                    "General performance improves and bug fixes"
+                ]
+            },
+        ];
+
+        var i = 0;
+        var len = changelogObj.length,
+            j, lenj;
+
+        for (i; i < len; i++) {
+
+            innerHtml += STR_DIV_TITLE + changelogObj[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
+
+            lenj = changelogObj[i].changes.length;
+
+            for (j = 0; j < lenj; j++) {
+                innerHtml += STR_DOT + changelogObj[i].changes[j] + STR_BR;
+            }
+            innerHtml += '</div><br>';
+        }
+
+        Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
     }
 
     function Main_IconLoad(lable, icon, string) {
@@ -9023,9 +9096,13 @@
         Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
     }
 
-    function Main_showAboutDialog(removeEventListener, addEventListener) {
+    function Main_showAboutDialog(removeEventListener, addEventListener, isChangelog) {
         Main_removeEventListener("keydown", removeEventListener);
         Main_addEventListener("keydown", addEventListener);
+
+        Main_AddClass(isChangelog ? 'dialog_about_text' : 'dialog_changelod_text', 'hideimp');
+        Main_RemoveClass(isChangelog ? 'dialog_changelod_text' : 'dialog_about_text', 'hideimp');
+
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
         Main_ShowElement('dialog_about');
@@ -9197,10 +9274,8 @@
             Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, navigator.appVersion, navigator.platform);
         }
 
-        var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
-
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
-            STR_DIV_LINK + '<span style="color: #FFFFFF;">Changelog:</span><span></span>' + STR_SPACE + STR_ABOUT_CHANGELOG + '</div>' + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+            '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
         Main_RunningTime = new Date().getTime();
     }
@@ -28395,6 +28470,7 @@
         else if (Sidepannel_Sidepannel_Pos === 12)
             Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
         else if (Sidepannel_Sidepannel_Pos === 13) Main_showExitDialog();
+        else if (Sidepannel_Sidepannel_Pos === 14) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls, true);
     }
 
     function Sidepannel_KeyEnter() {
@@ -28627,6 +28703,7 @@
         Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_ABOUT);
         Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_CONTROLS);
         Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_EXIT);
+        Main_innerHTML('side_panel_movel_new_14', STR_SPACE + STR_CHANGELOG);
 
         Sidepannel_SetIcons('side_panel_new_1', 'search');
         Sidepannel_SetIcons('side_panel_new_2', 'user');
@@ -28787,7 +28864,7 @@
                 break;
             case KEY_PG_DOWN:
             case KEY_DOWN:
-                if (Sidepannel_Sidepannel_Pos < 13) {
+                if (Sidepannel_Sidepannel_Pos < 14) {
                     Sidepannel_RemoveFocusMain();
                     Sidepannel_Sidepannel_Pos++;
                     if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += 2;
