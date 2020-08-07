@@ -9106,7 +9106,7 @@
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
         Main_ShowElement('dialog_about');
-        Main_EventScreen('About');
+        Main_EventScreen(isChangelog ? 'Changelog' : 'About');
     }
 
     function Main_HideAboutDialog() {
