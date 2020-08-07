@@ -530,7 +530,6 @@ function Main_SetStringsMain(isStarting) {
     Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
     Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
     Main_textContent("dialog_end_game_text", STR_GAME_CONT);
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + '<div id="about_runningtime"></div>' + STR_ABOUT_INFO_0);
 
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
@@ -539,6 +538,7 @@ function Main_SetStringsMain(isStarting) {
         Settings_SetStrings();
         Main_checkVersion();
     }
+    Main_Changelog();
 }
 
 function Main_SetStringsSecondary() {
@@ -613,6 +613,67 @@ function Main_SetStringsSecondary() {
     Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
     Main_textContent("chat_result", STR_CHAT_RESULT);
     ChatLiveControls_OptionsUpdate_defautls();
+}
+
+function Main_Changelog() {
+
+    var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+    var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
+        STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
+
+    var changelogObj = [
+        {
+            title: "Web Version August 07 2020",
+            changes: ["Add a in app Changelog on the side panel bottom options, just a resume of the latest changes"]
+        },
+        {
+            title: "Web Version August 06 2020",
+            changes: ["Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter"]
+        },
+        {
+            title: "Apk Version 3.0.238 - August 05 2020",
+            changes: ["General performance improves and bug fixes"]
+        },
+        {
+            title: "Apk Version 3.0.237 & Web Version August 05 2020",
+            changes: [
+                "Add new notification options on settings.. Notifications options",
+                'Add <span class="class_bold">"Streamer changed title"</span> notification for followed channels, disable by defaults',
+                'Add <span class="class_bold">"Streamer changed game"</span> notification for followed channels, disable by defaults',
+                'Add <span class="class_bold">"Game is Live"</span> notification for followed games, disable by defaults',
+                "General improves to the reliability and performance of notifications",
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
+            title: "Apk Version 3.0.236 - August 03 2020",
+            changes: ["General performance improves and bug fixes"]
+        },
+        {
+            title: "Web Version August 02 2020",
+            changes: [
+                "Improve settings order and strings, separate Interface customizations and Content customizations",
+                "Add a separate preview games sorting options",
+                "General performance improves and bug fixes"
+            ]
+        },
+    ];
+
+    var i = 0; var len = changelogObj.length, j, lenj;
+
+    for (i; i < len; i++) {
+
+        innerHtml += STR_DIV_TITLE + changelogObj[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
+
+        lenj = changelogObj[i].changes.length;
+
+        for (j = 0; j < lenj; j++) {
+            innerHtml += STR_DOT + changelogObj[i].changes[j] + STR_BR;
+        }
+        innerHtml += '</div><br>';
+    }
+
+    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -764,9 +825,13 @@ function Main_AboutDialogUpdateTime() {
     Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
 }
 
-function Main_showAboutDialog(removeEventListener, addEventListener) {
+function Main_showAboutDialog(removeEventListener, addEventListener, isChangelog) {
     Main_removeEventListener("keydown", removeEventListener);
     Main_addEventListener("keydown", addEventListener);
+
+    Main_AddClass(isChangelog ? 'dialog_about_text' : 'dialog_changelod_text', 'hideimp');
+    Main_RemoveClass(isChangelog ? 'dialog_changelod_text' : 'dialog_about_text', 'hideimp');
+
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
@@ -938,10 +1003,8 @@ function Main_checkVersion() {
         Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, navigator.appVersion, navigator.platform);
     }
 
-    var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
-
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
-        STR_DIV_LINK + '<span style="color: #FFFFFF;">Changelog:</span><span></span>' + STR_SPACE + STR_ABOUT_CHANGELOG + '</div>' + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+        '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
     Main_RunningTime = new Date().getTime();
 }

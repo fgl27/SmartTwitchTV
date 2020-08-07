@@ -7,6 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version August 07 2020
+==============
+
+* Add a in app Changelog on the side panel bottom options, just a resume of the latest changes for a complete [changelog click here](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md)
+
 Web Version August 06 2020
 ==============
 
