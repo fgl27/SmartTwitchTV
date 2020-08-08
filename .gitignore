@@ -23,6 +23,7 @@ app/scenes/Copy of SceneChannel.js
 css/*
 js/*
 TODO
+app/*.js
 release/app/*
 release/config.xml
 release/widget.info
@@ -37,3 +38,4 @@ release/temp_maker/
 index_release.html
 icon.png
 apk/app/src/main/assets/*
+release/scripts/testing.sh

@@ -477,9 +477,14 @@ public final class ChannelsUtils {
     }
 
     public static void UpdateAllChannels(Context context, AppPreferences appPreferences) {
-        StartLive(context);
-        StartFeatured(context);
-        StartGames(context);
+        String[][] DEFAULT_HEADERS = {
+                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
+        };
+
+        StartLive(context, appPreferences, DEFAULT_HEADERS);
+        StartFeatured(context, DEFAULT_HEADERS);
+        StartGames(context, DEFAULT_HEADERS);
         UpdateUserChannels(context, appPreferences);
     }
 
@@ -499,9 +504,9 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartLive(Context context) {
+    public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS) {
 
-        String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, new AppPreferences(context));
+        String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
 
         List<ChannelContentObj> content = null;
         long channelId = getChannelIdFromTvProvider(
@@ -517,7 +522,8 @@ public final class ChannelsUtils {
                     "streams",
                     null,
                     true,
-                    Constants.CHANNEL_TYPE_LIVE
+                    Constants.CHANNEL_TYPE_LIVE,
+                    DEFAULT_HEADERS
             );
 
         }
@@ -626,7 +632,7 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartFeatured(Context context) {
+    public static void StartFeatured(Context context, String[][] DEFAULT_HEADERS) {
         List<ChannelContentObj> content = null;
 
         long channelId = getChannelIdFromTvProvider(
@@ -641,7 +647,8 @@ public final class ChannelsUtils {
                     "featured",
                     "stream",
                     false,
-                    Constants.CHANNEL_TYPE_FEATURED
+                    Constants.CHANNEL_TYPE_FEATURED,
+                    DEFAULT_HEADERS
             );
 
         }
@@ -658,7 +665,7 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartGames(Context context) {
+    public static void StartGames(Context context, String[][] DEFAULT_HEADERS) {
         long channelId = getChannelIdFromTvProvider(
                 context,
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES]
@@ -670,7 +677,7 @@ public final class ChannelsUtils {
             content = GetGamesContent(
                     "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
                     "top",
-                    Constants.DEFAULT_HEADERS,
+                    DEFAULT_HEADERS,
                     Constants.CHANNEL_TYPE_GAMES
             );
 
@@ -784,7 +791,7 @@ public final class ChannelsUtils {
 
     }
 
-    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen) {
+    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen, String[][] DEFAULT_HEADERS) {
 
         try {
             Tools.ResponseObj response;
@@ -797,7 +804,7 @@ public final class ChannelsUtils {
                         null,
                         null,
                         0,
-                        Constants.DEFAULT_HEADERS
+                        DEFAULT_HEADERS
                 );
 
                 if (response != null) {

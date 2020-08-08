@@ -35,7 +35,10 @@ var AddCode_Scopes = [
 ];
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
-var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
+//Get yours client id and secret from https://docs.aws.amazon.com/lumberyard/latest/userguide/chatplay-generate-twitch-client-id.html
+var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";//public but get yours link above is free
+var AddCode_client_secret;//none public get yours link above is free
+var AddCode_client_secret2;//none public get yours link above is free
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 //Variable initialization end
@@ -51,9 +54,8 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
     if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
     var xmlHttp,
-        url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
-            encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-            '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
+        url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
+            '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
             '&redirect_uri=' + AddCode_redirect_uri;
 
     //Run in synchronous mode to prevent anything happening until user token is restored
@@ -157,9 +159,8 @@ function AddCode_TokensCheckScope(scope) {
 }
 
 function AddCode_requestTokens(tryes) {
-    var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
-        encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-        '&code=' + encodeURIComponent(AddCode_Code) + '&redirect_uri=' + AddCode_redirect_uri;
+    var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
+        '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
     AddCode_BasexmlHttpGet(theUrl, 'POST', 0, null, AddCode_requestTokensReady, tryes);
 }
@@ -685,10 +686,10 @@ function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, c
     xmlHttp.open(type, theUrl, true);
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
-    Main_Headers_Back[2][1] = access_token;
+    Main_Headers_Priv[2][1] = access_token;
 
     for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
+        xmlHttp.setRequestHeader(Main_Headers_Priv[i][0], Main_Headers_Priv[i][1]);
 
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp, tryes);

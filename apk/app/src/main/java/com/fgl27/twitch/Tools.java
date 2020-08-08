@@ -936,13 +936,13 @@ public final class Tools {
     }
 
     static void checkTokens(String UserId, AppPreferences appPreferences) {
-        String token = getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences);
+        String token = getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences);
 
         try {
             String urlString = "https://id.twitch.tv/oauth2/validate";
 
             String[][] HEADERS = {
-                    {"Authorization", "OAuth " + token}
+                    {Constants.BASE_HEADERS[2][0], token}
             };
 
             JsonObject obj;
@@ -971,7 +971,7 @@ public final class Tools {
                         if (obj.get("expires_in").isJsonNull()) {
 
                             appPreferences.put(
-                                    UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
+                                    UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
                                     (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000))
                             );
 
@@ -995,18 +995,28 @@ public final class Tools {
     }
 
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
-        String refresh_token = getString(UserId + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
 
-        if (refresh_token == null) {
-            eraseTokens(UserId, appPreferences);
+        String refresh_token = getString(UserId + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
+        String client_id = getString( Constants.PREF_CLIENT_ID, null, appPreferences);
+        String client_secret = getString( Constants.PREF_CLIENT_SECRET, null, appPreferences);
+        String redirect_uri = getString( Constants.PREF_REDIRECT_URI, null, appPreferences);
+
+        if (client_id == null || client_secret == null || redirect_uri == null || refresh_token == null) {
+
+            if (refresh_token == null) eraseTokens(UserId, appPreferences);
+
             return false;
+
         }
 
         try {
             String urlString = String.format(
                     Locale.US,
-                    "https://id.twitch.tv/oauth2/token?grant_type=refresh_token&client_id=5seja5ptej058mxqy7gh5tcudjqtm9&client_secret=elsu5d09k0xomu7cggx3qg5ybdwu7g&refresh_token=%s&redirect_uri=https://fgl27.github.io/SmartTwitchTV/release/index.min.html",
-                    refresh_token
+                    "https://id.twitch.tv/oauth2/token?grant_type=refresh_token&client_id=%s&client_secret=%s&refresh_token=%s&redirect_uri=%s",
+                    client_id,
+                    client_secret,
+                    refresh_token,
+                    redirect_uri
             );
 
             JsonObject obj;
@@ -1030,21 +1040,28 @@ public final class Tools {
                     ResponseText = response.responseText;
 
                     if (response.status == 200) {
+
                         obj = parseString(ResponseText).getAsJsonObject();
 
                         appPreferences.put(
-                                UserId + Constants.PREF_USER_REFRESH_TOKEN,
-                                !obj.get("refresh_token").isJsonNull() ? obj.get("refresh_token").getAsString() : null
+                                UserId + Constants.PREF_REFRESH_TOKEN,
+                                !obj.get("refresh_token").isJsonNull() ?
+                                        obj.get("refresh_token").getAsString() :
+                                        null
                         );
 
                         appPreferences.put(
-                                UserId + Constants.PREF_USER_TOKEN,
-                                !obj.get("access_token").isJsonNull() ? obj.get("access_token").getAsString() : null
+                                UserId + Constants.PREF_ACCESS_TOKEN,
+                                !obj.get("access_token").isJsonNull() ?
+                                        (Constants.BASE_HEADERS[2][1] + obj.get("access_token").getAsString()) :
+                                        null
                         );
 
                         appPreferences.put(
-                                UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN,
-                                !obj.get("expires_in").isJsonNull() ? (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) : 0
+                                UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
+                                !obj.get("expires_in").isJsonNull() ?
+                                        (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) :
+                                        0
                         );
 
                         return true;
@@ -1066,8 +1083,8 @@ public final class Tools {
     }
 
     static void eraseTokens(String UserId, AppPreferences appPreferences) {
-        appPreferences.put(UserId + Constants.PREF_USER_REFRESH_TOKEN, null);
-        appPreferences.put(UserId + Constants.PREF_USER_TOKEN, null);
-        appPreferences.put(UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0);
+        appPreferences.put(UserId + Constants.PREF_REFRESH_TOKEN, null);
+        appPreferences.put(UserId + Constants.PREF_ACCESS_TOKEN, null);
+        appPreferences.put(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0);
     }
 }

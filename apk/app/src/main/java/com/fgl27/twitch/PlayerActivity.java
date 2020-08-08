@@ -1184,10 +1184,15 @@ public class PlayerActivity extends Activity {
 
         ChannelHandler.post(() -> {
 
+            String[][] DEFAULT_HEADERS = {
+                    {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                    {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
+            };
+
             try {
                 switch (Type) {
                     case Constants.CHANNEL_TYPE_LIVE:
-                        ChannelsUtils.StartLive(context);
+                        ChannelsUtils.StartLive(context, appPreferences, DEFAULT_HEADERS);
                         break;
                     case Constants.CHANNEL_TYPE_USER_LIVE:
                         ChannelsUtils.SetUserLive(
@@ -1197,10 +1202,10 @@ public class PlayerActivity extends Activity {
                         );
                         break;
                     case Constants.CHANNEL_TYPE_FEATURED:
-                        ChannelsUtils.StartFeatured(context);
+                        ChannelsUtils.StartFeatured(context, DEFAULT_HEADERS);
                         break;
                     case Constants.CHANNEL_TYPE_GAMES:
-                        ChannelsUtils.StartGames(context);
+                        ChannelsUtils.StartGames(context, DEFAULT_HEADERS);
                         break;
                     case Constants.CHANNEL_TYPE_USER_GAMES:
                         ChannelsUtils.StartUserGames(
@@ -1913,15 +1918,23 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void setAppIds(String client_id, String client_secret, String redirect_uri) {
+            appPreferences.put(Constants.PREF_CLIENT_ID, client_id);
+            appPreferences.put(Constants.PREF_CLIENT_SECRET, client_secret);
+            appPreferences.put(Constants.PREF_REDIRECT_URI, redirect_uri);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public void UpdateUserId(String id, String name, String refresh_token) {
 
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
-            String temp_refresh_token = Tools.getString(id + Constants.PREF_USER_REFRESH_TOKEN, null, appPreferences);
+            String temp_refresh_token = Tools.getString(id + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
             appPreferences.put(Constants.PREF_USER_NAME, name);
             if (id != null)
-                appPreferences.put(id + Constants.PREF_USER_REFRESH_TOKEN, refresh_token);
+                appPreferences.put(id + Constants.PREF_REFRESH_TOKEN, refresh_token);
 
             if (id == null) {
 
@@ -1947,7 +1960,7 @@ public class PlayerActivity extends Activity {
                     if (refresh_token != null) {
 
                         if (temp_refresh_token == null ||
-                                Tools.getString(id + Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
+                                Tools.getString(id + Constants.PREF_ACCESS_TOKEN, null, appPreferences) == null ||
                                 !Objects.equals(temp_refresh_token, refresh_token)) {
 
                             Tools.refreshTokens(id, appPreferences);
@@ -1970,7 +1983,7 @@ public class PlayerActivity extends Activity {
             } else if (refresh_token != null) {
 
                 if (temp_refresh_token == null ||
-                        Tools.getString(id + Constants.PREF_USER_TOKEN, null, appPreferences) == null ||
+                        Tools.getString(id + Constants.PREF_ACCESS_TOKEN, null, appPreferences) == null ||
                         !Objects.equals(temp_refresh_token, refresh_token)) {
 
                     ChannelHandler.post(() -> Tools.refreshTokens(id, appPreferences));

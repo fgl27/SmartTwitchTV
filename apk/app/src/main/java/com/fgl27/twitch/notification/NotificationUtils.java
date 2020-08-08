@@ -123,22 +123,22 @@ public final class NotificationUtils {
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
 
-        if (Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences) != null) {
+        if (Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null) {
 
-            if (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_USER_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
+            if (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
                     Tools.refreshTokens(UserId, appPreferences)) {
 
                 return GetLiveStreamsListToken(UserId, appPreferences);
 
             } else {
 
-                return GetLiveStreamsListNoToken(UserId);
+                return GetLiveStreamsListNoToken(UserId, appPreferences);
 
             }
 
         } else {
 
-            return GetLiveStreamsListNoToken(UserId);
+            return GetLiveStreamsListNoToken(UserId, appPreferences);
 
         }
 
@@ -165,9 +165,9 @@ public final class NotificationUtils {
             String id;
             String url;
             String[][] DEFAULT_HEADERS = {
-                    {Constants.DEFAULT_HEADERS[0][0], Constants.DEFAULT_HEADERS[0][1]},
-                    {Constants.DEFAULT_HEADERS[1][0], Constants.DEFAULT_HEADERS[1][1]},
-                    {"Authorization", "OAuth " + Tools.getString(UserId + Constants.PREF_USER_TOKEN, null, appPreferences)}
+                    {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                    {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]},
+                    {Constants.BASE_HEADERS[2][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
             };
 
             do {//Get all user fallowed live channels
@@ -243,7 +243,7 @@ public final class NotificationUtils {
 
                             } else {
 
-                                return GetLiveStreamsListNoToken(UserId);
+                                return GetLiveStreamsListNoToken(UserId, appPreferences);
 
                             }
 
@@ -258,19 +258,27 @@ public final class NotificationUtils {
             Log.w(TAG, "GetLiveStreamsListToken e ", e);
         }
 
+        //Log.i(TAG, "GetLiveStreamsListToken StreamsResult " + StreamsResult.size());
+
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
     //There is a faster way to do this??? yes but that is needed the user authorization key
     //So this function runs without it is slower even more as the user follows more channels but works
     //The service that run this functions aren't time dependent so no problem
-    private static JsonArray GetLiveStreamsListNoToken(String UserId) {
+    private static JsonArray GetLiveStreamsListNoToken(String UserId, AppPreferences appPreferences) {
 
         JsonArray StreamsResult = new JsonArray();
         boolean HttpRequestSuccess = false;
 
         try {
-            Set<String> ChannelsList = GetChannels(UserId);
+
+            String[][] DEFAULT_HEADERS = {
+                    {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                    {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
+            };
+
+            Set<String> ChannelsList = GetChannels(UserId, DEFAULT_HEADERS);
             if (ChannelsList == null) return null;
 
             Set<String> TempArray = new HashSet<>();
@@ -317,7 +325,7 @@ public final class NotificationUtils {
                             null,
                             null,
                             0,
-                            Constants.DEFAULT_HEADERS
+                            DEFAULT_HEADERS
                     );
 
                     if (response != null) {
@@ -366,14 +374,12 @@ public final class NotificationUtils {
             Log.w(TAG, "GetLiveStreamsListNoToken e ", e);
         }
 
-//        if (BuildConfig.DEBUG) {
-//            Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
-//        }
+        //Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
 
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
-    private static Set<String> GetChannels(String userId) {
+    private static Set<String> GetChannels(String userId, String[][] DEFAULT_HEADERS) {
         Set<String> Result = new HashSet<>();
         boolean HttpRequestSuccess = false;
 
@@ -409,7 +415,7 @@ public final class NotificationUtils {
                             null,
                             null,
                             0,
-                            Constants.DEFAULT_HEADERS
+                            DEFAULT_HEADERS
                     );
 
                     if (response != null) {

@@ -108,7 +108,6 @@ var Main_GameSize = "340x475";
 
 var Main_values_Play_data;
 var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
-var Main_Force = "4mv6wki5h1ko";
 var Main_LastClickFinish = true;
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
@@ -124,7 +123,6 @@ var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
 var Main_FirstLoad = false;
 var Main_RunningTime = 0;
-var Main_Hash = "ncx6brgo";
 var Main_PreventCheckResume = false;
 
 //The values of thumbnail and related for it screen type
@@ -144,14 +142,10 @@ var Main_ColoumnsCountChannel = 6;
 var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
 var Main_Headers = [];
-var Main_Headers_Back = [];
+var Main_Headers_Priv = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
-var Main_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";
-var Main_clientIdHeader = 'Client-ID';
-var Main_AcceptHeader = 'Accept';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
-var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
 var Main_TwithcV5Flag = '&api_version=5';
 var Main_TwithcV5Flag_I = '?api_version=5';
 
@@ -164,7 +158,6 @@ var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomimg = '?' + Math.random();
-var Main_Fix = "kimne78kx3";
 var Main_DoRestore = true;
 var Main_CanBackup = false;
 var Main_UserBackupFile = 'user.json';
@@ -236,9 +229,11 @@ function Main_loadTranslations(language) {
                     'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                 };
             }
+
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
             Main_isDebug = OSInterface_getdebug();
             Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
+            OSInterface_setAppIds(AddCode_clientId, AddCode_client_secret, AddCode_redirect_uri);
 
         } catch (e) {
             Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;
@@ -1623,7 +1618,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, key);
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Priv, key);
 }
 
 function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
@@ -1632,7 +1627,7 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = Timeout;
 
-    Main_Headers[2][1] = access_token;
+    HeaderArray[2][1] = access_token;
 
     for (var i = 0; i < HeaderQuatity; i++)
         xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);

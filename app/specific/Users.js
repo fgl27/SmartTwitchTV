@@ -429,7 +429,7 @@ function Users_handleKeyDown(event) {
                         Main_SaveValues();
                         var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
                             type_code = 'code',
-                            client_id = Main_clientId,
+                            client_id = AddCode_clientId,
                             redirect_uri = AddCode_redirect_uri,
                             scope = '',
                             len = AddCode_Scopes.length;

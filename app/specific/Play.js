@@ -233,15 +233,19 @@ function Play_PreStart() {
     Play_SetChatFont();
     //set base strings that don't change
 
+    var clientIdHeader = 'Client-ID';
+    var AcceptHeader = 'Accept';
+    var TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+
     Main_Headers = [
-        [Main_clientIdHeader, Main_clientId],
-        [Main_AcceptHeader, Main_TwithcV5Json],
+        [clientIdHeader, AddCode_clientId],
+        [AcceptHeader, TwithcV5Json],
         [Main_Authorization, null]
     ];
 
-    Main_Headers_Back = [
-        [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
-        [Main_AcceptHeader, Main_TwithcV5Json],
+    Main_Headers_Priv = [
+        [clientIdHeader, AddCode_client_secret2],
+        [AcceptHeader, TwithcV5Json],
         [Main_Authorization, null]
     ];
 
@@ -249,7 +253,7 @@ function Play_PreStart() {
 
     Play_base_back_headers = JSON.stringify(
         [
-            [Main_clientIdHeader, Main_Headers_Back[0][1]]
+            [clientIdHeader, Main_Headers_Priv[0][1]]
         ]
     );
 

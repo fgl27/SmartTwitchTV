@@ -205,8 +205,8 @@ function UserLiveFeedobj_loadChannels() {
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+    for (var i = 0; i < 2; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
@@ -288,9 +288,10 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+    if (UserLiveFeed_token) Main_Headers[2][1] = UserLiveFeed_token;
+
+    for (var i = 0; i < (UserLiveFeed_token ? 3 : 2); i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
@@ -1062,9 +1063,10 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
 
-    xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-    xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[0].access_token);
+    Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+
+    for (var i = 0; i < 3; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);

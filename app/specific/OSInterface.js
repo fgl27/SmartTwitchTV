@@ -75,9 +75,7 @@ function OSInterface_upNotificationState(Notify) {
 //Android specific: true
 //Set if live notifications are enable
 function OSInterface_SetNotificationLive(Notify) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
 }
 
 //public void SetNotificationLive(boolean Notify)
@@ -85,9 +83,7 @@ function OSInterface_SetNotificationLive(Notify) {
 //Android specific: true
 //Set if live title change notifications are enable
 function OSInterface_SetNotificationTitle(Notify) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
 }
 
 //public void SetNotificationLive(boolean Notify)
@@ -95,9 +91,7 @@ function OSInterface_SetNotificationTitle(Notify) {
 //Android specific: true
 //Set if live game change notifications are enable
 function OSInterface_SetNotificationGame(Notify) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
 }
 
 //public void SetNotificationLive(boolean Notify)
@@ -105,9 +99,7 @@ function OSInterface_SetNotificationGame(Notify) {
 //Android specific: true
 //Set if live games notifications are enable
 function OSInterface_SetNotificationGameLive(Notify) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
 }
 
 //public void Settings_SetPingWarning(boolean warning)
@@ -405,6 +397,21 @@ function OSInterface_UpdateUserId(user) {
                 null
             );
         }
+}
+
+//public void setAppIds(String client_id, String client_secret, String redirect_uri)
+//client_id client_secret redirect_uri from add_code
+//Android specific: true
+//Set app id and etc related
+function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
+    try {
+        if (Main_IsOn_OSInterface)
+            Android.setAppIds(
+                client_id,
+                client_secret ? client_secret : null,
+                redirect_uri
+            );
+    } catch (e) {}
 }
 
 //public void BackupFile(String file, String file_content)

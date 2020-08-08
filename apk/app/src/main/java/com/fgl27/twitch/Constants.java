@@ -41,13 +41,17 @@ public final class Constants {
     public static final String PREF_NOTIFICATION_STREAM_GAME = "notification_game";
     public static final String PREF_NOTIFICATION_GAME = "notification_game_live";
 
+    public static final String PREF_CLIENT_ID = "client_id";
+    static final String PREF_CLIENT_SECRET = "client_secret";
+    static final String PREF_REDIRECT_URI = "redirect_uri";
+
     public static final String PREF_USER_ID = "user_id";
     public static final String PREF_USER_NAME = "user_name";
     public static final String PREF_USER_LANGUAGE = "user_lang";
 
-    static final String PREF_USER_REFRESH_TOKEN = "refresh_token";
-    public static final String PREF_USER_TOKEN = "user_token";
-    public static final String PREF_USER_TOKEN_EXPIRES_WHEN = "toke_expires_when";
+    static final String PREF_REFRESH_TOKEN = "refresh_token";
+    public static final String PREF_ACCESS_TOKEN = "access_token";
+    public static final String PREF_TOKEN_EXPIRES_WHEN = "toke_expires_when";
 
     public static final String ACTION_SCREEN_ON = "action_screenOn";
     public static final String ACTION_SCREEN_OFF = "action_screenOff";
@@ -58,9 +62,10 @@ public final class Constants {
     public static final String CHANNEL_INTENT = "channel_intent";//f update this also update it on the manifest... ChannelsReceiver & PlayerActivity
     public static final String CHANNEL_TYPE = "channel_type";
 
-    public static final String[][] DEFAULT_HEADERS = {
-            {"Client-ID", "5seja5ptej058mxqy7gh5tcudjqtm9"},
-            {"Accept", "application/vnd.twitchtv.v5+json"}
+    public static final String[][] BASE_HEADERS = {
+            {"Client-ID", ""},
+            {"Accept", "application/vnd.twitchtv.v5+json"},
+            {"Authorization", "OAuth "}
     };
 
     public static final String[] CHANNELS_NAMES = {
