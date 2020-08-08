@@ -8886,6 +8886,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.239 - August 08 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Web Version August 07 2020",
                 changes: ["Add a in app Changelog on the side panel bottom options, just a resume of the latest changes"]
             },
@@ -8911,14 +8915,6 @@
             {
                 title: "Apk Version 3.0.236 - August 03 2020",
                 changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version August 02 2020",
-                changes: [
-                    "Improve settings order and strings, separate Interface customizations and Content customizations",
-                    "Add a separate preview games sorting options",
-                    "General performance improves and bug fixes"
-                ]
             },
         ];
 
