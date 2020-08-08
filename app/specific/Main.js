@@ -624,7 +624,7 @@ function Main_SetStringsSecondary() {
 
 function Main_Changelog() {
 
-    var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+    var STR_ABOUT_CHANGELOG = "https://tinyurl.com/sttvchanges";
     var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
