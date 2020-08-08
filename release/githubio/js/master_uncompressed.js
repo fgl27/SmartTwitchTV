@@ -882,7 +882,7 @@
         STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
         STR_EXIT = "Exit";
         STR_CHANGELOG = "Changelog";
-        STR_CHANGELOG_SUMMARY = "Resume of the latest changes to read the full changelog check bellow link:";
+        STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
@@ -8885,7 +8885,7 @@
 
     function Main_Changelog() {
 
-        var STR_ABOUT_CHANGELOG = "https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md";
+        var STR_ABOUT_CHANGELOG = "https://tinyurl.com/sttvchanges";
         var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
