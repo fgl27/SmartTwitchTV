@@ -83,7 +83,7 @@ function en_USLang() {
     STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
     STR_EXIT = "Exit";
     STR_CHANGELOG = "Changelog";
-    STR_CHANGELOG_SUMMARY = "Resume of the latest changes to read the full changelog check bellow link:";
+    STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
     STR_CANCEL = "Cancel";
