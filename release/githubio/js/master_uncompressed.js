@@ -3114,7 +3114,10 @@
     ];
 
     var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
-    var AddCode_client_secret = "elsu5d09k0xomu7cggx3qg5ybdwu7g";
+    //Get yours client id and secret from https://docs.aws.amazon.com/lumberyard/latest/userguide/chatplay-generate-twitch-client-id.html
+    var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9"; //public but get yours link above is free
+    var AddCode_client_secret; //none public get yours link above is free
+    var AddCode_client_secret2; //none public get yours link above is free
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
     var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
     //Variable initialization end
@@ -3130,9 +3133,8 @@
         if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
 
         var xmlHttp,
-            url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' +
-            encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-            '&refresh_token=' + encodeURIComponent(AddUser_UsernameArray[position].refresh_token) +
+            url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
+            '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
             '&redirect_uri=' + AddCode_redirect_uri;
 
         //Run in synchronous mode to prevent anything happening until user token is restored
@@ -3237,9 +3239,8 @@
     }
 
     function AddCode_requestTokens(tryes) {
-        var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' +
-            encodeURIComponent(Main_clientId) + '&client_secret=' + encodeURIComponent(AddCode_client_secret) +
-            '&code=' + encodeURIComponent(AddCode_Code) + '&redirect_uri=' + AddCode_redirect_uri;
+        var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
+            '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
         AddCode_BasexmlHttpGet(theUrl, 'POST', 0, null, AddCode_requestTokensReady, tryes);
     }
@@ -3765,10 +3766,10 @@
         xmlHttp.open(type, theUrl, true);
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
-        Main_Headers_Back[2][1] = access_token;
+        Main_Headers_Priv[2][1] = access_token;
 
         for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers_Back[i][0], Main_Headers_Back[i][1]);
+            xmlHttp.setRequestHeader(Main_Headers_Priv[i][0], Main_Headers_Priv[i][1]);
 
         xmlHttp.onreadystatechange = function() {
             callbackready(xmlHttp, tryes);
@@ -7911,7 +7912,7 @@
 
     function Chat_loadChatRequest(id, tryes) {
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + Main_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
+            '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
@@ -8185,7 +8186,7 @@
 
     function Chat_loadChatNextRequest(id, tryes) {
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + Main_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
+            '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
@@ -8285,10 +8286,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.238';
-    var Main_version_java = 29; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 07 2020';
-    var Main_version_web = 47; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.239';
+    var Main_version_java = 30; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 08 2020';
+    var Main_version_web = 48; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8368,7 +8369,6 @@
 
     var Main_values_Play_data;
     var Main_values_History_data = {}; //The obj is defined in AddUser_RestoreUsers()
-    var Main_Force = "4mv6wki5h1ko";
     var Main_LastClickFinish = true;
     var Main_newUsercode = 0;
     var Main_ExitCursor = 0;
@@ -8384,7 +8384,6 @@
     var Main_FirstRun = true;
     var Main_FirstLoad = false;
     var Main_RunningTime = 0;
-    var Main_Hash = "ncx6brgo";
     var Main_PreventCheckResume = false;
 
     //The values of thumbnail and related for it screen type
@@ -8404,14 +8403,10 @@
     var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
     var Main_Headers = [];
-    var Main_Headers_Back = [];
+    var Main_Headers_Priv = [];
     var Main_kraken_api = 'https://api.twitch.tv/kraken/';
-    var Main_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";
-    var Main_clientIdHeader = 'Client-ID';
-    var Main_AcceptHeader = 'Accept';
     var Main_Authorization = 'Authorization';
     var Main_OAuth = 'OAuth ';
-    var Main_TwithcV5Json = 'application/vnd.twitchtv.v5+json';
     var Main_TwithcV5Flag = '&api_version=5';
     var Main_TwithcV5Flag_I = '?api_version=5';
 
@@ -8424,7 +8419,6 @@
     var Main_ClockOffset = 0;
     var Main_IsOn_OSInterface = 0;
     var Main_randomimg = '?' + Math.random();
-    var Main_Fix = "kimne78kx3";
     var Main_DoRestore = true;
     var Main_CanBackup = false;
     var Main_UserBackupFile = 'user.json';
@@ -8496,9 +8490,11 @@
                         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                     };
                 }
+
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
                 Main_isDebug = OSInterface_getdebug();
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
+                OSInterface_setAppIds(AddCode_clientId, AddCode_client_secret, AddCode_redirect_uri);
 
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;
@@ -9888,7 +9884,7 @@
     }
 
     function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Back, key);
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Priv, key);
     }
 
     function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
@@ -9897,7 +9893,7 @@
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
-        Main_Headers[2][1] = access_token;
+        HeaderArray[2][1] = access_token;
 
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
@@ -10944,9 +10940,7 @@
     //Android specific: true
     //Set if live notifications are enable
     function OSInterface_SetNotificationLive(Notify) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationLive(Notify);
     }
 
     //public void SetNotificationLive(boolean Notify)
@@ -10954,9 +10948,7 @@
     //Android specific: true
     //Set if live title change notifications are enable
     function OSInterface_SetNotificationTitle(Notify) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationTitle(Notify);
     }
 
     //public void SetNotificationLive(boolean Notify)
@@ -10964,9 +10956,7 @@
     //Android specific: true
     //Set if live game change notifications are enable
     function OSInterface_SetNotificationGame(Notify) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationGame(Notify);
     }
 
     //public void SetNotificationLive(boolean Notify)
@@ -10974,9 +10964,7 @@
     //Android specific: true
     //Set if live games notifications are enable
     function OSInterface_SetNotificationGameLive(Notify) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Notify);
     }
 
     //public void Settings_SetPingWarning(boolean warning)
@@ -11275,6 +11263,21 @@
                     null
                 );
             }
+    }
+
+    //public void setAppIds(String client_id, String client_secret, String redirect_uri)
+    //client_id client_secret redirect_uri from add_code
+    //Android specific: true
+    //Set app id and etc related
+    function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
+        try {
+            if (Main_IsOn_OSInterface)
+                Android.setAppIds(
+                    client_id,
+                    client_secret ? client_secret : null,
+                    redirect_uri
+                );
+        } catch (e) {}
     }
 
     //public void BackupFile(String file, String file_content)
@@ -15948,15 +15951,19 @@
         Play_SetChatFont();
         //set base strings that don't change
 
+        var clientIdHeader = 'Client-ID';
+        var AcceptHeader = 'Accept';
+        var TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+
         Main_Headers = [
-            [Main_clientIdHeader, Main_clientId],
-            [Main_AcceptHeader, Main_TwithcV5Json],
+            [clientIdHeader, AddCode_clientId],
+            [AcceptHeader, TwithcV5Json],
             [Main_Authorization, null]
         ];
 
-        Main_Headers_Back = [
-            [Main_clientIdHeader, Main_Fix + Main_Hash + Main_Force],
-            [Main_AcceptHeader, Main_TwithcV5Json],
+        Main_Headers_Priv = [
+            [clientIdHeader, AddCode_client_secret2],
+            [AcceptHeader, TwithcV5Json],
             [Main_Authorization, null]
         ];
 
@@ -15964,7 +15971,7 @@
 
         Play_base_back_headers = JSON.stringify(
             [
-                [Main_clientIdHeader, Main_Headers_Back[0][1]]
+                [clientIdHeader, Main_Headers_Priv[0][1]]
             ]
         );
 
@@ -23662,7 +23669,7 @@
             }
         };
         ScreenObj[Main_UserHost].Set_Scroll();
-        ScreenObj[Main_UserHost].Headers = Main_Headers_Back;
+        ScreenObj[Main_UserHost].Headers = Main_Headers_Priv;
     }
 
     function ScreensObj_InitAGame() {
@@ -24081,7 +24088,7 @@
             if (!this.loadingData) this.key_refresh();
         };
         ScreenObj[Main_usergames].Set_Scroll();
-        ScreenObj[Main_usergames].Headers = Main_Headers_Back;
+        ScreenObj[Main_usergames].Headers = Main_Headers_Priv;
     }
 
     function ScreensObj_InitSearchGames() {
@@ -30228,8 +30235,8 @@
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
+        for (var i = 0; i < 2; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
@@ -30311,9 +30318,10 @@
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        if (UserLiveFeed_token) xmlHttp.setRequestHeader(Main_Authorization, UserLiveFeed_token);
+        if (UserLiveFeed_token) Main_Headers[2][1] = UserLiveFeed_token;
+
+        for (var i = 0; i < (UserLiveFeed_token ? 3 : 2); i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
@@ -31096,9 +31104,10 @@
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.setRequestHeader(Main_clientIdHeader, Main_clientId);
-        xmlHttp.setRequestHeader(Main_AcceptHeader, Main_TwithcV5Json);
-        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[0].access_token);
+        Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+
+        for (var i = 0; i < 3; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
@@ -31979,7 +31988,7 @@
                             Main_SaveValues();
                             var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
                                 type_code = 'code',
-                                client_id = Main_clientId,
+                                client_id = AddCode_clientId,
                                 redirect_uri = AddCode_redirect_uri,
                                 scope = '',
                                 len = AddCode_Scopes.length;
