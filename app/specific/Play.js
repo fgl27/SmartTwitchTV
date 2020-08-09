@@ -257,6 +257,7 @@ function Play_PreStart() {
         ]
     );
 
+    Play_BottonIconsSet();
 }
 
 function Play_ResetDefaultQuality() {
@@ -299,8 +300,8 @@ function Play_Start(offline_chat) {
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
-    Main_HideElement('progress_bar_div');
-    Main_ShowElement('controls_holder');
+    Main_HideElementWithEle(Play_BottonIcons_Progress);
+    Main_ShowElementWithEle(Play_Controls_Holder);
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
@@ -534,7 +535,7 @@ function Play_Resume() {
     UserLiveFeed_Hide();
 
     ChatLive_Playing = true;
-    Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
     Play_showBufferDialog();
     Play_ResumeAfterOnlineCounter = 0;
 
@@ -1513,7 +1514,7 @@ function Play_UpdateStatus(mwhocall) {
 
 function Play_showPanel() {
     if (Play_getQualitiesFail) Play_getQualities(1, true);
-    PlayVod_IconsBottonResetFocus();
+    Play_BottonIconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
     PlayExtra_ResetSpeed();

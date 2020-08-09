@@ -899,7 +899,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
     if (Play_StayDialogVisible()) return;
 
     if (State) {
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
 
         if (PlayVodClip === 1) {
             ChatLive_Playing = true;
@@ -913,7 +913,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
         }
 
     } else {
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
         if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
         else ChatLive_Playing = false;
@@ -1228,7 +1228,7 @@ function Play_handleKeyDown(e) {
                         PlayVod_PanelY--;
                         if (PlayVod_PanelY < 1) {
                             PlayVod_PanelY = 1;
-                        } else PlayVod_IconsBottonFocus();
+                        } else Play_BottonIconsFocus();
                     } else Play_BottomUpDown(1, 1);
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
@@ -1255,7 +1255,7 @@ function Play_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
-                        PlayVod_IconsBottonFocus();
+                        Play_BottonIconsFocus();
                     } else Play_BottomUpDown(1, -1);
                     Play_setHidePanel();
                 } else if (Play_MultiDialogVisible()) {
@@ -2269,7 +2269,7 @@ function Play_MakeControls() {
 }
 
 function Play_IconsAddFocus() {
-    Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, 'progress_bar_div_focus');
+    Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
 
     Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
 
@@ -2285,7 +2285,7 @@ function Play_IconsAddFocus() {
 }
 
 function Play_IconsRemoveFocus() {
-    Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, 'progress_bar_div_focus');
+    Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
     Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
     Play_controls[Play_controlsChat].button_text.style.opacity = "0";
@@ -2331,7 +2331,7 @@ function Play_BottomUpDown(PlayVodClip, adder) {
         Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
     } else if (adder === 1) {
         PlayVod_PanelY--;
-        PlayVod_IconsBottonFocus();
+        Play_BottonIconsFocus();
     }
 }
 
@@ -2436,7 +2436,7 @@ function Play_SetControlsArrows(key) {
 function Play_showVodDialog(isFromVod) {
     Main_clearTimeout(Play_HideVodDialogId);
     Main_textContent("dialog_vod_text", isFromVod ? STR_VOD_HISTORY : STR_VOD_HISTORY_FORM_LIVE);
-    Main_HideElement('controls_holder');
+    Main_HideElementWithEle(Play_Controls_Holder);
     PlayVod_showPanel(false);
     Main_textContent('stream_quality', '');
     Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
@@ -2479,5 +2479,120 @@ function Play_SetAudioMultiIcon() {
 
         audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
         Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+    }
+}
+
+var Play_BottonIcons_Pause;
+var Play_BottonIcons_Next;
+var Play_BottonIcons_Back;
+var Play_BottonIcons_Progress;
+var Play_BottonIcons_Next_Img_holder;
+var Play_BottonIcons_End_img_holder;
+var Play_BottonIcons_Next_img;
+var Play_BottonIcons_Back_img;
+var Play_BottonIcons_End_img;
+var Play_BottonIcons_Progress_Steps;
+var Play_BottonIcons_Progress_JumpTo;
+var Play_BottonIcons_Focus_Class = 'progress_bar_div_focus';
+
+var Play_BottonIcons_Next_name;
+var Play_BottonIcons_Next_title;
+
+var Play_BottonIcons_Back_name;
+var Play_BottonIcons_Back_title;
+
+var Play_BottonIcons_End_name;
+var Play_BottonIcons_End_title;
+
+var Play_Controls_Holder;
+
+function Play_BottonIconsSet() {
+
+    Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
+    Play_BottonIcons_Back_img = Main_getElementById('back_button_img');
+    Play_BottonIcons_End_img = Main_getElementById('end_button_img');
+
+    Play_BottonIcons_Next_name = Main_getElementById('next_button_text_name');
+    Play_BottonIcons_Next_title = Main_getElementById('next_button_text_title');
+
+    Play_BottonIcons_Back_name = Main_getElementById('back_button_text_name');
+    Play_BottonIcons_Back_title = Main_getElementById('back_button_text_title');
+
+    Play_BottonIcons_End_name = Main_getElementById('end_next_button_text_name');
+    Play_BottonIcons_End_title = Main_getElementById('end_next_button_text_title');
+
+    Play_BottonIcons_Pause = Main_getElementById('pause_button');
+    Play_BottonIcons_Next = Main_getElementById('next_button');
+    Play_BottonIcons_Back = Main_getElementById('back_button');
+    PlayClip_HideShowNextDiv = [Play_BottonIcons_Next, Play_BottonIcons_Back];
+    Play_BottonIcons_Progress = Main_getElementById('progress_bar_div');
+    Play_BottonIcons_Next_Img_holder = Main_getElementById('next_button_img_holder');
+    Play_BottonIcons_End_img_holder = Main_getElementById('back_button_img_holder');
+    Play_BottonIcons_Progress_Steps = Main_getElementById('progress_bar_steps');
+    Play_BottonIcons_Progress_JumpTo = Main_getElementById('progress_bar_jump_to');
+
+    Play_Controls_Holder = Main_getElementById('controls_holder');
+}
+
+function Play_BottonIconsResetFocus() {
+    PlayVod_PanelY = 1;
+    PlayClip_EnterPos = 0;
+    Play_BottonIconsFocus();
+}
+
+function Play_BottonIconsFocus() {
+
+    if (PlayVod_PanelY < 0) {
+        PlayVod_PanelY = 0;
+        return;
+    }
+
+    Main_RemoveClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+    Main_RemoveClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+    Main_RemoveClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+    Main_RemoveClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+    Main_HideElementWithEle(Play_BottonIcons_Next_Img_holder);
+    Main_HideElementWithEle(Play_BottonIcons_End_img_holder);
+
+    if (!PlayVod_PanelY) { //progress_bar
+
+        Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+        Play_IconsRemoveFocus();
+
+        if (PlayVod_addToJump) {
+
+            PlayVod_jumpTime();
+            Play_BottonIcons_Progress_Steps.style.display = 'inline-block';
+
+        }
+
+    } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+
+        if (!PlayClip_EnterPos) { //pause
+
+            Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+
+        } else if (PlayClip_EnterPos === 1) { //next
+
+            Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
+            Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+
+        } else if (PlayClip_EnterPos === -1) { //back
+
+            Main_ShowElementWithEle(Play_BottonIcons_End_img_holder);
+            Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+
+        }
+
+        Play_IconsRemoveFocus();
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
+
+    } else if (PlayVod_PanelY === 2) { //botton icons
+
+        Play_IconsAddFocus();
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
+
     }
 }
