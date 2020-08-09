@@ -54,7 +54,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
         Sidepannel_UpdateThumb();
     } else {
         if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos])
-            document.getElementById('side_panel_warn').style.display = 'inline-block';
+            Main_getElementById('side_panel_warn').style.display = 'inline-block';
 
         Main_HideElement('side_panel_feed_thumb');
         if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
@@ -76,7 +76,7 @@ function Sidepannel_isShowingSide() {
 
 function Sidepannel_UpdateThumbDiv() {
 
-    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+    var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
         var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
@@ -102,7 +102,7 @@ function Sidepannel_UpdateThumb() {
         Main_ShowElement('side_panel_feed_thumb');
 
         if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
-            var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+            var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
             if (doc) {
 
@@ -138,7 +138,7 @@ var Sidepannel_PlayerViewSidePanelSet;
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
-        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
@@ -185,7 +185,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 }
 
 function Sidepannel_SetPlayerViewSidePanel() {
-    var Rect = document.getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
+    var Rect = Main_getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
     OSInterface_SetPlayerViewSidePanel(
         Rect.bottom,
         Rect.right,
@@ -218,7 +218,7 @@ function Sidepannel_CheckIfIsLiveStart() {
         return;
     }
 
-    var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+    var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
     if (doc) {
         try {
@@ -407,7 +407,7 @@ function Sidepannel_ShowFeed() {
 
     if ((ForceRefresh || !UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
-    } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+    } else if (Main_getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed(true);
     }
@@ -594,9 +594,9 @@ function Sidepannel_Scroll(skipAnimation) {
 
     if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
         if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-            value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
+            value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
         else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-            value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+            value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
     }
 
     if (!skipAnimation && Sidepannel_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&

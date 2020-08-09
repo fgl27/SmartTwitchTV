@@ -145,7 +145,7 @@ function ChatLiveControls_removeEventListener() {
     if (Main_ChatLiveInput !== null) {
         var elClone = Main_ChatLiveInput.cloneNode(true);
         Main_ChatLiveInput.parentNode.replaceChild(elClone, Main_ChatLiveInput);
-        Main_ChatLiveInput = document.getElementById("chat_send_input");
+        Main_ChatLiveInput = Main_getElementById("chat_send_input");
     }
 }
 
@@ -335,7 +335,7 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
         );
     }
 
-    var div_holder = document.getElementById('chat_emotes'), i;
+    var div_holder = Main_getElementById('chat_emotes'), i;
     Main_emptyWithEle(div_holder);
 
     ChatLiveControls_EmotesTotal = array.length;
@@ -424,7 +424,7 @@ function ChatLiveControls_SetEmojisDiv() {
         );
     }
 
-    var div_holder = document.getElementById('chat_emotes'), i;
+    var div_holder = Main_getElementById('chat_emotes'), i;
     Main_emptyWithEle(div_holder);
 
     ChatLiveControls_EmotesTotal = array.length;
@@ -511,7 +511,7 @@ function ChatLiveControls_ShowEmotes() {
         Main_addEventListener("keydown", ChatLiveControls_EmotesEvent);
         ChatLiveControls_resetInputFocusTools();
 
-        document.getElementById('chat_emotes').style.transform = '';
+        Main_getElementById('chat_emotes').style.transform = '';
         ChatLiveControls_EmotesUpdateCounter(0);
         Main_ShowElement('chat_emotes_holder');
         ChatLiveControls_EmotesAddFocus(0);
@@ -554,7 +554,7 @@ function ChatLiveControls_EmotesEvent(event) {
 }
 
 function ChatLiveControls_AddToChat(position) {
-    var doc = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
+    var doc = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
     if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
 }
 
@@ -602,14 +602,14 @@ function ChatLiveControls_EmotesScroll(position) {
         var postion_down = (postion_now + 2) * 20;
         var postion_up = (postion_now - 1) * 20;
 
-        var how_much = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
+        var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
 
         if (ChatLiveControls_EmotesArray[postion_down]) {
 
-            document.getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
+            Main_getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
 
         }
-    } else document.getElementById('chat_emotes').style.transform = '';
+    } else Main_getElementById('chat_emotes').style.transform = '';
 }
 
 function ChatLiveControls_UpdateTextInput(text) {
@@ -909,14 +909,14 @@ function ChatLiveControls_SetarrowsKey(key) {
     var maxValue = OptionsShowObj[key].values.length - 1;
 
     if (currentValue > 0 && currentValue < maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     } else if (currentValue === maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "0.2";
     } else {
-        document.getElementById(key + "arrow_left").style.opacity = "0.2";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     }
 }
 
@@ -968,8 +968,8 @@ function ChatLiveControls_OptionsUpDown(offset) {
 }
 
 function ChatLiveControls_RemoveinputFocusKey(key) {
-    document.getElementById(key + "arrow_left").style.opacity = "0";
-    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_getElementById(key + "arrow_left").style.opacity = "0";
+    Main_getElementById(key + "arrow_right").style.opacity = "0";
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
 }

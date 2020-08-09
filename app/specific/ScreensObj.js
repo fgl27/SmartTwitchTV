@@ -89,8 +89,8 @@ var Base_obj = {
         Screens_loadDataSuccess(this.screen);
     },
     Set_Scroll: function() {
-        this.ScrollDoc = document.getElementById(this.ids[4]);
-        this.tableDoc = document.getElementById(this.table);
+        this.ScrollDoc = Main_getElementById(this.ids[4]);
+        this.tableDoc = Main_getElementById(this.table);
     },
     addrow: Screens_addrow,
     key_exit: function(goSidepanel) {//TODO overwrite this on if object
@@ -1046,7 +1046,7 @@ var Base_Game_obj = {
     key_play: function() {
         Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
-        Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+        Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
         Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
         Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
 
@@ -1247,7 +1247,7 @@ var Base_Channel_obj = {
     base_key_play: function(go_screen, IsFollowing) {
         if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
-        Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+        Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
 
         Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
         Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
@@ -1436,8 +1436,8 @@ var Base_History_obj = {
             'dialog_hist_val_1',
             this.histArrays[1][this.histPosX[1]]
         );
-        document.getElementById("dialog_hist_left_1").style.opacity = "0";
-        document.getElementById("dialog_hist_right_1").style.opacity = "0";
+        Main_getElementById("dialog_hist_left_1").style.opacity = "0";
+        Main_getElementById("dialog_hist_right_1").style.opacity = "0";
         this.histPosXTemp = Main_Slice(this.histPosX);
     }
 };
@@ -1460,7 +1460,7 @@ function ScreensObj_HistoryLive() {
         },
         setTODialog: function() {
             Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-            if (Main_A_includes_B(document.getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
+            if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
                 Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
             else
                 Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
@@ -1868,7 +1868,7 @@ function ScreensObj_ClipCellArray(cell) {
 function ScreensObj_AnimateThumbId(screen) {
     Main_clearInterval(screen.AnimateThumbId);
     if (!Settings_Obj_default("videos_animation")) return;
-    var div = document.getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
+    var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
     // Only load the animation if it can be loaded
     // This prevent starting animating before it has loaded or animated a empty image

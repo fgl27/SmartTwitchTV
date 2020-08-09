@@ -274,11 +274,11 @@ function Main_loadTranslations(language) {
 
         if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-        Main_SearchInput = document.getElementById("search_input");
-        Main_AddUserInput = document.getElementById("user_input");
-        Main_ChatLiveInput = document.getElementById("chat_send_input");
-        Main_Scene1Doc = document.getElementById('scene1');
-        Main_Scene2Doc = document.getElementById('scene2');
+        Main_SearchInput = Main_getElementById("search_input");
+        Main_AddUserInput = Main_getElementById("user_input");
+        Main_ChatLiveInput = Main_getElementById("chat_send_input");
+        Main_Scene1Doc = Main_getElementById('scene1');
+        Main_Scene2Doc = Main_getElementById('scene2');
 
         Main_RestoreValues();
 
@@ -390,7 +390,7 @@ function Main_initWindows() {
 
     Screens_InitScreens();
 
-    document.getElementById("side_panel").style.transform = '';
+    Main_getElementById("side_panel").style.transform = '';
 
     Screens_first_init();
 
@@ -685,7 +685,7 @@ function Main_IconLoad(lable, icon, string) {
 }
 
 function Main_HideElement(element) {
-    Main_HideElementWithEle(document.getElementById(element));
+    Main_HideElementWithEle(Main_getElementById(element));
 }
 
 function Main_HideElementWithEle(element) {
@@ -693,7 +693,7 @@ function Main_HideElementWithEle(element) {
 }
 
 function Main_ShowElement(element) {
-    Main_ShowElementWithEle(document.getElementById(element));
+    Main_ShowElementWithEle(Main_getElementById(element));
 }
 
 function Main_ShowElementWithEle(element) {
@@ -701,7 +701,7 @@ function Main_ShowElementWithEle(element) {
 }
 
 function Main_isElementShowing(element) {
-    return Main_isElementShowingWithEle(document.getElementById(element));
+    return Main_isElementShowingWithEle(Main_getElementById(element));
 }
 
 function Main_isElementShowingWithEle(element) {
@@ -709,7 +709,7 @@ function Main_isElementShowingWithEle(element) {
 }
 
 function Main_AddClass(element, mclass) {
-    Main_AddClassWitEle(document.getElementById(element), mclass);
+    Main_AddClassWitEle(Main_getElementById(element), mclass);
 }
 
 function Main_AddClassWitEle(element, mclass) {
@@ -717,7 +717,7 @@ function Main_AddClassWitEle(element, mclass) {
 }
 
 function Main_RemoveClass(element, mclass) {
-    Main_RemoveClassWithEle(document.getElementById(element), mclass);
+    Main_RemoveClassWithEle(Main_getElementById(element), mclass);
 }
 
 function Main_RemoveClassWithEle(element, mclass) {
@@ -725,7 +725,7 @@ function Main_RemoveClassWithEle(element, mclass) {
 }
 
 function Main_innerHTML(div, value) {
-    Main_innerHTMLWithEle(document.getElementById(div), value);
+    Main_innerHTMLWithEle(Main_getElementById(div), value);
 }
 
 function Main_innerHTMLWithEle(ele, value) {
@@ -733,7 +733,7 @@ function Main_innerHTMLWithEle(ele, value) {
 }
 
 function Main_textContent(div, value) {
-    Main_textContentWithEle(document.getElementById(div), value);
+    Main_textContentWithEle(Main_getElementById(div), value);
 }
 
 function Main_textContentWithEle(ele, value) {
@@ -741,14 +741,14 @@ function Main_textContentWithEle(ele, value) {
 }
 
 function Main_replaceClassEmoji(div) {
-    var emojiel = document.getElementById(div).getElementsByClassName("emoji");
+    var emojiel = Main_getElementById(div).getElementsByClassName("emoji");
     if (emojiel) {
 
         var i = 0, len = emojiel.length;
         for (i; i < len; i++)
             emojiel[i].classList.add('emoticon');
 
-        emojiel = document.getElementById(div).getElementsByClassName("emoticon");
+        emojiel = Main_getElementById(div).getElementsByClassName("emoticon");
         i = 0;
         len = emojiel.length;
         for (i; i < len; i++)
@@ -810,7 +810,7 @@ function Main_CounterDialog(x, y, coloumns, total) {
 
 var Main_showWarningDialogId;
 function Main_showWarningDialog(text, timeout, changePos) {
-    var doc = document.getElementById('dialog_warning');
+    var doc = Main_getElementById('dialog_warning');
 
     if (changePos) doc.style.marginTop = '86vh';
     else doc.style.marginTop = '50vh';
@@ -915,7 +915,7 @@ function Main_is_rerun(content) {
 }
 
 function Main_ThumbNull(y, x, thumbnail) {
-    return document.getElementById(thumbnail + y + '_' + x) !== null;
+    return Main_getElementById(thumbnail + y + '_' + x) !== null;
 }
 
 function Main_ReStartScreens(preventRefresh) {
@@ -1084,7 +1084,7 @@ function Main_needUpdate(version) {
 }
 
 function Main_empty(el) {
-    Main_emptyWithEle(document.getElementById(el));
+    Main_emptyWithEle(Main_getElementById(el));
 }
 
 function Main_emptyWithEle(el) {
@@ -1122,7 +1122,7 @@ function Main_CantClick() {
 }
 
 function Main_ThumbOpenIsNull(id, thumbnail) {
-    return document.getElementById(thumbnail + id) === null;
+    return Main_getElementById(thumbnail + id) === null;
 }
 
 function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, screen) {
@@ -1130,7 +1130,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
     var isHosting = false;
 
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
     Play_data.data = Main_values_Play_data;
 
     if (checkHistory) {
@@ -1140,7 +1140,7 @@ function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, 
         if (index > -1) {
 
             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
+                Main_A_includes_B(Main_getElementById(idsArray[1] + id).src, 's3_vods')) {
 
                 Main_OPenAsVod(index);
                 return;
@@ -1222,7 +1222,7 @@ function Main_CheckBroadcastIDStartSucess(response) {
         }
     );
 
-    var doc = document.getElementById(Main_CheckBroadcastIDoc);
+    var doc = Main_getElementById(Main_CheckBroadcastIDoc);
     doc.childNodes[0].classList.add('hideimp');
     doc.childNodes[2].classList.remove('hideimp');
 
@@ -1234,6 +1234,10 @@ function Main_CheckBroadcastIDStartError() {
         Main_CheckBroadcastIDStart();
         Main_CheckBroadcastIDErrorTry++;
     } else Main_openStream();
+}
+
+function Main_getElementById(elemString) {
+    return document.getElementById(elemString);
 }
 
 function Main_showScene1Doc() {
@@ -1338,7 +1342,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     ChannelClip_playUrl = Main_values_Play_data[0];
     Play_DurationSeconds = parseInt(Main_values_Play_data[1]);
@@ -1383,7 +1387,7 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
     Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
-    Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+    Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
     ChannelVod_createdAt = Main_values_Play_data[2];
@@ -2076,7 +2080,7 @@ function Main_CheckStop() { // Called only by JAVA
     }
 
     //Reset Screen img if hiden
-    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     if (doc) Main_RemoveClassWithEle(doc, 'visibility_hidden');
     else if (ChannelContent_Isfocused()) {
         Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');

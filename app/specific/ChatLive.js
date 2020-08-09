@@ -294,8 +294,8 @@ function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
 function ChatLive_resetChatters(chat_number) {
     Main_textContent('chat_loggedin' + chat_number, '');
     Main_AddClass('chat_loggedin' + chat_number, 'hide');
-    document.getElementById('chat_box_holder' + chat_number).style.height = '';
-    document.getElementById('chat_container_name' + chat_number).style.top = '';
+    Main_getElementById('chat_box_holder' + chat_number).style.height = '';
+    Main_getElementById('chat_container_name' + chat_number).style.top = '';
 }
 
 function ChatLive_loadChatters(chat_number, id) {
@@ -307,8 +307,8 @@ function ChatLive_loadChatters(chat_number, id) {
             '...' + STR_IN_CHAT
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
-        document.getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
-        if (!chat_number) document.getElementById('chat_container_name' + chat_number).style.top = '3vh';
+        Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
+        if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
 
         ChatLive_loadChattersLoad(chat_number, id);
 
@@ -1716,7 +1716,7 @@ function ChatLive_CleanUser(chat_number, message) {
 function ChatLive_CleanMessage(message) {
     if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
         //Elem may not be there anymore
-        var el = document.getElementById(message.tags['target-msg-id']);
+        var el = Main_getElementById(message.tags['target-msg-id']);
         if (el) {
             if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
             Main_AddClassWitEle(el, 'chat_purged');

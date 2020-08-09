@@ -67,7 +67,7 @@ function PlayVod_Start() {
     Main_textContent("stream_live_time", '');
     Main_textContent('progress_bar_current_time', Play_timeS(0));
     Chat_title = " VOD";
-    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_HideElement('progress_pause_holder');
     Main_ShowElement('progress_bar_div');
@@ -100,7 +100,7 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(1, 0);
 
     if (!Main_vodOffset) {//we have some vod info
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
         Main_innerHTML(
             "stream_info_name",
             Play_partnerIcon(
@@ -303,7 +303,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
 
     Main_values.Main_selectedChannelLogo = response.channel.logo;
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
     Main_values.Main_selectedChannel_id = response.channel._id;
     Main_values.Main_selectedChannel = response.channel.name;
@@ -605,7 +605,7 @@ function PlayVod_hidePanel() {
     Play_ForceHidePannel();
     PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
+    Main_getElementById('progress_bar_steps').style.display = 'none';
     PlayVod_previews_hide();
     PlayVod_quality = PlayVod_qualityPlaying;
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
@@ -676,7 +676,7 @@ function PlayVod_IconsBottonFocus() {
         Play_IconsRemoveFocus();
         if (PlayVod_addToJump) {
             PlayVod_jumpTime();
-            document.getElementById('progress_bar_steps').style.display = 'inline-block';
+            Main_getElementById('progress_bar_steps').style.display = 'inline-block';
         }
     } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
         if (!PlayClip_EnterPos) { //pause
@@ -691,11 +691,11 @@ function PlayVod_IconsBottonFocus() {
 
         Play_IconsRemoveFocus();
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
+        Main_getElementById('progress_bar_steps').style.display = 'none';
     } else if (PlayVod_PanelY === 2) { //botton icons
         Play_IconsAddFocus();
         Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
+        Main_getElementById('progress_bar_steps').style.display = 'none';
     }
 }
 
@@ -760,7 +760,7 @@ function PlayVod_jump() {
         if (PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
+    Main_getElementById('progress_bar_steps').style.display = 'none';
     Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
     PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
     PlayVod_IsJumping = false;
@@ -780,7 +780,7 @@ function PlayVod_SizeClear() {
 
 var PlayVod_last_multiplier = '';
 function PlayVod_jumpSteps(pos, signal) {
-    if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
+    if (PlayVod_addToJump && !PlayVod_PanelY) Main_getElementById('progress_bar_steps').style.display = 'inline-block';
 
     Main_innerHTML(
         'progress_bar_steps',
@@ -963,7 +963,7 @@ function PlayVod_CheckPreviewVod() {
     var restorePreview = false;
 
     var doc =
-        document.getElementById(
+        Main_getElementById(
             ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
         );
 
@@ -977,7 +977,7 @@ function PlayVod_CheckPreviewVod() {
             if (index > -1) {
 
                 if ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(document.getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
+                    Main_A_includes_B(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
                     Main_A_equals_B(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid, Main_values.ChannelVod_vodId)) {
 
                     restorePreview = true;
@@ -1388,7 +1388,7 @@ var PlayVod_muted_segments_value = null;
 function PlayVod_muted_segments(muted_segments, skipwarning) {
     if (muted_segments && muted_segments.length) {
 
-        var doc = document.getElementById('inner_progress_bar_muted'), div;
+        var doc = Main_getElementById('inner_progress_bar_muted'), div;
         Main_emptyWithEle(doc);
 
         var i = 0, len = muted_segments.length;

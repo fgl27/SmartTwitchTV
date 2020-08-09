@@ -42,8 +42,8 @@ var Chat_JustStarted = true;
 //Variable initialization end
 
 function Chat_Preinit() {
-    Chat_div[0] = document.getElementById('chat_box0');
-    Chat_div[1] = document.getElementById('chat_box1');
+    Chat_div[0] = Main_getElementById('chat_box0');
+    Chat_div[1] = Main_getElementById('chat_box1');
     ChatLive_LineAddCounter[0] = 0;
     ChatLive_LineAddCounter[1] = 0;
     ChatLive_Messages[0] = [];

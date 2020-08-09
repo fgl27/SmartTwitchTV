@@ -524,7 +524,7 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                 )
             );
 
-            document.getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
+            Main_getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
 
             Play_MultiUpdateinfo(
                 pos,
@@ -565,7 +565,7 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
 
     pos = (pos + (4 - Play_Multi_Offset)) % 4;
     var extraText = Play_Multi_MainBig ? '_big' : '';
-    document.getElementById('stream_info_multiimg' + extraText + pos).src = logo;
+    Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
 
     Main_innerHTML(
         'stream_info_multi_name' + extraText + pos,
@@ -608,7 +608,7 @@ function Play_MultiSetpannelInfo() {
             'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
     }
 
-    var doc = document.getElementById('stream_info_multiimg_big0');
+    var doc = Main_getElementById('stream_info_multiimg_big0');
     doc.style.width = '16.5%';
     doc.style.marginTop = '-0.5%';
 
@@ -633,13 +633,13 @@ function Play_MultiSetUpdateDialog(obj) {
     for (var i = 0; i < 4; i++) {
         pos = (i + (4 - Play_Multi_Offset)) % 4;
         Main_textContent('stream_dialog_multi_name' + extraText + pos, Play_MultiArray[i].data[1]);
-        document.getElementById('stream_dialog_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
+        Main_getElementById('stream_dialog_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
         Main_innerHTML('stream_dialog_multi_game' + extraText + pos, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
         Main_innerHTML('stream_dialog_multi_title' + extraText + pos, twemoji.parse(Play_MultiArray[i].data[2]));
     }
 
     Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
-    document.getElementById('stream_dialog_multiimg-1').src = obj[9];
+    Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
@@ -659,7 +659,7 @@ function Play_MultiRemoveFocus() {
 }
 
 function Play_ShowMultiDialog() {
-    var doc = document.getElementById('dialog_multi');
+    var doc = Main_getElementById('dialog_multi');
     if (Play_Multi_MainBig) {
         Main_HideElement('stream_dialog_multi_4');
         Main_ShowElement('stream_dialog_multi_big');

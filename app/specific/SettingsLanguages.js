@@ -313,16 +313,16 @@ function Languages_inputFocus(position) {
 
 function Languages_RemoveinputFocus() {
     var key = Languages_value_keys[Languages_cursorY];
-    document.getElementById(key + "arrow_left").style.opacity = "0";
-    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_getElementById(key + "arrow_left").style.opacity = "0";
+    Main_getElementById(key + "arrow_right").style.opacity = "0";
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
 }
 
 function Languages_ScrollTable() {
 
-    document.getElementById('settings_scroll').scrollTop =
-        (Languages_cursorY > 7) ? document.getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
+    Main_getElementById('settings_scroll').scrollTop =
+        (Languages_cursorY > 7) ? Main_getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
 }
 
 function Languages_ChangeSettigs(position) {
@@ -359,21 +359,21 @@ function Languages_SetarrowsKey(key) {
     var maxValue = Languages_Obj_length(key);
 
     if (currentValue > 0 && currentValue < maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     } else if (currentValue === maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "0.2";
     } else {
-        document.getElementById(key + "arrow_left").style.opacity = "0.2";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     }
 }
 
 function Languages_HideShowAll() {
     for (var key in Languages_value) {
         if (!Main_A_includes_B(key, 'All')) {
-            document.getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
+            Main_getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
         }
     }
 }

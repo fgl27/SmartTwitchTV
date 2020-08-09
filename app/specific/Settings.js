@@ -695,8 +695,8 @@ function Settings_RemoveinputFocus() {
 }
 
 function Settings_RemoveinputFocusKey(key) {
-    document.getElementById(key + "arrow_left").style.opacity = "0";
-    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_getElementById(key + "arrow_left").style.opacity = "0";
+    Main_getElementById(key + "arrow_right").style.opacity = "0";
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
 }
@@ -720,14 +720,14 @@ function Settings_SetarrowsKey(key) {
     var maxValue = Settings_Obj_length(key);
 
     if (currentValue > 0 && currentValue < maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     } else if (currentValue === maxValue) {
-        document.getElementById(key + "arrow_left").style.opacity = "1";
-        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_left").style.opacity = "1";
+        Main_getElementById(key + "arrow_right").style.opacity = "0.2";
     } else {
-        document.getElementById(key + "arrow_left").style.opacity = "0.2";
-        document.getElementById(key + "arrow_right").style.opacity = "1";
+        Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_right").style.opacity = "1";
     }
 }
 
@@ -779,7 +779,7 @@ function Settings_check_min_seek() {
         var key = 'vod_seek_min';
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
-        document.getElementById(key + "arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_right").style.opacity = "0.2";
     }
 }
 
@@ -790,7 +790,7 @@ function Settings_check_max_seek() {
         var key = 'vod_seek_max';
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
-        document.getElementById(key + "arrow_left").style.opacity = "0.2";
+        Main_getElementById(key + "arrow_left").style.opacity = "0.2";
     }
 
 }
@@ -1015,7 +1015,7 @@ function Settings_ScrollTable() {
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
-        doc = document.getElementById('settings_scroll');
+        doc = Main_getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
             var position = doc.scrollTop;
@@ -1023,7 +1023,7 @@ function Settings_ScrollTable() {
             scrollTo(doc, position, 200);
         }
     } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
-        doc = document.getElementById('settings_scroll');
+        doc = Main_getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
     }
@@ -1032,7 +1032,7 @@ function Settings_ScrollTable() {
 }
 
 function Settings_ScrollTableReset() {
-    document.getElementById('settings_scroll').scrollTop = 0;
+    Main_getElementById('settings_scroll').scrollTop = 0;
     Settings_CurY = 0;
 }
 

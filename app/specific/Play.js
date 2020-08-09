@@ -178,12 +178,12 @@ var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 //Variable initialization end
 
 function Play_PreStart() {
-    Play_seek_previews = document.getElementById("seek_previews");
+    Play_seek_previews = Main_getElementById("seek_previews");
     Play_seek_previews_img = new Image();
-    Play_chat_container = document.getElementById("chat_container0");
-    Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
-    Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");
-    Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
+    Play_chat_container = Main_getElementById("chat_container0");
+    Play_ProgresBarrElm = Main_getElementById("inner_progress_bar");
+    Play_ProgresBarrBufferElm = Main_getElementById("inner_progress_bar_buffer");
+    Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
     Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
@@ -286,7 +286,7 @@ function Play_Start(offline_chat) {
 
     Play_LoadLogoSucess = false;
     //reset channel logo to prevent another channel logo
-    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
     Play_BottomShow(Play_MultiStream);
     Play_BottomShow(Play_controlsChatDelay);
@@ -356,7 +356,7 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
     if (isOn && response) {
 
         var responseObj = JSON.parse(response),
-            doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
         if (doc && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
@@ -416,7 +416,7 @@ var Play_PreviewCheckId = 0;
 var Play_PreviewVideoEnded = false;
 
 function Play_CheckIfIsLiveStart(callback) {
-    var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+    var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
     if (doc) {
         Play_showBufferDialog();
@@ -605,8 +605,8 @@ function Play_UpdateMainStreamDiv() {
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
     Play_LoadLogoSucess = true;
-    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
     Play_created = Play_data.data[12];
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -1405,7 +1405,7 @@ var Play_showWarningMidleDialogId;
 function Play_showWarningMidleDialog(text, timeout) {
     Main_innerHTML("dialog_warning_play_middle_text", text);
 
-    var doc = document.getElementById('dialog_warning_play_middle');
+    var doc = Main_getElementById('dialog_warning_play_middle');
 
     if (UserLiveFeed_isFeedShow()) doc.style.marginTop = '90vh';
     else doc.style.marginTop = '50vh';
@@ -1671,7 +1671,7 @@ function Play_getQualitiesCount() {
 function Play_ChatSize(showDialog) {
     if (Play_ChatSizeValue > Play_MaxChatSizeValue) Play_ChatSizeValue = Play_MaxChatSizeValue;
     Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue].containerHeight + '%';
-    document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
+    Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
     Play_ChatPosition();
 
     if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue].percentage);
@@ -2024,7 +2024,7 @@ function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     Play_created = Play_data.data[12];
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
 }
 
 function Play_handleKeyUpClear() {
@@ -2049,7 +2049,7 @@ var Play_StoreChatPosValue = {
 
 function Play_StoreChatPos() {
     Play_StoreChatPosValue.height = Play_chat_container.style.height;
-    Play_StoreChatPosValue.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+    Play_StoreChatPosValue.marginTop = Main_getElementById("play_chat_dialog").style.marginTop;
     Play_StoreChatPosValue.top = Play_chat_container.style.top;
     Play_StoreChatPosValue.left = Play_chat_container.style.left;
 }
@@ -2059,7 +2059,7 @@ function Play_ResStoreChatPos() {
     if (!Play_ChatEnable) Play_hideChat();
     else Play_showChat();
     Play_chat_container.style.height = Play_StoreChatPosValue.height;
-    document.getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
+    Main_getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
     Play_chat_container.style.top = Play_StoreChatPosValue.top;
     Play_chat_container.style.left = Play_StoreChatPosValue.left;
 }

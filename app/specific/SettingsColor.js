@@ -251,20 +251,20 @@ function SettingsColor_DialogColorsStart() {
     Main_textContent('cavas_shadows2', STR_SHADOWS_GRAY);
     Main_textContent('cavas_shadows3', STR_SHADOWS_BLACK);
 
-    SettingsColor_DivColorResult = document.getElementById('color_result');
+    SettingsColor_DivColorResult = Main_getElementById('color_result');
     SettingsColor_canvasPosX = [];
     SettingsColor_canvasPosX[0] = 0;
     SettingsColor_canvasPosX[1] = 0;
 
     SettingsColor_canvasPosDiv = [];
-    SettingsColor_canvasPosDiv[0] = document.getElementById('colorCanvas_pos0');
-    SettingsColor_canvasPosDiv[1] = document.getElementById('colorCanvas_pos1');
+    SettingsColor_canvasPosDiv[0] = Main_getElementById('colorCanvas_pos0');
+    SettingsColor_canvasPosDiv[1] = Main_getElementById('colorCanvas_pos1');
 
     SettingsColor_canvasDiv = [];
     SettingsColor_canvasDivContext = [];
 
-    SettingsColor_canvasDiv[0] = document.getElementById('colorCanvas0');
-    SettingsColor_canvasDiv[1] = document.getElementById('colorCanvas1');
+    SettingsColor_canvasDiv[0] = Main_getElementById('colorCanvas0');
+    SettingsColor_canvasDiv[1] = Main_getElementById('colorCanvas1');
     SettingsColor_canvasDivContext[0] = SettingsColor_canvasDiv[0].getContext('2d');
     SettingsColor_canvasDivContext[1] = SettingsColor_canvasDiv[1].getContext('2d');
 
@@ -304,11 +304,11 @@ function SettingsColor_DialogColorsStart() {
     SettingsColor_canvasPosDiv[0].style.left = 0;
     SettingsColor_DivColorsUpdate();
 
-    document.getElementById('color_thumb0_img').src = IMG_404_VIDEO;
+    Main_getElementById('color_thumb0_img').src = IMG_404_VIDEO;
     Main_AddClass('color_thumb0', 'stream_thumbnail_focused_no_ani');
     SettingsColor_DivResultUpdate('color_thumb0_text', STR_CURRENT_THUMB_STYLE);
 
-    document.getElementById('color_thumb1_img').src = IMG_404_VIDEO;
+    Main_getElementById('color_thumb1_img').src = IMG_404_VIDEO;
     SettingsColor_DivResultUpdate('color_thumb1_text', STR_NEW_THUMB_STYLE);
 }
 
@@ -737,20 +737,20 @@ function SettingsColor_RemoveoptFocus() {
     var key = 'color_options' + SettingsColor_canvasPosY;
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
-    document.getElementById(key + "arrow_left").style.opacity = "0";
-    document.getElementById(key + "arrow_right").style.opacity = "0";
+    Main_getElementById(key + "arrow_left").style.opacity = "0";
+    Main_getElementById(key + "arrow_right").style.opacity = "0";
 }
 
 function SettingsColor_ColorSetarrowsKey(pos, currentValue, maxValue) {
 
     if (currentValue > 0 && currentValue < maxValue) {
-        document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-        document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
     } else if (currentValue === maxValue) {
-        document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-        document.getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
+        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
     } else {
-        document.getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
-        document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
+        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
     }
 }

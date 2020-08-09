@@ -285,7 +285,7 @@ function ChannelContent_createCell(valuesArray) {
 
     var ishosting = ChannelContent_TargetId !== undefined;
 
-    document.getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
+    Main_getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
     Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
@@ -433,7 +433,7 @@ function ChannelContent_keyEnter() {
 
         } else {
 
-            Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
+            Main_values_Play_data = JSON.parse(Main_getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
 
             Play_data.data = Main_values_Play_data;
             Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
@@ -596,7 +596,7 @@ function ChannelContent_LoadPreview() {
 
         if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
 
-            var doc = document.getElementById('channel_content_cell0_1');
+            var doc = Main_getElementById('channel_content_cell0_1');
 
             if (doc) {
 
@@ -622,7 +622,7 @@ function ChannelContent_LoadPreview() {
 
 function ChannelContent_LoadPreviewRestore() {
 
-    var img = document.getElementById('channel_content_cell0_1_img');
+    var img = Main_getElementById('channel_content_cell0_1_img');
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
@@ -663,13 +663,13 @@ function ChannelContent_LoadPreviewStart(obj) {
 
 function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
-    var doc = document.getElementById('channel_content_cell0_1');
+    var doc = Main_getElementById('channel_content_cell0_1');
 
     if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() &&
         !Main_isElementShowing('dialog_thumb_opt') &&
         (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
         x === Main_values.Main_Go && doc &&
-        Main_A_includes_B(document.getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
+        Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
@@ -682,7 +682,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
 
-                var img = document.getElementById('channel_content_cell0_1_img');
+                var img = Main_getElementById('channel_content_cell0_1_img');
                 var Rect = img.parentElement.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
@@ -723,7 +723,7 @@ function ChannelContent_LoadPreviewWarn(ErrorText, time) {
 function ChannelContent_RestoreThumb(play_data) {
     if (ChannelContent_isoffline) return false;
 
-    var doc = document.getElementById('channel_content_cell0_1');
+    var doc = Main_getElementById('channel_content_cell0_1');
 
     if (doc && ChannelContent_cursorY) {
 
@@ -737,7 +737,7 @@ function ChannelContent_RestoreThumb(play_data) {
 }
 
 function ChannelContent_Isfocused() {
-    return document.getElementById('channel_content_cell0_1') &&
+    return Main_getElementById('channel_content_cell0_1') &&
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
         Main_isScene1DocShown();

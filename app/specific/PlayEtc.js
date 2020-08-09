@@ -115,7 +115,7 @@ function Play_SetChatSideBySide() {
 
         //Default values
         Play_chat_container.style.height = '99.6%';
-        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
         Play_chat_container.style.top = '0.2%';
 
     } else {
@@ -125,7 +125,7 @@ function Play_SetChatSideBySide() {
 
         //Default values
         Play_chat_container.style.height = '99.6%';
-        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
         Play_chat_container.style.top = '0.2%';
 
         if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
@@ -164,7 +164,7 @@ function Play_StoreChatFullScreen() {
 
     Play_ChatFullScreenObj.WasEnable = Play_ChatEnable;
     Play_ChatFullScreenObj.height = Play_chat_container.style.height;
-    Play_ChatFullScreenObj.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+    Play_ChatFullScreenObj.marginTop = Main_getElementById("play_chat_dialog").style.marginTop;
     Play_ChatFullScreenObj.top = Play_chat_container.style.top;
     Play_ChatFullScreenObj.left = Play_chat_container.style.left;
 }
@@ -184,7 +184,7 @@ function Play_ResStoreChatFullScreen() {
     if (!Play_ChatEnable) Play_hideChat();
     else Play_showChat();
     Play_chat_container.style.height = Play_ChatFullScreenObj.height;
-    document.getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
+    Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
     Play_chat_container.style.top = Play_ChatFullScreenObj.top;
     Play_chat_container.style.left = Play_ChatFullScreenObj.left;
 }
@@ -218,8 +218,8 @@ function Play_SetChatFullScreenKeyRight() {
 }
 
 function Play_SetChatFont() {
-    document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
-    document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+    Main_getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+    Main_getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
 }
 
 
@@ -481,9 +481,9 @@ function Play_EndSet(PlayVodClip) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 1;
         Play_EndIconsAddFocus();
-        document.getElementById('dialog_end_-1').style.display = 'none';
-        document.getElementById('dialog_end_0').style.display = 'none';
-        document.getElementById('dialog_end_1').style.display = 'inline-block';
+        Main_getElementById('dialog_end_-1').style.display = 'none';
+        Main_getElementById('dialog_end_0').style.display = 'none';
+        Main_getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
 
         Play_EndTextsReset();
@@ -493,9 +493,9 @@ function Play_EndSet(PlayVodClip) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = 1;
         Play_EndIconsAddFocus();
-        document.getElementById('dialog_end_-1').style.display = 'none';
-        document.getElementById('dialog_end_0').style.display = 'none';
-        document.getElementById('dialog_end_1').style.display = 'inline-block';
+        Main_getElementById('dialog_end_-1').style.display = 'none';
+        Main_getElementById('dialog_end_0').style.display = 'none';
+        Main_getElementById('dialog_end_1').style.display = 'inline-block';
 
         Play_EndTextsReset();
         Main_innerHTML("end_channel_name_text", Play_data.data[1]);
@@ -503,9 +503,9 @@ function Play_EndSet(PlayVodClip) {
         Main_innerHTML("end_vod_title_text", STR_STAY_OPEN_SUMMARY);
     } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
-        document.getElementById('dialog_end_-1').style.display = 'none';
-        document.getElementById('dialog_end_0').style.display = 'inline-block';
-        document.getElementById('dialog_end_1').style.display = 'none';
+        Main_getElementById('dialog_end_-1').style.display = 'none';
+        Main_getElementById('dialog_end_0').style.display = 'inline-block';
+        Main_getElementById('dialog_end_1').style.display = 'none';
 
         Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
         Main_innerHTML("end_replay_title_text", ChannelVod_title);
@@ -516,9 +516,9 @@ function Play_EndSet(PlayVodClip) {
         Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
     } else if (PlayVodClip === 3) { // clip
         Play_EndIconsResetFocus();
-        document.getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
-        document.getElementById('dialog_end_0').style.display = 'inline-block';
-        document.getElementById('dialog_end_1').style.display = 'inline-block';
+        Main_getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
+        Main_getElementById('dialog_end_0').style.display = 'inline-block';
+        Main_getElementById('dialog_end_1').style.display = 'inline-block';
         Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
 
         Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
@@ -832,7 +832,7 @@ function Play_FollowUnfollow() {
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
-    var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+    var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
         error = STR_STREAM_ERROR;
 
     if (doc) {
@@ -864,7 +864,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
             error = STR_ALREDY_PLAYING;
 
-            if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+            if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
                 if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
                 else return obj;
@@ -1012,7 +1012,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         }
 
         restorePreview = Sidepannel_RestoreThumb(
-            document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
+            Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
             Play_data
         );
 
@@ -1025,7 +1025,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             restorePreview = Sidepannel_RestoreThumb(
-                document.getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
+                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
                 Play_data
             );
 
@@ -1088,7 +1088,7 @@ function Play_MultiKeyDown() {
         Play_showChat();
         Play_chat_container.style.width = '32.8%';
         Play_chat_container.style.height = '65.8%';
-        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
         Play_chat_container.style.top = '0.2%';
         Play_chat_container.style.left = '67%';
 
@@ -2392,7 +2392,7 @@ function Play_BottomArrows(position) {
 }
 
 function Play_SetControls() {
-    var div, doc = document.getElementById('controls_holder');
+    var div, doc = Main_getElementById('controls_holder');
     for (var key in Play_controls) {
         div = document.createElement('div');
         div.className = 'controls_button_holder';
@@ -2414,11 +2414,11 @@ function Play_SetControls() {
 
         Play_controls[key].visible = true;
         Play_controls[key].doc = div;
-        Play_controls[key].doc_name = document.getElementById('controls_name_' + key);
-        Play_controls[key].doc_up = document.getElementById('control_arrow_up_' + key);
-        Play_controls[key].doc_down = document.getElementById('control_arrow_down' + key);
-        Play_controls[key].button = document.getElementById('controls_button_' + key);
-        Play_controls[key].button_text = document.getElementById('controls_button_text_' + key);
+        Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
+        Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
+        Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
+        Play_controls[key].button = Main_getElementById('controls_button_' + key);
+        Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
 
         if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
         if (Play_controls[key].setLable) Play_controls[key].setLable();

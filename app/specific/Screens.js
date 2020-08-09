@@ -936,7 +936,7 @@ function Screens_LoadPreview(key) {
             (ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) ||
             (ScreenObj[key].screenType === 2 && Settings_Obj_default('show_clip_player'))) {
 
-            doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+            doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
             if (doc) {
                 var id = 0,//Clip
@@ -953,7 +953,7 @@ function Screens_LoadPreview(key) {
 
                     if (index > -1 &&
                         (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
                         ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                     }
                 }
@@ -982,7 +982,7 @@ function Screens_LoadPreviewRestore(key) {
         return;
     }
 
-    var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+    var img = Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
@@ -1036,7 +1036,7 @@ function Screens_LoadPreviewStart(key, obj) {
             if (index > -1) {
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                    Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
 
                     id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                     token = Play_vod_token;
@@ -1081,14 +1081,14 @@ function Screens_LoadPreviewStart(key, obj) {
 
 function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
-    var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+    var doc = Main_getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
     if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
         (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
         x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
-        doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+        doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
         if (StreamData && doc) {
             StreamData = JSON.parse(StreamData);
@@ -1151,7 +1151,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                             //Live that is now a vod
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                Main_A_includes_B(document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
+                                Main_A_includes_B(Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
 
                                 Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
@@ -1175,7 +1175,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
                 }
 
-                var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+                var img = Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                 var Rect = img.parentElement.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
@@ -1223,7 +1223,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     if (index > -1) {
 
                         if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+                            Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
 
                             error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
@@ -1259,7 +1259,7 @@ function Screens_LoadPreviewWarn(ErrorText, x, time) {
 }
 
 function Screens_ThumbNotNull(thumbnail) {
-    return document.getElementById(thumbnail) !== null;
+    return Main_getElementById(thumbnail) !== null;
 }
 
 function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down, key) {
@@ -1534,7 +1534,7 @@ function Screens_setOffset(pos, y, key) {
     if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? (y + pos) : y;
         if (ScreenObj[key].Cells[pos]) {
-            ScreenObj[key].offsettop = (document.getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + document.getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+            ScreenObj[key].offsettop = (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
         } else ScreenObj[key].offsettop = 1;
 
         ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -1649,7 +1649,7 @@ function Screens_ClearAnimation(key) {
     if (ScreenObj[key].HasAnimateThumb) {
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
         if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
-            document.getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+            Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
             Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
         }
     }
@@ -2042,14 +2042,14 @@ function Screens_OffSetAddFocus(pos) {
     var maxValue = 5000;
 
     if (pos > 0 && pos < maxValue) {
-        document.getElementById("dialog_OffSet_left").style.opacity = "1";
-        document.getElementById("dialog_OffSet_right").style.opacity = "1";
+        Main_getElementById("dialog_OffSet_left").style.opacity = "1";
+        Main_getElementById("dialog_OffSet_right").style.opacity = "1";
     } else if (pos === maxValue) {
-        document.getElementById("dialog_OffSet_left").style.opacity = "1";
-        document.getElementById("dialog_OffSet_right").style.opacity = "0.2";
+        Main_getElementById("dialog_OffSet_left").style.opacity = "1";
+        Main_getElementById("dialog_OffSet_right").style.opacity = "0.2";
     } else {
-        document.getElementById("dialog_OffSet_left").style.opacity = "0.2";
-        document.getElementById("dialog_OffSet_right").style.opacity = "1";
+        Main_getElementById("dialog_OffSet_left").style.opacity = "0.2";
+        Main_getElementById("dialog_OffSet_right").style.opacity = "1";
     }
 }
 
@@ -2227,8 +2227,8 @@ function Screens_histAddFocus(divPos, key) {
 function Screens_histRemoveFocus(divPos, dialog) {
     Main_RemoveClass('dialog_' + dialog + '_setting_' + divPos, 'settings_div_focus');
     Main_RemoveClass('dialog_' + dialog + '_val_' + divPos, 'settings_value_focus');
-    document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
-    document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+    Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+    Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
 }
 
 function Screens_histSetArrow(key) {
@@ -2247,17 +2247,17 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
     Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
     if (maxValue === 1) {
-        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
-        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+        Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+        Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
     } else if (!pos) {
-        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
-        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+        Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
+        Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
     } else if (pos === (maxValue - 1)) {
-        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
-        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
+        Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+        Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
     } else {
-        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
-        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+        Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+        Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
     }
 }
 
@@ -2354,7 +2354,7 @@ var Screens_isFollowing = false;
 
 function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
-    Screens_values_Play_data = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
+    Screens_values_Play_data = JSON.parse(Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -2377,7 +2377,7 @@ function Screens_ThumbOptionStringSet(key) {
     Main_innerHTML('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : STR_EMPTY));
 
     if (ScreenObj[key].screen === Main_HistoryLive &&
-        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
         Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
     } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
@@ -2467,7 +2467,7 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             break;
         case KEY_UP:
             if (Screens_ThumbOptionSpecial) break;
-            var lower = !Main_A_includes_B(document.getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
+            var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
             Screens_SeTODialogId(key);
             Screens_ThumbOptionPosY--;
             if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
@@ -2546,7 +2546,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 
             if (!ScreenObj[key].screenType) {
                 if (ScreenObj[key].screen === Main_HistoryLive &&
-                    Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                    Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
                     ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                     Main_setItem(ScreenObj[Main_HistoryVod].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
                 } else {
@@ -2752,7 +2752,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     var historyType = Screens_ThumbOptionStringGetHistory(key);
     if (ScreenObj[key].screen === Main_HistoryLive &&
-        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
         historyType = Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1];
     }
 
@@ -2788,7 +2788,7 @@ function Screens_RefreshTimeout(key) {
 }
 
 function Screens_Isfocused() {
-    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     return doc &&
         Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
         Main_isScene1DocShown();

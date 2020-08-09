@@ -55,14 +55,14 @@ function PlayClip_Start() {
     Chat_title = STR_CLIP;
     PlayVod_ProgresBarrUpdate(0, 0);
 
-    document.getElementById('next_button_img').src = IMG_404_BANNER;
-    document.getElementById('back_button_img').src = IMG_404_BANNER;
-    document.getElementById('end_button_img').src = IMG_404_BANNER;
+    Main_getElementById('next_button_img').src = IMG_404_BANNER;
+    Main_getElementById('back_button_img').src = IMG_404_BANNER;
+    Main_getElementById('end_button_img').src = IMG_404_BANNER;
     Main_ShowElement('next_button_img');
     Main_ShowElement('back_button_img');
     Main_ShowElement('end_button_img');
 
-    Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTML(
         "stream_info_name",
         Play_partnerIcon(
@@ -86,7 +86,7 @@ function PlayClip_Start() {
     PlayVod_jump_max_step = 0;
     PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
     Main_replaceClassEmoji('stream_info_title');
-    Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
     Main_values.Play_isHost = false;
     PlayClip_SetOpenVod();
@@ -441,13 +441,13 @@ function PlayClip_UpdateNext() {
 
     if (nextid) {
         PlayClip_HasNext = true;
-        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
 
-        PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
+        PlayClip_NextImg(Main_getElementById('next_button_img'), data[15]);
         Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
         Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
-        PlayClip_NextImg(document.getElementById('end_button_img'), data[15]);
+        PlayClip_NextImg(Main_getElementById('end_button_img'), data[15]);
         Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(data[4]));
         Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(data[10]));
 
@@ -459,9 +459,9 @@ function PlayClip_UpdateNext() {
 
     if (backid) {
         PlayClip_HasBack = true;
-        data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
+        data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
 
-        PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
+        PlayClip_NextImg(Main_getElementById('back_button_img'), data[15]);
         Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
         Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(data[10]));
         PlayClip_HideShowNext(1, 1);
@@ -487,7 +487,7 @@ function PlayClip_getIdNext(y, x) {
 }
 
 function PlayClip_HideShowNext(which, val) {
-    document.getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
+    Main_getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
 }
 
 function PlayClip_Enter() {
@@ -531,7 +531,7 @@ function PlayClip_hidePanel() {
     Play_ForceHidePannel();
     if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
     Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-    document.getElementById('progress_bar_steps').style.display = 'none';
+    Main_getElementById('progress_bar_steps').style.display = 'none';
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
 }
 
@@ -640,7 +640,7 @@ function PlayClip_CheckPreview() {
 function PlayClip_CheckPreviewClip() {
     var restorePreview = false;
 
-    var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     if (doc) {
 
         restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);

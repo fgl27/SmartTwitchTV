@@ -75,7 +75,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
         if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
             UserLiveFeed_LastPos[pos] =
-                JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
+                JSON.parse(Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
     } else {
         UserLiveFeed_LastPos[pos] = null;
     }
@@ -107,14 +107,14 @@ function UserLiveFeedobj_CheckToken() {
     Main_clearTimeout(Main_CheckResumeFeedId);
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
-        UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+        UserSidePannel_LastPos = JSON.parse(Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
     } else UserSidePannel_LastPos = null;
 
     Main_ShowElement('dialog_loading_side_feed');
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_empty('side_panel_holder');
-    document.getElementById('side_panel_warn').style.display = 'none';
+    Main_getElementById('side_panel_warn').style.display = 'none';
 
     UserLiveFeed_loadChannelOffsset = 0;
     UserLiveFeed_followerChannels = [];

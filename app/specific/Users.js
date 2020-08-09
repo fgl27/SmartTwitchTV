@@ -99,7 +99,7 @@ function Users_StartLoad() {
 
 function Users_loadData() {
     var row = document.createElement('div');
-    var doc = document.getElementById('stream_table_user');
+    var doc = Main_getElementById('stream_table_user');
     var x = 1; // 1 as first is used by add user
     var y = 0;
     var div = document.createElement('div');
@@ -191,12 +191,12 @@ function Users_addFocus(forceScroll) {
 
             if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0])) {
 
-                document.getElementById(Users_ids[5]).style.transform = 'translateY(' +
-                    (((document.getElementById(Users_ids[6] + Users_cursorY).offsetHeight - document.getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
+                Main_getElementById(Users_ids[5]).style.transform = 'translateY(' +
+                    (((Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight - Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
                     'em)';
 
             }
-        } else document.getElementById(Users_ids[5]).style.transform = '';
+        } else Main_getElementById(Users_ids[5]).style.transform = '';
 
     }
 }
@@ -228,7 +228,7 @@ var Users_showUserDialogPos = 0;
 function Users_showUserDialog() {
     Users_RemoveCursor = 0;
     Users_setUserDialog();
-    Users_showUserDialogPos = parseInt(document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
+    Users_showUserDialogPos = parseInt(Main_getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
     Main_innerHTML("main_dialog_user_text", STR_USER_OPTION + " " + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
     Main_innerHTML("main_dialog_user_key", (AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE));

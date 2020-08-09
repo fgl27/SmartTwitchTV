@@ -97,7 +97,7 @@ function AddUser_removeEventListener() {
     if (Main_AddUserInput !== null) {
         var elClone = Main_AddUserInput.cloneNode(true);
         Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
-        Main_AddUserInput = document.getElementById("user_input");
+        Main_AddUserInput = Main_getElementById("user_input");
     }
 }
 
@@ -200,8 +200,8 @@ function AddUser_loadDataNoUser() {
 }
 
 function AddUser_RestoreUsers() {
-    Sidepannel_FixDiv = document.getElementById('side_panel_fix');
-    Sidepannel_MovelDiv = document.getElementById('side_panel_movel');
+    Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
+    Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
     if (AddUser_UsernameArray.length > 0) {

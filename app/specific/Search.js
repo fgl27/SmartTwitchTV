@@ -183,7 +183,7 @@ function Search_removeEventListener() {
     if (Main_SearchInput !== null) {
         var elClone = Main_SearchInput.cloneNode(true);
         Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
-        Main_SearchInput = document.getElementById("search_input");
+        Main_SearchInput = Main_getElementById("search_input");
     }
 }
 

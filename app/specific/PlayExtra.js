@@ -391,7 +391,7 @@ function PlayExtra_UpdatePanel() {
             Play_data.data[8]
         )
     );
-    document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
+    Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
 
     Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
@@ -407,7 +407,7 @@ function PlayExtra_UpdatePanel() {
             PlayExtra_data.data[8]
         )
     );
-    document.getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+    Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
     Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
     Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
