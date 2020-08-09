@@ -288,12 +288,12 @@ function Play_Start(offline_chat) {
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
 
-    document.getElementById('controls_' + Play_MultiStream).style.display = '';
-    document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
-    document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
-    document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
+    Play_BottomShow(Play_MultiStream);
+    Play_BottomShow(Play_controlsChatDelay);
+    Play_BottomShow(Play_controlsLowLatency);
+    Play_BottomShow(Play_controlsChatSend);
+    Play_BottomHide(Play_controlsOpenVod);
+    Play_BottomHide(Play_controlsChapters);
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
 
@@ -1733,9 +1733,9 @@ function Play_hideChatBackgroundDialog() {
     Main_HideElement('play_chat_dialog');
 }
 
-function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, Play_controls) {
-    var doc_up = document.getElementById("control_arrow_up_" + Play_controls),
-        doc_down = document.getElementById("control_arrow_down" + Play_controls),
+function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, position) {
+    var doc_up = Play_controls[position].doc_up,
+        doc_down = Play_controls[position].doc_down,
         total = getQualitiesCount();
 
     if (total === 1) {
@@ -1761,7 +1761,7 @@ function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, Play_con
         doc_down.style.opacity = "1";
     }
 
-    callback('controls_name_' + Play_controls);
+    callback('controls_name_' + position);
 }
 
 function Play_qualityIndexReset() {

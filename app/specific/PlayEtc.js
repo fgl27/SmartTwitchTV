@@ -1443,7 +1443,6 @@ function Play_MakeControls() {
         string: STR_SEARCH,
         values: null,
         defaultValue: null,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenSearch(PlayVodClip);
@@ -1455,7 +1454,6 @@ function Play_MakeControls() {
         string: STR_CHANNEL_CONT,
         values: '',
         defaultValue: null,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenChannel(PlayVodClip);
@@ -1472,7 +1470,6 @@ function Play_MakeControls() {
         string: STR_GAME_CONT,
         values: '',
         defaultValue: null,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             Play_ForceHidePannel();
             Play_OpenGame(PlayVodClip);
@@ -1489,7 +1486,6 @@ function Play_MakeControls() {
         string: STR_OPEN_BROADCAST,
         values: '',
         defaultValue: null,
-        opacity: 0,
         enterKey: function() {
             Play_ForceHidePannel();
             PlayClip_OpenVod();
@@ -1507,7 +1503,6 @@ function Play_MakeControls() {
         string: STR_FOLLOW,
         values: '',
         defaultValue: null,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
 
             AddCode_Channel_id = (PlayVodClip === 1 ? Play_data.data[14] : Main_values.Main_selectedChannel_id);
@@ -1532,7 +1527,6 @@ function Play_MakeControls() {
         string: STR_SPEED,
         values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
         defaultValue: 3,
-        opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
@@ -1549,7 +1543,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] +
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] +
                 (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
         },
         bottomArrows: function() {
@@ -1562,7 +1556,6 @@ function Play_MakeControls() {
         string: STR_OPEN_EXTERNAL_PLAYER,
         values: ['1080p60 | Source | 10.00Mbps | avc'],
         defaultValue: 0,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
@@ -1586,7 +1579,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             this.bottomArrows();
         },
@@ -1600,7 +1593,6 @@ function Play_MakeControls() {
         string: STR_QUALITY,
         values: ['1080p60 | Source | 10.00Mbps | avc'],
         defaultValue: 0,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
@@ -1643,7 +1635,6 @@ function Play_MakeControls() {
         string: STR_PLAYER_RESYNC,
         values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
         defaultValue: 2,
-        opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
@@ -1668,7 +1659,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1682,7 +1673,6 @@ function Play_MakeControls() {
         string: STR_PLAYER_RESYNC,
         values: [STR_PLAYER_MULTI_ALL, STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4],
         defaultValue: 0,
-        opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
@@ -1711,7 +1701,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1725,7 +1715,6 @@ function Play_MakeControls() {
         string: STR_LOW_LATENCY,
         values: [STR_DISABLE, STR_LOWLATENCY_ENABLE, STR_LOWLATENCY_LOW],
         defaultValue: Play_LowLatency,
-        opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
@@ -1769,7 +1758,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1782,7 +1771,6 @@ function Play_MakeControls() {
         string: STR_AUDIO_SOURCE,
         values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
         defaultValue: Play_controlsAudioPos,
-        opacity: 0,
         enterKey: function() {
             if (Play_StayDialogVisible()) return;
 
@@ -1813,7 +1801,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1826,7 +1814,6 @@ function Play_MakeControls() {
         string: STR_AUDIO_SOURCE,
         values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
         defaultValue: 0,
-        opacity: 0,
         enterKey: function(preventShowWarning) {
             if (Play_StayDialogVisible()) return;
 
@@ -1854,7 +1841,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1867,7 +1854,6 @@ function Play_MakeControls() {
         string: STR_CHAPTERS,
         values: [],
         defaultValue: 0,
-        opacity: 0,
         enterKey: function() {
 
             PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
@@ -1884,7 +1870,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
         bottomArrows: function() {
@@ -1896,7 +1882,6 @@ function Play_MakeControls() {
         icons: "multi",
         string: STR_4_WAY_MULTI,
         values: null,
-        opacity: 0,
         enterKey: function(shutdown) {
             if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
@@ -1980,7 +1965,6 @@ function Play_MakeControls() {
         string: STR_CHAT_SHOW,
         values: null,
         defaultValue: null,
-        opacity: 0,
         enterKey: function() {
             if ((!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
 
@@ -2010,7 +1994,6 @@ function Play_MakeControls() {
         string: STR_CHAT_WRITE,
         values: null,
         defaultValue: null,
-        opacity: 0,
         enterKey: function() {
             if (Main_values.Play_ChatForceDisable) {
                 Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
@@ -2031,7 +2014,6 @@ function Play_MakeControls() {
         string: STR_CHAT_VIDEO_MODE,
         values: null,
         defaultValue: null,
-        opacity: 0,
         enterKey: function() {
             Play_isFullScreen = !Play_isFullScreen;
             Play_SetFullScreen(Play_isFullScreen);
@@ -2070,7 +2052,6 @@ function Play_MakeControls() {
         string: STR_F_DISABLE_CHAT,
         values: null,
         defaultValue: null,
-        opacity: 0,
         enterKey: function(PlayVodClip) {
             Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
 
@@ -2093,7 +2074,6 @@ function Play_MakeControls() {
         string: STR_CHAT_POS,
         values: STR_CHAT_BASE_ARRAY,
         defaultValue: Play_ChatPositions,
-        opacity: 0,
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
@@ -2121,17 +2101,15 @@ function Play_MakeControls() {
             this.bottomArrows();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue]);
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
         },
         bottomArrows: function() {
-            var doc_up = document.getElementById("control_arrow_up_" + Play_controlsChatPos),
-                doc_down = document.getElementById("control_arrow_down" + Play_controlsChatPos);
 
-            doc_up.classList.remove('hide');
-            doc_down.classList.remove('hide');
+            this.doc_up.classList.remove('hide');
+            this.doc_down.classList.remove('hide');
 
-            doc_up.style.opacity = "1";
-            doc_down.style.opacity = "1";
+            this.doc_up.style.opacity = "1";
+            this.doc_down.style.opacity = "1";
         },
     };
 
@@ -2140,7 +2118,6 @@ function Play_MakeControls() {
         string: STR_CHAT_SIZE,
         values: ["12.5%", "25%", "50%", "75%", "100%"],
         defaultValue: Play_ChatSizeValue,
-        opacity: 0,
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
@@ -2177,10 +2154,15 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + Play_controlsChatPos,
-                Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
-            Main_textContent('controls_name_' + this.position,
-                this.values[this.defaultValue]);
+            Main_textContentWithEle(
+                Play_controls[Play_controlsChatPos].doc_name,
+                Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]
+            );
+
+            Main_textContentWithEle(
+                this.doc_name,
+                this.values[this.defaultValue]
+            );
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -2196,7 +2178,6 @@ function Play_MakeControls() {
             "75%", "80%", "85%", "90%", "95%", "100%"
         ],
         defaultValue: Main_values.ChatBackground,
-        opacity: 0,
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
@@ -2215,7 +2196,7 @@ function Play_MakeControls() {
             Main_SaveValues();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position,
+            Main_textContentWithEle(this.doc_name,
                 this.values[this.defaultValue]);
         },
         bottomArrows: function() {
@@ -2228,7 +2209,6 @@ function Play_MakeControls() {
         string: STR_CHAT_FONT,
         values: Play_ChatFontObj,
         defaultValue: Main_values.Chat_font_size_new,
-        opacity: 0,
         isChat: true,
         updown: function(adder) {
             if (!Play_isChatShown()) return;
@@ -2245,7 +2225,7 @@ function Play_MakeControls() {
             Main_SaveValues();
         },
         setLable: function() {
-            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + '%');
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -2259,7 +2239,6 @@ function Play_MakeControls() {
             20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
         ],
         defaultValue: Play_ChatDelayPosition,
-        opacity: 0,
         isChat: false,
         updown: function(adder) {
             this.defaultValue += adder;
@@ -2281,7 +2260,7 @@ function Play_MakeControls() {
             if (this.defaultValue > 1) stringSec = STR_SECONDS;
             else if (this.defaultValue > 0) stringSec = STR_SECOND;
 
-            Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + stringSec);
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -2289,60 +2268,27 @@ function Play_MakeControls() {
     };
 }
 
-function Play_SetAudioIcon() {
-    if (Play_controlsAudioPos === 2) {
-        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
-        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
-
-        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-    } else if (Play_controlsAudioPos === 1) {
-        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
-        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-mute strokicon" ></i>');
-
-        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-    } else {
-        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-mute strokicon" ></i>');
-        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
-
-        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-    }
-}
-
-function Play_SetAudioMultiIcon() {
-    var extraText = Play_Multi_MainBig ? 'big' : '',
-        audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
-        i;
-
-    if (audioPos === 4) {
-        for (i = 0; i < 4; i++)
-            Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-    } else {
-        for (i = 0; i < 4; i++)
-            Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-
-        audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
-        Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-    }
-}
-
 function Play_IconsAddFocus() {
-    Main_AddClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
-    document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "1";
+    Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, 'progress_bar_div_focus');
 
-    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen))
-        document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "1";
-    else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat)
-        document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
+    Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
+
+    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
+
+        Play_controls[Play_controlsChat].button_text.style.opacity = "1";
+
+    } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
+
+        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+
+    }
 }
 
 function Play_IconsRemoveFocus() {
-    Main_RemoveClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
-    document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
+    Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, 'progress_bar_div_focus');
+    Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
     //in case chat is disable and the warning is showing because some chat option was selected
-    document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
+    Play_controls[Play_controlsChat].button_text.style.opacity = "0";
 }
 
 function Play_KeyChatSizeChage() {
@@ -2389,23 +2335,35 @@ function Play_BottomUpDown(PlayVodClip, adder) {
     }
 }
 
-function Play_BottomLeftRigt(PlayVodClip, adder) {
-    Play_IconsRemoveFocus();
+function Play_BottomLeftRigt(PlayVodClip, adder, skipRemoveFocus) {
+
+    if (!skipRemoveFocus) Play_IconsRemoveFocus();
     Play_Panelcounter += adder;
     if (Play_Panelcounter > Play_controlsSize) Play_Panelcounter = 0;
     else if (Play_Panelcounter < 0) Play_Panelcounter = Play_controlsSize;
 
-    if (document.getElementById('controls_' + Play_Panelcounter).style.display === 'none') {
-        Play_BottomLeftRigt(PlayVodClip, adder);
+    if (!Play_controls[Play_Panelcounter].visible) {
+        Play_BottomLeftRigt(PlayVodClip, adder, true);
         return;
     }
 
     Play_IconsAddFocus();
+
+}
+
+function Play_BottomShow(position) {
+    Play_controls[position].doc.style.display = '';
+    Play_controls[position].visible = true;
+}
+
+function Play_BottomHide(position) {
+    Play_controls[position].doc.style.display = 'none';
+    Play_controls[position].visible = false;
 }
 
 function Play_BottomArrows(position) {
-    var doc_up = document.getElementById("control_arrow_up_" + position),
-        doc_down = document.getElementById("control_arrow_down" + position);
+    var doc_up = Play_controls[position].doc_up,
+        doc_down = Play_controls[position].doc_down;
 
     if (Play_controls[position].values.length === 1) {
         doc_up.classList.add('hide');
@@ -2430,7 +2388,7 @@ function Play_BottomArrows(position) {
         doc_down.style.opacity = "1";
     }
 
-    Main_textContent('controls_name_' + position, Play_controls[position].values[Play_controls[position].defaultValue]);
+    Main_textContentWithEle(Play_controls[position].doc_name, Play_controls[position].values[Play_controls[position].defaultValue]);
 }
 
 function Play_SetControls() {
@@ -2444,8 +2402,8 @@ function Play_SetControls() {
             '" class="controls_button"><div id="controls_icon_' + key +
             '"><i class="pause_button3d icon-' + Play_controls[key].icons +
             '" ></i></div></div><div id="controls_button_text_' + key +
-            '" class="extra_button_text_holder" style="opacity: ' + Play_controls[key].opacity +
-            ';"><div id="extra_button_text' + key + '" class="extra_button_text strokedeline" >' +
+            '" class="extra_button_text_holder" style="opacity: 0;;"><div id="extra_button_text' +
+            key + '" class="extra_button_text strokedeline" >' +
             Play_controls[key].string + '</div><div id="extra_button_' + key +
             '" class="extra_button_text strokedeline" >' +
             (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
@@ -2453,6 +2411,15 @@ function Play_SetControls() {
         doc.appendChild(div);
         Play_controlsSize++;
         Play_controls[key].position = key;
+
+        Play_controls[key].visible = true;
+        Play_controls[key].doc = div;
+        Play_controls[key].doc_name = document.getElementById('controls_name_' + key);
+        Play_controls[key].doc_up = document.getElementById('control_arrow_up_' + key);
+        Play_controls[key].doc_down = document.getElementById('control_arrow_down' + key);
+        Play_controls[key].button = document.getElementById('controls_button_' + key);
+        Play_controls[key].button_text = document.getElementById('controls_button_text_' + key);
+
         if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
         if (Play_controls[key].setLable) Play_controls[key].setLable();
     }
@@ -2474,4 +2441,43 @@ function Play_showVodDialog(isFromVod) {
     Main_textContent('stream_quality', '');
     Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
     Main_ShowElement('dialog_vod_start');
+}
+
+function Play_SetAudioIcon() {
+    if (Play_controlsAudioPos === 2) {
+        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+    } else if (Play_controlsAudioPos === 1) {
+        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-mute strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+    } else {
+        Main_innerHTML("chat_container_sound_icon0", '<i class="icon-mute strokicon" ></i>');
+        Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
+
+        Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+        Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+    }
+}
+
+function Play_SetAudioMultiIcon() {
+    var extraText = Play_Multi_MainBig ? 'big' : '',
+        audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
+        i;
+
+    if (audioPos === 4) {
+        for (i = 0; i < 4; i++)
+            Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+    } else {
+        for (i = 0; i < 4; i++)
+            Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+
+        audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
+        Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+    }
 }

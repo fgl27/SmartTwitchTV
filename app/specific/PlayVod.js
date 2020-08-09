@@ -73,12 +73,14 @@ function PlayVod_Start() {
     Main_ShowElement('progress_bar_div');
     Play_BufferSize = 0;
 
-    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
+    Play_BottomHide(Play_MultiStream);
+    Play_BottomHide(Play_controlsOpenVod);
+    Play_BottomHide(Play_controlsChatDelay);
+    Play_BottomHide(Play_controlsLowLatency);
+    Play_BottomHide(Play_controlsChatSend);
+    Play_BottomHide(Play_controlsChapters);
+
+
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_IconsResetFocus();
@@ -1496,7 +1498,7 @@ function PlayVod_ProcessChapters(obj) {
 
 
     if (len) {
-        document.getElementById('controls_' + Play_controlsChapters).style.display = '';
+        Play_BottomShow(Play_controlsChapters);
         Play_controls[Play_controlsChapters].setLable();
         Play_controls[Play_controlsChapters].bottomArrows();
         PlayVod_SetChapters();

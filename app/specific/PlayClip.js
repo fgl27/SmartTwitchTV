@@ -90,11 +90,13 @@ function PlayClip_Start() {
 
     Main_values.Play_isHost = false;
     PlayClip_SetOpenVod();
-    document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
-    document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
+
+    Play_BottomHide(Play_controlsChatDelay);
+    Play_BottomHide(Play_controlsLowLatency);
+    Play_BottomHide(Play_MultiStream);
+    Play_BottomHide(Play_controlsChatSend);
+    Play_BottomHide(Play_controlsChapters);
+
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
@@ -580,7 +582,8 @@ function PlayClip_setHidePanel() {
 }
 
 function PlayClip_SetOpenVod() {
-    document.getElementById('controls_' + Play_controlsOpenVod).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
+    if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+    else Play_BottomHide(Play_controlsOpenVod);
 }
 
 var PlayClip_OpenAVod = false;

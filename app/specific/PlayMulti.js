@@ -100,12 +100,14 @@ function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
 }
 
 function Play_Multi_SetPanel() {
-    document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
-    document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
+    Play_BottomShow(Play_controlsQualityMulti);
+    Play_BottomShow(Play_controlsAudioMulti);
+
+    Play_BottomHide(Play_controlsChatSide);
+    Play_BottomHide(Play_controlsQuality);
+    Play_BottomHide(Play_controlsQualityMini);
+    Play_BottomHide(Play_controlsAudio);
+
     UserLiveFeed_SetMulti();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
@@ -120,12 +122,14 @@ function Play_Multi_SetPanel() {
 }
 
 function Play_Multi_UnSetPanelDivs(checkChat) {
-    document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
-    document.getElementById('controls_' + Play_controlsQuality).style.display = '';
-    document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-    document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+    Play_BottomShow(Play_controlsChatSide);
+    Play_BottomShow(Play_controlsQuality);
+
+    Play_BottomHide(Play_controlsAudioMulti);
+    Play_BottomHide(Play_controlsAudio);
+    Play_BottomHide(Play_controlsQualityMini);
+    Play_BottomHide(Play_controlsQualityMulti);
+
     UserLiveFeed_SetFeedPicText();
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
