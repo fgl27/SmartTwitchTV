@@ -410,27 +410,30 @@ function Main_initWindows() {
 }
 
 function Main_CheckBackup() {
-    try {
-        if (Main_IsOn_OSInterface) {
-            Main_CanBackup = OSInterface_canBackupFile();
 
-            //Backup at start as a backup may never be done yet
-            if (Main_CanBackup) {
-                if (AddUser_IsUserSet()) {
+    if (Main_IsOn_OSInterface) {
+        Main_CanBackup = OSInterface_canBackupFile();
+
+        //Backup at start as a backup may never be done yet
+        if (Main_CanBackup && AddUser_IsUserSet()) {
+
+            Main_setTimeout(
+                function() {
                     OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                    Main_setTimeout(
-                        function() {
-                            OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                        },
-                        25000
-                    );
-                }
-            }
-        } else Main_CanBackup = false;
+                },
+                2500
+            );
 
-    } catch (e) {
-        Main_CanBackup = false;
-    }
+            Main_setTimeout(
+                function() {
+                    OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                },
+                25000
+            );
+
+        }
+    } else Main_CanBackup = false;
+
 }
 
 function Main_CheckDevice() {
