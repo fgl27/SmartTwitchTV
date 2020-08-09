@@ -325,6 +325,7 @@ function ChannelContent_loadDataSuccessFinish() {
     }
     ChannelContent_checkUser();
     Main_FirstLoad = false;
+    if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
 }
 
 function ChannelContent_checkUser() {

@@ -85,7 +85,6 @@ var Main_values = {
     "Search_isSearching": false,
     "Play_ChatForceDisable": false,
     "Never_run_new": true,
-    "warning_extra": true,
     "Chat_font_size_new": 75,
     "ChatBackground": 12,
     "Main_selectedChannelPartner": false,
@@ -393,7 +392,7 @@ function Main_initWindows() {
 
     document.getElementById("side_panel").style.transform = '';
 
-    Screens_init(Main_Live);
+    Screens_first_init();
 
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);

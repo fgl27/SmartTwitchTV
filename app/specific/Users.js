@@ -174,6 +174,8 @@ function Users_loadDataSuccessFinish() {
                 Users_Isautentication = true;
                 Users_showRemoveDialog();
             }
+
+            if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
         }
     );
 }

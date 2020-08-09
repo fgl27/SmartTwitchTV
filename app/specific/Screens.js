@@ -148,6 +148,133 @@ function Screens_assign() {
 
 //Variable initialization end
 
+function Screens_first_init() {
+
+    var Last_obj = OSInterface_GetLastIntentObj(),
+        obj,
+        live_channel_call,
+        host_channel_call,
+        game_channel_call,
+        screen_channel_call,
+        tempGame;
+
+    if (Last_obj) {
+        obj = JSON.parse(Last_obj);
+        live_channel_call = Main_A_equals_B(obj.type, "LIVE");
+        host_channel_call = Main_A_equals_B(obj.type, "HOST");
+
+        if (!live_channel_call && !host_channel_call) {
+            game_channel_call = Main_A_equals_B(obj.type, "GAME");
+
+            if (!game_channel_call) {
+                screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
+
+                if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+
+            }
+
+        }
+
+        if (obj.type && obj.screen) Main_EventChannel(obj);
+
+    }
+
+    var StartUser = Settings_value.start_user_screen.defaultValue;
+    var restore_playback = Settings_value.restor_playback.defaultValue;
+
+    if (live_channel_call || host_channel_call) {
+
+        Main_values.Play_WasPlaying = 1;
+
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+        if (live_channel_call) {
+
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+
+        } else {
+
+            Play_data.data = ScreensObj_HostCellArray(obj.obj);
+            Main_values.Play_isHost = true;
+            Play_data.DisplaynameHost = Play_data.data[1];
+            Play_data.data[1] = Play_data.data[15];
+
+        }
+
+        StartUser = false;
+        restore_playback = true;
+
+    } else if (game_channel_call) {
+
+        Main_values.Play_WasPlaying = 0;
+        Main_GoBefore = Main_aGame;
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+        Play_data.data[3] = obj.obj.name;
+        StartUser = false;
+        Main_values.Main_gameSelected = Play_data.data[3];
+
+    } else if (screen_channel_call) {
+
+        Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+        Main_values.Play_WasPlaying = 0;
+        StartUser = false;
+
+    }
+
+    if (Main_values.Play_WasPlaying !== 1 || StartUser) {
+
+        tempGame = Play_data.data[3];
+        Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+    }
+
+    if (StartUser) {
+
+        Users_beforeUser = Main_GoBefore;
+        Main_values.Main_Before = Users_beforeUser;
+        Main_values.Play_WasPlaying = 0;
+        ScreenObj[Main_Users].init_fun();
+
+    } else if (restore_playback && Main_values.Play_WasPlaying) {
+
+        Main_values.Main_Go = Main_GoBefore;
+        if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+
+        if (Main_values.Play_WasPlaying === 1) {
+
+            if (Play_data.data.length > 0) {
+
+                Main_openStream();
+
+            } else ScreenObj[Main_values.Main_Go].init_fun();
+
+        } else {
+
+            Play_data.data[3] = tempGame;
+            Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+            if (!Main_vodOffset) Main_vodOffset = 1;
+
+            Play_DurationSeconds = 0;
+            Main_openVod();
+
+        }
+
+    } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
+
+        if (Main_newUsercode) Main_HideLoadDialog();
+        ScreenObj[Main_GoBefore].init_fun();
+
+    } else {
+
+        //Values that need to be reset to prevent app odd behavier
+        Main_values.Search_isSearching = false;
+        Main_values.Main_BeforeChannelisSet = false;
+        Main_values.Main_BeforeAgameisSet = false;
+
+        ScreenObj[Main_Live].init_fun();
+    }
+}
+
 function Screens_init(key, preventRefresh) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
@@ -561,6 +688,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
 function Screens_loadDataSuccessFinish(key) {
     //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
     if (!ScreenObj[key].status) {
+
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
         if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
@@ -619,162 +747,34 @@ function Screens_loadDataSuccessFinish(key) {
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
 
-            //TODO check more cases for problems
-            var Last_obj = OSInterface_GetLastIntentObj(),
-                obj,
-                live_channel_call,
-                host_channel_call,
-                game_channel_call,
-                screen_channel_call,
-                tempGame;
+            if (Main_values.Never_run_new)
+                Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
 
-            if (Last_obj) {
-                obj = JSON.parse(Last_obj);
-                live_channel_call = Main_A_equals_B(obj.type, "LIVE");
-                host_channel_call = Main_A_equals_B(obj.type, "HOST");
-
-                if (!live_channel_call && !host_channel_call) {
-                    game_channel_call = Main_A_equals_B(obj.type, "GAME");
-
-                    if (!game_channel_call) {
-                        screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
-
-                        if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
-
-                    }
-
-                }
-
-                if (obj.type && obj.screen) Main_EventChannel(obj);
-
+            if (Main_values.Never_run_phone && !Main_isTV) {
+                Main_showphoneDialog(Main_values.Never_run_new ?
+                    ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             }
 
-            var StartUser = Settings_value.start_user_screen.defaultValue;
-            var restore_playback = Settings_value.restor_playback.defaultValue;
+            if (!Main_values.Never_run_new) Screens_addFocus(true, key);
 
-            if (live_channel_call || host_channel_call) {
+            Main_values.Never_run_new = false;
+            Main_values.Never_run_phone = false;
 
-                Main_values.Play_WasPlaying = 1;
-
-                Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-                if (live_channel_call) {
-                    Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-                } else {
-                    Play_data.data = ScreensObj_HostCellArray(obj.obj);
-                    Main_values.Play_isHost = true;
-                    Play_data.DisplaynameHost = Play_data.data[1];
-                    Play_data.data[1] = Play_data.data[15];
-                }
-
-                StartUser = false;
-                restore_playback = true;
-
-            } else if (game_channel_call) {
-                Main_values.Play_WasPlaying = 0;
-                Main_GoBefore = Main_aGame;
-                Play_data = JSON.parse(JSON.stringify(Play_data_base));
-                Play_data.data[3] = obj.obj.name;
-                StartUser = false;
-                Main_values.Main_gameSelected = Play_data.data[3];
-            } else if (screen_channel_call) {
-                Main_GoBefore = Main_onNewIntentGetSCreen(obj);
-                Main_values.Play_WasPlaying = 0;
-                StartUser = false;
-            }
-
-            Main_values.warning_extra = false;
-
-
-            if (Main_values.Play_WasPlaying !== 1 || StartUser) {
-                tempGame = Play_data.data[3];
-                Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            }
-
-            if (StartUser) {
-
-                Main_ExitCurrent(Main_values.Main_Go);
-                Users_beforeUser = Main_GoBefore;
-                Main_values.Main_Before = Users_beforeUser;
-                Main_values.Main_Go = Main_Users;
-                Main_values.Play_WasPlaying = 0;
-                Main_SwitchScreen(false);
-                Screens_loadDataSuccessFinishEnd();
-
-            } else if (restore_playback && Main_values.Play_WasPlaying) {// && ScreenObj[key].status
-                //Main_Log('Play_WasPlaying');
-
-                Main_ExitCurrent(Main_values.Main_Go);
-                Main_values.Main_Go = Main_GoBefore;
-                if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
-
-                //History vod is so fast to load that this need to be set here to prevent a vod reset
-                Main_FirstRun = false;
-
-                if (Main_values.Play_WasPlaying === 1) {
-                    if (Play_data.data.length > 0) {
-
-                        Main_openStream();
-                        Main_SwitchScreen(true);
-
-                    } else Main_SwitchScreen(false);
-                } else {
-                    Play_data.data[3] = tempGame;
-                    Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
-                    if (!Main_vodOffset) Main_vodOffset = 1;
-
-                    Play_DurationSeconds = 0;
-                    Main_openVod();
-                    Main_SwitchScreen(true);
-                }
-
-                Screens_loadDataSuccessFinishEnd(true);
-
-            } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
-                //Main_Log('!Play_WasPlaying');
-                Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
-                Main_ExitCurrent(Main_values.Main_Go);
-                Main_values.Main_Go = Main_GoBefore;
-                Screens_RemoveAllFocus(key);
-                Main_SwitchScreen();
-
-                if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd(true);
-                else {
-                    Main_FirstRun = false;
-                    Main_HideLoadDialog();
-                }
-            } else {
-                //Main_Log('Play_WasPlaying else');
-
-                //Values that need to be reset to prevent app odd behavier
-                Main_values.Search_isSearching = false;
-                Main_values.Main_BeforeChannelisSet = false;
-                Main_values.Main_BeforeAgameisSet = false;
-
-                if (Main_values.Never_run_new)
-                    Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-
-                if (Main_values.Never_run_phone && !Main_isTV) {
-                    Main_showphoneDialog(Main_values.Never_run_new ?
-                        ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-                }
-
-                if (!Main_values.Never_run_new) Screens_addFocus(true, key);
-
-                Main_values.Never_run_new = false;
-                Main_values.Never_run_phone = false;
-
-                Main_SaveValues();
-                Screens_loadDataSuccessFinishEnd();
-            }
+            Main_SaveValues();
+            Screens_loadDataSuccessFinishEnd();
 
         } else {
+
             Screens_addFocus(true, key);
             Main_SaveValues();
             if (Main_isScene1DocShown()) Main_HideLoadDialog();
+
         }
+
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
+
         Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+
     }
 }
 
