@@ -28,7 +28,7 @@ var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.239';
 var Main_version_java = 30;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'August 09 2020';
-var Main_version_web = 49;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 10;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -628,7 +628,7 @@ function Main_Changelog() {
     var changelogObj = [
         {
             title: "Web Version August 09 2020",
-            changes: ["General performance improves and bug fixes"]
+            changes: ["Improve app start performance", "General performance improves and bug fixes"]
         },
         {
             title: "Apk Version 3.0.239 - August 08 2020",
@@ -656,10 +656,6 @@ function Main_Changelog() {
                 "General improves to the reliability and performance of notifications",
                 "General performance improves and bug fixes"
             ]
-        },
-        {
-            title: "Apk Version 3.0.236 - August 03 2020",
-            changes: ["General performance improves and bug fixes"]
         },
     ];
 

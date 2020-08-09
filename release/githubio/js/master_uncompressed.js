@@ -1461,1460 +1461,7 @@
     //https://github.com/kevinfaguiar/vue-twemoji-picker/tree/master/emoji-data/en
     //https://emojipedia.org/
     //But removed not working or not needed as is too much
-    var emojis = [{
-        "unicode": "😀",
-        "tags": "grin"
-    }, {
-        "unicode": "😃",
-        "tags": "smile"
-    }, {
-        "unicode": "😄",
-        "tags": "smile2"
-    }, {
-        "unicode": "😁",
-        "tags": "smile3"
-    }, {
-        "unicode": "😆",
-        "tags": "satisfied"
-    }, {
-        "unicode": "😅",
-        "tags": "sweat"
-    }, {
-        "unicode": "🤣",
-        "tags": "rolling"
-    }, {
-        "unicode": "😂",
-        "tags": "tear"
-    }, {
-        "unicode": "🙂",
-        "tags": "smile4"
-    }, {
-        "unicode": "🙃",
-        "tags": "smile-upside-down"
-    }, {
-        "unicode": "😉",
-        "tags": "wink"
-    }, {
-        "unicode": "😊",
-        "tags": "smile-blush"
-    }, {
-        "unicode": "😇",
-        "tags": "angel"
-    }, {
-        "unicode": "🥰",
-        "tags": "adore"
-    }, {
-        "unicode": "😍",
-        "tags": "smile-love"
-    }, {
-        "unicode": "🤩",
-        "tags": "smile-star"
-    }, {
-        "unicode": "😘",
-        "tags": "kiss"
-    }, {
-        "unicode": "😗",
-        "tags": "kiss2"
-    }, {
-        "unicode": "☺️",
-        "tags": "relaxed"
-    }, {
-        "unicode": "😚",
-        "tags": "kiss3"
-    }, {
-        "unicode": "😙",
-        "tags": "kis4"
-    }, {
-        "unicode": "😋",
-        "tags": "delicious"
-    }, {
-        "unicode": "😛",
-        "tags": "tongue"
-    }, {
-        "unicode": "😜",
-        "tags": "tongue-wink"
-    }, {
-        "unicode": "🤪",
-        "tags": "goofy"
-    }, {
-        "unicode": "😝",
-        "tags": "tongue-><"
-    }, {
-        "unicode": "🤑",
-        "tags": "face-money"
-    }, {
-        "unicode": "🤗",
-        "tags": "hugging"
-    }, {
-        "unicode": "🤭",
-        "tags": "whoops"
-    }, {
-        "unicode": "🤫",
-        "tags": "quiet"
-    }, {
-        "unicode": "🤔",
-        "tags": "thinking"
-    }, {
-        "unicode": "🤐",
-        "tags": "zipper"
-    }, {
-        "unicode": "🤨",
-        "tags": "skeptic"
-    }, {
-        "unicode": "😑",
-        "tags": "unexpressive"
-    }, {
-        "unicode": "😶",
-        "tags": "silent"
-    }, {
-        "unicode": "😏",
-        "tags": "smirk"
-    }, {
-        "unicode": "😒",
-        "tags": "unhappy"
-    }, {
-        "unicode": "🙄",
-        "tags": "eyeroll"
-    }, {
-        "unicode": "😬",
-        "tags": "grimace"
-    }, {
-        "unicode": "🤥",
-        "tags": "pinocchio"
-    }, {
-        "unicode": "😌",
-        "tags": "relieved"
-    }, {
-        "unicode": "😔",
-        "tags": "pensive"
-    }, {
-        "unicode": "😪",
-        "tags": "sleep"
-    }, {
-        "unicode": "🤤",
-        "tags": "drooling-face"
-    }, {
-        "unicode": "😴",
-        "tags": "sleep-face"
-    }, {
-        "unicode": "😷",
-        "tags": "cold-face"
-    }, {
-        "unicode": "🤒",
-        "tags": "sick-face"
-    }, {
-        "unicode": "🤕",
-        "tags": "bandage-face"
-    }, {
-        "unicode": "🤢",
-        "tags": "nauseated-face"
-    }, {
-        "unicode": "🤮",
-        "tags": "sick-face"
-    }, {
-        "unicode": "🤧",
-        "tags": "sneeze"
-    }, {
-        "unicode": "🥵",
-        "tags": "feverish"
-    }, {
-        "unicode": "🥶",
-        "tags": "blue-faced"
-    }, {
-        "unicode": "🥴",
-        "tags": "intoxicated"
-    }, {
-        "unicode": "😵",
-        "tags": "dizzy"
-    }, {
-        "unicode": "🤯",
-        "tags": "mind blown"
-    }, {
-        "unicode": "🤠",
-        "tags": "cowboy"
-    }, {
-        "unicode": "🥳",
-        "tags": "celebration"
-    }, {
-        "unicode": "😎",
-        "tags": "cool-face"
-    }, {
-        "unicode": "🤓",
-        "tags": "cool"
-    }, {
-        "unicode": "🧐",
-        "tags": "stuffy"
-    }, {
-        "unicode": "😕",
-        "tags": "confused"
-    }, {
-        "unicode": "😟",
-        "tags": "worried"
-    }, {
-        "unicode": "🙁",
-        "tags": "frown"
-    }, {
-        "unicode": "☹️",
-        "tags": "frown"
-    }, {
-        "unicode": "😮",
-        "tags": "mouth-open"
-    }, {
-        "unicode": "😯",
-        "tags": "surprised"
-    }, {
-        "unicode": "😲",
-        "tags": "astonished"
-    }, {
-        "unicode": "😳",
-        "tags": "dazed"
-    }, {
-        "unicode": "🥺",
-        "tags": "puppy eyes"
-    }, {
-        "unicode": "😦",
-        "tags": "frown"
-    }, {
-        "unicode": "😧",
-        "tags": "anguished"
-    }, {
-        "unicode": "😨",
-        "tags": "fearful"
-    }, {
-        "unicode": "😰",
-        "tags": "fearful2"
-    }, {
-        "unicode": "😥",
-        "tags": "disappointed"
-    }, {
-        "unicode": "😢",
-        "tags": "cry-face"
-    }, {
-        "unicode": "😭",
-        "tags": "cry-face2"
-    }, {
-        "unicode": "😱",
-        "tags": "fear-face"
-    }, {
-        "unicode": "😖",
-        "tags": "confounded"
-    }, {
-        "unicode": "😣",
-        "tags": "persevere"
-    }, {
-        "unicode": "😞",
-        "tags": "disappointed"
-    }, {
-        "unicode": "😓",
-        "tags": "cold"
-    }, {
-        "unicode": "😩",
-        "tags": "weary"
-    }, {
-        "unicode": "😫",
-        "tags": "tired"
-    }, {
-        "unicode": "😤",
-        "tags": "triumph"
-    }, {
-        "unicode": "😡",
-        "tags": "angry"
-    }, {
-        "unicode": "😠",
-        "tags": "mad"
-    }, {
-        "unicode": "🤬",
-        "tags": "swearing"
-    }, {
-        "unicode": "😈",
-        "tags": "devil"
-    }, {
-        "unicode": "👿",
-        "tags": "demon"
-    }, {
-        "unicode": "💀",
-        "tags": "death"
-    }, {
-        "unicode": "☠️",
-        "tags": "crossbones"
-    }, {
-        "unicode": "💩",
-        "tags": "poop"
-    }, {
-        "unicode": "🤡",
-        "tags": "clown"
-    }, {
-        "unicode": "👹",
-        "tags": "creature"
-    }, {
-        "unicode": "👺",
-        "tags": "creature2"
-    }, {
-        "unicode": "👻",
-        "tags": "ghost"
-    }, {
-        "unicode": "👾",
-        "tags": "alien"
-    }, {
-        "unicode": "🤖",
-        "tags": "robot"
-    }, {
-        "unicode": "😺",
-        "tags": "cat-face"
-    }, {
-        "unicode": "😸",
-        "tags": "cat-smile"
-    }, {
-        "unicode": "😹",
-        "tags": "cat-tear"
-    }, {
-        "unicode": "😻",
-        "tags": "cat-heart"
-    }, {
-        "unicode": "😼",
-        "tags": "cat-ironic"
-    }, {
-        "unicode": "😽",
-        "tags": "cat-kiss"
-    }, {
-        "unicode": "🙀",
-        "tags": "cat-surprised"
-    }, {
-        "unicode": "😿",
-        "tags": "cat-sad"
-    }, {
-        "unicode": "😾",
-        "tags": "cat-pouting"
-    }, {
-        "unicode": "👋",
-        "tags": "hand-wave"
-    }, {
-        "unicode": "🤚",
-        "tags": "backhand"
-    }, {
-        "unicode": "🖐️",
-        "tags": "hand-open-finger"
-    }, {
-        "unicode": "✋",
-        "tags": "hand"
-    }, {
-        "unicode": "🖖",
-        "tags": "hand-vulcan"
-
-    }, {
-        "unicode": "👌",
-        "tags": "hand-ok"
-    }, {
-        "unicode": "✌️",
-        "tags": "hand-v"
-    }, {
-        "unicode": "🤞",
-        "tags": "hand-cross"
-    }, {
-        "unicode": "🤟",
-        "tags": "hand-ily"
-    }, {
-        "unicode": "🤘",
-        "tags": "hand-horns"
-    }, {
-        "unicode": "🤙",
-        "tags": "hand-call"
-    }, {
-        "unicode": "🖕",
-        "tags": "hand-finger"
-    }, {
-        "unicode": "👈",
-        "tags": "hand-point"
-    }, {
-        "unicode": "👇",
-        "tags": "hand-poin2"
-    }, {
-        "unicode": "☝️",
-        "tags": "hand-point3"
-    }, {
-        "unicode": "👍",
-        "tags": "hand-thumb-up"
-    }, {
-        "unicode": "👎",
-        "tags": "hand-thumb-down"
-    }, {
-        "unicode": "✊",
-        "tags": "hand-punch"
-    }, {
-        "unicode": "👊",
-        "tags": "hand-punch2"
-    }, {
-        "unicode": "🤛",
-        "tags": "hand-punch3"
-    }, {
-        "unicode": "🤜",
-        "tags": "hand-punch4"
-    }, {
-        "unicode": "👏",
-        "tags": "hand-clap"
-    }, {
-        "unicode": "🙌",
-        "tags": "hand-celebration"
-    }, {
-        "unicode": "👐",
-        "tags": "hand-open"
-    }, {
-        "unicode": "🤲",
-        "tags": "hand-prayer"
-    }, {
-        "unicode": "🤝",
-        "tags": "hand-agreement"
-    }, {
-        "unicode": "🙏",
-        "tags": "hand-please"
-    }, {
-        "unicode": "✍️",
-        "tags": "hand-write"
-    }, {
-        "unicode": "💅",
-        "tags": "cosmetics"
-    }, {
-        "unicode": "🤳",
-        "tags": "self"
-    }, {
-        "unicode": "💪",
-        "tags": "muscle"
-    }, {
-        "unicode": "🦵",
-        "tags": "kick"
-    }, {
-        "unicode": "🦶",
-        "tags": "kick2"
-    }, {
-        "unicode": "👂",
-        "tags": "ear"
-    }, {
-        "unicode": "👃",
-        "tags": "nose"
-    }, {
-        "unicode": "🧠",
-        "tags": "brain"
-    }, {
-        "unicode": "🦷",
-        "tags": "tooth"
-    }, {
-        "unicode": "👀",
-        "tags": "eyes"
-    }, {
-        "unicode": "👁️",
-        "tags": "eye"
-    }, {
-        "unicode": "👅",
-        "tags": "tongue2"
-    }, {
-        "unicode": "👄",
-        "tags": "lips"
-    }, {
-        "unicode": "👶",
-        "tags": "baby"
-    }, {
-        "unicode": "👨‍🦲",
-        "tags": "bald"
-    }, {
-        "unicode": "👴",
-        "tags": "old-man"
-    }, {
-        "unicode": "👵",
-        "tags": "old-woman"
-    }, {
-        "unicode": "🔥",
-        "tags": "fire"
-    }, {
-        "unicode": "👨‍🚒",
-        "tags": "firefighter"
-    }, {
-        "unicode": "👩‍🚒",
-        "tags": "firefighter2"
-    }, {
-        "unicode": "👮‍♂️",
-        "tags": "police-officer"
-    }, {
-        "unicode": "👮‍♀️",
-        "tags": "police-officer-woman"
-    }, {
-        "unicode": "👨‍👩‍👧‍👦",
-        "tags": "family"
-    }, {
-        "unicode": "🙈",
-        "tags": "monkey-see"
-    }, {
-        "unicode": "🙉",
-        "tags": "monkey-hear"
-    }, {
-        "unicode": "🙊",
-        "tags": "monkey-speak"
-    }, {
-        "unicode": "💋",
-        "tags": "kiss-lips"
-    }, {
-        "unicode": "💌",
-        "tags": "heart-letter"
-    }, {
-        "unicode": "💘",
-        "tags": "arrow-cupid"
-    }, {
-        "unicode": "💝",
-        "tags": "valentine"
-    }, {
-        "unicode": "💖",
-        "tags": "sparkle-heart"
-    }, {
-        "unicode": "💗",
-        "tags": "pulse"
-    }, {
-        "unicode": "💓",
-        "tags": "beating"
-    }, {
-        "unicode": "💞",
-        "tags": "revolving"
-    }, {
-        "unicode": "💕",
-        "tags": "love"
-    }, {
-        "unicode": "❣️",
-        "tags": "exclamation"
-    }, {
-        "unicode": "💔",
-        "tags": "broken-heart"
-    }, {
-        "unicode": "💟",
-        "tags": "heart-Decoration"
-    }, {
-        "unicode": "🖤",
-        "tags": "heart-black"
-    }, {
-        "unicode": "🤎",
-        "tags": "heart-brown"
-    }, {
-        "unicode": "💙",
-        "tags": "heart-blue"
-    }, {
-        "unicode": "💚",
-        "tags": "heart-green"
-    }, {
-        "unicode": "🧡",
-        "tags": "heart-orange"
-    }, {
-        "unicode": "💜",
-        "tags": "heart-purple"
-    }, {
-        "unicode": "❤️",
-        "tags": "heart-red"
-    }, {
-        "unicode": "🤍",
-        "tags": "black-white"
-    }, {
-        "unicode": "💛",
-        "tags": "heart-yellow"
-    }, {
-        "unicode": "💯",
-        "tags": "hundred"
-    }, {
-        "unicode": "💢",
-        "tags": "mad"
-    }, {
-        "unicode": "💥",
-        "tags": "boom"
-    }, {
-        "unicode": "💫",
-        "tags": "stars"
-    }, {
-        "unicode": "💦",
-        "tags": "splashing"
-    }, {
-        "unicode": "💨",
-        "tags": "comic-dash"
-    }, {
-        "unicode": "🕳️",
-        "tags": "hole"
-    }, {
-        "unicode": "💬",
-        "tags": "balloon-dialog"
-    }, {
-        "unicode": "🗨️",
-        "tags": "dialog"
-    }, {
-        "unicode": "🗯️",
-        "tags": "angry-balloon"
-    }, {
-        "unicode": "💭",
-        "tags": "balloon-bubble"
-    }, {
-        "unicode": "💤",
-        "tags": "comic-sleep"
-    }, {
-        "unicode": "🕶️",
-        "tags": "glasses-dark"
-    }, {
-        "unicode": "🥽",
-        "tags": "glasses-swimming"
-    }, {
-        "unicode": "🥼",
-        "tags": "scientist"
-    }, {
-        "unicode": "👔",
-        "tags": "tie"
-    }, {
-        "unicode": "👕",
-        "tags": "tshirt"
-    }, {
-        "unicode": "👖",
-        "tags": "pants"
-    }, {
-        "unicode": "🧣",
-        "tags": "neck"
-    }, {
-        "unicode": "🧤",
-        "tags": "hand"
-    }, {
-        "unicode": "🧥",
-        "tags": "jacket"
-    }, {
-        "unicode": "🧦",
-        "tags": "stocking"
-    }, {
-        "unicode": "👗",
-        "tags": "clothing"
-    }, {
-        "unicode": "👘",
-        "tags": "clothing2"
-    }, {
-        "unicode": "👙",
-        "tags": "swim-clothing"
-    }, {
-        "unicode": "👚",
-        "tags": "woman-clothing"
-    }, {
-        "unicode": "👛",
-        "tags": "coin-clothing"
-    }, {
-        "unicode": "👜",
-        "tags": "purse"
-    }, {
-        "unicode": "👝",
-        "tags": "pouch"
-    }, {
-        "unicode": "🛍️",
-        "tags": "shopping-bag"
-    }, {
-        "unicode": "🎒",
-        "tags": "school-bag"
-    }, {
-        "unicode": "👞",
-        "tags": "shoe"
-    }, {
-        "unicode": "👟",
-        "tags": "sneaker"
-    }, {
-        "unicode": "🥾",
-        "tags": "hiking-boot"
-    }, {
-        "unicode": "🥿",
-        "tags": "ballet flat"
-    }, {
-        "unicode": "👠",
-        "tags": "woman-shoe"
-    }, {
-        "unicode": "👡",
-        "tags": "woman-shoe2"
-    }, {
-        "unicode": "👢",
-        "tags": "woman-boot"
-    }, {
-        "unicode": "👑",
-        "tags": "king"
-    }, {
-        "unicode": "👒",
-        "tags": "hat"
-    }, {
-        "unicode": "🎩",
-        "tags": "tophat"
-    }, {
-        "unicode": "🧢",
-        "tags": "baseball cap"
-    }, {
-        "unicode": "⛑️",
-        "tags": "aid"
-    }, {
-        "unicode": "📿",
-        "tags": "beads"
-    }, {
-        "unicode": "💄",
-        "tags": "lipstick"
-    }, {
-        "unicode": "💍",
-        "tags": "diamond-ring"
-    }, {
-        "unicode": "💎",
-        "tags": "diamond"
-    }, {
-        "unicode": "🔇",
-        "tags": "mute"
-    }, {
-        "unicode": "🔉",
-        "tags": "medium"
-    }, {
-        "unicode": "🔊",
-        "tags": "loud"
-    }, {
-        "unicode": "📢",
-        "tags": "loud2"
-    }, {
-        "unicode": "📣",
-        "tags": "cheering"
-    }, {
-        "unicode": "📯",
-        "tags": "horn"
-    }, {
-        "unicode": "🔔",
-        "tags": "bell"
-    }, {
-        "unicode": "🔕",
-        "tags": "bell"
-    }, {
-        "unicode": "🎼",
-        "tags": "music-score"
-    }, {
-        "unicode": "🎵",
-        "tags": "music-note"
-    }, {
-        "unicode": "🎶",
-        "tags": "music-notes"
-    }, {
-        "unicode": "🎙️",
-        "tags": "microphone"
-    }, {
-        "unicode": "🎤",
-        "tags": "microphone2"
-    }, {
-        "unicode": "🎷",
-        "tags": "sax"
-    }, {
-        "unicode": "🎸",
-        "tags": "guitar"
-    }, {
-        "unicode": "🎹",
-        "tags": "piano-keys"
-    }, {
-        "unicode": "🎺",
-        "tags": "trumpet"
-    }, {
-        "unicode": "🎻",
-        "tags": "violin"
-    }, {
-        "unicode": "🥁",
-        "tags": "drumsticks"
-    }, {
-        "unicode": "📱",
-        "tags": "cellphone"
-    }, {
-        "unicode": "☎️",
-        "tags": "phone"
-    }, {
-        "unicode": "📞",
-        "tags": "phone2"
-    }, {
-        "unicode": "📠",
-        "tags": "fax"
-    }, {
-        "unicode": "🔋",
-        "tags": "battery"
-    }, {
-        "unicode": "🔌",
-        "tags": "plug"
-    }, {
-        "unicode": "🖥️",
-        "tags": "computer-desktop"
-    }, {
-        "unicode": "🖨️",
-        "tags": "printer"
-    }, {
-        "unicode": "⌨️",
-        "tags": "keyboard"
-    }, {
-        "unicode": "🖱️",
-        "tags": "mouse-computer"
-    }, {
-        "unicode": "💽",
-        "tags": "computer-disk"
-    }, {
-        "unicode": "💾",
-        "tags": "floppy-disk"
-    }, {
-        "unicode": "📀",
-        "tags": "blu-ray"
-    }, {
-        "unicode": "🧮",
-        "tags": "calculation"
-    }, {
-        "unicode": "🎥",
-        "tags": "camera"
-    }, {
-        "unicode": "🎞️",
-        "tags": "cinema"
-    }, {
-        "unicode": "📽️",
-        "tags": "cinema2"
-    }, {
-        "unicode": "📸",
-        "tags": "camera-flash"
-    }, {
-        "unicode": "📼",
-        "tags": "vhs-tape"
-    }, {
-        "unicode": "🔎",
-        "tags": "magnifying"
-    }, {
-        "unicode": "🕯️",
-        "tags": "light"
-    }, {
-        "unicode": "💡",
-        "tags": "bulb"
-    }, {
-        "unicode": "🔦",
-        "tags": "electric-torch"
-    }, {
-        "unicode": "📒",
-        "tags": "notebook"
-    }, {
-        "unicode": "📃",
-        "tags": "note"
-    }, {
-        "unicode": "📰",
-        "tags": "newspaper"
-    }, {
-        "unicode": "🗞️",
-        "tags": "newspaper-rolled"
-    }, {
-        "unicode": "💴",
-        "tags": "money-rolled"
-    }, {
-        "unicode": "💲",
-        "tags": "dollar-sign"
-    }, {
-        "unicode": "✉️",
-        "tags": "email"
-    }, {
-        "unicode": "✏️",
-        "tags": "pencil"
-    }, {
-        "unicode": "✒️",
-        "tags": "pen"
-    }, {
-        "unicode": "📝",
-        "tags": "note-pencil"
-    }, {
-        "unicode": "💼",
-        "tags": "briefcase"
-    }, {
-        "unicode": "🗓️",
-        "tags": "calendar"
-    }, {
-        "unicode": "📌",
-        "tags": "pin"
-    }, {
-        "unicode": "📍",
-        "tags": "pin2"
-    }, {
-        "unicode": "📎",
-        "tags": "paperclip"
-    }, {
-        "unicode": "📏",
-        "tags": "ruler"
-    }, {
-        "unicode": "📐",
-        "tags": "ruler2"
-    }, {
-        "unicode": "✂️",
-        "tags": "cutting"
-    }, {
-        "unicode": "🗑️",
-        "tags": "wastebasket"
-    }, {
-        "unicode": "🔑",
-        "tags": "key"
-    }, {
-        "unicode": "🗝️",
-        "tags": "key-old"
-    }, {
-        "unicode": "🔨",
-        "tags": "hammer"
-    }, {
-        "unicode": "⛏️",
-        "tags": "pickaxe"
-    }, {
-        "unicode": "⚒️",
-        "tags": "hammer2"
-    }, {
-        "unicode": "🛠️",
-        "tags": "hammer-wrench"
-    }, {
-        "unicode": "🗡️",
-        "tags": "knife"
-    }, {
-        "unicode": "⚔️",
-        "tags": "swords"
-    }, {
-        "unicode": "🔫",
-        "tags": "gun-tool"
-    }, {
-        "unicode": "🏹",
-        "tags": "archer"
-    }, {
-        "unicode": "🛡️",
-        "tags": "shield"
-    }, {
-        "unicode": "🔧",
-        "tags": "spanner"
-    }, {
-        "unicode": "🔩",
-        "tags": "bolt"
-    }, {
-        "unicode": "⚙️",
-        "tags": "cog"
-    }, {
-        "unicode": "⚖️",
-        "tags": "balance"
-    }, {
-        "unicode": "🔗",
-        "tags": "link"
-    }, {
-        "unicode": "🧲",
-        "tags": "magnetic"
-    }, {
-        "unicode": "⚗️",
-        "tags": "chemistry"
-    }, {
-        "unicode": "🧪",
-        "tags": "chemist"
-    }, {
-        "unicode": "🧬",
-        "tags": "gene"
-    }, {
-        "unicode": "🔬",
-        "tags": "microscope"
-    }, {
-        "unicode": "🔭",
-        "tags": "telescope"
-    }, {
-        "unicode": "📡",
-        "tags": "antenna-dish"
-    }, {
-        "unicode": "💉",
-        "tags": "medicine"
-    }, {
-        "unicode": "💊",
-        "tags": "medicine"
-    }, {
-        "unicode": "🚪",
-        "tags": "door"
-    }, {
-        "unicode": "🛏️",
-        "tags": "hotel-bed"
-    }, {
-        "unicode": "🚽",
-        "tags": "toilet"
-    }, {
-        "unicode": "🚿",
-        "tags": "shower"
-    }, {
-        "unicode": "🛁",
-        "tags": "bath"
-    }, {
-        "unicode": "🧴",
-        "tags": "lotion"
-    }, {
-        "unicode": "🧷",
-        "tags": "diaper"
-    }, {
-        "unicode": "🧹",
-        "tags": "sweeping"
-    }, {
-        "unicode": "🧺",
-        "tags": "farming"
-    }, {
-        "unicode": "🧻",
-        "tags": "toilet paper"
-    }, {
-        "unicode": "🧯",
-        "tags": "extinguisher"
-    }, {
-        "unicode": "🛒",
-        "tags": "shopping-cart"
-    }, {
-        "unicode": "🚬",
-        "tags": "smoking"
-    }, {
-        "unicode": "✔️",
-        "tags": "check"
-    }, {
-        "unicode": "⚰️",
-        "tags": "death"
-    }, {
-        "unicode": "🗿",
-        "tags": "statue-face"
-    }, {
-        "unicode": "🐵",
-        "tags": "monkey-face"
-    }, {
-        "unicode": "🐒",
-        "tags": "monkey"
-    }, {
-        "unicode": "🦍",
-        "tags": "gorilla"
-    }, {
-        "unicode": "🐶",
-        "tags": "dog-face"
-    }, {
-        "unicode": "🐩",
-        "tags": "dog"
-    }, {
-        "unicode": "🐺",
-        "tags": "face"
-    }, {
-        "unicode": "🦊",
-        "tags": "face"
-    }, {
-        "unicode": "🦝",
-        "tags": "curious"
-    }, {
-        "unicode": "🐱",
-        "tags": "cat"
-    }, {
-        "unicode": "🦁",
-        "tags": "lion-face"
-    }, {
-        "unicode": "🐯",
-        "tags": "tiger-face"
-    }, {
-        "unicode": "🐅",
-        "tags": "tiger"
-    }, {
-        "unicode": "🐆",
-        "tags": "leopard"
-    }, {
-        "unicode": "🐴",
-        "tags": "horse-face"
-    }, {
-        "unicode": "🐎",
-        "tags": "racehorse"
-    }, {
-        "unicode": "🦄",
-        "tags": "unicorn-face"
-    }, {
-        "unicode": "🦓",
-        "tags": "zebra"
-    }, {
-        "unicode": "🦌",
-        "tags": "deer"
-    }, {
-        "unicode": "🐮",
-        "tags": "cow"
-    }, {
-        "unicode": "🐂",
-        "tags": "bull"
-    }, {
-        "unicode": "🐃",
-        "tags": "buffalo"
-    }, {
-        "unicode": "🐄",
-        "tags": "cow"
-    }, {
-        "unicode": "🐷",
-        "tags": "pig-face"
-    }, {
-        "unicode": "🐖",
-        "tags": "sow"
-    }, {
-        "unicode": "🐗",
-        "tags": "pig"
-    }, {
-        "unicode": "🐽",
-        "tags": "pig-nose"
-    }, {
-        "unicode": "🐏",
-        "tags": "aries"
-    }, {
-        "unicode": "🐑",
-        "tags": "sheep"
-    }, {
-        "unicode": "🐐",
-        "tags": "capricorn"
-    }, {
-        "unicode": "🐪",
-        "tags": "dromedary"
-    }, {
-        "unicode": "🐫",
-        "tags": "camel"
-    }, {
-        "unicode": "🦙",
-        "tags": "alpaca"
-    }, {
-        "unicode": "🦒",
-        "tags": "spots"
-    }, {
-        "unicode": "🐘",
-        "tags": "elephant"
-    }, {
-        "unicode": "🦏",
-        "tags": "rhinoceros"
-    }, {
-        "unicode": "🦛",
-        "tags": "hippo"
-    }, {
-        "unicode": "🐭",
-        "tags": "mouse-face"
-    }, {
-        "unicode": "🐁",
-        "tags": "mouse"
-    }, {
-        "unicode": "🐀",
-        "tags": "rat"
-    }, {
-        "unicode": "🐹",
-        "tags": "pet-face"
-    }, {
-        "unicode": "🐰",
-        "tags": "bunny-face"
-    }, {
-        "unicode": "🐇",
-        "tags": "bunny"
-    }, {
-        "unicode": "🐿️",
-        "tags": "squirrel"
-    }, {
-        "unicode": "🦔",
-        "tags": "spiny"
-    }, {
-        "unicode": "🦇",
-        "tags": "vampire"
-    }, {
-        "unicode": "🐻",
-        "tags": "face"
-    }, {
-        "unicode": "🐨",
-        "tags": "bear"
-    }, {
-        "unicode": "🐼",
-        "tags": "panda-face"
-    }, {
-        "unicode": "🦘",
-        "tags": "marsupial"
-    }, {
-        "unicode": "🦡",
-        "tags": "honey badger"
-    }, {
-        "unicode": "🐾",
-        "tags": "paw"
-    }, {
-        "unicode": "🦃",
-        "tags": "bird"
-    }, {
-        "unicode": "🐔",
-        "tags": "chicken"
-    }, {
-        "unicode": "🐓",
-        "tags": "rooster"
-    }, {
-        "unicode": "🐣",
-        "tags": "baby-bird"
-    }, {
-        "unicode": "🐤",
-        "tags": "baby-chick"
-    }, {
-        "unicode": "🐥",
-        "tags": "baby-chick2"
-    }, {
-        "unicode": "🐧",
-        "tags": "penguin"
-    }, {
-        "unicode": "🕊️",
-        "tags": "bird-fly"
-    }, {
-        "unicode": "🦅",
-        "tags": "eagle"
-    }, {
-        "unicode": "🦆",
-        "tags": "duck"
-    }, {
-        "unicode": "🦢",
-        "tags": "swan"
-    }, {
-        "unicode": "🦉",
-        "tags": "owl"
-    }, {
-        "unicode": "🦚",
-        "tags": "peahen"
-    }, {
-        "unicode": "🦜",
-        "tags": "macaw"
-    }, {
-        "unicode": "🐸",
-        "tags": "frog-face"
-    }, {
-        "unicode": "🐊",
-        "tags": "crocodile"
-    }, {
-        "unicode": "🐢",
-        "tags": "turtle"
-    }, {
-        "unicode": "🦎",
-        "tags": "reptile"
-    }, {
-        "unicode": "🐍",
-        "tags": "snake"
-    }, {
-        "unicode": "🐲",
-        "tags": "dragon-face"
-    }, {
-        "unicode": "🐉",
-        "tags": "dragon"
-    }, {
-        "unicode": "🦕",
-        "tags": "brontosaurus"
-    }, {
-        "unicode": "🦖",
-        "tags": "t-rex"
-    }, {
-        "unicode": "🐳",
-        "tags": "whale"
-    }, {
-        "unicode": "🐋",
-        "tags": "whale2"
-    }, {
-        "unicode": "🐬",
-        "tags": "flipper"
-    }, {
-        "unicode": "🐠",
-        "tags": "tropical-fish"
-    }, {
-        "unicode": "🐡",
-        "tags": "fish"
-    }, {
-        "unicode": "🦈",
-        "tags": "shark"
-    }, {
-        "unicode": "🐙",
-        "tags": "octopus"
-    }, {
-        "unicode": "🐚",
-        "tags": "shell"
-    }, {
-        "unicode": "🐌",
-        "tags": "snail"
-    }, {
-        "unicode": "🦋",
-        "tags": "butterfly"
-    }, {
-        "unicode": "🐛",
-        "tags": "insect"
-    }, {
-        "unicode": "🐜",
-        "tags": "insect"
-    }, {
-        "unicode": "🐝",
-        "tags": "bee"
-    }, {
-        "unicode": "🐞",
-        "tags": "ladybug"
-    }, {
-        "unicode": "🦗",
-        "tags": "grasshopper"
-    }, {
-        "unicode": "🕷️",
-        "tags": "insect"
-    }, {
-        "unicode": "🕸️",
-        "tags": "spider-web"
-    }, {
-        "unicode": "🦂",
-        "tags": "scorpio"
-    }, {
-        "unicode": "🦟",
-        "tags": "mosquito"
-    }, {
-        "unicode": "🦠",
-        "tags": "amoeba"
-    }, {
-        "unicode": "💐",
-        "tags": "flower"
-    }, {
-        "unicode": "🌸",
-        "tags": "blossom"
-    }, {
-        "unicode": "🌹",
-        "tags": "flower"
-    }, {
-        "unicode": "🥀",
-        "tags": "flower-wilted"
-    }, {
-        "unicode": "🌺",
-        "tags": "flower2"
-    }, {
-        "unicode": "🌻",
-        "tags": "sun-flower"
-    }, {
-        "unicode": "🌼",
-        "tags": "flower3"
-    }, {
-        "unicode": "🌷",
-        "tags": "flower4"
-    }, {
-        "unicode": "🌱",
-        "tags": "young-tree"
-    }, {
-        "unicode": "🌲",
-        "tags": "tree"
-    }, {
-        "unicode": "🌳",
-        "tags": "big-tree"
-    }, {
-        "unicode": "🌵",
-        "tags": "plant"
-    }, {
-        "unicode": "🌿",
-        "tags": "leaf"
-    }, {
-        "unicode": "☘️",
-        "tags": "three-leaf clover"
-    }, {
-        "unicode": "🍀",
-        "tags": "four-leaf clover"
-    }, {
-        "unicode": "🍁",
-        "tags": "falling-leaf"
-    }, {
-        "unicode": "🏁",
-        "tags": "checkered"
-    }, {
-        "unicode": "🚩",
-        "tags": "post"
-    }, {
-        "unicode": "🎌",
-        "tags": "japanese-celebration"
-    }, {
-        "unicode": "🏴",
-        "tags": "flag-black"
-    }, {
-        "unicode": "🏳️",
-        "tags": "flag-white"
-    }, {
-        "unicode": "🏳️‍🌈",
-        "tags": "flag-pride"
-    }, {
-        "unicode": "🏴‍☠️",
-        "tags": "flag-pirate"
-    }, {
-        "unicode": "🇦🇷",
-        "tags": "AR",
-    }, {
-        "unicode": "🇦🇺",
-        "tags": "AU",
-    }, {
-        "unicode": "🇧🇬",
-        "tags": "BG",
-    }, {
-        "unicode": "🇧🇷",
-        "tags": "BR",
-    }, {
-        "unicode": "🇨🇦",
-        "tags": "CA",
-    }, {
-        "unicode": "🇨🇳",
-        "tags": "CN",
-    }, {
-        "unicode": "🇨🇿",
-        "tags": "CZ",
-    }, {
-        "unicode": "🇩🇪",
-        "tags": "DE",
-    }, {
-        "unicode": "🇩🇰",
-        "tags": "DK",
-    }, {
-        "unicode": "🇩🇲",
-        "tags": "DM",
-    }, {
-        "unicode": "🇩🇴",
-        "tags": "DO",
-    }, {
-        "unicode": "🇩🇿",
-        "tags": "DZ",
-    }, {
-        "unicode": "🇪🇦",
-        "tags": "EA",
-    }, {
-        "unicode": "🇪🇨",
-        "tags": "EC",
-    }, {
-        "unicode": "🇪🇸",
-        "tags": "ES",
-    }, {
-        "unicode": "🇫🇮",
-        "tags": "FI",
-    }, {
-        "unicode": "🇫🇷",
-        "tags": "FR",
-    }, {
-        "unicode": "🇬🇧",
-        "tags": "GB",
-    }, {
-        "unicode": "🇭🇰",
-        "tags": "HK",
-    }, {
-        "unicode": "🇮🇱",
-        "tags": "IL",
-    }, {
-        "unicode": "🇮🇹",
-        "tags": "IT",
-    }, {
-        "unicode": "🇯🇵",
-        "tags": "JA",
-    }, {
-        "unicode": "🇰🇵",
-        "tags": "KP",
-    }, {
-        "unicode": "🇰🇷",
-        "tags": "KR",
-    }, {
-        "unicode": "🇳🇱",
-        "tags": "NL",
-    }, {
-        "unicode": "🇳🇴",
-        "tags": "NO",
-    }, {
-        "unicode": "🇵🇱",
-        "tags": "PL",
-    }, {
-        "unicode": "🇵🇹",
-        "tags": "PT",
-    }, {
-        "unicode": "🇷🇴",
-        "tags": "RO",
-    }, {
-        "unicode": "🇷🇺",
-        "tags": "RU",
-    }, {
-        "unicode": "🇸🇰",
-        "tags": "SK",
-    }, {
-        "unicode": "🇸🇻",
-        "tags": "SV",
-    }, {
-        "unicode": "🇹🇭",
-        "tags": "TH",
-    }, {
-        "unicode": "🇹🇷",
-        "tags": "TR",
-    }, {
-        "unicode": "🇻🇮",
-        "tags": "VI",
-    }];
+    var emojis_string = '[{"unicode":"😀","tags":"grin","id":0},{"unicode":"😃","tags":"smile","id":1},{"unicode":"😄","tags":"smile2","id":2},{"unicode":"😁","tags":"smile3","id":3},{"unicode":"😆","tags":"satisfied","id":4},{"unicode":"😅","tags":"sweat","id":5},{"unicode":"🤣","tags":"rolling","id":6},{"unicode":"😂","tags":"tear","id":7},{"unicode":"🙂","tags":"smile4","id":8},{"unicode":"🙃","tags":"smile-upside-down","id":9},{"unicode":"😉","tags":"wink","id":10},{"unicode":"😊","tags":"smile-blush","id":11},{"unicode":"😇","tags":"angel","id":12},{"unicode":"🥰","tags":"adore","id":13},{"unicode":"😍","tags":"smile-love","id":14},{"unicode":"🤩","tags":"smile-star","id":15},{"unicode":"😘","tags":"kiss","id":16},{"unicode":"😗","tags":"kiss2","id":17},{"unicode":"☺️","tags":"relaxed","id":18},{"unicode":"😚","tags":"kiss3","id":19},{"unicode":"😙","tags":"kis4","id":20},{"unicode":"😋","tags":"delicious","id":21},{"unicode":"😛","tags":"tongue","id":22},{"unicode":"😜","tags":"tongue-wink","id":23},{"unicode":"🤪","tags":"goofy","id":24},{"unicode":"😝","tags":"tongue-><","id":25},{"unicode":"🤑","tags":"face-money","id":26},{"unicode":"🤗","tags":"hugging","id":27},{"unicode":"🤭","tags":"whoops","id":28},{"unicode":"🤫","tags":"quiet","id":29},{"unicode":"🤔","tags":"thinking","id":30},{"unicode":"🤐","tags":"zipper","id":31},{"unicode":"🤨","tags":"skeptic","id":32},{"unicode":"😑","tags":"unexpressive","id":33},{"unicode":"😶","tags":"silent","id":34},{"unicode":"😏","tags":"smirk","id":35},{"unicode":"😒","tags":"unhappy","id":36},{"unicode":"🙄","tags":"eyeroll","id":37},{"unicode":"😬","tags":"grimace","id":38},{"unicode":"🤥","tags":"pinocchio","id":39},{"unicode":"😌","tags":"relieved","id":40},{"unicode":"😔","tags":"pensive","id":41},{"unicode":"😪","tags":"sleep","id":42},{"unicode":"🤤","tags":"drooling-face","id":43},{"unicode":"😴","tags":"sleep-face","id":44},{"unicode":"😷","tags":"cold-face","id":45},{"unicode":"🤒","tags":"sick-face","id":46},{"unicode":"🤕","tags":"bandage-face","id":47},{"unicode":"🤢","tags":"nauseated-face","id":48},{"unicode":"🤮","tags":"sick-face","id":49},{"unicode":"🤧","tags":"sneeze","id":50},{"unicode":"🥵","tags":"feverish","id":51},{"unicode":"🥶","tags":"blue-faced","id":52},{"unicode":"🥴","tags":"intoxicated","id":53},{"unicode":"😵","tags":"dizzy","id":54},{"unicode":"🤯","tags":"mind blown","id":55},{"unicode":"🤠","tags":"cowboy","id":56},{"unicode":"🥳","tags":"celebration","id":57},{"unicode":"😎","tags":"cool-face","id":58},{"unicode":"🤓","tags":"cool","id":59},{"unicode":"🧐","tags":"stuffy","id":60},{"unicode":"😕","tags":"confused","id":61},{"unicode":"😟","tags":"worried","id":62},{"unicode":"🙁","tags":"frown","id":63},{"unicode":"☹️","tags":"frown","id":64},{"unicode":"😮","tags":"mouth-open","id":65},{"unicode":"😯","tags":"surprised","id":66},{"unicode":"😲","tags":"astonished","id":67},{"unicode":"😳","tags":"dazed","id":68},{"unicode":"🥺","tags":"puppy eyes","id":69},{"unicode":"😦","tags":"frown","id":70},{"unicode":"😧","tags":"anguished","id":71},{"unicode":"😨","tags":"fearful","id":72},{"unicode":"😰","tags":"fearful2","id":73},{"unicode":"😥","tags":"disappointed","id":74},{"unicode":"😢","tags":"cry-face","id":75},{"unicode":"😭","tags":"cry-face2","id":76},{"unicode":"😱","tags":"fear-face","id":77},{"unicode":"😖","tags":"confounded","id":78},{"unicode":"😣","tags":"persevere","id":79},{"unicode":"😞","tags":"disappointed","id":80},{"unicode":"😓","tags":"cold","id":81},{"unicode":"😩","tags":"weary","id":82},{"unicode":"😫","tags":"tired","id":83},{"unicode":"😤","tags":"triumph","id":84},{"unicode":"😡","tags":"angry","id":85},{"unicode":"😠","tags":"mad","id":86},{"unicode":"🤬","tags":"swearing","id":87},{"unicode":"😈","tags":"devil","id":88},{"unicode":"👿","tags":"demon","id":89},{"unicode":"💀","tags":"death","id":90},{"unicode":"☠️","tags":"crossbones","id":91},{"unicode":"💩","tags":"poop","id":92},{"unicode":"🤡","tags":"clown","id":93},{"unicode":"👹","tags":"creature","id":94},{"unicode":"👺","tags":"creature2","id":95},{"unicode":"👻","tags":"ghost","id":96},{"unicode":"👾","tags":"alien","id":97},{"unicode":"🤖","tags":"robot","id":98},{"unicode":"😺","tags":"cat-face","id":99},{"unicode":"😸","tags":"cat-smile","id":100},{"unicode":"😹","tags":"cat-tear","id":101},{"unicode":"😻","tags":"cat-heart","id":102},{"unicode":"😼","tags":"cat-ironic","id":103},{"unicode":"😽","tags":"cat-kiss","id":104},{"unicode":"🙀","tags":"cat-surprised","id":105},{"unicode":"😿","tags":"cat-sad","id":106},{"unicode":"😾","tags":"cat-pouting","id":107},{"unicode":"👋","tags":"hand-wave","id":108},{"unicode":"🤚","tags":"backhand","id":109},{"unicode":"🖐️","tags":"hand-open-finger","id":110},{"unicode":"✋","tags":"hand","id":111},{"unicode":"🖖","tags":"hand-vulcan","id":112},{"unicode":"👌","tags":"hand-ok","id":113},{"unicode":"✌️","tags":"hand-v","id":114},{"unicode":"🤞","tags":"hand-cross","id":115},{"unicode":"🤟","tags":"hand-ily","id":116},{"unicode":"🤘","tags":"hand-horns","id":117},{"unicode":"🤙","tags":"hand-call","id":118},{"unicode":"🖕","tags":"hand-finger","id":119},{"unicode":"👈","tags":"hand-point","id":120},{"unicode":"👇","tags":"hand-poin2","id":121},{"unicode":"☝️","tags":"hand-point3","id":122},{"unicode":"👍","tags":"hand-thumb-up","id":123},{"unicode":"👎","tags":"hand-thumb-down","id":124},{"unicode":"✊","tags":"hand-punch","id":125},{"unicode":"👊","tags":"hand-punch2","id":126},{"unicode":"🤛","tags":"hand-punch3","id":127},{"unicode":"🤜","tags":"hand-punch4","id":128},{"unicode":"👏","tags":"hand-clap","id":129},{"unicode":"🙌","tags":"hand-celebration","id":130},{"unicode":"👐","tags":"hand-open","id":131},{"unicode":"🤲","tags":"hand-prayer","id":132},{"unicode":"🤝","tags":"hand-agreement","id":133},{"unicode":"🙏","tags":"hand-please","id":134},{"unicode":"✍️","tags":"hand-write","id":135},{"unicode":"💅","tags":"cosmetics","id":136},{"unicode":"🤳","tags":"self","id":137},{"unicode":"💪","tags":"muscle","id":138},{"unicode":"🦵","tags":"kick","id":139},{"unicode":"🦶","tags":"kick2","id":140},{"unicode":"👂","tags":"ear","id":141},{"unicode":"👃","tags":"nose","id":142},{"unicode":"🧠","tags":"brain","id":143},{"unicode":"🦷","tags":"tooth","id":144},{"unicode":"👀","tags":"eyes","id":145},{"unicode":"👁️","tags":"eye","id":146},{"unicode":"👅","tags":"tongue2","id":147},{"unicode":"👄","tags":"lips","id":148},{"unicode":"👶","tags":"baby","id":149},{"unicode":"👨‍🦲","tags":"bald","id":150},{"unicode":"👴","tags":"old-man","id":151},{"unicode":"👵","tags":"old-woman","id":152},{"unicode":"🔥","tags":"fire","id":153},{"unicode":"👨‍🚒","tags":"firefighter","id":154},{"unicode":"👩‍🚒","tags":"firefighter2","id":155},{"unicode":"👮‍♂️","tags":"police-officer","id":156},{"unicode":"👮‍♀️","tags":"police-officer-woman","id":157},{"unicode":"👨‍👩‍👧‍👦","tags":"family","id":158},{"unicode":"🙈","tags":"monkey-see","id":159},{"unicode":"🙉","tags":"monkey-hear","id":160},{"unicode":"🙊","tags":"monkey-speak","id":161},{"unicode":"💋","tags":"kiss-lips","id":162},{"unicode":"💌","tags":"heart-letter","id":163},{"unicode":"💘","tags":"arrow-cupid","id":164},{"unicode":"💝","tags":"valentine","id":165},{"unicode":"💖","tags":"sparkle-heart","id":166},{"unicode":"💗","tags":"pulse","id":167},{"unicode":"💓","tags":"beating","id":168},{"unicode":"💞","tags":"revolving","id":169},{"unicode":"💕","tags":"love","id":170},{"unicode":"❣️","tags":"exclamation","id":171},{"unicode":"💔","tags":"broken-heart","id":172},{"unicode":"💟","tags":"heart-Decoration","id":173},{"unicode":"🖤","tags":"heart-black","id":174},{"unicode":"🤎","tags":"heart-brown","id":175},{"unicode":"💙","tags":"heart-blue","id":176},{"unicode":"💚","tags":"heart-green","id":177},{"unicode":"🧡","tags":"heart-orange","id":178},{"unicode":"💜","tags":"heart-purple","id":179},{"unicode":"❤️","tags":"heart-red","id":180},{"unicode":"🤍","tags":"black-white","id":181},{"unicode":"💛","tags":"heart-yellow","id":182},{"unicode":"💯","tags":"hundred","id":183},{"unicode":"💢","tags":"mad","id":184},{"unicode":"💥","tags":"boom","id":185},{"unicode":"💫","tags":"stars","id":186},{"unicode":"💦","tags":"splashing","id":187},{"unicode":"💨","tags":"comic-dash","id":188},{"unicode":"🕳️","tags":"hole","id":189},{"unicode":"💬","tags":"balloon-dialog","id":190},{"unicode":"🗨️","tags":"dialog","id":191},{"unicode":"🗯️","tags":"angry-balloon","id":192},{"unicode":"💭","tags":"balloon-bubble","id":193},{"unicode":"💤","tags":"comic-sleep","id":194},{"unicode":"🕶️","tags":"glasses-dark","id":195},{"unicode":"🥽","tags":"glasses-swimming","id":196},{"unicode":"🥼","tags":"scientist","id":197},{"unicode":"👔","tags":"tie","id":198},{"unicode":"👕","tags":"tshirt","id":199},{"unicode":"👖","tags":"pants","id":200},{"unicode":"🧣","tags":"neck","id":201},{"unicode":"🧤","tags":"hand","id":202},{"unicode":"🧥","tags":"jacket","id":203},{"unicode":"🧦","tags":"stocking","id":204},{"unicode":"👗","tags":"clothing","id":205},{"unicode":"👘","tags":"clothing2","id":206},{"unicode":"👙","tags":"swim-clothing","id":207},{"unicode":"👚","tags":"woman-clothing","id":208},{"unicode":"👛","tags":"coin-clothing","id":209},{"unicode":"👜","tags":"purse","id":210},{"unicode":"👝","tags":"pouch","id":211},{"unicode":"🛍️","tags":"shopping-bag","id":212},{"unicode":"🎒","tags":"school-bag","id":213},{"unicode":"👞","tags":"shoe","id":214},{"unicode":"👟","tags":"sneaker","id":215},{"unicode":"🥾","tags":"hiking-boot","id":216},{"unicode":"🥿","tags":"ballet flat","id":217},{"unicode":"👠","tags":"woman-shoe","id":218},{"unicode":"👡","tags":"woman-shoe2","id":219},{"unicode":"👢","tags":"woman-boot","id":220},{"unicode":"👑","tags":"king","id":221},{"unicode":"👒","tags":"hat","id":222},{"unicode":"🎩","tags":"tophat","id":223},{"unicode":"🧢","tags":"baseball cap","id":224},{"unicode":"⛑️","tags":"aid","id":225},{"unicode":"📿","tags":"beads","id":226},{"unicode":"💄","tags":"lipstick","id":227},{"unicode":"💍","tags":"diamond-ring","id":228},{"unicode":"💎","tags":"diamond","id":229},{"unicode":"🔇","tags":"mute","id":230},{"unicode":"🔉","tags":"medium","id":231},{"unicode":"🔊","tags":"loud","id":232},{"unicode":"📢","tags":"loud2","id":233},{"unicode":"📣","tags":"cheering","id":234},{"unicode":"📯","tags":"horn","id":235},{"unicode":"🔔","tags":"bell","id":236},{"unicode":"🔕","tags":"bell","id":237},{"unicode":"🎼","tags":"music-score","id":238},{"unicode":"🎵","tags":"music-note","id":239},{"unicode":"🎶","tags":"music-notes","id":240},{"unicode":"🎙️","tags":"microphone","id":241},{"unicode":"🎤","tags":"microphone2","id":242},{"unicode":"🎷","tags":"sax","id":243},{"unicode":"🎸","tags":"guitar","id":244},{"unicode":"🎹","tags":"piano-keys","id":245},{"unicode":"🎺","tags":"trumpet","id":246},{"unicode":"🎻","tags":"violin","id":247},{"unicode":"🥁","tags":"drumsticks","id":248},{"unicode":"📱","tags":"cellphone","id":249},{"unicode":"☎️","tags":"phone","id":250},{"unicode":"📞","tags":"phone2","id":251},{"unicode":"📠","tags":"fax","id":252},{"unicode":"🔋","tags":"battery","id":253},{"unicode":"🔌","tags":"plug","id":254},{"unicode":"🖥️","tags":"computer-desktop","id":255},{"unicode":"🖨️","tags":"printer","id":256},{"unicode":"⌨️","tags":"keyboard","id":257},{"unicode":"🖱️","tags":"mouse-computer","id":258},{"unicode":"💽","tags":"computer-disk","id":259},{"unicode":"💾","tags":"floppy-disk","id":260},{"unicode":"📀","tags":"blu-ray","id":261},{"unicode":"🧮","tags":"calculation","id":262},{"unicode":"🎥","tags":"camera","id":263},{"unicode":"🎞️","tags":"cinema","id":264},{"unicode":"📽️","tags":"cinema2","id":265},{"unicode":"📸","tags":"camera-flash","id":266},{"unicode":"📼","tags":"vhs-tape","id":267},{"unicode":"🔎","tags":"magnifying","id":268},{"unicode":"🕯️","tags":"light","id":269},{"unicode":"💡","tags":"bulb","id":270},{"unicode":"🔦","tags":"electric-torch","id":271},{"unicode":"📒","tags":"notebook","id":272},{"unicode":"📃","tags":"note","id":273},{"unicode":"📰","tags":"newspaper","id":274},{"unicode":"🗞️","tags":"newspaper-rolled","id":275},{"unicode":"💴","tags":"money-rolled","id":276},{"unicode":"💲","tags":"dollar-sign","id":277},{"unicode":"✉️","tags":"email","id":278},{"unicode":"✏️","tags":"pencil","id":279},{"unicode":"✒️","tags":"pen","id":280},{"unicode":"📝","tags":"note-pencil","id":281},{"unicode":"💼","tags":"briefcase","id":282},{"unicode":"🗓️","tags":"calendar","id":283},{"unicode":"📌","tags":"pin","id":284},{"unicode":"📍","tags":"pin2","id":285},{"unicode":"📎","tags":"paperclip","id":286},{"unicode":"📏","tags":"ruler","id":287},{"unicode":"📐","tags":"ruler2","id":288},{"unicode":"✂️","tags":"cutting","id":289},{"unicode":"🗑️","tags":"wastebasket","id":290},{"unicode":"🔑","tags":"key","id":291},{"unicode":"🗝️","tags":"key-old","id":292},{"unicode":"🔨","tags":"hammer","id":293},{"unicode":"⛏️","tags":"pickaxe","id":294},{"unicode":"⚒️","tags":"hammer2","id":295},{"unicode":"🛠️","tags":"hammer-wrench","id":296},{"unicode":"🗡️","tags":"knife","id":297},{"unicode":"⚔️","tags":"swords","id":298},{"unicode":"🔫","tags":"gun-tool","id":299},{"unicode":"🏹","tags":"archer","id":300},{"unicode":"🛡️","tags":"shield","id":301},{"unicode":"🔧","tags":"spanner","id":302},{"unicode":"🔩","tags":"bolt","id":303},{"unicode":"⚙️","tags":"cog","id":304},{"unicode":"⚖️","tags":"balance","id":305},{"unicode":"🔗","tags":"link","id":306},{"unicode":"🧲","tags":"magnetic","id":307},{"unicode":"⚗️","tags":"chemistry","id":308},{"unicode":"🧪","tags":"chemist","id":309},{"unicode":"🧬","tags":"gene","id":310},{"unicode":"🔬","tags":"microscope","id":311},{"unicode":"🔭","tags":"telescope","id":312},{"unicode":"📡","tags":"antenna-dish","id":313},{"unicode":"💉","tags":"medicine","id":314},{"unicode":"💊","tags":"medicine","id":315},{"unicode":"🚪","tags":"door","id":316},{"unicode":"🛏️","tags":"hotel-bed","id":317},{"unicode":"🚽","tags":"toilet","id":318},{"unicode":"🚿","tags":"shower","id":319},{"unicode":"🛁","tags":"bath","id":320},{"unicode":"🧴","tags":"lotion","id":321},{"unicode":"🧷","tags":"diaper","id":322},{"unicode":"🧹","tags":"sweeping","id":323},{"unicode":"🧺","tags":"farming","id":324},{"unicode":"🧻","tags":"toilet paper","id":325},{"unicode":"🧯","tags":"extinguisher","id":326},{"unicode":"🛒","tags":"shopping-cart","id":327},{"unicode":"🚬","tags":"smoking","id":328},{"unicode":"✔️","tags":"check","id":329},{"unicode":"⚰️","tags":"death","id":330},{"unicode":"🗿","tags":"statue-face","id":331},{"unicode":"🐵","tags":"monkey-face","id":332},{"unicode":"🐒","tags":"monkey","id":333},{"unicode":"🦍","tags":"gorilla","id":334},{"unicode":"🐶","tags":"dog-face","id":335},{"unicode":"🐩","tags":"dog","id":336},{"unicode":"🐺","tags":"face","id":337},{"unicode":"🦊","tags":"face","id":338},{"unicode":"🦝","tags":"curious","id":339},{"unicode":"🐱","tags":"cat","id":340},{"unicode":"🦁","tags":"lion-face","id":341},{"unicode":"🐯","tags":"tiger-face","id":342},{"unicode":"🐅","tags":"tiger","id":343},{"unicode":"🐆","tags":"leopard","id":344},{"unicode":"🐴","tags":"horse-face","id":345},{"unicode":"🐎","tags":"racehorse","id":346},{"unicode":"🦄","tags":"unicorn-face","id":347},{"unicode":"🦓","tags":"zebra","id":348},{"unicode":"🦌","tags":"deer","id":349},{"unicode":"🐮","tags":"cow","id":350},{"unicode":"🐂","tags":"bull","id":351},{"unicode":"🐃","tags":"buffalo","id":352},{"unicode":"🐄","tags":"cow","id":353},{"unicode":"🐷","tags":"pig-face","id":354},{"unicode":"🐖","tags":"sow","id":355},{"unicode":"🐗","tags":"pig","id":356},{"unicode":"🐽","tags":"pig-nose","id":357},{"unicode":"🐏","tags":"aries","id":358},{"unicode":"🐑","tags":"sheep","id":359},{"unicode":"🐐","tags":"capricorn","id":360},{"unicode":"🐪","tags":"dromedary","id":361},{"unicode":"🐫","tags":"camel","id":362},{"unicode":"🦙","tags":"alpaca","id":363},{"unicode":"🦒","tags":"spots","id":364},{"unicode":"🐘","tags":"elephant","id":365},{"unicode":"🦏","tags":"rhinoceros","id":366},{"unicode":"🦛","tags":"hippo","id":367},{"unicode":"🐭","tags":"mouse-face","id":368},{"unicode":"🐁","tags":"mouse","id":369},{"unicode":"🐀","tags":"rat","id":370},{"unicode":"🐹","tags":"pet-face","id":371},{"unicode":"🐰","tags":"bunny-face","id":372},{"unicode":"🐇","tags":"bunny","id":373},{"unicode":"🐿️","tags":"squirrel","id":374},{"unicode":"🦔","tags":"spiny","id":375},{"unicode":"🦇","tags":"vampire","id":376},{"unicode":"🐻","tags":"face","id":377},{"unicode":"🐨","tags":"bear","id":378},{"unicode":"🐼","tags":"panda-face","id":379},{"unicode":"🦘","tags":"marsupial","id":380},{"unicode":"🦡","tags":"honey badger","id":381},{"unicode":"🐾","tags":"paw","id":382},{"unicode":"🦃","tags":"bird","id":383},{"unicode":"🐔","tags":"chicken","id":384},{"unicode":"🐓","tags":"rooster","id":385},{"unicode":"🐣","tags":"baby-bird","id":386},{"unicode":"🐤","tags":"baby-chick","id":387},{"unicode":"🐥","tags":"baby-chick2","id":388},{"unicode":"🐧","tags":"penguin","id":389},{"unicode":"🕊️","tags":"bird-fly","id":390},{"unicode":"🦅","tags":"eagle","id":391},{"unicode":"🦆","tags":"duck","id":392},{"unicode":"🦢","tags":"swan","id":393},{"unicode":"🦉","tags":"owl","id":394},{"unicode":"🦚","tags":"peahen","id":395},{"unicode":"🦜","tags":"macaw","id":396},{"unicode":"🐸","tags":"frog-face","id":397},{"unicode":"🐊","tags":"crocodile","id":398},{"unicode":"🐢","tags":"turtle","id":399},{"unicode":"🦎","tags":"reptile","id":400},{"unicode":"🐍","tags":"snake","id":401},{"unicode":"🐲","tags":"dragon-face","id":402},{"unicode":"🐉","tags":"dragon","id":403},{"unicode":"🦕","tags":"brontosaurus","id":404},{"unicode":"🦖","tags":"t-rex","id":405},{"unicode":"🐳","tags":"whale","id":406},{"unicode":"🐋","tags":"whale2","id":407},{"unicode":"🐬","tags":"flipper","id":408},{"unicode":"🐠","tags":"tropical-fish","id":409},{"unicode":"🐡","tags":"fish","id":410},{"unicode":"🦈","tags":"shark","id":411},{"unicode":"🐙","tags":"octopus","id":412},{"unicode":"🐚","tags":"shell","id":413},{"unicode":"🐌","tags":"snail","id":414},{"unicode":"🦋","tags":"butterfly","id":415},{"unicode":"🐛","tags":"insect","id":416},{"unicode":"🐜","tags":"insect","id":417},{"unicode":"🐝","tags":"bee","id":418},{"unicode":"🐞","tags":"ladybug","id":419},{"unicode":"🦗","tags":"grasshopper","id":420},{"unicode":"🕷️","tags":"insect","id":421},{"unicode":"🕸️","tags":"spider-web","id":422},{"unicode":"🦂","tags":"scorpio","id":423},{"unicode":"🦟","tags":"mosquito","id":424},{"unicode":"🦠","tags":"amoeba","id":425},{"unicode":"💐","tags":"flower","id":426},{"unicode":"🌸","tags":"blossom","id":427},{"unicode":"🌹","tags":"flower","id":428},{"unicode":"🥀","tags":"flower-wilted","id":429},{"unicode":"🌺","tags":"flower2","id":430},{"unicode":"🌻","tags":"sun-flower","id":431},{"unicode":"🌼","tags":"flower3","id":432},{"unicode":"🌷","tags":"flower4","id":433},{"unicode":"🌱","tags":"young-tree","id":434},{"unicode":"🌲","tags":"tree","id":435},{"unicode":"🌳","tags":"big-tree","id":436},{"unicode":"🌵","tags":"plant","id":437},{"unicode":"🌿","tags":"leaf","id":438},{"unicode":"☘️","tags":"three-leaf clover","id":439},{"unicode":"🍀","tags":"four-leaf clover","id":440},{"unicode":"🍁","tags":"falling-leaf","id":441},{"unicode":"🏁","tags":"checkered","id":442},{"unicode":"🚩","tags":"post","id":443},{"unicode":"🎌","tags":"japanese-celebration","id":444},{"unicode":"🏴","tags":"flag-black","id":445},{"unicode":"🏳️","tags":"flag-white","id":446},{"unicode":"🏳️‍🌈","tags":"flag-pride","id":447},{"unicode":"🏴‍☠️","tags":"flag-pirate","id":448},{"unicode":"🇦🇷","tags":"AR","id":449},{"unicode":"🇦🇺","tags":"AU","id":450},{"unicode":"🇧🇬","tags":"BG","id":451},{"unicode":"🇧🇷","tags":"BR","id":452},{"unicode":"🇨🇦","tags":"CA","id":453},{"unicode":"🇨🇳","tags":"CN","id":454},{"unicode":"🇨🇿","tags":"CZ","id":455},{"unicode":"🇩🇪","tags":"DE","id":456},{"unicode":"🇩🇰","tags":"DK","id":457},{"unicode":"🇩🇲","tags":"DM","id":458},{"unicode":"🇩🇴","tags":"DO","id":459},{"unicode":"🇩🇿","tags":"DZ","id":460},{"unicode":"🇪🇦","tags":"EA","id":461},{"unicode":"🇪🇨","tags":"EC","id":462},{"unicode":"🇪🇸","tags":"ES","id":463},{"unicode":"🇫🇮","tags":"FI","id":464},{"unicode":"🇫🇷","tags":"FR","id":465},{"unicode":"🇬🇧","tags":"GB","id":466},{"unicode":"🇭🇰","tags":"HK","id":467},{"unicode":"🇮🇱","tags":"IL","id":468},{"unicode":"🇮🇹","tags":"IT","id":469},{"unicode":"🇯🇵","tags":"JA","id":470},{"unicode":"🇰🇵","tags":"KP","id":471},{"unicode":"🇰🇷","tags":"KR","id":472},{"unicode":"🇳🇱","tags":"NL","id":473},{"unicode":"🇳🇴","tags":"NO","id":474},{"unicode":"🇵🇱","tags":"PL","id":475},{"unicode":"🇵🇹","tags":"PT","id":476},{"unicode":"🇷🇴","tags":"RO","id":477},{"unicode":"🇷🇺","tags":"RU","id":478},{"unicode":"🇸🇰","tags":"SK","id":479},{"unicode":"🇸🇻","tags":"SV","id":480},{"unicode":"🇹🇭","tags":"TH","id":481},{"unicode":"🇹🇷","tags":"TR","id":482},{"unicode":"🇻🇮","tags":"VI","id":483}]';
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -3876,7 +2423,7 @@
         if (Main_AddUserInput !== null) {
             var elClone = Main_AddUserInput.cloneNode(true);
             Main_AddUserInput.parentNode.replaceChild(elClone, Main_AddUserInput);
-            Main_AddUserInput = document.getElementById("user_input");
+            Main_AddUserInput = Main_getElementById("user_input");
         }
     }
 
@@ -3979,8 +2526,8 @@
     }
 
     function AddUser_RestoreUsers() {
-        Sidepannel_FixDiv = document.getElementById('side_panel_fix');
-        Sidepannel_MovelDiv = document.getElementById('side_panel_movel');
+        Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
+        Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
         AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
         if (AddUser_UsernameArray.length > 0) {
@@ -4504,7 +3051,7 @@
 
         var ishosting = ChannelContent_TargetId !== undefined;
 
-        document.getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
+        Main_getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
 
         Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
@@ -4544,6 +3091,7 @@
         }
         ChannelContent_checkUser();
         Main_FirstLoad = false;
+        if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
     }
 
     function ChannelContent_checkUser() {
@@ -4651,7 +3199,7 @@
 
             } else {
 
-                Main_values_Play_data = JSON.parse(document.getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
+                Main_values_Play_data = JSON.parse(Main_getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
 
                 Play_data.data = Main_values_Play_data;
                 Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
@@ -4814,7 +3362,7 @@
 
             if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
 
-                var doc = document.getElementById('channel_content_cell0_1');
+                var doc = Main_getElementById('channel_content_cell0_1');
 
                 if (doc) {
 
@@ -4840,7 +3388,7 @@
 
     function ChannelContent_LoadPreviewRestore() {
 
-        var img = document.getElementById('channel_content_cell0_1_img');
+        var img = Main_getElementById('channel_content_cell0_1_img');
         var Rect = img.parentElement.getBoundingClientRect();
 
         OSInterface_ScreenPlayerRestore(
@@ -4881,13 +3429,13 @@
 
     function ChannelContent_LoadPreviewResult(StreamData, x) { //Called by Java
 
-        var doc = document.getElementById('channel_content_cell0_1');
+        var doc = Main_getElementById('channel_content_cell0_1');
 
         if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() &&
             !Main_isElementShowing('dialog_thumb_opt') &&
             (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && doc &&
-            Main_A_includes_B(document.getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
+            Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
             if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
@@ -4900,7 +3448,7 @@
                     Play_PreviewResponseText = StreamData.responseText;
                     Play_PreviewId = StreamInfo[14];
 
-                    var img = document.getElementById('channel_content_cell0_1_img');
+                    var img = Main_getElementById('channel_content_cell0_1_img');
                     var Rect = img.parentElement.getBoundingClientRect();
 
                     OSInterface_StartScreensPlayer(
@@ -4941,7 +3489,7 @@
     function ChannelContent_RestoreThumb(play_data) {
         if (ChannelContent_isoffline) return false;
 
-        var doc = document.getElementById('channel_content_cell0_1');
+        var doc = Main_getElementById('channel_content_cell0_1');
 
         if (doc && ChannelContent_cursorY) {
 
@@ -4955,7 +3503,7 @@
     }
 
     function ChannelContent_Isfocused() {
-        return document.getElementById('channel_content_cell0_1') &&
+        return Main_getElementById('channel_content_cell0_1') &&
             Main_values.Main_Go === Main_ChannelContent &&
             ChannelContent_cursorY &&
             Main_isScene1DocShown();
@@ -5107,7 +3655,7 @@
         if (Main_ChatLiveInput !== null) {
             var elClone = Main_ChatLiveInput.cloneNode(true);
             Main_ChatLiveInput.parentNode.replaceChild(elClone, Main_ChatLiveInput);
-            Main_ChatLiveInput = document.getElementById("chat_send_input");
+            Main_ChatLiveInput = Main_getElementById("chat_send_input");
         }
     }
 
@@ -5298,7 +3846,7 @@
             );
         }
 
-        var div_holder = document.getElementById('chat_emotes'),
+        var div_holder = Main_getElementById('chat_emotes'),
             i;
         Main_emptyWithEle(div_holder);
 
@@ -5389,7 +3937,7 @@
             );
         }
 
-        var div_holder = document.getElementById('chat_emotes'),
+        var div_holder = Main_getElementById('chat_emotes'),
             i;
         Main_emptyWithEle(div_holder);
 
@@ -5466,13 +4014,7 @@
     }
 
     function ChatLiveControls_SetEmojisObj() {
-        if (emojis[0].hasOwnProperty('id') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
-
-        var i = 0,
-            len = emojis.length;
-        for (i; i < len; i++) {
-            emojis[i].id = i;
-        }
+        emojis = JSON.parse(emojis_string);
     }
 
     function ChatLiveControls_ShowEmotes() {
@@ -5483,7 +4025,7 @@
             Main_addEventListener("keydown", ChatLiveControls_EmotesEvent);
             ChatLiveControls_resetInputFocusTools();
 
-            document.getElementById('chat_emotes').style.transform = '';
+            Main_getElementById('chat_emotes').style.transform = '';
             ChatLiveControls_EmotesUpdateCounter(0);
             Main_ShowElement('chat_emotes_holder');
             ChatLiveControls_EmotesAddFocus(0);
@@ -5526,7 +4068,7 @@
     }
 
     function ChatLiveControls_AddToChat(position) {
-        var doc = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
+        var doc = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[position]);
         if (doc) ChatLiveControls_UpdateTextInput(doc.getAttribute(Main_DataAttribute));
     }
 
@@ -5574,14 +4116,14 @@
             var postion_down = (postion_now + 2) * 20;
             var postion_up = (postion_now - 1) * 20;
 
-            var how_much = document.getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
+            var how_much = Main_getElementById('chat_emotes' + ChatLiveControls_EmotesArray[postion_up]).offsetHeight;
 
             if (ChatLiveControls_EmotesArray[postion_down]) {
 
-                document.getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
+                Main_getElementById('chat_emotes').style.transform = 'translateY(-' + (how_much * (postion_now - 1)) + 'px)';
 
             }
-        } else document.getElementById('chat_emotes').style.transform = '';
+        } else Main_getElementById('chat_emotes').style.transform = '';
     }
 
     function ChatLiveControls_UpdateTextInput(text) {
@@ -5885,14 +4427,14 @@
         var maxValue = OptionsShowObj[key].values.length - 1;
 
         if (currentValue > 0 && currentValue < maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         } else if (currentValue === maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "0.2";
         } else {
-            document.getElementById(key + "arrow_left").style.opacity = "0.2";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         }
     }
 
@@ -5944,8 +4486,8 @@
     }
 
     function ChatLiveControls_RemoveinputFocusKey(key) {
-        document.getElementById(key + "arrow_left").style.opacity = "0";
-        document.getElementById(key + "arrow_right").style.opacity = "0";
+        Main_getElementById(key + "arrow_left").style.opacity = "0";
+        Main_getElementById(key + "arrow_right").style.opacity = "0";
         Main_RemoveClass(key, 'settings_value_focus');
         Main_RemoveClass(key + '_div', 'settings_div_focus');
     }
@@ -6002,6 +4544,7 @@
         BadgesChannel: {}
     };
 
+    var emojis = [];
     var userEmote = {};
     var extraEmotes = {};
     var cheers = {};
@@ -6255,8 +4798,8 @@
     function ChatLive_resetChatters(chat_number) {
         Main_textContent('chat_loggedin' + chat_number, '');
         Main_AddClass('chat_loggedin' + chat_number, 'hide');
-        document.getElementById('chat_box_holder' + chat_number).style.height = '';
-        document.getElementById('chat_container_name' + chat_number).style.top = '';
+        Main_getElementById('chat_box_holder' + chat_number).style.height = '';
+        Main_getElementById('chat_container_name' + chat_number).style.top = '';
     }
 
     function ChatLive_loadChatters(chat_number, id) {
@@ -6268,8 +4811,8 @@
                 '...' + STR_IN_CHAT
             );
             Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
-            document.getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
-            if (!chat_number) document.getElementById('chat_container_name' + chat_number).style.top = '3vh';
+            Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
+            if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
 
             ChatLive_loadChattersLoad(chat_number, id);
 
@@ -7664,7 +6207,7 @@
     function ChatLive_CleanMessage(message) {
         if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
             //Elem may not be there anymore
-            var el = document.getElementById(message.tags['target-msg-id']);
+            var el = Main_getElementById(message.tags['target-msg-id']);
             if (el) {
                 if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
                 Main_AddClassWitEle(el, 'chat_purged');
@@ -7715,13 +6258,12 @@
     //Variable initialization end
 
     function Chat_Preinit() {
-        Chat_div[0] = document.getElementById('chat_box0');
-        Chat_div[1] = document.getElementById('chat_box1');
+        Chat_div[0] = Main_getElementById('chat_box0');
+        Chat_div[1] = Main_getElementById('chat_box1');
         ChatLive_LineAddCounter[0] = 0;
         ChatLive_LineAddCounter[1] = 0;
         ChatLive_Messages[0] = [];
         ChatLive_Messages[1] = [];
-        //Chat_loadBadgesGlobal();
     }
 
     function Chat_Init() {
@@ -7749,7 +6291,7 @@
         if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
         if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes(0);
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
-        Main_ready(ChatLiveControls_SetEmojisObj);
+        ChatLiveControls_SetEmojisObj();
     }
 
     function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
@@ -8288,7 +6830,7 @@
     var Main_stringVersion_Min = '.239';
     var Main_version_java = 30; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'August 09 2020';
-    var Main_version_web = 49; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8345,7 +6887,6 @@
         "Search_isSearching": false,
         "Play_ChatForceDisable": false,
         "Never_run_new": true,
-        "warning_extra": true,
         "Chat_font_size_new": 75,
         "ChatBackground": 12,
         "Main_selectedChannelPartner": false,
@@ -8535,11 +7076,11 @@
 
             if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-            Main_SearchInput = document.getElementById("search_input");
-            Main_AddUserInput = document.getElementById("user_input");
-            Main_ChatLiveInput = document.getElementById("chat_send_input");
-            Main_Scene1Doc = document.getElementById('scene1');
-            Main_Scene2Doc = document.getElementById('scene2');
+            Main_SearchInput = Main_getElementById("search_input");
+            Main_AddUserInput = Main_getElementById("user_input");
+            Main_ChatLiveInput = Main_getElementById("chat_send_input");
+            Main_Scene1Doc = Main_getElementById('scene1');
+            Main_Scene2Doc = Main_getElementById('scene2');
 
             Main_RestoreValues();
 
@@ -8651,9 +7192,9 @@
 
         Screens_InitScreens();
 
-        document.getElementById("side_panel").style.transform = '';
+        Main_getElementById("side_panel").style.transform = '';
 
-        Screens_init(Main_Live);
+        Screens_first_init();
 
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
@@ -8670,27 +7211,30 @@
     }
 
     function Main_CheckBackup() {
-        try {
-            if (Main_IsOn_OSInterface) {
-                Main_CanBackup = OSInterface_canBackupFile();
 
-                //Backup at start as a backup may never be done yet
-                if (Main_CanBackup) {
-                    if (AddUser_IsUserSet()) {
+        if (Main_IsOn_OSInterface) {
+            Main_CanBackup = OSInterface_canBackupFile();
+
+            //Backup at start as a backup may never be done yet
+            if (Main_CanBackup && AddUser_IsUserSet()) {
+
+                Main_setTimeout(
+                    function() {
                         OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                        Main_setTimeout(
-                            function() {
-                                OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                            },
-                            25000
-                        );
-                    }
-                }
-            } else Main_CanBackup = false;
+                    },
+                    2500
+                );
 
-        } catch (e) {
-            Main_CanBackup = false;
-        }
+                Main_setTimeout(
+                    function() {
+                        OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
+                    },
+                    25000
+                );
+
+            }
+        } else Main_CanBackup = false;
+
     }
 
     function Main_CheckDevice() {
@@ -8886,7 +7430,7 @@
 
         var changelogObj = [{
                 title: "Web Version August 09 2020",
-                changes: ["General performance improves and bug fixes"]
+                changes: ["Improve app start performance", "General performance improves and bug fixes"]
             },
             {
                 title: "Apk Version 3.0.239 - August 08 2020",
@@ -8915,10 +7459,6 @@
                     "General performance improves and bug fixes"
                 ]
             },
-            {
-                title: "Apk Version 3.0.236 - August 03 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
         ];
 
         var i = 0;
@@ -8945,7 +7485,7 @@
     }
 
     function Main_HideElement(element) {
-        Main_HideElementWithEle(document.getElementById(element));
+        Main_HideElementWithEle(Main_getElementById(element));
     }
 
     function Main_HideElementWithEle(element) {
@@ -8953,7 +7493,7 @@
     }
 
     function Main_ShowElement(element) {
-        Main_ShowElementWithEle(document.getElementById(element));
+        Main_ShowElementWithEle(Main_getElementById(element));
     }
 
     function Main_ShowElementWithEle(element) {
@@ -8961,7 +7501,7 @@
     }
 
     function Main_isElementShowing(element) {
-        return Main_isElementShowingWithEle(document.getElementById(element));
+        return Main_isElementShowingWithEle(Main_getElementById(element));
     }
 
     function Main_isElementShowingWithEle(element) {
@@ -8969,7 +7509,7 @@
     }
 
     function Main_AddClass(element, mclass) {
-        Main_AddClassWitEle(document.getElementById(element), mclass);
+        Main_AddClassWitEle(Main_getElementById(element), mclass);
     }
 
     function Main_AddClassWitEle(element, mclass) {
@@ -8977,7 +7517,7 @@
     }
 
     function Main_RemoveClass(element, mclass) {
-        Main_RemoveClassWithEle(document.getElementById(element), mclass);
+        Main_RemoveClassWithEle(Main_getElementById(element), mclass);
     }
 
     function Main_RemoveClassWithEle(element, mclass) {
@@ -8985,7 +7525,7 @@
     }
 
     function Main_innerHTML(div, value) {
-        Main_innerHTMLWithEle(document.getElementById(div), value);
+        Main_innerHTMLWithEle(Main_getElementById(div), value);
     }
 
     function Main_innerHTMLWithEle(ele, value) {
@@ -8993,7 +7533,7 @@
     }
 
     function Main_textContent(div, value) {
-        Main_textContentWithEle(document.getElementById(div), value);
+        Main_textContentWithEle(Main_getElementById(div), value);
     }
 
     function Main_textContentWithEle(ele, value) {
@@ -9001,7 +7541,7 @@
     }
 
     function Main_replaceClassEmoji(div) {
-        var emojiel = document.getElementById(div).getElementsByClassName("emoji");
+        var emojiel = Main_getElementById(div).getElementsByClassName("emoji");
         if (emojiel) {
 
             var i = 0,
@@ -9009,7 +7549,7 @@
             for (i; i < len; i++)
                 emojiel[i].classList.add('emoticon');
 
-            emojiel = document.getElementById(div).getElementsByClassName("emoticon");
+            emojiel = Main_getElementById(div).getElementsByClassName("emoticon");
             i = 0;
             len = emojiel.length;
             for (i; i < len; i++)
@@ -9072,7 +7612,7 @@
     var Main_showWarningDialogId;
 
     function Main_showWarningDialog(text, timeout, changePos) {
-        var doc = document.getElementById('dialog_warning');
+        var doc = Main_getElementById('dialog_warning');
 
         if (changePos) doc.style.marginTop = '86vh';
         else doc.style.marginTop = '50vh';
@@ -9177,7 +7717,7 @@
     }
 
     function Main_ThumbNull(y, x, thumbnail) {
-        return document.getElementById(thumbnail + y + '_' + x) !== null;
+        return Main_getElementById(thumbnail + y + '_' + x) !== null;
     }
 
     function Main_ReStartScreens(preventRefresh) {
@@ -9347,7 +7887,7 @@
     }
 
     function Main_empty(el) {
-        Main_emptyWithEle(document.getElementById(el));
+        Main_emptyWithEle(Main_getElementById(el));
     }
 
     function Main_emptyWithEle(el) {
@@ -9385,7 +7925,7 @@
     }
 
     function Main_ThumbOpenIsNull(id, thumbnail) {
-        return document.getElementById(thumbnail + id) === null;
+        return Main_getElementById(thumbnail + id) === null;
     }
 
     function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, screen) {
@@ -9393,7 +7933,7 @@
         var isHosting = false;
 
         Main_removeEventListener("keydown", handleKeyDownFunction);
-        Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
         Play_data.data = Main_values_Play_data;
 
         if (checkHistory) {
@@ -9403,7 +7943,7 @@
             if (index > -1) {
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(document.getElementById(idsArray[1] + id).src, 's3_vods')) {
+                    Main_A_includes_B(Main_getElementById(idsArray[1] + id).src, 's3_vods')) {
 
                     Main_OPenAsVod(index);
                     return;
@@ -9484,7 +8024,7 @@
             }
         );
 
-        var doc = document.getElementById(Main_CheckBroadcastIDoc);
+        var doc = Main_getElementById(Main_CheckBroadcastIDoc);
         doc.childNodes[0].classList.add('hideimp');
         doc.childNodes[2].classList.remove('hideimp');
 
@@ -9496,6 +8036,10 @@
             Main_CheckBroadcastIDStart();
             Main_CheckBroadcastIDErrorTry++;
         } else Main_openStream();
+    }
+
+    function Main_getElementById(elemString) {
+        return document.getElementById(elemString);
     }
 
     function Main_showScene1Doc() {
@@ -9600,7 +8144,7 @@
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
-        Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
         ChannelClip_playUrl = Main_values_Play_data[0];
         Play_DurationSeconds = parseInt(Main_values_Play_data[1]);
@@ -9645,7 +8189,7 @@
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
 
-        Main_values_Play_data = JSON.parse(document.getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
         Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
         ChannelVod_createdAt = Main_values_Play_data[2];
@@ -10345,7 +8889,7 @@
         }
 
         //Reset Screen img if hiden
-        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         if (doc) Main_RemoveClassWithEle(doc, 'visibility_hidden');
         else if (ChannelContent_Isfocused()) {
             Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
@@ -11937,7 +10481,7 @@
 
     var PlayClip_HasNext = false;
     var PlayClip_HasBack = false;
-    var PlayClip_HideShowNextDiv = ['next_button', 'back_button'];
+    var PlayClip_HideShowNextDiv;
     var PlayClip_EnterPos = 0;
     var PlayClip_All = false;
     var PlayClip_loadingtreamerInfoTry = 0;
@@ -11956,14 +10500,14 @@
         Chat_title = STR_CLIP;
         PlayVod_ProgresBarrUpdate(0, 0);
 
-        document.getElementById('next_button_img').src = IMG_404_BANNER;
-        document.getElementById('back_button_img').src = IMG_404_BANNER;
-        document.getElementById('end_button_img').src = IMG_404_BANNER;
-        Main_ShowElement('next_button_img');
-        Main_ShowElement('back_button_img');
-        Main_ShowElement('end_button_img');
+        Play_BottonIcons_Next_img.src = IMG_404_BANNER;
+        Play_BottonIcons_Back_img.src = IMG_404_BANNER;
+        Play_BottonIcons_End_img.src = IMG_404_BANNER;
+        Main_ShowElementWithEle(Play_BottonIcons_Next_img);
+        Main_ShowElementWithEle(Play_BottonIcons_Back_img);
+        Main_ShowElementWithEle(Play_BottonIcons_End_img);
 
-        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
         Main_innerHTML(
             "stream_info_name",
             Play_partnerIcon(
@@ -11987,15 +10531,17 @@
         PlayVod_jump_max_step = 0;
         PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
         Main_replaceClassEmoji('stream_info_title');
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
         Main_values.Play_isHost = false;
         PlayClip_SetOpenVod();
-        document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
-        document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
+
+        Play_BottomHide(Play_controlsChatDelay);
+        Play_BottomHide(Play_controlsLowLatency);
+        Play_BottomHide(Play_MultiStream);
+        Play_BottomHide(Play_controlsChatSend);
+        Play_BottomHide(Play_controlsChapters);
+
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
@@ -12005,9 +10551,9 @@
 
         Main_textContent('progress_bar_current_time', Play_timeS(0));
 
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
-        Main_ShowElement('progress_bar_div');
-        Main_ShowElement('controls_holder');
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
+        Main_ShowElementWithEle(Play_BottonIcons_Progress);
+        Main_ShowElementWithEle(Play_Controls_Holder);
 
         PlayClip_state = Play_STATE_LOADING_TOKEN;
         UserLiveFeed_PreventHide = false;
@@ -12340,29 +10886,29 @@
 
         if (nextid) {
             PlayClip_HasNext = true;
-            data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
+            data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
 
-            PlayClip_NextImg(document.getElementById('next_button_img'), data[15]);
-            Main_innerHTML("next_button_text_name", Main_ReplaceLargeFont(data[4]));
-            Main_innerHTML("next_button_text_title", Main_ReplaceLargeFont(data[10]));
+            PlayClip_NextImg(Play_BottonIcons_Next_img, data[15]);
+            Main_innerHTMLWithEle(Play_BottonIcons_Next_name, Main_ReplaceLargeFont(data[4]));
+            Main_innerHTMLWithEle(Play_BottonIcons_Next_title, Main_ReplaceLargeFont(data[10]));
 
-            PlayClip_NextImg(document.getElementById('end_button_img'), data[15]);
-            Main_innerHTML("end_next_button_text_name", Main_ReplaceLargeFont(data[4]));
-            Main_innerHTML("end_next_button_text_title", Main_ReplaceLargeFont(data[10]));
+            PlayClip_NextImg(Play_BottonIcons_End_img, data[15]);
+            Main_innerHTMLWithEle(Play_BottonIcons_End_name, Main_ReplaceLargeFont(data[4]));
+            Main_innerHTMLWithEle(Play_BottonIcons_End_title, Main_ReplaceLargeFont(data[10]));
 
             PlayClip_HideShowNext(0, 1);
         } else {
             PlayClip_HideShowNext(0, 0);
-            Main_HideElement('end_button_img');
+            Main_HideElementWithEle(Play_BottonIcons_End_img);
         }
 
         if (backid) {
             PlayClip_HasBack = true;
-            data = JSON.parse(document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
+            data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
 
-            PlayClip_NextImg(document.getElementById('back_button_img'), data[15]);
-            Main_innerHTML("back_button_text_name", Main_ReplaceLargeFont(data[4]));
-            Main_innerHTML("back_button_text_title", Main_ReplaceLargeFont(data[10]));
+            PlayClip_NextImg(Play_BottonIcons_Back_img, data[15]);
+            Main_innerHTMLWithEle(Play_BottonIcons_Back_name, Main_ReplaceLargeFont(data[4]));
+            Main_innerHTMLWithEle(Play_BottonIcons_Back_title, Main_ReplaceLargeFont(data[10]));
             PlayClip_HideShowNext(1, 1);
         } else PlayClip_HideShowNext(1, 0);
     }
@@ -12386,7 +10932,7 @@
     }
 
     function PlayClip_HideShowNext(which, val) {
-        document.getElementById(PlayClip_HideShowNextDiv[which]).style.opacity = val;
+        PlayClip_HideShowNextDiv[which].style.opacity = val;
     }
 
     function PlayClip_Enter() {
@@ -12429,8 +10975,8 @@
         PlayClip_quality = PlayClip_qualityPlaying;
         Play_ForceHidePannel();
         if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
     }
 
@@ -12440,7 +10986,7 @@
             PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
         }
         Play_CleanHideExit();
-        PlayVod_IconsBottonResetFocus();
+        Play_BottonIconsResetFocus();
         PlayClip_qualityIndexReset();
         PlayExtra_ResetSpeed();
         Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
@@ -12481,7 +11027,8 @@
     }
 
     function PlayClip_SetOpenVod() {
-        document.getElementById('controls_' + Play_controlsOpenVod).style.display = PlayClip_HasVOD ? 'inline-block' : 'none';
+        if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+        else Play_BottomHide(Play_controlsOpenVod);
     }
 
     var PlayClip_OpenAVod = false;
@@ -12539,7 +11086,7 @@
     function PlayClip_CheckPreviewClip() {
         var restorePreview = false;
 
-        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         if (doc) {
 
             restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
@@ -12584,7 +11131,7 @@
                         } else if (PlayVod_PanelY === 1) {
                             if (PlayClip_EnterPos > -1) {
                                 PlayClip_EnterPos--;
-                                if (PlayClip_HasBack || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                                if (PlayClip_HasBack || !PlayClip_EnterPos) Play_BottonIconsFocus();
                                 else PlayClip_EnterPos++;
                             }
                         }
@@ -12608,7 +11155,7 @@
                         } else if (PlayVod_PanelY === 1) {
                             if (PlayClip_EnterPos < 1) {
                                 PlayClip_EnterPos++;
-                                if (PlayClip_HasNext || !PlayClip_EnterPos) PlayVod_IconsBottonFocus();
+                                if (PlayClip_HasNext || !PlayClip_EnterPos) Play_BottonIconsFocus();
                                 else PlayClip_EnterPos--;
                             }
                         }
@@ -12633,7 +11180,7 @@
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY--;
-                            PlayVod_IconsBottonFocus();
+                            Play_BottonIconsFocus();
                         } else Play_BottomUpDown(3, 1);
                         PlayClip_setHidePanel();
                     } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
@@ -12645,7 +11192,7 @@
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
-                            PlayVod_IconsBottonFocus();
+                            Play_BottonIconsFocus();
                         } else Play_BottomUpDown(3, -1);
                         PlayClip_setHidePanel();
                     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
@@ -12767,7 +11314,7 @@
         if (!Play_isPanelShown()) PlayClip_showPanel();
         Play_clearHidePanel();
         PlayVod_PanelY = 0;
-        PlayVod_IconsBottonFocus();
+        Play_BottonIconsFocus();
 
         PlayVod_jumpStart(position, Play_DurationSeconds);
         PlayVod_ProgressBaroffset = 2500;
@@ -12890,7 +11437,7 @@
 
             //Default values
             Play_chat_container.style.height = '99.6%';
-            document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+            Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
 
         } else {
@@ -12900,7 +11447,7 @@
 
             //Default values
             Play_chat_container.style.height = '99.6%';
-            document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+            Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
 
             if (Main_IsOn_OSInterface) OSInterface_mupdatesize(Play_isFullScreen);
@@ -12939,7 +11486,7 @@
 
         Play_ChatFullScreenObj.WasEnable = Play_ChatEnable;
         Play_ChatFullScreenObj.height = Play_chat_container.style.height;
-        Play_ChatFullScreenObj.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+        Play_ChatFullScreenObj.marginTop = Main_getElementById("play_chat_dialog").style.marginTop;
         Play_ChatFullScreenObj.top = Play_chat_container.style.top;
         Play_ChatFullScreenObj.left = Play_chat_container.style.left;
     }
@@ -12959,7 +11506,7 @@
         if (!Play_ChatEnable) Play_hideChat();
         else Play_showChat();
         Play_chat_container.style.height = Play_ChatFullScreenObj.height;
-        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
         Play_chat_container.style.top = Play_ChatFullScreenObj.top;
         Play_chat_container.style.left = Play_ChatFullScreenObj.left;
     }
@@ -12993,8 +11540,8 @@
     }
 
     function Play_SetChatFont() {
-        document.getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
-        document.getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+        Main_getElementById('chat_inner_container').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
+        Main_getElementById('chat_inner_container2').style.fontSize = Play_ChatFontObj[Main_values.Chat_font_size_new] + '%';
     }
 
 
@@ -13256,9 +11803,9 @@
             Play_EndIconsRemoveFocus();
             Play_Endcounter = 1;
             Play_EndIconsAddFocus();
-            document.getElementById('dialog_end_-1').style.display = 'none';
-            document.getElementById('dialog_end_0').style.display = 'none';
-            document.getElementById('dialog_end_1').style.display = 'inline-block';
+            Main_getElementById('dialog_end_-1').style.display = 'none';
+            Main_getElementById('dialog_end_0').style.display = 'none';
+            Main_getElementById('dialog_end_1').style.display = 'inline-block';
             Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
 
             Play_EndTextsReset();
@@ -13268,9 +11815,9 @@
             Play_EndIconsRemoveFocus();
             Play_Endcounter = 1;
             Play_EndIconsAddFocus();
-            document.getElementById('dialog_end_-1').style.display = 'none';
-            document.getElementById('dialog_end_0').style.display = 'none';
-            document.getElementById('dialog_end_1').style.display = 'inline-block';
+            Main_getElementById('dialog_end_-1').style.display = 'none';
+            Main_getElementById('dialog_end_0').style.display = 'none';
+            Main_getElementById('dialog_end_1').style.display = 'inline-block';
 
             Play_EndTextsReset();
             Main_innerHTML("end_channel_name_text", Play_data.data[1]);
@@ -13278,9 +11825,9 @@
             Main_innerHTML("end_vod_title_text", STR_STAY_OPEN_SUMMARY);
         } else if (PlayVodClip === 2) { // vod
             Play_EndIconsResetFocus();
-            document.getElementById('dialog_end_-1').style.display = 'none';
-            document.getElementById('dialog_end_0').style.display = 'inline-block';
-            document.getElementById('dialog_end_1').style.display = 'none';
+            Main_getElementById('dialog_end_-1').style.display = 'none';
+            Main_getElementById('dialog_end_0').style.display = 'inline-block';
+            Main_getElementById('dialog_end_1').style.display = 'none';
 
             Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
             Main_innerHTML("end_replay_title_text", ChannelVod_title);
@@ -13291,9 +11838,9 @@
             Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
         } else if (PlayVodClip === 3) { // clip
             Play_EndIconsResetFocus();
-            document.getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
-            document.getElementById('dialog_end_0').style.display = 'inline-block';
-            document.getElementById('dialog_end_1').style.display = 'inline-block';
+            Main_getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
+            Main_getElementById('dialog_end_0').style.display = 'inline-block';
+            Main_getElementById('dialog_end_1').style.display = 'inline-block';
             Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
 
             Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
@@ -13606,7 +12153,7 @@
 
     function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
-        var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
+        var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
             error = STR_STREAM_ERROR;
 
         if (doc) {
@@ -13638,7 +12185,7 @@
 
                 error = STR_ALREDY_PLAYING;
 
-                if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+                if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
                     if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
                     else return obj;
@@ -13673,7 +12220,7 @@
         if (Play_StayDialogVisible()) return;
 
         if (State) {
-            Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+            Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
 
             if (PlayVodClip === 1) {
                 ChatLive_Playing = true;
@@ -13687,7 +12234,7 @@
             }
 
         } else {
-            Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-play-1"></i></div>');
+            Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
             if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
             else ChatLive_Playing = false;
@@ -13786,7 +12333,7 @@
             }
 
             restorePreview = Sidepannel_RestoreThumb(
-                document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
+                Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
                 Play_data
             );
 
@@ -13799,7 +12346,7 @@
                 !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
                 restorePreview = Sidepannel_RestoreThumb(
-                    document.getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
+                    Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
                     Play_data
                 );
 
@@ -13863,7 +12410,7 @@
             Play_showChat();
             Play_chat_container.style.width = '32.8%';
             Play_chat_container.style.height = '65.8%';
-            document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
+            Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[3].dialogTop + '%';
             Play_chat_container.style.top = '0.2%';
             Play_chat_container.style.left = '67%';
 
@@ -14003,7 +12550,7 @@
                             PlayVod_PanelY--;
                             if (PlayVod_PanelY < 1) {
                                 PlayVod_PanelY = 1;
-                            } else PlayVod_IconsBottonFocus();
+                            } else Play_BottonIconsFocus();
                         } else Play_BottomUpDown(1, 1);
                         Play_setHidePanel();
                     } else if (Play_MultiDialogVisible()) {
@@ -14030,7 +12577,7 @@
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
-                            PlayVod_IconsBottonFocus();
+                            Play_BottonIconsFocus();
                         } else Play_BottomUpDown(1, -1);
                         Play_setHidePanel();
                     } else if (Play_MultiDialogVisible()) {
@@ -14218,7 +12765,6 @@
             string: STR_SEARCH,
             values: null,
             defaultValue: null,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 Play_ForceHidePannel();
                 Play_OpenSearch(PlayVodClip);
@@ -14230,7 +12776,6 @@
             string: STR_CHANNEL_CONT,
             values: '',
             defaultValue: null,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 Play_ForceHidePannel();
                 Play_OpenChannel(PlayVodClip);
@@ -14247,7 +12792,6 @@
             string: STR_GAME_CONT,
             values: '',
             defaultValue: null,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 Play_ForceHidePannel();
                 Play_OpenGame(PlayVodClip);
@@ -14264,7 +12808,6 @@
             string: STR_OPEN_BROADCAST,
             values: '',
             defaultValue: null,
-            opacity: 0,
             enterKey: function() {
                 Play_ForceHidePannel();
                 PlayClip_OpenVod();
@@ -14282,7 +12825,6 @@
             string: STR_FOLLOW,
             values: '',
             defaultValue: null,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
 
                 AddCode_Channel_id = (PlayVodClip === 1 ? Play_data.data[14] : Main_values.Main_selectedChannel_id);
@@ -14307,7 +12849,6 @@
             string: STR_SPEED,
             values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
             defaultValue: 3,
-            opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
@@ -14324,7 +12865,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] +
+                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] +
                     (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
             },
             bottomArrows: function() {
@@ -14337,7 +12878,6 @@
             string: STR_OPEN_EXTERNAL_PLAYER,
             values: ['1080p60 | Source | 10.00Mbps | avc'],
             defaultValue: 0,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 if (Play_StayDialogVisible()) return;
 
@@ -14361,7 +12901,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
                 this.bottomArrows();
             },
@@ -14375,7 +12915,6 @@
             string: STR_QUALITY,
             values: ['1080p60 | Source | 10.00Mbps | avc'],
             defaultValue: 0,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 if (Play_StayDialogVisible()) return;
 
@@ -14418,7 +12957,6 @@
             string: STR_PLAYER_RESYNC,
             values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
             defaultValue: 2,
-            opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
@@ -14443,7 +12981,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14457,7 +12995,6 @@
             string: STR_PLAYER_RESYNC,
             values: [STR_PLAYER_MULTI_ALL, STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4],
             defaultValue: 0,
-            opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
@@ -14487,7 +13024,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14501,7 +13038,6 @@
             string: STR_LOW_LATENCY,
             values: [STR_DISABLE, STR_LOWLATENCY_ENABLE, STR_LOWLATENCY_LOW],
             defaultValue: Play_LowLatency,
-            opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
@@ -14546,7 +13082,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14559,7 +13095,6 @@
             string: STR_AUDIO_SOURCE,
             values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
             defaultValue: Play_controlsAudioPos,
-            opacity: 0,
             enterKey: function() {
                 if (Play_StayDialogVisible()) return;
 
@@ -14590,7 +13125,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14603,7 +13138,6 @@
             string: STR_AUDIO_SOURCE,
             values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
             defaultValue: 0,
-            opacity: 0,
             enterKey: function(preventShowWarning) {
                 if (Play_StayDialogVisible()) return;
 
@@ -14631,7 +13165,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14644,7 +13178,6 @@
             string: STR_CHAPTERS,
             values: [],
             defaultValue: 0,
-            opacity: 0,
             enterKey: function() {
 
                 PlayVod_TimeToJump = PlayVod_ChaptersArray[this.defaultValue].posMs / 1000;
@@ -14661,7 +13194,7 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
             },
             bottomArrows: function() {
@@ -14673,7 +13206,6 @@
             icons: "multi",
             string: STR_4_WAY_MULTI,
             values: null,
-            opacity: 0,
             enterKey: function(shutdown) {
                 if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
@@ -14757,7 +13289,6 @@
             string: STR_CHAT_SHOW,
             values: null,
             defaultValue: null,
-            opacity: 0,
             enterKey: function() {
                 if ((!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
 
@@ -14787,7 +13318,6 @@
             string: STR_CHAT_WRITE,
             values: null,
             defaultValue: null,
-            opacity: 0,
             enterKey: function() {
                 if (Main_values.Play_ChatForceDisable) {
                     Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
@@ -14808,7 +13338,6 @@
             string: STR_CHAT_VIDEO_MODE,
             values: null,
             defaultValue: null,
-            opacity: 0,
             enterKey: function() {
                 Play_isFullScreen = !Play_isFullScreen;
                 Play_SetFullScreen(Play_isFullScreen);
@@ -14847,7 +13376,6 @@
             string: STR_F_DISABLE_CHAT,
             values: null,
             defaultValue: null,
-            opacity: 0,
             enterKey: function(PlayVodClip) {
                 Main_values.Play_ChatForceDisable = !Main_values.Play_ChatForceDisable;
 
@@ -14870,7 +13398,6 @@
             string: STR_CHAT_POS,
             values: STR_CHAT_BASE_ARRAY,
             defaultValue: Play_ChatPositions,
-            opacity: 0,
             isChat: true,
             updown: function(adder) {
                 if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
@@ -14898,17 +13425,15 @@
                 this.bottomArrows();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue]);
+                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
             },
             bottomArrows: function() {
-                var doc_up = document.getElementById("control_arrow_up_" + Play_controlsChatPos),
-                    doc_down = document.getElementById("control_arrow_down" + Play_controlsChatPos);
 
-                doc_up.classList.remove('hide');
-                doc_down.classList.remove('hide');
+                this.doc_up.classList.remove('hide');
+                this.doc_down.classList.remove('hide');
 
-                doc_up.style.opacity = "1";
-                doc_down.style.opacity = "1";
+                this.doc_up.style.opacity = "1";
+                this.doc_down.style.opacity = "1";
             },
         };
 
@@ -14917,7 +13442,6 @@
             string: STR_CHAT_SIZE,
             values: ["12.5%", "25%", "50%", "75%", "100%"],
             defaultValue: Play_ChatSizeValue,
-            opacity: 0,
             isChat: true,
             updown: function(adder) {
                 if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
@@ -14954,10 +13478,15 @@
                 this.setLable();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + Play_controlsChatPos,
-                    Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
-                Main_textContent('controls_name_' + this.position,
-                    this.values[this.defaultValue]);
+                Main_textContentWithEle(
+                    Play_controls[Play_controlsChatPos].doc_name,
+                    Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]
+                );
+
+                Main_textContentWithEle(
+                    this.doc_name,
+                    this.values[this.defaultValue]
+                );
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -14973,7 +13502,6 @@
                 "75%", "80%", "85%", "90%", "95%", "100%"
             ],
             defaultValue: Main_values.ChatBackground,
-            opacity: 0,
             isChat: true,
             updown: function(adder) {
                 if (!Play_isChatShown() || (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
@@ -14992,7 +13520,7 @@
                 Main_SaveValues();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position,
+                Main_textContentWithEle(this.doc_name,
                     this.values[this.defaultValue]);
             },
             bottomArrows: function() {
@@ -15005,7 +13533,6 @@
             string: STR_CHAT_FONT,
             values: Play_ChatFontObj,
             defaultValue: Main_values.Chat_font_size_new,
-            opacity: 0,
             isChat: true,
             updown: function(adder) {
                 if (!Play_isChatShown()) return;
@@ -15022,7 +13549,7 @@
                 Main_SaveValues();
             },
             setLable: function() {
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + '%');
+                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -15036,7 +13563,6 @@
                 20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
             ],
             defaultValue: Play_ChatDelayPosition,
-            opacity: 0,
             isChat: false,
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -15058,7 +13584,7 @@
                 if (this.defaultValue > 1) stringSec = STR_SECONDS;
                 else if (this.defaultValue > 0) stringSec = STR_SECOND;
 
-                Main_textContent('controls_name_' + this.position, this.values[this.defaultValue] + stringSec);
+                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -15066,60 +13592,27 @@
         };
     }
 
-    function Play_SetAudioIcon() {
-        if (Play_controlsAudioPos === 2) {
-            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
-
-            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        } else if (Play_controlsAudioPos === 1) {
-            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-mute strokicon" ></i>');
-
-            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-        } else {
-            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-mute strokicon" ></i>');
-            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
-
-            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        }
-    }
-
-    function Play_SetAudioMultiIcon() {
-        var extraText = Play_Multi_MainBig ? 'big' : '',
-            audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
-            i;
-
-        if (audioPos === 4) {
-            for (i = 0; i < 4; i++)
-                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        } else {
-            for (i = 0; i < 4; i++)
-                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
-
-            audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
-            Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
-        }
-    }
-
     function Play_IconsAddFocus() {
-        Main_AddClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
-        document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "1";
+        Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
 
-        if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen))
-            document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "1";
-        else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat)
-            document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
+        Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
+
+        if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
+
+            Play_controls[Play_controlsChat].button_text.style.opacity = "1";
+
+        } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
+
+            Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+
+        }
     }
 
     function Play_IconsRemoveFocus() {
-        Main_RemoveClass('controls_button_' + Play_Panelcounter, 'progress_bar_div_focus');
-        document.getElementById('controls_button_text_' + Play_Panelcounter).style.opacity = "0";
+        Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
+        Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
         //in case chat is disable and the warning is showing because some chat option was selected
-        document.getElementById('controls_button_text_' + Play_controlsChat).style.opacity = "0";
+        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
     }
 
     function Play_KeyChatSizeChage() {
@@ -15162,27 +13655,39 @@
             Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
         } else if (adder === 1) {
             PlayVod_PanelY--;
-            PlayVod_IconsBottonFocus();
+            Play_BottonIconsFocus();
         }
     }
 
-    function Play_BottomLeftRigt(PlayVodClip, adder) {
-        Play_IconsRemoveFocus();
+    function Play_BottomLeftRigt(PlayVodClip, adder, skipRemoveFocus) {
+
+        if (!skipRemoveFocus) Play_IconsRemoveFocus();
         Play_Panelcounter += adder;
         if (Play_Panelcounter > Play_controlsSize) Play_Panelcounter = 0;
         else if (Play_Panelcounter < 0) Play_Panelcounter = Play_controlsSize;
 
-        if (document.getElementById('controls_' + Play_Panelcounter).style.display === 'none') {
-            Play_BottomLeftRigt(PlayVodClip, adder);
+        if (!Play_controls[Play_Panelcounter].visible) {
+            Play_BottomLeftRigt(PlayVodClip, adder, true);
             return;
         }
 
         Play_IconsAddFocus();
+
+    }
+
+    function Play_BottomShow(position) {
+        Play_controls[position].doc.style.display = '';
+        Play_controls[position].visible = true;
+    }
+
+    function Play_BottomHide(position) {
+        Play_controls[position].doc.style.display = 'none';
+        Play_controls[position].visible = false;
     }
 
     function Play_BottomArrows(position) {
-        var doc_up = document.getElementById("control_arrow_up_" + position),
-            doc_down = document.getElementById("control_arrow_down" + position);
+        var doc_up = Play_controls[position].doc_up,
+            doc_down = Play_controls[position].doc_down;
 
         if (Play_controls[position].values.length === 1) {
             doc_up.classList.add('hide');
@@ -15207,11 +13712,11 @@
             doc_down.style.opacity = "1";
         }
 
-        Main_textContent('controls_name_' + position, Play_controls[position].values[Play_controls[position].defaultValue]);
+        Main_textContentWithEle(Play_controls[position].doc_name, Play_controls[position].values[Play_controls[position].defaultValue]);
     }
 
     function Play_SetControls() {
-        var div, doc = document.getElementById('controls_holder');
+        var div, doc = Main_getElementById('controls_holder');
         for (var key in Play_controls) {
             div = document.createElement('div');
             div.className = 'controls_button_holder';
@@ -15221,8 +13726,8 @@
                 '" class="controls_button"><div id="controls_icon_' + key +
                 '"><i class="pause_button3d icon-' + Play_controls[key].icons +
                 '" ></i></div></div><div id="controls_button_text_' + key +
-                '" class="extra_button_text_holder" style="opacity: ' + Play_controls[key].opacity +
-                ';"><div id="extra_button_text' + key + '" class="extra_button_text strokedeline" >' +
+                '" class="extra_button_text_holder" style="opacity: 0;;"><div id="extra_button_text' +
+                key + '" class="extra_button_text strokedeline" >' +
                 Play_controls[key].string + '</div><div id="extra_button_' + key +
                 '" class="extra_button_text strokedeline" >' +
                 (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
@@ -15230,6 +13735,15 @@
             doc.appendChild(div);
             Play_controlsSize++;
             Play_controls[key].position = key;
+
+            Play_controls[key].visible = true;
+            Play_controls[key].doc = div;
+            Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
+            Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
+            Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
+            Play_controls[key].button = Main_getElementById('controls_button_' + key);
+            Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
+
             if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
             if (Play_controls[key].setLable) Play_controls[key].setLable();
         }
@@ -15246,11 +13760,165 @@
     function Play_showVodDialog(isFromVod) {
         Main_clearTimeout(Play_HideVodDialogId);
         Main_textContent("dialog_vod_text", isFromVod ? STR_VOD_HISTORY : STR_VOD_HISTORY_FORM_LIVE);
-        Main_HideElement('controls_holder');
+        Main_HideElementWithEle(Play_Controls_Holder);
         PlayVod_showPanel(false);
         Main_textContent('stream_quality', '');
         Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
         Main_ShowElement('dialog_vod_start');
+    }
+
+    function Play_SetAudioIcon() {
+        if (Play_controlsAudioPos === 2) {
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
+
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        } else if (Play_controlsAudioPos === 1) {
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-mute strokicon" ></i>');
+
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+        } else {
+            Main_innerHTML("chat_container_sound_icon0", '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("chat_container_sound_icon1", '<i class="icon-volume strokicon" ></i>');
+
+            Main_innerHTML("stream_info_pp_audio_0", STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+            Main_innerHTML("stream_info_pp_audio_1", STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        }
+    }
+
+    function Play_SetAudioMultiIcon() {
+        var extraText = Play_Multi_MainBig ? 'big' : '',
+            audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
+            i;
+
+        if (audioPos === 4) {
+            for (i = 0; i < 4; i++)
+                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        } else {
+            for (i = 0; i < 4; i++)
+                Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+
+            audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
+            Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        }
+    }
+
+    var Play_BottonIcons_Pause;
+    var Play_BottonIcons_Next;
+    var Play_BottonIcons_Back;
+    var Play_BottonIcons_Progress;
+    var Play_BottonIcons_Next_Img_holder;
+    var Play_BottonIcons_End_img_holder;
+    var Play_BottonIcons_Next_img;
+    var Play_BottonIcons_Back_img;
+    var Play_BottonIcons_End_img;
+    var Play_BottonIcons_Progress_Steps;
+    var Play_BottonIcons_Progress_JumpTo;
+    var Play_BottonIcons_Focus_Class = 'progress_bar_div_focus';
+
+    var Play_BottonIcons_Next_name;
+    var Play_BottonIcons_Next_title;
+
+    var Play_BottonIcons_Back_name;
+    var Play_BottonIcons_Back_title;
+
+    var Play_BottonIcons_End_name;
+    var Play_BottonIcons_End_title;
+
+    var Play_Controls_Holder;
+
+    function Play_BottonIconsSet() {
+
+        Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
+        Play_BottonIcons_Back_img = Main_getElementById('back_button_img');
+        Play_BottonIcons_End_img = Main_getElementById('end_button_img');
+
+        Play_BottonIcons_Next_name = Main_getElementById('next_button_text_name');
+        Play_BottonIcons_Next_title = Main_getElementById('next_button_text_title');
+
+        Play_BottonIcons_Back_name = Main_getElementById('back_button_text_name');
+        Play_BottonIcons_Back_title = Main_getElementById('back_button_text_title');
+
+        Play_BottonIcons_End_name = Main_getElementById('end_next_button_text_name');
+        Play_BottonIcons_End_title = Main_getElementById('end_next_button_text_title');
+
+        Play_BottonIcons_Pause = Main_getElementById('pause_button');
+        Play_BottonIcons_Next = Main_getElementById('next_button');
+        Play_BottonIcons_Back = Main_getElementById('back_button');
+        PlayClip_HideShowNextDiv = [Play_BottonIcons_Next, Play_BottonIcons_Back];
+        Play_BottonIcons_Progress = Main_getElementById('progress_bar_div');
+        Play_BottonIcons_Next_Img_holder = Main_getElementById('next_button_img_holder');
+        Play_BottonIcons_End_img_holder = Main_getElementById('back_button_img_holder');
+        Play_BottonIcons_Progress_Steps = Main_getElementById('progress_bar_steps');
+        Play_BottonIcons_Progress_JumpTo = Main_getElementById('progress_bar_jump_to');
+
+        Play_Controls_Holder = Main_getElementById('controls_holder');
+    }
+
+    function Play_BottonIconsResetFocus() {
+        PlayVod_PanelY = 1;
+        PlayClip_EnterPos = 0;
+        Play_BottonIconsFocus();
+    }
+
+    function Play_BottonIconsFocus() {
+
+        if (PlayVod_PanelY < 0) {
+            PlayVod_PanelY = 0;
+            return;
+        }
+
+        Main_RemoveClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+        Main_RemoveClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+        Main_RemoveClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+        Main_RemoveClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+        Main_HideElementWithEle(Play_BottonIcons_Next_Img_holder);
+        Main_HideElementWithEle(Play_BottonIcons_End_img_holder);
+
+        if (!PlayVod_PanelY) { //progress_bar
+
+            Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
+            Play_IconsRemoveFocus();
+
+            if (PlayVod_addToJump) {
+
+                PlayVod_jumpTime();
+                Play_BottonIcons_Progress_Steps.style.display = 'inline-block';
+
+            }
+
+        } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+
+            if (!PlayClip_EnterPos) { //pause
+
+                Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
+
+            } else if (PlayClip_EnterPos === 1) { //next
+
+                Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
+                Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
+
+            } else if (PlayClip_EnterPos === -1) { //back
+
+                Main_ShowElementWithEle(Play_BottonIcons_End_img_holder);
+                Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
+
+            }
+
+            Play_IconsRemoveFocus();
+            Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+            Play_BottonIcons_Progress_Steps.style.display = 'none';
+
+        } else if (PlayVod_PanelY === 2) { //botton icons
+
+            Play_IconsAddFocus();
+            Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+            Play_BottonIcons_Progress_Steps.style.display = 'none';
+
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -15598,9 +14266,12 @@
     function PlayExtra_SetPanel() {
         Play_controls[Play_controlsChatSide].setLable();
         Play_controls[Play_controlsChatSide].setIcon();
-        document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsAudio).style.display = '';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = '';
+
+        Play_BottomShow(Play_controlsAudio);
+        Play_BottomShow(Play_controlsQualityMini);
+
+        Play_BottomHide(Play_controlsQuality);
+
         Play_IconsResetFocus();
         PlayExtra_UpdatePanel();
         Main_HideElement('stream_info');
@@ -15612,11 +14283,12 @@
         Play_controls[Play_controlsChatSide].setLable();
         Play_controls[Play_controlsChatSide].setIcon();
 
-        document.getElementById('controls_' + Play_controlsQuality).style.display = '';
-        document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
+        Play_BottomShow(Play_controlsQuality);
+
+        Play_BottomHide(Play_controlsAudio);
+        Play_BottomHide(Play_controlsQualityMini);
+        Play_BottomHide(Play_controlsQualityMulti);
+        Play_BottomHide(Play_controlsAudioMulti);
 
         Play_IconsResetFocus();
         ChatLive_Clear(1);
@@ -15642,7 +14314,7 @@
                 Play_data.data[8]
             )
         );
-        document.getElementById('stream_info_ppimg0').src = Play_data.data[9];
+        Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
 
         Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
         Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
@@ -15658,7 +14330,7 @@
                 PlayExtra_data.data[8]
             )
         );
-        document.getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+        Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
         Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
         Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
@@ -15894,12 +14566,12 @@
     //Variable initialization end
 
     function Play_PreStart() {
-        Play_seek_previews = document.getElementById("seek_previews");
+        Play_seek_previews = Main_getElementById("seek_previews");
         Play_seek_previews_img = new Image();
-        Play_chat_container = document.getElementById("chat_container0");
-        Play_ProgresBarrElm = document.getElementById("inner_progress_bar");
-        Play_ProgresBarrBufferElm = document.getElementById("inner_progress_bar_buffer");
-        Play_PanneInfoDoclId = document.getElementById("scene_channel_panel");
+        Play_chat_container = Main_getElementById("chat_container0");
+        Play_ProgresBarrElm = Main_getElementById("inner_progress_bar");
+        Play_ProgresBarrBufferElm = Main_getElementById("inner_progress_bar_buffer");
+        Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
 
         Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
         Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
@@ -15974,6 +14646,7 @@
             ]
         );
 
+        Play_BottonIconsSet();
     }
 
     function Play_ResetDefaultQuality() {
@@ -16003,21 +14676,21 @@
 
         Play_LoadLogoSucess = false;
         //reset channel logo to prevent another channel logo
-        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
-        document.getElementById('controls_' + Play_MultiStream).style.display = '';
-        document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChatDelay).style.display = '';
-        document.getElementById('controls_' + Play_controlsLowLatency).style.display = '';
-        document.getElementById('controls_' + Play_controlsChatSend).style.display = '';
+        Play_BottomShow(Play_MultiStream);
+        Play_BottomShow(Play_controlsChatDelay);
+        Play_BottomShow(Play_controlsLowLatency);
+        Play_BottomShow(Play_controlsChatSend);
+        Play_BottomHide(Play_controlsOpenVod);
+        Play_BottomHide(Play_controlsChapters);
 
         if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
 
         PlayClip_HideShowNext(0, 0);
         PlayClip_HideShowNext(1, 0);
-        Main_HideElement('progress_bar_div');
-        Main_ShowElement('controls_holder');
+        Main_HideElementWithEle(Play_BottonIcons_Progress);
+        Main_ShowElementWithEle(Play_Controls_Holder);
 
         Play_data.isHost = Main_values.Play_isHost;
         Main_values.Play_isHost = false;
@@ -16073,7 +14746,7 @@
         if (isOn && response) {
 
             var responseObj = JSON.parse(response),
-                doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+                doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (doc && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
@@ -16133,7 +14806,7 @@
     var Play_PreviewVideoEnded = false;
 
     function Play_CheckIfIsLiveStart(callback) {
-        var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
         if (doc) {
             Play_showBufferDialog();
@@ -16251,7 +14924,7 @@
         UserLiveFeed_Hide();
 
         ChatLive_Playing = true;
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i></div>');
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
         Play_showBufferDialog();
         Play_ResumeAfterOnlineCounter = 0;
 
@@ -16323,8 +14996,8 @@
         Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
         Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
         Play_LoadLogoSucess = true;
-        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
         Play_created = Play_data.data[12];
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -17129,7 +15802,7 @@
     function Play_showWarningMidleDialog(text, timeout) {
         Main_innerHTML("dialog_warning_play_middle_text", text);
 
-        var doc = document.getElementById('dialog_warning_play_middle');
+        var doc = Main_getElementById('dialog_warning_play_middle');
 
         if (UserLiveFeed_isFeedShow()) doc.style.marginTop = '90vh';
         else doc.style.marginTop = '50vh';
@@ -17238,7 +15911,7 @@
 
     function Play_showPanel() {
         if (Play_getQualitiesFail) Play_getQualities(1, true);
-        PlayVod_IconsBottonResetFocus();
+        Play_BottonIconsResetFocus();
         Play_qualityIndexReset();
         Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
         PlayExtra_ResetSpeed();
@@ -17398,7 +16071,7 @@
     function Play_ChatSize(showDialog) {
         if (Play_ChatSizeValue > Play_MaxChatSizeValue) Play_ChatSizeValue = Play_MaxChatSizeValue;
         Play_chat_container.style.height = Play_ChatSizeVal[Play_ChatSizeValue].containerHeight + '%';
-        document.getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatSizeVal[Play_ChatSizeValue].dialogTop + '%';
         Play_ChatPosition();
 
         if (showDialog) Play_showChatBackgroundDialog(STR_SIZE + Play_ChatSizeVal[Play_ChatSizeValue].percentage);
@@ -17460,9 +16133,9 @@
         Main_HideElement('play_chat_dialog');
     }
 
-    function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, Play_controls) {
-        var doc_up = document.getElementById("control_arrow_up_" + Play_controls),
-            doc_down = document.getElementById("control_arrow_down" + Play_controls),
+    function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, position) {
+        var doc_up = Play_controls[position].doc_up,
+            doc_down = Play_controls[position].doc_down,
             total = getQualitiesCount();
 
         if (total === 1) {
@@ -17488,7 +16161,7 @@
             doc_down.style.opacity = "1";
         }
 
-        callback('controls_name_' + Play_controls);
+        callback('controls_name_' + position);
     }
 
     function Play_qualityIndexReset() {
@@ -17750,7 +16423,7 @@
         Play_data = JSON.parse(JSON.stringify(Play_data_old));
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
         Play_created = Play_data.data[12];
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Play_data.data[9]);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
     }
 
     function Play_handleKeyUpClear() {
@@ -17775,7 +16448,7 @@
 
     function Play_StoreChatPos() {
         Play_StoreChatPosValue.height = Play_chat_container.style.height;
-        Play_StoreChatPosValue.marginTop = document.getElementById("play_chat_dialog").style.marginTop;
+        Play_StoreChatPosValue.marginTop = Main_getElementById("play_chat_dialog").style.marginTop;
         Play_StoreChatPosValue.top = Play_chat_container.style.top;
         Play_StoreChatPosValue.left = Play_chat_container.style.left;
     }
@@ -17785,7 +16458,7 @@
         if (!Play_ChatEnable) Play_hideChat();
         else Play_showChat();
         Play_chat_container.style.height = Play_StoreChatPosValue.height;
-        document.getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
         Play_chat_container.style.top = Play_StoreChatPosValue.top;
         Play_chat_container.style.left = Play_StoreChatPosValue.left;
     }
@@ -17903,12 +16576,14 @@
     }
 
     function Play_Multi_SetPanel() {
-        document.getElementById('controls_' + Play_controlsChatSide).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQuality).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMulti).style.display = '';
-        document.getElementById('controls_' + Play_controlsAudioMulti).style.display = '';
+        Play_BottomShow(Play_controlsQualityMulti);
+        Play_BottomShow(Play_controlsAudioMulti);
+
+        Play_BottomHide(Play_controlsChatSide);
+        Play_BottomHide(Play_controlsQuality);
+        Play_BottomHide(Play_controlsQualityMini);
+        Play_BottomHide(Play_controlsAudio);
+
         UserLiveFeed_SetMulti();
         ChatLive_Clear(1);
         PlayExtra_HideChat();
@@ -17923,12 +16598,14 @@
     }
 
     function Play_Multi_UnSetPanelDivs(checkChat) {
-        document.getElementById('controls_' + Play_controlsAudioMulti).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChatSide).style.display = '';
-        document.getElementById('controls_' + Play_controlsQuality).style.display = '';
-        document.getElementById('controls_' + Play_controlsAudio).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMini).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsQualityMulti).style.display = 'none';
+        Play_BottomShow(Play_controlsChatSide);
+        Play_BottomShow(Play_controlsQuality);
+
+        Play_BottomHide(Play_controlsAudioMulti);
+        Play_BottomHide(Play_controlsAudio);
+        Play_BottomHide(Play_controlsQualityMini);
+        Play_BottomHide(Play_controlsQualityMulti);
+
         UserLiveFeed_SetFeedPicText();
         Main_ShowElement('stream_info');
         Main_HideElement('stream_info_multi');
@@ -18327,7 +17004,7 @@
                     )
                 );
 
-                document.getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
+                Main_getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
 
                 Play_MultiUpdateinfo(
                     pos,
@@ -18368,7 +17045,7 @@
 
         pos = (pos + (4 - Play_Multi_Offset)) % 4;
         var extraText = Play_Multi_MainBig ? '_big' : '';
-        document.getElementById('stream_info_multiimg' + extraText + pos).src = logo;
+        Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
 
         Main_innerHTML(
             'stream_info_multi_name' + extraText + pos,
@@ -18411,7 +17088,7 @@
                 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
         }
 
-        var doc = document.getElementById('stream_info_multiimg_big0');
+        var doc = Main_getElementById('stream_info_multiimg_big0');
         doc.style.width = '16.5%';
         doc.style.marginTop = '-0.5%';
 
@@ -18437,13 +17114,13 @@
         for (var i = 0; i < 4; i++) {
             pos = (i + (4 - Play_Multi_Offset)) % 4;
             Main_textContent('stream_dialog_multi_name' + extraText + pos, Play_MultiArray[i].data[1]);
-            document.getElementById('stream_dialog_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
+            Main_getElementById('stream_dialog_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
             Main_innerHTML('stream_dialog_multi_game' + extraText + pos, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
             Main_innerHTML('stream_dialog_multi_title' + extraText + pos, twemoji.parse(Play_MultiArray[i].data[2]));
         }
 
         Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
-        document.getElementById('stream_dialog_multiimg-1').src = obj[9];
+        Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
         Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
         Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
@@ -18463,7 +17140,7 @@
     }
 
     function Play_ShowMultiDialog() {
-        var doc = document.getElementById('dialog_multi');
+        var doc = Main_getElementById('dialog_multi');
         if (Play_Multi_MainBig) {
             Main_HideElement('stream_dialog_multi_4');
             Main_ShowElement('stream_dialog_multi_big');
@@ -18571,18 +17248,20 @@
         Main_textContent("stream_live_time", '');
         Main_textContent('progress_bar_current_time', Play_timeS(0));
         Chat_title = " VOD";
-        Play_LoadLogo(document.getElementById('stream_info_icon'), IMG_404_BANNER);
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
         Main_HideElement('progress_pause_holder');
-        Main_ShowElement('progress_bar_div');
+        Main_ShowElementWithEle(Play_BottonIcons_Progress);
         Play_BufferSize = 0;
 
-        document.getElementById('controls_' + Play_MultiStream).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsOpenVod).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChatDelay).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsLowLatency).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChatSend).style.display = 'none';
-        document.getElementById('controls_' + Play_controlsChapters).style.display = 'none';
+        Play_BottomHide(Play_MultiStream);
+        Play_BottomHide(Play_controlsOpenVod);
+        Play_BottomHide(Play_controlsChatDelay);
+        Play_BottomHide(Play_controlsLowLatency);
+        Play_BottomHide(Play_controlsChatSend);
+        Play_BottomHide(Play_controlsChapters);
+
+
         PlayExtra_UnSetPanel();
         Play_CurrentSpeed = 3;
         Play_IconsResetFocus();
@@ -18602,7 +17281,7 @@
         PlayClip_HideShowNext(1, 0);
 
         if (!Main_vodOffset) { //we have some vod info
-            Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+            Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
             Main_innerHTML(
                 "stream_info_name",
                 Play_partnerIcon(
@@ -18693,7 +17372,7 @@
 
         Main_setTimeout(
             function() {
-                Main_ShowElement('controls_holder');
+                Main_ShowElementWithEle(Play_Controls_Holder);
                 Main_ShowElement('progress_pause_holder');
             },
             1000
@@ -18805,7 +17484,7 @@
         Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
 
         Main_values.Main_selectedChannelLogo = response.channel.logo;
-        Play_LoadLogo(document.getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
         Main_values.Main_selectedChannel_id = response.channel._id;
         Main_values.Main_selectedChannel = response.channel.name;
@@ -19074,7 +17753,7 @@
             }
         }
         if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
-        Main_ShowElement('controls_holder');
+        Main_ShowElementWithEle(Play_Controls_Holder);
         Main_ShowElement('progress_pause_holder');
         PlayVod_isOn = false;
         PlayClip_OpenAVod = true;
@@ -19107,8 +17786,8 @@
         Play_clearHidePanel();
         Play_ForceHidePannel();
         PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
         PlayVod_previews_hide();
         PlayVod_quality = PlayVod_qualityPlaying;
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
@@ -19133,7 +17812,7 @@
         Play_CleanHideExit();
 
         if (autoHide) {
-            PlayVod_IconsBottonResetFocus();
+            Play_BottonIconsResetFocus();
             PlayVod_qualityIndexReset();
             Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controlsQuality);
             if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
@@ -19153,52 +17832,6 @@
 
             if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(false);
             else Play_VideoStatusTest();
-        }
-    }
-
-    function PlayVod_IconsBottonResetFocus() {
-        PlayVod_PanelY = 1;
-        PlayClip_EnterPos = 0;
-        PlayVod_IconsBottonFocus();
-    }
-
-    function PlayVod_IconsBottonFocus() {
-        if (PlayVod_PanelY < 0) {
-            PlayVod_PanelY = 0;
-            return;
-        }
-        Main_RemoveClass('pause_button', 'progress_bar_div_focus');
-        Main_RemoveClass('next_button', 'progress_bar_div_focus');
-        Main_RemoveClass('back_button', 'progress_bar_div_focus');
-        Main_RemoveClass('progress_bar_div', 'progress_bar_div_focus');
-        Main_HideElement('next_button_img_holder');
-        Main_HideElement('back_button_img_holder');
-
-        if (!PlayVod_PanelY) { //progress_bar
-            Main_AddClass('progress_bar_div', 'progress_bar_div_focus');
-            Play_IconsRemoveFocus();
-            if (PlayVod_addToJump) {
-                PlayVod_jumpTime();
-                document.getElementById('progress_bar_steps').style.display = 'inline-block';
-            }
-        } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
-            if (!PlayClip_EnterPos) { //pause
-                Main_AddClass('pause_button', 'progress_bar_div_focus');
-            } else if (PlayClip_EnterPos === 1) { //next
-                Main_ShowElement('next_button_img_holder');
-                Main_AddClass('next_button', 'progress_bar_div_focus');
-            } else if (PlayClip_EnterPos === -1) { //back
-                Main_ShowElement('back_button_img_holder');
-                Main_AddClass('back_button', 'progress_bar_div_focus');
-            }
-
-            Play_IconsRemoveFocus();
-            Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-            document.getElementById('progress_bar_steps').style.display = 'none';
-        } else if (PlayVod_PanelY === 2) { //botton icons
-            Play_IconsAddFocus();
-            Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-            document.getElementById('progress_bar_steps').style.display = 'none';
         }
     }
 
@@ -19262,9 +17895,9 @@
 
             if (PlayClip_HasVOD) Chat_Init();
         }
-        Main_innerHTML('progress_bar_jump_to', STR_SPACE);
-        document.getElementById('progress_bar_steps').style.display = 'none';
-        Main_innerHTML('pause_button', '<div ><i class="pause_button3d icon-pause"></i> </div>');
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
+        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
         PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
         PlayVod_IsJumping = false;
         Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
@@ -19284,10 +17917,10 @@
     var PlayVod_last_multiplier = '';
 
     function PlayVod_jumpSteps(pos, signal) {
-        if (PlayVod_addToJump && !PlayVod_PanelY) document.getElementById('progress_bar_steps').style.display = 'inline-block';
+        if (PlayVod_addToJump && !PlayVod_PanelY) Play_BottonIcons_Progress_Steps.style.display = 'inline-block';
 
-        Main_innerHTML(
-            'progress_bar_steps',
+        Main_innerHTMLWithEle(
+            Play_BottonIcons_Progress_Steps,
             STR_JUMPING_STEP + (signal ? signal : '') + Settings_jumpTimers_String[pos] +
             (PlayVod_isOn ? STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
         );
@@ -19313,7 +17946,11 @@
     }
 
     function PlayVod_jumpTime() {
-        Main_textContent('progress_bar_jump_to', STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' + STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump));
+        Main_textContentWithEle(
+            Play_BottonIcons_Progress_JumpTo,
+            STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' +
+            STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump)
+        );
     }
 
     function PlayVod_SeekClear() {
@@ -19388,7 +18025,7 @@
         PlayVod_IconsResetFocus();
         Play_HideVodDialogId = Main_setTimeout(
             function() {
-                Main_ShowElement('controls_holder');
+                Main_ShowElementWithEle(Play_Controls_Holder);
             },
             1000,
             Play_HideVodDialogId
@@ -19468,7 +18105,7 @@
         var restorePreview = false;
 
         var doc =
-            document.getElementById(
+            Main_getElementById(
                 ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
             );
 
@@ -19482,7 +18119,7 @@
                 if (index > -1) {
 
                     if ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(document.getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
+                            Main_A_includes_B(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX).src, 's3_vods')) &&
                         Main_A_equals_B(Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid, Main_values.ChannelVod_vodId)) {
 
                         restorePreview = true;
@@ -19598,7 +18235,7 @@
                         } else if (PlayVod_PanelY < 2) {
 
                             PlayVod_PanelY--;
-                            PlayVod_IconsBottonFocus();
+                            Play_BottonIconsFocus();
 
                         } else {
 
@@ -19616,7 +18253,7 @@
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
-                            PlayVod_IconsBottonFocus();
+                            Play_BottonIconsFocus();
                             PlayVod_previews_hide();
                         } else Play_BottomUpDown(2, -1);
                         PlayVod_setHidePanel();
@@ -19711,7 +18348,7 @@
         if (!Play_isPanelShown()) PlayVod_showPanel(true);
         Play_clearHidePanel();
         PlayVod_PanelY = 0;
-        PlayVod_IconsBottonFocus();
+        Play_BottonIconsFocus();
 
         PlayVod_jumpStart(position, Play_DurationSeconds);
         PlayVod_ProgressBaroffset = 2500;
@@ -19894,7 +18531,7 @@
     function PlayVod_muted_segments(muted_segments, skipwarning) {
         if (muted_segments && muted_segments.length) {
 
-            var doc = document.getElementById('inner_progress_bar_muted'),
+            var doc = Main_getElementById('inner_progress_bar_muted'),
                 div;
             Main_emptyWithEle(doc);
 
@@ -20006,7 +18643,7 @@
 
 
         if (len) {
-            document.getElementById('controls_' + Play_controlsChapters).style.display = '';
+            Play_BottomShow(Play_controlsChapters);
             Play_controls[Play_controlsChapters].setLable();
             Play_controls[Play_controlsChapters].bottomArrows();
             PlayVod_SetChapters();
@@ -20263,6 +18900,133 @@
     }
 
     //Variable initialization end
+
+    function Screens_first_init() {
+
+        var Last_obj = OSInterface_GetLastIntentObj(),
+            obj,
+            live_channel_call,
+            host_channel_call,
+            game_channel_call,
+            screen_channel_call,
+            tempGame;
+
+        if (Last_obj) {
+            obj = JSON.parse(Last_obj);
+            live_channel_call = Main_A_equals_B(obj.type, "LIVE");
+            host_channel_call = Main_A_equals_B(obj.type, "HOST");
+
+            if (!live_channel_call && !host_channel_call) {
+                game_channel_call = Main_A_equals_B(obj.type, "GAME");
+
+                if (!game_channel_call) {
+                    screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
+
+                    if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
+
+                }
+
+            }
+
+            if (obj.type && obj.screen) Main_EventChannel(obj);
+
+        }
+
+        var StartUser = Settings_value.start_user_screen.defaultValue;
+        var restore_playback = Settings_value.restor_playback.defaultValue;
+
+        if (live_channel_call || host_channel_call) {
+
+            Main_values.Play_WasPlaying = 1;
+
+            Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+            if (live_channel_call) {
+
+                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+
+            } else {
+
+                Play_data.data = ScreensObj_HostCellArray(obj.obj);
+                Main_values.Play_isHost = true;
+                Play_data.DisplaynameHost = Play_data.data[1];
+                Play_data.data[1] = Play_data.data[15];
+
+            }
+
+            StartUser = false;
+            restore_playback = true;
+
+        } else if (game_channel_call) {
+
+            Main_values.Play_WasPlaying = 0;
+            Main_GoBefore = Main_aGame;
+            Play_data = JSON.parse(JSON.stringify(Play_data_base));
+            Play_data.data[3] = obj.obj.name;
+            StartUser = false;
+            Main_values.Main_gameSelected = Play_data.data[3];
+
+        } else if (screen_channel_call) {
+
+            Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+            Main_values.Play_WasPlaying = 0;
+            StartUser = false;
+
+        }
+
+        if (Main_values.Play_WasPlaying !== 1 || StartUser) {
+
+            tempGame = Play_data.data[3];
+            Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+        }
+
+        if (StartUser) {
+
+            Users_beforeUser = Main_GoBefore;
+            Main_values.Main_Before = Users_beforeUser;
+            Main_values.Play_WasPlaying = 0;
+            ScreenObj[Main_Users].init_fun();
+
+        } else if (restore_playback && Main_values.Play_WasPlaying) {
+
+            Main_values.Main_Go = Main_GoBefore;
+            if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+
+            if (Main_values.Play_WasPlaying === 1) {
+
+                if (Play_data.data.length > 0) {
+
+                    Main_openStream();
+
+                } else ScreenObj[Main_values.Main_Go].init_fun();
+
+            } else {
+
+                Play_data.data[3] = tempGame;
+                Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
+                if (!Main_vodOffset) Main_vodOffset = 1;
+
+                Play_DurationSeconds = 0;
+                Main_openVod();
+
+            }
+
+        } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
+
+            if (Main_newUsercode) Main_HideLoadDialog();
+            ScreenObj[Main_GoBefore].init_fun();
+
+        } else {
+
+            //Values that need to be reset to prevent app odd behavier
+            Main_values.Search_isSearching = false;
+            Main_values.Main_BeforeChannelisSet = false;
+            Main_values.Main_BeforeAgameisSet = false;
+
+            ScreenObj[Main_Live].init_fun();
+        }
+    }
 
     function Screens_init(key, preventRefresh) {
         //Main_Log('Screens_init ' + ScreenObj[key].screen);
@@ -20677,6 +19441,7 @@
     function Screens_loadDataSuccessFinish(key) {
         //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
         if (!ScreenObj[key].status) {
+
             if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
             if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
@@ -20735,162 +19500,34 @@
             if (Main_FirstRun) {
                 //Main_Log('Main_FirstRun ' + Main_FirstRun);
 
-                //TODO check more cases for problems
-                var Last_obj = OSInterface_GetLastIntentObj(),
-                    obj,
-                    live_channel_call,
-                    host_channel_call,
-                    game_channel_call,
-                    screen_channel_call,
-                    tempGame;
+                if (Main_values.Never_run_new)
+                    Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
 
-                if (Last_obj) {
-                    obj = JSON.parse(Last_obj);
-                    live_channel_call = Main_A_equals_B(obj.type, "LIVE");
-                    host_channel_call = Main_A_equals_B(obj.type, "HOST");
-
-                    if (!live_channel_call && !host_channel_call) {
-                        game_channel_call = Main_A_equals_B(obj.type, "GAME");
-
-                        if (!game_channel_call) {
-                            screen_channel_call = Main_A_equals_B(obj.type, "SCREEN");
-
-                            if (!screen_channel_call) OSInterface_mCheckRefreshToast(parseInt(obj));
-
-                        }
-
-                    }
-
-                    if (obj.type && obj.screen) Main_EventChannel(obj);
-
+                if (Main_values.Never_run_phone && !Main_isTV) {
+                    Main_showphoneDialog(Main_values.Never_run_new ?
+                        ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
                 }
 
-                var StartUser = Settings_value.start_user_screen.defaultValue;
-                var restore_playback = Settings_value.restor_playback.defaultValue;
+                if (!Main_values.Never_run_new) Screens_addFocus(true, key);
 
-                if (live_channel_call || host_channel_call) {
+                Main_values.Never_run_new = false;
+                Main_values.Never_run_phone = false;
 
-                    Main_values.Play_WasPlaying = 1;
-
-                    Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-                    if (live_channel_call) {
-                        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-                    } else {
-                        Play_data.data = ScreensObj_HostCellArray(obj.obj);
-                        Main_values.Play_isHost = true;
-                        Play_data.DisplaynameHost = Play_data.data[1];
-                        Play_data.data[1] = Play_data.data[15];
-                    }
-
-                    StartUser = false;
-                    restore_playback = true;
-
-                } else if (game_channel_call) {
-                    Main_values.Play_WasPlaying = 0;
-                    Main_GoBefore = Main_aGame;
-                    Play_data = JSON.parse(JSON.stringify(Play_data_base));
-                    Play_data.data[3] = obj.obj.name;
-                    StartUser = false;
-                    Main_values.Main_gameSelected = Play_data.data[3];
-                } else if (screen_channel_call) {
-                    Main_GoBefore = Main_onNewIntentGetSCreen(obj);
-                    Main_values.Play_WasPlaying = 0;
-                    StartUser = false;
-                }
-
-                Main_values.warning_extra = false;
-
-
-                if (Main_values.Play_WasPlaying !== 1 || StartUser) {
-                    tempGame = Play_data.data[3];
-                    Play_data = JSON.parse(JSON.stringify(Play_data_base));
-                }
-
-                if (StartUser) {
-
-                    Main_ExitCurrent(Main_values.Main_Go);
-                    Users_beforeUser = Main_GoBefore;
-                    Main_values.Main_Before = Users_beforeUser;
-                    Main_values.Main_Go = Main_Users;
-                    Main_values.Play_WasPlaying = 0;
-                    Main_SwitchScreen(false);
-                    Screens_loadDataSuccessFinishEnd();
-
-                } else if (restore_playback && Main_values.Play_WasPlaying) { // && ScreenObj[key].status
-                    //Main_Log('Play_WasPlaying');
-
-                    Main_ExitCurrent(Main_values.Main_Go);
-                    Main_values.Main_Go = Main_GoBefore;
-                    if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
-
-                    //History vod is so fast to load that this need to be set here to prevent a vod reset
-                    Main_FirstRun = false;
-
-                    if (Main_values.Play_WasPlaying === 1) {
-                        if (Play_data.data.length > 0) {
-
-                            Main_openStream();
-                            Main_SwitchScreen(true);
-
-                        } else Main_SwitchScreen(false);
-                    } else {
-                        Play_data.data[3] = tempGame;
-                        Main_vodOffset = Main_getItemInt('Main_vodOffset', 0);
-                        if (!Main_vodOffset) Main_vodOffset = 1;
-
-                        Play_DurationSeconds = 0;
-                        Main_openVod();
-                        Main_SwitchScreen(true);
-                    }
-
-                    Screens_loadDataSuccessFinishEnd(true);
-
-                } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
-                    //Main_Log('!Play_WasPlaying');
-                    Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
-                    Main_ExitCurrent(Main_values.Main_Go);
-                    Main_values.Main_Go = Main_GoBefore;
-                    Screens_RemoveAllFocus(key);
-                    Main_SwitchScreen();
-
-                    if (!Main_newUsercode) Screens_loadDataSuccessFinishEnd(true);
-                    else {
-                        Main_FirstRun = false;
-                        Main_HideLoadDialog();
-                    }
-                } else {
-                    //Main_Log('Play_WasPlaying else');
-
-                    //Values that need to be reset to prevent app odd behavier
-                    Main_values.Search_isSearching = false;
-                    Main_values.Main_BeforeChannelisSet = false;
-                    Main_values.Main_BeforeAgameisSet = false;
-
-                    if (Main_values.Never_run_new)
-                        Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-
-                    if (Main_values.Never_run_phone && !Main_isTV) {
-                        Main_showphoneDialog(Main_values.Never_run_new ?
-                            ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-                    }
-
-                    if (!Main_values.Never_run_new) Screens_addFocus(true, key);
-
-                    Main_values.Never_run_new = false;
-                    Main_values.Never_run_phone = false;
-
-                    Main_SaveValues();
-                    Screens_loadDataSuccessFinishEnd();
-                }
+                Main_SaveValues();
+                Screens_loadDataSuccessFinishEnd();
 
             } else {
+
                 Screens_addFocus(true, key);
                 Main_SaveValues();
                 if (Main_isScene1DocShown()) Main_HideLoadDialog();
+
             }
+
         } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
+
             Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+
         }
     }
 
@@ -21057,7 +19694,7 @@
                 (ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) ||
                 (ScreenObj[key].screenType === 2 && Settings_Obj_default('show_clip_player'))) {
 
-                doc = document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+                doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
                 if (doc) {
                     var id = 0, //Clip
@@ -21074,7 +19711,7 @@
 
                         if (index > -1 &&
                             (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                                Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
                             ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                         }
                     }
@@ -21103,7 +19740,7 @@
             return;
         }
 
-        var img = document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+        var img = Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
         var Rect = img.parentElement.getBoundingClientRect();
 
         OSInterface_ScreenPlayerRestore(
@@ -21157,7 +19794,7 @@
                 if (index > -1) {
 
                     if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
 
                         id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                         token = Play_vod_token;
@@ -21202,14 +19839,14 @@
 
     function Screens_LoadPreviewResult(StreamData, x, y) { //Called by Java
 
-        var doc = document.getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+        var doc = Main_getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
         if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
             (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
-            doc = document.getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+            doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
             if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
@@ -21272,7 +19909,7 @@
 
                                 //Live that is now a vod
                                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                    Main_A_includes_B(document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
+                                    Main_A_includes_B(Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
 
                                     Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
@@ -21296,7 +19933,7 @@
                         lang = StreamInfo[16] ? 'HOSTING' : StreamInfo[15];
                     }
 
-                    var img = document.getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
+                    var img = Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                     var Rect = img.parentElement.getBoundingClientRect();
 
                     OSInterface_StartScreensPlayer(
@@ -21344,7 +19981,7 @@
                         if (index > -1) {
 
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                Main_A_includes_B(document.getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+                                Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
 
                                 error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
@@ -21380,7 +20017,7 @@
     }
 
     function Screens_ThumbNotNull(thumbnail) {
-        return document.getElementById(thumbnail) !== null;
+        return Main_getElementById(thumbnail) !== null;
     }
 
     function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down, key) {
@@ -21655,7 +20292,7 @@
         if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
             pos = !y ? (y + pos) : y;
             if (ScreenObj[key].Cells[pos]) {
-                ScreenObj[key].offsettop = (document.getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + document.getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+                ScreenObj[key].offsettop = (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
             } else ScreenObj[key].offsettop = 1;
 
             ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -21770,7 +20407,7 @@
         if (ScreenObj[key].HasAnimateThumb) {
             Main_clearInterval(ScreenObj[key].AnimateThumbId);
             if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
-                document.getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+                Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
                 Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
             }
         }
@@ -22163,14 +20800,14 @@
         var maxValue = 5000;
 
         if (pos > 0 && pos < maxValue) {
-            document.getElementById("dialog_OffSet_left").style.opacity = "1";
-            document.getElementById("dialog_OffSet_right").style.opacity = "1";
+            Main_getElementById("dialog_OffSet_left").style.opacity = "1";
+            Main_getElementById("dialog_OffSet_right").style.opacity = "1";
         } else if (pos === maxValue) {
-            document.getElementById("dialog_OffSet_left").style.opacity = "1";
-            document.getElementById("dialog_OffSet_right").style.opacity = "0.2";
+            Main_getElementById("dialog_OffSet_left").style.opacity = "1";
+            Main_getElementById("dialog_OffSet_right").style.opacity = "0.2";
         } else {
-            document.getElementById("dialog_OffSet_left").style.opacity = "0.2";
-            document.getElementById("dialog_OffSet_right").style.opacity = "1";
+            Main_getElementById("dialog_OffSet_left").style.opacity = "0.2";
+            Main_getElementById("dialog_OffSet_right").style.opacity = "1";
         }
     }
 
@@ -22348,8 +20985,8 @@
     function Screens_histRemoveFocus(divPos, dialog) {
         Main_RemoveClass('dialog_' + dialog + '_setting_' + divPos, 'settings_div_focus');
         Main_RemoveClass('dialog_' + dialog + '_val_' + divPos, 'settings_value_focus');
-        document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
-        document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+        Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+        Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
     }
 
     function Screens_histSetArrow(key) {
@@ -22368,17 +21005,17 @@
         Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
         if (maxValue === 1) {
-            document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
-            document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+            Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
+            Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
         } else if (!pos) {
-            document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
-            document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+            Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
+            Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
         } else if (pos === (maxValue - 1)) {
-            document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
-            document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
+            Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+            Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
         } else {
-            document.getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
-            document.getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+            Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
+            Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
         }
     }
 
@@ -22475,7 +21112,7 @@
 
     function Screens_ThumbOptionStringSet(key) {
         Screens_canFollow = false;
-        Screens_values_Play_data = JSON.parse(document.getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
+        Screens_values_Play_data = JSON.parse(Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
 
         if (AddUser_UserIsSet()) {
             Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -22498,7 +21135,7 @@
         Main_innerHTML('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : STR_EMPTY));
 
         if (ScreenObj[key].screen === Main_HistoryLive &&
-            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
             Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
         } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
@@ -22588,7 +21225,7 @@
                 break;
             case KEY_UP:
                 if (Screens_ThumbOptionSpecial) break;
-                var lower = !Main_A_includes_B(document.getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
+                var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
                 Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY--;
                 if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
@@ -22668,7 +21305,7 @@
 
                 if (!ScreenObj[key].screenType) {
                     if (ScreenObj[key].screen === Main_HistoryLive &&
-                        Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
                         ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                         Main_setItem(ScreenObj[Main_HistoryVod].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
                     } else {
@@ -22874,7 +21511,7 @@
 
         var historyType = Screens_ThumbOptionStringGetHistory(key);
         if (ScreenObj[key].screen === Main_HistoryLive &&
-            Main_A_includes_B(document.getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
             historyType = Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1];
         }
 
@@ -22911,7 +21548,7 @@
     }
 
     function Screens_Isfocused() {
-        var doc = document.getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         return doc &&
             Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
             Main_isScene1DocShown();
@@ -23007,8 +21644,8 @@
             Screens_loadDataSuccess(this.screen);
         },
         Set_Scroll: function() {
-            this.ScrollDoc = document.getElementById(this.ids[4]);
-            this.tableDoc = document.getElementById(this.table);
+            this.ScrollDoc = Main_getElementById(this.ids[4]);
+            this.tableDoc = Main_getElementById(this.table);
         },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) { //TODO overwrite this on if object
@@ -23964,7 +22601,7 @@
         key_play: function() {
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
-            Main_values.Main_gameSelected = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+            Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
             Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
             Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
 
@@ -24165,7 +22802,7 @@
         base_key_play: function(go_screen, IsFollowing) {
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
-            Main_values.Main_selectedChannel = JSON.parse(document.getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+            Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
 
             Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
             Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
@@ -24354,8 +22991,8 @@
                 'dialog_hist_val_1',
                 this.histArrays[1][this.histPosX[1]]
             );
-            document.getElementById("dialog_hist_left_1").style.opacity = "0";
-            document.getElementById("dialog_hist_right_1").style.opacity = "0";
+            Main_getElementById("dialog_hist_left_1").style.opacity = "0";
+            Main_getElementById("dialog_hist_right_1").style.opacity = "0";
             this.histPosXTemp = Main_Slice(this.histPosX);
         }
     };
@@ -24378,7 +23015,7 @@
             },
             setTODialog: function() {
                 Main_RemoveClass('dialog_thumb_opt_setting_-1', 'hideimp');
-                if (Main_A_includes_B(document.getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
+                if (Main_A_includes_B(Main_getElementById(this.ids[1] + this.posY + '_' + this.posX).src, 's3_vods'))
                     Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
                 else
                     Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
@@ -24787,7 +23424,7 @@
     function ScreensObj_AnimateThumbId(screen) {
         Main_clearInterval(screen.AnimateThumbId);
         if (!Settings_Obj_default("videos_animation")) return;
-        var div = document.getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
+        var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
         // Only load the animation if it can be loaded
         // This prevent starting animating before it has loaded or animated a empty image
@@ -24994,7 +23631,7 @@
         if (Main_SearchInput !== null) {
             var elClone = Main_SearchInput.cloneNode(true);
             Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
-            Main_SearchInput = document.getElementById("search_input");
+            Main_SearchInput = Main_getElementById("search_input");
         }
     }
 
@@ -25276,20 +23913,20 @@
         Main_textContent('cavas_shadows2', STR_SHADOWS_GRAY);
         Main_textContent('cavas_shadows3', STR_SHADOWS_BLACK);
 
-        SettingsColor_DivColorResult = document.getElementById('color_result');
+        SettingsColor_DivColorResult = Main_getElementById('color_result');
         SettingsColor_canvasPosX = [];
         SettingsColor_canvasPosX[0] = 0;
         SettingsColor_canvasPosX[1] = 0;
 
         SettingsColor_canvasPosDiv = [];
-        SettingsColor_canvasPosDiv[0] = document.getElementById('colorCanvas_pos0');
-        SettingsColor_canvasPosDiv[1] = document.getElementById('colorCanvas_pos1');
+        SettingsColor_canvasPosDiv[0] = Main_getElementById('colorCanvas_pos0');
+        SettingsColor_canvasPosDiv[1] = Main_getElementById('colorCanvas_pos1');
 
         SettingsColor_canvasDiv = [];
         SettingsColor_canvasDivContext = [];
 
-        SettingsColor_canvasDiv[0] = document.getElementById('colorCanvas0');
-        SettingsColor_canvasDiv[1] = document.getElementById('colorCanvas1');
+        SettingsColor_canvasDiv[0] = Main_getElementById('colorCanvas0');
+        SettingsColor_canvasDiv[1] = Main_getElementById('colorCanvas1');
         SettingsColor_canvasDivContext[0] = SettingsColor_canvasDiv[0].getContext('2d');
         SettingsColor_canvasDivContext[1] = SettingsColor_canvasDiv[1].getContext('2d');
 
@@ -25329,11 +23966,11 @@
         SettingsColor_canvasPosDiv[0].style.left = 0;
         SettingsColor_DivColorsUpdate();
 
-        document.getElementById('color_thumb0_img').src = IMG_404_VIDEO;
+        Main_getElementById('color_thumb0_img').src = IMG_404_VIDEO;
         Main_AddClass('color_thumb0', 'stream_thumbnail_focused_no_ani');
         SettingsColor_DivResultUpdate('color_thumb0_text', STR_CURRENT_THUMB_STYLE);
 
-        document.getElementById('color_thumb1_img').src = IMG_404_VIDEO;
+        Main_getElementById('color_thumb1_img').src = IMG_404_VIDEO;
         SettingsColor_DivResultUpdate('color_thumb1_text', STR_NEW_THUMB_STYLE);
     }
 
@@ -25760,21 +24397,21 @@
         var key = 'color_options' + SettingsColor_canvasPosY;
         Main_RemoveClass(key, 'settings_value_focus');
         Main_RemoveClass(key + '_div', 'settings_div_focus');
-        document.getElementById(key + "arrow_left").style.opacity = "0";
-        document.getElementById(key + "arrow_right").style.opacity = "0";
+        Main_getElementById(key + "arrow_left").style.opacity = "0";
+        Main_getElementById(key + "arrow_right").style.opacity = "0";
     }
 
     function SettingsColor_ColorSetarrowsKey(pos, currentValue, maxValue) {
 
         if (currentValue > 0 && currentValue < maxValue) {
-            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+            Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+            Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
         } else if (currentValue === maxValue) {
-            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
+            Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
+            Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
         } else {
-            document.getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
-            document.getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+            Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
+            Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
         }
     }
     /*
@@ -26477,8 +25114,8 @@
     }
 
     function Settings_RemoveinputFocusKey(key) {
-        document.getElementById(key + "arrow_left").style.opacity = "0";
-        document.getElementById(key + "arrow_right").style.opacity = "0";
+        Main_getElementById(key + "arrow_left").style.opacity = "0";
+        Main_getElementById(key + "arrow_right").style.opacity = "0";
         Main_RemoveClass(key, 'settings_value_focus');
         Main_RemoveClass(key + '_div', 'settings_div_focus');
     }
@@ -26502,14 +25139,14 @@
         var maxValue = Settings_Obj_length(key);
 
         if (currentValue > 0 && currentValue < maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         } else if (currentValue === maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "0.2";
         } else {
-            document.getElementById(key + "arrow_left").style.opacity = "0.2";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         }
     }
 
@@ -26560,7 +25197,7 @@
             var key = 'vod_seek_min';
             Main_setItem(key, Settings_Obj_default(key) + 1);
             Main_textContent(key, Settings_Obj_values(key));
-            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_right").style.opacity = "0.2";
         }
     }
 
@@ -26571,7 +25208,7 @@
             var key = 'vod_seek_max';
             Main_setItem(key, Settings_Obj_default(key) + 1);
             Main_textContent(key, Settings_Obj_values(key));
-            document.getElementById(key + "arrow_left").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_left").style.opacity = "0.2";
         }
 
     }
@@ -26796,7 +25433,7 @@
             offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
         if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
-            doc = document.getElementById('settings_scroll');
+            doc = Main_getElementById('settings_scroll');
             doc.scrollTop = doc.scrollHeight;
             if (Settings_Obj_default("app_animations")) {
                 var position = doc.scrollTop;
@@ -26804,7 +25441,7 @@
                 scrollTo(doc, position, 200);
             }
         } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
-            doc = document.getElementById('settings_scroll');
+            doc = Main_getElementById('settings_scroll');
             if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
             else doc.scrollTop = 0;
         }
@@ -26813,7 +25450,7 @@
     }
 
     function Settings_ScrollTableReset() {
-        document.getElementById('settings_scroll').scrollTop = 0;
+        Main_getElementById('settings_scroll').scrollTop = 0;
         Settings_CurY = 0;
     }
 
@@ -28031,16 +26668,16 @@
 
     function Languages_RemoveinputFocus() {
         var key = Languages_value_keys[Languages_cursorY];
-        document.getElementById(key + "arrow_left").style.opacity = "0";
-        document.getElementById(key + "arrow_right").style.opacity = "0";
+        Main_getElementById(key + "arrow_left").style.opacity = "0";
+        Main_getElementById(key + "arrow_right").style.opacity = "0";
         Main_RemoveClass(key, 'settings_value_focus');
         Main_RemoveClass(key + '_div', 'settings_div_focus');
     }
 
     function Languages_ScrollTable() {
 
-        document.getElementById('settings_scroll').scrollTop =
-            (Languages_cursorY > 7) ? document.getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
+        Main_getElementById('settings_scroll').scrollTop =
+            (Languages_cursorY > 7) ? Main_getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
     }
 
     function Languages_ChangeSettigs(position) {
@@ -28077,21 +26714,21 @@
         var maxValue = Languages_Obj_length(key);
 
         if (currentValue > 0 && currentValue < maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         } else if (currentValue === maxValue) {
-            document.getElementById(key + "arrow_left").style.opacity = "1";
-            document.getElementById(key + "arrow_right").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_left").style.opacity = "1";
+            Main_getElementById(key + "arrow_right").style.opacity = "0.2";
         } else {
-            document.getElementById(key + "arrow_left").style.opacity = "0.2";
-            document.getElementById(key + "arrow_right").style.opacity = "1";
+            Main_getElementById(key + "arrow_left").style.opacity = "0.2";
+            Main_getElementById(key + "arrow_right").style.opacity = "1";
         }
     }
 
     function Languages_HideShowAll() {
         for (var key in Languages_value) {
             if (!Main_A_includes_B(key, 'All')) {
-                document.getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
+                Main_getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
             }
         }
     }
@@ -28196,7 +26833,7 @@
             Sidepannel_UpdateThumb();
         } else {
             if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos])
-                document.getElementById('side_panel_warn').style.display = 'inline-block';
+                Main_getElementById('side_panel_warn').style.display = 'inline-block';
 
             Main_HideElement('side_panel_feed_thumb');
             if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
@@ -28218,7 +26855,7 @@
 
     function Sidepannel_UpdateThumbDiv() {
 
-        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (doc) {
             var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
@@ -28244,7 +26881,7 @@
             Main_ShowElement('side_panel_feed_thumb');
 
             if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
-                var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+                var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
                 if (doc) {
 
@@ -28280,7 +26917,7 @@
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
         if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
-            var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+            var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
             if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
@@ -28327,7 +26964,7 @@
     }
 
     function Sidepannel_SetPlayerViewSidePanel() {
-        var Rect = document.getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
+        var Rect = Main_getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
         OSInterface_SetPlayerViewSidePanel(
             Rect.bottom,
             Rect.right,
@@ -28360,7 +26997,7 @@
             return;
         }
 
-        var doc = document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
         if (doc) {
             try {
@@ -28550,7 +27187,7 @@
 
         if ((ForceRefresh || !UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             UserLiveFeed_RefreshLive();
-        } else if (document.getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+        } else if (Main_getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
             Sidepannel_PreloadImgs();
             Sidepannel_AddFocusFeed(true);
         }
@@ -28737,9 +27374,9 @@
 
         if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
             if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
-                value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
+                value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
             else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
-                value = document.getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+                value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
         }
 
         if (!skipAnimation && Sidepannel_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
@@ -29018,7 +27655,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].load = UserLiveFeedobj_UserVod;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].show = UserLiveFeedobj_ShowUserVod;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].hide = UserLiveFeedobj_HideUserVod;
-        UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = document.getElementById('user_vod_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].div = Main_getElementById('user_vod_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].Screen = 'preview_user_vod';
 
@@ -29026,14 +27663,14 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].load = UserLiveFeedobj_UserVodHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].show = UserLiveFeedobj_ShowUserVodHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].hide = UserLiveFeedobj_HideUserVodHistory;
-        UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = document.getElementById('user_vod_history_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].div = Main_getElementById('user_vod_history_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserVodHistoryPos].Screen = 'preview_user_vod_history';
 
         //User live
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].load = UserLiveFeedobj_CheckToken;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].show = UserLiveFeedobj_ShowFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
-        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = document.getElementById('user_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = Main_getElementById('user_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Screen = 'preview_user_live';
 
         //User live history
@@ -29041,21 +27678,21 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].show = UserLiveFeedobj_ShowHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].hide = UserLiveFeedobj_HideHistory;
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].checkHistory = true;
-        UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = document.getElementById('user_live_history_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = Main_getElementById('user_live_history_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
         //User Host
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
-        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = document.getElementById('user_host_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = Main_getElementById('user_host_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].Screen = 'preview_user_host';
 
         //User a game
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = document.getElementById('user_agames_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = Main_getElementById('user_agames_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
@@ -29065,7 +27702,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].show = UserLiveFeedobj_ShowCurrentAGame;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hide = UserLiveFeedobj_HideCurrentAGame;
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = document.getElementById('agame_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = Main_getElementById('agame_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
@@ -29075,7 +27712,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
-        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = document.getElementById('user_games_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].div = Main_getElementById('user_games_scroll');
         UserLiveFeed_cellVisible[UserLiveFeedobj_UserGamesPos] = 10;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].before = 5;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
@@ -29087,7 +27724,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
-        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = document.getElementById('games_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].div = Main_getElementById('games_scroll');
         UserLiveFeed_cellVisible[UserLiveFeedobj_GamesPos] = 10;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].before = 5;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
@@ -29100,7 +27737,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].show = UserLiveFeedobj_ShowLive;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].hide = UserLiveFeedobj_HideLive;
-        UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = document.getElementById('live_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = Main_getElementById('live_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
@@ -29110,7 +27747,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].show = UserLiveFeedobj_ShowCurrentGame;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hide = UserLiveFeedobj_HideCurrentGame;
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = document.getElementById('current_game_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = Main_getElementById('current_game_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
@@ -29120,7 +27757,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].show = UserLiveFeedobj_ShowFeatured;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hide = UserLiveFeedobj_HideFeatured;
-        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = document.getElementById('featured_feed_scroll');
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].div = Main_getElementById('featured_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
@@ -29136,10 +27773,10 @@
         Main_innerHTML('feed_end_9', 'VOD ' + STR_HISTORY);
         Main_innerHTML('icon_feed_back', STR_SPACE);
 
-        Sidepannel_ScroolDoc = document.getElementById('side_panel_holder');
-        Sidepannel_SidepannelDoc = document.getElementById('side_panel');
-        UserLiveFeed_FeedHolderDocId = document.getElementById('user_feed');
-        Sidepannel_UpdateThumbDoc = document.getElementById("feed_thumb_img");
+        Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
+        Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
+        UserLiveFeed_FeedHolderDocId = Main_getElementById('user_feed');
+        Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
     }
 
     function UserLiveFeed_RefreshLive() {
@@ -29408,7 +28045,7 @@
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
             UserLiveFeed_obj[pos].AddCellsize =
-                (document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
+                (Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
         }
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
@@ -29446,7 +28083,7 @@
 
             if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
 
-                var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+                var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
                 if (doc) {
 
@@ -29478,7 +28115,7 @@
     function UserLiveFeed_CheckVod() {
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-            var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (doc) {
                 var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
@@ -29486,7 +28123,7 @@
 
                 if (index > -1) {
 
-                    if (Main_A_includes_B(document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+                    if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
                         return false;
                     }
 
@@ -29526,7 +28163,7 @@
             (!Play_isEndDialogVisible() || !Play_EndFocus) &&
             UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
 
-            var doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
             if (StreamData && doc) {
                 StreamData = JSON.parse(StreamData);
@@ -29544,7 +28181,7 @@
 
                     if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
 
-                        var Rect = document.getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                        var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
                         OSInterface_SetPlayerViewFeedBottom(
                             Rect.bottom,
                             window.innerHeight
@@ -29860,7 +28497,7 @@
     }
 
     function UserLiveFeed_ThumbNull(y, thumbnail) {
-        return document.getElementById(thumbnail + y) !== null;
+        return Main_getElementById(thumbnail + y) !== null;
     }
 
     function UserLiveFeed_SetFeedPicText() {
@@ -29973,7 +28610,7 @@
     function UserLiveFeed_KeyEnter(pos) {
         var doc;
         if (pos === UserLiveFeedobj_UserGamesPos) {
-            doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
             if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
             if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
@@ -29994,7 +28631,7 @@
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
 
         } else if (pos === UserLiveFeedobj_GamesPos) {
-            doc = document.getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
             if (doc !== null) UserLiveFeedobj_CurrentAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
             if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentAGameNameEnter, '')) {
@@ -30104,7 +28741,7 @@
         if (UserLiveFeed_status[pos]) {
             if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
                 UserLiveFeed_LastPos[pos] =
-                JSON.parse(document.getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
+                JSON.parse(Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
         } else {
             UserLiveFeed_LastPos[pos] = null;
         }
@@ -30136,14 +28773,14 @@
         Main_clearTimeout(Main_CheckResumeFeedId);
 
         if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
-            UserSidePannel_LastPos = JSON.parse(document.getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+            UserSidePannel_LastPos = JSON.parse(Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
         } else UserSidePannel_LastPos = null;
 
         Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
         Main_empty('side_panel_holder');
-        document.getElementById('side_panel_warn').style.display = 'none';
+        Main_getElementById('side_panel_warn').style.display = 'none';
 
         UserLiveFeed_loadChannelOffsset = 0;
         UserLiveFeed_followerChannels = [];
@@ -31657,7 +30294,7 @@
 
     function Users_loadData() {
         var row = document.createElement('div');
-        var doc = document.getElementById('stream_table_user');
+        var doc = Main_getElementById('stream_table_user');
         var x = 1; // 1 as first is used by add user
         var y = 0;
         var div = document.createElement('div');
@@ -31732,6 +30369,8 @@
                     Users_Isautentication = true;
                     Users_showRemoveDialog();
                 }
+
+                if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
             }
         );
     }
@@ -31747,12 +30386,12 @@
 
                 if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0])) {
 
-                    document.getElementById(Users_ids[5]).style.transform = 'translateY(' +
-                        (((document.getElementById(Users_ids[6] + Users_cursorY).offsetHeight - document.getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
+                    Main_getElementById(Users_ids[5]).style.transform = 'translateY(' +
+                        (((Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight - Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
                         'em)';
 
                 }
-            } else document.getElementById(Users_ids[5]).style.transform = '';
+            } else Main_getElementById(Users_ids[5]).style.transform = '';
 
         }
     }
@@ -31784,7 +30423,7 @@
     function Users_showUserDialog() {
         Users_RemoveCursor = 0;
         Users_setUserDialog();
-        Users_showUserDialogPos = parseInt(document.getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
+        Users_showUserDialogPos = parseInt(Main_getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
         Main_innerHTML("main_dialog_user_text", STR_USER_OPTION + " " + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
         Main_innerHTML("main_dialog_user_key", (AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE));
