@@ -244,7 +244,7 @@ function Play_PreStart() {
     ];
 
     Main_Headers_Priv = [
-        [clientIdHeader, AddCode_client_secret2],
+        [clientIdHeader, AddCode_priv_client_id],
         [AcceptHeader, TwithcV5Json],
         [Main_Authorization, null]
     ];

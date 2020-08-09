@@ -38,7 +38,6 @@ var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.
 //Get yours client id and secret from https://docs.aws.amazon.com/lumberyard/latest/userguide/chatplay-generate-twitch-client-id.html
 var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";//public but get yours link above is free
 var AddCode_client_secret;//none public get yours link above is free
-var AddCode_client_secret2;//none public get yours link above is free
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 //Variable initialization end
@@ -273,7 +272,7 @@ function AddCode_CheckTokenStart(position) {
     if (!position) AddCode_CheckTokenSync(position, 0);
     else AddCode_CheckToken(position, 0);
 }
-
+var AddCode_priv_client_id;
 //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
 function AddCode_CheckTokenSync(position, tryes) {
     //Main_Log('AddCode_CheckToken');

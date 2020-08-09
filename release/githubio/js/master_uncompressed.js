@@ -3117,7 +3117,6 @@
     //Get yours client id and secret from https://docs.aws.amazon.com/lumberyard/latest/userguide/chatplay-generate-twitch-client-id.html
     var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9"; //public but get yours link above is free
     var AddCode_client_secret; //none public get yours link above is free
-    var AddCode_client_secret2; //none public get yours link above is free
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
     var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
     //Variable initialization end
@@ -3353,7 +3352,7 @@
         if (!position) AddCode_CheckTokenSync(position, 0);
         else AddCode_CheckToken(position, 0);
     }
-
+    var AddCode_priv_client_id;
     //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
     function AddCode_CheckTokenSync(position, tryes) {
         //Main_Log('AddCode_CheckToken');
@@ -8288,8 +8287,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.239';
     var Main_version_java = 30; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 08 2020';
-    var Main_version_web = 48; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'August 09 2020';
+    var Main_version_web = 49; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8886,6 +8885,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version August 09 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Apk Version 3.0.239 - August 08 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -15958,7 +15961,7 @@
         ];
 
         Main_Headers_Priv = [
-            [clientIdHeader, AddCode_client_secret2],
+            [clientIdHeader, AddCode_priv_client_id],
             [AcceptHeader, TwithcV5Json],
             [Main_Authorization, null]
         ];
