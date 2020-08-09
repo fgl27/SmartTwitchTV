@@ -500,12 +500,7 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
 }
 
 function ChatLiveControls_SetEmojisObj() {
-    if (emojis[0].hasOwnProperty('id') || !AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
-
-    var i = 0, len = emojis.length;
-    for (i; i < len; i++) {
-        emojis[i].id = i;
-    }
+    emojis = JSON.parse(emojis_string);
 }
 
 function ChatLiveControls_ShowEmotes() {

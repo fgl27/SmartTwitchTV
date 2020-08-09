@@ -40,6 +40,7 @@ var extraEmotesDone = {
     BadgesChannel: {}
 };
 
+var emojis = [];
 var userEmote = {};
 var extraEmotes = {};
 var cheers = {};

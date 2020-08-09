@@ -48,7 +48,6 @@ function Chat_Preinit() {
     ChatLive_LineAddCounter[1] = 0;
     ChatLive_Messages[0] = [];
     ChatLive_Messages[1] = [];
-    //Chat_loadBadgesGlobal();
 }
 
 function Chat_Init() {
@@ -75,7 +74,7 @@ function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
     if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes(0);
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
-    Main_ready(ChatLiveControls_SetEmojisObj);
+    ChatLiveControls_SetEmojisObj();
 }
 
 function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
