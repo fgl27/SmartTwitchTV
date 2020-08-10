@@ -2526,11 +2526,10 @@
     }
 
     function AddUser_RestoreUsers() {
-        Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
-        Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
         AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
-        if (AddUser_UsernameArray.length > 0) {
+
+        if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
 
             OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
@@ -2553,9 +2552,13 @@
 
             Main_Restore_history();
             return true;
+
         } else {
+
+            AddUser_UsernameArray = [];
             AddUser_UpdateSidepanelDefault();
             return false;
+
         }
     }
 
@@ -2721,6 +2724,7 @@
             });
             AddUser_UsernameArray.splice(0, 0, mainuser[0]);
         }
+
         var string = JSON.stringify(AddUser_UsernameArray);
         Main_setItem('AddUser_UsernameArray', string);
 
@@ -6827,10 +6831,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.239';
-    var Main_version_java = 30; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 09 2020';
-    var Main_version_web = 10; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.240';
+    var Main_version_java = 31; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 10 2020';
+    var Main_version_web = 51; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7076,11 +7080,10 @@
 
             if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-            Main_SearchInput = Main_getElementById("search_input");
-            Main_AddUserInput = Main_getElementById("user_input");
-            Main_ChatLiveInput = Main_getElementById("chat_send_input");
             Main_Scene1Doc = Main_getElementById('scene1');
             Main_Scene2Doc = Main_getElementById('scene2');
+            Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
+            Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
             Main_RestoreValues();
 
@@ -7155,11 +7158,13 @@
                 if (tempBackup !== null) {
                     var tempBackupArray = JSON.parse(tempBackup) || [];
 
-                    if (tempBackupArray.length > 0) {
+                    if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
                         Main_setItem('AddUser_UsernameArray', tempBackup);
 
                         tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
-                        if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
+                        var tempBackupObj = JSON.parse(tempBackup) || {};
+
+                        if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
 
                         AddUser_RestoreUsers();
                         if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
@@ -7192,10 +7197,6 @@
 
         Screens_InitScreens();
 
-        Main_getElementById("side_panel").style.transform = '';
-
-        Screens_first_init();
-
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
         }
@@ -7203,11 +7204,14 @@
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
         Main_SetHistoryworker();
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
-
         Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
 
         Main_SetStringsSecondary();
         Main_checkVersion();
+
+        Main_SearchInput = Main_getElementById("search_input");
+        Main_AddUserInput = Main_getElementById("user_input");
+        Main_ChatLiveInput = Main_getElementById("chat_send_input");
     }
 
     function Main_CheckBackup() {
@@ -7222,14 +7226,7 @@
                     function() {
                         OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
                     },
-                    2500
-                );
-
-                Main_setTimeout(
-                    function() {
-                        OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                    },
-                    25000
+                    10000
                 );
 
             }
@@ -7429,6 +7426,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.240 - August 10 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Web Version August 09 2020",
                 changes: ["Improve app start performance", "General performance improves and bug fixes"]
             },
@@ -7447,17 +7448,6 @@
             {
                 title: "Apk Version 3.0.238 - August 05 2020",
                 changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Apk Version 3.0.237 & Web Version August 05 2020",
-                changes: [
-                    "Add new notification options on settings.. Notifications options",
-                    'Add <span class="class_bold">"Streamer changed title"</span> notification for followed channels, disable by defaults',
-                    'Add <span class="class_bold">"Streamer changed game"</span> notification for followed channels, disable by defaults',
-                    'Add <span class="class_bold">"Game is Live"</span> notification for followed games, disable by defaults',
-                    "General improves to the reliability and performance of notifications",
-                    "General performance improves and bug fixes"
-                ]
             },
         ];
 
@@ -8614,7 +8604,7 @@
     function Main_setHistoryItem() {
         Main_setHistoryItemId = Main_setTimeout(
             Main_SaveHistoryItem,
-            5000,
+            10000,
             Main_setHistoryItemId
         );
     }
@@ -18857,14 +18847,18 @@
             key_fun: Users_handleKeyDown,
             exit_fun: Users_exit
         };
+        ScreenObj[Main_Users].key_controls = Screens_handleKeyControls.bind(null, Main_Users);
+
         ScreenObj[Main_ChannelContent] = {
             start_fun: ChannelContent_StartLoad,
             init_fun: ChannelContent_init,
             key_fun: ChannelContent_handleKeyDown,
             exit_fun: ChannelContent_exit
         };
+        ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
 
         Main_Startfirebase();
+        Screens_first_init();
     }
 
     //TODO cleanup not used when finished migrate all
@@ -19622,8 +19616,11 @@
 
                 if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
                 else {
+
                     Main_addEventListener("keydown", ScreenObj[key].key_fun);
-                    Screens_addFocus(true, key);
+                    if (ScreenObj[key].addFocus) Screens_addFocus(true, key);
+                    else ScreenObj[key].init_fun();
+
                 }
 
                 break;
@@ -27109,11 +27106,11 @@
         } else if (Sidepannel_Sidepannel_Pos === 10) {
             Main_showSettings();
         } else if (Sidepannel_Sidepannel_Pos === 11)
-            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
         else if (Sidepannel_Sidepannel_Pos === 12)
-            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
         else if (Sidepannel_Sidepannel_Pos === 13) Main_showExitDialog();
-        else if (Sidepannel_Sidepannel_Pos === 14) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls, true);
+        else if (Sidepannel_Sidepannel_Pos === 14) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls, true);
     }
 
     function Sidepannel_KeyEnter() {
@@ -27461,12 +27458,12 @@
                 break;
             case KEY_A:
             case KEY_7:
-                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
             case KEY_8:
-                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
@@ -27528,12 +27525,12 @@
                 break;
             case KEY_A:
             case KEY_7:
-                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+                Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_C:
             case KEY_8:
-                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+                Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
                 Sidepannel_Hide();
                 break;
             case KEY_E:
