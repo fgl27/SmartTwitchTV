@@ -36,6 +36,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -599,9 +600,11 @@ public final class Tools {
 
         if (isDirCreated) {
             try {
+
                 FileWriter mWriter = new FileWriter(Dir.getAbsolutePath() + "/" + file, false);
-                mWriter.write(file_content);
+                mWriter.write(file_content != null ? ("." + Base64.encodeToString(file_content.getBytes(), Base64.DEFAULT)) : "");
                 closeQuietly(mWriter);
+
             } catch (IOException e) {
                 Log.w(TAG, "BackupJson IOException ", e);
             }
@@ -634,7 +637,15 @@ public final class Tools {
 
             closeQuietly(mReader);
 
-            return data.toString();
+            String result = data.toString();
+
+            if (result.startsWith(".")){
+
+                result = new String(Base64.decode(result.substring(1), Base64.DEFAULT));
+
+            }
+
+            return result;
         } catch (FileNotFoundException e) {
             Log.w(TAG, "RestoreBakupFile FileNotFoundException ", e);
         }

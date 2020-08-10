@@ -420,14 +420,14 @@ function Main_CheckBackup() {
                 function() {
                     OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
                 },
-                2500
+                10000
             );
 
             Main_setTimeout(
                 function() {
                     OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
                 },
-                25000
+                30000
             );
 
         }
