@@ -14850,7 +14850,7 @@
 
             Sidepannel_CheckIfIsLiveWarn(
                 reason,
-                fail_type ? 5000 : 2000
+                0
             );
 
         } else if (Main_isScene1DocShown()) {
@@ -26910,6 +26910,41 @@
         return false;
     }
 
+    function Sidepannel_CheckIfIsLiveStart() {
+        Play_CheckIfIsLiveCleanEnd();
+
+        if (!Main_IsOn_OSInterface) {
+            return;
+        }
+
+        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+
+        if (doc) {
+
+            var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+
+            OSInterface_CheckIfIsLiveFeed(
+                Play_live_token.replace('%x', channel),
+                Play_live_links.replace('%x', channel),
+                Settings_Obj_values("show_feed_player_delay"),
+                "Sidepannel_CheckIfIsLiveResult",
+                1,
+                (Sidepannel_PosFeed % 100),
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
+            );
+
+        } else Play_CheckIfIsLiveCleanEnd();
+    }
+
+    function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
+        if (!Main_IsOn_OSInterface) return;
+
+        OSInterface_ClearSidePanelPlayer(!PreventcleanQuailities);
+        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+        Sidepannel_HideWarningDialog();
+    }
+
     var Sidepannel_PlayerViewSidePanelSet;
 
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
@@ -26951,7 +26986,7 @@
 
                     Sidepannel_CheckIfIsLiveWarn(
                         StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
-                        2000
+                        0
                     );
 
                 }
@@ -26978,50 +27013,24 @@
         Sidepannel_showWarningDialog(ErroText, time);
     }
 
+    var Sidepannel_showWarningDialogId;
+
     function Sidepannel_showWarningDialog(text, timeout) {
         Main_innerHTML('sidepannel_dialog_warning_text', text);
         Main_ShowElement('sidepannel_dialog_warning');
-        Main_setTimeout(Sidepannel_HideWarningDialog, timeout ? timeout : 0);
+
+        if (timeout) {
+            Sidepannel_showWarningDialogId = Main_setTimeout(
+                Sidepannel_HideWarningDialog,
+                timeout,
+                Sidepannel_showWarningDialogId
+            );
+        }
     }
 
     function Sidepannel_HideWarningDialog() {
+        Main_clearTimeout(Main_setHistoryItemId);
         Main_HideElement('sidepannel_dialog_warning');
-    }
-
-    function Sidepannel_CheckIfIsLiveStart() {
-        Play_CheckIfIsLiveCleanEnd();
-
-        if (!Main_IsOn_OSInterface) {
-            return;
-        }
-
-        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
-
-        if (doc) {
-            try {
-                var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
-
-                OSInterface_CheckIfIsLiveFeed(
-                    Play_live_token.replace('%x', channel),
-                    Play_live_links.replace('%x', channel),
-                    Settings_Obj_values("show_feed_player_delay"),
-                    "Sidepannel_CheckIfIsLiveResult",
-                    1,
-                    (Sidepannel_PosFeed % 100),
-                    DefaultHttpGetReTryMax,
-                    DefaultHttpGetTimeout
-                );
-            } catch (e) {
-                Play_CheckIfIsLiveCleanEnd();
-            }
-        } else Play_CheckIfIsLiveCleanEnd();
-    }
-
-    function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-        if (!Main_IsOn_OSInterface) return;
-
-        OSInterface_ClearSidePanelPlayer(!PreventcleanQuailities);
-        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
     }
 
     function Sidepannel_partnerIcon(name, partner, isrerun) {
@@ -28145,11 +28154,43 @@
         return position;
     }
 
-    function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    function UserLiveFeed_CheckIfIsLiveStart() {
+
+        Play_CheckIfIsLiveCleanEnd();
+
         if (!Main_IsOn_OSInterface) return;
 
-        OSInterface_ClearFeedPlayer();
-        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+        var obj = Play_CheckLiveThumb(false, true);
+
+        if (obj) {
+
+            var id, token, link;
+
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) { //vod
+
+                id = obj[7];
+                token = Play_vod_token;
+                link = Play_vod_links;
+
+            } else { //live
+
+                id = obj[6];
+                token = Play_live_token;
+                link = Play_live_links;
+            }
+
+            OSInterface_CheckIfIsLiveFeed(
+                token.replace('%x', id),
+                link.replace('%x', id),
+                Settings_Obj_values("show_feed_player_delay"),
+                "UserLiveFeed_CheckIfIsLiveResult",
+                UserLiveFeed_FeedPosX,
+                (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
+                DefaultHttpGetReTryMax,
+                DefaultHttpGetTimeout
+            );
+
+        } else UserLiveFeed_CheckIfIsLiveSTop();
     }
 
     var UserLiveFeed_CheckIfIsLiveResultThumb;
@@ -28168,7 +28209,7 @@
 
                 var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                     isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                    error = StreamInfo[6] + STR_SPACE;
+                    error;
 
                 if (StreamData.status === 200) {
 
@@ -28243,59 +28284,23 @@
 
                 } else {
 
-                    error += Play_CheckIfIsLiveGetEror(StreamData, isVod);
+                    error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamData, isVod);
 
                 }
 
-                UserLiveFeed_CheckIfIsLiveWarn(error);
+                Play_showWarningMidleDialog(error, 0);
             }
 
         }
 
     }
 
-    function UserLiveFeed_CheckIfIsLiveWarn(text) {
-        UserLiveFeed_CheckIfIsLiveSTop();
-        Play_showWarningMidleDialog(text, 2000);
-    }
-
-    function UserLiveFeed_CheckIfIsLiveStart() {
-
-        Play_CheckIfIsLiveCleanEnd();
-
+    function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
         if (!Main_IsOn_OSInterface) return;
 
-        var obj = Play_CheckLiveThumb(false, true);
-
-        if (obj) {
-
-            var id, token, link;
-
-            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) { //vod
-
-                id = obj[7];
-                token = Play_vod_token;
-                link = Play_vod_links;
-
-            } else { //live
-
-                id = obj[6];
-                token = Play_live_token;
-                link = Play_live_links;
-            }
-
-            OSInterface_CheckIfIsLiveFeed(
-                token.replace('%x', id),
-                link.replace('%x', id),
-                Settings_Obj_values("show_feed_player_delay"),
-                "UserLiveFeed_CheckIfIsLiveResult",
-                UserLiveFeed_FeedPosX,
-                (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-
-        } else UserLiveFeed_CheckIfIsLiveSTop();
+        OSInterface_ClearFeedPlayer();
+        if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+        Play_HideWarningMidleDialog();
     }
 
     function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
