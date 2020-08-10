@@ -282,6 +282,9 @@ function Main_loadTranslations(language) {
 
         Main_RestoreValues();
 
+        Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
+        Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
+
         Main_DoRestore = AddUser_RestoreUsers();
 
         if (!Main_values.Restore_Backup_Check) {

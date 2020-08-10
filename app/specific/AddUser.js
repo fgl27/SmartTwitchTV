@@ -200,11 +200,10 @@ function AddUser_loadDataNoUser() {
 }
 
 function AddUser_RestoreUsers() {
-    Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
-    Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 
     AddUser_UsernameArray = Main_getItemJson('AddUser_UsernameArray', []);
-    if (AddUser_UsernameArray.length > 0) {
+
+    if (Array.isArray(AddUser_UsernameArray) && AddUser_UsernameArray.length > 0) {
 
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
@@ -226,9 +225,13 @@ function AddUser_RestoreUsers() {
 
         Main_Restore_history();
         return true;
+
     } else {
+
+        AddUser_UsernameArray = [];
         AddUser_UpdateSidepanelDefault();
         return false;
+
     }
 }
 
@@ -385,7 +388,6 @@ function AddUser_removeUser(position) {
     }
 }
 
-var AddUser_BakupUserId;
 function AddUser_SaveUserArray() {
     if (AddUser_UsernameArray.length > 0) {
         //Remove first user alphabetical sort and add first back
