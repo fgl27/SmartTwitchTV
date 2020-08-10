@@ -2737,8 +2737,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void BackupFile(String file, String file_content) {
-            SaveBackupJsonHandler.removeCallbacksAndMessages(null);
-
             SaveBackupJsonHandler.postDelayed(() -> {
                 if (Tools.WR_storage(mWebViewContext)) {
                     Tools.BackupJson(

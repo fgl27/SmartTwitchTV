@@ -423,13 +423,6 @@ function Main_CheckBackup() {
                 10000
             );
 
-            Main_setTimeout(
-                function() {
-                    OSInterface_BackupFile(Main_HistoryBackupFile, JSON.stringify(Main_values_History_data));
-                },
-                30000
-            );
-
         }
     } else Main_CanBackup = false;
 
@@ -1806,7 +1799,7 @@ var Main_setHistoryItemId;
 function Main_setHistoryItem() {
     Main_setHistoryItemId = Main_setTimeout(
         Main_SaveHistoryItem,
-        5000,
+        10000,
         Main_setHistoryItemId
     );
 }
