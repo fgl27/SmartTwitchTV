@@ -470,7 +470,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
         Sidepannel_CheckIfIsLiveWarn(
             reason,
-            fail_type ? 5000 : 2000
+            0
         );
 
     } else if (Main_isScene1DocShown()) {

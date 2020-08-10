@@ -595,11 +595,43 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
-function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
+function UserLiveFeed_CheckIfIsLiveStart() {
+
+    Play_CheckIfIsLiveCleanEnd();
+
     if (!Main_IsOn_OSInterface) return;
 
-    OSInterface_ClearFeedPlayer();
-    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+    var obj = Play_CheckLiveThumb(false, true);
+
+    if (obj) {
+
+        var id, token, link;
+
+        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
+
+            id = obj[7];
+            token = Play_vod_token;
+            link = Play_vod_links;
+
+        } else {//live
+
+            id = obj[6];
+            token = Play_live_token;
+            link = Play_live_links;
+        }
+
+        OSInterface_CheckIfIsLiveFeed(
+            token.replace('%x', id),
+            link.replace('%x', id),
+            Settings_Obj_values("show_feed_player_delay"),
+            "UserLiveFeed_CheckIfIsLiveResult",
+            UserLiveFeed_FeedPosX,
+            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
+
+    } else UserLiveFeed_CheckIfIsLiveSTop();
 }
 
 var UserLiveFeed_CheckIfIsLiveResultThumb;
@@ -617,7 +649,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                error = StreamInfo[6] + STR_SPACE;
+                error;
 
             if (StreamData.status === 200) {
 
@@ -692,59 +724,23 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                error += Play_CheckIfIsLiveGetEror(StreamData, isVod);
+                error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamData, isVod);
 
             }
 
-            UserLiveFeed_CheckIfIsLiveWarn(error);
+            Play_showWarningMidleDialog(error, 0);
         }
 
     }
 
 }
 
-function UserLiveFeed_CheckIfIsLiveWarn(text) {
-    UserLiveFeed_CheckIfIsLiveSTop();
-    Play_showWarningMidleDialog(text, 2000);
-}
-
-function UserLiveFeed_CheckIfIsLiveStart() {
-
-    Play_CheckIfIsLiveCleanEnd();
-
+function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
     if (!Main_IsOn_OSInterface) return;
 
-    var obj = Play_CheckLiveThumb(false, true);
-
-    if (obj) {
-
-        var id, token, link;
-
-        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
-
-            id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
-
-        } else {//live
-
-            id = obj[6];
-            token = Play_live_token;
-            link = Play_live_links;
-        }
-
-        OSInterface_CheckIfIsLiveFeed(
-            token.replace('%x', id),
-            link.replace('%x', id),
-            Settings_Obj_values("show_feed_player_delay"),
-            "UserLiveFeed_CheckIfIsLiveResult",
-            UserLiveFeed_FeedPosX,
-            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-
-    } else UserLiveFeed_CheckIfIsLiveSTop();
+    OSInterface_ClearFeedPlayer();
+    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+    Play_HideWarningMidleDialog();
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
