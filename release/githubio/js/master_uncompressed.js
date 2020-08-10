@@ -8842,6 +8842,7 @@
             } else if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
         }
 
+        Main_clearTimeout(Main_setHistoryItemId);
         Main_SaveHistoryItem();
         //General related
         Screens_ClearAnimation(Screens_Current_Key);
