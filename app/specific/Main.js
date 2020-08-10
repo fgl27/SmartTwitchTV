@@ -353,11 +353,13 @@ function Main_initRestoreBackups() {
             if (tempBackup !== null) {
                 var tempBackupArray = JSON.parse(tempBackup) || [];
 
-                if (tempBackupArray.length > 0) {
+                if (Array.isArray(tempBackupArray) && tempBackupArray.length > 0) {
                     Main_setItem('AddUser_UsernameArray', tempBackup);
 
                     tempBackup = OSInterface_RestoreBackupFile(Main_HistoryBackupFile);
-                    if (tempBackup !== null) Main_setItem('Main_values_History_data', tempBackup);
+                    var tempBackupObj = JSON.parse(tempBackup) || {};
+
+                    if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
                     if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
