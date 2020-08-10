@@ -121,12 +121,10 @@ function ChatLiveControls_inputFocus() {
                 OSInterface_AvoidClicks(true);
                 Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
                 Main_ChatLiveInput.focus();
-                try {
-                    if (Main_IsOn_OSInterface) {
-                        if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
-                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
-                    }
-                } catch (e) {}
+                if (Main_IsOn_OSInterface) {
+                    if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
+                    else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
+                }
                 ChatLiveControls_keyBoardOn = true;
                 Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
                 //Set the avoidclicks only after focus

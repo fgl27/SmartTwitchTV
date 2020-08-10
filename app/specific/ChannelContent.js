@@ -643,22 +643,17 @@ function ChannelContent_LoadPreviewStart(obj) {
         return;
     }
 
-    try {
+    OSInterface_CheckIfIsLiveFeed(
+        Play_live_token.replace('%x', obj[6]),
+        Play_live_links.replace('%x', obj[6]),
+        Settings_Obj_values("show_feed_player_delay"),
+        "ChannelContent_LoadPreviewResult",
+        Main_ChannelContent,
+        0,
+        DefaultHttpGetReTryMax,
+        DefaultHttpGetTimeout
+    );
 
-        OSInterface_CheckIfIsLiveFeed(
-            Play_live_token.replace('%x', obj[6]),
-            Play_live_links.replace('%x', obj[6]),
-            Settings_Obj_values("show_feed_player_delay"),
-            "ChannelContent_LoadPreviewResult",
-            Main_ChannelContent,
-            0,
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-
-    } catch (e) {
-        Play_CheckIfIsLiveCleanEnd();
-    }
 }
 
 function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java

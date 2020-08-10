@@ -331,20 +331,16 @@ function Play_MultiStart(pos) {
     }
 
     Play_MultiArray[pos].resultId = (new Date().getTime());
-    //TODO remove the try after some app updates
-    try {
-        OSInterface_getStreamDataAsync(
-            Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
-            Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
-            'Play_MultiResult',
-            Play_MultiArray[pos].resultId,
-            pos,
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-    } catch (e) {
-        Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
-    }
+
+    OSInterface_getStreamDataAsync(
+        Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
+        Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
+        'Play_MultiResult',
+        Play_MultiArray[pos].resultId,
+        pos,
+        DefaultHttpGetReTryMax,
+        DefaultHttpGetTimeout
+    );
 
 }
 
