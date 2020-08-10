@@ -116,10 +116,6 @@
             pointer-events: none !important;
         }
 
-        .dontavoidclicks {
-            pointer-events: all;
-        }
-
         .feed_screen_input {
             pointer-events: none;
         }
@@ -1408,8 +1404,6 @@
             width: 24.7%;
             height: 48%;
             background-color: rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            font-size: 130%;
         }
 
         div.chat_container2 {
@@ -1922,13 +1916,9 @@
         }
 
         .chat_line {
-            margin-left: 0.15em;
-            margin-right: 0.15em;
-            padding-top: 0.35em;
-            padding-bottom: 0.35em;
+            padding: 0.35em;
             color: #FFFFFF;
-            font-size: 0.9em !important;
-            letter-spacing: 0.09ch;
+            text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
         }
 
         .chat_line,
@@ -1948,16 +1938,9 @@
             line-height: 1em !important;
         }
 
-        .chat_box {
-            background-color: transparent;
-            font-size: 0.65em;
-            margin: 0.25em;
-            text-shadow: -0.07em -0.07em 0 #000, 0.07em -0.07em 0 #000, -0.07em 0.07em 0 #000, 0.07em 0.07em 0 #000;
-        }
-
         .chat_loggedin {
             color: #FFFFFF;
-            text-shadow: -0.07em -0.07em 0 #000, 0.07em -0.07em 0 #000, -0.07em 0.07em 0 #000, 0.07em 0.07em 0 #000;
+            text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             font-size: 2.5vh;
             height: 2.75vh;
             width: 100%;
@@ -2901,33 +2884,33 @@
         </div>-->
         </div>
         <div id="scene2" class="screen_size visibility_hidden">
-            <div id="chat_container0" class="chat_container hide avoidclicks">
+            <div id="chat_container0" class="chat_container hide">
                 <div id="chat_inner_container" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>
                     <div id="chat_box_holder0" class="chat_box_holder">
                         <div style="transform: rotate(180deg);">
-                            <div id="chat_box0" class="chat_box"></div>
+                            <div id="chat_box0"></div>
                         </div>
                     </div>
                     <div id="play_chat_dialog"
                         style="position: absolute; text-align: center; width: 100%; margin-top: 50%;">
                         <div id="play_chat_dialog_text" class="strokedeline"
-                            style="display: inline-block; font-size: 100%; color: #FFFFFF;">
+                            style="display: inline-block; font-size: 4vh; color: #FFFFFF;">
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="chat_container1" class="chat_container2 hide avoidclicks">
+            <div id="chat_container1" class="chat_container2 hide">
                 <div id="chat_inner_container2" class="chat_size">
                     <div id="chat_loggedin1" class="chat_loggedin hide"></div>
                     <div id="chat_box_holder1" class="chat_box_holder">
                         <div style="transform: rotate(180deg);">
-                            <div id="chat_box1" class="chat_box"></div>
+                            <div id="chat_box1"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="chat_container_name1" class="chat_container2_name hide avoidclicks">
+            <div id="chat_container_name1" class="chat_container2_name hide">
                 <div id="chat_container_sound_icon1" class="chat_container_name_text">
                     <i class="icon-mute strokicon"></i>
                 </div>
@@ -2937,7 +2920,7 @@
                     <i class="icon-arrow-right strokicon"></i>
                 </div>
             </div>
-            <div id="chat_container_name0" class="chat_container_name hide avoidclicks">
+            <div id="chat_container_name0" class="chat_container_name hide">
                 <div class="chat_container_name_text">
                     <i class="icon-arrow-left strokicon"></i>
                 </div>
@@ -2947,7 +2930,7 @@
                     <i class="icon-volume strokicon"></i>
                 </div>
             </div>
-            <div id="scene_channel_panel" class="screen_size scene_channel_panel hide avoidclicks">
+            <div id="scene_channel_panel" class="screen_size scene_channel_panel hide">
                 <div class="playerinfo">
                     <div id="stream_clock" class="playclock"></div>
                     <div id="stream_info" class="shadow_text">
@@ -3285,9 +3268,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="controls_holder" class="controls_holder avoidclicks">
+                <div id="controls_holder" class="controls_holder">
                 </div>
-                <div id="progress_pause_holder" class="progress_pause_holder shadow_text avoidclicks">
+                <div id="progress_pause_holder" class="progress_pause_holder shadow_text">
                     <div id="progress_bar_div" class="progress_bar_div">
                         <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"></div>
                         <div>
@@ -3421,11 +3404,11 @@
 
                 <div id="chat_emotes_counter" class="chat_emotes_counter"></div>
             </div>
-            <div id="playsideinfo" class="avoidclicks playsideinfo shadow_text hide">
+            <div id="playsideinfo" class="playsideinfo shadow_text hide">
                 <div id="stream_quality" class="playsideinfostatus"></div>
                 <div id="stream_status" class="playsideinfostatus"></div>
             </div>
-            <div id="dialog_multi_help" class="avoidclicks hide"
+            <div id="dialog_multi_help" class="hide"
                 style="position: absolute; width: 100%; height : 100%; z-index: 1;">
                 <div class="screens dialog_multi_help_holder">
                     <div id="dialog_multi_help_text" class="screens dialog_multi_help"></div>
@@ -3673,7 +3656,7 @@
             <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
                 <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
-            <div id="user_feed" class="avoidclicks user_feed visibility_hidden">
+            <div id="user_feed" class="user_feed visibility_hidden">
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                     <div class="loading">
                         <div></div>
