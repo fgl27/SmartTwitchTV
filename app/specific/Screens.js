@@ -115,6 +115,7 @@ function Screens_InitScreens() {
     ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
 
     Main_Startfirebase();
+    Screens_first_init();
 }
 
 //TODO cleanup not used when finished migrate all

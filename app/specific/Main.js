@@ -274,16 +274,12 @@ function Main_loadTranslations(language) {
 
         if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 
-        Main_SearchInput = Main_getElementById("search_input");
-        Main_AddUserInput = Main_getElementById("user_input");
-        Main_ChatLiveInput = Main_getElementById("chat_send_input");
         Main_Scene1Doc = Main_getElementById('scene1');
         Main_Scene2Doc = Main_getElementById('scene2');
-
-        Main_RestoreValues();
-
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
+
+        Main_RestoreValues();
 
         Main_DoRestore = AddUser_RestoreUsers();
 
@@ -395,10 +391,6 @@ function Main_initWindows() {
 
     Screens_InitScreens();
 
-    Main_getElementById("side_panel").style.transform = '';
-
-    Screens_first_init();
-
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
@@ -406,11 +398,14 @@ function Main_initWindows() {
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
-
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
 
     Main_SetStringsSecondary();
     Main_checkVersion();
+
+    Main_SearchInput = Main_getElementById("search_input");
+    Main_AddUserInput = Main_getElementById("user_input");
+    Main_ChatLiveInput = Main_getElementById("chat_send_input");
 }
 
 function Main_CheckBackup() {
