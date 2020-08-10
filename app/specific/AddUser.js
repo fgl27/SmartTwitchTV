@@ -396,20 +396,12 @@ function AddUser_SaveUserArray() {
         AddUser_UsernameArray.splice(0, 0, mainuser[0]);
     }
 
-    AddUser_BakupUserId = Main_setTimeout(
-        AddUser_BakupUser,
-        10000,
-        AddUser_BakupUserId
-    );
-
-    //Main_Log('AddUser_SaveUserArray');
-}
-
-function AddUser_BakupUser() {
     var string = JSON.stringify(AddUser_UsernameArray);
     Main_setItem('AddUser_UsernameArray', string);
 
     if (Main_CanBackup) OSInterface_BackupFile(Main_UserBackupFile, string);
+
+    //Main_Log('AddUser_SaveUserArray');
 }
 
 function AddUser_UserMakeOne(position) {
