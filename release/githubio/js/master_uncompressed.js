@@ -3413,22 +3413,17 @@
             return;
         }
 
-        try {
+        OSInterface_CheckIfIsLiveFeed(
+            Play_live_token.replace('%x', obj[6]),
+            Play_live_links.replace('%x', obj[6]),
+            Settings_Obj_values("show_feed_player_delay"),
+            "ChannelContent_LoadPreviewResult",
+            Main_ChannelContent,
+            0,
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
 
-            OSInterface_CheckIfIsLiveFeed(
-                Play_live_token.replace('%x', obj[6]),
-                Play_live_links.replace('%x', obj[6]),
-                Settings_Obj_values("show_feed_player_delay"),
-                "ChannelContent_LoadPreviewResult",
-                Main_ChannelContent,
-                0,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-
-        } catch (e) {
-            Play_CheckIfIsLiveCleanEnd();
-        }
     }
 
     function ChannelContent_LoadPreviewResult(StreamData, x) { //Called by Java
@@ -3635,12 +3630,10 @@
                     OSInterface_AvoidClicks(true);
                     Main_AddClassWitEle(Main_ChatLiveInput, 'chat_input_class_focus');
                     Main_ChatLiveInput.focus();
-                    try {
-                        if (Main_IsOn_OSInterface) {
-                            if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
-                            else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
-                        }
-                    } catch (e) {}
+                    if (Main_IsOn_OSInterface) {
+                        if (OptionsShowObj.keyboard_options.defaultValue === 1) OSInterface_KeyboardCheckAndHIde();
+                        else if (OptionsShowObj.keyboard_options.defaultValue === 2) OSInterface_hideKeyboardFrom();
+                    }
                     ChatLiveControls_keyBoardOn = true;
                     Main_addEventListener("keydown", ChatLiveControls_KeyboardEvent);
                     //Set the avoidclicks only after focus
@@ -16801,20 +16794,16 @@
         }
 
         Play_MultiArray[pos].resultId = (new Date().getTime());
-        //TODO remove the try after some app updates
-        try {
-            OSInterface_getStreamDataAsync(
-                Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
-                Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
-                'Play_MultiResult',
-                Play_MultiArray[pos].resultId,
-                pos,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
-            );
-        } catch (e) {
-            Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
-        }
+
+        OSInterface_getStreamDataAsync(
+            Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
+            Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
+            'Play_MultiResult',
+            Play_MultiArray[pos].resultId,
+            pos,
+            DefaultHttpGetReTryMax,
+            DefaultHttpGetTimeout
+        );
 
     }
 
