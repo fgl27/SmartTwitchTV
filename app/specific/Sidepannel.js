@@ -329,11 +329,11 @@ function Sidepannel_KeyEnterBase() {
     } else if (Sidepannel_Sidepannel_Pos === 10) {
         Main_showSettings();
     } else if (Sidepannel_Sidepannel_Pos === 11)
-        Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+        Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
     else if (Sidepannel_Sidepannel_Pos === 12)
-        Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+        Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
     else if (Sidepannel_Sidepannel_Pos === 13) Main_showExitDialog();
-    else if (Sidepannel_Sidepannel_Pos === 14) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls, true);
+    else if (Sidepannel_Sidepannel_Pos === 14) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls, true);
 }
 
 function Sidepannel_KeyEnter() {
@@ -681,12 +681,12 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_A:
         case KEY_7:
-            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
             Sidepannel_Hide();
             break;
         case KEY_C:
         case KEY_8:
-            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
             Sidepannel_Hide();
             break;
         case KEY_E:
@@ -748,12 +748,12 @@ function Sidepannel_handleKeyDownMain(event) {
             break;
         case KEY_A:
         case KEY_7:
-            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
             Sidepannel_Hide();
             break;
         case KEY_C:
         case KEY_8:
-            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Screens_Current_Key].key_controls);
+            Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
             Sidepannel_Hide();
             break;
         case KEY_E:

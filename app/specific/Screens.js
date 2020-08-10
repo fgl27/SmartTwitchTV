@@ -104,12 +104,15 @@ function Screens_InitScreens() {
         key_fun: Users_handleKeyDown,
         exit_fun: Users_exit
     };
+    ScreenObj[Main_Users].key_controls = Screens_handleKeyControls.bind(null, Main_Users);
+
     ScreenObj[Main_ChannelContent] = {
         start_fun: ChannelContent_StartLoad,
         init_fun: ChannelContent_init,
         key_fun: ChannelContent_handleKeyDown,
         exit_fun: ChannelContent_exit
     };
+    ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
 
     Main_Startfirebase();
 }
@@ -864,8 +867,11 @@ function Screens_handleKeyControls(key, event) {
 
             if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
             else {
+
                 Main_addEventListener("keydown", ScreenObj[key].key_fun);
-                Screens_addFocus(true, key);
+                if (ScreenObj[key].addFocus) Screens_addFocus(true, key);
+                else ScreenObj[key].init_fun();
+
             }
 
             break;
