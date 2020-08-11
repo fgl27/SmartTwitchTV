@@ -4801,25 +4801,30 @@
 
     function ChatLive_loadChatters(chat_number, id) {
 
-        if (Main_IsOn_OSInterface && Settings_value.show_chatters.defaultValue) {
+        if (Settings_value.show_chatters.defaultValue) {
 
             Main_innerHTML(
                 "chat_loggedin" + chat_number,
                 '...' + STR_IN_CHAT
             );
             Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
+
             Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
             if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
 
-            ChatLive_loadChattersLoad(chat_number, id);
+            if (Main_IsOn_OSInterface) {
 
-            ChatLive_loadChattersId[chat_number] = Main_setInterval(
-                function() {
-                    ChatLive_loadChattersLoad(chat_number, id);
-                },
-                5 * 60 * 1000, //5 min
-                ChatLive_loadChattersId[chat_number]
-            );
+                ChatLive_loadChattersLoad(chat_number, id);
+
+                ChatLive_loadChattersId[chat_number] = Main_setInterval(
+                    function() {
+                        ChatLive_loadChattersLoad(chat_number, id);
+                    },
+                    5 * 60 * 1000, //5 min
+                    ChatLive_loadChattersId[chat_number]
+                );
+
+            }
 
         }
 
@@ -6133,6 +6138,7 @@
         ChatLive_LineAddCounter[chat_number] = 0;
         ChatLive_Messages[chat_number] = [];
 
+        ChatLive_resetChatters(chat_number);
         Main_emptyWithEle(Chat_div[chat_number]);
 
         ChatLive_loaded[chat_number] = false;
@@ -14394,7 +14400,7 @@
     var Play_ChatPositions = 0;
     var Play_ChatPositionConvertBefore = Play_ChatPositions;
     var Play_ChatBackground = 0.55;
-    var Play_ChatSizeValue = 2;
+    var Play_ChatSizeValue = 4;
     var Play_MaxChatSizeValue = 4;
     var Play_PanelHideID = null;
     var Play_isFullScreen = true;
@@ -14558,7 +14564,7 @@
         Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
 
         Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
-        Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
+        Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);
         Play_ChatEnable = Main_getItemBool('ChatEnable', false);
         Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
         Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
@@ -24790,7 +24796,7 @@
         },
         "show_chatters": { //Migrated to dialog
             "values": ["no", "yes"],
-            "defaultValue": 1
+            "defaultValue": 2
         },
         "individual_lines": { //Migrated to dialog
             "values": ["no", "yes"],
