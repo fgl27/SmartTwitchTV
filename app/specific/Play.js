@@ -22,7 +22,7 @@
 var Play_ChatPositions = 0;
 var Play_ChatPositionConvertBefore = Play_ChatPositions;
 var Play_ChatBackground = 0.55;
-var Play_ChatSizeValue = 2;
+var Play_ChatSizeValue = 4;
 var Play_MaxChatSizeValue = 4;
 var Play_PanelHideID = null;
 var Play_isFullScreen = true;
@@ -186,7 +186,7 @@ function Play_PreStart() {
     Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
-    Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 2);
+    Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);
     Play_ChatEnable = Main_getItemBool('ChatEnable', false);
     Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
     Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);

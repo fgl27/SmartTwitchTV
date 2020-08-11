@@ -385,7 +385,7 @@ var Settings_value = {
     },
     "show_chatters": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "individual_lines": {//Migrated to dialog
         "values": ["no", "yes"],

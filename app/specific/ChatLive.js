@@ -300,25 +300,30 @@ function ChatLive_resetChatters(chat_number) {
 
 function ChatLive_loadChatters(chat_number, id) {
 
-    if (Main_IsOn_OSInterface && Settings_value.show_chatters.defaultValue) {
+    if (Settings_value.show_chatters.defaultValue) {
 
         Main_innerHTML(
             "chat_loggedin" + chat_number,
             '...' + STR_IN_CHAT
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
+
         Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
         if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
 
-        ChatLive_loadChattersLoad(chat_number, id);
+        if (Main_IsOn_OSInterface) {
 
-        ChatLive_loadChattersId[chat_number] = Main_setInterval(
-            function() {
-                ChatLive_loadChattersLoad(chat_number, id);
-            },
-            5 * 60 * 1000,//5 min
-            ChatLive_loadChattersId[chat_number]
-        );
+            ChatLive_loadChattersLoad(chat_number, id);
+
+            ChatLive_loadChattersId[chat_number] = Main_setInterval(
+                function() {
+                    ChatLive_loadChattersLoad(chat_number, id);
+                },
+                5 * 60 * 1000,//5 min
+                ChatLive_loadChattersId[chat_number]
+            );
+
+        }
 
     }
 
@@ -1645,6 +1650,7 @@ function ChatLive_Clear(chat_number) {
     ChatLive_LineAddCounter[chat_number] = 0;
     ChatLive_Messages[chat_number] = [];
 
+    ChatLive_resetChatters(chat_number);
     Main_emptyWithEle(Chat_div[chat_number]);
 
     ChatLive_loaded[chat_number] = false;
