@@ -7785,17 +7785,33 @@
         if (Main_IsOn_OSInterface) {
             var device = OSInterface_getDevice();
             var Webviewversion = OSInterface_getWebviewVersion();
+            var Manufacturer = OSInterface_getManufacturer() + ' - ';
             Main_Log('Webviewversion ' + Webviewversion);
 
             Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
-                (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + device;
+                (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + device +
+                ' Sdk: ' + Main_AndroidSDK;
 
             if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
             else Main_checkWebVersionRun();
 
-            Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, Webviewversion, device);
+            Main_EventVersion(
+                Main_IsOn_OSInterfaceVersion,
+                Main_minversion,
+                Webviewversion,
+                device,
+                Main_AndroidSDK,
+                Manufacturer
+            );
         } else {
-            Main_EventVersion(Main_IsOn_OSInterfaceVersion, Main_minversion, navigator.appVersion, navigator.platform);
+            Main_EventVersion(
+                Main_IsOn_OSInterfaceVersion,
+                Main_minversion,
+                navigator.appVersion,
+                navigator.platform,
+                'Browser',
+                'Browser'
+            );
         }
 
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
@@ -9308,7 +9324,7 @@
         }
     }
 
-    function Main_EventVersion(apk, web, webview, device) {
+    function Main_EventVersion(apk, web, webview, device, sdk, manufacturer) {
         if (skipfirebase) return;
 
         try {
@@ -9323,7 +9339,9 @@
                             'apk_version': apk,
                             'web_version': web,
                             'webview_version': webview,
-                            'device_model': device
+                            'device_model': device,
+                            'sdk': sdk,
+                            'manufacturer': manufacturer,
                         }
                     );
 
