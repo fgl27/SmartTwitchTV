@@ -1440,6 +1440,9 @@ public class PlayerActivity extends Activity {
 
     //Force close the app
     private void closeThis() {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "closeThis");
+        }
         closeThisCalled = true;
         StopNotifications();
         finishAndRemoveTask();
