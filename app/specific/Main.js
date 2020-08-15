@@ -983,11 +983,11 @@ function Main_checkVersion() {
     if (Main_IsOn_OSInterface) {
         var device = OSInterface_getDevice();
         var Webviewversion = OSInterface_getWebviewVersion();
-        var Manufacturer = OSInterface_getManufacturer() + ' - ';
+        var Manufacturer = OSInterface_getManufacturer();
         Main_Log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
-            (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + device +
+            (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + ' - ' + device +
             ' Sdk: ' + Main_AndroidSDK;
 
         if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
