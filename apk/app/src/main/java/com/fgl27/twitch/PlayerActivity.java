@@ -78,6 +78,9 @@ import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -217,10 +220,8 @@ public class PlayerActivity extends Activity {
     private boolean canRunChannel;
     private boolean closeThisCalled;
 
-    private String[][] PreviewFeedHandlerResult = new String[25][100];
-    private String[] DataResult = new String[PlayerAccount];
-
-    private HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
+    private String[][] PreviewFeedResult = new String[25][100];
+    private String[] StreamDataResult = new String[PlayerAccount];
 
     private Handler[] RuntimeHandler = new Handler[2];
     private Handler MainThreadHandler;
@@ -231,11 +232,11 @@ public class PlayerActivity extends Activity {
     private Handler ChannelHandler;
     private Handler DeleteHandler;
 
-    private Handler PreviewFeedHandler;
-    private Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
-
     private Process PingProcess;
     private Runtime PingRuntime;
+
+    private final BlockingQueue<Runnable> DataWorkQueue = new LinkedBlockingQueue<>();
+    private ThreadPoolExecutor DataThreadPool;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -261,17 +262,26 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
+            int Number_of_Cores =  Runtime.getRuntime().availableProcessors();
+            //Background threads
+            DataThreadPool = new ThreadPoolExecutor(
+                    Number_of_Cores,
+                    Number_of_Cores * 2,
+                    60,
+                    TimeUnit.SECONDS,
+                    DataWorkQueue
+            );
+
             //Main loop threads
             Looper MainLooper = Looper.getMainLooper();
             MainThreadHandler = new Handler(MainLooper);
             CurrentPositionHandler[0] = new Handler(MainLooper);
             CurrentPositionHandler[1] = new Handler(MainLooper);
-
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(MainLooper);
             }
 
-            //BackGroundThreadEtc loop threads
+            //BackGroundThreadEtc loop threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BackGroundThread");
             backGroundThread.start();
             Looper BackGroundThreadLooper = backGroundThread.getLooper();
@@ -282,24 +292,14 @@ public class PlayerActivity extends Activity {
             ChannelHandler = new Handler(BackGroundThreadLooper);
             DeleteHandler = new Handler(BackGroundThreadLooper);
 
-            //Other loop threads
-            HandlerThread previewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
-            previewFeedHandlerThread.start();
-            PreviewFeedHandler = new Handler(previewFeedHandlerThread.getLooper());
-
-            for (int i = 0; i < PlayerAccount; i++) {
-                DataResultThread[i] = new HandlerThread("DataResultThread" + i);
-                DataResultThread[i].start();
-                DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
-            }
-
+            //Ping handler this handler may block the Queue but is very light run it on separated treads
+            //So one can un block the other
             HandlerThread[] runtimeThread = new HandlerThread[2];
             for (int i = 0; i < 2; i++) {
                 runtimeThread[i] = new HandlerThread("RuntimeThread" + i);
                 runtimeThread[i].start();
                 RuntimeHandler[i] = new Handler(runtimeThread[i].getLooper());
             }
-
             PingRuntime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
@@ -2126,7 +2126,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
-            return PreviewFeedHandlerResult[x][y];
+            return PreviewFeedResult[x][y];
         }
 
         //TODO remove this after some app updates
@@ -2136,20 +2136,21 @@ public class PlayerActivity extends Activity {
             CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout);
         }
 
-        @SuppressWarnings("unused")//called by JS
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
-            PreviewFeedHandlerResult[x][y] = null;
+            PreviewFeedResult[x][y] = null;
 
-            PreviewFeedHandler.post(() ->
+            DataThreadPool.execute(() ->
                     {
                         try {
-                            PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                            PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
                         } catch (Exception e) {
                             Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
                         }
 
-                        if (PreviewFeedHandlerResult[x][y] != null)
+                        if (PreviewFeedResult[x][y] != null)
                             LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
                     }
             );
@@ -2162,7 +2163,8 @@ public class PlayerActivity extends Activity {
             return getStreamData(token_url, hls_url, Timeout);
         }
 
-        @SuppressWarnings("unused")//called by JS
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public String getStreamData(String token_url, String hls_url, int Timeout) {
             try {
@@ -2181,13 +2183,13 @@ public class PlayerActivity extends Activity {
             getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout);
         }
 
-        @SuppressWarnings("unused")//called by JS
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
-            DataResultHandler[position].removeCallbacksAndMessages(null);
-            DataResult[position] = null;
+            StreamDataResult[position] = null;
 
-            DataResultHandler[position].post(() ->
+            DataThreadPool.execute(() ->
                     {
                         String result = null;
 
@@ -2197,8 +2199,8 @@ public class PlayerActivity extends Activity {
                             Log.w(TAG, "getStreamDataAsync Exception ", e);
                         }
 
-                        if (result != null) DataResult[position] = result;
-                        else DataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
+                        if (result != null) StreamDataResult[position] = result;
+                        else StreamDataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
 
                         LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
                     }
@@ -2209,7 +2211,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetDataResult(int position) {
-            return DataResult[position];
+            return StreamDataResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2222,11 +2224,9 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                              String callback, long checkResult, int key, int thread) {
+            StreamDataResult[thread] = null;
 
-            DataResultHandler[thread].removeCallbacksAndMessages(null);
-            DataResult[thread] = null;
-
-            DataResultHandler[thread].post(() ->
+            DataThreadPool.execute(() ->
                     {
                         Tools.ResponseObj response;
 
@@ -2242,7 +2242,7 @@ public class PlayerActivity extends Activity {
                             );
 
                             if (response != null) {
-                                DataResult[thread] = new Gson().toJson(response);
+                                StreamDataResult[thread] = new Gson().toJson(response);
                                 LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                                 return;
                             }
@@ -2250,7 +2250,7 @@ public class PlayerActivity extends Activity {
                         }
 
                         //MethodUrl is null inform JS callback
-                        DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
+                        StreamDataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
                         LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                     }
             );
@@ -2389,7 +2389,8 @@ public class PlayerActivity extends Activity {
             ClearSidePanelPlayer();
         }
 
-        @SuppressWarnings("unused")//called by JS
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer() {
             MainThreadHandler.post(() -> {
