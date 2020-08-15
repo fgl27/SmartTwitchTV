@@ -697,8 +697,9 @@ function Screens_loadDataSuccessFinish(key) {
 
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
-        if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
-        else {
+        if (ScreenObj[key].emptyContent) {
+            if (key === Main_values.Main_Go) Main_showWarningDialog(ScreenObj[key].empty_str());
+        } else {
 
             ScreenObj[key].status = true;
             var i, Cells_length = ScreenObj[key].Cells.length;
