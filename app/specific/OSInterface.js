@@ -171,7 +171,20 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
             y,
             Timeout
         );
-    } catch (e) {}
+    } catch (e) {
+        try {
+            Android.CheckIfIsLiveFeed(
+                token_url,
+                hls_url,
+                100,
+                callback,
+                x,
+                y,
+                2,
+                Timeout
+            );
+        } catch (e) {}
+    }
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
