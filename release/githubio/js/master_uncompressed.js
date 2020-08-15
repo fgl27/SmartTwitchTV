@@ -6832,7 +6832,7 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.240';
     var Main_version_java = 31; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 10 2020';
+    var Main_minversion = 'August 15 2020';
     var Main_version_web = 51; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
@@ -7425,6 +7425,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version August 15 2020",
+                changes: ["Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slow dows do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag"]
+            },
+            {
                 title: "Apk Version 3.0.240 - August 10 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -8049,32 +8053,32 @@
 
     function Main_showScene1Doc() {
         //Main_ShowElementWithEle(Main_Scene1Doc);
-        Main_RemoveClassWithEle(Main_Scene1Doc, 'visibility_hidden');
+        Main_RemoveClassWithEle(Main_Scene1Doc, 'transform_hide');
     }
 
     function Main_hideScene1Doc() {
         //Main_HideElementWithEle(Main_Scene1Doc);
-        Main_AddClassWitEle(Main_Scene1Doc, 'visibility_hidden');
+        Main_AddClassWitEle(Main_Scene1Doc, 'transform_hide');
     }
 
     function Main_isScene1DocShown() {
         //return Main_isElementShowingWithEle(Main_Scene1Doc);
-        return !Main_A_includes_B(Main_Scene1Doc.className, 'visibility_hidden');
+        return !Main_A_includes_B(Main_Scene1Doc.className, 'transform_hide');
     }
 
     function Main_showScene2Doc() {
         //Main_ShowElementWithEle(Main_Scene2Doc);
-        Main_RemoveClassWithEle(Main_Scene2Doc, 'visibility_hidden');
+        Main_RemoveClassWithEle(Main_Scene2Doc, 'transform_hide');
     }
 
     function Main_hideScene2Doc() {
         //Main_HideElementWithEle(Main_Scene2Doc);
-        Main_AddClassWitEle(Main_Scene2Doc, 'visibility_hidden');
+        Main_AddClassWitEle(Main_Scene2Doc, 'transform_hide');
     }
 
     function Main_isScene2DocShown() {
         //return Main_isElementShowingWithEle(Main_Scene2Doc);
-        return !Main_A_includes_B(Main_Scene2Doc.className, 'visibility_hidden');
+        return !Main_A_includes_B(Main_Scene2Doc.className, 'transform_hide');
     }
 
     function Main_OPenAsVod(index) {
@@ -15856,8 +15860,7 @@
     }
 
     function Play_isPanelShown() {
-        //return Play_PanneInfoDoclId.style.opacity === '1';
-        return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'hide');
+        return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
     }
 
     function Play_hidePanel() {
@@ -15870,8 +15873,7 @@
     }
 
     function Play_ForceShowPannel() {
-        //Play_PanneInfoDoclId.style.opacity = "1";
-        Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'hide');
+        Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'transform_hide');
 
         if (Play_StayDialogVisible()) return;
 
@@ -15880,8 +15882,7 @@
     }
 
     function Play_ForceHidePannel() {
-        //Play_PanneInfoDoclId.style.opacity = "0";
-        Main_AddClassWitEle(Play_PanneInfoDoclId, 'hide');
+        Main_AddClassWitEle(Play_PanneInfoDoclId, 'transform_hide');
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
@@ -27971,11 +27972,11 @@
     }
 
     function UserLiveFeed_isFeedShow() {
-        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'visibility_hidden');
+        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'transform_hide');
     }
 
     function UserLiveFeed_Show() {
-        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
     }
 
     function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -27987,7 +27988,7 @@
     function UserLiveFeed_HideAfter() {
         //return;//return;
         UserLiveFeed_Showloading(false);
-        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
     }
 
     function UserLiveFeed_ShowFeed() {
