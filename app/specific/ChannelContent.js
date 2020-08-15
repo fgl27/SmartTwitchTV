@@ -353,8 +353,8 @@ function ChannelContent_addFocusFollow() {
 
 function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
+        ChannelContent_CheckIfIsLiveSTop();
         Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
-        Sidepannel_CheckIfIsLiveSTop();
         Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
@@ -589,32 +589,27 @@ function ChannelContent_handleKeyDown(event) {
     }
 }
 
-
 function ChannelContent_LoadPreview() {
-    if (!ChannelContent_isoffline && Main_isScene1DocShown() &&
-        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
+    if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
+        Main_isScene1DocShown() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
-        if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
+        var doc = Main_getElementById('channel_content_cell0_1');
 
-            var doc = Main_getElementById('channel_content_cell0_1');
+        if (doc) {
 
-            if (doc) {
+            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
 
-                if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
+                ChannelContent_LoadPreviewStart(obj);
 
-                    ChannelContent_LoadPreviewStart(obj);
+            } else if (Play_PreviewId) {
 
-                } else if (Play_PreviewId) {
+                ChannelContent_LoadPreviewRestore();
 
-                    ChannelContent_LoadPreviewRestore();
-
-                }
-
-                Play_PreviewVideoEnded = false;
             }
 
+            Play_PreviewVideoEnded = false;
         }
 
     }
@@ -636,7 +631,31 @@ function ChannelContent_LoadPreviewRestore() {
     Main_AddClassWitEle(img, 'visibility_hidden');
 }
 
+function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    Main_clearTimeout(ChannelContent_LoadPreviewStartId);
+
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+
+        OSInterface_ClearSidePanelPlayer();
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+}
+
+var ChannelContent_LoadPreviewStartId;
 function ChannelContent_LoadPreviewStart(obj) {
+    ChannelContent_LoadPreviewStartId = Main_setTimeout(
+        function() {
+
+            ChannelContent_LoadPreviewRun(obj);
+
+        },
+        50 + Settings_Obj_values('show_feed_player_delay'),
+        ChannelContent_LoadPreviewStartId
+    );
+}
+
+function ChannelContent_LoadPreviewRun(obj) {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface) {
@@ -646,12 +665,10 @@ function ChannelContent_LoadPreviewStart(obj) {
     OSInterface_CheckIfIsLiveFeed(
         Play_live_token.replace('%x', obj[6]),
         Play_live_links.replace('%x', obj[6]),
-        Settings_Obj_values("show_feed_player_delay"),
         "ChannelContent_LoadPreviewResult",
         Main_ChannelContent,
         0,
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }
@@ -707,7 +724,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 }
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Play_CheckIfIsLiveCleanEnd();
     Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     Main_showWarningDialog(
         ErrorText,

@@ -446,8 +446,7 @@ function Play_CheckIfIsLiveStart(callback) {
             callback,
             Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
+            NewDefaultHttpGetTimeout
         );
     }
 
@@ -488,7 +487,8 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
                     25
                 );
             } else {
-                Sidepannel_CheckIfIsLiveSTop();
+                Play_CheckIfIsLiveCleanEnd();
+
                 Main_RemoveClass(
                     ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
                     'visibility_hidden'
@@ -515,7 +515,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
 function Play_CheckIfIsLiveCleanEnd() {
     Play_PreviewURL = '';
-    Play_PreviewId = 0;
+    Play_PreviewId = null;
     Play_PreviewResponseText = '';
     Play_PreviewOffset = 0;
 }
@@ -584,8 +584,7 @@ function Play_getStreamData(channel_name) {
     return OSInterface_getStreamData(
         Play_live_token.replace('%x', channel_name),
         Play_live_links.replace('%x', channel_name),
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }
@@ -875,8 +874,7 @@ function Play_loadData(synchronous) {
                 'Play_loadDataResult',
                 Play_loadDataId,
                 0,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
+                NewDefaultHttpGetTimeout
             );
         }
 

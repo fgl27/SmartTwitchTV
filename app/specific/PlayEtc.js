@@ -668,8 +668,7 @@ function Play_StayCheckLive() {
         'Play_StayCheckLiveResult',
         Play_loadDataId,
         0,
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }

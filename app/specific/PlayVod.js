@@ -415,8 +415,7 @@ function PlayVod_loadData() {
             'PlayVod_loadDataResult',
             PlayVod_loadDataId,
             0,
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
+            NewDefaultHttpGetTimeout
         );
 
     } else PlayVod_loadDataSuccessFake();

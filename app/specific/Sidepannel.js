@@ -133,7 +133,32 @@ function Sidepannel_RestoreThumb(doc, play_data) {
     return false;
 }
 
+function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+
+        OSInterface_ClearSidePanelPlayer();
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+    Sidepannel_HideWarningDialog();
+}
+
+var Sidepannel_CheckIfIsLiveStartId;
 function Sidepannel_CheckIfIsLiveStart() {
+    Sidepannel_CheckIfIsLiveStartId = Main_setTimeout(
+        function() {
+
+            Sidepannel_CheckIfIsLive();
+
+        },
+        100 + Settings_Obj_values('show_feed_player_delay'),
+        Sidepannel_CheckIfIsLiveStartId
+    );
+}
+
+function Sidepannel_CheckIfIsLive() {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface) {
@@ -149,23 +174,13 @@ function Sidepannel_CheckIfIsLiveStart() {
         OSInterface_CheckIfIsLiveFeed(
             Play_live_token.replace('%x', channel),
             Play_live_links.replace('%x', channel),
-            Settings_Obj_values("show_feed_player_delay"),
             "Sidepannel_CheckIfIsLiveResult",
             1,
             (Sidepannel_PosFeed % 100),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
+            NewDefaultHttpGetTimeout
         );
 
     } else Play_CheckIfIsLiveCleanEnd();
-}
-
-function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsOn_OSInterface) return;
-
-    OSInterface_ClearSidePanelPlayer(!PreventcleanQuailities);
-    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Sidepannel_HideWarningDialog();
 }
 
 var Sidepannel_PlayerViewSidePanelSet;
@@ -230,7 +245,7 @@ function Sidepannel_SetPlayerViewSidePanel() {
 }
 
 function Sidepannel_CheckIfIsLiveWarn(ErroText, time) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Play_CheckIfIsLiveCleanEnd();
     Sidepannel_UpdateThumbDiv();
     Sidepannel_showWarningDialog(ErroText, time);
 }

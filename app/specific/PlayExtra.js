@@ -115,8 +115,7 @@ function PlayExtra_Resume(synchronous) {
                 'PlayExtra_ResumeResult',
                 PlayExtra_ResumeId,
                 1,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
+                NewDefaultHttpGetTimeout
             );
         }
 

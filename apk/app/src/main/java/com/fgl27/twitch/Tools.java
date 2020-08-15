@@ -175,34 +175,30 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, long checkResult, int ReTryMax, int Timeout) throws Exception {
+    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout) throws Exception {
         ResponseObj response;
-        int i, status;
+        int status;
         JsonObject Token;
         String StreamSig = null;
         String StreamToken = null;
 
-        for (i = 0; i < ReTryMax; i++) {
+        response = GetResponseObj(token_url, Timeout);
 
-            response = GetResponseObj(token_url, Timeout + (2500 * i));
+        if (response != null) {
 
-            if (response != null) {
+            status = response.status;
 
-                status = response.status;
+            if (status == 200) {
+                Token = parseString(response.responseText).getAsJsonObject();
 
-                if (status == 200) {
-                    Token = parseString(response.responseText).getAsJsonObject();
+                if (Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
+                    StreamToken = Token.get("token").getAsString();
+                    StreamSig = Token.get("sig").getAsString();
+                }
 
-                    if (Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
-                        StreamToken = Token.get("token").getAsString();
-                        StreamSig = Token.get("sig").getAsString();
-                        break;
-                    }
+            } else if (status == 403 || status == 404 || status == 410)
+                return ResponseObjToString(status, "token", checkResult);
 
-                } else if (status == 403 || status == 404 || status == 410)
-                    return ResponseObjToString(status, "token", checkResult);
-
-            }
         }
 
         if (StreamToken != null && StreamSig != null) {
@@ -215,32 +211,28 @@ public final class Tools {
                     ThreadLocalRandom.current().nextInt(1, 100000)
             );
 
-            for (i = 0; i < ReTryMax; i++) {
+            response = GetResponseObj(url, Timeout);
 
-                response = GetResponseObj(url, Timeout + (2500 * i));
+            if (response != null) {
 
-                if (response != null) {
+                status = response.status;
 
-                    status = response.status;
+                //404 = off line
+                //403 = forbidden access
+                //410 = api v3 is gone use v5 bug
+                if (status == 200) {
+                    return new Gson().toJson(
+                            new ResponseObj(
+                                    status,
+                                    url,
+                                    response.responseText,
+                                    checkResult
+                            )
+                    );
+                } else if (status == 403 || status == 404 || status == 410)
+                    return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
 
-                    //404 = off line
-                    //403 = forbidden access
-                    //410 = api v3 is gone use v5 bug
-                    if (status == 200) {
-                        return new Gson().toJson(
-                                new ResponseObj(
-                                        status,
-                                        url,
-                                        response.responseText,
-                                        checkResult
-                                )
-                        );
-                    } else if (status == 403 || status == 404 || status == 410)
-                        return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
-
-                }
             }
-
         }
 
         return null;

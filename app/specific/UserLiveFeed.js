@@ -527,33 +527,32 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && add_focus && Settings_Obj_default('show_feed_player') &&
-        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
+        (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
+        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
 
-        if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
+        var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        if (doc) {
 
-            if (doc) {
+            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            var id;
 
-                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
-                var id;
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
+            else id = obj[14];
 
-                if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
-                else id = obj[14];
+            if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
 
-                if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
+                UserLiveFeed_CheckIfIsLiveStart();
 
-                    UserLiveFeed_CheckIfIsLiveStart();
+            } else if (Play_PreviewId) {
 
-                } else if (Play_PreviewId) {
-
-                    OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
-
-                }
+                OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
 
             }
 
         }
+
     }
 
     if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
@@ -595,7 +594,34 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
+function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    Main_clearTimeout(UserLiveFeed_LoadPreviewId);
+
+    if (Main_IsOn_OSInterface) {
+
+        OSInterface_ClearFeedPlayer();
+        if (Play_PreviewId && !PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+
+    }
+    Play_HideWarningMidleDialog();
+}
+
+var UserLiveFeed_LoadPreviewId;
 function UserLiveFeed_CheckIfIsLiveStart() {
+
+    UserLiveFeed_LoadPreviewId = Main_setTimeout(
+        function() {
+
+            UserLiveFeed_CheckIfIsLive();
+
+        },
+        100 + Settings_Obj_values('show_feed_player_delay'),
+        UserLiveFeed_LoadPreviewId
+    );
+
+}
+
+function UserLiveFeed_CheckIfIsLive() {
 
     Play_CheckIfIsLiveCleanEnd();
 
@@ -623,12 +649,10 @@ function UserLiveFeed_CheckIfIsLiveStart() {
         OSInterface_CheckIfIsLiveFeed(
             token.replace('%x', id),
             link.replace('%x', id),
-            Settings_Obj_values("show_feed_player_delay"),
             "UserLiveFeed_CheckIfIsLiveResult",
             UserLiveFeed_FeedPosX,
             (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
+            NewDefaultHttpGetTimeout
         );
 
     } else UserLiveFeed_CheckIfIsLiveSTop();
@@ -733,14 +757,6 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     }
 
-}
-
-function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsOn_OSInterface) return;
-
-    OSInterface_ClearFeedPlayer();
-    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Play_HideWarningMidleDialog();
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {

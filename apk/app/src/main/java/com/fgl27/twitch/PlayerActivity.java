@@ -2129,30 +2129,44 @@ public class PlayerActivity extends Activity {
             return PreviewFeedHandlerResult[x][y];
         }
 
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
-            PreviewFeedHandlerResult[x][y] = null;
-
-            PreviewFeedHandler.postDelayed(() -> {
-
-                try {
-                    PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
-                } catch (Exception e) {
-                    Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
-                }
-
-                if (PreviewFeedHandlerResult[x][y] != null)
-                    LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
-            }, 50 + Delay_ms);
+            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout);
         }
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
+            PreviewFeedHandler.removeCallbacksAndMessages(null);
+            PreviewFeedHandlerResult[x][y] = null;
+
+            PreviewFeedHandler.postDelayed(() ->
+                    {
+                        try {
+                            PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                        } catch (Exception e) {
+                            Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
+                        }
+
+                        if (PreviewFeedHandlerResult[x][y] != null)
+                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                    }, 100);
+        }
+
+        //TODO remove this after some app updates
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout) {
+            return getStreamData(token_url, hls_url, Timeout);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public String getStreamData(String token_url, String hls_url, int Timeout) {
             try {
-                return Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+                return Tools.getStreamData(token_url, hls_url, 0L, Timeout);
             } catch (Exception e) {
                 Log.w(TAG, "getStreamData Exception ", e);
             }
@@ -2160,9 +2174,16 @@ public class PlayerActivity extends Activity {
             return null;
         }
 
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout) {
+            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout);
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
             DataResultHandler[position].removeCallbacksAndMessages(null);
             DataResult[position] = null;
 
@@ -2171,7 +2192,7 @@ public class PlayerActivity extends Activity {
                         String result = null;
 
                         try {
-                            result = Tools.getStreamData(token_url, hls_url, checkResult, ReTryMax, Timeout);
+                            result = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
                         } catch (Exception e) {
                             Log.w(TAG, "getStreamDataAsync Exception ", e);
                         }
@@ -2362,20 +2383,23 @@ public class PlayerActivity extends Activity {
             });
         }
 
+        //TODO remoev this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer(boolean CleanPlayer) {
+            ClearSidePanelPlayer();
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
+        public void ClearSidePanelPlayer() {
             PreviewFeedHandler.removeCallbacksAndMessages(null);
-            if (CleanPlayer) {
+            MainThreadHandler.post(() -> {
 
-                MainThreadHandler.post(() -> {
+                VideoWebHolder.bringChildToFront(mWebView);
+                ClearPlayer(mainPlayer);
 
-                    VideoWebHolder.bringChildToFront(mWebView);
-                    ClearPlayer(mainPlayer);
-
-                });
-
-            }
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
