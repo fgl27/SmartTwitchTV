@@ -272,9 +272,11 @@ function AddUser_UpdateSidepanelSize(logo, username) {
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
     }
 
-    Main_ready(function() {
-        if (Settings_Obj_default("app_animations")) Sidepannel_MovelDiv.style.transition = '';
-    });
+    if (Settings_Obj_default("app_animations")) {
+        Main_ready(function() {
+            Sidepannel_MovelDiv.style.transition = '';
+        });
+    }
 
 }
 

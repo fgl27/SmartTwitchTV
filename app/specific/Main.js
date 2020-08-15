@@ -507,7 +507,7 @@ function Main_CheckDevice() {
             Main_values.OS_is_Check = true;
         }
 
-    } else Settings_ForceEnableAimations();
+    }// else Settings_ForceEnableAimations();
 }
 
 function Main_SetStringsMain(isStarting) {

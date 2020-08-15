@@ -400,11 +400,11 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'transform_hide');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
 }
 
 function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -416,7 +416,7 @@ function UserLiveFeed_Hide(PreventcleanQuailities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
 }
 
 function UserLiveFeed_ShowFeed() {
@@ -676,12 +676,23 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
 
-                    var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
-                    OSInterface_SetPlayerViewFeedBottom(
-                        Rect.bottom,
-                        window.innerHeight
-                    );
-                    UserLiveFeed_CheckIfIsLiveResultThumb = true;
+                    //Make sure transition has ended to calculate rect
+                    UserLiveFeed_FeedHolderDocId.style.transition = 'none';
+                    Main_ready(function() {
+
+                        var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                        OSInterface_SetPlayerViewFeedBottom(
+                            Rect.bottom,
+                            window.innerHeight
+                        );
+                        UserLiveFeed_CheckIfIsLiveResultThumb = true;
+
+                        if (Settings_Obj_default("app_animations")) {
+                            Main_ready(function() {
+                                UserLiveFeed_FeedHolderDocId.style.transition = '';
+                            });
+                        }
+                    });
 
                 }
 

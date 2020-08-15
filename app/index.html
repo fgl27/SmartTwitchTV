@@ -679,6 +679,13 @@
             width: 100%;
             overflow: hidden;
             background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+            transform: translateY(0);
+            transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
+        }
+
+        div.user_feed_hide {
+            transform: translateY(101%);
         }
 
         div.user_feed_scroll_game,
@@ -3665,7 +3672,7 @@
             <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
                 <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
-            <div id="user_feed" class="user_feed transform_base transform_hide">
+            <div id="user_feed" class="user_feed user_feed_hide">
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                     <div class="loading">
                         <div></div>
