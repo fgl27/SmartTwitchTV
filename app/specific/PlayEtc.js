@@ -567,6 +567,7 @@ function Play_StartStay() {
     Play_showChat();
     Play_data.watching_time = new Date().getTime();
     Play_state = Play_STATE_PLAYING;
+    Play_StayCheckHostId = 0;
 
     Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
     Main_ShowElement('play_dialog_retry');
@@ -605,33 +606,37 @@ function Play_StartStayStartCheck() {
     else Play_StayCheckLiveErrorFinish();
 }
 
+var Play_StayCheckHostId;
 function Play_StayCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+    Play_StayCheckHostId = new Date().getTime();
 
-    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        '[]',//JsonString
+        null,//JsonString
         'Play_StayCheckHostResult',//callback
         0,//checkResult
-        0,//key
+        Play_StayCheckHostId,//key
         3//thread
     );
 }
 
-function Play_StayCheckHostResult(result) {
-    if (result) {
-        var resultObj = JSON.parse(result);
-        if (resultObj.status === 200) {
-            Play_StayCheckHostEnd(resultObj.responseText);
-        } else {
-            Play_StayCheckLive();
-        }
+function Play_StayCheckHostResult(result, id) {
+    if (Play_StayCheckHostId === id) {
+
+        if (result) {
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                Play_StayCheckHostEnd(resultObj.responseText);
+            } else {
+                Play_StayCheckLive();
+            }
+        } else Play_StayCheckLive();
+
     }
-    else Play_StayCheckLive();
 }
 
 function Play_StayCheckHostEnd(responseText) {

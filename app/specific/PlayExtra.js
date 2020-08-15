@@ -40,6 +40,7 @@ function PlayExtra_ResetAudio() {
 
 function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
+    PlayExtra_loadDataCheckHostId = 0;
 
     var doc = Play_CheckLiveThumb();
     if (doc) {
@@ -266,34 +267,38 @@ function PlayExtra_End_success(doSwitch, fail_type) {
     Play_CloseSmall();
 }
 
+var PlayExtra_loadDataCheckHostId;
 function PlayExtra_loadDataCheckHost(doSwitch) {
-    //TODO replace all '[]' with null for performance after some app updates
+    PlayExtra_loadDataCheckHostId = new Date().getTime();
+
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
         DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        '[]',//JsonString
+        null,//JsonString
         'PlayExtra_CheckHostResult',//callback
-        0,//checkResult
+        PlayExtra_loadDataCheckHostId,//checkResult
         doSwitch,//key
         3//thread
     );
 
 }
 
-function PlayExtra_CheckHostResult(result, doSwitch) {
-    if (result) {
+function PlayExtra_CheckHostResult(result, doSwitch, id) {
+    if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
+        if (result) {
 
-        var resultObj = JSON.parse(result);
+            var resultObj = JSON.parse(result);
 
-        if (resultObj.status === 200) {
-            PlayExtra_CheckHost(resultObj.responseText, doSwitch);
-        } else {
-            PlayExtra_End_success(doSwitch);
-        }
+            if (resultObj.status === 200) {
+                PlayExtra_CheckHost(resultObj.responseText, doSwitch);
+            } else {
+                PlayExtra_End_success(doSwitch);
+            }
 
-    } else PlayExtra_End_success(doSwitch);
+        } else PlayExtra_End_success(doSwitch);
+    }
 }
 
 function PlayExtra_CheckHost(responseText, doSwitch) {

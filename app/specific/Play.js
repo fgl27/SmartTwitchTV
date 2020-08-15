@@ -305,6 +305,8 @@ function Play_Start(offline_chat) {
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
+    Play_loadDataCheckHostId = 0;
+    Play_StayCheckHostId = 0;
 
     Play_data.watching_time = new Date().getTime();
     Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
@@ -1287,6 +1289,10 @@ function Play_shutdownStream() {
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+        Play_loadDataCheckHostId = 0;
+        Play_StayCheckHostId = 0;
+        PlayExtra_loadDataCheckHostId = 0;
     }
 }
 
@@ -1823,21 +1829,23 @@ function Play_CheckHostStart(error_410) {
     Main_setTimeout(Play_loadDataCheckHost, 50);
 }
 
+var Play_loadDataCheckHostId;
 function Play_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+    Play_loadDataCheckHostId = new Date().getTime();
 
     Main_setTimeout(
         function() {
-            //TODO replace all '[]' with null for performance after some app updates
+
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
                 DefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
-                '[]',//JsonString
+                null,//JsonString
                 'Play_CheckHostResult',//callback
                 0,//checkResult
-                0,//key
+                Play_loadDataCheckHostId,//key
                 3//thread
             );
 
@@ -1846,16 +1854,21 @@ function Play_loadDataCheckHost() {
     );
 }
 
-function Play_CheckHostResult(result) {
-    if (result) {
-        var resultObj = JSON.parse(result);
-        if (resultObj.status === 200) {
-            Play_CheckHost(resultObj.responseText);
-        } else {
-            Play_EndStart(false, 1);
-        }
+function Play_CheckHostResult(result, id) {
+    if (Play_isOn && Play_loadDataCheckHostId === id) {
+
+        if (result) {
+
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                Play_CheckHost(resultObj.responseText);
+            } else {
+                Play_EndStart(false, 1);
+            }
+
+        } else Play_EndStart(false, 1);
+
     }
-    else Play_EndStart(false, 1);
 }
 
 function Play_CheckHost(responseText) {

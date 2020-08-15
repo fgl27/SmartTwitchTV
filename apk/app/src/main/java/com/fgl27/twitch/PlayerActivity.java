@@ -2223,7 +2223,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                             String callback, long checkResult, int key, int thread) {
+                                             String callback, long checkResult, long key, int thread) {
             StreamDataResult[thread] = null;
 
             DataThreadPool.execute(() ->

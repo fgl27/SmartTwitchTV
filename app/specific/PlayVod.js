@@ -1189,10 +1189,10 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             DefaultHttpGetTimeout * 2,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            '[]',//JsonString
+            null,//JsonString
             'PlayVod_previews_success',//callback
-            PlayVod_previewsId,//checkResult
-            0,//key
+            0,//checkResult
+            PlayVod_previewsId,//key
             2//thread
         );
     }
@@ -1224,30 +1224,26 @@ function PlayVod_previews_show() {
     Play_seek_previews.classList.remove('hideimp');
 }
 
-function PlayVod_previews_success(result) {
+function PlayVod_previews_success(result, id) {
 
-    if (PlayVod_isOn && result) {
+    if (PlayVod_isOn && result && PlayVod_previewsId === id) {
 
         var resultObj = JSON.parse(result);
 
-        if (resultObj.checkResult > 0 && resultObj.checkResult === PlayVod_previewsId) {
+        if (resultObj.status === 200) {
 
-            if (resultObj.status === 200) {
+            resultObj = JSON.parse(resultObj.responseText);
 
-                resultObj = JSON.parse(resultObj.responseText);
+            if (resultObj.length) {
+                PlayVod_previews_obj = resultObj[resultObj.length - 1];
 
-                if (resultObj.length) {
-                    PlayVod_previews_obj = resultObj[resultObj.length - 1];
+                if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
+                    PlayVod_previews_success_end();
+                } else PlayVod_previews_clear();
 
-                    if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
-                        PlayVod_previews_success_end();
-                    } else PlayVod_previews_clear();
-
-                }
-            } else {
-                PlayVod_previews_hide();
             }
-
+        } else {
+            PlayVod_previews_hide();
         }
 
     } else PlayVod_previews_hide();
@@ -1394,8 +1390,8 @@ function PlayVod_updateChapters() {
             'POST',//Method, null for get
             Play_base_back_headers,//JsonString
             'PlayVod_updateChaptersResult',//callback
-            PlayVod_updateChaptersId,//checkResult
-            0,//key
+            0,//checkResult
+            PlayVod_updateChaptersId,//key
             3//thread
         );
 
@@ -1403,16 +1399,13 @@ function PlayVod_updateChapters() {
 
 }
 
-function PlayVod_updateChaptersResult(response) {
-    if (PlayVod_isOn && response) {
+function PlayVod_updateChaptersResult(response, id) {
+    if (PlayVod_isOn && response && PlayVod_updateChaptersId === id) {
 
         var responseObj = JSON.parse(response);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayVod_updateChaptersId) {
-
-            if (responseObj.status === 200) {
-                PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
-            }
+        if (responseObj.status === 200) {
+            PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
         }
 
     }

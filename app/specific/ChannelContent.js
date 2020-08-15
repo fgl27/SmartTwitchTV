@@ -78,6 +78,7 @@ function ChannelContent_exit() {
     Main_HideElement('channel_content_scroll');
     Main_values.My_channel = false;
     ChannelContent_removeFocus();
+    ChannelContent_loadDataCheckHostId = 0;
 }
 
 function ChannelContent_StartLoad() {
@@ -148,34 +149,44 @@ function ChannelContent_loadDataError() {
     }
 }
 
+var ChannelContent_loadDataCheckHostId;
 function ChannelContent_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+    ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
         DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        '[]',//JsonString
+        null,//JsonString
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
-        0,//key
+        ChannelContent_loadDataCheckHostId,//key
         3//thread
     );
 
 }
 
-function ChannelContent_CheckHostResult(result) {
-    if (result) {
-        var resultObj = JSON.parse(result);
-        if (resultObj.status === 200) {
-            ChannelContent_CheckHost(resultObj.responseText);
-        } else {
-            ChannelContent_loadDataCheckHostError();
-        }
+function ChannelContent_CheckHostResult(result, id) {
+    if (ChannelContent_loadDataCheckHostId === id) {
+
+        if (result) {
+
+            var resultObj = JSON.parse(result);
+
+            if (resultObj.status === 200) {
+
+                ChannelContent_CheckHost(resultObj.responseText);
+
+            } else {
+
+                ChannelContent_loadDataCheckHostError();
+
+            }
+
+        } else ChannelContent_loadDataCheckHostError();
     }
-    else ChannelContent_loadDataCheckHostError();
 }
 
 function ChannelContent_loadDataCheckHostError() {
