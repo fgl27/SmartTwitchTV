@@ -659,12 +659,12 @@ function OSInterface_getVideoStatus(showLatency) {
     Android.getVideoStatus(showLatency);
 }
 
-//public String getVideoStatusString()
-//Android specific: true
-//request the video status dropped frames, buffer size etc
-function OSInterface_getVideoStatusString() {
-    return Android.getVideoStatusString();
-}
+// //public String getVideoStatusString()
+// //Android specific: true
+// //request the video status dropped frames, buffer size etc
+// function OSInterface_getVideoStatusString() {
+//     return Android.getVideoStatusString();
+// }
 
 //public void getVideoQuality(int who_called)
 //who_called = 0 live 1 vod
@@ -674,12 +674,12 @@ function OSInterface_getVideoQuality(who_called) {
     Android.getVideoQuality(who_called);
 }
 
-//public String getVideoStatusString()
-//Android specific: true
-//returns the video quality for the auto playback
-function OSInterface_getVideoQualityString() {
-    return Android.getVideoQualityString();
-}
+// //public String getVideoStatusString()
+// //Android specific: true
+// //returns the video quality for the auto playback
+// function OSInterface_getVideoQualityString() {
+//     return Android.getVideoQualityString();
+// }
 
 //public void DisableMultiStream()
 //Android specific: true

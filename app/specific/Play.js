@@ -1588,11 +1588,10 @@ function Play_VideoStatusTest() {
 }
 
 var Play_BufferSize = 0;
-function Play_ShowVideoStatus(showLatency, Who_Called) {
-    var value = OSInterface_getVideoStatusString();
+function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
+    if (!valueString) return;
 
-    if (value) value = JSON.parse(value);
-    else return;
+    var value = JSON.parse(valueString);
 
     Main_innerHTML("stream_status",
         STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
@@ -1627,17 +1626,15 @@ function Play_getBuffer(value) {
     return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
-function Play_ShowVideoQuality(who_called) {
-    var value = OSInterface_getVideoQualityString();
+function Play_ShowVideoQuality(who_called, value) {
 
     if (!value) {
+
         if (!who_called) Play_SetHtmlQuality('stream_quality');
         else PlayVod_SetHtmlQuality('stream_quality');
 
-        return;
-    }
+    } else Main_innerHTML("stream_quality", value);
 
-    Main_innerHTML("stream_quality", value);
 }
 
 function Play_clearHidePanel() {

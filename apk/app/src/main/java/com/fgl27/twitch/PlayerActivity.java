@@ -2681,9 +2681,8 @@ public class PlayerActivity extends Activity {
 
                 if (player[playerPos] != null)
                     VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
-                else VideoQualityResult = null;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ",Android.getVideoQualityString())");
             });
         }
 
@@ -2723,8 +2722,7 @@ public class PlayerActivity extends Activity {
                 //Erase after read
                 netActivity = 0L;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +
-                        "," + mWho_Called + ")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + mWho_Called + ",Android.getVideoStatusString())");
             });
 
         }
