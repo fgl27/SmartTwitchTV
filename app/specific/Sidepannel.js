@@ -153,7 +153,7 @@ function Sidepannel_CheckIfIsLiveStart() {
             Sidepannel_CheckIfIsLive();
 
         },
-        100 + Settings_Obj_values('show_feed_player_delay'),
+        DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
         Sidepannel_CheckIfIsLiveStartId
     );
 }

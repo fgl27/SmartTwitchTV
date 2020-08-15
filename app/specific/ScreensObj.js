@@ -41,6 +41,7 @@ var Main_HistoryPos = 0;
 
 var AGame_following = false;
 
+var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var NewDefaultHttpGetTimeout = 25000;
 var DefaultHttpGetTimeout = 6000;
 var DefaultHttpGetTimeoutPlus = 3000;

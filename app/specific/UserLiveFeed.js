@@ -604,7 +604,7 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
                         UserLiveFeed_CheckIfIsLive(obj);
 
                     },
-                    200 + Settings_Obj_values('show_feed_player_delay'),
+                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
                     UserLiveFeed_LoadPreviewId
                 );
 

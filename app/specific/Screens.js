@@ -981,7 +981,7 @@ function Screens_LoadPreview(key) {
                         Screens_LoadPreviewStart(key, obj);
 
                     },
-                    100 + Settings_Obj_values('show_feed_player_delay'),
+                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
                     Screens_LoadPreviewId
                 );
 
