@@ -7,10 +7,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Web Version August 15 2020
+Apk Version 3.0.241 - Web Version August 15 2020
 ==============
 
 * Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slowdowns do to accessibility service can't be fixed only mitigated, read more about it here: [“Working As Intended” – An Exploration into Android’s Accessibility Lag](https://www.xda-developers.com/working-as-intended-an-exploration-into-androids-accessibility-lag/)
+* General performance improves and bug fixes
 
 Apk Version 3.0.240 - August 10 2020
 ==============
