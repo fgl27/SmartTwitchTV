@@ -143,7 +143,6 @@ public final class Tools {
             2160
     };
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     public static class ResponseObj {
         public final int status;
         public final String responseText;
