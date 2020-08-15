@@ -76,7 +76,6 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -175,7 +174,7 @@ public class PlayerActivity extends Activity {
     private boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     private Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
     private int[] PlayerCheckCounter = new int[PlayerAccountPlus];
-    private int droppedFrames = 0;
+    private long droppedFrames = 0;
     private float conSpeed = 0f;
     private float netActivity = 0f;
     private long DroppedFramesTotal = 0L;
@@ -453,10 +452,13 @@ public class PlayerActivity extends Activity {
         }
 
         KeepScreenOn(true);
-        droppedFrames = 0;
 
         //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
         if (Who_Called > 1) GetCurrentPosition();
+
+        droppedFrames = 0;
+        NetActivityAVG = 0;
+        NetCounter = 0;
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource, Long resumePosition, boolean IsVod) {
@@ -579,6 +581,8 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
         droppedFrames = 0;
+        NetActivityAVG = 0;
+        NetCounter = 0;
     }
 
     private void ClearPlayer(int position) {
@@ -2695,15 +2699,6 @@ public class PlayerActivity extends Activity {
             getVideoStatusResult = null;
 
             MainThreadHandler.post(() -> {
-                ArrayList<String> ret = new ArrayList<>();
-
-                ret.add(Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"));//0
-                ret.add(Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"));//1
-                ret.add(String.valueOf(droppedFrames));//2
-                ret.add(String.valueOf(DroppedFramesTotal));//3
-
-                //Erase after read
-                netActivity = 0L;
 
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
                 long buffer = 0L;
@@ -2713,13 +2708,20 @@ public class PlayerActivity extends Activity {
                     buffer = player[playerPos].getTotalBufferedDuration();
                     LiveOffset = player[playerPos].getCurrentLiveOffset();
                 }
-                ret.add(Tools.getTime(buffer));//4
-                ret.add(Tools.getTime(LiveOffset));//5
-
-                ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
-                ret.add(String.valueOf(buffer / 1000.0));//7
-
-                getVideoStatusResult = new Gson().toJson(ret);
+                getVideoStatusResult = new Gson().toJson(
+                        new Object[]{
+                                Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"),//0
+                                Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"),//1
+                                droppedFrames,//2
+                                DroppedFramesTotal,//3
+                                Tools.getTime(buffer),//4
+                                Tools.getTime(LiveOffset),//5
+                                Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"),//6
+                                (buffer / 1000.0)//7
+                        }
+                );
+                //Erase after read
+                netActivity = 0L;
 
                 mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +
                         "," + mWho_Called + ")");
