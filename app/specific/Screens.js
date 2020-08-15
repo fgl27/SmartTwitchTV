@@ -302,6 +302,7 @@ function Screens_init(key, preventRefresh) {
         else Main_showLoadDialog();// the FirstLoad is running so just show the loading dialog prevent reload the screen
 
     } else {
+        ScreenObj[key].SetPreviewEnable();
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
@@ -340,6 +341,7 @@ function Screens_StartLoad(key) {
     Play_PreviewVideoEnded = false;
     Main_HideWarningDialog();
 
+    ScreenObj[key].SetPreviewEnable();
     ScreenObj[key].cursor = null;
     ScreenObj[key].after = '';
     ScreenObj[key].status = false;
@@ -695,8 +697,9 @@ function Screens_loadDataSuccessFinish(key) {
 
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
-        if (ScreenObj[key].emptyContent) Main_showWarningDialog(ScreenObj[key].empty_str());
-        else {
+        if (ScreenObj[key].emptyContent) {
+            if (key === Main_values.Main_Go) Main_showWarningDialog(ScreenObj[key].empty_str());
+        } else {
 
             ScreenObj[key].status = true;
             var i, Cells_length = ScreenObj[key].Cells.length;
@@ -929,55 +932,67 @@ function Screens_addFocus(forceScroll, key) {
 
 }
 
+function Screens_LoadPreviewSTop(PreventcleanQuailities) {
+    Main_clearTimeout(Screens_LoadPreviewId);
+
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+
+        OSInterface_ClearSidePanelPlayer();
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+}
+
+var Screens_LoadPreviewId;
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
+    if (ScreenObj[key].PreviewEnable && !Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
         (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
-        var doc, ThumbId;
 
-        //Live || VOD
-        if ((ScreenObj[key].screenType === 0 && Settings_Obj_default('show_live_player')) ||
-            (ScreenObj[key].screenType === 1 && Settings_Obj_default('show_vod_player')) ||
-            (ScreenObj[key].screenType === 2 && Settings_Obj_default('show_clip_player'))) {
+        var doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
 
-            doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+        if (doc) {
+            var id = 0,//Clip
+                obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-            if (doc) {
-                var id = 0,//Clip
-                    obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            if (ScreenObj[key].screenType === 0) id = 14;//live
+            else if (ScreenObj[key].screenType === 1) id = 7;//vod
 
-                if (ScreenObj[key].screenType === 0) id = 14;//live
-                else if (ScreenObj[key].screenType === 1) id = 7;//vod
+            var ThumbId = obj[id];//streamer id
 
-                ThumbId = obj[id];//streamer id
+            if (ScreenObj[key].screen === Main_HistoryLive) {
 
-                if (ScreenObj[key].screen === Main_HistoryLive) {
+                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                    var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
-
-                    if (index > -1 &&
-                        (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
-                        ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-                    }
+                if (index > -1 &&
+                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                    ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                 }
-
-                if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
-
-                    Screens_LoadPreviewStart(key, obj);
-
-                } else if (Play_PreviewId) {
-
-                    Screens_LoadPreviewRestore(key);
-
-                }
-
-                Play_PreviewVideoEnded = false;
             }
 
+            if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+
+                Screens_LoadPreviewId = Main_setTimeout(
+                    function() {
+
+                        Screens_LoadPreviewStart(key, obj);
+
+                    },
+                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                    Screens_LoadPreviewId
+                );
+
+            } else if (Play_PreviewId) {
+
+                Screens_LoadPreviewRestore(key);
+
+            }
+
+            Play_PreviewVideoEnded = false;
         }
 
     }
@@ -1017,7 +1032,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayClip_BaseUrl,//urlString
-            DefaultHttpGetTimeout,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
             'POST',//Method, null for get
             Play_base_back_headers,//JsonString
@@ -1076,12 +1091,10 @@ function Screens_LoadPreviewStart(key, obj) {
     OSInterface_CheckIfIsLiveFeed(
         token.replace('%x', id),
         link.replace('%x', id),
-        Settings_Obj_values("show_feed_player_delay"),
         "Screens_LoadPreviewResult",
         key,
         (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }
@@ -1257,7 +1270,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 }
 
 function Screens_LoadPreviewWarn(ErrorText, x, time) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Play_CheckIfIsLiveCleanEnd();
     Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'visibility_hidden');
     Main_showWarningDialog(
         ErrorText,
@@ -2319,7 +2332,7 @@ function Screens_histhandleKeyDown(key, event) {
 var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Screens_LoadPreviewSTop();
     Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
 
     Screens_clear = true;

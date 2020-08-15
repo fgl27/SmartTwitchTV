@@ -128,39 +128,38 @@ function OSInterface_SetQuality(position) {
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, ReTryMax, Timeout) {
-    Android.getStreamDataAsync(
-        token_url,
-        hls_url,
-        callback,
-        checkResult,
-        position,
-        ReTryMax,
-        Timeout
-    );
+function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout) {
+    try {
+        Android.getStreamDataAsync(
+            token_url,
+            hls_url,
+            callback,
+            checkResult,
+            position,
+            Timeout
+        );
+    } catch (e) {}
 }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
 //token_url = the base token url
 //hls_url = the base hls playlist url
-//Delay_ms = Delay in ms to start the check
 //callback = the call back function
 //x & y the position of the array that hold the result also used to check the received info can be used by callback 
-//ReTryMax = the retry quanity in case the http request fails
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x, y, ReTryMax, Timeout) {
-    Android.CheckIfIsLiveFeed(
-        token_url,
-        hls_url,
-        Delay_ms,
-        callback,
-        x,
-        y,
-        ReTryMax,
-        Timeout
-    );
+function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout) {
+    try {
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            callback,
+            x,
+            y,
+            Timeout
+        );
+    } catch (e) {}
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -170,13 +169,14 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, Delay_ms, callback, x
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamData(token_url, hls_url, ReTryMax, Timeout) {
-    return Android.getStreamData(
-        token_url,
-        hls_url,
-        ReTryMax,
-        Timeout
-    );
+function OSInterface_getStreamData(token_url, hls_url, Timeout) {
+    try {
+        return Android.getStreamData(
+            token_url,
+            hls_url,
+            Timeout
+        );
+    } catch (e) {}
 }
 
 //public String getQualities()
@@ -404,14 +404,12 @@ function OSInterface_UpdateUserId(user) {
 //Android specific: true
 //Set app id and etc related
 function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
-    try {
-        if (Main_IsOn_OSInterface)
-            Android.setAppIds(
-                client_id,
-                client_secret ? client_secret : null,
-                redirect_uri
-            );
-    } catch (e) {}
+    if (Main_IsOn_OSInterface)
+        Android.setAppIds(
+            client_id,
+            client_secret ? client_secret : null,
+            redirect_uri
+        );
 }
 
 //public void BackupFile(String file, String file_content)
@@ -661,12 +659,12 @@ function OSInterface_getVideoStatus(showLatency) {
     Android.getVideoStatus(showLatency);
 }
 
-//public String getVideoStatusString()
-//Android specific: true
-//request the video status dropped frames, buffer size etc
-function OSInterface_getVideoStatusString() {
-    return Android.getVideoStatusString();
-}
+// //public String getVideoStatusString()
+// //Android specific: true
+// //request the video status dropped frames, buffer size etc
+// function OSInterface_getVideoStatusString() {
+//     return Android.getVideoStatusString();
+// }
 
 //public void getVideoQuality(int who_called)
 //who_called = 0 live 1 vod
@@ -676,12 +674,12 @@ function OSInterface_getVideoQuality(who_called) {
     Android.getVideoQuality(who_called);
 }
 
-//public String getVideoStatusString()
-//Android specific: true
-//returns the video quality for the auto playback
-function OSInterface_getVideoQualityString() {
-    return Android.getVideoQualityString();
-}
+// //public String getVideoStatusString()
+// //Android specific: true
+// //returns the video quality for the auto playback
+// function OSInterface_getVideoQualityString() {
+//     return Android.getVideoQualityString();
+// }
 
 //public void DisableMultiStream()
 //Android specific: true
@@ -880,8 +878,10 @@ function OSInterface_ClearFeedPlayer() {
 //public void ClearFeedPlayer()
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
-function OSInterface_ClearSidePanelPlayer(CleanPlayer) {
-    Android.ClearSidePanelPlayer(CleanPlayer);
+function OSInterface_ClearSidePanelPlayer() {
+    try {
+        Android.ClearSidePanelPlayer();
+    } catch (e) {}
 }
 
 //public void SidePanelPlayerRestore()

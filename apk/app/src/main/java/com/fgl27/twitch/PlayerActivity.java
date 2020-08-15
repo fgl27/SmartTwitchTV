@@ -76,8 +76,10 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
-import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -172,7 +174,7 @@ public class PlayerActivity extends Activity {
     private boolean[] PlayerIsPlaying = new boolean[PlayerAccountPlus];
     private Handler[] PlayerCheckHandler = new Handler[PlayerAccountPlus];
     private int[] PlayerCheckCounter = new int[PlayerAccountPlus];
-    private int droppedFrames = 0;
+    private long droppedFrames = 0;
     private float conSpeed = 0f;
     private float netActivity = 0f;
     private long DroppedFramesTotal = 0L;
@@ -217,10 +219,8 @@ public class PlayerActivity extends Activity {
     private boolean canRunChannel;
     private boolean closeThisCalled;
 
-    private String[][] PreviewFeedHandlerResult = new String[25][100];
-    private String[] DataResult = new String[PlayerAccount];
-
-    private HandlerThread[] DataResultThread = new HandlerThread[PlayerAccountPlus];
+    private String[][] PreviewFeedResult = new String[25][100];
+    private String[] StreamDataResult = new String[PlayerAccount];
 
     private Handler[] RuntimeHandler = new Handler[2];
     private Handler MainThreadHandler;
@@ -231,11 +231,11 @@ public class PlayerActivity extends Activity {
     private Handler ChannelHandler;
     private Handler DeleteHandler;
 
-    private Handler PreviewFeedHandler;
-    private Handler[] DataResultHandler = new Handler[PlayerAccountPlus];
-
     private Process PingProcess;
     private Runtime PingRuntime;
+
+    private final BlockingQueue<Runnable> DataWorkQueue = new LinkedBlockingQueue<>();
+    private ThreadPoolExecutor DataThreadPool;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -261,17 +261,26 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
+            int Number_of_Cores =  Runtime.getRuntime().availableProcessors();
+            //Background threads
+            DataThreadPool = new ThreadPoolExecutor(
+                    Number_of_Cores,
+                    Number_of_Cores * 2,
+                    60,
+                    TimeUnit.SECONDS,
+                    DataWorkQueue
+            );
+
             //Main loop threads
             Looper MainLooper = Looper.getMainLooper();
             MainThreadHandler = new Handler(MainLooper);
             CurrentPositionHandler[0] = new Handler(MainLooper);
             CurrentPositionHandler[1] = new Handler(MainLooper);
-
             for (int i = 0; i < PlayerAccountPlus; i++) {
                 PlayerCheckHandler[i] = new Handler(MainLooper);
             }
 
-            //BackGroundThreadEtc loop threads
+            //BackGroundThread Etc threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BackGroundThread");
             backGroundThread.start();
             Looper BackGroundThreadLooper = backGroundThread.getLooper();
@@ -282,24 +291,14 @@ public class PlayerActivity extends Activity {
             ChannelHandler = new Handler(BackGroundThreadLooper);
             DeleteHandler = new Handler(BackGroundThreadLooper);
 
-            //Other loop threads
-            HandlerThread previewFeedHandlerThread = new HandlerThread("PreviewFeedHandlerThread");
-            previewFeedHandlerThread.start();
-            PreviewFeedHandler = new Handler(previewFeedHandlerThread.getLooper());
-
-            for (int i = 0; i < PlayerAccount; i++) {
-                DataResultThread[i] = new HandlerThread("DataResultThread" + i);
-                DataResultThread[i].start();
-                DataResultHandler[i] = new Handler(DataResultThread[i].getLooper());
-            }
-
+            //Ping handler this handler may block the Queue but is very light run it on separated treads
+            //So one can un block the other
             HandlerThread[] runtimeThread = new HandlerThread[2];
             for (int i = 0; i < 2; i++) {
                 runtimeThread[i] = new HandlerThread("RuntimeThread" + i);
                 runtimeThread[i].start();
                 RuntimeHandler[i] = new Handler(runtimeThread[i].getLooper());
             }
-
             PingRuntime = Runtime.getRuntime();
 
             deviceIsTV = Tools.deviceIsTV(this);
@@ -453,10 +452,13 @@ public class PlayerActivity extends Activity {
         }
 
         KeepScreenOn(true);
-        droppedFrames = 0;
 
         //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
         if (Who_Called > 1) GetCurrentPosition();
+
+        droppedFrames = 0;
+        NetActivityAVG = 0;
+        NetCounter = 0;
     }
 
     private void initializeSmallPlayer(MediaSource NewMediaSource, Long resumePosition, boolean IsVod) {
@@ -579,6 +581,8 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
         droppedFrames = 0;
+        NetActivityAVG = 0;
+        NetCounter = 0;
     }
 
     private void ClearPlayer(int position) {
@@ -2072,7 +2076,14 @@ public class PlayerActivity extends Activity {
 
                 if (startPlayer) {
 
-                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
+                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            who_called,
+                            mLowLatency,
+                            masterPlaylistString,
+                            userAgent
+                    );
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
 
                     if (mplayer == 1) {
@@ -2099,7 +2110,14 @@ public class PlayerActivity extends Activity {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
                 PreInitializePlayer(1, 0, mainPlayer);
             });
         }
@@ -2126,33 +2144,49 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
-            return PreviewFeedHandlerResult[x][y];
+            return PreviewFeedResult[x][y];
         }
 
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
-            PreviewFeedHandlerResult[x][y] = null;
-
-            PreviewFeedHandler.postDelayed(() -> {
-
-                try {
-                    PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
-                } catch (Exception e) {
-                    Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
-                }
-
-                if (PreviewFeedHandlerResult[x][y] != null)
-                    LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
-            }, 50 + Delay_ms);
+            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout);
         }
 
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
+        @JavascriptInterface
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
+            PreviewFeedResult[x][y] = null;
+
+            DataThreadPool.execute(() ->
+                    {
+                        try {
+                            PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                        } catch (Exception e) {
+                            Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
+                        }
+
+                        if (PreviewFeedResult[x][y] != null)
+                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                    }
+            );
+        }
+
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout) {
+            return getStreamData(token_url, hls_url, Timeout);
+        }
+
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
+        @JavascriptInterface
+        public String getStreamData(String token_url, String hls_url, int Timeout) {
             try {
-                return Tools.getStreamData(token_url, hls_url, 0L, ReTryMax, Timeout);
+                return Tools.getStreamData(token_url, hls_url, 0L, Timeout);
             } catch (Exception e) {
                 Log.w(TAG, "getStreamData Exception ", e);
             }
@@ -2160,24 +2194,31 @@ public class PlayerActivity extends Activity {
             return null;
         }
 
+        //TODO remove this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout) {
-            DataResultHandler[position].removeCallbacksAndMessages(null);
-            DataResult[position] = null;
+            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout);
+        }
 
-            DataResultHandler[position].post(() ->
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
+        @JavascriptInterface
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
+            StreamDataResult[position] = null;
+
+            DataThreadPool.execute(() ->
                     {
                         String result = null;
 
                         try {
-                            result = Tools.getStreamData(token_url, hls_url, checkResult, ReTryMax, Timeout);
+                            result = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
                         } catch (Exception e) {
                             Log.w(TAG, "getStreamDataAsync Exception ", e);
                         }
 
-                        if (result != null) DataResult[position] = result;
-                        else DataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
+                        if (result != null) StreamDataResult[position] = result;
+                        else StreamDataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
 
                         LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
                     }
@@ -2188,7 +2229,7 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetDataResult(int position) {
-            return DataResult[position];
+            return StreamDataResult[position];
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2200,36 +2241,30 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                             String callback, long checkResult, int key, int thread) {
+                                             String callback, long checkResult, long key, int thread) {
+            StreamDataResult[thread] = null;
 
-            DataResultHandler[thread].removeCallbacksAndMessages(null);
-            DataResult[thread] = null;
-
-            DataResultHandler[thread].post(() ->
+            DataThreadPool.execute(() ->
                     {
                         Tools.ResponseObj response;
 
-                        for (int i = 0; i < 3; i++) {
+                        response = Tools.MethodUrlHeaders(
+                                urlString,
+                                timeout,
+                                postMessage,
+                                Method,
+                                checkResult,
+                                JsonHeadersArray
+                        );
 
-                            response = Tools.MethodUrlHeaders(
-                                    urlString,
-                                    (timeout + (i * Constants.DEFAULT_HTTP_EXTRA_TIMEOUT)),
-                                    postMessage,
-                                    Method,
-                                    checkResult,
-                                    JsonHeadersArray
-                            );
-
-                            if (response != null) {
-                                DataResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
-                                return;
-                            }
-
+                        if (response != null) {
+                            StreamDataResult[thread] = new Gson().toJson(response);
+                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
+                            return;
                         }
 
                         //MethodUrl is null inform JS callback
-                        DataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
+                        StreamDataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
                         LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
                     }
             );
@@ -2244,7 +2279,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
@@ -2257,7 +2291,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         isVod ? 2 : 1,
-                        0,
+                        mLowLatency != 0 ? 2 : 0,
                         masterPlaylistString,
                         userAgent
                 );
@@ -2362,20 +2396,23 @@ public class PlayerActivity extends Activity {
             });
         }
 
+        //TODO remoev this after some app updates
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer(boolean CleanPlayer) {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
-            if (CleanPlayer) {
+            ClearSidePanelPlayer();
+        }
 
-                MainThreadHandler.post(() -> {
+        //TODO WeakerAccess after remove above
+        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
+        @JavascriptInterface
+        public void ClearSidePanelPlayer() {
+            MainThreadHandler.post(() -> {
 
-                    VideoWebHolder.bringChildToFront(mWebView);
-                    ClearPlayer(mainPlayer);
+                VideoWebHolder.bringChildToFront(mWebView);
+                ClearPlayer(mainPlayer);
 
-                });
-
-            }
+            });
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2644,9 +2681,8 @@ public class PlayerActivity extends Activity {
 
                 if (player[playerPos] != null)
                     VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
-                else VideoQualityResult = null;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ",Android.getVideoQualityString())");
             });
         }
 
@@ -2662,15 +2698,6 @@ public class PlayerActivity extends Activity {
             getVideoStatusResult = null;
 
             MainThreadHandler.post(() -> {
-                ArrayList<String> ret = new ArrayList<>();
-
-                ret.add(Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"));//0
-                ret.add(Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"));//1
-                ret.add(String.valueOf(droppedFrames));//2
-                ret.add(String.valueOf(DroppedFramesTotal));//3
-
-                //Erase after read
-                netActivity = 0L;
 
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
                 long buffer = 0L;
@@ -2680,16 +2707,22 @@ public class PlayerActivity extends Activity {
                     buffer = player[playerPos].getTotalBufferedDuration();
                     LiveOffset = player[playerPos].getCurrentLiveOffset();
                 }
-                ret.add(Tools.getTime(buffer));//4
-                ret.add(Tools.getTime(LiveOffset));//5
+                getVideoStatusResult = new Gson().toJson(
+                        new Object[]{
+                                Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"),//0
+                                Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"),//1
+                                droppedFrames,//2
+                                DroppedFramesTotal,//3
+                                Tools.getTime(buffer),//4
+                                Tools.getTime(LiveOffset),//5
+                                Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"),//6
+                                (buffer / 1000.0)//7
+                        }
+                );
+                //Erase after read
+                netActivity = 0L;
 
-                ret.add(Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"));//6
-                ret.add(String.valueOf(buffer / 1000.0));//7
-
-                getVideoStatusResult = new Gson().toJson(ret);
-
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency +
-                        "," + mWho_Called + ")");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + mWho_Called + ",Android.getVideoStatusString())");
             });
 
         }
@@ -2811,7 +2844,13 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mposition] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1, mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
         }

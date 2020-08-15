@@ -338,8 +338,7 @@ function Play_MultiStart(pos) {
         'Play_MultiResult',
         Play_MultiArray[pos].resultId,
         pos,
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }

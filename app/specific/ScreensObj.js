@@ -41,9 +41,11 @@ var Main_HistoryPos = 0;
 
 var AGame_following = false;
 
-var DefaultHttpGetTimeout = 6000;
-var DefaultHttpGetTimeoutPlus = 3000;
-var DefaultHttpGetReTryMax = 3;
+var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
+var NewDefaultHttpGetTimeout = 25000;
+var DefaultHttpGetTimeout = 20000;
+var DefaultHttpGetTimeoutPlus = 5000;
+var DefaultHttpGetReTryMax = 2;
 var empty_fun = function() {};
 
 var Base_obj = {
@@ -72,6 +74,13 @@ var Base_obj = {
     token: null,
     data_cursor: 0,
     lastRefresh: 0,
+    PreviewEnable: 0,
+    SetPreviewEnable: function() {
+        this.PreviewEnable =
+            (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
+            (this.screenType === 1 && Settings_Obj_default('show_vod_player')) ||
+            (this.screenType === 2 && Settings_Obj_default('show_clip_player'));
+    },
     AutoRefreshId: null,
     key_fun_start: function() {
         return Screens_handleKeyDown.bind(null, this.screen);

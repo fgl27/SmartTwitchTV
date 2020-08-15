@@ -211,7 +211,7 @@ function PlayClip_loadData() {
     PlayClip_loadDataRequest();
 }
 
-var PlayClip_loadDataRequestId = 0;
+var PlayClip_loadDataRequestId;
 
 function PlayClip_loadDataRequest() {
 
@@ -219,37 +219,34 @@ function PlayClip_loadDataRequest() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         PlayClip_BaseUrl,//urlString
-        DefaultHttpGetTimeout,//timeout
+        NewDefaultHttpGetTimeout,//timeout
         PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
         Play_base_back_headers,//JsonString
         'PlayClip_loadDataResult',//callback
-        PlayClip_loadDataRequestId,//checkResult
-        0,//key
+        0,//checkResult
+        PlayClip_loadDataRequestId,//key
         0//thread
     );
 }
 
-function PlayClip_loadDataResult(response) {
+function PlayClip_loadDataResult(response, id) {
 
-    if (PlayClip_isOn && response) {
+    if (PlayClip_isOn && response && PlayClip_loadDataRequestId === id) {
 
         var responseObj = JSON.parse(response);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === PlayClip_loadDataRequestId) {
-
-            if (responseObj.status === 200) {
-                PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
-                return;
-            } else if (responseObj.status === 410) { //Workaround for future 410 issue
-                PlayClip_loadData410 = true;
-                PlayClip_loadData410Recheck();
-                PlayClip_loadDataSuccess410();
-                return;
-            }
-
-            PlayClip_loadDataError();
+        if (responseObj.status === 200) {
+            PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
+            return;
+        } else if (responseObj.status === 410) { //Workaround for future 410 issue
+            PlayClip_loadData410 = true;
+            PlayClip_loadData410Recheck();
+            PlayClip_loadDataSuccess410();
+            return;
         }
+
+        PlayClip_loadDataError();
 
     }
 
@@ -407,6 +404,7 @@ function PlayClip_shutdownStream() {
         PlayClip_PreshutdownStream(true);
         Play_CleanHideExit();
         Play_exitMain();
+        PlayClip_loadDataRequestId = 0;
     }
 }
 

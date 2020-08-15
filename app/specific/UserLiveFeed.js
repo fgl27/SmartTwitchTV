@@ -526,35 +526,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && add_focus && Settings_Obj_default('show_feed_player') &&
-        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod() && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview) {
-
-        if (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) {
-
-            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
-
-            if (doc) {
-
-                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
-                var id;
-
-                if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
-                else id = obj[14];
-
-                if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
-
-                    UserLiveFeed_CheckIfIsLiveStart();
-
-                } else if (Play_PreviewId) {
-
-                    OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
-
-                }
-
-            }
-
-        }
-    }
+    UserLiveFeed_CheckIfIsLiveStart(pos);
 
     if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();
@@ -595,43 +567,87 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
-function UserLiveFeed_CheckIfIsLiveStart() {
+function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    Main_clearTimeout(UserLiveFeed_LoadPreviewId);
+
+    if (Main_IsOn_OSInterface) {
+
+        OSInterface_ClearFeedPlayer();
+        if (Play_PreviewId && !PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+
+    }
+    Play_HideWarningMidleDialog();
+}
+
+var UserLiveFeed_LoadPreviewId;
+function UserLiveFeed_CheckIfIsLiveStart(pos) {
+
+    if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
+        Settings_Obj_default('show_feed_player') &&
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
+        (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
+        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
+
+        var obj = Play_CheckLiveThumb(false, true);
+
+        if (obj) {
+            var id;
+
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) id = obj[7];
+            else id = obj[14];
+
+            if (!Play_PreviewId || !Main_A_equals_B(id, Play_PreviewId)) {
+
+                UserLiveFeed_LoadPreviewId = Main_setTimeout(
+                    function() {
+
+                        UserLiveFeed_CheckIfIsLive(obj);
+
+                    },
+                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                    UserLiveFeed_LoadPreviewId
+                );
+
+            } else if (Play_PreviewId) {//Refreshing the screen
+
+                OSInterface_SetFeedPosition(UserLiveFeed_CheckIfIsLiveGetPos(UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]));
+
+            }
+        }
+
+    }
+
+}
+
+function UserLiveFeed_CheckIfIsLive(obj) {
 
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface) return;
 
-    var obj = Play_CheckLiveThumb(false, true);
+    var id, token, link;
 
-    if (obj) {
+    if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
 
-        var id, token, link;
+        id = obj[7];
+        token = Play_vod_token;
+        link = Play_vod_links;
 
-        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
+    } else {//live
 
-            id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
+        id = obj[6];
+        token = Play_live_token;
+        link = Play_live_links;
+    }
 
-        } else {//live
-
-            id = obj[6];
-            token = Play_live_token;
-            link = Play_live_links;
-        }
-
-        OSInterface_CheckIfIsLiveFeed(
-            token.replace('%x', id),
-            link.replace('%x', id),
-            Settings_Obj_values("show_feed_player_delay"),
-            "UserLiveFeed_CheckIfIsLiveResult",
-            UserLiveFeed_FeedPosX,
-            (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
-        );
-
-    } else UserLiveFeed_CheckIfIsLiveSTop();
+    OSInterface_CheckIfIsLiveFeed(
+        token.replace('%x', id),
+        link.replace('%x', id),
+        "UserLiveFeed_CheckIfIsLiveResult",
+        UserLiveFeed_FeedPosX,
+        (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
+        NewDefaultHttpGetTimeout
+    );
 }
 
 var UserLiveFeed_CheckIfIsLiveResultThumb;
@@ -733,14 +749,6 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     }
 
-}
-
-function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
-    if (!Main_IsOn_OSInterface) return;
-
-    OSInterface_ClearFeedPlayer();
-    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
-    Play_HideWarningMidleDialog();
 }
 
 function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in, for_out, for_offset, eleRemovePos, right) {
@@ -964,6 +972,7 @@ function UserLiveFeed_SetHoldUp() {
 
 function UserLiveFeed_KeyRightLeft(Adder) {
     UserLiveFeed_ResetFeedId();
+
     if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
         if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;

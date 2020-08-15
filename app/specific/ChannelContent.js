@@ -78,6 +78,7 @@ function ChannelContent_exit() {
     Main_HideElement('channel_content_scroll');
     Main_values.My_channel = false;
     ChannelContent_removeFocus();
+    ChannelContent_loadDataCheckHostId = 0;
 }
 
 function ChannelContent_StartLoad() {
@@ -148,34 +149,44 @@ function ChannelContent_loadDataError() {
     }
 }
 
+var ChannelContent_loadDataCheckHostId;
 function ChannelContent_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+    ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-    //TODO replace all '[]' with null for performance after some app updates
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
-        DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
+        NewDefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        '[]',//JsonString
+        null,//JsonString
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
-        0,//key
+        ChannelContent_loadDataCheckHostId,//key
         3//thread
     );
 
 }
 
-function ChannelContent_CheckHostResult(result) {
-    if (result) {
-        var resultObj = JSON.parse(result);
-        if (resultObj.status === 200) {
-            ChannelContent_CheckHost(resultObj.responseText);
-        } else {
-            ChannelContent_loadDataCheckHostError();
-        }
+function ChannelContent_CheckHostResult(result, id) {
+    if (ChannelContent_loadDataCheckHostId === id) {
+
+        if (result) {
+
+            var resultObj = JSON.parse(result);
+
+            if (resultObj.status === 200) {
+
+                ChannelContent_CheckHost(resultObj.responseText);
+
+            } else {
+
+                ChannelContent_loadDataCheckHostError();
+
+            }
+
+        } else ChannelContent_loadDataCheckHostError();
     }
-    else ChannelContent_loadDataCheckHostError();
 }
 
 function ChannelContent_loadDataCheckHostError() {
@@ -201,7 +212,14 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        ChannelContent_GetStreamerInfoSuccess,
+        ChannelContent_GetStreamerInfoError
+    );
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
@@ -353,8 +371,8 @@ function ChannelContent_addFocusFollow() {
 
 function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
+        ChannelContent_CheckIfIsLiveSTop();
         Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
-        Sidepannel_CheckIfIsLiveSTop();
         Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
@@ -589,32 +607,27 @@ function ChannelContent_handleKeyDown(event) {
     }
 }
 
-
 function ChannelContent_LoadPreview() {
-    if (!ChannelContent_isoffline && Main_isScene1DocShown() &&
-        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
+    if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
+        Main_isScene1DocShown() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
-        if (!Main_isStoped && Settings_Obj_default('show_live_player')) {
+        var doc = Main_getElementById('channel_content_cell0_1');
 
-            var doc = Main_getElementById('channel_content_cell0_1');
+        if (doc) {
 
-            if (doc) {
+            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
 
-                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
 
-                if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
+                ChannelContent_LoadPreviewStart(obj);
 
-                    ChannelContent_LoadPreviewStart(obj);
+            } else if (Play_PreviewId) {
 
-                } else if (Play_PreviewId) {
+                ChannelContent_LoadPreviewRestore();
 
-                    ChannelContent_LoadPreviewRestore();
-
-                }
-
-                Play_PreviewVideoEnded = false;
             }
 
+            Play_PreviewVideoEnded = false;
         }
 
     }
@@ -636,7 +649,31 @@ function ChannelContent_LoadPreviewRestore() {
     Main_AddClassWitEle(img, 'visibility_hidden');
 }
 
+function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    Main_clearTimeout(ChannelContent_LoadPreviewStartId);
+
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+
+        OSInterface_ClearSidePanelPlayer();
+        Play_CheckIfIsLiveCleanEnd();
+
+    }
+}
+
+var ChannelContent_LoadPreviewStartId;
 function ChannelContent_LoadPreviewStart(obj) {
+    ChannelContent_LoadPreviewStartId = Main_setTimeout(
+        function() {
+
+            ChannelContent_LoadPreviewRun(obj);
+
+        },
+        50 + Settings_Obj_values('show_feed_player_delay'),
+        ChannelContent_LoadPreviewStartId
+    );
+}
+
+function ChannelContent_LoadPreviewRun(obj) {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface) {
@@ -646,12 +683,10 @@ function ChannelContent_LoadPreviewStart(obj) {
     OSInterface_CheckIfIsLiveFeed(
         Play_live_token.replace('%x', obj[6]),
         Play_live_links.replace('%x', obj[6]),
-        Settings_Obj_values("show_feed_player_delay"),
         "ChannelContent_LoadPreviewResult",
         Main_ChannelContent,
         0,
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }
@@ -707,7 +742,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 }
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Play_CheckIfIsLiveCleanEnd();
     Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
     Main_showWarningDialog(
         ErrorText,

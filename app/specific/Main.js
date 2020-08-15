@@ -1022,13 +1022,12 @@ function Main_checkWebVersionRun(web) {
     if (Main_IsOn_OSInterface) {
         var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
-        //TODO replace all '[]' with null for performance after some app updates
         OSInterface_GetMethodUrlHeadersAsync(
             baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
-            DefaultHttpGetTimeout,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            '[]',//JsonString
+            null,//JsonString
             'Main_checkWebVersion',//callback
             0,//checkResult
             web ? 1 : 0,//key
@@ -1204,7 +1203,15 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 10000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
+    BasexmlHttpGet(
+        theUrl,
+        10000,
+        2,
+        null,
+        Main_CheckBroadcastIDStartSucess,
+        Main_CheckBroadcastIDStartError,
+        false
+    );
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
@@ -1433,7 +1440,7 @@ function Main_openVod() {
 }
 
 function Main_removeFocus(id, idArray) {
-    Sidepannel_CheckIfIsLiveSTop();
+    Screens_LoadPreviewSTop();
     Main_HideWarningDialog();
     Main_RemoveClass(idArray[1] + id, 'visibility_hidden');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);

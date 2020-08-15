@@ -66,7 +66,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
             'POST',
             null,
             0,
-            '[]'
+            null
         );
 
         if (xmlHttp) {

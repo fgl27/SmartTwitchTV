@@ -331,13 +331,13 @@ function ChatLive_loadChatters(chat_number, id) {
 
 
 function ChatLive_loadChattersLoad(chat_number, id) {
-    //TODO replace all '[]' with null for performance after some app updates
+
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-        DefaultHttpGetTimeout,//timeout
+        NewDefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
-        '[]',//JsonString
+        null,//JsonString
         'ChatLive_loadChattersSuccess',//callback
         id,//checkResult
         chat_number,//key

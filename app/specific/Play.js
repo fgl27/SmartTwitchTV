@@ -305,6 +305,8 @@ function Play_Start(offline_chat) {
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
+    Play_loadDataCheckHostId = 0;
+    Play_StayCheckHostId = 0;
 
     Play_data.watching_time = new Date().getTime();
     Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
@@ -446,8 +448,7 @@ function Play_CheckIfIsLiveStart(callback) {
             callback,
             Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
-            DefaultHttpGetReTryMax,
-            DefaultHttpGetTimeout
+            NewDefaultHttpGetTimeout
         );
     }
 
@@ -488,7 +489,8 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
                     25
                 );
             } else {
-                Sidepannel_CheckIfIsLiveSTop();
+                Play_CheckIfIsLiveCleanEnd();
+
                 Main_RemoveClass(
                     ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
                     'visibility_hidden'
@@ -515,7 +517,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
 function Play_CheckIfIsLiveCleanEnd() {
     Play_PreviewURL = '';
-    Play_PreviewId = 0;
+    Play_PreviewId = null;
     Play_PreviewResponseText = '';
     Play_PreviewOffset = 0;
 }
@@ -584,8 +586,7 @@ function Play_getStreamData(channel_name) {
     return OSInterface_getStreamData(
         Play_live_token.replace('%x', channel_name),
         Play_live_links.replace('%x', channel_name),
-        DefaultHttpGetReTryMax,
-        DefaultHttpGetTimeout
+        NewDefaultHttpGetTimeout
     );
 
 }
@@ -875,8 +876,7 @@ function Play_loadData(synchronous) {
                 'Play_loadDataResult',
                 Play_loadDataId,
                 0,
-                DefaultHttpGetReTryMax,
-                DefaultHttpGetTimeout
+                NewDefaultHttpGetTimeout
             );
         }
 
@@ -1289,6 +1289,10 @@ function Play_shutdownStream() {
         Main_values.Play_WasPlaying = 0;
         Play_exitMain();
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
+
+        Play_loadDataCheckHostId = 0;
+        Play_StayCheckHostId = 0;
+        PlayExtra_loadDataCheckHostId = 0;
     }
 }
 
@@ -1584,11 +1588,10 @@ function Play_VideoStatusTest() {
 }
 
 var Play_BufferSize = 0;
-function Play_ShowVideoStatus(showLatency, Who_Called) {
-    var value = OSInterface_getVideoStatusString();
+function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
+    if (!valueString) return;
 
-    if (value) value = JSON.parse(value);
-    else return;
+    var value = JSON.parse(valueString);
 
     Main_innerHTML("stream_status",
         STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
@@ -1623,17 +1626,15 @@ function Play_getBuffer(value) {
     return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
 }
 
-function Play_ShowVideoQuality(who_called) {
-    var value = OSInterface_getVideoQualityString();
+function Play_ShowVideoQuality(who_called, value) {
 
     if (!value) {
+
         if (!who_called) Play_SetHtmlQuality('stream_quality');
         else PlayVod_SetHtmlQuality('stream_quality');
 
-        return;
-    }
+    } else Main_innerHTML("stream_quality", value);
 
-    Main_innerHTML("stream_quality", value);
 }
 
 function Play_clearHidePanel() {
@@ -1822,21 +1823,23 @@ function Play_CheckHostStart(error_410) {
     Main_setTimeout(Play_loadDataCheckHost, 50);
 }
 
+var Play_loadDataCheckHostId;
 function Play_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+    Play_loadDataCheckHostId = new Date().getTime();
 
     Main_setTimeout(
         function() {
-            //TODO replace all '[]' with null for performance after some app updates
+
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
-                DefaultHttpGetTimeout,//timeout
+                NewDefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
-                '[]',//JsonString
+                null,//JsonString
                 'Play_CheckHostResult',//callback
                 0,//checkResult
-                0,//key
+                Play_loadDataCheckHostId,//key
                 3//thread
             );
 
@@ -1845,16 +1848,21 @@ function Play_loadDataCheckHost() {
     );
 }
 
-function Play_CheckHostResult(result) {
-    if (result) {
-        var resultObj = JSON.parse(result);
-        if (resultObj.status === 200) {
-            Play_CheckHost(resultObj.responseText);
-        } else {
-            Play_EndStart(false, 1);
-        }
+function Play_CheckHostResult(result, id) {
+    if (Play_isOn && Play_loadDataCheckHostId === id) {
+
+        if (result) {
+
+            var resultObj = JSON.parse(result);
+            if (resultObj.status === 200) {
+                Play_CheckHost(resultObj.responseText);
+            } else {
+                Play_EndStart(false, 1);
+            }
+
+        } else Play_EndStart(false, 1);
+
     }
-    else Play_EndStart(false, 1);
 }
 
 function Play_CheckHost(responseText) {
