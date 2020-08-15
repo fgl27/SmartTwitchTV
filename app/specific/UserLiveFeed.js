@@ -678,21 +678,19 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                     //Make sure transition has ended to calculate rect
                     UserLiveFeed_FeedHolderDocId.style.transition = 'none';
-                    Main_ready(function() {
 
-                        var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
-                        OSInterface_SetPlayerViewFeedBottom(
-                            Rect.bottom,
-                            window.innerHeight
-                        );
-                        UserLiveFeed_CheckIfIsLiveResultThumb = true;
+                    var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                    OSInterface_SetPlayerViewFeedBottom(
+                        Rect.bottom,
+                        window.innerHeight
+                    );
+                    UserLiveFeed_CheckIfIsLiveResultThumb = true;
 
-                        if (Settings_Obj_default("app_animations")) {
-                            Main_ready(function() {
-                                UserLiveFeed_FeedHolderDocId.style.transition = '';
-                            });
-                        }
-                    });
+                    if (Settings_Obj_default("app_animations")) {
+                        Main_ready(function() {
+                            UserLiveFeed_FeedHolderDocId.style.transition = '';
+                        });
+                    }
 
                 }
 
