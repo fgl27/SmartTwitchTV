@@ -7426,7 +7426,7 @@
 
         var changelogObj = [{
                 title: "Web Version August 15 2020",
-                changes: ["Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slow dows do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag"]
+                changes: ["Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slowdowns do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag"]
             },
             {
                 title: "Apk Version 3.0.240 - August 10 2020",
