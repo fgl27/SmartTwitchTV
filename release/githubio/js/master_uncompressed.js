@@ -11753,7 +11753,14 @@
         Play_EndFocus = true;
         UserLiveFeed_PreventHide = true;
         UserLiveFeed_clearHideFeed();
+        //Skip transitions when showing end dialog
+        UserLiveFeed_FeedHolderDocId.style.transition = 'none';
         UserLiveFeed_ShowFeed();
+        if (Settings_Obj_default("app_animations")) {
+            Main_ready(function() {
+                UserLiveFeed_FeedHolderDocId.style.transition = '';
+            });
+        }
         Main_values.Play_WasPlaying = 0;
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         Main_SaveValues();
