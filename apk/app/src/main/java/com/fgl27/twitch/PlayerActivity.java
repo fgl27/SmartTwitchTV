@@ -77,7 +77,6 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.Objects;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -234,7 +233,6 @@ public class PlayerActivity extends Activity {
     private Process PingProcess;
     private Runtime PingRuntime;
 
-    private final BlockingQueue<Runnable> DataWorkQueue = new LinkedBlockingQueue<>();
     private ThreadPoolExecutor DataThreadPool;
 
     @Override
@@ -266,9 +264,9 @@ public class PlayerActivity extends Activity {
             DataThreadPool = new ThreadPoolExecutor(
                     Number_of_Cores,
                     Number_of_Cores * 2,
-                    60,
+                    60L,
                     TimeUnit.SECONDS,
-                    DataWorkQueue
+                    new LinkedBlockingQueue<>()
             );
 
             //Main loop threads
