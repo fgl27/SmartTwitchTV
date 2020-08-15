@@ -1481,6 +1481,15 @@
             visibility: hidden;
         }
 
+        .transform_base {
+            transform: translateX(0);
+            will-change: transform;
+        }
+
+        .transform_hide {
+            transform: translateX(101%) !important;
+        }
+
         .hide {
             display: none;
         }
@@ -2237,7 +2246,7 @@
 
 <body>
     <div id="body_container" class="screen_size" style="position: relative;">
-        <div id="scene1" class="screen_size" style="background-color: rgba(0, 0, 0, 1);">
+        <div id="scene1" class="screen_size transform_base" style="background-color: rgba(0, 0, 0, 1);">
             <div id="dialog_loading" class="screens dialogs hide"
                 style="z-index:98; margin-top: 50vh; overflow: visible;">
                 <div class="loading">
@@ -2882,7 +2891,8 @@
             <p>Test Text</p>
         </div>-->
         </div>
-        <div id="scene2" class="screen_size visibility_hidden">
+        <div id="scene2" class="screen_size transform_base
+        transform_hide">
             <div id="chat_container0" class="chat_container hide">
                 <div id="chat_inner_container" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>
@@ -3655,7 +3665,7 @@
             <div id="dialog_warning_muted" class="dialogs hide" style="z-index:7; margin-top: 25%;">
                 <div id="dialog_warning_muted_text" class="strokedelinebig dialog_text" style="font-size: 100%;"></div>
             </div>
-            <div id="user_feed" class="user_feed visibility_hidden">
+            <div id="user_feed" class="user_feed transform_base transform_hide">
                 <div id="dialog_loading_feed" class="dialogs_feed hide" style="margin-top: 5.5%; overflow: visible;">
                     <div class="loading">
                         <div></div>

@@ -400,11 +400,11 @@ function UserLiveFeed_GetSize(pos) {
 }
 
 function UserLiveFeed_isFeedShow() {
-    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'visibility_hidden');
+    return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'transform_hide');
 }
 
 function UserLiveFeed_Show() {
-    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+    Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
 }
 
 function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -416,7 +416,7 @@ function UserLiveFeed_Hide(PreventcleanQuailities) {
 function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
-    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+    Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
 }
 
 function UserLiveFeed_ShowFeed() {
