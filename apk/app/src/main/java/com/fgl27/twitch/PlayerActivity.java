@@ -2273,7 +2273,7 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         isVod ? 2 : 1,
-                        0,
+                        mLowLatency != 0 ? 2 : 0,
                         masterPlaylistString,
                         userAgent
                 );
