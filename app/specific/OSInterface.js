@@ -138,7 +138,19 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
             position,
             Timeout
         );
-    } catch (e) {}
+    } catch (e) {
+        try {
+            Android.getStreamDataAsync(
+                token_url,
+                hls_url,
+                callback,
+                checkResult,
+                position,
+                2,
+                Timeout
+            );
+        } catch (e) {}
+    }
 }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
@@ -176,7 +188,17 @@ function OSInterface_getStreamData(token_url, hls_url, Timeout) {
             hls_url,
             Timeout
         );
-    } catch (e) {}
+    } catch (e) {
+        try {
+            return Android.getStreamData(
+                token_url,
+                hls_url,
+                2,
+                Timeout
+            );
+        } catch (e) {}
+    }
+    return null;
 }
 
 //public String getQualities()
