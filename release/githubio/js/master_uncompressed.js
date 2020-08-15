@@ -10385,7 +10385,11 @@
     function OSInterface_ClearSidePanelPlayer() {
         try {
             Android.ClearSidePanelPlayer();
-        } catch (e) {}
+        } catch (e) {
+            try {
+                Android.ClearSidePanelPlayer(true);
+            } catch (e) {}
+        }
     }
 
     //public void SidePanelPlayerRestore()
