@@ -2599,9 +2599,11 @@
             Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
         }
 
-        Main_ready(function() {
-            if (Settings_Obj_default("app_animations")) Sidepannel_MovelDiv.style.transition = '';
-        });
+        if (Settings_Obj_default("app_animations")) {
+            Main_ready(function() {
+                Sidepannel_MovelDiv.style.transition = '';
+            });
+        }
 
     }
 
@@ -7351,7 +7353,7 @@
                 Main_values.OS_is_Check = true;
             }
 
-        } else Settings_ForceEnableAimations();
+        } // else Settings_ForceEnableAimations();
     }
 
     function Main_SetStringsMain(isStarting) {
@@ -25442,7 +25444,8 @@
                 'scenefeed_background',
                 'side_panel_fix',
                 'side_panel_movel',
-                'side_panel'
+                'side_panel',
+                'user_feed'
             ],
             animate = Settings_Obj_default("app_animations"),
             mtransition = animate ? '' : 'none';
@@ -28107,11 +28110,11 @@
     }
 
     function UserLiveFeed_isFeedShow() {
-        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'transform_hide');
+        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
     }
 
     function UserLiveFeed_Show() {
-        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
+        Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
     function UserLiveFeed_Hide(PreventcleanQuailities) {
@@ -28123,7 +28126,7 @@
     function UserLiveFeed_HideAfter() {
         //return;//return;
         UserLiveFeed_Showloading(false);
-        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'transform_hide');
+        Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
     function UserLiveFeed_ShowFeed() {
@@ -28386,12 +28389,23 @@
 
                     if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
 
-                        var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
-                        OSInterface_SetPlayerViewFeedBottom(
-                            Rect.bottom,
-                            window.innerHeight
-                        );
-                        UserLiveFeed_CheckIfIsLiveResultThumb = true;
+                        //Make sure transition has ended to calculate rect
+                        UserLiveFeed_FeedHolderDocId.style.transition = 'none';
+                        Main_ready(function() {
+
+                            var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                            OSInterface_SetPlayerViewFeedBottom(
+                                Rect.bottom,
+                                window.innerHeight
+                            );
+                            UserLiveFeed_CheckIfIsLiveResultThumb = true;
+
+                            if (Settings_Obj_default("app_animations")) {
+                                Main_ready(function() {
+                                    UserLiveFeed_FeedHolderDocId.style.transition = '';
+                                });
+                            }
+                        });
 
                     }
 
