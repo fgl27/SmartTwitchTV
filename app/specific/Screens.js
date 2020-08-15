@@ -942,26 +942,12 @@ function Screens_LoadPreviewSTop(PreventcleanQuailities) {
     }
 }
 
+var Screens_LoadPreviewId;
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
-var Screens_LoadPreviewId;
 function Screens_LoadPreview(key) {
-    if (ScreenObj[key].PreviewEnable) {
-        Screens_LoadPreviewId = Main_setTimeout(
-            function() {
 
-                Screens_LoadPreviewRun(key);
-
-            },
-            100 + Settings_Obj_values('show_feed_player_delay'),
-            Screens_LoadPreviewId
-        );
-    }
-}
-
-function Screens_LoadPreviewRun(key) {
-
-    if (!Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
+    if (ScreenObj[key].PreviewEnable && !Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
         (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
@@ -989,7 +975,15 @@ function Screens_LoadPreviewRun(key) {
 
             if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
 
-                Screens_LoadPreviewStart(key, obj);
+                Screens_LoadPreviewId = Main_setTimeout(
+                    function() {
+
+                        Screens_LoadPreviewStart(key, obj);
+
+                    },
+                    100 + Settings_Obj_values('show_feed_player_delay'),
+                    Screens_LoadPreviewId
+                );
 
             } else if (Play_PreviewId) {
 
@@ -1308,13 +1302,12 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
                 Screens_ChangeFocusAnimationFinished = true;
 
                 //Delay to make sure it happen after animation has ended
-                Screens_LoadPreviewId = Main_setTimeout(
+                Main_setTimeout(
                     function() {
                         Screens_LoadPreview(key);
 
                     },
-                    25,
-                    Screens_LoadPreviewId
+                    25
                 );
 
             },
@@ -1473,12 +1466,11 @@ function Screens_addrow(forceScroll, y, key) {
 
         } else {
 
-            Screens_LoadPreviewId = Main_setTimeout(
+            Main_setTimeout(
                 function() {
                     Screens_LoadPreview(key);
                 },
-                y ? 0 : Screens_ScrollAnimationTimeout,
-                Screens_LoadPreviewId
+                y ? 0 : Screens_ScrollAnimationTimeout
             );
         }
 
@@ -1533,12 +1525,11 @@ function Screens_addrowDown(y, key) {
             10
         );
     } else {
-        Screens_LoadPreviewId = Main_setTimeout(
+        Main_setTimeout(
             function() {
                 Screens_LoadPreview(key);
             },
-            y ? Screens_ScrollAnimationTimeout : 0,
-            Screens_LoadPreviewId
+            y ? Screens_ScrollAnimationTimeout : 0
         );
     }
 }

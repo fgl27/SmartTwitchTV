@@ -2139,10 +2139,9 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
             PreviewFeedHandlerResult[x][y] = null;
 
-            PreviewFeedHandler.postDelayed(() ->
+            PreviewFeedHandler.post(() ->
                     {
                         try {
                             PreviewFeedHandlerResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
@@ -2152,7 +2151,8 @@ public class PlayerActivity extends Activity {
 
                         if (PreviewFeedHandlerResult[x][y] != null)
                             LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
-                    }, 100);
+                    }
+            );
         }
 
         //TODO remove this after some app updates
@@ -2265,7 +2265,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
@@ -2393,7 +2392,6 @@ public class PlayerActivity extends Activity {
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer() {
-            PreviewFeedHandler.removeCallbacksAndMessages(null);
             MainThreadHandler.post(() -> {
 
                 VideoWebHolder.bringChildToFront(mWebView);
