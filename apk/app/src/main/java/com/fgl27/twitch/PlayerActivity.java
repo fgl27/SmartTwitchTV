@@ -2072,7 +2072,14 @@ public class PlayerActivity extends Activity {
 
                 if (startPlayer) {
 
-                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, who_called, mLowLatency, masterPlaylistString, userAgent);
+                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            who_called,
+                            mLowLatency,
+                            masterPlaylistString,
+                            userAgent
+                    );
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
 
                     if (mplayer == 1) {
@@ -2099,7 +2106,14 @@ public class PlayerActivity extends Activity {
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
-                mediaSources[mainPlayer] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
                 PreInitializePlayer(1, 0, mainPlayer);
             });
         }
@@ -2830,7 +2844,13 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mposition = mainPlayer;
                 else if (position == 1) mposition = mainPlayer ^ 1;
 
-                mediaSources[mposition] = Tools.buildMediaSource(Uri.parse(uri), mWebViewContext, 1, mLowLatency, masterPlaylistString, userAgent);
+                mediaSources[mposition] = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1, mLowLatency,
+                        masterPlaylistString,
+                        userAgent
+                );
                 initializePlayerMulti(mposition, mediaSources[mposition]);
             });
         }
