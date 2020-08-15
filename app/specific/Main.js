@@ -1199,7 +1199,15 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, 10000, 2, null, Main_CheckBroadcastIDStartSucess, Main_CheckBroadcastIDStartError, false);
+    BasexmlHttpGet(
+        theUrl,
+        10000,
+        2,
+        null,
+        Main_CheckBroadcastIDStartSucess,
+        Main_CheckBroadcastIDStartError,
+        false
+    );
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {

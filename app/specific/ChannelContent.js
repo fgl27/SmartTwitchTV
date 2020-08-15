@@ -212,7 +212,14 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        ChannelContent_GetStreamerInfoSuccess,
+        ChannelContent_GetStreamerInfoError
+    );
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {

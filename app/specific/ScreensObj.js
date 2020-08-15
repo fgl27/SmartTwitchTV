@@ -43,9 +43,9 @@ var AGame_following = false;
 
 var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var NewDefaultHttpGetTimeout = 25000;
-var DefaultHttpGetTimeout = 6000;
-var DefaultHttpGetTimeoutPlus = 3000;
-var DefaultHttpGetReTryMax = 3;
+var DefaultHttpGetTimeout = 20000;
+var DefaultHttpGetTimeoutPlus = 5000;
+var DefaultHttpGetReTryMax = 2;
 var empty_fun = function() {};
 
 var Base_obj = {
