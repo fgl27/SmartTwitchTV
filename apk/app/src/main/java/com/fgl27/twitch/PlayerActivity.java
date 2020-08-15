@@ -281,7 +281,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[i] = new Handler(MainLooper);
             }
 
-            //BackGroundThreadEtc loop threads that may or may not use delay to start
+            //BackGroundThread Etc threads that may or may not use delay to start
             HandlerThread backGroundThread = new HandlerThread("BackGroundThread");
             backGroundThread.start();
             Looper BackGroundThreadLooper = backGroundThread.getLooper();
@@ -2230,23 +2230,19 @@ public class PlayerActivity extends Activity {
                     {
                         Tools.ResponseObj response;
 
-                        for (int i = 0; i < 3; i++) {
+                        response = Tools.MethodUrlHeaders(
+                                urlString,
+                                timeout,
+                                postMessage,
+                                Method,
+                                checkResult,
+                                JsonHeadersArray
+                        );
 
-                            response = Tools.MethodUrlHeaders(
-                                    urlString,
-                                    (timeout + (i * Constants.DEFAULT_HTTP_EXTRA_TIMEOUT)),
-                                    postMessage,
-                                    Method,
-                                    checkResult,
-                                    JsonHeadersArray
-                            );
-
-                            if (response != null) {
-                                StreamDataResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
-                                return;
-                            }
-
+                        if (response != null) {
+                            StreamDataResult[thread] = new Gson().toJson(response);
+                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
+                            return;
                         }
 
                         //MethodUrl is null inform JS callback

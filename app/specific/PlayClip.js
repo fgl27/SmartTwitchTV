@@ -219,7 +219,7 @@ function PlayClip_loadDataRequest() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         PlayClip_BaseUrl,//urlString
-        DefaultHttpGetTimeout,//timeout
+        NewDefaultHttpGetTimeout,//timeout
         PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
         Play_base_back_headers,//JsonString

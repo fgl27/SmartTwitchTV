@@ -1839,7 +1839,7 @@ function Play_loadDataCheckHost() {
 
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
-                DefaultHttpGetTimeout,//timeout
+                NewDefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
                 null,//JsonString

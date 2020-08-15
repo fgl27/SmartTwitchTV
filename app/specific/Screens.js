@@ -1031,7 +1031,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayClip_BaseUrl,//urlString
-            DefaultHttpGetTimeout,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
             'POST',//Method, null for get
             Play_base_back_headers,//JsonString

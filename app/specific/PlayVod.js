@@ -1186,7 +1186,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayVod_previews_url,//urlString
-            DefaultHttpGetTimeout * 2,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             null,//JsonString
@@ -1385,7 +1385,7 @@ function PlayVod_updateChapters() {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayClip_BaseUrl,//urlString
-            DefaultHttpGetTimeout,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId),//postMessage, null for get
             'POST',//Method, null for get
             Play_base_back_headers,//JsonString

@@ -334,7 +334,7 @@ function ChatLive_loadChattersLoad(chat_number, id) {
 
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-        DefaultHttpGetTimeout,//timeout
+        NewDefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString

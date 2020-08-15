@@ -156,7 +156,7 @@ function ChannelContent_loadDataCheckHost() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
-        DefaultHttpGetTimeout + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
+        NewDefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString

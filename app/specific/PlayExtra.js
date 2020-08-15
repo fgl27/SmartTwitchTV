@@ -273,7 +273,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
-        DefaultHttpGetTimeout,//timeout
+        NewDefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString

@@ -1020,7 +1020,7 @@ function Main_checkWebVersionRun(web) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
-            DefaultHttpGetTimeout,//timeout
+            NewDefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             null,//JsonString
