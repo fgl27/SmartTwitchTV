@@ -1352,7 +1352,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_hideScene1Doc();
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
+    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
     Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -1397,7 +1397,7 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     Main_removeEventListener("keydown", handleKeyDownFunction);
-    Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
+    Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
     Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -1445,7 +1445,7 @@ function Main_openVod() {
 function Main_removeFocus(id, idArray) {
     Screens_LoadPreviewSTop();
     Main_HideWarningDialog();
-    Main_RemoveClass(idArray[1] + id, 'visibility_hidden');
+    Main_RemoveClass(idArray[1] + id, 'opacity_zero');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
 }
 
@@ -2094,9 +2094,9 @@ function Main_CheckStop() { // Called only by JAVA
 
     //Reset Screen img if hiden
     var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    if (doc) Main_RemoveClassWithEle(doc, 'visibility_hidden');
+    if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
     else if (ChannelContent_Isfocused()) {
-        Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
     }
 }
 

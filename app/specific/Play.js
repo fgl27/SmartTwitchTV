@@ -493,7 +493,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
                 Main_RemoveClass(
                     ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
-                    'visibility_hidden'
+                    'opacity_zero'
                 );
             }
 

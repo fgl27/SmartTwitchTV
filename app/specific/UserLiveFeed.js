@@ -279,24 +279,24 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //feedShow = UserLiveFeed_isFeedShow();
 
             // if (!feedShow) {
-            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+            //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             //     UserLiveFeed_Show();
             // }
             if (feedtypeNotshow) {
-                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
+                Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
             // if (!Main_isScene2DocShown()) {
-            //     Main_AddClassWitEle(Main_Scene2Doc, 'visibility_hidden');
+            //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
             //     Main_showScene2Doc();
 
             //     UserLiveFeed_obj[pos].AddCellsize =
             //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
             //     Main_hideScene2Doc();
-            //     Main_RemoveClassWithEle(Main_Scene2Doc, 'visibility_hidden');
+            //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
             // } else {
             UserLiveFeed_obj[pos].AddCellsize =
                 UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
@@ -304,11 +304,11 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
             // if (!feedShow) {
             //     UserLiveFeed_HideAfter();
-            //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+            //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
             // }
             if (feedtypeNotshow) {
                 Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
-                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
+                Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
             }
         }
 
@@ -1063,7 +1063,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
             return;
         }
 
-        Main_AddClass('icon_feed_back', 'visibility_hidden');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
     }
 }
@@ -1085,7 +1085,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_UserAGamesPos) {
 
-        Main_AddClass('icon_feed_back', 'visibility_hidden');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeedobj_CurrentUserAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
@@ -1107,7 +1107,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_AGamesPos) {
 
-        Main_AddClass('icon_feed_back', 'visibility_hidden');
+        Main_AddClass('icon_feed_back', 'opacity_zero');
         UserLiveFeedobj_CurrentAGameEnable = false;
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
         UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;

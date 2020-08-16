@@ -373,7 +373,7 @@ function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
         ChannelContent_CheckIfIsLiveSTop();
         Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
-        Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
 
@@ -646,7 +646,7 @@ function ChannelContent_LoadPreviewRestore() {
         4
     );
 
-    Main_AddClassWitEle(img, 'visibility_hidden');
+    Main_AddClassWitEle(img, 'opacity_zero');
 }
 
 function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -726,7 +726,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
                     1
                 );
 
-                Main_AddClassWitEle(img, 'visibility_hidden');
+                Main_AddClassWitEle(img, 'opacity_zero');
 
             } else {
 
@@ -743,7 +743,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
     Play_CheckIfIsLiveCleanEnd();
-    Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+    Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
     Main_showWarningDialog(
         ErrorText,
         time
