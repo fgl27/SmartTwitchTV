@@ -28,7 +28,7 @@ var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.241';
 var Main_version_java = 32;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'August 15 2020';
-var Main_version_web = 52;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 53;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;

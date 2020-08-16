@@ -3147,7 +3147,7 @@
         if (ChannelContent_cursorY) {
             ChannelContent_CheckIfIsLiveSTop();
             Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
-            Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+            Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
         } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
     }
 
@@ -3420,7 +3420,7 @@
             4
         );
 
-        Main_AddClassWitEle(img, 'visibility_hidden');
+        Main_AddClassWitEle(img, 'opacity_zero');
     }
 
     function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
@@ -3501,7 +3501,7 @@
                         1
                     );
 
-                    Main_AddClassWitEle(img, 'visibility_hidden');
+                    Main_AddClassWitEle(img, 'opacity_zero');
 
                 } else {
 
@@ -3518,7 +3518,7 @@
 
     function ChannelContent_LoadPreviewWarn(ErrorText, time) {
         Play_CheckIfIsLiveCleanEnd();
-        Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
         Main_showWarningDialog(
             ErrorText,
             time
@@ -4045,7 +4045,7 @@
             '" class="chat_emotes_img_div" ><img alt="" class="chat_emotes_img" src="' + url +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_BANNER +
             '\';"></div><div class="chat_emotes_name_holder"><div id="chat_emotes_name' + id +
-            '" class="chat_emotes_name visibility_hidden">' + name + '</div></div>';
+            '" class="chat_emotes_name opacity_zero">' + name + '</div></div>';
 
         return div;
     }
@@ -4112,12 +4112,12 @@
     function ChatLiveControls_EmotesAddFocus(position) {
         Main_AddClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
         ChatLiveControls_EmotesUpdateCounter(ChatLiveControls_EmotesPos);
-        Main_RemoveClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'visibility_hidden');
+        Main_RemoveClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
     }
 
     function ChatLiveControls_EmotesRemoveFocus(position) {
         Main_RemoveClass('chat_emotes_img' + ChatLiveControls_EmotesArray[position], 'chat_emotes_focus');
-        Main_AddClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'visibility_hidden');
+        Main_AddClass('chat_emotes_name' + ChatLiveControls_EmotesArray[position], 'opacity_zero');
     }
 
     function ChatLiveControls_EmotesChangeFocus(position, adder) {
@@ -6873,7 +6873,7 @@
     var Main_stringVersion_Min = '.241';
     var Main_version_java = 32; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'August 15 2020';
-    var Main_version_web = 52; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 53; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8201,7 +8201,7 @@
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_hideScene1Doc();
         Main_removeEventListener("keydown", handleKeyDownFunction);
-        Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
+        Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
         Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -8246,7 +8246,7 @@
     function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_removeEventListener("keydown", handleKeyDownFunction);
-        Main_RemoveClass(idsArray[1] + id, 'visibility_hidden');
+        Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
         Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
 
@@ -8294,7 +8294,7 @@
     function Main_removeFocus(id, idArray) {
         Screens_LoadPreviewSTop();
         Main_HideWarningDialog();
-        Main_RemoveClass(idArray[1] + id, 'visibility_hidden');
+        Main_RemoveClass(idArray[1] + id, 'opacity_zero');
         Main_RemoveClass(idArray[0] + id, Main_classThumb);
     }
 
@@ -8950,9 +8950,9 @@
 
         //Reset Screen img if hiden
         var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-        if (doc) Main_RemoveClassWithEle(doc, 'visibility_hidden');
+        if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
         else if (ChannelContent_Isfocused()) {
-            Main_RemoveClass('channel_content_cell0_1_img', 'visibility_hidden');
+            Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
         }
     }
 
@@ -14999,7 +14999,7 @@
 
                     Main_RemoveClass(
                         ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
-                        'visibility_hidden'
+                        'opacity_zero'
                     );
                 }
 
@@ -19583,11 +19583,11 @@
                 //if (SceneNotShowing || ScrollDocNotShowing) {
                 if (ScrollDocNotShowing) {
                     // if (SceneNotShowing) {
-                    //     Main_AddClassWitEle(Main_Scene1Doc, 'visibility_hidden');
+                    //     Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
                     //     Main_showScene1Doc();
                     // }
                     //if (ScrollDocNotShowing) {
-                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'visibility_hidden');
+                    Main_AddClassWitEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
                     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
                     //}
 
@@ -19596,12 +19596,12 @@
                     //if (ScrollDocNotShowing) {
                     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
                     //}
-                    Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'visibility_hidden');
+                    Main_RemoveClassWithEle(ScreenObj[key].ScrollDoc, 'opacity_zero');
 
                     // if (SceneNotShowing) {
                     //     Main_hideScene1Doc();
                     // }
-                    // Main_RemoveClassWithEle(Main_Scene1Doc, 'visibility_hidden');
+                    // Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
                 } else Screens_setOffset(1, 0, key);
 
                 for (i = 0; i < (Cells_length < ScreenObj[key].visiblerows ? Cells_length : ScreenObj[key].visiblerows); i++) {
@@ -19885,7 +19885,7 @@
         );
 
         Screens_ClearAnimation(key);
-        Main_AddClassWitEle(img, 'visibility_hidden');
+        Main_AddClassWitEle(img, 'opacity_zero');
     }
 
     function Screens_LoadPreviewStart(key, obj) {
@@ -20079,7 +20079,7 @@
                     );
 
                     Screens_ClearAnimation(x);
-                    Main_AddClassWitEle(img, 'visibility_hidden');
+                    Main_AddClassWitEle(img, 'opacity_zero');
 
                     if (offset) {
                         Main_showWarningDialog(
@@ -20140,7 +20140,7 @@
 
     function Screens_LoadPreviewWarn(ErrorText, x, time) {
         Play_CheckIfIsLiveCleanEnd();
-        Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'visibility_hidden');
+        Main_RemoveClass(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX, 'opacity_zero');
         Main_showWarningDialog(
             ErrorText,
             time
@@ -20539,7 +20539,7 @@
             Main_clearInterval(ScreenObj[key].AnimateThumbId);
             if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
                 Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
-                Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
+                Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
             }
         }
     }
@@ -21202,7 +21202,7 @@
 
     function Screens_ThumbOptionStart(key) {
         Screens_LoadPreviewSTop();
-        Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'visibility_hidden');
+        Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
 
         Screens_clear = true;
 
@@ -22211,7 +22211,7 @@
         },
         key_play: function() {
             if (this.itemsCount) {
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                 Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
             }
         }
@@ -22496,7 +22496,7 @@
         ScreenObj[Main_aGame].Set_Scroll();
         ScreenObj[Main_aGame].key_play = function() {
             if (this.itemsCount && this.posY !== -1) {
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
                 Main_OpenLiveStream(
                     this.posY + '_' + this.posX,
@@ -23225,7 +23225,7 @@
                 } else Screens_histStart(this.screen);
             } else {
                 if (this.itemsCount) {
-                    Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'visibility_hidden');
+                    Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                     Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
                 }
             }
@@ -23570,7 +23570,7 @@
         // This prevent starting animating before it has loaded or animated a empty image
         screen.Vod_newImg.onload = function() {
             this.onload = null;
-            Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'visibility_hidden');
+            Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
             div.style.backgroundSize = div.offsetWidth + "px";
             var frame = 0;
             screen.AnimateThumbId = Main_setInterval(
@@ -27993,24 +27993,24 @@
                 //feedShow = UserLiveFeed_isFeedShow();
 
                 // if (!feedShow) {
-                //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+                //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 //     UserLiveFeed_Show();
                 // }
                 if (feedtypeNotshow) {
-                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
+                    Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                     Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'hide');
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
                 // if (!Main_isScene2DocShown()) {
-                //     Main_AddClassWitEle(Main_Scene2Doc, 'visibility_hidden');
+                //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
                 //     Main_showScene2Doc();
 
                 //     UserLiveFeed_obj[pos].AddCellsize =
                 //         UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
 
                 //     Main_hideScene2Doc();
-                //     Main_RemoveClassWithEle(Main_Scene2Doc, 'visibility_hidden');
+                //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
                 // } else {
                 UserLiveFeed_obj[pos].AddCellsize =
                     UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
@@ -28018,11 +28018,11 @@
 
                 // if (!feedShow) {
                 //     UserLiveFeed_HideAfter();
-                //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'visibility_hidden');
+                //     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
                 // }
                 if (feedtypeNotshow) {
                     Main_AddClassWitEle(UserLiveFeed_obj[pos].div, 'hide');
-                    Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'visibility_hidden');
+                    Main_RemoveClassWithEle(UserLiveFeed_obj[pos].div, 'opacity_zero');
                 }
             }
 
@@ -28783,7 +28783,7 @@
                 return;
             }
 
-            Main_AddClass('icon_feed_back', 'visibility_hidden');
+            Main_AddClass('icon_feed_back', 'opacity_zero');
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
         }
     }
@@ -28805,7 +28805,7 @@
 
         } else if (pos === UserLiveFeedobj_UserAGamesPos) {
 
-            Main_AddClass('icon_feed_back', 'visibility_hidden');
+            Main_AddClass('icon_feed_back', 'opacity_zero');
             UserLiveFeedobj_CurrentUserAGameEnable = false;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = UserLiveFeedobj_UserGamesPos;
@@ -28827,7 +28827,7 @@
 
         } else if (pos === UserLiveFeedobj_AGamesPos) {
 
-            Main_AddClass('icon_feed_back', 'visibility_hidden');
+            Main_AddClass('icon_feed_back', 'opacity_zero');
             UserLiveFeedobj_CurrentAGameEnable = false;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = UserLiveFeedobj_GamesPos;
@@ -29541,7 +29541,7 @@
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
         UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
-        Main_RemoveClass('icon_feed_back', 'visibility_hidden');
+        Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
     }
 
@@ -29623,7 +29623,7 @@
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, (UserLiveFeedobj_CurrentAGameName !== UserLiveFeedobj_CurrentAGameNameEnter));
         UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
-        Main_RemoveClass('icon_feed_back', 'visibility_hidden');
+        Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentAGameName);
     }
 
