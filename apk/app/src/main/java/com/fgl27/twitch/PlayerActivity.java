@@ -21,6 +21,7 @@
 package com.fgl27.twitch;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -232,6 +233,7 @@ public class PlayerActivity extends Activity {
 
     private Process PingProcess;
     private Runtime PingRuntime;
+    private boolean PingSDKBool;
 
     private ThreadPoolExecutor DataThreadPool;
 
@@ -279,7 +281,7 @@ public class PlayerActivity extends Activity {
             }
 
             //BackGroundThread Etc threads that may or may not use delay to start
-            HandlerThread backGroundThread = new HandlerThread("BackGroundThread");
+            HandlerThread backGroundThread = new HandlerThread("BGT");
             backGroundThread.start();
             Looper BackGroundThreadLooper = backGroundThread.getLooper();
 
@@ -289,15 +291,7 @@ public class PlayerActivity extends Activity {
             ChannelHandler = new Handler(BackGroundThreadLooper);
             DeleteHandler = new Handler(BackGroundThreadLooper);
 
-            //Ping handler this handler may block the Queue but is very light run it on separated treads
-            //So one can un block the other
-            HandlerThread[] runtimeThread = new HandlerThread[2];
-            for (int i = 0; i < 2; i++) {
-                runtimeThread[i] = new HandlerThread("RuntimeThread" + i);
-                runtimeThread[i].start();
-                RuntimeHandler[i] = new Handler(runtimeThread[i].getLooper());
-            }
-            PingRuntime = Runtime.getRuntime();
+            SetPing();
 
             deviceIsTV = Tools.deviceIsTV(this);
             canRunChannel = deviceIsTV && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
@@ -1065,32 +1059,57 @@ public class PlayerActivity extends Activity {
         warningShowing = false;
     }
 
+    private void SetPing() {
+        //Ping handler this handler may block the Queue but is very light run it on separated treads
+        //So one can un block the other
+        PingSDKBool = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+        HandlerThread[] runtimeThread = new HandlerThread[PingSDKBool ? 1 : 2];
+
+        for (int i = 0; i < runtimeThread.length; i++) {
+
+            runtimeThread[i] = new HandlerThread("RT" + i);
+            runtimeThread[i].start();
+            RuntimeHandler[i] = new Handler(runtimeThread[i].getLooper());
+
+        }
+
+        PingRuntime = Runtime.getRuntime();
+    }
+
     private void StartPing() {
         RuntimeHandler[0].removeCallbacksAndMessages(null);
+        RuntimeHandler[0].postDelayed(this::CheckPing, 5000);
+    }
 
-        RuntimeHandler[0].postDelayed(() -> {
-            String TempPing = DoGetPing();
-            RuntimeHandler[1].removeCallbacksAndMessages(null);
+    private void CheckPing() {
+        String TempPing = DoGetPing();
+        if(!PingSDKBool) RuntimeHandler[1].removeCallbacksAndMessages(null);
 
-            if (TempPing != null) {
-                PingValue = Float.parseFloat(TempPing);
-                PingValueAVG += PingValue;
-                PingCounter++;
-                //Reset error check
+        if (TempPing != null) {
+
+            PingValue = Float.parseFloat(TempPing);
+            PingValueAVG += PingValue;
+            PingCounter++;
+            //Reset error check
+            PingErrorCounter = 0L;
+            //Prevent clear ShowNoNetworkWarning
+            if (warningShowing) MainThreadHandler.post(this::HideWarningText);
+
+        } else if (!warningShowing && PingWarning && player[mainPlayer] == null) {//Prevent showing if playing or disabled by user
+
+            PingErrorCounter++;
+            if (PingErrorCounter > 3) {//> 0 1 2 3 = 32s... 5 seconds of postDelayed plus 3 seconds of waitFor/postDelayed times 4 = 32s
+
                 PingErrorCounter = 0L;
-                //Prevent clear ShowNoNetworkWarning
-                if (warningShowing) MainThreadHandler.post(this::HideWarningText);
-            } else if (!warningShowing && PingWarning && player[mainPlayer] == null) {//Prevent showing if playing or disabled by user
-                PingErrorCounter++;
-                if (PingErrorCounter > 3) {//> 0 1 2 3 = 32s... 5 seconds of postDelayed plus 3 seconds of waitFor/postDelayed times 4 = 32s
-                    PingErrorCounter = 0L;
-                    MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
-                    MainThreadHandler.postDelayed(this::HideWarningText, 30000);
-                }
+                MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
+                MainThreadHandler.postDelayed(this::HideWarningText, 30000);
+
             }
 
-            if (!IsStopped) StartPing();
-        }, 5000);
+        }
+
+        if (!IsStopped) StartPing();
+
     }
 
     private void DestroyGetPing() {
@@ -1100,19 +1119,26 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    @SuppressLint("NewApi")
     private String DoGetPing() {
-        RuntimeHandler[1].removeCallbacksAndMessages(null);
         PingProcess = null;
+
         try {
 
             PingProcess = PingRuntime.exec("ping -c 1 api.twitch.tv");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            if (PingSDKBool) {
+
                 if (!PingProcess.waitFor(3, TimeUnit.SECONDS)) {
                     PingProcess.destroy();
                     return null;
                 }
+
             } else {
+
+                RuntimeHandler[1].removeCallbacksAndMessages(null);
                 RuntimeHandler[1].postDelayed(this::DestroyGetPing, 3000);
+
             }
 
             Matcher pingMatcher = TIME_NAME.matcher(Tools.readFullyString(PingProcess.getInputStream()));
