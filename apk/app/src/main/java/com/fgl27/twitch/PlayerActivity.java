@@ -181,6 +181,7 @@ public class PlayerActivity extends Activity {
     private int DeviceRam = 0;
     private String VideoQualityResult = null;
     private String getVideoStatusResult = null;
+    private String PreviewPlayerPlaylist;
     private float conSpeedAVG = 0f;
     private float NetActivityAVG = 0f;
     private long NetCounter = 0L;
@@ -2098,7 +2099,8 @@ public class PlayerActivity extends Activity {
 
                 if (startPlayer) {
 
-                    mediaSources[mainPlayer ^ mplayer] = mediaSources[4] != null ? mediaSources[4] :
+                    mediaSources[mainPlayer ^ mplayer] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                            mediaSources[4] :
                             Tools.buildMediaSource(
                                     Uri.parse(uri),
                                     mWebViewContext,
@@ -2108,7 +2110,7 @@ public class PlayerActivity extends Activity {
                                     userAgent
                             );
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
-                    mediaSources[4] = null;
+                    PreviewPlayerPlaylist = null;
 
                     if (mplayer == 1) {
                         PicturePicture = true;
@@ -2136,7 +2138,8 @@ public class PlayerActivity extends Activity {
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
 
-                mediaSources[mainPlayer] = mediaSources[4] != null ? mediaSources[4] :
+                mediaSources[mainPlayer] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                        mediaSources[4] :
                         Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
@@ -2147,7 +2150,7 @@ public class PlayerActivity extends Activity {
                         );
 
                 PreInitializePlayer(1, 0, mainPlayer);
-                mediaSources[4] = null;
+                PreviewPlayerPlaylist = null;
             });
         }
 
@@ -2316,6 +2319,7 @@ public class PlayerActivity extends Activity {
         public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
 
+                PreviewPlayerPlaylist = masterPlaylistString;
                 mediaSources[4] = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
@@ -2873,7 +2877,8 @@ public class PlayerActivity extends Activity {
                 if (position == 0) mPosition = mainPlayer;
                 else if (position == 1) mPosition = mainPlayer ^ 1;
 
-                mediaSources[mPosition] = mediaSources[4] != null ? mediaSources[4] :
+                mediaSources[mPosition] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                        mediaSources[4] :
                         Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
@@ -2884,7 +2889,7 @@ public class PlayerActivity extends Activity {
                         );
 
                 initializePlayerMulti(mPosition);
-                mediaSources[4] = null;
+                PreviewPlayerPlaylist = null;
             });
         }
 
