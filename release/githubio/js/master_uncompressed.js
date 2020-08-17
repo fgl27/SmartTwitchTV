@@ -6870,10 +6870,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.241';
-    var Main_version_java = 32; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 15 2020';
-    var Main_version_web = 53; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.243';
+    var Main_version_java = 33; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 17 2020';
+    var Main_version_web = 54; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7465,6 +7465,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.243 - Web Version August 17 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Apk Version 3.0.241 - Web Version August 15 2020",
                 changes: [
                     "Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slowdowns do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag",
@@ -7490,10 +7494,6 @@
             {
                 title: "Web Version August 06 2020",
                 changes: ["Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter"]
-            },
-            {
-                title: "Apk Version 3.0.238 - August 05 2020",
-                changes: ["General performance improves and bug fixes"]
             },
         ];
 
@@ -11087,7 +11087,7 @@
         Play_CleanHideExit();
         Play_BottonIconsResetFocus();
         PlayClip_qualityIndexReset();
-        PlayExtra_ResetSpeed();
+        Play_ResetSpeed();
         Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
         Play_ForceShowPannel();
         Play_clearHidePanel();
@@ -11444,6 +11444,25 @@
     var Play_isFullScreenold = true;
     var Play_FullScreenSize = 3;
     var Play_FullScreenPosition = 1;
+
+    function Play_ResetLowlatency() {
+        Play_controls[Play_controlsLowLatency].defaultValue = Play_LowLatency;
+        Play_controls[Play_controlsLowLatency].bottomArrows();
+        Play_controls[Play_controlsLowLatency].setLable();
+    }
+
+    function Play_ResetSpeed() {
+        Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
+        Play_controls[Play_controlsSpeed].bottomArrows();
+        Play_controls[Play_controlsSpeed].setLable();
+    }
+
+    function Play_ResetAudio() {
+        //After setting we only reset this if the app is close/re opened
+        Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
+        Play_controls[Play_controlsAudio].bottomArrows();
+        Play_controls[Play_controlsAudio].setLable();
+    }
 
     function Play_SetFullScreen(isfull) {
         var changed = Play_isFullScreenold !== Play_isFullScreen;
@@ -14059,19 +14078,6 @@
 
     var PlayExtra_WasPicturePicture = false;
 
-    function PlayExtra_ResetSpeed() {
-        Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
-        Play_controls[Play_controlsSpeed].bottomArrows();
-        Play_controls[Play_controlsSpeed].setLable();
-    }
-
-    function PlayExtra_ResetAudio() {
-        //After setting we only reset this if the app is close/re opened
-        Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
-        Play_controls[Play_controlsAudio].bottomArrows();
-        Play_controls[Play_controlsAudio].setLable();
-    }
-
     function PlayExtra_KeyEnter() {
         PlayExtra_clear = true;
         PlayExtra_loadDataCheckHostId = 0;
@@ -16032,8 +16038,9 @@
         Play_BottonIconsResetFocus();
         Play_qualityIndexReset();
         Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
-        PlayExtra_ResetSpeed();
-        PlayExtra_ResetAudio();
+        Play_ResetSpeed();
+        Play_ResetLowlatency();
+        Play_ResetAudio();
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
         Play_RefreshWatchingtime();
         PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
@@ -17935,7 +17942,7 @@
             Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controlsQuality);
             if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
             Play_clearHidePanel();
-            PlayExtra_ResetSpeed();
+            Play_ResetSpeed();
             PlayVod_setHidePanel();
         }
         Play_ForceShowPannel();
