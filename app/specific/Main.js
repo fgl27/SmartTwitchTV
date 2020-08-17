@@ -25,7 +25,7 @@ var Main_isReleased = false;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.243';
+var Main_stringVersion_Min = '.244';
 var Main_version_java = 33;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'August 17 2020';
 var Main_version_web = 54;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
@@ -620,7 +620,7 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.243 - Web Version August 17 2020",
+            title: "Apk Version 3.0.244 - Web Version August 17 2020",
             changes: ["General performance improves and bug fixes"]
         },
         {
