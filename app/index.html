@@ -1488,8 +1488,13 @@
             opacity: 0;
         }
 
-        .visibility_hide {
-            visibility: hidden;
+        .transform_base {
+            transform: translateX(0);
+            will-change: transform;
+        }
+
+        .transform_hide {
+            transform: translateX(101%) !important;
         }
 
         .hide {
@@ -2248,7 +2253,7 @@
 
 <body>
     <div id="body_container" class="screen_size" style="position: relative;">
-        <div id="scene1" class="screen_size " style="background-color: rgba(0, 0, 0, 1);">
+        <div id="scene1" class="screen_size transform_base" style="background-color: rgba(0, 0, 0, 1);">
             <div id="dialog_loading" class="screens dialogs hide"
                 style="z-index:98; margin-top: 50vh; overflow: visible;">
                 <div class="loading">
@@ -2893,7 +2898,7 @@
             <p>Test Text</p>
         </div>-->
         </div>
-        <div id="scene2" class="screen_size visibility_hide">
+        <div id="scene2" class="screen_size transform_base transform_hide">
             <div id="chat_container0" class="chat_container hide">
                 <div id="chat_inner_container" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>
@@ -2940,7 +2945,7 @@
                     <i class="icon-volume strokicon"></i>
                 </div>
             </div>
-            <div id="scene_channel_panel" class="screen_size scene_channel_panel visibility_hide">
+            <div id="scene_channel_panel" class="screen_size scene_channel_panel transform_base transform_hide">
                 <div class="playerinfo">
                     <div id="stream_clock" class="playclock"></div>
                     <div id="stream_info" class="shadow_text">
