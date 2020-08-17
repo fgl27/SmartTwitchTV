@@ -633,7 +633,6 @@ public class PlayerActivity extends Activity {
             playerListener[position] = null;
         }
 
-        mediaSources[position] = null;
         PlayerCheckCounter[position] = 0;
         PlayerIsPlaying[position] = false;
 
