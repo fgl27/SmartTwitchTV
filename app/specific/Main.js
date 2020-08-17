@@ -25,7 +25,7 @@ var Main_isReleased = false;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.242';
+var Main_stringVersion_Min = '.243';
 var Main_version_java = 33;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'August 15 2020';
 var Main_version_web = 53;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
@@ -620,6 +620,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.243 - August 17 2020",
+            changes: ["General performance improves and bug fixes"]
+        },
+        {
             title: "Apk Version 3.0.241 - Web Version August 15 2020",
             changes: [
                 "Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slowdowns do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag",
@@ -645,10 +649,6 @@ function Main_Changelog() {
         {
             title: "Web Version August 06 2020",
             changes: ["Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter"]
-        },
-        {
-            title: "Apk Version 3.0.238 - August 05 2020",
-            changes: ["General performance improves and bug fixes"]
         },
     ];
 
