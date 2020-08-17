@@ -459,7 +459,7 @@ public class PlayerActivity extends Activity {
         NetCounter = 0;
     }
 
-    private void initializeSmallPlayer(MediaSource NewMediaSource, Long resumePosition, boolean IsVod) {
+    private void initializeSmallPlayer(Long resumePosition, boolean IsVod) {
         if (IsStopped) {
             monStop();
             return;
@@ -500,12 +500,11 @@ public class PlayerActivity extends Activity {
         player[4].setPlayWhenReady(true);
 
         player[4].setMediaSource(
-                NewMediaSource,
+                mediaSources[4],
                 IsVod && resumePosition > 0 ? resumePosition : C.TIME_UNSET);
 
         player[4].prepare();
 
-        mediaSources[4] = NewMediaSource;
         player[4].setVolume(PreviewAudio);
         SmallPlayerCurrentPosition = resumePosition;
 
@@ -519,7 +518,7 @@ public class PlayerActivity extends Activity {
         if (IsVod) GetCurrentPositionSmall();
     }
 
-    private void initializePlayerMulti(int position, MediaSource NewMediaSource) {
+    private void initializePlayerMulti(int position) {
         if (IsStopped) {
             monStop();
             return;
@@ -564,13 +563,12 @@ public class PlayerActivity extends Activity {
         player[position].setPlayWhenReady(true);
 
         player[position].setMediaSource(
-                NewMediaSource,
+                mediaSources[position],
                 C.TIME_UNSET
         );
 
         player[position].prepare();
 
-        mediaSources[position] = NewMediaSource;
         hideLoading(5);
 
         if (AudioMulti == 4 || AudioMulti == position)
@@ -641,6 +639,7 @@ public class PlayerActivity extends Activity {
             playerListener[position] = null;
         }
 
+        mediaSources[position] = null;
         PlayerCheckCounter[position] = 0;
         PlayerIsPlaying[position] = false;
 
@@ -2074,15 +2073,17 @@ public class PlayerActivity extends Activity {
 
                 if (startPlayer) {
 
-                    mediaSources[mainPlayer ^ mplayer] = Tools.buildMediaSource(
-                            Uri.parse(uri),
-                            mWebViewContext,
-                            who_called,
-                            mLowLatency,
-                            masterPlaylistString,
-                            userAgent
-                    );
+                    mediaSources[mainPlayer ^ mplayer] = mediaSources[4] != null ? mediaSources[4] :
+                            Tools.buildMediaSource(
+                                    Uri.parse(uri),
+                                    mWebViewContext,
+                                    who_called,
+                                    mLowLatency,
+                                    masterPlaylistString,
+                                    userAgent
+                            );
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
+                    mediaSources[4] = null;
 
                     if (mplayer == 1) {
                         PicturePicture = true;
@@ -2105,18 +2106,23 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void PrepareForMulti(String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
+
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
-                mediaSources[mainPlayer] = Tools.buildMediaSource(
-                        Uri.parse(uri),
-                        mWebViewContext,
-                        1,
-                        mLowLatency,
-                        masterPlaylistString,
-                        userAgent
-                );
+
+                mediaSources[mainPlayer] = mediaSources[4] != null ? mediaSources[4] :
+                        Tools.buildMediaSource(
+                                Uri.parse(uri),
+                                mWebViewContext,
+                                1,
+                                mLowLatency,
+                                masterPlaylistString,
+                                userAgent
+                        );
+
                 PreInitializePlayer(1, 0, mainPlayer);
+                mediaSources[4] = null;
             });
         }
 
@@ -2289,13 +2295,13 @@ public class PlayerActivity extends Activity {
                         Uri.parse(uri),
                         mWebViewContext,
                         isVod ? 2 : 1,
-                        mLowLatency != 0 ? 2 : 0,
+                        mLowLatency,
                         masterPlaylistString,
                         userAgent
                 );
 
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
-                initializeSmallPlayer(mediaSources[4], resumePosition, isVod);
+                initializeSmallPlayer(resumePosition, isVod);
 
             });
         }
@@ -2838,18 +2844,22 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartMultiStream(int position, String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
-                int mposition = position;
-                if (position == 0) mposition = mainPlayer;
-                else if (position == 1) mposition = mainPlayer ^ 1;
+                int mPosition = position;
+                if (position == 0) mPosition = mainPlayer;
+                else if (position == 1) mPosition = mainPlayer ^ 1;
 
-                mediaSources[mposition] = Tools.buildMediaSource(
-                        Uri.parse(uri),
-                        mWebViewContext,
-                        1, mLowLatency,
-                        masterPlaylistString,
-                        userAgent
-                );
-                initializePlayerMulti(mposition, mediaSources[mposition]);
+                mediaSources[mPosition] = mediaSources[4] != null ? mediaSources[4] :
+                        Tools.buildMediaSource(
+                                Uri.parse(uri),
+                                mWebViewContext,
+                                1,
+                                mLowLatency,
+                                masterPlaylistString,
+                                userAgent
+                        );
+
+                initializePlayerMulti(mPosition);
+                mediaSources[4] = null;
             });
         }
 
@@ -3094,7 +3104,7 @@ public class PlayerActivity extends Activity {
 
         if (Who_Called == 1) {
 
-            if (MultiStreamEnable) initializePlayerMulti(position, mediaSources[position]);
+            if (MultiStreamEnable) initializePlayerMulti(position);
             else initializePlayer(position);
 
         } else initializePlayer(position);
@@ -3216,7 +3226,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerCheckCounter[4] < 4) {
 
-            initializeSmallPlayer(mediaSources[4], mResumePositionSmallPlayer, IsVod);
+            initializeSmallPlayer(mResumePositionSmallPlayer, IsVod);
 
         } else {
 
