@@ -541,7 +541,7 @@ function PlayClip_showPanel() {
     Play_CleanHideExit();
     Play_BottonIconsResetFocus();
     PlayClip_qualityIndexReset();
-    PlayExtra_ResetSpeed();
+    Play_ResetSpeed();
     Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
     Play_ForceShowPannel();
     Play_clearHidePanel();

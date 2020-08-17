@@ -634,7 +634,7 @@ function PlayVod_showPanel(autoHide) {
         Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controlsQuality);
         if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
         Play_clearHidePanel();
-        PlayExtra_ResetSpeed();
+        Play_ResetSpeed();
         PlayVod_setHidePanel();
     }
     Play_ForceShowPannel();

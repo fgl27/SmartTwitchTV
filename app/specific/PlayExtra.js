@@ -25,19 +25,6 @@ var PlayExtra_PicturePicture = false;
 
 var PlayExtra_WasPicturePicture = false;
 
-function PlayExtra_ResetSpeed() {
-    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
-    Play_controls[Play_controlsSpeed].bottomArrows();
-    Play_controls[Play_controlsSpeed].setLable();
-}
-
-function PlayExtra_ResetAudio() {
-    //After setting we only reset this if the app is close/re opened
-    Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
-    Play_controls[Play_controlsAudio].bottomArrows();
-    Play_controls[Play_controlsAudio].setLable();
-}
-
 function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
     PlayExtra_loadDataCheckHostId = 0;

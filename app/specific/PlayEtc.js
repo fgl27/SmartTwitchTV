@@ -24,6 +24,25 @@ var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 
+function Play_ResetLowlatency() {
+    Play_controls[Play_controlsLowLatency].defaultValue = Play_LowLatency;
+    Play_controls[Play_controlsLowLatency].bottomArrows();
+    Play_controls[Play_controlsLowLatency].setLable();
+}
+
+function Play_ResetSpeed() {
+    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
+    Play_controls[Play_controlsSpeed].bottomArrows();
+    Play_controls[Play_controlsSpeed].setLable();
+}
+
+function Play_ResetAudio() {
+    //After setting we only reset this if the app is close/re opened
+    Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
+    Play_controls[Play_controlsAudio].bottomArrows();
+    Play_controls[Play_controlsAudio].setLable();
+}
+
 function Play_SetFullScreen(isfull) {
     var changed = Play_isFullScreenold !== Play_isFullScreen;
     Play_isFullScreenold = Play_isFullScreen;

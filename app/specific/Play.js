@@ -1518,8 +1518,9 @@ function Play_showPanel() {
     Play_BottonIconsResetFocus();
     Play_qualityIndexReset();
     Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
-    PlayExtra_ResetSpeed();
-    PlayExtra_ResetAudio();
+    Play_ResetSpeed();
+    Play_ResetLowlatency();
+    Play_ResetAudio();
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
