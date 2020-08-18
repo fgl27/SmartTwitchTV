@@ -274,7 +274,7 @@ function OSInterface_mMethodUrlHeaders(urlString, timeout, postMessage, Method, 
 //Android specific: false
 //Allows to change the audio source on PP or 50/50 mode
 function OSInterface_mSwitchPlayerAudio(position) {
-    Android.mSwitchPlayerAudio(position);
+    if (Main_IsOn_OSInterface) Android.mSwitchPlayerAudio(position);
 }
 
 //public void mupdatesizePP(boolean FullScreen)
@@ -384,7 +384,7 @@ function OSInterface_mSwitchPlayerPosition(mPicturePicturePosition) {
 //Android specific: true
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
-    Android.RestartPlayer(who_called, ResumePosition, player);
+    if (Main_IsOn_OSInterface) Android.RestartPlayer(who_called, ResumePosition, player);
 }
 
 //public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player)
@@ -748,7 +748,7 @@ function OSInterface_EnableMultiStream(MainBig, offset) {
 //Android specific: true
 //Allows to change the playback speed
 function OSInterface_setPlaybackSpeed(speed) {
-    Android.setPlaybackSpeed(speed);
+    if (Main_IsOn_OSInterface) Android.setPlaybackSpeed(speed);
 }
 
 //public void OpenExternal(String url)
@@ -788,7 +788,7 @@ function OSInterface_SetPreviewOthersAudio(volume) {
 //Android specific: true
 //Allows to set with player will produce audio
 function OSInterface_mSetPlayerAudioMulti(position) {
-    Android.mSetPlayerAudioMulti(position);
+    if (Main_IsOn_OSInterface) Android.mSetPlayerAudioMulti(position);
 }
 
 //public boolean IsMainNotMain()

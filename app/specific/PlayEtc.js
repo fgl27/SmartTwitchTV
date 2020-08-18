@@ -23,24 +23,72 @@ var Play_MultiChatBeffore;
 var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
+var Play_DefaultAudio_Multi = 0;
 
 function Play_ResetLowlatency() {
-    Play_controls[Play_controlsLowLatency].defaultValue = Play_LowLatency;
-    Play_controls[Play_controlsLowLatency].bottomArrows();
-    Play_controls[Play_controlsLowLatency].setLable();
+    Play_A_Control(Play_LowLatency, Play_controlsLowLatency);
+    Main_textContent(
+        'extra_button_title' + Play_controlsLowLatency,
+        STR_LOWLATENCY_ENABLE_ARRAY[Play_controls[Play_controlsLowLatency].defaultValue]
+    );
 }
 
 function Play_ResetSpeed() {
-    Play_controls[Play_controlsSpeed].defaultValue = Play_CurrentSpeed;
-    Play_controls[Play_controlsSpeed].bottomArrows();
-    Play_controls[Play_controlsSpeed].setLable();
+    Play_A_Control(Play_CurrentSpeed, Play_controlsSpeed);
+    Main_textContent(
+        'extra_button_title' + Play_controlsSpeed,
+        STR_SPEED + ' - ' + Play_controls[Play_controlsSpeed].values[Play_controls[Play_controlsSpeed].defaultValue] + 'x'
+    );
 }
 
 function Play_ResetAudio() {
     //After setting we only reset this if the app is close/re opened
-    Play_controls[Play_controlsAudio].defaultValue = Play_controlsAudioPos;
-    Play_controls[Play_controlsAudio].bottomArrows();
-    Play_controls[Play_controlsAudio].setLable();
+    if (Play_MultiEnable) {
+
+        var pos = Play_DefaultAudio_Multi < 4 ?
+            ((Play_DefaultAudio_Multi + (4 - Play_Multi_Offset)) % 4) :
+            Play_DefaultAudio_Multi;
+
+        Play_A_Control(
+            pos,
+            Play_controlsAudioMulti
+        );
+
+        Main_textContent(
+            'extra_button_title' + Play_controlsAudioMulti,
+            STR_AUDIO_SOURCE + ' - ' +
+            (Play_DefaultAudio_Multi < 4 ?
+                Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
+                Play_controls[Play_controlsAudioMulti].values[pos]
+            )
+        );
+
+        //Reset Quality Multi to default
+        Play_A_Control(0, Play_controlsQualityMulti);
+    } else {
+
+        Play_A_Control(Play_controlsAudioPos, Play_controlsAudio);
+
+        var text = !Play_controls[Play_controlsAudio].defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
+
+        Main_textContent(
+            'extra_button_title' + Play_controlsAudio,
+            STR_AUDIO_SOURCE + ' - ' +
+            (
+                Play_controls[Play_controls[Play_controlsAudio].position].defaultValue < 2 ?
+                    Play_controls[Play_controls[Play_controlsAudio].position].values[Play_controls[Play_controls[Play_controlsAudio].position].defaultValue] + ' - ' + text :
+                    Play_controls[Play_controls[Play_controlsAudio].position].values[Play_controls[Play_controls[Play_controlsAudio].position].defaultValue]
+            )
+        );
+        Play_A_Control(2, Play_controlsQualityMini);
+    }
+}
+
+function Play_A_Control(value, control) {
+    //After setting we only reset this if the app is close/re opened
+    Play_controls[control].defaultValue = value;
+    Play_controls[control].bottomArrows();
+    Play_controls[control].setLable();
 }
 
 function Play_SetFullScreen(isfull) {
@@ -186,6 +234,9 @@ function Play_StoreChatFullScreen() {
     Play_ChatFullScreenObj.marginTop = Main_getElementById("play_chat_dialog").style.marginTop;
     Play_ChatFullScreenObj.top = Play_chat_container.style.top;
     Play_ChatFullScreenObj.left = Play_chat_container.style.left;
+
+    Play_controls[Play_controlsAudio].values = STR_AUDIO_5050;
+    Play_ResetAudio();
 }
 
 function Play_ResStoreChatFullScreen() {
@@ -206,6 +257,9 @@ function Play_ResStoreChatFullScreen() {
     Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
     Play_chat_container.style.top = Play_ChatFullScreenObj.top;
     Play_chat_container.style.left = Play_ChatFullScreenObj.left;
+
+    Play_controls[Play_controlsAudio].values = STR_AUDIO_PP;
+    Play_ResetAudio();
 }
 
 function Play_ChatFullScreenKeyLeft() {
@@ -390,7 +444,7 @@ function Play_EndIconsRemoveFocus() {
 
 function Play_EndText(PlayVodClip) {
     if (PlayVodClip === 1) Play_DialogEndText = Play_data.data[1] + ' ' + STR_LIVE;
-    else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_VIDEO;
+    else if (PlayVodClip === 2) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + ' VOD';
     else if (PlayVodClip === 3) Play_DialogEndText = Main_values.Main_selectedChannelDisplayname + STR_CLIP;
 
     Play_DialogEndText = Main_ReplaceLargeFont(Play_DialogEndText);
@@ -1073,13 +1127,13 @@ var Play_AudioAll = false;
 function Play_MultiKeyDownHold(preventShowWarning) {
     Play_EndUpclear = true;
 
-    if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4) {
-        Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
-        Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+    if (Play_DefaultAudio_Multi !== 4) {
+        Play_Oldaudio = Play_DefaultAudio_Multi;
+        Play_DefaultAudio_Multi = 4;
         Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
     } else {
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
-        Play_Oldaudio = Play_controls[Play_controlsAudioMulti].defaultValue;
+        Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
+        Play_Oldaudio = Play_DefaultAudio_Multi;
         Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
     }
 }
@@ -1101,8 +1155,8 @@ function Play_PPKeyDownHold() {
 function Play_MultiKeyDown() {
     Play_Multi_MainBig = !Play_Multi_MainBig;
     if (Play_Multi_MainBig) {
-        //reset audio value if on big as it may had be changed via hold down or bootm controls
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
+        //reset audio value if on big as it may had be changed via hold down or bottom controls
+        Play_DefaultAudio_Multi = Play_Multi_Offset;
 
         OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
 
@@ -1123,12 +1177,20 @@ function Play_MultiKeyDown() {
         Play_chat_container.style.left = '67%';
 
         if (!Play_MultiArray[Play_Multi_Offset].data.length) Play_MultiEnableKeyRightLeft(1);
+
+        Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI_BIG;
+        Play_controls[Play_controlsAudioMulti].values = STR_AUDIO_MULTI_BIG;
+        Play_ResetAudio();
     } else {
         Play_MultiUpdateinfoMainBig('');
         Main_ShowElement('stream_info_multi');
         Main_HideElement('stream_info_multi_big');
         Play_ResStoreChatPos();
         OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
+
+        Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI;
+        Play_controls[Play_controlsAudioMulti].values = STR_AUDIO_MULTI;
+        Play_ResetAudio();
     }
     Play_SetAudioMultiIcon();
 }
@@ -1541,7 +1603,7 @@ function Play_MakeControls() {
             Play_Resetpanel(PlayVodClip);
         },
         setLable: function(string, AddCode_IsFollowing) {
-            Main_textContent('extra_button_text' + this.position, string);
+            Main_textContent('extra_button_title' + this.position, string);
             this.setIcon(AddCode_IsFollowing);
             Main_textContent('extra_button_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
         },
@@ -1562,6 +1624,7 @@ function Play_MakeControls() {
 
             Play_CurrentSpeed = this.defaultValue;
             OSInterface_setPlaybackSpeed(this.values[this.defaultValue]);
+            Play_ResetSpeed();
         },
         updown: function(adder) {
             this.defaultValue += adder;
@@ -1628,16 +1691,23 @@ function Play_MakeControls() {
 
             var oldQuality;
             if (PlayVodClip === 1) {
-                Play_hidePanel();
+
+                Play_data.quality = Play_data.qualityPlaying;
+                Play_data_base.quality = Play_data.quality;
+
                 oldQuality = Play_data.quality;
                 Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
                 Play_SetHtmlQuality('stream_quality');
 
                 if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1);//just quality change
-                else OSInterface_RestartPlayer(1, 0, 0);//resetart the player
+                else OSInterface_RestartPlayer(1, 0, 0);//restart the player
+
+                Play_qualityIndexReset();
 
             } else if (PlayVodClip === 2) {
-                PlayVod_hidePanel();
+
+                PlayVod_quality = PlayVod_qualityPlaying;
+
                 oldQuality = PlayVod_quality;
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
@@ -1646,14 +1716,22 @@ function Play_MakeControls() {
                 if (oldQuality !== PlayVod_quality) OSInterface_SetQuality(PlayVod_qualityIndex - 1);//just quality change
                 else OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);//resetart the player
 
+                PlayVod_qualityIndexReset();
+
             } else if (PlayVodClip === 3) {
-                PlayClip_hidePanel();
+
+                PlayClip_quality = PlayClip_qualityPlaying;
+
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
                 PlayClip_qualityPlaying = PlayClip_quality;
                 PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
                 PlayClip_SetHtmlQuality('stream_quality');
                 PlayClip_onPlayer();
+
+                PlayClip_qualityIndexReset();
+
             }
+            Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder, PlayVodClip) {
             Play_updownquality(adder, PlayVodClip, Play_controlsQuality);
@@ -1663,9 +1741,9 @@ function Play_MakeControls() {
     Play_controls[Play_controlsQualityMini] = { //quality for picture in picture
         icons: "videocamera",
         string: STR_PLAYER_RESYNC,
-        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        values: STR_AUDIO_PP,
         defaultValue: 2,
-        enterKey: function() {
+        enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
             if (this.defaultValue === 2) {//both
@@ -1674,10 +1752,9 @@ function Play_MakeControls() {
             } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0);//main
             else OSInterface_RestartPlayer(1, 0, 1);//small
 
-            Play_hidePanel();
-            this.defaultValue = 2;
             this.bottomArrows();
             this.setLable();
+            Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
 
@@ -1689,8 +1766,16 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
+            if (!PlayExtra_data.data || !Play_data.data) return;
+
+            var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
+
             Main_textContentWithEle(this.doc_name,
-                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+                Play_controls[this.position].defaultValue < 2 ?
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + text :
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+
+            );
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -1701,9 +1786,9 @@ function Play_MakeControls() {
     Play_controls[Play_controlsQualityMulti] = { //quality for Multi
         icons: "videocamera",
         string: STR_PLAYER_RESYNC,
-        values: [STR_PLAYER_MULTI_ALL, STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4],
+        values: STR_QUALITY_MULTI,
         defaultValue: 0,
-        enterKey: function() {
+        enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
             if (!this.defaultValue) {
@@ -1714,12 +1799,19 @@ function Play_MakeControls() {
                         OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
                     }
                 }
-            } else OSInterface_StartMultiStream(this.defaultValue - 1, Play_MultiArray[this.defaultValue - 1].AutoUrl, Play_MultiArray[this.defaultValue - 1].playlist);
 
-            Play_hidePanel();
-            this.defaultValue = 0;
-            this.bottomArrows();
-            this.setLable();
+            } else {
+                var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue - 1) % 4;
+
+                OSInterface_StartMultiStream(
+                    pos,
+                    Play_MultiArray[pos].AutoUrl,
+                    Play_MultiArray[pos].playlist
+                );
+
+            }
+
+            Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
 
@@ -1727,12 +1819,29 @@ function Play_MakeControls() {
             if (this.defaultValue < 0) this.defaultValue = 0;
             else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
 
+            //prevent change not activi video
+            var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue - 1) % 4;
+            if (this.defaultValue && !Play_MultiArray[pos].data.length) {
+
+                this.updown(adder);
+                return;
+
+            }
+
             this.bottomArrows();
             this.setLable();
         },
         setLable: function() {
-            Main_textContentWithEle(this.doc_name,
-                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+            var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue - 1) % 4;
+            if (!Play_MultiArray[pos]) return;
+
+            Main_textContentWithEle(
+                this.doc_name,
+                (Play_controls[this.position].defaultValue ?
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + Play_MultiArray[pos].data[1] :
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+                )
+            );
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -1743,12 +1852,10 @@ function Play_MakeControls() {
     Play_controls[Play_controlsLowLatency] = { //quality
         icons: "history",
         string: STR_LOW_LATENCY,
-        values: [STR_DISABLE, STR_LOWLATENCY_ENABLE, STR_LOWLATENCY_LOW],
+        values: STR_LOWLATENCY_ARRAY,
         defaultValue: Play_LowLatency,
-        enterKey: function() {
+        enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
-
-            Play_hidePanel();
 
             Play_LowLatency = this.defaultValue;
 
@@ -1776,7 +1883,8 @@ function Play_MakeControls() {
             if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
             Main_setItem('Play_LowLatency', Play_LowLatency);
-            //this.setLable();
+            Play_ResetLowlatency();
+            Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
 
@@ -1788,6 +1896,7 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
+
             Main_textContentWithEle(this.doc_name,
                 Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
         },
@@ -1799,9 +1908,9 @@ function Play_MakeControls() {
     Play_controls[Play_controlsAudio] = { //Audio
         icons: "volume",
         string: STR_AUDIO_SOURCE,
-        values: [STR_PLAYER_AUTO_SMALLS, STR_PLAYER_AUTO_BIG, STR_PLAYER_AUTO_ALL],
+        values: STR_AUDIO_PP,
         defaultValue: Play_controlsAudioPos,
-        enterKey: function() {
+        enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
             OSInterface_mSwitchPlayerAudio(this.defaultValue);
@@ -1810,8 +1919,7 @@ function Play_MakeControls() {
 
             Main_setItem('Play_controlsAudioPos', Play_controlsAudioPos);
 
-            this.bottomArrows();
-            this.setLable();
+            Play_ResetAudio();
             Play_SetAudioIcon();
 
             var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
@@ -1820,6 +1928,7 @@ function Play_MakeControls() {
                 ((this.defaultValue < 2) ? text : this.values[this.defaultValue]),
                 2000
             );
+            Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
 
@@ -1831,8 +1940,16 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
+            if (!PlayExtra_data.data || !Play_data.data) return;
+
+            var text = !this.defaultValue ? PlayExtra_data.data[1] : Play_data.data[1];
+
             Main_textContentWithEle(this.doc_name,
-                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+                Play_controls[this.position].defaultValue < 2 ?
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + text :
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+
+            );
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -1842,37 +1959,68 @@ function Play_MakeControls() {
     Play_controls[Play_controlsAudioMulti] = { //Audio multi
         icons: "volume",
         string: STR_AUDIO_SOURCE,
-        values: [STR_PLAYER_WINDOW + 1, STR_PLAYER_WINDOW + 2, STR_PLAYER_WINDOW + 3, STR_PLAYER_WINDOW + 4, STR_PLAYER_MULTI_ALL],
+        values: STR_AUDIO_MULTI,
         defaultValue: 0,
-        enterKey: function(preventShowWarning) {
+        enterKey: function(preventShowWarning, keyRightLeft) {
             if (Play_StayDialogVisible()) return;
 
-            OSInterface_mSetPlayerAudioMulti(this.defaultValue);
-            Play_AudioAll = this.defaultValue === 4;
+            if (keyRightLeft) {
+                Play_AudioAll = Play_DefaultAudio_Multi === 4;
 
-            this.bottomArrows();
-            this.setLable();
+                OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
+
+
+            } else {
+                Play_AudioAll = this.defaultValue === 4;
+
+                Play_DefaultAudio_Multi = Play_AudioAll ? this.defaultValue : (Play_Multi_Offset + this.defaultValue) % 4;
+
+                OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
+
+            }
+
+            Play_ResetAudio();
             Play_SetAudioMultiIcon();
 
             if (!preventShowWarning) {
                 Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE +
-                    ((this.defaultValue < 4) ? Play_MultiArray[this.defaultValue].data[1] : this.values[this.defaultValue]),
+                    (Play_DefaultAudio_Multi < 4 ? Play_MultiArray[Play_DefaultAudio_Multi].data[1] : this.values[Play_DefaultAudio_Multi]),
                     2000
                 );
             }
+            Play_Resetpanel(1);
         },
         updown: function(adder) {
 
             this.defaultValue += adder;
+
             if (this.defaultValue < 0) this.defaultValue = 0;
             else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
 
+            //prevent change not activi video
+            if (this.defaultValue < 4 && !Play_MultiArray[this.defaultValue].data.length) {
+
+                this.updown(adder);
+                return;
+
+            }
+
             this.bottomArrows();
             this.setLable();
+
         },
         setLable: function() {
-            Main_textContentWithEle(this.doc_name,
-                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+            //Prevent crash at start
+            if (!Play_MultiArray[Play_DefaultAudio_Multi]) return;
+
+            Main_textContentWithEle(
+                this.doc_name,
+                (Play_controls[this.position].defaultValue < 4 ?
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + Play_MultiArray[(Play_controls[this.position].defaultValue + (4 - Play_Multi_Offset)) % 4].data[1] :
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+                )
+            );
+
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -1965,11 +2113,11 @@ function Play_MakeControls() {
                     );
 
                     var PP_audio = Play_controls[Play_controlsAudio].defaultValue;
-                    if (!PP_audio) Play_controls[Play_controlsAudioMulti].defaultValue = 1;
-                    else if (PP_audio === 1) Play_controls[Play_controlsAudioMulti].defaultValue = 0;
-                    else Play_controls[Play_controlsAudioMulti].defaultValue = 4;
+                    if (!PP_audio) Play_DefaultAudio_Multi = 1;
+                    else if (PP_audio === 1) Play_DefaultAudio_Multi = 0;
+                    else Play_DefaultAudio_Multi = 4;
 
-                } else Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+                } else Play_DefaultAudio_Multi = 0;
 
                 Play_controls[Play_controlsAudioMulti].enterKey(true);
 
@@ -2044,7 +2192,7 @@ function Play_MakeControls() {
         string: STR_CHAT_VIDEO_MODE,
         values: null,
         defaultValue: null,
-        enterKey: function() {
+        enterKey: function(PlayVodClip) {
             Play_isFullScreen = !Play_isFullScreen;
             Play_SetFullScreen(Play_isFullScreen);
 
@@ -2059,12 +2207,21 @@ function Play_MakeControls() {
             }
             this.setLable();
             this.setIcon();
+            Play_Resetpanel(PlayVodClip);
         },
         setLable: function() {
             var title = Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
             if (PlayExtra_PicturePicture) title = Play_isFullScreen ? STR_CHAT_PP_SIDE_FULL : STR_CHAT_5050;
 
-            Main_textContent('extra_button_' + this.position, '(' + title + ')');
+            Main_textContent(
+                'extra_button_title' + this.position,
+                STR_CHAT_VIDEO_MODE + ' - ' + title
+            );
+
+            title = !Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
+            if (PlayExtra_PicturePicture) title = !Play_isFullScreen ? STR_CHAT_PP_SIDE_FULL : STR_CHAT_5050;
+
+            Main_textContent('extra_button_' + this.position, STR_PRESS_ENTER_TO_CHANGE + title);
 
             Play_controls[Play_controlsChat].setLable();
         },
@@ -2265,7 +2422,7 @@ function Play_MakeControls() {
     Play_controls[Play_controlsChatDelay] = { //chat delay
         icons: "chat-delay",
         string: STR_CHAT_DELAY,
-        values: [STR_DISABLE, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+        values: [STR_DISABLED, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
             20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
         ],
         defaultValue: Play_ChatDelayPosition,
@@ -2346,7 +2503,6 @@ function Play_BottomOptionsPressed(PlayVodClip) {
     } else {
         Play_Resetpanel(PlayVodClip);
     }
-    Main_SaveValues();
 }
 
 function Play_Resetpanel(PlayVodClip) {
@@ -2432,10 +2588,10 @@ function Play_SetControls() {
             '" class="controls_button"><div id="controls_icon_' + key +
             '"><i class="pause_button3d icon-' + Play_controls[key].icons +
             '" ></i></div></div><div id="controls_button_text_' + key +
-            '" class="extra_button_text_holder" style="opacity: 0;;"><div id="extra_button_text' +
-            key + '" class="extra_button_text strokedeline" >' +
+            '" class="extra_button_title_holder" style="opacity: 0;;"><div id="extra_button_title' +
+            key + '" class="extra_button_title strokedeline" >' +
             Play_controls[key].string + '</div><div id="extra_button_' + key +
-            '" class="extra_button_text strokedeline" >' +
+            '" class="extra_button_title strokedeline" >' +
             (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
 
         doc.appendChild(div);
@@ -2497,15 +2653,20 @@ function Play_SetAudioIcon() {
 
 function Play_SetAudioMultiIcon() {
     var extraText = Play_Multi_MainBig ? 'big' : '',
-        audioPos = Play_controls[Play_controlsAudioMulti].defaultValue,
+        audioPos = Play_DefaultAudio_Multi,
         i;
 
     if (audioPos === 4) {
-        for (i = 0; i < 4; i++)
+
+        for (i = 0; i < 4; i++) {
             Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-volume strokicon" ></i>');
+        }
+
     } else {
-        for (i = 0; i < 4; i++)
+
+        for (i = 0; i < 4; i++) {
             Main_innerHTML("stream_info_multi_audio_" + extraText + i, STR_SPACE + '<i class="icon-mute strokicon" ></i>');
+        }
 
         audioPos = (audioPos + (4 - Play_Multi_Offset)) % 4;
         Main_innerHTML("stream_info_multi_audio_" + extraText + audioPos, STR_SPACE + '<i class="icon-volume strokicon" ></i>');

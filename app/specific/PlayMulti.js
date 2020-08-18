@@ -144,6 +144,8 @@ function Play_Multi_UnSetPanelDivs(checkChat) {
         Play_ResStoreChatPos();
         Play_Multi_MainBig = false;
     }
+    Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI;
+    Play_controls[Play_controlsAudioMulti].values = STR_AUDIO_MULTI;
 }
 
 function Play_Multi_UnSetPanelDivsCheckChat() {
@@ -238,10 +240,10 @@ function Play_MultiEnd(position, fail_type) {
         Play_CheckHostStart();
     } else {
         if (Play_Multi_MainBig && position === Play_Multi_Offset) {
-            var tempAudio = Play_controls[Play_controlsAudioMulti].defaultValue === 4;
+            var tempAudio = Play_DefaultAudio_Multi === 4;
             Play_MultiEnableKeyRightLeft(1);
             if (tempAudio) Play_MultiKeyDownHold();
-        } else if (Play_controls[Play_controlsAudioMulti].defaultValue !== 4 && position === Play_Multi_Offset) Play_MultiEnableKeyRightLeft(1);
+        } else if (Play_DefaultAudio_Multi !== 4 && position === Play_Multi_Offset) Play_MultiEnableKeyRightLeft(1);
 
     }
 }
@@ -454,36 +456,38 @@ function Play_MultiCheckLiveFeed(pos) {
 
 function Play_MultiEnableKeyRightLeft(adder) {
     //reset audio value if on big as it may had be changed via hold down or bottom controls
-    var IsAUdio_All;
+    var IsAudio_All;
 
     if (Play_Multi_MainBig) {
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_Multi_Offset;
-        IsAUdio_All = Play_AudioAll;
+        Play_DefaultAudio_Multi = Play_Multi_Offset;
+        IsAudio_All = Play_AudioAll;
     }
 
-    Play_controls[Play_controlsAudioMulti].defaultValue += adder;
+    Play_DefaultAudio_Multi += adder;
 
-    if (Play_controls[Play_controlsAudioMulti].defaultValue > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
+    if (Play_DefaultAudio_Multi > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
 
-        Play_controls[Play_controlsAudioMulti].defaultValue = 0;
+        Play_DefaultAudio_Multi = 0;
 
-    } else if (Play_controls[Play_controlsAudioMulti].defaultValue < 0) {
+    } else if (Play_DefaultAudio_Multi < 0) {
 
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_controls[Play_controlsAudioMulti].values.length - 2;
+        Play_DefaultAudio_Multi = Play_controls[Play_controlsAudioMulti].values.length - 2;
 
     }
 
-    if (!Play_MultiArray[Play_controls[Play_controlsAudioMulti].defaultValue].data.length) {
+    if (!Play_MultiArray[Play_DefaultAudio_Multi].data.length) {
         //Prevent infity loop from first fun line
-        if (Play_Multi_MainBig) Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
+        if (Play_Multi_MainBig) Play_Multi_Offset = Play_DefaultAudio_Multi;
 
         Play_MultiEnableKeyRightLeft(adder);
         return;
     }
 
-    if (Play_Multi_MainBig && Play_Multi_Offset !== Play_controls[Play_controlsAudioMulti].defaultValue) {
+    if (Play_Multi_MainBig && Play_Multi_Offset !== Play_DefaultAudio_Multi) {
 
-        Play_Multi_Offset = Play_controls[Play_controlsAudioMulti].defaultValue;
+        Play_Multi_Offset = Play_DefaultAudio_Multi;
+
+        Play_ResetAudio();
 
         Play_showWarningMidleDialog(
             STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
@@ -496,9 +500,14 @@ function Play_MultiEnableKeyRightLeft(adder) {
         Play_MultiUpdateinfoMainBig('_big');
         Play_MultiUpdateMain();
 
-        if (IsAUdio_All) Play_MultiKeyDownHold(true);
+        if (IsAudio_All) Play_MultiKeyDownHold(true);
 
-    } else Play_controls[Play_controlsAudioMulti].enterKey();
+    } else {
+
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+        Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+
+    }
 }
 
 function Play_MultiUpdateinfoMainBig(extraText) {

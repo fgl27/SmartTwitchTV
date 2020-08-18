@@ -1122,7 +1122,7 @@ function Play_SetExternalQualities(array, startPos, name) {
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLable();
 
-    Main_innerHTML('extra_button_text' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+    Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
 
     Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
 }
@@ -1520,14 +1520,13 @@ function Play_showPanel() {
     Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
     Play_ResetSpeed();
     Play_ResetLowlatency();
-    Play_ResetAudio();
+    if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
     PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
     Play_CleanHideExit();
     Play_ForceShowPannel();
-    Play_clearHidePanel();
-    Play_setHidePanel();
+    Play_Resetpanel(1);
 }
 
 function Play_RefreshWatchingtime() {
@@ -1765,6 +1764,8 @@ function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, position
 }
 
 function Play_qualityIndexReset() {
+    if (PlayExtra_PicturePicture || Play_MultiEnable) return;
+
     Play_data.qualityIndex = 0;
     for (var i = 0; i < Play_getQualitiesCount(); i++) {
         if (Play_data.qualities[i].id === Play_data.quality) {
@@ -1774,6 +1775,15 @@ function Play_qualityIndexReset() {
             Play_data.qualityIndex = i;
         }
     }
+
+    Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+}
+
+function Play_qualityTitleReset(title) {
+    Main_textContent(
+        'extra_button_title' + Play_controlsQuality,
+        STR_QUALITY + ' - ' + title
+    );
 }
 
 //called by android PlayerActivity

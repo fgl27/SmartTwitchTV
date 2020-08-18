@@ -861,13 +861,13 @@ function ChatLiveControls_OptionsShow() {
         },
         emote_sorting: {
             defaultValue: OptionsShowObj.emote_sorting.defaultValue,
-            values: [STR_DISABLE, STR_A_Z, STR_Z_A],
+            values: [STR_DISABLED, STR_A_Z, STR_Z_A],
             title: STR_CHAT_OPTIONS_EMOTE_SORT,
             summary: STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY
         },
         force_show_chat_write: {
             defaultValue: OptionsShowObj.force_show_chat_write.defaultValue,
-            values: [STR_DISABLE, STR_ENABLE],
+            values: [STR_DISABLED, STR_ENABLED],
             title: STR_CHAT_OPTIONS_FORCE_SHOW,
             summary: STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY
         },

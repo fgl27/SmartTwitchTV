@@ -579,7 +579,7 @@ function Main_SetStringsSecondary() {
     Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
 
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
-    Main_textContent("dialog_hist_setting_name_1", STR_ENABLE);
+    Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
     Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
     Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
     Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);

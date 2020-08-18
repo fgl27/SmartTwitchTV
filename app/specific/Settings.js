@@ -514,7 +514,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    div += Settings_Content('pp_workaround', [STR_DISABLE, STR_ENABLE], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+    div += Settings_Content('pp_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
@@ -619,7 +619,7 @@ function Settings_SetStrings() {
 
     key = "pp_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
-    Settings_value[key].values = [STR_DISABLE, STR_ENABLE];
+    Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
 
     key = "keep_panel_info_visible";
     Settings_DivOptionChangeLang(key, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
@@ -1155,7 +1155,7 @@ function Settings_CodecsShow() {
             for (i; i < len; i++) {
 
                 Settings_value[Settings_CodecsValue[i].name] = {
-                    "values": [STR_ENABLE, STR_DISABLE],
+                    "values": [STR_ENABLED, STR_DISABLED],
                     "defaultValue": Main_getItemInt(Settings_CodecsValue[i].name, 0)
                 };
 
@@ -1419,8 +1419,8 @@ function Settings_DialogShowSmallPayer() {
         disable_feed_player_multi: {
             defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
             values: Settings_value.disable_feed_player_multi.values,
-            title: STR_DISABLE_FEED_PLAYER_MULTI,
-            summary: STR_DISABLE_FEED_PLAYER_MULTI_SUMMARY
+            title: STR_DISABLED_FEED_PLAYER_MULTI,
+            summary: STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY
         },
         preview_screen_sizes: {
             defaultValue: Settings_value.preview_screen_sizes.defaultValue,
@@ -1464,7 +1464,7 @@ function Settings_DialogShowNotification() {
     Settings_value.game_notification.values = [STR_NO, STR_YES];
     Settings_value.game_live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
-    Settings_value.since_notification.values[0] = STR_DISABLE;
+    Settings_value.since_notification.values[0] = STR_DISABLED;
 
     var obj = {
         live_notification: {
@@ -1598,7 +1598,7 @@ function Settings_DialogShowUIOpt() {
 
 function Settings_DialogShowCustomOpt() {
     Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
-    Settings_value.auto_refresh_screen.values[0] = STR_DISABLE;
+    Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
 
     Settings_value.live_feed_sort.values = [
         STR_VIWES_MOST,
@@ -1723,7 +1723,7 @@ function Settings_DialogShowChat() {
     Settings_value.show_sub.values = yes_no;
     Settings_value.highlight_bits.values = yes_no;
     Settings_value.show_actions.values = yes_no;
-    Settings_value.chat_individual_background.values = [STR_DISABLE, STR_ENABLE, STR_BRIGHT_MODE, STR_DARK_MODE];
+    Settings_value.chat_individual_background.values = [STR_DISABLED, STR_ENABLED, STR_BRIGHT_MODE, STR_DARK_MODE];
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
     Settings_value.chat_nickcolor.values = yes_no;
