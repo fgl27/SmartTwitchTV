@@ -1902,7 +1902,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudio] = { //Audio
+    Play_controls[Play_controlsAudio] = {//Audio
         icons: "volume",
         string: STR_AUDIO_SOURCE,
         values: STR_AUDIO_PP,

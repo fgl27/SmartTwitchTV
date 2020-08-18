@@ -446,8 +446,13 @@ function Play_MultiUpdateMain() {
 function Play_MultiCheckLiveFeed(pos) {
     Main_setTimeout(
         function() {
+            //if vod supported adedded
+            // var id = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ?
+            //     Play_MultiArray[pos].data[7] :
+            //     Play_MultiArray[pos].data[14];
+
             if (Play_PreviewId &&
-                Main_A_equals_B(Play_MultiArray[pos].data[6], Play_PreviewId))
+                Main_A_equals_B(Play_MultiArray[pos].data[14], Play_PreviewId))
                 UserLiveFeed_CheckIfIsLiveSTop();
         },
         1000
