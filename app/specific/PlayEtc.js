@@ -87,7 +87,7 @@ function Play_ResetAudio() {
 function Play_A_Control(value, control) {
     //After setting we only reset this if the app is close/re opened
     Play_controls[control].defaultValue = value;
-    Play_controls[control].bottomArrows();
+    if (Play_controls[control].bottomArrows) Play_controls[control].bottomArrows();
     Play_controls[control].setLable();
 }
 
@@ -1816,11 +1816,12 @@ function Play_MakeControls() {
         updown: function(adder) {
 
             this.defaultValue += adder;
-            if (this.defaultValue < 0) this.defaultValue = 0;
-            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
 
             //prevent change not activi video
             var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue - 1) % 4;
+
             if (this.defaultValue && !Play_MultiArray[pos].data.length) {
 
                 this.updown(adder);
@@ -1828,12 +1829,11 @@ function Play_MakeControls() {
 
             }
 
-            this.bottomArrows();
             this.setLable();
         },
         setLable: function() {
             var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue - 1) % 4;
-            if (!Play_MultiArray[pos]) return;
+            if (this.defaultValue && !Play_MultiArray[pos]) return;
 
             Main_textContentWithEle(
                 this.doc_name,
@@ -1842,10 +1842,7 @@ function Play_MakeControls() {
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]
                 )
             );
-        },
-        bottomArrows: function() {
-            Play_BottomArrows(this.position);
-        },
+        }
 
     };
 
@@ -1994,37 +1991,36 @@ function Play_MakeControls() {
 
             this.defaultValue += adder;
 
-            if (this.defaultValue < 0) this.defaultValue = 0;
-            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
+
+            var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue) % 4;
 
             //prevent change not activi video
-            if (this.defaultValue < 4 && !Play_MultiArray[this.defaultValue].data.length) {
+            if (this.defaultValue < 4 && !Play_MultiArray[pos].data.length) {
 
                 this.updown(adder);
                 return;
 
             }
 
-            this.bottomArrows();
             this.setLable();
 
         },
         setLable: function() {
+            var pos = (Play_Multi_Offset + Play_controls[this.position].defaultValue) % 4;
             //Prevent crash at start
-            if (!Play_MultiArray[Play_DefaultAudio_Multi]) return;
+            if (Play_controls[this.position].defaultValue < 4 && !Play_MultiArray[pos]) return;
 
             Main_textContentWithEle(
                 this.doc_name,
                 (Play_controls[this.position].defaultValue < 4 ?
-                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + Play_MultiArray[(Play_controls[this.position].defaultValue + (4 - Play_Multi_Offset)) % 4].data[1] :
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue] + ' - ' + Play_MultiArray[pos].data[1] :
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]
                 )
             );
 
-        },
-        bottomArrows: function() {
-            Play_BottomArrows(this.position);
-        },
+        }
     };
 
     Play_controls[Play_controlsChapters] = { //Audio multi
