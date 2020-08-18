@@ -27,8 +27,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.244';
 var Main_version_java = 33;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'August 17 2020';
-var Main_version_web = 54;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'August 18 2020';
+var Main_version_web = 55;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -620,6 +620,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version August 18 2020",
+            changes: ["Improve player bottom controls, make easier to understand what is be changed, fix not properly working options (Multistream audio and player restart was not working sometimes)"]
+        },
+        {
             title: "Apk Version 3.0.244 - Web Version August 17 2020",
             changes: ["General performance improves and bug fixes"]
         },
@@ -645,10 +649,6 @@ function Main_Changelog() {
         {
             title: "Web Version August 07 2020",
             changes: ["Add a in app Changelog on the side panel bottom options, just a resume of the latest changes"]
-        },
-        {
-            title: "Web Version August 06 2020",
-            changes: ["Change default selected thumbnail background color to black, if you prefer the old way change it back in settings... Interface customization... Select thumbnail style... Styles... White...Apply changes... press enter"]
         },
     ];
 
