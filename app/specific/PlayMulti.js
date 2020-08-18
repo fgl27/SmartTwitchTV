@@ -431,7 +431,7 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
-    Play_MultiCheckLiveFeed(pos);
+    Play_MultiCheckLiveFeed(pos, 0);
     Play_updateStreamInfoMulti(pos);
 }
 
@@ -443,7 +443,7 @@ function Play_MultiUpdateMain() {
     Main_SaveValues();
 }
 
-function Play_MultiCheckLiveFeed(pos) {
+function Play_MultiCheckLiveFeed(pos, tryes) {
     Main_setTimeout(
         function() {
             //if vod supported adedded
@@ -451,11 +451,18 @@ function Play_MultiCheckLiveFeed(pos) {
             //     Play_MultiArray[pos].data[7] :
             //     Play_MultiArray[pos].data[14];
 
-            if (Play_PreviewId &&
-                Main_A_equals_B(Play_MultiArray[pos].data[14], Play_PreviewId))
+            if (Play_PreviewId && Main_A_equals_B(Play_MultiArray[pos].data[14], Play_PreviewId)) {
+
                 UserLiveFeed_CheckIfIsLiveSTop();
+
+            } else if (tryes < 7) {
+
+                Play_MultiCheckLiveFeed(pos, tryes + 1);
+
+            }
+
         },
-        1000
+        250
     );
 }
 
