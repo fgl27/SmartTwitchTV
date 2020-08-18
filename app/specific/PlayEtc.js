@@ -1752,17 +1752,15 @@ function Play_MakeControls() {
             } else if (this.defaultValue) OSInterface_RestartPlayer(1, 0, 0);//main
             else OSInterface_RestartPlayer(1, 0, 1);//small
 
-            this.bottomArrows();
             this.setLable();
             Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
 
             this.defaultValue += adder;
-            if (this.defaultValue < 0) this.defaultValue = 0;
-            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
 
-            this.bottomArrows();
             this.setLable();
         },
         setLable: function() {
@@ -1776,10 +1774,7 @@ function Play_MakeControls() {
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]
 
             );
-        },
-        bottomArrows: function() {
-            Play_BottomArrows(this.position);
-        },
+        }
 
     };
 
@@ -1930,10 +1925,9 @@ function Play_MakeControls() {
         updown: function(adder) {
 
             this.defaultValue += adder;
-            if (this.defaultValue < 0) this.defaultValue = 0;
-            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+            if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
 
-            this.bottomArrows();
             this.setLable();
         },
         setLable: function() {
@@ -1947,10 +1941,7 @@ function Play_MakeControls() {
                     Play_controls[this.position].values[Play_controls[this.position].defaultValue]
 
             );
-        },
-        bottomArrows: function() {
-            Play_BottomArrows(this.position);
-        },
+        }
     };
 
     Play_controls[Play_controlsAudioMulti] = { //Audio multi
