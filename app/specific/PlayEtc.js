@@ -1122,22 +1122,6 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
     return restorePreview;
 }
 
-var Play_Oldaudio = 0;
-var Play_AudioAll = false;
-function Play_MultiKeyDownHold(preventShowWarning) {
-    Play_EndUpclear = true;
-
-    if (Play_DefaultAudio_Multi !== 4) {
-        Play_Oldaudio = Play_DefaultAudio_Multi;
-        Play_DefaultAudio_Multi = 4;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
-    } else {
-        Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
-        Play_Oldaudio = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
-    }
-}
-
 function Play_PPKeyDownHold() {
     Play_EndUpclear = true;
 
@@ -2105,6 +2089,7 @@ function Play_MakeControls() {
                     else Play_DefaultAudio_Multi = 4;
 
                 } else Play_DefaultAudio_Multi = 0;
+                Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
 
                 Play_controls[Play_controlsAudioMulti].enterKey(true);
 

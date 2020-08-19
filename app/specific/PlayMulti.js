@@ -522,6 +522,25 @@ function Play_MultiEnableKeyRightLeft(adder) {
     }
 }
 
+var Play_Oldaudio = 0;
+var Play_AudioAll = false;
+function Play_MultiKeyDownHold(preventShowWarning) {
+    Play_EndUpclear = true;
+
+    if (Play_DefaultAudio_Multi !== 4) {
+        Play_Oldaudio = Play_DefaultAudio_Multi;
+        Play_DefaultAudio_Multi = 4;
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
+    } else {
+        Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
+        Play_Oldaudio = Play_DefaultAudio_Multi;
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
+    }
+}
+
+
 function Play_MultiUpdateinfoMainBig(extraText) {
     var pos, i = 0, len = Play_MultiArray.length;
     for (i; i < len; i++) {
