@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version August 19 2020
 ==============
 
-* Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version
+* Fix hold key down to enable audio all videos on Multistream, bug added on last Web version August 18 2020
 * General performance improves and bug fixes
 
 Web Version August 18 2020
