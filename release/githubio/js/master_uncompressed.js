@@ -6882,8 +6882,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.244';
     var Main_version_java = 33; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 18 2020';
-    var Main_version_web = 55; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'August 19 2020';
+    var Main_version_web = 56; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7475,6 +7475,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version August 19 2020",
+                changes: [
+                    "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version August 18 2020",
                 changes: ["Improve player bottom controls, make easier to understand what is be changed, fix not properly working options (Multistream audio and player restart was not working sometimes)"]
             },
@@ -7500,10 +7507,6 @@
             {
                 title: "Apk Version 3.0.239 - August 08 2020",
                 changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version August 07 2020",
-                changes: ["Add a in app Changelog on the side panel bottom options, just a resume of the latest changes"]
             },
         ];
 
@@ -12556,23 +12559,6 @@
         return restorePreview;
     }
 
-    var Play_Oldaudio = 0;
-    var Play_AudioAll = false;
-
-    function Play_MultiKeyDownHold(preventShowWarning) {
-        Play_EndUpclear = true;
-
-        if (Play_DefaultAudio_Multi !== 4) {
-            Play_Oldaudio = Play_DefaultAudio_Multi;
-            Play_DefaultAudio_Multi = 4;
-            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
-        } else {
-            Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
-            Play_Oldaudio = Play_DefaultAudio_Multi;
-            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning);
-        }
-    }
-
     function Play_PPKeyDownHold() {
         Play_EndUpclear = true;
 
@@ -13542,6 +13528,7 @@
                         else Play_DefaultAudio_Multi = 4;
 
                     } else Play_DefaultAudio_Multi = 0;
+                    Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
 
                     Play_controls[Play_controlsAudioMulti].enterKey(true);
 
@@ -17301,6 +17288,26 @@
 
         }
     }
+
+    var Play_Oldaudio = 0;
+    var Play_AudioAll = false;
+
+    function Play_MultiKeyDownHold(preventShowWarning) {
+        Play_EndUpclear = true;
+
+        if (Play_DefaultAudio_Multi !== 4) {
+            Play_Oldaudio = Play_DefaultAudio_Multi;
+            Play_DefaultAudio_Multi = 4;
+            Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
+        } else {
+            Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
+            Play_Oldaudio = Play_DefaultAudio_Multi;
+            Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+            Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
+        }
+    }
+
 
     function Play_MultiUpdateinfoMainBig(extraText) {
         var pos, i = 0,
