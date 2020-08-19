@@ -2091,7 +2091,7 @@ function Play_MakeControls() {
                 } else Play_DefaultAudio_Multi = 0;
                 Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
 
-                Play_controls[Play_controlsAudioMulti].enterKey(true);
+                Play_controls[Play_controlsAudioMulti].enterKey(true, true);
 
                 for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                     Play_MultiInfoReset(i);
