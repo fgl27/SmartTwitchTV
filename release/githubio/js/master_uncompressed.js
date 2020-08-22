@@ -6355,6 +6355,8 @@
         ChatLive_LineAddCounter[1] = 0;
         ChatLive_Messages[0] = [];
         ChatLive_Messages[1] = [];
+        ChatLive_Latency[0] = 0;
+        ChatLive_Latency[0] = 1;
     }
 
     function Chat_Init() {
