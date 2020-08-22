@@ -11,7 +11,7 @@ Apk Version 3.0.245 - Web Version August 22 2020
 ==============
 
 * Add chat delay option base on Latency To Broadcaster, requested on [issue 15](https://github.com/fgl27/SmartTwitchTV/issues/15)
-* Fix Multistream not enable when PP or 50/50 was enable, bug introduced on Web version August 19 2020
+* Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version August 19 2020
 * General performance improves and bug fixes
 
 Web Version August 19 2020

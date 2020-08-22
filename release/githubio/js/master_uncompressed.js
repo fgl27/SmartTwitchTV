@@ -639,6 +639,8 @@
     var STR_QUALITY_MULTI;
     var STR_QUALITY_MULTI_BIG;
     var STR_PRESS_ENTER_TO_CHANGE;
+    var STR_LATENCY_TO_BROADCASTER;
+    var STR_CHAT_DELAY_LATENCY_TO_BROADCASTER;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1202,7 +1204,9 @@
         STR_AVGMB = " Avg) Mb";
         STR_NET_ACT = "Net Activity: ";
         STR_NET_SPEED = "Net Speed:";
-        STR_LATENCY = "Latency To Broadcaster: ";
+        STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
+        STR_LATENCY = STR_LATENCY_TO_BROADCASTER + ": ";
+        STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
         STR_PING = "Ping to Twitch: ";
         STR_WARNING = "Warning";
         STR_WARNINGS = STR_WARNING + 's';
@@ -5295,14 +5299,19 @@
                         });
 
                         if (Play_ChatDelayPosition) {
-                            var stringSec = STR_SECOND;
-                            if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
+                            var stringSec = '';
+
+                            if (Play_controls[Play_controlsChatDelay].defaultValue > 2) stringSec = STR_SECONDS;
+                            else if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECOND;
 
                             ChatLive_LineAdd({
                                 chat_number: chat_number,
                                 message: ChatLive_LineAddSimple(STR_CHAT_DELAY + ' ' +
                                     Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] + stringSec)
                             });
+
+                            if (Play_ChatDelayPosition === 1)
+                                OSInterface_getLatency(chat_number);
                         }
 
                     }
@@ -6008,15 +6017,16 @@
         };
 
         if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
-        else {
-            var id = Chat_Id[chat_number];
-            Main_setTimeout(
-                function() {
-                    if (id === Chat_Id[chat_number]) ChatLive_LineAdd(messageObj);
-                },
-                (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000)
-            );
-        }
+        else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
+    }
+
+    function ChatLive_LineAddDelay(chat_number, id, messageObj) {
+        Main_setTimeout(
+            function() {
+                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(messageObj);
+            },
+            Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition
+        );
     }
 
     function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
@@ -6158,19 +6168,46 @@
     }
 
     function ChatLive_MessagesRunAfterPause() {
-        var i, j,
-            Temp_Messages = [];
-
-        Temp_Messages[0] = Main_Slice(ChatLive_Messages[0]);
-        ChatLive_Messages[0] = [];
-
-        Temp_Messages[1] = Main_Slice(ChatLive_Messages[1]);
-        ChatLive_Messages[1] = [];
+        var i, j, len;
 
         for (i = 0; i < 2; i++) {
-            for (j = 0; j < Temp_Messages[i].length; j++) {
-                ChatLive_LineAdd(Temp_Messages[i][j]);
+            len = ChatLive_Messages[i].length;
+
+            for (j = 0; j < len; j++) {
+
+                ChatLive_LineAdd(ChatLive_Messages[i][j]);
+
             }
+
+            ChatLive_Messages[i] = [];
+        }
+
+        //After a pause/play UpdateLatency
+        ChatLive_UpdateLatency();
+    }
+
+    function ChatLive_UpdateLatency() {
+        if (Play_ChatDelayPosition === 1) {
+            if (Chat_Id[0]) OSInterface_getLatency(0);
+            if (Chat_Id[1]) OSInterface_getLatency(1);
+        }
+    }
+
+    var ChatLive_Latency = [];
+    var ChatLive_LatencyId = [];
+
+    function ChatLive_SetLatency(chat_number, latency) {
+        ChatLive_Latency[chat_number] = latency > 0 ? latency : 0;
+
+        if (Play_ChatDelayPosition === 1) {
+            //Update after it 30 seconds as the value may vary after some time
+            ChatLive_LatencyId[chat_number] = Main_setTimeout(
+                function() {
+                    if (Chat_Id[chat_number]) OSInterface_getLatency(chat_number);
+                },
+                30 * 1000,
+                ChatLive_LatencyId[chat_number]
+            );
         }
     }
 
@@ -6178,6 +6215,7 @@
         ChatLive_CheckClear(chat_number);
         Main_clearTimeout(ChatLive_socketSendCheckID);
         Main_clearTimeout(ChatLive_loadBadgesChannelId);
+        Main_clearTimeout(ChatLive_LatencyId[chat_number]);
         Main_clearInterval(ChatLive_loadChattersId[chat_number]);
     }
 
@@ -6880,10 +6918,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.244';
-    var Main_version_java = 33; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 19 2020';
-    var Main_version_web = 56; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.245';
+    var Main_version_java = 34; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'August 22 2020';
+    var Main_version_web = 57; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7081,6 +7119,7 @@
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
                         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
                         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
+                        'ChatLive_SetLatency': ChatLive_SetLatency
                     };
                 }
 
@@ -7475,6 +7514,14 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.245 - Web Version August 22 2020",
+                changes: [
+                    "Add chat delay option base on Latency To Broadcaster",
+                    "Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version August 19 2020",
                 changes: [
                     "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
@@ -7498,14 +7545,6 @@
             },
             {
                 title: "Apk Version 3.0.240 - August 10 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version August 09 2020",
-                changes: ["Improve app start performance", "General performance improves and bug fixes"]
-            },
-            {
-                title: "Apk Version 3.0.239 - August 08 2020",
                 changes: ["General performance improves and bug fixes"]
             },
         ];
@@ -10521,6 +10560,15 @@
         if (Main_IsOn_OSInterface) Android.upDateLang(lang);
     }
 
+    //public void getLatency(String callback)
+    //Android specific: true
+    //Get live stream latency to the streamer
+    function OSInterface_getLatency(chat_number) {
+        try {
+            Android.getLatency(chat_number);
+        } catch (e) {}
+    }
+
     //public boolean isKeyboardConnected()
     //Android specific: true
     //informs if a hw Keyboard is connected to the devices
@@ -11490,14 +11538,16 @@
                 Play_controlsAudioMulti
             );
 
-            Main_textContent(
-                'extra_button_title' + Play_controlsAudioMulti,
-                STR_AUDIO_SOURCE + ' - ' +
-                (Play_DefaultAudio_Multi < 4 ?
-                    Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
-                    Play_controls[Play_controlsAudioMulti].values[pos]
-                )
-            );
+            if (Play_MultiArray[Play_DefaultAudio_Multi]) {
+                Main_textContent(
+                    'extra_button_title' + Play_controlsAudioMulti,
+                    STR_AUDIO_SOURCE + ' - ' +
+                    (Play_DefaultAudio_Multi < 4 ?
+                        Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
+                        Play_controls[Play_controlsAudioMulti].values[pos]
+                    )
+                );
+            }
 
             //Reset Quality Multi to default
             Play_A_Control(0, Play_controlsQualityMulti);
@@ -12423,9 +12473,15 @@
             Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
 
             if (PlayVodClip === 1) {
+
                 ChatLive_Playing = true;
                 ChatLive_MessagesRunAfterPause();
-            } else if (PlayClip_HasVOD) Chat_Play(Chat_Id[0]);
+
+            } else if (PlayClip_HasVOD) {
+
+                Chat_Play(Chat_Id[0]);
+
+            }
 
             if (Play_isPanelShown()) {
                 if (PlayVodClip === 1) Play_hidePanel();
@@ -12940,11 +12996,11 @@
     var Play_controlsChatSend = 16;
     var Play_controlsChatSide = 17;
     var Play_controlsChatForceDis = 18;
-    var Play_controlsChatPos = 19;
-    var Play_controlsChatSize = 20;
-    var Play_controlsChatBright = 21;
-    var Play_controlsChatFont = 22;
-    var Play_controlsChatDelay = 23;
+    var Play_controlsChatDelay = 19;
+    var Play_controlsChatPos = 20;
+    var Play_controlsChatSize = 21;
+    var Play_controlsChatBright = 22;
+    var Play_controlsChatFont = 23;
 
     var Play_controlsDefault = Play_controlsChat;
     var Play_Panelcounter = Play_controlsDefault;
@@ -13485,7 +13541,6 @@
                     }
 
                     Play_hidePanel();
-                    Play_Multi_SetPanel();
                     if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                         Play_SetPlayQuality("Auto");
                         OSInterface_SetQuality(-1);
@@ -13531,6 +13586,7 @@
                     Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
 
                     Play_controls[Play_controlsAudioMulti].enterKey(true, true);
+                    Play_Multi_SetPanel();
 
                     for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                         Play_MultiInfoReset(i);
@@ -13664,6 +13720,40 @@
             setLable: function() {
                 Main_textContent('extra_button_' + this.position, '(' +
                     (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
+            },
+        };
+
+        Play_controls[Play_controlsChatDelay] = { //chat delay
+            icons: "chat-delay",
+            string: STR_CHAT_DELAY,
+            values: [STR_DISABLED, STR_CHAT_DELAY_LATENCY_TO_BROADCASTER, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
+            ],
+            defaultValue: Play_ChatDelayPosition,
+            isChat: false,
+            updown: function(adder) {
+                this.defaultValue += adder;
+
+                if (this.defaultValue < 0) this.defaultValue = 0;
+                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+                Play_ChatDelayPosition = this.defaultValue > 1 ? (this.values[this.defaultValue] * 1000) : this.defaultValue;
+
+                ChatLive_UpdateLatency();
+                Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
+                this.bottomArrows();
+                this.setLable();
+            },
+            setLable: function() {
+                var stringSec = '';
+
+                if (this.defaultValue > 2) stringSec = STR_SECONDS;
+                else if (this.defaultValue > 1) stringSec = STR_SECOND;
+
+                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
+            },
+            bottomArrows: function() {
+                Play_BottomArrows(this.position);
             },
         };
 
@@ -13830,40 +13920,6 @@
             },
         };
 
-        Play_controls[Play_controlsChatDelay] = { //chat delay
-            icons: "chat-delay",
-            string: STR_CHAT_DELAY,
-            values: [STR_DISABLED, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
-            ],
-            defaultValue: Play_ChatDelayPosition,
-            isChat: false,
-            updown: function(adder) {
-                this.defaultValue += adder;
-
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1))
-                    this.defaultValue = (this.values.length - 1);
-
-                Play_ChatDelayPosition = this.defaultValue;
-
-                Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
-                this.bottomArrows();
-                this.setLable();
-            },
-            setLable: function() {
-                var stringSec = '';
-
-                if (this.defaultValue > 1) stringSec = STR_SECONDS;
-                else if (this.defaultValue > 0) stringSec = STR_SECOND;
-
-                Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
-            },
-            bottomArrows: function() {
-                Play_BottomArrows(this.position);
-            },
-        };
     }
 
     function Play_IconsAddFocus() {
@@ -32108,6 +32164,7 @@
         'Main_EventChannelRefresh': Main_EventChannelRefresh, // Main_EventChannelRefresh() func from app/specific/Main.js
         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess, // ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult, // PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
+        'ChatLive_SetLatency': ChatLive_SetLatency, // ChatLive_SetLatency() func from app/specific/ChatLive.js
     };
 
     /** Expose `smartTwitchTV` */
