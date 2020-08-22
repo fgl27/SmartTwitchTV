@@ -7519,7 +7519,7 @@
                 title: "Apk Version 3.0.245 - Web Version August 22 2020",
                 changes: [
                     "Add chat delay option base on Latency To Broadcaster",
-                    "Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version",
+                    "Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version August 19 2020",
                     "General performance improves and bug fixes"
                 ]
             },
