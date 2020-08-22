@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Apk Version 3.0.245 - Web Version August 22 2020
 ==============
 
-* Add chat delay option base on Latency To Broadcaster
+* Add chat delay option base on Latency To Broadcaster, requested on [issue 15](https://github.com/fgl27/SmartTwitchTV/issues/15)
 * General performance improves and bug fixes
 
 Web Version August 19 2020
