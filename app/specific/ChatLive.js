@@ -748,8 +748,10 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     );
 
                     if (Play_ChatDelayPosition) {
-                        var stringSec = STR_SECOND;
-                        if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECONDS;
+                        var stringSec = '';
+
+                        if (Play_controls[Play_controlsChatDelay].defaultValue > 2) stringSec = STR_SECONDS;
+                        else if (Play_controls[Play_controlsChatDelay].defaultValue > 1) stringSec = STR_SECOND;
 
                         ChatLive_LineAdd(
                             {
@@ -758,6 +760,9 @@ function ChatLive_loadChatRequest(chat_number, id) {
                                     Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] + stringSec)
                             }
                         );
+
+                        if (Play_ChatDelayPosition === 1)
+                            OSInterface_getLatency(chat_number);
                     }
 
                 }
@@ -1470,15 +1475,16 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     };
 
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
-    else {
-        var id = Chat_Id[chat_number];
-        Main_setTimeout(
-            function() {
-                if (id === Chat_Id[chat_number]) ChatLive_LineAdd(messageObj);
-            },
-            (Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] * 1000)
-        );
-    }
+    else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
+}
+
+function ChatLive_LineAddDelay(chat_number, id, messageObj) {
+    Main_setTimeout(
+        function() {
+            if (id === Chat_Id[chat_number]) ChatLive_LineAdd(messageObj);
+        },
+        Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition
+    );
 }
 
 function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
@@ -1620,19 +1626,45 @@ function ChatLive_ElemntAdd(messageObj) {
 }
 
 function ChatLive_MessagesRunAfterPause() {
-    var i, j,
-        Temp_Messages = [];
-
-    Temp_Messages[0] = Main_Slice(ChatLive_Messages[0]);
-    ChatLive_Messages[0] = [];
-
-    Temp_Messages[1] = Main_Slice(ChatLive_Messages[1]);
-    ChatLive_Messages[1] = [];
+    var i, j, len;
 
     for (i = 0; i < 2; i++) {
-        for (j = 0; j < Temp_Messages[i].length; j++) {
-            ChatLive_LineAdd(Temp_Messages[i][j]);
+        len = ChatLive_Messages[i].length;
+
+        for (j = 0; j < len; j++) {
+
+            ChatLive_LineAdd(ChatLive_Messages[i][j]);
+
         }
+
+        ChatLive_Messages[i] = [];
+    }
+
+    //After a pause/play UpdateLatency
+    ChatLive_UpdateLatency();
+}
+
+function ChatLive_UpdateLatency() {
+    if (Play_ChatDelayPosition === 1) {
+        if (Chat_Id[0]) OSInterface_getLatency(0);
+        if (Chat_Id[1]) OSInterface_getLatency(1);
+    }
+}
+
+var ChatLive_Latency = [];
+var ChatLive_LatencyId = [];
+function ChatLive_SetLatency(chat_number, latency) {
+    ChatLive_Latency[chat_number] = latency > 0 ? latency : 0;
+
+    if (Play_ChatDelayPosition === 1) {
+        //Update after it 30 seconds as the value may vary after some time
+        ChatLive_LatencyId[chat_number] = Main_setTimeout(
+            function() {
+                if (Chat_Id[chat_number]) OSInterface_getLatency(chat_number);
+            },
+            30 * 1000,
+            ChatLive_LatencyId[chat_number]
+        );
     }
 }
 
@@ -1640,6 +1672,7 @@ function ChatLive_ClearIds(chat_number) {
     ChatLive_CheckClear(chat_number);
     Main_clearTimeout(ChatLive_socketSendCheckID);
     Main_clearTimeout(ChatLive_loadBadgesChannelId);
+    Main_clearTimeout(ChatLive_LatencyId[chat_number]);
     Main_clearInterval(ChatLive_loadChattersId[chat_number]);
 }
 

@@ -76,6 +76,7 @@
         'Main_EventChannelRefresh': Main_EventChannelRefresh,// Main_EventChannelRefresh() func from app/specific/Main.js
         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,// ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,// PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
+        'ChatLive_SetLatency': ChatLive_SetLatency,// ChatLive_SetLatency() func from app/specific/ChatLive.js
     };
 
     /** Expose `smartTwitchTV` */

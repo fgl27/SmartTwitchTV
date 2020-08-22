@@ -1037,6 +1037,15 @@ function OSInterface_upDateLang(lang) {
     if (Main_IsOn_OSInterface) Android.upDateLang(lang);
 }
 
+//public void getLatency(String callback)
+//Android specific: true
+//Get live stream latency to the streamer
+function OSInterface_getLatency(chat_number) {
+    try {
+        Android.getLatency(chat_number);
+    } catch (e) {}
+}
+
 //public boolean isKeyboardConnected()
 //Android specific: true
 //informs if a hw Keyboard is connected to the devices

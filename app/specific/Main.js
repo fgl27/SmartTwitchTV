@@ -226,6 +226,7 @@ function Main_loadTranslations(language) {
                     'Main_EventChannelRefresh': Main_EventChannelRefresh,
                     'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
                     'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
+                    'ChatLive_SetLatency': ChatLive_SetLatency
                 };
             }
 

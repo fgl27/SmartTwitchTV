@@ -2762,6 +2762,29 @@ public class PlayerActivity extends Activity {
 
         @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
+        public void getLatency(int chat_number) {
+            MainThreadHandler.post(() -> {
+
+                if (MultiStreamEnable) {
+
+                    if (player[MultiMainPlayer] != null) {
+
+                        mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(0," + player[MultiMainPlayer].getCurrentLiveOffset() + ")");
+
+                    }
+
+                } else if (player[mainPlayer ^ chat_number] != null) {
+
+                    mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + player[mainPlayer ^ chat_number].getCurrentLiveOffset() + ")");
+
+                }
+
+            });
+
+        }
+
+        @SuppressWarnings("unused")//called by JS
+        @JavascriptInterface
         public boolean deviceIsTV() {
             return deviceIsTV;
         }
@@ -3055,21 +3078,34 @@ public class PlayerActivity extends Activity {
                 else
                     PlayerCheckCounter[position] = 0;
 
-                //If other not playing just play it so they stay in sync
-                if (MultiStreamEnable) {
-                    for (int i = 0; i < PlayerAccount; i++) {
-                        if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
-                    }
-                } else {
-                    int OtherPlayer = position ^ 1;
-                    if (player[OtherPlayer] != null) {
-                        if (!player[OtherPlayer].isPlaying())
-                            player[OtherPlayer].setPlayWhenReady(true);
-                    }
-                }
-
                 if (mWho_Called > 1) {
+
                     LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
+
+                } else {
+
+                    //If other not playing just play it so they stay in sync
+                    if (MultiStreamEnable) {
+
+                        for (int i = 0; i < PlayerAccount; i++) {
+                            if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
+                        }
+
+                        if (MultiMainPlayer == position)
+                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(0," + player[MultiMainPlayer].getCurrentLiveOffset() + ")");
+
+                    } else {
+
+                        int OtherPlayer = position ^ 1;
+                        if (player[OtherPlayer] != null) {
+                            if (!player[OtherPlayer].isPlaying())
+                                player[OtherPlayer].setPlayWhenReady(true);
+                        }
+
+                        LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + player[position].getCurrentLiveOffset() + ")");
+
+                    }
+
                 }
 
             }

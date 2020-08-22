@@ -398,7 +398,9 @@ function en_USLang() {
     STR_AVGMB = " Avg) Mb";
     STR_NET_ACT = "Net Activity: ";
     STR_NET_SPEED = "Net Speed:";
-    STR_LATENCY = "Latency To Broadcaster: ";
+    STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
+    STR_LATENCY = STR_LATENCY_TO_BROADCASTER + ": ";
+    STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping to Twitch: ";
     STR_WARNING = "Warning";
     STR_WARNINGS = STR_WARNING + 's';

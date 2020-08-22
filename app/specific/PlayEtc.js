@@ -54,14 +54,16 @@ function Play_ResetAudio() {
             Play_controlsAudioMulti
         );
 
-        Main_textContent(
-            'extra_button_title' + Play_controlsAudioMulti,
-            STR_AUDIO_SOURCE + ' - ' +
-            (Play_DefaultAudio_Multi < 4 ?
-                Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
-                Play_controls[Play_controlsAudioMulti].values[pos]
-            )
-        );
+        if (Play_MultiArray[Play_DefaultAudio_Multi]) {
+            Main_textContent(
+                'extra_button_title' + Play_controlsAudioMulti,
+                STR_AUDIO_SOURCE + ' - ' +
+                (Play_DefaultAudio_Multi < 4 ?
+                    Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
+                    Play_controls[Play_controlsAudioMulti].values[pos]
+                )
+            );
+        }
 
         //Reset Quality Multi to default
         Play_A_Control(0, Play_controlsQualityMulti);
@@ -986,9 +988,15 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
         Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
 
         if (PlayVodClip === 1) {
+
             ChatLive_Playing = true;
             ChatLive_MessagesRunAfterPause();
-        } else if (PlayClip_HasVOD) Chat_Play(Chat_Id[0]);
+
+        } else if (PlayClip_HasVOD) {
+
+            Chat_Play(Chat_Id[0]);
+
+        }
 
         if (Play_isPanelShown()) {
             if (PlayVodClip === 1) Play_hidePanel();
@@ -1503,11 +1511,11 @@ var Play_controlsChat = 15;
 var Play_controlsChatSend = 16;
 var Play_controlsChatSide = 17;
 var Play_controlsChatForceDis = 18;
-var Play_controlsChatPos = 19;
-var Play_controlsChatSize = 20;
-var Play_controlsChatBright = 21;
-var Play_controlsChatFont = 22;
-var Play_controlsChatDelay = 23;
+var Play_controlsChatDelay = 19;
+var Play_controlsChatPos = 20;
+var Play_controlsChatSize = 21;
+var Play_controlsChatBright = 22;
+var Play_controlsChatFont = 23;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2046,7 +2054,6 @@ function Play_MakeControls() {
                 }
 
                 Play_hidePanel();
-                Play_Multi_SetPanel();
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_SetPlayQuality("Auto");
                     OSInterface_SetQuality(-1);
@@ -2092,6 +2099,7 @@ function Play_MakeControls() {
                 Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
 
                 Play_controls[Play_controlsAudioMulti].enterKey(true, true);
+                Play_Multi_SetPanel();
 
                 for (i = PlayExtra_PicturePicture ? 2 : 1; i < 4; i++) {
                     Play_MultiInfoReset(i);
@@ -2225,6 +2233,40 @@ function Play_MakeControls() {
         setLable: function() {
             Main_textContent('extra_button_' + this.position, '(' +
                 (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
+        },
+    };
+
+    Play_controls[Play_controlsChatDelay] = { //chat delay
+        icons: "chat-delay",
+        string: STR_CHAT_DELAY,
+        values: [STR_DISABLED, STR_CHAT_DELAY_LATENCY_TO_BROADCASTER, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+            20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
+        ],
+        defaultValue: Play_ChatDelayPosition,
+        isChat: false,
+        updown: function(adder) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            Play_ChatDelayPosition = this.defaultValue > 1 ? (this.values[this.defaultValue] * 1000) : this.defaultValue;
+
+            ChatLive_UpdateLatency();
+            Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
+            this.bottomArrows();
+            this.setLable();
+        },
+        setLable: function() {
+            var stringSec = '';
+
+            if (this.defaultValue > 2) stringSec = STR_SECONDS;
+            else if (this.defaultValue > 1) stringSec = STR_SECOND;
+
+            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
         },
     };
 
@@ -2391,40 +2433,6 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsChatDelay] = { //chat delay
-        icons: "chat-delay",
-        string: STR_CHAT_DELAY,
-        values: [STR_DISABLED, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-            20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
-        ],
-        defaultValue: Play_ChatDelayPosition,
-        isChat: false,
-        updown: function(adder) {
-            this.defaultValue += adder;
-
-            if (this.defaultValue < 0)
-                this.defaultValue = 0;
-            else if (this.defaultValue > (this.values.length - 1))
-                this.defaultValue = (this.values.length - 1);
-
-            Play_ChatDelayPosition = this.defaultValue;
-
-            Main_setItem('Play_ChatDelayPosition', Play_ChatDelayPosition);
-            this.bottomArrows();
-            this.setLable();
-        },
-        setLable: function() {
-            var stringSec = '';
-
-            if (this.defaultValue > 1) stringSec = STR_SECONDS;
-            else if (this.defaultValue > 0) stringSec = STR_SECOND;
-
-            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + stringSec);
-        },
-        bottomArrows: function() {
-            Play_BottomArrows(this.position);
-        },
-    };
 }
 
 function Play_IconsAddFocus() {
