@@ -25,10 +25,10 @@ var Main_isReleased = false;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.244';
-var Main_version_java = 33;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'August 19 2020';
-var Main_version_web = 56;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.245';
+var Main_version_java = 34;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'August 22 2020';
+var Main_version_web = 57;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -621,6 +621,13 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.245 - Web Version August 22 2020",
+            changes: [
+                "Add chat delay option base on Latency To Broadcaster",
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
             title: "Web Version August 19 2020",
             changes: [
                 "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
@@ -644,14 +651,6 @@ function Main_Changelog() {
         },
         {
             title: "Apk Version 3.0.240 - August 10 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Web Version August 09 2020",
-            changes: ["Improve app start performance", "General performance improves and bug fixes"]
-        },
-        {
-            title: "Apk Version 3.0.239 - August 08 2020",
             changes: ["General performance improves and bug fixes"]
         },
     ];
