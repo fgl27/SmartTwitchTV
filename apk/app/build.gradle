@@ -11,7 +11,7 @@ android {
         targetSdkVersion versions.maxSdk
         versionCode versions.publishVersionCode
         versionName versions.publishVersion + versions.publishVersionCode
-        resConfigs "en" //limit dependencies languages
+        resConfigs "en", "xhdpi" //limit dependencies languages and resources use
     }
     buildTypes {
         release {
