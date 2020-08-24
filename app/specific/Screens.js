@@ -453,13 +453,25 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
 
 function Screens_HttpResultStatus(resultObj, key) {
     if (resultObj.status === 200) {
-        Screens_concatenate(resultObj.responseText, key);
+        
+        //console.log(resultObj.responseText);
+        Screens_concatenate(
+            JSON.parse(resultObj.responseText),
+            key
+        );
+
     } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
+
         AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+
     } else if (resultObj.status === 500 && Main_isScene1DocShown() && key === Main_usergames) {
+
         ScreenObj[key].key_refresh();
+
     } else {
+
         Screens_loadDataError(key);
+
     }
 }
 
@@ -493,8 +505,8 @@ function Screens_loadDatafail(key) {
 
 }
 
-function Screens_concatenate(responseText, key) {
-    ScreenObj[key].concatenate(responseText);
+function Screens_concatenate(responseObj, key) {
+    ScreenObj[key].concatenate(responseObj);
 }
 
 function Screens_loadDataSuccess(key) {

@@ -131,24 +131,22 @@ var Base_obj = {
             Main_SwitchScreen();
         } else Screens_OpenSidePanel(false, this.screen);
     },
-    concatenate: function(responseText) {
-        //Main_Log(responseText);
-        if (this.data) {
-            responseText = JSON.parse(responseText);
+    concatenate: function(responseObj) {
 
-            if (responseText[this.object]) {
-                this.data = this.data.concat(responseText[this.object]);
+        if (this.data) {
+
+            if (responseObj[this.object]) {
+                this.data.push.apply(this.data, responseObj[this.object]);
                 this.offset = this.data.length;
             }
 
-            this.setMax(responseText);
+            this.setMax(responseObj);
         } else {
-            responseText = JSON.parse(responseText);
 
-            this.data = responseText[this.object];
+            this.data = responseObj[this.object];
             if (this.data) {
                 this.offset = this.data.length;
-                this.setMax(responseText);
+                this.setMax(responseObj);
             } else this.data = [];
 
             this.loadDataSuccess();
@@ -649,27 +647,25 @@ function ScreensObj_InitUserLive() {
 
     ScreenObj[Main_UserLive] = Screens_assign(ScreenObj[Main_UserLive], Base_Live_obj);
 
-    ScreenObj[Main_UserLive].concatenate = function(responseText) {
-        ////Main_Log(responseText);
+    ScreenObj[Main_UserLive].concatenate = function(responseObj) {
+
         if (this.token || this.followerChannelsDone) {
             //User has added a key or followed channels list is done, concatenate live channels
             if (this.data) {
-                responseText = JSON.parse(responseText);
 
-                if (responseText[this.object]) {
-                    this.data = this.data.concat(responseText[this.object]);
+                if (responseObj[this.object]) {
+                    this.data.push.apply(this.data, responseObj[this.object]);
                     this.offset = this.data.length;
                 }
 
-                this.setMax(responseText);
+                this.setMax(responseObj);
             } else {
-                responseText = JSON.parse(responseText);
 
-                this.data = responseText[this.object];
+                this.data = responseObj[this.object];
                 if (this.data) this.offset = this.data.length;
                 else this.data = [];
 
-                this.setMax(responseText);
+                this.setMax(responseObj);
 
                 //Live user sort by views was removed bt twitch without any warning.
                 if (this.dataEnded && this.token) {
@@ -682,7 +678,7 @@ function ScreensObj_InitUserLive() {
             }
             this.loadingData = false;
         } else {
-            var response = JSON.parse(responseText).follows,
+            var response = responseObj.follows,
                 response_items = response.length;
 
             if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
