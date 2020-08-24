@@ -6,35 +6,36 @@ Readme content:
 
 * [About the project](#about-the-project)
 * [How the application works](#how-the-application-works)
-* [Application languages and build process](#application-languages-and-build-process)
-* [How to make changes and test it (in case you are making chages)](#how-to-make-changes-and-test-it)
+* [How the application looks](#how-the-application-looks)
+* [How to translate this](#how-to-translate-this)
 * [Download](#download)
 * [Dependencies](#dependencies)
 * [Changelog](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md)
+* [Project TODO, Featured request, Ideas and etc related list](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/TODO.md)
 * [Are phones and tablets supported](#are-phones-and-tablets-supported)
-* [Contributing instructions](#contributing-instructions)
-* [How the application looks](#how-the-application-looks)
 * [User Authorization key](#authorization)
+* [Application code languages and build process](#application-code-languages-and-build-process)
+* [Contributing instructions](#contributing-instructions)
+* [How to make changes and test it](#how-to-make-changes-and-test-it)
 * [Donations](#donations)
-
 
 About the project:
 ==============
 
-This is an web application designed to watch Twitch broadcasts on SmartTV's , A good official Twitch app is not available for most devices, that is way this project exist.
+This is an web application designed to watch Twitch broadcasts on SmartTV's , a official Twitch app is not available for most devices, that is way this project exist.
 
 The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
 
 This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history
 
-## About this fork
+### About this fork
 
 I initially fork this from https://github.com/CazuzaCzz/SmartTwitchTV/commits/tizen
 The original fork is https://github.com/nikitakatchik/SmartTwitchTV
 
-I have started this project because the above Repos of the app did not fully support my TV model and don't have all possible Twitch featuring.
+I have started this project because the above repo's of the app did not fully support my TV model (at the time this was a Samsung Tizen OS only project) and didn't had all possible Twitch featuring.
 
-I start this new repo keep the original name and commit history, work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help of some users reporting bugs and features request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be always improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that process is slow.
+I start this new repo keep the original name and commit history but not as a fork simply because I made so may changes that makes no sense to call this a fork, I work a long time writing this a new application basically from scratch focusing on performance and all available Twitch featuring, with the help users and contributors reporting bugs and making features request, I add many features and work to resolve all the bugs, today the application is very complete, can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be improved, new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that process is slow mostly because there is only one person working on the project and that work is done for free on spare time.
 
 How the application works
 ==============
@@ -43,74 +44,69 @@ The application is splinted on two parts, a web app and apk.
 
 ### The web app
 
-The web app is a web page [App web page](https://fgl27.github.io/SmartTwitchTV/release/index.min.html) that contains the app user interface and most of it's logic.
+The web app is a web page [Click here to access it](https://fgl27.github.io/SmartTwitchTV/release/index.min.html), this page contains the app user interface and most of the app logic.
 
 ### The Apk
 
-The apk holds two main views of the app, the Webview the view that loads the web app page and the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) the main app activity and the activity that holds the app players and web UI, the apk also handles the Android specific interactions that the app needs to work.<br>
+The apk holds two main views of the app, the Webview the view that loads the web app page and the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) the main app activity and the activity that holds the app players and web UI, the apk also handles the Android specific interactions that the app needs to make all to work.<br>
 
 ### The interactions between web app and apk
 
 The web app and the apk use a "OS interface" to communicate back and for.<br>
 
-To the web app interact with the apk it will use [one of this function](https://github.com/fgl27/SmartTwitchTV/blob/master/app/specific/OSInterface.js) it of those function has a function on the JAVA side of the code, the java side of those functions is on the **JavascriptInterface** of the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) that **JavascriptInterface** uses the class named **public class WebAppInterface**.
+To the web app interact with the apk it will use one of this function of this file [SmartTwitchTV/app/specific/OSInterface.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/specific/OSInterface.js) it of those function has a "mirror function" on the JAVA side of the code, the java side of those functions is on a **JavascriptInterface** of the [PlayerActivity](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java) that **JavascriptInterface** uses the class named **public class WebAppInterface** to hold all the functions.
 
-To the apk communicate with the web app it will call it will call a function `WebView.loadUrl("javascript:smartTwitchTV.FUN_NAME()")` where that FUN_NAME must be one of the function exposed on the [app API](https://github.com/fgl27/SmartTwitchTV/blob/master/release/api.js)
+To the apk communicate with the web app it will use this function call `WebView.loadUrl("javascript:smartTwitchTV.FUN_NAME()")` where that `FUN_NAME` must be one of the function exposed on the [app API](https://github.com/fgl27/SmartTwitchTV/blob/master/release/api.js)
 
-Application languages and build process
+In order for the app to work is necessary that back and for communication between the UI and the apk, the process is technically simple but if you never sow it at first it may seems complicated.<br>
+
+
+[How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
 ==============
 
-## Languages
+The application never stops receiving updates the bellow video may be outdated, I try to keep a updated video always available but is not a priority
+[![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=LA2x1c-BOJg)
 
-Languages used by the app, the web app code is compose of a html, CSS and a Javascript files, to edit those files use VS code (recomendede) or any text editor. The apk code is compose of JAVA, xml and basic build files use android Studio to edit and build apk.
-
-## build process
-
-The web app and the apk need to be build/generated here is a simple explanation on how that is done.<br>
-
-## The web app
-
-The web app files are locate here [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) but that is not direct the code that app uses, to generate the final code first is need to process those files, for that process is used this script [release_maker.sh](https://github.com/fgl27/SmartTwitchTV/blob/master/release/scripts/release_maker.sh).
-
-How that process works is divided on it language...
-
-### Javascript
-
-The script process the Javascript code from this folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) plus this file [app API](https://github.com/fgl27/SmartTwitchTV/blob/master/release/api.js), on that process the script will validate the code checking for error and general code miss use, if the validation pass the Javascript code will be mangle and compressed [to this files](https://github.com/fgl27/SmartTwitchTV/tree/master/release/githubio/js).
-
-### Html
-
-The html files from this folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) will processed and compressed [to this files](https://github.com/fgl27/SmartTwitchTV/tree/master/release).
-
-### CSS
-
-The CSS files [this folder](https://github.com/fgl27/SmartTwitchTV/tree/master/release/githubio/css) from will processed and compressed the same folder.<br>
-
-If all the process finises OK the scrip will inform with of those files changed in relation to the last time the script run, a commit can be pushed to update those files on the repo, every time that the apk start those files will downloaded by the app, this way the majority of the app Logic and UI can be updated without having to push a new apk.
-
-## The apk
-
-The apk files, [those files are located here](https://github.com/fgl27/SmartTwitchTV/tree/master/apk), because the app uses a modified version of ExoPlayer the player API there is also [this fork of ExoPlayer](https://github.com/fgl27/ExoPlayer).<br>
-
-To build the apk:
-
-* Create a new folder (the name is irrelevant) inside of that folder...
-* [Download or clone app source](https://github.com/fgl27/SmartTwitchTV), if download make sure you extract the app to the new folder
-* [Download or clone ExoPlayer source](https://github.com/fgl27/ExoPlayer), if download make sure you extract the app to the new folder
-* Install android studio after open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
-* Wait studio load and download all app dependencies, if it ask to install extra dependencies follow it's instructions
-* If you have any problem after this step try to google as the project is solely build using Android Studio so it must work for you, but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose).
-* Building the apk, on studio, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments a app will be generated studio will let you click to show where that apk is generated to.
-
-How to make changes and test it
+How to translate this
 ==============
 
-To make changes on the web app, edit the files from [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app), to test those changes just open the file smartTwitchTV/app/index.html on a browser preferably Chrome (the Webview that the app uses use the same web interface as Chrome).
+The app has two strings files:<br>
 
-If the changes that you are making are on a part of the app that interacts with the apk you must be changing functions that use functions of this file [OSInterface.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/specific/OSInterface.js), in order to test those changes/functions you can build the app and included the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) inside the app assets. To do that copy the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) to the `assets` folder [create that folder here](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main), after before build modify [Constants.java](the https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/Constants.java) file, un-comment the two lines `//final static String PageUrl` and `//final static String KeyPageUrl` and comment-out the next two lines that are from the same variables. Now build the app and test yours changes.
+* [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) 
+* [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 
-To make changes to the app apk, just use the studio to make the changes and follow the build process to make a app.
+Follow the bellow instruction to translate, test and send the files back.
 
+### How to translate and test?
+
+* [Download and extract the app source](https://github.com/fgl27/SmartTwitchTV/archive/master.zip)
+* Navigate and open [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) and follow the bellow Translate and Testing steps
+* Do the same for [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
+
+### Translate
+
+* Translate all string to yours language
+* Delete from the file any string that when translated has no difference to the original EN_US String
+* Remove from the file any string that wasn't translated and add it to a separated file name it `untranslated_js.txt` for `app/languages/en_US.js` and `untranslated_xml.txt` for `apk/app/src/main/res/values/strings.xml` make sure you inform why you didn't translate it of those.
+* The files `untranslated_*.txt` are a way so in the future is easier to know with string need to be updates, as when changes are made to the original strings I may remove them from the translation so the translator know that they need a update, also new string created after the translation will be added to `untranslated_*.txt`
+
+### Testing [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) 
+
+This file is part of the web app to test that file the easiest way is to:<br>
+
+* Open this file [app/index.html](https://github.com/fgl27/SmartTwitchTV/blob/master/app/index.html) on a web browser (recommended chrome) that will load the web app
+* To navigate use the keyboard arrow keys, enter and esc
+* Make sure you go to all app screens included the player (open Live, VOD and clips) and check if the translate string do not overflow and or cause the app to look odd
+* Make sure you open the fallowing side panel screens Settings, About and Controls as those are the screens that have more text so they usually need some work to make all look OK.
+* If any screen looks odd and isn't possible in any for or way to make the string to feet inform with string/screen has the problem when you share the file
+
+### Testing [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
+
+This file is part of the apk and is technically not needed to test it, just make sure you followed the `Translate` instructions, I will do a check if I find a issue I'll inform.
+
+### How to send the files
+
+Send all the files included the `untranslated_*.txt` files via a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com) inform the language they are for, make sure you tested/validate the file and inform the result and issues you find.<br>
 
 Download
 ==============
@@ -148,17 +144,6 @@ Are phones and tablets supported?
 ==============
 
 Yes but is limited, you need to use the APK from [release](https://github.com/fgl27/SmartTwitchTV/releases) and manually install the APK. Be aware that this app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter key controller use the on screen virtual D-pad + back key to navigate, in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.
-
-Contributing instructions
-==============
-
-Any Help is welcome you can use a github PR, [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or send a [email](mailto:fglfgl27@gmail.com).
-
-[How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
-==============
-
-The application never stops receiving updates the bellow video may be outdated
-[![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=LA2x1c-BOJg)
 
 Authorization
 ==============
@@ -211,6 +196,78 @@ That key will be used to access Twitch specific content of that user, it permiss
 * The permission used for this is **chat:read** the API used on this is [Connecting to Twitch IRC](https://dev.Twitch/docs/irc/guide/#connecting-to-twitch-irc)
 * Allows access so you can use the app to logging in on Twitch chat using yours username to read chat messages as yours user (technically the app can read chat without a user but the bellow option will not work on that case as the login is as anonymous).
 * Also enable you to receive gifted sub give for user in chat.<br>
+
+Application code languages and build process
+==============
+
+## Code Languages used by the project.
+
+* The web app code is compose of html/CSS (UI code) and a Javascript files (logic code), to edit those files use VS code (recommend) or any text editor.
+* The apk code is compose of JAVA (logic code), xml (UI and related code) and basic build files use android Studio to edit and build apk.
+
+## Build process
+
+The web app and the apk need to be build/generated here is a simple explanation on how that is done.<br>
+
+## Building The web app
+
+The web app files are locate here [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) but that is not the code that the end user runs, to generate the final code first is need to process those files, for that process is used this script [release_maker.sh](https://github.com/fgl27/SmartTwitchTV/blob/master/release/scripts/release_maker.sh).
+
+How that process works is divided on it language of the web app...
+
+### Javascript (building The web app)
+
+The script process all the Javascript code from this folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) and sub folders plus this file [app API](https://github.com/fgl27/SmartTwitchTV/blob/master/release/api.js), on that process the script will validate the code checking for error and general code miss use, if the validation pass the Javascript code will be clean, mangle and compressed [to this files](https://github.com/fgl27/SmartTwitchTV/tree/master/release/githubio/js).
+
+The `smartTwitchTV/release/githubio/js/master.js` is the main app Javascript code, that file contains a single function in a form of a "API" that contains one single exported or global object smartTwitchTV, smartTwitchTV is the object that the apk uses to communicate with the web app that is why it has some exported properties those properties are all function that the apk use to communicate with the web app.
+
+### Html (building The web app)
+
+The html files from this folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) and sub folders will be processed, clean and compressed [to this files](https://github.com/fgl27/SmartTwitchTV/tree/master/release).
+
+### CSS (building The web app)
+
+The CSS files from [this folder](https://github.com/fgl27/SmartTwitchTV/tree/master/release/githubio/css) will be processed, clean and compressed the same folder.<br>
+
+If all the process finises OK the scrip will inform with of those files changed in relation to the last time the script run, a commit can be pushed to update those files on the repo, every time that the apk start those files will downloaded by the app, this way the majority of the app Logic and UI can be updated without having to push a new apk, simply by closing and opening the app the end user updates to latest version, the app has a building update check function that informs the user when a update is available, so the user is always up to date.
+
+**If you don't understand why Javascript, Html and css file need to be process like this, the simple answer is that they work better, faster and reliable this way, if you need more info about that process just search about it as is the most common process used by web projects.**
+
+## Build The apk
+
+The apk files are located here [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk), because the app uses a modified version of **ExoPlayer** (the app player API) there is also [this fork of ExoPlayer](https://github.com/fgl27/ExoPlayer).<br>
+
+To build the apk:
+
+* Create a `new folder` (the name is irrelevant) inside of that folder...
+* [Download and extract](https://github.com/fgl27/SmartTwitchTV/archive/master.zip) the app source or clone it (`git clone https://github.com/fgl27/SmartTwitchTV`), if you download it make sure you extract it to the `new folder`
+* [Download and extract](https://github.com/fgl27/ExoPlayer/archive/dev-v2.zip) ExoPlayer or clone it (`https://github.com/fgl27/ExoPlayer`), if download make sure you extract it to the `new folder`
+* Make sure yours `new folder` contains this two folders `SmartTwitchTV` and `ExoPlayer` before proceed to next step
+* Install **Android Studio** after open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
+* Wait **Studio** do it's preparation it will load and download all app dependencies and etc related needed for this app, if it ask to install extra dependencies/sdk/etc follow it's instructions
+* Building the apk, on **Studio**, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments a app will be generated, a pop notification inside **Studio** will show and let you click to see where that apk is generated to.
+* If you have any problem using **Android Studio** just try to google as the project is solely build using **Android Studio** it must work for you, if it doesn't is because you did something wrong, **Android Studio** apk build is a very common thing one can find any type of help about it just by "googling it", but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
+
+Contributing instructions
+==============
+
+Any help is welcome.<br>
+
+* If you know how to code you can use a github PR to send yours changes/improves etc... Check [How to make changes and test it](#how-to-make-changes-and-test-it) to better understand how to do that...
+* If you have a idea, feature request, a problem or anything related you can inform it on a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or send a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com).
+
+
+How to make changes and test it
+==============
+
+To make changes on the web app, edit the files from [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app), to test those changes just open the file `smartTwitchTV/app/index.html` on a browser preferably Chrome (the Webview that the app uses use the same web interface as Chrome so testing on Chrome on a computer is very close to test on a device).
+
+If the changes that you are making are on a part of the app that interacts with the apk you must be changing functions that use functions of this file [OSInterface.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/specific/OSInterface.js), in order to test those you can build the app and included the folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) inside the app `assets` folder.
+
+
+To do that create a `assets` folder on [SmartTwitchTV/apk/app/src/main/](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main) folder copy the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) folder to it, after before build modify the [Constants.java](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/Constants.java) file, un-comment the first two lines `//final static String PageUrl` and `//final static String KeyPageUrl` and comment-out the next two lines that are of the same variables. Now build the app and test yours changes.
+
+To make changes to the app apk, just use the **Android Studio** to make the changes, to build and test use the [build process of the apk](#build-the-apk).
 
 Donations
 ==============
