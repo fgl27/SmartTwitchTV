@@ -94,11 +94,12 @@ Follow the bellow instruction to translate, test and send the files back.
 
 This file is part of the web app to test that file the easiest way is to:<br>
 
-* Open this file [app/index.html](https://github.com/fgl27/SmartTwitchTV/blob/master/app/index.html) on a web browser (recommended chrome) that will load the web app
+* Open this file [app/index.html](https://github.com/fgl27/SmartTwitchTV/blob/master/app/index.html) locally on a web browser (recommended chrome) that will load the web app
 * To navigate use the keyboard arrow keys, enter and esc
 * Make sure you go to all app screens included the player (open Live, VOD and clips) and check if the translate string do not overflow and or cause the app to look odd
 * Make sure you open the fallowing side panel screens Settings, About and Controls as those are the screens that have more text so they usually need some work to make all look OK.
 * If any screen looks odd and isn't possible in any for or way to make the string to feet inform with string/screen has the problem when you share the file
+* If you wanna compare yours changes VS the original app side by side open on a new tab the [main app page](https://fgl27.github.io/SmartTwitchTV/release/index.min.html)
 
 ### Testing [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 
