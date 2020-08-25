@@ -54,7 +54,7 @@ var Base_Game_obj;
 var Base_Channel_obj;
 var Base_History_obj;
 
-function ScreensObj_Vars() {
+function ScreensObj_StartAllVars() {
 
     Base_obj = {
         posX: 0,

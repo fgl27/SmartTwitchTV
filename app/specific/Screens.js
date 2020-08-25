@@ -46,7 +46,7 @@ var firebaseConfig = {
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
-    ScreensObj_Vars();
+    ScreensObj_StartAllVars();
 
     //Live screens
     ScreensObj_InitLive();
