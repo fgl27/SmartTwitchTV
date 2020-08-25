@@ -35,7 +35,7 @@ var AddCode_Scopes = [
 ];
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
-//Get yours client id and secret from https://docs.aws.amazon.com/lumberyard/latest/userguide/chatplay-generate-twitch-client-id.html
+//Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
 var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";//public but get yours link above is free
 var AddCode_client_secret;//none public get yours link above is free
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
