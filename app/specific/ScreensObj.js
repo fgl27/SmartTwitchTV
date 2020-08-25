@@ -36,8 +36,6 @@ var ChannelVod_createdAt = '';
 var ChannelVod_views = '';
 var ChannelVod_title = '';
 var ChannelVod_game = '';
-var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
-var Main_HistoryPos = 0;
 
 var AGame_following = false;
 
@@ -48,165 +46,528 @@ var DefaultHttpGetTimeoutPlus = 5000;
 var DefaultHttpGetReTryMax = 2;
 var empty_fun = function() {};
 
-var Base_obj = {
-    posX: 0,
-    posY: -1,
-    currY: 0,
-    row_id: 0,
-    offsettopFontsize: 0,
-    offsettop: 0,
-    coloumn_id: 0,
-    dataEnded: false,
-    idObject: {},
-    loadingData: false,
-    itemsCount: 0,
-    loadingDataTryMax: DefaultHttpGetReTryMax,
-    MaxOffset: 0,
-    offset: 0,
-    visiblerows: 3,
-    status: false,
-    emptyContent: true,
-    itemsCountCheck: false,
-    FirstLoad: false,
-    row: 0,
-    Headers: [],
-    data: null,
-    token: null,
-    data_cursor: 0,
-    lastRefresh: 0,
-    PreviewEnable: 0,
-    SetPreviewEnable: function() {
-        this.PreviewEnable =
-            (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
-            (this.screenType === 1 && Settings_Obj_default('show_vod_player')) ||
-            (this.screenType === 2 && Settings_Obj_default('show_clip_player'));
-    },
-    AutoRefreshId: null,
-    key_fun_start: function() {
-        return Screens_handleKeyDown.bind(null, this.screen);
-    },
-    exit_fun: function() {
-        Screens_exit(this.screen);
-    },
-    init_fun: function(preventRefresh) {
-        Screens_init(this.screen, preventRefresh);
-    },
-    start_fun: function() {
-        Screens_StartLoad(this.screen);
-    },
-    loadDataSuccess: function() {
-        Screens_loadDataSuccess(this.screen);
-    },
-    Set_Scroll: function() {
-        this.ScrollDoc = Main_getElementById(this.ids[4]);
-        this.tableDoc = Main_getElementById(this.table);
-    },
-    addrow: Screens_addrow,
-    key_exit: function(goSidepanel) {//TODO overwrite this on if object
-        Screens_RemoveAllFocus(this.screen);
+var Base_obj;
+var Base_Vod_obj;
+var Base_Live_obj;
+var Base_Clip_obj;
+var Base_Game_obj;
+var Base_Channel_obj;
+var Base_History_obj;
 
-        if ((this.screen === Main_aGame) && !goSidepanel) {
-            if (Main_values.Games_return) {
-                Main_values.Main_Go = Main_SearchGames;
-                Main_values.Main_gameSelected = Main_values.gameSelectedOld;
-                Main_values.gameSelectedOld = null;
-            } else {
-                Main_values.Main_Go = Main_values.Main_BeforeAgame;
-                Main_values.Main_BeforeAgame = Main_games;
-            }
-            Screens_BasicExit(Main_values.Main_Go, this.screen);
-            Main_SwitchScreen();
-        } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
-            this.screen === Main_SearchChannels) && !goSidepanel) {
-            if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
-            else Main_values.Main_Go = Main_values.Main_BeforeSearch;
-            Main_values.Search_isSearching = false;
-            Screens_BasicExit(Main_values.Main_Go, this.screen);
-            Main_SwitchScreen();
-        } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
-            Screens_BasicExit(Main_aGame, this.screen);
-            Main_SwitchScreen();
-        } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
-            Screens_BasicExit(Main_ChannelContent, this.screen);
-            Main_SwitchScreen();
-        } else Screens_OpenSidePanel(false, this.screen);
-    },
-    concatenate: function(responseObj) {
+function ScreensObj_Vars() {
 
-        if (this.data) {
+    Base_obj = {
+        posX: 0,
+        posY: -1,
+        currY: 0,
+        row_id: 0,
+        offsettopFontsize: 0,
+        offsettop: 0,
+        coloumn_id: 0,
+        dataEnded: false,
+        idObject: {},
+        loadingData: false,
+        itemsCount: 0,
+        loadingDataTryMax: DefaultHttpGetReTryMax,
+        MaxOffset: 0,
+        offset: 0,
+        visiblerows: 3,
+        status: false,
+        emptyContent: true,
+        itemsCountCheck: false,
+        FirstLoad: false,
+        row: 0,
+        Headers: Main_Headers,
+        data: null,
+        token: null,
+        data_cursor: 0,
+        lastRefresh: 0,
+        PreviewEnable: 0,
+        SetPreviewEnable: function() {
+            this.PreviewEnable =
+                (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
+                (this.screenType === 1 && Settings_Obj_default('show_vod_player')) ||
+                (this.screenType === 2 && Settings_Obj_default('show_clip_player'));
+        },
+        AutoRefreshId: null,
+        key_fun_start: function() {
+            return Screens_handleKeyDown.bind(null, this.screen);
+        },
+        exit_fun: function() {
+            Screens_exit(this.screen);
+        },
+        init_fun: function(preventRefresh) {
+            Screens_init(this.screen, preventRefresh);
+        },
+        start_fun: function() {
+            Screens_StartLoad(this.screen);
+        },
+        loadDataSuccess: function() {
+            Screens_loadDataSuccess(this.screen);
+        },
+        Set_Scroll: function() {
+            this.ScrollDoc = Main_getElementById(this.ids[4]);
+            this.tableDoc = Main_getElementById(this.table);
+        },
+        addrow: Screens_addrow,
+        key_exit: function(goSidepanel) {//TODO overwrite this on if object
+            Screens_RemoveAllFocus(this.screen);
 
-            if (responseObj[this.object]) {
-                this.data.push.apply(this.data, responseObj[this.object]);
-                this.offset = this.data.length;
-            }
+            if ((this.screen === Main_aGame) && !goSidepanel) {
+                if (Main_values.Games_return) {
+                    Main_values.Main_Go = Main_SearchGames;
+                    Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+                    Main_values.gameSelectedOld = null;
+                } else {
+                    Main_values.Main_Go = Main_values.Main_BeforeAgame;
+                    Main_values.Main_BeforeAgame = Main_games;
+                }
+                Screens_BasicExit(Main_values.Main_Go, this.screen);
+                Main_SwitchScreen();
+            } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
+                this.screen === Main_SearchChannels) && !goSidepanel) {
+                if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
+                else Main_values.Main_Go = Main_values.Main_BeforeSearch;
+                Main_values.Search_isSearching = false;
+                Screens_BasicExit(Main_values.Main_Go, this.screen);
+                Main_SwitchScreen();
+            } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
+                Screens_BasicExit(Main_aGame, this.screen);
+                Main_SwitchScreen();
+            } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
+                Screens_BasicExit(Main_ChannelContent, this.screen);
+                Main_SwitchScreen();
+            } else Screens_OpenSidePanel(false, this.screen);
+        },
+        concatenate: function(responseObj) {
 
-            this.setMax(responseObj);
-        } else {
-
-            this.data = responseObj[this.object];
             if (this.data) {
-                this.offset = this.data.length;
+
+                if (responseObj[this.object]) {
+                    this.data.push.apply(this.data, responseObj[this.object]);
+                    this.offset = this.data.length;
+                }
+
                 this.setMax(responseObj);
-            } else this.data = [];
+            } else {
 
-            this.loadDataSuccess();
+                this.data = responseObj[this.object];
+                if (this.data) {
+                    this.offset = this.data.length;
+                    this.setMax(responseObj);
+                } else this.data = [];
+
+                this.loadDataSuccess();
+            }
+            this.loadingData = false;
+        },
+        screen_view: function() {
+            if (this.ScreenName)
+                Main_EventScreen(this.ScreenName);
+        },
+    };
+
+    Base_Vod_obj = {
+        ItemsLimit: Main_ItemsLimitVideo,
+        ColoumnsCount: Main_ColoumnsCountVideo,
+        ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+        thumbclass: 'stream_thumbnail_live_holder',
+        rowClass: 'animate_height_transition',
+        histPosXName: 'HistoryVod_histPosX',
+        screenType: 1,
+        addFocus: function(forceScroll, key) {
+            this.AnimateThumb(this);
+            Screens_addFocusVideo(forceScroll, key);
+        },
+        setTODialog: function() {
+            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
+        },
+        setMax: function(tempObj) {
+            if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
+        },
+        img_404: IMG_404_VOD,
+        HasSwitches: true,
+        period: ['day', 'week', 'month', 'all'],
+        empty_str: function() {
+            return STR_NO + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
+        },
+        AnimateThumbId: null,
+        HasAnimateThumb: true,
+        Vod_newImg: new Image(),
+        AnimateThumb: ScreensObj_AnimateThumbId,
+        addCell: function(cell) {
+            if (!this.idObject[cell._id]) {
+
+                this.itemsCount++;
+                this.idObject[cell._id] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellVod(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        ScreensObj_VodCellArray(cell),
+                        this.screen
+                    )
+                );
+
+                this.coloumn_id++;
+            }
         }
-        this.loadingData = false;
-    },
-    screen_view: function() {
-        if (this.ScreenName)
-            Main_EventScreen(this.ScreenName);
-    },
-};
+    };
 
-var Base_Vod_obj = {
-    ItemsLimit: Main_ItemsLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    thumbclass: 'stream_thumbnail_live_holder',
-    rowClass: 'animate_height_transition',
-    histPosXName: 'HistoryVod_histPosX',
-    screenType: 1,
-    addFocus: function(forceScroll, key) {
-        this.AnimateThumb(this);
-        Screens_addFocusVideo(forceScroll, key);
-    },
-    setTODialog: function() {
-        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
-    },
-    setMax: function(tempObj) {
-        if (tempObj[this.object].length < (Main_ItemsLimitMax - 5)) this.dataEnded = true;
-    },
-    img_404: IMG_404_VOD,
-    HasSwitches: true,
-    period: ['day', 'week', 'month', 'all'],
-    empty_str: function() {
-        return STR_NO + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-    },
-    AnimateThumbId: null,
-    HasAnimateThumb: true,
-    Vod_newImg: new Image(),
-    AnimateThumb: ScreensObj_AnimateThumbId,
-    addCell: function(cell) {
-        if (!this.idObject[cell._id]) {
+    Base_Live_obj = {
+        ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+        ItemsLimit: Main_ItemsLimitVideo,
+        ColoumnsCount: Main_ColoumnsCountVideo,
+        addFocus: Screens_addFocusVideo,
+        rowClass: 'animate_height_transition',
+        thumbclass: 'stream_thumbnail_live_holder',
+        histPosXName: 'HistoryLive_histPosX',
+        screenType: 0,
+        img_404: IMG_404_VIDEO,
+        setMax: function(tempObj) {
+            this.MaxOffset = tempObj._total;
 
-            this.itemsCount++;
-            this.idObject[cell._id] = 1;
+            if (!tempObj[this.object]) this.dataEnded = true;
+            else if (typeof this.MaxOffset === 'undefined') {
+                if (tempObj[this.object].length < 90) this.dataEnded = true;
+            } else {
+                if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+            }
+        },
+        empty_str: function() {
+            return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
+        },
+        setTODialog: function() {
+            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
+        },
+        addCell: function(cell) {
+            this.addCellTemp(cell);
+        },
+        check_offset: function() {
+            if ((this.offset >= 900) ||
+                ((typeof this.MaxOffset !== 'undefined') &&
+                    this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset)) this.dataEnded = true;
+        },
+        addCellTemp: function(cell) {
+            if (!this.idObject[cell.channel._id]) {
 
-            this.row.appendChild(
-                Screens_createCellVod(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    ScreensObj_VodCellArray(cell),
-                    this.screen
-                )
+                this.itemsCount++;
+                this.idObject[cell.channel._id] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellLive(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        ScreensObj_LiveCellArray(cell),
+                        this.screen
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        key_play: function() {
+            if (this.itemsCount) {
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
+            }
+        }
+    };
+
+    Base_Clip_obj = {
+        HeaderQuatity: 2,
+        ItemsLimit: Main_ItemsLimitVideo,
+        TopRowCreated: false,
+        ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+        ColoumnsCount: Main_ColoumnsCountVideo,
+        addFocus: Screens_addFocusVideo,
+        rowClass: 'animate_height_transition',
+        thumbclass: 'stream_thumbnail_live_holder',
+        histPosXName: 'HistoryClip_histPosX',
+        screenType: 2,
+        cursor: null,
+        object: 'clips',
+        period: ['day', 'week', 'month', 'all'],
+        img_404: IMG_404_VOD,
+        empty_str: function() {
+            return STR_NO + STR_SPACE + STR_CLIPS;
+        },
+        setTODialog: function() {
+            Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
+            Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
+        },
+        HasSwitches: true,
+        SwitchesIcons: ['history', 'play-1'],
+        addSwitches: function() {
+            ScreensObj_addSwitches(
+                [
+                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
+                    STR_SPACE + STR_SPACE + STR_PLAY_ALL
+                ],
+                this.screen
             );
+        },
+        setMax: function(tempObj) {
+            this.cursor = tempObj._cursor;
+            if (this.cursor === '') this.dataEnded = true;
+        },
+        key_play: function() {
+            if (this.posY === -1) {
+                if (!this.loadingData) {
+                    if (!this.posX) Screens_PeriodStart(this.screen);
+                    else {
+                        PlayClip_All = true;
+                        Screens_removeFocusFollow(this.screen);
+                        this.posX = 0;
+                        this.posY = 0;
+                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                    }
+                }
+            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+        },
+        Cells: [],
+        addCell: function(cell) {
+            if (!this.idObject[cell.tracking_id]) {
+                this.itemsCount++;
+                this.idObject[cell.tracking_id] = 1;
 
-            this.coloumn_id++;
+                this.row.appendChild(
+                    Screens_createCellClip(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        ScreensObj_ClipCellArray(cell),
+                        this.screen
+                    )
+                );
+
+                this.coloumn_id++;
+            }
         }
-    }
-};
+    };
+
+    Base_Game_obj = {
+        HeaderQuatity: 2,
+        thumbclass: 'stream_thumbnail_game_holder',
+        ItemsReloadLimit: Main_ItemsReloadLimitGame,
+        ItemsLimit: Main_ItemsLimitGame,
+        rowClass: 'animate_height_transition_games',
+        ColoumnsCount: Main_ColoumnsCountGame,
+        addFocus: Screens_addFocusVideo,
+        img_404: IMG_404_GAME,
+        screenType: 3,
+        empty_str: function() {
+            return STR_NO + STR_SPACE + STR_LIVE_GAMES;
+        },
+        setTODialog: Screens_ThumbOptionHideSpecial,
+        key_play: function() {
+            Main_removeFocus(this.posY + '_' + this.posX, this.ids);
+
+            Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+            Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
+            Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
+
+            Main_removeEventListener("keydown", this.key_fun);
+            Main_values.Main_BeforeAgame = this.screen;
+            Main_values.Main_Go = Main_aGame;
+            Main_values.Main_BeforeAgameisSet = true;
+
+            Main_addFocusVideoOffset = 0;
+            Main_removeEventListener("keydown", this.key_fun);
+            Main_HideElementWithEle(this.ScrollDoc);
+
+            Main_SwitchScreen();
+        },
+        setMax: function(tempObj) {
+
+            this.MaxOffset = tempObj._total;
+            if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+
+        },
+        addCell: function(cell) {
+            var hasLive = this.isLive || this.screen === Main_games;
+            var game = hasLive ? cell.game : cell;
+            if (!this.idObject[game._id]) {
+
+                this.itemsCount++;
+                this.idObject[game._id] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellGame(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        [game.box.template.replace("{width}x{height}", Main_GameSize),
+                        game.name,
+                        hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
+                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
+                        game._id
+                        ],
+                        this.screen
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        }
+    };
+
+    Base_Channel_obj = {
+        ItemsLimit: Main_ItemsLimitChannel,
+        ColoumnsCount: Main_ColoumnsCountChannel,
+        addFocus: Screens_addFocusChannel,
+        ItemsReloadLimit: Main_ItemsReloadLimitChannel,
+        thumbclass: 'stream_thumbnail_channel_holder',
+        rowClass: 'animate_height_transition_channel',
+        screenType: 4,
+        img_404: IMG_404_LOGO,
+        setMax: function(tempObj) {
+            this.MaxOffset = tempObj._total;
+            if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+        },
+        setTODialog: Screens_ThumbOptionHideSpecial,
+        empty_str: function() {
+            return STR_NO + STR_SPACE + STR_USER_CHANNEL;
+        },
+        addCellTemp: function(cell) {
+            if (!this.idObject[cell._id]) {
+
+                this.itemsCount++;
+                this.idObject[cell._id] = 1;
+
+                this.row.appendChild(
+                    Screens_createCellChannel(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
+                        this.screen
+                    )
+                );
+
+                this.coloumn_id++;
+            }
+        },
+        base_key_play: function(go_screen, IsFollowing) {
+            if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
+
+            Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+
+            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
+            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
+            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
+            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
+            //console.log(Main_values.Main_selectedChannel);
+            //console.log(Main_values.Main_selectedChannel_id);
+
+            Main_removeEventListener("keydown", this.key_fun);
+            Main_values.Main_BeforeChannel = go_screen;
+            Main_values.Main_Go = Main_ChannelContent;
+            Main_values.Main_BeforeChannelisSet = true;
+            AddCode_IsFollowing = IsFollowing;
+            ChannelContent_UserChannels = IsFollowing;
+            Screens_exit(this.screen);
+            Main_SwitchScreen();
+        },
+    };
+
+    Base_History_obj = {
+        ItemsReloadLimit: Main_ItemsReloadLimitVideo,
+        ItemsLimit: Main_ItemsLimitVideo,
+        ColoumnsCount: Main_ColoumnsCountVideo,
+        addFocus: Screens_addFocusVideo,
+        rowClass: 'animate_height_transition',
+        thumbclass: 'stream_thumbnail_live_holder',
+        isHistory: true,
+        streamerID: {},
+        HasSwitches: true,
+        key_pgDown: Main_UserLive,
+        key_pgUp: Main_UserChannels,
+        histPosY: 0,
+        histPosXTemp: [0, 0, 0],
+        sorting: [],
+        sortingValues: [
+            ['date', 0],
+            ['date', 1],
+            ['name', 1],
+            ['name', 0],
+            ['game', 1],
+            ['game', 0],
+            ['views', 0],
+            ['views', 1],
+            ['created_at', 0],
+            ['created_at', 1]
+        ],
+        sortingPos: 0,
+        Upsorting: function() {
+            this.sorting = [
+                STR_NEWEST,
+                STR_OLDEST,
+                STR_NAME_A_Z,
+                STR_NAME_Z_A,
+                STR_GAME_A_Z,
+                STR_GAME_Z_A,
+                STR_VIWES_MOST,
+                STR_VIWES_LOWEST,
+                STR_CREATED_NEWEST,
+                STR_CREATED_OLDEST
+            ];
+        },
+        histEna: [],
+        histEnaPos: 0,
+        UpEna: function() {
+            this.histEna = [
+                STR_YES,
+                STR_NO
+            ];
+        },
+        histArrays: [],
+        UpArrays: function() {
+            this.histArrays = [
+                this.sorting,
+                this.histEna,
+                [STR_PRESS_ENTER_D]
+            ];
+        },
+        set_url: empty_fun,
+        empty_str: function() {
+            return STR_NO + STR_SPACE + STR_HISTORY;
+        },
+        history_concatenate: function() {
+            this.streamerID = {};
+            this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
+            Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
+            this.dataEnded = true;
+            this.loadDataSuccess();
+            this.loadingData = false;
+        },
+        history_exit: function() {
+            if (this.status) {
+                Screens_removeFocusFollow(this.screen);
+                this.posY = 0;
+                this.posX = 0;
+                Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
+            }
+            Main_removeEventListener("keydown", this.key_fun);
+            Main_HideElementWithEle(this.ScrollDoc);
+        },
+        sethistMainDialog: function() {
+            this.Upsorting();
+            this.UpEna();
+            this.UpArrays();
+
+            Screens_histSetArrow(this.screen);
+
+            Main_textContent(
+                'dialog_hist_val_1',
+                this.histArrays[1][this.histPosX[1]]
+            );
+            Main_getElementById("dialog_hist_left_1").style.opacity = "0";
+            Main_getElementById("dialog_hist_right_1").style.opacity = "0";
+            this.histPosXTemp = Main_Slice(this.histPosX);
+        }
+    };
+}
 
 function ScreensObj_InitVod() {
     ScreenObj[Main_Vod] = Screens_assign({
@@ -467,67 +828,6 @@ function ScreensObj_InitUserVod() {
     ScreenObj[Main_UserVod] = Screens_assign(ScreenObj[Main_UserVod], Base_Vod_obj);
     ScreenObj[Main_UserVod].Set_Scroll();
 }
-
-var Base_Live_obj = {
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    ItemsLimit: Main_ItemsLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Screens_addFocusVideo,
-    rowClass: 'animate_height_transition',
-    thumbclass: 'stream_thumbnail_live_holder',
-    histPosXName: 'HistoryLive_histPosX',
-    screenType: 0,
-    img_404: IMG_404_VIDEO,
-    setMax: function(tempObj) {
-        this.MaxOffset = tempObj._total;
-
-        if (!tempObj[this.object]) this.dataEnded = true;
-        else if (typeof this.MaxOffset === 'undefined') {
-            if (tempObj[this.object].length < 90) this.dataEnded = true;
-        } else {
-            if (this.data.length >= this.MaxOffset) this.dataEnded = true;
-        }
-    },
-    empty_str: function() {
-        return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
-    },
-    setTODialog: function() {
-        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_LIVE_DIS);
-    },
-    addCell: function(cell) {
-        this.addCellTemp(cell);
-    },
-    check_offset: function() {
-        if ((this.offset >= 900) ||
-            ((typeof this.MaxOffset !== 'undefined') &&
-                this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset)) this.dataEnded = true;
-    },
-    addCellTemp: function(cell) {
-        if (!this.idObject[cell.channel._id]) {
-
-            this.itemsCount++;
-            this.idObject[cell.channel._id] = 1;
-
-            this.row.appendChild(
-                Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    ScreensObj_LiveCellArray(cell),
-                    this.screen
-                )
-            );
-
-            this.coloumn_id++;
-        }
-    },
-    key_play: function() {
-        if (this.itemsCount) {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-            Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
-        }
-    }
-};
 
 function ScreensObj_InitLive() {
     ScreenObj[Main_Live] = Screens_assign({
@@ -856,77 +1156,6 @@ function ScreensObj_InitFeatured() {
     ScreenObj[Main_Featured].Set_Scroll();
 }
 
-var Base_Clip_obj = {
-    HeaderQuatity: 2,
-    ItemsLimit: Main_ItemsLimitVideo,
-    TopRowCreated: false,
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Screens_addFocusVideo,
-    rowClass: 'animate_height_transition',
-    thumbclass: 'stream_thumbnail_live_holder',
-    histPosXName: 'HistoryClip_histPosX',
-    screenType: 2,
-    cursor: null,
-    object: 'clips',
-    period: ['day', 'week', 'month', 'all'],
-    img_404: IMG_404_VOD,
-    empty_str: function() {
-        return STR_NO + STR_SPACE + STR_CLIPS;
-    },
-    setTODialog: function() {
-        Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
-        Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
-    },
-    HasSwitches: true,
-    SwitchesIcons: ['history', 'play-1'],
-    addSwitches: function() {
-        ScreensObj_addSwitches(
-            [
-                STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
-                STR_SPACE + STR_SPACE + STR_PLAY_ALL
-            ],
-            this.screen
-        );
-    },
-    setMax: function(tempObj) {
-        this.cursor = tempObj._cursor;
-        if (this.cursor === '') this.dataEnded = true;
-    },
-    key_play: function() {
-        if (this.posY === -1) {
-            if (!this.loadingData) {
-                if (!this.posX) Screens_PeriodStart(this.screen);
-                else {
-                    PlayClip_All = true;
-                    Screens_removeFocusFollow(this.screen);
-                    this.posX = 0;
-                    this.posY = 0;
-                    Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
-                }
-            }
-        } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
-    },
-    Cells: [],
-    addCell: function(cell) {
-        if (!this.idObject[cell.tracking_id]) {
-            this.itemsCount++;
-            this.idObject[cell.tracking_id] = 1;
-
-            this.row.appendChild(
-                Screens_createCellClip(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    ScreensObj_ClipCellArray(cell),
-                    this.screen
-                )
-            );
-
-            this.coloumn_id++;
-        }
-    }
-};
-
 function ScreensObj_InitClip() {
     ScreenObj[Main_Clip] = Screens_assign({
         ids: Screens_ScreenIds('Clip'),
@@ -1033,71 +1262,6 @@ function ScreensObj_InitAGameClip() {
     ScreenObj[Main_AGameClip] = Screens_assign(ScreenObj[Main_AGameClip], Base_Clip_obj);
     ScreenObj[Main_AGameClip].Set_Scroll();
 }
-
-var Base_Game_obj = {
-    HeaderQuatity: 2,
-    thumbclass: 'stream_thumbnail_game_holder',
-    ItemsReloadLimit: Main_ItemsReloadLimitGame,
-    ItemsLimit: Main_ItemsLimitGame,
-    rowClass: 'animate_height_transition_games',
-    ColoumnsCount: Main_ColoumnsCountGame,
-    addFocus: Screens_addFocusVideo,
-    img_404: IMG_404_GAME,
-    screenType: 3,
-    empty_str: function() {
-        return STR_NO + STR_SPACE + STR_LIVE_GAMES;
-    },
-    setTODialog: Screens_ThumbOptionHideSpecial,
-    key_play: function() {
-        Main_removeFocus(this.posY + '_' + this.posX, this.ids);
-
-        Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-        Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
-        Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
-
-        Main_removeEventListener("keydown", this.key_fun);
-        Main_values.Main_BeforeAgame = this.screen;
-        Main_values.Main_Go = Main_aGame;
-        Main_values.Main_BeforeAgameisSet = true;
-
-        Main_addFocusVideoOffset = 0;
-        Main_removeEventListener("keydown", this.key_fun);
-        Main_HideElementWithEle(this.ScrollDoc);
-
-        Main_SwitchScreen();
-    },
-    setMax: function(tempObj) {
-
-        this.MaxOffset = tempObj._total;
-        if (this.data.length >= this.MaxOffset) this.dataEnded = true;
-
-    },
-    addCell: function(cell) {
-        var hasLive = this.isLive || this.screen === Main_games;
-        var game = hasLive ? cell.game : cell;
-        if (!this.idObject[game._id]) {
-
-            this.itemsCount++;
-            this.idObject[game._id] = 1;
-
-            this.row.appendChild(
-                Screens_createCellGame(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [game.box.template.replace("{width}x{height}", Main_GameSize),
-                    game.name,
-                    hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                        Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
-                    game._id
-                    ],
-                    this.screen
-                )
-            );
-
-            this.coloumn_id++;
-        }
-    }
-};
 
 function ScreensObj_InitGame() {
     ScreenObj[Main_games] = Screens_assign({
@@ -1214,64 +1378,6 @@ function ScreensObj_InitSearchGames() {
     ScreenObj[Main_SearchGames].Set_Scroll();
 }
 
-var Base_Channel_obj = {
-    ItemsLimit: Main_ItemsLimitChannel,
-    ColoumnsCount: Main_ColoumnsCountChannel,
-    addFocus: Screens_addFocusChannel,
-    ItemsReloadLimit: Main_ItemsReloadLimitChannel,
-    thumbclass: 'stream_thumbnail_channel_holder',
-    rowClass: 'animate_height_transition_channel',
-    screenType: 4,
-    img_404: IMG_404_LOGO,
-    setMax: function(tempObj) {
-        this.MaxOffset = tempObj._total;
-        if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
-    },
-    setTODialog: Screens_ThumbOptionHideSpecial,
-    empty_str: function() {
-        return STR_NO + STR_SPACE + STR_USER_CHANNEL;
-    },
-    addCellTemp: function(cell) {
-        if (!this.idObject[cell._id]) {
-
-            this.itemsCount++;
-            this.idObject[cell._id] = 1;
-
-            this.row.appendChild(
-                Screens_createCellChannel(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
-                    this.screen
-                )
-            );
-
-            this.coloumn_id++;
-        }
-    },
-    base_key_play: function(go_screen, IsFollowing) {
-        if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
-
-        Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-
-        Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-        Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-        Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-        Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-        //console.log(Main_values.Main_selectedChannel);
-        //console.log(Main_values.Main_selectedChannel_id);
-
-        Main_removeEventListener("keydown", this.key_fun);
-        Main_values.Main_BeforeChannel = go_screen;
-        Main_values.Main_Go = Main_ChannelContent;
-        Main_values.Main_BeforeChannelisSet = true;
-        AddCode_IsFollowing = IsFollowing;
-        ChannelContent_UserChannels = IsFollowing;
-        Screens_exit(this.screen);
-        Main_SwitchScreen();
-    },
-};
-
 function ScreensObj_InitUserChannels() {
     ScreenObj[Main_UserChannels] = Screens_assign({
         HeaderQuatity: 2,
@@ -1349,103 +1455,6 @@ function ScreensObj_InitSearchChannels() {
     ScreenObj[Main_SearchChannels].visiblerows = 5;
     ScreenObj[Main_SearchChannels].Set_Scroll();
 }
-
-var Base_History_obj = {
-    ItemsReloadLimit: Main_ItemsReloadLimitVideo,
-    ItemsLimit: Main_ItemsLimitVideo,
-    ColoumnsCount: Main_ColoumnsCountVideo,
-    addFocus: Screens_addFocusVideo,
-    rowClass: 'animate_height_transition',
-    thumbclass: 'stream_thumbnail_live_holder',
-    isHistory: true,
-    streamerID: {},
-    HasSwitches: true,
-    key_pgDown: Main_UserLive,
-    key_pgUp: Main_UserChannels,
-    histPosY: 0,
-    histPosXTemp: [0, 0, 0],
-    sorting: [],
-    sortingValues: [
-        ['date', 0],
-        ['date', 1],
-        ['name', 1],
-        ['name', 0],
-        ['game', 1],
-        ['game', 0],
-        ['views', 0],
-        ['views', 1],
-        ['created_at', 0],
-        ['created_at', 1]
-    ],
-    sortingPos: 0,
-    Upsorting: function() {
-        this.sorting = [
-            STR_NEWEST,
-            STR_OLDEST,
-            STR_NAME_A_Z,
-            STR_NAME_Z_A,
-            STR_GAME_A_Z,
-            STR_GAME_Z_A,
-            STR_VIWES_MOST,
-            STR_VIWES_LOWEST,
-            STR_CREATED_NEWEST,
-            STR_CREATED_OLDEST
-        ];
-    },
-    histEna: [],
-    histEnaPos: 0,
-    UpEna: function() {
-        this.histEna = [
-            STR_YES,
-            STR_NO
-        ];
-    },
-    histArrays: [],
-    UpArrays: function() {
-        this.histArrays = [
-            this.sorting,
-            this.histEna,
-            [STR_PRESS_ENTER_D]
-        ];
-    },
-    set_url: empty_fun,
-    empty_str: function() {
-        return STR_NO + STR_SPACE + STR_HISTORY;
-    },
-    history_concatenate: function() {
-        this.streamerID = {};
-        this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
-        Main_History_Sort(this.data, this.sortingValues[this.histPosX[0]][0], this.sortingValues[this.histPosX[0]][1]);
-        this.dataEnded = true;
-        this.loadDataSuccess();
-        this.loadingData = false;
-    },
-    history_exit: function() {
-        if (this.status) {
-            Screens_removeFocusFollow(this.screen);
-            this.posY = 0;
-            this.posX = 0;
-            Main_AddClass(this.ids[0] + '0_' + this.posX, Main_classThumb);
-        }
-        Main_removeEventListener("keydown", this.key_fun);
-        Main_HideElementWithEle(this.ScrollDoc);
-    },
-    sethistMainDialog: function() {
-        this.Upsorting();
-        this.UpEna();
-        this.UpArrays();
-
-        Screens_histSetArrow(this.screen);
-
-        Main_textContent(
-            'dialog_hist_val_1',
-            this.histArrays[1][this.histPosX[1]]
-        );
-        Main_getElementById("dialog_hist_left_1").style.opacity = "0";
-        Main_getElementById("dialog_hist_right_1").style.opacity = "0";
-        this.histPosXTemp = Main_Slice(this.histPosX);
-    }
-};
 
 function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive] = Screens_assign({

@@ -59,6 +59,9 @@ var Main_HistoryLive = 22;
 var Main_HistoryVod = 23;
 var Main_HistoryClip = 24;
 
+var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
+var Main_HistoryPos = 0;
+
 var Main_GoBefore = '';
 var Main_values = {
     "Main_Go": 1,
@@ -272,6 +275,11 @@ function Main_loadTranslations(language) {
 
         Main_Log("language is " + language);
         DefaultLang();
+
+        //When running locally from a browser overwrite AddCode_redirect_uri to be able to add authorization keys
+        if (!Main_IsOn_OSInterface && !Main_A_includes_B(window.location.href, AddCode_redirect_uri)) {
+            AddCode_redirect_uri = window.location.href.split('?code')[0];
+        }
 
         if (Main_A_includes_B(window.location.href, 'code')) processCode(window.location.href);
 

@@ -249,8 +249,6 @@ function Play_PreStart() {
         [Main_Authorization, null]
     ];
 
-    Base_obj.Headers = Main_Headers;
-
     Play_base_back_headers = JSON.stringify(
         [
             [clientIdHeader, Main_Headers_Priv[0][1]]

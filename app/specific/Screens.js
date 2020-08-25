@@ -46,6 +46,8 @@ var firebaseConfig = {
 
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
+    ScreensObj_Vars();
+
     //Live screens
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
@@ -453,7 +455,7 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
 
 function Screens_HttpResultStatus(resultObj, key) {
     if (resultObj.status === 200) {
-        
+
         //console.log(resultObj.responseText);
         Screens_concatenate(
             JSON.parse(resultObj.responseText),
