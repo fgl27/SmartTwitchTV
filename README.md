@@ -26,7 +26,9 @@ This is an web application designed to watch Twitch broadcasts on SmartTV's , a 
 
 The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
 
-This project is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history
+This project is the main project but originally this is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history.
+
+Because Samsung Tizen OS is very limited not all features of the Android project can be ported to Samsung, but from time to time I will port the features from the Android version to the Samsung version.
 
 ### About this fork
 

@@ -122,3 +122,8 @@ TODO list
 * The main `README.md` can always be improved
 * as thing change on the project revise the information there
 
+### Port the project to Samsung
+
+* Today this is the main SmartTV Twitch project any changes done here needed to be ported to The Samsung version [smarttv-twitch](https://github.com/fgl27/smarttv-twitch)
+* Samsung Tizen OS is very limited not all features of the Android project can be ported
+
