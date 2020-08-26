@@ -402,7 +402,7 @@ function Play_EndCheckPreview(PlayVodClip) {
 function Play_showEndDialog(PlayVodClip) {
     Play_EndCheckPreview(PlayVodClip);
 
-    Main_ShowElement('dialog_end_stream');
+    Main_ShowElementWithEle(Play_EndDialogElem);
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
     UserLiveFeed_PreventHide = true;
@@ -421,13 +421,13 @@ function Play_showEndDialog(PlayVodClip) {
 }
 
 function Play_HideEndDialog() {
-    Main_HideElement('dialog_end_stream');
+    Main_HideElementWithEle(Play_EndDialogElem);
     Play_EndTextClear();
     Play_EndIconsResetFocus();
 }
 
 function Play_isEndDialogVisible() {
-    return Main_isElementShowing('dialog_end_stream');
+    return Main_isElementShowingWithEle(Play_EndDialogElem);
 }
 
 function Play_EndIconsResetFocus() {
@@ -1256,8 +1256,8 @@ function Play_handleKeyDown(e) {
                     !PlayExtra_PicturePicture) {
                     Play_KeyChatPosChage();
                 } else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
+                    Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
@@ -1287,8 +1287,8 @@ function Play_handleKeyDown(e) {
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
                 } else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
+                    Play_clearHidePanel();
                     Play_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();

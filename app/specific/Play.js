@@ -47,6 +47,8 @@ var Play_Multi_Offset = 0;
 var Play_DurationSeconds = 0;
 var Play_seek_previews;
 var Play_seek_previews_img;
+var Play_EndDialogElem;
+var Play_MultiDialogElem;
 
 var Play_streamInfoTimerId = null;
 
@@ -178,12 +180,14 @@ var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
 //Variable initialization end
 
 function Play_PreStart() {
-    Play_seek_previews = Main_getElementById("seek_previews");
+    Play_seek_previews = Main_getElementById('seek_previews');
     Play_seek_previews_img = new Image();
-    Play_chat_container = Main_getElementById("chat_container0");
-    Play_ProgresBarrElm = Main_getElementById("inner_progress_bar");
-    Play_ProgresBarrBufferElm = Main_getElementById("inner_progress_bar_buffer");
-    Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
+    Play_chat_container = Main_getElementById('chat_container0');
+    Play_ProgresBarrElm = Main_getElementById('inner_progress_bar');
+    Play_ProgresBarrBufferElm = Main_getElementById('inner_progress_bar_buffer');
+    Play_PanneInfoDoclId = Main_getElementById('scene_channel_panel');
+    Play_EndDialogElem = Main_getElementById('dialog_end_stream');
+    Play_MultiDialogElem = Main_getElementById('dialog_multi');
 
     Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
     Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);

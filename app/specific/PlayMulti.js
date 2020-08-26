@@ -694,33 +694,33 @@ function Play_MultiRemoveFocus() {
 }
 
 function Play_ShowMultiDialog() {
-    var doc = Main_getElementById('dialog_multi');
+
     if (Play_Multi_MainBig) {
         Main_HideElement('stream_dialog_multi_4');
         Main_ShowElement('stream_dialog_multi_big');
         //doc.style.width = '97%';
-        doc.style.setProperty('width', '97%', 'important');
-        doc.style.left = '1.5%';
+        Play_MultiDialogElem.style.setProperty('width', '97%', 'important');
+        Play_MultiDialogElem.style.left = '1.5%';
     } else {
         Main_HideElement('stream_dialog_multi_big');
         Main_ShowElement('stream_dialog_multi_4');
-        doc.style.width = '';
-        doc.style.left = '';
+        Play_MultiDialogElem.style.width = '';
+        Play_MultiDialogElem.style.left = '';
     }
 
-    Main_ShowElementWithEle(doc);
+    Main_ShowElementWithEle(Play_MultiDialogElem);
 }
 
 function Play_HideMultiDialog(PreventcleanQuailities) {
     //return;
-    Main_HideElement('dialog_multi');
+    Main_HideElementWithEle(Play_MultiDialogElem);
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
     if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
 }
 
 function Play_MultiDialogVisible() {
-    return Main_isElementShowing('dialog_multi');
+    return Main_isElementShowingWithEle(Play_MultiDialogElem);
 }
 
 function Play_clearHideMultiDialog() {

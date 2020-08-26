@@ -677,7 +677,6 @@ function PlayClip_handleKeyDown(e) {
             case KEY_LEFT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, -1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, Play_DurationSeconds);
@@ -689,6 +688,7 @@ function PlayClip_handleKeyDown(e) {
                             else PlayClip_EnterPos++;
                         }
                     }
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
@@ -701,7 +701,6 @@ function PlayClip_handleKeyDown(e) {
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
                 else if (Play_isPanelShown()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, 1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, Play_DurationSeconds);
@@ -713,6 +712,7 @@ function PlayClip_handleKeyDown(e) {
                             else PlayClip_EnterPos--;
                         }
                     }
+                    Play_clearHidePanel();
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();

@@ -987,12 +987,12 @@ function PlayVod_handleKeyDown(e) {
             case KEY_LEFT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, Play_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
+                    Play_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
@@ -1011,12 +1011,12 @@ function PlayVod_handleKeyDown(e) {
             case KEY_RIGHT:
                 if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
                 else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
-                    Play_clearHidePanel();
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, Play_DurationSeconds);
                         PlayVod_ProgressBaroffset = 2500;
                     }
+                    Play_clearHidePanel();
                     PlayVod_setHidePanel();
                 } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
