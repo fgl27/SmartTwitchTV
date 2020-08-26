@@ -9364,6 +9364,7 @@
 
         } catch (e) {
             console.log("Main_Startfirebase e " + e);
+            skipfirebase = true;
         }
     }
 
@@ -11293,9 +11294,7 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
-                    else if (Play_isPanelShown()) {
-                        Play_clearHidePanel();
+                    if (Play_isPanelShowing()) {
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, -1);
                         else if (!PlayVod_PanelY) {
                             PlayVod_jumpStart(-1, Play_DurationSeconds);
@@ -11307,7 +11306,10 @@
                                 else PlayClip_EnterPos++;
                             }
                         }
+                        Play_clearHidePanel();
                         PlayClip_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                        UserLiveFeed_KeyRightLeft(-1);
                     } else if (Play_isEndDialogVisible()) {
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
@@ -11317,9 +11319,7 @@
                     } else PlayClip_FastBackForward(-1);
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-                    else if (Play_isPanelShown()) {
-                        Play_clearHidePanel();
+                    if (Play_isPanelShowing()) {
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, 1);
                         else if (!PlayVod_PanelY) {
                             PlayVod_jumpStart(1, Play_DurationSeconds);
@@ -11331,7 +11331,10 @@
                                 else PlayClip_EnterPos--;
                             }
                         }
+                        Play_clearHidePanel();
                         PlayClip_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                        UserLiveFeed_KeyRightLeft(1);
                     } else if (Play_isEndDialogVisible()) {
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
@@ -11341,34 +11344,35 @@
                     } else PlayClip_FastBackForward(1);
                     break;
                 case KEY_UP:
-                    if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
-                        Play_EndTextClear();
-                        Main_removeEventListener("keydown", PlayClip_handleKeyDown);
-                        Main_addEventListener("keyup", Play_handleKeyUp);
-                        Play_EndUpclear = false;
-                        Play_EndUpclearCalback = PlayClip_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
-                    } else if (Play_isPanelShown()) {
+                    if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY--;
                             Play_BottonIconsFocus();
                         } else Play_BottomUpDown(3, 1);
                         PlayClip_setHidePanel();
+                    } else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
+                        Play_EndTextClear();
+                        Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+                        Main_addEventListener("keyup", Play_handleKeyUp);
+                        Play_EndUpclear = false;
+                        Play_EndUpclearCalback = PlayClip_handleKeyDown;
+                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                     else PlayClip_showPanel();
                     break;
                 case KEY_DOWN:
-                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
-                    else if (Play_isPanelShown()) {
+                    if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
                             Play_BottonIconsFocus();
                         } else Play_BottomUpDown(3, -1);
                         PlayClip_setHidePanel();
+                    } else if (Play_isEndDialogVisible()) {
+                        Play_EndDialogUpDown(1);
                     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                    else if (Play_isFullScreen && !Play_isPanelShown()) Play_controls[Play_controlsChat].enterKey(3);
+                    else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(3);
                     else PlayClip_showPanel();
                     break;
                 case KEY_ENTER:
@@ -11383,7 +11387,7 @@
                                 Play_OpenLiveStream(PlayClip_handleKeyDown);
                             }
                         }
-                    } else if (Play_isPanelShown()) {
+                    } else if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (!PlayVod_PanelY) {
                             if (PlayVod_IsJumping) PlayVod_jump();
@@ -11419,7 +11423,7 @@
                             Play_showExitDialog();
                         }
 
-                    } else if (Play_isPanelShown()) PlayClip_hidePanel();
+                    } else if (Play_isPanelShowing()) PlayClip_hidePanel();
                     else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
                         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
                             UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
@@ -11447,7 +11451,7 @@
                     break;
                 case KEY_REFRESH:
                     if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                    else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
+                    else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
                         !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                     break;
                 case KEY_CHAT:
@@ -11483,7 +11487,7 @@
     }
 
     function PlayClip_FastBackForward(position) {
-        if (!Play_isPanelShown()) PlayClip_showPanel();
+        if (!Play_isPanelShowing()) PlayClip_showPanel();
         Play_clearHidePanel();
         PlayVod_PanelY = 0;
         Play_BottonIconsFocus();
@@ -11896,7 +11900,7 @@
     function Play_showEndDialog(PlayVodClip) {
         Play_EndCheckPreview(PlayVodClip);
 
-        Main_ShowElement('dialog_end_stream');
+        Main_ShowElementWithEle(Play_EndDialogElem);
         UserLiveFeed_SetHoldUp();
         Play_EndFocus = true;
         UserLiveFeed_PreventHide = true;
@@ -11915,13 +11919,13 @@
     }
 
     function Play_HideEndDialog() {
-        Main_HideElement('dialog_end_stream');
+        Main_HideElementWithEle(Play_EndDialogElem);
         Play_EndTextClear();
         Play_EndIconsResetFocus();
     }
 
     function Play_isEndDialogVisible() {
-        return Main_isElementShowing('dialog_end_stream');
+        return Main_isElementShowingWithEle(Play_EndDialogElem);
     }
 
     function Play_EndIconsResetFocus() {
@@ -12493,7 +12497,7 @@
 
             }
 
-            if (Play_isPanelShown()) {
+            if (Play_isPanelShowing()) {
                 if (PlayVodClip === 1) Play_hidePanel();
                 else if (PlayVodClip === 2) PlayVod_hidePanel();
                 else if (PlayVodClip === 3) PlayClip_hidePanel();
@@ -12530,7 +12534,7 @@
             if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
                 UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
             else UserLiveFeed_Hide();
-        } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+        } else if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
             if (is_vod) PlayVod_hidePanel();
             else Play_hidePanel();
         } else {
@@ -12740,20 +12744,20 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                    if (Play_isPanelShowing()) {
+                        if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
+                        Play_clearHidePanel();
+                        Play_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                     else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
                         Play_MultiDialogPos--;
                         if (Play_MultiDialogPos < 0) Play_MultiDialogPos = 3;
                         Play_MultiAddFocus();
-                    } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(-1);
-                    else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
+                    } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
+                    else if (Play_isFullScreen && Play_isChatShown() &&
                         !PlayExtra_PicturePicture) {
                         Play_KeyChatPosChage();
-                    } else if (Play_isPanelShown()) {
-                        Play_clearHidePanel();
-                        if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
-                        Play_setHidePanel();
                     } else if (Play_isEndDialogVisible()) {
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
@@ -12771,20 +12775,20 @@
                     else Play_showPanel();
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                    if (Play_isPanelShowing()) {
+                        if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
+                        Play_clearHidePanel();
+                        Play_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
                     else if (Play_MultiDialogVisible()) {
                         Play_MultiRemoveFocus();
                         Play_MultiDialogPos++;
                         if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                         Play_MultiAddFocus();
-                    } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(1);
-                    else if (Play_isFullScreen && Play_isChatShown() && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                    } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
+                    else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() &&
                         (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                         Play_KeyChatSizeChage();
-                    } else if (Play_isPanelShown()) {
-                        Play_clearHidePanel();
-                        if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
-                        Play_setHidePanel();
                     } else if (Play_isEndDialogVisible()) {
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
@@ -12801,7 +12805,7 @@
                     else Play_showPanel();
                     break;
                 case KEY_UP:
-                    if (Play_isPanelShown()) {
+                    if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY--;
@@ -12830,7 +12834,7 @@
                     }
                     break;
                 case KEY_DOWN:
-                    if (Play_isPanelShown()) {
+                    if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
@@ -12879,7 +12883,7 @@
                                 Play_OpenLiveFeed();
                             }
                         }
-                    } else if (Play_isPanelShown()) {
+                    } else if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY === 1) {
                             if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
@@ -13932,29 +13936,6 @@
 
     }
 
-    function Play_IconsAddFocus() {
-        Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
-
-        Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
-
-        if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
-
-            Play_controls[Play_controlsChat].button_text.style.opacity = "1";
-
-        } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
-
-            Play_controls[Play_controlsChat].button_text.style.opacity = "0";
-
-        }
-    }
-
-    function Play_IconsRemoveFocus() {
-        Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
-        Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
-        //in case chat is disable and the warning is showing because some chat option was selected
-        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
-    }
-
     function Play_KeyChatSizeChage() {
         Play_ChatSizeValue++;
         if (Play_ChatSizeValue > Play_MaxChatSizeValue) {
@@ -13998,10 +13979,41 @@
         }
     }
 
+    function Play_IconsAddFocus() {
+        Main_AddClassWitEle(
+            Play_controls[Play_Panelcounter].button,
+            Play_BottonIcons_Focus_Class
+        );
+
+        Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
+
+        if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
+
+            Play_controls[Play_controlsChat].button_text.style.opacity = "1";
+
+        } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
+
+            Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+
+        }
+    }
+
+    function Play_IconsRemoveFocus() {
+        Main_RemoveClassWithEle(
+            Play_controls[Play_Panelcounter].button,
+            Play_BottonIcons_Focus_Class
+        );
+        Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
+        //in case chat is disable and the warning is showing because some chat option was selected
+        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+    }
+
     function Play_BottomLeftRigt(PlayVodClip, adder, skipRemoveFocus) {
 
         if (!skipRemoveFocus) Play_IconsRemoveFocus();
+
         Play_Panelcounter += adder;
+
         if (Play_Panelcounter > Play_controlsSize) Play_Panelcounter = 0;
         else if (Play_Panelcounter < 0) Play_Panelcounter = Play_controlsSize;
 
@@ -14771,6 +14783,8 @@
     var Play_DurationSeconds = 0;
     var Play_seek_previews;
     var Play_seek_previews_img;
+    var Play_EndDialogElem;
+    var Play_MultiDialogElem;
 
     var Play_streamInfoTimerId = null;
 
@@ -14902,12 +14916,14 @@
     //Variable initialization end
 
     function Play_PreStart() {
-        Play_seek_previews = Main_getElementById("seek_previews");
+        Play_seek_previews = Main_getElementById('seek_previews');
         Play_seek_previews_img = new Image();
-        Play_chat_container = Main_getElementById("chat_container0");
-        Play_ProgresBarrElm = Main_getElementById("inner_progress_bar");
-        Play_ProgresBarrBufferElm = Main_getElementById("inner_progress_bar_buffer");
-        Play_PanneInfoDoclId = Main_getElementById("scene_channel_panel");
+        Play_chat_container = Main_getElementById('chat_container0');
+        Play_ProgresBarrElm = Main_getElementById('inner_progress_bar');
+        Play_ProgresBarrBufferElm = Main_getElementById('inner_progress_bar_buffer');
+        Play_PanneInfoDoclId = Main_getElementById('scene_channel_panel');
+        Play_EndDialogElem = Main_getElementById('dialog_end_stream');
+        Play_MultiDialogElem = Main_getElementById('dialog_multi');
 
         Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
         Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);
@@ -16185,7 +16201,7 @@
         return Main_isElementShowing('play_dialog_exit');
     }
 
-    function Play_isPanelShown() {
+    function Play_isPanelShowing() {
         return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
     }
 
@@ -17528,33 +17544,33 @@
     }
 
     function Play_ShowMultiDialog() {
-        var doc = Main_getElementById('dialog_multi');
+
         if (Play_Multi_MainBig) {
             Main_HideElement('stream_dialog_multi_4');
             Main_ShowElement('stream_dialog_multi_big');
             //doc.style.width = '97%';
-            doc.style.setProperty('width', '97%', 'important');
-            doc.style.left = '1.5%';
+            Play_MultiDialogElem.style.setProperty('width', '97%', 'important');
+            Play_MultiDialogElem.style.left = '1.5%';
         } else {
             Main_HideElement('stream_dialog_multi_big');
             Main_ShowElement('stream_dialog_multi_4');
-            doc.style.width = '';
-            doc.style.left = '';
+            Play_MultiDialogElem.style.width = '';
+            Play_MultiDialogElem.style.left = '';
         }
 
-        Main_ShowElementWithEle(doc);
+        Main_ShowElementWithEle(Play_MultiDialogElem);
     }
 
     function Play_HideMultiDialog(PreventcleanQuailities) {
         //return;
-        Main_HideElement('dialog_multi');
+        Main_HideElementWithEle(Play_MultiDialogElem);
         Play_clearHideMultiDialog();
         Play_MultiRemoveFocus();
         if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
     }
 
     function Play_MultiDialogVisible() {
-        return Main_isElementShowing('dialog_multi');
+        return Main_isElementShowingWithEle(Play_MultiDialogElem);
     }
 
     function Play_clearHideMultiDialog() {
@@ -18557,15 +18573,16 @@
         } else {
             switch (e.keyCode) {
                 case KEY_LEFT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
-                    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
-                        Play_clearHidePanel();
+                    if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
                         else if (!PlayVod_PanelY) {
                             PlayVod_jumpStart(-1, Play_DurationSeconds);
                             PlayVod_ProgressBaroffset = 2500;
                         }
+                        Play_clearHidePanel();
                         PlayVod_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                        UserLiveFeed_KeyRightLeft(-1);
                     } else if (Play_isVodDialogVisible()) {
                         PlayVod_IconsRemoveFocus();
                         if (PlayVod_VodPositions) PlayVod_VodPositions--;
@@ -18581,15 +18598,16 @@
                     } else PlayVod_FastBackForward(-1);
                     break;
                 case KEY_RIGHT:
-                    if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-                    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
-                        Play_clearHidePanel();
+                    if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                         if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                         else if (!PlayVod_PanelY) {
                             PlayVod_jumpStart(1, Play_DurationSeconds);
                             PlayVod_ProgressBaroffset = 2500;
                         }
+                        Play_clearHidePanel();
                         PlayVod_setHidePanel();
+                    } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                        UserLiveFeed_KeyRightLeft(1);
                     } else if (Play_isVodDialogVisible()) {
                         PlayVod_IconsRemoveFocus();
                         if (PlayVod_VodPositions) PlayVod_VodPositions--;
@@ -18605,14 +18623,7 @@
                     } else PlayVod_FastBackForward(1);
                     break;
                 case KEY_UP:
-                    if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
-                        Play_EndTextClear();
-                        Main_removeEventListener("keydown", PlayVod_handleKeyDown);
-                        Main_addEventListener("keyup", Play_handleKeyUp);
-                        Play_EndUpclear = false;
-                        Play_EndUpclearCalback = PlayVod_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
-                    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                    if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
 
                         if (!PlayVod_PanelY) {
@@ -18632,12 +18643,18 @@
                         }
 
                         PlayVod_setHidePanel();
+                    } else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
+                        Play_EndTextClear();
+                        Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+                        Main_addEventListener("keyup", Play_handleKeyUp);
+                        Play_EndUpclear = false;
+                        Play_EndUpclearCalback = PlayVod_handleKeyDown;
+                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                     } else if (!UserLiveFeed_isFeedShow() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
                     else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_DOWN:
-                    if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
-                    else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                    if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                         Play_clearHidePanel();
                         if (PlayVod_PanelY < 2) {
                             PlayVod_PanelY++;
@@ -18645,8 +18662,10 @@
                             PlayVod_previews_hide();
                         } else Play_BottomUpDown(2, -1);
                         PlayVod_setHidePanel();
+                    } else if (Play_isEndDialogVisible()) {
+                        Play_EndDialogUpDown(1);
                     } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                    else if (Play_isFullScreen && !Play_isPanelShown()) Play_controls[Play_controlsChat].enterKey(2);
+                    else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(2);
                     else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                     break;
                 case KEY_ENTER:
@@ -18662,7 +18681,7 @@
                                 Play_OpenLiveStream(PlayVod_handleKeyDown);
                             }
                         }
-                    } else if (Play_isPanelShown()) {
+                    } else if (Play_isPanelShowing()) {
                         Play_clearHidePanel();
                         if (!PlayVod_PanelY) {
                             if (PlayVod_IsJumping) PlayVod_jump();
@@ -18697,7 +18716,7 @@
                     break;
                 case KEY_REFRESH:
                     if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                    else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
+                    else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
                         !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                     break;
                 case KEY_CHAT:
@@ -18723,7 +18742,7 @@
                     break;
                 case KEY_MEDIA_NEXT:
                 case KEY_MEDIA_PREVIOUS:
-                    if (Play_isPanelShown()) PlayVod_hidePanel();
+                    if (Play_isPanelShowing()) PlayVod_hidePanel();
                     else PlayVod_showPanel(true);
                     break;
                 default:
@@ -18733,7 +18752,7 @@
     }
 
     function PlayVod_FastBackForward(position) {
-        if (!Play_isPanelShown()) PlayVod_showPanel(true);
+        if (!Play_isPanelShowing()) PlayVod_showPanel(true);
         Play_clearHidePanel();
         PlayVod_PanelY = 0;
         Play_BottonIconsFocus();
@@ -19055,7 +19074,7 @@
                         Play_data.data[3] = PlayVod_ChaptersArray[len].game;
                         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
-                        if (!Play_isPanelShown() || Play_Panelcounter !== Play_controlsChapters) {
+                        if (!Play_isPanelShowing() || Play_Panelcounter !== Play_controlsChapters) {
                             Play_controls[Play_controlsChapters].defaultValue = len;
                             Play_controls[Play_controlsChapters].setLable();
                             Play_controls[Play_controlsChapters].bottomArrows();
