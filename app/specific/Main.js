@@ -2453,6 +2453,7 @@ function Main_Startfirebase() {
 
     } catch (e) {
         console.log("Main_Startfirebase e " + e);
+        skipfirebase = true;
     }
 }
 
