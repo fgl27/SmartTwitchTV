@@ -993,7 +993,7 @@ function PlayVod_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                     UserLiveFeed_KeyRightLeft(-1);
                 } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
@@ -1018,7 +1018,7 @@ function PlayVod_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                     UserLiveFeed_KeyRightLeft(1);
                 } else if (Play_isVodDialogVisible()) {
                     PlayVod_IconsRemoveFocus();
@@ -1055,14 +1055,14 @@ function PlayVod_handleKeyDown(e) {
                     }
 
                     PlayVod_setHidePanel();
-                } else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
+                } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
                     Main_removeEventListener("keydown", PlayVod_handleKeyDown);
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = PlayVod_handleKeyDown;
                     Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
-                } else if (!UserLiveFeed_isFeedShow() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
+                } else if (!UserLiveFeed_isPreviewShowing() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
@@ -1076,7 +1076,7 @@ function PlayVod_handleKeyDown(e) {
                     PlayVod_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndDialogUpDown(1);
-                } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                } else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(2);
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
@@ -1101,7 +1101,7 @@ function PlayVod_handleKeyDown(e) {
                         if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow()) {
+                } else if (UserLiveFeed_isPreviewShowing()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else PlayVod_CheckIfIsLiveStart();
                 }
@@ -1122,13 +1122,13 @@ function PlayVod_handleKeyDown(e) {
                 if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                 break;
             case KEY_1:
-                if (UserLiveFeed_isFeedShow()) {
+                if (UserLiveFeed_isPreviewShowing()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else PlayVod_CheckIfIsLiveStart();
                 }
                 break;
             case KEY_REFRESH:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
                     !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                 break;
@@ -1137,19 +1137,19 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
                 else UserLiveFeed_ShowFeed();
                 break;
             case KEY_PG_DOWN:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
                 else UserLiveFeed_ShowFeed();
                 break;
             case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible()) break;
 
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else Play_controls[Play_controlsChatSide].enterKey();
 
                 break;

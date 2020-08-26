@@ -1533,7 +1533,7 @@ function Main_updateclock() {
 function Main_updateUserFeed() {
     //Main_Log('Main_updateUserFeed');
 
-    if (AddUser_UserIsSet() && !UserLiveFeed_isFeedShow() &&
+    if (AddUser_UserIsSet() && !UserLiveFeed_isPreviewShowing() &&
         !Sidepannel_isShowing() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;

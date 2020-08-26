@@ -1414,7 +1414,7 @@ function Play_showWarningMidleDialog(text, timeout) {
 
     var doc = Main_getElementById('dialog_warning_play_middle');
 
-    if (UserLiveFeed_isFeedShow()) doc.style.marginTop = '90vh';
+    if (UserLiveFeed_isPreviewShowing()) doc.style.marginTop = '90vh';
     else doc.style.marginTop = '50vh';
 
     Main_ShowElementWithEle(doc);

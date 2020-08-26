@@ -96,7 +96,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].dataEnded = false;
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
-    if (UserLiveFeed_isFeedShow()) {
+    if (UserLiveFeed_isPreviewShowing()) {
         UserLiveFeed_obj[pos].div.classList.remove('hide');
     }
 }
@@ -174,7 +174,7 @@ function UserLiveFeedobj_loadDataErrorElse(pos) {
         UserLiveFeed_Showloading(false);
         Main_HideElement('dialog_loading_side_feed');
 
-        if (UserLiveFeed_isFeedShow()) {
+        if (UserLiveFeed_isPreviewShowing()) {
             UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
         }
 
@@ -340,7 +340,7 @@ function UserLiveFeedobj_ShowFeed() {
 
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
-    if (Main_isScene2DocShown() && !UserLiveFeed_isFeedShow()) UserLiveFeed_Show();
+    if (Main_isScene2DocShown() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
     if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
@@ -348,7 +348,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
         if (UserLiveFeed_loadingData[pos]) {
 
-            if (UserLiveFeed_isFeedShow()) {
+            if (UserLiveFeed_isPreviewShowing()) {
                 UserLiveFeed_Showloading(true);
                 UserLiveFeed_obj[pos].div.classList.remove('hide');
             }

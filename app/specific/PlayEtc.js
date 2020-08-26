@@ -1031,7 +1031,7 @@ function Play_KeyReturn(is_vod) {
         }
 
     } else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
-    else if (UserLiveFeed_isFeedShow() && !Play_isEndDialogVisible()) {
+    else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
             UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
         else UserLiveFeed_Hide();
@@ -1249,7 +1249,7 @@ function Play_handleKeyDown(e) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos--;
@@ -1280,7 +1280,7 @@ function Play_handleKeyDown(e) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
                     Play_clearHidePanel();
                     Play_setHidePanel();
-                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos++;
@@ -1324,8 +1324,8 @@ function Play_handleKeyDown(e) {
                         if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
                     }
                     Play_MultiAddFocus();
-                } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
-                else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
+                } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
+                else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
                     Main_removeEventListener("keydown", Play_handleKeyDown);
                     Main_addEventListener("keyup", Play_handleKeyUp);
@@ -1352,7 +1352,7 @@ function Play_handleKeyDown(e) {
                     }
                     Play_MultiAddFocus();
                 } else if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
-                else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (PlayExtra_PicturePicture && !Play_MultiEnable) {
                     if (Play_isFullScreen) {
                         Main_removeEventListener("keydown", Play_handleKeyDown);
@@ -1395,7 +1395,7 @@ function Play_handleKeyDown(e) {
                     var pos = (Play_MultiDialogPos + Play_Multi_Offset) % 4;
                     Main_Set_history('live', Play_MultiArray[pos].data);//save before we change
                     Play_MultiStartPrestart(pos);
-                } else if (UserLiveFeed_isFeedShow()) {
+                } else if (UserLiveFeed_isPreviewShowing()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
@@ -1427,7 +1427,7 @@ function Play_handleKeyDown(e) {
                 if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
                 break;
             case KEY_1:
-                if (UserLiveFeed_isFeedShow()) {
+                if (UserLiveFeed_isPreviewShowing()) {
                     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
@@ -1443,12 +1443,12 @@ function Play_handleKeyDown(e) {
                 Play_controls[Play_controlsChat].enterKey(1);
                 break;
             case KEY_PG_UP:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(-1);
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
                 else UserLiveFeed_ShowFeed();
                 break;
             case KEY_PG_DOWN:
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
                 else UserLiveFeed_ShowFeed();
                 break;
@@ -1456,7 +1456,7 @@ function Play_handleKeyDown(e) {
             case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
 
-                if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
+                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else Play_controls[Play_controlsChatSide].enterKey();
 
                 break;

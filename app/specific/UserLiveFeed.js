@@ -276,7 +276,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
             var feedtypeNotshow = !Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div);
-            //feedShow = UserLiveFeed_isFeedShow();
+            //feedShow = UserLiveFeed_isPreviewShowing();
 
             // if (!feedShow) {
             //     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'opacity_zero');
@@ -353,7 +353,7 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
 
             if (Main_isStoped ||
                 !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
-                ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isFeedShow()) &&
+                ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isPreviewShowing()) &&
                     (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
 
                 if (!Screens_Some_Screen_Is_Refreshing) {
@@ -399,7 +399,7 @@ function UserLiveFeed_GetSize(pos) {
     return UserLiveFeed_itemsCount[pos];
 }
 
-function UserLiveFeed_isFeedShow() {
+function UserLiveFeed_isPreviewShowing() {
     return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
 }
 
@@ -433,7 +433,7 @@ function UserLiveFeed_clearHideFeed() {
 }
 
 function UserLiveFeed_setHideFeed() {
-    if (UserLiveFeed_isFeedShow()) UserLiveFeed_Feedid = Main_setTimeout(UserLiveFeed_Hide, 10000, UserLiveFeed_Feedid);
+    if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_Feedid = Main_setTimeout(UserLiveFeed_Hide, 10000, UserLiveFeed_Feedid);
 }
 
 function UserLiveFeed_FeedRefresh() {
@@ -481,7 +481,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos);
 
     if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
-        if (!total && UserLiveFeed_isFeedShow()) UserLiveFeed_CheckIfIsLiveSTop();
+        if (!total && UserLiveFeed_isPreviewShowing()) UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_ResetFeedId();
         return;
     }
@@ -586,7 +586,7 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
         Settings_Obj_default('show_feed_player') &&
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
-        UserLiveFeed_isFeedShow() && UserLiveFeed_CheckVod()) {
+        UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
 
         var obj = Play_CheckLiveThumb(false, true);
 
@@ -654,7 +654,7 @@ var UserLiveFeed_CheckIfIsLiveResultThumb;
 var UserLiveFeed_PreviewOffset = 0;
 function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && UserLiveFeed_isFeedShow() &&
+    if (!Main_isStoped && UserLiveFeed_isPreviewShowing() &&
         (!Play_isEndDialogVisible() || !Play_EndFocus) &&
         UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
 
