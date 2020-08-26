@@ -675,8 +675,7 @@ function PlayClip_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
-                else if (Play_isPanelShown()) {
+                if (Play_isPanelShown()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, -1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, Play_DurationSeconds);
@@ -690,6 +689,8 @@ function PlayClip_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayClip_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                    UserLiveFeed_KeyRightLeft(-1);
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
@@ -699,8 +700,7 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_FastBackForward(-1);
                 break;
             case KEY_RIGHT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
-                else if (Play_isPanelShown()) {
+                if (Play_isPanelShown()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(3, 1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, Play_DurationSeconds);
@@ -714,6 +714,8 @@ function PlayClip_handleKeyDown(e) {
                     }
                     Play_clearHidePanel();
                     PlayClip_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                    UserLiveFeed_KeyRightLeft(1);
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
@@ -723,32 +725,33 @@ function PlayClip_handleKeyDown(e) {
                 } else PlayClip_FastBackForward(1);
                 break;
             case KEY_UP:
-                if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
-                    Play_EndTextClear();
-                    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
-                    Main_addEventListener("keyup", Play_handleKeyUp);
-                    Play_EndUpclear = false;
-                    Play_EndUpclearCalback = PlayClip_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
-                } else if (Play_isPanelShown()) {
+                if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY--;
                         Play_BottonIconsFocus();
                     } else Play_BottomUpDown(3, 1);
                     PlayClip_setHidePanel();
+                } else if (Play_isEndDialogVisible() || UserLiveFeed_isFeedShow()) {
+                    Play_EndTextClear();
+                    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
+                    Play_EndUpclear = false;
+                    Play_EndUpclearCalback = PlayClip_handleKeyDown;
+                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
                 } else if (!UserLiveFeed_isFeedShow()) UserLiveFeed_ShowFeed();
                 else PlayClip_showPanel();
                 break;
             case KEY_DOWN:
-                if (Play_isEndDialogVisible()) Play_EndDialogUpDown(1);
-                else if (Play_isPanelShown()) {
+                if (Play_isPanelShown()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
                         Play_BottonIconsFocus();
                     } else Play_BottomUpDown(3, -1);
                     PlayClip_setHidePanel();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndDialogUpDown(1);
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
                 else if (Play_isFullScreen && !Play_isPanelShown()) Play_controls[Play_controlsChat].enterKey(3);
                 else PlayClip_showPanel();

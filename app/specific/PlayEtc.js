@@ -1245,20 +1245,20 @@ function Play_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
+                if (Play_isPanelShown()) {
+                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
+                    Play_clearHidePanel();
+                    Play_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(-1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos--;
                     if (Play_MultiDialogPos < 0) Play_MultiDialogPos = 3;
                     Play_MultiAddFocus();
-                } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(-1);
-                else if (Play_isFullScreen && !Play_isPanelShown() && Play_isChatShown() &&
+                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
+                else if (Play_isFullScreen && Play_isChatShown() &&
                     !PlayExtra_PicturePicture) {
                     Play_KeyChatPosChage();
-                } else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
-                    Play_clearHidePanel();
-                    Play_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
@@ -1276,20 +1276,20 @@ function Play_handleKeyDown(e) {
                 else Play_showPanel();
                 break;
             case KEY_RIGHT:
-                if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
+                if (Play_isPanelShown()) {
+                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
+                    Play_clearHidePanel();
+                    Play_setHidePanel();
+                } else if (UserLiveFeed_isFeedShow() && (!Play_EndFocus || !Play_isEndDialogVisible())) UserLiveFeed_KeyRightLeft(1);
                 else if (Play_MultiDialogVisible()) {
                     Play_MultiRemoveFocus();
                     Play_MultiDialogPos++;
                     if (Play_MultiDialogPos > 3) Play_MultiDialogPos = 0;
                     Play_MultiAddFocus();
-                } else if (Play_MultiEnable && !Play_isPanelShown()) Play_MultiEnableKeyRightLeft(1);
-                else if (Play_isFullScreen && Play_isChatShown() && !Play_isPanelShown() && !Play_isEndDialogVisible() &&
+                } else if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
+                else if (Play_isFullScreen && Play_isChatShown() && !Play_isEndDialogVisible() &&
                     (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                     Play_KeyChatSizeChage();
-                } else if (Play_isPanelShown()) {
-                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
-                    Play_clearHidePanel();
-                    Play_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
@@ -2435,29 +2435,6 @@ function Play_MakeControls() {
 
 }
 
-function Play_IconsAddFocus() {
-    Main_AddClassWitEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
-
-    Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
-
-    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
-
-        Play_controls[Play_controlsChat].button_text.style.opacity = "1";
-
-    } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
-
-        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
-
-    }
-}
-
-function Play_IconsRemoveFocus() {
-    Main_RemoveClassWithEle(Play_controls[Play_Panelcounter].button, Play_BottonIcons_Focus_Class);
-    Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
-    //in case chat is disable and the warning is showing because some chat option was selected
-    Play_controls[Play_controlsChat].button_text.style.opacity = "0";
-}
-
 function Play_KeyChatSizeChage() {
     Play_ChatSizeValue++;
     if (Play_ChatSizeValue > Play_MaxChatSizeValue) {
@@ -2501,10 +2478,41 @@ function Play_BottomUpDown(PlayVodClip, adder) {
     }
 }
 
+function Play_IconsAddFocus() {
+    Main_AddClassWitEle(
+        Play_controls[Play_Panelcounter].button,
+        Play_BottonIcons_Focus_Class
+    );
+
+    Play_controls[Play_Panelcounter].button_text.style.opacity = "1";
+
+    if (Play_controls[Play_Panelcounter].isChat && (!Play_isChatShown() || !Play_isFullScreen)) {
+
+        Play_controls[Play_controlsChat].button_text.style.opacity = "1";
+
+    } else if (Play_Panelcounter !== Play_controlsChat && !Play_controls[Play_Panelcounter].isChat) {
+
+        Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+
+    }
+}
+
+function Play_IconsRemoveFocus() {
+    Main_RemoveClassWithEle(
+        Play_controls[Play_Panelcounter].button,
+        Play_BottonIcons_Focus_Class
+    );
+    Play_controls[Play_Panelcounter].button_text.style.opacity = "0";
+    //in case chat is disable and the warning is showing because some chat option was selected
+    Play_controls[Play_controlsChat].button_text.style.opacity = "0";
+}
+
 function Play_BottomLeftRigt(PlayVodClip, adder, skipRemoveFocus) {
 
     if (!skipRemoveFocus) Play_IconsRemoveFocus();
+
     Play_Panelcounter += adder;
+
     if (Play_Panelcounter > Play_controlsSize) Play_Panelcounter = 0;
     else if (Play_Panelcounter < 0) Play_Panelcounter = Play_controlsSize;
 
