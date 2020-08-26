@@ -998,7 +998,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
         }
 
-        if (Play_isPanelShown()) {
+        if (Play_isPanelShowing()) {
             if (PlayVodClip === 1) Play_hidePanel();
             else if (PlayVodClip === 2) PlayVod_hidePanel();
             else if (PlayVodClip === 3) PlayClip_hidePanel();
@@ -1035,7 +1035,7 @@ function Play_KeyReturn(is_vod) {
         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
             UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
         else UserLiveFeed_Hide();
-    } else if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+    } else if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
@@ -1245,7 +1245,7 @@ function Play_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (Play_isPanelShown()) {
+                if (Play_isPanelShowing()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, -1);
                     Play_clearHidePanel();
                     Play_setHidePanel();
@@ -1276,7 +1276,7 @@ function Play_handleKeyDown(e) {
                 else Play_showPanel();
                 break;
             case KEY_RIGHT:
-                if (Play_isPanelShown()) {
+                if (Play_isPanelShowing()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(1, 1);
                     Play_clearHidePanel();
                     Play_setHidePanel();
@@ -1306,7 +1306,7 @@ function Play_handleKeyDown(e) {
                 else Play_showPanel();
                 break;
             case KEY_UP:
-                if (Play_isPanelShown()) {
+                if (Play_isPanelShowing()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY--;
@@ -1335,7 +1335,7 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_DOWN:
-                if (Play_isPanelShown()) {
+                if (Play_isPanelShowing()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
@@ -1384,7 +1384,7 @@ function Play_handleKeyDown(e) {
                             Play_OpenLiveFeed();
                         }
                     }
-                } else if (Play_isPanelShown()) {
+                } else if (Play_isPanelShowing()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY === 1) {
                         if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();

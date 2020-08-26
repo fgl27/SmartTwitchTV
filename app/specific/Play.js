@@ -1457,7 +1457,7 @@ function Play_ExitDialogVisible() {
     return Main_isElementShowing('play_dialog_exit');
 }
 
-function Play_isPanelShown() {
+function Play_isPanelShowing() {
     return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
 }
 

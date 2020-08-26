@@ -985,7 +985,7 @@ function PlayVod_handleKeyDown(e) {
     } else {
         switch (e.keyCode) {
             case KEY_LEFT:
-                if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(-1, Play_DurationSeconds);
@@ -1010,7 +1010,7 @@ function PlayVod_handleKeyDown(e) {
                 } else PlayVod_FastBackForward(-1);
                 break;
             case KEY_RIGHT:
-                if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                     if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
                     else if (!PlayVod_PanelY) {
                         PlayVod_jumpStart(1, Play_DurationSeconds);
@@ -1035,7 +1035,7 @@ function PlayVod_handleKeyDown(e) {
                 } else PlayVod_FastBackForward(1);
                 break;
             case KEY_UP:
-                if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
 
                     if (!PlayVod_PanelY) {
@@ -1066,7 +1066,7 @@ function PlayVod_handleKeyDown(e) {
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_DOWN:
-                if (Play_isPanelShown() && !Play_isVodDialogVisible()) {
+                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
@@ -1077,7 +1077,7 @@ function PlayVod_handleKeyDown(e) {
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndDialogUpDown(1);
                 } else if (UserLiveFeed_isFeedShow()) UserLiveFeed_KeyUpDown(1);
-                else if (Play_isFullScreen && !Play_isPanelShown()) Play_controls[Play_controlsChat].enterKey(2);
+                else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(2);
                 else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
                 break;
             case KEY_ENTER:
@@ -1093,7 +1093,7 @@ function PlayVod_handleKeyDown(e) {
                             Play_OpenLiveStream(PlayVod_handleKeyDown);
                         }
                     }
-                } else if (Play_isPanelShown()) {
+                } else if (Play_isPanelShowing()) {
                     Play_clearHidePanel();
                     if (!PlayVod_PanelY) {
                         if (PlayVod_IsJumping) PlayVod_jump();
@@ -1129,7 +1129,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_REFRESH:
                 if (UserLiveFeed_isFeedShow()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isEndDialogVisible() && !Play_isPanelShown() &&
+                else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
                     !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
                 break;
             case KEY_CHAT:
@@ -1155,7 +1155,7 @@ function PlayVod_handleKeyDown(e) {
                 break;
             case KEY_MEDIA_NEXT:
             case KEY_MEDIA_PREVIOUS:
-                if (Play_isPanelShown()) PlayVod_hidePanel();
+                if (Play_isPanelShowing()) PlayVod_hidePanel();
                 else PlayVod_showPanel(true);
                 break;
             default:
@@ -1165,7 +1165,7 @@ function PlayVod_handleKeyDown(e) {
 }
 
 function PlayVod_FastBackForward(position) {
-    if (!Play_isPanelShown()) PlayVod_showPanel(true);
+    if (!Play_isPanelShowing()) PlayVod_showPanel(true);
     Play_clearHidePanel();
     PlayVod_PanelY = 0;
     Play_BottonIconsFocus();
@@ -1483,7 +1483,7 @@ function PlayVod_ChaptersSetGame(timeMs) {
                     Play_data.data[3] = PlayVod_ChaptersArray[len].game;
                     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
-                    if (!Play_isPanelShown() || Play_Panelcounter !== Play_controlsChapters) {
+                    if (!Play_isPanelShowing() || Play_Panelcounter !== Play_controlsChapters) {
                         Play_controls[Play_controlsChapters].defaultValue = len;
                         Play_controls[Play_controlsChapters].setLable();
                         Play_controls[Play_controlsChapters].bottomArrows();
