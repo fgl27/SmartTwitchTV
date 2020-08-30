@@ -300,8 +300,8 @@ function Screens_init(key, preventRefresh) {
     else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
-        if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);
-        else Main_showLoadDialog();// the FirstLoad is running so just show the loading dialog prevent reload the screen
+        if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
+        else Main_showLoadDialog();// the isRefreshing is running so just show the loading dialog prevent reload the screen
 
     } else {
         ScreenObj[key].SetPreviewEnable();
@@ -353,7 +353,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].emptyContent = true;
     ScreenObj[key].idObject = {};
     ScreenObj[key].Cells = [];
-    ScreenObj[key].FirstLoad = true;
+    ScreenObj[key].isRefreshing = true;
     Screens_Some_Screen_Is_Refreshing = true;
     ScreenObj[key].itemsCount = 0;
     ScreenObj[key].posX = 0;
@@ -492,7 +492,7 @@ function Screens_loadDatafail(key) {
 
     if (!ScreenObj[key].itemsCount) {
 
-        ScreenObj[key].FirstLoad = false;
+        ScreenObj[key].isRefreshing = false;
         Screens_Some_Screen_Is_Refreshing = false;
 
         if (Screens_IsInUse(key)) {
@@ -761,7 +761,7 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
         }
-        ScreenObj[key].FirstLoad = false;
+        ScreenObj[key].isRefreshing = false;
         Screens_Some_Screen_Is_Refreshing = false;
         Screens_SetAutoRefresh(key);
 
@@ -814,7 +814,7 @@ function Screens_CheckAutoRefresh(key, timeout) {
 
     ScreenObj[key].AutoRefreshId = Main_setTimeout(
         function() {
-            if (!ScreenObj[key].FirstLoad) {//the screen is not refreshing
+            if (!ScreenObj[key].isRefreshing) {//the screen is not refreshing
 
                 if (Main_isStoped ||
                     ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens

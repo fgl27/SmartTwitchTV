@@ -75,7 +75,7 @@ function ScreensObj_StartAllVars() {
         status: false,
         emptyContent: true,
         itemsCountCheck: false,
-        FirstLoad: false,
+        isRefreshing: false,
         row: 0,
         Headers: Main_Headers,
         data: null,
