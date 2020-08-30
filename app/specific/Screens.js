@@ -466,7 +466,7 @@ function Screens_HttpResultStatus(resultObj, key) {
 
         AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
 
-    } else if (resultObj.status === 500 && Main_isScene1DocShown() && key === Main_usergames) {
+    } else if (resultObj.status === 500 && Screens_IsInUse(key) && key === Main_usergames) {
 
         ScreenObj[key].key_refresh();
 
@@ -495,7 +495,7 @@ function Screens_loadDatafail(key) {
         ScreenObj[key].FirstLoad = false;
         Screens_Some_Screen_Is_Refreshing = false;
 
-        if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
+        if (Screens_IsInUse(key)) {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             ScreenObj[key].key_exit();
             if (!Main_FirstRun) Main_HideLoadDialog();
@@ -712,7 +712,7 @@ function Screens_loadDataSuccessFinish(key) {
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
         if (ScreenObj[key].emptyContent) {
-            if (key === Main_values.Main_Go) Main_showWarningDialog(ScreenObj[key].empty_str());
+            if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
         } else {
 
             ScreenObj[key].status = true;
@@ -788,7 +788,7 @@ function Screens_loadDataSuccessFinish(key) {
 
             Screens_addFocus(true, key);
             Main_SaveValues();
-            if (key === Main_values.Main_Go && Main_isScene1DocShown()) Main_HideLoadDialog();
+            if (Screens_IsInUse(key)) Main_HideLoadDialog();
 
         }
 
@@ -963,8 +963,7 @@ var Screens_LoadPreviewId;
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (ScreenObj[key].PreviewEnable && !Main_isStoped && key === Main_values.Main_Go && Main_isScene1DocShown() &&
-        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
+    if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
         var doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
@@ -1118,9 +1117,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
     var doc = Main_getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
-    if (!Main_isStoped && Main_isScene1DocShown() && !Main_isElementShowing('dialog_thumb_opt') &&
-        (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
-        x === Main_values.Main_Go && y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
+    if (!Main_isStoped && Screens_IsInUse(x) && !Main_isElementShowing('dialog_thumb_opt') &&
+        y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
         doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
@@ -2827,4 +2825,9 @@ function Screens_Isfocused() {
     return doc &&
         Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
         Main_isScene1DocShown();
+}
+
+function Screens_IsInUse(key) {
+    return key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        !Sidepannel_MainisShowing() && !Settings_isVisible();
 }
