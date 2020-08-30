@@ -250,6 +250,7 @@ function Main_loadTranslations(language) {
             Main_AddClass('scenefeed', 'feed_screen_input');
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
             KEY_RETURN = 27;
+            Main_HideElement('scene_keys');
         }
 
         Main_showLoadDialog();
