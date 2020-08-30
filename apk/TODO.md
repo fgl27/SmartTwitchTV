@@ -15,6 +15,7 @@ TODO list
 
 ### Update screens thumbnail options
 
+* General improve
 * Change the name to "Extra screen options" or something like this
 * Update the function so it work more like the player controls, in relation to the construction of the UI
 * Construct the UI with all possible options, and on it screen there will be a function that will set with options wll be visible, technically what is done today but on a way that is easier to manage
@@ -24,41 +25,40 @@ TODO list
 
 ### Add a dialog that add extra options to the player preview
 
+* New feature
 * Probably will show when holding down
 * similar to the dialog that exist today on the main screen when left key is hold, similar options similar behavior
 * Do this only after screens thumbnail options have be updated, so is all similar
 
 ### Update the channels screen
 
+* New feature
 * Update top option that today are 3 to 4 and on that forth add a "is following who" option so one can see what channel that channel/user follows
-* For that maybe need to add a extra channel holder screen, on title show "Name is following channels" or something like that
+* For this probably need to add a extra channel holder screen, on title show "Name is following channels" or something like that
 
 ### Add a audio volume dialog to the player
 
+* New feature
 * Allows to control it player individual volume on PP and Multistream mode
 * This features need a UI with a slider 0 to 100% for it player that is visible, showing with video it belong to, the slider and the streamer name...
 * For the name just use the same logic that add the title and streamer name to the player `Play_controlsAudio` and `Play_controlsAudioMulti`
 
 ### Improve the player PP mode start when the preview player is visible
 
+* General improve
 * Technically is possible to use the PP player as the preview player if the user is only playing one video
 * Then when the user hold enter to start the PP mode if the small player preview is visible it just gets positioned on the correct place and becomes the PP player
 
 ### Convert all chat controls option to a single control
 
+* General improve
 * So in one click the player controls hide all other controls and show only chat controls
 * This will allow to add some of the controls that today are in setting to the player
 * Will also improve the UI as there will be less controls visible will make easier to use and understand
 
-### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
-
-* Some string are "harcoded" on the apk
-* they are probably all on the `apk/app/src/main/java/com/fgl27/twitch/notification` and `apk/app/src/main/java/com/fgl27/twitch/channels`
-* Maybe some are on apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java
-* there is probably the needed to convert some of the final `ChannelContentObj` from `apk/app/src/main/java/com/fgl27/twitch/channels` to a function similar to `getRefreshContent()` fun as may be needed a context to get the string from the values/strings.xml as a static final obj can load strings
-
 ### Improve hosting related screen and notifications
 
+* New feature and general improve
 * Multiple followed streamer can host the same stream, today the behavior is just excluded duplicate host change that
 * Add a option to setting to show duplicate/triplicate etc hosting
 * this option must be apply to the user hosting, preview user hosting and channels to the home screen user hosting
@@ -67,25 +67,37 @@ TODO list
 
 ### Expand the setting option Default player quality
 
+* New feature
 * today there is only auto and source expand it
 * Add all possible but most used qualities, 1080p, 900p, 720p, 480p, 360p, 160p
 * Technically there is XXXp60 and XXXp30, make sure the app chooses the one that has more frames
 * Technically the above may already be the default behavior
 
+### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
+
+* General improve
+* Some string are "harcoded" on the apk
+* they are probably all on the `apk/app/src/main/java/com/fgl27/twitch/notification` and `apk/app/src/main/java/com/fgl27/twitch/channels`
+* Maybe some are on apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java
+* there is probably the needed to convert some of the final `ChannelContentObj` from `apk/app/src/main/java/com/fgl27/twitch/channels` to a function similar to `getRefreshContent()` fun as may be needed a context to get the string from the values/strings.xml as a static final obj can load strings
+
 ### Update how content languages works
 
+* General improve
 * Old twitch API allowed multiple languages today that is not the case it only allows one language on most API calls
 * That is way the content language is not just a array left and right click option
 * So change the content language and update the related code to be just a array left and right click option
 
 ### Add translations, improve strings
 
+* General improve
 * I (project main developer) don't nativity speak English, but PT-BR
 * So on the future I will add PT-BR tranlation
 * Because the above the main app English strings probably aren't 100% as I don't nativity speak English so they can always receive a check/improve
 
 ### Update how string works on the JS side of the code
 
+* General improve
 * Change strings to be a obj, this will make easier to work with languages changes by the user
 * The idea is to have a main string obj default_string, saved as a `JSON.stringify` string...
 * When the app first load it parses the string `JSON.parse`, is faster to the JS engine to parse a `JSON.stringify` in relation to have the obj as a obj (this in relation to when all JS files are first parsed)
@@ -104,6 +116,7 @@ TODO list
 
 ### Update the player files Play*.js
 
+* General improve
 * make the player something similar to how the screen works
 * A base player file, and a base playerObj file
 * the player is the base player and work always in a regularly way and order, the peculiar things that differentiates it type of playback (Live, VOD, CLIPS, Picture in Picture, Multistream) stay on the obj that the player call on it function to make it work as a it individual player
@@ -112,6 +125,7 @@ TODO list
 
 ### Update the player files UserLiveFeed*.js
 
+* General improve
 * Similar to "Update the player files Play*.js" the UserLiveFeed and UserLiveFeedobj can be improved
 * To make it work similar to how the screen works
 * Simpler obj initialization and use
