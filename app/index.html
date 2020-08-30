@@ -663,12 +663,12 @@
 
         div.scenefeed_background_no_ani,
         div.scenefeed_background {
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 1);
         }
 
         div.scenefeed_background {
             transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 1);
         }
 
         div.user_feed {
@@ -1153,10 +1153,10 @@
         div.side_panel_feed_thumb {
             box-sizing: border-box;
             position: absolute;
-            width: 73%;
-            height: 95.5%;
+            width: 74%;
+            height: 97%;
             top: 2.25%;
-            left: 25.75%;
+            left: 25.25%;
             background-color: #000000;
             border: 0.06em solid #ebebeb;
         }
@@ -1464,7 +1464,7 @@
         div.topbar {
             position: absolute;
             margin-left: 4.75%;
-            width: 94.5%;
+            width: 95.24%;
             background: rgba(0, 0, 0, 1);
             /* 1vh offset to hide content that may show benhide it*/
             height: 5.35vh;
@@ -1473,16 +1473,17 @@
 
         div.controls_div {
             float: left;
-            padding-left: 1%;
+            padding-left: 0.5%;
             /* 1vh offset to hide content that may show benhide it*/
             padding-top: calc(1vh + 0.2%);
         }
 
         div.top_clock {
             position: absolute;
-            right: 1%;
+            right: 2vh;
             /* 1vh offset to hide content that may show benhide it*/
-            top: calc(1vh + 5%);
+            top: 0.2vh;
+            z-index: 4;
         }
 
         .opacity_zero {
@@ -2547,7 +2548,7 @@
                 </div>
             </div>
             <div id="dialog_counter"
-                style="position: absolute; z-index:99; bottom: 0; right:0; width: auto; height: auto;">
+                style="position: absolute; z-index:2; bottom: 0; right:0; width: auto; height: auto;">
                 <div style="background: linear-gradient(to top, black, rgba(0, 0, 0, 0.75));">
                     <div id="dialog_counter_text" class="counter_class"></div>
                 </div>
@@ -2698,9 +2699,12 @@
                     <div id="stream_table_user_vod" class="streams_div"></div>
                 </div>
             </div>
+            <div id="clock_holder" class="top_clock hide">
+                <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
+            </div>
             <div id="topbar" class="topbar hide">
-                <div class="top_clock">
-                    <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
+                <div class="top_clock" style="top:1.75ch;">
+                    <div class="icon_top_label"></div>
                     <div id="label_update" class="icon_top_label hide"></div>
                 </div>
                 <div id="controls_div" class="controls_div">

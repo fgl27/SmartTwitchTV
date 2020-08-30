@@ -902,6 +902,7 @@ function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_FirstRun = false;
     if (!SkipHidedialog) Main_HideLoadDialog();
     Main_ShowElement('topbar');
+    Main_ShowElement('clock_holder');
     Main_ShowElement('side_panel_new_holder');
     AddUser_UpdateSidepanelAfterShow();
 

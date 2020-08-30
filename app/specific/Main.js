@@ -1023,6 +1023,8 @@ function Main_checkVersion() {
             'Browser',
             'Browser'
         );
+        //T0 test he position
+        Main_checkWebVersionUpdate(true);
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
