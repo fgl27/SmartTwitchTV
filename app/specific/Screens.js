@@ -1705,6 +1705,7 @@ function Screens_OpenSidePanel(forceFeed, key) {
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
     Screens_ClearAnimation(key);
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+    Main_HideLoadDialog();
     Sidepannel_Start(ScreenObj[key].key_fun, forceFeed);
 }
 
