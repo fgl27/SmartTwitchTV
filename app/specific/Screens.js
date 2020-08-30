@@ -501,7 +501,7 @@ function Screens_loadDatafail(key) {
         }//esle the user has alredy exit the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
-        else Main_HideLoadDialog();
+        else if (key === Main_values.Main_Go) Main_HideLoadDialog();
 
     } else ScreenObj[key].dataEnded = true;
 
@@ -788,7 +788,7 @@ function Screens_loadDataSuccessFinish(key) {
 
             Screens_addFocus(true, key);
             Main_SaveValues();
-            if (Main_isScene1DocShown()) Main_HideLoadDialog();
+            if (key === Main_values.Main_Go && Main_isScene1DocShown()) Main_HideLoadDialog();
 
         }
 
