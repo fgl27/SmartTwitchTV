@@ -20866,6 +20866,7 @@
         if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         Screens_ClearAnimation(key);
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+        Main_HideLoadDialog();
         Sidepannel_Start(ScreenObj[key].key_fun, forceFeed);
     }
 
@@ -21990,6 +21991,7 @@
             Main_isScene1DocShown();
     }
 
+    //TODO add screen.isInuse prop to adress this fun use
     function Screens_IsInUse(key) {
         return key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
             !Sidepannel_MainisShowing() && !Settings_isVisible();
