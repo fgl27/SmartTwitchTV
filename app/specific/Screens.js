@@ -495,13 +495,13 @@ function Screens_loadDatafail(key) {
         ScreenObj[key].FirstLoad = false;
         Screens_Some_Screen_Is_Refreshing = false;
 
-        if (key === Main_values.Main_Go) {
+        if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
             ScreenObj[key].key_exit();
-        }//esle the user has alredy exit the screen
+            if (!Main_FirstRun) Main_HideLoadDialog();
+        }//else the user has already exit the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
-        else if (key === Main_values.Main_Go) Main_HideLoadDialog();
 
     } else ScreenObj[key].dataEnded = true;
 
