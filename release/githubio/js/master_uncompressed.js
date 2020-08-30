@@ -7145,6 +7145,7 @@
                 Main_AddClass('scenefeed', 'feed_screen_input');
                 //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
                 KEY_RETURN = 27;
+                Main_HideElement('scene_keys');
             }
 
             Main_showLoadDialog();
@@ -7921,6 +7922,8 @@
                 'Browser',
                 'Browser'
             );
+            //T0 test he position
+            Main_checkWebVersionUpdate(true);
         }
 
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
@@ -20060,6 +20063,7 @@
         Main_FirstRun = false;
         if (!SkipHidedialog) Main_HideLoadDialog();
         Main_ShowElement('topbar');
+        Main_ShowElement('clock_holder');
         Main_ShowElement('side_panel_new_holder');
         AddUser_UpdateSidepanelAfterShow();
 
@@ -30722,6 +30726,7 @@
     function Users_init() {
         if (Main_newUsercode) {
             Main_HideElement('topbar');
+            Main_HideElement('clock_holder');
             Main_HideElement('side_panel_new_holder');
             Users_exit();
             AddCode_CheckNewCode(Main_newUsercode);
