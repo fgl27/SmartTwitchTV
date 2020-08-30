@@ -2827,6 +2827,7 @@ function Screens_Isfocused() {
         Main_isScene1DocShown();
 }
 
+//TODO add screen.isInuse prop to adress this fun use
 function Screens_IsInUse(key) {
     return key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
         !Sidepannel_MainisShowing() && !Settings_isVisible();
