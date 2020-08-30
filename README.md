@@ -42,7 +42,7 @@ I keep the original name and commit history but not as a fork simply because I m
 How the application works
 ==============
 
-The application is splinted on two parts, a web app and apk.
+The application is splinted in two parts, a web app and Android apk.
 
 ### The web app
 
