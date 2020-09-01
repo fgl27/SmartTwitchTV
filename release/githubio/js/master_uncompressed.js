@@ -12167,6 +12167,7 @@
 
     function Play_StartStay() {
         if (!ChatLive_loaded[0]) ChatLive_Init(0);
+        Play_ChatEnable = true;
         Play_HideBufferDialog();
         if (Main_IsOn_OSInterface) OSInterface_stopVideo();
         OSInterface_mKeepScreenOn(true);
