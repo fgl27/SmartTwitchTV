@@ -10584,7 +10584,7 @@
     //Android specific: true
     //Allows to control if the screen will be on or not from js side
     function OSInterface_mKeepScreenOn(keepOn) { //Not be used
-        Android.mKeepScreenOn(keepOn);
+        if (Main_IsOn_OSInterface) Android.mKeepScreenOn(keepOn);
     }
 
     //public boolean isKeyboardConnected()
@@ -16528,7 +16528,7 @@
             }
         }
 
-        Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+        if (Play_data.qualities[Play_data.qualityIndex]) Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
     }
 
     function Play_qualityTitleReset(title) {
