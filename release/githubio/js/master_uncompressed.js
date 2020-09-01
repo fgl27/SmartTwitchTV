@@ -6922,8 +6922,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.245';
     var Main_version_java = 34; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'August 30 2020';
-    var Main_version_web = 58; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 01 2020';
+    var Main_version_web = 59; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7525,6 +7525,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 01 2020",
+                changes: ["Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts"]
+            },
+            {
                 title: "Web Version August 30 2020",
                 changes: ["General performance and visual improves"]
             },
@@ -12151,6 +12155,8 @@
 
     function Play_StartStay() {
         if (!ChatLive_loaded[0]) ChatLive_Init(0);
+        Play_HideBufferDialog();
+        if (Main_IsOn_OSInterface) OSInterface_stopVideo();
         Play_showChat();
         Play_data.watching_time = new Date().getTime();
         Play_state = Play_STATE_PLAYING;
@@ -19460,8 +19466,8 @@
         else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
             ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
-            if (!ScreenObj[key].FirstLoad) Screens_StartLoad(key);
-            else Main_showLoadDialog(); // the FirstLoad is running so just show the loading dialog prevent reload the screen
+            if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
+            else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
 
         } else {
             ScreenObj[key].SetPreviewEnable();
@@ -19513,7 +19519,7 @@
         ScreenObj[key].emptyContent = true;
         ScreenObj[key].idObject = {};
         ScreenObj[key].Cells = [];
-        ScreenObj[key].FirstLoad = true;
+        ScreenObj[key].isRefreshing = true;
         Screens_Some_Screen_Is_Refreshing = true;
         ScreenObj[key].itemsCount = 0;
         ScreenObj[key].posX = 0;
@@ -19652,7 +19658,7 @@
 
         if (!ScreenObj[key].itemsCount) {
 
-            ScreenObj[key].FirstLoad = false;
+            ScreenObj[key].isRefreshing = false;
             Screens_Some_Screen_Is_Refreshing = false;
 
             if (Screens_IsInUse(key)) {
@@ -19921,7 +19927,7 @@
                 }
 
             }
-            ScreenObj[key].FirstLoad = false;
+            ScreenObj[key].isRefreshing = false;
             Screens_Some_Screen_Is_Refreshing = false;
             Screens_SetAutoRefresh(key);
 
@@ -19974,7 +19980,7 @@
 
         ScreenObj[key].AutoRefreshId = Main_setTimeout(
             function() {
-                if (!ScreenObj[key].FirstLoad) { //the screen is not refreshing
+                if (!ScreenObj[key].isRefreshing) { //the screen is not refreshing
 
                     if (Main_isStoped ||
                         ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
@@ -22077,7 +22083,7 @@
             status: false,
             emptyContent: true,
             itemsCountCheck: false,
-            FirstLoad: false,
+            isRefreshing: false,
             row: 0,
             Headers: Main_Headers,
             data: null,
