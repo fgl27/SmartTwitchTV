@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version September 01 2020
 ==============
 
-* Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen save
+* Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen saver
 
 Web Version August 30 2020
 ==============
