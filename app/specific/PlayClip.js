@@ -551,7 +551,9 @@ function PlayClip_showPanel() {
 
 function PlayClip_qualityIndexReset() {
     PlayClip_qualityIndex = 0;
-    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
+    var i = 0, len = PlayClip_getQualitiesCount();
+
+    for (i; i < len; i++) {
         if (PlayClip_qualities[i].id === PlayClip_quality) {
             PlayClip_qualityIndex = i;
             break;

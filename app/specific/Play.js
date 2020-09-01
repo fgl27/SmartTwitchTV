@@ -1770,7 +1770,9 @@ function Play_qualityIndexReset() {
     if (PlayExtra_PicturePicture || Play_MultiEnable) return;
 
     Play_data.qualityIndex = 0;
-    for (var i = 0; i < Play_getQualitiesCount(); i++) {
+    var i = 0, len = Play_getQualitiesCount();
+
+    for (i; i < len; i++) {
         if (Play_data.qualities[i].id === Play_data.quality) {
             Play_data.qualityIndex = i;
             break;

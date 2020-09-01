@@ -659,7 +659,9 @@ function PlayVod_setHidePanel() {
 
 function PlayVod_qualityIndexReset() {
     PlayVod_qualityIndex = 0;
-    for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
+    var i = 0, len = PlayVod_getQualitiesCount();
+
+    for (i; i < len; i++) {
         if (PlayVod_qualities[i].id === PlayVod_quality) {
             PlayVod_qualityIndex = i;
             break;
