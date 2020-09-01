@@ -646,6 +646,8 @@ function Play_StopStay() {
 
 function Play_StartStay() {
     if (!ChatLive_loaded[0]) ChatLive_Init(0);
+    Play_HideBufferDialog();
+    if (Main_IsOn_OSInterface) OSInterface_stopVideo();
     Play_showChat();
     Play_data.watching_time = new Date().getTime();
     Play_state = Play_STATE_PLAYING;
