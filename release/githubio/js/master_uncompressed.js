@@ -11172,7 +11172,10 @@
 
     function PlayClip_qualityIndexReset() {
         PlayClip_qualityIndex = 0;
-        for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
+        var i = 0,
+            len = PlayClip_getQualitiesCount();
+
+        for (i; i < len; i++) {
             if (PlayClip_qualities[i].id === PlayClip_quality) {
                 PlayClip_qualityIndex = i;
                 break;
@@ -16544,7 +16547,10 @@
         if (PlayExtra_PicturePicture || Play_MultiEnable) return;
 
         Play_data.qualityIndex = 0;
-        for (var i = 0; i < Play_getQualitiesCount(); i++) {
+        var i = 0,
+            len = Play_getQualitiesCount();
+
+        for (i; i < len; i++) {
             if (Play_data.qualities[i].id === Play_data.quality) {
                 Play_data.qualityIndex = i;
                 break;
@@ -18273,7 +18279,10 @@
 
     function PlayVod_qualityIndexReset() {
         PlayVod_qualityIndex = 0;
-        for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
+        var i = 0,
+            len = PlayVod_getQualitiesCount();
+
+        for (i; i < len; i++) {
             if (PlayVod_qualities[i].id === PlayVod_quality) {
                 PlayVod_qualityIndex = i;
                 break;
