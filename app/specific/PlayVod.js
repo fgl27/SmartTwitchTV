@@ -667,7 +667,7 @@ function PlayVod_qualityIndexReset() {
             PlayVod_qualityIndex = i;
         }
     }
-    Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+    if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
 }
 
 function PlayVod_SetHtmlQuality(element) {

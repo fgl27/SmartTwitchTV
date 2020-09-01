@@ -560,7 +560,7 @@ function PlayClip_qualityIndexReset() {
         }
     }
 
-    Play_qualityTitleReset(PlayClip_qualities[PlayClip_qualityIndex].id.split(' | mp4')[0]);
+    if (PlayClip_qualities[PlayClip_qualityIndex]) Play_qualityTitleReset(PlayClip_qualities[PlayClip_qualityIndex].id.split(' | mp4')[0]);
 }
 
 function PlayClip_getQualitiesCount() {
