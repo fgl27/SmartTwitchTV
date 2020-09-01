@@ -11181,7 +11181,7 @@
             }
         }
 
-        Play_qualityTitleReset(PlayClip_qualities[PlayClip_qualityIndex].id.split(' | mp4')[0]);
+        if (PlayClip_qualities[PlayClip_qualityIndex]) Play_qualityTitleReset(PlayClip_qualities[PlayClip_qualityIndex].id.split(' | mp4')[0]);
     }
 
     function PlayClip_getQualitiesCount() {
@@ -18281,7 +18281,7 @@
                 PlayVod_qualityIndex = i;
             }
         }
-        Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+        if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
     }
 
     function PlayVod_SetHtmlQuality(element) {
