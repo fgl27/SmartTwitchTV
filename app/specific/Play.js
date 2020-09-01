@@ -1778,7 +1778,7 @@ function Play_qualityIndexReset() {
         }
     }
 
-    Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
+    if (Play_data.qualities[Play_data.qualityIndex]) Play_qualityTitleReset(Play_data.qualities[Play_data.qualityIndex].id);
 }
 
 function Play_qualityTitleReset(title) {
