@@ -1021,7 +1021,7 @@
         STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
         STR_STAY_OPEN = "Stay on the stream";
         STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
-        STR_STAY_CHECK = "Check if stream is back online in:";
+        STR_STAY_CHECK = "Check if stream is online in:";
         STR_STAY_CHECKING = "Checking if is online...";
         STR_STAY_CHECK_LAST = "Last result:";
         STR_NO_BROADCAST = "No Broadcast";
@@ -7526,7 +7526,10 @@
 
         var changelogObj = [{
                 title: "Web Version September 01 2020",
-                changes: ["Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen saver"]
+                changes: [
+                    "Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen saver",
+                    "Improve offline chat visual and fix write to chat not showing some times"
+                ]
             },
             {
                 title: "Web Version August 30 2020",
@@ -10709,6 +10712,7 @@
         Main_values.Play_isHost = false;
         PlayClip_SetOpenVod();
 
+        Play_StartStayShowbottom();
         Play_BottomHide(Play_controlsChatDelay);
         Play_BottomHide(Play_controlsLowLatency);
         Play_BottomHide(Play_MultiStream);
@@ -12142,11 +12146,30 @@
         Main_HideElement('play_dialog_retry');
     }
 
+    function Play_StartStayHidebottom() {
+        Play_BottomHide(Play_MultiStream);
+        Play_BottomHide(Play_controlsQuality);
+        Play_BottomHide(Play_controlsExternal);
+        Play_BottomHide(Play_controlsLowLatency);
+        Play_BottomHide(Play_controlsSpeed);
+    }
+
+    function Play_StartStayShowbottom() {
+        Play_BottomShow(Play_MultiStream);
+        Play_BottomShow(Play_controlsQuality);
+        Play_BottomShow(Play_controlsExternal);
+        Play_BottomShow(Play_controlsLowLatency);
+        Play_BottomShow(Play_controlsSpeed);
+    }
+
     function Play_StartStay() {
         if (!ChatLive_loaded[0]) ChatLive_Init(0);
         Play_HideBufferDialog();
         if (Main_IsOn_OSInterface) OSInterface_stopVideo();
         OSInterface_mKeepScreenOn(true);
+        Play_StartStayHidebottom();
+        ChatLive_Latency[0] = 0;
+        ChatLive_Latency[1] = 0;
         Play_showChat();
         Play_data.watching_time = new Date().getTime();
         Play_state = Play_STATE_PLAYING;
@@ -12282,6 +12305,7 @@
         if (responseObj.status === 200) {
             Main_HideElement('play_dialog_retry');
 
+            Play_StartStayShowbottom();
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessend(responseObj.responseText, false, true);
             Play_ShowPanelStatus(1);
@@ -15031,6 +15055,7 @@
         //reset channel logo to prevent another channel logo
         Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
+        Play_StartStayShowbottom();
         Play_BottomShow(Play_MultiStream);
         Play_BottomShow(Play_controlsChatDelay);
         Play_BottomShow(Play_controlsLowLatency);
@@ -17661,6 +17686,7 @@
         Main_ShowElementWithEle(Play_BottonIcons_Progress);
         Play_BufferSize = 0;
 
+        Play_StartStayShowbottom();
         Play_BottomHide(Play_MultiStream);
         Play_BottomHide(Play_controlsOpenVod);
         Play_BottomHide(Play_controlsChatDelay);

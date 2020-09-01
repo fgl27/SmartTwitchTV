@@ -631,7 +631,10 @@ function Main_Changelog() {
     var changelogObj = [
         {
             title: "Web Version September 01 2020",
-            changes: ["Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen saver"]
+            changes: [
+                "Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen saver",
+                "Improve offline chat visual and fix write to chat not showing some times"
+            ]
         },
         {
             title: "Web Version August 30 2020",
