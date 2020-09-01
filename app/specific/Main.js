@@ -631,7 +631,7 @@ function Main_Changelog() {
     var changelogObj = [
         {
             title: "Web Version September 01 2020",
-            changes: ["Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts"]
+            changes: ["Improve Stay on the stream feature, prevent buffer dialog and last video frame from be displayed when the mode starts, prevent screen save"]
         },
         {
             title: "Web Version August 30 2020",
@@ -659,13 +659,6 @@ function Main_Changelog() {
         {
             title: "Apk Version 3.0.244 - Web Version August 17 2020",
             changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Apk Version 3.0.241 - Web Version August 15 2020",
-            changes: [
-                "Mitigate the freeze effects when using accessibility service, most noticeably when exiting the player, slowdowns do to accessibility service can't be fixed only mitigated, read more about it https://tinyurl.com/applag",
-                "General performance improves and bug fixes"
-            ]
         },
     ];
 
