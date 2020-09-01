@@ -667,10 +667,6 @@ function Main_Changelog() {
                 "General performance improves and bug fixes"
             ]
         },
-        {
-            title: "Apk Version 3.0.240 - August 10 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
     ];
 
     var i = 0; var len = changelogObj.length, j, lenj;
