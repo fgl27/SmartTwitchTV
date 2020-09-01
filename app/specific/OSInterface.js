@@ -1046,6 +1046,13 @@ function OSInterface_getLatency(chat_number) {
     } catch (e) {}
 }
 
+//public void mKeepScreenOn(boolean keepOn)
+//Android specific: true
+//Allows to control if the screen will be on or not from js side
+function OSInterface_mKeepScreenOn(keepOn) {//Not be used
+    Android.mKeepScreenOn(keepOn);
+}
+
 //public boolean isKeyboardConnected()
 //Android specific: true
 //informs if a hw Keyboard is connected to the devices
@@ -1065,13 +1072,6 @@ function OSInterface_getLatency(chat_number) {
 //return the playback state
 // function OSInterface_getPlaybackState() {//Not be used
 //     return Android.getPlaybackState();
-// }
-
-//public void mKeepScreenOn(boolean keepOn)
-//Android specific: true
-//Allows to control if the screen will be on or not from js side
-// function OSInterface_mKeepScreenOn(keepOn) {//Not be used
-//     Android.mKeepScreenOn(keepOn);
 // }
 
 //public void mSetAudio(int position, float volume)
