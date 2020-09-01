@@ -73,6 +73,7 @@ function PlayVod_Start() {
     Main_ShowElementWithEle(Play_BottonIcons_Progress);
     Play_BufferSize = 0;
 
+    Play_StartStayShowbottom();
     Play_BottomHide(Play_MultiStream);
     Play_BottomHide(Play_controlsOpenVod);
     Play_BottomHide(Play_controlsChatDelay);

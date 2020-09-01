@@ -644,11 +644,30 @@ function Play_StopStay() {
     Main_HideElement('play_dialog_retry');
 }
 
+function Play_StartStayHidebottom() {
+    Play_BottomHide(Play_MultiStream);
+    Play_BottomHide(Play_controlsQuality);
+    Play_BottomHide(Play_controlsExternal);
+    Play_BottomHide(Play_controlsLowLatency);
+    Play_BottomHide(Play_controlsSpeed);
+}
+
+function Play_StartStayShowbottom() {
+    Play_BottomShow(Play_MultiStream);
+    Play_BottomShow(Play_controlsQuality);
+    Play_BottomShow(Play_controlsExternal);
+    Play_BottomShow(Play_controlsLowLatency);
+    Play_BottomShow(Play_controlsSpeed);
+}
+
 function Play_StartStay() {
     if (!ChatLive_loaded[0]) ChatLive_Init(0);
     Play_HideBufferDialog();
     if (Main_IsOn_OSInterface) OSInterface_stopVideo();
     OSInterface_mKeepScreenOn(true);
+    Play_StartStayHidebottom();
+    ChatLive_Latency[0] = 0;
+    ChatLive_Latency[1] = 0;
     Play_showChat();
     Play_data.watching_time = new Date().getTime();
     Play_state = Play_STATE_PLAYING;
@@ -783,6 +802,7 @@ function Play_StayCheckLiveResultEnd(responseObj) {
     if (responseObj.status === 200) {
         Main_HideElement('play_dialog_retry');
 
+        Play_StartStayShowbottom();
         Play_data.AutoUrl = responseObj.url;
         Play_loadDataSuccessend(responseObj.responseText, false, true);
         Play_ShowPanelStatus(1);

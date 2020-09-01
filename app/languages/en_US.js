@@ -215,7 +215,7 @@ function en_USLang() {
     STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
     STR_STAY_OPEN = "Stay on the stream";
     STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
-    STR_STAY_CHECK = "Check if stream is back online in:";
+    STR_STAY_CHECK = "Check if stream is online in:";
     STR_STAY_CHECKING = "Checking if is online...";
     STR_STAY_CHECK_LAST = "Last result:";
     STR_NO_BROADCAST = "No Broadcast";

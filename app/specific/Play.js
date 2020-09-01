@@ -291,6 +291,7 @@ function Play_Start(offline_chat) {
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
+    Play_StartStayShowbottom();
     Play_BottomShow(Play_MultiStream);
     Play_BottomShow(Play_controlsChatDelay);
     Play_BottomShow(Play_controlsLowLatency);
