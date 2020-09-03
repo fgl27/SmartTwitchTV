@@ -62,22 +62,27 @@ function Play_updateStreamInfoMultiValues(response, pos) {
 
     if (obj.streams && obj.streams.length) {
 
-        Play_MultiArray[pos].data = ScreensObj_LiveCellArray(obj.streams[0]);
+        var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
-        if (!pos) {
-            Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
-            Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+        //Prevent save the wrong stream data
+        if (Play_MultiArray[pos].data.length > 0 && Main_A_equals_B(tempData[14], Play_MultiArray[pos].data[14])) {
+            Play_MultiArray[pos].data = tempData;
+
+            if (!pos) {
+                Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
+                Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+            }
+
+            Play_MultiUpdateinfo(
+                (pos + (4 - Play_Multi_Offset)) % 4,
+                obj.streams[0].game,
+                obj.streams[0].viewers,
+                twemoji.parse(obj.streams[0].channel.status, false, true),
+                (Play_Multi_MainBig ? '_big' : '')
+            );
+
+            Main_Set_history('live', Play_MultiArray[pos].data);
         }
-
-        Play_MultiUpdateinfo(
-            (pos + (4 - Play_Multi_Offset)) % 4,
-            obj.streams[0].game,
-            obj.streams[0].viewers,
-            twemoji.parse(obj.streams[0].channel.status, false, true),
-            (Play_Multi_MainBig ? '_big' : '')
-        );
-
-        Main_Set_history('live', Play_MultiArray[pos].data);
 
     }
 }
