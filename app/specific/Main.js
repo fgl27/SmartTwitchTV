@@ -630,8 +630,11 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Web Version September 03 2020",
-            changes: ["Prevent displaying wrong stream information on PP mode (only happened on a very odd case)"]
+            title: "Apk Version 3.0.246 - Web Version September 03 2020",
+            changes: [
+                "Prevent displaying wrong stream information on PP mode (only happened on a very odd case)",
+                "General performance improves and bug fixes"
+            ]
         },
         {
             title: "Web Version September 01 2020",
