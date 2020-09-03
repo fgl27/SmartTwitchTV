@@ -73,7 +73,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.google.gson.JsonParser.parseString;
 
-public final class ChannelsUtils {
+public final class  ChannelsUtils {
 
     private static final int JOB_ID = 1;
 
@@ -432,7 +432,7 @@ public final class ChannelsUtils {
 //        ).replaceAll("[^Md]|(?<=(.))\\1", "").toUpperCase();
 
         String dateFormat = ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
-                .toPattern().replaceAll("[^Md]|(?<=(.))\\1", "").toUpperCase();
+                .toPattern().replaceAll("[^Md]|(?<=(.))\\1", "").toUpperCase(Locale.US);
 
         if (dateFormat.startsWith("M")) dayMonth = month + " " + day;
         else dayMonth = day + " " + month;
