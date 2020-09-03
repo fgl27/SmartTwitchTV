@@ -15430,11 +15430,17 @@
     }
 
     function Play_updateStreamInfoEnd(response) {
-        Play_data.data = ScreensObj_LiveCellArray(response);
+        var tempData = ScreensObj_LiveCellArray(response);
 
-        Play_UpdateMainStreamDiv();
+        //Prevent save the wrong stream data this can happen when switching right after enable PP mode
+        if (Play_data.data.length > 0 && Main_A_equals_B(tempData[14], Play_data.data[14])) {
+            Play_data.data = tempData;
 
-        if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+            Play_UpdateMainStreamDiv();
+
+            if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
+        }
+
     }
 
     function Play_updateStreamInfoStartError() {
@@ -15584,7 +15590,7 @@
                 if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
                 //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
-                if (PlayExtra_data.data.length > 0) {
+                if (PlayExtra_data.data.length > 0 && Main_A_equals_B(tempData[14], PlayExtra_data.data[14])) {
                     PlayExtra_data.data = tempData;
 
                     PlayExtra_UpdatePanel();
@@ -16941,22 +16947,27 @@
 
         if (obj.streams && obj.streams.length) {
 
-            Play_MultiArray[pos].data = ScreensObj_LiveCellArray(obj.streams[0]);
+            var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
-            if (!pos) {
-                Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
-                Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+            //Prevent save the wrong stream data
+            if (Play_MultiArray[pos].data.length > 0 && Main_A_equals_B(tempData[14], Play_MultiArray[pos].data[14])) {
+                Play_MultiArray[pos].data = tempData;
+
+                if (!pos) {
+                    Play_controls[Play_controlsChanelCont].setLable(Play_MultiArray[pos].data[1]);
+                    Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
+                }
+
+                Play_MultiUpdateinfo(
+                    (pos + (4 - Play_Multi_Offset)) % 4,
+                    obj.streams[0].game,
+                    obj.streams[0].viewers,
+                    twemoji.parse(obj.streams[0].channel.status, false, true),
+                    (Play_Multi_MainBig ? '_big' : '')
+                );
+
+                Main_Set_history('live', Play_MultiArray[pos].data);
             }
-
-            Play_MultiUpdateinfo(
-                (pos + (4 - Play_Multi_Offset)) % 4,
-                obj.streams[0].game,
-                obj.streams[0].viewers,
-                twemoji.parse(obj.streams[0].channel.status, false, true),
-                (Play_Multi_MainBig ? '_big' : '')
-            );
-
-            Main_Set_history('live', Play_MultiArray[pos].data);
 
         }
     }
