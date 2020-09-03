@@ -27,8 +27,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.245';
 var Main_version_java = 34;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 01 2020';
-var Main_version_web = 59;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'September 03 2020';
+var Main_version_web = 60;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -629,6 +629,10 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Web Version September 03 2020",
+            changes: ["Prevent displaying wrong stream information on PP mode (only happened on a very odd case)"]
+        },
         {
             title: "Web Version September 01 2020",
             changes: [
