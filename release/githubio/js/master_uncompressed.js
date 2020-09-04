@@ -5405,6 +5405,7 @@
             function(event) {
                 //Main_Log(JSON.stringify(event) + ' onclose main ');
                 ChatLive_LineAddErro('Websocket closed remotely... ' + JSON.stringify(event), chat_number);
+                ChatLive_loaded[chat_number] = false;
                 ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
             };
 
@@ -5412,6 +5413,7 @@
             function(error) {
                 //Main_Log(JSON.stringify(error) + ' erro main');
                 ChatLive_LineAddErro('Error... ' + JSON.stringify(error), chat_number);
+                ChatLive_loaded[chat_number] = false;
                 ChatLive_Check(chat_number, id, ChatLive_ReTryDelay, true);
             };
 
@@ -5447,6 +5449,7 @@
             ChatLive_reset(chat_number);
             ChatLive_socket[chat_number].close(1000);
         }
+        ChatLive_loaded[chat_number] = false;
     }
 
     function ChatLive_Check(chat_number, id, timeout, silent) {
@@ -5623,6 +5626,7 @@
             function(event) {
                 //Main_Log(JSON.stringify(event) + ' onclose send');
                 ChatLive_LineAddErro('Websocket closed remotely... ' + JSON.stringify(event), 0, true);
+                ChatLive_socketSendJoin = false;
                 ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay, true);
             };
 
@@ -5630,6 +5634,7 @@
             function(error) {
                 //Main_Log(JSON.stringify(error) + ' error send');
                 ChatLive_LineAddErro('Error... ' + JSON.stringify(error), 0, true);
+                ChatLive_socketSendJoin = false;
                 ChatLive_socketSendCheck(chat_number, id, ChatLive_ReTryDelay, true);
             };
 
