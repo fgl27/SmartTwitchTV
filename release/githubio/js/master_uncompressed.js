@@ -6927,8 +6927,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.246';
     var Main_version_java = 35; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 03 2020';
-    var Main_version_web = 60; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 04 2020';
+    var Main_version_web = 61; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7530,6 +7530,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 04 2020",
+                changes: ["General performance and visual improves"]
+            },
+            {
                 title: "Apk Version 3.0.246 - Web Version September 03 2020",
                 changes: [
                     "Prevent displaying wrong stream information on PP mode (only happened on a very odd case)",
@@ -7565,10 +7569,6 @@
             {
                 title: "Web Version August 18 2020",
                 changes: ["Improve player bottom controls, make easier to understand what is be changed, fix not properly working options (Multistream audio and player restart was not working sometimes)"]
-            },
-            {
-                title: "Apk Version 3.0.244 - Web Version August 17 2020",
-                changes: ["General performance improves and bug fixes"]
             },
         ];
 
