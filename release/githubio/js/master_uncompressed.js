@@ -5607,10 +5607,10 @@
                         AddCode_refreshTokens(0, 0, null, null);
                     } else ChatLive_UserNoticeWarn(message);
                     break;
-                case "USERSTATE":
-                    //Main_Log('USERSTATE send');
-                    //Main_Log(message);
-                    break;
+                    // case "USERSTATE":
+                    //     Main_Log('USERSTATE send');
+                    //     Main_Log(message);
+                    //     break;
                 case "PART":
                     if (ChatLive_socketSend) {
                         ChatLive_SendReeset();
