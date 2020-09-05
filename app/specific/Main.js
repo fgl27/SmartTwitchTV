@@ -169,7 +169,7 @@ var Main_vodOffset = 0;
 var Main_body = document.body;
 //Variable initialization end
 
-// this function will be called only when running the app/ folder, release maker will remove this
+// this function call will be used only when running the app/ folder, release maker will remove this
 Main_Start();
 
 function Main_Start() {
