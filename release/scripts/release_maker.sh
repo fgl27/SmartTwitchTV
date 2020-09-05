@@ -205,7 +205,7 @@ fi;
 mkdir -p "$temp_maker_folder"
 
 # this var is used for debugging
-sed -i 's/Main_isReleased = false/Main_isReleased = true/g' app/specific/Main.js;
+sed -i 's/Main_Start();/\/\/Main_Start();/g' app/specific/Main.js;
 
 # make the release/index.min.html
 cp -rf app/index.html release/index.min.html
@@ -266,7 +266,7 @@ echo -e "\\n${bldgrn}Compression done\\n";
 cp -rf master.js githubio/js/master.js;
 cd - &> /dev/null || exit;
 rm -rf "$temp_maker_folder"
-sed -i 's/Main_isReleased = true/Main_isReleased = false/g' app/specific/Main.js;
+sed -i 's/\/\/Main_Start();/Main_Start();/g' app/specific/Main.js;
 
 #if [ "$canbeautify" == 1 ]; then
 #	echo -e "${bldgrn}JS Beautifier code formarter started...\\n";
