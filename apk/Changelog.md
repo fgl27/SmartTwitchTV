@@ -10,7 +10,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version Seember 04 2020
 ==============
 
-* General performance and visual improves
+* General performance improves and bug fixes
 
 Apk Version 3.0.246 - Web Version September 03 2020
 ==============

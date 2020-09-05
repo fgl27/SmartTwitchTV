@@ -631,7 +631,7 @@ function Main_Changelog() {
     var changelogObj = [
         {
             title: "Web Version September 04 2020",
-            changes: ["General performance and visual improves"]
+            changes: ["General performance improves and bug fixes"]
         },
         {
             title: "Apk Version 3.0.246 - Web Version September 03 2020",
