@@ -1374,7 +1374,7 @@ function Main_openStream() {
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
-    Main_hideScene1Doc();
+
     Main_removeEventListener("keydown", handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
@@ -1401,21 +1401,24 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     ChannelClip_views = Main_values_Play_data[14];
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
-    Main_addEventListener("keydown", PlayClip_handleKeyDown);
-    Main_showScene2Doc();
-    Play_hideChat();
-    Play_HideWarningDialog();
-    Play_CleanHideExit();
+    Main_hideScene1Doc();
+    Main_ready(function() {
+        Main_addEventListener("keydown", PlayClip_handleKeyDown);
+        Main_showScene2Doc();
+        Play_hideChat();
+        Play_HideWarningDialog();
+        Play_CleanHideExit();
 
-    PlayClip_Start();
+        PlayClip_Start();
 
-    Main_EventPlay(
-        'clip',
-        Main_values_Play_data[6],
-        Main_values_Play_data[3],
-        Main_values_Play_data[17],
-        screen
-    );
+        Main_EventPlay(
+            'clip',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            Main_values_Play_data[17],
+            screen
+        );
+    });
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
@@ -1458,12 +1461,14 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
 
 function Main_openVod() {
     Main_hideScene1Doc();
-    Main_addEventListener("keydown", PlayVod_handleKeyDown);
-    Main_showScene2Doc();
-    PlayVod_hidePanel();
-    Play_hideChat();
-    Play_CleanHideExit();
-    PlayVod_Start();
+    Main_ready(function() {
+        Main_addEventListener("keydown", PlayVod_handleKeyDown);
+        Main_showScene2Doc();
+        PlayVod_hidePanel();
+        Play_hideChat();
+        Play_CleanHideExit();
+        PlayVod_Start();
+    });
 }
 
 function Main_removeFocus(id, idArray) {
@@ -2503,83 +2508,89 @@ function Main_EventShowScreen(type, name) {
 }
 
 function Main_EventPlay(type, name, game, lang, screen, mode) {
-    if (skipfirebase) return;
+    Main_ready(function() {
+        if (skipfirebase) return;
 
-    try {
+        try {
 
-        gtag(
-            'event',
-            type,
-            {
-                'name': name,
-                'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                'game': game ? game : UNKNOWN,
-                'screen': screen ? screen : UNKNOWN,
-                'mode': mode ? mode : 'NORMAL'
-            }
-        );
+            gtag(
+                'event',
+                type,
+                {
+                    'name': name,
+                    'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                    'game': game ? game : UNKNOWN,
+                    'screen': screen ? screen : UNKNOWN,
+                    'mode': mode ? mode : 'NORMAL'
+                }
+            );
 
-    } catch (e) {
-        console.log("Main_EventPlay e " + e);
-    }
+        } catch (e) {
+            console.log("Main_EventPlay e " + e);
+        }
+    });
 }
 
 function Main_EventPreview(type, name, game, lang, screen) {
-    if (skipfirebase) return;
+    Main_ready(function() {
+        if (skipfirebase) return;
 
-    try {
+        try {
 
-        gtag(
-            'event',
-            type,
-            {
-                'name': name,
-                'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                'game': game ? game : UNKNOWN,
-                'screen': screen ? screen : UNKNOWN
-            }
-        );
+            gtag(
+                'event',
+                type,
+                {
+                    'name': name,
+                    'lang': lang ? lang.toUpperCase() : UNKNOWN,
+                    'game': game ? game : UNKNOWN,
+                    'screen': screen ? screen : UNKNOWN
+                }
+            );
 
-    } catch (e) {
-        console.log("Main_EventPreview e " + e);
-    }
+        } catch (e) {
+            console.log("Main_EventPreview e " + e);
+        }
+    });
 }
 
 function Main_EventVersion(apk, web, webview, device, sdk, manufacturer) {
-    if (skipfirebase) return;
+    Main_ready(function() {
+        if (skipfirebase) return;
 
-    try {
+        try {
 
-        //Delay the event if it is call too sone will not work
-        Main_setTimeout(
-            function() {
+            //Delay the event if it is call too sone will not work
+            Main_setTimeout(
+                function() {
 
-                gtag(
-                    'event',
-                    'app_version',
-                    {
-                        'apk_version': apk,
-                        'web_version': web,
-                        'webview_version': webview,
-                        'device_model': device,
-                        'sdk': sdk,
-                        'manufacturer': manufacturer,
-                    }
-                );
+                    gtag(
+                        'event',
+                        'app_version',
+                        {
+                            'apk_version': apk,
+                            'web_version': web,
+                            'webview_version': webview,
+                            'device_model': device,
+                            'sdk': sdk,
+                            'manufacturer': manufacturer,
+                        }
+                    );
 
-            },
-            15000
-        );
+                },
+                15000
+            );
 
-        //Te app willsend this from when the token is added just save a refrecen and use later
-        if (Main_getItemInt('New_User_Token_Added', 0)) {
-            Main_setItem('New_User_Token_Added', 0);
-            Main_Eventsimple('New_User_Token_Added');
+            //Te app willsend this from when the token is added just save a refrecen and use later
+            if (Main_getItemInt('New_User_Token_Added', 0)) {
+                Main_setItem('New_User_Token_Added', 0);
+                Main_Eventsimple('New_User_Token_Added');
+            }
+
+        } catch (e) {
+            console.log("Main_EventVersion e " + e);
         }
-
-    } catch (e) {
-        console.log("Main_EventVersion e " + e);
-    }
+    });
 }
 
 function Main_EventChannelRefresh(screen) {
@@ -2593,23 +2604,25 @@ function Main_EventChannelRefresh(screen) {
 }
 
 function Main_EventChannel(obj) {
-    if (skipfirebase) return;
+    Main_ready(function() {
+        if (skipfirebase) return;
 
-    try {
-        if (!obj || !obj.type || !obj.screen) return;
+        try {
+            if (!obj || !obj.type || !obj.screen) return;
 
-        gtag(
-            'event',
-            'channel',
-            {
-                'type': obj.type,
-                'screen': Main_EventGetChannelScreen(obj)
-            }
-        );
+            gtag(
+                'event',
+                'channel',
+                {
+                    'type': obj.type,
+                    'screen': Main_EventGetChannelScreen(obj)
+                }
+            );
 
-    } catch (e) {
-        console.log("Main_EventChannel e " + e);
-    }
+        } catch (e) {
+            console.log("Main_EventChannel e " + e);
+        }
+    });
 }
 
 var UNKNOWN = 'UNKNOWN';
@@ -2629,13 +2642,15 @@ function Main_EventGetChannelScreen(obj) {
 }
 
 function Main_Eventsimple(event) {
-    if (skipfirebase) return;
+    Main_ready(function() {
+        if (skipfirebase) return;
 
-    try {
+        try {
 
-        firebase.analytics().logEvent(event);
+            firebase.analytics().logEvent(event);
 
-    } catch (e) {
-        console.log("Main_Eventsimple event " + event + " e " + e);
-    }
+        } catch (e) {
+            console.log("Main_Eventsimple event " + event + " e " + e);
+        }
+    });
 }
