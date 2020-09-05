@@ -1065,7 +1065,7 @@ function ChatLive_SendPrepared(chat_number, id) {
             //     break;
             case "PART":
                 if (ChatLive_socketSend) {
-                    ChatLive_SendReeset();
+                    ChatLive_SendReset();
                     ChatLive_socketSend.close(1000);
                 }
                 break;
@@ -1093,7 +1093,7 @@ function ChatLive_SendPrepared(chat_number, id) {
     ChatLive_socketSendSetCheck(chat_number, id);
 }
 
-function ChatLive_SendReeset() {
+function ChatLive_SendReset() {
     ChatLive_socketSend.onclose = empty_fun;
     ChatLive_socketSend.onerror = empty_fun;
     ChatLive_socketSend.onmessage = empty_fun;
@@ -1103,7 +1103,7 @@ function ChatLive_SendReeset() {
 function ChatLive_SendClose() {
     if (ChatLive_socketSend) {
         if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
-        ChatLive_SendReeset();
+        ChatLive_SendReset();
         ChatLive_socketSend.close(1000);
 
     }
