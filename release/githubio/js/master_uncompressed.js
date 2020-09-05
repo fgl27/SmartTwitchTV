@@ -5263,7 +5263,7 @@
                     break;
                 case "PING":
                     //Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
-                    //Main_Log(message);
+                    Main_Log(JSON.stringify(message));
                     ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                     break;
                 case "001":
@@ -8267,13 +8267,11 @@
     function Main_openStream() {
         //Main_Log('Main_openStream');
         Main_hideScene1Doc();
-        Main_ready(function() {
-            Main_addEventListener("keydown", Play_handleKeyDown);
-            Main_showScene2Doc();
-            Play_hidePanel();
-            if (!Play_EndDialogEnter) Play_HideEndDialog();
-            Play_Start();
-        });
+        Main_addEventListener("keydown", Play_handleKeyDown);
+        Main_showScene2Doc();
+        Play_hidePanel();
+        if (!Play_EndDialogEnter) Play_HideEndDialog();
+        Play_Start();
     }
 
     function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
@@ -8306,23 +8304,21 @@
         ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
         Main_hideScene1Doc();
-        Main_ready(function() {
-            Main_addEventListener("keydown", PlayClip_handleKeyDown);
-            Main_showScene2Doc();
-            Play_hideChat();
-            Play_HideWarningDialog();
-            Play_CleanHideExit();
+        Main_addEventListener("keydown", PlayClip_handleKeyDown);
+        Main_showScene2Doc();
+        Play_hideChat();
+        Play_HideWarningDialog();
+        Play_CleanHideExit();
 
-            PlayClip_Start();
+        PlayClip_Start();
 
-            Main_EventPlay(
-                'clip',
-                Main_values_Play_data[6],
-                Main_values_Play_data[3],
-                Main_values_Play_data[17],
-                screen
-            );
-        });
+        Main_EventPlay(
+            'clip',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            Main_values_Play_data[17],
+            screen
+        );
     }
 
     function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
@@ -8365,14 +8361,12 @@
 
     function Main_openVod() {
         Main_hideScene1Doc();
-        Main_ready(function() {
-            Main_addEventListener("keydown", PlayVod_handleKeyDown);
-            Main_showScene2Doc();
-            PlayVod_hidePanel();
-            Play_hideChat();
-            Play_CleanHideExit();
-            PlayVod_Start();
-        });
+        Main_addEventListener("keydown", PlayVod_handleKeyDown);
+        Main_showScene2Doc();
+        PlayVod_hidePanel();
+        Play_hideChat();
+        Play_CleanHideExit();
+        PlayVod_Start();
     }
 
     function Main_removeFocus(id, idArray) {
