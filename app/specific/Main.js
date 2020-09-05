@@ -630,6 +630,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.247 - Web Version September 05 2020",
+            changes: ["General performance and visual improves"]
+        },
+        {
             title: "Web Version September 04 2020",
             changes: ["General performance improves and bug fixes"]
         },
@@ -665,10 +669,6 @@ function Main_Changelog() {
                 "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
                 "General performance improves and bug fixes"
             ]
-        },
-        {
-            title: "Web Version August 18 2020",
-            changes: ["Improve player bottom controls, make easier to understand what is be changed, fix not properly working options (Multistream audio and player restart was not working sometimes)"]
         },
     ];
 

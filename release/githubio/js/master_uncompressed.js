@@ -5613,7 +5613,7 @@
                     //     break;
                 case "PART":
                     if (ChatLive_socketSend) {
-                        ChatLive_SendReeset();
+                        ChatLive_SendReset();
                         ChatLive_socketSend.close(1000);
                     }
                     break;
@@ -5641,7 +5641,7 @@
         ChatLive_socketSendSetCheck(chat_number, id);
     }
 
-    function ChatLive_SendReeset() {
+    function ChatLive_SendReset() {
         ChatLive_socketSend.onclose = empty_fun;
         ChatLive_socketSend.onerror = empty_fun;
         ChatLive_socketSend.onmessage = empty_fun;
@@ -5651,7 +5651,7 @@
     function ChatLive_SendClose() {
         if (ChatLive_socketSend) {
             if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
-            ChatLive_SendReeset();
+            ChatLive_SendReset();
             ChatLive_socketSend.close(1000);
 
         }
@@ -6925,10 +6925,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.246';
-    var Main_version_java = 35; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 04 2020';
-    var Main_version_web = 61; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.247';
+    var Main_version_java = 36; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'September 05 2020';
+    var Main_version_web = 62; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7530,6 +7530,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.247 - Web Version September 05 2020",
+                changes: ["General performance and visual improves"]
+            },
+            {
                 title: "Web Version September 04 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -7565,10 +7569,6 @@
                     "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
                     "General performance improves and bug fixes"
                 ]
-            },
-            {
-                title: "Web Version August 18 2020",
-                changes: ["Improve player bottom controls, make easier to understand what is be changed, fix not properly working options (Multistream audio and player restart was not working sometimes)"]
             },
         ];
 
@@ -9694,28 +9694,14 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout) {
-        try {
-            Android.getStreamDataAsync(
-                token_url,
-                hls_url,
-                callback,
-                checkResult,
-                position,
-                Timeout
-            );
-        } catch (e) {
-            try {
-                Android.getStreamDataAsync(
-                    token_url,
-                    hls_url,
-                    callback,
-                    checkResult,
-                    position,
-                    2,
-                    Timeout
-                );
-            } catch (e) {}
-        }
+        Android.getStreamDataAsync(
+            token_url,
+            hls_url,
+            callback,
+            checkResult,
+            position,
+            Timeout
+        );
     }
 
     //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
@@ -9727,29 +9713,14 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout) {
-        try {
-            Android.CheckIfIsLiveFeed(
-                token_url,
-                hls_url,
-                callback,
-                x,
-                y,
-                Timeout
-            );
-        } catch (e) {
-            try {
-                Android.CheckIfIsLiveFeed(
-                    token_url,
-                    hls_url,
-                    100,
-                    callback,
-                    x,
-                    y,
-                    2,
-                    Timeout
-                );
-            } catch (e) {}
-        }
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            callback,
+            x,
+            y,
+            Timeout
+        );
     }
 
     //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -9760,23 +9731,11 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamData(token_url, hls_url, Timeout) {
-        try {
-            return Android.getStreamData(
-                token_url,
-                hls_url,
-                Timeout
-            );
-        } catch (e) {
-            try {
-                return Android.getStreamData(
-                    token_url,
-                    hls_url,
-                    2,
-                    Timeout
-                );
-            } catch (e) {}
-        }
-        return null;
+        return Android.getStreamData(
+            token_url,
+            hls_url,
+            Timeout
+        );
     }
 
     //public String getQualities()
@@ -10480,13 +10439,7 @@
     //Android specific: true
     //Clear the side panel or small player over the live feed play removes it from the screen
     function OSInterface_ClearSidePanelPlayer() {
-        try {
-            Android.ClearSidePanelPlayer();
-        } catch (e) {
-            try {
-                Android.ClearSidePanelPlayer(true);
-            } catch (e) {}
-        }
+        Android.ClearSidePanelPlayer();
     }
 
     //public void SidePanelPlayerRestore()
@@ -10607,9 +10560,8 @@
     //Android specific: true
     //Get live stream latency to the streamer
     function OSInterface_getLatency(chat_number) {
-        try {
-            Android.getLatency(chat_number);
-        } catch (e) {}
+        Android.getLatency(chat_number);
+
     }
 
     //public void mKeepScreenOn(boolean keepOn)
