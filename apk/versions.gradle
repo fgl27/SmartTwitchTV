@@ -11,7 +11,7 @@ ext.versions = [
         leanback             : '1.0.0',
         tvprovider             : '1.0.0',
         gradlePlugin         : '4.0.1',
-        benmanes             : '0.29.0',
+        benmanes             : '0.30.0',
         googlegson           : '2.8.6',
         webkit               : '1.3.0',
 ]
