@@ -8182,32 +8182,32 @@
 
     function Main_showScene1Doc() {
         //Main_ShowElementWithEle(Main_Scene1Doc);
-        Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
+        Main_RemoveClassWithEle(Main_Scene1Doc, 'transform_hide');
     }
 
     function Main_hideScene1Doc() {
         //Main_HideElementWithEle(Main_Scene1Doc);
-        Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
+        Main_AddClassWitEle(Main_Scene1Doc, 'transform_hide');
     }
 
     function Main_isScene1DocShown() {
         //return Main_isElementShowingWithEle(Main_Scene1Doc);
-        return !Main_A_includes_B(Main_Scene1Doc.className, 'opacity_zero');
+        return !Main_A_includes_B(Main_Scene1Doc.className, 'transform_hide');
     }
 
     function Main_showScene2Doc() {
         //Main_ShowElementWithEle(Main_Scene2Doc);
-        Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
+        Main_RemoveClassWithEle(Main_Scene2Doc, 'transform_hide');
     }
 
     function Main_hideScene2Doc() {
         //Main_HideElementWithEle(Main_Scene2Doc);
-        Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
+        Main_AddClassWitEle(Main_Scene2Doc, 'transform_hide');
     }
 
     function Main_isScene2DocShown() {
         //return Main_isElementShowingWithEle(Main_Scene2Doc);
-        return !Main_A_includes_B(Main_Scene2Doc.className, 'opacity_zero');
+        return !Main_A_includes_B(Main_Scene2Doc.className, 'transform_hide');
     }
 
     function Main_OPenAsVod(index) {
@@ -16220,7 +16220,7 @@
     }
 
     function Play_isPanelShowing() {
-        return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'opacity_zero');
+        return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
     }
 
     function Play_hidePanel() {
@@ -16233,7 +16233,7 @@
     }
 
     function Play_ForceShowPannel() {
-        Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'opacity_zero');
+        Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'transform_hide');
 
         if (Play_StayDialogVisible()) return;
 
@@ -16242,7 +16242,7 @@
     }
 
     function Play_ForceHidePannel() {
-        Main_AddClassWitEle(Play_PanneInfoDoclId, 'opacity_zero');
+        Main_AddClassWitEle(Play_PanneInfoDoclId, 'transform_hide');
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
