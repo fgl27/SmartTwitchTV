@@ -5263,7 +5263,7 @@
                     break;
                 case "PING":
                     //Main_Log('ChatLive_socket[chat_number] ' + chat_number + ' PING');
-                    Main_Log(JSON.stringify(message));
+                    //Main_Log(JSON.stringify(message));
                     ChatLive_socket[chat_number].send('PONG ' + message.params[0]);
                     break;
                 case "001":
