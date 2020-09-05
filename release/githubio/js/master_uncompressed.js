@@ -6923,7 +6923,6 @@
     //Variable initialization
     var smartTwitchTV;
     var Main_isTV;
-    var Main_isReleased = false;
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
@@ -7072,8 +7071,8 @@
     var Main_body = document.body;
     //Variable initialization end
 
-    // this function will be called only once the first time the app startup
-    if (!Main_isReleased) Main_Start();
+    // this function will be called only when running the app/ folder, release maker will remove this
+    Main_Start();
 
     function Main_Start() {
         if (document.readyState === "loading") {
@@ -7145,7 +7144,6 @@
                 Main_IsOn_OSInterface = 0;
                 Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)"; //default rgba(0, 0, 0, 1)
                 Main_isDebug = true;
-                //Main_Log('Main_isReleased: ' + Main_isReleased);
                 //Main_Log('Main_isDebug: ' + Main_isDebug);
                 //Main_Log('Main_isBrowser: ' + !Main_IsOn_OSInterface);
                 //If we add the class on the android app for some reason it prevents input from release the focus
