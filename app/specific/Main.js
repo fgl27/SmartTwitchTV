@@ -1363,11 +1363,14 @@ function Main_OPenAsVod_PreshutdownStream() {
 function Main_openStream() {
     //Main_Log('Main_openStream');
     Main_hideScene1Doc();
-    Main_addEventListener("keydown", Play_handleKeyDown);
     Main_showScene2Doc();
-    Play_hidePanel();
-    if (!Play_EndDialogEnter) Play_HideEndDialog();
-    Play_Start();
+
+    Main_ready(function() {
+        Main_addEventListener("keydown", Play_handleKeyDown);
+        Play_hidePanel();
+        if (!Play_EndDialogEnter) Play_HideEndDialog();
+        Play_Start();
+    });
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
