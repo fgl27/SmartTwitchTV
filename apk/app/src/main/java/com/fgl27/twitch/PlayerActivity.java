@@ -1716,6 +1716,7 @@ public class PlayerActivity extends Activity {
     }
 
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
+    @SuppressWarnings({"unused", "RedundantSuppression"})
     public class WebAppInterface {
         final Context mWebViewContext;
 
@@ -1726,13 +1727,11 @@ public class PlayerActivity extends Activity {
             mWebViewContext = context;
         }
 
-        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetIntentObj() {
             return IntentObj;
         }
 
-        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetLastIntentObj() {
             String tempLastIntent = LastIntent;
@@ -1741,31 +1740,26 @@ public class PlayerActivity extends Activity {
             return tempLastIntent;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefreshToast(int type) {
             RefreshChannelToast(type, mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mCheckRefresh(int type) {
             RefreshChannel(type, true, mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mPageUrl() {
             return Constants.PageUrl;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mloadUrl(String url) {
             LoadUrlWebview(url);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mshowLoading(boolean show) {
             MainThreadHandler.post(() -> {
@@ -1774,7 +1768,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mshowLoadingBottom(boolean show) {
             MainThreadHandler.post(() -> {
@@ -1783,7 +1776,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mclose(boolean close) {
             MainThreadHandler.post(() -> {
@@ -1792,13 +1784,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showToast(String toast) {
             MainThreadHandler.post(() -> Toast.makeText(mWebViewContext, toast, Toast.LENGTH_LONG).show());
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void OpenExternal(String url) {
 
@@ -1817,19 +1807,16 @@ public class PlayerActivity extends Activity {
 
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean isConnected() {
             return Tools.isConnected(mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean isKeyboardConnected() {
             return getResources().getConfiguration().keyboard == Configuration.KEYBOARD_QWERTY;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void KeyboardCheckAndHIde() {
             MainThreadHandler.post(() -> {
@@ -1839,13 +1826,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void hideKeyboardFrom() {
             MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mWebViewContext, mWebView));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void AvoidClicks(boolean Avoid) {
             if (deviceIsTV) return;
@@ -1863,7 +1848,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void initbodyClickSet() {
             if (deviceIsTV) return;
@@ -1876,99 +1860,83 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysOpacity(int Opacity) {
             if (deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetKeysPosition(int Position) {
             if (deviceIsTV) return;
             MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean WebViewKeyIsShowing() {
             return deviceIsTV || mWebViewKeyIsShowing;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void showKeyboardFrom() {
             MainThreadHandler.post(() -> Tools.showKeyboardFrom(mWebViewContext, mWebView));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetCheckSource(boolean mCheckSource) {
             CheckSource = mCheckSource;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationPosition(int position) {
             appPreferences.put(Constants.PREF_NOTIFICATION_POSITION, position);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationRepeat(int times) {
             appPreferences.put(Constants.PREF_NOTIFICATION_REPEAT, times);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationSinceTime(long time) {
             appPreferences.put(Constants.PREF_NOTIFICATION_SINCE_TIME, time);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void RunNotificationService() {
             InitNotifications(0, mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StopNotificationService() {
             StopNotifications();
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upNotificationState(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_BACKGROUND, Notify);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationLive(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_LIVE, Notify);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationTitle(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_TITLE, Notify);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationGame(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_STREAM_GAME, Notify);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetNotificationGameLive(boolean Notify) {
             appPreferences.put(Constants.PREF_NOTIFICATION_GAME, Notify);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void setAppIds(String client_id, String client_secret, String redirect_uri) {
             appPreferences.put(Constants.PREF_CLIENT_ID, client_id);
@@ -1976,7 +1944,6 @@ public class PlayerActivity extends Activity {
             appPreferences.put(Constants.PREF_REDIRECT_URI, redirect_uri);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void UpdateUserId(String id, String name, String refresh_token) {
 
@@ -2053,43 +2020,36 @@ public class PlayerActivity extends Activity {
             }
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void upDateLang(String lang) {
             appPreferences.put(Constants.PREF_USER_LANGUAGE, lang);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void Settings_SetPingWarning(boolean warning) {
             PingWarning = warning;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetFullScreenSize(int mFullScreenSize) {
             FullScreenSize = mFullScreenSize;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetFullScreenPosition(int mFullScreenPosition) {
             FullScreenPosition = mFullScreenPosition;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesize(boolean FullScreen) {
             MainThreadHandler.post(() -> updateVideSize(FullScreen));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mupdatesizePP(boolean FullScreen) {
             MainThreadHandler.post(() -> updateVideSizePP(FullScreen));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
@@ -2107,7 +2067,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int mplayer) {
             MainThreadHandler.post(() -> {
@@ -2153,7 +2112,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void PrepareForMulti(String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
@@ -2178,7 +2136,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
@@ -2197,21 +2154,11 @@ public class PlayerActivity extends Activity {
 //
 //        }
 
-        @SuppressWarnings("unused")//called by CheckIfIsLiveFeed
         @JavascriptInterface
         public String GetCheckIfIsLiveFeed(int x, int y) {
             return PreviewFeedResult[x][y];
         }
 
-        //TODO remove this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout) {
-            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout);
-        }
-
-        //TODO WeakerAccess after remove above
-        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
             PreviewFeedResult[x][y] = null;
@@ -2230,15 +2177,6 @@ public class PlayerActivity extends Activity {
             );
         }
 
-        //TODO remove this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout) {
-            return getStreamData(token_url, hls_url, Timeout);
-        }
-
-        //TODO WeakerAccess after remove above
-        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public String getStreamData(String token_url, String hls_url, int Timeout) {
             try {
@@ -2250,15 +2188,6 @@ public class PlayerActivity extends Activity {
             return null;
         }
 
-        //TODO remove this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout) {
-            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout);
-        }
-
-        //TODO WeakerAccess after remove above
-        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
             StreamDataResult[position] = null;
@@ -2282,19 +2211,16 @@ public class PlayerActivity extends Activity {
 
         }
 
-        @SuppressWarnings("unused")//called by getStreamDataAsync & GetMethodUrlHeadersAsync
         @JavascriptInterface
         public String GetDataResult(int position) {
             return StreamDataResult[position];
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray) {
             return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                              String callback, long checkResult, long key, int thread) {
@@ -2326,19 +2252,16 @@ public class PlayerActivity extends Activity {
             );
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetFeedPosition(int position) {
             MainThreadHandler.post(() -> PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ClearFeedPlayer() {
             MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
@@ -2359,7 +2282,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetPlayerViewFeedBottom(float bottom, int web_height) {
             int i, j, len = PlayerViewExtraLayout.length, lenEx;
@@ -2376,13 +2298,11 @@ public class PlayerActivity extends Activity {
             }
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetPlayerViewSidePanel(float bottom, float right, float left, int web_height) {
             PlayerViewSidePanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, false);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartSidePanelPlayer(String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
@@ -2403,7 +2323,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartScreensPlayer(String uri, String masterPlaylistString, int ResumePosition,
                                        float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
@@ -2427,7 +2346,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SidePanelPlayerRestore() {
             MainThreadHandler.post(() -> {
@@ -2438,7 +2356,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
@@ -2455,15 +2372,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        //TODO remoev this after some app updates
-        @SuppressWarnings("unused")//called by JS
-        @JavascriptInterface
-        public void ClearSidePanelPlayer(boolean CleanPlayer) {
-            ClearSidePanelPlayer();
-        }
-
-        //TODO WeakerAccess after remove above
-        @SuppressWarnings({"unused", "WeakerAccess"})//called by JS
         @JavascriptInterface
         public void ClearSidePanelPlayer() {
             MainThreadHandler.post(() -> {
@@ -2474,19 +2382,16 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetlatency(int LowLatency) {
             mLowLatency = LowLatency;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void stopVideo() {
             MainThreadHandler.post(() -> ResetPlayerState(mainPlayer));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mClearSmallPlayer() {
             MainThreadHandler.post(() -> {
@@ -2495,52 +2400,44 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayer() {
             MainThreadHandler.post(PlayerActivity.this::SwitchPlayer);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, true));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerPosition(int PicturePicturePos) {
             PicturePicturePosition = PicturePicturePos;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, false));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
             MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
             MainThreadHandler.post(() -> SwitchPlayerAudio(position));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetAudio(int position, float volume) {
             MainThreadHandler.post(() -> SetAudio(position, volume));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mSetPlayerAudioMulti(int position) {
             MainThreadHandler.post(() -> {
@@ -2553,25 +2450,21 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetPreviewOthersAudio(int volume) {
             PreviewOthersAudio = volume / 100f;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetPreviewAudio(int volume) {
             PreviewAudio = volume / 100f;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetPreviewSize(int mPreviewSize) {
             PreviewSize = mPreviewSize;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
             int mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
@@ -2581,7 +2474,6 @@ public class PlayerActivity extends Activity {
                     .build();
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetSmallPlayerBitrate(int Bitrate) {
             int PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
@@ -2602,49 +2494,41 @@ public class PlayerActivity extends Activity {
                     ).build();
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long getsavedtime() {
             return mResumePosition;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettime() {
             return PlayerCurrentPosition;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public long gettimepreview() {
             return SmallPlayerCurrentPosition;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getManufacturer() {
             return Build.MANUFACTURER;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getDevice() {
             return Build.MODEL;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public int getSDK() {
             return Build.VERSION.SDK_INT;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mKeepScreenOn(boolean keepOn) {
             MainThreadHandler.post(() -> KeepScreenOn(keepOn));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void PlayPauseChange() {
             MainThreadHandler.post(() -> {
@@ -2663,7 +2547,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void PlayPause(boolean state) {
             MainThreadHandler.post(() -> {
@@ -2675,13 +2558,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getPlaybackState() {
             return PlayerIsPlaying[MultiStreamEnable ? MultiMainPlayer : mainPlayer];
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void setPlaybackSpeed(float speed) {
             MainThreadHandler.post(() -> {
@@ -2695,7 +2576,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetBuffer(int who_called, int buffer_size) {
             BUFFER_SIZE[who_called] = Math.min(buffer_size, 15000);
@@ -2705,32 +2585,27 @@ public class PlayerActivity extends Activity {
             loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], DeviceRam / 2);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getversion() {
             return BuildConfig.VERSION_NAME;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean getdebug() {
             return BuildConfig.DEBUG;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void clearCookie() {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoQualityString() {
             return VideoQualityResult;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getVideoQuality(int who_called) {
             VideoQualityResult = null;
@@ -2745,13 +2620,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getVideoStatusString() {
             return getVideoStatusResult;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getVideoStatus(boolean showLatency) {
             getVideoStatusResult = null;
@@ -2786,7 +2659,6 @@ public class PlayerActivity extends Activity {
 
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void getLatency(int chat_number) {
             MainThreadHandler.post(() -> {
@@ -2809,31 +2681,26 @@ public class PlayerActivity extends Activity {
 
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean deviceIsTV() {
             return deviceIsTV;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void keyEvent(int key, int keyaction) {
             MainThreadHandler.post(() -> mWebView.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getcodecCapabilities(String CodecType) {
             return Tools.codecCapabilities(CodecType);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void setBlackListMediaCodec(String CodecList) {
             BLACKLISTEDCODECS = !CodecList.isEmpty() ? CodecList.split(",") : null;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void msetPlayer(boolean surface_view, boolean FullScreen) {
             MainThreadHandler.post(() -> {
@@ -2846,13 +2713,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void mhideSystemUI() {
             MainThreadHandler.post(PlayerActivity.this::hideSystemUI);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void BackupFile(String file, String file_content) {
             SaveBackupJsonHandler.postDelayed(() -> {
@@ -2866,13 +2731,11 @@ public class PlayerActivity extends Activity {
             }, 5000);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean HasBackupFile(String file) {
             return Tools.HasBackupFile(file, mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String RestoreBackupFile(String file) {
             if (Tools.WR_storage(mWebViewContext))
@@ -2881,19 +2744,16 @@ public class PlayerActivity extends Activity {
             return null;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void requestWr() {
             MainThreadHandler.post(PlayerActivity.this::Check_WriteExternalStorage);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean canBackupFile() {
             return Tools.WR_storage(mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void EnableMultiStream(boolean MainBig, int offset) {
             MainThreadHandler.post(() -> {
@@ -2903,13 +2763,11 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean IsMainNotMain() {
             return mainPlayer != 0;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void DisableMultiStream() {
             MainThreadHandler.post(() -> {
@@ -2918,7 +2776,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void StartMultiStream(int position, String uri, String masterPlaylistString) {
             MainThreadHandler.post(() -> {
@@ -2942,7 +2799,6 @@ public class PlayerActivity extends Activity {
             });
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public boolean isAccessibilitySettingsOn() {
             try {
@@ -2958,25 +2814,21 @@ public class PlayerActivity extends Activity {
             return false;
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getWebviewVersion() {
             return Tools.getWebviewVersion(mWebViewContext);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public String getQualities() {
             return Tools.getQualities(trackSelector[mainPlayer]);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void SetQuality(int position) {
             mSetQuality(position);
         }
 
-        @SuppressWarnings("unused")//called by JS
         @JavascriptInterface
         public void LongLog(String log) {
             Tools.LongLog(TAG, log);

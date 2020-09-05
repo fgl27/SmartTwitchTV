@@ -129,28 +129,14 @@ function OSInterface_SetQuality(position) {
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout) {
-    try {
-        Android.getStreamDataAsync(
-            token_url,
-            hls_url,
-            callback,
-            checkResult,
-            position,
-            Timeout
-        );
-    } catch (e) {
-        try {
-            Android.getStreamDataAsync(
-                token_url,
-                hls_url,
-                callback,
-                checkResult,
-                position,
-                2,
-                Timeout
-            );
-        } catch (e) {}
-    }
+    Android.getStreamDataAsync(
+        token_url,
+        hls_url,
+        callback,
+        checkResult,
+        position,
+        Timeout
+    );
 }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
@@ -162,29 +148,14 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout) {
-    try {
-        Android.CheckIfIsLiveFeed(
-            token_url,
-            hls_url,
-            callback,
-            x,
-            y,
-            Timeout
-        );
-    } catch (e) {
-        try {
-            Android.CheckIfIsLiveFeed(
-                token_url,
-                hls_url,
-                100,
-                callback,
-                x,
-                y,
-                2,
-                Timeout
-            );
-        } catch (e) {}
-    }
+    Android.CheckIfIsLiveFeed(
+        token_url,
+        hls_url,
+        callback,
+        x,
+        y,
+        Timeout
+    );
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -195,23 +166,11 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_getStreamData(token_url, hls_url, Timeout) {
-    try {
-        return Android.getStreamData(
-            token_url,
-            hls_url,
-            Timeout
-        );
-    } catch (e) {
-        try {
-            return Android.getStreamData(
-                token_url,
-                hls_url,
-                2,
-                Timeout
-            );
-        } catch (e) {}
-    }
-    return null;
+    return Android.getStreamData(
+        token_url,
+        hls_url,
+        Timeout
+    );
 }
 
 //public String getQualities()
@@ -914,13 +873,7 @@ function OSInterface_ClearFeedPlayer() {
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
 function OSInterface_ClearSidePanelPlayer() {
-    try {
-        Android.ClearSidePanelPlayer();
-    } catch (e) {
-        try {
-            Android.ClearSidePanelPlayer(true);
-        } catch (e) {}
-    }
+    Android.ClearSidePanelPlayer();
 }
 
 //public void SidePanelPlayerRestore()
@@ -1041,9 +994,8 @@ function OSInterface_upDateLang(lang) {
 //Android specific: true
 //Get live stream latency to the streamer
 function OSInterface_getLatency(chat_number) {
-    try {
-        Android.getLatency(chat_number);
-    } catch (e) {}
+    Android.getLatency(chat_number);
+
 }
 
 //public void mKeepScreenOn(boolean keepOn)
