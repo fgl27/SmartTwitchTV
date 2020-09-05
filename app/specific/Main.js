@@ -1276,32 +1276,32 @@ function Main_getElementById(elemString) {
 
 function Main_showScene1Doc() {
     //Main_ShowElementWithEle(Main_Scene1Doc);
-    Main_RemoveClassWithEle(Main_Scene1Doc, 'transform_hide');
+    Main_RemoveClassWithEle(Main_Scene1Doc, 'opacity_zero');
 }
 
 function Main_hideScene1Doc() {
     //Main_HideElementWithEle(Main_Scene1Doc);
-    Main_AddClassWitEle(Main_Scene1Doc, 'transform_hide');
+    Main_AddClassWitEle(Main_Scene1Doc, 'opacity_zero');
 }
 
 function Main_isScene1DocShown() {
     //return Main_isElementShowingWithEle(Main_Scene1Doc);
-    return !Main_A_includes_B(Main_Scene1Doc.className, 'transform_hide');
+    return !Main_A_includes_B(Main_Scene1Doc.className, 'opacity_zero');
 }
 
 function Main_showScene2Doc() {
     //Main_ShowElementWithEle(Main_Scene2Doc);
-    Main_RemoveClassWithEle(Main_Scene2Doc, 'transform_hide');
+    Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
 }
 
 function Main_hideScene2Doc() {
     //Main_HideElementWithEle(Main_Scene2Doc);
-    Main_AddClassWitEle(Main_Scene2Doc, 'transform_hide');
+    Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
 }
 
 function Main_isScene2DocShown() {
     //return Main_isElementShowingWithEle(Main_Scene2Doc);
-    return !Main_A_includes_B(Main_Scene2Doc.className, 'transform_hide');
+    return !Main_A_includes_B(Main_Scene2Doc.className, 'opacity_zero');
 }
 
 function Main_OPenAsVod(index) {

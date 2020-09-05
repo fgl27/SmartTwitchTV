@@ -1465,7 +1465,7 @@ function Play_ExitDialogVisible() {
 }
 
 function Play_isPanelShowing() {
-    return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
+    return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'opacity_zero');
 }
 
 function Play_hidePanel() {
@@ -1478,7 +1478,7 @@ function Play_hidePanel() {
 }
 
 function Play_ForceShowPannel() {
-    Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'transform_hide');
+    Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'opacity_zero');
 
     if (Play_StayDialogVisible()) return;
 
@@ -1487,7 +1487,7 @@ function Play_ForceShowPannel() {
 }
 
 function Play_ForceHidePannel() {
-    Main_AddClassWitEle(Play_PanneInfoDoclId, 'transform_hide');
+    Main_AddClassWitEle(Play_PanneInfoDoclId, 'opacity_zero');
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
 }
