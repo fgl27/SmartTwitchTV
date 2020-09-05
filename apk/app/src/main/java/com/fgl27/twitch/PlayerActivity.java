@@ -37,13 +37,18 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.provider.Settings;
+import android.transition.ChangeBounds;
+import android.transition.Transition;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceRequest;
@@ -237,6 +242,8 @@ public class PlayerActivity extends Activity {
     private boolean PingSDKBool;
 
     private ThreadPoolExecutor DataThreadPool;
+
+    private Transition PreviewTransition;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -687,6 +694,10 @@ public class PlayerActivity extends Activity {
     }
 
     private void SetDefaultLayouts() {
+        PreviewTransition = new ChangeBounds();
+        PreviewTransition.setDuration(200);
+        PreviewTransition.setInterpolator(new LinearInterpolator());
+
         int[] positions = {
                 Gravity.RIGHT | Gravity.BOTTOM,//0
                 Gravity.RIGHT | Gravity.CENTER,//1
@@ -878,7 +889,7 @@ public class PlayerActivity extends Activity {
         isFullScreen = FullScreen;
         if (FullScreen) {
             PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
-            UpdadeSizePosSmall(mainPlayer ^ 1);
+            UpdadeSizePosSmall(mainPlayer ^ 1, false);
         } else {
             PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[3][0]);//center top 50% width x height
             PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[7][0]);//center bottom 50% width x height
@@ -932,8 +943,19 @@ public class PlayerActivity extends Activity {
         if (player[pos] != null) player[pos].setVolume(volume);
     }
 
-    public void UpdadeSizePosSmall(int pos) {
+    public void UpdadeSizePosSmall(int pos, boolean animate) {
         PlayerView[pos].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+        AnimateSetLayoutParams(
+                PlayerView[pos],
+                PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize],
+                animate
+        );
+    }
+
+    public void AnimateSetLayoutParams(ViewGroup view, FrameLayout.LayoutParams layout, boolean animate) {
+        //Animate the size changes looks odd, the video it self is slow to resize and there is a ghost effect, not noticeable when changing only the position
+        if (animate) TransitionManager.beginDelayedTransition(view, PreviewTransition);
+        view.setLayoutParams(layout);
     }
 
     public void mSetPreviewOthersAudio() {
@@ -2413,7 +2435,6 @@ public class PlayerActivity extends Activity {
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
                 MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel), 100);
-
             });
         }
 
@@ -2429,7 +2450,6 @@ public class PlayerActivity extends Activity {
                     PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
                     //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
                     MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel), 100);
-
                 }
 
             });
@@ -2485,7 +2505,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, true));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2498,7 +2518,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, false));
         }
 
         @SuppressWarnings("unused")//called by JS
@@ -2822,7 +2842,7 @@ public class PlayerActivity extends Activity {
                 if (FullScreen) updateVideSizePP(true);
                 else updateVideSize(false);
 
-                UpdadeSizePosSmall(mainPlayer ^ 1);
+                UpdadeSizePosSmall(mainPlayer ^ 1, false);
             });
         }
 
