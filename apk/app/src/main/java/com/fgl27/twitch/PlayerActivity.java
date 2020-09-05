@@ -2095,9 +2095,8 @@ public class PlayerActivity extends Activity {
                     startPlayer = player[mainPlayer] == null;
                 }
 
-                VideoWebHolder.bringChildToFront(mWebView);
-
                 if (startPlayer) {
+                    VideoWebHolder.bringChildToFront(mWebView);
 
                     mediaSources[mainPlayer ^ mplayer] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
                             mediaSources[4] :
@@ -2125,6 +2124,9 @@ public class PlayerActivity extends Activity {
                     if (mWho_Called > 1) {
                         LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
                     }
+
+                    //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
+                    MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
                 }
             });
         }
@@ -2409,7 +2411,9 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 mWho_Called = 4;
                 VideoWebHolder.bringChildToFront(VideoHolder);
-                PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
+                //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
+                MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel), 100);
+
             });
         }
 
@@ -2423,7 +2427,9 @@ public class PlayerActivity extends Activity {
                     VideoWebHolder.bringChildToFront(VideoHolder);
 
                     PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
-                    PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
+                    //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
+                    MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel), 100);
+
                 }
 
             });
