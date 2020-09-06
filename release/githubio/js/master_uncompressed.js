@@ -8211,7 +8211,7 @@
     }
 
     function Main_isScene2DocVisible() {
-        return Main_Scene2Doc.style.opacity === 1;
+        return parseInt(Main_Scene2Doc.style.opacity);
     }
 
     function Main_OPenAsVod(index) {
@@ -15458,7 +15458,6 @@
 
     function Play_CheckFollow(id) {
         if (AddUser_UserIsSet() && id) {
-            Play_controls[Play_controlsFollow].setLable('');
             AddCode_PlayRequest = true;
             AddCode_Channel_id = id;
             AddCode_CheckFollow();
