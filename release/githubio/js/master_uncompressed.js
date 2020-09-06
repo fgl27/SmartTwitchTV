@@ -2836,7 +2836,7 @@
         if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
         Main_cleanTopLabel();
         Main_innerHTML("label_last_refresh", '');
-        if (Main_isScene1DocShown()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
+        if (Main_isScene1DocVisible()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
         AddCode_PlayRequest = false;
 
         Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
@@ -3397,7 +3397,7 @@
 
     function ChannelContent_LoadPreview() {
         if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
-            Main_isScene1DocShown() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
+            Main_isScene1DocVisible() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
             var doc = Main_getElementById('channel_content_cell0_1');
 
@@ -3484,7 +3484,7 @@
 
         var doc = Main_getElementById('channel_content_cell0_1');
 
-        if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() &&
+        if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
             !Main_isElementShowing('dialog_thumb_opt') &&
             (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && doc &&
@@ -3559,7 +3559,7 @@
         return Main_getElementById('channel_content_cell0_1') &&
             Main_values.Main_Go === Main_ChannelContent &&
             ChannelContent_cursorY &&
-            Main_isScene1DocShown();
+            Main_isScene1DocVisible();
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -8177,33 +8177,28 @@
     }
 
     function Main_showScene1Doc() {
-        //Main_ShowElementWithEle(Main_Scene1Doc);
-        Main_RemoveClassWithEle(Main_Scene1Doc, 'transform_hide');
+        Main_Scene1Doc.style.opacity = 1;
     }
 
     function Main_hideScene1Doc() {
-        //Main_HideElementWithEle(Main_Scene1Doc);
-        Main_AddClassWitEle(Main_Scene1Doc, 'transform_hide');
+        Main_Scene1Doc.style.opacity = 0;
     }
 
-    function Main_isScene1DocShown() {
-        //return Main_isElementShowingWithEle(Main_Scene1Doc);
-        return !Main_A_includes_B(Main_Scene1Doc.className, 'transform_hide');
+    function Main_isScene1DocVisible() {
+        return parseInt(Main_Scene1Doc.style.opacity);
     }
 
     function Main_showScene2Doc() {
-        //Main_ShowElementWithEle(Main_Scene2Doc);
-        Main_RemoveClassWithEle(Main_Scene2Doc, 'transform_hide');
+        Main_Scene2Doc.style.opacity = 1;
     }
 
     function Main_hideScene2Doc() {
-        //Main_HideElementWithEle(Main_Scene2Doc);
-        Main_AddClassWitEle(Main_Scene2Doc, 'transform_hide');
+        Main_Scene2Doc.style.opacity = 0;
+
     }
 
-    function Main_isScene2DocShown() {
-        //return Main_isElementShowingWithEle(Main_Scene2Doc);
-        return !Main_A_includes_B(Main_Scene2Doc.className, 'transform_hide');
+    function Main_isScene2DocVisible() {
+        return Main_Scene2Doc.style.opacity === 1;
     }
 
     function Main_OPenAsVod(index) {
@@ -8285,7 +8280,7 @@
 
             mutationObserver.observe(Main_Scene1Doc, {
                 attributes: true,
-                attributeFilter: ['class'],
+                attributeFilter: ['style'],
             });
 
             Main_hideScene1Doc();
@@ -8326,13 +8321,9 @@
         ChannelClip_views = Main_values_Play_data[14];
         ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
-        Main_hideScene1Doc();
-
-        Main_ready(function() {
-
-            Main_showScene2Doc();
-
-            Main_ready(function() {
+        Main_hideScene1DocAndCallBack(
+            function() {
+                Main_showScene2Doc();
 
                 Main_addEventListener("keydown", PlayClip_handleKeyDown);
                 Play_hideChat();
@@ -8348,9 +8339,9 @@
                     Main_values_Play_data[17],
                     screen
                 );
+            }
+        );
 
-            });
-        });
     }
 
     function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
@@ -8392,22 +8383,17 @@
     }
 
     function Main_openVod() {
-        Main_hideScene1Doc();
-
-        Main_ready(function() {
-
-            Main_showScene2Doc();
-
-            Main_ready(function() {
+        Main_hideScene1DocAndCallBack(
+            function() {
+                Main_showScene2Doc();
 
                 Main_addEventListener("keydown", PlayVod_handleKeyDown);
                 PlayVod_hidePanel();
                 Play_hideChat();
                 Play_CleanHideExit();
                 PlayVod_Start();
-
-            });
-        });
+            }
+        );
     }
 
     function Main_removeFocus(id, idArray) {
@@ -9101,7 +9087,7 @@
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_updateclock();
 
-        if (!skipPlay && (Main_isScene2DocShown() || Sidepannel_isShowing())) Play_CheckResume();
+        if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowing())) Play_CheckResume();
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
@@ -9148,7 +9134,7 @@
         Main_ShowElement('dialog_accessibility');
         Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
         Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
-        if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
+        if (!Sidepannel_isShowing() && Main_isScene1DocVisible()) {
             Sidepannel_Hide();
             Main_addEventListener("keydown", Main_CheckAccessibilityKey);
         }
@@ -9169,7 +9155,7 @@
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
             case KEY_ENTER:
-                if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocShown()) {
+                if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
                     Main_CheckAccessibilityHide(true);
                 }
                 break;
@@ -9255,7 +9241,7 @@
             Play_showBufferDialog();
             Main_CheckResume(true);
 
-            if (Main_isScene2DocShown()) {
+            if (Main_isScene2DocVisible()) {
 
                 Main_onNewIntentClearPlay();
 
@@ -9290,7 +9276,7 @@
             Main_CheckResume(true);
 
             //TODO check when side panel is open
-            if (Main_isScene2DocShown()) {
+            if (Main_isScene2DocVisible()) {
                 Main_onNewIntentClearPlay();
 
                 Main_hideScene2Doc();
@@ -9310,7 +9296,7 @@
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_data.data[3] = obj.obj.name;
 
-            if (Main_isScene2DocShown()) {
+            if (Main_isScene2DocVisible()) {
                 var PlayVodClip = 1;
 
                 if (PlayVod_isOn) PlayVodClip = 2;
@@ -9344,7 +9330,7 @@
 
             Main_CheckResume(true);
 
-            if (Main_isScene2DocShown()) {
+            if (Main_isScene2DocVisible()) {
 
                 Main_onNewIntentClearPlay();
 
@@ -15261,7 +15247,7 @@
                 0
             );
 
-        } else if (Main_isScene1DocShown()) {
+        } else if (Main_isScene1DocVisible()) {
 
             if (ScreenObj[Main_values.Main_Go].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
@@ -16256,7 +16242,7 @@
     }
 
     function Play_isPanelShowing() {
-        return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
+        return parseInt(Play_PanneInfoDoclId.style.opacity);
     }
 
     function Play_hidePanel() {
@@ -16269,7 +16255,7 @@
     }
 
     function Play_ForceShowPannel() {
-        Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'transform_hide');
+        Play_PanneInfoDoclId.style.opacity = 1;
 
         if (Play_StayDialogVisible()) return;
 
@@ -16278,7 +16264,7 @@
     }
 
     function Play_ForceHidePannel() {
-        Main_AddClassWitEle(Play_PanneInfoDoclId, 'transform_hide');
+        Play_PanneInfoDoclId.style.opacity = 0;
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
     }
@@ -16709,7 +16695,7 @@
     }
 
     function Play_UpdateDuration(duration) { // Called only by JAVA
-        if (Main_isScene1DocShown()) {
+        if (Main_isScene1DocVisible()) {
             if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Screens_Current_Key); //fix position after animation has endede after Player.STATE_READY
         } else if (duration > 0) {
             Play_DurationSeconds = duration / 1000;
@@ -19507,7 +19493,7 @@
         Main_values.Main_Go = key;
         ScreenObj[key].label_init();
 
-        if (Main_isScene1DocShown() &&
+        if (Main_isScene1DocVisible() &&
             !Sidepannel_isShowing() &&
             !Sidepannel_MainisShowing()) {
             Main_addEventListener("keydown", ScreenObj[key].key_fun);
@@ -19546,7 +19532,7 @@
     }
 
     function Screens_StartLoad(key) {
-        if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
+        if (key === Main_values.Main_Go && Main_isScene1DocVisible()) {
 
             Screens_RemoveFocus(key);
             Main_showLoadDialog();
@@ -19946,7 +19932,7 @@
                 }
 
                 //Show screen to calculated Screens_setOffset as display none doesn't allow calculation
-                //var SceneNotShowing = !Main_isScene1DocShown();
+                //var SceneNotShowing = !Main_isScene1DocVisible();
                 var ScrollDocNotShowing = !Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc);
 
                 //if (SceneNotShowing || ScrollDocNotShowing) {
@@ -20036,7 +20022,7 @@
                 if (!ScreenObj[key].isRefreshing) { //the screen is not refreshing
 
                     if (Main_isStoped ||
-                        ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
+                        ((!Main_isScene1DocVisible() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                             (key !== Main_values.Main_Go))) { //the screen is not selected
 
                         if (!Screens_Some_Screen_Is_Refreshing) {
@@ -22051,12 +22037,12 @@
         var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
         return doc &&
             Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
-            Main_isScene1DocShown();
+            Main_isScene1DocVisible();
     }
 
     //TODO add screen.isInuse prop to adress this fun use
     function Screens_IsInUse(key) {
-        return key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+        return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowing() &&
             !Sidepannel_MainisShowing() && !Settings_isVisible();
     }
     /*
@@ -27367,7 +27353,7 @@
     }
 
     function Sidepannel_isShowing() {
-        return Sidepannel_isShowingSide() && Main_isScene1DocShown();
+        return Sidepannel_isShowingSide() && Main_isScene1DocVisible();
     }
 
     function Sidepannel_isShowingSide() {
@@ -28382,7 +28368,7 @@
                 }
 
                 //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-                // if (!Main_isScene2DocShown()) {
+                // if (!Main_isScene2DocVisible()) {
                 //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
                 //     Main_showScene2Doc();
 
@@ -29568,7 +29554,7 @@
 
     function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
-        if (Main_isScene2DocShown() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
+        if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
         if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
