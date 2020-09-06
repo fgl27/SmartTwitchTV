@@ -1372,17 +1372,25 @@ function Main_openStream() {
 
 
 function Main_hideScene1DocAndCallBack(callback) {
-    var mutationObserver = new MutationObserver(function() {
+
+    try {
+        var mutationObserver = new MutationObserver(function() {
+            callback();
+            this.disconnect();
+        });
+
+        mutationObserver.observe(Main_Scene1Doc, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        Main_hideScene1Doc();
+
+    } catch (e) {
+        Main_hideScene1Doc();
         callback();
-        this.disconnect();
-    });
+    }
 
-    mutationObserver.observe(Main_Scene1Doc, {
-        attributes: true,
-        attributeFilter: ['class'],
-    });
-
-    Main_hideScene1Doc();
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
