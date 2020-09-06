@@ -697,7 +697,6 @@ function Play_updateStreamInfoStartError() {
 
 function Play_CheckFollow(id) {
     if (AddUser_UserIsSet() && id) {
-        Play_controls[Play_controlsFollow].setLable('');
         AddCode_PlayRequest = true;
         AddCode_Channel_id = id;
         AddCode_CheckFollow();

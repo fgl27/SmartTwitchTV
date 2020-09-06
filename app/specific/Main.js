@@ -1306,7 +1306,7 @@ function Main_hideScene2Doc() {
 }
 
 function Main_isScene2DocVisible() {
-    return Main_Scene2Doc.style.opacity === 1;
+    return parseInt(Main_Scene2Doc.style.opacity);
 }
 
 function Main_OPenAsVod(index) {
