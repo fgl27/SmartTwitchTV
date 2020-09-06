@@ -10763,7 +10763,7 @@
             Play_controls[Play_controlsOpenVod].setLable('');
         }
 
-        PlayVod_CheckFollow();
+        Play_CheckFollow(Main_values.Main_selectedChannel_id);
         Play_ShowPanelStatus(3);
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -15083,6 +15083,7 @@
 
         if (offline_chat) {
             Play_StartStay();
+            Play_CheckFollow(Play_data.data[14]);
         } else if (!Play_PreviewId) {
             Play_showBufferDialog();
             Play_loadData();
@@ -15384,7 +15385,7 @@
     function Play_UpdateMainStream(startChat, refreshInfo) {
         if (startChat) {
             ChatLive_Init(0);
-            Play_CheckFollow();
+            Play_CheckFollow(Play_data.data[14]);
         }
         Play_UpdateMainStreamDiv();
         //Restore info panel from web
@@ -15409,7 +15410,7 @@
     }
 
     function Play_updateStreamInfoStartValues(response) {
-        Play_CheckFollow();
+        Play_CheckFollow(Play_data.data[14]);
 
         var obj = JSON.parse(response);
 
@@ -15455,10 +15456,11 @@
         }
     }
 
-    function Play_CheckFollow() {
-        if (AddUser_UserIsSet() && Play_data.data[14]) {
+    function Play_CheckFollow(id) {
+        if (AddUser_UserIsSet() && id) {
+            Play_controls[Play_controlsFollow].setLable('');
             AddCode_PlayRequest = true;
-            AddCode_Channel_id = Play_data.data[14];
+            AddCode_Channel_id = id;
             AddCode_CheckFollow();
         } else Play_hideFollow();
     }
@@ -17324,7 +17326,7 @@
         ChatLive_Init(0);
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-        Play_CheckFollow();
+        Play_CheckFollow(Play_data.data[14]);
         Main_SaveValues();
     }
 
@@ -17882,14 +17884,6 @@
         }
     }
 
-    function PlayVod_CheckFollow() {
-        if (AddUser_UserIsSet()) {
-            AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-            AddCode_PlayRequest = true;
-            AddCode_CheckFollow();
-        } else Play_hideFollow();
-    }
-
     function PlayVod_updateVodInfoPannel(response) {
         response = JSON.parse(response);
 
@@ -17932,7 +17926,7 @@
         Main_values.Main_selectedChannel_id = response.channel._id;
         Main_values.Main_selectedChannel = response.channel.name;
 
-        PlayVod_CheckFollow();
+        Play_CheckFollow(Main_values.Main_selectedChannel_id);
 
         PlayVod_previews_pre_start(response.seek_previews_url);
         PlayVod_muted_segments_value = response.muted_segments;
