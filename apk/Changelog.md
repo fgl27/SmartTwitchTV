@@ -7,12 +7,18 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version September 04 2020
+==============
+
+* Prevent chat disconnection do to inactivity, technically this only affect devices running outdated version of Webview 75.X and older
+
+
 Apk Version 3.0.247 - Web Version September 05 2020
 ==============
 
 * General performance and visual improves
 
-Web Version Seember 04 2020
+Web Version September 04 2020
 ==============
 
 * General performance improves and bug fixes

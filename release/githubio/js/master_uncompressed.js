@@ -5316,6 +5316,9 @@
                                 OSInterface_getLatency(chat_number);
                         }
 
+                        //On old implementation of webview or malfunction implementations, there is the need to send a a "heartbeat"
+                        //from time to time, to prevent the connection from be closed, only one device need this Amazon firestick 4k Model AFTMM
+                        //On that device the onclose is automatic call after 60 seconds of inactivity
                         ChatLive_PingId[chat_number] = Main_setInterval(
                             function() {
                                 if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1)
@@ -5611,6 +5614,10 @@
                     break;
                 case "CAP":
                     ChatLive_socketSendJoin = true;
+
+                    //On old implementation of webview or malfunction implementations, there is the need to send a a "heartbeat"
+                    //from time to time, to prevent the connection from be closed, only one device need this Amazon firestick 4k Model AFTMM
+                    //On that device the onclose is automatic call after 60 seconds of inactivity
                     ChatLive_SendPingId = Main_setInterval(
                         function() {
                             if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1)
@@ -6948,8 +6955,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.247';
     var Main_version_java = 36; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 05 2020';
-    var Main_version_web = 64; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 06 2020';
+    var Main_version_web = 65; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7550,6 +7557,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 06 2020",
+                changes: ["Prevent chat disconnection do to inactivity, technically this only affect devices running outdated version of Webview 75.X and older"]
+            },
+            {
                 title: "Apk Version 3.0.247 - Web Version September 05 2020",
                 changes: ["General performance and visual improves"]
             },
@@ -7580,13 +7591,6 @@
                 changes: [
                     "Add chat delay option base on Latency To Broadcaster",
                     "Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version August 19 2020",
-                    "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version August 19 2020",
-                changes: [
-                    "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
                     "General performance improves and bug fixes"
                 ]
             },

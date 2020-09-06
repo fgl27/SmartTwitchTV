@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.247';
 var Main_version_java = 36;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 05 2020';
-var Main_version_web = 64;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'September 06 2020';
+var Main_version_web = 65;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -628,6 +628,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version September 06 2020",
+            changes: ["Prevent chat disconnection do to inactivity, technically this only affect devices running outdated version of Webview 75.X and older"]
+        },
+        {
             title: "Apk Version 3.0.247 - Web Version September 05 2020",
             changes: ["General performance and visual improves"]
         },
@@ -658,13 +662,6 @@ function Main_Changelog() {
             changes: [
                 "Add chat delay option base on Latency To Broadcaster",
                 "Fix Multistream not enable when it was never used yet and PP or 50/50 was enable, bug introduced on Web version August 19 2020",
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version August 19 2020",
-            changes: [
-                "Fix hold key down to enable audio all videos on Multistream, bug added on Web Version August 18 2020 version",
                 "General performance improves and bug fixes"
             ]
         },
