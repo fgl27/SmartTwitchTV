@@ -6927,7 +6927,7 @@
     var Main_stringVersion_Min = '.247';
     var Main_version_java = 36; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 05 2020';
-    var Main_version_web = 63; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 64; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -12159,6 +12159,7 @@
 
     function Play_StartStay() {
         if (!ChatLive_loaded[0]) ChatLive_Init(0);
+        Play_CheckFollow(Play_data.data[14]);
         Play_ChatEnable = true;
         Play_HideBufferDialog();
         if (Main_IsOn_OSInterface) OSInterface_stopVideo();
@@ -15083,7 +15084,6 @@
 
         if (offline_chat) {
             Play_StartStay();
-            Play_CheckFollow(Play_data.data[14]);
         } else if (!Play_PreviewId) {
             Play_showBufferDialog();
             Play_loadData();
