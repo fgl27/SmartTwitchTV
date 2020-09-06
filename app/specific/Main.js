@@ -1359,22 +1359,30 @@ function Main_OPenAsVod_PreshutdownStream() {
 }
 
 function Main_openStream() {
-    //Main_Log('Main_openStream');
-    Main_hideScene1Doc();
-
-    Main_ready(function() {
-
-        Main_showScene2Doc();
-
-        Main_ready(function() {
-
+    Main_hideScene1DocAndCallBack(
+        function() {
+            Main_showScene2Doc();
             Main_addEventListener("keydown", Play_handleKeyDown);
             Play_hidePanel();
             if (!Play_EndDialogEnter) Play_HideEndDialog();
             Play_Start();
+        }
+    );
+}
 
-        });
+
+function Main_hideScene1DocAndCallBack(callback) {
+    var mutationObserver = new MutationObserver(function() {
+        callback();
+        this.disconnect();
     });
+
+    mutationObserver.observe(Main_Scene1Doc, {
+        attributes: true,
+        attributeFilter: ['class'],
+    });
+
+    Main_hideScene1Doc();
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
