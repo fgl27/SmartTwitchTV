@@ -2040,7 +2040,7 @@
     function AddCode_RequestCheckFollowNOK(response) {
         response = JSON.parse(response);
         if (response.error) {
-            if (Main_A_includes_B((response.error + ''), 'Not Found')) {
+            if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
                 AddCode_IsFollowing = false;
                 if (AddCode_PlayRequest) Play_setFollow();
                 else ChannelContent_setFollow();
@@ -2139,7 +2139,7 @@
             } else if (xmlHttp.status === 404) { //success no user is not a sub
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.error) {
-                    if (Main_A_includes_B((response.error + ''), 'Not Found')) {
+                    if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
                         AddCode_RequestCheckSubfail();
                     } else AddCode_RequestCheckSubError(tryes);
                 } else AddCode_RequestCheckSubError(tryes);
