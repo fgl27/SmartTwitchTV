@@ -47,6 +47,8 @@ var cheers = {};
 
 var ChatLive_selectedChannel_id = [];
 var ChatLive_loadChattersId = [];
+var ChatLive_PingId = [];
+var ChatLive_SendPingId;
 var ChatLive_selectedChannel = [];
 
 var emoteReplace = {
@@ -765,6 +767,14 @@ function ChatLive_loadChatRequest(chat_number, id) {
                             OSInterface_getLatency(chat_number);
                     }
 
+                    ChatLive_PingId[chat_number] = Main_setInterval(
+                        function() {
+                            if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1)
+                                ChatLive_socket[chat_number].send('PONG tmi.twitch.tv');
+                        },
+                        30 * 1000,//30 
+                        ChatLive_PingId[chat_number]
+                    );
                 }
                 ChatLive_CheckRoomState(message, chat_number, true);
 
@@ -901,6 +911,7 @@ function ChatLive_Close(chat_number) {
         ChatLive_socket[chat_number].close(1000);
     }
     ChatLive_loaded[chat_number] = false;
+    Main_clearInterval(ChatLive_PingId[chat_number]);
 }
 
 function ChatLive_Check(chat_number, id, timeout, silent) {
@@ -1052,6 +1063,14 @@ function ChatLive_SendPrepared(chat_number, id) {
                 break;
             case "CAP":
                 ChatLive_socketSendJoin = true;
+                ChatLive_SendPingId = Main_setInterval(
+                    function() {
+                        if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1)
+                            ChatLive_socketSend.send('PONG tmi.twitch.tv');
+                    },
+                    30 * 1000,//30 sec
+                    ChatLive_SendPingId
+                );
                 break;
             case "NOTICE":
                 if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
@@ -1108,6 +1127,7 @@ function ChatLive_SendClose() {
 
     }
     ChatLive_socketSendJoin = false;
+    Main_clearInterval(ChatLive_SendPingId);
 }
 
 function ChatLive_socketSendSetCheck(chat_number, id) {
@@ -1679,6 +1699,8 @@ function ChatLive_ClearIds(chat_number) {
     Main_clearTimeout(ChatLive_loadBadgesChannelId);
     Main_clearTimeout(ChatLive_LatencyId[chat_number]);
     Main_clearInterval(ChatLive_loadChattersId[chat_number]);
+    Main_clearInterval(ChatLive_PingId[chat_number]);
+    Main_clearInterval(ChatLive_SendPingId);
 }
 
 function ChatLive_Clear(chat_number) {
