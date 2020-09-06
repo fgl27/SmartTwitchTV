@@ -323,7 +323,6 @@ function Play_Start(offline_chat) {
 
     if (offline_chat) {
         Play_StartStay();
-        Play_CheckFollow(Play_data.data[14]);
     } else if (!Play_PreviewId) {
         Play_showBufferDialog();
         Play_loadData();
