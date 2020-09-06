@@ -439,6 +439,7 @@ function UserLiveFeed_setHideFeed() {
 function UserLiveFeed_FeedRefresh() {
     if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] && !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
 
+        Play_HideWarningMidleDialog();
         UserLiveFeed_clearHideFeed();
         UserLiveFeed_StartLoad();
 
