@@ -7071,7 +7071,7 @@
     var Main_body = document.body;
     //Variable initialization end
 
-    // this function will be called only when running the app/ folder, release maker will remove this
+    // this function call will be used only when running the app/ folder, release maker will remove this
     Main_Start();
 
     function Main_Start() {
@@ -8265,22 +8265,30 @@
     }
 
     function Main_openStream() {
-        //Main_Log('Main_openStream');
-        Main_hideScene1Doc();
-
-        Main_ready(function() {
-
-            Main_showScene2Doc();
-
-            Main_ready(function() {
-
+        Main_hideScene1DocAndCallBack(
+            function() {
+                Main_showScene2Doc();
                 Main_addEventListener("keydown", Play_handleKeyDown);
                 Play_hidePanel();
                 if (!Play_EndDialogEnter) Play_HideEndDialog();
                 Play_Start();
+            }
+        );
+    }
 
-            });
+
+    function Main_hideScene1DocAndCallBack(callback) {
+        var mutationObserver = new MutationObserver(function() {
+            callback();
+            this.disconnect();
         });
+
+        mutationObserver.observe(Main_Scene1Doc, {
+            attributes: true,
+            attributeFilter: ['class'],
+        });
+
+        Main_hideScene1Doc();
     }
 
     function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
