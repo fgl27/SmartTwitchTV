@@ -8272,23 +8272,11 @@
 
     function Main_hideScene1DocAndCallBack(callback) {
 
-        try {
-            var mutationObserver = new MutationObserver(function() {
-                callback();
-                this.disconnect();
-            });
+        Main_hideScene1Doc();
 
-            mutationObserver.observe(Main_Scene1Doc, {
-                attributes: true,
-                attributeFilter: ['style'],
-            });
-
-            Main_hideScene1Doc();
-
-        } catch (e) {
-            Main_hideScene1Doc();
-            callback();
-        }
+        Main_ready(function() {
+            Main_setTimeout(callback, 100);
+        });
 
     }
 
