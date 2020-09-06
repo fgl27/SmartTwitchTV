@@ -767,6 +767,9 @@ function ChatLive_loadChatRequest(chat_number, id) {
                             OSInterface_getLatency(chat_number);
                     }
 
+                    //On old implementation of webview or malfunction implementations, there is the need to send a a "heartbeat"
+                    //from time to time, to prevent the connection from be closed, only one device need this Amazon firestick 4k Model AFTMM
+                    //On that device the onclose is automatic call after 60 seconds of inactivity
                     ChatLive_PingId[chat_number] = Main_setInterval(
                         function() {
                             if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1)
@@ -1063,6 +1066,10 @@ function ChatLive_SendPrepared(chat_number, id) {
                 break;
             case "CAP":
                 ChatLive_socketSendJoin = true;
+
+                //On old implementation of webview or malfunction implementations, there is the need to send a a "heartbeat"
+                //from time to time, to prevent the connection from be closed, only one device need this Amazon firestick 4k Model AFTMM
+                //On that device the onclose is automatic call after 60 seconds of inactivity
                 ChatLive_SendPingId = Main_setInterval(
                     function() {
                         if (ChatLive_socketSend && ChatLive_socketSend.readyState === 1)
