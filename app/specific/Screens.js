@@ -288,7 +288,7 @@ function Screens_init(key, preventRefresh) {
     Main_values.Main_Go = key;
     ScreenObj[key].label_init();
 
-    if (Main_isScene1DocShown() &&
+    if (Main_isScene1DocVisible() &&
         !Sidepannel_isShowing() &&
         !Sidepannel_MainisShowing()) {
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
@@ -327,7 +327,7 @@ function Screens_exit(key) {
 }
 
 function Screens_StartLoad(key) {
-    if (key === Main_values.Main_Go && Main_isScene1DocShown()) {
+    if (key === Main_values.Main_Go && Main_isScene1DocVisible()) {
 
         Screens_RemoveFocus(key);
         Main_showLoadDialog();
@@ -727,7 +727,7 @@ function Screens_loadDataSuccessFinish(key) {
             }
 
             //Show screen to calculated Screens_setOffset as display none doesn't allow calculation
-            //var SceneNotShowing = !Main_isScene1DocShown();
+            //var SceneNotShowing = !Main_isScene1DocVisible();
             var ScrollDocNotShowing = !Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc);
 
             //if (SceneNotShowing || ScrollDocNotShowing) {
@@ -817,7 +817,7 @@ function Screens_CheckAutoRefresh(key, timeout) {
             if (!ScreenObj[key].isRefreshing) {//the screen is not refreshing
 
                 if (Main_isStoped ||
-                    ((!Main_isScene1DocShown() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
+                    ((!Main_isScene1DocVisible() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                         (key !== Main_values.Main_Go))) {//the screen is not selected
 
                     if (!Screens_Some_Screen_Is_Refreshing) {
@@ -2825,11 +2825,11 @@ function Screens_Isfocused() {
     var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
     return doc &&
         Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
-        Main_isScene1DocShown();
+        Main_isScene1DocVisible();
 }
 
 //TODO add screen.isInuse prop to adress this fun use
 function Screens_IsInUse(key) {
-    return key === Main_values.Main_Go && Main_isScene1DocShown() && !Sidepannel_isShowing() &&
+    return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowing() &&
         !Sidepannel_MainisShowing() && !Settings_isVisible();
 }

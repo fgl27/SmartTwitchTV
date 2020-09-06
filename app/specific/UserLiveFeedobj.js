@@ -340,7 +340,7 @@ function UserLiveFeedobj_ShowFeed() {
 
 function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
-    if (Main_isScene2DocShown() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
+    if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
     if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||

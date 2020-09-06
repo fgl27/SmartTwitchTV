@@ -49,7 +49,7 @@ function ChannelContent_init() {
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
     Main_innerHTML("label_last_refresh", '');
-    if (Main_isScene1DocShown()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
+    if (Main_isScene1DocVisible()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
     AddCode_PlayRequest = false;
 
     Main_innerHTML('top_lable', Main_values.Main_selectedChannelDisplayname);
@@ -609,7 +609,7 @@ function ChannelContent_handleKeyDown(event) {
 
 function ChannelContent_LoadPreview() {
     if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
-        Main_isScene1DocShown() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
+        Main_isScene1DocVisible() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
         var doc = Main_getElementById('channel_content_cell0_1');
 
@@ -695,7 +695,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
     var doc = Main_getElementById('channel_content_cell0_1');
 
-    if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocShown() &&
+    if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
         !Main_isElementShowing('dialog_thumb_opt') &&
         (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
         x === Main_values.Main_Go && doc &&
@@ -770,5 +770,5 @@ function ChannelContent_Isfocused() {
     return Main_getElementById('channel_content_cell0_1') &&
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
-        Main_isScene1DocShown();
+        Main_isScene1DocVisible();
 }

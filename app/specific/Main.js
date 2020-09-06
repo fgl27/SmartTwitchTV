@@ -1273,33 +1273,28 @@ function Main_getElementById(elemString) {
 }
 
 function Main_showScene1Doc() {
-    //Main_ShowElementWithEle(Main_Scene1Doc);
-    Main_RemoveClassWithEle(Main_Scene1Doc, 'transform_hide');
+    Main_Scene1Doc.style.opacity = 1;
 }
 
 function Main_hideScene1Doc() {
-    //Main_HideElementWithEle(Main_Scene1Doc);
-    Main_AddClassWitEle(Main_Scene1Doc, 'transform_hide');
+    Main_Scene1Doc.style.opacity = 0;
 }
 
-function Main_isScene1DocShown() {
-    //return Main_isElementShowingWithEle(Main_Scene1Doc);
-    return !Main_A_includes_B(Main_Scene1Doc.className, 'transform_hide');
+function Main_isScene1DocVisible() {
+    return parseInt(Main_Scene1Doc.style.opacity);
 }
 
 function Main_showScene2Doc() {
-    //Main_ShowElementWithEle(Main_Scene2Doc);
-    Main_RemoveClassWithEle(Main_Scene2Doc, 'transform_hide');
+    Main_Scene2Doc.style.opacity = 1;
 }
 
 function Main_hideScene2Doc() {
-    //Main_HideElementWithEle(Main_Scene2Doc);
-    Main_AddClassWitEle(Main_Scene2Doc, 'transform_hide');
+    Main_Scene2Doc.style.opacity = 0;
+
 }
 
-function Main_isScene2DocShown() {
-    //return Main_isElementShowingWithEle(Main_Scene2Doc);
-    return !Main_A_includes_B(Main_Scene2Doc.className, 'transform_hide');
+function Main_isScene2DocVisible() {
+    return Main_Scene2Doc.style.opacity === 1;
 }
 
 function Main_OPenAsVod(index) {
@@ -1381,7 +1376,7 @@ function Main_hideScene1DocAndCallBack(callback) {
 
         mutationObserver.observe(Main_Scene1Doc, {
             attributes: true,
-            attributeFilter: ['class'],
+            attributeFilter: ['style'],
         });
 
         Main_hideScene1Doc();
@@ -1422,13 +1417,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
     ChannelClip_views = Main_values_Play_data[14];
     ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
-    Main_hideScene1Doc();
-
-    Main_ready(function() {
-
-        Main_showScene2Doc();
-
-        Main_ready(function() {
+    Main_hideScene1DocAndCallBack(
+        function() {
+            Main_showScene2Doc();
 
             Main_addEventListener("keydown", PlayClip_handleKeyDown);
             Play_hideChat();
@@ -1444,9 +1435,9 @@ function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
                 Main_values_Play_data[17],
                 screen
             );
+        }
+    );
 
-        });
-    });
 }
 
 function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
@@ -1488,22 +1479,17 @@ function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
 }
 
 function Main_openVod() {
-    Main_hideScene1Doc();
-
-    Main_ready(function() {
-
-        Main_showScene2Doc();
-
-        Main_ready(function() {
+    Main_hideScene1DocAndCallBack(
+        function() {
+            Main_showScene2Doc();
 
             Main_addEventListener("keydown", PlayVod_handleKeyDown);
             PlayVod_hidePanel();
             Play_hideChat();
             Play_CleanHideExit();
             PlayVod_Start();
-
-        });
-    });
+        }
+    );
 }
 
 function Main_removeFocus(id, idArray) {
@@ -2189,7 +2175,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    if (!skipPlay && (Main_isScene2DocShown() || Sidepannel_isShowing())) Play_CheckResume();
+    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowing())) Play_CheckResume();
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
@@ -2236,7 +2222,7 @@ function Main_CheckAccessibilitySet() {
     Main_ShowElement('dialog_accessibility');
     Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
     Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
-    if (!Sidepannel_isShowing() && Main_isScene1DocShown()) {
+    if (!Sidepannel_isShowing() && Main_isScene1DocVisible()) {
         Sidepannel_Hide();
         Main_addEventListener("keydown", Main_CheckAccessibilityKey);
     }
@@ -2257,7 +2243,7 @@ function Main_CheckAccessibilityKey(event) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
         case KEY_ENTER:
-            if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocShown()) {
+            if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
                 Main_CheckAccessibilityHide(true);
             }
             break;
@@ -2341,7 +2327,7 @@ function Main_onNewIntent(mobj) {
         Play_showBufferDialog();
         Main_CheckResume(true);
 
-        if (Main_isScene2DocShown()) {
+        if (Main_isScene2DocVisible()) {
 
             Main_onNewIntentClearPlay();
 
@@ -2376,7 +2362,7 @@ function Main_onNewIntent(mobj) {
         Main_CheckResume(true);
 
         //TODO check when side panel is open
-        if (Main_isScene2DocShown()) {
+        if (Main_isScene2DocVisible()) {
             Main_onNewIntentClearPlay();
 
             Main_hideScene2Doc();
@@ -2396,7 +2382,7 @@ function Main_onNewIntent(mobj) {
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_data.data[3] = obj.obj.name;
 
-        if (Main_isScene2DocShown()) {
+        if (Main_isScene2DocVisible()) {
             var PlayVodClip = 1;
 
             if (PlayVod_isOn) PlayVodClip = 2;
@@ -2430,7 +2416,7 @@ function Main_onNewIntent(mobj) {
 
         Main_CheckResume(true);
 
-        if (Main_isScene2DocShown()) {
+        if (Main_isScene2DocVisible()) {
 
             Main_onNewIntentClearPlay();
 

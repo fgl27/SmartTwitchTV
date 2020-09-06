@@ -477,7 +477,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             0
         );
 
-    } else if (Main_isScene1DocShown()) {
+    } else if (Main_isScene1DocVisible()) {
 
         if (ScreenObj[Main_values.Main_Go].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
@@ -1465,7 +1465,7 @@ function Play_ExitDialogVisible() {
 }
 
 function Play_isPanelShowing() {
-    return !Main_A_includes_B(Play_PanneInfoDoclId.className, 'transform_hide');
+    return parseInt(Play_PanneInfoDoclId.style.opacity);
 }
 
 function Play_hidePanel() {
@@ -1478,7 +1478,7 @@ function Play_hidePanel() {
 }
 
 function Play_ForceShowPannel() {
-    Main_RemoveClassWithEle(Play_PanneInfoDoclId, 'transform_hide');
+    Play_PanneInfoDoclId.style.opacity = 1;
 
     if (Play_StayDialogVisible()) return;
 
@@ -1487,7 +1487,7 @@ function Play_ForceShowPannel() {
 }
 
 function Play_ForceHidePannel() {
-    Main_AddClassWitEle(Play_PanneInfoDoclId, 'transform_hide');
+    Play_PanneInfoDoclId.style.opacity = 0;
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
 }
@@ -1913,7 +1913,7 @@ function Play_CheckHost(responseText) {
 }
 
 function Play_UpdateDuration(duration) { // Called only by JAVA
-    if (Main_isScene1DocShown()) {
+    if (Main_isScene1DocVisible()) {
         if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Screens_Current_Key);//fix position after animation has endede after Player.STATE_READY
     } else if (duration > 0) {
         Play_DurationSeconds = duration / 1000;

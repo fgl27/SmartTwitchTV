@@ -67,7 +67,7 @@ function Sidepannel_RemoveFocusFeed() {
 }
 
 function Sidepannel_isShowing() {
-    return Sidepannel_isShowingSide() && Main_isScene1DocShown();
+    return Sidepannel_isShowingSide() && Main_isScene1DocVisible();
 }
 
 function Sidepannel_isShowingSide() {

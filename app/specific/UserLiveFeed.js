@@ -288,7 +288,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             }
 
             //Show screen offseted to calculated Screens_setOffset as display none doesn't allow calculation
-            // if (!Main_isScene2DocShown()) {
+            // if (!Main_isScene2DocVisible()) {
             //     Main_AddClassWitEle(Main_Scene2Doc, 'opacity_zero');
             //     Main_showScene2Doc();
 
