@@ -1272,6 +1272,10 @@ function Main_getElementById(elemString) {
     return document.getElementById(elemString);
 }
 
+function Main_isScene1DocVisible() {
+    return parseInt(Main_Scene1Doc.style.opacity);
+}
+
 function Main_showScene1Doc() {
     Main_Scene1Doc.style.opacity = 1;
 }
@@ -1280,8 +1284,16 @@ function Main_hideScene1Doc() {
     Main_Scene1Doc.style.opacity = 0;
 }
 
-function Main_isScene1DocVisible() {
-    return parseInt(Main_Scene1Doc.style.opacity);
+var Main_hideScene1DocAndCallBackId;
+function Main_hideScene1DocAndCallBack(callback) {
+
+    Main_hideScene1Doc();
+
+    //Delay the the call back as it depedes from the Main_Scene1Doc not be visible anymore
+    Main_hideScene1DocAndCallBackId = Main_ready(function() {
+        Main_setTimeout(callback, 100, Main_hideScene1DocAndCallBackId);
+    });
+
 }
 
 function Main_showScene2Doc() {
@@ -1363,17 +1375,6 @@ function Main_openStream() {
             Play_Start();
         }
     );
-}
-
-
-function Main_hideScene1DocAndCallBack(callback) {
-
-    Main_hideScene1Doc();
-
-    Main_ready(function() {
-        Main_setTimeout(callback, 100);
-    });
-
 }
 
 function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
