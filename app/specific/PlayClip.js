@@ -150,7 +150,7 @@ function PlayClip_Start() {
         Play_controls[Play_controlsOpenVod].setLable('');
     }
 
-    PlayVod_CheckFollow();
+    Play_CheckFollow(Main_values.Main_selectedChannel_id);
     Play_ShowPanelStatus(3);
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);

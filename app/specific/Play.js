@@ -323,6 +323,7 @@ function Play_Start(offline_chat) {
 
     if (offline_chat) {
         Play_StartStay();
+        Play_CheckFollow(Play_data.data[14]);
     } else if (!Play_PreviewId) {
         Play_showBufferDialog();
         Play_loadData();
@@ -623,7 +624,7 @@ function Play_UpdateMainStreamDiv() {
 function Play_UpdateMainStream(startChat, refreshInfo) {
     if (startChat) {
         ChatLive_Init(0);
-        Play_CheckFollow();
+        Play_CheckFollow(Play_data.data[14]);
     }
     Play_UpdateMainStreamDiv();
     //Restore info panel from web
@@ -648,7 +649,7 @@ function Play_updateStreamInfoStart() {
 }
 
 function Play_updateStreamInfoStartValues(response) {
-    Play_CheckFollow();
+    Play_CheckFollow(Play_data.data[14]);
 
     var obj = JSON.parse(response);
 
@@ -694,10 +695,11 @@ function Play_updateStreamInfoStartError() {
     }
 }
 
-function Play_CheckFollow() {
-    if (AddUser_UserIsSet() && Play_data.data[14]) {
+function Play_CheckFollow(id) {
+    if (AddUser_UserIsSet() && id) {
+        Play_controls[Play_controlsFollow].setLable('');
         AddCode_PlayRequest = true;
-        AddCode_Channel_id = Play_data.data[14];
+        AddCode_Channel_id = id;
         AddCode_CheckFollow();
     } else Play_hideFollow();
 }

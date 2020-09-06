@@ -259,14 +259,6 @@ function PlayVod_updateVodInfoError() {
     }
 }
 
-function PlayVod_CheckFollow() {
-    if (AddUser_UserIsSet()) {
-        AddCode_Channel_id = Main_values.Main_selectedChannel_id;
-        AddCode_PlayRequest = true;
-        AddCode_CheckFollow();
-    } else Play_hideFollow();
-}
-
 function PlayVod_updateVodInfoPannel(response) {
     response = JSON.parse(response);
 
@@ -309,7 +301,7 @@ function PlayVod_updateVodInfoPannel(response) {
     Main_values.Main_selectedChannel_id = response.channel._id;
     Main_values.Main_selectedChannel = response.channel.name;
 
-    PlayVod_CheckFollow();
+    Play_CheckFollow(Main_values.Main_selectedChannel_id);
 
     PlayVod_previews_pre_start(response.seek_previews_url);
     PlayVod_muted_segments_value = response.muted_segments;

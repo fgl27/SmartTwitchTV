@@ -444,7 +444,7 @@ function Play_MultiUpdateMain() {
     ChatLive_Init(0);
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-    Play_CheckFollow();
+    Play_CheckFollow(Play_data.data[14]);
     Main_SaveValues();
 }
 
