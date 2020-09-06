@@ -5600,8 +5600,6 @@
                     break;
                 case "CAP":
                     ChatLive_socketSendJoin = true;
-                    //Workaround to have the send chat alive on old webview implementation;;; log in to a channel
-                    ChatLive_socketSend.send('JOIN #fglfgl27');
                     break;
                 case "NOTICE":
                     if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
@@ -5652,7 +5650,7 @@
 
     function ChatLive_SendClose() {
         if (ChatLive_socketSend) {
-            if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART #fglfgl27');
+            if (ChatLive_socketSend.readyState === 1) ChatLive_socketSend.send('PART ');
             ChatLive_SendReset();
             ChatLive_socketSend.close(1000);
 
