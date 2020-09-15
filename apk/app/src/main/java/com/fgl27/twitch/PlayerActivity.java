@@ -68,6 +68,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
@@ -2569,10 +2570,10 @@ public class PlayerActivity extends Activity {
                 if (MultiStreamEnable) {
                     for (int i = 0; i < PlayerAccount; i++) {
                         if (player[i] != null)
-                            player[i].setPlaybackSpeed(speed);
+                            player[i].setPlaybackParameters(new PlaybackParameters(speed));
                     }
                 } else if (player[mainPlayer] != null)
-                    player[mainPlayer].setPlaybackSpeed(speed);
+                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(speed));
             });
         }
 
