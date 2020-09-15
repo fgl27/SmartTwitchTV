@@ -18,10 +18,18 @@ TODO list
 * General improve
 * Change the name to "Extra screen options" or something like this
 * Update the function so it work more like the player controls, in relation to the construction of the UI
-* Construct the UI with all possible options, and on it screen there will be a function that will set with options wll be visible, technically what is done today but on a way that is easier to manage
+* Construct the UI with all possible options, and on it screen there will be a function that will set with options will be visible, technically what is done today but on a way that is easier to manage
 * Add two extra option to replace the "Content language", one is global language and one is screen language, if the screen is not set the screen will load on the global
 * Add a option to follow and unfollow channel and games
 * Maybe add some extra options that makes sense...
+
+### Update screens general use of storing stream data in attribute plus general improves
+
+* General improve
+* Make screen to use only one value X, not X_Y, this will make easier to understand and use the screens
+* Store the added div data in a obj part of the screen, this will make it faster to access and faster to create screens
+* The above also affect how side panel and prayer preview store stream info so update there too
+* Add some proper check to prevent preview on screens to remove and add thumbnail on a browser when exiting the player... browser only check probably can improve general use of the app
 
 ### Add a dialog that add extra options to the player preview
 
@@ -92,7 +100,7 @@ TODO list
 
 * General improve
 * I (project main developer) don't nativity speak English, but PT-BR
-* So on the future I will add PT-BR tranlation
+* So on the future I will add PT-BR translation
 * Because the above the main app English strings probably aren't 100% as I don't nativity speak English so they can always receive a check/improve
 
 ### Update how string works on the JS side of the code
@@ -102,7 +110,7 @@ TODO list
 * The idea is to have a main string obj default_string, saved as a `JSON.stringify` string...
 * When the app first load it parses the string `JSON.parse`, is faster to the JS engine to parse a `JSON.stringify` in relation to have the obj as a obj (this in relation to when all JS files are first parsed)
 * When the app first loads it clones the default string to the EN_US language
-* When a language change is requested first we reset the default obj base on EN_US then change to the new lang
+* When a language change is requested first we reset the default obj base on EN_US then change to the new Lang
 * That is to make sure the app lang is fully reset before change from one none default language to another, as some languages may not have all strings translated
 * Don't keep any translation on the app master code, but download they on the app start
 * Use a background http get fun to download all the strings that are save as a `JSON.stringify` string obj
