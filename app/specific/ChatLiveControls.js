@@ -846,7 +846,7 @@ function ChatLiveControls_OptionsUpdate_defautls() {
     OptionsShowObj.emote_sorting = {};
     OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
     OptionsShowObj.force_show_chat_write = {};
-    OptionsShowObj.force_show_chat_write.defaultValue = Main_getItemInt('force_show_chat_write', 0);
+    OptionsShowObj.force_show_chat_write.defaultValue = Main_getItemInt('force_show_chat_write', 1);
 }
 
 function ChatLiveControls_OptionsShow() {
