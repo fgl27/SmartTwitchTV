@@ -95,7 +95,7 @@ public final class  ChannelsUtils {
                     false
             );
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
     public static class PreviewObj {
         private final JsonObject obj;
         private final String type;

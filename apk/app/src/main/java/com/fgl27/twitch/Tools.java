@@ -386,7 +386,7 @@ public final class Tools {
         }
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
     private static class CodecList {
         private final String type;
         private final String name;
@@ -734,7 +734,7 @@ public final class Tools {
         return null;
     }
 
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
     private static class QualitiesObj {
         private final String id;
         private final String band;
