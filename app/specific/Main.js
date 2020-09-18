@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.247';
 var Main_version_java = 36;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 17 2020';
-var Main_version_web = 66;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'September 18 2020';
+var Main_version_web = 67;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -627,6 +627,10 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Web Version September 18 2020",
+            changes: ['Add extra quality options for the "default player quality" in settings (1080p60, 720p60, etc... etc)']
+        },
         {
             title: "Web Version September 17 2020",
             changes: ["General performance improves and bug fixes"]

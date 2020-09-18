@@ -1113,7 +1113,7 @@
         STR_NORMAL = "Normal";
         STR_AUTO = "Auto";
         STR_DEF_QUALITY = "Default player quality";
-        STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to be in auto mode, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
+        STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
         STR_VERY_LOW = "Very low";
         STR_LOW = "Low";
         STR_HIGH = "High";
@@ -1134,7 +1134,7 @@
         STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom lefth", "Bottom center", "Bottom right"];
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
         STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-        STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate for small players (small player also applyes to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
+        STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate to the small players (small player also applies to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
         STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
         STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
         STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
@@ -6978,8 +6978,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.247';
     var Main_version_java = 36; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 17 2020';
-    var Main_version_web = 66; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 18 2020';
+    var Main_version_web = 67; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7580,6 +7580,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 18 2020",
+                changes: ['Add extra quality options for the "default player quality" in settings (1080p60, 720p60, etc... etc)']
+            },
+            {
                 title: "Web Version September 17 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -15069,10 +15073,13 @@
     }
 
     function Play_ResetDefaultQuality() {
-        if ((Main_A_includes_B(Play_data.quality, 'Auto') || Main_A_includes_B(PlayVod_quality, 'Auto')) &&
-            !Main_A_includes_B(Settings_Obj_values('default_quality'), 'Auto')) {
+
+        if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
+
             Play_SetQuality();
+
         }
+
     }
 
     function Play_SetQuality() {
@@ -25199,7 +25206,7 @@
             "defaultValue": 3
         },
         "default_quality": {
-            "values": ["Auto", "source"],
+            "values": ["Auto", "source", "1080p60", "1080p30", "720p60", "720p30", "480p30", "360p30", "160p30", ],
             "defaultValue": 1
         },
         "check_source": {
@@ -25472,11 +25479,14 @@
 
         div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
-        div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
+        key = "default_quality";
+        Settings_value[key].values[0] = STR_AUTO;
+        Settings_value[key].values[1] = STR_SOURCE;
+        div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
         //Dialog settings
-        div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
         div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+        div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
         div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
         div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
         div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -25564,7 +25574,8 @@
 
         key = "default_quality";
         Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-        Settings_value[key].values = [STR_AUTO, STR_SOURCE];
+        Settings_value[key].values[0] = STR_AUTO;
+        Settings_value[key].values[1] = STR_SOURCE;
 
         key = "check_source";
         Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);

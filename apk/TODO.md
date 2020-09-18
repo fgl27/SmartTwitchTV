@@ -73,14 +73,6 @@ TODO list
 * Add a new notification "Streamer is now hosting" showing Streamer A is not hosting Streamer B
 * the notification must also follow the duplicate/triplicate etc rules if enabled
 
-### Expand the setting option Default player quality
-
-* New feature
-* today there is only auto and source expand it
-* Add all possible but most used qualities, 1080p, 900p, 720p, 480p, 360p, 160p
-* Technically there is XXXp60 and XXXp30, make sure the app chooses the one that has more frames
-* Technically the above may already be the default behavior
-
 ### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
 
 * General improve
