@@ -641,6 +641,7 @@
     var STR_PRESS_ENTER_TO_CHANGE;
     var STR_LATENCY_TO_BROADCASTER;
     var STR_CHAT_DELAY_LATENCY_TO_BROADCASTER;
+    var STR_CHAT_SEND_DELAY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1039,6 +1040,7 @@
         STR_LOADING_CHAT = "Chat: Connecting to";
         STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
         STR_CHAT_CONNECTED = "Chat: Connected";
+        STR_CHAT_SEND_DELAY = "Message send, chat delay enabled, message will show in chat after";
         STR_CHAT_DELAY = "Chat: delay";
         STR_VOD_HISTORY_BASE = "Play from the start or from where you stopped watching the";
         STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD?";
@@ -3751,17 +3753,21 @@
     var ChatLiveControls_showWarningDialogId;
 
     function ChatLiveControls_showWarningDialog(text, timeout) {
+
         Main_innerHTML("dialog_warning_chat_text", text);
         Main_ShowElement('dialog_warning_chat');
 
         Main_clearTimeout(ChatLiveControls_showWarningDialogId);
+
         if (timeout) {
+
             ChatLiveControls_showWarningDialogId = Main_setTimeout(
                 function() {
                     Main_HideElement('dialog_warning_chat');
                 },
                 timeout
             );
+
         }
     }
 
@@ -3783,14 +3789,22 @@
             ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
 
         } else if (ChatLiveControls_cursor === 5) {
+
             if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+
                 if (ChatLiveControls_CanSend()) {
+
                     if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
+
                         Main_ChatLiveInput.value = '';
                         ChatLiveControls_UpdateResultTextEmpty();
+
                     } else ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
+
                 } else ChatLiveControls_CantSend();
+
             } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
+
         } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
 
             ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
@@ -5753,6 +5767,15 @@
         if (ChatLive_socketSendJoin && ChatLive_socketSend && ChatLive_socketSend.readyState === 1) {
             //Main_Log('ChatLive_SendMessage sended');
             ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message);
+
+            if (Play_ChatDelayPosition) {
+                var time = Math.ceil((Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition) / 1000);
+
+                ChatLiveControls_showWarningDialog(
+                    STR_CHAT_SEND_DELAY + STR_SPACE + time + (time > 1 ? STR_SECONDS : STR_SECOND),
+                    1500
+                );
+            }
 
             return true;
         }
