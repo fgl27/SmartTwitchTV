@@ -2147,11 +2147,10 @@ public class PlayerActivity extends Activity {
             });
         }
 
-//        @SuppressWarnings("unused")//called by JS
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
 //
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer ^ 1));
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer, 1));
 //
 //        }
 
