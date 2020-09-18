@@ -1206,6 +1206,15 @@ function ChatLive_SendMessage(message, chat_number) {
         //Main_Log('ChatLive_SendMessage sended');
         ChatLive_socketSend.send('PRIVMSG #' + ChatLive_selectedChannel[chat_number] + ' :' + message);
 
+        if (Play_ChatDelayPosition) {
+            var time = Math.ceil((Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition) / 1000);
+
+            ChatLiveControls_showWarningDialog(
+                STR_CHAT_SEND_DELAY + STR_SPACE + time + (time > 1 ? STR_SECONDS : STR_SECOND),
+                1500
+            );
+        }
+
         return true;
     }
 

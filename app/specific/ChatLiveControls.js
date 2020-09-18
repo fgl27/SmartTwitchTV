@@ -187,17 +187,21 @@ function ChatLiveControls_resetInputFocusTools() {
 
 var ChatLiveControls_showWarningDialogId;
 function ChatLiveControls_showWarningDialog(text, timeout) {
+
     Main_innerHTML("dialog_warning_chat_text", text);
     Main_ShowElement('dialog_warning_chat');
 
     Main_clearTimeout(ChatLiveControls_showWarningDialogId);
+
     if (timeout) {
+
         ChatLiveControls_showWarningDialogId = Main_setTimeout(
             function() {
                 Main_HideElement('dialog_warning_chat');
             },
             timeout
         );
+
     }
 }
 
@@ -219,14 +223,22 @@ function ChatLiveControls_HandleKeyEnter() {
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
 
     } else if (ChatLiveControls_cursor === 5) {
+
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+
             if (ChatLiveControls_CanSend()) {
+
                 if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
+
                     Main_ChatLiveInput.value = '';
                     ChatLiveControls_UpdateResultTextEmpty();
+
                 } else ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
+
             } else ChatLiveControls_CantSend();
+
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
+
     } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
 
         ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));

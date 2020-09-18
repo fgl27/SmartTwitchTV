@@ -233,6 +233,7 @@ function en_USLang() {
     STR_LOADING_CHAT = "Chat: Connecting to";
     STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
     STR_CHAT_CONNECTED = "Chat: Connected";
+    STR_CHAT_SEND_DELAY = "Message send, chat delay enabled, message will show in chat after";
     STR_CHAT_DELAY = "Chat: delay";
     STR_VOD_HISTORY_BASE = "Play from the start or from where you stopped watching the";
     STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD?";
