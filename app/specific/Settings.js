@@ -248,7 +248,7 @@ var Settings_value = {
         "defaultValue": 3
     },
     "default_quality": {
-        "values": ["Auto", "source"],
+        "values": ["Auto", "source", "1080p60", "1080p30", "720p60", "720p30", "480p30", "360p30", "160p30",],
         "defaultValue": 1
     },
     "check_source": {
@@ -520,11 +520,14 @@ function Settings_SetSettings() {
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
-    div += Settings_Content('default_quality', [STR_AUTO, STR_SOURCE], STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
+    key = "default_quality";
+    Settings_value[key].values[0] = STR_AUTO;
+    Settings_value[key].values[1] = STR_SOURCE;
+    div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
-    div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+    div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -611,7 +614,8 @@ function Settings_SetStrings() {
 
     key = "default_quality";
     Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-    Settings_value[key].values = [STR_AUTO, STR_SOURCE];
+    Settings_value[key].values[0] = STR_AUTO;
+    Settings_value[key].values[1] = STR_SOURCE;
 
     key = "check_source";
     Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);

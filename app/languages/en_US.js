@@ -306,7 +306,7 @@ function en_USLang() {
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
     STR_DEF_QUALITY = "Default player quality";
-    STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to be in auto mode, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
+    STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
@@ -327,7 +327,7 @@ function en_USLang() {
     STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom lefth", "Bottom center", "Bottom right"];
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
     STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-    STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate for small players (small player also applyes to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
+    STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate to the small players (small player also applies to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
     STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
     STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
     STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";

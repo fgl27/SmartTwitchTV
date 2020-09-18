@@ -263,10 +263,13 @@ function Play_PreStart() {
 }
 
 function Play_ResetDefaultQuality() {
-    if ((Main_A_includes_B(Play_data.quality, 'Auto') || Main_A_includes_B(PlayVod_quality, 'Auto')) &&
-        !Main_A_includes_B(Settings_Obj_values('default_quality'), 'Auto')) {
+
+    if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
+
         Play_SetQuality();
+
     }
+
 }
 
 function Play_SetQuality() {
