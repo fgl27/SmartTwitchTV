@@ -64,13 +64,12 @@ function PlayVod_Start() {
     PlayVod_updateChaptersId = 0;
     PlayVod_ChaptersArray = [];
     PlayVod_ProgresBarrUpdate(0, 0);
-    Main_textContent("stream_live_time", '');
-    Main_textContent('progress_bar_current_time', Play_timeS(0));
+    Main_textContentWithEle(Play_infoLiveTime, '');
+    Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
     Chat_title = " VOD";
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_HideElement('progress_pause_holder');
-    Main_ShowElementWithEle(Play_BottonIcons_Progress);
     Play_BufferSize = 0;
 
     Play_StartStayShowbottom();
@@ -113,9 +112,9 @@ function PlayVod_Start() {
         );
         Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_textContent("stream_info_game", ChannelVod_game);
-        Main_innerHTML("stream_live_time", ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
+        Main_innerHTMLWithEle(Play_infoLiveTime, ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
         Main_textContent("stream_live_viewers", '');
-        Main_textContent("stream_watching_time", '');
+        Main_textContentWithEle(Play_infoWatchingTime, '');
 
         Main_replaceClassEmoji('stream_info_title');
     }
@@ -197,7 +196,7 @@ function PlayVod_PosStart() {
         },
         1000
     );
-    Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
+    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 
     PlayVod_SaveOffsetId = Main_setInterval(PlayVod_SaveOffset, 60000, PlayVod_SaveOffsetId);
 
@@ -284,11 +283,11 @@ function PlayVod_updateVodInfoPannel(response) {
         (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
     );
 
-    Main_innerHTML("stream_live_time", STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
+    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
     Main_textContent("stream_live_viewers", '');
-    Main_textContent("stream_watching_time", '');
+    Main_textContentWithEle(Play_infoWatchingTime, '');
 
-    Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
+    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 
     PlayVod_currentTime = Main_vodOffset * 1000;
     PlayVod_ProgresBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
@@ -637,12 +636,15 @@ function PlayVod_showPanel(autoHide) {
 function PlayVod_RefreshProgressBarr(show) {
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
+
         if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
             OSInterface_getVideoQuality(1);
 
         if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(false);
         else Play_VideoStatusTest();
+
     }
+
 }
 
 function PlayVod_setHidePanel() {
@@ -683,7 +685,11 @@ function PlayVod_getQualitiesCount() {
 }
 
 function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
-    Main_textContent('progress_bar_current_time', Play_timeS(current_time_seconds));
+    Main_textContentWithEle(
+        Play_BottonIcons_Progress_CurrentTime,
+        Play_timeS(current_time_seconds)
+    );
+
     Play_ProgresBarrBufferElm.style.width = Math.ceil(((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0) + '%';
 
     if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
@@ -733,8 +739,8 @@ function PlayVod_jumpSteps(pos, signal) {
 
     Main_innerHTMLWithEle(
         Play_BottonIcons_Progress_Steps,
-        STR_JUMPING_STEP + (signal ? signal : '') + Settings_jumpTimers_String[pos] +
-        (PlayVod_isOn ? STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '')
+        STR_JUMPING_STEP + (signal ? signal : '') +
+        (PlayVod_isOn ? Settings_jumpTimers_String[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
     );
 
     PlayVod_last_multiplier = signal;

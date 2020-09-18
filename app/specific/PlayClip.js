@@ -32,7 +32,7 @@ var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
 var PlayClip_loadData410 = false;
 
-var PlayClip_jumpTimers = [5];
+var PlayClip_jumpTimers = [1];
 
 var PlayClip_HasNext = false;
 var PlayClip_HasBack = false;
@@ -76,15 +76,12 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
 
-    Main_innerHTML("stream_live_time", ChannelClip_createdAt + ',' + STR_SPACE + ChannelClip_views);
+    Main_innerHTMLWithEle(Play_infoLiveTime, ChannelClip_createdAt + ',' + STR_SPACE + ChannelClip_views);
     Main_textContent("stream_live_viewers", '');
-    Main_textContent("stream_watching_time", '');
+    Main_textContentWithEle(Play_infoWatchingTime, '');
 
-    Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
-    PlayVod_jumpStepsIncreaseLock = false;
-    Play_DefaultjumpTimers = PlayClip_jumpTimers;
-    PlayVod_jump_max_step = 0;
-    PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
+    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+    PlayClip_SetProgressBarJumpers();
     Main_replaceClassEmoji('stream_info_title');
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
@@ -105,10 +102,9 @@ function PlayClip_Start() {
     Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
 
-    Main_textContent('progress_bar_current_time', Play_timeS(0));
+    Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
 
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
-    Main_ShowElementWithEle(Play_BottonIcons_Progress);
     Main_ShowElementWithEle(Play_Controls_Holder);
 
     PlayClip_state = Play_STATE_LOADING_TOKEN;
@@ -155,6 +151,16 @@ function PlayClip_Start() {
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 }
+
+function PlayClip_SetProgressBarJumpers() {
+
+    PlayVod_jumpStepsIncreaseLock = false;
+    Play_DefaultjumpTimers = PlayClip_jumpTimers;
+    PlayVod_jump_max_step = 0;
+    PlayVod_jumpSteps(Play_DefaultjumpTimers[0]);
+
+}
+
 
 function PlayClip_updateVodInfo() {
     if (!Main_values.ChannelVod_vodId) return;
@@ -729,12 +735,14 @@ function PlayClip_handleKeyDown(e) {
                 break;
             case KEY_UP:
                 if (Play_isPanelShowing()) {
+
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY--;
                         Play_BottonIconsFocus();
                     } else Play_BottomUpDown(3, 1);
                     PlayClip_setHidePanel();
+
                 } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();
                     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
@@ -881,3 +889,4 @@ function PlayClip_FastBackForward(position) {
     PlayVod_ProgressBaroffset = 2500;
     PlayClip_setHidePanel();
 }
+

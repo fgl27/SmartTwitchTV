@@ -55,8 +55,6 @@ var Play_streamInfoTimerId = null;
 var Play_ChatEnable = false;
 var Play_exitID = null;
 
-var Play_created = '';
-
 var Play_loadingInfoDataTry = 0;
 
 var Play_ResumeAfterOnlineCounter = 0;
@@ -306,8 +304,10 @@ function Play_Start(offline_chat) {
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
-    Main_HideElementWithEle(Play_BottonIcons_Progress);
     Main_ShowElementWithEle(Play_Controls_Holder);
+    Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
+    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(28));
+    Play_DurationSeconds = 28;
 
     Play_data.isHost = Main_values.Play_isHost;
     Main_values.Play_isHost = false;
@@ -315,10 +315,10 @@ function Play_Start(offline_chat) {
     Play_StayCheckHostId = 0;
 
     Play_data.watching_time = new Date().getTime();
-    Main_innerHTML("stream_watching_time", "," + STR_SPACE + STR_WATCHING + Play_timeS(0));
-    Play_created = Play_timeMs(0);
+    Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeS(0));
+    PlayClip_SetProgressBarJumpers();
 
-    Main_textContent("stream_live_time", Play_created);
+    Main_textContentWithEle(Play_infoLiveTime, Play_timeMs(0));
 
     Play_isOn = true;
     Play_Playing = false;
@@ -615,7 +615,6 @@ function Play_UpdateMainStreamDiv() {
     Play_LoadLogoSucess = true;
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
-    Play_created = Play_data.data[12];
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
     Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
@@ -1497,9 +1496,11 @@ function Play_ForceHidePannel() {
 
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
+
     if (Settings_Obj_default("keep_panel_info_visible") === 1 && !Play_StayDialogVisible()) {
 
         if (Main_IsOn_OSInterface) {
+
             Play_ShowPanelStatusId = Main_setInterval(
                 function() {
                     Play_UpdateStatus(mwhocall);
@@ -1507,14 +1508,19 @@ function Play_ShowPanelStatus(mwhocall) {
                 1000,
                 Play_ShowPanelStatusId
             );
+
         } else Play_VideoStatusTest();
 
         Main_ShowElement('playsideinfo');
         Main_AddClass('playsideinfo', 'playsideinfofocus');
+
     } else {
+
         Main_HideElement('playsideinfo');
         Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+
     }
+
 }
 
 function Play_UpdateStatus(mwhocall) {
@@ -1542,57 +1548,67 @@ function Play_showPanel() {
 }
 
 function Play_RefreshWatchingtime() {
+
     if (Play_MultiEnable) {
 
-        var extraText = Play_Multi_MainBig ? 'big' : '', pos, i;
+        var extraText = Play_Multi_MainBig ? 'big' : 'small', pos, i;
 
         for (i = 0; i < 4; i++) {
+
             pos = (i + (4 - Play_Multi_Offset)) % 4;
+
             if (Play_MultiArray[i].data.length > 0) {
-                Main_innerHTML("stream_info_multi_watching_time" + extraText + pos, STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
-                Main_innerHTML('stream_info_multi_livetime' + extraText + pos, STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+
+                Main_textContentWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
+                Main_textContentWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+
             } else {
-                Main_innerHTML("stream_info_multi_watching_time" + extraText + pos, STR_SPACE);
-                Main_innerHTML('stream_info_multi_livetime' + extraText + pos, STR_SPACE);
+
+                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SPACE);
+
             }
+
         }
 
     } else if (PlayExtra_PicturePicture) {
-        Main_innerHTML("stream_info_pp_watching_time0", STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
-        Main_innerHTML("stream_info_pp_livetime0", STR_SINCE +
-            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_data.data[12])));
+        Main_textContentWithEle(Play_infoPPWatchingTime[0], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+        Main_textContentWithEle(Play_infoPPLiveTime[0], STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
 
-        Main_innerHTML("stream_info_pp_watching_time1", STR_WATCHING + Play_timeMs((new Date().getTime()) - (PlayExtra_data.watching_time)));
+        Main_textContentWithEle(Play_infoPPWatchingTime[1], STR_WATCHING + Play_timeMs((new Date().getTime()) - (PlayExtra_data.watching_time)));
+        Main_textContentWithEle(Play_infoPPLiveTime[1], STR_SINCE + Play_streamLiveAt(PlayExtra_data.data[12]));
 
-        Main_innerHTML("stream_info_pp_livetime1", STR_SINCE +
-            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(PlayExtra_data.data[12])));
     } else if (Play_StayDialogVisible()) {
 
-        Main_innerHTML("stream_live_time",
-            STR_WAITING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
-        Main_textContent("stream_watching_time", '');
-        Main_innerHTML("stream_live_viewers", '');
+        Main_textContentWithEle(Play_infoLiveTime, STR_WAITING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+        Main_textContentWithEle(Play_infoWatchingTime, '');
+        Main_textContent("stream_live_viewers", '');
 
         return;
-    } else {
-        Main_innerHTML("stream_watching_time", "," +
-            STR_SPACE + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
 
-        Main_innerHTML("stream_live_time", STR_SINCE +
-            (Main_A_includes_B('00:00', Play_created) ? '00:00' : Play_streamLiveAt(Play_created)));
+    } else {
+
+        Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
+
+        Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
+
     }
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
+
         if (Main_IsOn_OSInterface) {
+
             if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
             OSInterface_getVideoStatus(true);
+
         } else Play_VideoStatusTest();
+
     }
 }
 
 function Play_VideoStatusTest() {
-    Main_innerHTML("stream_status", STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
+    Main_innerHTMLWithEle(Play_StreamStatus, STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
         STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
         STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
@@ -1605,7 +1621,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     var value = JSON.parse(valueString);
 
-    Main_innerHTML("stream_status",
+    Main_innerHTMLWithEle(Play_StreamStatus,
         STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
         STR_NET_ACT + value[1] + STR_BR +
         STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
@@ -1613,17 +1629,14 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
         (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
         STR_BR + STR_PING + value[6]);
 
-    if (Who_Called > 1) {
+    var timeMs = OSInterface_gettime();
+    Play_BufferSize = parseFloat(value[7]);
 
-        var timeMs = OSInterface_gettime();
-        Play_BufferSize = parseFloat(value[7]);
+    if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
+    else PlayVod_ChaptersSetGame(timeMs);
 
-        if (Who_Called === 3) Play_BufferSize = Math.ceil(Play_BufferSize);
-        else PlayVod_ChaptersSetGame(timeMs);
+    PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
 
-        PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
-
-    }
 }
 
 function Play_getMbps(value) {
@@ -1916,15 +1929,23 @@ function Play_CheckHost(responseText) {
 }
 
 function Play_UpdateDuration(duration) { // Called only by JAVA
+
     if (Main_isScene1DocVisible()) {
+
         if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Screens_Current_Key);//fix position after animation has endede after Player.STATE_READY
+
     } else if (duration > 0) {
+
         Play_DurationSeconds = duration / 1000;
-        Main_textContent('progress_bar_duration', Play_timeS(Play_DurationSeconds));
-        PlayVod_RefreshProgressBarr();
+
+        Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+
         if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
+
         if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
+
     }
+
 }
 
 function Play_CloseBigAndSwich(error_410) {
@@ -2054,7 +2075,6 @@ function Play_SavePlayData() {
 function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-    Play_created = Play_data.data[12];
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
 }
 
@@ -2105,4 +2125,15 @@ function Play_AudioChangeLeft() {
     Play_controls[Play_controlsAudio].defaultValue--;
     if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 2);
     Play_controls[Play_controlsAudio].enterKey();
+}
+
+function Play_FastBackForward(position) {
+    if (!Play_isPanelShowing()) Play_showPanel();
+    Play_clearHidePanel();
+    PlayVod_PanelY = 0;
+    Play_BottonIconsFocus();
+
+    PlayVod_jumpStart(position, Play_DurationSeconds);
+    PlayVod_ProgressBaroffset = 2500;
+    Play_setHidePanel();
 }

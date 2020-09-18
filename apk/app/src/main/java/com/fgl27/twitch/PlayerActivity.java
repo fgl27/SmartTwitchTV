@@ -454,8 +454,8 @@ public class PlayerActivity extends Activity {
 
         KeepScreenOn(true);
 
-        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
-        if (Who_Called > 1) GetCurrentPosition();
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
+        if (position == mainPlayer) GetCurrentPosition(mainPlayer);
 
         droppedFrames = 0;
         NetActivityAVG = 0;
@@ -517,7 +517,7 @@ public class PlayerActivity extends Activity {
             PlayerView[4].setVisibility(View.VISIBLE);
         }
 
-        //Player can only be accessed from main thread so start a "position listener" to pass the value to webview
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
         if (IsVod) GetCurrentPositionSmall();
     }
 
@@ -577,6 +577,9 @@ public class PlayerActivity extends Activity {
         if (AudioMulti == 4 || AudioMulti == position)
             player[position].setVolume(player[4] == null ? 1f : PreviewOthersAudio);
         else player[position].setVolume(0f);
+
+        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
+        if (position == MultiMainPlayer) GetCurrentPosition(MultiMainPlayer);
 
         KeepScreenOn(true);
         droppedFrames = 0;
@@ -1027,17 +1030,23 @@ public class PlayerActivity extends Activity {
             trackSelector[mainPlayer].setParameters(trackSelectorParameters);
     }
 
-    private void GetCurrentPosition() {
+    private void GetCurrentPosition(int playerPos) {
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-
         CurrentPositionHandler[0].postDelayed(() -> {
-            if (player[mainPlayer] == null) {
+
+
+            if (player[playerPos] != null) {
+
+                PlayerCurrentPosition = player[playerPos].getCurrentPosition();
+                GetCurrentPosition(playerPos);
+
+            } else {
+
                 CurrentPositionHandler[0].removeCallbacksAndMessages(null);
                 PlayerCurrentPosition = 0L;
-            } else {
-                PlayerCurrentPosition = player[mainPlayer].getCurrentPosition();
-                GetCurrentPosition();
+
             }
+
         }, 500);
     }
 
@@ -2054,16 +2063,18 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
-                if (player[mainPlayer] != null) {
-                    long duration = player[mainPlayer].getDuration();
+                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+
+                if (player[playerPos] != null) {
+                    long duration = player[playerPos].getDuration();
                     long jumpPosition = position > 0 ? position : 0;
 
                     if (jumpPosition >= duration)
                         jumpPosition = duration - 1000;
 
                     PlayerCurrentPosition = jumpPosition;
-                    player[mainPlayer].seekTo(jumpPosition);
-                    player[mainPlayer].setPlayWhenReady(true);
+                    player[playerPos].seekTo(jumpPosition);
+                    player[playerPos].setPlayWhenReady(true);
                 }
             });
         }
@@ -2103,9 +2114,7 @@ public class PlayerActivity extends Activity {
                     mWho_Called = who_called;
                     PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
 
-                    if (mWho_Called > 1) {
-                        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
-                    }
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
 
                     //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
                     MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
@@ -2501,12 +2510,12 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public long gettime() {
-            return PlayerCurrentPosition;
+            return PlayerCurrentPosition > 0 ? PlayerCurrentPosition : 0;
         }
 
         @JavascriptInterface
         public long gettimepreview() {
-            return SmallPlayerCurrentPosition;
+            return SmallPlayerCurrentPosition > 0 ? SmallPlayerCurrentPosition : 0;
         }
 
         @JavascriptInterface
@@ -2533,6 +2542,7 @@ public class PlayerActivity extends Activity {
         public void PlayPauseChange() {
             MainThreadHandler.post(() -> {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+
                 if (player[playerPos] != null) {
 
                     boolean state = !player[playerPos].isPlaying();
@@ -2956,11 +2966,9 @@ public class PlayerActivity extends Activity {
                 else
                     PlayerCheckCounter[position] = 0;
 
-                if (mWho_Called > 1) {
+                LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
-
-                } else {
+                if (mWho_Called == 1) {
 
                     //If other not playing just play it so they stay in sync
                     if (MultiStreamEnable) {
