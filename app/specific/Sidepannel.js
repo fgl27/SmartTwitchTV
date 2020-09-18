@@ -245,6 +245,7 @@ function Sidepannel_SetPlayerViewSidePanel() {
 }
 
 function Sidepannel_CheckIfIsLiveWarn(ErroText, time) {
+    OSInterface_ClearSidePanelPlayer();
     Play_CheckIfIsLiveCleanEnd();
     Sidepannel_UpdateThumbDiv();
     Sidepannel_showWarningDialog(ErroText, time);
