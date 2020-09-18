@@ -103,6 +103,14 @@ TODO list
 * So on the future I will add PT-BR translation
 * Because the above the main app English strings probably aren't 100% as I don't nativity speak English so they can always receive a check/improve
 
+### Improve restore backup dialog
+
+* General improve
+* Add more restore options that can be disable
+* Add restore settings
+* Add restore screens position and etc related as player settings
+* to add this featuring is better to add a obj that saves all the things, one for settings one for general player and screen things
+
 ### Update how string works on the JS side of the code
 
 * General improve
