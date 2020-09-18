@@ -379,7 +379,6 @@ public class PlayerActivity extends Activity {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
         if (position == mainPlayer) {
-            CurrentPositionHandler[0].removeCallbacksAndMessages(null);
             PlayerCurrentPosition = mResumePosition;
         }
         lastSeenTrackGroupArray = null;
@@ -619,6 +618,8 @@ public class PlayerActivity extends Activity {
         //All players are close enable screen saver
         if (player[0] == null && player[1] == null && player[2] == null && player[3] == null) {
             KeepScreenOn(false);
+            CurrentPositionHandler[0].removeCallbacksAndMessages(null);
+            CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         }
     }
 
@@ -1035,20 +1036,13 @@ public class PlayerActivity extends Activity {
 
     private void GetCurrentPosition() {
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
+
         CurrentPositionHandler[0].postDelayed(() -> {
             int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-            if (player[playerPos] != null) {
+            PlayerCurrentPosition = player[playerPos] != null ? player[playerPos].getCurrentPosition() : 0L;
 
-                PlayerCurrentPosition = player[playerPos].getCurrentPosition();
-                GetCurrentPosition();
-
-            } else {
-
-                CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-                PlayerCurrentPosition = 0L;
-
-            }
+            GetCurrentPosition();
 
         }, 500);
     }
@@ -1057,13 +1051,11 @@ public class PlayerActivity extends Activity {
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
 
         CurrentPositionHandler[1].postDelayed(() -> {
-            if (player[4] == null) {
-                CurrentPositionHandler[1].removeCallbacksAndMessages(null);
-                SmallPlayerCurrentPosition = 0L;
-            } else {
-                SmallPlayerCurrentPosition = player[4].getCurrentPosition();
-                GetCurrentPositionSmall();
-            }
+
+            SmallPlayerCurrentPosition = player[4] != null ? player[4].getCurrentPosition() : 0L;
+
+            GetCurrentPositionSmall();
+
         }, 500);
     }
 
@@ -1359,6 +1351,7 @@ public class PlayerActivity extends Activity {
             ClearPlayer(i);
         }
         ClearSmallPlayer();
+        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
         ClearWebViewChache();
 
@@ -3072,7 +3065,6 @@ public class PlayerActivity extends Activity {
 
         hideLoading(5);
         hideLoading(position);
-        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         String WebViewLoad;
 
         if (MultiStreamEnable) {
