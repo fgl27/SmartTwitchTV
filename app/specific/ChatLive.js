@@ -1211,7 +1211,7 @@ function ChatLive_SendMessage(message, chat_number) {
 
             ChatLiveControls_showWarningDialog(
                 STR_CHAT_SEND_DELAY + STR_SPACE + time + (time > 1 ? STR_SECONDS : STR_SECOND),
-                1500
+                5000
             );
         }
 
