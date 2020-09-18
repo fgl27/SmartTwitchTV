@@ -378,8 +378,10 @@ public class PlayerActivity extends Activity {
     private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
-        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-        PlayerCurrentPosition = mResumePosition;
+        if (position == mainPlayer) {
+            CurrentPositionHandler[0].removeCallbacksAndMessages(null);
+            PlayerCurrentPosition = mResumePosition;
+        }
         lastSeenTrackGroupArray = null;
         initializePlayer(position);
     }
@@ -455,7 +457,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
 
         //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-        if (position == mainPlayer) GetCurrentPosition(mainPlayer);
+        if (position == mainPlayer) GetCurrentPosition();
 
         droppedFrames = 0;
         NetActivityAVG = 0;
@@ -579,7 +581,7 @@ public class PlayerActivity extends Activity {
         else player[position].setVolume(0f);
 
         //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-        if (position == MultiMainPlayer) GetCurrentPosition(MultiMainPlayer);
+        if (position == MultiMainPlayer) GetCurrentPosition();
 
         KeepScreenOn(true);
         droppedFrames = 0;
@@ -596,8 +598,6 @@ public class PlayerActivity extends Activity {
         //Multi audio is deal on js side when a player closes
         if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
 
-        CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-        PlayerCurrentPosition = 0L;
         CheckKeepScreenOn();
     }
 
@@ -923,6 +923,7 @@ public class PlayerActivity extends Activity {
 
         //Set proper video volume, muted to small
         SwitchPlayerAudio(AudioSource);
+        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
     }
 
     public void SwitchPlayerAudio(int pos) {
@@ -989,6 +990,8 @@ public class PlayerActivity extends Activity {
 
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
+
+        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[MultiMainPlayer].getDuration() + ")");
     }
 
     public void SetMultiStream(int offset) {
@@ -1030,15 +1033,15 @@ public class PlayerActivity extends Activity {
             trackSelector[mainPlayer].setParameters(trackSelectorParameters);
     }
 
-    private void GetCurrentPosition(int playerPos) {
+    private void GetCurrentPosition() {
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
         CurrentPositionHandler[0].postDelayed(() -> {
-
+            int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
             if (player[playerPos] != null) {
 
                 PlayerCurrentPosition = player[playerPos].getCurrentPosition();
-                GetCurrentPosition(playerPos);
+                GetCurrentPosition();
 
             } else {
 
