@@ -615,7 +615,7 @@ function PlayVod_showPanel(autoHide) {
     if (Play_getQualitiesFail) Play_getQualities(2, true);
 
     PlayVod_SetChapters();
-    PlayVod_RefreshProgressBarrStart(autoHide);
+    PlayVod_RefreshProgressBarrStart(autoHide, 1);
     Play_CleanHideExit();
 
     if (autoHide) {
@@ -632,25 +632,30 @@ function PlayVod_showPanel(autoHide) {
 }
 
 
-function PlayVod_RefreshProgressBarrStart(showVideoQuality) {
+function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
     if (Play_isOn) Play_RefreshWatchingtime();
-    PlayVod_RefreshProgressBarr(showVideoQuality);
+    PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
 
     PlayVod_RefreshProgressBarrID = Main_setInterval(
         function() {
-            PlayVod_RefreshProgressBarr(showVideoQuality);
+            PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
         },
         1000,
         PlayVod_RefreshProgressBarrID
     );
 }
 
-function PlayVod_RefreshProgressBarr(showVideoQuality) {
+function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
 
-        if (Main_IsOn_OSInterface && (Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') || Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) && showVideoQuality)
-            OSInterface_getVideoQuality(1);
+        if (Main_IsOn_OSInterface &&
+            (Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') || Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) &&
+            showVideoQuality) {
+
+            OSInterface_getVideoQuality(who_called);
+
+        }
 
         if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
         else Play_VideoStatusTest();
