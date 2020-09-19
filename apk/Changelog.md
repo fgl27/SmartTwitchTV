@@ -7,7 +7,7 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Apk Version 3.0.249 - Web Version September 18 2020
+Apk Version 3.0.250 - Web Version September 18 2020
 ==============
 
 * Add extra quality options for the "default player quality" in settings (1080p60, 720p60, etc... etc)
