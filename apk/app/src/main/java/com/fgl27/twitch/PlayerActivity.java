@@ -379,6 +379,7 @@ public class PlayerActivity extends Activity {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
         if (position == mainPlayer) {
+            CurrentPositionHandler[0].removeCallbacksAndMessages(null);
             PlayerCurrentPosition = mResumePosition;
         }
         lastSeenTrackGroupArray = null;
