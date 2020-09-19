@@ -308,7 +308,7 @@ Web Version July 07 2020
 Apk Version 3.0.217 - July 06 2020
 ==============
 
-* Notification service, closing the app (by holding return key or using the exit dialog -> close) will now stop all running notifications and prevent notification until the app is re-open or the device is rebooted
+* Notification service, closing the app (by holding return key or using the exit dialog -> close) will now stop all running notifications
 * Update ExoPlayer to latest version
 * General performance improves and bug fixes
 
