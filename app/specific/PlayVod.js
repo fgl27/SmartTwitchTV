@@ -649,10 +649,9 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
 
-        if (Main_IsOn_OSInterface &&
+        if (Main_IsOn_OSInterface && showVideoQuality &&
             ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
-                (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn)) &&
-            showVideoQuality) {
+                (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
             OSInterface_getVideoQuality(who_called);
 
