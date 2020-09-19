@@ -633,7 +633,9 @@ function PlayVod_showPanel(autoHide) {
 
 
 function PlayVod_RefreshProgressBarrStart(show) {
+    if (Play_isOn) Play_RefreshWatchingtime();
     PlayVod_RefreshProgressBarr(show);
+
     PlayVod_RefreshProgressBarrID = Main_setInterval(
         function() {
             PlayVod_RefreshProgressBarr(show);
@@ -655,6 +657,7 @@ function PlayVod_RefreshProgressBarr(show) {
 
     }
 
+    if (Play_isOn) Play_RefreshWatchingtime();
 }
 
 function PlayVod_setHidePanel() {
