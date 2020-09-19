@@ -67,9 +67,7 @@ function PlayVod_Start() {
     Main_textContentWithEle(Play_infoLiveTime, '');
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
     Chat_title = " VOD";
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
-    Main_HideElement('progress_pause_holder');
+
     Play_BufferSize = 0;
 
     Play_StartStayShowbottom();
@@ -80,6 +78,9 @@ function PlayVod_Start() {
     Play_BottomHide(Play_controlsChatSend);
     Play_BottomHide(Play_controlsChapters);
 
+    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
+    Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
     PlayExtra_UnSetPanel();
     Play_CurrentSpeed = 3;
@@ -192,9 +193,9 @@ function PlayVod_PosStart() {
     Main_setTimeout(
         function() {
             Main_ShowElementWithEle(Play_Controls_Holder);
-            Main_ShowElement('progress_pause_holder');
+            Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
         },
-        1000
+        500
     );
     Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 
@@ -563,7 +564,8 @@ function PlayVod_PreshutdownStream(saveOffset) {
     }
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
     Main_ShowElementWithEle(Play_Controls_Holder);
-    Main_ShowElement('progress_pause_holder');
+    Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
+
     PlayVod_isOn = false;
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);
@@ -612,18 +614,8 @@ function PlayVod_ClearProgressJumptime() {
 function PlayVod_showPanel(autoHide) {
     if (Play_getQualitiesFail) Play_getQualities(2, true);
 
-    if (!Play_StayDialogVisible()) {
-        PlayVod_SetChapters();
-        PlayVod_RefreshProgressBarr(autoHide);
-        PlayVod_RefreshProgressBarrID = Main_setInterval(
-            function() {
-                PlayVod_RefreshProgressBarr(autoHide);
-            },
-            1000,
-            PlayVod_RefreshProgressBarrID
-        );
-    }
-
+    PlayVod_SetChapters();
+    PlayVod_RefreshProgressBarrStart(autoHide);
     Play_CleanHideExit();
 
     if (autoHide) {
@@ -637,6 +629,18 @@ function PlayVod_showPanel(autoHide) {
     }
     Play_ForceShowPannel();
     if (PlayVod_muted_segments_warn && autoHide) PlayVod_muted_WarningDialog();
+}
+
+
+function PlayVod_RefreshProgressBarrStart(show) {
+    PlayVod_RefreshProgressBarr(show);
+    PlayVod_RefreshProgressBarrID = Main_setInterval(
+        function() {
+            PlayVod_RefreshProgressBarr(show);
+        },
+        1000,
+        PlayVod_RefreshProgressBarrID
+    );
 }
 
 function PlayVod_RefreshProgressBarr(show) {
@@ -702,7 +706,7 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 }
 
 function PlayVod_jump() {
-    if (!Play_isEndDialogVisible()) {
+    if (!Play_isOn && !Play_isEndDialogVisible()) {
 
         if (PlayVod_isOn) {
 

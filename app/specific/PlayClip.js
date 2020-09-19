@@ -82,6 +82,7 @@ function PlayClip_Start() {
 
     Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
     PlayClip_SetProgressBarJumpers();
+
     Main_replaceClassEmoji('stream_info_title');
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
@@ -537,10 +538,7 @@ function PlayClip_hidePanel() {
 }
 
 function PlayClip_showPanel() {
-    if (!Play_StayDialogVisible()) {
-        PlayVod_RefreshProgressBarr();
-        PlayVod_RefreshProgressBarrID = Main_setInterval(PlayVod_RefreshProgressBarr, 1000, PlayVod_RefreshProgressBarrID);
-    }
+    PlayVod_RefreshProgressBarrStart();
     Play_CleanHideExit();
     Play_BottonIconsResetFocus();
     PlayClip_qualityIndexReset();

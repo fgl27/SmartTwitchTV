@@ -650,6 +650,7 @@ function Play_StartStayHidebottom() {
     Play_BottomHide(Play_controlsExternal);
     Play_BottomHide(Play_controlsLowLatency);
     Play_BottomHide(Play_controlsSpeed);
+    Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
 function Play_StartStayShowbottom() {
@@ -658,6 +659,7 @@ function Play_StartStayShowbottom() {
     Play_BottomShow(Play_controlsExternal);
     Play_BottomShow(Play_controlsLowLatency);
     Play_BottomShow(Play_controlsSpeed);
+    Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
 function Play_StartStay() {
@@ -686,6 +688,14 @@ function Play_StartStay() {
         Play_StartStayTryId
     );
 
+    //Reset play data and info panel
+    Play_data.data[3] = '';
+    Play_data.data[4] = '';
+    Play_data.data[5] = '';
+    Play_data.data[7] = '';
+    Play_data.data[11] = '';
+    Play_data.data[12] = 0;
+    Play_data.data[13] = 0;
     Play_UpdateMainStreamDiv();
 }
 
@@ -1348,10 +1358,12 @@ function Play_handleKeyDown(e) {
 
                     Play_clearHidePanel();
 
-                    if (PlayVod_PanelY < 2) {
-                        PlayVod_PanelY--;
-                        Play_BottonIconsFocus();
-                    } else Play_BottomUpDown(1, 1);
+                    if (!Play_StayDialogVisible()) {
+                        if (PlayVod_PanelY < 2) {
+                            PlayVod_PanelY--;
+                            Play_BottonIconsFocus();
+                        } else Play_BottomUpDown(1, 1);
+                    }
 
                     Play_setHidePanel();
 
@@ -1379,10 +1391,13 @@ function Play_handleKeyDown(e) {
 
                     Play_clearHidePanel();
 
-                    if (PlayVod_PanelY < 2) {
-                        PlayVod_PanelY++;
-                        Play_BottonIconsFocus();
-                    } else Play_BottomUpDown(1, -1);
+                    if (!Play_StayDialogVisible()) {
+
+                        if (PlayVod_PanelY < 2) {
+                            PlayVod_PanelY++;
+                            Play_BottonIconsFocus();
+                        } else Play_BottomUpDown(1, -1);
+                    }
 
                     Play_setHidePanel();
 
@@ -2727,9 +2742,9 @@ var Play_BottonIcons_Progress_Steps;
 var Play_BottonIcons_Progress_JumpTo;
 var Play_BottonIcons_Progress_CurrentTime;
 var Play_BottonIcons_Progress_Duration;
+var Play_BottonIcons_Progress_PauseHolder;
 
 var Play_StreamStatus;
-
 
 var Play_BottonIcons_Focus_Class = 'progress_bar_div_focus';
 
@@ -2779,6 +2794,7 @@ function Play_BottonIconsSet() {
     Play_BottonIcons_Progress_JumpTo = Main_getElementById('progress_bar_jump_to');
     Play_BottonIcons_Progress_CurrentTime = Main_getElementById('progress_bar_current_time');
     Play_BottonIcons_Progress_Duration = Main_getElementById('progress_bar_duration');
+    Play_BottonIcons_Progress_PauseHolder = Main_getElementById('progress_pause_holder');
 
     Play_Controls_Holder = Main_getElementById('controls_holder');
 

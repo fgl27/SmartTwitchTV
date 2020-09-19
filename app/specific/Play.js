@@ -1541,7 +1541,12 @@ function Play_showPanel() {
     if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
     Play_RefreshWatchingtime();
-    PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
+    if (!Play_StayDialogVisible()) {
+        PlayVod_RefreshProgressBarrStart();
+    } else {
+        PlayVod_PanelY = 2;
+        Play_BottonIconsFocus();
+    }
     Play_CleanHideExit();
     Play_ForceShowPannel();
     Play_Resetpanel(1);
