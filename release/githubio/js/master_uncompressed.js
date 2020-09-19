@@ -11184,14 +11184,10 @@
         //return;//return;
         PlayVod_jumpCount = 0;
         PlayVod_IsJumping = false;
-        PlayVod_addToJump = 0;
         Play_clearHidePanel();
         PlayClip_quality = PlayClip_qualityPlaying;
         Play_ForceHidePannel();
-        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
-        Play_BottonIcons_Progress_Steps.style.display = 'none';
-        Main_clearInterval(PlayVod_RefreshProgressBarrID);
+        PlayVod_ClearProgressJumptime();
     }
 
     function PlayClip_showPanel() {
@@ -16362,7 +16358,7 @@
         Play_ForceHidePannel();
         Play_data.quality = Play_data.qualityPlaying;
         Play_data_base.quality = Play_data.quality;
-        Main_clearInterval(PlayVod_RefreshProgressBarrID);
+        PlayVod_ClearProgressJumptime();
     }
 
     function Play_ForceShowPannel() {
@@ -18368,16 +18364,22 @@
         //return;//return;
         PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
         PlayVod_IsJumping = false;
-        PlayVod_addToJump = 0;
         Play_clearHidePanel();
         Play_ForceHidePannel();
-        PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
-        Play_BottonIcons_Progress_Steps.style.display = 'none';
         PlayVod_previews_hide();
         PlayVod_quality = PlayVod_qualityPlaying;
-        Main_clearInterval(PlayVod_RefreshProgressBarrID);
         PlayVod_jumpStepsIncreaseLock = false;
+        PlayVod_ClearProgressJumptime();
+    }
+
+    function PlayVod_ClearProgressJumptime() {
+
+        if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
+        PlayVod_addToJump = 0;
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Play_BottonIcons_Progress_Steps.style.display = 'none';
+        Main_clearInterval(PlayVod_RefreshProgressBarrID);
+
     }
 
     function PlayVod_showPanel(autoHide) {
