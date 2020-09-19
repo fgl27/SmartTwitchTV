@@ -2984,7 +2984,7 @@ public class PlayerActivity extends Activity {
                                 player[OtherPlayer].setPlayWhenReady(true);
                         }
 
-                        LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + player[position].getCurrentLiveOffset() + ")");
+                        LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + (position == mainPlayer ? 0 : 1) + "," + player[position].getCurrentLiveOffset() + ")");
 
                     }
 
