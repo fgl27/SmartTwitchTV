@@ -530,14 +530,10 @@ function PlayClip_hidePanel() {
     //return;//return;
     PlayVod_jumpCount = 0;
     PlayVod_IsJumping = false;
-    PlayVod_addToJump = 0;
     Play_clearHidePanel();
     PlayClip_quality = PlayClip_qualityPlaying;
     Play_ForceHidePannel();
-    if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
-    Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
-    Play_BottonIcons_Progress_Steps.style.display = 'none';
-    Main_clearInterval(PlayVod_RefreshProgressBarrID);
+    PlayVod_ClearProgressJumptime();
 }
 
 function PlayClip_showPanel() {

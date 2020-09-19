@@ -1476,7 +1476,7 @@ function Play_hidePanel() {
     Play_ForceHidePannel();
     Play_data.quality = Play_data.qualityPlaying;
     Play_data_base.quality = Play_data.quality;
-    Main_clearInterval(PlayVod_RefreshProgressBarrID);
+    PlayVod_ClearProgressJumptime();
 }
 
 function Play_ForceShowPannel() {
