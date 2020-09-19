@@ -553,33 +553,33 @@ Apk Version 2.0.107 and up & Web Version January 6 2020
 
 * New User history screen for Live, VOD and clip histories
 
-Apk Version 2.0.105 and up & Web Version December 29 2020
+Apk Version 2.0.105 and up & Web Version December 29 2019
 ==============
 
 * General performance improves  and bug fixes
 
-Apk Version 2.0.67 and up & Web Version September 10 2020
+Apk Version 2.0.67 and up & Web Version September 10 2019
 ==============
 
 * General performance improves  and bug fixes
 
-Apk Version 2.0.66 & Web Version September 9 2020
+Apk Version 2.0.66 & Web Version September 9 2019
 ==============
 
 * Add Low latency controls to Live player 
 * General improves for performance
 
-Apk Version 2.0.52 and up & Web Version August 15 2020
+Apk Version 2.0.52 and up & Web Version August 15 2019
 ==============
 
 * General improves for performance and minor bug fixes
 
-Apk Version 2.0.51 & Web Version August 13 2020
+Apk Version 2.0.51 & Web Version August 13 2019
 ==============
 
 * 50/50 Mode two live stream and two chats at the same time
 
-Apk Version 2.0.46 and up & Web Version August 11 2020
+Apk Version 2.0.46 and up & Web Version August 11 2019
 ==============
 
 * Major version update from 1.0.X to 2.0.X
@@ -587,13 +587,13 @@ Apk Version 2.0.46 and up & Web Version August 11 2020
 * Add Picture in Picture mode (Check setting and controls to understand how to setup and use it)
 * Add full player status in player top right corner, can be set to be visible all the time in settings
 
-Apk Version 1.0.10 and up & Web Version April 24 2020
+Apk Version 1.0.10 and up & Web Version April 24 2019
 ==============
 
 * General improves for performance, bug fixes and new features.
 
 
-Apk Version 1.0.0 to Version 1.0.9 & Web Version April 20 2020
+Apk Version 1.0.0 to Version 1.0.9 & Web Version April 20 2019
 ==============
 
 * Initial app release, that was a port from the Samsung version of the app https://github.com/fgl27/smarttv-twitch
