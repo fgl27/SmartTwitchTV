@@ -1542,7 +1542,7 @@ function Play_showPanel() {
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
 
     if (!Play_StayDialogVisible()) {
-        PlayVod_RefreshProgressBarrStart();
+        PlayVod_RefreshProgressBarrStart(true);
     } else {
         PlayVod_PanelY = 2;
         Play_BottonIconsFocus();

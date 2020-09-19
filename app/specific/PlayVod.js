@@ -632,27 +632,27 @@ function PlayVod_showPanel(autoHide) {
 }
 
 
-function PlayVod_RefreshProgressBarrStart(show) {
+function PlayVod_RefreshProgressBarrStart(showVideoQuality) {
     if (Play_isOn) Play_RefreshWatchingtime();
-    PlayVod_RefreshProgressBarr(show);
+    PlayVod_RefreshProgressBarr(showVideoQuality);
 
     PlayVod_RefreshProgressBarrID = Main_setInterval(
         function() {
-            PlayVod_RefreshProgressBarr(show);
+            PlayVod_RefreshProgressBarr(showVideoQuality);
         },
         1000,
         PlayVod_RefreshProgressBarrID
     );
 }
 
-function PlayVod_RefreshProgressBarr(show) {
+function PlayVod_RefreshProgressBarr(showVideoQuality) {
 
     if (!Settings_Obj_default("keep_panel_info_visible")) {
 
-        if (Main_IsOn_OSInterface && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && show)
+        if (Main_IsOn_OSInterface && (Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') || Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) && showVideoQuality)
             OSInterface_getVideoQuality(1);
 
-        if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(false);
+        if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
         else Play_VideoStatusTest();
 
     }
