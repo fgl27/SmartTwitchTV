@@ -6976,7 +6976,7 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.250';
+    var Main_stringVersion_Min = '.251';
     var Main_version_java = 37; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 18 2020';
     var Main_version_web = 68; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
@@ -7580,7 +7580,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.250 - Web Version September 18 2020",
+                title: "Apk Version 3.0.251 - Web Version September 18 2020",
                 changes: [
                     'Add extra quality options for the "default player quality" in settings (1080p60, 720p60, etc... etc)',
                     'Update the player API (ExoPlayer) to latest version, if anyone has a player issues inform, contact information on the about of the app',
