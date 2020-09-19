@@ -6979,7 +6979,7 @@
     var Main_stringVersion_Min = '.251';
     var Main_version_java = 37; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 19 2020';
-    var Main_version_web = 71; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 72; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -16439,7 +16439,7 @@
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
 
         if (!Play_StayDialogVisible()) {
-            PlayVod_RefreshProgressBarrStart(true);
+            PlayVod_RefreshProgressBarrStart(true, 1);
         } else {
             PlayVod_PanelY = 2;
             Play_BottonIconsFocus();
@@ -18409,7 +18409,7 @@
         if (Play_getQualitiesFail) Play_getQualities(2, true);
 
         PlayVod_SetChapters();
-        PlayVod_RefreshProgressBarrStart(autoHide);
+        PlayVod_RefreshProgressBarrStart(autoHide, 1);
         Play_CleanHideExit();
 
         if (autoHide) {
@@ -18426,25 +18426,30 @@
     }
 
 
-    function PlayVod_RefreshProgressBarrStart(showVideoQuality) {
+    function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
         if (Play_isOn) Play_RefreshWatchingtime();
-        PlayVod_RefreshProgressBarr(showVideoQuality);
+        PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
 
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
-                PlayVod_RefreshProgressBarr(showVideoQuality);
+                PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
             },
             1000,
             PlayVod_RefreshProgressBarrID
         );
     }
 
-    function PlayVod_RefreshProgressBarr(showVideoQuality) {
+    function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
         if (!Settings_Obj_default("keep_panel_info_visible")) {
 
-            if (Main_IsOn_OSInterface && (Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') || Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) && showVideoQuality)
-                OSInterface_getVideoQuality(1);
+            if (Main_IsOn_OSInterface &&
+                (Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') || Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) &&
+                showVideoQuality) {
+
+                OSInterface_getVideoQuality(who_called);
+
+            }
 
             if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
             else Play_VideoStatusTest();
