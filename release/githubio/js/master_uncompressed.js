@@ -6979,7 +6979,7 @@
     var Main_stringVersion_Min = '.251';
     var Main_version_java = 37; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 19 2020';
-    var Main_version_web = 69; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 70; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -16437,13 +16437,15 @@
         Play_ResetLowlatency();
         if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
-        Play_RefreshWatchingtime();
+
         if (!Play_StayDialogVisible()) {
             PlayVod_RefreshProgressBarrStart();
         } else {
             PlayVod_PanelY = 2;
             Play_BottonIconsFocus();
+            PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
         }
+
         Play_CleanHideExit();
         Play_ForceShowPannel();
         Play_Resetpanel(1);
@@ -18425,7 +18427,9 @@
 
 
     function PlayVod_RefreshProgressBarrStart(show) {
+        if (Play_isOn) Play_RefreshWatchingtime();
         PlayVod_RefreshProgressBarr(show);
+
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
                 PlayVod_RefreshProgressBarr(show);
@@ -18447,6 +18451,7 @@
 
         }
 
+        if (Play_isOn) Play_RefreshWatchingtime();
     }
 
     function PlayVod_setHidePanel() {
