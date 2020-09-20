@@ -222,7 +222,7 @@ How that process works is divided on it language of the web app...
 
 The script process all the Javascript code from this folder [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) and sub folders plus this file [app API](https://github.com/fgl27/SmartTwitchTV/blob/master/release/api.js), on that process the script will validate the code checking for error and general code miss use, if the validation pass the Javascript code will be clean, mangle and compressed [to this files](https://github.com/fgl27/SmartTwitchTV/tree/master/release/githubio/js).
 
-The `smartTwitchTV/release/githubio/js/master.js` is the main app Javascript code, that file contains a single function in a form of a "API" that contains one single exported or global object smartTwitchTV, smartTwitchTV is the object that the apk uses to communicate with the web app that is why it has some exported properties those properties are all function that the apk use to communicate with the web app.
+The `smartTwitchTV/release/githubio/js/main.js` is the main app Javascript code, that file contains a single function in a form of a "API" that contains one single exported or global object smartTwitchTV, smartTwitchTV is the object that the apk uses to communicate with the web app that is why it has some exported properties those properties are all function that the apk use to communicate with the web app.
 
 ### Html (building The web app)
 
