@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.251';
 var Main_version_java = 37;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 19 2020';
-var Main_version_web = 73;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'September 20 2020';
+var Main_version_web = 74;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -628,6 +628,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version September 20 2020",
+            changes: ["General performance improves and bug fixes"]
+        },
+        {
             title: "Web Version September 19 2020",
             changes: ["General performance improves and bug fixes"]
         },
@@ -652,10 +656,6 @@ function Main_Changelog() {
         {
             title: "Web Version September 06 2020",
             changes: ["Prevent chat disconnection do to inactivity, technically this only affect devices running outdated version of Webview 75.X and older"]
-        },
-        {
-            title: "Apk Version 3.0.247 - Web Version September 05 2020",
-            changes: ["General performance and visual improves"]
         },
     ];
 
