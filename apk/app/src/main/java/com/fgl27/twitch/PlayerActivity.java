@@ -996,7 +996,8 @@ public class PlayerActivity extends Activity {
         if (trackSelector[mainPlayer] != null)
             trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
 
-        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[MultiMainPlayer].getDuration() + ")");
+        if (player[MultiMainPlayer] != null)
+            LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[MultiMainPlayer].getDuration() + ")");
     }
 
     public void SetMultiStream(int offset) {
