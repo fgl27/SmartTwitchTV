@@ -532,14 +532,14 @@ public final class Tools {
         return false;
     }
 
-    static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String masterPlaylist, String userAgent) {
+    static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String mainPlaylist, String userAgent) {
         if (who_called == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency)
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (who_called == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, masterPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(MediaItemBuilder(uri));
         } else
@@ -548,9 +548,9 @@ public final class Tools {
                     .createMediaSource(MediaItemBuilder(uri));
     }
 
-    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String masterPlaylist, Uri uri, String userAgent) {
-        if (masterPlaylist == null)
-            masterPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
+    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String mainPlaylist, Uri uri, String userAgent) {
+        if (mainPlaylist == null)
+            mainPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
 
         return new DefaultDataSourceFactory(
                 context,
@@ -560,7 +560,7 @@ public final class Tools {
                         4000,
                         4000,
                         false,
-                        masterPlaylist.getBytes(),
+                        mainPlaylist.getBytes(),
                         uri
                 )
         );
