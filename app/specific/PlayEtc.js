@@ -689,6 +689,7 @@ function Play_StartStay() {
     );
 
     //Reset play data and info panel
+    Play_data.data[2] = STR_SPACE;
     Play_data.data[3] = '';
     Play_data.data[4] = '';
     Play_data.data[5] = '';
