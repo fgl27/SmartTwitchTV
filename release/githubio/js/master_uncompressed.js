@@ -10612,7 +10612,7 @@
     //Android specific: true
     //Get live stream latency to the streamer
     function OSInterface_getLatency(chat_number) {
-        Android.getLatency(chat_number);
+        if (Main_IsOn_OSInterface) Android.getLatency(chat_number);
 
     }
 
@@ -14079,7 +14079,7 @@
     function Play_BottomUpDown(PlayVodClip, adder) {
         if (Play_controls[Play_Panelcounter].updown) {
             Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
-        } else if (adder === 1 && (PlayVodClip || !Play_StayDialogVisible())) {
+        } else if (adder === 1 && (PlayVodClip > 1 || !Play_StayDialogVisible())) {
             PlayVod_PanelY--;
             Play_BottonIconsFocus();
         }
