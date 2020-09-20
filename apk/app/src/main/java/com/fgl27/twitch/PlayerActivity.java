@@ -925,7 +925,10 @@ public class PlayerActivity extends Activity {
 
         //Set proper video volume, muted to small
         SwitchPlayerAudio(AudioSource);
-        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
+
+        //Update main player duration
+        if (player[mainPlayer] != null)
+            LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
     }
 
     public void SwitchPlayerAudio(int pos) {
