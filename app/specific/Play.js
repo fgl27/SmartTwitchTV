@@ -1063,7 +1063,7 @@ function Play_qualityChanged() {
 
     Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
 
-    Play_SetHtmlQuality('stream_quality');
+    Play_SetHtmlQuality(Play_info_quality);
     if (Main_IsOn_OSInterface) OSInterface_SetQuality(Play_data.qualityIndex - 1);
     else Play_onPlayer();
     //Play_PannelEndStart(1);
@@ -1210,7 +1210,7 @@ function Play_SetHtmlQuality(element) {
 
     quality_string += !Main_A_includes_B(Play_data.quality, 'Auto') ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
 
-    Main_innerHTML(element, quality_string);
+    Main_innerHTMLWithEle(element, quality_string);
 }
 
 function Play_PlayerCheck(mwhocall) { // Called only by JAVA
@@ -1220,7 +1220,7 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
 
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(1, 0, 0);
-        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
+        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
@@ -1229,14 +1229,14 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         PlayVod_qualityPlaying = PlayVod_quality;
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
-        Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controlsQuality);
+        Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 3) {
         if (!navigator.onLine) Play_EndStart(false, mwhocall);
         else if ((PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1)) {
             PlayClip_qualityIndex++;
-            Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
+            Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
             PlayClip_qualityChanged();
             Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
         } else Play_EndStart(false, 3);
@@ -1535,11 +1535,11 @@ function Play_showPanel() {
     if (Play_getQualitiesFail) Play_getQualities(1, true);
     Play_BottonIconsResetFocus();
     Play_qualityIndexReset();
-    Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controlsQuality);
+    Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
     Play_ResetSpeed();
     Play_ResetLowlatency();
     if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
-    if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality('stream_quality');
+    if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
 
     if (!Play_StayDialogVisible()) {
         PlayVod_RefreshProgressBarrStart(true, 0);
@@ -1662,8 +1662,8 @@ function Play_ShowVideoQuality(who_called, value) {
 
     if (!value) {
 
-        if (!who_called) Play_SetHtmlQuality('stream_quality');
-        else PlayVod_SetHtmlQuality('stream_quality');
+        if (!who_called) Play_SetHtmlQuality(Play_info_quality);
+        else PlayVod_SetHtmlQuality(Play_info_quality);
 
     } else Main_innerHTML("stream_quality", value);
 
@@ -1764,9 +1764,10 @@ function Play_hideChatBackgroundDialog() {
     Main_HideElement('play_chat_dialog');
 }
 
-function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, position) {
-    var doc_up = Play_controls[position].doc_up,
-        doc_down = Play_controls[position].doc_down,
+function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, obj) {
+
+    var doc_up = obj.doc_up,
+        doc_down = obj.doc_down,
         total = getQualitiesCount();
 
     if (total === 1) {
@@ -1792,7 +1793,8 @@ function Play_qualityDisplay(getQualitiesCount, qualityIndex, callback, position
         doc_down.style.opacity = "1";
     }
 
-    callback('controls_name_' + position);
+    callback(obj.doc_name);
+
 }
 
 function Play_qualityIndexReset() {

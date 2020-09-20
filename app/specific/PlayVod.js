@@ -511,7 +511,7 @@ function PlayVod_qualityChanged() {
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
     PlayVod_qualityPlaying = PlayVod_quality;
 
-    PlayVod_SetHtmlQuality('stream_quality');
+    PlayVod_SetHtmlQuality(Play_info_quality);
     if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
     else PlayVod_onPlayer();
     //Play_PannelEndStart(2);
@@ -621,8 +621,8 @@ function PlayVod_showPanel(autoHide) {
     if (autoHide) {
         Play_BottonIconsResetFocus();
         PlayVod_qualityIndexReset();
-        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controlsQuality);
-        if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality('stream_quality');
+        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
+        if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality(Play_info_quality);
         Play_clearHidePanel();
         Play_ResetSpeed();
         PlayVod_setHidePanel();
@@ -695,7 +695,7 @@ function PlayVod_SetHtmlQuality(element) {
 
     quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
 
-    Main_textContent(element, quality_string);
+    Main_textContentWithEle(element, quality_string);
 }
 
 function PlayVod_getQualitiesCount() {

@@ -374,7 +374,7 @@ function PlayClip_qualityChanged() {
 
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
     PlayClip_qualityPlaying = PlayClip_quality;
-    PlayClip_SetHtmlQuality('stream_quality');
+    PlayClip_SetHtmlQuality(Play_info_quality);
     PlayClip_onPlayer();
     //Play_PannelEndStart(3);
 }
@@ -543,7 +543,7 @@ function PlayClip_showPanel() {
     Play_BottonIconsResetFocus();
     PlayClip_qualityIndexReset();
     Play_ResetSpeed();
-    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controlsQuality);
+    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
     Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();
@@ -577,7 +577,7 @@ function PlayClip_SetHtmlQuality(element) {
     var quality_string = PlayClip_quality;
     if (Main_A_includes_B(PlayClip_quality, 'source')) quality_string = quality_string.replace("source", STR_SOURCE);
 
-    Main_textContent(element, PlayClip_quality);
+    Main_textContentWithEle(element, PlayClip_quality);
 }
 
 function PlayClip_setHidePanel() {

@@ -326,7 +326,7 @@ function Play_IconsResetFocus() {
     Play_IconsAddFocus();
 }
 
-function Play_updownquality(adder, PlayVodClip, Play_controls) {
+function Play_updownquality(adder, PlayVodClip, Play_controls_Pos) {
 
     var total;
 
@@ -336,21 +336,21 @@ function Play_updownquality(adder, PlayVodClip, Play_controls) {
         total = Play_getQualitiesCount() - 1;
         Play_data.qualityIndex = Play_updownqualityCheckTotal(Play_data.qualityIndex, total);
 
-        Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls);
+        Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls[Play_controls_Pos]);
     } else if (PlayVodClip === 2) {
         //TODO fix this reversed logic
         PlayVod_qualityIndex += adder * -1;
         total = PlayVod_getQualitiesCount() - 1;
         PlayVod_qualityIndex = Play_updownqualityCheckTotal(PlayVod_qualityIndex, total);
 
-        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controls);
+        Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controls[Play_controls_Pos]);
     } else if (PlayVodClip === 3) {
         //TODO fix this reversed logic
         PlayClip_qualityIndex += adder * -1;
         total = PlayClip_getQualitiesCount() - 1;
         PlayClip_qualityIndex = Play_updownqualityCheckTotal(PlayClip_qualityIndex, total);
 
-        Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls);
+        Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controls_Pos]);
     }
 
 }
@@ -1753,7 +1753,7 @@ function Play_MakeControls() {
 
                 oldQuality = Play_data.quality;
                 Play_SetPlayQuality(Play_data.qualities[Play_data.qualityIndex].id);
-                Play_SetHtmlQuality('stream_quality');
+                Play_SetHtmlQuality(Play_info_quality);
 
                 if (oldQuality !== Play_data.quality) OSInterface_SetQuality(Play_data.qualityIndex - 1);//just quality change
                 else OSInterface_RestartPlayer(1, 0, 0);//restart the player
@@ -1767,7 +1767,7 @@ function Play_MakeControls() {
                 oldQuality = PlayVod_quality;
                 PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
                 PlayVod_qualityPlaying = PlayVod_quality;
-                PlayVod_SetHtmlQuality('stream_quality');
+                PlayVod_SetHtmlQuality(Play_info_quality);
 
                 if (oldQuality !== PlayVod_quality) OSInterface_SetQuality(PlayVod_qualityIndex - 1);//just quality change
                 else OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);//resetart the player
@@ -1781,7 +1781,7 @@ function Play_MakeControls() {
                 PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
                 PlayClip_qualityPlaying = PlayClip_quality;
                 PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
-                PlayClip_SetHtmlQuality('stream_quality');
+                PlayClip_SetHtmlQuality(Play_info_quality);
                 PlayClip_onPlayer();
 
                 PlayClip_qualityIndexReset();
@@ -2121,7 +2121,7 @@ function Play_MakeControls() {
                 if (!Main_A_includes_B(Play_data.quality, 'Auto')) {
                     Play_SetPlayQuality("Auto");
                     OSInterface_SetQuality(-1);
-                    Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controlsQuality);
+                    Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
                 }
 
                 OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
@@ -2676,7 +2676,7 @@ function Play_showVodDialog(isFromVod) {
     Main_textContent("dialog_vod_text", isFromVod ? STR_VOD_HISTORY : STR_VOD_HISTORY_FORM_LIVE);
     Main_HideElementWithEle(Play_Controls_Holder);
     PlayVod_showPanel(false);
-    Main_textContent('stream_quality', '');
+    Main_textContentWithEle(Play_info_quality, '');
     Main_innerHTML("dialog_vod_saved_text", STR_FROM + Play_timeMs(PlayVod_VodOffset * 1000));
     Main_ShowElement('dialog_vod_start');
 }
@@ -2764,7 +2764,10 @@ var Play_infoPPWatchingTime = [];
 var Play_infoMultiLiveTime = [];
 var Play_infoMultiWatchingTime = [];
 
+var Play_info_quality;
+
 function Play_BottonIconsSet() {
+    Play_info_quality = Main_getElementById('stream_quality');
 
     Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
     Play_BottonIcons_Back_img = Main_getElementById('back_button_img');
