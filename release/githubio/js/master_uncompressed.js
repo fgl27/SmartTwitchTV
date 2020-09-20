@@ -12900,12 +12900,10 @@
 
                         Play_clearHidePanel();
 
-                        if (!Play_StayDialogVisible()) {
-                            if (PlayVod_PanelY < 2) {
-                                PlayVod_PanelY--;
-                                Play_BottonIconsFocus();
-                            } else Play_BottomUpDown(1, 1);
-                        }
+                        if (PlayVod_PanelY < 2) {
+                            PlayVod_PanelY--;
+                            Play_BottonIconsFocus();
+                        } else Play_BottomUpDown(1, 1);
 
                         Play_setHidePanel();
 
@@ -12933,13 +12931,10 @@
 
                         Play_clearHidePanel();
 
-                        if (!Play_StayDialogVisible()) {
-
-                            if (PlayVod_PanelY < 2) {
-                                PlayVod_PanelY++;
-                                Play_BottonIconsFocus();
-                            } else Play_BottomUpDown(1, -1);
-                        }
+                        if (PlayVod_PanelY < 2) {
+                            PlayVod_PanelY++;
+                            Play_BottonIconsFocus();
+                        } else Play_BottomUpDown(1, -1);
 
                         Play_setHidePanel();
 
@@ -14084,7 +14079,7 @@
     function Play_BottomUpDown(PlayVodClip, adder) {
         if (Play_controls[Play_Panelcounter].updown) {
             Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
-        } else if (adder === 1) {
+        } else if (adder === 1 && (PlayVodClip || !Play_StayDialogVisible())) {
             PlayVod_PanelY--;
             Play_BottonIconsFocus();
         }
