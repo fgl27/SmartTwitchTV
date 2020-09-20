@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+# along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/main/LICENSE>.
 
 #code compressor using uglifyjs, jshint, js-beautify, sed and cleancss, this .sh runs on linux shell base system
 
@@ -35,7 +35,7 @@
 
 #exec this file or drag this .sh file to terminal to generate a released
 
-# add html files here, master.css here is a temp file generate by this .sh it has the css content of index.html
+# add html files here, main.css here is a temp file generate by this .sh it has the css content of index.html
 temp_maker_folder="release/temp_maker/";
 
 # add js folders here
@@ -142,9 +142,9 @@ js_comp_ugf() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			echo -e "${bldblu}	Including compresed version of $x to master.js";
+			echo -e "${bldblu}	Including compresed version of $x to main.js";
 			uglifyjs "$x" -c -m -o "$mainfolder"/"$temp_maker_folder""$x";
-			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/master.js;
+			cat "$mainfolder"/"$temp_maker_folder""$x" >> "$mainfolder"/release/main.js;
 		done
 		cd - &> /dev/null || exit;
 	done
@@ -155,14 +155,14 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/master.js
+			cat "$x" >> "$mainfolder"/release/main.js
 		done
 		cd - &> /dev/null || exit;
 	done
 
-	echo "$master_end" >> "$mainfolder"/release/master.js;
+	echo "$main_end" >> "$mainfolder"/release/main.js;
 
-	jsh_check="$(jshint "$mainfolder"/release/master.js)";
+	jsh_check="$(jshint "$mainfolder"/release/main.js)";
 	if [ ! -z "$jsh_check" ]; then
 		echo -e "${bldred}	JSHint erros or warnings found:\\n"
 		echo -e "${bldred}	$jsh_check"
@@ -170,8 +170,8 @@ js_jshint() {
 		exit;
 	else
 		echo -e "${bldblu}JSHint Test finished no errors or warnings found\\n"
-		cp -rf "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/master_uncompressed.js;
-		js-beautify -q "$mainfolder"/release/githubio/js/master_uncompressed.js -o "$mainfolder"/release/githubio/js/master_uncompressed.js
+		cp -rf "$mainfolder"/release/main.js "$mainfolder"/release/githubio/js/main_uncompressed.js;
+		js-beautify -q "$mainfolder"/release/githubio/js/main_uncompressed.js -o "$mainfolder"/release/githubio/js/main_uncompressed.js
 	fi;
 
 	jsh_check="$(jshint "$mainfolder"/app/Extrapage/Extrapage.js)";
@@ -182,13 +182,13 @@ js_jshint() {
 		exit;
 	else
 		echo -e "${bldblu}JSHint Test finished no errors or warnings found on Extrapage\\n"
-		cp -rf "$mainfolder"/release/master.js "$mainfolder"/release/githubio/js/master_uncompressed.js;
-		js-beautify -q "$mainfolder"/release/githubio/js/master_uncompressed.js -o "$mainfolder"/release/githubio/js/master_uncompressed.js
+		cp -rf "$mainfolder"/release/main.js "$mainfolder"/release/githubio/js/main_uncompressed.js;
+		js-beautify -q "$mainfolder"/release/githubio/js/main_uncompressed.js -o "$mainfolder"/release/githubio/js/main_uncompressed.js
 	fi;
 }
 
-master_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' release/api.js);
-master_end=$(echo "$a" | sed '/APICENTER/,/APIEND/!d;/APIEND/d;/APICENTER/d' release/api.js);
+main_start=$(echo "$a" | sed '/APISTART/,/APIMID/!d;/APIMID/d;/APISTART/d' release/api.js);
+main_end=$(echo "$a" | sed '/APICENTER/,/APIEND/!d;/APIEND/d;/APICENTER/d' release/api.js);
 
 echo -e "\\n${bldred}####################################\\n#				   #";
 echo -e "#				   #\\n#	${bldcya}Starting Release maker${bldred}	   #\\n#				   #";
@@ -196,8 +196,8 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */\n/* exported Play_CheckResume */' > "$mainfolder"/release/master.js;
-	echo "$master_start" >> "$mainfolder"/release/master.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */\n/* exported Play_CheckResume */' > "$mainfolder"/release/main.js;
+	echo "$main_start" >> "$mainfolder"/release/main.js;
 	js_jshint "${js_folders[@]}";
 fi;
 
@@ -211,7 +211,7 @@ sed -i 's/Main_Start();/\/\/Main_Start();/g' app/specific/Main.js;
 cp -rf app/index.html release/index.min.html
 sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/index.min.html
 old='<!-- httpmin-->'
-new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/master.js" defer></script>'
+new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/main.js" defer></script>'
 sed --in-place "s%$old%$new%g" release/index.min.html
 
 cp -rf app/Extrapage/index.html release/extrapageindex.min.html
@@ -238,8 +238,8 @@ if [ "$canhtmlminifier" == 1 ]; then
 	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/extrapageindex.min.html -o release/extrapageindex.min.html
 fi;
 
-echo "" > release/master.js;
-echo "$master_start" > release/master.js;
+echo "" > release/main.js;
+echo "$main_start" > release/main.js;
 
 if [ "$canuglifyjs" == 1 ]; then
 	js_comp_ugf "${js_folders[@]}";
@@ -254,16 +254,16 @@ cd release/ || exit
 
 # Run uglifyjs one more time with "toplevel" enable, only here as if run before js files don't work, the result is around 10% compression improve
 if [ "$canuglifyjs" == 1 ]; then
-	echo "$master_end" >> master.js;
-	echo -e "${bldblu}	uglifyjs  master.js";
-	uglifyjs master.js -c -m toplevel -o master.js;
+	echo "$main_end" >> main.js;
+	echo -e "${bldblu}	uglifyjs  main.js";
+	uglifyjs main.js -c -m toplevel -o main.js;
 	uglifyjs githubio/js/Extrapage.js -c -m toplevel -o githubio/js/Extrapage.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";
 
-# copy master.js temp files to githubio/js/
-cp -rf master.js githubio/js/master.js;
+# copy main.js temp files to githubio/js/
+cp -rf main.js githubio/js/main.js;
 cd - &> /dev/null || exit;
 rm -rf "$temp_maker_folder"
 sed -i 's/\/\/Main_Start();/Main_Start();/g' app/specific/Main.js;
@@ -283,7 +283,7 @@ sed -i 's/\/\/Main_Start();/Main_Start();/g' app/specific/Main.js;
 #	echo -e "	${bldred}Repo files not beautifyed\\n"
 #fi;
 
-# Warn if a change was detected to master.js and release/html
+# Warn if a change was detected to main.js and release/html
 git_check="$(git status | grep modified)";
 if [ ! -z "$git_check" ]; then
 	echo -e "${bldgrn}Is necessary to update githubio as below files are modify:\\n"

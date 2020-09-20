@@ -346,18 +346,18 @@ function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
     if (Main_IsOn_OSInterface) Android.RestartPlayer(who_called, ResumePosition, player);
 }
 
-//public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int player)
+//public void StartAuto(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //who_called = 0 live, 1 vod, 2 clip
 //ResumePosition =  the position to start the video, if a live this is always 0
 //player = the player position, there is several player to do multistream support
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
-function OSInterface_StartAuto(uri, masterPlaylistString, who_called, ResumePosition, player) {
+function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player) {
     Android.StartAuto(
         uri,
-        masterPlaylistString,
+        mainPlaylistString,
         who_called,
         ResumePosition,
         player
@@ -682,20 +682,20 @@ function OSInterface_DisableMultiStream() {
     Android.DisableMultiStream();
 }
 
-//public void StartMultiStream(int position, String uri, String masterPlaylistString)
+//public void StartMultiStream(int position, String uri, String mainPlaylistString)
 //position = position of the player
 //uri = uri of the playlist
-//masterPlaylistString = master Playlist String
+//mainPlaylistString = main Playlist String
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartMultiStream(position, uri, masterPlaylistString) {
-    Android.StartMultiStream(position, uri, masterPlaylistString);
+function OSInterface_StartMultiStream(position, uri, mainPlaylistString) {
+    Android.StartMultiStream(position, uri, mainPlaylistString);
 }
 
 //public void EnableMultiStream(boolean MainBig, int offset)
 //MainBig = MainBig mode if true the main player is bigger
 //offset = is the player position offset on the screen, one can click left right to change with will be the main player, the offset determines the position of it player
-//masterPlaylistString = master Playlist String
+//mainPlaylistString = main Playlist String
 //Android specific: true
 //Start MultiStream and allows to change its mode
 function OSInterface_EnableMultiStream(MainBig, offset) {
@@ -757,35 +757,35 @@ function OSInterface_IsMainNotMain() {
     return Android.IsMainNotMain();
 }
 
-//public void PrepareForMulti(String uri, String masterPlaylistString)
+//public void PrepareForMulti(String uri, String mainPlaylistString)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //Android specific: true
 //If IsMainNotMain fix player position
-function OSInterface_PrepareForMulti(uri, masterPlaylistString) {
-    Android.PrepareForMulti(uri, masterPlaylistString);
+function OSInterface_PrepareForMulti(uri, mainPlaylistString) {
+    Android.PrepareForMulti(uri, mainPlaylistString);
 }
 
-//public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod)
+//public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //position = position of the player on the screen
 //resumePosition = the postion to start the vod
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod) {
-    Android.StartFeedPlayer(uri, masterPlaylistString, position, resumePosition, isVod);
+function OSInterface_StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, isVod) {
+    Android.StartFeedPlayer(uri, mainPlaylistString, position, resumePosition, isVod);
 }
 
-//public void StartFeedPlayer(String uri, String masterPlaylistString, , int top, int right, int bottom, int left)
+//public void StartFeedPlayer(String uri, String mainPlaylistString, , int top, int right, int bottom, int left)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartSidePanelPlayer(uri, masterPlaylistString) {
+function OSInterface_StartSidePanelPlayer(uri, mainPlaylistString) {
     Android.StartSidePanelPlayer(
         uri,
-        masterPlaylistString
+        mainPlaylistString
     );
 }
 
@@ -803,7 +803,7 @@ function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
 
 //public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //bottom, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //Android specific: true
 //Start MultiStream at position
@@ -818,19 +818,19 @@ function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
 
 }
 
-//public void StartScreensPlayer(String uri, String masterPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
+//public void StartScreensPlayer(String uri, String mainPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //ResumePosition position to start the vod
 //top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //who_called 1 live 2 vod 3 clip
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
+function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
 
     Android.StartScreensPlayer(
         uri,
-        masterPlaylistString,
+        mainPlaylistString,
         ResumePosition,
         bottom,
         right,
@@ -844,7 +844,7 @@ function OSInterface_StartScreensPlayer(uri, masterPlaylistString, ResumePositio
 
 //public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
 //uri =  the url of the playlist or the clip
-//masterPlaylistString = the stringify version of the url playlist content
+//mainPlaylistString = the stringify version of the url playlist content
 //top, right, left = 'side_panel_feed_thumb'.getBoundingClientRect()
 //who_called 1 live 2 vod 3 clip
 //Android specific: true

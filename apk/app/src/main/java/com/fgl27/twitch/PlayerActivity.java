@@ -2077,7 +2077,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartAuto(String uri, String masterPlaylistString, int who_called, long ResumePosition, int mplayer) {
+        public void StartAuto(String uri, String mainPlaylistString, int who_called, long ResumePosition, int mplayer) {
             MainThreadHandler.post(() -> {
                 boolean startPlayer = true;
 
@@ -2088,14 +2088,14 @@ public class PlayerActivity extends Activity {
                 if (startPlayer) {
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    mediaSources[mainPlayer ^ mplayer] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                    mediaSources[mainPlayer ^ mplayer] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
                             mediaSources[4] :
                             Tools.buildMediaSource(
                                     Uri.parse(uri),
                                     mWebViewContext,
                                     who_called,
                                     mLowLatency,
-                                    masterPlaylistString,
+                                    mainPlaylistString,
                                     userAgent
                             );
                     PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
@@ -2120,21 +2120,21 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void PrepareForMulti(String uri, String masterPlaylistString) {
+        public void PrepareForMulti(String uri, String mainPlaylistString) {
             MainThreadHandler.post(() -> {
 
                 PicturePicture = false;
                 ClearPlayer(mainPlayer);
                 mainPlayer = mainPlayer ^ 1;
 
-                mediaSources[mainPlayer] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                mediaSources[mainPlayer] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
                         mediaSources[4] :
                         Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
                                 1,
                                 mLowLatency,
-                                masterPlaylistString,
+                                mainPlaylistString,
                                 userAgent
                         );
 
@@ -2269,16 +2269,16 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartFeedPlayer(String uri, String masterPlaylistString, int position, long resumePosition, boolean isVod) {
+        public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
 
-                PreviewPlayerPlaylist = masterPlaylistString;
+                PreviewPlayerPlaylist = mainPlaylistString;
                 mediaSources[4] = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
                         isVod ? 2 : 1,
                         mLowLatency,
-                        masterPlaylistString,
+                        mainPlaylistString,
                         userAgent
                 );
 
@@ -2310,7 +2310,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartSidePanelPlayer(String uri, String masterPlaylistString) {
+        public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
             MainThreadHandler.post(() -> {
 
                 mediaSources[mainPlayer] = Tools.buildMediaSource(
@@ -2318,7 +2318,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         1,
                         mLowLatency,
-                        masterPlaylistString,
+                        mainPlaylistString,
                         userAgent
                 );
 
@@ -2330,7 +2330,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartScreensPlayer(String uri, String masterPlaylistString, int ResumePosition,
+        public void StartScreensPlayer(String uri, String mainPlaylistString, int ResumePosition,
                                        float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
 
@@ -2339,7 +2339,7 @@ public class PlayerActivity extends Activity {
                         mWebViewContext,
                         who_called,
                         mLowLatency,
-                        masterPlaylistString,
+                        mainPlaylistString,
                         userAgent
                 );
 
@@ -2784,20 +2784,20 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartMultiStream(int position, String uri, String masterPlaylistString) {
+        public void StartMultiStream(int position, String uri, String mainPlaylistString) {
             MainThreadHandler.post(() -> {
                 int mPosition = position;
                 if (position == 0) mPosition = mainPlayer;
                 else if (position == 1) mPosition = mainPlayer ^ 1;
 
-                mediaSources[mPosition] = PreviewPlayerPlaylist != null && Objects.equals(masterPlaylistString, PreviewPlayerPlaylist) ?
+                mediaSources[mPosition] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
                         mediaSources[4] :
                         Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
                                 1,
                                 mLowLatency,
-                                masterPlaylistString,
+                                mainPlaylistString,
                                 userAgent
                         );
 
