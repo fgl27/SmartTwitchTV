@@ -102,6 +102,9 @@ TODO list
 * Add restore settings
 * Add restore screens position and etc related as player settings
 * to add this featuring is better to add a obj that saves all the things, one for settings one for general player and screen things
+* Make Main obj the singular obj that is used to save all minus history and user
+* On settings update the settings obj so it loads from a fun as screen, included on it the strings and remove the old workaround for 0 defaults
+* On settings add a temp var to check if the prop already exist on main obj if yes restore from it if not set the prop to main prop
 
 ### Update how string works on the JS side of the code
 
