@@ -994,7 +994,7 @@ function OSInterface_upDateLang(lang) {
 //Android specific: true
 //Get live stream latency to the streamer
 function OSInterface_getLatency(chat_number) {
-    Android.getLatency(chat_number);
+    if (Main_IsOn_OSInterface) Android.getLatency(chat_number);
 
 }
 
