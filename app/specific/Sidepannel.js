@@ -133,10 +133,10 @@ function Sidepannel_RestoreThumb(doc, play_data) {
     return false;
 }
 
-function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
+function Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities) {
     Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQuailities) {
 
         OSInterface_ClearSidePanelPlayer();
         Play_CheckIfIsLiveCleanEnd();
@@ -456,7 +456,6 @@ function Sidepannel_StartMain() {
     Sidepannel_FixDiv.style.marginLeft = '';
     Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
     Sidepannel_AddFocusMain();
-    Sidepannel_MainisShowing();
     Main_EventScreen('Side_panel_main');
 }
 
@@ -474,27 +473,26 @@ function Sidepannel_HideMain(hideAll) {
         (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
 
     Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
-    Sidepannel_MainisShowing();
 }
 
-function Sidepannel_Hide(PreventcleanQuailities) {
+function Sidepannel_Hide(PreventCleanQuailities) {
 
-    if (!PreventcleanQuailities) {
+    if (!PreventCleanQuailities) {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_HideElement('side_panel_feed_thumb');
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     }
-    Sidepannel_HideEle(PreventcleanQuailities);
+    Sidepannel_HideEle(PreventCleanQuailities);
 
     Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
     Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
 
-function Sidepannel_HideEle(PreventcleanQuailities) {
-    Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
-    if (!PreventcleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+function Sidepannel_HideEle(PreventCleanQuailities) {
+    Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities);
+    if (!PreventCleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
