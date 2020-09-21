@@ -6992,8 +6992,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.253';
     var Main_version_java = 38; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 20 2020';
-    var Main_version_web = 75; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 21 2020';
+    var Main_version_web = 76; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7594,6 +7594,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 21 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Apk Version 3.0.253 - Web Version September 20 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -7618,10 +7622,6 @@
             {
                 title: "Web Version September 17 2020",
                 changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version September 06 2020",
-                changes: ["Prevent chat disconnection do to inactivity, technically this only affect devices running outdated version of Webview 75.X and older"]
             },
         ];
 
@@ -9119,15 +9119,7 @@
 
         var UserIsSet = AddUser_UserIsSet();
 
-        //Check on resume if token has expired and refresh
-        //The token may expire while the device is on standby and on that case even if the app is running
-        //the internet connection may be down (do to standby), on that case the update token fun will run and not work
-        //On that case the expires_when will be less the time now and we need to update on resume
-        //If the app closes next reopen the same check will happen but somewhere else
-        if (UserIsSet && AddUser_UsernameArray[0].access_token &&
-            (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
-            AddCode_refreshTokens(0, 0, null, null, null, true);
-        }
+        Main_CheckResumeUpdateToken(UserIsSet);
 
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_updateclock();
@@ -9147,10 +9139,24 @@
         Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
         //Tecnicly this are only neede if the app fail to refresh when is on background
-        UserLiveFeed_CheckRefreshAfterResume();
-        Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
+        if (!skipPlay) {
+            UserLiveFeed_CheckRefreshAfterResume();
+            Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
-        if (!skipPlay) Main_CheckAccessibility();
+            Main_CheckAccessibility();
+        }
+    }
+
+    function Main_CheckResumeUpdateToken(UserIsSet) {
+        //Check on resume if token has expired and refresh
+        //The token may expire while the device is on standby and on that case even if the app is running
+        //the internet connection may be down (do to standby), on that case the update token fun will run and not work
+        //On that case the expires_when will be less the time now and we need to update on resume
+        //If the app closes next reopen the same check will happen but somewhere else
+        if (UserIsSet && AddUser_UsernameArray[0].access_token &&
+            (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
+            AddCode_refreshTokens(0, 0, null, null, null, true);
+        }
     }
 
     function Main_CheckAccessibility(skipRefresCheck) {
@@ -9267,8 +9273,13 @@
         PlayClip_isOn = false;
 
         if (Play_MultiEnable) {
-            Play_controls[Play_MultiStream].enterKey();
+            //Make sure PP is disabled first, then disable Multistream at last close all players
             PlayExtra_PicturePicture = false;
+
+            Play_controls[Play_MultiStream].enterKey();
+
+            OSInterface_mClearSmallPlayer();
+            OSInterface_stopVideo();
         } else if (PlayExtra_PicturePicture) {
             PlayExtra_UnSetPanel();
             PlayExtra_PicturePicture = false;
@@ -9386,7 +9397,7 @@
                 Sidepannel_Hide(false);
             }
 
-            var goTo = Main_onNewIntentGetSCreen(obj);
+            var goTo = Main_onNewIntentGetScreen(obj);
 
             if (Main_values.Main_Go !== goTo) {
                 if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
@@ -9400,7 +9411,7 @@
         Main_EventChannel(obj);
     }
 
-    function Main_onNewIntentGetSCreen(obj) {
+    function Main_onNewIntentGetScreen(obj) {
         var goTo = Main_values.Main_Go;
         var UserIsSet = AddUser_UserIsSet();
 
@@ -19617,7 +19628,7 @@
 
         } else if (screen_channel_call) {
 
-            Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+            Main_GoBefore = Main_onNewIntentGetScreen(obj);
             Main_values.Play_WasPlaying = 0;
             StartUser = false;
 
@@ -27614,10 +27625,10 @@
         return false;
     }
 
-    function Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities) {
+    function Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities) {
         Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQuailities) {
 
             OSInterface_ClearSidePanelPlayer();
             Play_CheckIfIsLiveCleanEnd();
@@ -27941,7 +27952,6 @@
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_addEventListener("keydown", Sidepannel_handleKeyDownMain);
         Sidepannel_AddFocusMain();
-        Sidepannel_MainisShowing();
         Main_EventScreen('Side_panel_main');
     }
 
@@ -27959,27 +27969,26 @@
             (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
 
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
-        Sidepannel_MainisShowing();
     }
 
-    function Sidepannel_Hide(PreventcleanQuailities) {
+    function Sidepannel_Hide(PreventCleanQuailities) {
 
-        if (!PreventcleanQuailities) {
+        if (!PreventCleanQuailities) {
             Sidepannel_HideMain();
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
             Main_HideElement('side_panel_feed_thumb');
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         }
-        Sidepannel_HideEle(PreventcleanQuailities);
+        Sidepannel_HideEle(PreventCleanQuailities);
 
         Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
         Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
     }
 
-    function Sidepannel_HideEle(PreventcleanQuailities) {
-        Sidepannel_CheckIfIsLiveSTop(PreventcleanQuailities);
-        if (!PreventcleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+    function Sidepannel_HideEle(PreventCleanQuailities) {
+        Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities);
+        if (!PreventCleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     }
 
     function Sidepannel_SetTopOpacity(Main_Go) {
