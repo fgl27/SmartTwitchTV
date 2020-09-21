@@ -2140,15 +2140,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
 
     var UserIsSet = AddUser_UserIsSet();
 
-    //Check on resume if token has expired and refresh
-    //The token may expire while the device is on standby and on that case even if the app is running
-    //the internet connection may be down (do to standby), on that case the update token fun will run and not work
-    //On that case the expires_when will be less the time now and we need to update on resume
-    //If the app closes next reopen the same check will happen but somewhere else
-    if (UserIsSet && AddUser_UsernameArray[0].access_token &&
-        (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
-        AddCode_refreshTokens(0, 0, null, null, null, true);
-    }
+    Main_CheckResumeUpdateToken(UserIsSet);
 
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
@@ -2168,10 +2160,24 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
     //Tecnicly this are only neede if the app fail to refresh when is on background
-    UserLiveFeed_CheckRefreshAfterResume();
-    Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
+    if (!skipPlay) {
+        UserLiveFeed_CheckRefreshAfterResume();
+        Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
-    if (!skipPlay) Main_CheckAccessibility();
+        Main_CheckAccessibility();
+    }
+}
+
+function Main_CheckResumeUpdateToken(UserIsSet) {
+    //Check on resume if token has expired and refresh
+    //The token may expire while the device is on standby and on that case even if the app is running
+    //the internet connection may be down (do to standby), on that case the update token fun will run and not work
+    //On that case the expires_when will be less the time now and we need to update on resume
+    //If the app closes next reopen the same check will happen but somewhere else
+    if (UserIsSet && AddUser_UsernameArray[0].access_token &&
+        (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
+        AddCode_refreshTokens(0, 0, null, null, null, true);
+    }
 }
 
 function Main_CheckAccessibility(skipRefresCheck) {
