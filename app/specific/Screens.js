@@ -221,7 +221,7 @@ function Screens_first_init() {
 
     } else if (screen_channel_call) {
 
-        Main_GoBefore = Main_onNewIntentGetSCreen(obj);
+        Main_GoBefore = Main_onNewIntentGetScreen(obj);
         Main_values.Play_WasPlaying = 0;
         StartUser = false;
 

@@ -2286,8 +2286,13 @@ function Main_onNewIntentClearPlay() {
     PlayClip_isOn = false;
 
     if (Play_MultiEnable) {
-        Play_controls[Play_MultiStream].enterKey();
+        //Make sure PP is disabled first, then disable Multistream at last close all players
         PlayExtra_PicturePicture = false;
+
+        Play_controls[Play_MultiStream].enterKey();
+
+        OSInterface_mClearSmallPlayer();
+        OSInterface_stopVideo();
     } else if (PlayExtra_PicturePicture) {
         PlayExtra_UnSetPanel();
         PlayExtra_PicturePicture = false;
@@ -2405,7 +2410,7 @@ function Main_onNewIntent(mobj) {
             Sidepannel_Hide(false);
         }
 
-        var goTo = Main_onNewIntentGetSCreen(obj);
+        var goTo = Main_onNewIntentGetScreen(obj);
 
         if (Main_values.Main_Go !== goTo) {
             if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
@@ -2419,7 +2424,7 @@ function Main_onNewIntent(mobj) {
     Main_EventChannel(obj);
 }
 
-function Main_onNewIntentGetSCreen(obj) {
+function Main_onNewIntentGetScreen(obj) {
     var goTo = Main_values.Main_Go;
     var UserIsSet = AddUser_UserIsSet();
 
