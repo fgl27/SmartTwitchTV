@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/main/LICENSE>.
+# along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
 
 #code compressor using uglifyjs, jshint, js-beautify, sed and cleancss, this .sh runs on linux shell base system
 
@@ -35,7 +35,6 @@
 
 #exec this file or drag this .sh file to terminal to generate a released
 
-# add html files here, main.css here is a temp file generate by this .sh it has the css content of index.html
 temp_maker_folder="release/temp_maker/";
 
 # add js folders here

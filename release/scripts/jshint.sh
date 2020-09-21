@@ -58,8 +58,8 @@ mainfolder="$(dirname "$mainfolder")";
 
 cd "$mainfolder" || exit
 
-master_start=$(echo "$a" | sed -n '/APISTART/,/APIMID/p' release/api.js);
-master_end=$(echo "$a" | sed -n '/APICENTER/,/APIEND/p' release/api.js);
+main_start=$(echo "$a" | sed -n '/APISTART/,/APIMID/p' release/api.js);
+main_end=$(echo "$a" | sed -n '/APICENTER/,/APIEND/p' release/api.js);
 
 # jshint indent all the *.js code
 js_jshint() {
@@ -67,14 +67,14 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/master.js
+			cat "$x" >> "$mainfolder"/release/main.js
 		done
 		cd - &> /dev/null || exit;
 	done
 
-	echo "$master_end" >> "$mainfolder"/release/master.js;
+	echo "$main_end" >> "$mainfolder"/release/main.js;
 
-	jsh_check="$(jshint "$mainfolder"/release/master.js)";
+	jsh_check="$(jshint "$mainfolder"/release/main.js)";
 	if [ ! -z "$jsh_check" ]; then
 		echo -e "${bldred}	JSHint erros or warnings found:\\n"
 		echo -e "${bldred}	$jsh_check"
@@ -100,8 +100,8 @@ if which 'jshint' >/dev/null ; then
 		npm install jshint -g
 	fi;
 	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */' > "$mainfolder"/release/master.js;
-	echo "$master_start" >> "$mainfolder"/release/master.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */' > "$mainfolder"/release/main.js;
+	echo "$main_start" >> "$mainfolder"/release/main.js;
 	js_jshint "${js_folders[@]}";
 else
 	echo -e "\\n${bldred}can't run jshint because it is not installed";
