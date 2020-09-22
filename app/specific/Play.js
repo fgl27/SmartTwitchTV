@@ -1472,6 +1472,8 @@ function Play_isPanelShowing() {
 
 function Play_hidePanel() {
     //return;//return;
+    PlayVod_jumpCount = 0;
+    PlayVod_IsJumping = false;
     Play_clearHidePanel();
     Play_ForceHidePannel();
     Play_data.quality = Play_data.qualityPlaying;
