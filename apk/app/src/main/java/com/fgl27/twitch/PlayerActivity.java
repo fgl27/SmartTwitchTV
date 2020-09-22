@@ -72,6 +72,7 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -139,7 +140,6 @@ public class PlayerActivity extends Activity {
     private PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
-    private DefaultRenderersFactory renderersFactory;
     private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
     private DefaultTrackSelector.Parameters trackSelectorParameters;
     private DefaultTrackSelector.Parameters trackSelectorParametersPP;
@@ -375,7 +375,83 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void PreInitializePlayer(int who_called, long ResumePosition, int position) {
+
+    private void SetupPlayer(int PlayerPosition, int loadControlPosition, long ResumePosition, boolean StartGetCurrentPosition,
+                             DefaultTrackSelector.Parameters trackSelectorParameters, Player.EventListener mPlayerEventListener, AnalyticsListener mAnalyticsListener) {
+
+        if (IsStopped) {
+            monStop();
+            return;
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "SetupPlayer position " + PlayerPosition);
+        }
+
+        PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
+
+        if (player[PlayerPosition] == null) {
+
+            trackSelector[PlayerPosition] = new DefaultTrackSelector(this);
+            trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
+
+            DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
+            if (BLACKLISTEDCODECS != null) renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
+
+            player[PlayerPosition] = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
+                    .setTrackSelector(trackSelector[PlayerPosition])
+                    .setLoadControl(loadControl[loadControlPosition])
+                    .build();
+
+            player[PlayerPosition].addListener(mPlayerEventListener);
+            player[PlayerPosition].addAnalyticsListener(mAnalyticsListener);
+
+            PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
+
+        }
+
+        PlayerView[PlayerPosition].setPlaybackPreparer(null);
+        player[PlayerPosition].setPlayWhenReady(true);
+        player[PlayerPosition].setMediaSource(
+                mediaSources[PlayerPosition],
+                ResumePosition
+        );
+
+        player[PlayerPosition].prepare();
+
+        if (PlayerView[PlayerPosition].getVisibility() != View.VISIBLE)
+            PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+
+        KeepScreenOn(true);
+
+        if (PlayerPosition < 4) {
+
+            //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
+            if (StartGetCurrentPosition) GetCurrentPosition();
+
+            hideLoading(5);
+            droppedFrames = 0;
+            NetActivityAVG = 0;
+            NetCounter = 0;
+
+        } else if (StartGetCurrentPosition) {
+
+            GetCurrentPositionSmall();
+            SmallPlayerCurrentPosition = ResumePosition;
+
+        }
+
+    }
+
+    private void SetupPlayerListener(int PlayerPosition, int Who_Called) {
+
+        // Change from clip, vod, live to other type need a update of the listener Who_Called var, only update instead of create a new as  it's technically faster
+        if (playerListener[PlayerPosition] == null) playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
+        else playerListener[PlayerPosition].UpdateWho_Called(Who_Called);
+
+    }
+
+    private void PreparePlayer_Single_PP(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
         if (position == mainPlayer) {
@@ -383,210 +459,75 @@ public class PlayerActivity extends Activity {
             PlayerCurrentPosition = mResumePosition;
         }
         lastSeenTrackGroupArray = null;
-        initializePlayer(position);
+        initializePlayer_Single_PP(position);
     }
 
     // The main player initialization function
-    private void initializePlayer(int position) {
-        if (IsStopped) {
-            monStop();
-            return;
-        }
+    private void initializePlayer_Single_PP(int PlayerPosition) {
 
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "initializePlayer position " + position);
-        }
-
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-
-        boolean isSmall = (mainPlayer != position);
+        boolean isSmall = (mainPlayer != PlayerPosition);
         int Who_Called = mWho_Called > 3 ? (mWho_Called - 3) : mWho_Called;
 
-        if (PlayerView[position].getVisibility() != View.VISIBLE)
-            PlayerView[position].setVisibility(View.VISIBLE);
+        SetupPlayerListener(PlayerPosition, Who_Called);
 
-        if (player[position] == null) {
-            trackSelector[position] = new DefaultTrackSelector(this);
-            trackSelector[position].setParameters(isSmall ? trackSelectorParametersPP : trackSelectorParameters);
-
-            if (BLACKLISTEDCODECS != null) {
-                renderersFactory = new DefaultRenderersFactory(this);
-                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
-
-                player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
-                        .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[Who_Called])
-                        .build();
-            } else {
-                player[position] = new SimpleExoPlayer.Builder(this)
-                        .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[Who_Called])
-                        .build();
-            }
-
-            playerListener[position] = new PlayerEventListener(position, Who_Called);
-            player[position].addListener(playerListener[position]);
-            player[position].addAnalyticsListener(new AnalyticsEventListener());
-
-            PlayerView[position].setPlayer(player[position]);
-        } else if (playerListener[position] != null) {
-            playerListener[position].UpdateWho_Called(Who_Called);
-        }
-
-        PlayerView[position].setPlaybackPreparer(null);
-        player[position].setPlayWhenReady(true);
-        player[position].setMediaSource(
-                mediaSources[position],
-                ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET
+        SetupPlayer(
+                PlayerPosition,
+                Who_Called,
+                ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET,
+                PlayerPosition == mainPlayer,
+                isSmall ? trackSelectorParametersPP : trackSelectorParameters,
+                playerListener[PlayerPosition],
+                new AnalyticsEventListener()
         );
 
-        player[position].prepare();
-
-        hideLoading(5);
         SwitchPlayerAudio(AudioSource);
 
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
-            int tempPos = position ^ 1;
+            int tempPos = PlayerPosition ^ 1;
             if (player[tempPos] != null) {
                 PlayerView[tempPos].setVisibility(View.GONE);
                 PlayerView[tempPos].setVisibility(View.VISIBLE);
             }
         }
 
-        KeepScreenOn(true);
-
-        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-        if (position == mainPlayer) GetCurrentPosition();
-
-        droppedFrames = 0;
-        NetActivityAVG = 0;
-        NetCounter = 0;
     }
 
-    private void initializeSmallPlayer(Long resumePosition, boolean IsVod) {
-        if (IsStopped) {
-            monStop();
-            return;
-        }
+    private void initializePlayer_Multi(int PlayerPosition) {
 
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "initializeSmallPlayer");
-        }
+        SetupPlayerListener(PlayerPosition, 1);
 
-        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-
-        if (player[4] == null) {
-            trackSelector[4] = new DefaultTrackSelector(this);
-            trackSelector[4].setParameters(trackSelectorParametersExtraSmall);
-
-            if (BLACKLISTEDCODECS != null) {
-                renderersFactory = new DefaultRenderersFactory(this);
-                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
-
-                player[4] = new SimpleExoPlayer.Builder(this, renderersFactory)
-                        .setTrackSelector(trackSelector[4])
-                        .setLoadControl(loadControl[0])
-                        .build();
-            } else {
-                player[4] = new SimpleExoPlayer.Builder(this)
-                        .setTrackSelector(trackSelector[4])
-                        .setLoadControl(loadControl[0])
-                        .build();
-            }
-
-            player[4].addListener(new PlayerEventListenerSmall(IsVod));
-            player[4].addAnalyticsListener(new AnalyticsEventListenerSmall());
-
-            PlayerView[4].setPlayer(player[4]);
-        }
-
-        PlayerView[4].setPlaybackPreparer(null);
-        player[4].setPlayWhenReady(true);
-
-        player[4].setMediaSource(
-                mediaSources[4],
-                IsVod && resumePosition > 0 ? resumePosition : C.TIME_UNSET);
-
-        player[4].prepare();
-
-        player[4].setVolume(PreviewAudio);
-        SmallPlayerCurrentPosition = resumePosition;
-
-        KeepScreenOn(true);
-
-        if (PlayerView[4].getVisibility() != View.VISIBLE) {
-            PlayerView[4].setVisibility(View.VISIBLE);
-        }
-
-        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-        if (IsVod) GetCurrentPositionSmall();
-    }
-
-    private void initializePlayerMulti(int position) {
-        if (IsStopped) {
-            monStop();
-            return;
-        }
-
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "initializePlayerMulti position " + position);
-        }
-
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-
-        if (PlayerView[position].getVisibility() != View.VISIBLE)
-            PlayerView[position].setVisibility(View.VISIBLE);
-
-        if (player[position] == null) {
-            trackSelector[position] = new DefaultTrackSelector(this);
-            trackSelector[position].setParameters(trackSelectorParametersPP);
-
-            if (BLACKLISTEDCODECS != null) {
-                renderersFactory = new DefaultRenderersFactory(this);
-                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
-
-                player[position] = new SimpleExoPlayer.Builder(this, renderersFactory)
-                        .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[0])
-                        .build();
-            } else {
-                player[position] = new SimpleExoPlayer.Builder(this)
-                        .setTrackSelector(trackSelector[position])
-                        .setLoadControl(loadControl[0])
-                        .build();
-            }
-
-            playerListener[position] = new PlayerEventListener(position, mWho_Called);
-            player[position].addListener(playerListener[position]);
-            player[position].addAnalyticsListener(new AnalyticsEventListener());
-
-            PlayerView[position].setPlayer(player[position]);
-        }
-
-        PlayerView[position].setPlaybackPreparer(null);
-        player[position].setPlayWhenReady(true);
-
-        player[position].setMediaSource(
-                mediaSources[position],
-                C.TIME_UNSET
+        SetupPlayer(
+                PlayerPosition,
+                0,
+                C.TIME_UNSET,
+                PlayerPosition == MultiMainPlayer,
+                trackSelectorParametersPP,
+                playerListener[PlayerPosition],
+                new AnalyticsEventListener()
         );
 
-        player[position].prepare();
+        float volume = 0f;
+        if (AudioMulti == 4 || AudioMulti == PlayerPosition) volume = player[4] == null ? 1f : PreviewOthersAudio;
 
-        hideLoading(5);
+        player[PlayerPosition].setVolume(volume);
 
-        if (AudioMulti == 4 || AudioMulti == position)
-            player[position].setVolume(player[4] == null ? 1f : PreviewOthersAudio);
-        else player[position].setVolume(0f);
+    }
 
-        //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-        if (position == MultiMainPlayer) GetCurrentPosition();
+    private void initializePlayer_Preview(Long resumePosition, boolean IsVod) {
 
-        KeepScreenOn(true);
-        droppedFrames = 0;
-        NetActivityAVG = 0;
-        NetCounter = 0;
+        SetupPlayer(
+                4,
+                0,
+                (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
+                IsVod,
+                trackSelectorParametersExtraSmall,
+                new PlayerEventListenerSmall(IsVod),
+                new AnalyticsEventListenerSmall()
+        );
+
+        player[4].setVolume(PreviewAudio);
+
     }
 
     private void ClearPlayer(int position) {
@@ -2102,7 +2043,7 @@ public class PlayerActivity extends Activity {
                                     mainPlaylistString,
                                     userAgent
                             );
-                    PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ mplayer);
+                    PreparePlayer_Single_PP(who_called, ResumePosition, mainPlayer ^ mplayer);
                     PreviewPlayerPlaylist = null;
 
                     if (mplayer == 1) {
@@ -2142,7 +2083,7 @@ public class PlayerActivity extends Activity {
                                 userAgent
                         );
 
-                PreInitializePlayer(1, 0, mainPlayer);
+                PreparePlayer_Single_PP(1, 0, mainPlayer);
                 PreviewPlayerPlaylist = null;
             });
         }
@@ -2150,7 +2091,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void RestartPlayer(int who_called, long ResumePosition, int player) {
             MainThreadHandler.post(() -> {
-                PreInitializePlayer(who_called, ResumePosition, mainPlayer ^ player);
+                PreparePlayer_Single_PP(who_called, ResumePosition, mainPlayer ^ player);
                 if (player == 1) {
                     PicturePicture = true;
                 }
@@ -2287,7 +2228,7 @@ public class PlayerActivity extends Activity {
                 );
 
                 PlayerView[4].setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
-                initializeSmallPlayer(resumePosition, isVod);
+                initializePlayer_Preview(resumePosition, isVod);
 
             });
         }
@@ -2328,7 +2269,7 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
-                PreInitializePlayer(4, 0, mainPlayer);
+                PreparePlayer_Single_PP(4, 0, mainPlayer);
 
             });
         }
@@ -2351,7 +2292,7 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
-                PreInitializePlayer(3 + who_called, ResumePosition, mainPlayer);
+                PreparePlayer_Single_PP(3 + who_called, ResumePosition, mainPlayer);
 
             });
         }
@@ -2805,7 +2746,7 @@ public class PlayerActivity extends Activity {
                                 userAgent
                         );
 
-                initializePlayerMulti(mPosition);
+                initializePlayer_Multi(mPosition);
                 PreviewPlayerPlaylist = null;
             });
         }
@@ -3057,10 +2998,10 @@ public class PlayerActivity extends Activity {
 
         if (Who_Called == 1) {
 
-            if (MultiStreamEnable) initializePlayerMulti(position);
-            else initializePlayer(position);
+            if (MultiStreamEnable) initializePlayer_Multi(position);
+            else initializePlayer_Single_PP(position);
 
-        } else initializePlayer(position);
+        } else initializePlayer_Single_PP(position);
     }
 
     public void PlayerEventListenerClear(int position, int fail_type) {
@@ -3178,7 +3119,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerCheckCounter[4] < 4) {
 
-            initializeSmallPlayer(mResumePositionSmallPlayer, IsVod);
+            initializePlayer_Preview(mResumePositionSmallPlayer, IsVod);
 
         } else {
 
