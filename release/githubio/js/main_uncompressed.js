@@ -9139,12 +9139,10 @@
         Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
 
         //Tecnicly this are only neede if the app fail to refresh when is on background
-        if (!skipPlay) {
-            UserLiveFeed_CheckRefreshAfterResume();
-            Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
+        UserLiveFeed_CheckRefreshAfterResume();
+        Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
-            Main_CheckAccessibility();
-        }
+        if (!skipPlay) Main_CheckAccessibility();
     }
 
     function Main_CheckResumeUpdateToken(UserIsSet) {
