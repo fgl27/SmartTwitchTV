@@ -714,7 +714,7 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 }
 
 function PlayVod_jump() {
-    if (!Play_isOn && !Play_isEndDialogVisible()) {
+    if (!Play_isEndDialogVisible()) {
 
         if (PlayVod_isOn) {
 
@@ -730,7 +730,7 @@ function PlayVod_jump() {
             OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         }
 
-        if (PlayClip_HasVOD) Chat_Init();
+        if (!Play_isOn && PlayClip_HasVOD) Chat_Init();
     }
     Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
     Play_BottonIcons_Progress_Steps.style.display = 'none';
