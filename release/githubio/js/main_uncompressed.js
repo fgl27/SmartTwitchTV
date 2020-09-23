@@ -6990,10 +6990,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.253';
-    var Main_version_java = 38; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.254';
+    var Main_version_java = 39; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 23 2020';
-    var Main_version_web = 19; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 79; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7578,7 +7578,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Web Version September 23 2020",
+                title: "Apk Version 3.0.254 - Web Version September 23 2020",
                 changes: ["General performance improves and bug fixes"]
             },
             {
@@ -10278,13 +10278,6 @@
         Android.getVideoStatus(showLatency);
     }
 
-    // //public String getVideoStatusString()
-    // //Android specific: true
-    // //request the video status dropped frames, buffer size etc
-    // function OSInterface_getVideoStatusString() {
-    //     return Android.getVideoStatusString();
-    // }
-
     //public void getVideoQuality(int who_called)
     //who_called = 0 live 1 vod
     //Android specific: true
@@ -10292,13 +10285,6 @@
     function OSInterface_getVideoQuality(who_called) {
         Android.getVideoQuality(who_called);
     }
-
-    // //public String getVideoStatusString()
-    // //Android specific: true
-    // //returns the video quality for the auto playback
-    // function OSInterface_getVideoQualityString() {
-    //     return Android.getVideoQualityString();
-    // }
 
     //public void DisableMultiStream()
     //Android specific: true
@@ -10629,6 +10615,14 @@
     function OSInterface_mKeepScreenOn(keepOn) { //Not be used
         if (Main_IsOn_OSInterface) Android.mKeepScreenOn(keepOn);
     }
+
+    //public void getDuration()
+    //String callback = the fun to receive the value
+    //Android specific: true
+    //Runs only once, this functions check for storage access and request the user to give the permission
+    // function OSInterface_getDuration(callback) {
+    //     Android.getDuration(callback);
+    // }
 
     //public boolean isKeyboardConnected()
     //Android specific: true
@@ -16433,6 +16427,7 @@
 
         if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
         else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+
         OSInterface_getVideoStatus(isLive);
     }
 
@@ -16447,11 +16442,15 @@
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
 
         if (!Play_StayDialogVisible()) {
+
             PlayVod_RefreshProgressBarrStart(true, 0);
+
         } else {
+
             PlayVod_PanelY = 2;
             Play_BottonIconsFocus();
             PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
+
         }
 
         Play_CleanHideExit();
@@ -16503,21 +16502,10 @@
         } else {
 
             Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
-
             Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
 
         }
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) {
-
-            if (Main_IsOn_OSInterface) {
-
-                if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
-                OSInterface_getVideoStatus(true);
-
-            } else Play_VideoStatusTest();
-
-        }
     }
 
     function Play_VideoStatusTest() {
@@ -16531,23 +16519,30 @@
     var Play_BufferSize = 0;
 
     function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
+
         if (!valueString) return;
 
         var value = JSON.parse(valueString);
 
-        Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
-            STR_NET_ACT + value[1] + STR_BR +
-            STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-            STR_BUFFER_HEALT + value[4] +
-            (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
-            STR_BR + STR_PING + value[6]);
+        if (Settings_Obj_default("keep_panel_info_visible") !== 2) {
+
+            Main_innerHTMLWithEle(Play_StreamStatus,
+                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
+                STR_NET_ACT + value[1] + STR_BR +
+                STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+                STR_BUFFER_HEALT + value[4] +
+                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+                STR_BR + STR_PING + value[6]);
+
+        }
 
         var timeMs = OSInterface_gettime();
         Play_BufferSize = parseFloat(value[7]);
 
         if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
         else PlayVod_ChaptersSetGame(timeMs);
+
+        if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
         PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
 
@@ -16854,16 +16849,19 @@
 
         } else if (duration > 0) {
 
-            Play_DurationSeconds = duration / 1000;
-
-            Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
-
-            if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
+            Play_UpdateDurationDiv(duration);
 
             if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true); //duration may have changed update the positions
 
         }
 
+    }
+
+    function Play_UpdateDurationDiv(duration) {
+
+        Play_DurationSeconds = duration / 1000;
+
+        Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
     }
 
     function Play_CloseBigAndSwich(error_410) {
@@ -18431,6 +18429,7 @@
             Play_ResetSpeed();
             PlayVod_setHidePanel();
         }
+
         Play_ForceShowPannel();
         if (PlayVod_muted_segments_warn && autoHide) PlayVod_muted_WarningDialog();
     }
@@ -18450,16 +18449,17 @@
     }
 
     function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
+        var Update_status = Settings_Obj_default("keep_panel_info_visible");
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) {
+        if (!Update_status && Main_IsOn_OSInterface && showVideoQuality &&
+            ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
+                (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
-            if (Main_IsOn_OSInterface && showVideoQuality &&
-                ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
-                    (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
+            OSInterface_getVideoQuality(who_called);
 
-                OSInterface_getVideoQuality(who_called);
+        }
 
-            }
+        if (Update_status !== 1) {
 
             if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
             else Play_VideoStatusTest();
@@ -19170,14 +19170,16 @@
     var PlayVod_muted_segments_value = null;
 
     function PlayVod_muted_segments(muted_segments, skipwarning) {
+
         if (muted_segments && muted_segments.length) {
 
             var doc = Main_getElementById('inner_progress_bar_muted'),
-                div;
+                div,
+                i = 0,
+                len = muted_segments.length;
+
             Main_emptyWithEle(doc);
 
-            var i = 0,
-                len = muted_segments.length;
             for (i; i < len; i++) {
 
                 div = document.createElement('div');
@@ -19187,11 +19189,14 @@
 
                 doc.appendChild(div);
             }
+
             if (!skipwarning) PlayVod_muted_segments_warn = true;
+
         } else {
             PlayVod_muted_segments_warn = false;
             Main_empty('inner_progress_bar_muted');
         }
+
     }
 
     var PlayVod_muted_WarningDialogId;
