@@ -102,7 +102,8 @@ public final class Tools {
 
     private static final String TAG = "STTV_Tools";
 
-    private static final Type ArrayType = new TypeToken<String[][]>() {}.getType();
+    private static final Type ArrayType = new TypeToken<String[][]>() {
+    }.getType();
 
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
@@ -630,7 +631,7 @@ public final class Tools {
 
             String result = data.toString();
 
-            if (result.startsWith(".")){
+            if (result.startsWith(".")) {
 
                 result = new String(Base64.decode(result.substring(1), Base64.DEFAULT));
 
@@ -999,9 +1000,9 @@ public final class Tools {
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
 
         String refresh_token = getString(UserId + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
-        String client_id = getString( Constants.PREF_CLIENT_ID, null, appPreferences);
-        String client_secret = getString( Constants.PREF_CLIENT_SECRET, null, appPreferences);
-        String redirect_uri = getString( Constants.PREF_REDIRECT_URI, null, appPreferences);
+        String client_id = getString(Constants.PREF_CLIENT_ID, null, appPreferences);
+        String client_secret = getString(Constants.PREF_CLIENT_SECRET, null, appPreferences);
+        String redirect_uri = getString(Constants.PREF_REDIRECT_URI, null, appPreferences);
 
         if (client_id == null || client_secret == null || redirect_uri == null || refresh_token == null) {
 

@@ -73,7 +73,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.google.gson.JsonParser.parseString;
 
-public final class  ChannelsUtils {
+public final class ChannelsUtils {
 
     private static final int JOB_ID = 1;
 
