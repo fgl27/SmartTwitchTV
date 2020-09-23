@@ -627,6 +627,7 @@ function PlayVod_showPanel(autoHide) {
         Play_ResetSpeed();
         PlayVod_setHidePanel();
     }
+
     Play_ForceShowPannel();
     if (PlayVod_muted_segments_warn && autoHide) PlayVod_muted_WarningDialog();
 }
@@ -646,16 +647,17 @@ function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
 }
 
 function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
+    var Update_status = Settings_Obj_default("keep_panel_info_visible");
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) {
+    if (!Update_status && Main_IsOn_OSInterface && showVideoQuality &&
+        ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
+            (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
-        if (Main_IsOn_OSInterface && showVideoQuality &&
-            ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
-                (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
+        OSInterface_getVideoQuality(who_called);
 
-            OSInterface_getVideoQuality(who_called);
+    }
 
-        }
+    if (Update_status !== 1) {
 
         if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
         else Play_VideoStatusTest();

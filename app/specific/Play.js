@@ -1545,11 +1545,15 @@ function Play_showPanel() {
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
 
     if (!Play_StayDialogVisible()) {
+
         PlayVod_RefreshProgressBarrStart(true, 0);
+
     } else {
+
         PlayVod_PanelY = 2;
         Play_BottonIconsFocus();
         PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
+
     }
 
     Play_CleanHideExit();
@@ -1600,7 +1604,6 @@ function Play_RefreshWatchingtime() {
     } else {
 
         Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
-
         Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
 
     }
@@ -1622,13 +1625,17 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     var value = JSON.parse(valueString);
 
-    Main_innerHTMLWithEle(Play_StreamStatus,
-        STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
-        STR_NET_ACT + value[1] + STR_BR +
-        STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-        STR_BUFFER_HEALT + value[4] +
-        (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
-        STR_BR + STR_PING + value[6]);
+    if (Settings_Obj_default("keep_panel_info_visible") !== 2) {
+
+        Main_innerHTMLWithEle(Play_StreamStatus,
+            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
+            STR_NET_ACT + value[1] + STR_BR +
+            STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+            STR_BUFFER_HEALT + value[4] +
+            (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+            STR_BR + STR_PING + value[6]);
+
+    }
 
     var timeMs = OSInterface_gettime();
     Play_BufferSize = parseFloat(value[7]);
