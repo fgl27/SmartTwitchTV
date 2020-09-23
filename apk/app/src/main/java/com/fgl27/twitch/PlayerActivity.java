@@ -412,8 +412,8 @@ public class PlayerActivity extends Activity {
 
             } else {
 
-                player[PlayerPosition].addListener(new PlayerEventListenerSmall(StartGetCurrentPosition));
-                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListenerSmall());
+                player[PlayerPosition].addListener(new PlayerEventListenerPreview(StartGetCurrentPosition));
+                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListenerPreview());
 
             }
 
@@ -3085,11 +3085,11 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private class PlayerEventListenerSmall implements Player.EventListener {
+    private class PlayerEventListenerPreview implements Player.EventListener {
 
         private final boolean IsVod;
 
-        private PlayerEventListenerSmall(boolean mIsVod) {
+        private PlayerEventListenerPreview(boolean mIsVod) {
             this.IsVod = mIsVod;
         }
 
@@ -3172,8 +3172,8 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //For the small player only droppedFrames is need as this is a good mesure of lag
-    private class AnalyticsEventListenerSmall implements AnalyticsListener {
+    //For the preview over the player player only droppedFrames is need as this is a good measure of lag
+    private class AnalyticsEventListenerPreview implements AnalyticsListener {
 
         @Override
         public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
