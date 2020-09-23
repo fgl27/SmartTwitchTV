@@ -1005,6 +1005,14 @@ function OSInterface_mKeepScreenOn(keepOn) {//Not be used
     if (Main_IsOn_OSInterface) Android.mKeepScreenOn(keepOn);
 }
 
+//public void getDuration()
+//String callback = the fun to receive the value
+//Android specific: true
+//Runs only once, this functions check for storage access and request the user to give the permission
+// function OSInterface_getDuration(callback) {
+//     Android.getDuration(callback);
+// }
+
 //public boolean isKeyboardConnected()
 //Android specific: true
 //informs if a hw Keyboard is connected to the devices

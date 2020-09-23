@@ -1947,9 +1947,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
 
     } else if (duration > 0) {
 
-        Play_DurationSeconds = duration / 1000;
-
-        Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+        Play_UpdateDurationDiv(duration);
 
         if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
 
@@ -1957,6 +1955,13 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
 
     }
 
+}
+
+function Play_UpdateDurationDiv(duration) {
+
+    Play_DurationSeconds = duration / 1000;
+
+    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 }
 
 function Play_CloseBigAndSwich(error_410) {

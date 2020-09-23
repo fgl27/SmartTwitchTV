@@ -2181,6 +2181,21 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void getDuration(String callback) {
+
+            MainThreadHandler.post(() -> {
+                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
+
+                if (player[playerPos] != null) {
+
+                    mWebView.loadUrl("javascript:smartTwitchTV." + callback + "(" + player[mainPlayer].getDuration() + ")");
+
+                }
+            });
+
+        }
+
+        @JavascriptInterface
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
@@ -2235,7 +2250,7 @@ public class PlayerActivity extends Activity {
                     mWho_Called = who_called;
                     PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
+                    mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
 
                     //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
                     MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);

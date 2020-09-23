@@ -1362,12 +1362,16 @@ function PlayVod_previews_move(position) {
 var PlayVod_muted_segments_warn = false;
 var PlayVod_muted_segments_value = null;
 function PlayVod_muted_segments(muted_segments, skipwarning) {
+
     if (muted_segments && muted_segments.length) {
 
-        var doc = Main_getElementById('inner_progress_bar_muted'), div;
+        var doc = Main_getElementById('inner_progress_bar_muted'),
+            div,
+            i = 0,
+            len = muted_segments.length;
+
         Main_emptyWithEle(doc);
 
-        var i = 0, len = muted_segments.length;
         for (i; i < len; i++) {
 
             div = document.createElement('div');
@@ -1377,11 +1381,14 @@ function PlayVod_muted_segments(muted_segments, skipwarning) {
 
             doc.appendChild(div);
         }
+
         if (!skipwarning) PlayVod_muted_segments_warn = true;
+
     } else {
         PlayVod_muted_segments_warn = false;
         Main_empty('inner_progress_bar_muted');
     }
+
 }
 
 var PlayVod_muted_WarningDialogId;
