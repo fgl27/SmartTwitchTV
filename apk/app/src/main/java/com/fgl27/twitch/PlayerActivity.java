@@ -2193,8 +2193,9 @@ public class PlayerActivity extends Activity {
                         jumpPosition = duration - 1000;
 
                     PlayerCurrentPosition = jumpPosition;
-                    player[playerPos].seekTo(jumpPosition);
+                    //Make sure we are playing and not paused, this way the listeners will properly work
                     player[playerPos].setPlayWhenReady(true);
+                    player[playerPos].seekTo(jumpPosition);
                 }
             });
         }
