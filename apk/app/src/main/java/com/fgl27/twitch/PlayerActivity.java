@@ -270,7 +270,7 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
-            int Number_of_Cores =  Runtime.getRuntime().availableProcessors();
+            int Number_of_Cores = Runtime.getRuntime().availableProcessors();
             //Background threads
             DataThreadPool = new ThreadPoolExecutor(
                     Number_of_Cores,
@@ -376,8 +376,8 @@ public class PlayerActivity extends Activity {
     }
 
 
-    private void SetupPlayer(int PlayerPosition, int loadControlPosition, long ResumePosition, boolean StartGetCurrentPosition,
-                             DefaultTrackSelector.Parameters trackSelectorParameters, Player.EventListener mPlayerEventListener, AnalyticsListener mAnalyticsListener) {
+    private void SetupPlayer(int PlayerPosition, int loadControlPosition, int Who_Called, long ResumePosition,
+                             boolean StartGetCurrentPosition, boolean UseFullAnalytics, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
         if (IsStopped) {
             monStop();
@@ -396,17 +396,32 @@ public class PlayerActivity extends Activity {
             trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
 
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
-            if (BLACKLISTEDCODECS != null) renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
+            if (BLACKLISTEDCODECS != null)
+                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
 
             player[PlayerPosition] = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
                     .setTrackSelector(trackSelector[PlayerPosition])
                     .setLoadControl(loadControl[loadControlPosition])
                     .build();
 
-            player[PlayerPosition].addListener(mPlayerEventListener);
-            player[PlayerPosition].addAnalyticsListener(mAnalyticsListener);
+            if (UseFullAnalytics) {
+
+                playerListener[PlayerPosition] =  new PlayerEventListener(PlayerPosition, Who_Called);
+                player[PlayerPosition].addListener(playerListener[PlayerPosition]);
+                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListener());
+
+            } else {
+
+                player[PlayerPosition].addListener(new PlayerEventListenerSmall(StartGetCurrentPosition));
+                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListenerSmall());
+
+            }
 
             PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
+
+        } else if (UseFullAnalytics && playerListener[PlayerPosition] != null) {
+
+            playerListener[PlayerPosition].UpdateWho_Called(Who_Called);
 
         }
 
@@ -443,14 +458,6 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private void SetupPlayerListener(int PlayerPosition, int Who_Called) {
-
-        // Change from clip, vod, live to other type need a update of the listener Who_Called var, only update instead of create a new as  it's technically faster
-        if (playerListener[PlayerPosition] == null) playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
-        else playerListener[PlayerPosition].UpdateWho_Called(Who_Called);
-
-    }
-
     private void PreparePlayer_Single_PP(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
@@ -468,16 +475,15 @@ public class PlayerActivity extends Activity {
         boolean isSmall = (mainPlayer != PlayerPosition);
         int Who_Called = mWho_Called > 3 ? (mWho_Called - 3) : mWho_Called;
 
-        SetupPlayerListener(PlayerPosition, Who_Called);
-
         SetupPlayer(
                 PlayerPosition,
                 Who_Called,
+                Who_Called,
                 ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET,
                 PlayerPosition == mainPlayer,
-                isSmall ? trackSelectorParametersPP : trackSelectorParameters,
-                playerListener[PlayerPosition],
-                new AnalyticsEventListener()
+                true,
+                isSmall ? trackSelectorParametersPP : trackSelectorParameters
+
         );
 
         SwitchPlayerAudio(AudioSource);
@@ -495,20 +501,20 @@ public class PlayerActivity extends Activity {
 
     private void initializePlayer_Multi(int PlayerPosition) {
 
-        SetupPlayerListener(PlayerPosition, 1);
-
         SetupPlayer(
                 PlayerPosition,
                 0,
+                1,
                 C.TIME_UNSET,
                 PlayerPosition == MultiMainPlayer,
-                trackSelectorParametersPP,
-                playerListener[PlayerPosition],
-                new AnalyticsEventListener()
+                true,
+                trackSelectorParametersPP
+
         );
 
         float volume = 0f;
-        if (AudioMulti == 4 || AudioMulti == PlayerPosition) volume = player[4] == null ? 1f : PreviewOthersAudio;
+        if (AudioMulti == 4 || AudioMulti == PlayerPosition)
+            volume = player[4] == null ? 1f : PreviewOthersAudio;
 
         player[PlayerPosition].setVolume(volume);
 
@@ -519,11 +525,12 @@ public class PlayerActivity extends Activity {
         SetupPlayer(
                 4,
                 0,
+                1,
                 (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
                 IsVod,
-                trackSelectorParametersExtraSmall,
-                new PlayerEventListenerSmall(IsVod),
-                new AnalyticsEventListenerSmall()
+                false,
+                trackSelectorParametersExtraSmall
+
         );
 
         player[4].setVolume(PreviewAudio);
@@ -1056,7 +1063,7 @@ public class PlayerActivity extends Activity {
 
     private void CheckPing() {
         String TempPing = DoGetPing();
-        if(!PingSDKBool) RuntimeHandler[1].removeCallbacksAndMessages(null);
+        if (!PingSDKBool) RuntimeHandler[1].removeCallbacksAndMessages(null);
 
         if (TempPing != null) {
 
@@ -1665,6 +1672,177 @@ public class PlayerActivity extends Activity {
 
         mWebViewKeyIsShowing = true;
         mWebViewKey.loadUrl(Constants.KeyPageUrl);
+    }
+
+    public void mSetQuality(int position) {
+
+        if (trackSelector[mainPlayer] != null) {
+            IsInAutoMode = position == -1;
+
+            if (IsInAutoMode) {
+                trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+                return;
+            }
+
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+
+            if (mappedTrackInfo != null) {
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
+                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
+
+                        if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
+
+                            builder.setSelectionOverride(
+                                    rendererIndex,
+                                    mappedTrackInfo.getTrackGroups(rendererIndex),
+                                    new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                            );
+
+                        }
+
+                        trackSelector[mainPlayer].setParameters(builder);
+                        break;
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void RequestGetQualities(int Who_Called) {
+
+        if (!PicturePicture && !MultiStreamEnable && Who_Called < 3) {
+            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
+        }
+    }
+
+    public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
+        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
+
+        //Pause to things run smother and prevent odd behavior during the checks
+        if (player[position] != null) {
+
+            player[position].setPlayWhenReady(false);
+
+        }
+
+        PlayerCheckCounter[position]++;
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+        }
+
+        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
+
+            if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
+                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+            else//already on auto just restart the player
+                PlayerEventListenerCheckCounterEnd(position, Who_Called);
+
+        } else if (PlayerCheckCounter[position] > 3) {
+
+            // try == 3 Give up internet is probably down or something related
+            PlayerEventListenerClear(position, fail_type);
+
+        } else if (PlayerCheckCounter[position] > 1) {//only for clips
+
+            // Second check drop quality as it freezes too much
+            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+
+        } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
+    }
+
+    //First check only reset the player as it may be stuck
+    public void PlayerEventListenerCheckCounterEnd(int position, int Who_Called) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+        }
+
+        if (Who_Called == 1) clearResumePosition();
+        else if (Who_Called == 2) updateResumePosition(position);//VOD
+
+        if (Who_Called == 1) {
+
+            if (MultiStreamEnable) initializePlayer_Multi(position);
+            else initializePlayer_Single_PP(position);
+
+        } else initializePlayer_Single_PP(position);
+    }
+
+    public void PlayerEventListenerClear(int position, int fail_type) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
+        }
+
+        hideLoading(5);
+        hideLoading(position);
+        String WebViewLoad;
+
+        if (MultiStreamEnable) {
+
+            ClearPlayer(position);
+            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
+
+        } else if (PicturePicture) {
+
+            ClearPlayer(position);
+            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type + ")";
+
+        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
+
+        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
+    }
+
+    public void PlayerEventListenerCheckCounterSmall(int fail_type, boolean IsVod) {
+        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+
+        //Pause so things run smother and prevent odd behavior during the checks
+        if (player[4] != null) {
+
+            player[4].setPlayWhenReady(false);
+
+        }
+
+        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
+        PlayerCheckCounter[4]++;
+
+        if (IsVod) {
+            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+            // is already gone and we already saved the correct mResumePositionSmallPlayer
+            if (PlayerCheckCounter[4] < 2 && player[4] != null) {
+
+                mResumePositionSmallPlayer = GetResumePosition(4);
+
+            }
+
+        } else mResumePositionSmallPlayer = 0L;
+
+
+        if (PlayerCheckCounter[4] < 4) {
+
+            initializePlayer_Preview(mResumePositionSmallPlayer, IsVod);
+
+        } else {
+
+            ClearSmallPlayer();
+            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
+
+        }
+    }
+
+    @TargetApi(23)
+    private void Check_WriteExternalStorage() {
+        if (!Tools.WR_storage(this)) {
+            requestPermissions(new String[]{
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    },
+                    123);
+        }
     }
 
     //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
@@ -2787,52 +2965,6 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void mSetQuality(int position) {
-
-        if (trackSelector[mainPlayer] != null) {
-            IsInAutoMode = position == -1;
-
-            if (IsInAutoMode) {
-                trackSelector[mainPlayer].setParameters(trackSelectorParameters);
-                return;
-            }
-
-            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
-
-            if (mappedTrackInfo != null) {
-                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
-
-                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
-
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
-                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
-
-                        if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
-
-                            builder.setSelectionOverride(
-                                    rendererIndex,
-                                    mappedTrackInfo.getTrackGroups(rendererIndex),
-                                    new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
-                            );
-
-                        }
-
-                        trackSelector[mainPlayer].setParameters(builder);
-                        break;
-                    }
-
-                }
-            }
-        }
-    }
-
-    public void RequestGetQualities(int Who_Called) {
-
-        if (!PicturePicture && !MultiStreamEnable && Who_Called < 3) {
-            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
-        }
-    }
-
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
@@ -2916,7 +3048,8 @@ public class PlayerActivity extends Activity {
                     if (MultiStreamEnable) {
 
                         for (int i = 0; i < PlayerAccount; i++) {
-                            if (position != i && player[i] != null) player[i].setPlayWhenReady(true);
+                            if (position != i && player[i] != null)
+                                player[i].setPlayWhenReady(true);
                         }
 
                         if (MultiMainPlayer == position)
@@ -2949,84 +3082,6 @@ public class PlayerActivity extends Activity {
 
         }
 
-    }
-
-    public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
-        PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-
-        //Pause to things run smother and prevent odd behavior during the checks
-        if (player[position] != null) {
-
-            player[position].setPlayWhenReady(false);
-
-        }
-
-        PlayerCheckCounter[position]++;
-
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
-        }
-
-        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
-
-            if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
-                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
-            else//already on auto just restart the player
-                PlayerEventListenerCheckCounterEnd(position, Who_Called);
-
-        } else if (PlayerCheckCounter[position] > 3) {
-
-            // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position, fail_type);
-
-        } else if (PlayerCheckCounter[position] > 1) {//only for clips
-
-            // Second check drop quality as it freezes too much
-            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
-
-        } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
-    }
-
-    //First check only reset the player as it may be stuck
-    public void PlayerEventListenerCheckCounterEnd(int position, int Who_Called) {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
-        }
-
-        if (Who_Called == 1) clearResumePosition();
-        else if (Who_Called == 2) updateResumePosition(position);//VOD
-
-        if (Who_Called == 1) {
-
-            if (MultiStreamEnable) initializePlayer_Multi(position);
-            else initializePlayer_Single_PP(position);
-
-        } else initializePlayer_Single_PP(position);
-    }
-
-    public void PlayerEventListenerClear(int position, int fail_type) {
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
-        }
-
-        hideLoading(5);
-        hideLoading(position);
-        String WebViewLoad;
-
-        if (MultiStreamEnable) {
-
-            ClearPlayer(position);
-            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
-
-        } else if (PicturePicture) {
-
-            ClearPlayer(position);
-            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type + ")";
-
-        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
-        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
-
-        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }
 
     private class PlayerEventListenerSmall implements Player.EventListener {
@@ -3092,43 +3147,6 @@ public class PlayerActivity extends Activity {
 
     }
 
-    public void PlayerEventListenerCheckCounterSmall(int fail_type, boolean IsVod) {
-        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-
-        //Pause so things run smother and prevent odd behavior during the checks
-        if (player[4] != null) {
-
-            player[4].setPlayWhenReady(false);
-
-        }
-
-        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
-        PlayerCheckCounter[4]++;
-
-        if (IsVod) {
-            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
-            // is already gone and we already saved the correct mResumePositionSmallPlayer
-            if (PlayerCheckCounter[4] < 2 && player[4] != null) {
-
-                mResumePositionSmallPlayer = GetResumePosition(4);
-
-            }
-
-        } else mResumePositionSmallPlayer = 0L;
-
-
-        if (PlayerCheckCounter[4] < 4) {
-
-            initializePlayer_Preview(mResumePositionSmallPlayer, IsVod);
-
-        } else {
-
-            ClearSmallPlayer();
-            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
-
-        }
-    }
-
     private class AnalyticsEventListener implements AnalyticsListener {
 
         @Override
@@ -3162,16 +3180,6 @@ public class PlayerActivity extends Activity {
             DroppedFramesTotal += count;
         }
 
-    }
-
-    @TargetApi(23)
-    private void Check_WriteExternalStorage() {
-        if (!Tools.WR_storage(this)) {
-            requestPermissions(new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    },
-                    123);
-        }
     }
 
 }
