@@ -6992,8 +6992,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.253';
     var Main_version_java = 38; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 21 2020';
-    var Main_version_web = 78; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'September 23 2020';
+    var Main_version_web = 19; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7091,22 +7091,6 @@
     var Main_FirstLoad = false;
     var Main_RunningTime = 0;
     var Main_PreventCheckResume = false;
-
-    //The values of thumbnail and related for it screen type
-    var Main_ReloadLimitOffsetGames = 1.35;
-    var Main_ReloadLimitOffsetVideos = 1.5;
-
-    var Main_ItemsLimitVideo = 45;
-    var Main_ColoumnsCountVideo = 3;
-    var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
-
-    var Main_ItemsLimitGame = 45;
-    var Main_ColoumnsCountGame = 5;
-    var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
-
-    var Main_ItemsLimitChannel = 48;
-    var Main_ColoumnsCountChannel = 6;
-    var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
     var Main_Headers = [];
     var Main_Headers_Priv = [];
@@ -7594,6 +7578,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version September 23 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Web Version September 21 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -7618,10 +7606,6 @@
                     'Clips and Live progress bar step is 1 second, allowing more control over the time position',
                     'General performance improves and bug fixes'
                 ]
-            },
-            {
-                title: "Web Version September 17 2020",
-                changes: ["General performance improves and bug fixes"]
             },
         ];
 
@@ -19779,13 +19763,9 @@
     }
 
     function Screens_loadDataRequestStart(key) {
-        Screens_loadDataPrepare(key);
-        Screens_loadDataRequest(key);
-    }
-
-    function Screens_loadDataPrepare(key) {
         ScreenObj[key].loadingData = true;
         ScreenObj[key].loadingDataTry = 0;
+        Screens_loadDataRequest(key);
     }
 
     function Screens_loadDataRequest(key) {
@@ -19809,36 +19789,6 @@
         }
 
     }
-
-    // function Screens_BaseHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
-    //     if (Main_IsOn_OSInterface) Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
-    //     else Screens_BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key);
-    // }
-
-    // function Screens_BasexmlAndroidGet(theUrl, Timeout, HeaderQuatity, access_token, HeaderArray, key) {
-    //     try {
-
-    // OSInterface_GetMethodUrlHeadersAsync(
-    //     theUrl,//urlString
-    //     Timeout,//timeout
-    //     null,//postMessage, null for get
-    //     null,//Method, null for get
-    //     '',//TODO add a fun to generate the JsonString
-    //     'Screens_AndroidResult',//callback
-    //     0,//checkResult
-    //     key,//key
-    //     ScreenObj[key].thread//TODO update thread numebr 0 to 3 only thread
-    // );
-
-    //     } catch (e) {
-    //         Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key);
-    //     }
-    // }
-
-    // function Screens_AndroidResult(result, key) {
-    //     if (result) Screens_HttpResultStatus(JSON.parse(result), key);
-    //     else Screens_loadDataError(key);
-    // }
 
     function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
         var xmlHttp = new XMLHttpRequest();
@@ -19869,6 +19819,12 @@
                 key
             );
 
+            //If the scroll position is at the end of the list after a loading success focus
+            if (Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
+
+                Screens_addFocus(true, key);
+
+            }
         } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
             AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
@@ -20349,9 +20305,13 @@
         //Load more as the data is getting used
         if (ScreenObj[key].data) {
             if ((ScreenObj[key].posY > 2) && (ScreenObj[key].data_cursor + Main_ItemsLimitMax) > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
+
                 Screens_loadDataRequestStart(key);
+
             } else if ((ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit) > (ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount) && ScreenObj[key].data_cursor < ScreenObj[key].data.length) {
+
                 ScreenObj[key].loadDataSuccess();
+
             }
         }
 
@@ -22269,6 +22229,22 @@
 
     //Spacing for reease maker not trow erros frm jshint
     var Main_ItemsLimitMax = 100;
+
+    //The values of thumbnail and related for it screen type
+    var Main_ReloadLimitOffsetGames = 1.35;
+    var Main_ReloadLimitOffsetVideos = 1.5;
+
+    var Main_ItemsLimitVideo = 45;
+    var Main_ColoumnsCountVideo = 3;
+    var Main_ItemsReloadLimitVideo = Math.floor((Main_ItemsLimitVideo / Main_ColoumnsCountVideo) / Main_ReloadLimitOffsetVideos);
+
+    var Main_ItemsLimitGame = 45;
+    var Main_ColoumnsCountGame = 5;
+    var Main_ItemsReloadLimitGame = Math.floor((Main_ItemsLimitGame / Main_ColoumnsCountGame) / Main_ReloadLimitOffsetGames);
+
+    var Main_ItemsLimitChannel = 48;
+    var Main_ColoumnsCountChannel = 6;
+    var Main_ItemsReloadLimitChannel = Math.floor((Main_ItemsLimitChannel / Main_ColoumnsCountChannel) / Main_ReloadLimitOffsetVideos);
 
     var ChannelClip_game = '';
     var ChannelClip_views = '';

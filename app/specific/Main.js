@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.253';
 var Main_version_java = 38;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 21 2020';
-var Main_version_web = 78;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'September 23 2020';
+var Main_version_web = 19;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -612,6 +612,10 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version September 23 2020",
+            changes: ["General performance improves and bug fixes"]
+        },
+        {
             title: "Web Version September 21 2020",
             changes: ["General performance improves and bug fixes"]
         },
@@ -636,10 +640,6 @@ function Main_Changelog() {
                 'Clips and Live progress bar step is 1 second, allowing more control over the time position',
                 'General performance improves and bug fixes'
             ]
-        },
-        {
-            title: "Web Version September 17 2020",
-            changes: ["General performance improves and bug fixes"]
         },
     ];
 
