@@ -1530,6 +1530,7 @@ function Play_UpdateStatus(mwhocall) {
 
     if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
     else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+
     OSInterface_getVideoStatus(isLive);
 }
 
@@ -1604,16 +1605,6 @@ function Play_RefreshWatchingtime() {
 
     }
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) {
-
-        if (Main_IsOn_OSInterface) {
-
-            if (Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
-            OSInterface_getVideoStatus(true);
-
-        } else Play_VideoStatusTest();
-
-    }
 }
 
 function Play_VideoStatusTest() {
@@ -1626,6 +1617,7 @@ function Play_VideoStatusTest() {
 
 var Play_BufferSize = 0;
 function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
+
     if (!valueString) return;
 
     var value = JSON.parse(valueString);
@@ -1643,6 +1635,8 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
     else PlayVod_ChaptersSetGame(timeMs);
+
+    if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
     PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
 
@@ -1948,8 +1942,6 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
     } else if (duration > 0) {
 
         Play_UpdateDurationDiv(duration);
-
-        if (!Settings_Obj_default("keep_panel_info_visible")) OSInterface_getVideoStatus(false);
 
         if (PlayVod_isOn) PlayVod_muted_segments(PlayVod_muted_segments_value, true);//duration may have changed update the positions
 

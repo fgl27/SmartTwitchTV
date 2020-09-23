@@ -2780,11 +2780,14 @@ public class PlayerActivity extends Activity {
                 int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
                 long buffer = 0L;
                 long LiveOffset = 0L;
+                long Duration = 0L;
 
                 if (player[playerPos] != null) {
                     buffer = player[playerPos].getTotalBufferedDuration();
                     LiveOffset = player[playerPos].getCurrentLiveOffset();
+                    Duration = player[mainPlayer].getDuration();
                 }
+
                 getVideoStatusResult = new Gson().toJson(
                         new Object[]{
                                 Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"),//0
@@ -2794,7 +2797,8 @@ public class PlayerActivity extends Activity {
                                 Tools.getTime(buffer),//4
                                 Tools.getTime(LiveOffset),//5
                                 Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"),//6
-                                (buffer / 1000.0)//7
+                                (buffer / 1000.0),//7
+                                Duration//8
                         }
                 );
                 //Erase after read
