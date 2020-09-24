@@ -16449,6 +16449,7 @@
 
             PlayVod_PanelY = 2;
             Play_BottonIconsFocus();
+            Play_RefreshWatchingtime();
             PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
 
         }
