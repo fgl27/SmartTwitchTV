@@ -43,7 +43,6 @@ var Play_EndUpclearCalback;
 var Play_EndDialogEnter = 0;
 var Play_PanneInfoDoclId;
 var Play_Multi_MainBig = false;
-var Play_Multi_Offset = 0;
 var Play_DurationSeconds = 0;
 var Play_seek_previews;
 var Play_seek_previews_img;
@@ -1312,8 +1311,8 @@ function Play_PreshutdownStream(closePlayer) {
     if (Main_IsOn_OSInterface) {
         if (closePlayer) {
             //We are closing the player on error or on end
-            OSInterface_mClearSmallPlayer();
             if (!Play_PreviewId) OSInterface_stopVideo();
+            else OSInterface_mClearSmallPlayer();
         }
     }
 
@@ -1566,21 +1565,19 @@ function Play_RefreshWatchingtime() {
 
     if (Play_MultiEnable) {
 
-        var extraText = Play_Multi_MainBig ? 'big' : 'small', pos, i;
+        var extraText = Play_Multi_MainBig ? 'big' : 'small', i;
 
         for (i = 0; i < 4; i++) {
 
-            pos = (i + (4 - Play_Multi_Offset)) % 4;
-
             if (Play_MultiArray[i].data.length > 0) {
 
-                Main_textContentWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
-                Main_textContentWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+                Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
+                Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
 
             } else {
 
-                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_SPACE);
-                Main_innerHTMLWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE);
 
             }
 

@@ -74,7 +74,7 @@ function Play_updateStreamInfoMultiValues(response, pos) {
             }
 
             Play_MultiUpdateinfo(
-                (pos + (4 - Play_Multi_Offset)) % 4,
+                pos,
                 obj.streams[0].game,
                 obj.streams[0].viewers,
                 twemoji.parse(obj.streams[0].channel.status, false, true),
@@ -176,25 +176,22 @@ function Play_Multi_UnSetPanel(shutdown) {
         Play_MultiInfoReset(i);
     }
 
-    var pos_0 = Play_Multi_Offset % 4;
-    var pos_1 = (1 + Play_Multi_Offset) % 4;
+    if (Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0) {
 
-    if (Play_MultiArray[pos_0].data.length > 0 && Play_MultiArray[pos_1].data.length > 0) {
         if (PlayExtra_PicturePicture) {
-            PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[pos_1]));
+
+            PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
             PlayExtra_SetPanel();
             OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
-
-            if (Play_Multi_Offset) {
-                OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
-            }
 
             if (!Play_isFullScreen) {
                 Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
             }
+
         }
+
     } else {
         Play_Multi_UnSetPanelDivsCheckChat();
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
@@ -203,20 +200,31 @@ function Play_Multi_UnSetPanel(shutdown) {
     Play_Multi_UnSetPanelDivsCheckChat();
 
     //Check if main player is open if not check if one is so it can be main
-    var First = (Play_MultiFirstAvailable() + Play_Multi_Offset) % 4;
+    var First = Play_MultiFirstAvailable();
+
     if (First !== null) {
+
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
 
-        if ((name !== Play_data.data[14] || Play_Multi_Offset) && First) {
+        if ((name !== Play_data.data[14]) && First) {
+
             OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
             Play_UpdateMainStream(true, true);
             Play_MultiUpdateMain();
-        } else Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
 
-    } else if (shutdown) Play_shutdownStream();
+        } else {
 
-    Play_Multi_Offset = 0;
+            Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
+
+        }
+
+    } else if (shutdown) {
+
+        Play_shutdownStream();
+
+    }
+
     Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
 }
 
@@ -238,17 +246,26 @@ function Play_MultiEnd(position, fail_type) {
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
     if (!Play_MultiHasOne()) {
+
         Play_MultiEnable = false;
         OSInterface_DisableMultiStream();
         Play_Multi_UnSetPanelDivs(true);
         PlayExtra_ClearExtra();
         Play_CheckHostStart();
+
     } else {
-        if (Play_Multi_MainBig && position === Play_Multi_Offset) {
+
+        if (Play_Multi_MainBig && !position) {
+
             var tempAudio = Play_DefaultAudio_Multi === 4;
             Play_MultiEnableKeyRightLeft(1);
             if (tempAudio) Play_MultiKeyDownHold();
-        } else if (Play_DefaultAudio_Multi !== 4 && position === Play_Multi_Offset) Play_MultiEnableKeyRightLeft(1);
+
+        } else if (Play_DefaultAudio_Multi !== 4 && !position) {
+
+            Play_MultiEnableKeyRightLeft(1);
+
+        }
 
     }
 }
@@ -427,12 +444,14 @@ function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
     Main_Set_history('live', Play_MultiArray[pos].data);
 
     //reset chat and follow icon if pos 0 changed
-    var tempPos = (pos + (4 - Play_Multi_Offset)) % 4;//revert the value to check for chat
-    if (!tempPos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
+    if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
+
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
         Play_MultiUpdateMain();
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+
     }
+
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
@@ -471,60 +490,114 @@ function Play_MultiCheckLiveFeed(pos, tryes) {
     );
 }
 
+var Play_MultiEnableKeyRightLeft_Offset = 0;
+
 function Play_MultiEnableKeyRightLeft(adder) {
-    //reset audio value if on big as it may had be changed via hold down or bottom controls
-    var IsAudio_All;
 
     if (Play_Multi_MainBig) {
-        Play_DefaultAudio_Multi = Play_Multi_Offset;
-        IsAudio_All = Play_AudioAll;
-    }
 
-    Play_DefaultAudio_Multi += adder;
+        Play_SetMultiStreamMainBig(adder);
+        Play_MultiEnableKeyRightLeft_Offset += adder;
 
-    if (Play_DefaultAudio_Multi > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
+        if (Play_MultiArray[0].data.length) {
 
-        Play_DefaultAudio_Multi = 0;
+            // === 4 noting changed
+            if (Math.abs(Play_MultiEnableKeyRightLeft_Offset) === 4) {
+                Play_MultiEnableKeyRightLeft_Offset = 0;
 
-    } else if (Play_DefaultAudio_Multi < 0) {
+                return;
+            }
 
-        Play_DefaultAudio_Multi = Play_controls[Play_controlsAudioMulti].values.length - 2;
+            Play_DefaultAudio_Multi = 0;
+            Play_ResetAudio();
 
-    }
+            OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
-    if (!Play_MultiArray[Play_DefaultAudio_Multi].data.length) {
-        //Prevent infity loop from first fun line
-        if (Play_Multi_MainBig) Play_Multi_Offset = Play_DefaultAudio_Multi;
+            Play_showWarningMidleDialog(
+                STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[0].data[1],
+                2000
+            );
+            Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
+            Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+            Play_MultiUpdateinfoMainBig('_big');
+            Play_MultiUpdateMain();
 
-        Play_MultiEnableKeyRightLeft(adder);
-        return;
-    }
+        } else {
 
-    if (Play_Multi_MainBig && Play_Multi_Offset !== Play_DefaultAudio_Multi) {
+            Play_MultiEnableKeyRightLeft(adder);
 
-        Play_Multi_Offset = Play_DefaultAudio_Multi;
+            return;
+        }
 
-        Play_ResetAudio();
-
-        Play_showWarningMidleDialog(
-            STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[Play_Multi_Offset].data[1],
-            2000
-        );
-
-        OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_Multi_Offset);
-        Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_Multi_Offset]));
-        Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
-        Play_MultiUpdateinfoMainBig('_big');
-        Play_MultiUpdateMain();
-
-        if (IsAudio_All) Play_MultiKeyDownHold(true);
+        Play_MultiEnableKeyRightLeft_Offset = 0;
 
     } else {
+
+        Play_DefaultAudio_Multi += adder;
+
+        if (Play_DefaultAudio_Multi > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
+
+            Play_DefaultAudio_Multi = 0;
+
+        } else if (Play_DefaultAudio_Multi < 0) {
+
+            Play_DefaultAudio_Multi = Play_controls[Play_controlsAudioMulti].values.length - 2;
+
+        }
+
+        if (!Play_MultiArray[Play_DefaultAudio_Multi].data.length) {
+
+            Play_MultiEnableKeyRightLeft(adder);
+            return;
+        }
 
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
         Play_controls[Play_controlsAudioMulti].enterKey(false, true);
 
     }
+
+}
+
+//mirror function to Java SetMultiStreamMainBig
+function Play_SetMultiStreamMainBig(offset) {
+
+    var tempPosition,
+        len = Math.abs(offset),
+        i, j, j_len = 3,// j_len = 3 is Play_MultiArray.length - 1
+        left = offset > 0;
+
+    for (i = 0; i < len; i++) {
+
+        //https://www.javatpoint.com/java-program-to-left-rotate-the-elements-of-an-array
+        if (left) {//if offset = 1 result 1 2 3 0
+
+            //Stores the first element of the array
+            tempPosition = Play_MultiArray[0];
+
+            for (j = 0; j < j_len; j++) {
+                //Shift element of array by one
+                Play_MultiArray[j] = Play_MultiArray[j + 1];
+            }
+            //First element of array will be added to the end
+            Play_MultiArray[j] = tempPosition;
+
+            //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
+        } else {// else if offset -1 result 3 0 1 2
+
+            //Stores the last element of array
+            tempPosition = Play_MultiArray[3];
+
+            for (j = j_len; j > 0; j--) {
+                //Shift element of array by one
+                Play_MultiArray[j] = Play_MultiArray[j - 1];
+            }
+            //Last element of array will be added to the start of array.
+            Play_MultiArray[0] = tempPosition;
+
+        }
+
+    }
+
 }
 
 var Play_Oldaudio = 0;
@@ -547,14 +620,13 @@ function Play_MultiKeyDownHold(preventShowWarning) {
 
 
 function Play_MultiUpdateinfoMainBig(extraText) {
-    var pos, i = 0, len = Play_MultiArray.length;
+    var i = 0, len = Play_MultiArray.length;
     for (i; i < len; i++) {
 
         if (Play_MultiArray[i].data.length > 0) {
-            pos = (i + (4 - Play_Multi_Offset)) % 4;
 
             Main_innerHTML(
-                'stream_info_multi_name' + extraText + pos,
+                'stream_info_multi_name' + extraText + i,
                 Play_partnerIcon(
                     Play_MultiArray[i].data[1],
                     Play_MultiArray[i].data[10],
@@ -564,10 +636,10 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                 )
             );
 
-            Main_getElementById('stream_info_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
+            Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
 
             Play_MultiUpdateinfo(
-                pos,
+                i,
                 Play_MultiArray[i].data[3],
                 Play_MultiArray[i].data[13],
                 twemoji.parse(Play_MultiArray[i].data[2]),
@@ -603,7 +675,6 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
     var partner = Play_MultiArray[pos].data[10];
     var lang = Play_MultiArray[pos].data[5] ? Play_MultiArray[pos].data[5].split(' ')[1] : '';
 
-    pos = (pos + (4 - Play_Multi_Offset)) % 4;
     var extraText = Play_Multi_MainBig ? '_big' : '';
     Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
 
@@ -667,15 +738,16 @@ function Play_MultiSetpannelInfo() {
 
 var Play_MultiDialogPos = 0;
 function Play_MultiSetUpdateDialog(obj) {
-    var pos;
+
     var extraText = Play_Multi_MainBig ? '_big' : '';
 
     for (var i = 0; i < 4; i++) {
-        pos = (i + (4 - Play_Multi_Offset)) % 4;
-        Main_textContent('stream_dialog_multi_name' + extraText + pos, Play_MultiArray[i].data[1]);
-        Main_getElementById('stream_dialog_multiimg' + extraText + pos).src = Play_MultiArray[i].data[9];
-        Main_innerHTML('stream_dialog_multi_game' + extraText + pos, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
-        Main_innerHTML('stream_dialog_multi_title' + extraText + pos, twemoji.parse(Play_MultiArray[i].data[2]));
+
+        Main_textContent('stream_dialog_multi_name' + extraText + i, Play_MultiArray[i].data[1]);
+        Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+        Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
+        Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
+
     }
 
     Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
@@ -687,6 +759,7 @@ function Play_MultiSetUpdateDialog(obj) {
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
+
 }
 
 function Play_MultiAddFocus() {

@@ -1325,7 +1325,6 @@ function Main_OPenAsVod_shutdownStream() {
 
 function Main_OPenAsVod_PreshutdownStream() {
     if (Main_IsOn_OSInterface) {
-        OSInterface_mClearSmallPlayer();
         OSInterface_stopVideo();
     }
 
@@ -2279,7 +2278,6 @@ function Main_onNewIntentClearPlay() {
 
         Play_controls[Play_MultiStream].enterKey();
 
-        OSInterface_mClearSmallPlayer();
         OSInterface_stopVideo();
     } else if (PlayExtra_PicturePicture) {
         PlayExtra_UnSetPanel();

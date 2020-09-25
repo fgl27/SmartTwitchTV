@@ -736,22 +736,6 @@ function OSInterface_mSetPlayerAudioMulti(position) {
     if (Main_IsOn_OSInterface) Android.mSetPlayerAudioMulti(position);
 }
 
-//public boolean IsMainNotMain()
-//Android specific: true
-//boolean if true the main player is not the original main player and a change is needed to prevent odd behavior when changing multistream players positon
-function OSInterface_IsMainNotMain() {
-    return Android.IsMainNotMain();
-}
-
-//public void PrepareForMulti(String uri, String mainPlaylistString)
-//uri =  the url of the playlist or the clip
-//mainPlaylistString = the stringify version of the url playlist content
-//Android specific: true
-//If IsMainNotMain fix player position
-function OSInterface_PrepareForMulti(uri, mainPlaylistString) {
-    Android.PrepareForMulti(uri, mainPlaylistString);
-}
-
 //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
 //mainPlaylistString = the stringify version of the url playlist content
