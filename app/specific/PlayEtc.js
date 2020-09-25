@@ -1168,12 +1168,12 @@ function Play_PPKeyDownHold() {
     Play_EndUpclear = true;
 
     if (Play_controls[Play_controlsAudio].defaultValue !== 2) {
-        Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
+        Play_OldAudio = Play_controls[Play_controlsAudio].defaultValue;
         Play_controls[Play_controlsAudio].defaultValue = 2;
         Play_controls[Play_controlsAudio].enterKey();
     } else {
-        Play_controls[Play_controlsAudio].defaultValue = Play_Oldaudio < 2 ? Play_Oldaudio : 1;
-        Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
+        Play_controls[Play_controlsAudio].defaultValue = Play_OldAudio < 2 ? Play_OldAudio : 1;
+        Play_OldAudio = Play_controls[Play_controlsAudio].defaultValue;
         Play_controls[Play_controlsAudio].enterKey();
     }
 }
@@ -2063,8 +2063,6 @@ function Play_MakeControls() {
 
             if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
             else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
-
-            var pos = Play_controls[this.position].defaultValue;
 
             //prevent change not activi video
             if (this.defaultValue < 4 && !Play_MultiArray[Play_controls[this.position].defaultValue].data.length) {

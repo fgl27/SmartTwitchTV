@@ -164,7 +164,9 @@ function Play_Multi_UnSetPanelDivsCheckChat() {
 }
 
 function Play_Multi_UnSetPanel(shutdown) {
+
     Play_Multi_UnSetPanelDivs();
+
     for (var i = 0; i < 4; i++) {
 
         if (Play_MultiArray[i].data.length > 0) {
@@ -193,10 +195,13 @@ function Play_Multi_UnSetPanel(shutdown) {
         }
 
     } else {
+
         Play_Multi_UnSetPanelDivsCheckChat();
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
         PlayExtra_PicturePicture = false;
+
     }
+
     Play_Multi_UnSetPanelDivsCheckChat();
 
     //Check if main player is open if not check if one is so it can be main
@@ -206,8 +211,9 @@ function Play_Multi_UnSetPanel(shutdown) {
 
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
+        var nameChanged = name !== Play_data.data[14];
 
-        if ((name !== Play_data.data[14]) && First) {
+        if (nameChanged && First) {
 
             OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
             Play_UpdateMainStream(true, true);
@@ -215,7 +221,7 @@ function Play_Multi_UnSetPanel(shutdown) {
 
         } else {
 
-            Play_UpdateMainStream(name !== Play_data.data[14], name !== Play_data.data[14]);
+            Play_UpdateMainStream(nameChanged, nameChanged);
 
         }
 
@@ -225,7 +231,7 @@ function Play_Multi_UnSetPanel(shutdown) {
 
     }
 
-    Play_Oldaudio = Play_controls[Play_controlsAudio].defaultValue;
+    Play_OldAudio = Play_controls[Play_controlsAudio].defaultValue;
 }
 
 function Play_MultiFirstAvailable() {
@@ -600,19 +606,19 @@ function Play_SetMultiStreamMainBig(offset) {
 
 }
 
-var Play_Oldaudio = 0;
+var Play_OldAudio = 0;
 var Play_AudioAll = false;
 function Play_MultiKeyDownHold(preventShowWarning) {
     Play_EndUpclear = true;
 
     if (Play_DefaultAudio_Multi !== 4) {
-        Play_Oldaudio = Play_DefaultAudio_Multi;
+        Play_OldAudio = Play_DefaultAudio_Multi;
         Play_DefaultAudio_Multi = 4;
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
         Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
     } else {
-        Play_DefaultAudio_Multi = Play_Oldaudio < 4 ? Play_Oldaudio : 0;
-        Play_Oldaudio = Play_DefaultAudio_Multi;
+        Play_DefaultAudio_Multi = Play_OldAudio < 4 ? Play_OldAudio : 0;
+        Play_OldAudio = Play_DefaultAudio_Multi;
         Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
         Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
     }
