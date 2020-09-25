@@ -672,10 +672,11 @@ function OSInterface_DisableMultiStream() {
 //position = position of the player
 //uri = uri of the playlist
 //mainPlaylistString = main Playlist String
+//Restart the player
 //Android specific: true
 //Start MultiStream at position
-function OSInterface_StartMultiStream(position, uri, mainPlaylistString) {
-    Android.StartMultiStream(position, uri, mainPlaylistString);
+function OSInterface_StartMultiStream(position, uri, mainPlaylistString, Restart) {
+    Android.StartMultiStream(position, uri, mainPlaylistString, Restart);
 }
 
 //public void EnableMultiStream(boolean MainBig, int offset)

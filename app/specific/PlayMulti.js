@@ -342,7 +342,7 @@ function Play_MultiStart(pos) {
 
     if (Play_PreviewId) {
 
-        Play_MultiStartQualitySucess(
+        Play_MultiStartQualitySuccess(
             pos,
             Play_PreviewURL,
             Play_PreviewResponseText
@@ -377,7 +377,7 @@ function Play_MultiResult(response, pos) {
 
             if (responseObj.status === 200) {
 
-                Play_MultiStartQualitySucess(pos, responseObj.url, responseObj.responseText);
+                Play_MultiStartQualitySuccess(pos, responseObj.url, responseObj.responseText);
                 return;
 
             } else if (responseObj.status === 1 || responseObj.status === 403) {
@@ -420,7 +420,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     }
 }
 
-function Play_MultiStartQualitySucess(pos, theUrl, playlist) {
+function Play_MultiStartQualitySuccess(pos, theUrl, playlist) {
 
     Play_MultiArray[pos].AutoUrl = theUrl;
 

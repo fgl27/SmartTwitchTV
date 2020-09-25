@@ -1857,23 +1857,31 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
-            if (!this.defaultValue) {
+            if (!this.defaultValue) {//restart all
 
                 var i = 0, len = Play_MultiArray.length;
                 for (i; i < len; i++) {
                     if (Play_MultiArray[i].data.length > 0) {
-                        OSInterface_StartMultiStream(i, Play_MultiArray[i].AutoUrl, Play_MultiArray[i].playlist);
+
+                        OSInterface_StartMultiStream(
+                            i,
+                            Play_MultiArray[i].AutoUrl,
+                            Play_MultiArray[i].playlist,
+                            true
+                        );
+
                     }
                 }
 
             } else {
 
-                var pos = Play_controls[this.position].defaultValue;
+                var pos = Play_controls[this.position].defaultValue - 1;
 
                 OSInterface_StartMultiStream(
                     pos,
                     Play_MultiArray[pos].AutoUrl,
-                    Play_MultiArray[pos].playlist
+                    Play_MultiArray[pos].playlist,
+                    true
                 );
 
             }
@@ -1881,13 +1889,13 @@ function Play_MakeControls() {
             Play_Resetpanel(PlayVodClip);
         },
         updown: function(adder) {
-
             this.defaultValue += adder;
+
             if (this.defaultValue < 0) this.defaultValue = (this.values.length - 1);
             else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = 0;
 
             //prevent change not activi video
-            if (this.defaultValue && !Play_MultiArray[Play_controls[this.position].defaultValue].data.length) {
+            if (this.defaultValue && !Play_MultiArray[Play_controls[this.position].defaultValue - 1].data.length) {
 
                 this.updown(adder);
                 return;
@@ -1897,7 +1905,8 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function() {
-            var pos = Play_controls[this.position].defaultValue;
+            var pos = Play_controls[this.position].defaultValue - 1;
+
             if (this.defaultValue && !Play_MultiArray[pos]) return;
 
             Main_textContentWithEle(
@@ -2058,7 +2067,7 @@ function Play_MakeControls() {
             var pos = Play_controls[this.position].defaultValue;
 
             //prevent change not activi video
-            if (this.defaultValue < 4 && !Play_MultiArray[pos].data.length) {
+            if (this.defaultValue < 4 && !Play_MultiArray[Play_controls[this.position].defaultValue].data.length) {
 
                 this.updown(adder);
                 return;

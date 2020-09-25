@@ -854,7 +854,7 @@ public class PlayerActivity extends Activity {
     private void SwitchPlayer() {
 
         //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
-        //The odd behavior will stay until the player is closed
+        //The odd behavior will stay until the player is releasePlayer
         if (player[0] != null) player[0].setPlayWhenReady(false);
         if (player[1] != null) player[1].setPlayWhenReady(false);
 
@@ -959,6 +959,8 @@ public class PlayerActivity extends Activity {
             int j_len = PlayerAccount - 1;
             boolean left = offset > 0;
 
+            //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
+            //The odd behavior will stay until the player is releasePlayer
             for (i = 0; i < PlayerAccount; i++) {
 
                 if (player[i] != null) {
@@ -2347,6 +2349,10 @@ public class PlayerActivity extends Activity {
         public void RestartPlayer(int who_called, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
 
+                //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
+                //The odd behavior will stay until the player is releasePlayer
+                releasePlayer(position);
+
                 PreparePlayer_Single_PP(who_called, ResumePosition, position);
 
                 if (position == 1) {
@@ -2976,8 +2982,12 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartMultiStream(int position, String uri, String mainPlaylistString) {
+        public void StartMultiStream(int position, String uri, String mainPlaylistString, boolean Restart) {
             MainThreadHandler.post(() -> {
+
+                //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a SetMultiStreamMainBig
+                //The odd behavior will stay until the player is releasePlayer
+                if (Restart) releasePlayer(position);
 
                 mediaSources[position] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
                         mediaSources[4] :
