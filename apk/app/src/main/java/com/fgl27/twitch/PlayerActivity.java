@@ -140,6 +140,8 @@ public class PlayerActivity extends Activity {
     private PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
+    private PlayerEventListenerPreview playerPreviewListener;
+    private AnalyticsEventListenerPreview playerPreviewAnalyticsListener;
     private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
     private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
     private TrackGroupArray lastSeenTrackGroupArray;
@@ -385,11 +387,17 @@ public class PlayerActivity extends Activity {
         trackSelector[4] = tempTrackSelector;
 
         MediaSource tempMediaSource = mediaSources[PlayerPosition];
-        mediaSources[0] = mediaSources[4];
+        mediaSources[PlayerPosition] = mediaSources[4];
         mediaSources[4] = tempMediaSource;
 
         PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
         PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+
+        if (playerPreviewListener != null)
+            player[PlayerPosition].removeListener(playerPreviewListener);
+
+        if (playerPreviewAnalyticsListener != null)
+            player[PlayerPosition].removeAnalyticsListener(playerPreviewAnalyticsListener);
 
         playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
         player[PlayerPosition].addListener(playerListener[PlayerPosition]);
@@ -442,8 +450,11 @@ public class PlayerActivity extends Activity {
 
             } else {
 
-                player[PlayerPosition].addListener(new PlayerEventListenerPreview(StartGetCurrentPosition));
-                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListenerPreview());
+                playerPreviewListener = new PlayerEventListenerPreview(StartGetCurrentPosition);
+                player[PlayerPosition].addListener(playerPreviewListener);
+
+                playerPreviewAnalyticsListener = new AnalyticsEventListenerPreview();
+                player[PlayerPosition].addAnalyticsListener(playerPreviewAnalyticsListener);
 
             }
 
@@ -595,6 +606,8 @@ public class PlayerActivity extends Activity {
         releasePlayer(4);
         mSetPreviewOthersAudio();
 
+        playerPreviewListener = null;
+        playerPreviewAnalyticsListener = null;
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
         mResumePositionSmallPlayer = 0L;
