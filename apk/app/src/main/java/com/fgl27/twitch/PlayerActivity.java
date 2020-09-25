@@ -141,9 +141,7 @@ public class PlayerActivity extends Activity {
     private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
     private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
-    private DefaultTrackSelector.Parameters trackSelectorParameters;
-    private DefaultTrackSelector.Parameters trackSelectorParametersPP;
-    private DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
+    private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
     private TrackGroupArray lastSeenTrackGroupArray;
     private long mResumePosition;
     private long mResumePositionSmallPlayer;
@@ -479,7 +477,7 @@ public class PlayerActivity extends Activity {
                 ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET,
                 PlayerPosition == 0,
                 true,
-                isSmall ? trackSelectorParametersPP : trackSelectorParameters
+                isSmall ? trackSelectorParameters[1] : trackSelectorParameters[0]
 
         );
 
@@ -504,7 +502,7 @@ public class PlayerActivity extends Activity {
                 C.TIME_UNSET,
                 PlayerPosition == 0,
                 true,
-                trackSelectorParametersPP
+                trackSelectorParameters[1]
 
         );
 
@@ -525,7 +523,7 @@ public class PlayerActivity extends Activity {
                 (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
                 IsVod,
                 false,
-                trackSelectorParametersExtraSmall
+                trackSelectorParameters[2]
 
         );
 
@@ -852,32 +850,30 @@ public class PlayerActivity extends Activity {
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer() {
+        int i;
 
         //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
         //The odd behavior will stay until the player is releasePlayer
-        if (player[0] != null) player[0].setPlayWhenReady(false);
-        if (player[1] != null) player[1].setPlayWhenReady(false);
+        for (i = 0; i < 2; i++) {
+            if (player[i] != null) player[i].setPlayWhenReady(false);
+        }
 
         SimpleExoPlayer tempMainPlayer = player[0];
         player[0] = player[1];
         player[1] = tempMainPlayer;
 
-        PlayerView[0].setPlayer(player[0]);
-        PlayerView[1].setPlayer(player[1]);
-
-        DefaultTrackSelector temptrackSelector = trackSelector[0];
+        DefaultTrackSelector tempTrackSelector = trackSelector[0];
         trackSelector[0] = trackSelector[1];
-        trackSelector[1] = temptrackSelector;
+        trackSelector[1] = tempTrackSelector;
 
-        //change trackSelector to limit video Bitrate
-        if (trackSelector[1] != null)
-            trackSelector[1].setParameters(trackSelectorParametersPP);
+        for (i = 0; i < 2; i++) {
 
-        if (trackSelector[0] != null)
-            trackSelector[0].setParameters(trackSelectorParameters);
+            PlayerView[i].setPlayer(player[i]);
+            if (player[i] != null) player[i].setPlayWhenReady(true);
+            if (trackSelector[i] != null)
+                trackSelector[0].setParameters(trackSelectorParameters[i]);
 
-        if (player[0] != null) player[0].setPlayWhenReady(true);
-        if (player[1] != null) player[1].setPlayWhenReady(true);
+        }
 
         SwitchPlayerAudio(AudioSource);
 
@@ -1028,7 +1024,7 @@ public class PlayerActivity extends Activity {
         SetPlayerAudioMulti();
 
         if (trackSelector[0] != null)
-            trackSelector[0].setParameters(trackSelectorParametersPP);
+            trackSelector[0].setParameters(trackSelectorParameters[1]);
 
     }
 
@@ -1039,7 +1035,7 @@ public class PlayerActivity extends Activity {
         }
 
         if (trackSelector[0] != null)
-            trackSelector[0].setParameters(trackSelectorParametersPP);
+            trackSelector[0].setParameters(trackSelectorParameters[1]);
     }
 
     public void UnSetMultiStream() {
@@ -1073,7 +1069,7 @@ public class PlayerActivity extends Activity {
         PlayerView[3].setVisibility(View.GONE);
 
         if (trackSelector[0] != null)
-            trackSelector[0].setParameters(trackSelectorParameters);
+            trackSelector[0].setParameters(trackSelectorParameters[0]);
     }
 
     private void GetCurrentPosition() {
@@ -1768,7 +1764,7 @@ public class PlayerActivity extends Activity {
             IsInAutoMode = position == -1;
 
             if (IsInAutoMode) {
-                trackSelector[0].setParameters(trackSelectorParameters);
+                trackSelector[0].setParameters(trackSelectorParameters[0]);
                 return;
             }
 
@@ -2683,7 +2679,7 @@ public class PlayerActivity extends Activity {
         public void SetMainPlayerBitrate(int Bitrate) {
             int mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
-            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+            trackSelectorParameters[0] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBitrate)
                     .build();
@@ -2697,13 +2693,13 @@ public class PlayerActivity extends Activity {
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
-            trackSelectorParametersPP = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+            trackSelectorParameters[1] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
             int extraSmallPlayerBitrate = 4000000;
-            trackSelectorParametersExtraSmall = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+            trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
                             Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate)
