@@ -941,18 +941,22 @@ public class PlayerActivity extends Activity {
     public void SetMultiStreamMainBig(int offset) {
 
         for (int i = 0; i < PlayerAccount; i++) {
+
             PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
             PlayerView[i].setVisibility(View.VISIBLE);
+
         }
 
         if (offset != 0) {
 
             SimpleExoPlayer tempPlayer;
             DefaultTrackSelector tempTrackSelector;
+
             int len = Math.abs(offset);
             int i;
             int j;
             int j_len = PlayerAccount - 1;
+
             boolean left = offset > 0;
 
             //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
