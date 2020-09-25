@@ -662,17 +662,28 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
         if (StreamData && doc) {
-            StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+            var StreamDataObj = JSON.parse(StreamData),
+                StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                 error;
 
-            if (StreamData.status === 200) {
+            Play_PreviewId = StreamInfo[14];
 
-                Play_PreviewURL = StreamData.url;
-                Play_PreviewResponseText = StreamData.responseText;
-                Play_PreviewId = StreamInfo[14];
+            if (Play_MultiEnable) {
+
+                for (var i = 0; i < Play_MultiArray_length; i++) {
+
+                    if (Play_MultiArray[i].data.length > 0 && Main_A_equals_B(Play_MultiArray[i].data[14], Play_PreviewId)) return;
+
+                }
+
+            }
+
+            if (StreamDataObj.status === 200) {
+
+                Play_PreviewURL = StreamDataObj.url;
+                Play_PreviewResponseText = StreamDataObj.responseText;
                 UserLiveFeed_PreviewOffset = 0;
 
                 if (!UserLiveFeed_CheckIfIsLiveResultThumb) {
@@ -750,7 +761,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamData, isVod);
+                error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
 
             }
 

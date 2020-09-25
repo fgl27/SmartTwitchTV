@@ -563,13 +563,16 @@ function Play_ResumeAfterOnline() {
             ChatLive_Init(0);
             Play_data.watching_time = new Date().getTime();
 
-            var i = 0, len = Play_MultiArray.length;
-            for (i; i < len; i++) {
+            var i = 0;
+
+            for (i; i < Play_MultiArray_length; i++) {
+
                 if (Play_MultiArray[i].data.length > 0) {
 
                     Play_MultiStart(i);
 
                 }
+
             }
         } else {
             Play_data.watching_time = new Date().getTime();
@@ -767,10 +770,15 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
-        var i = 0, len = Play_MultiArray.length;
-        for (i; i < len; i++) {
+
+        var i = 0;
+
+        for (i; i < Play_MultiArray_length; i++) {
+
             Play_updateStreamInfoMulti(i);
+
         }
+
     } else {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(

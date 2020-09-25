@@ -1100,16 +1100,16 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
         doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
 
         if (StreamData && doc) {
-            StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+            var StreamDataObj = JSON.parse(StreamData),
+                StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
                 index,
                 UserIsSet = AddUser_UserIsSet();
 
-            if (StreamData.status === 200) {
+            if (StreamDataObj.status === 200) {
 
-                Play_PreviewURL = StreamData.url;
-                Play_PreviewResponseText = StreamData.responseText;
+                Play_PreviewURL = StreamDataObj.url;
+                Play_PreviewResponseText = StreamDataObj.responseText;
 
                 var offset = 0,
                     PreviewResponseText = Play_PreviewResponseText,
@@ -1225,7 +1225,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                     error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
 
-                } else if (ScreenObj[x].screen === Main_HistoryLive && StreamData.status !== 1 && StreamData.status !== 403) {
+                } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
 
                     index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
@@ -1242,7 +1242,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                 } else {
 
-                    error += Play_CheckIfIsLiveGetEror(StreamData, ScreenObj[x].screenType === 1);
+                    error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
 
                 }
 
