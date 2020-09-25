@@ -66,7 +66,7 @@ function PlayExtra_KeyEnter() {
         else {
 
             PlayExtra_data.AutoUrl = Play_PreviewURL;
-            PlayExtra_loadDataSuccessEnd(Play_PreviewResponseText);
+            PlayExtra_loadDataSuccessEnd(Play_PreviewResponseText, true);
 
             Play_CheckIfIsLiveCleanEnd();
         }
@@ -150,8 +150,8 @@ function PlayExtra_ResumeResultEnd(responseObj) {
 
 }
 
-function PlayExtra_loadDataSuccessEnd(playlist) {
-    UserLiveFeed_Hide();
+function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
+    UserLiveFeed_Hide(PreventcleanQuailities);
     OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();

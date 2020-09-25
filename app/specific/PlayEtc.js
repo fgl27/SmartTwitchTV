@@ -1462,7 +1462,7 @@ function Play_handleKeyDown(e) {
 
                 } else if (Play_MultiDialogVisible()) {
 
-                    Play_HideMultiDialog(true);
+                    Play_HideMultiDialog(Play_PreviewId);
                     Main_Set_history('live', Play_MultiArray[Play_MultiDialogPos].data);//save before we change
                     Play_MultiStartPrestart(Play_MultiDialogPos);
 
@@ -1472,8 +1472,10 @@ function Play_handleKeyDown(e) {
                     else if (Play_MultiEnable) {
 
                         if (Play_MultiIsFull()) {
+
                             var obj1 = Play_CheckLiveThumb();
                             if (obj1) Play_MultiSetUpdateDialog(obj1);
+
                         } else Play_MultiStartPrestart();
 
                     } else if (Play_StayDialogVisible()) {

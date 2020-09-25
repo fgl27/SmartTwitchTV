@@ -363,10 +363,9 @@ function Play_MultiStart(pos) {
         Play_MultiStartQualitySuccess(
             pos,
             Play_PreviewURL,
-            Play_PreviewResponseText
+            Play_PreviewResponseText,
+            true
         );
-
-        UserLiveFeed_CheckIfIsLiveSTop();
 
         return;
 
@@ -438,11 +437,11 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     }
 }
 
-function Play_MultiStartQualitySuccess(pos, theUrl, playlist) {
+function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQuailities) {
 
     Play_MultiArray[pos].AutoUrl = theUrl;
 
-    if (Play_MultiIsFull()) UserLiveFeed_Hide();
+    if (Play_MultiIsFull()) UserLiveFeed_Hide(PreventCleanQuailities);
 
     OSInterface_StartMultiStream(pos, theUrl, playlist);
 
@@ -750,7 +749,7 @@ function Play_MultiSetUpdateDialog(obj) {
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
-    UserLiveFeed_Hide(true);
+    UserLiveFeed_Hide(Play_PreviewId);
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
@@ -784,12 +783,12 @@ function Play_ShowMultiDialog() {
     Main_ShowElementWithEle(Play_MultiDialogElem);
 }
 
-function Play_HideMultiDialog(PreventcleanQuailities) {
+function Play_HideMultiDialog(PreventCleanQuailities) {
     //return;
     Main_HideElementWithEle(Play_MultiDialogElem);
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
-    if (!PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities);
 }
 
 function Play_MultiDialogVisible() {

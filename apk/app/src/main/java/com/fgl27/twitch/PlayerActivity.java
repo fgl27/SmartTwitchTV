@@ -371,6 +371,40 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    private void ReUsePlayer(int PlayerPosition, int Who_Called, DefaultTrackSelector.Parameters trackSelectorParameters) {
+
+        if (player[PlayerPosition] != null) player[PlayerPosition].setPlayWhenReady(false);
+        if (player[4] != null) player[4].setPlayWhenReady(false);
+
+        SimpleExoPlayer tempPlayer = player[PlayerPosition];
+        player[PlayerPosition] = player[4];
+        player[4] = tempPlayer;
+
+        DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
+        trackSelector[PlayerPosition] = trackSelector[4];
+        trackSelector[4] = tempTrackSelector;
+
+        MediaSource tempMediaSource = mediaSources[PlayerPosition];
+        mediaSources[0] = mediaSources[4];
+        mediaSources[4] = tempMediaSource;
+
+        PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
+        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+
+        playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
+        player[PlayerPosition].addListener(playerListener[PlayerPosition]);
+        player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListener());
+
+        if (trackSelector[PlayerPosition] != null)
+            trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
+
+        player[PlayerPosition].setPlayWhenReady(true);
+
+        if (PlayerPosition == 0) GetCurrentPosition();
+
+        PlayerView[4].setPlayer(player[4]);
+        Clear_PreviewPlayer();
+    }
 
     private void SetupPlayer(int PlayerPosition, int loadControlPosition, int Who_Called, long ResumePosition,
                              boolean StartGetCurrentPosition, boolean UseFullAnalytics, DefaultTrackSelector.Parameters trackSelectorParameters) {
@@ -381,7 +415,7 @@ public class PlayerActivity extends Activity {
         }
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "SetupPlayer position " + PlayerPosition);
+            Log.i(TAG, "SetupPlayer position " + PlayerPosition + " player[PlayerPosition] == null " + (player[PlayerPosition] == null));
         }
 
         PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
@@ -506,15 +540,25 @@ public class PlayerActivity extends Activity {
 
         );
 
+        SetMultiVolume(PlayerPosition);
+
+    }
+
+    private void SetMultiVolume(int PlayerPosition) {
         float volume = 0f;
         if (AudioMulti == 4 || AudioMulti == PlayerPosition)
             volume = player[4] == null ? 1f : PreviewOthersAudio;
 
         player[PlayerPosition].setVolume(volume);
-
     }
 
     private void initializePlayer_Preview(Long resumePosition, boolean IsVod) {
+
+        int ActivePlayerAccount = 0;
+
+        for (int i = 0; i < PlayerAccount; i++) {
+            if (player[i] != null) ActivePlayerAccount++;
+        }
 
         SetupPlayer(
                 4,
@@ -523,7 +567,7 @@ public class PlayerActivity extends Activity {
                 (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
                 IsVod,
                 false,
-                trackSelectorParameters[2]
+                ActivePlayerAccount > 3 ? trackSelectorParameters[2] : trackSelectorParameters[1]
 
         );
 
@@ -543,7 +587,7 @@ public class PlayerActivity extends Activity {
         CheckKeepScreenOn();
     }
 
-    private void ClearSmallPlayer() {
+    private void Clear_PreviewPlayer() {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "ClearSmallPlayer");
         }
@@ -866,12 +910,20 @@ public class PlayerActivity extends Activity {
         trackSelector[0] = trackSelector[1];
         trackSelector[1] = tempTrackSelector;
 
+        MediaSource tempMediaSource = mediaSources[0];
+        mediaSources[0] = mediaSources[1];
+        mediaSources[1] = tempMediaSource;
+
         for (i = 0; i < 2; i++) {
 
             PlayerView[i].setPlayer(player[i]);
             if (player[i] != null) player[i].setPlayWhenReady(true);
+
             if (trackSelector[i] != null)
-                trackSelector[0].setParameters(trackSelectorParameters[i]);
+                trackSelector[i].setParameters(trackSelectorParameters[i]);
+
+            if (playerListener[i] != null)
+                playerListener[i].UpdatePosition(i ^ 1);
 
         }
 
@@ -951,6 +1003,7 @@ public class PlayerActivity extends Activity {
 
             SimpleExoPlayer tempPlayer;
             DefaultTrackSelector tempTrackSelector;
+            MediaSource tempMediaSource;
 
             int len = Math.abs(offset);
             int i;
@@ -979,15 +1032,24 @@ public class PlayerActivity extends Activity {
                     //Stores the first element of the array
                     tempPlayer = player[0];
                     tempTrackSelector = trackSelector[0];
+                    tempMediaSource = mediaSources[0];
 
                     for (j = 0; j < j_len; j++) {
                         //Shift element of array by one
                         player[j] = player[j + 1];
                         trackSelector[j] = trackSelector[j + 1];
+                        mediaSources[j] = mediaSources[j + 1];
+
+                        if (playerListener[j] != null)
+                            playerListener[j].UpdatePosition(j + 1);
                     }
                     //First element of array will be added to the end
                     player[j] = tempPlayer;
                     trackSelector[j] = tempTrackSelector;
+                    mediaSources[j] = tempMediaSource;
+
+                    if (playerListener[j] != null)
+                        playerListener[j].UpdatePosition(0);
 
                     //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
                 } else {// else if offset -1 result 3 0 1 2
@@ -995,16 +1057,24 @@ public class PlayerActivity extends Activity {
                     //Stores the last element of array
                     tempPlayer = player[3];
                     tempTrackSelector = trackSelector[3];
+                    tempMediaSource = mediaSources[3];
 
                     for (j = j_len; j > 0; j--) {
                         //Shift element of array by one
                         player[j] = player[j - 1];
                         trackSelector[j] = trackSelector[j - 1];
+                        mediaSources[j] = mediaSources[j - 1];
+
+                        if (playerListener[j] != null)
+                            playerListener[j].UpdatePosition(j - 1);
                     }
                     //Last element of array will be added to the start of array.
                     player[0] = tempPlayer;
                     trackSelector[0] = tempTrackSelector;
+                    mediaSources[0] = tempMediaSource;
 
+                    if (playerListener[0] != null)
+                        playerListener[0].UpdatePosition(3);
                 }
 
             }
@@ -1391,7 +1461,7 @@ public class PlayerActivity extends Activity {
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
         }
-        ClearSmallPlayer();
+        Clear_PreviewPlayer();
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
         ClearWebViewChache();
@@ -1442,7 +1512,7 @@ public class PlayerActivity extends Activity {
             ClearPlayer(i);
         }
 
-        ClearSmallPlayer();
+        Clear_PreviewPlayer();
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onDestroy");
@@ -1880,8 +1950,10 @@ public class PlayerActivity extends Activity {
             ClearPlayer(position);
             WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
-        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
-        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
+        } else if (mWho_Called > 3) {
+            ClearPlayer(position);
+            WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+        } else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
 
         LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }
@@ -1917,7 +1989,7 @@ public class PlayerActivity extends Activity {
 
         } else {
 
-            ClearSmallPlayer();
+            Clear_PreviewPlayer();
             LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
 
         }
@@ -2313,18 +2385,30 @@ public class PlayerActivity extends Activity {
                 if (startPlayer) {
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    mediaSources[position] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
-                            mediaSources[4] :
-                            Tools.buildMediaSource(
-                                    Uri.parse(uri),
-                                    mWebViewContext,
-                                    who_called,
-                                    mLowLatency,
-                                    mainPlaylistString,
-                                    userAgent
-                            );
+                    boolean reUsePlayer = player[4] != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
 
-                    PreparePlayer_Single_PP(who_called, ResumePosition, position);
+                    if (reUsePlayer) {
+
+                        ReUsePlayer(position, who_called, trackSelectorParameters[position]);
+
+                        SwitchPlayerAudio(AudioSource);
+
+                    } else {
+
+                        mediaSources[position] = Tools.buildMediaSource(
+                                Uri.parse(uri),
+                                mWebViewContext,
+                                who_called,
+                                mLowLatency,
+                                mainPlaylistString,
+                                userAgent
+                        );
+
+                        PreparePlayer_Single_PP(who_called, ResumePosition, position);
+
+                        if (player[4] != null) releasePlayer(4);
+                    }
+
                     PreviewPlayerPlaylist = null;
 
                     if (position == 1) {
@@ -2474,8 +2558,17 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void ClearFeedPlayer() {
-            MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
+        public void ClearFeedPlayer(boolean PreventClean) {
+            MainThreadHandler.post(() -> {
+
+                if (PreventClean) {
+
+                    if (player[4] != null) player[4].setPlayWhenReady(false);
+                    PlayerView[4].setVisibility(View.GONE);
+
+                } else Clear_PreviewPlayer();
+
+            });
         }
 
         @JavascriptInterface
@@ -2989,19 +3082,32 @@ public class PlayerActivity extends Activity {
                 //The odd behavior will stay until the player is releasePlayer
                 if (Restart) releasePlayer(position);
 
-                mediaSources[position] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
-                        mediaSources[4] :
-                        Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                1,
-                                mLowLatency,
-                                mainPlaylistString,
-                                userAgent
-                        );
+                boolean reUsePlayer = player[4] != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
 
-                initializePlayer_Multi(position);
+                if (reUsePlayer) {
+
+                    ReUsePlayer(position, 1, trackSelectorParameters[1]);
+
+                    SetMultiVolume(position);
+
+                } else {
+
+                    mediaSources[position] = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            1,
+                            mLowLatency,
+                            mainPlaylistString,
+                            userAgent
+                    );
+
+                    initializePlayer_Multi(position);
+
+                    if (player[4] != null) releasePlayer(4);
+                }
+
                 PreviewPlayerPlaylist = null;
+
             });
         }
 
@@ -3044,7 +3150,7 @@ public class PlayerActivity extends Activity {
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
-        private final int position;
+        private int position;
         private final int Delay_ms;
         private int Who_Called;
 
@@ -3056,6 +3162,10 @@ public class PlayerActivity extends Activity {
 
         private void UpdateWho_Called(int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
+        }
+
+        private void UpdatePosition(int position) {
+            this.position = position;
         }
 
         @Override
@@ -3182,7 +3292,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[4].removeCallbacksAndMessages(null);
                 player[4].setPlayWhenReady(false);
 
-                ClearSmallPlayer();
+                Clear_PreviewPlayer();
 
                 LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + Player_Ended + ")");
                 mSetPreviewOthersAudio();

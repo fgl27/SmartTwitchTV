@@ -407,9 +407,9 @@ function UserLiveFeed_Show() {
     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
 }
 
-function UserLiveFeed_Hide(PreventcleanQuailities) {
+function UserLiveFeed_Hide(PreventCleanQuailities) {
     //return;//return;
-    UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities);
+    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities);
     UserLiveFeed_HideAfter();
 }
 
@@ -568,15 +568,20 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
-function UserLiveFeed_CheckIfIsLiveSTop(PreventcleanQuailities) {
+function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities) {
     Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
     if (Main_IsOn_OSInterface) {
 
-        OSInterface_ClearFeedPlayer();
-        if (Play_PreviewId && !PreventcleanQuailities) Play_CheckIfIsLiveCleanEnd();
+        OSInterface_ClearFeedPlayer(PreventCleanQuailities);
+        if (Play_PreviewId && !PreventCleanQuailities) {
+
+            Play_CheckIfIsLiveCleanEnd();
+
+        }
 
     }
+
     Play_HideWarningMidleDialog();
 }
 

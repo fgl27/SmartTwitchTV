@@ -324,14 +324,18 @@ function Play_Start(offline_chat) {
     Play_state = Play_STATE_LOADING_TOKEN;
 
     if (offline_chat) {
+
         Play_StartStay();
+
     } else if (!Play_PreviewId) {
+
         Play_showBufferDialog();
         Play_loadData();
+
     } else {
 
         Play_data.AutoUrl = Play_PreviewURL;
-        Play_loadDataSuccessend(Play_PreviewResponseText, true);
+        Play_loadDataSuccessend(Play_PreviewResponseText, true, false, true);
 
         Play_CheckIfIsLiveCleanEnd();
         Play_getQualities(1, false);
@@ -503,6 +507,8 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             }
 
         } else {
+            OSInterface_ClearSidePanelPlayer();
+
             Screens_LoadPreviewWarn(
                 reason,
                 Main_values.Main_Go,
@@ -937,8 +943,8 @@ function Play_loadDataResultEnd(responseObj) {
     Play_loadDataErrorFinish();
 }
 
-function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory) {
-    UserLiveFeed_Hide();
+function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
+    UserLiveFeed_Hide(PreventcleanQuailities);
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
     else if (Play_EndDialogEnter === 3) {
