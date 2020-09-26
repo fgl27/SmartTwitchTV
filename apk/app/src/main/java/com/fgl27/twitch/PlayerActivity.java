@@ -3239,8 +3239,6 @@ public class PlayerActivity extends Activity {
                 else
                     PlayerCheckCounter[position] = 0;
 
-                LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
-
                 if (mWho_Called == 1) {
 
                     //If other not playing just play it so they stay in sync
@@ -3265,6 +3263,10 @@ public class PlayerActivity extends Activity {
                         LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + player[position].getCurrentLiveOffset() + ")");
 
                     }
+
+                } else {
+
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
 
                 }
 
