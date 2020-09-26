@@ -368,8 +368,18 @@ public class PlayerActivity extends Activity {
 
     private void ReUsePlayer(int PlayerPosition, int Who_Called, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
-        if (player[PlayerPosition] != null) player[PlayerPosition].setPlayWhenReady(false);
+        PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
+        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+
+        if (player[PlayerPosition] != null) {
+            player[PlayerPosition].removeListener(playerListener[PlayerPosition]);
+            player[PlayerPosition].setPlayWhenReady(false);
+        }
         player[4].setPlayWhenReady(false);
+
+        playerListener[4].UpdatePosition(PlayerPosition);
+        playerListener[4].UpdateWho_Called(Who_Called);
+        playerListener[PlayerPosition] = playerListener[4];
 
         SimpleExoPlayer tempPlayer = player[PlayerPosition];
         player[PlayerPosition] = player[4];
@@ -385,10 +395,6 @@ public class PlayerActivity extends Activity {
 
         PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
         PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
-
-        player[PlayerPosition].removeListener(playerListener[4]);
-        playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
-        player[PlayerPosition].addListener(playerListener[PlayerPosition]);
 
         player[PlayerPosition].setPlayWhenReady(true);
         trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
