@@ -1772,8 +1772,8 @@ function ScreensObj_TopLableAgameInit(key) {
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
-    if (Main_values.Main_OldgameSelected !== Main_values.Main_gameSelected ||
-        ScreenObj[key].gameSelected !== Main_values.Main_gameSelected)
+    if (!Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected) ||
+        !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected))
         ScreenObj[key].status = false;
 
     ScreenObj[key].gameSelected = Main_values.Main_gameSelected;

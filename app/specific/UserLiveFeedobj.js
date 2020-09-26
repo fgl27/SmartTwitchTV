@@ -563,7 +563,7 @@ var UserLiveFeedobj_CurrentGameName = '';
 function UserLiveFeedobj_ShowCurrentGame() {
     UserLiveFeedobj_SetBottomText(2);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, (UserLiveFeedobj_CurrentGameName !== Play_data.data[3]));
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[3]));
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
 }
 
@@ -684,7 +684,7 @@ var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_SetBottomText(7);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, (UserLiveFeedobj_CurrentUserAGameName !== UserLiveFeedobj_CurrentUserAGameNameEnter));
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
     Main_RemoveClass('icon_feed_back', 'opacity_zero');
@@ -764,7 +764,7 @@ var UserLiveFeedobj_CurrentAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_SetBottomText(0);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, (UserLiveFeedobj_CurrentAGameName !== UserLiveFeedobj_CurrentAGameNameEnter));
+    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentAGameName, UserLiveFeedobj_CurrentAGameNameEnter));
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
     Main_RemoveClass('icon_feed_back', 'opacity_zero');

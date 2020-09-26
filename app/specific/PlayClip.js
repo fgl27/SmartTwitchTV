@@ -422,8 +422,10 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
     PlayClip_hidePanel();
     if (Main_IsOn_OSInterface && !Play_PreviewId) {
+
         if (closePlayer) OSInterface_stopVideo();
         else OSInterface_PlayPause(false);
+
     }
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();

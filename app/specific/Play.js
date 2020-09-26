@@ -43,7 +43,6 @@ var Play_EndUpclearCalback;
 var Play_EndDialogEnter = 0;
 var Play_PanneInfoDoclId;
 var Play_Multi_MainBig = false;
-var Play_Multi_Offset = 0;
 var Play_DurationSeconds = 0;
 var Play_seek_previews;
 var Play_seek_previews_img;
@@ -325,14 +324,18 @@ function Play_Start(offline_chat) {
     Play_state = Play_STATE_LOADING_TOKEN;
 
     if (offline_chat) {
+
         Play_StartStay();
+
     } else if (!Play_PreviewId) {
+
         Play_showBufferDialog();
         Play_loadData();
+
     } else {
 
         Play_data.AutoUrl = Play_PreviewURL;
-        Play_loadDataSuccessend(Play_PreviewResponseText, true);
+        Play_loadDataSuccessend(Play_PreviewResponseText, true, false, true);
 
         Play_CheckIfIsLiveCleanEnd();
         Play_getQualities(1, false);
@@ -504,6 +507,8 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             }
 
         } else {
+            OSInterface_ClearSidePanelPlayer();
+
             Screens_LoadPreviewWarn(
                 reason,
                 Main_values.Main_Go,
@@ -564,13 +569,16 @@ function Play_ResumeAfterOnline() {
             ChatLive_Init(0);
             Play_data.watching_time = new Date().getTime();
 
-            var i = 0, len = Play_MultiArray.length;
-            for (i; i < len; i++) {
+            var i = 0;
+
+            for (i; i < Play_MultiArray_length; i++) {
+
                 if (Play_MultiArray[i].data.length > 0) {
 
                     Play_MultiStart(i);
 
                 }
+
             }
         } else {
             Play_data.watching_time = new Date().getTime();
@@ -768,10 +776,15 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
 
 function Play_updateStreamInfo() {
     if (Play_MultiEnable) {
-        var i = 0, len = Play_MultiArray.length;
-        for (i; i < len; i++) {
+
+        var i = 0;
+
+        for (i; i < Play_MultiArray_length; i++) {
+
             Play_updateStreamInfoMulti(i);
+
         }
+
     } else {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(
@@ -930,8 +943,8 @@ function Play_loadDataResultEnd(responseObj) {
     Play_loadDataErrorFinish();
 }
 
-function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory) {
-    UserLiveFeed_Hide();
+function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
+    UserLiveFeed_Hide(PreventcleanQuailities);
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
     else if (Play_EndDialogEnter === 3) {
@@ -1312,8 +1325,8 @@ function Play_PreshutdownStream(closePlayer) {
     if (Main_IsOn_OSInterface) {
         if (closePlayer) {
             //We are closing the player on error or on end
-            OSInterface_mClearSmallPlayer();
             if (!Play_PreviewId) OSInterface_stopVideo();
+            else OSInterface_mClearSmallPlayer();
         }
     }
 
@@ -1566,21 +1579,19 @@ function Play_RefreshWatchingtime() {
 
     if (Play_MultiEnable) {
 
-        var extraText = Play_Multi_MainBig ? 'big' : 'small', pos, i;
+        var extraText = Play_Multi_MainBig ? 'big' : 'small', i;
 
         for (i = 0; i < 4; i++) {
 
-            pos = (i + (4 - Play_Multi_Offset)) % 4;
-
             if (Play_MultiArray[i].data.length > 0) {
 
-                Main_textContentWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
-                Main_textContentWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+                Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
+                Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
 
             } else {
 
-                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[pos][extraText], STR_SPACE);
-                Main_innerHTMLWithEle(Play_infoMultiLiveTime[pos][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE);
 
             }
 

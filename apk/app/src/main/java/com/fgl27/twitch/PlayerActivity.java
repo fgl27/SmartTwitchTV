@@ -94,7 +94,6 @@ import java.util.regex.Pattern;
 public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
-    private final int DefaultDelayPlayerCheck = 8000;
     private final int PlayerAccount = 4;
     private final int PlayerAccountPlus = PlayerAccount + 1;
 
@@ -131,19 +130,13 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e_texture_view//4
     };
 
-    private final int Player_Ended = 0;
-    private final int Player_Erro = 1;
-    private final int Player_Lag = 2;
-
     private int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     private String[] BLACKLISTEDCODECS = null;
     private PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
     private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
-    private DefaultTrackSelector.Parameters trackSelectorParameters;
-    private DefaultTrackSelector.Parameters trackSelectorParametersPP;
-    private DefaultTrackSelector.Parameters trackSelectorParametersExtraSmall;
+    private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
     private TrackGroupArray lastSeenTrackGroupArray;
     private long mResumePosition;
     private long mResumePositionSmallPlayer;
@@ -157,8 +150,6 @@ public class PlayerActivity extends Activity {
     private boolean MultiStreamEnable;
     private boolean isFullScreen = true;
     private boolean CheckSource = true;
-    private int mainPlayer = 0;
-    private int MultiMainPlayer = 0;
     private int PicturePicturePosition = 0;
     private int PicturePictureSize = 1;//sizes are 0 , 1 , 2, 3, 4
     private int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
@@ -375,9 +366,47 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    private void ReUsePlayer(int PlayerPosition, int Who_Called, DefaultTrackSelector.Parameters trackSelectorParameters) {
+
+        PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
+        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+
+        if (player[PlayerPosition] != null) {
+            player[PlayerPosition].removeListener(playerListener[PlayerPosition]);
+            player[PlayerPosition].setPlayWhenReady(false);
+        }
+        player[4].setPlayWhenReady(false);
+
+        playerListener[4].UpdatePosition(PlayerPosition);
+        playerListener[4].UpdateWho_Called(Who_Called);
+        playerListener[PlayerPosition] = playerListener[4];
+
+        SimpleExoPlayer tempPlayer = player[PlayerPosition];
+        player[PlayerPosition] = player[4];
+        player[4] = tempPlayer;
+
+        DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
+        trackSelector[PlayerPosition] = trackSelector[4];
+        trackSelector[4] = tempTrackSelector;
+
+        MediaSource tempMediaSource = mediaSources[PlayerPosition];
+        mediaSources[PlayerPosition] = mediaSources[4];
+        mediaSources[4] = tempMediaSource;
+
+        PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
+        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+
+        player[PlayerPosition].setPlayWhenReady(true);
+        trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
+
+        if (PlayerPosition == 0) GetCurrentPosition();
+
+        PlayerView[4].setPlayer(player[4]);
+        Clear_PreviewPlayer();
+    }
 
     private void SetupPlayer(int PlayerPosition, int loadControlPosition, int Who_Called, long ResumePosition,
-                             boolean StartGetCurrentPosition, boolean UseFullAnalytics, DefaultTrackSelector.Parameters trackSelectorParameters) {
+                             boolean StartGetCurrentPosition, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
         if (IsStopped) {
             monStop();
@@ -385,7 +414,7 @@ public class PlayerActivity extends Activity {
         }
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "SetupPlayer position " + PlayerPosition);
+            Log.i(TAG, "SetupPlayer position " + PlayerPosition + " player[PlayerPosition] == null " + (player[PlayerPosition] == null));
         }
 
         PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
@@ -404,28 +433,20 @@ public class PlayerActivity extends Activity {
                     .setLoadControl(loadControl[loadControlPosition])
                     .build();
 
-            if (UseFullAnalytics) {
+            playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
+            player[PlayerPosition].addListener(playerListener[PlayerPosition]);
 
-                playerListener[PlayerPosition] =  new PlayerEventListener(PlayerPosition, Who_Called);
-                player[PlayerPosition].addListener(playerListener[PlayerPosition]);
-                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListener());
-
-            } else {
-
-                player[PlayerPosition].addListener(new PlayerEventListenerPreview(StartGetCurrentPosition));
-                player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListenerPreview());
-
-            }
+            player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
 
-        } else if (UseFullAnalytics && playerListener[PlayerPosition] != null) {
+        } else {
 
             playerListener[PlayerPosition].UpdateWho_Called(Who_Called);
+            playerListener[PlayerPosition].UpdatePosition(PlayerPosition);
 
         }
 
-        PlayerView[PlayerPosition].setPlaybackPreparer(null);
         player[PlayerPosition].setPlayWhenReady(true);
         player[PlayerPosition].setMediaSource(
                 mediaSources[PlayerPosition],
@@ -440,6 +461,7 @@ public class PlayerActivity extends Activity {
         KeepScreenOn(true);
 
         if (PlayerPosition < 4) {
+            //Main players
 
             //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
             if (StartGetCurrentPosition) GetCurrentPosition();
@@ -450,6 +472,7 @@ public class PlayerActivity extends Activity {
             NetCounter = 0;
 
         } else if (StartGetCurrentPosition) {
+            //Preview player
 
             GetCurrentPositionSmall();
             SmallPlayerCurrentPosition = ResumePosition;
@@ -461,7 +484,7 @@ public class PlayerActivity extends Activity {
     private void PreparePlayer_Single_PP(int who_called, long ResumePosition, int position) {
         mWho_Called = who_called;
         mResumePosition = ResumePosition > 0 ? ResumePosition : 0;
-        if (position == mainPlayer) {
+        if (position == 0) {
             CurrentPositionHandler[0].removeCallbacksAndMessages(null);
             PlayerCurrentPosition = mResumePosition;
         }
@@ -472,7 +495,7 @@ public class PlayerActivity extends Activity {
     // The main player initialization function
     private void initializePlayer_Single_PP(int PlayerPosition) {
 
-        boolean isSmall = (mainPlayer != PlayerPosition);
+        boolean isSmall = PlayerPosition == 1;
         int Who_Called = mWho_Called > 3 ? (mWho_Called - 3) : mWho_Called;
 
         SetupPlayer(
@@ -480,9 +503,8 @@ public class PlayerActivity extends Activity {
                 Who_Called,
                 Who_Called,
                 ((mResumePosition > 0) && (Who_Called > 1)) ? mResumePosition : C.TIME_UNSET,
-                PlayerPosition == mainPlayer,
-                true,
-                isSmall ? trackSelectorParametersPP : trackSelectorParameters
+                PlayerPosition == 0,
+                isSmall ? trackSelectorParameters[1] : trackSelectorParameters[0]
 
         );
 
@@ -490,10 +512,9 @@ public class PlayerActivity extends Activity {
 
         if (!isSmall) {
             //Reset small player view so it shows after big one has started
-            int tempPos = PlayerPosition ^ 1;
-            if (player[tempPos] != null) {
-                PlayerView[tempPos].setVisibility(View.GONE);
-                PlayerView[tempPos].setVisibility(View.VISIBLE);
+            if (player[1] != null) {
+                PlayerView[1].setVisibility(View.GONE);
+                PlayerView[1].setVisibility(View.VISIBLE);
             }
         }
 
@@ -506,30 +527,38 @@ public class PlayerActivity extends Activity {
                 0,
                 1,
                 C.TIME_UNSET,
-                PlayerPosition == MultiMainPlayer,
-                true,
-                trackSelectorParametersPP
+                PlayerPosition == 0,
+                trackSelectorParameters[1]
 
         );
 
+        SetMultiVolume(PlayerPosition);
+
+    }
+
+    private void SetMultiVolume(int PlayerPosition) {
         float volume = 0f;
         if (AudioMulti == 4 || AudioMulti == PlayerPosition)
             volume = player[4] == null ? 1f : PreviewOthersAudio;
 
         player[PlayerPosition].setVolume(volume);
-
     }
 
     private void initializePlayer_Preview(Long resumePosition, boolean IsVod) {
 
+        int ActivePlayerAccount = 0;
+
+        for (int i = 0; i < PlayerAccount; i++) {
+            if (player[i] != null) ActivePlayerAccount++;
+        }
+
         SetupPlayer(
                 4,
                 0,
-                1,
+                IsVod ? 2 : 1,
                 (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
                 IsVod,
-                false,
-                trackSelectorParametersExtraSmall
+                ActivePlayerAccount > 3 ? trackSelectorParameters[2] : trackSelectorParameters[1]
 
         );
 
@@ -544,12 +573,12 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
         //Multi audio is deal on js side when a player closes
-        if (mainPlayer != position && !MultiStreamEnable) SwitchPlayerAudio(1);
+        if (position == 1 && !MultiStreamEnable) SwitchPlayerAudio(1);
 
         CheckKeepScreenOn();
     }
 
-    private void ClearSmallPlayer() {
+    private void Clear_PreviewPlayer() {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "ClearSmallPlayer");
         }
@@ -573,14 +602,18 @@ public class PlayerActivity extends Activity {
     }
 
     //Stop the player called from js, clear it all
-    private void ResetPlayerState(int position) {
-        if (mainPlayer == 1) SwitchPlayer();
+    private void ResetPlayerState() {
 
         PicturePicture = false;
         AudioSource = 1;
 
-        ClearPlayer(position);
+        for (int i = 0; i < PlayerAccount; i++) {
+            releasePlayer(i);
+        }
+
         clearResumePosition();
+        KeepScreenOn(false);
+
     }
 
     //Main release function
@@ -603,7 +636,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //Basic player position setting, for resume playback 
+    //Basic player position setting, for resume playback
     private void clearResumePosition() {
         mResumePosition = C.TIME_UNSET;
     }
@@ -833,50 +866,60 @@ public class PlayerActivity extends Activity {
     private void updateVideSize(boolean FullScreen) {
         isFullScreen = FullScreen;
         if (FullScreen)
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);//100% width x height
+            PlayerView[0].setLayoutParams(PlayerViewDefaultSize);//100% width x height
         else
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
+            PlayerView[0].setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
     }
 
     //Used in 50/50 mode two videos on the center plus two chat one on it side
     private void updateVideSizePP(boolean FullScreen) {
         isFullScreen = FullScreen;
         if (FullScreen) {
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
-            UpdadeSizePosSmall(mainPlayer ^ 1, false);
+            PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
+            UpdadeSizePosSmall(1, false);
         } else {
-            PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[3][0]);//center top 50% width x height
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[7][0]);//center bottom 50% width x height
+            PlayerView[0].setLayoutParams(PlayerViewSmallSize[3][0]);//center top 50% width x height
+            PlayerView[1].setLayoutParams(PlayerViewSmallSize[7][0]);//center bottom 50% width x height
         }
     }
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer() {
-        int WillBeMain = mainPlayer ^ 1;//shift 0 to 1 and vice versa
+        int i;
 
-        //Set new video sizes
-        PlayerView[WillBeMain].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[mainPlayer].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+        //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
+        //The odd behavior will stay until the player is releasePlayer
+        for (i = 0; i < 2; i++) {
+            if (player[i] != null) player[i].setPlayWhenReady(false);
+        }
 
-        VideoHolder.bringChildToFront(PlayerView[mainPlayer]);
+        SimpleExoPlayer tempMainPlayer = player[0];
+        player[0] = player[1];
+        player[1] = tempMainPlayer;
 
-        PlayerView[mainPlayer].setVisibility(View.GONE);
-        PlayerView[mainPlayer].setVisibility(View.VISIBLE);
+        DefaultTrackSelector tempTrackSelector = trackSelector[0];
+        trackSelector[0] = trackSelector[1];
+        trackSelector[1] = tempTrackSelector;
 
-        //change trackSelector to limit video Bitrate
-        if (trackSelector[WillBeMain] != null)
-            trackSelector[WillBeMain].setParameters(trackSelectorParameters);
-        if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
+        MediaSource tempMediaSource = mediaSources[0];
+        mediaSources[0] = mediaSources[1];
+        mediaSources[1] = tempMediaSource;
 
-        mainPlayer = WillBeMain;
+        for (i = 0; i < 2; i++) {
 
-        //Set proper video volume, muted to small
+            PlayerView[i].setPlayer(player[i]);
+            if (player[i] != null) player[i].setPlayWhenReady(true);
+
+            if (trackSelector[i] != null)
+                trackSelector[i].setParameters(trackSelectorParameters[i]);
+
+            if (playerListener[i] != null)
+                playerListener[i].UpdatePosition(i ^ 1);
+
+        }
+
         SwitchPlayerAudio(AudioSource);
 
-        //Update main player duration
-        if (player[mainPlayer] != null)
-            LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
     }
 
     public void SwitchPlayerAudio(int pos) {
@@ -888,12 +931,12 @@ public class PlayerActivity extends Activity {
             SetAudio(1, volume);
         } else if (pos == 1) {//Main
             AudioMulti = 0;
-            SetAudio(mainPlayer, volume);
-            SetAudio(mainPlayer ^ 1, 0f);
+            SetAudio(0, volume);
+            SetAudio(1, 0f);
         } else {//Small
             AudioMulti = 1;
-            SetAudio(mainPlayer, 0f);
-            SetAudio(mainPlayer ^ 1, volume);
+            SetAudio(0, 0f);
+            SetAudio(1, volume);
         }
     }
 
@@ -922,42 +965,142 @@ public class PlayerActivity extends Activity {
     }
 
     public void SetPlayerAudioMulti() {
+
         float volume = player[4] == null ? 1f : PreviewOthersAudio;
+
         for (int i = 0; i < PlayerAccount; i++) {
+
             if (player[i] != null) {
+
                 if (AudioMulti == 4 || AudioMulti == i) player[i].setVolume(volume);
                 else player[i].setVolume(0f);
+
             }
+
         }
+
     }
 
     public void SetMultiStreamMainBig(int offset) {
-        PlayerView[(mainPlayer + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[4]);
-        PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[5]);
-        PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[6]);
-        PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[7]);
 
-        AudioMulti = (mainPlayer + offset) % 4;
-        MultiMainPlayer = AudioMulti;
+        for (int i = 0; i < PlayerAccount; i++) {
+
+            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+            PlayerView[i].setVisibility(View.VISIBLE);
+
+        }
+
+        if (offset != 0) {
+
+            SimpleExoPlayer tempPlayer;
+            DefaultTrackSelector tempTrackSelector;
+            MediaSource tempMediaSource;
+
+            int len = Math.abs(offset);
+            int i;
+            int j;
+            int j_len = PlayerAccount - 1;
+
+            boolean left = offset > 0;
+
+            //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
+            //The odd behavior will stay until the player is releasePlayer
+            for (i = 0; i < PlayerAccount; i++) {
+
+                if (player[i] != null) {
+
+                    player[i].setPlayWhenReady(false);
+
+                }
+
+            }
+
+            for (i = 0; i < len; i++) {
+
+                //https://www.javatpoint.com/java-program-to-left-rotate-the-elements-of-an-array
+                if (left) {//if offset = 1 result 1 2 3 0
+
+                    //Stores the first element of the array
+                    tempPlayer = player[0];
+                    tempTrackSelector = trackSelector[0];
+                    tempMediaSource = mediaSources[0];
+
+                    for (j = 0; j < j_len; j++) {
+                        //Shift element of array by one
+                        player[j] = player[j + 1];
+                        trackSelector[j] = trackSelector[j + 1];
+                        mediaSources[j] = mediaSources[j + 1];
+
+                        if (playerListener[j] != null)
+                            playerListener[j].UpdatePosition(j + 1);
+                    }
+                    //First element of array will be added to the end
+                    player[j] = tempPlayer;
+                    trackSelector[j] = tempTrackSelector;
+                    mediaSources[j] = tempMediaSource;
+
+                    if (playerListener[j] != null)
+                        playerListener[j].UpdatePosition(0);
+
+                    //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
+                } else {// else if offset -1 result 3 0 1 2
+
+                    //Stores the last element of array
+                    tempPlayer = player[3];
+                    tempTrackSelector = trackSelector[3];
+                    tempMediaSource = mediaSources[3];
+
+                    for (j = j_len; j > 0; j--) {
+                        //Shift element of array by one
+                        player[j] = player[j - 1];
+                        trackSelector[j] = trackSelector[j - 1];
+                        mediaSources[j] = mediaSources[j - 1];
+
+                        if (playerListener[j] != null)
+                            playerListener[j].UpdatePosition(j - 1);
+                    }
+                    //Last element of array will be added to the start of array.
+                    player[0] = tempPlayer;
+                    trackSelector[0] = tempTrackSelector;
+                    mediaSources[0] = tempMediaSource;
+
+                    if (playerListener[0] != null)
+                        playerListener[0].UpdatePosition(3);
+                }
+
+            }
+
+            for (i = 0; i < PlayerAccount; i++) {
+                PlayerView[i].setPlayer(player[i]);
+            }
+
+            for (i = 0; i < PlayerAccount; i++) {
+
+                if (player[i] != null) {
+
+                    player[i].setPlayWhenReady(true);
+
+                }
+
+            }
+        }
+
+        AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
         SetPlayerAudioMulti();
 
-        if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
+        if (trackSelector[0] != null)
+            trackSelector[0].setParameters(trackSelectorParameters[1]);
 
-        if (player[MultiMainPlayer] != null)
-            LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[MultiMainPlayer].getDuration() + ")");
     }
 
-    public void SetMultiStream(int offset) {
-        PlayerView[(mainPlayer + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[0]);
-        PlayerView[((mainPlayer ^ 1) + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[1]);
-        PlayerView[(2 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[2]);
-        PlayerView[(3 + offset) % 4].setLayoutParams(MultiStreamPlayerViewLayout[3]);
+    public void SetMultiStream() {
 
-        MultiMainPlayer = (mainPlayer + offset) % 4;
+        for (int i = 0; i < PlayerAccount; i++) {
+            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i]);
+        }
 
-        if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParametersPP);
+        if (trackSelector[0] != null)
+            trackSelector[0].setParameters(trackSelectorParameters[1]);
     }
 
     public void UnSetMultiStream() {
@@ -965,35 +1108,41 @@ public class PlayerActivity extends Activity {
         ClearPlayer(3);
 
         if (PicturePicture) {
+
             updateVideSizePP(isFullScreen);
 
             //Reset small player position over big player, as after a resume all player restart and position is reset on that case
-            PlayerView[mainPlayer ^ 1].setVisibility(View.GONE);
-            PlayerView[mainPlayer ^ 1].setVisibility(View.VISIBLE);
+            PlayerView[1].setVisibility(View.GONE);
+            PlayerView[1].setVisibility(View.VISIBLE);
+
         } else {
+
             updateVideSize(isFullScreen);
-            PlayerView[mainPlayer ^ 1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+            PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+
         }
 
-        if (!PicturePicture || player[mainPlayer ^ 1] == null || player[mainPlayer] == null) {
+        if (!PicturePicture || player[0] == null || player[1] == null) {
+
             PicturePicture = false;
-            ClearPlayer(mainPlayer ^ 1);
+            ClearPlayer(1);
             SwitchPlayerAudio(1);
+
         } else SwitchPlayerAudio(AudioSource);
 
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
-        if (trackSelector[mainPlayer] != null)
-            trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+
+        if (trackSelector[0] != null)
+            trackSelector[0].setParameters(trackSelectorParameters[0]);
     }
 
     private void GetCurrentPosition() {
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
         CurrentPositionHandler[0].postDelayed(() -> {
-            int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-            PlayerCurrentPosition = player[playerPos] != null ? player[playerPos].getCurrentPosition() : 0L;
+            PlayerCurrentPosition = player[0] != null ? player[0].getCurrentPosition() : 0L;
 
             GetCurrentPosition();
 
@@ -1075,7 +1224,7 @@ public class PlayerActivity extends Activity {
             //Prevent clear ShowNoNetworkWarning
             if (warningShowing) MainThreadHandler.post(this::HideWarningText);
 
-        } else if (!warningShowing && PingWarning && player[mainPlayer] == null) {//Prevent showing if playing or disabled by user
+        } else if (!warningShowing && PingWarning && player[0] == null) {//Prevent showing if playing or disabled by user
 
             PingErrorCounter++;
             if (PingErrorCounter > 3) {//> 0 1 2 3 = 32s... 5 seconds of postDelayed plus 3 seconds of waitFor/postDelayed times 4 = 32s
@@ -1299,11 +1448,11 @@ public class PlayerActivity extends Activity {
 
         int temp_AudioMulti = AudioMulti;
 
-        updateResumePosition(mainPlayer);//VOD only uses mainPlayer
+        updateResumePosition(0);//VOD only uses mainPlayer
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
         }
-        ClearSmallPlayer();
+        Clear_PreviewPlayer();
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
         ClearWebViewChache();
@@ -1354,7 +1503,7 @@ public class PlayerActivity extends Activity {
             ClearPlayer(i);
         }
 
-        ClearSmallPlayer();
+        Clear_PreviewPlayer();
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onDestroy");
@@ -1554,7 +1703,7 @@ public class PlayerActivity extends Activity {
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        //When we request a full url change on autentication key request 
+        //When we request a full url change on autentication key request
         //prevent open it on a external browser
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -1676,22 +1825,22 @@ public class PlayerActivity extends Activity {
 
     public void mSetQuality(int position) {
 
-        if (trackSelector[mainPlayer] != null) {
+        if (trackSelector[0] != null) {
             IsInAutoMode = position == -1;
 
             if (IsInAutoMode) {
-                trackSelector[mainPlayer].setParameters(trackSelectorParameters);
+                trackSelector[0].setParameters(trackSelectorParameters[0]);
                 return;
             }
 
-            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[mainPlayer].getCurrentMappedTrackInfo();
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector[0].getCurrentMappedTrackInfo();
 
             if (mappedTrackInfo != null) {
                 for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[mainPlayer].getParameters().buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector[0].getParameters().buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
@@ -1704,7 +1853,7 @@ public class PlayerActivity extends Activity {
 
                         }
 
-                        trackSelector[mainPlayer].setParameters(builder);
+                        trackSelector[0].setParameters(builder);
                         break;
                     }
 
@@ -1736,24 +1885,56 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
         }
 
-        if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
+        if (position < 4) {
+            //Main players
 
-            if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
+            if (PlayerCheckCounter[position] < 4 && PlayerCheckCounter[position] > 1 && Who_Called < 3) {
+
+                if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+                else//already on auto just restart the player
+                    PlayerEventListenerCheckCounterEnd(position, Who_Called);
+
+            } else if (PlayerCheckCounter[position] > 3) {
+
+                // try == 3 Give up internet is probably down or something related
+                PlayerEventListenerClear(position, fail_type);
+
+            } else if (PlayerCheckCounter[position] > 1) {//only for clips
+
+                // Second check drop quality as it freezes too much
                 LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
-            else//already on auto just restart the player
-                PlayerEventListenerCheckCounterEnd(position, Who_Called);
 
-        } else if (PlayerCheckCounter[position] > 3) {
+            } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
 
-            // try == 3 Give up internet is probably down or something related
-            PlayerEventListenerClear(position, fail_type);
+        } else {
+            //Preview player
 
-        } else if (PlayerCheckCounter[position] > 1) {//only for clips
+            boolean IsVod = Who_Called == 2;
 
-            // Second check drop quality as it freezes too much
-            LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+            if (IsVod) {
+                // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+                // is already gone and we already saved the correct mResumePositionSmallPlayer
+                if (PlayerCheckCounter[position] < 2 && player[position] != null) {
 
-        } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
+                    mResumePositionSmallPlayer = GetResumePosition(position);
+
+                }
+
+            } else mResumePositionSmallPlayer = 0L;
+
+            if (PlayerCheckCounter[position] < 4) {
+
+                initializePlayer_Preview(mResumePositionSmallPlayer, IsVod);
+
+            } else {
+
+                Clear_PreviewPlayer();
+                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
+
+            }
+
+        }
     }
 
     //First check only reset the player as it may be stuck
@@ -1777,62 +1958,41 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
         }
-
-        hideLoading(5);
-        hideLoading(position);
         String WebViewLoad;
 
-        if (MultiStreamEnable) {
+        if (position < 4) {
+            //Main players
 
-            ClearPlayer(position);
-            WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
+            hideLoading(5);
+            hideLoading(position);
 
-        } else if (PicturePicture) {
+            if (MultiStreamEnable) {
 
-            ClearPlayer(position);
-            WebViewLoad = "PlayExtra_End(" + (mainPlayer == position) + "," + fail_type + ")";
+                ClearPlayer(position);
+                WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
 
-        } else if (mWho_Called > 3) WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
-        else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
+            } else if (PicturePicture) {
 
-        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
-    }
+                ClearPlayer(position);
+                WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
-    public void PlayerEventListenerCheckCounterSmall(int fail_type, boolean IsVod) {
-        PlayerCheckHandler[4].removeCallbacksAndMessages(null);
+            } else if (mWho_Called > 3) {
 
-        //Pause so things run smother and prevent odd behavior during the checks
-        if (player[4] != null) {
+                ClearPlayer(position);
+                WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
 
-            player[4].setPlayWhenReady(false);
-
-        }
-
-        CurrentPositionHandler[1].removeCallbacksAndMessages(null);
-        PlayerCheckCounter[4]++;
-
-        if (IsVod) {
-            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
-            // is already gone and we already saved the correct mResumePositionSmallPlayer
-            if (PlayerCheckCounter[4] < 2 && player[4] != null) {
-
-                mResumePositionSmallPlayer = GetResumePosition(4);
-
-            }
-
-        } else mResumePositionSmallPlayer = 0L;
-
-
-        if (PlayerCheckCounter[4] < 4) {
-
-            initializePlayer_Preview(mResumePositionSmallPlayer, IsVod);
+            } else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
 
         } else {
+            //Preview player
 
-            ClearSmallPlayer();
-            LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
+            Clear_PreviewPlayer();
+            WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+            mSetPreviewOthersAudio();
 
         }
+
+        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
     }
 
     @TargetApi(23)
@@ -2184,11 +2344,10 @@ public class PlayerActivity extends Activity {
         public void getDuration(String callback) {
 
             MainThreadHandler.post(() -> {
-                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null) {
+                if (player[0] != null) {
 
-                    mWebView.loadUrl("javascript:smartTwitchTV." + callback + "(" + player[mainPlayer].getDuration() + ")");
+                    mWebView.loadUrl("javascript:smartTwitchTV." + callback + "(" + player[0].getDuration() + ")");
 
                 }
             });
@@ -2198,10 +2357,9 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mseekTo(long position) {
             MainThreadHandler.post(() -> {
-                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null) {
-                    long duration = player[playerPos].getDuration();
+                if (player[0] != null) {
+                    long duration = player[0].getDuration();
                     long jumpPosition = position > 0 ? position : 0;
 
                     if (jumpPosition >= duration)
@@ -2209,38 +2367,51 @@ public class PlayerActivity extends Activity {
 
                     PlayerCurrentPosition = jumpPosition;
                     //Make sure we are playing and not paused, this way the listeners will properly work
-                    player[playerPos].setPlayWhenReady(true);
-                    player[playerPos].seekTo(jumpPosition);
+                    player[0].setPlayWhenReady(true);
+                    player[0].seekTo(jumpPosition);
                 }
             });
         }
 
         @JavascriptInterface
-        public void StartAuto(String uri, String mainPlaylistString, int who_called, long ResumePosition, int mplayer) {
+        public void StartAuto(String uri, String mainPlaylistString, int who_called, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
                 boolean startPlayer = true;
 
                 if (mWho_Called > 3) {
-                    startPlayer = player[mainPlayer] == null;
+                    startPlayer = player[0] == null;
                 }
 
                 if (startPlayer) {
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    mediaSources[mainPlayer ^ mplayer] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
-                            mediaSources[4] :
-                            Tools.buildMediaSource(
-                                    Uri.parse(uri),
-                                    mWebViewContext,
-                                    who_called,
-                                    mLowLatency,
-                                    mainPlaylistString,
-                                    userAgent
-                            );
-                    PreparePlayer_Single_PP(who_called, ResumePosition, mainPlayer ^ mplayer);
+                    boolean reUsePlayer = player[4] != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+
+                    if (reUsePlayer) {
+
+                        ReUsePlayer(position, who_called, trackSelectorParameters[position]);
+
+                        SwitchPlayerAudio(AudioSource);
+
+                    } else {
+
+                        mediaSources[position] = Tools.buildMediaSource(
+                                Uri.parse(uri),
+                                mWebViewContext,
+                                who_called,
+                                mLowLatency,
+                                mainPlaylistString,
+                                userAgent
+                        );
+
+                        PreparePlayer_Single_PP(who_called, ResumePosition, position);
+
+                        if (player[4] != null) releasePlayer(4);
+                    }
+
                     PreviewPlayerPlaylist = null;
 
-                    if (mplayer == 1) {
+                    if (position == 1) {
                         PicturePicture = true;
                     }
 
@@ -2248,9 +2419,9 @@ public class PlayerActivity extends Activity {
 
                     hideLoading(5);
                     mWho_Called = who_called;
-                    PlayerView[mainPlayer].setLayoutParams(PlayerViewDefaultSize);
+                    PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
 
-                    mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + player[mainPlayer].getDuration() + ")");
+                    mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + player[0].getDuration() + ")");
 
                     //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
                     MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
@@ -2259,35 +2430,19 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void PrepareForMulti(String uri, String mainPlaylistString) {
+        public void RestartPlayer(int who_called, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
 
-                PicturePicture = false;
-                ClearPlayer(mainPlayer);
-                mainPlayer = mainPlayer ^ 1;
+                //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
+                //The odd behavior will stay until the player is releasePlayer
+                releasePlayer(position);
 
-                mediaSources[mainPlayer] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
-                        mediaSources[4] :
-                        Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                1,
-                                mLowLatency,
-                                mainPlaylistString,
-                                userAgent
-                        );
+                PreparePlayer_Single_PP(who_called, ResumePosition, position);
 
-                PreparePlayer_Single_PP(1, 0, mainPlayer);
-                PreviewPlayerPlaylist = null;
-            });
-        }
+                if (position == 1) {
 
-        @JavascriptInterface
-        public void RestartPlayer(int who_called, long ResumePosition, int player) {
-            MainThreadHandler.post(() -> {
-                PreparePlayer_Single_PP(who_called, ResumePosition, mainPlayer ^ player);
-                if (player == 1) {
                     PicturePicture = true;
+
                 }
             });
         }
@@ -2295,7 +2450,7 @@ public class PlayerActivity extends Activity {
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
 //
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(mainPlayer, 1));
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(0, 1));
 //
 //        }
 
@@ -2403,8 +2558,17 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void ClearFeedPlayer() {
-            MainThreadHandler.post(PlayerActivity.this::ClearSmallPlayer);
+        public void ClearFeedPlayer(boolean PreventClean) {
+            MainThreadHandler.post(() -> {
+
+                if (PreventClean) {
+
+                    if (player[4] != null) player[4].setPlayWhenReady(false);
+                    PlayerView[4].setVisibility(View.GONE);
+
+                } else Clear_PreviewPlayer();
+
+            });
         }
 
         @JavascriptInterface
@@ -2452,7 +2616,7 @@ public class PlayerActivity extends Activity {
         public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
             MainThreadHandler.post(() -> {
 
-                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                mediaSources[0] = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
                         1,
@@ -2462,8 +2626,8 @@ public class PlayerActivity extends Activity {
                 );
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
-                PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel);
-                PreparePlayer_Single_PP(4, 0, mainPlayer);
+                PlayerView[0].setLayoutParams(PlayerViewSidePanel);
+                PreparePlayer_Single_PP(4, 0, 0);
 
             });
         }
@@ -2473,7 +2637,7 @@ public class PlayerActivity extends Activity {
                                        float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
 
-                mediaSources[mainPlayer] = Tools.buildMediaSource(
+                mediaSources[0] = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
                         who_called,
@@ -2485,8 +2649,8 @@ public class PlayerActivity extends Activity {
                 PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
-                PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel);
-                PreparePlayer_Single_PP(3 + who_called, ResumePosition, mainPlayer);
+                PlayerView[0].setLayoutParams(PlayerViewScreensPanel);
+                PreparePlayer_Single_PP(3 + who_called, ResumePosition, 0);
 
             });
         }
@@ -2497,7 +2661,7 @@ public class PlayerActivity extends Activity {
                 mWho_Called = 4;
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
-                MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewSidePanel), 100);
+                MainThreadHandler.postDelayed(() -> PlayerView[0].setLayoutParams(PlayerViewSidePanel), 100);
             });
         }
 
@@ -2505,13 +2669,13 @@ public class PlayerActivity extends Activity {
         public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
             MainThreadHandler.post(() -> {
 
-                if (player[mainPlayer] != null) {
+                if (player[0] != null) {
                     mWho_Called = 3 + who_called;
                     VideoWebHolder.bringChildToFront(VideoHolder);
 
                     PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
                     //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
-                    MainThreadHandler.postDelayed(() -> PlayerView[mainPlayer].setLayoutParams(PlayerViewScreensPanel), 100);
+                    MainThreadHandler.postDelayed(() -> PlayerView[0].setLayoutParams(PlayerViewScreensPanel), 100);
                 }
 
             });
@@ -2522,7 +2686,7 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
 
                 VideoWebHolder.bringChildToFront(mWebView);
-                ClearPlayer(mainPlayer);
+                ClearPlayer(0);
 
             });
         }
@@ -2534,14 +2698,14 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void stopVideo() {
-            MainThreadHandler.post(() -> ResetPlayerState(mainPlayer));
+            MainThreadHandler.post(PlayerActivity.this::ResetPlayerState);
         }
 
         @JavascriptInterface
         public void mClearSmallPlayer() {
             MainThreadHandler.post(() -> {
                 PicturePicture = false;
-                ClearPlayer(mainPlayer ^ 1);
+                ClearPlayer(1);
             });
         }
 
@@ -2553,7 +2717,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, true));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(1, true));
         }
 
         @JavascriptInterface
@@ -2564,7 +2728,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(mainPlayer ^ 1, false));
+            MainThreadHandler.post(() -> UpdadeSizePosSmall(1, false));
         }
 
         @JavascriptInterface
@@ -2586,12 +2750,10 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSetPlayerAudioMulti(int position) {
             MainThreadHandler.post(() -> {
-                int mposition = position;
-                if (position == 0) mposition = mainPlayer;
-                else if (position == 1) mposition = mainPlayer ^ 1;
 
-                AudioMulti = mposition;
+                AudioMulti = position;
                 SetPlayerAudioMulti();
+
             });
         }
 
@@ -2613,10 +2775,12 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
             int mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
-            trackSelectorParameters = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+
+            trackSelectorParameters[0] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBitrate)
                     .build();
+
         }
 
         @JavascriptInterface
@@ -2626,13 +2790,13 @@ public class PlayerActivity extends Activity {
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
-            trackSelectorParametersPP = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+            trackSelectorParameters[1] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
             int extraSmallPlayerBitrate = 4000000;
-            trackSelectorParametersExtraSmall = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
+            trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
                             Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate)
@@ -2677,11 +2841,10 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void PlayPauseChange() {
             MainThreadHandler.post(() -> {
-                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null) {
+                if (player[0] != null) {
 
-                    boolean state = !player[playerPos].isPlaying();
+                    boolean state = !player[0].isPlaying();
 
                     for (int i = 0; i < PlayerAccount; i++) {
                         if (player[i] != null) player[i].setPlayWhenReady(state);
@@ -2706,7 +2869,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public boolean getPlaybackState() {
-            return PlayerIsPlaying[MultiStreamEnable ? MultiMainPlayer : mainPlayer];
+            return PlayerIsPlaying[0];
         }
 
         @JavascriptInterface
@@ -2717,8 +2880,8 @@ public class PlayerActivity extends Activity {
                         if (player[i] != null)
                             player[i].setPlaybackParameters(new PlaybackParameters(speed));
                     }
-                } else if (player[mainPlayer] != null)
-                    player[mainPlayer].setPlaybackParameters(new PlaybackParameters(speed));
+                } else if (player[0] != null)
+                    player[0].setPlaybackParameters(new PlaybackParameters(speed));
             });
         }
 
@@ -2757,10 +2920,9 @@ public class PlayerActivity extends Activity {
             VideoQualityResult = null;
 
             MainThreadHandler.post(() -> {
-                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
 
-                if (player[playerPos] != null)
-                    VideoQualityResult = Tools.GetVideoQuality(player[playerPos].getVideoFormat());
+                if (player[0] != null)
+                    VideoQualityResult = Tools.GetVideoQuality(player[0].getVideoFormat());
 
                 mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ",Android.getVideoQualityString())");
             });
@@ -2777,15 +2939,14 @@ public class PlayerActivity extends Activity {
 
             MainThreadHandler.post(() -> {
 
-                int playerPos = MultiStreamEnable ? MultiMainPlayer : mainPlayer;
                 long buffer = 0L;
                 long LiveOffset = 0L;
                 long Duration = 0L;
 
-                if (player[playerPos] != null) {
-                    buffer = player[playerPos].getTotalBufferedDuration();
-                    LiveOffset = player[playerPos].getCurrentLiveOffset();
-                    Duration = player[playerPos].getDuration();
+                if (player[0] != null) {
+                    buffer = player[0].getTotalBufferedDuration();
+                    LiveOffset = player[0].getCurrentLiveOffset();
+                    Duration = player[0].getDuration();
                 }
 
                 getVideoStatusResult = new Gson().toJson(
@@ -2813,17 +2974,9 @@ public class PlayerActivity extends Activity {
         public void getLatency(int chat_number) {
             MainThreadHandler.post(() -> {
 
-                if (MultiStreamEnable) {
+                if (player[chat_number] != null) {
 
-                    if (player[MultiMainPlayer] != null) {
-
-                        mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(0," + player[MultiMainPlayer].getCurrentLiveOffset() + ")");
-
-                    }
-
-                } else if (player[mainPlayer ^ chat_number] != null) {
-
-                    mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + player[mainPlayer ^ chat_number].getCurrentLiveOffset() + ")");
+                    mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + player[chat_number].getCurrentLiveOffset() + ")");
 
                 }
 
@@ -2859,7 +3012,7 @@ public class PlayerActivity extends Activity {
                 if (FullScreen) updateVideSizePP(true);
                 else updateVideSize(false);
 
-                UpdadeSizePosSmall(mainPlayer ^ 1, false);
+                UpdadeSizePosSmall(1, false);
             });
         }
 
@@ -2909,13 +3062,8 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> {
                 MultiStreamEnable = true;
                 if (MainBig) SetMultiStreamMainBig(offset);
-                else SetMultiStream(offset);
+                else SetMultiStream();
             });
-        }
-
-        @JavascriptInterface
-        public boolean IsMainNotMain() {
-            return mainPlayer != 0;
         }
 
         @JavascriptInterface
@@ -2927,25 +3075,39 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartMultiStream(int position, String uri, String mainPlaylistString) {
+        public void StartMultiStream(int position, String uri, String mainPlaylistString, boolean Restart) {
             MainThreadHandler.post(() -> {
-                int mPosition = position;
-                if (position == 0) mPosition = mainPlayer;
-                else if (position == 1) mPosition = mainPlayer ^ 1;
 
-                mediaSources[mPosition] = PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) ?
-                        mediaSources[4] :
-                        Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                1,
-                                mLowLatency,
-                                mainPlaylistString,
-                                userAgent
-                        );
+                //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a SetMultiStreamMainBig
+                //The odd behavior will stay until the player is releasePlayer
+                if (Restart) releasePlayer(position);
 
-                initializePlayer_Multi(mPosition);
+                boolean reUsePlayer = player[4] != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+
+                if (reUsePlayer) {
+
+                    ReUsePlayer(position, 1, trackSelectorParameters[1]);
+
+                    SetMultiVolume(position);
+
+                } else {
+
+                    mediaSources[position] = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            1,
+                            mLowLatency,
+                            mainPlaylistString,
+                            userAgent
+                    );
+
+                    initializePlayer_Multi(position);
+
+                    if (player[4] != null) releasePlayer(4);
+                }
+
                 PreviewPlayerPlaylist = null;
+
             });
         }
 
@@ -2971,7 +3133,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public String getQualities() {
-            return Tools.getQualities(trackSelector[mainPlayer]);
+            return Tools.getQualities(trackSelector[0]);
         }
 
         @JavascriptInterface
@@ -2988,18 +3150,23 @@ public class PlayerActivity extends Activity {
     // Basic EventListener for exoplayer
     private class PlayerEventListener implements Player.EventListener {
 
-        private final int position;
+        private int position;
         private final int Delay_ms;
         private int Who_Called;
 
         private PlayerEventListener(int position, int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
             this.position = position;
-            this.Delay_ms = BUFFER_SIZE[m_Who_Called] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0);
+            int defaultDelayPlayerCheck = 8000;
+            this.Delay_ms = BUFFER_SIZE[m_Who_Called] + defaultDelayPlayerCheck + (MultiStreamEnable ? (defaultDelayPlayerCheck / 2) : 0);
         }
 
         private void UpdateWho_Called(int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
+        }
+
+        private void UpdatePosition(int position) {
+            this.position = position;
         }
 
         @Override
@@ -3007,8 +3174,8 @@ public class PlayerActivity extends Activity {
         public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
-            //So trackGroups.length will be 0 and getQualities = null, after 100ms or so this will be called again and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
+            //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && position < 4) {//position < 4 Main players
                 RequestGetQualities(Who_Called);
                 lastSeenTrackGroupArray = trackGroups;
             }
@@ -3034,7 +3201,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position, Player_Ended);
+                PlayerEventListenerClear(position, 0);//player_Ended
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
@@ -3047,46 +3214,58 @@ public class PlayerActivity extends Activity {
                     if (player[position] == null || !player[position].isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, Who_Called, Player_Lag);
+                    PlayerEventListenerCheckCounter(position, Who_Called, 2);//Player_Lag
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
 
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
-                //Delay the counter reset to make sure the connection is fine now when not on a auto mode
-                if (!IsInAutoMode || Who_Called == 3)
-                    PlayerCheckHandler[position].postDelayed(() -> PlayerCheckCounter[position] = 0, 10000);
-                else
-                    PlayerCheckCounter[position] = 0;
+                if (position < 4) {
+                    //Main players
 
-                LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
+                    //Delay the counter reset to make sure the connection is fine now when not on a auto mode
+                    if (!IsInAutoMode || Who_Called == 3)
+                        PlayerCheckHandler[position].postDelayed(() -> PlayerCheckCounter[position] = 0, 10000);
+                    else
+                        PlayerCheckCounter[position] = 0;
 
-                if (mWho_Called == 1) {
+                    if (mWho_Called == 1) {
 
-                    //If other not playing just play it so they stay in sync
-                    if (MultiStreamEnable) {
+                        //If other not playing just play it so they stay in sync
+                        if (MultiStreamEnable) {
 
-                        for (int i = 0; i < PlayerAccount; i++) {
-                            if (position != i && player[i] != null)
-                                player[i].setPlayWhenReady(true);
+                            for (int i = 0; i < PlayerAccount; i++) {
+                                if (position != i && player[i] != null)
+                                    player[i].setPlayWhenReady(true);
+                            }
+
+                            if (position == 0)
+                                LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(0," + player[position].getCurrentLiveOffset() + ")");
+
+                        } else {
+
+                            int OtherPlayer = position ^ 1;
+                            if (player[OtherPlayer] != null) {
+                                if (!player[OtherPlayer].isPlaying())
+                                    player[OtherPlayer].setPlayWhenReady(true);
+                            }
+
+                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + player[position].getCurrentLiveOffset() + ")");
+
                         }
-
-                        if (MultiMainPlayer == position)
-                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(0," + player[MultiMainPlayer].getCurrentLiveOffset() + ")");
 
                     } else {
 
-                        int OtherPlayer = position ^ 1;
-                        if (player[OtherPlayer] != null) {
-                            if (!player[OtherPlayer].isPlaying())
-                                player[OtherPlayer].setPlayWhenReady(true);
-                        }
-
-                        LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + (position == mainPlayer ? 0 : 1) + "," + player[position].getCurrentLiveOffset() + ")");
+                        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + player[position].getDuration() + ")");
 
                     }
 
+                } else {
+                    //Preview player
+
+                    PlayerCheckCounter[position] = 0;
+                    mSetPreviewOthersAudio();
                 }
 
             }
@@ -3096,72 +3275,9 @@ public class PlayerActivity extends Activity {
         public void onPlayerError(@NonNull ExoPlaybackException e) {
 
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, Who_Called, Player_Erro);
+            PlayerEventListenerCheckCounter(position, Who_Called, 1);//player_Erro
 
             Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
-
-        }
-
-    }
-
-    private class PlayerEventListenerPreview implements Player.EventListener {
-
-        private final boolean IsVod;
-
-        private PlayerEventListenerPreview(boolean mIsVod) {
-            this.IsVod = mIsVod;
-        }
-
-        @Override
-        public void onPlaybackStateChanged(@Player.State int playbackState) {
-
-            if (player[4] == null || !player[4].getPlayWhenReady())
-                return;
-
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "PlayerEventListenerSmall onPlaybackStateChanged playbackState " + playbackState);
-            }
-
-            if (playbackState == Player.STATE_ENDED) {
-                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                player[4].setPlayWhenReady(false);
-
-                ClearSmallPlayer();
-
-                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + Player_Ended + ")");
-                mSetPreviewOthersAudio();
-
-            } else if (playbackState == Player.STATE_BUFFERING) {
-                //Use the player buffer as a player check state to prevent be buffering for ever
-                //If buffer for too long check because the player may have froze
-                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                PlayerCheckHandler[4].postDelayed(() -> {
-
-                    //Check if Player was released or is on pause
-                    if (player[4] == null || !player[4].isPlaying())
-                        return;
-
-                    PlayerEventListenerCheckCounterSmall(Player_Lag, IsVod);
-
-                }, BUFFER_SIZE[1] + DefaultDelayPlayerCheck + (MultiStreamEnable ? (DefaultDelayPlayerCheck / 2) : 0));
-
-            } else if (playbackState == Player.STATE_READY) {
-
-                PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-                PlayerCheckCounter[4] = 0;
-                mSetPreviewOthersAudio();
-
-            }
-
-        }
-
-        @Override
-        public void onPlayerError(@NonNull ExoPlaybackException e) {
-
-            PlayerCheckHandler[4].removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounterSmall(Player_Erro, IsVod);
-
-            Log.w(TAG, "onPlayerError Small isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
 
         }
 
@@ -3189,17 +3305,6 @@ public class PlayerActivity extends Activity {
                 NetActivityAVG += netActivity;
             }
         }
-    }
-
-    //For the preview over the player player only droppedFrames is need as this is a good measure of lag
-    private class AnalyticsEventListenerPreview implements AnalyticsListener {
-
-        @Override
-        public final void onDroppedVideoFrames(@NonNull EventTime eventTime, int count, long elapsedMs) {
-            droppedFrames += count;
-            DroppedFramesTotal += count;
-        }
-
     }
 
 }

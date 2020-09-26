@@ -1315,7 +1315,6 @@ function Main_OPenAsVod_shutdownStream() {
 
 function Main_OPenAsVod_PreshutdownStream() {
     if (Main_IsOn_OSInterface) {
-        OSInterface_mClearSmallPlayer();
         OSInterface_stopVideo();
     }
 
@@ -1875,7 +1874,7 @@ function Main_Setworker() {
 }
 
 function Main_A_includes_B(A, B) {
-    return A ? A.includes(B) : false;
+    return A ? A.indexOf(B) !== -1 : false;
 }
 
 function Main_A_equals_B(A, B) {// jshint ignore:line
@@ -2041,14 +2040,18 @@ function Main_CheckStop() { // Called only by JAVA
     if (PlayClip_isOn) PlayClip_Resume();
     else if (Play_isOn) {
         if (Play_MultiEnable) {
-            var i = 0, len = Play_MultiArray.length;
-            for (i; i < len; i++) {
+            var i = 0;
+
+            for (i; i < Play_MultiArray_length; i++) {
+
                 if (Play_MultiArray[i].data.length > 0) {
 
                     Main_Set_history('live', Play_MultiArray[i].data);
 
                 }
+
             }
+
         } else if (PlayExtra_PicturePicture) {
 
             if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
@@ -2269,7 +2272,6 @@ function Main_onNewIntentClearPlay() {
 
         Play_controls[Play_MultiStream].enterKey();
 
-        OSInterface_mClearSmallPlayer();
         OSInterface_stopVideo();
     } else if (PlayExtra_PicturePicture) {
         PlayExtra_UnSetPanel();
