@@ -6990,10 +6990,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.254';
-    var Main_version_java = 39; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 23 2020';
-    var Main_version_web = 79; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.255';
+    var Main_version_java = 40; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'September 26 2020';
+    var Main_version_web = 80; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7578,6 +7578,10 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.255 - Web Version September 26 2020",
+                changes: ["General performance improves and bug fixes"]
+            },
+            {
                 title: "Apk Version 3.0.254 - Web Version September 23 2020",
                 changes: ["General performance improves and bug fixes"]
             },
@@ -7592,20 +7596,6 @@
             {
                 title: "Web Version September 19 2020",
                 changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Apk Version 3.0.251 - Web Version September 18 2020",
-                changes: [
-                    'Add extra quality options for the "default player quality" in settings (1080p60, 720p60, etc... etc)',
-                    'Update the player API (ExoPlayer) to latest version, if anyone has a player issues inform, contact information on the about of the app',
-                    "Allow to use the player progressbar on live streams, Twitch keeps only 28 to 32 seconds of it live stream duration on the server, so isn't' possible to go back to the beginning of a streams",
-                    'The above change add a few features requested before see bellow',
-                    'Manually sync multiple streams using the progress bar, on Picture in Picture, 50/50 mode or on Multistream mode, the progress bar will control the main player, on PP mode that is the big player, on 50/50 is the top, on Multistream is the top left or the big one, this way use the progress bar to delay one of the streams until they sink',
-                    'Quick replay using progress bar, use the progress bar to quickly replay a few seconds',
-                    'Lower the latency to the streamer as lower as possible using the progress bar, be aware this will cause re-buffer if the value is too much close to the duration',
-                    'Clips and Live progress bar step is 1 second, allowing more control over the time position',
-                    'General performance improves and bug fixes'
-                ]
             },
         ];
 
