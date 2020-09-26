@@ -51,12 +51,6 @@ TODO list
 * This features need a UI with a slider 0 to 100% for it player that is visible, showing with video it belong to, the slider and the streamer name...
 * For the name just use the same logic that add the title and streamer name to the player `Play_controlsAudio` and `Play_controlsAudioMulti`
 
-### Improve the player PP mode start when the preview player is visible
-
-* General improve
-* Technically is possible to use the PP player as the preview player if the user is only playing one video
-* Then when the user hold enter to start the PP mode if the small player preview is visible it just gets positioned on the correct place and becomes the PP player
-
 ### Convert all chat controls option to a single control
 
 * General improve
