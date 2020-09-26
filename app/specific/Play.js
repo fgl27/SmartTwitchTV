@@ -316,6 +316,7 @@ function Play_Start(offline_chat) {
     Play_data.watching_time = new Date().getTime();
     Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeS(0));
     PlayClip_SetProgressBarJumpers();
+    PlayVod_previews_clear();
 
     Main_textContentWithEle(Play_infoLiveTime, Play_timeMs(0));
 

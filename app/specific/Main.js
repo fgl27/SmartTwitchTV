@@ -615,7 +615,7 @@ function Main_Changelog() {
             title: "Apk Version 3.0.256 - Web Version September 26 2020",
             changes: [
                 "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
-                "open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
+                "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
                 'Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now',
                 "General performance improves and bug fixes"
             ]
