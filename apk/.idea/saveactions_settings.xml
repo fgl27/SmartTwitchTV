@@ -5,7 +5,7 @@
       <set>
         <option value="activate" />
         <option value="organizeImports" />
-        <option value="reformatChangedCode" />
+        <option value="reformat" />
       </set>
     </option>
     <option name="configurationPath" value="" />
