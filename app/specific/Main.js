@@ -1884,7 +1884,7 @@ function Main_Setworker() {
 }
 
 function Main_A_includes_B(A, B) {
-    return A ? A.includes(B) : false;
+    return A ? A.indexOf(B) !== -1 : false;
 }
 
 function Main_A_equals_B(A, B) {// jshint ignore:line
