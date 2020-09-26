@@ -434,6 +434,8 @@ public class PlayerActivity extends Activity {
                     .build();
 
             playerListener[PlayerPosition] = new PlayerEventListener(PlayerPosition, Who_Called);
+            player[PlayerPosition].addListener(playerListener[PlayerPosition]);
+
             player[PlayerPosition].addAnalyticsListener(new AnalyticsEventListener());
 
             PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
