@@ -2785,7 +2785,7 @@ public class PlayerActivity extends Activity {
                 if (player[playerPos] != null) {
                     buffer = player[playerPos].getTotalBufferedDuration();
                     LiveOffset = player[playerPos].getCurrentLiveOffset();
-                    Duration = player[mainPlayer].getDuration();
+                    Duration = player[playerPos].getDuration();
                 }
 
                 getVideoStatusResult = new Gson().toJson(
