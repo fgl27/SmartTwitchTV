@@ -676,7 +676,9 @@ function OSInterface_DisableMultiStream() {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartMultiStream(position, uri, mainPlaylistString, Restart) {
-    Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
+    try {
+        Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
+    } catch (e) {}
 }
 
 //public void EnableMultiStream(boolean MainBig, int offset)
@@ -837,7 +839,9 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
 function OSInterface_ClearFeedPlayer(PreventClean) {
-    Android.ClearFeedPlayer(Boolean(PreventClean));
+    try {
+        Android.ClearFeedPlayer(Boolean(PreventClean));
+    } catch (e) {}
 }
 
 //public void ClearFeedPlayer()
