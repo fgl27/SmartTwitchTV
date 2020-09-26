@@ -9,7 +9,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Apk Version 3.0.255 - Web Version September 26 2020
+Apk Version 3.0.256 - Web Version September 26 2020
+==============
+
+* Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app
+* Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)
+* Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now
+* General performance improves and bug fixes
+
+Apk Version 3.0.255 - Web Version September 25 2020
 ==============
 
 * General performance improves and bug fixes

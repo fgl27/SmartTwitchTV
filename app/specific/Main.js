@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.255';
-var Main_version_java = 40;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_stringVersion_Min = '.256';
+var Main_version_java = 41;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'September 26 2020';
-var Main_version_web = 80;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 81;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -612,7 +612,16 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.255 - Web Version September 26 2020",
+            title: "Apk Version 3.0.256 - Web Version September 26 2020",
+            changes: [
+                "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
+                "open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
+                'Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now',
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
+            title: "Apk Version 3.0.255 - Web Version September 25 2020",
             changes: ["General performance improves and bug fixes"]
         },
         {
