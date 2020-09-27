@@ -6990,10 +6990,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.255';
-    var Main_version_java = 40; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 26 2020';
-    var Main_version_web = 80; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.261';
+    var Main_version_java = 45; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'September 27 2020';
+    var Main_version_web = 85; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7578,6 +7578,19 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.261 - Web Version September 27 2020",
+                changes: ["Revert the player change of previously version (Apk Version 3.0.260) as some devices (Xiaomi Mi Box S) can't handle them"]
+            },
+            {
+                title: "Apk Version 3.0.260 - Web Version September 27 2020",
+                changes: [
+                    "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
+                    "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
+                    'Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now',
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.255 - Web Version September 26 2020",
                 changes: ["General performance improves and bug fixes"]
             },
