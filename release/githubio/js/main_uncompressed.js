@@ -6990,10 +6990,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.259';
-    var Main_version_java = 43; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 26 2020';
-    var Main_version_web = 83; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.260';
+    var Main_version_java = 44; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'September 27 2020';
+    var Main_version_web = 84; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7578,7 +7578,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.259 - Web Version September 26 2020",
+                title: "Apk Version 3.0.260 - Web Version September 27 2020",
                 changes: [
                     "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
                     "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
@@ -10274,8 +10274,10 @@
     //public void getVideoStatus(boolean showLatency)
     //Android specific: true
     //request the video status dropped frames, buffer size etc
-    function OSInterface_getVideoStatus(showLatency) {
-        Android.getVideoStatus(Boolean(showLatency));
+    function OSInterface_getVideoStatus(showLatency, Who_Called) {
+        try {
+            Android.getVideoStatus(Boolean(showLatency), Who_Called);
+        } catch (e) {}
     }
 
     //public void getVideoQuality(int who_called)
@@ -11185,7 +11187,7 @@
     }
 
     function PlayClip_showPanel() {
-        PlayVod_RefreshProgressBarrStart();
+        PlayVod_RefreshProgressBarrStart(false, 2);
         Play_CleanHideExit();
         Play_BottonIconsResetFocus();
         PlayClip_qualityIndexReset();
@@ -16444,13 +16446,13 @@
 
     }
 
-    function Play_UpdateStatus(mwhocall) {
-        var isLive = mwhocall === 1;
+    function Play_UpdateStatus(who_called) {
+        var isLive = who_called === 1;
 
         if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
-        else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+        else if (who_called === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
 
-        OSInterface_getVideoStatus(isLive);
+        OSInterface_getVideoStatus(isLive, who_called);
     }
 
     function Play_showPanel() {
@@ -18545,7 +18547,7 @@
 
         if (Update_status !== 1) {
 
-            if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
+            if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn, who_called);
             else Play_VideoStatusTest();
 
         }
