@@ -540,7 +540,7 @@ function PlayClip_hidePanel() {
 }
 
 function PlayClip_showPanel() {
-    PlayVod_RefreshProgressBarrStart();
+    PlayVod_RefreshProgressBarrStart(false, 2);
     Play_CleanHideExit();
     Play_BottonIconsResetFocus();
     PlayClip_qualityIndexReset();

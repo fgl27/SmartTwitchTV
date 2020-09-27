@@ -649,8 +649,10 @@ function OSInterface_LongLog(log) {
 //public void getVideoStatus(boolean showLatency)
 //Android specific: true
 //request the video status dropped frames, buffer size etc
-function OSInterface_getVideoStatus(showLatency) {
-    Android.getVideoStatus(Boolean(showLatency));
+function OSInterface_getVideoStatus(showLatency, Who_Called) {
+    try {
+        Android.getVideoStatus(Boolean(showLatency), Who_Called);
+    } catch (e) {}
 }
 
 //public void getVideoQuality(int who_called)

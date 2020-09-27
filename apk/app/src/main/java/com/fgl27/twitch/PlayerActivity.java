@@ -367,6 +367,8 @@ public class PlayerActivity extends Activity {
 
     private void ReUsePlayer(int PlayerPosition, int Who_Called, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
+        mWho_Called = Who_Called;
+
         PlayerCheckHandler[PlayerPosition].removeCallbacksAndMessages(null);
         PlayerCheckHandler[4].removeCallbacksAndMessages(null);
 
@@ -1889,7 +1891,7 @@ public class PlayerActivity extends Activity {
             } else if (PlayerCheckCounter[position] > 3) {
 
                 // try == 3 Give up internet is probably down or something related
-                PlayerEventListenerClear(position, fail_type);
+                PlayerEventListenerClear(position, fail_type, Who_Called);
 
             } else if (PlayerCheckCounter[position] > 1) {//only for clips
 
@@ -1945,7 +1947,7 @@ public class PlayerActivity extends Activity {
         } else initializePlayer_Single_PP(position);
     }
 
-    public void PlayerEventListenerClear(int position, int fail_type) {
+    public void PlayerEventListenerClear(int position, int fail_type, int Who_Called) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
         }
@@ -1967,12 +1969,12 @@ public class PlayerActivity extends Activity {
                 ClearPlayer(position);
                 WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
-            } else if (mWho_Called > 3) {
+            } else if (Who_Called > 3) {
 
                 ClearPlayer(position);
                 WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
 
-            } else WebViewLoad = "Play_PannelEndStart(" + mWho_Called + "," + fail_type + ")";
+            } else WebViewLoad = "Play_PannelEndStart(" + Who_Called + "," + fail_type + ")";
 
         } else {
             //Preview player
@@ -2932,7 +2934,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getVideoStatus(boolean showLatency) {
+        public void getVideoStatus(boolean showLatency, int Who_Called) {
             getVideoStatusResult = null;
 
             MainThreadHandler.post(() -> {
@@ -2963,7 +2965,7 @@ public class PlayerActivity extends Activity {
                 //Erase after read
                 netActivity = 0L;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + mWho_Called + ",Android.getVideoStatusString())");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + Who_Called + ",Android.getVideoStatusString())");
             });
 
         }
@@ -3203,7 +3205,7 @@ public class PlayerActivity extends Activity {
                 PlayerCheckHandler[position].removeCallbacksAndMessages(null);
                 player[position].setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position, 0);//player_Ended
+                PlayerEventListenerClear(position, 0, Who_Called);//player_Ended
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
@@ -3232,7 +3234,7 @@ public class PlayerActivity extends Activity {
                     else
                         PlayerCheckCounter[position] = 0;
 
-                    if (mWho_Called == 1) {
+                    if (Who_Called == 1) {
 
                         //If other not playing just play it so they stay in sync
                         if (MultiStreamEnable) {

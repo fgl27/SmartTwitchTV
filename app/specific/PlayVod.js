@@ -659,7 +659,7 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
     if (Update_status !== 1) {
 
-        if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn);
+        if (Main_IsOn_OSInterface) OSInterface_getVideoStatus(Play_isOn, who_called);
         else Play_VideoStatusTest();
 
     }

@@ -1539,13 +1539,13 @@ function Play_ShowPanelStatus(mwhocall) {
 
 }
 
-function Play_UpdateStatus(mwhocall) {
-    var isLive = mwhocall === 1;
+function Play_UpdateStatus(who_called) {
+    var isLive = who_called === 1;
 
     if (isLive && Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) OSInterface_getVideoQuality(0);
-    else if (mwhocall === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
+    else if (who_called === 2 && Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) OSInterface_getVideoQuality(1);
 
-    OSInterface_getVideoStatus(isLive);
+    OSInterface_getVideoStatus(isLive, who_called);
 }
 
 function Play_showPanel() {
