@@ -416,7 +416,7 @@ function PlayClip_shutdownStream() {
     }
 }
 
-function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
+function PlayClip_PreshutdownStream(closePlayer) {
     //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
     Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
@@ -431,7 +431,7 @@ function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
     Chat_Clear();
     Play_ClearPlayer();
 
-    if (!Play_PreviewId) UserLiveFeed_Hide(PreventcleanQuailities);
+    if (!Play_PreviewId) UserLiveFeed_Hide();
     else UserLiveFeed_HideAfter();
 
     PlayClip_qualities = [];
@@ -623,7 +623,7 @@ function PlayClip_CheckIfIsLiveStart() {
 }
 
 function PlayClip_OpenLiveStream() {
-    PlayClip_PreshutdownStream(true, true);
+    PlayClip_PreshutdownStream(true);
     Play_OpenFeed(PlayClip_handleKeyDown);
 }
 

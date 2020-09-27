@@ -945,7 +945,7 @@ function Play_loadDataResultEnd(responseObj) {
 }
 
 function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
-    UserLiveFeed_Hide(PreventcleanQuailities);
+    UserLiveFeed_Hide(PreventcleanQuailities, 0);
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
     else if (Play_EndDialogEnter === 3) {
@@ -2043,7 +2043,7 @@ function Play_OpenFeed(keyfun) {
             return;
         }
 
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide(Play_PreviewId, 0);
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
@@ -2062,7 +2062,7 @@ function Play_OpenFeed(keyfun) {
         );
 
     } else {
-        UserLiveFeed_Hide(true);
+        UserLiveFeed_Hide(Play_PreviewId, 0);
 
         Play_OpenLiveStream(keyfun);
     }

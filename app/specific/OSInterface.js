@@ -834,13 +834,14 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
     );
 
 }
-
-//public void ClearFeedPlayer()
+//public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
+//PreventClean prevent closing the player
+//trackSelectorPos the player that will use the not closed player trackSelector Position
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
-function OSInterface_ClearFeedPlayer(PreventClean) {
+function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
     try {
-        Android.ClearFeedPlayer(Boolean(PreventClean));
+        Android.ClearFeedPlayer(Boolean(PreventClean), Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1);
     } catch (e) {}
 }
 

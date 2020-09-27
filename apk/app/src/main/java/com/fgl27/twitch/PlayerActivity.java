@@ -2551,12 +2551,19 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void ClearFeedPlayer(boolean PreventClean) {
+        public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos) {
             MainThreadHandler.post(() -> {
 
                 if (PreventClean) {
 
+                    if (trackSelector[4] != null) {
+                        int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
+
+                        trackSelector[4].setParameters(trackSelectorParameters[FinalTrackSelectorPos]);
+                    }
+
                     if (player[4] != null) player[4].setPlayWhenReady(false);
+
                     PlayerView[4].setVisibility(View.GONE);
 
                 } else Clear_PreviewPlayer();
