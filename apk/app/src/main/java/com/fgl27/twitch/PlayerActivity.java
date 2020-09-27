@@ -137,7 +137,6 @@ public class PlayerActivity extends Activity {
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
     private DefaultTrackSelector[] trackSelector = new DefaultTrackSelector[PlayerAccountPlus];
     private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
-    private TrackGroupArray lastSeenTrackGroupArray;
     private long mResumePosition;
     private long mResumePositionSmallPlayer;
     private int mWho_Called = 1;
@@ -488,7 +487,6 @@ public class PlayerActivity extends Activity {
             CurrentPositionHandler[0].removeCallbacksAndMessages(null);
             PlayerCurrentPosition = mResumePosition;
         }
-        lastSeenTrackGroupArray = null;
         initializePlayer_Single_PP(position);
     }
 
@@ -3153,6 +3151,7 @@ public class PlayerActivity extends Activity {
         private int position;
         private final int Delay_ms;
         private int Who_Called;
+        private TrackGroupArray lastSeenTrackGroupArray = null;
 
         private PlayerEventListener(int position, int m_Who_Called) {
             this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
@@ -3175,10 +3174,10 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && position == 0) {
                 lastSeenTrackGroupArray = trackGroups;
 
-                if (position == 0 && !PicturePicture && !MultiStreamEnable && Who_Called < 3)
+                if (!PicturePicture && !MultiStreamEnable && Who_Called < 3)
                     LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
 
             }
