@@ -1862,13 +1862,6 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void RequestGetQualities(int Who_Called) {
-
-        if (!PicturePicture && !MultiStreamEnable && Who_Called < 3) {
-            mWebView.loadUrl("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
-        }
-    }
-
     public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
@@ -3175,8 +3168,9 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && position < 4) {//position < 4 Main players
-                RequestGetQualities(Who_Called);
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 &&
+                    position == 0 && !PicturePicture && !MultiStreamEnable && Who_Called < 3) {//position < 4 Main players
+                LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
                 lastSeenTrackGroupArray = trackGroups;
             }
         }
