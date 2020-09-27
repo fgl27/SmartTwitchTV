@@ -6990,10 +6990,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.256';
-    var Main_version_java = 41; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.258';
+    var Main_version_java = 42; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'September 26 2020';
-    var Main_version_web = 81; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 82; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7578,7 +7578,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.256 - Web Version September 26 2020",
+                title: "Apk Version 3.0.258 - Web Version September 26 2020",
                 changes: [
                     "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
                     "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
@@ -10459,13 +10459,14 @@
         );
 
     }
-
-    //public void ClearFeedPlayer()
+    //public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
+    //PreventClean prevent closing the player
+    //trackSelectorPos the player that will use the not closed player trackSelector Position
     //Android specific: true
     //Clear the side panel or small player over the live feed play removes it from the screen
-    function OSInterface_ClearFeedPlayer(PreventClean) {
+    function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
         try {
-            Android.ClearFeedPlayer(Boolean(PreventClean));
+            Android.ClearFeedPlayer(Boolean(PreventClean), Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1);
         } catch (e) {}
     }
 
@@ -11060,7 +11061,7 @@
         }
     }
 
-    function PlayClip_PreshutdownStream(closePlayer, PreventcleanQuailities) {
+    function PlayClip_PreshutdownStream(closePlayer) {
         //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
         Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
@@ -11075,7 +11076,7 @@
         Chat_Clear();
         Play_ClearPlayer();
 
-        if (!Play_PreviewId) UserLiveFeed_Hide(PreventcleanQuailities);
+        if (!Play_PreviewId) UserLiveFeed_Hide();
         else UserLiveFeed_HideAfter();
 
         PlayClip_qualities = [];
@@ -11269,7 +11270,7 @@
     }
 
     function PlayClip_OpenLiveStream() {
-        PlayClip_PreshutdownStream(true, true);
+        PlayClip_PreshutdownStream(true);
         Play_OpenFeed(PlayClip_handleKeyDown);
     }
 
@@ -15845,7 +15846,7 @@
     }
 
     function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
-        UserLiveFeed_Hide(PreventcleanQuailities);
+        UserLiveFeed_Hide(PreventcleanQuailities, 0);
 
         if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
         else if (Play_EndDialogEnter === 3) {
@@ -16951,7 +16952,7 @@
                 return;
             }
 
-            UserLiveFeed_Hide(true);
+            UserLiveFeed_Hide(Play_PreviewId, 0);
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
@@ -16970,7 +16971,7 @@
             );
 
         } else {
-            UserLiveFeed_Hide(true);
+            UserLiveFeed_Hide(Play_PreviewId, 0);
 
             Play_OpenLiveStream(keyfun);
         }
@@ -28759,9 +28760,9 @@
         Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
-    function UserLiveFeed_Hide(PreventCleanQuailities) {
+    function UserLiveFeed_Hide(PreventCleanQuailities, trackSelectorPos) {
         //return;//return;
-        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities);
+        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities, trackSelectorPos);
         UserLiveFeed_HideAfter();
     }
 
@@ -28921,12 +28922,12 @@
         return position;
     }
 
-    function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities) {
+    function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities, trackSelectorPos) {
         Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
         if (Main_IsOn_OSInterface) {
 
-            OSInterface_ClearFeedPlayer(PreventCleanQuailities);
+            OSInterface_ClearFeedPlayer(PreventCleanQuailities, trackSelectorPos);
             if (Play_PreviewId && !PreventCleanQuailities) {
 
                 Play_CheckIfIsLiveCleanEnd();
