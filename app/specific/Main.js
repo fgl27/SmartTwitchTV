@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.260';
-var Main_version_java = 44;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_stringVersion_Min = '.261';
+var Main_version_java = 45;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'September 27 2020';
-var Main_version_web = 84;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 85;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -611,6 +611,10 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Apk Version 3.0.261 - Web Version September 27 2020",
+            changes: ["Revert the player change of previously version (Apk Version 3.0.260) as some devices (Xiaomi Mi Box S) can't handle them"]
+        },
         {
             title: "Apk Version 3.0.260 - Web Version September 27 2020",
             changes: [
