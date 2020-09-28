@@ -2450,7 +2450,7 @@ public class PlayerActivity extends Activity {
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
 //
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(0, 1));
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(0, 0, 1));
 //
 //        }
 
@@ -3204,7 +3204,7 @@ public class PlayerActivity extends Activity {
                 return;
 
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "onPlaybackStateChanged position " + position + " playbackState " + playbackState);
+                Log.i(TAG, "onPlaybackStateChanged position " + position + " Who_Called " + Who_Called + " playbackState " + playbackState);
             }
 
             if (playbackState == Player.STATE_ENDED) {
