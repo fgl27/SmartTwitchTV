@@ -887,15 +887,21 @@ public class PlayerActivity extends Activity {
     private void SwitchPlayer() {
         int i;
 
-        //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
-        //The odd behavior will stay until the player is releasePlayer
-        for (i = 0; i < 2; i++) {
-            if (player[i] != null) player[i].setPlayWhenReady(false);
-        }
-
         SimpleExoPlayer tempMainPlayer = player[0];
         player[0] = player[1];
         player[1] = tempMainPlayer;
+
+        PlayerView tempPlayerView = PlayerView[0];
+        PlayerView[0] = PlayerView[1];
+        PlayerView[1] = tempPlayerView;
+
+        PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+
+        VideoHolder.bringChildToFront(PlayerView[1]);
+
+        PlayerView[1].setVisibility(View.GONE);
+        PlayerView[1].setVisibility(View.VISIBLE);
 
         DefaultTrackSelector tempTrackSelector = trackSelector[0];
         trackSelector[0] = trackSelector[1];
@@ -906,9 +912,6 @@ public class PlayerActivity extends Activity {
         mediaSources[1] = tempMediaSource;
 
         for (i = 0; i < 2; i++) {
-
-            PlayerView[i].setPlayer(player[i]);
-            if (player[i] != null) player[i].setPlayWhenReady(true);
 
             if (trackSelector[i] != null)
                 trackSelector[i].setParameters(trackSelectorParameters[i]);
@@ -981,20 +984,15 @@ public class PlayerActivity extends Activity {
 
     }
 
+    //TODO introduce a player obj to hold all related to the player in on single obj
     public void SetMultiStreamMainBig(int offset) {
-
-        for (int i = 0; i < PlayerAccount; i++) {
-
-            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-            PlayerView[i].setVisibility(View.VISIBLE);
-
-        }
 
         if (offset != 0) {
 
             SimpleExoPlayer tempPlayer;
             DefaultTrackSelector tempTrackSelector;
             MediaSource tempMediaSource;
+            PlayerView tempPlayerView;
 
             int len = Math.abs(offset);
             int i;
@@ -1003,18 +1001,6 @@ public class PlayerActivity extends Activity {
 
             boolean left = offset > 0;
 
-            //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
-            //The odd behavior will stay until the player is releasePlayer
-            for (i = 0; i < PlayerAccount; i++) {
-
-                if (player[i] != null) {
-
-                    player[i].setPlayWhenReady(false);
-
-                }
-
-            }
-
             for (i = 0; i < len; i++) {
 
                 //https://www.javatpoint.com/java-program-to-left-rotate-the-elements-of-an-array
@@ -1022,12 +1008,15 @@ public class PlayerActivity extends Activity {
 
                     //Stores the first element of the array
                     tempPlayer = player[0];
+                    tempPlayerView = PlayerView[0];
+
                     tempTrackSelector = trackSelector[0];
                     tempMediaSource = mediaSources[0];
 
                     for (j = 0; j < j_len; j++) {
                         //Shift element of array by one
                         player[j] = player[j + 1];
+                        PlayerView[j] = PlayerView[j + 1];
                         trackSelector[j] = trackSelector[j + 1];
                         mediaSources[j] = mediaSources[j + 1];
 
@@ -1036,6 +1025,8 @@ public class PlayerActivity extends Activity {
                     }
                     //First element of array will be added to the end
                     player[j] = tempPlayer;
+                    PlayerView[j] = tempPlayerView;
+
                     trackSelector[j] = tempTrackSelector;
                     mediaSources[j] = tempMediaSource;
 
@@ -1047,12 +1038,15 @@ public class PlayerActivity extends Activity {
 
                     //Stores the last element of array
                     tempPlayer = player[3];
+                    tempPlayerView = PlayerView[3];
+
                     tempTrackSelector = trackSelector[3];
                     tempMediaSource = mediaSources[3];
 
                     for (j = j_len; j > 0; j--) {
                         //Shift element of array by one
                         player[j] = player[j - 1];
+                        PlayerView[j] = PlayerView[j - 1];
                         trackSelector[j] = trackSelector[j - 1];
                         mediaSources[j] = mediaSources[j - 1];
 
@@ -1061,6 +1055,8 @@ public class PlayerActivity extends Activity {
                     }
                     //Last element of array will be added to the start of array.
                     player[0] = tempPlayer;
+                    PlayerView[0] = tempPlayerView;
+
                     trackSelector[0] = tempTrackSelector;
                     mediaSources[0] = tempMediaSource;
 
@@ -1070,19 +1066,13 @@ public class PlayerActivity extends Activity {
 
             }
 
-            for (i = 0; i < PlayerAccount; i++) {
-                PlayerView[i].setPlayer(player[i]);
-            }
+        }
 
-            for (i = 0; i < PlayerAccount; i++) {
+        for (int i = 0; i < PlayerAccount; i++) {
 
-                if (player[i] != null) {
+            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+            PlayerView[i].setVisibility(View.VISIBLE);
 
-                    player[i].setPlayWhenReady(true);
-
-                }
-
-            }
         }
 
         AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
