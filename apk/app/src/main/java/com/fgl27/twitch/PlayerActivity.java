@@ -207,6 +207,8 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams PlayerViewScreensPanel;
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
+    private FrameLayout PreviewHolder;
+
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
     private Point ScreenSize;
@@ -302,6 +304,8 @@ public class PlayerActivity extends Activity {
 
             VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
+            PreviewHolder = findViewById(R.id.previewholder);
+
             setPlayerSurface(true);
 
             DeviceRam = Tools.DeviceRam(this);
@@ -374,9 +378,7 @@ public class PlayerActivity extends Activity {
 
         if (player[PlayerPosition] != null) {
             player[PlayerPosition].removeListener(playerListener[PlayerPosition]);
-            player[PlayerPosition].setPlayWhenReady(false);
         }
-        player[4].setPlayWhenReady(false);
 
         playerListener[4].UpdatePosition(PlayerPosition);
         playerListener[4].UpdateWho_Called(Who_Called);
@@ -386,6 +388,23 @@ public class PlayerActivity extends Activity {
         player[PlayerPosition] = player[4];
         player[4] = tempPlayer;
 
+        PreviewHolder.removeView(PlayerView[4]);
+        VideoHolder.removeView(PlayerView[PlayerPosition]);
+
+        VideoHolder.addView(PlayerView[4]);
+        PreviewHolder.addView(PlayerView[PlayerPosition]);
+
+        PlayerView tempPlayerView = PlayerView[PlayerPosition];
+        PlayerView[PlayerPosition] = PlayerView[4];
+        PlayerView[4] = tempPlayerView;
+
+        PlayerView[PlayerPosition].setLayoutParams(PlayerView[4].getLayoutParams());
+        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+
+        PlayerView[4].setLayoutParams(PlayerView[PlayerPosition].getLayoutParams());
+
+        if (PlayerPosition > 0) VideoHolder.bringChildToFront(PlayerView[PlayerPosition]);
+
         DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
         trackSelector[PlayerPosition] = trackSelector[4];
         trackSelector[4] = tempTrackSelector;
@@ -393,9 +412,6 @@ public class PlayerActivity extends Activity {
         MediaSource tempMediaSource = mediaSources[PlayerPosition];
         mediaSources[PlayerPosition] = mediaSources[4];
         mediaSources[4] = tempMediaSource;
-
-        PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
-        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
 
         player[PlayerPosition].setPlayWhenReady(true);
         trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
