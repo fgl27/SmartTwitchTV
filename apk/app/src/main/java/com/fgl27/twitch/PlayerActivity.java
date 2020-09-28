@@ -3200,7 +3200,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlaybackStateChanged(@Player.State int playbackState) {
 
-            if (player[position] == null || !player[position].getPlayWhenReady())
+            if (player[position] == null)
                 return;
 
             if (BuildConfig.DEBUG) {
