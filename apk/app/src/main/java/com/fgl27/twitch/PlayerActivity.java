@@ -1969,7 +1969,7 @@ public class PlayerActivity extends Activity {
                 ClearPlayer(position);
                 WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
-            } else if (Who_Called > 3) {
+            } else if (mWho_Called > 3) {
 
                 ClearPlayer(position);
                 WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
