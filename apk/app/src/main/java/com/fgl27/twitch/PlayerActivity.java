@@ -385,10 +385,16 @@ public class PlayerActivity extends Activity {
         playerListener[4].UpdateWho_Called(Who_Called);
         playerListener[PlayerPosition] = playerListener[4];
 
+        DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
+        trackSelector[PlayerPosition] = trackSelector[4];
+        trackSelector[4] = tempTrackSelector;
+
+        MediaSource tempMediaSource = mediaSources[PlayerPosition];
+        mediaSources[PlayerPosition] = mediaSources[4];
+        mediaSources[4] = tempMediaSource;
+
         PreviewHolder.removeView(PlayerView[4]);
         VideoHolder.addView(PlayerView[4]);
-        PlayerView[4].setLayoutParams(PlayerView[PlayerPosition].getLayoutParams());
-        PlayerView[4].setVisibility(View.VISIBLE);
 
         if (PlayerPosition == 0 && PicturePicture && player[1] != null && !MultiStreamEnable) {
             //Reset the small PP player view position so it stay visible
@@ -413,13 +419,8 @@ public class PlayerActivity extends Activity {
         PlayerView[PlayerPosition].setId(PlayerView[4].getId());
         PlayerView[4].setId(tempId);
 
-        DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
-        trackSelector[PlayerPosition] = trackSelector[4];
-        trackSelector[4] = tempTrackSelector;
-
-        MediaSource tempMediaSource = mediaSources[PlayerPosition];
-        mediaSources[PlayerPosition] = mediaSources[4];
-        mediaSources[4] = tempMediaSource;
+        PlayerView[PlayerPosition].setLayoutParams(PlayerView[4].getLayoutParams());
+        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
 
         player[PlayerPosition].setPlayWhenReady(true);
         trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
@@ -534,14 +535,20 @@ public class PlayerActivity extends Activity {
 
         SwitchPlayerAudio(AudioSource);
 
-        if (!isSmall && player[1] != null) {
+        if (!isSmall) {
+            ResetSmallView();
+        }
+
+    }
+
+    private void ResetSmallView() {
+        if (player[1] != null) {
             //Reset small player view so it shows after big one has started
             player[1].setPlayWhenReady(false);
             PlayerView[1].setVisibility(View.GONE);
             PlayerView[1].setVisibility(View.VISIBLE);
             player[1].setPlayWhenReady(true);
         }
-
     }
 
     private void initializePlayer_Multi(int PlayerPosition) {
@@ -917,6 +924,21 @@ public class PlayerActivity extends Activity {
             if (player[i] != null) player[i].setPlayWhenReady(false);
         }
 
+        if (playerListener[0] != null) playerListener[0].UpdatePosition(1);
+        if (playerListener[1] != null) playerListener[1].UpdatePosition(0);
+
+        PlayerEventListener tempPlayerListener = playerListener[0];
+        playerListener[0] = playerListener[1];
+        playerListener[1] = tempPlayerListener;
+
+        MediaSource tempMediaSource = mediaSources[0];
+        mediaSources[0] = mediaSources[1];
+        mediaSources[1] = tempMediaSource;
+
+        DefaultTrackSelector tempTrackSelector = trackSelector[0];
+        trackSelector[0] = trackSelector[1];
+        trackSelector[1] = tempTrackSelector;
+
         SimpleExoPlayer tempMainPlayer = player[0];
         player[0] = player[1];
         player[1] = tempMainPlayer;
@@ -925,33 +947,20 @@ public class PlayerActivity extends Activity {
         PlayerView[0] = PlayerView[1];
         PlayerView[1] = tempPlayerView;
 
-        PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
-        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
-
         VideoHolder.bringChildToFront(PlayerView[1]);
 
         PlayerView[1].setVisibility(View.GONE);
         PlayerView[1].setVisibility(View.VISIBLE);
 
-        DefaultTrackSelector tempTrackSelector = trackSelector[0];
-        trackSelector[0] = trackSelector[1];
-        trackSelector[1] = tempTrackSelector;
+        PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
+        if (player[0] != null) player[0].setPlayWhenReady(true);
+        if (trackSelector[0] != null)
+            trackSelector[0].setParameters(trackSelectorParameters[0]);
 
-        MediaSource tempMediaSource = mediaSources[0];
-        mediaSources[0] = mediaSources[1];
-        mediaSources[1] = tempMediaSource;
-
-        for (i = 0; i < 2; i++) {
-
-            if (player[i] != null) player[i].setPlayWhenReady(true);
-
-            if (trackSelector[i] != null)
-                trackSelector[i].setParameters(trackSelectorParameters[i]);
-
-            if (playerListener[i] != null)
-                playerListener[i].UpdatePosition(i ^ 1);
-
-        }
+        PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+        if (player[1] != null) player[1].setPlayWhenReady(true);
+        if (trackSelector[1] != null)
+            trackSelector[1].setParameters(trackSelectorParameters[1]);
 
         SwitchPlayerAudio(AudioSource);
 
@@ -1018,23 +1027,23 @@ public class PlayerActivity extends Activity {
 
     //TODO introduce a player obj to hold all related to the player in on single obj
     public void SetMultiStreamMainBig(int offset) {
-
-        for (int i = 0; i < PlayerAccount; i++) {
-
-            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-            PlayerView[i].setVisibility(View.VISIBLE);
-
-        }
+        int i;
 
         if (offset != 0) {
+
+            for (i = 0; i < PlayerAccount; i++) {
+
+                if (player[i] != null) player[i].setPlayWhenReady(false);
+
+            }
 
             SimpleExoPlayer tempPlayer;
             DefaultTrackSelector tempTrackSelector;
             MediaSource tempMediaSource;
             PlayerView tempPlayerView;
+            PlayerEventListener tempPlayerListener;
 
             int len = Math.abs(offset);
-            int i;
             int j;
             int j_len = PlayerAccount - 1;
 
@@ -1051,27 +1060,33 @@ public class PlayerActivity extends Activity {
 
                     tempTrackSelector = trackSelector[0];
                     tempMediaSource = mediaSources[0];
+                    tempPlayerListener = playerListener[0];
 
                     for (j = 0; j < j_len; j++) {
                         //Shift element of array by one
-                        player[j] = player[j + 1];
-                        PlayerView[j] = PlayerView[j + 1];
+
                         trackSelector[j] = trackSelector[j + 1];
                         mediaSources[j] = mediaSources[j + 1];
 
                         if (playerListener[j] != null)
                             playerListener[j].UpdatePosition(j + 1);
+
+                        playerListener[j] = playerListener[j + 1];
+
+                        player[j] = player[j + 1];
+                        PlayerView[j] = PlayerView[j + 1];
                     }
                     //First element of array will be added to the end
-                    player[j] = tempPlayer;
-                    PlayerView[j] = tempPlayerView;
-
                     trackSelector[j] = tempTrackSelector;
                     mediaSources[j] = tempMediaSource;
 
                     if (playerListener[j] != null)
                         playerListener[j].UpdatePosition(0);
 
+                    playerListener[j] = tempPlayerListener;
+
+                    player[j] = tempPlayer;
+                    PlayerView[j] = tempPlayerView;
                     //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
                 } else {// else if offset -1 result 3 0 1 2
 
@@ -1081,38 +1096,54 @@ public class PlayerActivity extends Activity {
 
                     tempTrackSelector = trackSelector[3];
                     tempMediaSource = mediaSources[3];
+                    tempPlayerListener = playerListener[3];
+
 
                     for (j = j_len; j > 0; j--) {
                         //Shift element of array by one
-                        player[j] = player[j - 1];
-                        PlayerView[j] = PlayerView[j - 1];
                         trackSelector[j] = trackSelector[j - 1];
                         mediaSources[j] = mediaSources[j - 1];
 
                         if (playerListener[j] != null)
                             playerListener[j].UpdatePosition(j - 1);
+
+                        playerListener[j] = playerListener[j - 1];
+
+                        player[j] = player[j - 1];
+                        PlayerView[j] = PlayerView[j - 1];
                     }
                     //Last element of array will be added to the start of array.
-                    player[0] = tempPlayer;
-                    PlayerView[0] = tempPlayerView;
-
                     trackSelector[0] = tempTrackSelector;
                     mediaSources[0] = tempMediaSource;
 
                     if (playerListener[0] != null)
                         playerListener[0].UpdatePosition(3);
+
+                    playerListener[0] = tempPlayerListener;
+
+                    player[0] = tempPlayer;
+                    PlayerView[0] = tempPlayerView;
+
                 }
 
             }
 
-        }
+            for (i = 0; i < PlayerAccount; i++) {
 
-        for (int i = 0; i < PlayerAccount; i++) {
+                if (player[i] != null) player[i].setPlayWhenReady(true);
+                PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+                PlayerView[i].setVisibility(View.VISIBLE);
 
-            if (player[i] != null) player[i].setPlayWhenReady(true);
-            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-            VideoHolder.bringChildToFront(PlayerView[i]);
+            }
 
+        } else {
+
+            for (i = 0; i < PlayerAccount; i++) {
+
+                PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+                PlayerView[i].setVisibility(View.VISIBLE);
+
+            }
         }
 
         AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
@@ -1897,6 +1928,10 @@ public class PlayerActivity extends Activity {
     public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
         PlayerCheckHandler[position].removeCallbacksAndMessages(null);
 
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position] + " fail_type " + fail_type);
+        }
+
         //Pause to things run smother and prevent odd behavior during the checks
         if (player[position] != null) {
 
@@ -1906,9 +1941,6 @@ public class PlayerActivity extends Activity {
 
         PlayerCheckCounter[position]++;
 
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
-        }
 
         if (position < 4) {
             //Main players
@@ -1965,7 +1997,7 @@ public class PlayerActivity extends Activity {
     //First check only reset the player as it may be stuck
     public void PlayerEventListenerCheckCounterEnd(int position, int Who_Called) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position]);
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerCheckCounter[position] " + PlayerCheckCounter[position] + " Who_Called " + Who_Called);
         }
 
         if (Who_Called == 1) clearResumePosition();
@@ -3310,10 +3342,10 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
 
+            Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
+
             PlayerCheckHandler[position].removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounter(position, Who_Called, 1);//player_Erro
-
-            Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
 
         }
 
