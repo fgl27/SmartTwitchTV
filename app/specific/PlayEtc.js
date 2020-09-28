@@ -651,9 +651,9 @@ function Play_StartStayHidebottom() {
     Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
-function Play_StartStayShowbottom() {
+function Play_StartStayShowBottom() {
     Play_BottomShow(Play_MultiStream);
-    Play_BottomShow(Play_controlsQuality);
+    if (!PlayExtra_PicturePicture) Play_BottomShow(Play_controlsQuality);
     Play_BottomShow(Play_controlsExternal);
     Play_BottomShow(Play_controlsLowLatency);
     Play_BottomShow(Play_controlsSpeed);
@@ -813,7 +813,7 @@ function Play_StayCheckLiveResultEnd(responseObj) {
     if (responseObj.status === 200) {
         Main_HideElement('play_dialog_retry');
 
-        Play_StartStayShowbottom();
+        Play_StartStayShowBottom();
         Play_data.AutoUrl = responseObj.url;
         Play_loadDataSuccessend(responseObj.responseText, false, true);
         Play_ShowPanelStatus(1);

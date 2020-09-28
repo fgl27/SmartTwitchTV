@@ -70,7 +70,7 @@ function PlayVod_Start() {
 
     Play_BufferSize = 0;
 
-    Play_StartStayShowbottom();
+    Play_StartStayShowBottom();
     Play_BottomHide(Play_MultiStream);
     Play_BottomHide(Play_controlsOpenVod);
     Play_BottomHide(Play_controlsChatDelay);

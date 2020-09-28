@@ -378,32 +378,40 @@ public class PlayerActivity extends Activity {
 
         if (player[PlayerPosition] != null) {
             player[PlayerPosition].removeListener(playerListener[PlayerPosition]);
+            player[PlayerPosition].setPlayWhenReady(false);
         }
 
         playerListener[4].UpdatePosition(PlayerPosition);
         playerListener[4].UpdateWho_Called(Who_Called);
         playerListener[PlayerPosition] = playerListener[4];
 
-        SimpleExoPlayer tempPlayer = player[PlayerPosition];
-        player[PlayerPosition] = player[4];
-        player[4] = tempPlayer;
-
         PreviewHolder.removeView(PlayerView[4]);
-        VideoHolder.removeView(PlayerView[PlayerPosition]);
-
         VideoHolder.addView(PlayerView[4]);
+        PlayerView[4].setLayoutParams(PlayerView[PlayerPosition].getLayoutParams());
+        PlayerView[4].setVisibility(View.VISIBLE);
+
+        if (PlayerPosition == 0 && PicturePicture && player[1] != null && !MultiStreamEnable) {
+            //Reset the small PP player view position so it stay visible
+            player[1].setPlayWhenReady(false);
+            VideoHolder.removeView(PlayerView[1]);
+            VideoHolder.addView(PlayerView[1]);
+            player[1].setPlayWhenReady(true);
+        }
+
+        VideoHolder.removeView(PlayerView[PlayerPosition]);
         PreviewHolder.addView(PlayerView[PlayerPosition]);
 
         PlayerView tempPlayerView = PlayerView[PlayerPosition];
         PlayerView[PlayerPosition] = PlayerView[4];
         PlayerView[4] = tempPlayerView;
 
-        PlayerView[PlayerPosition].setLayoutParams(PlayerView[4].getLayoutParams());
-        PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
+        SimpleExoPlayer tempPlayer = player[PlayerPosition];
+        player[PlayerPosition] = player[4];
+        player[4] = tempPlayer;
 
-        PlayerView[4].setLayoutParams(PlayerView[PlayerPosition].getLayoutParams());
-
-        if (PlayerPosition > 0) VideoHolder.bringChildToFront(PlayerView[PlayerPosition]);
+        int tempId = PlayerView[PlayerPosition].getId();
+        PlayerView[PlayerPosition].setId(PlayerView[4].getId());
+        PlayerView[4].setId(tempId);
 
         DefaultTrackSelector tempTrackSelector = trackSelector[PlayerPosition];
         trackSelector[PlayerPosition] = trackSelector[4];
@@ -526,12 +534,12 @@ public class PlayerActivity extends Activity {
 
         SwitchPlayerAudio(AudioSource);
 
-        if (!isSmall) {
+        if (!isSmall && player[1] != null) {
             //Reset small player view so it shows after big one has started
-            if (player[1] != null) {
-                PlayerView[1].setVisibility(View.GONE);
-                PlayerView[1].setVisibility(View.VISIBLE);
-            }
+            player[1].setPlayWhenReady(false);
+            PlayerView[1].setVisibility(View.GONE);
+            PlayerView[1].setVisibility(View.VISIBLE);
+            player[1].setPlayWhenReady(true);
         }
 
     }
@@ -903,6 +911,12 @@ public class PlayerActivity extends Activity {
     private void SwitchPlayer() {
         int i;
 
+        //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
+        //The odd behavior will stay until the player is releasePlayer
+        for (i = 0; i < 2; i++) {
+            if (player[i] != null) player[i].setPlayWhenReady(false);
+        }
+
         SimpleExoPlayer tempMainPlayer = player[0];
         player[0] = player[1];
         player[1] = tempMainPlayer;
@@ -928,6 +942,8 @@ public class PlayerActivity extends Activity {
         mediaSources[1] = tempMediaSource;
 
         for (i = 0; i < 2; i++) {
+
+            if (player[i] != null) player[i].setPlayWhenReady(true);
 
             if (trackSelector[i] != null)
                 trackSelector[i].setParameters(trackSelectorParameters[i]);
@@ -1002,6 +1018,13 @@ public class PlayerActivity extends Activity {
 
     //TODO introduce a player obj to hold all related to the player in on single obj
     public void SetMultiStreamMainBig(int offset) {
+
+        for (int i = 0; i < PlayerAccount; i++) {
+
+            PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+            PlayerView[i].setVisibility(View.VISIBLE);
+
+        }
 
         if (offset != 0) {
 
@@ -1086,8 +1109,9 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAccount; i++) {
 
+            if (player[i] != null) player[i].setPlayWhenReady(true);
             PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-            PlayerView[i].setVisibility(View.VISIBLE);
+            VideoHolder.bringChildToFront(PlayerView[i]);
 
         }
 
@@ -1103,6 +1127,7 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAccount; i++) {
             PlayerView[i].setLayoutParams(MultiStreamPlayerViewLayout[i]);
+            VideoHolder.bringChildToFront(PlayerView[i]);
         }
 
         if (trackSelector[0] != null)

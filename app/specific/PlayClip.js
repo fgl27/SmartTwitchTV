@@ -89,7 +89,7 @@ function PlayClip_Start() {
     Main_values.Play_isHost = false;
     PlayClip_SetOpenVod();
 
-    Play_StartStayShowbottom();
+    Play_StartStayShowBottom();
     Play_BottomHide(Play_controlsChatDelay);
     Play_BottomHide(Play_controlsLowLatency);
     Play_BottomHide(Play_MultiStream);
