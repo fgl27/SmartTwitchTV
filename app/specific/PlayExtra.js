@@ -226,6 +226,7 @@ function PlayExtra_HideChat() {
 
 function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
     if (!fail_type && Settings_value.open_host.defaultValue) {
+
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
         Main_setTimeout(
@@ -234,12 +235,14 @@ function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
             },
             2000//Delay as the stream just ended and may not show as host yet
         );
+
     } else PlayExtra_End_success(doSwitch, fail_type);
 }
 
 function PlayExtra_End_success(doSwitch, fail_type) {
 
-    var reason = PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
+    var reason = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + STR_IS_OFFLINE;
+
     if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
