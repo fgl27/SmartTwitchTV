@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  /*
  * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
  *
@@ -20,173 +19,172 @@
  *
  */
 -->
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
-    android:focusable="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true">
 
     <FrameLayout
         android:id="@+id/videowebholder"
-        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="false">
 
         <FrameLayout
             android:id="@+id/videoholder"
-            android:focusableInTouchMode="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="false">
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:use_artwork="false"
-                app:show_buffering="always"/>
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view2"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:use_artwork="false"
-                app:show_buffering="always"/>
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view3"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:use_artwork="false"
-                app:show_buffering="always"/>
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view4"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:use_artwork="false"
-                app:show_buffering="always"/>
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view_texture_view"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
-                app:use_artwork="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:surface_type="texture_view"
-                app:show_buffering="always"/>
+                app:use_artwork="false"
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view2_texture_view"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
-                app:use_artwork="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:surface_type="texture_view"
-                app:show_buffering="always"/>
+                app:use_artwork="false"
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view3_texture_view"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
-                app:use_artwork="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:surface_type="texture_view"
-                app:show_buffering="always"/>
+                app:use_artwork="false"
+                app:use_controller="false" />
 
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view4_texture_view"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:use_controller="false"
-                app:use_artwork="false"
+                android:focusableInTouchMode="false"
+                app:show_buffering="always"
                 app:surface_type="texture_view"
-                app:show_buffering="always"/>
+                app:use_artwork="false"
+                app:use_controller="false" />
         </FrameLayout>
 
         <WebView
             android:id="@+id/WebView"
-            android:focusable="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:focusable="true" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/previewholder"
-        android:focusableInTouchMode="false"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="false">
+
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/player_view_e_texture_view"
-            android:focusableInTouchMode="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusableInTouchMode="false"
             android:visibility="gone"
-            app:use_controller="false"
-            app:use_artwork="false"
+            app:show_buffering="always"
             app:surface_type="texture_view"
-            app:show_buffering="always"/>
+            app:use_artwork="false"
+            app:use_controller="false" />
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/player_view_e"
-            android:focusableInTouchMode="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusableInTouchMode="false"
             android:visibility="gone"
-            app:use_controller="false"
+            app:show_buffering="always"
             app:use_artwork="false"
-            app:show_buffering="always"/>
+            app:use_controller="false" />
     </FrameLayout>
-    
+
     <WebView
         android:id="@+id/WebViewKey"
-        android:focusable="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:focusable="true" />
 
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@android:color/white"
+        android:layout_gravity="center"
         android:background="@drawable/shadow"
-        android:layout_gravity="center"/>
+        android:indeterminate="true"
+        android:indeterminateTint="@android:color/white" />
 
     <ProgressBar
         android:id="@+id/loading2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
         android:indeterminate="true"
         android:indeterminateTint="@android:color/white"
-        android:background="@drawable/shadow"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shadow_text"
         android:gravity="center|top"
+        android:padding="10dp"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:textStyle="bold"
-        android:layout_marginTop="50dp"
-        android:padding="10dp"
-        android:background="@drawable/shadow_text"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </merge>
