@@ -1104,6 +1104,7 @@ public class PlayerActivity extends Activity {
             //Reset small player position over big player, as after a resume all player restart and position is reset on that case
             PlayerView[1].setVisibility(View.GONE);
             PlayerView[1].setVisibility(View.VISIBLE);
+            VideoHolder.bringChildToFront(PlayerView[1]);
 
         } else {
 
