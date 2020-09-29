@@ -92,7 +92,7 @@ var Main_values = {
     "Main_selectedChannelPartner": false,
     "Sidepannel_IsUser": false,
     "My_channel": false,
-    "DeviceCheckNew": false,
+    "DeviceCheck2": false,
     "Never_run_phone": true,
     "Codec_is_Check": false,
     "check_pp_workaround": true,
@@ -423,11 +423,12 @@ function Main_CheckBackup() {
 function Main_CheckDevice() {
     if (Main_IsOn_OSInterface) {
 
-        if (!Main_values.DeviceCheckNew) {
+        if (!Main_values.DeviceCheck2) {
 
-            Main_values.DeviceCheckNew = true;
+            Main_values.DeviceCheck2 = true;
             var device = OSInterface_getDevice();
             var Manufacturer = OSInterface_getManufacturer();
+
             device = device ? device.toLowerCase() : "";
             Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
 
@@ -446,6 +447,14 @@ function Main_CheckDevice() {
 
                 //Enable app animations
                 Settings_ForceEnableAimations();
+            } else if (Main_A_includes_B(device, 'mibox4')) {//current my box 4 or S can't handle 9xxp
+
+                Settings_value.block_qualities_9.defaultValue = 1;
+                Main_setItem('block_qualities_9', 2);
+
+                Settings_DisableQualities = ['9'];
+                Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
+                Settings_Qualities();
             }
         }
 

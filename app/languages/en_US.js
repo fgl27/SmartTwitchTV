@@ -645,4 +645,9 @@ function en_USLang() {
     STR_PLAYED = "Played ";
     STR_CHAPTERS = "Chapters";
     STR_FROM_SIMPLE = " from ";
+    STR_BLOCK_RES = "Blocked resolutions";
+    STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from be used, this is usable to devices that lag playing a particularly resolution";
+    STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
+    STR_BLOCKED = "Blocked";
+    STR_BLOCKED_NOT = "Not blocked";
 }

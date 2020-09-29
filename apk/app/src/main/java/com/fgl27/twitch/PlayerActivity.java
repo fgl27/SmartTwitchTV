@@ -67,6 +67,7 @@ import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -74,6 +75,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
@@ -84,6 +86,8 @@ import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -131,7 +135,8 @@ public class PlayerActivity extends Activity {
     };
 
     private int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
-    private String[] BLACKLISTEDCODECS = null;
+    private String[] BLACKLISTED_CODECS = null;
+    private String[] BLACKLISTED_QUALITIES = null;
     private PlayerView[] PlayerView = new PlayerView[PlayerAccountPlus];
     private SimpleExoPlayer[] player = new SimpleExoPlayer[PlayerAccountPlus];
     private PlayerEventListener[] playerListener = new PlayerEventListener[PlayerAccountPlus];
@@ -423,7 +428,11 @@ public class PlayerActivity extends Activity {
         PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
 
         player[PlayerPosition].setPlayWhenReady(true);
-        trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
+
+        if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null)
+            setEnabledQualities(trackSelector[PlayerPosition]);
+        else
+            trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
 
         if (PlayerPosition == 0) GetCurrentPosition();
 
@@ -451,8 +460,8 @@ public class PlayerActivity extends Activity {
             trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
 
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
-            if (BLACKLISTEDCODECS != null)
-                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTEDCODECS));
+            if (BLACKLISTED_CODECS != null)
+                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTED_CODECS));
 
             player[PlayerPosition] = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
                     .setTrackSelector(trackSelector[PlayerPosition])
@@ -954,13 +963,19 @@ public class PlayerActivity extends Activity {
 
         PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
         if (player[0] != null) player[0].setPlayWhenReady(true);
-        if (trackSelector[0] != null)
+        if (trackSelector[0] != null) {
             trackSelector[0].setParameters(trackSelectorParameters[0]);
+            if (BLACKLISTED_QUALITIES != null)
+                setEnabledQualities(trackSelector[0]);
+        }
 
         PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         if (player[1] != null) player[1].setPlayWhenReady(true);
-        if (trackSelector[1] != null)
+        if (trackSelector[1] != null) {
             trackSelector[1].setParameters(trackSelectorParameters[1]);
+            if (BLACKLISTED_QUALITIES != null)
+                setEnabledQualities(trackSelector[1]);
+        }
 
         SwitchPlayerAudio(AudioSource);
 
@@ -1149,9 +1164,6 @@ public class PlayerActivity extends Activity {
         AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
         SetPlayerAudioMulti();
 
-        if (trackSelector[0] != null)
-            trackSelector[0].setParameters(trackSelectorParameters[1]);
-
     }
 
     public void SetMultiStream() {
@@ -1161,8 +1173,11 @@ public class PlayerActivity extends Activity {
             VideoHolder.bringChildToFront(PlayerView[i]);
         }
 
-        if (trackSelector[0] != null)
+        if (trackSelector[0] != null) {
             trackSelector[0].setParameters(trackSelectorParameters[1]);
+            if (BLACKLISTED_QUALITIES != null)
+                setEnabledQualities(trackSelector[0]);
+        }
     }
 
     public void UnSetMultiStream() {
@@ -1196,8 +1211,11 @@ public class PlayerActivity extends Activity {
         PlayerView[2].setVisibility(View.GONE);
         PlayerView[3].setVisibility(View.GONE);
 
-        if (trackSelector[0] != null)
+        if (trackSelector[0] != null) {
             trackSelector[0].setParameters(trackSelectorParameters[0]);
+            if (BLACKLISTED_QUALITIES != null)
+                setEnabledQualities(trackSelector[0]);
+        }
     }
 
     private void GetCurrentPosition() {
@@ -1892,7 +1910,11 @@ public class PlayerActivity extends Activity {
             IsInAutoMode = position == -1;
 
             if (IsInAutoMode) {
-                trackSelector[0].setParameters(trackSelectorParameters[0]);
+                if (BLACKLISTED_QUALITIES != null)
+                    setEnabledQualities(trackSelector[0]);
+                else
+                    trackSelector[0].setParameters(trackSelectorParameters[0]);
+
                 return;
             }
 
@@ -1917,6 +1939,73 @@ public class PlayerActivity extends Activity {
                         }
 
                         trackSelector[0].setParameters(builder);
+                        break;
+                    }
+
+                }
+            }
+        }
+    }
+
+    public void setEnabledQualities(DefaultTrackSelector trackSelector) {
+
+        if (trackSelector != null) {
+
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+
+            if (mappedTrackInfo != null) {
+                for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
+
+                    if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
+
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector.getParameters().buildUpon();
+                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
+
+                        TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
+                        if (trackGroupArray.length > 0) {
+
+                            ArrayList<Integer> result = new ArrayList<>();
+                            Format format;
+                            TrackGroup groupIndex = trackGroupArray.get(0);
+                            boolean add;
+
+                            for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
+                                format = groupIndex.getFormat(trackIndex);
+                                add = true;
+
+                                for (String value : BLACKLISTED_QUALITIES) {
+                                    if (Integer.toString(format.height).startsWith(value)) {
+                                        add = false;
+                                        break;
+                                    }
+                                }
+
+                                if (add) {
+                                    result.add(trackIndex);
+                                }
+                            }
+
+                            int len = result.size();
+
+                            if (len > 0) {
+
+                                int[] ret = new int[len];
+                                Iterator<Integer> iterator = result.iterator();
+
+                                for (int i = 0; i < len; i++) {
+                                    ret[i] = iterator.next();
+                                }
+
+                                builder.setSelectionOverride(
+                                        rendererIndex,
+                                        mappedTrackInfo.getTrackGroups(rendererIndex),
+                                        new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, ret)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                                );
+
+                            }
+                        }
+
+                        trackSelector.setParameters(builder);
                         break;
                     }
 
@@ -2620,7 +2709,7 @@ public class PlayerActivity extends Activity {
 
                 if (PreventClean) {
 
-                    if (trackSelector[4] != null) {
+                    if (trackSelector[4] != null && BLACKLISTED_QUALITIES == null) {
                         int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
 
                         trackSelector[4].setParameters(trackSelectorParameters[FinalTrackSelectorPos]);
@@ -3065,7 +3154,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void setBlackListMediaCodec(String CodecList) {
-            BLACKLISTEDCODECS = !CodecList.isEmpty() ? CodecList.split(",") : null;
+            BLACKLISTED_CODECS = !CodecList.isEmpty() ? CodecList.split(",") : null;
         }
 
         @JavascriptInterface
@@ -3206,6 +3295,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void setBlackListQualities(String qualitiesList) {
+            BLACKLISTED_QUALITIES = !qualitiesList.isEmpty() ? qualitiesList.split(",") : null;
+        }
+
+        @JavascriptInterface
         public void LongLog(String log) {
             Tools.LongLog(TAG, log);
         }
@@ -3240,10 +3334,13 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && position == 0) {
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
                 lastSeenTrackGroupArray = trackGroups;
 
-                if (!PicturePicture && !MultiStreamEnable && Who_Called < 3)
+                if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && player[position] != null)
+                    setEnabledQualities((DefaultTrackSelector) player[position].getTrackSelector());
+
+                if (position == 0 && !PicturePicture && !MultiStreamEnable && Who_Called < 3)
                     LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
 
             }

@@ -601,6 +601,16 @@ function OSInterface_setBlackListMediaCodec(CodecList) {
     Android.setBlackListMediaCodec(CodecList);
 }
 
+//public void setBlackListMediaCodec(String qualitiesList)
+//qualitiesList = the start of a qualitie 10 for 1080 pr any 10xx, 9 for 900 or 9xx etc etc
+//Android specific: true
+//Returns the codecCapabilities for that codec type
+function OSInterface_setBlackListQualities(qualitiesList) {
+    try {
+        Android.setBlackListQualities(qualitiesList);
+    } catch (e) {}
+}
+
 //public void mshowLoading(boolean show)
 //show = show or not
 //Android specific: true

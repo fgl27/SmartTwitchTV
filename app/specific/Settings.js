@@ -329,6 +329,11 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
+    "block_qualities": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
     "vod_seek_min": {//Migrated to dialog
         "values": Settings_jumpTimers_String,
         "defaultValue": 1
@@ -406,7 +411,39 @@ var Settings_value = {
     "chat_timestamp": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
-    }
+    },
+    "block_qualities_21": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_16": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_14": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_10": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_9": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_7": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_4": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
+    "block_qualities_3": {//Migrated to dialog
+        "values": ["enabled", "disabled"],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -530,6 +567,7 @@ function Settings_SetSettings() {
     div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
+    div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
     div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
@@ -663,8 +701,12 @@ function Settings_SetDefautls() {
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
-    Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     Settings_CodecsSet();
+
+    Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
+    Settings_Qualities();
+
+    Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
     OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
     OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
@@ -774,6 +816,15 @@ function Settings_SetDefault(position) {
     else if (position === "pp_workaround") Settings_PP_Workaround();
     else if (position === "vod_seek_min") Settings_check_min_seek();
     else if (position === "vod_seek_max") Settings_check_max_seek();
+    else if (position === "block_qualities_21" || position === "block_qualities_16" ||
+        position === "block_qualities_14" || position === "block_qualities_10" ||
+        position === "block_qualities_9" || position === "block_qualities_7" ||
+        position === "block_qualities_4" || position === "block_qualities_3") {
+
+        Settings_QualitiesCheck();
+
+    }
+
 }
 
 function Settings_check_min_seek() {
@@ -1116,6 +1167,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'block_qualities')) Settings_block_qualities();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
@@ -1132,6 +1184,7 @@ function Settings_handleKeyDown(event) {
 var Settings_CodecsValue = [];
 var Settings_CodecsPos;
 var Settings_DisableCodecsNames = [];
+var Settings_DisableQualities = [];
 
 function Settings_CodecsShow() {
     Main_removeEventListener("keydown", Settings_handleKeyDown);
@@ -1202,11 +1255,11 @@ function Settings_handleKeyDownCodecs(event) {
             break;
         case KEY_LEFT:
             key = Settings_CodecsValue[Settings_CodecsPos].name;
-            if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
+            if (Settings_Obj_default(key) > 0) Settings_CodecsRightLeft(-1);
             break;
         case KEY_RIGHT:
             key = Settings_CodecsValue[Settings_CodecsPos].name;
-            if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
+            if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRightLeft(1);
             break;
         case KEY_UP:
             if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
@@ -1233,7 +1286,7 @@ function Settings_CodecsUpDown(offset) {
     Settings_SetarrowsKey(key);
 }
 
-function Settings_CodecsRigthLeft(offset) {
+function Settings_CodecsRightLeft(offset) {
 
     if (Settings_CodecsValue.length < 2) {
         Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
@@ -1293,6 +1346,26 @@ function Settings_CodecsRigthLeft(offset) {
 
 function Settings_CodecsSet() {
     if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+}
+
+function Settings_QualitiesCheck() {
+    Settings_DisableQualities = [];
+    var array_values = ['21', '16', '14', '10', '9', '7', '4', '3'],
+        i = 0,
+        len = array_values.length;
+
+    for (i; i < len; i++) {
+
+        if (Settings_Obj_default('block_qualities_' + array_values[i]))
+            Settings_DisableQualities.push(array_values[i]);
+    }
+
+    Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
+    Settings_Qualities();
+}
+
+function Settings_Qualities() {
+    if (Main_IsOn_OSInterface) OSInterface_setBlackListQualities(Settings_DisableQualities.join());
 }
 
 function Settings_ForceEnableAimations() {
@@ -1823,6 +1896,71 @@ function Settings_DialogShowChat() {
     };
 
     Settings_DialogShow(obj, STR_CHAT_OPTIONS);
+}
+
+function Settings_block_qualities() {
+    var array_ena_dis = [STR_BLOCKED_NOT, STR_BLOCKED];
+    Settings_value.block_qualities_21.values = array_ena_dis;
+    Settings_value.block_qualities_16.values = array_ena_dis;
+    Settings_value.block_qualities_14.values = array_ena_dis;
+    Settings_value.block_qualities_10.values = array_ena_dis;
+    Settings_value.block_qualities_9.values = array_ena_dis;
+    Settings_value.block_qualities_7.values = array_ena_dis;
+    Settings_value.block_qualities_4.values = array_ena_dis;
+    Settings_value.block_qualities_3.values = array_ena_dis;
+
+    var obj = {
+        block_qualities_21: {
+            defaultValue: Settings_value.block_qualities_21.defaultValue,
+            values: Settings_value.block_qualities_21.values,
+            title: '21XXp',
+            summary: null
+        },
+        block_qualities_16: {
+            defaultValue: Settings_value.block_qualities_16.defaultValue,
+            values: Settings_value.block_qualities_16.values,
+            title: '16XXp',
+            summary: null
+        },
+        block_qualities_14: {
+            defaultValue: Settings_value.block_qualities_14.defaultValue,
+            values: Settings_value.block_qualities_14.values,
+            title: '14XXp',
+            summary: null
+        },
+        block_qualities_10: {
+            defaultValue: Settings_value.block_qualities_10.defaultValue,
+            values: Settings_value.block_qualities_10.values,
+            title: '10XXp',
+            summary: null
+        },
+        block_qualities_9: {
+            defaultValue: Settings_value.block_qualities_9.defaultValue,
+            values: Settings_value.block_qualities_9.values,
+            title: '9XXp',
+            summary: null
+        },
+        block_qualities_7: {
+            defaultValue: Settings_value.block_qualities_7.defaultValue,
+            values: Settings_value.block_qualities_7.values,
+            title: '7XXp',
+            summary: null
+        },
+        block_qualities_4: {
+            defaultValue: Settings_value.block_qualities_4.defaultValue,
+            values: Settings_value.block_qualities_4.values,
+            title: '4XXp',
+            summary: null
+        },
+        block_qualities_3: {
+            defaultValue: Settings_value.block_qualities_3.defaultValue,
+            values: Settings_value.block_qualities_3.values,
+            title: '3XXp',
+            summary: null
+        },
+    };
+
+    Settings_DialogShow(obj, STR_BLOCK_RES + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY_EXTRA);
 }
 
 function Settings_Dialog_isVisible() {
