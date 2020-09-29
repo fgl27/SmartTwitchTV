@@ -212,7 +212,6 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams PlayerViewScreensPanel;
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
-    private FrameLayout PreviewHolder;
 
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
@@ -309,7 +308,6 @@ public class PlayerActivity extends Activity {
 
             VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
-            PreviewHolder = findViewById(R.id.previewholder);
 
             setPlayerSurface(true);
 
@@ -398,35 +396,12 @@ public class PlayerActivity extends Activity {
         mediaSources[PlayerPosition] = mediaSources[4];
         mediaSources[4] = tempMediaSource;
 
-        PreviewHolder.removeView(PlayerView[4]);
-        VideoHolder.addView(PlayerView[4]);
-
-        if (PlayerPosition == 0 && PicturePicture && player[1] != null && !MultiStreamEnable) {
-            //Reset the small PP player view position so it stay visible
-            player[1].setPlayWhenReady(false);
-            VideoHolder.removeView(PlayerView[1]);
-            VideoHolder.addView(PlayerView[1]);
-            player[1].setPlayWhenReady(true);
-        }
-
-        VideoHolder.removeView(PlayerView[PlayerPosition]);
-        PreviewHolder.addView(PlayerView[PlayerPosition]);
-
-        PlayerView tempPlayerView = PlayerView[PlayerPosition];
-        PlayerView[PlayerPosition] = PlayerView[4];
-        PlayerView[4] = tempPlayerView;
-
         SimpleExoPlayer tempPlayer = player[PlayerPosition];
         player[PlayerPosition] = player[4];
         player[4] = tempPlayer;
 
-        int tempId = PlayerView[PlayerPosition].getId();
-        PlayerView[PlayerPosition].setId(PlayerView[4].getId());
-        PlayerView[4].setId(tempId);
-
-        PlayerView[PlayerPosition].setLayoutParams(PlayerView[4].getLayoutParams());
         PlayerView[PlayerPosition].setVisibility(View.VISIBLE);
-
+        PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
         player[PlayerPosition].setPlayWhenReady(true);
 
         if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null)

@@ -122,33 +122,26 @@
             android:focusable="true" />
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/previewholder"
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view_e_texture_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="false">
+        android:focusableInTouchMode="false"
+        android:visibility="gone"
+        app:show_buffering="always"
+        app:surface_type="texture_view"
+        app:use_artwork="false"
+        app:use_controller="false" />
 
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/player_view_e_texture_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="false"
-            android:visibility="gone"
-            app:show_buffering="always"
-            app:surface_type="texture_view"
-            app:use_artwork="false"
-            app:use_controller="false" />
-
-        <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/player_view_e"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="false"
-            android:visibility="gone"
-            app:show_buffering="always"
-            app:use_artwork="false"
-            app:use_controller="false" />
-    </FrameLayout>
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view_e"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="false"
+        android:visibility="gone"
+        app:show_buffering="always"
+        app:use_artwork="false"
+        app:use_controller="false" />
 
     <WebView
         android:id="@+id/WebViewKey"
