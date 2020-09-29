@@ -133,7 +133,6 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e_texture_view//4
     };
 
-    private int extraSmallPlayerBitrate = 4000000;
     private int PP_PlayerBitrate = Integer.MAX_VALUE;
     private int mainPlayerBitrate = Integer.MAX_VALUE;
 
@@ -1954,12 +1953,7 @@ public class PlayerActivity extends Activity {
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
 
-                            int MaxBitrate = mainPlayerBitrate;
-                            if (position != 0) {
-                                if (MultiStreamEnable)
-                                    MaxBitrate = Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate);
-                                else MaxBitrate = PP_PlayerBitrate;
-                            }
+                            int MaxBitrate = (MultiStreamEnable || position != 0) ? PP_PlayerBitrate : mainPlayerBitrate;
 
                             ArrayList<Integer> result = new ArrayList<>();
                             Format format;
@@ -2952,6 +2946,7 @@ public class PlayerActivity extends Activity {
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
+            int extraSmallPlayerBitrate = 4000000;
             trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
