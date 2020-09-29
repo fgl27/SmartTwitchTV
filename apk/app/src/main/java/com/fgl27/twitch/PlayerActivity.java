@@ -87,7 +87,6 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -404,8 +403,8 @@ public class PlayerActivity extends Activity {
         PlayerView[PlayerPosition].setPlayer(player[PlayerPosition]);
         player[PlayerPosition].setPlayWhenReady(true);
 
-        if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null)
-            setEnabledQualities(trackSelector[PlayerPosition]);
+        if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
+            setEnabledQualities(trackSelector[PlayerPosition], trackSelectorParameters);
         else
             trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
 
@@ -939,17 +938,23 @@ public class PlayerActivity extends Activity {
         PlayerView[0].setLayoutParams(PlayerViewDefaultSize);
         if (player[0] != null) player[0].setPlayWhenReady(true);
         if (trackSelector[0] != null) {
-            trackSelector[0].setParameters(trackSelectorParameters[0]);
-            if (BLACKLISTED_QUALITIES != null)
-                setEnabledQualities(trackSelector[0]);
+
+            if (BLACKLISTED_QUALITIES == null)
+                trackSelector[0].setParameters(trackSelectorParameters[0]);
+            else
+                setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
+
         }
 
         PlayerView[1].setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         if (player[1] != null) player[1].setPlayWhenReady(true);
         if (trackSelector[1] != null) {
-            trackSelector[1].setParameters(trackSelectorParameters[1]);
-            if (BLACKLISTED_QUALITIES != null)
-                setEnabledQualities(trackSelector[1]);
+
+            if (BLACKLISTED_QUALITIES == null)
+                trackSelector[1].setParameters(trackSelectorParameters[1]);
+            else
+                setEnabledQualities(trackSelector[1], trackSelectorParameters[1]);
+
         }
 
         SwitchPlayerAudio(AudioSource);
@@ -1149,9 +1154,12 @@ public class PlayerActivity extends Activity {
         }
 
         if (trackSelector[0] != null) {
-            trackSelector[0].setParameters(trackSelectorParameters[1]);
-            if (BLACKLISTED_QUALITIES != null)
-                setEnabledQualities(trackSelector[0]);
+
+            if (BLACKLISTED_QUALITIES == null)
+                trackSelector[0].setParameters(trackSelectorParameters[1]);
+            else
+                setEnabledQualities(trackSelector[0], trackSelectorParameters[1]);
+
         }
     }
 
@@ -1187,9 +1195,12 @@ public class PlayerActivity extends Activity {
         PlayerView[3].setVisibility(View.GONE);
 
         if (trackSelector[0] != null) {
-            trackSelector[0].setParameters(trackSelectorParameters[0]);
-            if (BLACKLISTED_QUALITIES != null)
-                setEnabledQualities(trackSelector[0]);
+
+            if (BLACKLISTED_QUALITIES == null)
+                trackSelector[0].setParameters(trackSelectorParameters[0]);
+            else
+                setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
+
         }
     }
 
@@ -1885,10 +1896,10 @@ public class PlayerActivity extends Activity {
             IsInAutoMode = position == -1;
 
             if (IsInAutoMode) {
-                if (BLACKLISTED_QUALITIES != null)
-                    setEnabledQualities(trackSelector[0]);
-                else
+                if (BLACKLISTED_QUALITIES == null)
                     trackSelector[0].setParameters(trackSelectorParameters[0]);
+                else
+                    setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
 
                 return;
             }
@@ -1922,7 +1933,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void setEnabledQualities(DefaultTrackSelector trackSelector) {
+    public void setEnabledQualities(DefaultTrackSelector trackSelector, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
         if (trackSelector != null) {
 
@@ -1933,7 +1944,7 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelector.getParameters().buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
@@ -1942,9 +1953,10 @@ public class PlayerActivity extends Activity {
                             ArrayList<Integer> result = new ArrayList<>();
                             Format format;
                             TrackGroup groupIndex = trackGroupArray.get(0);
+                            int groupIndex_len = groupIndex.length;
                             boolean add;
 
-                            for (int trackIndex = 0; trackIndex < groupIndex.length; trackIndex++) {
+                            for (int trackIndex = 0; trackIndex < groupIndex_len; trackIndex++) {
                                 format = groupIndex.getFormat(trackIndex);
                                 add = true;
 
@@ -1961,14 +1973,15 @@ public class PlayerActivity extends Activity {
                             }
 
                             int len = result.size();
+                            //prevent block it all
+                            if (len >= groupIndex_len) len = groupIndex_len - 1;
 
                             if (len > 0) {
 
                                 int[] ret = new int[len];
-                                Iterator<Integer> iterator = result.iterator();
 
                                 for (int i = 0; i < len; i++) {
-                                    ret[i] = iterator.next();
+                                    ret[i] = result.get(i);
                                 }
 
                                 builder.setSelectionOverride(
@@ -3312,8 +3325,12 @@ public class PlayerActivity extends Activity {
             if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
                 lastSeenTrackGroupArray = trackGroups;
 
-                if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && player[position] != null)
-                    setEnabledQualities((DefaultTrackSelector) player[position].getTrackSelector());
+                if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && player[position] != null) {
+                    DefaultTrackSelector trackSelector = (DefaultTrackSelector) player[position].getTrackSelector();
+
+                    if (trackSelector != null)
+                        setEnabledQualities(trackSelector, trackSelector.getParameters());
+                }
 
                 if (position == 0 && !PicturePicture && !MultiStreamEnable && Who_Called < 3)
                     LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
