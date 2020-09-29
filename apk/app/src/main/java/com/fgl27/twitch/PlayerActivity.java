@@ -3322,7 +3322,7 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0) {
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && Who_Called < 3) {
                 lastSeenTrackGroupArray = trackGroups;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && player[position] != null) {
@@ -3332,7 +3332,7 @@ public class PlayerActivity extends Activity {
                         setEnabledQualities(trackSelector, trackSelector.getParameters());
                 }
 
-                if (position == 0 && !PicturePicture && !MultiStreamEnable && Who_Called < 3)
+                if (position == 0 && !PicturePicture && !MultiStreamEnable)
                     LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
 
             }
