@@ -133,6 +133,10 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e_texture_view//4
     };
 
+    private int extraSmallPlayerBitrate = 4000000;
+    private int PP_PlayerBitrate = Integer.MAX_VALUE;
+    private int mainPlayerBitrate = Integer.MAX_VALUE;
+
     private int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     private String[] BLACKLISTED_CODECS = null;
     private String[] BLACKLISTED_QUALITIES = null;
@@ -404,7 +408,7 @@ public class PlayerActivity extends Activity {
         player[PlayerPosition].setPlayWhenReady(true);
 
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
-            setEnabledQualities(trackSelector[PlayerPosition], trackSelectorParameters);
+            setEnabledQualities(trackSelector[PlayerPosition], PlayerPosition);
         else
             trackSelector[PlayerPosition].setParameters(trackSelectorParameters);
 
@@ -942,7 +946,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_QUALITIES == null)
                 trackSelector[0].setParameters(trackSelectorParameters[0]);
             else
-                setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
+                setEnabledQualities(trackSelector[0], 0);
 
         }
 
@@ -953,7 +957,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_QUALITIES == null)
                 trackSelector[1].setParameters(trackSelectorParameters[1]);
             else
-                setEnabledQualities(trackSelector[1], trackSelectorParameters[1]);
+                setEnabledQualities(trackSelector[1], 1);
 
         }
 
@@ -1158,7 +1162,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_QUALITIES == null)
                 trackSelector[0].setParameters(trackSelectorParameters[1]);
             else
-                setEnabledQualities(trackSelector[0], trackSelectorParameters[1]);
+                setEnabledQualities(trackSelector[0], 1);
 
         }
     }
@@ -1199,7 +1203,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_QUALITIES == null)
                 trackSelector[0].setParameters(trackSelectorParameters[0]);
             else
-                setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
+                setEnabledQualities(trackSelector[0], 0);
 
         }
     }
@@ -1899,7 +1903,7 @@ public class PlayerActivity extends Activity {
                 if (BLACKLISTED_QUALITIES == null)
                     trackSelector[0].setParameters(trackSelectorParameters[0]);
                 else
-                    setEnabledQualities(trackSelector[0], trackSelectorParameters[0]);
+                    setEnabledQualities(trackSelector[0], 0);
 
                 return;
             }
@@ -1933,7 +1937,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void setEnabledQualities(DefaultTrackSelector trackSelector, DefaultTrackSelector.Parameters trackSelectorParameters) {
+    public void setEnabledQualities(DefaultTrackSelector trackSelector, int position) {
 
         if (trackSelector != null) {
 
@@ -1944,11 +1948,18 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters.buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelector.getParameters().buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
+
+                            int MaxBitrate = mainPlayerBitrate;
+                            if (position != 0) {
+                                if (MultiStreamEnable)
+                                    MaxBitrate = Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate);
+                                else MaxBitrate = PP_PlayerBitrate;
+                            }
 
                             ArrayList<Integer> result = new ArrayList<>();
                             Format format;
@@ -1960,16 +1971,21 @@ public class PlayerActivity extends Activity {
                                 format = groupIndex.getFormat(trackIndex);
                                 add = true;
 
-                                for (String value : BLACKLISTED_QUALITIES) {
-                                    if (Integer.toString(format.height).startsWith(value)) {
-                                        add = false;
-                                        break;
+                                if (format.bitrate <= MaxBitrate) {
+
+                                    for (String value : BLACKLISTED_QUALITIES) {
+                                        if (Integer.toString(format.height).startsWith(value)) {
+                                            add = false;
+                                            break;
+                                        }
                                     }
+
+                                    if (add) {
+                                        result.add(trackIndex);
+                                    }
+
                                 }
 
-                                if (add) {
-                                    result.add(trackIndex);
-                                }
                             }
 
                             int len = result.size();
@@ -2915,7 +2931,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate) {
-            int mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
             trackSelectorParameters[0] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
@@ -2926,7 +2942,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void SetSmallPlayerBitrate(int Bitrate) {
-            int PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
 
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
@@ -2936,7 +2952,6 @@ public class PlayerActivity extends Activity {
                     .setMaxVideoBitrate(PP_PlayerBitrate)
                     .build();
 
-            int extraSmallPlayerBitrate = 4000000;
             trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(
@@ -3326,14 +3341,16 @@ public class PlayerActivity extends Activity {
                 lastSeenTrackGroupArray = trackGroups;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && player[position] != null) {
-                    DefaultTrackSelector trackSelector = (DefaultTrackSelector) player[position].getTrackSelector();
 
-                    if (trackSelector != null)
-                        setEnabledQualities(trackSelector, trackSelector.getParameters());
+                    setEnabledQualities((DefaultTrackSelector) player[position].getTrackSelector(), position);
+
                 }
 
-                if (position == 0 && !PicturePicture && !MultiStreamEnable)
+                if (position == 0 && !PicturePicture && !MultiStreamEnable) {
+
                     LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
+
+                }
 
             }
         }
