@@ -127,11 +127,11 @@ var Settings_value = {
         "values": [
             'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
         ],
-        "defaultValue": 1
+        "defaultValue": 6
     },
     "auto_refresh_background": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "show_feed_player_delay": {//Migrated to dialog
         "values": [
