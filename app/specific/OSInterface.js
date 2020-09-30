@@ -569,20 +569,24 @@ function OSInterface_keyEvent(key, keyaction) {
     Android.keyEvent(key, keyaction);
 }
 
-//public void SetSmallPlayerBandwidth(int Bitrate)
-//Bitrate = set mainPlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+//public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
+//Resolution/Bitrate = set maximum allowed value, if 0 the value will be set to Integer.MAX_VALUE
 //Android specific: true
 //Sets small player max Bitrate
-function OSInterface_SetSmallPlayerBitrate(Bitrate) {
-    if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
+function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
+    } catch (e) {}
 }
 
-//public void SetSmallPlayerBandwidth(int Bitrate)
-//Bitrate = set PP_PlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+//public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
+//Resolution/Bitrate = set maximum allowed value, if 0 the value will be set to Integer.MAX_VALUE
 //Android specific: true
 //Sets Big player max Bitrate
-function OSInterface_SetMainPlayerBitrate(Bitrate) {
-    if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
+function OSInterface_SetMainPlayerBitrate(Bitrate, Resolution) {
+    try {
+        if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
+    } catch (e) {}
 }
 
 //public String getcodecCapabilities(String CodecType)

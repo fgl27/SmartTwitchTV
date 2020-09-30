@@ -30,6 +30,9 @@ var Settings_Time_String = [
     '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
     '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
 ];
+var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
+var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
+var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
 var Settings_value = {
     "restor_playback": {
@@ -216,28 +219,36 @@ var Settings_value = {
         "defaultValue": 4
     },
     "buffer_live": {//Migrated to dialog
-        "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "values": buffer_values,
         "defaultValue": 2
     },
     "buffer_vod": {//Migrated to dialog
-        "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "values": buffer_values,
         "defaultValue": 2
     },
     "buffer_clip": {//Migrated to dialog
-        "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        "values": buffer_values,
         "defaultValue": 2
     },
     "end_dialog_counter": {//Migrated to dialog
         "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
         "defaultValue": 4
     },
+    "res_max": {//Migrated to dialog
+        "values": res_values,
+        "defaultValue": 1
+    },
+    "res_min": {//Migrated to dialog
+        "values": res_values,
+        "defaultValue": 6 // 720p
+    },
     "bitrate_main": {//Migrated to dialog
-        "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
+        "values": Settings_GetBitrates(bitrate_values),
         "defaultValue": 1
     },
     "bitrate_min": {//Migrated to dialog
-        "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
-        "defaultValue": 18
+        "values": Settings_GetBitrates(bitrate_values),
+        "defaultValue": 18//3 Mbps
     },
     "videos_animation": {//Migrated to dialog
         "values": ["no", "yes"],
@@ -489,6 +500,17 @@ function Settings_GetnotificationTime() {
     return array;
 }
 
+
+function Settings_GetBitrates(values) {
+    var i = 0, len = values.length, array = [];
+
+    for (i; i < len; i++) {
+        array.push(values[i] + " Mbps");
+    }
+
+    return array;
+}
+
 var Settings_value_keys = [];
 var Settings_positions_length = 0;
 //Variable initialization end
@@ -564,22 +586,12 @@ function Settings_SetSettings() {
 
     //Dialog settings
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+    div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
     div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
     div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
-    div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
-    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
     div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-    // Prepare the bitrates
-    key = "bitrate_main";
-    var i = 1, len = Settings_value[key].values.length;
-    for (i; i < len; i++) {
-        Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
-    }
-    Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-    Settings_value.bitrate_min.values = Settings_value[key].values;
-    Settings_SetBitRate(0);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
@@ -714,6 +726,8 @@ function Settings_SetDefautls() {
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
     Settings_set_all_notification();
+
+    Settings_SetResBitRate(0);
 }
 
 function Settings_Obj_values(key) {
@@ -809,8 +823,10 @@ function Settings_SetDefault(position) {
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
-    } else if (position === "bitrate_main") Settings_SetBitRate(1);
-    else if (position === "bitrate_min") Settings_SetBitRate(2);
+    } else if (position === "bitrate_main") Settings_SetResBitRate(1);
+    else if (position === "bitrate_min") Settings_SetResBitRate(2);
+    else if (position === "res_max") Settings_SetResBitRate(1);
+    else if (position === "res_min") Settings_SetResBitRate(2);
     else if (position === "dpad_opacity") Settings_DpadOpacity();
     else if (position === "dpad_position") Settings_DpadPOsition();
     else if (position === "pp_workaround") Settings_PP_Workaround();
@@ -994,34 +1010,38 @@ function Settings_ShowCounter(show) {
     }
 }
 
-function Settings_SetBitRate(whocall) {
+function Settings_SetResBitRate(whocall) {
     if (Main_IsOn_OSInterface) {
         if (!whocall) {
-            Settings_SetBitRateMain();
-            Settings_SetBitRateMin();
-        } else if (whocall === 1) Settings_SetBitRateMain();
-        else if (whocall === 2) Settings_SetBitRateMin();
+            Settings_SetResBitRateMain();
+            Settings_SetResBitRateMin();
+        } else if (whocall === 1) Settings_SetResBitRateMain();
+        else if (whocall === 2) Settings_SetResBitRateMin();
     }
 }
 
-function Settings_SetBitRateMain() {
-    var value;
+function Settings_SetResBitRateMain() {
+    var resolution = 0, bitrate = 0;
 
     if (Settings_Obj_default("bitrate_main") > 0)
-        value = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
-    else value = 0;
+        bitrate = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
 
-    OSInterface_SetMainPlayerBitrate(value);
+    if (Settings_Obj_default("res_max") > 0)
+        resolution = parseInt(Settings_Obj_values("res_max").split("p")[0]);
+
+    OSInterface_SetMainPlayerBitrate(bitrate, resolution);
 }
 
-function Settings_SetBitRateMin() {
-    var value;
+function Settings_SetResBitRateMin() {
+    var resolution = 0, bitrate = 0;
 
     if (Settings_Obj_default("bitrate_min") > 0)
-        value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
-    else value = 0;
+        bitrate = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
 
-    OSInterface_SetSmallPlayerBitrate(value);
+    if (Settings_Obj_default("res_min") > 0)
+        resolution = parseInt(Settings_Obj_values("res_min").split("p")[0]);
+
+    OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
 }
 
 function Settings_SetBuffers(whocall) {
@@ -1400,7 +1420,26 @@ function Settings_DialogShowBuffer() {
 }
 
 function Settings_DialogShowBitrate() {
+    Settings_value.res_max.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+    Settings_value.res_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+    Settings_value.bitrate_main.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+    Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+
     var obj = {
+        res_max: {
+            defaultValue: Settings_value.res_max.defaultValue,
+            values: Settings_value.res_max.values,
+            title: STR_PLAYER_RES_MAIN,
+            summary: null
+        },
+        res_min: {
+            defaultValue: Settings_value.res_min.defaultValue,
+            values: Settings_value.res_min.values,
+            title: STR_PLAYER_RES_SMALL,
+            summary: null
+        },
         bitrate_main: {
             defaultValue: Settings_value.bitrate_main.defaultValue,
             values: Settings_value.bitrate_main.values,
@@ -1411,11 +1450,11 @@ function Settings_DialogShowBitrate() {
             defaultValue: Settings_value.bitrate_min.defaultValue,
             values: Settings_value.bitrate_min.values,
             title: STR_PLAYER_BITRATE_SMALL,
-            summary: STR_PLAYER_BITRATE_SMALL_SUMMARY
-        }
+            summary: null
+        },
     };
 
-    Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+    Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC);
 }
 
 function Settings_vod_seek() {

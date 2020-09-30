@@ -305,8 +305,7 @@ function en_USLang() {
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
-    STR_DEF_QUALITY = "Default player quality";
-    STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
+
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
@@ -326,12 +325,23 @@ function en_USLang() {
     STR_QUALITY_MULTI = [STR_PLAYER_MULTI_ALL, "Top lefth", "Top right", "Bottom lefth", "Bottom right"];
     STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom lefth", "Bottom center", "Bottom right"];
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
-    STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-    STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate to the small players (small player also applies to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
-    STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
-    STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
-    STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+    STR_PLAYER_BITRATE = "Auto quality maximum allowed Resolution/Bitrate";
+    STR_PLAYER_BITRATE_SUMMARY = 'This will be used to prevent lags on low end devices when playing multiple videos at the same time (most devices will lag by skipping frames on that situation, as they are only made to play a single video), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended Resolution/Bitrate to all small players is 720p/3 Mbps and unlimited for main or big player for most low end devices.';
+    STR_PLAYER_BITRATE_SUMMARY_ETC = "Different values here for Main and small player resolution and or bitrate, may cause a short buffering/loading when changing with is the Main player in Picture Picture mode (pressing down will change the players), to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+    STR_PLAYER_MAIN = "Main player, for the big player in Picture in Picture or the Top player 50/50";
+    STR_PLAYER_RES_SMALL = "Small players, for the small player of Picture in Picture mode and all Multistream players";
+    STR_PLAYER_BITRATE_MAIN = 'Bitrate - ' + STR_PLAYER_MAIN;
+    STR_PLAYER_BITRATE_SMALL = 'Bitrate - ' + STR_PLAYER_RES_SMALL;
+    STR_PLAYER_RES_MAIN = 'Resolution - ' + STR_PLAYER_MAIN;
+    STR_PLAYER_RES_SMALL = 'Resolution - ' + STR_PLAYER_RES_SMALL;
+    STR_BLOCK_RES = "Auto quality Blocked resolutions";
+    STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution";
+    STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
+    STR_BLOCKED = "Blocked";
+    STR_BLOCKED_NOT = "Not blocked";
     STR_AUDIO_SOURCE = "Audio source";
+    STR_DEF_QUALITY = "Default player quality";
+    STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "' + STR_PLAYER_BITRATE + '"';
     STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
     STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show preview feed choose a stream then hold key enter or press key 1 to start";
     STR_PICTURE_CONTROLS2 = "Change a video content: From player preview, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
@@ -342,7 +352,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS3 = "Change audio source to all videos: on multistream or PP hold key down, on 50/50 single click key down";
     STR_PICTURE_CONTROLS8 = "Player Restart: use the player bottom controls Player Restart, this will only restart all the players, usefully to sync player and chat, this will not sync a player content with another";
     STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
-    STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
+    STR_PICTURE_CONTROLS10 = 'Picture in Picture video quality: Check in app settings "' + STR_PLAYER_BITRATE + '"';
     STR_PICTURE_CONTROLS11 = "Close small or bottom video (Picture in Picture only): return key twice will exit PP or 50/50 mode";
     STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
@@ -645,9 +655,5 @@ function en_USLang() {
     STR_PLAYED = "Played ";
     STR_CHAPTERS = "Chapters";
     STR_FROM_SIMPLE = " from ";
-    STR_BLOCK_RES = "Blocked resolutions";
-    STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from be used, this is usable to devices that lag playing a particularly resolution";
-    STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
-    STR_BLOCKED = "Blocked";
-    STR_BLOCKED_NOT = "Not blocked";
+
 }

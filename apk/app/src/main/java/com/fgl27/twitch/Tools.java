@@ -194,6 +194,7 @@ public final class Tools {
                 if (Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
                     StreamToken = Token.get("token").getAsString();
                     StreamSig = Token.get("sig").getAsString();
+                    //Log.d(TAG, "StreamToken " + StreamToken);
                 }
 
             } else if (status == 403 || status == 404 || status == 410)

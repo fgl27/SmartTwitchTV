@@ -135,6 +135,8 @@ public class PlayerActivity extends Activity {
 
     private int PP_PlayerBitrate = Integer.MAX_VALUE;
     private int mainPlayerBitrate = Integer.MAX_VALUE;
+    private int PP_PlayerResolution = Integer.MAX_VALUE;
+    private int mainPlayerResolution = Integer.MAX_VALUE;
 
     private int[] BUFFER_SIZE = {4000, 4000, 4000, 4000};//Default, live, vod, clips
     private String[] BLACKLISTED_CODECS = null;
@@ -1954,6 +1956,7 @@ public class PlayerActivity extends Activity {
                         if (trackGroupArray.length > 0) {
 
                             int MaxBitrate = (MultiStreamEnable || position != 0) ? PP_PlayerBitrate : mainPlayerBitrate;
+                            int MaxResolution = (MultiStreamEnable || position != 0) ? PP_PlayerResolution : mainPlayerResolution;
 
                             ArrayList<Integer> result = new ArrayList<>();
                             Format format;
@@ -1965,7 +1968,7 @@ public class PlayerActivity extends Activity {
                                 format = groupIndex.getFormat(trackIndex);
                                 add = true;
 
-                                if (format.bitrate <= MaxBitrate) {
+                                if (format.bitrate <= MaxBitrate && format.height <= MaxResolution) {
 
                                     for (String value : BLACKLISTED_QUALITIES) {
                                         if (Integer.toString(format.height).startsWith(value)) {
@@ -2924,19 +2927,24 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void SetMainPlayerBitrate(int Bitrate) {
+        public void SetMainPlayerBitrate(int Bitrate, int Resolution) {
             mainPlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            mainPlayerResolution = Resolution == 0 ? Integer.MAX_VALUE : (Resolution + 10);
+            int width = Resolution == 0 ? Integer.MAX_VALUE : (int) ((mainPlayerResolution * 16.0f) / 9.0f);
 
             trackSelectorParameters[0] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(mainPlayerBitrate)
+                    .setMaxVideoSize(width, mainPlayerResolution)
                     .build();
 
         }
 
         @JavascriptInterface
-        public void SetSmallPlayerBitrate(int Bitrate) {
+        public void SetSmallPlayerBitrate(int Bitrate, int Resolution) {
             PP_PlayerBitrate = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
+            PP_PlayerResolution = Resolution == 0 ? Integer.MAX_VALUE : (Resolution + 10);
+            int width = Resolution == 0 ? Integer.MAX_VALUE : (int) ((PP_PlayerResolution * 16.0f) / 9.0f);
 
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
@@ -2944,6 +2952,7 @@ public class PlayerActivity extends Activity {
             trackSelectorParameters[1] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
                     .setMaxVideoBitrate(PP_PlayerBitrate)
+                    .setMaxVideoSize(width, PP_PlayerResolution)
                     .build();
 
             int extraSmallPlayerBitrate = 4000000;
@@ -2951,7 +2960,10 @@ public class PlayerActivity extends Activity {
                     .buildUpon()
                     .setMaxVideoBitrate(
                             Math.min(PP_PlayerBitrate, extraSmallPlayerBitrate)
-                    ).build();
+                    )
+                    .setMaxVideoSize(width, PP_PlayerResolution)
+                    .build();
+
         }
 
         @JavascriptInterface

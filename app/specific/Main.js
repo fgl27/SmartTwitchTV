@@ -439,7 +439,10 @@ function Main_CheckDevice() {
                 //bitrate to max possible
                 Settings_value.bitrate_min.defaultValue = 0;
                 Main_setItem('bitrate_min', 1);
-                OSInterface_SetSmallPlayerBitrate(0);
+
+                Settings_value.res_min.defaultValue = 0;
+                Main_setItem('res_min', 1);
+                OSInterface_SetSmallPlayerBitrate(0, 0);
 
                 //enable small player over feed on multi
                 Settings_value.disable_feed_player_multi.defaultValue = 0;
