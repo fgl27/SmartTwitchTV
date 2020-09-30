@@ -389,7 +389,7 @@ var Settings_value = {
     },
     "highlight_bits": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "show_actions": {//Migrated to dialog
         "values": ["no", "yes"],
