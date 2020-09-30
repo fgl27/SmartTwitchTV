@@ -429,8 +429,7 @@ function Screens_HttpResultStatus(resultObj, key) {
         );
 
         //If the scroll position is at the end of the list after a loading success focus
-        if (Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
-
+        if (ScreenObj[key].itemsCount && Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
             Screens_addFocus(true, key);
 
         }
