@@ -44,6 +44,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -234,8 +235,9 @@ public class PlayerActivity extends Activity {
 
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
-    private int mWho_Called = 1;
+    private boolean IsUsingSurfaceView;
 
+    private int mWho_Called = 1;
 
     //TODO comment this what they are for 123 ?
     private LoadControl[] loadControl = new LoadControl[4];
@@ -406,6 +408,8 @@ public class PlayerActivity extends Activity {
     }
 
     public void setPlayerSurface(boolean surface_view) {
+        IsUsingSurfaceView = surface_view;
+
         int[] idGone = idtexture, idVisible = idsurface;
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (!surface_view) {
@@ -470,6 +474,7 @@ public class PlayerActivity extends Activity {
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters);
 
         if (PlayerObjPosition == 0) GetCurrentPosition();
+        else if (PlayerObjPosition == 1) ResetPPView();
 
         PlayerObj[4].playerView.setPlayer(PlayerObj[4].player);
         Clear_PreviewPlayer();
@@ -579,19 +584,32 @@ public class PlayerActivity extends Activity {
 
         SwitchPlayerAudio(AudioSource);
 
-        if (!isSmall) {
-            ResetSmallView();
-        }
+        if (isSmall) ResetPPView();
 
     }
 
-    private void ResetSmallView() {
-        if (PlayerObj[1].player != null) {
-            //Reset small player view so it shows after big one has started
-            PlayerObj[1].player.setPlayWhenReady(false);
-            PlayerObj[1].playerView.setVisibility(View.GONE);
-            PlayerObj[1].playerView.setVisibility(View.VISIBLE);
-            PlayerObj[1].player.setPlayWhenReady(true);
+    private void ResetPPView() {
+        //Reset the Z position of the PP player so it show above the other
+
+        if (IsUsingSurfaceView && PlayerObj[0].player != null && PlayerObj[1].player != null) {
+
+            SurfaceView PlayerSurfaceViewMain = (SurfaceView) PlayerObj[0].playerView.getVideoSurfaceView();
+            SurfaceView PlayerSurfaceViewPP = (SurfaceView) PlayerObj[1].playerView.getVideoSurfaceView();
+
+            if (PlayerSurfaceViewMain != null && PlayerSurfaceViewPP != null) {
+
+                //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work
+                VideoHolder.removeView(PlayerObj[0].playerView);
+                VideoHolder.removeView(PlayerObj[1].playerView);
+
+                PlayerSurfaceViewPP.setZOrderMediaOverlay(true);
+                PlayerSurfaceViewMain.setZOrderMediaOverlay(false);
+
+                VideoHolder.addView(PlayerObj[0].playerView);
+                VideoHolder.addView(PlayerObj[1].playerView);
+
+            }
+
         }
     }
 
@@ -637,8 +655,26 @@ public class PlayerActivity extends Activity {
 
         );
 
+        ResetSmallView();
+
         PlayerObj[4].player.setVolume(PreviewAudio);
 
+    }
+
+    private void ResetSmallView() {
+        if (IsUsingSurfaceView && PlayerObj[4].player != null) {
+
+            //Reset the Z position of the PP player so it show above the other
+
+            SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
+
+            if (PlayerSurfaceView != null) {
+
+                PlayerSurfaceView.setZOrderMediaOverlay(true);
+
+            }
+
+        }
     }
 
     private void ClearPlayer(int position) {
@@ -993,9 +1029,6 @@ public class PlayerActivity extends Activity {
 
         VideoHolder.bringChildToFront(PlayerObj[1].playerView);
 
-        PlayerObj[1].playerView.setVisibility(View.GONE);
-        PlayerObj[1].playerView.setVisibility(View.VISIBLE);
-
         PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
         if (PlayerObj[0].player != null) PlayerObj[0].player.setPlayWhenReady(true);
         if (PlayerObj[0].trackSelector != null) {
@@ -1017,6 +1050,8 @@ public class PlayerActivity extends Activity {
                 setEnabledQualities(PlayerObj[1].trackSelector, 1);
 
         }
+
+        ResetPPView();
 
         SwitchPlayerAudio(AudioSource);
 
@@ -1185,9 +1220,9 @@ public class PlayerActivity extends Activity {
 
             for (i = 0; i < PlayerAccount; i++) {
 
-                if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(true);
                 PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
                 PlayerObj[i].playerView.setVisibility(View.VISIBLE);
+                if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(true);
 
             }
 
@@ -1210,7 +1245,6 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAccount; i++) {
             PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i]);
-            VideoHolder.bringChildToFront(PlayerObj[i].playerView);
         }
 
         if (PlayerObj[0].trackSelector != null) {
@@ -1230,11 +1264,7 @@ public class PlayerActivity extends Activity {
         if (PicturePicture) {
 
             updateVideSizePP(isFullScreen);
-
-            //Reset small player position over big player, as after a resume all player restart and position is reset on that case
-            PlayerObj[1].playerView.setVisibility(View.GONE);
-            PlayerObj[1].playerView.setVisibility(View.VISIBLE);
-            VideoHolder.bringChildToFront(PlayerObj[1].playerView);
+            ResetPPView();
 
         } else {
 
@@ -2924,7 +2954,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void mSwitchPlayerObjPosition(int mPicturePicturePosition) {
+        public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
             MainThreadHandler.post(() -> UpdadeSizePosSmall(1, true));
         }
