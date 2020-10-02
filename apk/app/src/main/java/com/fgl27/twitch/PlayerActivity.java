@@ -598,16 +598,19 @@ public class PlayerActivity extends Activity {
 
             if (PlayerSurfaceViewMain != null && PlayerSurfaceViewPP != null) {
 
-                //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work
-                VideoHolder.removeView(PlayerObj[0].playerView);
-                VideoHolder.removeView(PlayerObj[1].playerView);
+                //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on older OS
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    VideoHolder.removeView(PlayerObj[0].playerView);
+                    VideoHolder.removeView(PlayerObj[1].playerView);
+                }
 
                 PlayerSurfaceViewPP.setZOrderMediaOverlay(true);
                 PlayerSurfaceViewMain.setZOrderMediaOverlay(false);
 
-                VideoHolder.addView(PlayerObj[0].playerView);
-                VideoHolder.addView(PlayerObj[1].playerView);
-
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    VideoHolder.addView(PlayerObj[0].playerView);
+                    VideoHolder.addView(PlayerObj[1].playerView);
+                }
             }
 
         }
