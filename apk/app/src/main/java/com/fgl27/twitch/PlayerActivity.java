@@ -999,13 +999,6 @@ public class PlayerActivity extends Activity {
 
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer() {
-        int i;
-
-        //Pausing the playback prevent (is not 100% but prevent most cases) the player from display a flicker green screen, or odd green artifacts after the switch
-        //The odd behavior will stay until the player is releasePlayer
-        for (i = 0; i < 2; i++) {
-            if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(false);
-        }
 
         if (PlayerObj[0].Listener != null) PlayerObj[0].Listener.UpdatePosition(1);
         if (PlayerObj[1].Listener != null) PlayerObj[1].Listener.UpdatePosition(0);
@@ -1033,7 +1026,6 @@ public class PlayerActivity extends Activity {
         VideoHolder.bringChildToFront(PlayerObj[1].playerView);
 
         PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
-        if (PlayerObj[0].player != null) PlayerObj[0].player.setPlayWhenReady(true);
         if (PlayerObj[0].trackSelector != null) {
 
             if (BLACKLISTED_QUALITIES == null)
@@ -1044,7 +1036,6 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
-        if (PlayerObj[1].player != null) PlayerObj[1].player.setPlayWhenReady(true);
         if (PlayerObj[1].trackSelector != null) {
 
             if (BLACKLISTED_QUALITIES == null)
@@ -1123,12 +1114,6 @@ public class PlayerActivity extends Activity {
         int i;
 
         if (offset != 0) {
-
-            for (i = 0; i < PlayerAccount; i++) {
-
-                if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(false);
-
-            }
 
             SimpleExoPlayer tempPlayer;
             DefaultTrackSelector tempTrackSelector;
@@ -1225,7 +1210,6 @@ public class PlayerActivity extends Activity {
 
                 PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
                 PlayerObj[i].playerView.setVisibility(View.VISIBLE);
-                if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(true);
 
             }
 
