@@ -185,6 +185,8 @@ public class PlayerActivity extends Activity {
     private boolean IsInAutoMode = true;
     private boolean PingWarning = true;
     private AppPreferences appPreferences;
+    //A layout used to hide a view without using visibility change
+    private FrameLayout.LayoutParams HideLayout = new FrameLayout.LayoutParams(0, 0, 0);
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -2722,6 +2724,17 @@ public class PlayerActivity extends Activity {
             MainThreadHandler.post(() -> PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
 
+//        @JavascriptInterface
+//        public void TestFun() {
+//            MainThreadHandler.post(() -> {
+//
+//                FrameLayout.LayoutParams temp = new FrameLayout.LayoutParams(0, 0, 0);
+//                PlayerObj[0].playerView.setLayoutParams(temp);
+//                PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
+//
+//            });
+//        }
+
         @JavascriptInterface
         public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos) {
             MainThreadHandler.post(() -> {
@@ -2736,7 +2749,7 @@ public class PlayerActivity extends Activity {
 
                     if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
 
-                    PlayerObj[4].playerView.setVisibility(View.GONE);
+                    PlayerObj[4].playerView.setLayoutParams(HideLayout);
 
                 } else Clear_PreviewPlayer();
 

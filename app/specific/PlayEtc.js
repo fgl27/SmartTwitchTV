@@ -1392,6 +1392,8 @@ function Play_handleKeyDown(e) {
                 }
                 break;
             case KEY_DOWN:
+                // Android.TestFun();
+                // break;
                 if (Play_isPanelShowing()) {
 
                     Play_clearHidePanel();
