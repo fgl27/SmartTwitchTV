@@ -464,7 +464,9 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].player = PlayerObj[4].player;
         PlayerObj[4].player = tempPlayer;
 
-        PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
+        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
+            PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
+
         PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
@@ -495,6 +497,10 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
 
         if (PlayerObj[PlayerObjPosition].player == null) {
+
+            //Change the visibility before starting the player, as some device will have error on visibility changes
+            if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
+                PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
             PlayerObj[PlayerObjPosition].trackSelector = new DefaultTrackSelector(this);
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters);
@@ -529,9 +535,6 @@ public class PlayerActivity extends Activity {
         );
 
         PlayerObj[PlayerObjPosition].player.prepare();
-
-        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
-            PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
         KeepScreenOn(true);
 
@@ -1003,25 +1006,9 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[0].Listener != null) PlayerObj[0].Listener.UpdatePosition(1);
         if (PlayerObj[1].Listener != null) PlayerObj[1].Listener.UpdatePosition(0);
 
-        PlayerEventListener tempPlayerListener = PlayerObj[0].Listener;
-        PlayerObj[0].Listener = PlayerObj[1].Listener;
-        PlayerObj[1].Listener = tempPlayerListener;
-
-        MediaSource tempMediaSource = PlayerObj[0].mediaSources;
-        PlayerObj[0].mediaSources = PlayerObj[1].mediaSources;
-        PlayerObj[1].mediaSources = tempMediaSource;
-
-        DefaultTrackSelector tempTrackSelector = PlayerObj[0].trackSelector;
-        PlayerObj[0].trackSelector = PlayerObj[1].trackSelector;
-        PlayerObj[1].trackSelector = tempTrackSelector;
-
-        SimpleExoPlayer tempMainPlayer = PlayerObj[0].player;
-        PlayerObj[0].player = PlayerObj[1].player;
-        PlayerObj[1].player = tempMainPlayer;
-
-        PlayerView tempPlayerView = PlayerObj[0].playerView;
-        PlayerObj[0].playerView = PlayerObj[1].playerView;
-        PlayerObj[1].playerView = tempPlayerView;
+        PlayerObj tempPlayerObj = PlayerObj[0];
+        PlayerObj[0] = PlayerObj[1];
+        PlayerObj[1] = tempPlayerObj;
 
         VideoHolder.bringChildToFront(PlayerObj[1].playerView);
 
@@ -1115,92 +1102,53 @@ public class PlayerActivity extends Activity {
 
         if (offset != 0) {
 
-            SimpleExoPlayer tempPlayer;
-            DefaultTrackSelector tempTrackSelector;
-            MediaSource tempMediaSource;
-            PlayerView tempPlayerView;
-            PlayerEventListener tempPlayerListener;
+            PlayerObj tempPlayerObj;
 
-            int len = Math.abs(offset);
+            int i_len = Math.abs(offset);
             int j;
             int j_len = PlayerAccount - 1;
 
             boolean left = offset > 0;
 
-            for (i = 0; i < len; i++) {
+            for (i = 0; i < i_len; i++) {
 
-                //https://www.javatpoint.com/java-program-to-left-rotate-the-elements-of-an-array
                 if (left) {//if offset = 1 result 1 2 3 0
 
                     //Stores the first element of the array
-                    tempPlayer = PlayerObj[0].player;
-                    tempPlayerView = PlayerObj[0].playerView;
-
-                    tempTrackSelector = PlayerObj[0].trackSelector;
-                    tempMediaSource = PlayerObj[0].mediaSources;
-                    tempPlayerListener = PlayerObj[0].Listener;
+                    tempPlayerObj = PlayerObj[0];
 
                     for (j = 0; j < j_len; j++) {
-                        //Shift element of array by one
-
-                        PlayerObj[j].trackSelector = PlayerObj[j + 1].trackSelector;
-                        PlayerObj[j].mediaSources = PlayerObj[j + 1].mediaSources;
-
                         if (PlayerObj[j].Listener != null)
                             PlayerObj[j].Listener.UpdatePosition(j + 1);
 
-                        PlayerObj[j].Listener = PlayerObj[j + 1].Listener;
-
-                        PlayerObj[j].player = PlayerObj[j + 1].player;
-                        PlayerObj[j].playerView = PlayerObj[j + 1].playerView;
+                        //Shift element of array by one
+                        PlayerObj[j] = PlayerObj[j + 1];
                     }
-                    //First element of array will be added to the end
-                    PlayerObj[j].trackSelector = tempTrackSelector;
-                    PlayerObj[j].mediaSources = tempMediaSource;
 
                     if (PlayerObj[j].Listener != null)
                         PlayerObj[j].Listener.UpdatePosition(0);
 
-                    PlayerObj[j].Listener = tempPlayerListener;
+                    //First element of array will be added to the end
+                    PlayerObj[j] = tempPlayerObj;
 
-                    PlayerObj[j].player = tempPlayer;
-                    PlayerObj[j].playerView = tempPlayerView;
-                    //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
                 } else {// else if offset -1 result 3 0 1 2
 
                     //Stores the last element of array
-                    tempPlayer = PlayerObj[3].player;
-                    tempPlayerView = PlayerObj[3].playerView;
-
-                    tempTrackSelector = PlayerObj[3].trackSelector;
-                    tempMediaSource = PlayerObj[3].mediaSources;
-                    tempPlayerListener = PlayerObj[3].Listener;
-
+                    tempPlayerObj = PlayerObj[3];
 
                     for (j = j_len; j > 0; j--) {
-                        //Shift element of array by one
-                        PlayerObj[j].trackSelector = PlayerObj[j - 1].trackSelector;
-                        PlayerObj[j].mediaSources = PlayerObj[j - 1].mediaSources;
 
                         if (PlayerObj[j].Listener != null)
                             PlayerObj[j].Listener.UpdatePosition(j - 1);
 
-                        PlayerObj[j].Listener = PlayerObj[j - 1].Listener;
-
-                        PlayerObj[j].player = PlayerObj[j - 1].player;
-                        PlayerObj[j].playerView = PlayerObj[j - 1].playerView;
+                        //Shift element of array by one
+                        PlayerObj[j] = PlayerObj[j - 1];
                     }
-                    //Last element of array will be added to the start of array.
-                    PlayerObj[0].trackSelector = tempTrackSelector;
-                    PlayerObj[0].mediaSources = tempMediaSource;
-
                     if (PlayerObj[0].Listener != null)
                         PlayerObj[0].Listener.UpdatePosition(3);
 
-                    PlayerObj[0].Listener = tempPlayerListener;
-
-                    PlayerObj[0].player = tempPlayer;
-                    PlayerObj[0].playerView = tempPlayerView;
+                    //Last element of array will be added to the start of array.
+                    PlayerObj[0] = tempPlayerObj;
 
                 }
 
@@ -1209,7 +1157,6 @@ public class PlayerActivity extends Activity {
             for (i = 0; i < PlayerAccount; i++) {
 
                 PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-                PlayerObj[i].playerView.setVisibility(View.VISIBLE);
 
             }
 
@@ -1218,7 +1165,6 @@ public class PlayerActivity extends Activity {
             for (i = 0; i < PlayerAccount; i++) {
 
                 PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-                PlayerObj[i].playerView.setVisibility(View.VISIBLE);
 
             }
         }
