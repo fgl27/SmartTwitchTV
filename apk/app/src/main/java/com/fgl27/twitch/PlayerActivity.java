@@ -458,8 +458,10 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].playerView.setLayoutParams(PlayerObj[4].playerView.getLayoutParams());
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
-        if (PicturePicture && !MultiStreamEnable) ResetPPView();
-        else ResetCurrentView(PlayerObjPosition);
+        if (PicturePicture && !MultiStreamEnable) {
+            ResetCurrentView(PlayerObjPosition);
+            ResetPPView();
+        } else ResetCurrentView(PlayerObjPosition);
 
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
             setEnabledQualities(PlayerObj[PlayerObjPosition].trackSelector, PlayerObjPosition);
@@ -580,7 +582,7 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private void FixZorder(int positionInFront, int positionInBack) {
+    private void Fix_Z_Order(int positionInFront, int positionInBack) {
 
         SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[positionInBack].playerView.getVideoSurfaceView();
         SurfaceView PlayerSurfaceViewPreview = (SurfaceView) PlayerObj[positionInFront].playerView.getVideoSurfaceView();
@@ -608,7 +610,7 @@ public class PlayerActivity extends Activity {
 
         if (IsUsingSurfaceView) {
 
-            FixZorder(4, position);
+            Fix_Z_Order(4, position);
 
         }
         VideoWebHolder.bringChildToFront(mWebView);
@@ -621,7 +623,7 @@ public class PlayerActivity extends Activity {
 
         if (IsUsingSurfaceView) {
 
-            FixZorder(1, 0);
+            Fix_Z_Order(1, 0);
 
         }
         VideoWebHolder.bringChildToFront(PlayerObj[1].playerView);
