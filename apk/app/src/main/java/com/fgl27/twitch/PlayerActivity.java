@@ -1027,29 +1027,26 @@ public class PlayerActivity extends Activity {
         PlayerObj[1] = tempPlayerObj;
 
         PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
-        if (PlayerObj[0].trackSelector != null) {
-
-            if (BLACKLISTED_QUALITIES == null)
-                PlayerObj[0].trackSelector.setParameters(trackSelectorParameters[0]);
-            else
-                setEnabledQualities(PlayerObj[0].trackSelector, 0);
-
-        }
-
         PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
-        if (PlayerObj[1].trackSelector != null) {
-
-            if (BLACKLISTED_QUALITIES == null)
-                PlayerObj[1].trackSelector.setParameters(trackSelectorParameters[1]);
-            else
-                setEnabledQualities(PlayerObj[1].trackSelector, 1);
-
-        }
-
         ResetPPView();
+
+        for (int i = 0; i < 2; i++) {
+            PlayerObjUpdateTrackSelector(i, i);
+        }
 
         SwitchPlayerAudio(AudioSource);
 
+    }
+
+    public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {
+        if (PlayerObj[PlayerObjPos].trackSelector != null) {
+
+            if (BLACKLISTED_QUALITIES == null)
+                PlayerObj[PlayerObjPos].trackSelector.setParameters(trackSelectorParameters[ParametersPos]);
+            else
+                setEnabledQualities(PlayerObj[PlayerObjPos].trackSelector, ParametersPos);
+
+        }
     }
 
     public void SwitchPlayerAudio(int pos) {
@@ -1097,12 +1094,13 @@ public class PlayerActivity extends Activity {
     public void SetPlayerAudioMulti() {
 
         float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
+        boolean AudioAll = AudioMulti == 4;
 
         for (int i = 0; i < PlayerAccount; i++) {
 
             if (PlayerObj[i].player != null) {
 
-                if (AudioMulti == 4 || AudioMulti == i) PlayerObj[i].player.setVolume(volume);
+                if (AudioAll || AudioMulti == i) PlayerObj[i].player.setVolume(volume);
                 else PlayerObj[i].player.setVolume(0f);
 
             }
@@ -1132,11 +1130,13 @@ public class PlayerActivity extends Activity {
                     tempPlayerObj = PlayerObj[0];
 
                     for (j = 0; j < j_len; j++) {
+
                         if (PlayerObj[j].Listener != null)
                             PlayerObj[j].Listener.UpdatePosition(j + 1);
 
                         //Shift element of array by one
                         PlayerObj[j] = PlayerObj[j + 1];
+
                     }
 
                     if (PlayerObj[j].Listener != null)
@@ -1157,7 +1157,9 @@ public class PlayerActivity extends Activity {
 
                         //Shift element of array by one
                         PlayerObj[j] = PlayerObj[j - 1];
+
                     }
+
                     if (PlayerObj[0].Listener != null)
                         PlayerObj[0].Listener.UpdatePosition(3);
 
@@ -1168,19 +1170,12 @@ public class PlayerActivity extends Activity {
 
             }
 
-            for (i = 0; i < PlayerAccount; i++) {
+        }
 
-                PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
+        for (i = 0; i < PlayerAccount; i++) {
 
-            }
+            PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
 
-        } else {
-
-            for (i = 0; i < PlayerAccount; i++) {
-
-                PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
-
-            }
         }
 
         AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
@@ -1194,14 +1189,8 @@ public class PlayerActivity extends Activity {
             PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i]);
         }
 
-        if (PlayerObj[0].trackSelector != null) {
+        PlayerObjUpdateTrackSelector(0, 1);
 
-            if (BLACKLISTED_QUALITIES == null)
-                PlayerObj[0].trackSelector.setParameters(trackSelectorParameters[1]);
-            else
-                setEnabledQualities(PlayerObj[0].trackSelector, 1);
-
-        }
     }
 
     public void UnSetMultiStream() {
@@ -1231,14 +1220,7 @@ public class PlayerActivity extends Activity {
         PlayerObj[2].playerView.setVisibility(View.GONE);
         PlayerObj[3].playerView.setVisibility(View.GONE);
 
-        if (PlayerObj[0].trackSelector != null) {
-
-            if (BLACKLISTED_QUALITIES == null)
-                PlayerObj[0].trackSelector.setParameters(trackSelectorParameters[0]);
-            else
-                setEnabledQualities(PlayerObj[0].trackSelector, 0);
-
-        }
+        PlayerObjUpdateTrackSelector(0, 0);
     }
 
     private void GetCurrentPosition() {
@@ -1933,10 +1915,7 @@ public class PlayerActivity extends Activity {
             IsInAutoMode = position == -1;
 
             if (IsInAutoMode) {
-                if (BLACKLISTED_QUALITIES == null)
-                    PlayerObj[0].trackSelector.setParameters(trackSelectorParameters[0]);
-                else
-                    setEnabledQualities(PlayerObj[0].trackSelector, 0);
+                PlayerObjUpdateTrackSelector(0, 0);
 
                 return;
             }
@@ -1970,6 +1949,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    //TODO revise this when fully update to PlayerObj
     public void setEnabledQualities(DefaultTrackSelector trackSelector, int position) {
 
         if (trackSelector != null) {
@@ -2753,6 +2733,7 @@ public class PlayerActivity extends Activity {
 
                 if (PreventClean) {
 
+                    //TODO revise this when fully update to PlayerObj
                     if (PlayerObj[4].trackSelector != null && BLACKLISTED_QUALITIES == null) {
                         int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
 
