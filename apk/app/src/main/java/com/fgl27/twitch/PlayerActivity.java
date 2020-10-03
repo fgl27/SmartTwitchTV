@@ -582,25 +582,27 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private void Fix_Z_Order(PlayerView ViewInFront, PlayerView ViewInBack) {
+    private void Fix_Z_Order(PlayerView ViewOnTop, PlayerView ViewOnBottom, boolean ForceOnTop) {
 
-        SurfaceView PlayerSurfaceView = (SurfaceView) ViewInBack.getVideoSurfaceView();
-        SurfaceView PlayerSurfaceViewPreview = (SurfaceView) ViewInFront.getVideoSurfaceView();
+        SurfaceView TopSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
+        SurfaceView BottomSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
 
-        if (PlayerSurfaceView != null && PlayerSurfaceViewPreview != null) {
+        if (TopSurfaceView != null && BottomSurfaceView != null) {
 
             //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoWebHolder.removeView(ViewInBack);
-                VideoWebHolder.removeView(ViewInFront);
+                VideoWebHolder.removeView(ViewOnBottom);
+                VideoWebHolder.removeView(ViewOnTop);
             }
 
-            PlayerSurfaceViewPreview.setZOrderMediaOverlay(true);
-            PlayerSurfaceView.setZOrderMediaOverlay(false);
+            if (ForceOnTop) BottomSurfaceView.setZOrderOnTop(true);
+            else BottomSurfaceView.setZOrderMediaOverlay(true);
+
+            TopSurfaceView.setZOrderMediaOverlay(false);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoWebHolder.addView(ViewInBack);
-                VideoWebHolder.addView(ViewInFront);
+                VideoWebHolder.addView(ViewOnBottom);
+                VideoWebHolder.addView(ViewOnTop);
             }
         }
 
@@ -610,7 +612,7 @@ public class PlayerActivity extends Activity {
 
         if (IsUsingSurfaceView) {
 
-            Fix_Z_Order(PlayerObj[4].playerView, PlayerObj[position].playerView);
+            Fix_Z_Order(PlayerObj[4].playerView, PlayerObj[position].playerView, true);
 
         }
         VideoWebHolder.bringChildToFront(mWebView);
@@ -623,7 +625,7 @@ public class PlayerActivity extends Activity {
 
         if (IsUsingSurfaceView) {
 
-            Fix_Z_Order(PlayerObj[1].playerView, PlayerObj[0].playerView);
+            Fix_Z_Order(PlayerObj[1].playerView, PlayerObj[0].playerView, false);
 
         }
         VideoWebHolder.bringChildToFront(PlayerObj[1].playerView);
@@ -689,7 +691,7 @@ public class PlayerActivity extends Activity {
 
             if (PlayerSurfaceView != null) {
 
-                PlayerSurfaceView.setZOrderMediaOverlay(true);
+                PlayerSurfaceView.setZOrderOnTop(true);
 
             }
 
