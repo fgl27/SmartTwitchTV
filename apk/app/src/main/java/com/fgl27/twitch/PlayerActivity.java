@@ -584,8 +584,8 @@ public class PlayerActivity extends Activity {
 
     private void Fix_Z_Order(PlayerView ViewOnTop, PlayerView ViewOnBottom, boolean ForceOnTop) {
 
-        SurfaceView TopSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
-        SurfaceView BottomSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
+        SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
+        SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
 
         if (TopSurfaceView != null && BottomSurfaceView != null) {
 
@@ -595,10 +595,11 @@ public class PlayerActivity extends Activity {
                 VideoWebHolder.removeView(ViewOnTop);
             }
 
-            if (ForceOnTop) BottomSurfaceView.setZOrderOnTop(true);
-            else BottomSurfaceView.setZOrderMediaOverlay(true);
+            if (ForceOnTop) TopSurfaceView.setZOrderOnTop(true);
+            else TopSurfaceView.setZOrderMediaOverlay(true);
 
-            TopSurfaceView.setZOrderMediaOverlay(false);
+            BottomSurfaceView.setZOrderOnTop(false);
+            BottomSurfaceView.setZOrderMediaOverlay(false);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                 VideoWebHolder.addView(ViewOnBottom);
@@ -706,10 +707,8 @@ public class PlayerActivity extends Activity {
         releasePlayer(4);
         mSetPreviewOthersAudio();
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            VideoWebHolder.removeView(PlayerObj[4].playerView);
-            VideoWebHolder.addView(PlayerObj[4].playerView);
-        }
+        VideoWebHolder.removeView(PlayerObj[4].playerView);
+        VideoWebHolder.addView(PlayerObj[4].playerView);
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
@@ -2573,7 +2572,7 @@ public class PlayerActivity extends Activity {
 
                         PreparePlayer_Single_PP(who_called, ResumePosition, position);
 
-                        if (PlayerObj[4].player != null) releasePlayer(4);
+                        if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                     }
 
                     PreviewPlayerPlaylist = null;
