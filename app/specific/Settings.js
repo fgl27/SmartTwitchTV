@@ -212,7 +212,7 @@ var Settings_value = {
     },
     "since_notification": {//Migrated to dialog
         "values": Settings_GetnotificationTime(),
-        "defaultValue": 1
+        "defaultValue": 7
     },
     "global_font_offset": {//Migrated to dialog
         "values": [-3, -2, -1, 0, 1, 2, 3],
