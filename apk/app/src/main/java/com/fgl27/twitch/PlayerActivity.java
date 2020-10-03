@@ -2778,13 +2778,12 @@ public class PlayerActivity extends Activity {
             int i, j, len = PlayerViewExtraLayout.length, lenEx;
 
             float scale = (float) ScreenSize.y / web_height;//WebView screen size is not the same size as device screen
-            float bottomMargin = bottom * scale;
-            bottomMargin = (float) ScreenSize.y - bottomMargin;
+            int bottomMargin = (int) Math.floor(ScreenSize.y - (bottom * scale));
 
             for (i = 0; i < len; i++) {
                 lenEx = PlayerViewExtraLayout[i].length;
                 for (j = 0; j < lenEx; j++) {
-                    PlayerViewExtraLayout[i][j].bottomMargin = (int) bottomMargin;
+                    PlayerViewExtraLayout[i][j].bottomMargin = bottomMargin;
                 }
             }
         }
