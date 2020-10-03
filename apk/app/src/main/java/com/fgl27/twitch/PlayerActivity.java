@@ -69,7 +69,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -241,7 +240,6 @@ public class PlayerActivity extends Activity {
     private int mWho_Called = 1;
 
     //TODO comment this what they are for 123 ?
-    private LoadControl[] loadControl = new LoadControl[4];
     private int[] BUFFER_SIZE = {250, 250, 250, 250};//Default, live, vod, clips
     private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
 
@@ -253,7 +251,7 @@ public class PlayerActivity extends Activity {
 
         DefaultTrackSelector trackSelector;
 
-        int loadControlPosition;
+        int loadControlRamDivider;
         int Type;
         int CheckCounter;
 
@@ -269,14 +267,14 @@ public class PlayerActivity extends Activity {
         SimpleExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
-                  int loadControlPosition, int Type, int CheckCounter, Handler CheckHandler,
+                  int loadControlRamDivider, int Type, int CheckCounter, Handler CheckHandler,
                   long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
                   PlayerView playerView, SimpleExoPlayer player) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
             this.trackSelector = trackSelector;
-            this.loadControlPosition = loadControlPosition;
+            this.loadControlRamDivider = loadControlRamDivider;
 
             this.Type = Type;
             this.CheckCounter = CheckCounter;
@@ -335,7 +333,7 @@ public class PlayerActivity extends Activity {
                         false,
                         false,
                         null,
-                        0,
+                        2,
                         0,
                         0,
                         null,
@@ -502,7 +500,12 @@ public class PlayerActivity extends Activity {
 
             PlayerObj[PlayerObjPosition].player = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
                     .setTrackSelector(PlayerObj[PlayerObjPosition].trackSelector)
-                    .setLoadControl(loadControl[PlayerObj[loadControlPosition].loadControlPosition])
+                    .setLoadControl(
+                            Tools.getLoadControl(
+                                    BUFFER_SIZE[Who_Called],
+                                    DeviceRam / (loadControlPosition > 1 ? 1 : 2)
+                            )
+                    )
                     .build();
 
             PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition, Who_Called);
@@ -637,7 +640,7 @@ public class PlayerActivity extends Activity {
 
         SetupPlayer(
                 PlayerObjPosition,
-                0,
+                1,
                 1,
                 C.TIME_UNSET,
                 PlayerObjPosition == 0,
@@ -667,7 +670,7 @@ public class PlayerActivity extends Activity {
 
         SetupPlayer(
                 4,
-                0,
+                1,
                 IsVod ? 2 : 1,
                 (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
                 IsVod,
@@ -3078,10 +3081,6 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetBuffer(int who_called, int buffer_size) {
             BUFFER_SIZE[who_called] = Math.min(buffer_size, 15000);
-            loadControl[who_called] = Tools.getLoadControl(BUFFER_SIZE[who_called], DeviceRam);
-
-            //MUltiStream and preview feed player
-            loadControl[0] = Tools.getLoadControl(BUFFER_SIZE[1], DeviceRam / 2);
         }
 
         @JavascriptInterface
