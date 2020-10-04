@@ -243,7 +243,7 @@ public class PlayerActivity extends Activity {
     private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};
     private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 730};
 
-    private String[] BLACKLISTED_CODECS = null;
+    private BlackListMediaCodecSelector BLACKLISTED_CODECS = null;
     private String[] BLACKLISTED_QUALITIES = null;
 
     private PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
@@ -543,7 +543,7 @@ public class PlayerActivity extends Activity {
 
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
             if (BLACKLISTED_CODECS != null)
-                renderersFactory.setMediaCodecSelector(new BlackListMediaCodecSelector(BLACKLISTED_CODECS));
+                renderersFactory.setMediaCodecSelector(BLACKLISTED_CODECS);
 
             PlayerObj[PlayerObjPosition].player = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
                     .setTrackSelector(PlayerObj[PlayerObjPosition].trackSelector)
@@ -3191,7 +3191,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void setBlackListMediaCodec(String CodecList) {
-            BLACKLISTED_CODECS = CodecList != null && !CodecList.isEmpty() ? CodecList.toLowerCase(Locale.US).split(",") : null;
+            BLACKLISTED_CODECS = CodecList != null && !CodecList.isEmpty() ? new BlackListMediaCodecSelector(CodecList.toLowerCase(Locale.US).split(",")) : null;
         }
 
         @JavascriptInterface
