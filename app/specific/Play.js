@@ -2109,7 +2109,6 @@ function Play_RestorePlayDataValues() {
 function Play_handleKeyUpClear() {
     Main_clearTimeout(PlayExtra_KeyEnterID);
     Main_removeEventListener("keyup", Play_handleKeyUp);
-    if (!Main_isElementShowing('dialog_os')) Main_addEventListener("keydown", Play_handleKeyDown);
 }
 
 function Play_Exit() {

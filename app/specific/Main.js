@@ -95,7 +95,6 @@ var Main_values = {
     "DeviceCheck2": false,
     "Never_run_phone": true,
     "Codec_is_Check": false,
-    "check_pp_workaround": true,
     "OS_is_Check": false,
     "Restore_Backup_Check": false
 };
@@ -139,7 +138,6 @@ var Main_DataAttribute = 'data-array';
 
 var Main_update_show_toast = false;
 var Main_IsOn_OSInterfaceVersion = '';
-var Main_AndroidSDK = 1000;
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
 var Main_randomimg = '?' + Math.random();
@@ -502,19 +500,6 @@ function Main_CheckDevice() {
 
         }
 
-        if (Main_IsOn_OSInterface) Main_AndroidSDK = OSInterface_getSDK();
-        else Main_AndroidSDK = 1000;
-
-        //Android N (sdk 25) and older don't properly support animations on surface_view
-        //So enable the workaround by default
-        if (!Main_values.OS_is_Check && Main_AndroidSDK < 1000) {
-            if (Main_AndroidSDK < 26) {
-                Settings_value.pp_workaround.defaultValue = 1;
-                Main_setItem('pp_workaround', 2);
-            }
-            Main_values.OS_is_Check = true;
-        }
-
     }// else Settings_ForceEnableAimations();
 }
 
@@ -583,8 +568,6 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
     Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FOLLOW);
-
-    Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
 
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
     Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
@@ -994,6 +977,8 @@ function Main_checkVersion() {
         var device = OSInterface_getDevice();
         var Webviewversion = OSInterface_getWebviewVersion();
         var Manufacturer = OSInterface_getManufacturer();
+        var Main_AndroidSDK = OSInterface_getSDK();
+
         Main_Log('Webviewversion ' + Webviewversion);
 
         Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +

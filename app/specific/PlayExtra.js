@@ -413,27 +413,7 @@ function PlayExtra_qualityChanged() {
         OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
     }
 
-    if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
-
-        Main_ShowElement('dialog_os');
-        Main_removeEventListener("keydown", Play_handleKeyDown);
-        Main_addEventListener("keydown", PlayExtra_handleKeyDown);
-
-        Main_values.check_pp_workaround = false;
-        Main_SaveValues();
-    }
-
     //Main_Log('PlayExtra_onPlayer: Auto');
-}
-
-function PlayExtra_handleKeyDown(e) {
-    if (e.keyCode === KEY_RETURN || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
-
-        Main_removeEventListener("keydown", PlayExtra_handleKeyDown);
-        Main_addEventListener("keydown", Play_handleKeyDown);
-        Main_HideElement('dialog_os');
-
-    }
 }
 
 function PlayExtra_loadDataFail(Reason) {

@@ -433,8 +433,6 @@ function en_USLang() {
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
     STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
     STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need it, as it will result in a lower image quality";
-    STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in settings "<div class="class_bold" style="display: inline-block">' +
-        STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
     STR_HISTORY = "History";
     STR_WATCHED = "Watched on ";
     STR_UNTIL = "until ";
