@@ -850,6 +850,7 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
     );
 
 }
+
 //public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
 //PreventClean prevent closing the player
 //trackSelectorPos the player that will use the not closed player trackSelector Position
@@ -995,6 +996,15 @@ function OSInterface_getLatency(chat_number) {
 //Allows to control if the screen will be on or not from js side
 function OSInterface_mKeepScreenOn(keepOn) {//Not be used
     if (Main_IsOn_OSInterface) Android.mKeepScreenOn(Boolean(keepOn));
+}
+
+//public void CheckReUsePlayer()
+//Android specific: true
+//Check to see if DefectedCodecExist
+function OSInterface_CheckReUsePlayer() {
+    try {
+        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer();
+    } catch (e) {}
 }
 
 //public void getDuration()

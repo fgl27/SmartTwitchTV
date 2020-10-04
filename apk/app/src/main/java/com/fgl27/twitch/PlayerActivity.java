@@ -441,6 +441,13 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    private boolean CanReUsePlayer(String mainPlaylistString) {
+        return reUsePlayer &&
+                PlayerObj[4].player != null &&
+                PreviewPlayerPlaylist != null &&
+                Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+    }
+
     private void ReUsePlayer(int PlayerObjPosition) {
 
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
@@ -2466,6 +2473,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void CheckReUsePlayer() {
+            reUsePlayer = !Tools.DefectedCodecExist();
+        }
+
+        @JavascriptInterface
         public void StartAuto(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
                 boolean startPlayer = PlayerObj[0].player == null || !PlayerObj[0].isScreenPreview;
@@ -2477,7 +2489,7 @@ public class PlayerActivity extends Activity {
 
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    boolean mReUsePlayer = reUsePlayer && PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+                    boolean mReUsePlayer = CanReUsePlayer(mainPlaylistString);
 
                     if (mReUsePlayer) {
 
@@ -2485,7 +2497,7 @@ public class PlayerActivity extends Activity {
                                 false,
                                 Type,
                                 ResumePosition,
-                                position,// always 0 or 1
+                                position,// always 0 or 1... so safe to use position
                                 position
                         );
 
@@ -2672,6 +2684,7 @@ public class PlayerActivity extends Activity {
 
                     if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
 
+                    //Prepare the trackselector before, only noticeable in multistream when using the multi dialog to choose
                     if (PlayerObj[4].trackSelector != null && BLACKLISTED_QUALITIES == null) {
                         int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
 
@@ -3234,7 +3247,7 @@ public class PlayerActivity extends Activity {
                 //The odd behavior will stay until the player is releasePlayer
                 if (Restart) releasePlayer(position);
 
-                boolean mReUsePlayer = reUsePlayer && PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+                boolean mReUsePlayer = CanReUsePlayer(mainPlaylistString);
 
                 Set_PlayerObj(
                         false,

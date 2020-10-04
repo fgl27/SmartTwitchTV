@@ -507,6 +507,22 @@ public final class Tools {
         }
     }
 
+    static boolean DefectedCodecExist() {
+
+        for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
+            if (!codec.isEncoder()) {
+                for (String type : codec.getSupportedTypes()) {
+                    if (type.contains("avc") && (codec.getName().toLowerCase(Locale.US)).contains("amlogic")) {
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+
+    }
+
     static DefaultLoadControl getLoadControl(int buffer, int DeviceRam) {
         return new DefaultLoadControl.Builder()
                 .setAllocator(new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE))

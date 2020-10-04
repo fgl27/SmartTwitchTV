@@ -383,9 +383,13 @@ function Main_initWindows() {
 
     Screens_InitScreens();
 
+    //If add a setting to control SetReUsePlayer() remove this
+    OSInterface_CheckReUsePlayer();
+
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
+
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
     Main_SetHistoryworker();
