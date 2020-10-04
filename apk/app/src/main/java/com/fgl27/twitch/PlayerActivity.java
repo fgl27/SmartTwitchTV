@@ -239,10 +239,8 @@ public class PlayerActivity extends Activity {
 
     private boolean IsUsingSurfaceView;
 
-    private int mWho_Called = 1;
-
-    //TODO comment this what they are for 123 ?
-    private int[] BUFFER_SIZE = {250, 250, 250, 250};//Default, live, vod, clips
+    //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
+    private int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
     private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
 
     private PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
@@ -252,6 +250,7 @@ public class PlayerActivity extends Activity {
         boolean isScreenPreview;
 
         DefaultTrackSelector trackSelector;
+        DefaultTrackSelector.Parameters trackSelectorParameters;
 
         int loadControlRamDivider;
         int Type;
@@ -269,6 +268,7 @@ public class PlayerActivity extends Activity {
         SimpleExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
+                  DefaultTrackSelector.Parameters trackSelectorParameters,
                   int loadControlRamDivider, int Type, int CheckCounter, Handler CheckHandler,
                   long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
                   PlayerView playerView, SimpleExoPlayer player) {
@@ -276,6 +276,8 @@ public class PlayerActivity extends Activity {
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
             this.trackSelector = trackSelector;
+            this.trackSelectorParameters = trackSelectorParameters;
+
             this.loadControlRamDivider = loadControlRamDivider;
 
             this.Type = Type;
@@ -334,6 +336,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[i] = new PlayerObj(
                         false,
                         false,
+                        null,
                         null,
                         2,
                         0,
@@ -437,9 +440,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void ReUsePlayer(int PlayerObjPosition, int Who_Called, DefaultTrackSelector.Parameters trackSelectorParameters) {
-
-        mWho_Called = Who_Called;
+    private void ReUsePlayer(int PlayerObjPosition, DefaultTrackSelector.Parameters trackSelectorParameters) {
 
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[4].CheckHandler.removeCallbacksAndMessages(null);
@@ -453,7 +454,6 @@ public class PlayerActivity extends Activity {
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
-        PlayerObj[4].Listener.UpdateWho_Called(Who_Called);
         PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
 
         DefaultTrackSelector tempTrackSelector = PlayerObj[PlayerObjPosition].trackSelector;
@@ -471,10 +471,10 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
-        if (PicturePicture && !MultiStreamEnable) ResetPPView();
+        if (PlayerObjPosition == 1) ResetPPView();
 
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
-            setEnabledQualities(PlayerObj[PlayerObjPosition].trackSelector, PlayerObjPosition);
+            setEnabledQualities(PlayerObjPosition);
         else
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters);
 
@@ -484,8 +484,7 @@ public class PlayerActivity extends Activity {
         Clear_PreviewPlayer();
     }
 
-    private void SetupPlayer(int PlayerObjPosition, int loadControlPosition, int Who_Called, long ResumePosition,
-                             boolean StartGetCurrentPosition, DefaultTrackSelector.Parameters trackSelectorParameters) {
+    private void SetupPlayer(int PlayerObjPosition) {
 
         if (IsStopped) {
             monStop();
@@ -505,7 +504,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
             PlayerObj[PlayerObjPosition].trackSelector = new DefaultTrackSelector(this);
-            PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters);
+            PlayerObj[PlayerObjPosition].trackSelector.setParameters(PlayerObj[PlayerObjPosition].trackSelectorParameters);
 
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
             if (BLACKLISTED_CODECS != null)
@@ -515,13 +514,13 @@ public class PlayerActivity extends Activity {
                     .setTrackSelector(PlayerObj[PlayerObjPosition].trackSelector)
                     .setLoadControl(
                             Tools.getLoadControl(
-                                    BUFFER_SIZE[Who_Called],
-                                    DeviceRam / (loadControlPosition > 1 ? 1 : 2)
+                                    BUFFER_SIZE[PlayerObj[PlayerObjPosition].Type - 1],
+                                    DeviceRam / PlayerObj[PlayerObjPosition].loadControlRamDivider
                             )
                     )
                     .build();
 
-            PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition, Who_Called);
+            PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition);
             PlayerObj[PlayerObjPosition].player.addListener(PlayerObj[PlayerObjPosition].Listener);
 
             PlayerObj[PlayerObjPosition].player.addAnalyticsListener(new AnalyticsEventListener());
@@ -530,7 +529,6 @@ public class PlayerActivity extends Activity {
 
         } else {
 
-            PlayerObj[PlayerObjPosition].Listener.UpdateWho_Called(Who_Called);
             PlayerObj[PlayerObjPosition].Listener.UpdatePosition(PlayerObjPosition);
 
         }
@@ -538,7 +536,7 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
         PlayerObj[PlayerObjPosition].player.setMediaSource(
                 PlayerObj[PlayerObjPosition].mediaSources,
-                ResumePosition
+                PlayerObj[PlayerObjPosition].ResumePosition
         );
 
         PlayerObj[PlayerObjPosition].player.prepare();
@@ -549,105 +547,90 @@ public class PlayerActivity extends Activity {
             //Main players
 
             //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
-            if (StartGetCurrentPosition) GetCurrentPosition();
+            if (PlayerObjPosition == 0) {
+                PlayerCurrentPosition =
+                        PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
+                                0 : PlayerObj[PlayerObjPosition].ResumePosition;
+
+                GetCurrentPosition();
+            }
 
             hideLoading(5);
             droppedFrames = 0;
             NetActivityAVG = 0;
             NetCounter = 0;
 
-        } else if (StartGetCurrentPosition) {
+        } else if (PlayerObj[PlayerObjPosition].Type > 1) {
             //Preview player
 
+            SmallPlayerCurrentPosition =
+                    PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
+                            0 : PlayerObj[PlayerObjPosition].ResumePosition;
+
             GetCurrentPositionSmall();
-            SmallPlayerCurrentPosition = ResumePosition;
 
         }
 
     }
 
-    private void PreparePlayer_Single_PP(int who_called, long ResumePosition, int position) {
-        mWho_Called = who_called;
-        PlayerObj[position].ResumePosition = ResumePosition > 0 ? ResumePosition : 0;
-        if (position == 0) {
-            CurrentPositionHandler[0].removeCallbacksAndMessages(null);
-            PlayerCurrentPosition = PlayerObj[position].ResumePosition;
-        }
-        initializePlayer_Single_PP(position);
-    }
+    private void PreparePlayer_Single_PP(boolean isScreenPreview, int Type, long ResumePosition, int position) {
 
-    // The main player initialization function
-    private void initializePlayer_Single_PP(int PlayerObjPosition) {
-
-        boolean isSmall = PlayerObjPosition == 1;
-        int Who_Called = mWho_Called > 3 ? (mWho_Called - 3) : mWho_Called;
-
-        SetupPlayer(
-                PlayerObjPosition,
-                Who_Called,
-                Who_Called,
-                ((PlayerObj[PlayerObjPosition].ResumePosition > 0) && (Who_Called > 1)) ? PlayerObj[PlayerObjPosition].ResumePosition : C.TIME_UNSET,
-                PlayerObjPosition == 0,
-                isSmall ? trackSelectorParameters[1] : trackSelectorParameters[0]
-
+        Set_PlayerObj(
+                isScreenPreview,
+                Type,
+                ResumePosition,
+                position == 1 ? trackSelectorParameters[1] : trackSelectorParameters[0],
+                position
         );
 
-        SwitchPlayerAudio(AudioSource);
+        SetupPlayer(position);
 
-        if (isSmall) ResetPPView();
+        if (position == 1) ResetPPView();
 
     }
 
-    private void Fix_Z_Order(PlayerView ViewOnTop, PlayerView ViewOnBottom) {
-        VideoHolder.bringChildToFront(ViewOnTop);
+    private void Set_PlayerObj(boolean isScreenPreview, int Type, long ResumePosition,
+                               DefaultTrackSelector.Parameters trackSelectorParameters, int position) {
 
-        SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
-        SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
-
-        if (TopSurfaceView != null && BottomSurfaceView != null) {
-
-            //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoHolder.removeView(ViewOnBottom);
-                VideoHolder.removeView(ViewOnTop);
-            }
-
-            TopSurfaceView.setZOrderMediaOverlay(true);
-
-            BottomSurfaceView.setZOrderMediaOverlay(false);
-
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoHolder.addView(ViewOnBottom);
-                VideoHolder.addView(ViewOnTop);
-            }
-        }
+        PlayerObj[position].isScreenPreview = isScreenPreview;
+        PlayerObj[position].trackSelectorParameters = trackSelectorParameters;
+        PlayerObj[position].Type = Type;
+        PlayerObj[position].loadControlRamDivider = PlayerObj[position].Type > 1 ? 2 : 1;
+        PlayerObj[position].CheckCounter = 0;
+        PlayerObj[position].ResumePosition = ResumePosition > 0 && PlayerObj[position].Type > 1 ? ResumePosition : C.TIME_UNSET;
 
     }
 
     private void ResetPPView() {
-        //Reset the Z position of the PP player so it show above the other
+        VideoHolder.bringChildToFront(PlayerObj[1].playerView);
 
+        //Reset the Z position of the PP player so it show above the other
         if (IsUsingSurfaceView) {
 
-            Fix_Z_Order(PlayerObj[1].playerView, PlayerObj[0].playerView);
+            PlayerView ViewOnTop = PlayerObj[1].playerView;
+            PlayerView ViewOnBottom = PlayerObj[0].playerView;
 
+            SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
+            SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
+
+            if (TopSurfaceView != null && BottomSurfaceView != null) {
+
+                //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    VideoHolder.removeView(ViewOnBottom);
+                    VideoHolder.removeView(ViewOnTop);
+                }
+
+                TopSurfaceView.setZOrderMediaOverlay(true);
+
+                BottomSurfaceView.setZOrderMediaOverlay(false);
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    VideoHolder.addView(ViewOnBottom);
+                    VideoHolder.addView(ViewOnTop);
+                }
+            }
         }
-
-    }
-
-    private void initializePlayer_Multi(int PlayerObjPosition) {
-
-        SetupPlayer(
-                PlayerObjPosition,
-                1,
-                1,
-                C.TIME_UNSET,
-                PlayerObjPosition == 0,
-                trackSelectorParameters[1]
-
-        );
-
-        SetMultiVolume(PlayerObjPosition);
 
     }
 
@@ -657,46 +640,6 @@ public class PlayerActivity extends Activity {
             volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
 
         PlayerObj[PlayerObjPosition].player.setVolume(volume);
-    }
-
-    private void initializePlayer_Preview(Long resumePosition, boolean IsVod) {
-
-        int ActivePlayerAccount = 0;
-
-        for (int i = 0; i < PlayerAccount; i++) {
-            if (PlayerObj[i].player != null) ActivePlayerAccount++;
-        }
-
-        SetupPlayer(
-                4,
-                1,
-                IsVod ? 2 : 1,
-                (IsVod && (resumePosition > 0)) ? resumePosition : C.TIME_UNSET,
-                IsVod,
-                ActivePlayerAccount > 3 ? trackSelectorParameters[2] : trackSelectorParameters[1]
-
-        );
-
-        ResetSmallView();
-
-        PlayerObj[4].player.setVolume(PreviewAudio);
-
-    }
-
-    private void ResetSmallView() {
-
-        //Reset the Z position of the PP player so it show above the other
-        if (IsUsingSurfaceView) {
-
-            SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
-
-            if (PlayerSurfaceView != null) {
-
-                PlayerSurfaceView.setZOrderMediaOverlay(true);
-
-            }
-
-        }
     }
 
     private void Clear_PreviewPlayer() {
@@ -742,9 +685,9 @@ public class PlayerActivity extends Activity {
 
         for (int i = 0; i < PlayerAccount; i++) {
             releasePlayer(i);
+            clearResumePosition(i);
         }
 
-        clearResumePosition();
         KeepScreenOn(false);
 
     }
@@ -770,8 +713,8 @@ public class PlayerActivity extends Activity {
     }
 
     //Basic player position setting, for resume playback
-    private void clearResumePosition() {
-        PlayerObj[4].ResumePosition = C.TIME_UNSET;
+    private void clearResumePosition(int position) {
+        PlayerObj[position].ResumePosition = C.TIME_UNSET;
     }
 
     private void updateResumePosition(int position) {
@@ -1044,7 +987,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_QUALITIES == null)
                 PlayerObj[PlayerObjPos].trackSelector.setParameters(trackSelectorParameters[ParametersPos]);
             else
-                setEnabledQualities(PlayerObj[PlayerObjPos].trackSelector, ParametersPos);
+                setEnabledQualities(ParametersPos);
 
         }
     }
@@ -1950,18 +1893,18 @@ public class PlayerActivity extends Activity {
     }
 
     //TODO revise this when fully update to PlayerObj
-    public void setEnabledQualities(DefaultTrackSelector trackSelector, int position) {
+    public void setEnabledQualities(int position) {
 
-        if (trackSelector != null) {
+        if (PlayerObj[position].trackSelector != null) {
 
-            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = trackSelector.getCurrentMappedTrackInfo();
+            MappingTrackSelector.MappedTrackInfo mappedTrackInfo = PlayerObj[position].trackSelector.getCurrentMappedTrackInfo();
 
             if (mappedTrackInfo != null) {
                 for (int rendererIndex = 0; rendererIndex < mappedTrackInfo.getRendererCount(); rendererIndex++) {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelector.getParameters().buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[position].trackSelectorParameters.buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
@@ -2018,7 +1961,7 @@ public class PlayerActivity extends Activity {
                             }
                         }
 
-                        trackSelector.setParameters(builder);
+                        PlayerObj[position].trackSelector.setParameters(builder);
                         break;
                     }
 
@@ -2027,7 +1970,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void PlayerEventListenerCheckCounter(int position, int Who_Called, int fail_type) {
+    public void PlayerEventListenerCheckCounter(int position, int fail_type) {
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
 
         if (BuildConfig.DEBUG) {
@@ -2047,44 +1990,31 @@ public class PlayerActivity extends Activity {
         if (position < 4) {
             //Main players
 
-            if (PlayerObj[position].CheckCounter < 4 && PlayerObj[position].CheckCounter > 1 && Who_Called < 3) {
+            if (PlayerObj[position].CheckCounter < 4 && PlayerObj[position].CheckCounter > 1 && PlayerObj[position].Type < 3) {
 
                 if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
                 else//already on auto just restart the player
-                    PlayerEventListenerCheckCounterEnd(position, Who_Called);
+                    PlayerEventListenerCheckCounterEnd(position);
 
             } else if (PlayerObj[position].CheckCounter > 3) {
 
                 // try == 3 Give up internet is probably down or something related
-                PlayerEventListenerClear(position, fail_type, Who_Called);
+                PlayerEventListenerClear(position, fail_type);
 
             } else if (PlayerObj[position].CheckCounter > 1) {//only for clips
 
                 // Second check drop quality as it freezes too much
-                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + Who_Called + ")");
+                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
 
-            } else PlayerEventListenerCheckCounterEnd(position, Who_Called);//first check just reset
+            } else PlayerEventListenerCheckCounterEnd(position);//first check just reset
 
         } else {
             //Preview player
 
-            boolean IsVod = Who_Called == 2;
-
-            if (IsVod) {
-                // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
-                // is already gone and we already saved the correct PlayerObj[position].ResumePosition
-                if (PlayerObj[position].CheckCounter < 2 && PlayerObj[position].player != null) {
-
-                    PlayerObj[position].ResumePosition = GetResumePosition(position);
-
-                }
-
-            } else PlayerObj[position].ResumePosition = 0L;
-
             if (PlayerObj[position].CheckCounter < 4) {
 
-                initializePlayer_Preview(PlayerObj[position].ResumePosition, IsVod);
+                PlayerEventListenerCheckCounterEnd(position);
 
             } else {
 
@@ -2097,23 +2027,18 @@ public class PlayerActivity extends Activity {
     }
 
     //First check only reset the player as it may be stuck
-    public void PlayerEventListenerCheckCounterEnd(int position, int Who_Called) {
+    public void PlayerEventListenerCheckCounterEnd(int position) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerObj[position].CheckCounter " + PlayerObj[position].CheckCounter + " Who_Called " + Who_Called);
+            Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerObj[position].CheckCounter " + PlayerObj[position].CheckCounter + " Type " + PlayerObj[position].Type);
         }
 
-        if (Who_Called == 1) clearResumePosition();
-        else if (Who_Called == 2) updateResumePosition(position);//VOD
+        if (PlayerObj[position].Type == 1) clearResumePosition(position);
+        else if (PlayerObj[position].Type == 2) updateResumePosition(position);//VOD
 
-        if (Who_Called == 1) {
-
-            if (MultiStreamEnable) initializePlayer_Multi(position);
-            else initializePlayer_Single_PP(position);
-
-        } else initializePlayer_Single_PP(position);
+        SetupPlayer(position);
     }
 
-    public void PlayerEventListenerClear(int position, int fail_type, int Who_Called) {
+    public void PlayerEventListenerClear(int position, int fail_type) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
         }
@@ -2135,12 +2060,13 @@ public class PlayerActivity extends Activity {
                 ClearPlayer(position);
                 WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
-            } else if (mWho_Called > 3) {
+            } else if (PlayerObj[position].isScreenPreview) {
 
                 ClearPlayer(position);
                 WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
 
-            } else WebViewLoad = "Play_PannelEndStart(" + Who_Called + "," + fail_type + ")";
+            } else
+                WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + ")";
 
         } else {
             //Preview player
@@ -2533,13 +2459,9 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void StartAuto(String uri, String mainPlaylistString, int who_called, long ResumePosition, int position) {
+        public void StartAuto(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
-                boolean startPlayer = true;
-
-                if (mWho_Called > 3) {
-                    startPlayer = PlayerObj[0].player == null;
-                }
+                boolean startPlayer = PlayerObj[0].player == null || !PlayerObj[0].isScreenPreview;
 
                 if (startPlayer) {
                     if (position == 1) {
@@ -2552,7 +2474,15 @@ public class PlayerActivity extends Activity {
 
                     if (reUsePlayer) {
 
-                        ReUsePlayer(position, who_called, trackSelectorParameters[position]);
+                        Set_PlayerObj(
+                                false,
+                                Type,
+                                ResumePosition,
+                                position == 1 ? trackSelectorParameters[1] : trackSelectorParameters[0],
+                                position
+                        );
+
+                        ReUsePlayer(position, trackSelectorParameters[position]);
 
                         SwitchPlayerAudio(AudioSource);
 
@@ -2561,13 +2491,13 @@ public class PlayerActivity extends Activity {
                         PlayerObj[position].mediaSources = Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
-                                who_called,
+                                Type,
                                 mLowLatency,
                                 mainPlaylistString,
                                 userAgent
                         );
 
-                        PreparePlayer_Single_PP(who_called, ResumePosition, position);
+                        PreparePlayer_Single_PP(false, Type, ResumePosition, position);
 
                         if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                     }
@@ -2577,7 +2507,6 @@ public class PlayerActivity extends Activity {
                 } else {
 
                     hideLoading(5);
-                    mWho_Called = who_called;
                     PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
 
                     mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
@@ -2589,14 +2518,14 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void RestartPlayer(int who_called, long ResumePosition, int position) {
+        public void RestartPlayer(int Type, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
 
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
                 //The odd behavior will stay until the player is releasePlayer
                 releasePlayer(position);
 
-                PreparePlayer_Single_PP(who_called, ResumePosition, position);
+                PreparePlayer_Single_PP(false, Type, ResumePosition, position);
 
                 if (position == 1) {
 
@@ -2763,8 +2692,39 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
+                int ActivePlayerAccount = 0;
+
+                for (int i = 0; i < PlayerAccount; i++) {
+                    if (PlayerObj[i].player != null) ActivePlayerAccount++;
+                }
+
+                Set_PlayerObj(
+                        false,
+                        isVod ? 2 : 1,
+                        resumePosition,
+                        ActivePlayerAccount > 3 ? trackSelectorParameters[2] : trackSelectorParameters[1],
+                        4
+                );
+
                 PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
-                initializePlayer_Preview(resumePosition, isVod);
+
+                SetupPlayer(4);
+
+                //Reset the Z position of the PP player so it show above the other
+                if (IsUsingSurfaceView) {
+
+                    SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
+
+                    if (PlayerSurfaceView != null) {
+
+                        PlayerSurfaceView.setZOrderMediaOverlay(true);
+
+                    }
+
+                }
+
+                if (PlayerObj[4] != null)
+                    PlayerObj[4].player.setVolume(PreviewAudio);
 
             });
         }
@@ -2804,20 +2764,20 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
-                PreparePlayer_Single_PP(4, 0, 0);
+                PreparePlayer_Single_PP(true, 1, 0, 0);
 
             });
         }
 
         @JavascriptInterface
         public void StartScreensPlayer(String uri, String mainPlaylistString, int ResumePosition,
-                                       float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
+                                       float bottom, float right, float left, int web_height, int Type, boolean bigger) {
             MainThreadHandler.post(() -> {
 
                 PlayerObj[0].mediaSources = Tools.buildMediaSource(
                         Uri.parse(uri),
                         mWebViewContext,
-                        who_called,
+                        Type,
                         mLowLatency,
                         mainPlaylistString,
                         userAgent
@@ -2827,7 +2787,7 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensPanel);
-                PreparePlayer_Single_PP(3 + who_called, ResumePosition, 0);
+                PreparePlayer_Single_PP(true, Type, ResumePosition, 0);
 
             });
         }
@@ -2835,7 +2795,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SidePanelPlayerRestore() {
             MainThreadHandler.post(() -> {
-                mWho_Called = 4;
+                PlayerObj[0].isScreenPreview = true;
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
                 MainThreadHandler.postDelayed(() -> PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel), 100);
@@ -2843,11 +2803,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int who_called, boolean bigger) {
+        public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int Type, boolean bigger) {
             MainThreadHandler.post(() -> {
 
                 if (PlayerObj[0].player != null) {
-                    mWho_Called = 3 + who_called;
+                    PlayerObj[0].isScreenPreview = true;
                     VideoWebHolder.bringChildToFront(VideoHolder);
 
                     PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
@@ -3038,7 +2998,7 @@ public class PlayerActivity extends Activity {
                     }
 
                     KeepScreenOn(state);
-                    mWebView.loadUrl("javascript:smartTwitchTV.Play_PlayPauseChange(" + state + "," + mWho_Called + ")");
+                    mWebView.loadUrl("javascript:smartTwitchTV.Play_PlayPauseChange(" + state + "," + PlayerObj[0].Type + ")");
                 }
             });
         }
@@ -3073,8 +3033,8 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void SetBuffer(int who_called, int buffer_size) {
-            BUFFER_SIZE[who_called] = Math.min(buffer_size, 15000);
+        public void SetBuffer(int Type, int buffer_size) {
+            BUFFER_SIZE[Type - 1] = Math.min(buffer_size, 15000);
         }
 
         @JavascriptInterface
@@ -3099,7 +3059,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getVideoQuality(int who_called) {
+        public void getVideoQuality(int Type) {
             VideoQualityResult = null;
 
             MainThreadHandler.post(() -> {
@@ -3107,7 +3067,7 @@ public class PlayerActivity extends Activity {
                 if (PlayerObj[0].player != null)
                     VideoQualityResult = Tools.GetVideoQuality(PlayerObj[0].player.getVideoFormat());
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + who_called + ",Android.getVideoQualityString())");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoQuality(" + Type + ",Android.getVideoQualityString())");
             });
         }
 
@@ -3117,7 +3077,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getVideoStatus(boolean showLatency, int Who_Called) {
+        public void getVideoStatus(boolean showLatency, int Type) {
             getVideoStatusResult = null;
 
             MainThreadHandler.post(() -> {
@@ -3148,7 +3108,7 @@ public class PlayerActivity extends Activity {
                 //Erase after read
                 netActivity = 0L;
 
-                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + Who_Called + ",Android.getVideoStatusString())");
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_ShowVideoStatus(" + showLatency + "," + Type + ",Android.getVideoStatusString())");
             });
 
         }
@@ -3267,11 +3227,17 @@ public class PlayerActivity extends Activity {
 
                 boolean reUsePlayer = PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
 
+                Set_PlayerObj(
+                        false,
+                        1,
+                        0,
+                        trackSelectorParameters[1],
+                        position
+                );
+
                 if (reUsePlayer) {
 
-                    ReUsePlayer(position, 1, trackSelectorParameters[1]);
-
-                    SetMultiVolume(position);
+                    ReUsePlayer(position, trackSelectorParameters[1]);
 
                 } else {
 
@@ -3284,11 +3250,12 @@ public class PlayerActivity extends Activity {
                             userAgent
                     );
 
-                    initializePlayer_Multi(position);
+                    SetupPlayer(position);
 
-                    if (PlayerObj[4].player != null) releasePlayer(4);
+                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                 }
 
+                SetMultiVolume(position);
                 PreviewPlayerPlaylist = null;
 
             });
@@ -3340,18 +3307,12 @@ public class PlayerActivity extends Activity {
 
         private int position;
         private final int Delay_ms;
-        private int Who_Called;
         private TrackGroupArray lastSeenTrackGroupArray = null;
 
-        private PlayerEventListener(int position, int m_Who_Called) {
-            this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
+        private PlayerEventListener(int position) {
             this.position = position;
             int defaultDelayPlayerCheck = 8000;
-            this.Delay_ms = BUFFER_SIZE[m_Who_Called] + defaultDelayPlayerCheck + (MultiStreamEnable ? (defaultDelayPlayerCheck / 2) : 0);
-        }
-
-        private void UpdateWho_Called(int m_Who_Called) {
-            this.Who_Called = m_Who_Called;// > 3 ? (m_Who_Called - 3) : m_Who_Called;
+            this.Delay_ms = BUFFER_SIZE[PlayerObj[position].Type - 1] + defaultDelayPlayerCheck + (MultiStreamEnable ? (defaultDelayPlayerCheck / 2) : 0);
         }
 
         private void UpdatePosition(int position) {
@@ -3364,18 +3325,18 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && Who_Called < 3) {
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && !PlayerObj[position].isScreenPreview) {
                 lastSeenTrackGroupArray = trackGroups;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {
 
-                    setEnabledQualities((DefaultTrackSelector) PlayerObj[position].player.getTrackSelector(), position);
+                    setEnabledQualities(position);
 
                 }
 
                 if (position == 0 && !PicturePicture && !MultiStreamEnable) {
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + Who_Called + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + PlayerObj[position].Type + ")");
 
                 }
 
@@ -3394,7 +3355,7 @@ public class PlayerActivity extends Activity {
                 return;
 
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "onPlaybackStateChanged position " + position + " Who_Called " + Who_Called + " playbackState " + playbackState);
+                Log.i(TAG, "onPlaybackStateChanged position " + position + " Type " + PlayerObj[position].Type + " playbackState " + playbackState);
             }
 
             if (playbackState == Player.STATE_ENDED) {
@@ -3402,7 +3363,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
                 PlayerObj[position].player.setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position, 0, Who_Called);//player_Ended
+                PlayerEventListenerClear(position, 0);//player_Ended
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
@@ -3415,7 +3376,7 @@ public class PlayerActivity extends Activity {
                     if (PlayerObj[position].player == null || !PlayerObj[position].player.isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, Who_Called, 2);//Player_Lag
+                    PlayerEventListenerCheckCounter(position, 2);//Player_Lag
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
@@ -3426,12 +3387,12 @@ public class PlayerActivity extends Activity {
                     //Main players
 
                     //Delay the counter reset to make sure the connection is fine now when not on a auto mode
-                    if (!IsInAutoMode || Who_Called == 3)
+                    if (!IsInAutoMode || PlayerObj[position].Type == 3)
                         PlayerObj[position].CheckHandler.postDelayed(() -> PlayerObj[position].CheckCounter = 0, 10000);
                     else
                         PlayerObj[position].CheckCounter = 0;
 
-                    if (Who_Called == 1) {
+                    if (PlayerObj[position].Type == 1) {
 
                         //If other not playing just play it so they stay in sync
                         if (MultiStreamEnable) {
@@ -3478,7 +3439,7 @@ public class PlayerActivity extends Activity {
             Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
 
             PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
-            PlayerEventListenerCheckCounter(position, Who_Called, 1);//player_Erro
+            PlayerEventListenerCheckCounter(position, 1);//player_Erro
 
         }
 
