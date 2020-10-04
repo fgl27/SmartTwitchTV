@@ -422,7 +422,7 @@ public final class Tools {
         ArrayList<CodecList> result = new ArrayList<>();
 
         for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
-            if (!codec.isEncoder()) {
+            if (codec != null && !codec.isEncoder()) {
                 for (String type : codec.getSupportedTypes()) {
                     if (type.contains(CodecType)) {
                         MediaCodecInfo.CodecCapabilities codecCapabilities = codec.getCapabilitiesForType(type);
@@ -507,19 +507,38 @@ public final class Tools {
         }
     }
 
-    static boolean DefectedCodecExist() {
+    static boolean DefectedCodecDontExist(String[] CodecList) {
+        String codecName;
 
         for (MediaCodecInfo codec : new MediaCodecList(MediaCodecList.REGULAR_CODECS).getCodecInfos()) {
-            if (!codec.isEncoder()) {
+
+            if (codec != null && !codec.isEncoder()) {
+
                 for (String type : codec.getSupportedTypes()) {
-                    if (type.contains("avc") && (codec.getName().toLowerCase(Locale.US)).contains("amlogic")) {
-                        return true;
+
+                    if (type.contains("avc")) {
+
+                        codecName = codec.getName().toLowerCase(Locale.US);
+
+                        for (String CodecListName : CodecList) {
+
+                            if (codecName.contains(CodecListName)) {
+
+                                return false;
+
+                            }
+
+                        }
+
                     }
+
                 }
+
             }
 
         }
-        return false;
+
+        return true;
 
     }
 

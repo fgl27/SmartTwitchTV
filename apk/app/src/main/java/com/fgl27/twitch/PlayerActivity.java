@@ -87,6 +87,7 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -2499,8 +2500,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void CheckReUsePlayer() {
-            reUsePlayer = !Tools.DefectedCodecExist();
+        public void CheckReUsePlayer(String CodecListToCheck) {
+
+            if (CodecListToCheck == null || CodecListToCheck.isEmpty()) reUsePlayer = true;
+            else reUsePlayer = Tools.DefectedCodecDontExist(CodecListToCheck.split(","));
+
         }
 
         @JavascriptInterface
@@ -3187,7 +3191,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void setBlackListMediaCodec(String CodecList) {
-            BLACKLISTED_CODECS = !CodecList.isEmpty() ? CodecList.split(",") : null;
+            BLACKLISTED_CODECS = CodecList != null && !CodecList.isEmpty() ? CodecList.toLowerCase(Locale.US).split(",") : null;
         }
 
         @JavascriptInterface
@@ -3339,7 +3343,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void setBlackListQualities(String qualitiesList) {
-            BLACKLISTED_QUALITIES = !qualitiesList.isEmpty() ? qualitiesList.split(",") : null;
+            BLACKLISTED_QUALITIES = qualitiesList != null && !qualitiesList.isEmpty() ? qualitiesList.split(",") : null;
         }
 
         @JavascriptInterface

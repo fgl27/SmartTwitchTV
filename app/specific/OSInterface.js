@@ -998,12 +998,13 @@ function OSInterface_mKeepScreenOn(keepOn) {//Not be used
     if (Main_IsOn_OSInterface) Android.mKeepScreenOn(Boolean(keepOn));
 }
 
-//public void CheckReUsePlayer()
+//public void CheckReUsePlayer(String CodecListToCheck)
+//CodecListToCheck = coma separated codec list to check
 //Android specific: true
 //Check to see if DefectedCodecExist
 function OSInterface_CheckReUsePlayer() {
     try {
-        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer();
+        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
     } catch (e) {}
 }
 
