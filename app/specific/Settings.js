@@ -43,7 +43,7 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
-    "pp_workaround": {
+    "PP_workaround": {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
@@ -573,7 +573,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    div += Settings_Content('pp_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+    div += Settings_Content('PP_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
@@ -671,7 +671,7 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
     Settings_value[key].values = [STR_YES, STR_NO];
 
-    key = "pp_workaround";
+    key = "PP_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
     Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
 
@@ -829,7 +829,7 @@ function Settings_SetDefault(position) {
     else if (position === "res_min") Settings_SetResBitRate(2);
     else if (position === "dpad_opacity") Settings_DpadOpacity();
     else if (position === "dpad_position") Settings_DpadPOsition();
-    else if (position === "pp_workaround") Settings_PP_Workaround();
+    else if (position === "PP_workaround") Settings_PP_Workaround();
     else if (position === "vod_seek_min") Settings_check_min_seek();
     else if (position === "vod_seek_max") Settings_check_max_seek();
     else if (position === "block_qualities_21" || position === "block_qualities_16" ||
@@ -939,7 +939,7 @@ function Settings_SetPingWarning() {
 }
 
 function Settings_PP_Workaround() {
-    OSInterface_msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+    OSInterface_msetPlayer(!Settings_Obj_default("PP_workaround"), Play_isFullScreen);
 }
 
 function Settings_DpadOpacity() {
