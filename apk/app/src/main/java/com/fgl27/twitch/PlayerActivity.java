@@ -236,10 +236,11 @@ public class PlayerActivity extends Activity {
 
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
     private int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
-    private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
 
-    private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};//Main Player, PP or Multistream, Player preview
-    private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 720};//Main Player, PP or Multistream, Player preview
+    ////Main Player, PP or Multistream, Player preview
+    private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
+    private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};
+    private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 730};
 
     private String[] BLACKLISTED_CODECS = null;
     private String[] BLACKLISTED_QUALITIES = null;
@@ -251,7 +252,7 @@ public class PlayerActivity extends Activity {
         boolean isScreenPreview;
 
         DefaultTrackSelector trackSelector;
-        DefaultTrackSelector.Parameters trackSelectorParameters;
+        int trackSelectorParametersPosition;
 
         int loadControlRamDivider;
         int Type;
@@ -269,15 +270,14 @@ public class PlayerActivity extends Activity {
         SimpleExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
-                  DefaultTrackSelector.Parameters trackSelectorParameters,
-                  int loadControlRamDivider, int Type, int CheckCounter, Handler CheckHandler,
-                  long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
+                  int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter,
+                  Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
                   PlayerView playerView, SimpleExoPlayer player) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
             this.trackSelector = trackSelector;
-            this.trackSelectorParameters = trackSelectorParameters;
+            this.trackSelectorParametersPosition = trackSelectorParameters;
 
             this.loadControlRamDivider = loadControlRamDivider;
 
@@ -338,7 +338,7 @@ public class PlayerActivity extends Activity {
                         false,
                         false,
                         null,
-                        null,
+                        0,
                         2,
                         0,
                         0,
@@ -477,7 +477,7 @@ public class PlayerActivity extends Activity {
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
             setEnabledQualities(PlayerObjPosition);
         else
-            PlayerObj[PlayerObjPosition].trackSelector.setParameters(PlayerObj[PlayerObjPosition].trackSelectorParameters);
+            PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
 
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
@@ -505,7 +505,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
             PlayerObj[PlayerObjPosition].trackSelector = new DefaultTrackSelector(this);
-            PlayerObj[PlayerObjPosition].trackSelector.setParameters(PlayerObj[PlayerObjPosition].trackSelectorParameters);
+            PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
 
             DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this);
             if (BLACKLISTED_CODECS != null)
@@ -580,7 +580,7 @@ public class PlayerActivity extends Activity {
                 isScreenPreview,
                 Type,
                 ResumePosition,
-                position == 1 ? trackSelectorParameters[1] : trackSelectorParameters[0],
+                position == 1 ? 1 : 0,
                 position
         );
 
@@ -591,10 +591,10 @@ public class PlayerActivity extends Activity {
     }
 
     private void Set_PlayerObj(boolean isScreenPreview, int Type, long ResumePosition,
-                               DefaultTrackSelector.Parameters trackSelectorParameters, int position) {
+                               int trackSelectorParametersPosition, int position) {
 
         PlayerObj[position].isScreenPreview = isScreenPreview;
-        PlayerObj[position].trackSelectorParameters = trackSelectorParameters;
+        PlayerObj[position].trackSelectorParametersPosition = trackSelectorParametersPosition;
         PlayerObj[position].Type = Type;
         PlayerObj[position].loadControlRamDivider = PlayerObj[position].Type > 1 ? 2 : 1;
         PlayerObj[position].CheckCounter = 0;
@@ -983,7 +983,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {
-        PlayerObj[PlayerObjPos].trackSelectorParameters = trackSelectorParameters[ParametersPos];
+        PlayerObj[PlayerObjPos].trackSelectorParametersPosition = ParametersPos;
 
         if (PlayerObj[PlayerObjPos].trackSelector != null) {
 
@@ -1873,7 +1873,7 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[0].trackSelectorParameters.buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[0].trackSelector.getParameters().buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
@@ -1906,14 +1906,14 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[position].trackSelectorParameters.buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters[PlayerObj[position].trackSelectorParametersPosition].buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
 
-                            int MaxBitrate = (MultiStreamEnable || position != 0) ? PlayerBitrate[1] : PlayerBitrate[0];
-                            int MaxResolution = (MultiStreamEnable || position != 0) ? PlayerResolution[1] : PlayerResolution[0];
+                            int MaxBitrate = PlayerBitrate[PlayerObj[position].trackSelectorParametersPosition];
+                            int MaxResolution = PlayerResolution[PlayerObj[position].trackSelectorParametersPosition];
 
                             ArrayList<Integer> result = new ArrayList<>();
                             Format format;
@@ -2485,7 +2485,7 @@ public class PlayerActivity extends Activity {
                                 false,
                                 Type,
                                 ResumePosition,
-                                position == 1 ? trackSelectorParameters[1] : trackSelectorParameters[0],
+                                position,// always 0 or 1
                                 position
                         );
 
@@ -2708,7 +2708,7 @@ public class PlayerActivity extends Activity {
                         false,
                         isVod ? 2 : 1,
                         resumePosition,
-                        ActivePlayerAccount > 3 ? trackSelectorParameters[2] : trackSelectorParameters[1],
+                        ActivePlayerAccount > 3 ? 2 : 1,//Technically the trackSelectorParameters[2] is requires less performance, when all player are be used use 2
                         4
                 );
 
@@ -2944,13 +2944,15 @@ public class PlayerActivity extends Activity {
                     .setMaxVideoSize(width, PlayerResolution[1])
                     .build();
 
-            int extraSmallPlayerBitrate = 4000000;
+            //Technically the trackSelectorParameters[2] is requires less performance, when all player are in use this will be used
+            //Max 720p60
+            PlayerBitrate[2] = Math.min(PlayerBitrate[1], 4000000);
+            PlayerResolution[2] = Math.min(PlayerResolution[1], 730);
+
             trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
                     .buildUpon()
-                    .setMaxVideoBitrate(
-                            Math.min(PlayerBitrate[1], extraSmallPlayerBitrate)
-                    )
-                    .setMaxVideoSize(width, PlayerResolution[1])
+                    .setMaxVideoBitrate(PlayerBitrate[2])
+                    .setMaxVideoSize(width, PlayerResolution[2])
                     .build();
 
         }
@@ -3237,7 +3239,7 @@ public class PlayerActivity extends Activity {
                         false,
                         1,
                         0,
-                        trackSelectorParameters[1],
+                        1,
                         position
                 );
 
@@ -3331,7 +3333,7 @@ public class PlayerActivity extends Activity {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
             //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && !PlayerObj[position].isScreenPreview) {
+            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && PlayerObj[position].Type < 3) {
                 lastSeenTrackGroupArray = trackGroups;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {
