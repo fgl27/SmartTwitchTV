@@ -996,12 +996,13 @@ public class PlayerActivity extends Activity {
     //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer() {
 
-        if (PlayerObj[0].Listener != null) PlayerObj[0].Listener.UpdatePosition(1);
-        if (PlayerObj[1].Listener != null) PlayerObj[1].Listener.UpdatePosition(0);
-
         PlayerObj tempPlayerObj = PlayerObj[0];
         PlayerObj[0] = PlayerObj[1];
         PlayerObj[1] = tempPlayerObj;
+
+        for (int i = 0; i < 2; i++) {
+            if (PlayerObj[i].Listener != null) PlayerObj[i].Listener.UpdatePosition(i);
+        }
 
         PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
         PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
