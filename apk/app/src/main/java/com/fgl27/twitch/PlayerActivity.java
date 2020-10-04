@@ -2514,6 +2514,7 @@ public class PlayerActivity extends Activity {
                 } else {
 
                     hideLoading(5);
+                    PlayerObj[position].isScreenPreview = false;
                     PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
 
                     mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
