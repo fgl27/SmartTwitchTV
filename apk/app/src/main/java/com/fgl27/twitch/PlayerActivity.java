@@ -441,11 +441,24 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private boolean CanReUsePlayer(String mainPlaylistString) {
+    private boolean CanReUsePlayer(String mainPlaylistString, int trackSelectorParametersPosition) {
+        boolean SkipCheckBitRes = false;
+
+        //If all 4 player are running skip checking resolution and bitrate as we are update multistream base on multistream dialog
+        //With is a special case always different
+        for (int i = 0; i < PlayerAccount; i++) {
+            if (PlayerObj[i].player != null) {
+                SkipCheckBitRes = true;
+                break;
+            }
+        }
+
         return reUsePlayer &&
                 PlayerObj[4].player != null &&
                 PreviewPlayerPlaylist != null &&
-                Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+                Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) &&
+                (SkipCheckBitRes || PlayerBitrate[PlayerObj[4].trackSelectorParametersPosition] == PlayerBitrate[trackSelectorParametersPosition] &&
+                        PlayerResolution[PlayerObj[4].trackSelectorParametersPosition] == PlayerResolution[trackSelectorParametersPosition]);
     }
 
     private void ReUsePlayer(int PlayerObjPosition) {
@@ -2489,7 +2502,10 @@ public class PlayerActivity extends Activity {
 
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    boolean mReUsePlayer = CanReUsePlayer(mainPlaylistString);
+                    boolean mReUsePlayer = CanReUsePlayer(
+                            mainPlaylistString,
+                            position// always 0 or 1... so safe to use position
+                    );
 
                     if (mReUsePlayer) {
 
@@ -3247,7 +3263,10 @@ public class PlayerActivity extends Activity {
                 //The odd behavior will stay until the player is releasePlayer
                 if (Restart) releasePlayer(position);
 
-                boolean mReUsePlayer = CanReUsePlayer(mainPlaylistString);
+                boolean mReUsePlayer = CanReUsePlayer(
+                        mainPlaylistString,
+                        1
+                );
 
                 Set_PlayerObj(
                         false,
