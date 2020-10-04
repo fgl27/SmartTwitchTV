@@ -2109,6 +2109,7 @@ function Play_RestorePlayDataValues() {
 function Play_handleKeyUpClear() {
     Main_clearTimeout(PlayExtra_KeyEnterID);
     Main_removeEventListener("keyup", Play_handleKeyUp);
+    Main_addEventListener("keydown", Play_handleKeyDown);
 }
 
 function Play_Exit() {
