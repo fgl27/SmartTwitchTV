@@ -431,8 +431,8 @@ function en_USLang() {
     STR_UNKNOWN = "Unknown";
     STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
     STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
-    STR_PP_WORKAROUND = "Multiplayers mode old OS workaround";
-    STR_PP_WORKAROUND_SUMMARY = "For devices running Android 7 (Nougat) or older is necessary to enable this to have Multiplayers mode properly working, don't enable this on a device that doesn't need it, as it will result in a lower image quality and possible lost of performance";
+    STR_PP_WORKAROUND = "Multiplayer mode old OS workaround";
+    STR_PP_WORKAROUND_SUMMARY = "For some devices running Android 7 (Nougat) or older is necessary to enable this to have Multiplayer mode properly working, don't enable this is you don't have a issue, as it will result in a lower image quality and possible lost of performance";
     STR_HISTORY = "History";
     STR_WATCHED = "Watched on ";
     STR_UNTIL = "until ";
