@@ -596,7 +596,7 @@ public class PlayerActivity extends Activity {
         PlayerObj[position].isScreenPreview = isScreenPreview;
         PlayerObj[position].trackSelectorParametersPosition = trackSelectorParametersPosition;
         PlayerObj[position].Type = Type;
-        PlayerObj[position].loadControlRamDivider = PlayerObj[position].Type > 1 ? 2 : 1;
+        PlayerObj[position].loadControlRamDivider = PlayerObj[position].Type > 1 ? 1 : 2;
         PlayerObj[position].CheckCounter = 0;
         PlayerObj[position].ResumePosition = ResumePosition > 0 && PlayerObj[position].Type > 1 ? ResumePosition : C.TIME_UNSET;
 

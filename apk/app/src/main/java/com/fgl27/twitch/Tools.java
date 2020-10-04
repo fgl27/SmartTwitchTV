@@ -672,7 +672,7 @@ public final class Tools {
             actManager.getMemoryInfo(memInfo);
         } else return 500000000;
 
-        return (int) (memInfo.totalMem / 18);
+        return (int) (memInfo.totalMem / 20);
     }
 
     static String getWebviewVersion(Context context) {
