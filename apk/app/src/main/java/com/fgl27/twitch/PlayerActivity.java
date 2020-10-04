@@ -232,6 +232,7 @@ public class PlayerActivity extends Activity {
     private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
     private boolean IsUsingSurfaceView;
+    private boolean reUsePlayer = true;
 
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
     private int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
@@ -1894,7 +1895,6 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //TODO revise this when fully update to PlayerObj
     public void setEnabledQualities(int position) {
 
         if (PlayerObj[position].trackSelector != null) {
@@ -2461,6 +2461,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void SetReUsePlayer(boolean mReUsePlayer) {
+            reUsePlayer = mReUsePlayer;
+        }
+
+        @JavascriptInterface
         public void StartAuto(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
             MainThreadHandler.post(() -> {
                 boolean startPlayer = PlayerObj[0].player == null || !PlayerObj[0].isScreenPreview;
@@ -2472,9 +2477,9 @@ public class PlayerActivity extends Activity {
 
                     VideoWebHolder.bringChildToFront(mWebView);
 
-                    boolean reUsePlayer = PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+                    boolean mReUsePlayer = reUsePlayer && PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
 
-                    if (reUsePlayer) {
+                    if (mReUsePlayer) {
 
                         Set_PlayerObj(
                                 false,
@@ -3226,7 +3231,7 @@ public class PlayerActivity extends Activity {
                 //The odd behavior will stay until the player is releasePlayer
                 if (Restart) releasePlayer(position);
 
-                boolean reUsePlayer = PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
+                boolean mReUsePlayer = reUsePlayer && PlayerObj[4].player != null && PreviewPlayerPlaylist != null && Objects.equals(mainPlaylistString, PreviewPlayerPlaylist);
 
                 Set_PlayerObj(
                         false,
@@ -3236,7 +3241,7 @@ public class PlayerActivity extends Activity {
                         position
                 );
 
-                if (reUsePlayer) {
+                if (mReUsePlayer) {
 
                     ReUsePlayer(position);
 
