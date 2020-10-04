@@ -1000,6 +1000,7 @@ public class PlayerActivity extends Activity {
         PlayerObj[0] = PlayerObj[1];
         PlayerObj[1] = tempPlayerObj;
 
+        //UpdatePosition before the rest as ResetPPView and PlayerObjUpdateTrackSelector can cause player errors
         for (int i = 0; i < 2; i++) {
             if (PlayerObj[i].Listener != null) PlayerObj[i].Listener.UpdatePosition(i);
         }
