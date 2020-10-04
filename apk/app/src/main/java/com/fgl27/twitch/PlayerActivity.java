@@ -562,10 +562,6 @@ public class PlayerActivity extends Activity {
 
             PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
 
-        } else {
-
-            PlayerObj[PlayerObjPosition].Listener.UpdatePosition(PlayerObjPosition);
-
         }
 
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
@@ -670,7 +666,10 @@ public class PlayerActivity extends Activity {
     }
 
     private void SetMultiVolume(int PlayerObjPosition) {
+        if (PlayerObj[PlayerObjPosition].player == null) return;
+
         float volume = 0f;
+
         if (AudioMulti == 4 || AudioMulti == PlayerObjPosition)
             volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
 
@@ -761,7 +760,7 @@ public class PlayerActivity extends Activity {
     }
 
     private long GetResumePosition(int position) {
-        return PlayerObj[position].player.isCurrentWindowSeekable() ?
+        return PlayerObj[position].player != null && PlayerObj[position].player.isCurrentWindowSeekable() ?
                 Math.max(0, PlayerObj[position].player.getCurrentPosition()) : C.TIME_UNSET;
     }
 
@@ -1111,16 +1110,9 @@ public class PlayerActivity extends Activity {
 
                     for (j = 0; j < j_len; j++) {
 
-                        if (PlayerObj[j].Listener != null)
-                            PlayerObj[j].Listener.UpdatePosition(j + 1);
-
                         //Shift element of array by one
                         PlayerObj[j] = PlayerObj[j + 1];
-
                     }
-
-                    if (PlayerObj[j].Listener != null)
-                        PlayerObj[j].Listener.UpdatePosition(0);
 
                     //First element of array will be added to the end
                     PlayerObj[j] = tempPlayerObj;
@@ -1132,20 +1124,13 @@ public class PlayerActivity extends Activity {
 
                     for (j = j_len; j > 0; j--) {
 
-                        if (PlayerObj[j].Listener != null)
-                            PlayerObj[j].Listener.UpdatePosition(j - 1);
-
                         //Shift element of array by one
                         PlayerObj[j] = PlayerObj[j - 1];
-
                     }
 
-                    if (PlayerObj[0].Listener != null)
-                        PlayerObj[0].Listener.UpdatePosition(3);
 
                     //Last element of array will be added to the start of array.
                     PlayerObj[0] = tempPlayerObj;
-
                 }
 
             }
@@ -1156,6 +1141,8 @@ public class PlayerActivity extends Activity {
 
             PlayerObj[i].playerView.setLayoutParams(MultiStreamPlayerViewLayout[i + 4]);
 
+            if (PlayerObj[i].Listener != null)
+                PlayerObj[i].Listener.UpdatePosition(i);
         }
 
         AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
@@ -2562,7 +2549,8 @@ public class PlayerActivity extends Activity {
                     PlayerObj[position].isScreenPreview = false;
                     PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
 
-                    mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
+                    if (PlayerObj[0].player != null)
+                        mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
 
                     //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
                     MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
@@ -2768,9 +2756,7 @@ public class PlayerActivity extends Activity {
 
                 }
 
-                if (PlayerObj[4] != null)
-                    PlayerObj[4].player.setVolume(PreviewAudio);
-
+                SetAudio(4, PreviewAudio);
             });
         }
 
@@ -3069,13 +3055,10 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void setPlaybackSpeed(float speed) {
             MainThreadHandler.post(() -> {
-                if (MultiStreamEnable) {
-                    for (int i = 0; i < PlayerAccount; i++) {
-                        if (PlayerObj[i].player != null)
-                            PlayerObj[i].player.setPlaybackParameters(new PlaybackParameters(speed));
-                    }
-                } else if (PlayerObj[0].player != null)
-                    PlayerObj[0].player.setPlaybackParameters(new PlaybackParameters(speed));
+                for (int i = 0; i < PlayerAccount; i++) {
+                    if (PlayerObj[i].player != null)
+                        PlayerObj[i].player.setPlaybackParameters(new PlaybackParameters(speed));
+                }
             });
         }
 
@@ -3285,7 +3268,7 @@ public class PlayerActivity extends Activity {
                         position
                 );
 
-                if (mReUsePlayer) {
+                if (!Restart && mReUsePlayer) {
 
                     ReUsePlayer(position);
 
