@@ -132,12 +132,6 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e_texture_view//4
     };
 
-    private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};//Main Player, PP or Multistream, Player preview
-    private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 720};//Main Player, PP or Multistream, Player preview
-
-    private String[] BLACKLISTED_CODECS = null;
-    private String[] BLACKLISTED_QUALITIES = null;
-
     private String userAgent;
     private WebView mWebView;
     private WebView mWebViewKey;
@@ -242,6 +236,12 @@ public class PlayerActivity extends Activity {
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
     private int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
     private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
+
+    private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};//Main Player, PP or Multistream, Player preview
+    private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 720};//Main Player, PP or Multistream, Player preview
+
+    private String[] BLACKLISTED_CODECS = null;
+    private String[] BLACKLISTED_QUALITIES = null;
 
     private PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
 
@@ -440,7 +440,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private void ReUsePlayer(int PlayerObjPosition, DefaultTrackSelector.Parameters trackSelectorParameters) {
+    private void ReUsePlayer(int PlayerObjPosition) {
 
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[4].CheckHandler.removeCallbacksAndMessages(null);
@@ -448,7 +448,7 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[PlayerObjPosition].player != null) {
             PlayerObj[PlayerObjPosition].player.setPlayWhenReady(false);
             PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
-        } //else player not set so is needed to set the obj here or in the fun that call this
+        }
 
         if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
@@ -476,7 +476,7 @@ public class PlayerActivity extends Activity {
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
             setEnabledQualities(PlayerObjPosition);
         else
-            PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters);
+            PlayerObj[PlayerObjPosition].trackSelector.setParameters(PlayerObj[PlayerObjPosition].trackSelectorParameters);
 
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
@@ -982,6 +982,8 @@ public class PlayerActivity extends Activity {
     }
 
     public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {
+        PlayerObj[PlayerObjPos].trackSelectorParameters = trackSelectorParameters[ParametersPos];
+
         if (PlayerObj[PlayerObjPos].trackSelector != null) {
 
             if (BLACKLISTED_QUALITIES == null)
@@ -1870,7 +1872,7 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[0].trackSelector.getParameters().buildUpon();
+                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[0].trackSelectorParameters.buildUpon();
                         builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
 
                         if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
@@ -2482,7 +2484,7 @@ public class PlayerActivity extends Activity {
                                 position
                         );
 
-                        ReUsePlayer(position, trackSelectorParameters[position]);
+                        ReUsePlayer(position);
 
                         SwitchPlayerAudio(AudioSource);
 
@@ -2662,14 +2664,13 @@ public class PlayerActivity extends Activity {
 
                 if (PreventClean) {
 
-                    //TODO revise this when fully update to PlayerObj
+                    if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
+
                     if (PlayerObj[4].trackSelector != null && BLACKLISTED_QUALITIES == null) {
                         int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
 
                         PlayerObj[4].trackSelector.setParameters(trackSelectorParameters[FinalTrackSelectorPos]);
                     }
-
-                    if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
 
                     PlayerObj[4].playerView.setLayoutParams(HideLayout);
 
@@ -3237,7 +3238,7 @@ public class PlayerActivity extends Activity {
 
                 if (reUsePlayer) {
 
-                    ReUsePlayer(position, trackSelectorParameters[1]);
+                    ReUsePlayer(position);
 
                 } else {
 
