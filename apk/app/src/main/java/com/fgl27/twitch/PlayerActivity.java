@@ -441,24 +441,37 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    private boolean CanReUsePlayer(String mainPlaylistString, int trackSelectorParametersPosition) {
-        boolean SkipCheckBitRes = false;
-
-        //If all 4 player are running skip checking resolution and bitrate as we are update multistream base on multistream dialog
-        //With is a special case always different
+    private boolean AllMainPlayerInUse() {
         for (int i = 0; i < PlayerAccount; i++) {
-            if (PlayerObj[i].player != null) {
-                SkipCheckBitRes = true;
-                break;
+            if (PlayerObj[i].player == null) {
+                return false;
             }
         }
 
+        return true;
+    }
+
+    private boolean AllMainPlayerNotInUse() {
+        for (int i = 0; i < PlayerAccount; i++) {
+            if (PlayerObj[i].player != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean CanReUsePlayer(String mainPlaylistString, int trackSelectorParametersPosition) {
+
+        //If all 4 player are running skip checking resolution and bitrate as we are update multistream base on multistream dialog
+        //With is a special case always different
         return reUsePlayer &&
                 PlayerObj[4].player != null &&
                 PreviewPlayerPlaylist != null &&
                 Objects.equals(mainPlaylistString, PreviewPlayerPlaylist) &&
-                (SkipCheckBitRes || PlayerBitrate[PlayerObj[4].trackSelectorParametersPosition] == PlayerBitrate[trackSelectorParametersPosition] &&
+                (AllMainPlayerInUse() || PlayerBitrate[PlayerObj[4].trackSelectorParametersPosition] == PlayerBitrate[trackSelectorParametersPosition] &&
                         PlayerResolution[PlayerObj[4].trackSelectorParametersPosition] == PlayerResolution[trackSelectorParametersPosition]);
+
     }
 
     private void ReUsePlayer(int PlayerObjPosition) {
@@ -691,7 +704,7 @@ public class PlayerActivity extends Activity {
 
     private void CheckKeepScreenOn() {
         //All players are close enable screen saver
-        if (PlayerObj[0].player == null && PlayerObj[1].player == null && PlayerObj[2].player == null && PlayerObj[3].player == null) {
+        if (AllMainPlayerNotInUse()) {
             KeepScreenOn(false);
             CurrentPositionHandler[0].removeCallbacksAndMessages(null);
             CurrentPositionHandler[1].removeCallbacksAndMessages(null);
@@ -2726,17 +2739,11 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
-                int ActivePlayerAccount = 0;
-
-                for (int i = 0; i < PlayerAccount; i++) {
-                    if (PlayerObj[i].player != null) ActivePlayerAccount++;
-                }
-
                 Set_PlayerObj(
                         false,
                         isVod ? 2 : 1,
                         resumePosition,
-                        ActivePlayerAccount > 3 ? 2 : 1,//Technically the trackSelectorParameters[2] is requires less performance, when all player are be used use 2
+                        AllMainPlayerInUse() ? 2 : 1,//Technically the trackSelectorParameters[2] is requires less performance, when all player are be used use 2
                         4
                 );
 
