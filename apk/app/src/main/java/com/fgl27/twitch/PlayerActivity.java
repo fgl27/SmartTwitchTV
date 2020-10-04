@@ -2700,12 +2700,10 @@ public class PlayerActivity extends Activity {
 
                     if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
 
-                    //Prepare the trackselector before, only noticeable in multistream when using the multi dialog to choose
-                    if (PlayerObj[4].trackSelector != null && BLACKLISTED_QUALITIES == null) {
-                        int FinalTrackSelectorPos = trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1;
-
-                        PlayerObj[4].trackSelector.setParameters(trackSelectorParameters[FinalTrackSelectorPos]);
-                    }
+                    PlayerObjUpdateTrackSelector(
+                            4,
+                            trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1
+                    );
 
                     PlayerObj[4].playerView.setLayoutParams(HideLayout);
 
