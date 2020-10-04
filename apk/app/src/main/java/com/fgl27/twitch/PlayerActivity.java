@@ -201,6 +201,8 @@ public class PlayerActivity extends Activity {
     //the default size for the side panel players
     private FrameLayout.LayoutParams PlayerViewSidePanel;
     private FrameLayout.LayoutParams PlayerViewScreensPanel;
+    //Base frame holders
+    private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
 
     private Point ScreenSize;
@@ -367,6 +369,7 @@ public class PlayerActivity extends Activity {
 
             userAgent = Util.getUserAgent(this, TAG);
 
+            VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
 
             setPlayerSurface(true);
@@ -444,22 +447,31 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[PlayerObjPosition].player != null) {
             PlayerObj[PlayerObjPosition].player.setPlayWhenReady(false);
             PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
-        }
+        } //else player not set so is needed to set the obj here or in the fun that call this
+
+        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
+            PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
         PlayerObj[4].Listener.UpdateWho_Called(Who_Called);
+        PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
 
-        PlayerObj tempPlayerObj = PlayerObj[PlayerObjPosition];
-        PlayerObj[PlayerObjPosition] = PlayerObj[4];
-        PlayerObj[4] = tempPlayerObj;
+        DefaultTrackSelector tempTrackSelector = PlayerObj[PlayerObjPosition].trackSelector;
+        PlayerObj[PlayerObjPosition].trackSelector = PlayerObj[4].trackSelector;
+        PlayerObj[4].trackSelector = tempTrackSelector;
 
-        PlayerObj[PlayerObjPosition].playerView.setLayoutParams(PlayerObj[4].playerView.getLayoutParams());
+        MediaSource tempMediaSource = PlayerObj[PlayerObjPosition].mediaSources;
+        PlayerObj[PlayerObjPosition].mediaSources = PlayerObj[4].mediaSources;
+        PlayerObj[4].mediaSources = tempMediaSource;
+
+        SimpleExoPlayer tempPlayer = PlayerObj[PlayerObjPosition].player;
+        PlayerObj[PlayerObjPosition].player = PlayerObj[4].player;
+        PlayerObj[4].player = tempPlayer;
+
+        PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
-        if (PicturePicture && !MultiStreamEnable) {
-            ResetCurrentView(PlayerObjPosition);
-            ResetPPView();
-        } else ResetCurrentView(PlayerObjPosition);
+        if (PicturePicture && !MultiStreamEnable) ResetPPView();
 
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
             setEnabledQualities(PlayerObj[PlayerObjPosition].trackSelector, PlayerObjPosition);
@@ -468,6 +480,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
+        PlayerObj[4].playerView.setPlayer(PlayerObj[4].player);
         Clear_PreviewPlayer();
     }
 
@@ -585,7 +598,8 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private void Fix_Z_Order(PlayerView ViewOnTop, PlayerView ViewOnBottom, boolean ForceOnTop) {
+    private void Fix_Z_Order(PlayerView ViewOnTop, PlayerView ViewOnBottom) {
+        VideoHolder.bringChildToFront(ViewOnTop);
 
         SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
         SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
@@ -594,33 +608,19 @@ public class PlayerActivity extends Activity {
 
             //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoWebHolder.removeView(ViewOnBottom);
-                VideoWebHolder.removeView(ViewOnTop);
+                VideoHolder.removeView(ViewOnBottom);
+                VideoHolder.removeView(ViewOnTop);
             }
 
-            if (ForceOnTop) TopSurfaceView.setZOrderOnTop(true);
-            else TopSurfaceView.setZOrderMediaOverlay(true);
+            TopSurfaceView.setZOrderMediaOverlay(true);
 
-            BottomSurfaceView.setZOrderOnTop(false);
             BottomSurfaceView.setZOrderMediaOverlay(false);
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                VideoWebHolder.addView(ViewOnBottom);
-                VideoWebHolder.addView(ViewOnTop);
+                VideoHolder.addView(ViewOnBottom);
+                VideoHolder.addView(ViewOnTop);
             }
         }
-
-    }
-
-    private void ResetCurrentView(int position) {
-
-        if (IsUsingSurfaceView) {
-
-            Fix_Z_Order(PlayerObj[4].playerView, PlayerObj[position].playerView, true);
-
-        }
-        VideoWebHolder.bringChildToFront(mWebView);
-        VideoWebHolder.bringChildToFront(PlayerObj[4].playerView);
 
     }
 
@@ -629,11 +629,10 @@ public class PlayerActivity extends Activity {
 
         if (IsUsingSurfaceView) {
 
-            Fix_Z_Order(PlayerObj[1].playerView, PlayerObj[0].playerView, false);
+            Fix_Z_Order(PlayerObj[1].playerView, PlayerObj[0].playerView);
 
         }
-        VideoWebHolder.bringChildToFront(PlayerObj[1].playerView);
-        VideoWebHolder.bringChildToFront(mWebView);
+
     }
 
     private void initializePlayer_Multi(int PlayerObjPosition) {
@@ -685,8 +684,6 @@ public class PlayerActivity extends Activity {
     }
 
     private void ResetSmallView() {
-        VideoWebHolder.bringChildToFront(mWebView);
-        VideoWebHolder.bringChildToFront(PlayerObj[4].playerView);
 
         //Reset the Z position of the PP player so it show above the other
         if (IsUsingSurfaceView) {
@@ -695,7 +692,7 @@ public class PlayerActivity extends Activity {
 
             if (PlayerSurfaceView != null) {
 
-                PlayerSurfaceView.setZOrderOnTop(true);
+                PlayerSurfaceView.setZOrderMediaOverlay(true);
 
             }
 
@@ -709,9 +706,6 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(4);
         mSetPreviewOthersAudio();
-
-        VideoWebHolder.removeView(PlayerObj[4].playerView);
-        VideoWebHolder.addView(PlayerObj[4].playerView);
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
@@ -2808,7 +2802,7 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
-                VideoWebHolder.bringChildToFront(PlayerObj[0].playerView);
+                VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
                 PreparePlayer_Single_PP(4, 0, 0);
 
@@ -2831,7 +2825,7 @@ public class PlayerActivity extends Activity {
 
                 PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
-                VideoWebHolder.bringChildToFront(PlayerObj[0].playerView);
+                VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensPanel);
                 PreparePlayer_Single_PP(3 + who_called, ResumePosition, 0);
 
@@ -2842,7 +2836,7 @@ public class PlayerActivity extends Activity {
         public void SidePanelPlayerRestore() {
             MainThreadHandler.post(() -> {
                 mWho_Called = 4;
-                VideoWebHolder.bringChildToFront(PlayerObj[0].playerView);
+                VideoWebHolder.bringChildToFront(VideoHolder);
                 //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
                 MainThreadHandler.postDelayed(() -> PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel), 100);
             });
@@ -2854,7 +2848,7 @@ public class PlayerActivity extends Activity {
 
                 if (PlayerObj[0].player != null) {
                     mWho_Called = 3 + who_called;
-                    VideoWebHolder.bringChildToFront(PlayerObj[0].playerView);
+                    VideoWebHolder.bringChildToFront(VideoHolder);
 
                     PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
                     //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
