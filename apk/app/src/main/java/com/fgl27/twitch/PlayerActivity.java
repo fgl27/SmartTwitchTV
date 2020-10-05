@@ -195,7 +195,7 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
     //the default size for the side panel players
     private FrameLayout.LayoutParams PlayerViewSidePanel;
-    private FrameLayout.LayoutParams PlayerViewScreensPanel;
+    private FrameLayout.LayoutParams PlayerViewScreensLayout;
     //Base frame holders
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
@@ -728,7 +728,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //Main release function
+    //Simple release function
     private void SimpleReleasePlayer(int position) {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "SimpleReleasePlayer position " + position);
@@ -2524,8 +2524,6 @@ public class PlayerActivity extends Activity {
 
                         ReUsePlayer(position);
 
-                        SwitchPlayerAudio(AudioSource);
-
                     } else {
 
                         PlayerObj[position].mediaSources = Tools.buildMediaSource(
@@ -2542,6 +2540,7 @@ public class PlayerActivity extends Activity {
                         if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                     }
 
+                    SwitchPlayerAudio(AudioSource);
                     PreviewPlayerPlaylist = null;
 
                 } else {
@@ -2566,14 +2565,8 @@ public class PlayerActivity extends Activity {
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
                 //The odd behavior will stay until the player is releasePlayer
                 SimpleReleasePlayer(position);
-
                 SetupPlayer(position);
 
-                if (position == 1) {
-
-                    PicturePicture = true;
-
-                }
             });
         }
 
@@ -2722,16 +2715,6 @@ public class PlayerActivity extends Activity {
         public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod) {
             MainThreadHandler.post(() -> {
 
-                PreviewPlayerPlaylist = mainPlaylistString;
-                PlayerObj[4].mediaSources = Tools.buildMediaSource(
-                        Uri.parse(uri),
-                        mWebViewContext,
-                        isVod ? 2 : 1,
-                        mLowLatency,
-                        mainPlaylistString,
-                        userAgent
-                );
-
                 //Reset the Z position of the PP player so it show above the other on android 7 and older
                 //Call this always before starting the player
                 if (IsUsingSurfaceView) {
@@ -2744,6 +2727,16 @@ public class PlayerActivity extends Activity {
                     }
 
                 }
+
+                PreviewPlayerPlaylist = mainPlaylistString;
+                PlayerObj[4].mediaSources = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        isVod ? 2 : 1,
+                        mLowLatency,
+                        mainPlaylistString,
+                        userAgent
+                );
 
                 Set_PlayerObj(
                         false,
@@ -2824,10 +2817,10 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
-                PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
+                PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
-                PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensPanel);
+                PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensLayout);
 
                 Set_PlayerObj(
                         true,
@@ -2859,9 +2852,9 @@ public class PlayerActivity extends Activity {
                     PlayerObj[0].isScreenPreview = true;
                     VideoWebHolder.bringChildToFront(VideoHolder);
 
-                    PlayerViewScreensPanel = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
+                    PlayerViewScreensLayout = Tools.BasePreviewLayout(bottom, right, left, web_height, ScreenSize, bigger);
                     //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
-                    MainThreadHandler.postDelayed(() -> PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensPanel), 100);
+                    MainThreadHandler.postDelayed(() -> PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensLayout), 100);
                 }
 
             });
