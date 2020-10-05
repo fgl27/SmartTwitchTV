@@ -616,8 +616,6 @@ public class PlayerActivity extends Activity {
 
         SetupPlayer(position);
 
-        if (position == 1) ResetPPView();
-
     }
 
     private void Set_PlayerObj(boolean isScreenPreview, int Type, long ResumePosition,
@@ -2060,6 +2058,12 @@ public class PlayerActivity extends Activity {
         if (PlayerObj[position].Type == 1) clearResumePosition(position);
         else if (PlayerObj[position].Type == 2) updateResumePosition(position);//VOD
 
+        //Simple release to make sure player is reseated before start a new playback
+        if (PlayerObj[position].player != null) {
+            PlayerObj[position].player.release();
+            PlayerObj[position].player = null;
+        }
+
         SetupPlayer(position);
     }
 
@@ -2504,6 +2508,7 @@ public class PlayerActivity extends Activity {
                 if (startPlayer) {
                     if (position == 1) {
                         PicturePicture = true;
+                        ResetPPView();
                     }
 
                     VideoWebHolder.bringChildToFront(mWebView);
@@ -2733,6 +2738,18 @@ public class PlayerActivity extends Activity {
                         userAgent
                 );
 
+                //Reset the Z position of the PP player so it show above the other on android 7 and older
+                if (IsUsingSurfaceView) {
+                    SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
+
+                    if (PlayerSurfaceView != null) {
+
+                        PlayerSurfaceView.setZOrderMediaOverlay(true);
+
+                    }
+
+                }
+
                 Set_PlayerObj(
                         false,
                         isVod ? 2 : 1,
@@ -2744,19 +2761,6 @@ public class PlayerActivity extends Activity {
                 PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
 
                 SetupPlayer(4);
-
-                //Reset the Z position of the PP player so it show above the other
-                if (IsUsingSurfaceView) {
-
-                    SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
-
-                    if (PlayerSurfaceView != null) {
-
-                        PlayerSurfaceView.setZOrderMediaOverlay(true);
-
-                    }
-
-                }
 
                 SetAudio(4, PreviewAudio);
             });
@@ -3463,6 +3467,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerObj[position].CheckCounter = 0;
                     mSetPreviewOthersAudio();
+
                 }
 
             }
