@@ -280,7 +280,7 @@
     var STR_PLAYER_BITRATE_SUMMARY;
     var STR_PLAYER_BITRATE_MAIN;
     var STR_PLAYER_BITRATE_SMALL;
-    var STR_PLAYER_BITRATE_SMALL_SUMMARY;
+    var STR_PLAYER_BITRATE_SUMMARY_ETC;
     var STR_PLAYER_BITRATE_UNLIMITED;
     var STR_PICTURE_LIVE_FEED;
     var STR_AUDIO_SOURCE;
@@ -354,7 +354,6 @@
     var STR_USER_LIVE;
     var STR_PP_WORKAROUND;
     var STR_PP_WORKAROUND_SUMMARY;
-    var STR_PP_WARNIG;
     var STR_CLOSE_THIS2;
     var STR_HISTORY;
     var STR_WATCHED;
@@ -642,6 +641,14 @@
     var STR_LATENCY_TO_BROADCASTER;
     var STR_CHAT_DELAY_LATENCY_TO_BROADCASTER;
     var STR_CHAT_SEND_DELAY;
+    var STR_BLOCK_RES;
+    var STR_BLOCK_RES_SUMMARY;
+    var STR_BLOCK_RES_SUMMARY_EXTRA;
+    var STR_BLOCKED;
+    var STR_BLOCKED_NOT;
+    var STR_PLAYER_MAIN;
+    var STR_PLAYER_RES_MAIN;
+    var STR_PLAYER_RES_SMALL;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1112,8 +1119,7 @@
         STR_QUALITY = "Quality";
         STR_NORMAL = "Normal";
         STR_AUTO = "Auto";
-        STR_DEF_QUALITY = "Default player quality";
-        STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "Auto quality Bitrate limit"';
+
         STR_VERY_LOW = "Very low";
         STR_LOW = "Low";
         STR_HIGH = "High";
@@ -1133,12 +1139,23 @@
         STR_QUALITY_MULTI = [STR_PLAYER_MULTI_ALL, "Top lefth", "Top right", "Bottom lefth", "Bottom right"];
         STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom lefth", "Bottom center", "Bottom right"];
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
-        STR_PLAYER_BITRATE = "Auto quality Bitrate limit:";
-        STR_PLAYER_BITRATE_SUMMARY = 'The maximum allowed bitrate for the auto quality, this is used to prevent lags on low end devices when playing multiple videos at the same time (as most devices will lag on that situation), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended bitrate to the small players (small player also applies to all Multistream players and 50/50 mode) is 3 Mbps and unlimited for main or big player for most low end devices.';
-        STR_PLAYER_BITRATE_MAIN = "Main player bitrate";
-        STR_PLAYER_BITRATE_SMALL = "Small player bitrate (for Picture in Picture mode and Multistream)";
-        STR_PLAYER_BITRATE_SMALL_SUMMARY = "Different values for Main and small player bitrate may cause a short buffering when changing video source, to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+        STR_PLAYER_BITRATE = "Auto quality maximum allowed Resolution/Bitrate";
+        STR_PLAYER_BITRATE_SUMMARY = 'This will be used to prevent lags on low end devices when playing multiple videos at the same time (most devices will lag by skipping frames on that situation, as they are only made to play a single video), also helps to limit internet bandwidth use in case you need limit that also set the "Default player quality" to Auto, the recommended Resolution/Bitrate to all small players is 720p/3 Mbps and unlimited for main or big player for most low end devices.';
+        STR_PLAYER_BITRATE_SUMMARY_ETC = "Different values here for Main and small player resolution and or bitrate, may cause a short buffering/loading when changing with is the Main player in Picture Picture mode (pressing down will change the players), to prevent this set both values the same at the cost of possible lag, the best indicative of too high bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
+        STR_PLAYER_MAIN = "Main player, for the big player in Picture in Picture or the Top player 50/50";
+        STR_PLAYER_RES_SMALL = "Small players, for the small player of Picture in Picture mode and all Multistream players";
+        STR_PLAYER_BITRATE_MAIN = 'Bitrate - ' + STR_PLAYER_MAIN;
+        STR_PLAYER_BITRATE_SMALL = 'Bitrate - ' + STR_PLAYER_RES_SMALL;
+        STR_PLAYER_RES_MAIN = 'Resolution - ' + STR_PLAYER_MAIN;
+        STR_PLAYER_RES_SMALL = 'Resolution - ' + STR_PLAYER_RES_SMALL;
+        STR_BLOCK_RES = "Auto quality Blocked resolutions";
+        STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution";
+        STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
+        STR_BLOCKED = "Blocked";
+        STR_BLOCKED_NOT = "Not blocked";
         STR_AUDIO_SOURCE = "Audio source";
+        STR_DEF_QUALITY = "Default player quality";
+        STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "' + STR_PLAYER_BITRATE + '"';
         STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
         STR_PICTURE_CONTROLS1 = "Enable Picture in Picture mode: Playing a video press up to show preview feed choose a stream then hold key enter or press key 1 to start";
         STR_PICTURE_CONTROLS2 = "Change a video content: From player preview, If on multiplayer always single click, If on PP or 50/50 a single click update the big or top video, hold key enter or press key 1 updates the small or bottom video";
@@ -1149,7 +1166,7 @@
         STR_PICTURE_CONTROLS3 = "Change audio source to all videos: on multistream or PP hold key down, on 50/50 single click key down";
         STR_PICTURE_CONTROLS8 = "Player Restart: use the player bottom controls Player Restart, this will only restart all the players, usefully to sync player and chat, this will not sync a player content with another";
         STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
-        STR_PICTURE_CONTROLS10 = "Picture in Picture video quality: Check in app settings Auto quality Bitrate limit";
+        STR_PICTURE_CONTROLS10 = 'Picture in Picture video quality: Check in app settings "' + STR_PLAYER_BITRATE + '"';
         STR_PICTURE_CONTROLS11 = "Close small or bottom video (Picture in Picture only): return key twice will exit PP or 50/50 mode";
         STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
@@ -1228,10 +1245,8 @@
         STR_UNKNOWN = "Unknown";
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
-        STR_PP_WORKAROUND = "Picture in Picture old OS workaround";
-        STR_PP_WORKAROUND_SUMMARY = "For devices running android 7 (Nougat) or older is necessary to enable this to have PP mode properly working, don't enable this on a device that don't need it, as it will result in a lower image quality";
-        STR_PP_WARNIG = 'For some devices most running android 7 (Nougat) or older, is needed to enable in settings "<div class="class_bold" style="display: inline-block">' +
-            STR_PP_WORKAROUND + '</div>" to have Picture in Picture properly working, if you can\'t see the small screen exit the player and enable that on settings';
+        STR_PP_WORKAROUND = "Multiplayer mode old OS workaround";
+        STR_PP_WORKAROUND_SUMMARY = "For some devices running Android 7 (Nougat) or older is necessary to enable this to have Multiplayer mode properly working, don't enable this is you don't have a issue, as it will result in a lower image quality and possible lost of performance";
         STR_HISTORY = "History";
         STR_WATCHED = "Watched on ";
         STR_UNTIL = "until ";
@@ -1287,15 +1302,15 @@
         STR_FEED_END_DIALOG = ', Press return to go back to top menu';
         STR_BACK_USER_GAMES = ' Press return key to go back to ';
         STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
-        STR_SHOW_LIVE_PLAYER = 'Show Live streams preview player';
+        STR_SHOW_LIVE_PLAYER = 'Show preview on Live streams Screens';
         STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
-        STR_SHOW_VOD_PLAYER = 'Show VOD preview player';
-        STR_SHOW_CLIP_PLAYER = 'Show CLIP preview player';
-        STR_PREVIEW_CLIP_NEXT = 'When a preview end automatic switch next available clip';
-        STR_SHOW_SIDE_PLAYER = 'Show side panel preview player';
-        STR_SHOW_FEED_PLAYER = 'Show preview player on player preview';
+        STR_SHOW_VOD_PLAYER = 'Show preview on VOD Screens';
+        STR_SHOW_CLIP_PLAYER = 'Show preview on CLIP Screens';
+        STR_PREVIEW_CLIP_NEXT = 'When a clip preview end automatic switch next available clip';
+        STR_SHOW_SIDE_PLAYER = 'Show preview on side panel';
+        STR_SHOW_FEED_PLAYER = 'Show preview on the player preview thumbnails';
         STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't wanna or yours device lags when more then one player is active set this to NO";
-        STR_DISABLED_FEED_PLAYER_MULTI = 'Disable preview player when multistream is enabled';
+        STR_DISABLED_FEED_PLAYER_MULTI = 'Disable preview when multistream is enabled';
         STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
         STR_PREVIEW_ERROR_LOAD = "Preview fail to load:";
         STR_PREVIEW_ERROR_LINK = " unreachable";
@@ -1304,16 +1319,16 @@
         STR_PLAYER_LAG_ERRO = "Player unable to play do to lag";
         STR_PLAYER_ERROR = "Player unable to play do to player error";
         STR_PLAYER_ERROR_MULTI = ", try to lower small player bitrate value in settings";
-        STR_PREVIEW_SIZE = "Player preview player size";
-        STR_PREVIEW_SIZE_SUMMARY = "Set the size of the preview player of the preview feed (the one that shows only when playing a video)";
+        STR_PREVIEW_SIZE = "Player preview size";
+        STR_PREVIEW_SIZE_SUMMARY = "Set the size of the player preview of the preview thumbnails";
         STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large", "Extra large"];
-        STR_PREVIEW_SIZE_SCREEN = "Screens preview player size";
-        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview player of the screens (the one that shows above live/vod/clip)";
+        STR_PREVIEW_SIZE_SCREEN = "Screens preview size";
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview ";
         STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Thumbnail size", "Larger"];
-        STR_SIDE_PANEL_PLAYER_DELAY = "Preview player delay";
+        STR_SIDE_PANEL_PLAYER_DELAY = "Preview delay";
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
-        STR_PREVIEW_VOLUME = "Preview player volume";
-        STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview player volume";
+        STR_PREVIEW_VOLUME = "Preview volume";
+        STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview volume";
         STR_PREVIEW_OTHERS_VOLUME = "Main players volume";
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "The main player (All players picture in picture, multistream players) volume can be lower when the preview player is showing";
         STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
@@ -1327,7 +1342,7 @@
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
         STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
-        STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview player screen the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
+        STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
         STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
         STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
         STR_ENABLED_MAIN_MULTI = "Enable main or top left corner player first";
@@ -1339,7 +1354,7 @@
         STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
         STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
         STR_TOO_ERRORS = " or too many errors";
-        STR_STREAM_ERROR_SMALL = "Preview player, stream ended" + STR_TOO_ERRORS;
+        STR_STREAM_ERROR_SMALL = "Preview, stream ended" + STR_TOO_ERRORS;
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
         STR_GIFT_SUB = " has gift you a sub!";
@@ -1452,6 +1467,7 @@
         STR_PLAYED = "Played ";
         STR_CHAPTERS = "Chapters";
         STR_FROM_SIMPLE = " from ";
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -6990,10 +7006,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.260';
-    var Main_version_java = 44; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'September 27 2020';
-    var Main_version_web = 84; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.262';
+    var Main_version_java = 46; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'October 05 2020';
+    var Main_version_web = 88; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7058,10 +7074,9 @@
         "Main_selectedChannelPartner": false,
         "Sidepannel_IsUser": false,
         "My_channel": false,
-        "DeviceCheckNew": false,
+        "DeviceCheck2": false,
         "Never_run_phone": true,
         "Codec_is_Check": false,
-        "check_pp_workaround": true,
         "OS_is_Check": false,
         "Restore_Backup_Check": false
     };
@@ -7105,7 +7120,6 @@
 
     var Main_update_show_toast = false;
     var Main_IsOn_OSInterfaceVersion = '';
-    var Main_AndroidSDK = 1000;
     var Main_ClockOffset = 0;
     var Main_IsOn_OSInterface = 0;
     var Main_randomimg = '?' + Math.random();
@@ -7349,9 +7363,13 @@
 
         Screens_InitScreens();
 
+        //If add a setting to control SetReUsePlayer() remove this
+        OSInterface_CheckReUsePlayer();
+
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
         }
+
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
         Main_SetHistoryworker();
@@ -7389,11 +7407,12 @@
     function Main_CheckDevice() {
         if (Main_IsOn_OSInterface) {
 
-            if (!Main_values.DeviceCheckNew) {
+            if (!Main_values.DeviceCheck2) {
 
-                Main_values.DeviceCheckNew = true;
+                Main_values.DeviceCheck2 = true;
                 var device = OSInterface_getDevice();
                 var Manufacturer = OSInterface_getManufacturer();
+
                 device = device ? device.toLowerCase() : "";
                 Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
 
@@ -7404,7 +7423,10 @@
                     //bitrate to max possible
                     Settings_value.bitrate_min.defaultValue = 0;
                     Main_setItem('bitrate_min', 1);
-                    OSInterface_SetSmallPlayerBitrate(0);
+
+                    Settings_value.res_min.defaultValue = 0;
+                    Main_setItem('res_min', 1);
+                    OSInterface_SetSmallPlayerBitrate(0, 0);
 
                     //enable small player over feed on multi
                     Settings_value.disable_feed_player_multi.defaultValue = 0;
@@ -7412,6 +7434,14 @@
 
                     //Enable app animations
                     Settings_ForceEnableAimations();
+                } else if (Main_A_includes_B(device, 'mibox4')) { //current my box 4 or S can't handle 9xxp
+
+                    Settings_value.block_qualities_9.defaultValue = 1;
+                    Main_setItem('block_qualities_9', 2);
+
+                    Settings_DisableQualities = ['9'];
+                    Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
+                    Settings_Qualities();
                 }
             }
 
@@ -7451,19 +7481,6 @@
 
                 }
 
-            }
-
-            if (Main_IsOn_OSInterface) Main_AndroidSDK = OSInterface_getSDK();
-            else Main_AndroidSDK = 1000;
-
-            //Android N (sdk 25) and older don't properly support animations on surface_view
-            //So enable the workaround by default
-            if (!Main_values.OS_is_Check && Main_AndroidSDK < 1000) {
-                if (Main_AndroidSDK < 26) {
-                    Settings_value.pp_workaround.defaultValue = 1;
-                    Main_setItem('pp_workaround', 2);
-                }
-                Main_values.OS_is_Check = true;
             }
 
         } // else Settings_ForceEnableAimations();
@@ -7535,8 +7552,6 @@
         Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
         Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FOLLOW);
 
-        Main_innerHTML("dialog_os_text", STR_PP_WARNIG + STR_BR + STR_BR + STR_DIV_TITLE + STR_CLOSE_THIS2 + '</div>');
-
         Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
         Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
         Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
@@ -7578,35 +7593,24 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.260 - Web Version September 27 2020",
-                changes: [
-                    "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
-                    "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
-                    'Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now',
-                    "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.255 - Web Version September 25 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Apk Version 3.0.254 - Web Version September 23 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version September 21 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Apk Version 3.0.253 - Web Version September 20 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-            {
-                title: "Web Version September 19 2020",
-                changes: ["General performance improves and bug fixes"]
-            },
-        ];
+            title: "Apk Version 3.0.262 - Web Version October 05 2020",
+            changes: [
+                "Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain",
+                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it problem that was fix or at least mitigate is on the bellow lines",
+                'Re-organized settings order, clean up some strings',
+                'Add new Settings "Auto quality Blocked resolutions" this is to address the issue that some devices have with some resolutions as the Xiaomi Mi Box S and 9XXp resolution problem, this issue was already informed to Xiaomi see bellow issue list and probably on next update from they it will be fixed, but as this maybe a issue on the Amlogic Codecs this is a good feature to have, as there is a lot of TV device that use Amlogic and may never get updates',
+                'Add new Settings "Auto quality maximum allowed Resolution/Bitrate" this new settings allows to control more then the old option that only allowed Bitrate control, with this device that was lagging on the past playing multiple streams have more control and can mitigate the lags',
+                'Setting is no longer necessary to enable "Multiplayer mode old OS workaround" for most device (probably all), so it comes disabled by default on all devices, if you need this on yours device send a email (contact info in the about), this option when enable may cause lag on some devices so only use if you really needed',
+                'Prevent flicker green screen on NVIDIA SHIELD, I only have the 2017 darcy model but this probably prevent on all models, this issue is better described bellow',
+                'Bellow are the list of issue and discussion that I have started in order to addressed all device specific issue that I know the app has, again this are device specific so only some unlucky user are affected, the goal her is to find a solution on the device side that is why I have started the bellow discussion so the Manufacturer get informed',
+                'Xiaomi Mi Box S: 90 % frame drops on 9XXp60 but OK for 1080p60 https://github.com/google/ExoPlayer/issues/7411 issue closed the resolution there is that the Manufacturer will update the OS to fix the problem,  the problem is on the this device maybe on others that use Amlogic CPU',
+                'Xiaomi Mi Box S: Error when changing PP mode causing too long buffers https://github.com/google/ExoPlayer/issues/7996 issue open, the problem was mitigate on the app side, but this error may occurs and cause long buffer for the user, the problem is on the Amlogic codec the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem',
+                'NVIDIA SHIELD flicker green screen https://github.com/google/ExoPlayer/issues/7998, issue open, the problem here is only on streams that use Rec._709 color profile, was possible to prevent the issue from happening on almost all situations, but randomly it may happen when this happens isn\'t possible for the app to detect, so to fix after you notice it just restart the player, if playing a single video just change the quality to the same (press enter in the quality control option), if playing multiple streams just restart the problematic stream (Using the controls restart, choose the affected stream only), the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem',
+                'Amazon Fire Stick Gen 2: visual glitches when playing multiple streams https://github.com/fgl27/SmartTwitchTV/issues/13, this issue has not yet a full fix, if you try any type of multiple stream options one or all video may have visual glitches, as this is a very old device there may not be a solution only mitigation',
+                'On future app updates I\'ll update on the resolution of this issues',
+                'Thanks for all the users and the ExoPlayer team members that helped with this issues',
+            ]
+        }, ];
 
         var i = 0;
         var len = changelogObj.length,
@@ -7944,6 +7948,8 @@
             var device = OSInterface_getDevice();
             var Webviewversion = OSInterface_getWebviewVersion();
             var Manufacturer = OSInterface_getManufacturer();
+            var Main_AndroidSDK = OSInterface_getSDK();
+
             Main_Log('Webviewversion ' + Webviewversion);
 
             Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
@@ -10194,20 +10200,24 @@
         Android.keyEvent(key, keyaction);
     }
 
-    //public void SetSmallPlayerBandwidth(int Bitrate)
-    //Bitrate = set mainPlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+    //public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
+    //Resolution/Bitrate = set maximum allowed value, if 0 the value will be set to Integer.MAX_VALUE
     //Android specific: true
     //Sets small player max Bitrate
-    function OSInterface_SetSmallPlayerBitrate(Bitrate) {
-        if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
+    function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
+        } catch (e) {}
     }
 
-    //public void SetSmallPlayerBandwidth(int Bitrate)
-    //Bitrate = set PP_PlayerBitrate, if 0 the value will be set to Integer.MAX_VALUE
+    //public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
+    //Resolution/Bitrate = set maximum allowed value, if 0 the value will be set to Integer.MAX_VALUE
     //Android specific: true
     //Sets Big player max Bitrate
-    function OSInterface_SetMainPlayerBitrate(Bitrate) {
-        if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
+    function OSInterface_SetMainPlayerBitrate(Bitrate, Resolution) {
+        try {
+            if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
+        } catch (e) {}
     }
 
     //public String getcodecCapabilities(String CodecType)
@@ -10224,6 +10234,16 @@
     //Returns the codecCapabilities for that codec type
     function OSInterface_setBlackListMediaCodec(CodecList) {
         Android.setBlackListMediaCodec(CodecList);
+    }
+
+    //public void setBlackListMediaCodec(String qualitiesList)
+    //qualitiesList = the start of a qualitie 10 for 1080 pr any 10xx, 9 for 900 or 9xx etc etc
+    //Android specific: true
+    //Returns the codecCapabilities for that codec type
+    function OSInterface_setBlackListQualities(qualitiesList) {
+        try {
+            Android.setBlackListQualities(qualitiesList);
+        } catch (e) {}
     }
 
     //public void mshowLoading(boolean show)
@@ -10461,6 +10481,7 @@
         );
 
     }
+
     //public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
     //PreventClean prevent closing the player
     //trackSelectorPos the player that will use the not closed player trackSelector Position
@@ -10608,6 +10629,16 @@
         if (Main_IsOn_OSInterface) Android.mKeepScreenOn(Boolean(keepOn));
     }
 
+    //public void CheckReUsePlayer(String CodecListToCheck)
+    //CodecListToCheck = coma separated codec list to check
+    //Android specific: true
+    //Check to see if DefectedCodecExist
+    function OSInterface_CheckReUsePlayer() {
+        try {
+            if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
+        } catch (e) {}
+    }
+
     //public void getDuration()
     //String callback = the fun to receive the value
     //Android specific: true
@@ -10736,7 +10767,7 @@
         Main_values.Play_isHost = false;
         PlayClip_SetOpenVod();
 
-        Play_StartStayShowbottom();
+        Play_StartStayShowBottom();
         Play_BottomHide(Play_controlsChatDelay);
         Play_BottomHide(Play_controlsLowLatency);
         Play_BottomHide(Play_MultiStream);
@@ -12187,9 +12218,9 @@
         Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
     }
 
-    function Play_StartStayShowbottom() {
+    function Play_StartStayShowBottom() {
         Play_BottomShow(Play_MultiStream);
-        Play_BottomShow(Play_controlsQuality);
+        if (!PlayExtra_PicturePicture) Play_BottomShow(Play_controlsQuality);
         Play_BottomShow(Play_controlsExternal);
         Play_BottomShow(Play_controlsLowLatency);
         Play_BottomShow(Play_controlsSpeed);
@@ -12350,7 +12381,7 @@
         if (responseObj.status === 200) {
             Main_HideElement('play_dialog_retry');
 
-            Play_StartStayShowbottom();
+            Play_StartStayShowBottom();
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessend(responseObj.responseText, false, true);
             Play_ShowPanelStatus(1);
@@ -12929,6 +12960,8 @@
                     }
                     break;
                 case KEY_DOWN:
+                    // Android.TestFun();
+                    // break;
                     if (Play_isPanelShowing()) {
 
                         Play_clearHidePanel();
@@ -14669,6 +14702,7 @@
 
     function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
         if (!fail_type && Settings_value.open_host.defaultValue) {
+
             Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
             Main_setTimeout(
@@ -14677,12 +14711,14 @@
                 },
                 2000 //Delay as the stream just ended and may not show as host yet
             );
+
         } else PlayExtra_End_success(doSwitch, fail_type);
     }
 
     function PlayExtra_End_success(doSwitch, fail_type) {
 
-        var reason = PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
+        var reason = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + STR_IS_OFFLINE;
+
         if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
         if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
@@ -14854,27 +14890,7 @@
             OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
         }
 
-        if (Main_AndroidSDK < 26 && Main_values.check_pp_workaround && !Settings_Obj_default("pp_workaround")) {
-
-            Main_ShowElement('dialog_os');
-            Main_removeEventListener("keydown", Play_handleKeyDown);
-            Main_addEventListener("keydown", PlayExtra_handleKeyDown);
-
-            Main_values.check_pp_workaround = false;
-            Main_SaveValues();
-        }
-
         //Main_Log('PlayExtra_onPlayer: Auto');
-    }
-
-    function PlayExtra_handleKeyDown(e) {
-        if (e.keyCode === KEY_RETURN || e.keyCode === KEY_KEYBOARD_BACKSPACE) {
-
-            Main_removeEventListener("keydown", PlayExtra_handleKeyDown);
-            Main_addEventListener("keydown", Play_handleKeyDown);
-            Main_HideElement('dialog_os');
-
-        }
     }
 
     function PlayExtra_loadDataFail(Reason) {
@@ -14978,10 +14994,10 @@
     var Play_DefaultjumpTimers = [];
 
     //To pass to Java
-    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_";
+    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token";
     var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
 
-    var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
+    var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token";
     var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
     var Play_base_back_headers = '';
@@ -15192,7 +15208,7 @@
         //reset channel logo to prevent another channel logo
         Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
-        Play_StartStayShowbottom();
+        Play_StartStayShowBottom();
         Play_BottomShow(Play_MultiStream);
         Play_BottomShow(Play_controlsChatDelay);
         Play_BottomShow(Play_controlsLowLatency);
@@ -17020,7 +17036,7 @@
     function Play_handleKeyUpClear() {
         Main_clearTimeout(PlayExtra_KeyEnterID);
         Main_removeEventListener("keyup", Play_handleKeyUp);
-        if (!Main_isElementShowing('dialog_os')) Main_addEventListener("keydown", Play_handleKeyDown);
+        Main_addEventListener("keydown", Play_handleKeyDown);
     }
 
     function Play_Exit() {
@@ -17957,7 +17973,7 @@
 
         Play_BufferSize = 0;
 
-        Play_StartStayShowbottom();
+        Play_StartStayShowBottom();
         Play_BottomHide(Play_MultiStream);
         Play_BottomHide(Play_controlsOpenVod);
         Play_BottomHide(Play_controlsChatDelay);
@@ -19911,8 +19927,7 @@
             );
 
             //If the scroll position is at the end of the list after a loading success focus
-            if (Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
-
+            if (ScreenObj[key].itemsCount && Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
                 Screens_addFocus(true, key);
 
             }
@@ -25221,6 +25236,9 @@
         '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
         '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
     ];
+    var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
+    var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
+    var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 
     var Settings_value = {
         "restor_playback": {
@@ -25231,7 +25249,7 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
-        "pp_workaround": {
+        "PP_workaround": {
             "values": ["no", "yes"],
             "defaultValue": 1
         },
@@ -25315,11 +25333,11 @@
             "values": [
                 'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
             ],
-            "defaultValue": 1
+            "defaultValue": 6
         },
         "auto_refresh_background": { //Migrated to dialog
             "values": ["no", "yes"],
-            "defaultValue": 1
+            "defaultValue": 2
         },
         "show_feed_player_delay": { //Migrated to dialog
             "values": [
@@ -25401,35 +25419,43 @@
         },
         "since_notification": { //Migrated to dialog
             "values": Settings_GetnotificationTime(),
-            "defaultValue": 1
+            "defaultValue": 7
         },
         "global_font_offset": { //Migrated to dialog
             "values": [-3, -2, -1, 0, 1, 2, 3],
             "defaultValue": 4
         },
         "buffer_live": { //Migrated to dialog
-            "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            "values": buffer_values,
             "defaultValue": 2
         },
         "buffer_vod": { //Migrated to dialog
-            "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            "values": buffer_values,
             "defaultValue": 2
         },
         "buffer_clip": { //Migrated to dialog
-            "values": [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+            "values": buffer_values,
             "defaultValue": 2
         },
         "end_dialog_counter": { //Migrated to dialog
             "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
             "defaultValue": 4
         },
+        "res_max": { //Migrated to dialog
+            "values": res_values,
+            "defaultValue": 1
+        },
+        "res_min": { //Migrated to dialog
+            "values": res_values,
+            "defaultValue": 6 // 720p
+        },
         "bitrate_main": { //Migrated to dialog
-            "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
+            "values": Settings_GetBitrates(bitrate_values),
             "defaultValue": 1
         },
         "bitrate_min": { //Migrated to dialog
-            "values": ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1],
-            "defaultValue": 18
+            "values": Settings_GetBitrates(bitrate_values),
+            "defaultValue": 18 //3 Mbps
         },
         "videos_animation": { //Migrated to dialog
             "values": ["no", "yes"],
@@ -25491,7 +25517,7 @@
             "set_values": [""],
             "defaultValue": 1
         },
-        "small_feed_player": {
+        "preview_settings": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
@@ -25517,6 +25543,11 @@
             "defaultValue": 1
         },
         "vod_seek": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "block_qualities": {
             "values": ["None"],
             "set_values": [""],
             "defaultValue": 1
@@ -25566,7 +25597,7 @@
         },
         "highlight_bits": { //Migrated to dialog
             "values": ["no", "yes"],
-            "defaultValue": 1
+            "defaultValue": 2
         },
         "show_actions": { //Migrated to dialog
             "values": ["no", "yes"],
@@ -25599,7 +25630,39 @@
         "chat_timestamp": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
-        }
+        },
+        "block_qualities_21": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_16": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_14": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_10": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_9": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_7": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_4": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
+        "block_qualities_3": { //Migrated to dialog
+            "values": ["enabled", "disabled"],
+            "defaultValue": 1
+        },
     };
 
     function Settings_GenerateClock() {
@@ -25640,6 +25703,19 @@
 
         for (i = 2; i < 25; i++) {
             array.push(i + ' Hours');
+        }
+
+        return array;
+    }
+
+
+    function Settings_GetBitrates(values) {
+        var i = 0,
+            len = values.length,
+            array = [];
+
+        for (i; i < len; i++) {
+            array.push(values[i] + " Mbps");
         }
 
         return array;
@@ -25707,7 +25783,7 @@
 
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-        div += Settings_Content('pp_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+        div += Settings_Content('PP_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
         div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
@@ -25720,22 +25796,12 @@
 
         //Dialog settings
         div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+        div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+        div += Settings_Content('preview_settings', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
         div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
         div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
-        div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
-        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
         div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-        // Prepare the bitrates
-        key = "bitrate_main";
-        var i = 1,
-            len = Settings_value[key].values.length;
-        for (i; i < len; i++) {
-            Settings_value[key].values[i] = Settings_value[key].values[i] + " Mbps";
-        }
-        Settings_value[key].values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-        Settings_value.bitrate_min.values = Settings_value[key].values;
-        Settings_SetBitRate(0);
 
         Main_innerHTML("settings_main", div);
         Settings_positions_length = Settings_value_keys.length;
@@ -25815,7 +25881,7 @@
         Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
         Settings_value[key].values = [STR_YES, STR_NO];
 
-        key = "pp_workaround";
+        key = "PP_workaround";
         Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
         Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
 
@@ -25857,8 +25923,12 @@
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
-        Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
         Settings_CodecsSet();
+
+        Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
+        Settings_Qualities();
+
+        Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
         OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
         OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
         OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
@@ -25866,6 +25936,8 @@
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
         Settings_set_all_notification();
+
+        Settings_SetResBitRate(0);
     }
 
     function Settings_Obj_values(key) {
@@ -25960,13 +26032,24 @@
         else if (position === "clock_offset") {
             Settings_SetClock();
             Main_updateclock();
-        } else if (position === "bitrate_main") Settings_SetBitRate(1);
-        else if (position === "bitrate_min") Settings_SetBitRate(2);
+        } else if (position === "bitrate_main") Settings_SetResBitRate(1);
+        else if (position === "bitrate_min") Settings_SetResBitRate(2);
+        else if (position === "res_max") Settings_SetResBitRate(1);
+        else if (position === "res_min") Settings_SetResBitRate(2);
         else if (position === "dpad_opacity") Settings_DpadOpacity();
         else if (position === "dpad_position") Settings_DpadPOsition();
-        else if (position === "pp_workaround") Settings_PP_Workaround();
+        else if (position === "PP_workaround") Settings_PP_Workaround();
         else if (position === "vod_seek_min") Settings_check_min_seek();
         else if (position === "vod_seek_max") Settings_check_max_seek();
+        else if (position === "block_qualities_21" || position === "block_qualities_16" ||
+            position === "block_qualities_14" || position === "block_qualities_10" ||
+            position === "block_qualities_9" || position === "block_qualities_7" ||
+            position === "block_qualities_4" || position === "block_qualities_3") {
+
+            Settings_QualitiesCheck();
+
+        }
+
     }
 
     function Settings_check_min_seek() {
@@ -26065,7 +26148,7 @@
     }
 
     function Settings_PP_Workaround() {
-        OSInterface_msetPlayer(!Settings_Obj_default("pp_workaround"), Play_isFullScreen);
+        OSInterface_msetPlayer(!Settings_Obj_default("PP_workaround"), Play_isFullScreen);
     }
 
     function Settings_DpadOpacity() {
@@ -26136,34 +26219,40 @@
         }
     }
 
-    function Settings_SetBitRate(whocall) {
+    function Settings_SetResBitRate(whocall) {
         if (Main_IsOn_OSInterface) {
             if (!whocall) {
-                Settings_SetBitRateMain();
-                Settings_SetBitRateMin();
-            } else if (whocall === 1) Settings_SetBitRateMain();
-            else if (whocall === 2) Settings_SetBitRateMin();
+                Settings_SetResBitRateMain();
+                Settings_SetResBitRateMin();
+            } else if (whocall === 1) Settings_SetResBitRateMain();
+            else if (whocall === 2) Settings_SetResBitRateMin();
         }
     }
 
-    function Settings_SetBitRateMain() {
-        var value;
+    function Settings_SetResBitRateMain() {
+        var resolution = 0,
+            bitrate = 0;
 
         if (Settings_Obj_default("bitrate_main") > 0)
-            value = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
-        else value = 0;
+            bitrate = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
 
-        OSInterface_SetMainPlayerBitrate(value);
+        if (Settings_Obj_default("res_max") > 0)
+            resolution = parseInt(Settings_Obj_values("res_max").split("p")[0]);
+
+        OSInterface_SetMainPlayerBitrate(bitrate, resolution);
     }
 
-    function Settings_SetBitRateMin() {
-        var value;
+    function Settings_SetResBitRateMin() {
+        var resolution = 0,
+            bitrate = 0;
 
         if (Settings_Obj_default("bitrate_min") > 0)
-            value = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
-        else value = 0;
+            bitrate = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
 
-        OSInterface_SetSmallPlayerBitrate(value);
+        if (Settings_Obj_default("res_min") > 0)
+            resolution = parseInt(Settings_Obj_values("res_min").split("p")[0]);
+
+        OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
     }
 
     function Settings_SetBuffers(whocall) {
@@ -26309,7 +26398,8 @@
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek();
-                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'block_qualities')) Settings_block_qualities();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'preview_settings')) Settings_DialogShowSmallPayer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
@@ -26325,6 +26415,7 @@
     var Settings_CodecsValue = [];
     var Settings_CodecsPos;
     var Settings_DisableCodecsNames = [];
+    var Settings_DisableQualities = [];
 
     function Settings_CodecsShow() {
         Main_removeEventListener("keydown", Settings_handleKeyDown);
@@ -26420,11 +26511,11 @@
                 break;
             case KEY_LEFT:
                 key = Settings_CodecsValue[Settings_CodecsPos].name;
-                if (Settings_Obj_default(key) > 0) Settings_CodecsRigthLeft(-1);
+                if (Settings_Obj_default(key) > 0) Settings_CodecsRightLeft(-1);
                 break;
             case KEY_RIGHT:
                 key = Settings_CodecsValue[Settings_CodecsPos].name;
-                if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRigthLeft(1);
+                if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRightLeft(1);
                 break;
             case KEY_UP:
                 if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
@@ -26451,7 +26542,7 @@
         Settings_SetarrowsKey(key);
     }
 
-    function Settings_CodecsRigthLeft(offset) {
+    function Settings_CodecsRightLeft(offset) {
 
         if (Settings_CodecsValue.length < 2) {
             Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
@@ -26513,6 +26604,26 @@
         if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
     }
 
+    function Settings_QualitiesCheck() {
+        Settings_DisableQualities = [];
+        var array_values = ['21', '16', '14', '10', '9', '7', '4', '3'],
+            i = 0,
+            len = array_values.length;
+
+        for (i; i < len; i++) {
+
+            if (Settings_Obj_default('block_qualities_' + array_values[i]))
+                Settings_DisableQualities.push(array_values[i]);
+        }
+
+        Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
+        Settings_Qualities();
+    }
+
+    function Settings_Qualities() {
+        if (Main_IsOn_OSInterface) OSInterface_setBlackListQualities(Settings_DisableQualities.join());
+    }
+
     function Settings_ForceEnableAimations() {
         Settings_value.app_animations.defaultValue = 1;
         Main_setItem('app_animations', 2);
@@ -26545,7 +26656,26 @@
     }
 
     function Settings_DialogShowBitrate() {
+        Settings_value.res_max.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+        Settings_value.res_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+        Settings_value.bitrate_main.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+        Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
+
+
         var obj = {
+            res_max: {
+                defaultValue: Settings_value.res_max.defaultValue,
+                values: Settings_value.res_max.values,
+                title: STR_PLAYER_RES_MAIN,
+                summary: null
+            },
+            res_min: {
+                defaultValue: Settings_value.res_min.defaultValue,
+                values: Settings_value.res_min.values,
+                title: STR_PLAYER_RES_SMALL,
+                summary: null
+            },
             bitrate_main: {
                 defaultValue: Settings_value.bitrate_main.defaultValue,
                 values: Settings_value.bitrate_main.values,
@@ -26556,11 +26686,11 @@
                 defaultValue: Settings_value.bitrate_min.defaultValue,
                 values: Settings_value.bitrate_min.values,
                 title: STR_PLAYER_BITRATE_SMALL,
-                summary: STR_PLAYER_BITRATE_SMALL_SUMMARY
-            }
+                summary: null
+            },
         };
 
-        Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_PLAYER_BITRATE_SUMMARY);
+        Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC);
     }
 
     function Settings_vod_seek() {
@@ -26602,6 +26732,18 @@
         Settings_value.preview_sizes.values = STR_PREVIEW_SIZE_ARRAY;
 
         var obj = {
+            show_feed_player: {
+                defaultValue: Settings_value.show_feed_player.defaultValue,
+                values: Settings_value.show_feed_player.values,
+                title: STR_SHOW_FEED_PLAYER,
+                summary: STR_SHOW_FEED_PLAYER_SUMMARY
+            },
+            show_side_player: {
+                defaultValue: Settings_value.show_side_player.defaultValue,
+                values: Settings_value.show_side_player.values,
+                title: STR_SHOW_SIDE_PLAYER,
+                summary: null
+            },
             show_live_player: {
                 defaultValue: Settings_value.show_live_player.defaultValue,
                 values: Settings_value.show_live_player.values,
@@ -26619,30 +26761,6 @@
                 values: Settings_value.show_clip_player.values,
                 title: STR_SHOW_CLIP_PLAYER,
                 summary: null
-            },
-            auto_clip_preview: {
-                defaultValue: Settings_value.auto_clip_preview.defaultValue,
-                values: Settings_value.auto_clip_preview.values,
-                title: STR_AUTO_PLAY_NEXT,
-                summary: STR_PREVIEW_CLIP_NEXT
-            },
-            show_side_player: {
-                defaultValue: Settings_value.show_side_player.defaultValue,
-                values: Settings_value.show_side_player.values,
-                title: STR_SHOW_SIDE_PLAYER,
-                summary: null
-            },
-            show_feed_player: {
-                defaultValue: Settings_value.show_feed_player.defaultValue,
-                values: Settings_value.show_feed_player.values,
-                title: STR_SHOW_FEED_PLAYER,
-                summary: STR_SHOW_FEED_PLAYER_SUMMARY
-            },
-            disable_feed_player_multi: {
-                defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
-                values: Settings_value.disable_feed_player_multi.values,
-                title: STR_DISABLED_FEED_PLAYER_MULTI,
-                summary: STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY
             },
             preview_screen_sizes: {
                 defaultValue: Settings_value.preview_screen_sizes.defaultValue,
@@ -26673,7 +26791,19 @@
                 values: Settings_value.show_feed_player_delay.values,
                 title: STR_SIDE_PANEL_PLAYER_DELAY,
                 summary: STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY
-            }
+            },
+            disable_feed_player_multi: {
+                defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
+                values: Settings_value.disable_feed_player_multi.values,
+                title: STR_DISABLED_FEED_PLAYER_MULTI,
+                summary: STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY
+            },
+            auto_clip_preview: {
+                defaultValue: Settings_value.auto_clip_preview.defaultValue,
+                values: Settings_value.auto_clip_preview.values,
+                title: STR_AUTO_PLAY_NEXT,
+                summary: STR_PREVIEW_CLIP_NEXT
+            },
         };
 
         Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER);
@@ -27041,6 +27171,71 @@
         };
 
         Settings_DialogShow(obj, STR_CHAT_OPTIONS);
+    }
+
+    function Settings_block_qualities() {
+        var array_ena_dis = [STR_BLOCKED_NOT, STR_BLOCKED];
+        Settings_value.block_qualities_21.values = array_ena_dis;
+        Settings_value.block_qualities_16.values = array_ena_dis;
+        Settings_value.block_qualities_14.values = array_ena_dis;
+        Settings_value.block_qualities_10.values = array_ena_dis;
+        Settings_value.block_qualities_9.values = array_ena_dis;
+        Settings_value.block_qualities_7.values = array_ena_dis;
+        Settings_value.block_qualities_4.values = array_ena_dis;
+        Settings_value.block_qualities_3.values = array_ena_dis;
+
+        var obj = {
+            block_qualities_21: {
+                defaultValue: Settings_value.block_qualities_21.defaultValue,
+                values: Settings_value.block_qualities_21.values,
+                title: '21XXp',
+                summary: null
+            },
+            block_qualities_16: {
+                defaultValue: Settings_value.block_qualities_16.defaultValue,
+                values: Settings_value.block_qualities_16.values,
+                title: '16XXp',
+                summary: null
+            },
+            block_qualities_14: {
+                defaultValue: Settings_value.block_qualities_14.defaultValue,
+                values: Settings_value.block_qualities_14.values,
+                title: '14XXp',
+                summary: null
+            },
+            block_qualities_10: {
+                defaultValue: Settings_value.block_qualities_10.defaultValue,
+                values: Settings_value.block_qualities_10.values,
+                title: '10XXp',
+                summary: null
+            },
+            block_qualities_9: {
+                defaultValue: Settings_value.block_qualities_9.defaultValue,
+                values: Settings_value.block_qualities_9.values,
+                title: '9XXp',
+                summary: null
+            },
+            block_qualities_7: {
+                defaultValue: Settings_value.block_qualities_7.defaultValue,
+                values: Settings_value.block_qualities_7.values,
+                title: '7XXp',
+                summary: null
+            },
+            block_qualities_4: {
+                defaultValue: Settings_value.block_qualities_4.defaultValue,
+                values: Settings_value.block_qualities_4.values,
+                title: '4XXp',
+                summary: null
+            },
+            block_qualities_3: {
+                defaultValue: Settings_value.block_qualities_3.defaultValue,
+                values: Settings_value.block_qualities_3.values,
+                title: '3XXp',
+                summary: null
+            },
+        };
+
+        Settings_DialogShow(obj, STR_BLOCK_RES + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY_EXTRA);
     }
 
     function Settings_Dialog_isVisible() {
