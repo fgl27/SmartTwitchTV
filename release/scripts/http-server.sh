@@ -1,5 +1,7 @@
 #!/bin/bash
 
+gnome-terminal
+
 #install the server
 #npm install http-server -g
 
