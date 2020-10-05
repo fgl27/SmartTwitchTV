@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.261';
-var Main_version_java = 45;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'September 27 2020';
-var Main_version_web = 85;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.262';
+var Main_version_java = 46;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'October XX 2020';
+var Main_version_web = 88;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -611,37 +611,21 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.261 - Web Version September 27 2020",
-            changes: ["Revert the player change of previously version (Apk Version 3.0.260) as some devices (Xiaomi Mi Box S) can't handle them"]
-        },
-        {
-            title: "Apk Version 3.0.260 - Web Version September 27 2020",
+            title: "Apk Version 3.0.262 - Web Version October XX 2020",
             changes: [
-                "Update app player functionality to make it more reliable and add features, if anyone has a player issues inform, contact information on the about of the app",
-                "Open PP or Multistream mode is instantaneous now if the player preview is showing (the preview is the player that shows over the player when pressing UP)",
-                'Click enter when the preview is showing to open the preview on the Main player will open instantaneous if you have in settings the "Auto quality Bitrates" set to the same value for all the player, if not (if the Bitrates are different) is not instantaneous but is much faster now',
-                "General performance improves and bug fixes"
+                "Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain",
+                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it problem that was fix or at least mitigate is on the bellow lines",
+                'Re-organized settings order, clean up some strings',
+                'Add new Settings "Auto quality Blocked resolutions" this is to address the issue that some devices have with some resolutions as the Xiaomi Mi Box S and 9XXp resolution problem, this issue was already informed to Xiaomi see bellow issue list and probably on next update from they it will be fixed, but as this maybe a issue on the Amlogic Codecs this is a good feature to have, as there is a lot of TV device that use Amlogic and may never get updates',
+                'Add new Settings "Auto quality maximum allowed Resolution/Bitrate" this new settings allows to control more then the old option that only allowed Bitrate control, with this device that was lagging on the past playing multiple streams have more control and can mitigate the lags',
+                'Setting is no longer necessary to enable "Multiplayer mode old OS workaround" for most device (probably all), so it comes disabled by default on all devices, if you need this on yours device send a email (contact info in the about), this option when enable may cause lag on some devices so only use if you really needed',
+                'Prevent flicker green screen on NVIDIA SHIELD, I only have the 2017 darcy model but this probably prevent on all models, this issue is better described bellow',
+                'Bellow are the list of issue and discussion that I have started in order to addressed all device specific issue that I know the app has, again this are device specific so only some unlucky user are affected, the goal her is to find a solution on the device side that is why I have started the bellow discussion so the Manufacturer get informed',
+                'Xiaomi Mi Box S: 90 % frame drops on 9XXp60 but OK for 1080p60 https://github.com/google/ExoPlayer/issues/7411 issue closed the resolution there is that the Manufacturer will update the OS to fix the problem,  the problem is on the this device maybe on others that use Amlogic CPU',
+                'Xiaomi Mi Box S: Error when changing PP mode causing too long buffers https://github.com/google/ExoPlayer/issues/7996 issue open, the problem was mitigate on the app side, but this error may occurs and cause long buffer for the user, the problem is on the Amlogic codec the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem',
+                'NVIDIA SHIELD flicker green screen https://github.com/google/ExoPlayer/issues/7998, issue open, the problem here is only on streams that use Rec._709 color profile, was possible to prevent the issue from happening on almost all situations, but randomly it may happen when this happens isn\'t possible for the app to detect, so to fix after you notice it just restart the player, if playing a single video just change the quality to the same (press enter in the quality control option), if playing multiple streams just restart the problematic stream (Using the controls restart, choose the affected stream only), the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem',
+                'Amazon Fire Stick Gen 2: visual glitches when playing multiple streams https://github.com/fgl27/SmartTwitchTV/issues/13, this issue has not yet a full fix, if you try any type of multiple stream options one or all video may have visual glitches, as this is a very old device there may not be a solution only mitigation'
             ]
-        },
-        {
-            title: "Apk Version 3.0.255 - Web Version September 25 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Apk Version 3.0.254 - Web Version September 23 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Web Version September 21 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Apk Version 3.0.253 - Web Version September 20 2020",
-            changes: ["General performance improves and bug fixes"]
-        },
-        {
-            title: "Web Version September 19 2020",
-            changes: ["General performance improves and bug fixes"]
         },
     ];
 
