@@ -24,6 +24,8 @@ Apk Version 3.0.262 - Web Version October XX 2020
 * [Xiaomi Mi Box S: Error when changing PP mode causing too long buffers](https://github.com/google/ExoPlayer/issues/7996) issue open, the problem was mitigate on the app side, but this error may occurs and cause long buffer for the user, the problem is on the Amlogic codec the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem
 * [NVIDIA SHIELD flicker green screen](https://github.com/google/ExoPlayer/issues/7998), issue open, the problem here is only on streams that use **Rec._709 color profile**, was possible to prevent the issue from happening on almost all situations, but randomly it may happen when this happens isn't possible for the app to detect, so to fix after you notice it just restart the player, if playing a single video just change the quality to the same (press enter in the quality control option), if playing multiple streams just restart the problematic stream (Using the controls restart, choose the affected stream only), the goal of the discussion is reach a conclusion and inform the Manufacturer to fix the problem
 * [Amazon Fire Stick Gen 2: visual glitches when playing multiple streams](https://github.com/fgl27/SmartTwitchTV/issues/13), this issue has not yet a full fix, if you try any type of multiple stream options one or all video may have visual glitches, as this is a very old device there may not be a solution only mitigation.
+* On future app updates I'll update on the resolution of this issues
+* Thanks for all the users and the ExoPlayer team members that helped with this issues
 
 Apk Version 3.0.261 - Web Version September 27 2020
 ==============
