@@ -506,8 +506,6 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
-        if (PlayerObjPosition == 1) ResetPPView();
-
         if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
             setEnabledQualities(PlayerObjPosition);
         else
@@ -601,20 +599,6 @@ public class PlayerActivity extends Activity {
             GetCurrentPositionSmall();
 
         }
-
-    }
-
-    private void PreparePlayer_Single_PP(boolean isScreenPreview, int Type, long ResumePosition, int position) {
-
-        Set_PlayerObj(
-                isScreenPreview,
-                Type,
-                ResumePosition,
-                position == 1 ? 1 : 0,
-                position
-        );
-
-        SetupPlayer(position);
 
     }
 
@@ -742,6 +726,19 @@ public class PlayerActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "releasePlayer position " + position);
         }
+    }
+
+    //Main release function
+    private void SimpleReleasePlayer(int position) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "SimpleReleasePlayer position " + position);
+        }
+
+        if (PlayerObj[position].player != null) {
+            PlayerObj[position].player.release();
+            PlayerObj[position].player = null;
+        }
+
     }
 
     //Basic player position setting, for resume playback
@@ -2059,11 +2056,7 @@ public class PlayerActivity extends Activity {
         else if (PlayerObj[position].Type == 2) updateResumePosition(position);//VOD
 
         //Simple release to make sure player is reseated before start a new playback
-        if (PlayerObj[position].player != null) {
-            PlayerObj[position].player.release();
-            PlayerObj[position].player = null;
-        }
-
+        SimpleReleasePlayer(position);
         SetupPlayer(position);
     }
 
@@ -2508,6 +2501,7 @@ public class PlayerActivity extends Activity {
                 if (startPlayer) {
                     if (position == 1) {
                         PicturePicture = true;
+                        //Call this always before starting the player
                         ResetPPView();
                     }
 
@@ -2518,15 +2512,15 @@ public class PlayerActivity extends Activity {
                             position// always 0 or 1... so safe to use position
                     );
 
-                    if (mReUsePlayer) {
+                    Set_PlayerObj(
+                            false,
+                            Type,
+                            ResumePosition,
+                            position,// always 0 or 1... so safe to use position
+                            position
+                    );
 
-                        Set_PlayerObj(
-                                false,
-                                Type,
-                                ResumePosition,
-                                position,// always 0 or 1... so safe to use position
-                                position
-                        );
+                    if (mReUsePlayer) {
 
                         ReUsePlayer(position);
 
@@ -2543,7 +2537,7 @@ public class PlayerActivity extends Activity {
                                 userAgent
                         );
 
-                        PreparePlayer_Single_PP(false, Type, ResumePosition, position);
+                        SetupPlayer(position);
 
                         if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                     }
@@ -2571,9 +2565,9 @@ public class PlayerActivity extends Activity {
 
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
                 //The odd behavior will stay until the player is releasePlayer
-                releasePlayer(position);
+                SimpleReleasePlayer(position);
 
-                PreparePlayer_Single_PP(false, Type, ResumePosition, position);
+                SetupPlayer(position);
 
                 if (position == 1) {
 
@@ -2739,6 +2733,7 @@ public class PlayerActivity extends Activity {
                 );
 
                 //Reset the Z position of the PP player so it show above the other on android 7 and older
+                //Call this always before starting the player
                 if (IsUsingSurfaceView) {
                     SurfaceView PlayerSurfaceView = (SurfaceView) PlayerObj[4].playerView.getVideoSurfaceView();
 
@@ -2801,7 +2796,16 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel);
-                PreparePlayer_Single_PP(true, 1, 0, 0);
+
+                Set_PlayerObj(
+                        true,
+                        1,
+                        0,
+                        0,
+                        0
+                );
+
+                SetupPlayer(0);
 
             });
         }
@@ -2824,8 +2828,16 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 PlayerObj[0].playerView.setLayoutParams(PlayerViewScreensPanel);
-                PreparePlayer_Single_PP(true, Type, ResumePosition, 0);
 
+                Set_PlayerObj(
+                        true,
+                        Type,
+                        ResumePosition,
+                        0,
+                        0
+                );
+
+                SetupPlayer(0);
             });
         }
 
@@ -3259,7 +3271,7 @@ public class PlayerActivity extends Activity {
 
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a SetMultiStreamMainBig
                 //The odd behavior will stay until the player is releasePlayer
-                if (Restart) releasePlayer(position);
+                if (Restart) SimpleReleasePlayer(position);
 
                 boolean mReUsePlayer = CanReUsePlayer(
                         mainPlaylistString,
