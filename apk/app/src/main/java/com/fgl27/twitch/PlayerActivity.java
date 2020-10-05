@@ -532,11 +532,11 @@ public class PlayerActivity extends Activity {
 
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
 
-        if (PlayerObj[PlayerObjPosition].player == null) {
+        //Change the visibility before starting the player, as some device will have error on visibility changes
+        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
+            PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
 
-            //Change the visibility before starting the player, as some device will have error on visibility changes
-            if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
-                PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
+        if (PlayerObj[PlayerObjPosition].player == null) {
 
             PlayerObj[PlayerObjPosition].trackSelector = new DefaultTrackSelector(this);
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
