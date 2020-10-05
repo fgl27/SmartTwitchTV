@@ -669,6 +669,7 @@ public class PlayerActivity extends Activity {
 
         //Prevent odd error Decoder init failed: OMX.Nvidia.h264.decode... maybe also to other devices
         //That happens after a resume that before the resume you move the player using setplayer()
+        //This also prevent the SurfaceView not be visible on the same situation
         if (IsUsingSurfaceView) {
             PreviewHolder.removeView(PlayerObj[4].playerView);
             PreviewHolder.addView(PlayerObj[4].playerView);
