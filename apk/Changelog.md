@@ -9,7 +9,7 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Apk Version 3.0.262 - Web Version October XX 2020
+Apk Version 3.0.262 - Web Version October 05 2020
 ==============
 
 * Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain

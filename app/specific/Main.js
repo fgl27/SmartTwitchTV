@@ -26,7 +26,7 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.262';
 var Main_version_java = 46;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'October XX 2020';
+var Main_minversion = 'October 05 2020';
 var Main_version_web = 88;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
@@ -611,7 +611,7 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.262 - Web Version October XX 2020",
+            title: "Apk Version 3.0.262 - Web Version October 05 2020",
             changes: [
                 "Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain",
                 "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it problem that was fix or at least mitigate is on the bellow lines",
