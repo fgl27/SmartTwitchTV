@@ -310,7 +310,7 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
-    "small_feed_player": {
+    "preview_settings": {
         "values": ["None"],
         "set_values": [""],
         "defaultValue": 1
@@ -588,9 +588,9 @@ function Settings_SetSettings() {
     div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+    div += Settings_Content('preview_settings', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
     div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('small_feed_player', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
     div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     Main_innerHTML("settings_main", div);
@@ -1188,7 +1188,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'block_qualities')) Settings_block_qualities();
-            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'small_feed_player')) Settings_DialogShowSmallPayer();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'preview_settings')) Settings_DialogShowSmallPayer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'live_notification_opt')) Settings_DialogShowNotification();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'dpad_opt')) Settings_DialogShowDpad();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
@@ -1496,6 +1496,18 @@ function Settings_DialogShowSmallPayer() {
     Settings_value.preview_sizes.values = STR_PREVIEW_SIZE_ARRAY;
 
     var obj = {
+        show_feed_player: {
+            defaultValue: Settings_value.show_feed_player.defaultValue,
+            values: Settings_value.show_feed_player.values,
+            title: STR_SHOW_FEED_PLAYER,
+            summary: STR_SHOW_FEED_PLAYER_SUMMARY
+        },
+        show_side_player: {
+            defaultValue: Settings_value.show_side_player.defaultValue,
+            values: Settings_value.show_side_player.values,
+            title: STR_SHOW_SIDE_PLAYER,
+            summary: null
+        },
         show_live_player: {
             defaultValue: Settings_value.show_live_player.defaultValue,
             values: Settings_value.show_live_player.values,
@@ -1513,30 +1525,6 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.show_clip_player.values,
             title: STR_SHOW_CLIP_PLAYER,
             summary: null
-        },
-        auto_clip_preview: {
-            defaultValue: Settings_value.auto_clip_preview.defaultValue,
-            values: Settings_value.auto_clip_preview.values,
-            title: STR_AUTO_PLAY_NEXT,
-            summary: STR_PREVIEW_CLIP_NEXT
-        },
-        show_side_player: {
-            defaultValue: Settings_value.show_side_player.defaultValue,
-            values: Settings_value.show_side_player.values,
-            title: STR_SHOW_SIDE_PLAYER,
-            summary: null
-        },
-        show_feed_player: {
-            defaultValue: Settings_value.show_feed_player.defaultValue,
-            values: Settings_value.show_feed_player.values,
-            title: STR_SHOW_FEED_PLAYER,
-            summary: STR_SHOW_FEED_PLAYER_SUMMARY
-        },
-        disable_feed_player_multi: {
-            defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
-            values: Settings_value.disable_feed_player_multi.values,
-            title: STR_DISABLED_FEED_PLAYER_MULTI,
-            summary: STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY
         },
         preview_screen_sizes: {
             defaultValue: Settings_value.preview_screen_sizes.defaultValue,
@@ -1567,7 +1555,19 @@ function Settings_DialogShowSmallPayer() {
             values: Settings_value.show_feed_player_delay.values,
             title: STR_SIDE_PANEL_PLAYER_DELAY,
             summary: STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY
-        }
+        },
+        disable_feed_player_multi: {
+            defaultValue: Settings_value.disable_feed_player_multi.defaultValue,
+            values: Settings_value.disable_feed_player_multi.values,
+            title: STR_DISABLED_FEED_PLAYER_MULTI,
+            summary: STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY
+        },
+        auto_clip_preview: {
+            defaultValue: Settings_value.auto_clip_preview.defaultValue,
+            values: Settings_value.auto_clip_preview.values,
+            title: STR_AUTO_PLAY_NEXT,
+            summary: STR_PREVIEW_CLIP_NEXT
+        },
     };
 
     Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER);
