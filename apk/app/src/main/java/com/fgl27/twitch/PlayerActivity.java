@@ -197,6 +197,7 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams PlayerViewSidePanel;
     private FrameLayout.LayoutParams PlayerViewScreensLayout;
     //Base frame holders
+    private FrameLayout PreviewHolder;
     private FrameLayout VideoHolder;
     private FrameLayout VideoWebHolder;
 
@@ -374,6 +375,7 @@ public class PlayerActivity extends Activity {
 
             userAgent = Util.getUserAgent(this, TAG);
 
+            PreviewHolder = findViewById(R.id.previewholder);
             VideoHolder = findViewById(R.id.videoholder);
             VideoWebHolder = findViewById(R.id.videowebholder);
 
@@ -513,7 +515,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
-        PlayerObj[4].playerView.setPlayer(PlayerObj[4].player);
+        PlayerObj[4].playerView.setPlayer(null);
         Clear_PreviewPlayer();
     }
 
@@ -635,7 +637,6 @@ public class PlayerActivity extends Activity {
                 }
 
                 TopSurfaceView.setZOrderMediaOverlay(true);
-
                 BottomSurfaceView.setZOrderMediaOverlay(false);
 
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
@@ -660,11 +661,18 @@ public class PlayerActivity extends Activity {
 
     private void Clear_PreviewPlayer() {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "ClearSmallPlayer");
+            Log.i(TAG, "Clear_PreviewPlayer");
         }
 
         releasePlayer(4);
         mSetPreviewOthersAudio();
+
+        //Prevent odd error Decoder init failed: OMX.Nvidia.h264.decode... maybe also to other devices
+        //That happens after a resume that before the resume you move the player using setplayer()
+        if (IsUsingSurfaceView) {
+            PreviewHolder.removeView(PlayerObj[4].playerView);
+            PreviewHolder.addView(PlayerObj[4].playerView);
+        }
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
@@ -710,22 +718,27 @@ public class PlayerActivity extends Activity {
 
     //Main release function
     private void releasePlayer(int position) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "releasePlayer start position " + position);
+        }
+
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
         PlayerObj[position].playerView.setVisibility(View.GONE);
 
         if (PlayerObj[position].player != null) {
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "releasePlayer notnull release position " + position);
+            }
+
             PlayerObj[position].player.release();
-            PlayerObj[position].player = null;
-            PlayerObj[position].trackSelector = null;
-            PlayerObj[position].Listener = null;
         }
+
+        PlayerObj[position].player = null;
+        PlayerObj[position].trackSelector = null;
+        PlayerObj[position].Listener = null;
 
         PlayerObj[position].CheckCounter = 0;
         PlayerObj[position].IsPlaying = false;
-
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "releasePlayer position " + position);
-        }
     }
 
     //Simple release function
@@ -2706,7 +2719,7 @@ public class PlayerActivity extends Activity {
 
                     PlayerObj[4].playerView.setLayoutParams(HideLayout);
 
-                } else Clear_PreviewPlayer();
+                } else if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
             });
         }
