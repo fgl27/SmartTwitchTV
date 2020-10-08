@@ -10207,7 +10207,11 @@
     function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
         try {
             if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
-        } catch (e) {}
+        } catch (e) {
+            try {
+                if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
+            } catch (e) {}
+        }
     }
 
     //public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
@@ -10217,7 +10221,13 @@
     function OSInterface_SetMainPlayerBitrate(Bitrate, Resolution) {
         try {
             if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
-        } catch (e) {}
+        } catch (e) {
+            try {
+                if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
+            } catch (e) {
+
+            }
+        }
     }
 
     //public String getcodecCapabilities(String CodecType)
