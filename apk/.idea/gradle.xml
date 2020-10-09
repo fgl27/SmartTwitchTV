@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/hls" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/smoothstreaming" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/ui" />
+            <option value="$PROJECT_DIR$/../../ExoPlayer/robolectricutils" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/testdata" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/testutils" />
             <option value="$PROJECT_DIR$" />
