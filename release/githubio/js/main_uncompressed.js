@@ -7008,8 +7008,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.262';
     var Main_version_java = 46; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 05 2020';
-    var Main_version_web = 88; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 09 2020';
+    var Main_version_web = 89; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7596,7 +7596,7 @@
             title: "Apk Version 3.0.262 - Web Version October 05 2020",
             changes: [
                 "Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain",
-                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it problem that was fix or at least mitigate is on the bellow lines",
+                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it od the problem that was fix or at least mitigate is on the bellow lines",
                 'Re-organized settings order, clean up some strings',
                 'Add new Settings "Auto quality Blocked resolutions" this is to address the issue that some devices have with some resolutions as the Xiaomi Mi Box S and 9XXp resolution problem, this issue was already informed to Xiaomi see bellow issue list and probably on next update from they it will be fixed, but as this maybe a issue on the Amlogic Codecs this is a good feature to have, as there is a lot of TV device that use Amlogic and may never get updates',
                 'Add new Settings "Auto quality maximum allowed Resolution/Bitrate" this new settings allows to control more then the old option that only allowed Bitrate control, with this device that was lagging on the past playing multiple streams have more control and can mitigate the lags',
@@ -11629,12 +11629,12 @@
                 Play_controlsAudioMulti
             );
 
-            if (Play_MultiArray[Play_DefaultAudio_Multi]) {
+            if (Play_MultiArray[pos]) {
                 Main_textContent(
                     'extra_button_title' + Play_controlsAudioMulti,
                     STR_AUDIO_SOURCE + ' - ' +
-                    (Play_DefaultAudio_Multi < 4 ?
-                        Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
+                    (pos < 4 ?
+                        Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[pos].data[1] :
                         Play_controls[Play_controlsAudioMulti].values[pos]
                     )
                 );
@@ -17359,6 +17359,7 @@
 
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);
+
         if (!Play_MultiHasOne()) {
 
             Play_MultiEnable = false;
@@ -17369,19 +17370,37 @@
 
         } else {
 
-            if (Play_Multi_MainBig && !position) {
+            if (Play_Multi_MainBig) {
 
-                var tempAudio = Play_DefaultAudio_Multi === 4;
-                Play_MultiEnableKeyRightLeft(1);
-                if (tempAudio) Play_MultiKeyDownHold();
+                if (!position) {
 
-            } else if (Play_DefaultAudio_Multi !== 4 && !position) {
+                    var tempAudio = Play_DefaultAudio_Multi === 4;
+                    Play_MultiEnableKeyRightLeft(1);
+                    if (tempAudio) Play_MultiKeyDownHold();
 
-                Play_MultiEnableKeyRightLeft(1);
+                } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
+
+                    if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
+                    else Play_MultiEnableKeyRightLeft(1);
+
+                }
+
+            } else if (Play_DefaultAudio_Multi !== 4) {
+
+                if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
+                else Play_MultiEnableKeyRightLeft(1);
 
             }
 
         }
+    }
+
+    function Play_MultiSetMainAudio() {
+
+        Play_DefaultAudio_Multi = 0;
+        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+        Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+
     }
 
     function Play_MultiFirstClear() {
@@ -17607,6 +17626,7 @@
 
                 Play_DefaultAudio_Multi = 0;
                 Play_ResetAudio();
+                Play_SetAudioMultiIcon();
 
                 OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
@@ -17657,6 +17677,8 @@
 
     //mirror function to Java SetMultiStreamMainBig
     function Play_SetMultiStreamMainBig(offset) {
+
+        if (!offset) return;
 
         var tempPosition,
             len = Math.abs(offset),

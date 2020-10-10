@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.262';
 var Main_version_java = 46;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'October 05 2020';
-var Main_version_web = 88;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'October 09 2020';
+var Main_version_web = 89;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -614,7 +614,7 @@ function Main_Changelog() {
             title: "Apk Version 3.0.262 - Web Version October 05 2020",
             changes: [
                 "Add back all performance improves and features of Apk Version 3.0.260 but this time without any device incompatibility and with even better performance gain",
-                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it problem that was fix or at least mitigate is on the bellow lines",
+                "Addressed all problems discovered on Apk Version 3.0.260 plus also addressed old reported or discovered problems, it od the problem that was fix or at least mitigate is on the bellow lines",
                 'Re-organized settings order, clean up some strings',
                 'Add new Settings "Auto quality Blocked resolutions" this is to address the issue that some devices have with some resolutions as the Xiaomi Mi Box S and 9XXp resolution problem, this issue was already informed to Xiaomi see bellow issue list and probably on next update from they it will be fixed, but as this maybe a issue on the Amlogic Codecs this is a good feature to have, as there is a lot of TV device that use Amlogic and may never get updates',
                 'Add new Settings "Auto quality maximum allowed Resolution/Bitrate" this new settings allows to control more then the old option that only allowed Bitrate control, with this device that was lagging on the past playing multiple streams have more control and can mitigate the lags',
