@@ -52,12 +52,12 @@ function Play_ResetAudio() {
             Play_controlsAudioMulti
         );
 
-        if (Play_MultiArray[Play_DefaultAudio_Multi]) {
+        if (Play_MultiArray[pos]) {
             Main_textContent(
                 'extra_button_title' + Play_controlsAudioMulti,
                 STR_AUDIO_SOURCE + ' - ' +
-                (Play_DefaultAudio_Multi < 4 ?
-                    Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[Play_DefaultAudio_Multi].data[1] :
+                (pos < 4 ?
+                    Play_controls[Play_controlsAudioMulti].values[pos] + ' - ' + Play_MultiArray[pos].data[1] :
                     Play_controls[Play_controlsAudioMulti].values[pos]
                 )
             );

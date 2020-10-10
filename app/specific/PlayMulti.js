@@ -255,6 +255,7 @@ function Play_MultiEnd(position, fail_type) {
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
+
     if (!Play_MultiHasOne()) {
 
         Play_MultiEnable = false;
@@ -265,19 +266,37 @@ function Play_MultiEnd(position, fail_type) {
 
     } else {
 
-        if (Play_Multi_MainBig && !position) {
+        if (Play_Multi_MainBig) {
 
-            var tempAudio = Play_DefaultAudio_Multi === 4;
-            Play_MultiEnableKeyRightLeft(1);
-            if (tempAudio) Play_MultiKeyDownHold();
+            if (!position) {
 
-        } else if (Play_DefaultAudio_Multi !== 4 && !position) {
+                var tempAudio = Play_DefaultAudio_Multi === 4;
+                Play_MultiEnableKeyRightLeft(1);
+                if (tempAudio) Play_MultiKeyDownHold();
 
-            Play_MultiEnableKeyRightLeft(1);
+            } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
+
+                if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
+                else Play_MultiEnableKeyRightLeft(1);
+
+            }
+
+        } else if (Play_DefaultAudio_Multi !== 4) {
+
+            if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
+            else Play_MultiEnableKeyRightLeft(1);
 
         }
 
     }
+}
+
+function Play_MultiSetMainAudio() {
+
+    Play_DefaultAudio_Multi = 0;
+    Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+    Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+
 }
 
 function Play_MultiFirstClear() {
@@ -503,6 +522,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
             Play_DefaultAudio_Multi = 0;
             Play_ResetAudio();
+            Play_SetAudioMultiIcon();
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
@@ -553,6 +573,8 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
 //mirror function to Java SetMultiStreamMainBig
 function Play_SetMultiStreamMainBig(offset) {
+
+    if (!offset) return;
 
     var tempPosition,
         len = Math.abs(offset),

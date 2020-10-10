@@ -2587,7 +2587,7 @@ public class PlayerActivity extends Activity {
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
 //
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(0, 0, 1));
+//            MainThreadHandler.post(() -> PlayerEventListenerClear(1, 0));
 //
 //        }
 
