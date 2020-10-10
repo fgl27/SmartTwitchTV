@@ -7008,8 +7008,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.262';
     var Main_version_java = 46; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 09 2020';
-    var Main_version_web = 89; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 10 2020';
+    var Main_version_web = 90; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -17370,37 +17370,25 @@
 
         } else {
 
-            if (Play_Multi_MainBig) {
+            if (Play_Multi_MainBig && !position) { //If main ended find a new main
 
-                if (!position) {
+                var tempAudio = Play_DefaultAudio_Multi === 4;
+                Play_MultiEnableKeyRightLeft(1);
+                if (tempAudio) Play_MultiKeyDownHold();
 
-                    var tempAudio = Play_DefaultAudio_Multi === 4;
-                    Play_MultiEnableKeyRightLeft(1);
-                    if (tempAudio) Play_MultiKeyDownHold();
+            } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
 
-                } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
+                if (Play_MultiArray[0].data.length) { //Set audio to main video if available
 
-                    if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
-                    else Play_MultiEnableKeyRightLeft(1);
+                    Play_DefaultAudio_Multi = 0;
+                    Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+                    Play_controls[Play_controlsAudioMulti].enterKey(false, true);
 
-                }
-
-            } else if (Play_DefaultAudio_Multi !== 4) {
-
-                if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
-                else Play_MultiEnableKeyRightLeft(1);
+                } else Play_MultiEnableKeyRightLeft(1); //else find one
 
             }
 
         }
-    }
-
-    function Play_MultiSetMainAudio() {
-
-        Play_DefaultAudio_Multi = 0;
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(false, true);
-
     }
 
     function Play_MultiFirstClear() {
