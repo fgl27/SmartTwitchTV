@@ -266,37 +266,25 @@ function Play_MultiEnd(position, fail_type) {
 
     } else {
 
-        if (Play_Multi_MainBig) {
+        if (Play_Multi_MainBig && !position) {//If main ended find a new main
 
-            if (!position) {
+            var tempAudio = Play_DefaultAudio_Multi === 4;
+            Play_MultiEnableKeyRightLeft(1);
+            if (tempAudio) Play_MultiKeyDownHold();
 
-                var tempAudio = Play_DefaultAudio_Multi === 4;
-                Play_MultiEnableKeyRightLeft(1);
-                if (tempAudio) Play_MultiKeyDownHold();
+        } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
 
-            } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
+            if (Play_MultiArray[0].data.length) {//Set audio to main video if available
 
-                if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
-                else Play_MultiEnableKeyRightLeft(1);
+                Play_DefaultAudio_Multi = 0;
+                Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
+                Play_controls[Play_controlsAudioMulti].enterKey(false, true);
 
-            }
-
-        } else if (Play_DefaultAudio_Multi !== 4) {
-
-            if (Play_MultiArray[0].data.length) Play_MultiSetMainAudio();
-            else Play_MultiEnableKeyRightLeft(1);
+            } else Play_MultiEnableKeyRightLeft(1);//else find one
 
         }
 
     }
-}
-
-function Play_MultiSetMainAudio() {
-
-    Play_DefaultAudio_Multi = 0;
-    Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-    Play_controls[Play_controlsAudioMulti].enterKey(false, true);
-
 }
 
 function Play_MultiFirstClear() {
