@@ -513,6 +513,7 @@ public class PlayerActivity extends Activity {
         else
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
 
+        mSetMainPlayersAudio();
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
         PlayerObj[4].playerView.setPlayer(null);
@@ -576,6 +577,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerObjPosition < 4) {
             //Main players
+            mSetMainPlayersAudio();
 
             //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
             if (PlayerObjPosition == 0) {
@@ -593,6 +595,7 @@ public class PlayerActivity extends Activity {
 
         } else if (PlayerObj[PlayerObjPosition].Type > 1) {
             //Preview player
+            SetAudio(4, PreviewAudio);
 
             SmallPlayerCurrentPosition =
                     PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
@@ -648,24 +651,13 @@ public class PlayerActivity extends Activity {
 
     }
 
-    private void SetMultiVolume(int PlayerObjPosition) {
-        if (PlayerObj[PlayerObjPosition].player == null) return;
-
-        float volume = 0f;
-
-        if (AudioMulti == 4 || AudioMulti == PlayerObjPosition)
-            volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
-
-        PlayerObj[PlayerObjPosition].player.setVolume(volume);
-    }
-
     private void Clear_PreviewPlayer() {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "Clear_PreviewPlayer");
         }
 
         releasePlayer(4);
-        mSetPreviewOthersAudio();
+        mSetMainPlayersAudio();
 
         //Prevent odd error Decoder init failed: OMX.Nvidia.h264.decode... maybe also to other devices
         //That happens after a resume that before the resume you move the player using setplayer()
@@ -688,6 +680,7 @@ public class PlayerActivity extends Activity {
 
         releasePlayer(position);
         //Multi audio is deal on js side when a player closes
+        //Reset audio source to main window as PP closed
         if (position == 1 && !MultiStreamEnable) SwitchPlayerAudio(1);
 
         CheckKeepScreenOn();
@@ -1039,9 +1032,19 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    public void SetAudio(int pos, float volume) {
+        if (PlayerObj[pos].player != null) PlayerObj[pos].player.setVolume(volume);
+    }
+
+    public void mSetMainPlayersAudio() {
+        if (MultiStreamEnable) SetPlayerAudioMulti();
+        else SwitchPlayerAudio(AudioSource);
+    }
+
     public void SwitchPlayerAudio(int pos) {
         float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
         AudioSource = pos;
+
         if (pos >= 2) {//both
             AudioMulti = 4;
             SetAudio(0, volume);
@@ -1057,8 +1060,23 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void SetAudio(int pos, float volume) {
-        if (PlayerObj[pos].player != null) PlayerObj[pos].player.setVolume(volume);
+    public void SetPlayerAudioMulti() {
+
+        float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
+
+        boolean AudioAll = AudioMulti == 4;
+
+        for (int i = 0; i < PlayerAccount; i++) {
+
+            if (PlayerObj[i].player != null) {
+
+                if (AudioAll || AudioMulti == i) PlayerObj[i].player.setVolume(volume);
+                else PlayerObj[i].player.setVolume(0f);
+
+            }
+
+        }
+
     }
 
     public void UpdadeSizePosSmall(int pos, boolean animate) {
@@ -1074,29 +1092,6 @@ public class PlayerActivity extends Activity {
         //Animate the size changes looks odd, the video it self is slow to resize and there is a ghost effect, not noticeable when changing only the position
         if (animate) TransitionManager.beginDelayedTransition(view, PreviewTransition);
         view.setLayoutParams(layout);
-    }
-
-    public void mSetPreviewOthersAudio() {
-        if (MultiStreamEnable) SetPlayerAudioMulti();
-        else SwitchPlayerAudio(AudioSource);
-    }
-
-    public void SetPlayerAudioMulti() {
-
-        float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
-        boolean AudioAll = AudioMulti == 4;
-
-        for (int i = 0; i < PlayerAccount; i++) {
-
-            if (PlayerObj[i].player != null) {
-
-                if (AudioAll || AudioMulti == i) PlayerObj[i].player.setVolume(volume);
-                else PlayerObj[i].player.setVolume(0f);
-
-            }
-
-        }
-
     }
 
     public void SetMultiStreamMainBig(int offset) {
@@ -1191,7 +1186,6 @@ public class PlayerActivity extends Activity {
 
             PicturePicture = false;
             ClearPlayer(1);
-            SwitchPlayerAudio(1);
 
         } else SwitchPlayerAudio(AudioSource);
 
@@ -1510,6 +1504,7 @@ public class PlayerActivity extends Activity {
         IsStopped = true;
         if (!WebviewLoaded) return;
 
+        //ClearPlayer will reset multi audio position
         int temp_AudioMulti = AudioMulti;
 
         updateResumePosition(0);//VOD only uses mainPlayer
@@ -1530,7 +1525,7 @@ public class PlayerActivity extends Activity {
         NotificationHandler.removeCallbacksAndMessages(null);
         StartNotificationService();
 
-        //ClearPlayer will reset audio position
+        //ClearPlayer will reset multi audio position
         AudioMulti = temp_AudioMulti;
 
         //Reset status values
@@ -2109,7 +2104,7 @@ public class PlayerActivity extends Activity {
 
             Clear_PreviewPlayer();
             WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
-            mSetPreviewOthersAudio();
+            mSetMainPlayersAudio();
 
         }
 
@@ -2554,7 +2549,6 @@ public class PlayerActivity extends Activity {
                         if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                     }
 
-                    SwitchPlayerAudio(AudioSource);
                     PreviewPlayerPlaylist = null;
 
                 } else {
@@ -2763,8 +2757,6 @@ public class PlayerActivity extends Activity {
                 PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]);
 
                 SetupPlayer(4);
-
-                SetAudio(4, PreviewAudio);
             });
         }
 
@@ -3313,7 +3305,6 @@ public class PlayerActivity extends Activity {
                     if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                 }
 
-                SetMultiVolume(position);
                 PreviewPlayerPlaylist = null;
 
             });
@@ -3485,7 +3476,7 @@ public class PlayerActivity extends Activity {
                     //Preview player
 
                     PlayerObj[position].CheckCounter = 0;
-                    mSetPreviewOthersAudio();
+                    mSetMainPlayersAudio();
 
                 }
 
