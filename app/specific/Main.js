@@ -2043,6 +2043,8 @@ function Main_CheckStop() { // Called only by JAVA
     Main_clearInterval(PlayVod_RefreshProgressBarrID);
     Main_clearInterval(PlayVod_SaveOffsetId);
 
+    Main_clearTimeout(Play_StartStayTryId);
+
     if (PlayClip_isOn) PlayClip_Resume();
     else if (Play_isOn) {
         if (Play_MultiEnable) {
@@ -2063,7 +2065,7 @@ function Main_CheckStop() { // Called only by JAVA
             if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
             if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
 
-        } else if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
+        } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
     }
 
     Main_clearTimeout(Main_setHistoryItemId);

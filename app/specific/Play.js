@@ -561,9 +561,12 @@ function Play_Resume() {
 
 function Play_ResumeAfterOnline() {
     if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+
         Main_clearInterval(Play_ResumeAfterOnlineId);
         Play_CheckIfIsLiveCleanEnd();
+
         if (Play_MultiEnable) {
+
             Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
             Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
@@ -581,7 +584,9 @@ function Play_ResumeAfterOnline() {
                 }
 
             }
+
         } else {
+
             Play_data.watching_time = new Date().getTime();
             Play_state = Play_STATE_LOADING_TOKEN;
             // TO test a if a stream has ended during a resume process force change this
@@ -591,6 +596,7 @@ function Play_ResumeAfterOnline() {
             //Play_data.data[14] = id;
             if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
             Play_loadData();
+
         }
     }
     Play_ResumeAfterOnlineCounter++;
