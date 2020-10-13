@@ -9036,8 +9036,6 @@
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
         Main_clearInterval(PlayVod_SaveOffsetId);
 
-        Main_clearTimeout(Play_StartStayTryId);
-
         if (PlayClip_isOn) PlayClip_Resume();
         else if (Play_isOn) {
             if (Play_MultiEnable) {
@@ -9061,6 +9059,7 @@
             } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
         }
 
+        Play_StopStay();
         Main_clearTimeout(Main_setHistoryItemId);
         Main_SaveHistoryItem();
         //General related
