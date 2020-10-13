@@ -7008,8 +7008,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.264';
     var Main_version_java = 48; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 12 2020';
-    var Main_version_web = 98; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 13 2020';
+    var Main_version_web = 99; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7593,7 +7593,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.263 and 3.0.264 - Web Version October 11 2020",
+                title: "Apk Version 3.0.263 and 3.0.264 - Web Version October 13 2020",
                 changes: [
                     "General performance improves and bug fixes",
                 ]
@@ -9036,6 +9036,8 @@
         Main_clearInterval(PlayVod_RefreshProgressBarrID);
         Main_clearInterval(PlayVod_SaveOffsetId);
 
+        Main_clearTimeout(Play_StartStayTryId);
+
         if (PlayClip_isOn) PlayClip_Resume();
         else if (Play_isOn) {
             if (Play_MultiEnable) {
@@ -9056,7 +9058,7 @@
                 if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
                 if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
 
-            } else if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
+            } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
         }
 
         Main_clearTimeout(Main_setHistoryItemId);
@@ -15495,9 +15497,12 @@
 
     function Play_ResumeAfterOnline() {
         if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
+
             Main_clearInterval(Play_ResumeAfterOnlineId);
             Play_CheckIfIsLiveCleanEnd();
+
             if (Play_MultiEnable) {
+
                 Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
@@ -15515,7 +15520,9 @@
                     }
 
                 }
+
             } else {
+
                 Play_data.watching_time = new Date().getTime();
                 Play_state = Play_STATE_LOADING_TOKEN;
                 // TO test a if a stream has ended during a resume process force change this
@@ -15525,6 +15532,7 @@
                 //Play_data.data[14] = id;
                 if (PlayExtra_PicturePicture) PlayExtra_Resume(true);
                 Play_loadData();
+
             }
         }
         Play_ResumeAfterOnlineCounter++;
