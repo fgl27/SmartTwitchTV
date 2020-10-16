@@ -3,14 +3,14 @@ ext.versions = [
         maxSdk               : 29,
         compileSdk           : 29,
         buildTools           : '30.0.2',
-
+        gradlePlugin         : '4.1.0',
+        
         publishVersion       : '3.0.',
         publishVersionCode   : 264,
 
         tray                 : '0.12.0',
         leanback             : '1.0.0',
         tvprovider           : '1.0.0',
-        gradlePlugin         : '4.0.2',
         benmanes             : '0.33.0',
         googlegson           : '2.8.6',
         webkit               : '1.3.0',
