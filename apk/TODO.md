@@ -44,6 +44,12 @@ TODO list
 * Update top option that today are 3 to 4 and on that forth add a "is following who" option so one can see what channel that channel/user follows
 * For this probably need to add a extra channel holder screen, on title show "Name is following channels" or something like that
 
+### Add a pop warning and a way to open a live from a clip and vod
+
+* New feature
+* in player controls add a option that checks if the streamer is live from time to time and let the user know and open the live from the icon
+* make the warning a pop that can be disabled
+
 ### Add a audio volume dialog to the player
 
 * New feature
@@ -135,6 +141,15 @@ TODO list
 * To make it work similar to how the screen works
 * Simpler obj initialization and use
 * Also this UserLiveFeed is old code and can be improve
+
+### Update the back process to work with targetSdk=30
+
+* General improve
+* From [Meet Google Play's target API level requirement](https://developer.android.com/distribute/best-practices/develop/target-sdk) the min sdk of target changes every year and will on the end of 2021 change to 30
+* Permission to access external storage changed on sdk 30 https://developer.android.com/training/data-storage#permissions
+* Making current option not working on that sdk when targeting 30, works if targeting 29
+* Update the process to work on all OS
+
 
 ### Improve the main app README.md
 
