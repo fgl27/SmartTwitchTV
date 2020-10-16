@@ -17627,6 +17627,7 @@
                 }
 
                 Play_DefaultAudio_Multi = 0;
+                OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
                 Play_ResetAudio();
                 Play_SetAudioMultiIcon();
 
