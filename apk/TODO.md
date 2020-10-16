@@ -3,12 +3,14 @@ Project TODO, featured request, ideas and etc related list
 
 The information on this file is a expectation of what will be done to the app, that means that some of the information here may change be removed or not become a real featuring, there is no priority on what will be done first or when will be done also the order of the list don't affect what will be done first or when.<br>
 
-One observation is that if a feature was added by a user request that feature will only be removed if is something that isn't possible to do and the user will be informed about it.
+One observation is that if a feature was added by a user request that feature will only be removed if is something that isn't possible to do and the user will be informed about it, but doesn't guarantee that will be done.
 
 Featured request list
 ==============
 
-* Current empty
+* [Light mode for chat](https://github.com/fgl27/smarttv-twitch/issues/122) ... White background for chat and side by side mode, all the logic and a control need to be created, looks very terrible on most TV
+* [Separate @ Mentions from Chat Scroll](https://github.com/fgl27/smarttv-twitch/issues/131) ... Pin a chat message when the user is mention, all the logic need to be created
+* [Select multiple languages](https://github.com/fgl27/SmartTwitchTV/issues/21) ... Allow to select more then one language for app content, is not just allow, all the logic need to be created Twitch API doesn't support this
 
 TODO list
 ==============
