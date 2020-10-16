@@ -180,7 +180,7 @@ public class PlayerActivity extends Activity {
     private boolean PingWarning = true;
     private AppPreferences appPreferences;
     //A layout used to hide a view without using visibility change
-    private FrameLayout.LayoutParams HideLayout = new FrameLayout.LayoutParams(0, 0, 0);
+    private final FrameLayout.LayoutParams HideLayout = new FrameLayout.LayoutParams(0, 0, 0);
     //The default size for all loading dialog
     private FrameLayout.LayoutParams DefaultLoadingLayout;
     //the default size for the main player 100% width x height
@@ -208,9 +208,9 @@ public class PlayerActivity extends Activity {
     private boolean canRunChannel;
     private boolean closeThisCalled;
 
-    private Handler[] RuntimeHandler = new Handler[2];
+    private final Handler[] RuntimeHandler = new Handler[2];
     private Handler MainThreadHandler;
-    private Handler[] CurrentPositionHandler = new Handler[2];
+    private final Handler[] CurrentPositionHandler = new Handler[2];
     private Handler SaveBackupJsonHandler;
     private Handler NotificationHandler;
     private Handler ToastHandler;
@@ -228,26 +228,26 @@ public class PlayerActivity extends Activity {
     private final int PlayerAccount = 4;
     private final int PlayerAccountPlus = PlayerAccount + 1;
 
-    private String[][] PreviewFeedResult = new String[25][100];
-    private String[] StreamDataResult = new String[PlayerAccount];
+    private final String[][] PreviewFeedResult = new String[25][100];
+    private final String[] StreamDataResult = new String[PlayerAccount];
 
-    private ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
+    private final ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
     private boolean IsUsingSurfaceView;
     private boolean reUsePlayer = true;
 
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
-    private int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
+    private final int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
 
     ////Main Player, PP or Multistream, Player preview
-    private DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
-    private int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};
-    private int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 730};
+    private final DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
+    private final int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};
+    private final int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 730};
 
     private BlackListMediaCodecSelector BLACKLISTED_CODECS = null;
     private String[] BLACKLISTED_QUALITIES = null;
 
-    private PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
+    private final PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
 
     public class PlayerObj {
         boolean IsPlaying;

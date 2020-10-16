@@ -135,7 +135,7 @@ public final class ChannelsUtils {
 
     }
 
-    private static Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.viewers - Obj1.viewers;
+    private static final Comparator<ChannelContentObj> compareViewers = (Obj1, Obj2) -> Obj2.viewers - Obj1.viewers;
 
     public static class ChannelObj {
         private final int drawable;
