@@ -152,20 +152,23 @@ function PlayExtra_ResumeResultEnd(responseObj) {
 
 function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
     UserLiveFeed_Hide(PreventcleanQuailities);
-    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
+    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {
-        OSInterface_mupdatesizePP(Play_isFullScreen);
         ChatLive_Init(1);
+        OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_ShowChat();
         Play_SetChatSideBySide();
     } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
-    if (Play_isOn) PlayExtra_qualityChanged();
+    if (Main_IsOn_OSInterface && Play_isOn) {
+        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+    }
+
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
     PlayExtra_updateStreamInfo();
     ChatLive_Playing = true;
@@ -406,14 +409,6 @@ function PlayExtra_UpdatePanel() {
 
     Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
     Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
-}
-
-function PlayExtra_qualityChanged() {
-    if (Main_IsOn_OSInterface && Play_isOn) {
-        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
-    }
-
-    //Main_Log('PlayExtra_onPlayer: Auto');
 }
 
 function PlayExtra_loadDataFail(Reason) {
