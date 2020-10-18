@@ -133,10 +133,10 @@ function Sidepannel_RestoreThumb(doc, play_data) {
     return false;
 }
 
-function Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities) {
+function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
     Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQuailities) {
+    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
 
         OSInterface_ClearSidePanelPlayer();
         Play_CheckIfIsLiveCleanEnd();
@@ -475,24 +475,24 @@ function Sidepannel_HideMain(hideAll) {
     Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
 }
 
-function Sidepannel_Hide(PreventCleanQuailities) {
+function Sidepannel_Hide(PreventCleanQualities) {
 
-    if (!PreventCleanQuailities) {
+    if (!PreventCleanQualities) {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_HideElement('side_panel_feed_thumb');
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     }
-    Sidepannel_HideEle(PreventCleanQuailities);
+    Sidepannel_HideEle(PreventCleanQualities);
 
     Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
     Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
 }
 
-function Sidepannel_HideEle(PreventCleanQuailities) {
-    Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities);
-    if (!PreventCleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+function Sidepannel_HideEle(PreventCleanQualities) {
+    Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities);
+    if (!PreventCleanQualities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {

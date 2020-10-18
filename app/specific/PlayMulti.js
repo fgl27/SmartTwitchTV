@@ -444,12 +444,12 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
     }
 }
 
-function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQuailities) {
+function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualities) {
 
     Play_MultiArray[pos].AutoUrl = theUrl;
 
     if (Play_MultiIsFull()) {
-        UserLiveFeed_Hide(PreventCleanQuailities);
+        UserLiveFeed_Hide(PreventCleanQualities);
 
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
         Main_setTimeout(
@@ -803,12 +803,12 @@ function Play_ShowMultiDialog() {
     Main_ShowElementWithEle(Play_MultiDialogElem);
 }
 
-function Play_HideMultiDialog(PreventCleanQuailities) {
+function Play_HideMultiDialog(PreventCleanQualities) {
     //return;
     Main_HideElementWithEle(Play_MultiDialogElem);
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
-    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities);
+    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
 }
 
 function Play_MultiDialogVisible() {
