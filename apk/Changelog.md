@@ -9,14 +9,22 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.266 - October 18 2020
+==============
+
+* Fix issue that sometimes a stream didn't open and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) when multistream was enable one of the stream may not properly load do to error, now when that happens a warning will inform the error and or prevent it
+* General performance improves and bug fixes
+
 Web Version October 13 2020
 ==============
 
 * General performance improves and bug fixes
+* Fix player top panel not showing the correct audio source icon next to the streamer name
 
 Apk Version 3.0.264 - October 12 2020
 ==============
 
+* Fix Multistream audio issue, sometimes a stream that didn't had audio enable changed the audio to enable without user interaction
 * General performance improves and bug fixes
 
 Apk Version 3.0.263 - Web Version October 11 2020
