@@ -508,7 +508,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
                 return;
             }
 
-            Play_DefaultAudio_Multi = 0;
+            if (Play_DefaultAudio_Multi !== 4) Play_DefaultAudio_Multi = 0;
             OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
             Play_ResetAudio();
             Play_SetAudioMultiIcon();
