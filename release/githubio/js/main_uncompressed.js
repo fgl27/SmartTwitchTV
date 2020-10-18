@@ -14641,20 +14641,23 @@
 
     function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
         UserLiveFeed_Hide(PreventcleanQuailities);
-        OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         PlayExtra_data.watching_time = new Date().getTime();
         Play_SetAudioIcon();
+        OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
         PlayExtra_data.playlist = playlist;
         PlayExtra_SetPanel();
 
         if (!Play_isFullScreen) {
-            OSInterface_mupdatesizePP(Play_isFullScreen);
             ChatLive_Init(1);
+            OSInterface_mupdatesizePP(Play_isFullScreen);
             PlayExtra_ShowChat();
             Play_SetChatSideBySide();
         } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
-        if (Play_isOn) PlayExtra_qualityChanged();
+        if (Main_IsOn_OSInterface && Play_isOn) {
+            OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+        }
+
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
         PlayExtra_updateStreamInfo();
         ChatLive_Playing = true;
@@ -14896,14 +14899,6 @@
 
         Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
         Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
-    }
-
-    function PlayExtra_qualityChanged() {
-        if (Main_IsOn_OSInterface && Play_isOn) {
-            OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
-        }
-
-        //Main_Log('PlayExtra_onPlayer: Auto');
     }
 
     function PlayExtra_loadDataFail(Reason) {
@@ -17570,12 +17565,12 @@
         }
     }
 
-    function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQuailities) {
+    function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualities) {
 
         Play_MultiArray[pos].AutoUrl = theUrl;
 
         if (Play_MultiIsFull()) {
-            UserLiveFeed_Hide(PreventCleanQuailities);
+            UserLiveFeed_Hide(PreventCleanQualities);
 
             //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
             Main_setTimeout(
@@ -17931,12 +17926,12 @@
         Main_ShowElementWithEle(Play_MultiDialogElem);
     }
 
-    function Play_HideMultiDialog(PreventCleanQuailities) {
+    function Play_HideMultiDialog(PreventCleanQualities) {
         //return;
         Main_HideElementWithEle(Play_MultiDialogElem);
         Play_clearHideMultiDialog();
         Play_MultiRemoveFocus();
-        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities);
+        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     }
 
     function Play_MultiDialogVisible() {
@@ -20477,10 +20472,10 @@
 
     }
 
-    function Screens_LoadPreviewSTop(PreventcleanQuailities) {
+    function Screens_LoadPreviewSTop(PreventCleanQualities) {
         Main_clearTimeout(Screens_LoadPreviewId);
 
-        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventcleanQuailities) {
+        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
 
             OSInterface_ClearSidePanelPlayer();
             Play_CheckIfIsLiveCleanEnd();
@@ -27939,10 +27934,10 @@
         return false;
     }
 
-    function Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities) {
+    function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
         Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQuailities) {
+        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
 
             OSInterface_ClearSidePanelPlayer();
             Play_CheckIfIsLiveCleanEnd();
@@ -28285,24 +28280,24 @@
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
     }
 
-    function Sidepannel_Hide(PreventCleanQuailities) {
+    function Sidepannel_Hide(PreventCleanQualities) {
 
-        if (!PreventCleanQuailities) {
+        if (!PreventCleanQualities) {
             Sidepannel_HideMain();
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
             Main_HideElement('side_panel_feed_thumb');
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         }
-        Sidepannel_HideEle(PreventCleanQuailities);
+        Sidepannel_HideEle(PreventCleanQualities);
 
         Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
         Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
     }
 
-    function Sidepannel_HideEle(PreventCleanQuailities) {
-        Sidepannel_CheckIfIsLiveSTop(PreventCleanQuailities);
-        if (!PreventCleanQuailities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+    function Sidepannel_HideEle(PreventCleanQualities) {
+        Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities);
+        if (!PreventCleanQualities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     }
 
     function Sidepannel_SetTopOpacity(Main_Go) {
@@ -29009,9 +29004,9 @@
         Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
-    function UserLiveFeed_Hide(PreventCleanQuailities, trackSelectorPos) {
+    function UserLiveFeed_Hide(PreventCleanQualities, trackSelectorPos) {
         //return;//return;
-        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities, trackSelectorPos);
+        UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities, trackSelectorPos);
         UserLiveFeed_HideAfter();
     }
 
@@ -29171,13 +29166,13 @@
         return position;
     }
 
-    function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQuailities, trackSelectorPos) {
+    function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities, trackSelectorPos) {
         Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
         if (Main_IsOn_OSInterface) {
 
-            OSInterface_ClearFeedPlayer(PreventCleanQuailities, trackSelectorPos);
-            if (Play_PreviewId && !PreventCleanQuailities) {
+            OSInterface_ClearFeedPlayer(PreventCleanQualities, trackSelectorPos);
+            if (Play_PreviewId && !PreventCleanQualities) {
 
                 Play_CheckIfIsLiveCleanEnd();
 
