@@ -323,9 +323,9 @@ public class PlayerActivity extends Activity {
             int Number_of_Cores = Runtime.getRuntime().availableProcessors();
             //Background threads
             DataThreadPool = new ThreadPoolExecutor(
-                    Number_of_Cores,
                     Number_of_Cores * 2,
-                    60L,
+                    Number_of_Cores * 2,
+                    0,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>()
             );
@@ -2594,18 +2594,30 @@ public class PlayerActivity extends Activity {
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
             PreviewFeedResult[x][y] = null;
 
-            DataThreadPool.execute(() ->
-                    {
-                        try {
-                            PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
-                        } catch (Exception e) {
-                            Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
-                        }
+            try {
+                DataThreadPool.execute(() ->
+                        {
+                            try {
+                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                            } catch (Exception e) {
+                                Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
+                            }
 
-                        if (PreviewFeedResult[x][y] != null)
-                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
-                    }
-            );
+                            if (PreviewFeedResult[x][y] != null)
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
+                            else CheckIfIsLiveFeedError(x, y, callback);
+
+                        }
+                );
+            } catch (Exception ignore) {//Most are RejectedExecutionException
+                CheckIfIsLiveFeedError(x, y, callback);
+            }
+        }
+
+        void CheckIfIsLiveFeedError(int x, int y, String callback) {
+            //MethodUrl is null inform JS callback
+            PreviewFeedResult[x][y] = Tools.ResponseObjToString(0, "", 0);
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetCheckIfIsLiveFeed(" + x + "," + y + "), " + x + "," + y + ")");
         }
 
         @JavascriptInterface
@@ -2623,23 +2635,37 @@ public class PlayerActivity extends Activity {
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
             StreamDataResult[position] = null;
 
-            DataThreadPool.execute(() ->
-                    {
-                        String result = null;
+            try {
+                DataThreadPool.execute(() ->
+                        {
 
-                        try {
-                            result = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
-                        } catch (Exception e) {
-                            Log.w(TAG, "getStreamDataAsync Exception ", e);
+                            try {
+                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
+                            } catch (Exception e) {
+                                Log.w(TAG, "getStreamDataAsync Exception ", e);
+                            }
+
+                            if (StreamDataResult[position] != null) {
+
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
+
+                            } else {
+
+                                getStreamDataAsyncError(position, callback, checkResult);
+
+                            }
+
                         }
+                );
+            } catch (Exception ignore) {//Most are RejectedExecutionException
+                getStreamDataAsyncError(position, callback, checkResult);
+            }
 
-                        if (result != null) StreamDataResult[position] = result;
-                        else StreamDataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
+        }
 
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
-                    }
-            );
-
+        void getStreamDataAsyncError(int position, String callback, long checkResult) {
+            StreamDataResult[position] = Tools.ResponseObjToString(0, "", checkResult);
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + position + "), " + position + ")");
         }
 
         @JavascriptInterface
@@ -2657,30 +2683,42 @@ public class PlayerActivity extends Activity {
                                              String callback, long checkResult, long key, int thread) {
             StreamDataResult[thread] = null;
 
-            DataThreadPool.execute(() ->
-                    {
-                        Tools.ResponseObj response;
+            try {
+                DataThreadPool.execute(() ->
+                        {
+                            Tools.ResponseObj response;
 
-                        response = Tools.MethodUrlHeaders(
-                                urlString,
-                                timeout,
-                                postMessage,
-                                Method,
-                                checkResult,
-                                JsonHeadersArray
-                        );
+                            response = Tools.MethodUrlHeaders(
+                                    urlString,
+                                    timeout,
+                                    postMessage,
+                                    Method,
+                                    checkResult,
+                                    JsonHeadersArray
+                            );
 
-                        if (response != null) {
-                            StreamDataResult[thread] = new Gson().toJson(response);
-                            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
-                            return;
+                            if (response != null) {
+
+                                StreamDataResult[thread] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
+
+                            } else {
+
+                                GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+
+                            }
+
                         }
+                );
+            } catch (Exception ignore) {//Most are RejectedExecutionException
+                GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+            }
+        }
 
-                        //MethodUrl is null inform JS callback
-                        StreamDataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
-                        LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
-                    }
-            );
+        void GetMethodUrlHeadersAsyncError(String callback, long checkResult, long key, int thread) {
+            //MethodUrl is null inform JS callback
+            StreamDataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
         }
 
         @JavascriptInterface
