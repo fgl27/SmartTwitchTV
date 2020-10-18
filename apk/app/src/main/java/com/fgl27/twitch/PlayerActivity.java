@@ -2592,6 +2592,10 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
+            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, true);
+        }
+
+        void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, boolean tryAgain) {
             PreviewFeedResult[x][y] = null;
 
             try {
@@ -2610,7 +2614,9 @@ public class PlayerActivity extends Activity {
                         }
                 );
             } catch (Exception ignore) {//Most are RejectedExecutionException
-                CheckIfIsLiveFeedError(x, y, callback);
+                if (tryAgain) {//try again after a minor delay
+                    MainThreadHandler.postDelayed(() -> CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, false), 250);
+                } else CheckIfIsLiveFeedError(x, y, callback);
             }
         }
 
@@ -2633,6 +2639,10 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
+            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, true);
+        }
+
+        void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, boolean tryAgain) {
             StreamDataResult[position] = null;
 
             try {
@@ -2658,7 +2668,11 @@ public class PlayerActivity extends Activity {
                         }
                 );
             } catch (Exception ignore) {//Most are RejectedExecutionException
-                getStreamDataAsyncError(position, callback, checkResult);
+
+                if (tryAgain) {//try again after a minor delay
+                    MainThreadHandler.postDelayed(() -> getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, false), 250);
+                } else getStreamDataAsyncError(position, callback, checkResult);
+
             }
 
         }
@@ -2681,6 +2695,14 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                              String callback, long checkResult, long key, int thread) {
+
+            GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
+                    callback, checkResult, key, thread, true);
+
+        }
+
+        void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+                                      String callback, long checkResult, long key, int thread, boolean tryAgain) {
             StreamDataResult[thread] = null;
 
             try {
@@ -2711,7 +2733,10 @@ public class PlayerActivity extends Activity {
                         }
                 );
             } catch (Exception ignore) {//Most are RejectedExecutionException
-                GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+                if (tryAgain) {//try again after a minor delay
+                    MainThreadHandler.postDelayed(() -> GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
+                            callback, checkResult, key, thread, false), 250);
+                } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
             }
         }
 
