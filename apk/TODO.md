@@ -152,6 +152,9 @@ TODO list
 * Making current option not working on that sdk when targeting 30, works if targeting 29
 * Update the process to work on all OS
 
+### Check all the logic regarding Handler.post as it may return false
+
+* https://developer.android.com/reference/android/os/Handler#post(java.lang.Runnable) Returns true if the Runnable was successfully placed in to the message queue. Returns false on failure, usually because the looper processing the message queue is exiting.
 
 ### Improve the main app README.md
 
