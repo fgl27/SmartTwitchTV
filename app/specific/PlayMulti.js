@@ -448,9 +448,18 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQuaili
 
     Play_MultiArray[pos].AutoUrl = theUrl;
 
-    if (Play_MultiIsFull()) UserLiveFeed_Hide(PreventCleanQuailities);
+    if (Play_MultiIsFull()) {
+        UserLiveFeed_Hide(PreventCleanQuailities);
 
-    OSInterface_StartMultiStream(pos, theUrl, playlist);
+        //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
+        Main_setTimeout(
+            function() {
+                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) OSInterface_StartMultiStream(pos, theUrl, playlist);
+            },
+            25
+        );
+
+    } else OSInterface_StartMultiStream(pos, theUrl, playlist);
 
     Play_MultiArray[pos].playlist = playlist;
 
