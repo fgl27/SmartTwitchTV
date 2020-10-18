@@ -15489,6 +15489,17 @@
         Play_ShowPanelStatus(1);
     }
 
+    function Play_ResumeAfterOnlineMulti(pos) {
+        //delay it call as some slow end device will not be able to handle all at once
+        Main_setTimeout(
+            function() {
+                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) Play_MultiStart(pos);
+            },
+            25 * pos
+        );
+
+    }
+
     function Play_ResumeAfterOnline() {
         if (navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
 
@@ -15506,15 +15517,16 @@
 
                 for (i; i < Play_MultiArray_length; i++) {
 
-                    if (Play_MultiArray[i].data.length > 0) {
-
-                        Play_MultiStart(i);
-
-                    }
+                    Play_ResumeAfterOnlineMulti(i);
 
                 }
 
-                ChatLive_Init(0);
+                Main_setTimeout(
+                    function() {
+                        if (!Main_isStoped && Play_isOn) ChatLive_Init(0);
+                    },
+                    200
+                );
 
             } else {
 
