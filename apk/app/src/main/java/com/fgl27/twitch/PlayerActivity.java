@@ -1280,7 +1280,7 @@ public class PlayerActivity extends Activity {
             //Reset error check
             PingErrorCounter = 0L;
             //Prevent clear ShowNoNetworkWarning
-            if (warningShowing) MainThreadHandler.post(this::HideWarningText);
+            if (warningShowing) runOnUiThread(this::HideWarningText);
 
         } else if (!warningShowing && PingWarning && PlayerObj[0].player == null) {//Prevent showing if playing or disabled by user
 
@@ -1288,7 +1288,7 @@ public class PlayerActivity extends Activity {
             if (PingErrorCounter > 3) {//> 0 1 2 3 = 32s... 5 seconds of postDelayed plus 3 seconds of waitFor/postDelayed times 4 = 32s
 
                 PingErrorCounter = 0L;
-                MainThreadHandler.post(() -> ShowWarningText(getString(R.string.no_internet)));
+                runOnUiThread(() -> ShowWarningText(getString(R.string.no_internet)));
                 MainThreadHandler.postDelayed(this::HideWarningText, 30000);
 
             }
@@ -1734,7 +1734,7 @@ public class PlayerActivity extends Activity {
     }
 
     public void LoadUrlWebview(String LoadUrlString) {
-        MainThreadHandler.post(() -> mWebView.loadUrl(LoadUrlString));
+        runOnUiThread(() -> mWebView.loadUrl(LoadUrlString));
     }
 
     // A web app that loads all thumbnails content and interact with the player
@@ -1871,7 +1871,7 @@ public class PlayerActivity extends Activity {
             public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
                 //because this WebView in on top key will be dispatched here
                 //Main WebView must handle all the keys
-                MainThreadHandler.post(() -> mWebView.dispatchKeyEvent(event));
+                runOnUiThread(() -> mWebView.dispatchKeyEvent(event));
                 //If return true, WebView will not handle the key event
                 return true;
             }
@@ -2168,7 +2168,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mshowLoading(boolean show) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 if (show) showLoading();
                 else hideLoading(5);
             });
@@ -2176,7 +2176,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mshowLoadingBottom(boolean show) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 if (show) showLoadingBotton();
                 else hideLoading(6);
             });
@@ -2184,7 +2184,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mclose(boolean close) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 if (close) closeThis();
                 else minimizeThis();
             });
@@ -2192,13 +2192,13 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void showToast(String toast) {
-            MainThreadHandler.post(() -> Toast.makeText(mWebViewContext, toast, Toast.LENGTH_LONG).show());
+            runOnUiThread(() -> Toast.makeText(mWebViewContext, toast, Toast.LENGTH_LONG).show());
         }
 
         @JavascriptInterface
         public void OpenExternal(String url) {
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.parse(url), "video/*");
@@ -2225,7 +2225,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void KeyboardCheckAndHIde() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 if (getResources().getConfiguration().keyboard == Configuration.KEYBOARD_QWERTY) {
                     Tools.hideKeyboardFrom(mWebViewContext, mWebView);
                 }
@@ -2234,14 +2234,14 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void hideKeyboardFrom() {
-            MainThreadHandler.post(() -> Tools.hideKeyboardFrom(mWebViewContext, mWebView));
+            runOnUiThread(() -> Tools.hideKeyboardFrom(mWebViewContext, mWebView));
         }
 
         @JavascriptInterface
         public void AvoidClicks(boolean Avoid) {
             if (deviceIsTV) return;
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 if (Avoid) {
                     mWebViewKeyIsShowing = false;
                     mWebViewKey.setVisibility(View.GONE);
@@ -2258,7 +2258,7 @@ public class PlayerActivity extends Activity {
         public void initbodyClickSet() {
             if (deviceIsTV) return;
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 mWebViewKeyIsShowing = true;
                 mWebViewKey.setVisibility(View.VISIBLE);
                 mWebViewKey.requestFocus();
@@ -2269,13 +2269,13 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void SetKeysOpacity(int Opacity) {
             if (deviceIsTV) return;
-            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
+            runOnUiThread(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_opacity(" + Opacity + ")"));
         }
 
         @JavascriptInterface
         public void SetKeysPosition(int Position) {
             if (deviceIsTV) return;
-            MainThreadHandler.post(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
+            runOnUiThread(() -> mWebViewKey.loadUrl("javascript:Extrapage.Set_dpad_position(" + Position + ")"));
         }
 
         @JavascriptInterface
@@ -2285,7 +2285,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void showKeyboardFrom() {
-            MainThreadHandler.post(() -> Tools.showKeyboardFrom(mWebViewContext, mWebView));
+            runOnUiThread(() -> Tools.showKeyboardFrom(mWebViewContext, mWebView));
         }
 
         @JavascriptInterface
@@ -2448,18 +2448,18 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mupdatesize(boolean FullScreen) {
-            MainThreadHandler.post(() -> updateVideSize(FullScreen));
+            runOnUiThread(() -> updateVideSize(FullScreen));
         }
 
         @JavascriptInterface
         public void mupdatesizePP(boolean FullScreen) {
-            MainThreadHandler.post(() -> updateVideSizePP(FullScreen));
+            runOnUiThread(() -> updateVideSizePP(FullScreen));
         }
 
         @JavascriptInterface
         public void getDuration(String callback) {
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[0].player != null) {
 
@@ -2472,7 +2472,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mseekTo(long position) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[0].player != null) {
                     long duration = PlayerObj[0].player.getDuration();
@@ -2504,7 +2504,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void StartAuto(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 boolean startPlayer = PlayerObj[0].player == null || !PlayerObj[0].isScreenPreview;
 
                 if (startPlayer) {
@@ -2568,7 +2568,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void RestartPlayer(int Type, long ResumePosition, int position) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a player start or SwitchPlayer
                 //The odd behavior will stay until the player is releasePlayer
@@ -2581,7 +2581,7 @@ public class PlayerActivity extends Activity {
 //        @JavascriptInterface
 //        public void PlayerEventListenerClearTest() {
 //
-//            MainThreadHandler.post(() -> PlayerEventListenerClear(1, 0));
+//            runOnUiThread(() -> PlayerEventListenerClear(1, 0));
 //
 //        }
 
@@ -2748,12 +2748,12 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void SetFeedPosition(int position) {
-            MainThreadHandler.post(() -> PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
+            runOnUiThread(() -> PlayerObj[4].playerView.setLayoutParams(PlayerViewExtraLayout[PreviewSize][position]));
         }
 
 //        @JavascriptInterface
 //        public void TestFun() {
-//            MainThreadHandler.post(() -> {
+//            runOnUiThread(() -> {
 //
 //                FrameLayout.LayoutParams temp = new FrameLayout.LayoutParams(0, 0, 0);
 //                PlayerObj[0].playerView.setLayoutParams(temp);
@@ -2764,7 +2764,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PreventClean) {
 
@@ -2784,7 +2784,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 //Reset the Z position of the PP player so it show above the other on android 7 and older
                 //Call this always before starting the player
@@ -2845,7 +2845,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void StartSidePanelPlayer(String uri, String mainPlaylistString) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 PlayerObj[0].mediaSources = Tools.buildMediaSource(
                         Uri.parse(uri),
@@ -2875,7 +2875,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void StartScreensPlayer(String uri, String mainPlaylistString, int ResumePosition,
                                        float bottom, float right, float left, int web_height, int Type, boolean bigger) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 PlayerObj[0].mediaSources = Tools.buildMediaSource(
                         Uri.parse(uri),
@@ -2905,7 +2905,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void SidePanelPlayerRestore() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 PlayerObj[0].isScreenPreview = true;
                 VideoWebHolder.bringChildToFront(VideoHolder);
                 //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
@@ -2915,7 +2915,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void ScreenPlayerRestore(float bottom, float right, float left, int web_height, int Type, boolean bigger) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[0].player != null) {
                     PlayerObj[0].isScreenPreview = true;
@@ -2931,7 +2931,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void ClearSidePanelPlayer() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 VideoWebHolder.bringChildToFront(mWebView);
                 ClearPlayer(0);
@@ -2946,12 +2946,12 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void stopVideo() {
-            MainThreadHandler.post(PlayerActivity.this::ResetPlayerState);
+            runOnUiThread(PlayerActivity.this::ResetPlayerState);
         }
 
         @JavascriptInterface
         public void mClearSmallPlayer() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 PicturePicture = false;
                 ClearPlayer(1);
             });
@@ -2959,13 +2959,13 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mSwitchPlayer() {
-            MainThreadHandler.post(PlayerActivity.this::SwitchPlayer);
+            runOnUiThread(PlayerActivity.this::SwitchPlayer);
         }
 
         @JavascriptInterface
         public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(1, true));
+            runOnUiThread(() -> UpdadeSizePosSmall(1, true));
         }
 
         @JavascriptInterface
@@ -2976,28 +2976,28 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
-            MainThreadHandler.post(() -> UpdadeSizePosSmall(1, false));
+            runOnUiThread(() -> UpdadeSizePosSmall(1, false));
         }
 
         @JavascriptInterface
         public void mSetPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
-            MainThreadHandler.post(PlayerActivity.this::SetDefaultLayouts);
+            runOnUiThread(PlayerActivity.this::SetDefaultLayouts);
         }
 
         @JavascriptInterface
         public void mSwitchPlayerAudio(int position) {
-            MainThreadHandler.post(() -> SwitchPlayerAudio(position));
+            runOnUiThread(() -> SwitchPlayerAudio(position));
         }
 
         @JavascriptInterface
         public void mSetAudio(int position, float volume) {
-            MainThreadHandler.post(() -> SetAudio(position, volume));
+            runOnUiThread(() -> SetAudio(position, volume));
         }
 
         @JavascriptInterface
         public void mSetPlayerAudioMulti(int position) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 AudioMulti = position;
                 SetPlayerAudioMulti();
@@ -3094,12 +3094,12 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mKeepScreenOn(boolean keepOn) {
-            MainThreadHandler.post(() -> KeepScreenOn(keepOn));
+            runOnUiThread(() -> KeepScreenOn(keepOn));
         }
 
         @JavascriptInterface
         public void PlayPauseChange() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[0].player != null) {
 
@@ -3118,7 +3118,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void PlayPause(boolean state) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 for (int i = 0; i < PlayerAccount; i++) {
                     if (PlayerObj[i].player != null) PlayerObj[i].player.setPlayWhenReady(state);
                 }
@@ -3134,7 +3134,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void setPlaybackSpeed(float speed) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 for (int i = 0; i < PlayerAccount; i++) {
                     if (PlayerObj[i].player != null)
                         PlayerObj[i].player.setPlaybackParameters(new PlaybackParameters(speed));
@@ -3172,7 +3172,7 @@ public class PlayerActivity extends Activity {
         public void getVideoQuality(int Type) {
             VideoQualityResult = null;
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[0].player != null)
                     VideoQualityResult = Tools.GetVideoQuality(PlayerObj[0].player.getVideoFormat());
@@ -3190,7 +3190,7 @@ public class PlayerActivity extends Activity {
         public void getVideoStatus(boolean showLatency, int Type) {
             getVideoStatusResult = null;
 
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 long buffer = 0L;
                 long LiveOffset = 0L;
@@ -3225,7 +3225,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void getLatency(int chat_number) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 if (PlayerObj[chat_number].player != null) {
 
@@ -3244,7 +3244,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void keyEvent(int key, int keyaction) {
-            MainThreadHandler.post(() -> mWebView.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
+            runOnUiThread(() -> mWebView.dispatchKeyEvent(new KeyEvent(keysAction[keyaction], keys[key])));
         }
 
         @JavascriptInterface
@@ -3259,7 +3259,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void msetPlayer(boolean surface_view, boolean FullScreen) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 setPlayerSurface(surface_view);
 
                 if (FullScreen) updateVideSizePP(true);
@@ -3271,7 +3271,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mhideSystemUI() {
-            MainThreadHandler.post(PlayerActivity.this::hideSystemUI);
+            runOnUiThread(PlayerActivity.this::hideSystemUI);
         }
 
         @JavascriptInterface
@@ -3302,7 +3302,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void requestWr() {
-            MainThreadHandler.post(PlayerActivity.this::Check_WriteExternalStorage);
+            runOnUiThread(PlayerActivity.this::Check_WriteExternalStorage);
         }
 
         @JavascriptInterface
@@ -3312,7 +3312,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void EnableMultiStream(boolean MainBig, int offset) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 MultiStreamEnable = true;
                 if (MainBig) SetMultiStreamMainBig(offset);
                 else SetMultiStream();
@@ -3321,7 +3321,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void DisableMultiStream() {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
                 MultiStreamEnable = false;
                 UnSetMultiStream();
             });
@@ -3329,7 +3329,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void StartMultiStream(int position, String uri, String mainPlaylistString, boolean Restart) {
-            MainThreadHandler.post(() -> {
+            runOnUiThread(() -> {
 
                 //Player Restart options... the player may randomly display a flicker green screen, or odd green artifacts after a SetMultiStreamMainBig
                 //The odd behavior will stay until the player is releasePlayer
