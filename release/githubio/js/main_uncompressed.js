@@ -15500,7 +15500,6 @@
                 Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, (1000 * 60 * 3), Play_streamInfoTimerId);
                 Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
-                ChatLive_Init(0);
                 Play_data.watching_time = new Date().getTime();
 
                 var i = 0;
@@ -15514,6 +15513,8 @@
                     }
 
                 }
+
+                ChatLive_Init(0);
 
             } else {
 
