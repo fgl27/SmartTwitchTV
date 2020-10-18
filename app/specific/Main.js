@@ -613,7 +613,7 @@ function Main_Changelog() {
         {
             title: "Apk Version 3.0.265 and 3.0.266 - Web Version October 18 2020",
             changes: [
-                "Fix issue that sometimes a stream didn't open and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) when multistream was enable one of the stream may not properly load do to error, now when that happens a warning will inform the error and or prevent it",
+                "Fix issue that sometimes a stream didn't play and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) and multistream was enable one of the stream may not properly load do to error, now the app will try to prevent it if not possible will warn",
                 "General performance improves and bug fixes",
             ]
         },
