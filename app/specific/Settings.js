@@ -1205,6 +1205,7 @@ var Settings_CodecsValue = [];
 var Settings_CodecsPos;
 var Settings_DisableCodecsNames = [];
 var Settings_DisableQualities = [];
+var Settings_DisableQualitiesLen = 0;
 
 function Settings_CodecsShow() {
     Main_removeEventListener("keydown", Settings_handleKeyDown);
@@ -1379,6 +1380,11 @@ function Settings_QualitiesCheck() {
         if (Settings_Obj_default('block_qualities_' + array_values[i]))
             Settings_DisableQualities.push(array_values[i]);
     }
+
+    Settings_DisableQualitiesLen = Settings_DisableQualities.length;
+    // //reset clip source on change
+    PlayClip_quality = 'source';
+    PlayClip_qualityPlaying = PlayClip_quality;
 
     Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
     Settings_Qualities();

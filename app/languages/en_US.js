@@ -334,9 +334,9 @@ function en_USLang() {
     STR_PLAYER_BITRATE_SMALL = 'Bitrate - ' + STR_PLAYER_RES_SMALL;
     STR_PLAYER_RES_MAIN = 'Resolution - ' + STR_PLAYER_MAIN;
     STR_PLAYER_RES_SMALL = 'Resolution - ' + STR_PLAYER_RES_SMALL;
-    STR_BLOCK_RES = "Auto quality Blocked resolutions";
-    STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution";
-    STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
+    STR_BLOCK_RES = "Blocked resolutions";
+    STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution, as clips can't be played in auto mode this will also block the automatic section of this resolution in a clip.";
+    STR_BLOCK_RES_SUMMARY_EXTRA = "The user can overwrite the selection manually during the playback<br><br>XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
     STR_BLOCKED = "Blocked";
     STR_BLOCKED_NOT = "Not blocked";
     STR_AUDIO_SOURCE = "Audio source";

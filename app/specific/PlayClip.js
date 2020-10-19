@@ -288,12 +288,20 @@ function PlayClip_loadDataError() {
 function PlayClip_loadDataSuccessFake() {
     PlayClip_qualities = [
         {
-            'id': 'Auto',
-            'url': 'https://fake_auto'
-        },
-        {
             'id': '1080p60 | source | mp4',
             'url': 'https://fake_1080p60'
+        },
+        {
+            'id': '720p60 | mp4',
+            'url': 'https://fake_720p60'
+        },
+        {
+            'id': '720p | mp4',
+            'url': 'https://fake_720p'
+        },
+        {
+            'id': '480p | mp4',
+            'url': 'https://fake_480p'
         },
     ];
     Play_SetExternalQualities(PlayClip_qualities, 1);
@@ -355,20 +363,54 @@ function PlayClip_FrameRate(value) {
     else return '';
 }
 
-function PlayClip_qualityChanged() {
-    PlayClip_qualityIndex = 0;
-    PlayClip_playingUrl = PlayClip_qualities[0].url;
+function PlayClip_SetQuality(array) {
+    var len = array.length,
+        i = 0,
+        ret = 0;
 
-    for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
-        if (PlayClip_qualities[i].id === PlayClip_quality) {
-            PlayClip_qualityIndex = i;
-            PlayClip_playingUrl = PlayClip_qualities[i].url;
-            break;
-        } else if (Main_A_includes_B(PlayClip_qualities[i].id, PlayClip_quality)) { //make shore to set a value before break out
-            PlayClip_qualityIndex = i;
-            PlayClip_playingUrl = PlayClip_qualities[i].url;
+    if (Settings_DisableQualitiesLen) {
+
+        //Find a not blocked resolution
+        for (i; i < len; i++) {
+
+            if (!PlayClip_CheckBlockedRes(i, array)) {
+                ret = i;
+                break;
+            }
         }
+
+    } else {
+
+        if (!Main_A_includes_B(PlayClip_quality, 'ource')) {
+            for (i; i < len; i++) {
+
+                if (array[i].id === PlayClip_quality) {
+                    ret = i;
+                    break;
+                }
+            }
+        }
+
     }
+
+    return ret;
+}
+
+function PlayClip_CheckBlockedRes(pos, array) {
+
+    for (var i = 0; i < Settings_DisableQualitiesLen; i++) {
+
+        if (array[pos].id.startsWith(Settings_DisableQualities[i]))
+            return true;
+
+    }
+
+    return false;
+}
+
+function PlayClip_qualityChanged() {
+    PlayClip_qualityIndex = PlayClip_SetQuality(PlayClip_qualities);
+    PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
 
     PlayClip_state = Play_STATE_PLAYING;
 
@@ -378,6 +420,7 @@ function PlayClip_qualityChanged() {
     PlayClip_onPlayer();
     //Play_PannelEndStart(3);
 }
+
 
 function PlayClip_onPlayer() {
     //Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);

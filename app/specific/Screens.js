@@ -1113,13 +1113,19 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                 var offset = 0,
                     PreviewResponseText = Play_PreviewResponseText,
                     lang,
-                    who_called;
+                    who_called,
+                    clipID;
 
                 if (ScreenObj[x].screenType === 2) {//clip
 
                     Play_PreviewId = StreamInfo[0];
                     Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
-                    Play_PreviewURL = Play_PreviewResponseText[0].url;
+
+                    clipID = PlayClip_SetQuality(Play_PreviewResponseText);
+                    PlayClip_quality = Play_PreviewResponseText[clipID].id;
+                    PlayClip_qualityPlaying = PlayClip_quality;
+
+                    Play_PreviewURL = Play_PreviewResponseText[clipID].url;
                     lang = StreamInfo[17];
                     who_called = 3;
 
