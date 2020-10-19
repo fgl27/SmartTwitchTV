@@ -12,6 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Apk Version 3.0.267 - October 19 2020
 ==============
 
+* Allow the settings blocked resolution to also work on clips
 * General performance improves and bug fixes
 
 Apk Version 3.0.265 and 3.0.266 - October 18 2020

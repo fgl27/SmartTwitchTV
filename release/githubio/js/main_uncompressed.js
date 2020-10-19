@@ -1148,9 +1148,9 @@
         STR_PLAYER_BITRATE_SMALL = 'Bitrate - ' + STR_PLAYER_RES_SMALL;
         STR_PLAYER_RES_MAIN = 'Resolution - ' + STR_PLAYER_MAIN;
         STR_PLAYER_RES_SMALL = 'Resolution - ' + STR_PLAYER_RES_SMALL;
-        STR_BLOCK_RES = "Auto quality Blocked resolutions";
-        STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution";
-        STR_BLOCK_RES_SUMMARY_EXTRA = "XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
+        STR_BLOCK_RES = "Blocked resolutions";
+        STR_BLOCK_RES_SUMMARY = "When using Auto quality is possible to block one or more resolutions from ever be used, this is usable to devices that lag playing a particularly resolution, as clips can't be played in auto mode this will also block the automatic section of this resolution in a clip.";
+        STR_BLOCK_RES_SUMMARY_EXTRA = "The user can overwrite the selection manually during the playback<br><br>XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
         STR_BLOCKED = "Blocked";
         STR_BLOCKED_NOT = "Not blocked";
         STR_AUDIO_SOURCE = "Audio source";
@@ -7009,7 +7009,7 @@
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 19 2020';
-    var Main_version_web = 103; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 104; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7595,6 +7595,7 @@
         var changelogObj = [{
                 title: "Apk Version 3.0.267 - Web Version October 19 2020",
                 changes: [
+                    "Allow the settings blocked resolution to also work on clips",
                     "General performance improves and bug fixes",
                 ]
             },
@@ -10984,12 +10985,20 @@
 
     function PlayClip_loadDataSuccessFake() {
         PlayClip_qualities = [{
-                'id': 'Auto',
-                'url': 'https://fake_auto'
-            },
-            {
                 'id': '1080p60 | source | mp4',
                 'url': 'https://fake_1080p60'
+            },
+            {
+                'id': '720p60 | mp4',
+                'url': 'https://fake_720p60'
+            },
+            {
+                'id': '720p | mp4',
+                'url': 'https://fake_720p'
+            },
+            {
+                'id': '480p | mp4',
+                'url': 'https://fake_480p'
             },
         ];
         Play_SetExternalQualities(PlayClip_qualities, 1);
@@ -11052,20 +11061,54 @@
         else return '';
     }
 
-    function PlayClip_qualityChanged() {
-        PlayClip_qualityIndex = 0;
-        PlayClip_playingUrl = PlayClip_qualities[0].url;
+    function PlayClip_SetQuality(array) {
+        var len = array.length,
+            i = 0,
+            ret = 0;
 
-        for (var i = 0; i < PlayClip_getQualitiesCount(); i++) {
-            if (PlayClip_qualities[i].id === PlayClip_quality) {
-                PlayClip_qualityIndex = i;
-                PlayClip_playingUrl = PlayClip_qualities[i].url;
-                break;
-            } else if (Main_A_includes_B(PlayClip_qualities[i].id, PlayClip_quality)) { //make shore to set a value before break out
-                PlayClip_qualityIndex = i;
-                PlayClip_playingUrl = PlayClip_qualities[i].url;
+        if (Settings_DisableQualitiesLen) {
+
+            //Find a not blocked resolution
+            for (i; i < len; i++) {
+
+                if (!PlayClip_CheckBlockedRes(i, array)) {
+                    ret = i;
+                    break;
+                }
             }
+
+        } else {
+
+            if (!Main_A_includes_B(PlayClip_quality, 'ource')) {
+                for (i; i < len; i++) {
+
+                    if (array[i].id === PlayClip_quality) {
+                        ret = i;
+                        break;
+                    }
+                }
+            }
+
         }
+
+        return ret;
+    }
+
+    function PlayClip_CheckBlockedRes(pos, array) {
+
+        for (var i = 0; i < Settings_DisableQualitiesLen; i++) {
+
+            if (array[pos].id.startsWith(Settings_DisableQualities[i]))
+                return true;
+
+        }
+
+        return false;
+    }
+
+    function PlayClip_qualityChanged() {
+        PlayClip_qualityIndex = PlayClip_SetQuality(PlayClip_qualities);
+        PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
 
         PlayClip_state = Play_STATE_PLAYING;
 
@@ -11075,6 +11118,7 @@
         PlayClip_onPlayer();
         //Play_PannelEndStart(3);
     }
+
 
     function PlayClip_onPlayer() {
         //Main_Log('PlayClip_onPlayer ' + PlayClip_playingUrl);
@@ -20669,13 +20713,19 @@
                     var offset = 0,
                         PreviewResponseText = Play_PreviewResponseText,
                         lang,
-                        who_called;
+                        who_called,
+                        clipID;
 
                     if (ScreenObj[x].screenType === 2) { //clip
 
                         Play_PreviewId = StreamInfo[0];
                         Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
-                        Play_PreviewURL = Play_PreviewResponseText[0].url;
+
+                        clipID = PlayClip_SetQuality(Play_PreviewResponseText);
+                        PlayClip_quality = Play_PreviewResponseText[clipID].id;
+                        PlayClip_qualityPlaying = PlayClip_quality;
+
+                        Play_PreviewURL = Play_PreviewResponseText[clipID].url;
                         lang = StreamInfo[17];
                         who_called = 3;
 
@@ -26469,6 +26519,7 @@
     var Settings_CodecsPos;
     var Settings_DisableCodecsNames = [];
     var Settings_DisableQualities = [];
+    var Settings_DisableQualitiesLen = 0;
 
     function Settings_CodecsShow() {
         Main_removeEventListener("keydown", Settings_handleKeyDown);
@@ -26668,6 +26719,11 @@
             if (Settings_Obj_default('block_qualities_' + array_values[i]))
                 Settings_DisableQualities.push(array_values[i]);
         }
+
+        Settings_DisableQualitiesLen = Settings_DisableQualities.length;
+        // //reset clip source on change
+        PlayClip_quality = 'source';
+        PlayClip_qualityPlaying = PlayClip_quality;
 
         Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
         Settings_Qualities();
