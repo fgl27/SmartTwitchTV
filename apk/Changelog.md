@@ -9,7 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Apk Version 3.0.266 - October 18 2020
+Apk Version 3.0.267 - October 18 2020
+==============
+
+* General performance improves and bug fixes
+
+Apk Version 3.0.265 and 3.0.266 - October 18 2020
 ==============
 
 * Fix issue that sometimes a stream didn't play and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) and multistream was enable one of the stream may not properly load do to error, now the app will try to prevent it if not possible will warn
