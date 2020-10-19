@@ -1382,7 +1382,7 @@ function Settings_QualitiesCheck() {
     }
 
     Settings_DisableQualitiesLen = Settings_DisableQualities.length;
-    // //reset clip source on change
+    //reset clip source on change
     PlayClip_quality = 'source';
     PlayClip_qualityPlaying = PlayClip_quality;
 
