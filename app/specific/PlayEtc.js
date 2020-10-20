@@ -2557,12 +2557,18 @@ function Play_Resetpanel(PlayVodClip) {
 }
 
 function Play_BottomUpDown(PlayVodClip, adder) {
+
     if (Play_controls[Play_Panelcounter].updown) {
+
         Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
+
     } else if (adder === 1 && (PlayVodClip > 1 || !Play_StayDialogVisible())) {
+
         PlayVod_PanelY--;
         Play_BottonIconsFocus();
+
     }
+
 }
 
 function Play_IconsAddFocus() {
@@ -2787,8 +2793,13 @@ var Play_infoMultiLiveTime = [];
 var Play_infoMultiWatchingTime = [];
 
 var Play_info_quality;
+var Play_info_div;
+var Play_side_info_div;
+
 
 function Play_BottonIconsSet() {
+    Play_info_div = Main_getElementById('playerinfo');
+    Play_side_info_div = Main_getElementById('playsideinfo');
     Play_info_quality = Main_getElementById('stream_quality');
 
     Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
@@ -2865,6 +2876,7 @@ function Play_BottonIconsFocus() {
 
     if (!PlayVod_PanelY) { //progress_bar
 
+        Play_BottonIconsProgressBarShow();
         Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
         Play_IconsRemoveFocus();
 
@@ -2876,6 +2888,8 @@ function Play_BottonIconsFocus() {
         }
 
     } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+
+        Play_BottonIconsProgressBarHide();
 
         if (!PlayClip_EnterPos) { //pause
 
@@ -2899,9 +2913,34 @@ function Play_BottonIconsFocus() {
 
     } else if (PlayVod_PanelY === 2) { //botton icons
 
+        Play_BottonIconsProgressBarHide();
         Play_IconsAddFocus();
         Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
         Play_BottonIcons_Progress_Steps.style.display = 'none';
 
     }
+}
+
+function Play_BottonIconsProgressBarShow() {
+    Main_AddClassWitEle(Play_BottonIcons_Pause, 'hideimp');
+    Main_HideElementWithEle(Play_info_div);
+    Main_HideElementWithEle(Play_Controls_Holder);
+
+    Main_AddClassWitEle(Play_BottonIcons_Next, 'hideimp');
+    Main_AddClassWitEle(Play_BottonIcons_Back, 'hideimp');
+
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+}
+
+function Play_BottonIconsProgressBarHide() {
+    Main_RemoveClassWithEle(Play_BottonIcons_Pause, 'hideimp');
+    Main_ShowElementWithEle(Play_info_div);
+    Main_ShowElementWithEle(Play_Controls_Holder);
+
+    Main_RemoveClassWithEle(Play_BottonIcons_Next, 'hideimp');
+    Main_RemoveClassWithEle(Play_BottonIcons_Back, 'hideimp');
+
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 }

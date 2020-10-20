@@ -1519,14 +1519,14 @@ function Play_ForceShowPannel() {
 
     if (Play_StayDialogVisible()) return;
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.opacity = 0;
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 var Play_ShowPanelStatusId;
@@ -1546,13 +1546,13 @@ function Play_ShowPanelStatus(mwhocall) {
 
         } else Play_VideoStatusTest();
 
-        Main_ShowElement('playsideinfo');
-        Main_AddClass('playsideinfo', 'playsideinfofocus');
+        Main_ShowElementWithEle(Play_side_info_div);
+        Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 
     } else {
 
-        Main_HideElement('playsideinfo');
-        Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+        Main_HideElementWithEle(Play_side_info_div);
+        Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
     }
 
