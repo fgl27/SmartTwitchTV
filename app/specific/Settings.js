@@ -691,6 +691,7 @@ function Settings_SetStrings() {
 }
 
 function Settings_SetDefautls() {
+    //Settings animation will call user live that will call play warning middle and the div need to be initiated first
     Play_BottonIconsSet();
 
     for (var key in Settings_value) {
