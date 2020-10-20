@@ -14574,9 +14574,8 @@
 
     function Play_BottonIconsProgressBarShow() {
         Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
-
-        Main_HideElementWithEle(Play_info_div);
-        Main_HideElementWithEle(Play_Controls_Holder);
+        Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
 
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
@@ -14584,9 +14583,8 @@
 
     function Play_BottonIconsProgressBarHide() {
         Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
-
-        Main_ShowElementWithEle(Play_info_div);
-        Main_ShowElementWithEle(Play_Controls_Holder);
+        Main_RemoveClassWithEle(Play_info_div, 'opacity_zero');
+        Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
 
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
@@ -26065,10 +26063,6 @@
 
         Settings_SetBuffers(0);
         Settings_SetClock();
-        if (!Main_isTV) {
-            Settings_DpadOpacity();
-            Settings_DpadPOsition();
-        }
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
         Settings_notification_background();
@@ -26093,6 +26087,20 @@
         Settings_set_all_notification();
 
         Settings_SetResBitRate(0);
+
+        if (!Main_isTV) {
+            Settings_DpadOpacity();
+            Settings_DpadPOsition();
+
+            //Do it again after a delay to make sure the view is ready to receive the update
+            Main_setTimeout(
+                function() {
+                    Settings_DpadOpacity();
+                    Settings_DpadPOsition();
+                },
+                2500
+            );
+        }
     }
 
     function Settings_Obj_values(key) {
