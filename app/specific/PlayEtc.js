@@ -2800,7 +2800,11 @@ var Play_dialog_warning_play_middle_text;
 var Play_dialog_warning_play;
 var Play_dialog_warning_play_text;
 
+var Play_pause_next_div;
+
 function Play_BottonIconsSet() {
+    Play_pause_next_div = Main_getElementById('pause_next_div');
+
     Play_dialog_warning_play_middle_text = Main_getElementById('dialog_warning_play_middle_text');
     Play_dialog_warning_play_middle = Main_getElementById('dialog_warning_play_middle');
 
@@ -2931,24 +2935,20 @@ function Play_BottonIconsFocus() {
 }
 
 function Play_BottonIconsProgressBarShow() {
-    Main_AddClassWitEle(Play_BottonIcons_Pause, 'hideimp');
+    Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
+
     Main_HideElementWithEle(Play_info_div);
     Main_HideElementWithEle(Play_Controls_Holder);
-
-    Main_AddClassWitEle(Play_BottonIcons_Next, 'hideimp');
-    Main_AddClassWitEle(Play_BottonIcons_Back, 'hideimp');
 
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 function Play_BottonIconsProgressBarHide() {
-    Main_RemoveClassWithEle(Play_BottonIcons_Pause, 'hideimp');
+    Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
+
     Main_ShowElementWithEle(Play_info_div);
     Main_ShowElementWithEle(Play_Controls_Holder);
-
-    Main_RemoveClassWithEle(Play_BottonIcons_Next, 'hideimp');
-    Main_RemoveClassWithEle(Play_BottonIcons_Back, 'hideimp');
 
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
