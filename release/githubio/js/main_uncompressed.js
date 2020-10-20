@@ -18172,9 +18172,9 @@
 
             Main_replaceClassEmoji('stream_info_title');
         }
+        PlayVod_SetStart();
 
         if (!Play_PreviewId) {
-            PlayVod_SetStart();
             Play_showBufferDialog();
             var isFromVod = true;
             var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -18232,12 +18232,15 @@
     }
 
     function PlayVod_SetStart() {
-        Play_EndSet(2);
+
+        PlayVod_loadingInfoDataTry = 0;
+
         PlayVod_muted_segments_value = null;
         PlayVod_previews_clear();
-        PlayVod_PrepareLoad();
         PlayVod_updateVodInfo();
         PlayVod_updateChapters();
+        Play_EndSet(2);
+
     }
 
     function PlayVod_PosStart() {
@@ -18261,11 +18264,13 @@
         PlayVod_isOn = true;
 
         if (!Play_PreviewId) {
+
             if (!PlayVod_replay) PlayVod_loadData();
             else {
                 PlayVod_state = Play_STATE_PLAYING;
                 PlayVod_onPlayer();
             }
+
         } else {
             PlayVod_autoUrl = Play_PreviewURL;
             PlayVod_playlist = Play_PreviewResponseText;
@@ -18283,7 +18288,6 @@
 
             }
 
-            PlayVod_SetStart();
             Play_CheckIfIsLiveCleanEnd();
 
             PlayVod_SaveOffset();
@@ -18294,10 +18298,6 @@
 
         Main_values.Play_WasPlaying = 2;
         Main_SaveValues();
-    }
-
-    function PlayVod_PrepareLoad() {
-        PlayVod_loadingInfoDataTry = 0;
     }
 
     function PlayVod_updateVodInfo() {
