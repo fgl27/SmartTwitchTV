@@ -7009,7 +7009,7 @@
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 20 2020';
-    var Main_version_web = 105; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 106; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -15343,6 +15343,7 @@
         Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeS(0));
         PlayClip_SetProgressBarJumpers();
         PlayVod_previews_clear();
+        Main_empty('inner_progress_bar_muted');
 
         Main_textContentWithEle(Play_infoLiveTime, Play_timeMs(0));
 
@@ -26052,6 +26053,7 @@
     }
 
     function Settings_SetDefautls() {
+        //Settings animation will call user live that will call play warning middle and the div need to be initiated first
         Play_BottonIconsSet();
 
         for (var key in Settings_value) {
