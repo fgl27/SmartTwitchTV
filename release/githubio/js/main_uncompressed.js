@@ -7008,8 +7008,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 19 2020';
-    var Main_version_web = 104; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 20 2020';
+    var Main_version_web = 105; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7593,6 +7593,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version October 20 2020",
+                changes: [
+                    "Improve player progressbar use, by hiding etc information not needed when using it",
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Apk Version 3.0.267 - Web Version October 19 2020",
                 changes: [
                     "Allow the settings blocked resolution to also work on clips",
@@ -14188,12 +14195,18 @@
     }
 
     function Play_BottomUpDown(PlayVodClip, adder) {
+
         if (Play_controls[Play_Panelcounter].updown) {
+
             Play_controls[Play_Panelcounter].updown(adder, PlayVodClip);
+
         } else if (adder === 1 && (PlayVodClip > 1 || !Play_StayDialogVisible())) {
+
             PlayVod_PanelY--;
             Play_BottonIconsFocus();
+
         }
+
     }
 
     function Play_IconsAddFocus() {
@@ -14418,8 +14431,22 @@
     var Play_infoMultiWatchingTime = [];
 
     var Play_info_quality;
+    var Play_info_div;
+    var Play_side_info_div;
+    var Play_dialog_warning_play_middle;
+    var Play_dialog_warning_play_middle_text;
+    var Play_dialog_warning_play;
+    var Play_dialog_warning_play_text;
 
     function Play_BottonIconsSet() {
+        Play_dialog_warning_play_middle_text = Main_getElementById('dialog_warning_play_middle_text');
+        Play_dialog_warning_play_middle = Main_getElementById('dialog_warning_play_middle');
+
+        Play_dialog_warning_play_text = Main_getElementById('dialog_warning_play_text');
+        Play_dialog_warning_play = Main_getElementById('dialog_warning_play');
+
+        Play_info_div = Main_getElementById('playerinfo');
+        Play_side_info_div = Main_getElementById('playsideinfo');
         Play_info_quality = Main_getElementById('stream_quality');
 
         Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
@@ -14496,6 +14523,7 @@
 
         if (!PlayVod_PanelY) { //progress_bar
 
+            Play_BottonIconsProgressBarShow();
             Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
             Play_IconsRemoveFocus();
 
@@ -14507,6 +14535,8 @@
             }
 
         } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
+
+            Play_BottonIconsProgressBarHide();
 
             if (!PlayClip_EnterPos) { //pause
 
@@ -14530,11 +14560,36 @@
 
         } else if (PlayVod_PanelY === 2) { //botton icons
 
+            Play_BottonIconsProgressBarHide();
             Play_IconsAddFocus();
             Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
             Play_BottonIcons_Progress_Steps.style.display = 'none';
 
         }
+    }
+
+    function Play_BottonIconsProgressBarShow() {
+        Main_AddClassWitEle(Play_BottonIcons_Pause, 'hideimp');
+        Main_HideElementWithEle(Play_info_div);
+        Main_HideElementWithEle(Play_Controls_Holder);
+
+        Main_AddClassWitEle(Play_BottonIcons_Next, 'hideimp');
+        Main_AddClassWitEle(Play_BottonIcons_Back, 'hideimp');
+
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    }
+
+    function Play_BottonIconsProgressBarHide() {
+        Main_RemoveClassWithEle(Play_BottonIcons_Pause, 'hideimp');
+        Main_ShowElementWithEle(Play_info_div);
+        Main_ShowElementWithEle(Play_Controls_Holder);
+
+        Main_RemoveClassWithEle(Play_BottonIcons_Next, 'hideimp');
+        Main_RemoveClassWithEle(Play_BottonIcons_Back, 'hideimp');
+
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -16406,8 +16461,8 @@
     var Play_showWarningDialogId;
 
     function Play_showWarningDialog(text, timeout) {
-        Main_innerHTML("dialog_warning_play_text", text);
-        Main_ShowElement('dialog_warning_play');
+        Main_innerHTMLWithEle(Play_dialog_warning_play_text, text);
+        Main_ShowElementWithEle(Play_dialog_warning_play);
 
         if (timeout) {
             Play_showWarningDialogId = Main_setTimeout(
@@ -16422,24 +16477,22 @@
     }
 
     function Play_HideWarningDialog() {
-        Main_HideElement('dialog_warning_play');
+        Main_HideElementWithEle(Play_dialog_warning_play);
     }
 
     function Play_WarningDialogVisible() {
-        return Main_isElementShowing('dialog_warning_play');
+        return Main_isElementShowingWithEle(Play_dialog_warning_play);
     }
 
     var Play_showWarningMidleDialogId;
 
     function Play_showWarningMidleDialog(text, timeout) {
-        Main_innerHTML("dialog_warning_play_middle_text", text);
+        Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
 
-        var doc = Main_getElementById('dialog_warning_play_middle');
+        if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.marginTop = '90vh';
+        else Play_dialog_warning_play_middle.style.marginTop = '50vh';
 
-        if (UserLiveFeed_isPreviewShowing()) doc.style.marginTop = '90vh';
-        else doc.style.marginTop = '50vh';
-
-        Main_ShowElementWithEle(doc);
+        Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
         if (timeout) {
             Play_showWarningMidleDialogId = Main_setTimeout(
@@ -16453,12 +16506,12 @@
     }
 
     function Play_HideWarningMidleDialog() {
-        Main_HideElement('dialog_warning_play_middle');
+        Main_HideElementWithEle(Play_dialog_warning_play_middle);
         Main_clearTimeout(Play_showWarningMidleDialogId);
     }
 
     function Play_WarningMidleDialogVisible() {
-        return Main_isElementShowing('dialog_warning_play_middle');
+        return Main_isElementShowingWithEle(Play_dialog_warning_play_middle);
     }
 
     function Play_showExitDialog() {
@@ -16499,14 +16552,14 @@
 
         if (Play_StayDialogVisible()) return;
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElement('playsideinfo');
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
     }
 
     function Play_ForceHidePannel() {
         Play_PanneInfoDoclId.style.opacity = 0;
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElement('playsideinfo');
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClass('playsideinfo', 'playsideinfofocus');
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
     }
 
     var Play_ShowPanelStatusId;
@@ -16527,13 +16580,13 @@
 
             } else Play_VideoStatusTest();
 
-            Main_ShowElement('playsideinfo');
-            Main_AddClass('playsideinfo', 'playsideinfofocus');
+            Main_ShowElementWithEle(Play_side_info_div);
+            Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 
         } else {
 
-            Main_HideElement('playsideinfo');
-            Main_RemoveClass('playsideinfo', 'playsideinfofocus');
+            Main_HideElementWithEle(Play_side_info_div);
+            Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
         }
 
