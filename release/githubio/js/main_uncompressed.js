@@ -7596,7 +7596,7 @@
                 title: "Web Version October 20 2020",
                 changes: [
                     "Improve player progressbar use, by hiding etc information not needed when using it",
-                    "General performance improves and bug fixes",
+                    "General performance improves",
                 ]
             },
             {
