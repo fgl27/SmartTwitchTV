@@ -2795,9 +2795,18 @@ var Play_infoMultiWatchingTime = [];
 var Play_info_quality;
 var Play_info_div;
 var Play_side_info_div;
-
+var Play_dialog_warning_play_middle;
+var Play_dialog_warning_play_middle_text;
+var Play_dialog_warning_play;
+var Play_dialog_warning_play_text;
 
 function Play_BottonIconsSet() {
+    Play_dialog_warning_play_middle_text = Main_getElementById('dialog_warning_play_middle_text');
+    Play_dialog_warning_play_middle = Main_getElementById('dialog_warning_play_middle');
+
+    Play_dialog_warning_play_text = Main_getElementById('dialog_warning_play_text');
+    Play_dialog_warning_play = Main_getElementById('dialog_warning_play');
+
     Play_info_div = Main_getElementById('playerinfo');
     Play_side_info_div = Main_getElementById('playsideinfo');
     Play_info_quality = Main_getElementById('stream_quality');

@@ -1427,8 +1427,8 @@ function Play_HideBufferDialog() {
 
 var Play_showWarningDialogId;
 function Play_showWarningDialog(text, timeout) {
-    Main_innerHTML("dialog_warning_play_text", text);
-    Main_ShowElement('dialog_warning_play');
+    Main_innerHTMLWithEle(Play_dialog_warning_play_text, text);
+    Main_ShowElementWithEle(Play_dialog_warning_play);
 
     if (timeout) {
         Play_showWarningDialogId = Main_setTimeout(
@@ -1443,23 +1443,21 @@ function Play_showWarningDialog(text, timeout) {
 }
 
 function Play_HideWarningDialog() {
-    Main_HideElement('dialog_warning_play');
+    Main_HideElementWithEle(Play_dialog_warning_play);
 }
 
 function Play_WarningDialogVisible() {
-    return Main_isElementShowing('dialog_warning_play');
+    return Main_isElementShowingWithEle(Play_dialog_warning_play);
 }
 
 var Play_showWarningMidleDialogId;
 function Play_showWarningMidleDialog(text, timeout) {
-    Main_innerHTML("dialog_warning_play_middle_text", text);
+    Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
 
-    var doc = Main_getElementById('dialog_warning_play_middle');
+    if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.marginTop = '90vh';
+    else Play_dialog_warning_play_middle.style.marginTop = '50vh';
 
-    if (UserLiveFeed_isPreviewShowing()) doc.style.marginTop = '90vh';
-    else doc.style.marginTop = '50vh';
-
-    Main_ShowElementWithEle(doc);
+    Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
     if (timeout) {
         Play_showWarningMidleDialogId = Main_setTimeout(
@@ -1473,12 +1471,12 @@ function Play_showWarningMidleDialog(text, timeout) {
 }
 
 function Play_HideWarningMidleDialog() {
-    Main_HideElement('dialog_warning_play_middle');
+    Main_HideElementWithEle(Play_dialog_warning_play_middle);
     Main_clearTimeout(Play_showWarningMidleDialogId);
 }
 
 function Play_WarningMidleDialogVisible() {
-    return Main_isElementShowing('dialog_warning_play_middle');
+    return Main_isElementShowingWithEle(Play_dialog_warning_play_middle);
 }
 
 function Play_showExitDialog() {
