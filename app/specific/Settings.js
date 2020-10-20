@@ -691,6 +691,7 @@ function Settings_SetStrings() {
 }
 
 function Settings_SetDefautls() {
+    Play_BottonIconsSet();
 
     for (var key in Settings_value) {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);

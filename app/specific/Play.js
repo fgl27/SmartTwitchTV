@@ -255,8 +255,6 @@ function Play_PreStart() {
             [clientIdHeader, Main_Headers_Priv[0][1]]
         ]
     );
-
-    Play_BottonIconsSet();
 }
 
 function Play_ResetDefaultQuality() {
