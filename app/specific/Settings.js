@@ -700,10 +700,6 @@ function Settings_SetDefautls() {
 
     Settings_SetBuffers(0);
     Settings_SetClock();
-    if (!Main_isTV) {
-        Settings_DpadOpacity();
-        Settings_DpadPOsition();
-    }
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Settings_notification_background();
@@ -728,6 +724,20 @@ function Settings_SetDefautls() {
     Settings_set_all_notification();
 
     Settings_SetResBitRate(0);
+
+    if (!Main_isTV) {
+        Settings_DpadOpacity();
+        Settings_DpadPOsition();
+
+        //Do it again after a delay to make sure the view is ready to receive the update
+        Main_setTimeout(
+            function() {
+                Settings_DpadOpacity();
+                Settings_DpadPOsition();
+            },
+            2500
+        );
+    }
 }
 
 function Settings_Obj_values(key) {
