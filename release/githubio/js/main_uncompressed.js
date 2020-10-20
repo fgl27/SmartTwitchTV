@@ -15283,8 +15283,6 @@
                 [clientIdHeader, Main_Headers_Priv[0][1]]
             ]
         );
-
-        Play_BottonIconsSet();
     }
 
     function Play_ResetDefaultQuality() {
@@ -26054,6 +26052,7 @@
     }
 
     function Settings_SetDefautls() {
+        Play_BottonIconsSet();
 
         for (var key in Settings_value) {
             Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
