@@ -726,18 +726,26 @@ function Settings_SetDefautls() {
     Settings_SetResBitRate(0);
 
     if (!Main_isTV) {
-        Settings_DpadOpacity();
-        Settings_DpadPOsition();
+        Settings_SetDpad();
 
         //Do it again after a delay to make sure the view is ready to receive the update
         Main_setTimeout(
-            function() {
-                Settings_DpadOpacity();
-                Settings_DpadPOsition();
-            },
+            Settings_SetDpad,
             2500
         );
     }
+}
+
+
+function Settings_SetDpad() {
+    Settings_DpadOpacity();
+    //prevent call OSInterface simultaneously, as the last may not work
+    Main_setTimeout(
+        function() {
+            Settings_DpadPOsition();
+        },
+        100
+    );
 }
 
 function Settings_Obj_values(key) {
