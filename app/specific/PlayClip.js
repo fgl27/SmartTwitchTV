@@ -497,7 +497,7 @@ function PlayClip_UpdateNext() {
 
     if (nextid) {
         PlayClip_HasNext = true;
-        data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
+        data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[nextid]);
 
         PlayClip_NextImg(Play_BottonIcons_Next_img, data[15]);
         Main_innerHTMLWithEle(Play_BottonIcons_Next_name, Main_ReplaceLargeFont(data[4]));
@@ -515,7 +515,7 @@ function PlayClip_UpdateNext() {
 
     if (backid) {
         PlayClip_HasBack = true;
-        data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
+        data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[backid]);
 
         PlayClip_NextImg(Play_BottonIcons_Back_img, data[15]);
         Main_innerHTMLWithEle(Play_BottonIcons_Back_name, Main_ReplaceLargeFont(data[4]));
@@ -569,6 +569,7 @@ function PlayClip_PlayNextPreviously() {
         PlayClip_replayOrNext = true;
         PlayClip_PreshutdownStream(false);
         Main_OpenClip(
+            Screens_GetObj(Screens_Current_Key),
             ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
             ScreenObj[Screens_Current_Key].ids,
             ScreenObj[Screens_Current_Key].key_fun,
@@ -693,10 +694,11 @@ function PlayClip_CheckPreview() {
 function PlayClip_CheckPreviewClip() {
     var restorePreview = false;
 
-    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    if (doc) {
+    var data = ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX];
 
-        restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+    if (data) {
+
+        restorePreview = Main_A_equals_B(data[0], ChannelClip_playUrl);
 
     }
 

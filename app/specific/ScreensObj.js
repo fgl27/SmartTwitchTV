@@ -99,6 +99,7 @@ function ScreensObj_StartAllVars() {
         data_cursor: 0,
         lastRefresh: 0,
         PreviewEnable: 0,
+        DataObj: {},
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -180,6 +181,40 @@ function ScreensObj_StartAllVars() {
         screen_view: function() {
             if (this.ScreenName)
                 Main_EventScreen(this.ScreenName);
+        },
+        OpenVodStart: function() {
+
+            Main_OpenVodStart(
+                Screens_GetObj(this.screen),
+                this.posY + '_' + this.posX,
+                this.ids,
+                this.key_fun,
+                this.ScreenName
+            );
+
+        },
+        OpenClip: function() {
+
+            Main_OpenClip(
+                Screens_GetObj(this.screen),
+                this.posY + '_' + this.posX,
+                this.ids,
+                this.key_fun,
+                this.ScreenName
+            );
+
+        },
+        OpenLiveStream: function(checkHistory) {
+
+            Main_OpenLiveStream(
+                Screens_GetObj(this.screen),
+                this.posY + '_' + this.posX,
+                this.ids,
+                this.key_fun,
+                checkHistory,
+                this.ScreenName
+            );
+
         },
     };
 
@@ -288,7 +323,7 @@ function ScreensObj_StartAllVars() {
         key_play: function() {
             if (this.itemsCount) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
+                this.OpenLiveStream(false);
             }
         }
     };
@@ -332,18 +367,29 @@ function ScreensObj_StartAllVars() {
             if (this.cursor === '') this.dataEnded = true;
         },
         key_play: function() {
+
             if (this.posY === -1) {
+
                 if (!this.loadingData) {
-                    if (!this.posX) Screens_PeriodStart(this.screen);
-                    else {
+
+                    if (!this.posX) {
+
+                        Screens_PeriodStart(this.screen);
+                        return;
+
+                    } else {
+
                         PlayClip_All = true;
                         Screens_removeFocusFollow(this.screen);
                         this.posX = 0;
                         this.posY = 0;
-                        Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
                     }
-                }
-            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
+                } else return;
+            }
+
+            this.OpenClip();
         },
         Cells: [],
         addCell: function(cell) {
@@ -382,9 +428,10 @@ function ScreensObj_StartAllVars() {
         key_play: function() {
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
-            Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-            Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
-            Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
+            var data = Screens_GetObj(this.screen);
+
+            Main_values.Main_gameSelected_id = data[3];
+            Main_values.Main_gameSelected = data[1];
 
             Main_removeEventListener("keydown", this.key_fun);
             Main_values.Main_BeforeAgame = this.screen;
@@ -415,11 +462,11 @@ function ScreensObj_StartAllVars() {
                     Screens_createCellGame(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        [game.box.template.replace("{width}x{height}", Main_GameSize),
-                        game.name,
+                        [game.box.template.replace("{width}x{height}", Main_GameSize),//0
+                        game.name,//1
                         hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
-                        game._id
+                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',//2
+                        game._id//3
                         ],
                         this.screen
                     )
@@ -468,14 +515,12 @@ function ScreensObj_StartAllVars() {
         base_key_play: function(go_screen, IsFollowing) {
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
-            Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+            var data = Screens_GetObj(this.screen);
 
-            Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-            Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-            Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-            Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-            //console.log(Main_values.Main_selectedChannel);
-            //console.log(Main_values.Main_selectedChannel_id);
+            Main_values.Main_selectedChannel_id = data[1];
+            Main_values.Main_selectedChannelDisplayname = data[3];
+            Main_values.Main_selectedChannelLogo = data[2];
+            Main_values.Main_selectedChannel = data[0];
 
             Main_removeEventListener("keydown", this.key_fun);
             Main_values.Main_BeforeChannel = go_screen;
@@ -614,7 +659,7 @@ function ScreensObj_InitVod() {
                     Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+            } else this.OpenVodStart();
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -681,7 +726,7 @@ function ScreensObj_InitChannelVod() {
                     this.SetPeriod();
                     Screens_StartLoad(this.screen);
                 } else Screens_OffSetStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+            } else this.OpenVodStart();
         },
         SwitchesIcons: ['movie-play', 'history', 'offset'],
         addSwitches: function() {
@@ -755,7 +800,7 @@ function ScreensObj_InitAGameVod() {
                     Screens_StartLoad(this.screen);
                     Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                 } else Screens_PeriodStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+            } else this.OpenVodStart();
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -824,7 +869,7 @@ function ScreensObj_InitUserVod() {
                     this.SetPeriod();
                     Screens_StartLoad(this.screen);
                 }
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+            } else this.OpenVodStart();
         },
         SwitchesIcons: ['movie-play', 'history'],
         addSwitches: function() {
@@ -1133,13 +1178,7 @@ function ScreensObj_InitAGame() {
         if (this.itemsCount && this.posY !== -1) {
             Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
-            Main_OpenLiveStream(
-                this.posY + '_' + this.posX,
-                this.ids,
-                this.key_fun,
-                false,
-                Main_values.Main_BeforeAgameisSet && ScreenObj[Main_values.Main_BeforeAgame].ScreenName ? ScreenObj[Main_values.Main_BeforeAgame].ScreenName : this.ScreenName
-            );
+            this.OpenLiveStream(false);
 
         } else AGame_headerOptions(this.screen);
     };
@@ -1576,7 +1615,7 @@ function ScreensObj_HistoryLive() {
         } else {
             if (this.itemsCount) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
+                this.OpenLiveStream(true);
             }
         }
     };
@@ -1630,7 +1669,7 @@ function ScreensObj_HistoryVod() {
                     this.history_exit();
                     Main_SwitchScreen();
                 } else Screens_histStart(this.screen);
-            } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+            } else this.OpenVodStart();
 
         },
         addCell: function(cell) {
@@ -1713,16 +1752,26 @@ function ScreensObj_HistoryClip() {
         key_play: function() {
 
             if (this.posY === -1) {
+
                 if (this.posX === 0) {
+
                     Main_values.Main_Go = Main_HistoryLive;
                     this.history_exit();
                     Main_SwitchScreen();
+
                 } else if (this.posX === 1) {
+
                     Main_values.Main_Go = Main_HistoryVod;
                     this.history_exit();
                     Main_SwitchScreen();
+
                 } else Screens_histStart(this.screen);
-            } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
+            } else {
+
+                this.OpenClip();
+
+            }
 
         },
         addCell: function(cell) {

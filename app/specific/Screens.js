@@ -344,6 +344,7 @@ function Screens_StartLoad(key) {
     Play_PreviewVideoEnded = false;
     Main_HideWarningDialog();
 
+    ScreenObj[key].DataObj = {};
     ScreenObj[key].SetPreviewEnable();
     ScreenObj[key].cursor = null;
     ScreenObj[key].after = '';
@@ -553,11 +554,11 @@ function Screens_createRow(key) {
 
 }
 
-function Screens_createCell(id_attribute, Data_content, html_content, key) {
+function Screens_createCell(id_attribute, id, Data_content, html_content, key) {
     var div = document.createElement('div');
 
     div.setAttribute('id', id_attribute);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
+    ScreenObj[key].DataObj[id] = Data_content;
     div.className = ScreenObj[key].thumbclass;
     div.innerHTML = html_content;
 
@@ -566,7 +567,7 @@ function Screens_createCell(id_attribute, Data_content, html_content, key) {
 
 function Screens_createCellChannel(id, idArray, valuesArray, key) {
     return Screens_createCell(
-        idArray[3] + id,
+        idArray[3] + id, id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
         id + '" alt="" class="stream_img" src="' + valuesArray[2] +
@@ -582,7 +583,7 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
 
 function Screens_createCellGame(id, idArray, valuesArray, key) {
     return Screens_createCell(
-        idArray[3] + id,
+        idArray[3] + id, id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
@@ -599,7 +600,7 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
     var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
     return Screens_createCell(
-        idArray[3] + id,
+        idArray[3] + id, id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
@@ -624,7 +625,7 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
 function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
     return Screens_createCell(
-        idArray[3] + id,
+        idArray[3] + id, id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
         (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
@@ -656,7 +657,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     return Screens_createCell(
-        idArray[3] + id,
+        idArray[3] + id, id,
         valuesArray,
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
@@ -936,6 +937,10 @@ function Screens_LoadPreviewSTop(PreventCleanQualities) {
     }
 }
 
+function Screens_GetObj(key) {
+    return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+}
+
 var Screens_LoadPreviewId;
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
@@ -944,11 +949,9 @@ function Screens_LoadPreview(key) {
     if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-        var doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
-
-        if (doc) {
+        if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]) {
             var id = 0,//Clip
-                obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                obj = Screens_GetObj(key);
 
             if (ScreenObj[key].screenType === 0) id = 14;//live
             else if (ScreenObj[key].screenType === 1) id = 7;//vod
@@ -1099,12 +1102,10 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
         y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
 
-        doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
-
-        if (StreamData && doc) {
+        if (StreamData && ScreenObj[x].DataObj[ScreenObj[x].posY + '_' + ScreenObj[x].posX]) {
 
             var StreamDataObj = JSON.parse(StreamData),
-                StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                StreamInfo = Screens_GetObj(x),
                 index,
                 UserIsSet = AddUser_UserIsSet();
 
@@ -1561,7 +1562,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
             if (doc) {
 
-                var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var data = Screens_GetObj(key);
 
                 if (Main_history_Watched_Obj[data[7]])
                     Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
@@ -2403,7 +2404,7 @@ var Screens_isFollowing = false;
 
 function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
-    Screens_values_Play_data = JSON.parse(Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
+    Screens_values_Play_data = Screens_GetObj(key);
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);

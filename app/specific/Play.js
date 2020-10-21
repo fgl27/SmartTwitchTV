@@ -367,12 +367,11 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
 
     if (isOn && response) {
 
-        var responseObj = JSON.parse(response),
-            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+        var responseObj = JSON.parse(response);
 
-        if (doc && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+        if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX) && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
-            var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+            var StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                 error = StreamInfo[6] + STR_SPACE;
 
@@ -428,12 +427,11 @@ var Play_PreviewCheckId = 0;
 var Play_PreviewVideoEnded = false;
 
 function Play_CheckIfIsLiveStart(callback) {
-    var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-    if (doc) {
+    if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
         Play_showBufferDialog();
 
-        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+        var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
             id, token, link;
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
@@ -492,7 +490,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
                 //Save as we have watched it all
 
-                var data = JSON.parse(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + id).getAttribute(Main_DataAttribute));
+                var data = Screens_GetObj(Main_values.Main_Go);
 
                 Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
 
@@ -2085,6 +2083,7 @@ function Play_OpenFeed(keyfun) {
         if (!Play_PreviewOffset) Play_PreviewOffset = UserLiveFeed_PreviewOffset;
 
         Main_OpenVodStart(
+            UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
             UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
             UserLiveFeed_ids,
             keyfun,
@@ -2102,6 +2101,7 @@ function Play_OpenFeed(keyfun) {
 
 function Play_OpenLiveStream(keyfun) {
     Main_OpenLiveStream(
+        UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
         UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
         UserLiveFeed_ids,
         keyfun,

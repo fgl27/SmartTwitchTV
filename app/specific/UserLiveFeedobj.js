@@ -73,9 +73,12 @@ var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
-        if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
-            UserLiveFeed_LastPos[pos] =
-                JSON.parse(Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
+
+        var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+
+        if (UserLiveFeed_ThumbNull(id, UserLiveFeed_ids[0]))
+            UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][id][14];
+
     } else {
         UserLiveFeed_LastPos[pos] = null;
     }
@@ -85,6 +88,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
     UserLiveFeed_cell[pos] = [];
     UserLiveFeed_idObject[pos] = {};
+    UserLiveFeed_DataObj[pos] = {};
 
     UserLiveFeed_itemsCount[pos] = 0;
     Main_emptyWithEle(UserLiveFeed_obj[pos].div);
@@ -107,7 +111,9 @@ function UserLiveFeedobj_CheckToken() {
     Main_clearTimeout(Main_CheckResumeFeedId);
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
-        UserSidePannel_LastPos = JSON.parse(Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+
+        UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos]][14];
+
     } else UserSidePannel_LastPos = null;
 
     Main_ShowElement('dialog_loading_side_feed');
@@ -431,6 +437,7 @@ function UserLiveFeedobj_History() {
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
+                            pos,
                             pos + '_' + itemsCount,
                             cell.data,
                             cell.date,
@@ -813,7 +820,6 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 
     var div = document.createElement('div');
     div.setAttribute('id', UserLiveFeed_side_ids[3] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
     div.className = 'side_panel_feed';
 
     div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
@@ -831,12 +837,12 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
     return div;
 }
 
-function UserLiveFeedobj_CreatFeed(id, data, Extra_when, Extra_vodimg, force_VOD) {
+function UserLiveFeedobj_CreatFeed(pos, id, data, Extra_when, Extra_vodimg, force_VOD) {
     if (!data[1]) data[1] = data[6];
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    UserLiveFeed_DataObj[pos][id] = data;
 
     div.className = 'user_feed_thumb';
 
@@ -865,11 +871,11 @@ function UserLiveFeedobj_CreatFeed(id, data, Extra_when, Extra_vodimg, force_VOD
     return div;
 }
 
-function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
+function UserLiveFeedobj_CreatVodFeed(pos, id, data, Extra_when, Extra_until) {
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    UserLiveFeed_DataObj[pos][id] = data;
 
     div.className = 'user_feed_thumb';
 
@@ -892,12 +898,12 @@ function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
     return div;
 }
 
-function UserLiveFeedobj_CreatGameFeed(id, data) {
+function UserLiveFeedobj_CreatGameFeed(pos, id, data) {
     var div = document.createElement('div');
     data[14] = data[2];//To make UserLiveFeed_LastPos work
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+    UserLiveFeed_DataObj[pos][id] = data;
 
     div.className = 'user_feed_thumb_game';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
@@ -972,6 +978,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
+                        UserLiveFeedobj_UserLivePos,
                         UserLiveFeedobj_UserLivePos + '_' + itemsCount,
                         mArray
                     );
@@ -1124,6 +1131,7 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatVodFeed(
+                        pos,
                         pos + '_' + itemsCount,
                         mArray
                     );
@@ -1209,6 +1217,7 @@ function UserLiveFeedobj_UserVodHistory() {
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatVodFeed(
+                        pos,
                         pos + '_' + itemsCount,
                         cell.data,
                         cell.date,
@@ -1289,6 +1298,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
+                        pos,
                         pos + '_' + itemsCount,
                         mArray
                     );
@@ -1383,6 +1393,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
+                        UserLiveFeedobj_UserHostPos,
                         UserLiveFeedobj_UserHostPos + '_' + itemsCount,
                         ScreensObj_HostCellArray(stream)
                     );
@@ -1468,6 +1479,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatGameFeed(
+                        pos,
                         pos + '_' + itemsCount,
                         [
                             game.name,//0

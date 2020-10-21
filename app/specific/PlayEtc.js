@@ -952,11 +952,10 @@ function Play_FollowUnfollow() {
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
-    var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
-        error = STR_STREAM_ERROR;
+    var error = STR_STREAM_ERROR;
 
-    if (doc) {
-        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+    if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
+        var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX);
 
         //prevent bad saved obj
         if (!obj[14]) {
@@ -1132,14 +1131,16 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 
         //if side panel is showing, try to find if current stream is on side panel to keep player open
         if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
+
             Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
             Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
             Sidepannel_AddFocusFeed(true);
+
         }
 
-        restorePreview = Sidepannel_RestoreThumb(
-            Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
-            Play_data
+        restorePreview = Main_A_equals_B(
+            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed],
+            Play_data.data[14]
         );
 
         //live
@@ -1150,9 +1151,9 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
-            restorePreview = Sidepannel_RestoreThumb(
-                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
-                Play_data
+            restorePreview = Main_A_equals_B(
+                ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14],
+                Play_data.data[14]
             );
 
         }

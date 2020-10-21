@@ -941,13 +941,9 @@ function PlayVod_CheckPreview() {
 function PlayVod_CheckPreviewVod() {
     var restorePreview = false;
 
-    var doc =
-        Main_getElementById(
-            ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
-        );
+    if (ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX]) {
 
-    if (doc) {
-        var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        var obj = Screens_GetObj(Main_values.Main_Go);
 
         if (ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) {
 
