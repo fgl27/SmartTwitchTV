@@ -92,7 +92,6 @@ function ScreensObj_StartAllVars() {
         emptyContent: true,
         itemsCountCheck: false,
         isRefreshing: false,
-        row: 0,
         Headers: Main_Headers,
         data: null,
         token: null,
@@ -100,6 +99,7 @@ function ScreensObj_StartAllVars() {
         lastRefresh: 0,
         PreviewEnable: 0,
         DataObj: {},
+        tempHtml: '',
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -253,14 +253,13 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell._id] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellVod(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         ScreensObj_VodCellArray(cell),
                         this.screen
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -308,13 +307,11 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.channel._id] = 1;
 
-                this.row.appendChild(
-                    Screens_createCellLive(
-                        this.row_id + '_' + this.coloumn_id,
-                        this.ids,
-                        ScreensObj_LiveCellArray(cell),
-                        this.screen
-                    )
+                this.tempHtml += Screens_createCellLive(
+                    this.row_id + '_' + this.coloumn_id,
+                    this.ids,
+                    ScreensObj_LiveCellArray(cell),
+                    this.screen
                 );
 
                 this.coloumn_id++;
@@ -397,14 +394,13 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.tracking_id] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellClip(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         ScreensObj_ClipCellArray(cell),
                         this.screen
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -458,7 +454,7 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[game._id] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellGame(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
@@ -469,8 +465,7 @@ function ScreensObj_StartAllVars() {
                         game._id//3
                         ],
                         this.screen
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -500,14 +495,13 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell._id] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellChannel(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
                         this.screen
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -1112,14 +1106,13 @@ function ScreensObj_InitUserHost() {
             this.itemsCount++;
             this.idObject[cell.target._id] = 1;
 
-            this.row.appendChild(
+            this.tempHtml +=
                 Screens_createCellLive(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
                     ScreensObj_HostCellArray(cell),
                     this.screen
-                )
-            );
+                );
 
             this.coloumn_id++;
         }
@@ -1568,7 +1561,7 @@ function ScreensObj_HistoryLive() {
                 this.itemsCount++;
                 this.idObject[cell.data[7]] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellLive(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
@@ -1577,8 +1570,7 @@ function ScreensObj_HistoryLive() {
                         cell.date,
                         cell.vodimg,
                         (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
-                    )
-                );
+                    );
 
                 //If there is alredy one stream shoing all the rest is a VOD
                 this.streamerID[cell.data[14]] = 1;
@@ -1678,7 +1670,7 @@ function ScreensObj_HistoryVod() {
                 this.itemsCount++;
                 this.idObject[cell.data[7]] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellVod(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
@@ -1686,8 +1678,7 @@ function ScreensObj_HistoryVod() {
                         this.screen,
                         cell.date,
                         cell.watched
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -1780,7 +1771,7 @@ function ScreensObj_HistoryClip() {
                 this.itemsCount++;
                 this.idObject[cell.data[7]] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellClip(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
@@ -1788,8 +1779,7 @@ function ScreensObj_HistoryClip() {
                         this.screen,
                         cell.date,
                         cell.watched
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
