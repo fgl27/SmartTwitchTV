@@ -2020,7 +2020,6 @@ function Main_SetHistoryworker() {
 
                             if (obj.status !== 200) {
 
-
                                 var message = JSON.parse(obj.responseText).message;
 
                                 //VOD was deleted
@@ -2069,20 +2068,28 @@ function Main_SetHistoryworker() {
                         };
                     }
 
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.mData = event.data;
+                    setTimeout(
+                        function() {
 
-                    xmlHttp.open("GET", theUrl, true);
-                    xmlHttp.timeout = 60000;
+                            var xmlHttp = new XMLHttpRequest();
 
-                    xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
-                    xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+                            xmlHttp.mData = event.data;
 
-                    xmlHttp.onreadystatechange = function() {
-                        if (xmlHttp.readyState === 4) onload(xmlHttp);
-                    };
+                            xmlHttp.open("GET", theUrl, true);
+                            xmlHttp.timeout = 60000;
 
-                    xmlHttp.send(null);
+                            xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
+                            xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+
+                            xmlHttp.onreadystatechange = function() {
+                                if (xmlHttp.readyState === 4) onload(xmlHttp);
+                            };
+
+                            xmlHttp.send(null);
+
+                        },
+                        event.data.delay ? event.data.delay * 50 : 0
+                    );
 
                 }
 
@@ -2187,7 +2194,8 @@ function Main_RunVODWorker() {
         BradcastCheckerWorker.postMessage(
             {
                 obj: array[i],
-                type: 2
+                type: 2,
+                delay: i
             }
         );
     }
@@ -2205,7 +2213,8 @@ function Main_RunClipWorker() {
         BradcastCheckerWorker.postMessage(
             {
                 obj: array[i],
-                type: 3
+                type: 3,
+                delay: i
             }
         );
     }
