@@ -79,9 +79,13 @@ function Sidepannel_GetObj(pos) {
     return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
 }
 
+function Sidepannel_Obj(pos) {
+    return Boolean(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
+}
+
 function Sidepannel_UpdateThumbDiv() {
 
-    if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
+    if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
 
         var info = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
@@ -107,7 +111,7 @@ function Sidepannel_UpdateThumb() {
 
         if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
 
-            if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
+            if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
 
                 var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14];
 
@@ -157,7 +161,7 @@ function Sidepannel_CheckIfIsLive() {
         return;
     }
 
-    if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
+    if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
 
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][6];
 
@@ -178,7 +182,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
-        if (StreamData && UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
+        if (StreamData && Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
             StreamData = JSON.parse(StreamData);
 
             var StreamInfo = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);

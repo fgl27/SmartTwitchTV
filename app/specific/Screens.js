@@ -917,6 +917,10 @@ function Screens_GetObj(key) {
     return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
 }
 
+function Screens_ObjNotNull(key) {
+    return Boolean(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+}
+
 var Screens_LoadPreviewId;
 //Clips load too fast, so only call this function after animations have ended
 //Also help to prevent lag on animation
@@ -925,7 +929,7 @@ function Screens_LoadPreview(key) {
     if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-        if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]) {
+        if (Screens_ObjNotNull(key)) {
             var id = 0,//Clip
                 obj = Screens_GetObj(key);
 
@@ -1076,7 +1080,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
         y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
 
-        if (StreamData && ScreenObj[x].DataObj[ScreenObj[x].posY + '_' + ScreenObj[x].posX]) {
+        if (StreamData && Screens_ObjNotNull(x)) {
 
             var StreamDataObj = JSON.parse(StreamData),
                 StreamInfo = Screens_GetObj(x),
@@ -1533,9 +1537,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
         if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
 
-            var doc = Main_getElementById(ScreenObj[key].ids[3] + id);
-
-            if (doc) {
+            if (Screens_ObjNotNull(key)) {
 
                 var data = Screens_GetObj(key);
 

@@ -954,7 +954,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
     var error = STR_STREAM_ERROR;
 
-    if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
+    if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
         var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX);
 
         //prevent bad saved obj

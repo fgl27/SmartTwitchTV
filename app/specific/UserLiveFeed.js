@@ -485,7 +485,7 @@ function UserLiveFeed_GetObj(pos) {
     return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + UserLiveFeed_FeedPosY[pos]]);
 }
 
-function UserLiveFeed_Obj(pos) {
+function UserLiveFeed_ObjNotNull(pos) {
     return Boolean(UserLiveFeed_DataObj[pos][pos + '_' + UserLiveFeed_FeedPosY[pos]]);
 }
 
@@ -507,7 +507,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
-            if (UserLiveFeed_Obj(pos)) {
+            if (UserLiveFeed_ObjNotNull(pos)) {
 
                 var data = UserLiveFeed_GetObj(pos);
 
@@ -563,7 +563,7 @@ function UserLiveFeed_CheckVod() {
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-        if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
+        if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
             var data = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX);
 
@@ -692,7 +692,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
         (!Play_isEndDialogVisible() || !Play_EndFocus) &&
         UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
 
-        if (StreamData && UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
+        if (StreamData && UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
             var StreamDataObj = JSON.parse(StreamData),
                 StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
@@ -1115,7 +1115,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     if (pos === UserLiveFeedobj_UserGamesPos) {
 
-        if (UserLiveFeed_Obj(pos))
+        if (UserLiveFeed_ObjNotNull(pos))
             UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_GetObj(pos);
 
         if (!UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]] ||
@@ -1141,7 +1141,7 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_GamesPos) {
 
-        if (UserLiveFeed_Obj(pos))
+        if (UserLiveFeed_ObjNotNull(pos))
             UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_GetObj(pos);
 
         if (!UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]]) {

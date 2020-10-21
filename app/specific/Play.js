@@ -369,7 +369,7 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
 
         var responseObj = JSON.parse(response);
 
-        if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX) && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+        if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX) && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
             var StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
@@ -428,7 +428,7 @@ var Play_PreviewVideoEnded = false;
 
 function Play_CheckIfIsLiveStart(callback) {
 
-    if (UserLiveFeed_Obj(UserLiveFeed_FeedPosX)) {
+    if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
         Play_showBufferDialog();
 
         var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
