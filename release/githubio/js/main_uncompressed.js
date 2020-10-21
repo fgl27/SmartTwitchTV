@@ -7009,7 +7009,7 @@
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 21 2020';
-    var Main_version_web = 108; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 109; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7376,6 +7376,12 @@
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
         Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
 
+        Main_setTimeout(Main_RunVODWorker, 15000);
+        Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360)); //Check it 6 hours
+
+        Main_setTimeout(Main_RunClipWorker, 15000);
+        Main_setInterval(Main_RunClipWorker, (1000 * 60 * 360)); //Check it 6 hours
+
         Main_SetStringsSecondary();
         Main_checkVersion();
 
@@ -7596,7 +7602,9 @@
                 title: "Web Version October 21 2020",
                 changes: [
                     "Add a progress indicator to already watched VOD/Clip",
-                    "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)"
+                    "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)",
+                    "Automatic remove from history unreachable (deleted from the server) VOD/Clip",
+                    "General performance improves and bug fixes",
                 ]
             },
             {
@@ -8942,50 +8950,115 @@
 
     function Main_SetHistoryworker() {
 
-        var blobURL2 = URL.createObjectURL(new Blob(['(',
+        var blobURL = URL.createObjectURL(new Blob(['(',
 
             function() {
                 this.addEventListener('message',
                     function(event) {
+                        var theUrl, onload;
 
-                        var theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.data[14] + '?api_version=5';
+                        if (event.data.type === 1) { //Live
 
-                        var onload = function(obj) {
+                            theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.obj.data[14] + '?api_version=5';
 
-                            if (obj.status === 200) {
-                                var response = JSON.parse(obj.responseText);
+                            onload = function(obj) {
 
-                                if (response.stream !== null) {
-                                    if (!Array.isArray(response.stream)) {
+                                if (obj.status === 200) {
+                                    var response = JSON.parse(obj.responseText);
 
-                                        if (obj.mData.data[7] !== response.stream._id) {
+                                    if (response.stream !== null) {
+
+                                        if (!Array.isArray(response.stream)) {
+
+                                            if (obj.mData.obj.data[7] !== response.stream._id) {
+
+                                                this.postMessage({
+                                                    data: obj.mData.obj.data[7],
+                                                    ended: true,
+                                                    type: 1
+                                                });
+
+                                            } else {
+
+                                                this.postMessage({
+                                                    data: response.stream,
+                                                    ended: false,
+                                                    type: 1
+                                                });
+
+                                            }
+
+                                        }
+                                    } else {
+
+                                        this.postMessage({
+                                            data: obj.mData.obj.data[7],
+                                            ended: true,
+                                            type: 1
+                                        });
+
+                                    }
+                                }
+
+                            };
+                        } else if (event.data.type === 2) { //VOD
+
+                            theUrl = 'https://api.twitch.tv/kraken/videos/' + event.data.obj.data[7] + '?api_version=5';
+
+                            onload = function(obj) {
+
+                                if (obj.status !== 200) {
+
+
+                                    var message = JSON.parse(obj.responseText).message;
+
+                                    //VOD was deleted
+                                    if (message && typeof message === "string") {
+                                        message = message.toLowerCase();
+
+                                        if (message.indexOf('not found') > -1 && message.indexOf(obj.mData.obj.data[7] > -1)) {
+
                                             this.postMessage({
-                                                data: obj.mData.data[7],
-                                                ended: true
-                                            });
-                                        } else {
-                                            this.postMessage({
-                                                data: response.stream,
-                                                ended: false
+                                                data: obj.mData.obj.data[7],
+                                                type: 2
                                             });
                                         }
 
                                     }
-                                } else {
-                                    this.postMessage({
-                                        data: obj.mData.data[7],
-                                        ended: true
-                                    });
-                                }
-                            }
 
-                        };
+                                }
+
+                            };
+                        } else if (event.data.type === 3) { //Clip
+
+                            theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
+
+                            onload = function(obj) {
+
+                                if (obj.status !== 200) {
+
+                                    var message = JSON.parse(obj.responseText).message;
+
+                                    //Clip was deleted
+                                    if (message && typeof message === "string" && message.toLowerCase().indexOf('clip does not exist') > -1) {
+
+                                        this.postMessage({
+                                            data: obj.mData.obj.data[7],
+                                            type: 3
+                                        });
+
+                                    }
+
+                                }
+
+                            };
+                        }
 
                         var xmlHttp = new XMLHttpRequest();
                         xmlHttp.mData = event.data;
 
                         xmlHttp.open("GET", theUrl, true);
-                        xmlHttp.timeout = 30000;
+                        xmlHttp.timeout = 60000;
 
                         xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -8997,6 +9070,7 @@
                         xmlHttp.send(null);
 
                     }
+
                 );
 
             }.toString(),
@@ -9006,34 +9080,68 @@
             type: 'application/javascript'
         }));
 
-        BradcastCheckerWorker = new Worker(blobURL2);
+        BradcastCheckerWorker = new Worker(blobURL);
 
         BradcastCheckerWorker.addEventListener('message',
             function(event) {
-                if (event.data.ended) {
-                    var index = Main_history_Exist('live', event.data.data);
+                var index;
+
+                if (event.data.type === 1) {
+
+                    if (event.data.ended) {
+
+                        index = Main_history_Exist('live', event.data.data);
+
+                        if (index > -1) {
+
+                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
+                                        forceVod: true
+                                    }
+                                );
+                            } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                        }
+
+                    } else {
+
+                        Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
+                    }
+
+                } else if (event.data.type === 2) {
+
+                    index = Main_history_Exist('vod', event.data.data);
 
                     if (index > -1) {
 
-                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
-                                    forceVod: true
-                                }
-                            );
-                        } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn'ot have a VOD
+                        //delete the vod entry as it no longer exist
+                        Main_values_History_data[AddUser_UsernameArray[0].id].vod.splice(index, 1);
+
                     }
-                } else {
-                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
+                } else if (event.data.type === 3) {
+
+                    index = Main_history_Exist('clip', event.data.data);
+
+                    if (index > -1) {
+
+                        //delete the vod entry as it no longer exist
+                        Main_values_History_data[AddUser_UsernameArray[0].id].clip.splice(index, 1);
+
+                    }
+
                 }
+
             }
+
         );
     }
 
     var Main_StartHistoryworkerId;
 
     function Main_StartHistoryworker() {
-        //Main_Log('Main_StartHistoryworker');
+
         if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
@@ -9043,13 +9151,48 @@
         for (i; i < len; i++) {
             if (!array[i].forceVod) {
                 if (array[i].data[14] && array[i].data[14] !== '') {
-                    BradcastCheckerWorker.postMessage(
-                        array[i]
-                    );
+                    BradcastCheckerWorker.postMessage({
+                        obj: array[i],
+                        type: 1
+                    });
                 } else {
                     array.splice(i, 1);
                 }
             }
+        }
+    }
+
+    function Main_RunVODWorker() {
+
+        if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod;
+
+        var i = 0,
+            len = array.length;
+
+        for (i; i < len; i++) {
+            BradcastCheckerWorker.postMessage({
+                obj: array[i],
+                type: 2
+            });
+        }
+    }
+
+    function Main_RunClipWorker() {
+
+        if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
+
+        var i = 0,
+            len = array.length;
+
+        for (i; i < len; i++) {
+            BradcastCheckerWorker.postMessage({
+                obj: array[i],
+                type: 3
+            });
         }
     }
 
@@ -10994,8 +11137,13 @@
             var responseObj = JSON.parse(response);
 
             if (responseObj.status === 200) {
-                PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
-                return;
+                var tempArray = PlayClip_QualityGenerate(responseObj.responseText);
+
+                if (tempArray.length) {
+                    PlayClip_QualityStart(tempArray);
+                    return;
+                }
+
             } else if (responseObj.status === 410) { //Workaround for future 410 issue
                 PlayClip_loadData410 = true;
                 PlayClip_loadData410Recheck();
@@ -11074,7 +11222,7 @@
         var Array = [],
             response = JSON.parse(mresponse);
 
-        if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
+        if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip') && response.data.clip) {
             response = response.data.clip.videoQualities;
 
             var i = 0,
@@ -20829,13 +20977,22 @@
                         Play_PreviewId = StreamInfo[0];
                         Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
 
-                        var clipID = PlayClip_SetQuality(Play_PreviewResponseText);
-                        PlayClip_quality = Play_PreviewResponseText[clipID].id;
-                        PlayClip_qualityPlaying = PlayClip_quality;
+                        if (Play_PreviewResponseText.length) {
 
-                        Play_PreviewURL = Play_PreviewResponseText[clipID].url;
-                        lang = StreamInfo[17];
-                        who_called = 3;
+                            var clipID = PlayClip_SetQuality(Play_PreviewResponseText);
+                            PlayClip_quality = Play_PreviewResponseText[clipID].id;
+                            PlayClip_qualityPlaying = PlayClip_quality;
+
+                            Play_PreviewURL = Play_PreviewResponseText[clipID].url;
+                            lang = StreamInfo[17];
+                            who_called = 3;
+
+                        } else {
+
+                            Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
+                            return;
+
+                        }
 
                     } else if (ScreenObj[x].screenType === 1) { //vod
                         Play_PreviewId = StreamInfo[7];
@@ -20932,42 +21089,48 @@
 
                 } else {
 
-                    var error = StreamInfo[6] + STR_SPACE;
-
-                    if (ScreenObj[x].screenType === 2) {
-
-                        error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
-
-                    } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
-
-                        index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
-
-                        if (index > -1) {
-
-                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
-
-                                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-
-                            }
-
-                        }
-
-                    } else {
-
-                        error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
-
-                    }
-
-                    Screens_LoadPreviewWarn(
-                        error,
-                        x,
-                        4000
-                    );
+                    Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
                 }
 
             }
         }
+
+    }
+
+    function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x) {
+
+        var error = StreamInfo[6] + STR_SPACE;
+
+        if (ScreenObj[x].screenType === 2) {
+
+            error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
+        } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
+
+            var index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
+
+            if (index > -1) {
+
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                    Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+
+                    error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+
+                }
+
+            }
+
+        } else {
+
+            error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
+
+        }
+
+        Screens_LoadPreviewWarn(
+            error,
+            x,
+            4000
+        );
 
     }
 

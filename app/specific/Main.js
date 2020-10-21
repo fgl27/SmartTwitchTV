@@ -621,7 +621,7 @@ function Main_Changelog() {
             changes: [
                 "Add a progress indicator to already watched VOD/Clip",
                 "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)",
-                "Automatic remove from history deleted VOD/Clip",
+                "Automatic remove from history unreachable (deleted from the server) VOD/Clip",
                 "General performance improves and bug fixes",
             ]
         },
