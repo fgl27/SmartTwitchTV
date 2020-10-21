@@ -7008,8 +7008,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 20 2020';
-    var Main_version_web = 106; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 21 2020';
+    var Main_version_web = 107; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7593,6 +7593,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version October 21 2020",
+                changes: [
+                    "Add a progress indicator to already watched VOD/Clip",
+                ]
+            },
+            {
                 title: "Web Version October 20 2020",
                 changes: [
                     "Improve player progressbar use, by hiding etc information not needed when using it",
@@ -8714,7 +8720,14 @@
                     }
                 );
 
+                if (type === 'vod' || type === 'clip') {
+
+                    Main_history_Watched_Obj[Main_values_History_data[AddUser_UsernameArray[0].id][type][0].data[7]] = 0;
+
+                }
+
                 Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
+
             }
 
             Main_values_History_data[AddUser_UsernameArray[0].id][type].push({
@@ -8741,6 +8754,32 @@
         }
 
         Main_setHistoryItem();
+
+    }
+
+    var Main_history_Watched_Obj = {};
+
+    function Main_history_SetVod_Watched() {
+
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
+            i = 0,
+            len = array.length;
+
+        for (i; i < len; i++) {
+
+            Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[11]) * 100;
+
+        }
+
+        array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
+        i = 0;
+        len = array.length;
+
+        for (i; i < len; i++) {
+
+            Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[1]) * 100;
+
+        }
     }
 
     function Main_history_Exist(type, id) {
@@ -8797,12 +8836,16 @@
             ArrayPos.date = new Date().getTime();
             ArrayPos.watched = time;
 
+            Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
+
             Main_setHistoryItem();
+
         }
     }
 
     function Main_Restore_history() {
         Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+        Main_history_SetVod_Watched();
     }
 
     function Main_History_Sort(array, msort, direction) {
@@ -11167,7 +11210,7 @@
     function PlayClip_PreshutdownStream(closePlayer) {
         //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-        Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
+        Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10, 'clip');
         PlayClip_hidePanel();
         if (Main_IsOn_OSInterface && !Play_PreviewId) {
 
@@ -19774,7 +19817,8 @@
             base + '_data', //3
             base + '_scroll', //4
             base + '_animated', //5
-            base + '_row' //6
+            base + '_row', //6
+            base + '_watched' //7
         ];
     }
 
@@ -20248,7 +20292,8 @@
             '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-            '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
+            '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
@@ -20273,7 +20318,8 @@
             (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
             '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-            '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
+            '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
@@ -21183,7 +21229,24 @@
 
             if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
 
-            Main_AddClass(ScreenObj[key].ids[0] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, Main_classThumb);
+            var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+            Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
+
+            if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+
+                var doc = Main_getElementById(ScreenObj[key].ids[3] + id);
+
+                if (doc) {
+
+                    var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+                    if (Main_history_Watched_Obj[data[7]])
+                        Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                }
+
+            }
 
             ScreenObj[key].addFocus(forceScroll, key);
 
@@ -28776,7 +28839,8 @@
         'ulf_thumbdiv', //0
         'ulf_img', //1
         'ulf_title', //2
-        'ulf_data' //3
+        'ulf_data', //3
+        'ulf_watched' //4
     ];
 
     var UserLiveFeed_side_ids = [
@@ -29217,8 +29281,23 @@
         }
 
         var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
+
         if (add_focus) {
-            Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+            var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+
+            Main_AddClass(UserLiveFeed_ids[0] + id, UserLiveFeed_FocusClass);
+
+            if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+                var doc = Main_getElementById(UserLiveFeed_ids[3] + id);
+                if (doc) {
+
+                    var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+                    if (Main_history_Watched_Obj[data[7]])
+                        Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                }
+            }
         }
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
@@ -30761,7 +30840,8 @@
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
             '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
-            '\';"></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+            '\';"><div id="' + UserLiveFeed_ids[4] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[data[7]] ? Main_history_Watched_Obj[data[7]] : 0) +
+            '%;"></div></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
             UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
             '<i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i> ' + data[1] +
             '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
