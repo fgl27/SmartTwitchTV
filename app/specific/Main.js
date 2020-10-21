@@ -2073,7 +2073,7 @@ function Main_SetHistoryworker() {
                     xmlHttp.mData = event.data;
 
                     xmlHttp.open("GET", theUrl, true);
-                    xmlHttp.timeout = 30000;
+                    xmlHttp.timeout = 60000;
 
                     xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                     xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
