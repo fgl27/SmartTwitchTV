@@ -112,14 +112,15 @@ function UserLiveFeedobj_CheckToken() {
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
 
-        UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos]][14];
+        UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos]][14];
 
     } else UserSidePannel_LastPos = null;
 
     Main_ShowElement('dialog_loading_side_feed');
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
-    Main_empty('side_panel_holder');
+    Main_emptyWithEle(Sidepannel_ScroolDoc);
+    Sidepannel_Html = '';
     Main_getElementById('side_panel_warn').style.display = 'none';
 
     UserLiveFeed_loadChannelOffsset = 0;
@@ -818,11 +819,8 @@ function UserLiveFeedobj_SetBottomText(pos) {
 
 function UserLiveFeedobj_CreatSideFeed(id, data) {
 
-    var div = document.createElement('div');
-    div.setAttribute('id', UserLiveFeed_side_ids[3] + id);
-    div.className = 'side_panel_feed';
-
-    div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
+    return '<div id="' + UserLiveFeed_side_ids[3] + id +
+        '" class="side_panel_feed"><div id="' + UserLiveFeed_side_ids[0] + id +
         '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
         '" style="width: 100%;"><div style="display: none;">' + data[1] +
         '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
@@ -832,9 +830,8 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
         '</div><div class="side_panel_new_game">' + data[3] +
         '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
         (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
-        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
+        ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div></div>';
 
-    return div;
 }
 
 function UserLiveFeedobj_CreatFeed(pos, id, data, Extra_when, Extra_vodimg, force_VOD) {
@@ -983,18 +980,19 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                         mArray
                     );
 
-                Sidepannel_ScroolDoc.appendChild(
+                Sidepannel_Html +=
                     UserLiveFeedobj_CreatSideFeed(
                         itemsCount,
                         mArray
-                    )
-                );
+                    );
 
                 itemsCount++;
             }
         }
 
     } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+
+    Main_innerHTMLWithEle(Sidepannel_ScroolDoc, Sidepannel_Html);
 
     // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
     //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,

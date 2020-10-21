@@ -32,6 +32,7 @@ var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_Fi
 var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
+var Sidepannel_Html;
 var Sidepannel_SidepannelDoc;
 var Sidepannel_ChangeFocusAnimationFinished = true;
 var Sidepannel_ChangeFocusAnimationFast = false;
