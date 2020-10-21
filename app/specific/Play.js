@@ -487,6 +487,18 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
         if (ScreenObj[Main_values.Main_Go].screenType === 2 && Settings_Obj_default('auto_clip_preview')) {
 
+            var id = ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX;
+
+            if (ScreenObj[Main_HistoryClip].histPosX[1]) {
+                //Save as we have watched it all
+
+                var data = JSON.parse(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + id).getAttribute(Main_DataAttribute));
+
+                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
+
+                Main_history_UpdateVodClip(data[7], data[1], 'clip');
+            }
+
             if (PlayClip_getIdNext(1, 0)) {
                 //Use OSInterface_keyEvent to prevent odd screen scroll visual behavior
                 OSInterface_keyEvent(3, 0);
@@ -501,7 +513,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
                 Play_CheckIfIsLiveCleanEnd();
 
                 Main_RemoveClass(
-                    ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
+                    ScreenObj[Main_values.Main_Go].ids[1] + id,
                     'opacity_zero'
                 );
             }

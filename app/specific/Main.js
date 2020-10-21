@@ -1722,8 +1722,8 @@ function Main_Set_history(type, Data, skipUpdateDate) {
         ArrayPos.views = Data[13];
 
     } else {
-        //Limit size to 1500
-        if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1499) {
+        //Limit size to 2000
+        if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1999) {
 
             //Sort by oldest first to delete the oldest
             Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
