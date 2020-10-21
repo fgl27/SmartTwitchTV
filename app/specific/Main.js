@@ -394,6 +394,9 @@ function Main_initWindows() {
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
 
+    Main_setTimeout(Main_RunVODWorker, 15000);
+    Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360));//Check it 6 hours
+
     Main_SetStringsSecondary();
     Main_checkVersion();
 
@@ -1944,52 +1947,93 @@ function Main_A_equals_B_No_Case(A, B) {// jshint ignore:line
 }
 
 var BradcastCheckerWorker;
+
 function Main_SetHistoryworker() {
 
-    var blobURL2 = URL.createObjectURL(new Blob(['(',
+    var blobURL = URL.createObjectURL(new Blob(['(',
 
         function() {
             this.addEventListener('message',
                 function(event) {
+                    var theUrl, onload;
 
-                    var theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.data[14] + '?api_version=5';
+                    if (event.data.type === 1) {//Live
 
-                    var onload = function(obj) {
+                        theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.obj.data[14] + '?api_version=5';
 
-                        if (obj.status === 200) {
-                            var response = JSON.parse(obj.responseText);
+                        onload = function(obj) {
 
-                            if (response.stream !== null) {
-                                if (!Array.isArray(response.stream)) {
+                            if (obj.status === 200) {
+                                var response = JSON.parse(obj.responseText);
 
-                                    if (obj.mData.data[7] !== response.stream._id) {
-                                        this.postMessage(
-                                            {
-                                                data: obj.mData.data[7],
-                                                ended: true
-                                            }
-                                        );
-                                    } else {
-                                        this.postMessage(
-                                            {
-                                                data: response.stream,
-                                                ended: false
-                                            }
-                                        );
+                                if (response.stream !== null) {
+
+                                    if (!Array.isArray(response.stream)) {
+
+                                        if (obj.mData.obj.data[7] !== response.stream._id) {
+
+                                            this.postMessage(
+                                                {
+                                                    data: obj.mData.obj.data[7],
+                                                    ended: true,
+                                                    type: 1
+                                                }
+                                            );
+
+                                        } else {
+
+                                            this.postMessage(
+                                                {
+                                                    data: response.stream,
+                                                    ended: false,
+                                                    type: 1
+                                                }
+                                            );
+
+                                        }
+
                                     }
+                                } else {
+
+                                    this.postMessage(
+                                        {
+                                            data: obj.mData.obj.data[7],
+                                            ended: true,
+                                            type: 1
+                                        }
+                                    );
 
                                 }
-                            } else {
-                                this.postMessage(
-                                    {
-                                        data: obj.mData.data[7],
-                                        ended: true
-                                    }
-                                );
                             }
-                        }
 
-                    };
+                        };
+                    } else if (event.data.type === 2) {//VOD
+
+                        theUrl = 'https://api.twitch.tv/kraken/videos/' + event.data.obj.data[7] + '?api_version=5';
+
+                        onload = function(obj) {
+
+                            if (obj.status !== 200) {
+
+
+                                var message = JSON.parse(obj.responseText).message;
+
+                                //VOD was deleted
+                                if (message && message.toLowerCase.indexOf('not found') && message.indexOf(obj.mData.obj.data[7])) {
+
+                                    this.postMessage(
+                                        {
+                                            data: obj.mData.obj.data[7],
+                                            type: 2
+                                        }
+                                    );
+
+                                }
+
+                            }
+
+                        };
+                    }
 
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.mData = event.data;
@@ -2007,40 +2051,64 @@ function Main_SetHistoryworker() {
                     xmlHttp.send(null);
 
                 }
+
             );
 
         }.toString(),
 
         ')()'], {type: 'application/javascript'}));
 
-    BradcastCheckerWorker = new Worker(blobURL2);
+    BradcastCheckerWorker = new Worker(blobURL);
 
     BradcastCheckerWorker.addEventListener('message',
         function(event) {
-            if (event.data.ended) {
-                var index = Main_history_Exist('live', event.data.data);
+            var index;
+
+            if (event.data.type === 1) {
+
+                if (event.data.ended) {
+
+                    index = Main_history_Exist('live', event.data.data);
+
+                    if (index > -1) {
+
+                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+                                {
+                                    forceVod: true
+                                }
+                            );
+                        } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
+                    }
+
+                } else {
+
+                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
+                }
+
+            } else if (event.data.type === 2) {
+
+                index = Main_history_Exist('vod', event.data.data);
 
                 if (index > -1) {
 
-                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-                            {
-                                forceVod: true
-                            }
-                        );
-                    } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn'ot have a VOD
+                    //delete the vod entry as it no longer exist
+                    Main_values_History_data[AddUser_UsernameArray[0].id].vod.splice(index, 1);
+
                 }
-            } else {
-                Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
             }
+
         }
+
     );
 }
 
 var Main_StartHistoryworkerId;
 function Main_StartHistoryworker() {
-    //Main_Log('Main_StartHistoryworker');
+
     if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
@@ -2050,12 +2118,32 @@ function Main_StartHistoryworker() {
         if (!array[i].forceVod) {
             if (array[i].data[14] && array[i].data[14] !== '') {
                 BradcastCheckerWorker.postMessage(
-                    array[i]
+                    {
+                        obj: array[i],
+                        type: 1
+                    }
                 );
             } else {
                 array.splice(i, 1);
             }
         }
+    }
+}
+
+function Main_RunVODWorker() {
+
+    if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod;
+
+    var i = 0, len = array.length;
+    for (i; i < len; i++) {
+        BradcastCheckerWorker.postMessage(
+            {
+                obj: array[i],
+                type: 2
+            }
+        );
     }
 }
 
