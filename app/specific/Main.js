@@ -1783,6 +1783,7 @@ function Main_Set_history(type, Data, skipUpdateDate) {
 var Main_history_Watched_Obj = {};
 
 function Main_history_SetVod_Watched() {
+    Main_history_Watched_Obj = {};
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0, len = array.length;

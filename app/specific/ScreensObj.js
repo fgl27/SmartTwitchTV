@@ -305,6 +305,7 @@ function ScreensObj_StartAllVars() {
         histPosXName: 'HistoryClip_histPosX',
         screenType: 2,
         cursor: null,
+        OldUserName: '',
         object: 'clips',
         period: ['day', 'week', 'month', 'all'],
         img_404: IMG_404_VOD,
@@ -626,6 +627,8 @@ function ScreensObj_InitVod() {
             );
         },
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
             Sidepannel_SetTopOpacity(this.screen);
@@ -693,6 +696,8 @@ function ScreensObj_InitChannelVod() {
         },
         lastselectedChannel: '',
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) {
                 this.OffSetPos = 0;
@@ -764,6 +769,8 @@ function ScreensObj_InitAGameVod() {
         },
         OldgameSelected: '',
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             ScreensObj_TopLableAgameInit(this.screen);
             this.SetPeriod();
         },
@@ -830,6 +837,8 @@ function ScreensObj_InitUserVod() {
             );
         },
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             this.SetPeriod();
             ScreensObj_TopLableUserInit(this.screen);
         },
@@ -1193,6 +1202,8 @@ function ScreensObj_InitClip() {
             ScreensObj_SetTopLable(STR_CLIPS, Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             this.SetPeriod();
             Sidepannel_SetDefaultLables();
             Main_values.Sidepannel_IsUser = false;
@@ -1229,6 +1240,8 @@ function ScreensObj_InitChannelClip() {
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
                 ChannelContent_RestoreChannelValue();
             if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
@@ -1267,6 +1280,8 @@ function ScreensObj_InitAGameClip() {
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
+            ScreensObj_CheckUser(this.screen);
+
             ScreensObj_TopLableAgameInit(this.screen);
             this.SetPeriod();
         },
@@ -1793,11 +1808,15 @@ function ScreensObj_TopLableAgameExit(key) {
 }
 
 function ScreensObj_TopLableUserInit(key) {
-    if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
-    ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
+    ScreensObj_CheckUser(key);
 
     Sidepannel_SetUserLables();
     Sidepannel_SetTopOpacity(ScreenObj[key].screen);
+}
+
+function ScreensObj_CheckUser(key) {
+    if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
+    ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
 }
 
 function ScreensObj_SetTopLable(text, small_text) {

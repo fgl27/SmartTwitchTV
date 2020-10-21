@@ -425,6 +425,7 @@ function AddUser_UserMakeOne(position) {
 
     OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
+    Main_history_SetVod_Watched();
     //Reset user emotes on chage
     userEmote = {};
 }
