@@ -75,11 +75,15 @@ function Sidepannel_isShowingSide() {
     return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
+function Sidepannel_GetObj(pos) {
+    return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
+}
+
 function Sidepannel_UpdateThumbDiv() {
 
     if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
 
-        var info = UserLiveFeed_GetObj(UserLiveFeedobj_UserLivePos);
+        var info = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
         Sidepannel_UpdateThumbDoc.onerror = function() {
             this.onerror = null;
@@ -105,7 +109,7 @@ function Sidepannel_UpdateThumb() {
 
             if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
 
-                var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos]][14];
+                var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14];
 
                 if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                     Sidepannel_CheckIfIsLiveStart();
@@ -155,13 +159,13 @@ function Sidepannel_CheckIfIsLive() {
 
     if (UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
 
-        var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos]][6];
+        var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][6];
 
         OSInterface_CheckIfIsLiveFeed(
             Play_live_token.replace('%x', channel),
             Play_live_links.replace('%x', channel),
             "Sidepannel_CheckIfIsLiveResult",
-            1,
+            0,
             (Sidepannel_PosFeed % 100),
             NewDefaultHttpGetTimeout
         );
@@ -172,12 +176,12 @@ function Sidepannel_CheckIfIsLive() {
 var Sidepannel_PlayerViewSidePanelSet;
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
+    if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
         if (StreamData && UserLiveFeed_Obj(UserLiveFeedobj_UserLivePos)) {
             StreamData = JSON.parse(StreamData);
 
-            var StreamInfo = UserLiveFeed_GetObj(UserLiveFeedobj_UserLivePos);
+            var StreamInfo = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
             if (StreamData.status === 200) {
 
@@ -672,7 +676,7 @@ function Sidepannel_handleKeyDown(event) {
                 Main_values.Play_isHost = false;
 
                 Main_OpenLiveStream(
-                    UserLiveFeed_GetObj(UserLiveFeedobj_UserLivePos),
+                    Sidepannel_GetObj(UserLiveFeedobj_UserLivePos),
                     Sidepannel_PosFeed,
                     UserLiveFeed_side_ids,
                     Sidepannel_handleKeyDown,

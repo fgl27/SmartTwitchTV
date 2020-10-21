@@ -1072,11 +1072,9 @@ function Screens_LoadPreviewStart(key, obj) {
 
 function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
-    var doc = Main_getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
-
     if (!Main_isStoped && Screens_IsInUse(x) && !Main_isElementShowing('dialog_thumb_opt') &&
         y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
-        doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
+        (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
 
         if (StreamData && ScreenObj[x].DataObj[ScreenObj[x].posY + '_' + ScreenObj[x].posX]) {
 
@@ -1531,6 +1529,7 @@ function Screens_addrowEnd(forceScroll, key) {
         var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
         Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
+        ScreenObj[key].focusPos = id;
 
         if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
 
@@ -1629,6 +1628,7 @@ function Screens_addFocusFollow(key) {
     else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
     Main_AddClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
+    ScreenObj[key].focusPos = -1;
 }
 
 function Screens_removeFocusFollow(key) {
@@ -1651,22 +1651,29 @@ function Screens_BasicExit(before, key) {
 function Screens_KeyUpDown(y, key) {
     //TODO improve this
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].posY && y === -1 && !ScreenObj[key].emptyContent) {
+
         Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
         Screens_ClearAnimation(key);
         ScreenObj[key].posY = -1;
         if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 1;
         Screens_addFocusFollow(key);
-    } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 && (Main_ThumbNull(0, ScreenObj[key].posX, ScreenObj[key].ids[0]))) {
+
+    } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 &&
+        (Main_ThumbNull(0, ScreenObj[key].posX, ScreenObj[key].ids[0]))) {
+
         ScreenObj[key].posY = 0;
         Screens_addFocus(false, key);
         Screens_removeFocusFollow(key);
+
     } else {
+
         for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
             if (Main_ThumbNull((ScreenObj[key].posY + y), (ScreenObj[key].posX - i), ScreenObj[key].ids[0])) {
                 Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                 return;
             }
         }
+
     }
 }
 
@@ -1899,12 +1906,16 @@ function AGame_headerOptions(key) {
 }
 
 function AGame_headerOptionsExit(key) {
+
     if (ScreenObj[key].status && ScreenObj[key].posY === -1) {
+
         Screens_removeFocusFollow(key);
         ScreenObj[key].posY = 0;
         ScreenObj[key].posX = 0;
         Main_AddClass(ScreenObj[key].ids[0] + '0_' + ScreenObj[key].posX, Main_classThumb);
+
     }
+
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
 }
@@ -2814,10 +2825,7 @@ function Screens_RefreshTimeout(key) {
 }
 
 function Screens_Isfocused() {
-    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-    return doc &&
-        Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
-        Main_isScene1DocVisible();
+    return (ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX) === ScreenObj[Screens_Current_Key].focusPos && Main_isScene1DocVisible();
 }
 
 //TODO add screen.isInuse prop to adress this fun use

@@ -100,6 +100,7 @@ function ScreensObj_StartAllVars() {
         PreviewEnable: 0,
         DataObj: {},
         tempHtml: '',
+        focusPos: '',
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
