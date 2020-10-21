@@ -1726,7 +1726,14 @@ function Main_Set_history(type, Data, skipUpdateDate) {
                 }
             );
 
+            if (type === 'vod' || type === 'clip') {
+
+                Main_history_Watched_Obj[Main_values_History_data[AddUser_UsernameArray[0].id][type][0].data[7]] = 0;
+
+            }
+
             Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
+
         }
 
         Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
@@ -1755,6 +1762,31 @@ function Main_Set_history(type, Data, skipUpdateDate) {
     }
 
     Main_setHistoryItem();
+
+}
+
+var Main_history_Watched_Obj = {};
+
+function Main_history_SetVod_Watched() {
+
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
+        i = 0, len = array.length;
+
+    for (i; i < len; i++) {
+
+        Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[11]) * 100;
+
+    }
+
+    array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
+    i = 0;
+    len = array.length;
+
+    for (i; i < len; i++) {
+
+        Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[1]) * 100;
+
+    }
 }
 
 function Main_history_Exist(type, id) {
@@ -1809,12 +1841,16 @@ function Main_history_UpdateVodClip(id, time, type) {
         ArrayPos.date = new Date().getTime();
         ArrayPos.watched = time;
 
+        Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
+
         Main_setHistoryItem();
+
     }
 }
 
 function Main_Restore_history() {
     Main_values_History_data = Screens_assign(Main_values_History_data, Main_getItemJson('Main_values_History_data', {}));
+    Main_history_SetVod_Watched();
 }
 
 function Main_History_Sort(array, msort, direction) {

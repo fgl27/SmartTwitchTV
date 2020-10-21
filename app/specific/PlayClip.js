@@ -462,7 +462,7 @@ function PlayClip_shutdownStream() {
 function PlayClip_PreshutdownStream(closePlayer) {
     //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 0, 'clip');
+    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10, 'clip');
     PlayClip_hidePanel();
     if (Main_IsOn_OSInterface && !Play_PreviewId) {
 

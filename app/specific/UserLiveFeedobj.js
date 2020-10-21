@@ -876,7 +876,8 @@ function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
         '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' + UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + data[0] +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
-        '\';"></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
+        '\';"><div id="' + UserLiveFeed_ids[4] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[data[7]] ? Main_history_Watched_Obj[data[7]] : 0) +
+        '%;"></div></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
         UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
         '<i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i> ' + data[1] +
         '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +

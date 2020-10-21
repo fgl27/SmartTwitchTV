@@ -52,7 +52,8 @@ var UserLiveFeed_ids = [
     'ulf_thumbdiv',//0
     'ulf_img',//1
     'ulf_title',//2
-    'ulf_data'//3
+    'ulf_data',//3
+    'ulf_watched'//4
 ];
 
 var UserLiveFeed_side_ids = [
@@ -488,8 +489,23 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
+
     if (add_focus) {
-        Main_AddClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
+        var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+
+        Main_AddClass(UserLiveFeed_ids[0] + id, UserLiveFeed_FocusClass);
+
+        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+            var doc = Main_getElementById(UserLiveFeed_ids[3] + id);
+            if (doc) {
+
+                var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+                if (Main_history_Watched_Obj[data[7]])
+                    Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+            }
+        }
     }
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {

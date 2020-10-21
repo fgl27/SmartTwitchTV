@@ -129,7 +129,8 @@ function Screens_ScreenIds(base) {
         base + '_data',//3
         base + '_scroll',//4
         base + '_animated',//5
-        base + '_row'//6
+        base + '_row',//6
+        base + '_watched'//7
     ];
 }
 
@@ -603,7 +604,8 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
         idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-        '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
+        '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
@@ -628,7 +630,8 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
         '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-        '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+        '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
+        '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
@@ -1533,7 +1536,24 @@ function Screens_addrowEnd(forceScroll, key) {
 
         if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
 
-        Main_AddClass(ScreenObj[key].ids[0] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, Main_classThumb);
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+        Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
+
+        if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
+
+            var doc = Main_getElementById(ScreenObj[key].ids[3] + id);
+
+            if (doc) {
+
+                var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+
+                if (Main_history_Watched_Obj[data[7]])
+                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+            }
+
+        }
 
         ScreenObj[key].addFocus(forceScroll, key);
 
