@@ -496,7 +496,9 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
                 Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
 
+                Main_Set_history('clip', data);
                 Main_history_UpdateVodClip(data[7], data[1], 'clip');
+
             }
 
             if (PlayClip_getIdNext(1, 0)) {
