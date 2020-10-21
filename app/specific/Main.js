@@ -27,7 +27,7 @@ var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.267';
 var Main_version_java = 50;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
 var Main_minversion = 'October 21 2020';
-var Main_version_web = 107;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_version_web = 108;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -614,6 +614,7 @@ function Main_Changelog() {
             title: "Web Version October 21 2020",
             changes: [
                 "Add a progress indicator to already watched VOD/Clip",
+                "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)"
             ]
         },
         {
