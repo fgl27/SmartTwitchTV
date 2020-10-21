@@ -14,6 +14,8 @@ Web Version October 21 2020
 
 * Add a progress indicator to already watched VOD/Clip
 * Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)
+* Automatic remove from history deleted VOD/Clip
+* General performance improves and bug fixes
 
 Web Version October 20 2020
 ==============
