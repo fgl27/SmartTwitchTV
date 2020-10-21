@@ -1139,7 +1139,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         }
 
         restorePreview = Main_A_equals_B(
-            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed],
+            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14],
             Play_data.data[14]
         );
 
