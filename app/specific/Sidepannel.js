@@ -79,13 +79,13 @@ function Sidepannel_GetObj(pos) {
     return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
 }
 
-function Sidepannel_Obj(pos) {
+function Sidepannel_ObjNotNull(pos) {
     return Boolean(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
 }
 
 function Sidepannel_UpdateThumbDiv() {
 
-    if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
+    if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
         var info = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
@@ -111,7 +111,7 @@ function Sidepannel_UpdateThumb() {
 
         if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
 
-            if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
+            if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
                 var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14];
 
@@ -161,7 +161,7 @@ function Sidepannel_CheckIfIsLive() {
         return;
     }
 
-    if (Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
+    if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][6];
 
@@ -182,7 +182,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
-        if (StreamData && Sidepannel_Obj(UserLiveFeedobj_UserLivePos)) {
+        if (StreamData && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
             StreamData = JSON.parse(StreamData);
 
             var StreamInfo = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
@@ -413,8 +413,7 @@ function Sidepannel_ShowFeed() {
     var ForceRefresh = false;
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
-    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
-        !UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0]) ||
+    if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
         ForceRefresh = true;
     }

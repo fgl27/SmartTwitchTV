@@ -492,7 +492,7 @@ function UserLiveFeed_ObjNotNull(pos) {
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos);
 
-    if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
+    if (!total || !UserLiveFeed_ObjNotNull(pos) || UserLiveFeed_loadingData[pos]) {
         if (!total && UserLiveFeed_isPreviewShowing()) UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_ResetFeedId();
         return;
@@ -995,12 +995,8 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
 function UserLiveFeed_FeedRemoveFocus(pos) {
     UserLiveFeed_CheckIfIsLiveSTop();
 
-    if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
+    if (UserLiveFeed_ObjNotNull(pos))
         Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-}
-
-function UserLiveFeed_ThumbNull(y, thumbnail) {
-    return Main_getElementById(thumbnail + y) !== null;
 }
 
 function UserLiveFeed_SetFeedPicText() {

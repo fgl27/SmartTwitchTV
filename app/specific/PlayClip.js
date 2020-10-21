@@ -496,6 +496,7 @@ function PlayClip_UpdateNext() {
     PlayClip_HasBack = false;
 
     if (nextid) {
+
         PlayClip_HasNext = true;
         data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[nextid]);
 
@@ -508,12 +509,16 @@ function PlayClip_UpdateNext() {
         Main_innerHTMLWithEle(Play_BottonIcons_End_title, Main_ReplaceLargeFont(data[10]));
 
         PlayClip_HideShowNext(0, 1);
+
     } else {
+
         PlayClip_HideShowNext(0, 0);
         Main_HideElementWithEle(Play_BottonIcons_End_img);
+
     }
 
     if (backid) {
+
         PlayClip_HasBack = true;
         data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[backid]);
 
@@ -521,6 +526,7 @@ function PlayClip_UpdateNext() {
         Main_innerHTMLWithEle(Play_BottonIcons_Back_name, Main_ReplaceLargeFont(data[4]));
         Main_innerHTMLWithEle(Play_BottonIcons_Back_title, Main_ReplaceLargeFont(data[10]));
         PlayClip_HideShowNext(1, 1);
+
     } else PlayClip_HideShowNext(1, 0);
 }
 
@@ -534,10 +540,16 @@ function PlayClip_NextImg(ImgObjet, link) {
 }
 
 function PlayClip_getIdNext(y, x) {
-    if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY), (ScreenObj[Screens_Current_Key].posX + y), ScreenObj[Screens_Current_Key].ids[0]))
+
+    if (ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y)]) {
+
         return ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y);
-    else if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY + y), x, ScreenObj[Screens_Current_Key].ids[0]))
+
+    } else if (ScreenObj[Screens_Current_Key].DataObj[(ScreenObj[Screens_Current_Key].posY + y) + '_' + x]) {
+
         return (ScreenObj[Screens_Current_Key].posY + y) + '_' + x;
+
+    }
 
     return null;
 }

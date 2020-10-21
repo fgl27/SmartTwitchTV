@@ -1268,10 +1268,6 @@ function Screens_LoadPreviewWarn(ErrorText, x, time) {
     );
 }
 
-function Screens_ThumbNotNull(thumbnail) {
-    return Main_getElementById(thumbnail) !== null;
-}
-
 function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down, key) {
     Screens_ChangeFocusAnimationFinished = false;
     Screens_ChangeFocusAnimationFast = true;
@@ -1626,6 +1622,8 @@ function Screens_RemoveFocus(key) {
 }
 
 function Screens_addFocusFollow(key) {
+    if (!ScreenObj[key].status) return;
+
     if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
     else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
@@ -1651,6 +1649,8 @@ function Screens_BasicExit(before, key) {
 }
 
 function Screens_KeyUpDown(y, key) {
+    if (!ScreenObj[key].status) return;
+
     //TODO improve this
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].posY && y === -1 && !ScreenObj[key].emptyContent) {
 
@@ -1661,7 +1661,7 @@ function Screens_KeyUpDown(y, key) {
         Screens_addFocusFollow(key);
 
     } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 &&
-        (Main_ThumbNull(0, ScreenObj[key].posX, ScreenObj[key].ids[0]))) {
+        ScreenObj[key].DataObj['0_' + ScreenObj[key].posX]) {
 
         ScreenObj[key].posY = 0;
         Screens_addFocus(false, key);
@@ -1670,9 +1670,11 @@ function Screens_KeyUpDown(y, key) {
     } else {
 
         for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
-            if (Main_ThumbNull((ScreenObj[key].posY + y), (ScreenObj[key].posX - i), ScreenObj[key].ids[0])) {
+            if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + (ScreenObj[key].posX - i)]) {
+
                 Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                 return;
+
             }
         }
 
@@ -1681,24 +1683,38 @@ function Screens_KeyUpDown(y, key) {
 
 function Screens_ClearAnimation(key) {
     if (ScreenObj[key].HasAnimateThumb) {
+
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
-        if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
+
+        if (Screens_ObjNotNull(key) && ScreenObj[key].status) {
+
             Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
             Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
         }
+
     }
 }
 
 function Screens_KeyLeftRight(y, x, key) {
+    if (!ScreenObj[key].status) return;
+
     if (ScreenObj[key].HasSwitches && ScreenObj[key].posY === -1) {
+
         ScreenObj[key].posY = -1;
         Screens_removeFocusFollow(key);
         ScreenObj[key].posX += (!x ? 1 : -1);
         Screens_addFocusFollow(key);
-    } else if (Main_ThumbNull((ScreenObj[key].posY), (ScreenObj[key].posX + y), ScreenObj[key].ids[0]))
+
+    } else if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + (ScreenObj[key].posX + y)]) {
+
         Screens_ChangeFocus(0, (ScreenObj[key].posX + y), key);
-    else if (Main_ThumbNull((ScreenObj[key].posY + y), x, ScreenObj[key].ids[0]))
+
+    } else if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + x]) {
+
         Screens_ChangeFocus(y, x, key);
+
+    }
 }
 
 function Screens_OpenSidePanel(forceFeed, key) {
@@ -1711,12 +1727,17 @@ function Screens_OpenSidePanel(forceFeed, key) {
 }
 
 function Screens_RemoveAllFocus(key) {
-    if (Main_ThumbNull(ScreenObj[key].posY, ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+    if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX] &&
+        ScreenObj[key].status) {
+
         Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+
     } else if (ScreenObj[key].posY < 0) {
+
         Screens_removeFocusFollow(key);
         ScreenObj[key].posY = 0;
         ScreenObj[key].posX = 0;
+
     }
 }
 
@@ -1726,17 +1747,25 @@ function Screens_handleKeyUp(key, e) {
     //Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
 
     if (e.keyCode === KEY_ENTER) {
+
         Screens_handleKeyUpClear(key);
         if (!Screens_clear) ScreenObj[key].key_play();
+
     } else if (e.keyCode === KEY_LEFT) {
+
         Main_clearTimeout(Screens_KeyEnterID);
         Main_removeEventListener("keyup", ScreenObj[key].key_up);
+
         if (!Screens_clear) {
+
             if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
             else {
+
                 Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
                 Main_addEventListener("keydown", ScreenObj[key].key_fun);
+
             }
+
         }
     }
     Screens_handleKeyUpIsClear = true;
@@ -1755,14 +1784,20 @@ function Screens_handleKeyUpAnimationFast() {
 }
 
 function Screens_keyRight(key) {
+    if (!ScreenObj[key].status) return;
+
     //Prevent scroll too fast out of ScreenObj[key].Cells.length
     //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
     if (ScreenObj[key].dataEnded ||
         ScreenObj[key].posX < (ScreenObj[key].ColoumnsCount - 1) ||
         (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1)) {
+
         if (ScreenObj[key].posX === (ScreenObj[key].ColoumnsCount - 1)) {
+
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
+
         } else Screens_KeyLeftRight(1, 0, key);
+
     } else Screens_addFocus(true, key);
 }
 
