@@ -397,6 +397,9 @@ function Main_initWindows() {
     Main_setTimeout(Main_RunVODWorker, 15000);
     Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360));//Check it 6 hours
 
+    Main_setTimeout(Main_RunClipWorker, 15000);
+    Main_setInterval(Main_RunClipWorker, (1000 * 60 * 360));//Check it 6 hours
+
     Main_SetStringsSecondary();
     Main_checkVersion();
 
@@ -2019,12 +2022,41 @@ function Main_SetHistoryworker() {
                                 var message = JSON.parse(obj.responseText).message;
 
                                 //VOD was deleted
-                                if (message && message.toLowerCase.indexOf('not found') && message.indexOf(obj.mData.obj.data[7])) {
+                                if (message && typeof message === "string") {
+                                    message = message.toLowerCase();
+
+                                    if (message.indexOf('not found') > -1 && message.indexOf(obj.mData.obj.data[7] > -1)) {
+
+                                        this.postMessage(
+                                            {
+                                                data: obj.mData.obj.data[7],
+                                                type: 2
+                                            }
+                                        );
+                                    }
+
+                                }
+
+                            }
+
+                        };
+                    } else if (event.data.type === 3) {//Clip
+
+                        theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
+
+                        onload = function(obj) {
+
+                            if (obj.status !== 200) {
+
+                                var message = JSON.parse(obj.responseText).message;
+
+                                //Clip was deleted
+                                if (message && typeof message === "string" && message.toLowerCase().indexOf('clip does not exist') > -1) {
 
                                     this.postMessage(
                                         {
                                             data: obj.mData.obj.data[7],
-                                            type: 2
+                                            type: 3
                                         }
                                     );
 
@@ -2099,6 +2131,17 @@ function Main_SetHistoryworker() {
 
                 }
 
+            } else if (event.data.type === 3) {
+
+                index = Main_history_Exist('clip', event.data.data);
+
+                if (index > -1) {
+
+                    //delete the vod entry as it no longer exist
+                    Main_values_History_data[AddUser_UsernameArray[0].id].clip.splice(index, 1);
+
+                }
+
             }
 
         }
@@ -2137,11 +2180,30 @@ function Main_RunVODWorker() {
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod;
 
     var i = 0, len = array.length;
+
     for (i; i < len; i++) {
         BradcastCheckerWorker.postMessage(
             {
                 obj: array[i],
                 type: 2
+            }
+        );
+    }
+}
+
+function Main_RunClipWorker() {
+
+    if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
+
+    var i = 0, len = array.length;
+
+    for (i; i < len; i++) {
+        BradcastCheckerWorker.postMessage(
+            {
+                obj: array[i],
+                type: 3
             }
         );
     }

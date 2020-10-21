@@ -1123,13 +1123,22 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     Play_PreviewId = StreamInfo[0];
                     Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
 
-                    var clipID = PlayClip_SetQuality(Play_PreviewResponseText);
-                    PlayClip_quality = Play_PreviewResponseText[clipID].id;
-                    PlayClip_qualityPlaying = PlayClip_quality;
+                    if (Play_PreviewResponseText.length) {
 
-                    Play_PreviewURL = Play_PreviewResponseText[clipID].url;
-                    lang = StreamInfo[17];
-                    who_called = 3;
+                        var clipID = PlayClip_SetQuality(Play_PreviewResponseText);
+                        PlayClip_quality = Play_PreviewResponseText[clipID].id;
+                        PlayClip_qualityPlaying = PlayClip_quality;
+
+                        Play_PreviewURL = Play_PreviewResponseText[clipID].url;
+                        lang = StreamInfo[17];
+                        who_called = 3;
+
+                    } else {
+
+                        Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
+                        return;
+
+                    }
 
                 } else if (ScreenObj[x].screenType === 1) {//vod
                     Play_PreviewId = StreamInfo[7];
@@ -1226,42 +1235,48 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                var error = StreamInfo[6] + STR_SPACE;
-
-                if (ScreenObj[x].screenType === 2) {
-
-                    error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
-
-                } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
-
-                    index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
-
-                    if (index > -1) {
-
-                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
-
-                            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-
-                        }
-
-                    }
-
-                } else {
-
-                    error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
-
-                }
-
-                Screens_LoadPreviewWarn(
-                    error,
-                    x,
-                    4000
-                );
+                Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x);
             }
 
         }
     }
+
+}
+
+function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x) {
+
+    var error = StreamInfo[6] + STR_SPACE;
+
+    if (ScreenObj[x].screenType === 2) {
+
+        error += 'CLIP' + STR_PREVIEW_ERROR_LINK;
+
+    } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
+
+        var index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
+
+        if (index > -1) {
+
+            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
+                Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+
+                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+
+            }
+
+        }
+
+    } else {
+
+        error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
+
+    }
+
+    Screens_LoadPreviewWarn(
+        error,
+        x,
+        4000
+    );
 
 }
 

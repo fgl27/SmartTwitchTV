@@ -245,8 +245,13 @@ function PlayClip_loadDataResult(response, id) {
         var responseObj = JSON.parse(response);
 
         if (responseObj.status === 200) {
-            PlayClip_QualityStart(PlayClip_QualityGenerate(responseObj.responseText));
-            return;
+            var tempArray = PlayClip_QualityGenerate(responseObj.responseText);
+
+            if (tempArray.length) {
+                PlayClip_QualityStart(tempArray);
+                return;
+            }
+
         } else if (responseObj.status === 410) { //Workaround for future 410 issue
             PlayClip_loadData410 = true;
             PlayClip_loadData410Recheck();
@@ -326,7 +331,7 @@ function PlayClip_QualityGenerate(mresponse) {
     var Array = [],
         response = JSON.parse(mresponse);
 
-    if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip')) {
+    if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip') && response.data.clip) {
         response = response.data.clip.videoQualities;
 
         var i = 0, len = response.length;
