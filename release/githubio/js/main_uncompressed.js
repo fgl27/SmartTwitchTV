@@ -2798,6 +2798,7 @@
 
         OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
+        Main_history_SetVod_Watched();
         //Reset user emotes on chage
         userEmote = {};
     }
@@ -7009,7 +7010,7 @@
     var Main_stringVersion_Min = '.267';
     var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 21 2020';
-    var Main_version_web = 111; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 112; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -8769,6 +8770,7 @@
     var Main_history_Watched_Obj = {};
 
     function Main_history_SetVod_Watched() {
+        Main_history_Watched_Obj = {};
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
             i = 0,
@@ -23022,6 +23024,7 @@
             histPosXName: 'HistoryClip_histPosX',
             screenType: 2,
             cursor: null,
+            OldUserName: '',
             object: 'clips',
             period: ['day', 'week', 'month', 'all'],
             img_404: IMG_404_VOD,
@@ -23343,6 +23346,8 @@
                 );
             },
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 Sidepannel_SetDefaultLables();
                 Main_values.Sidepannel_IsUser = false;
                 Sidepannel_SetTopOpacity(this.screen);
@@ -23410,6 +23415,8 @@
             },
             lastselectedChannel: '',
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
                 if (Main_values.Main_selectedChannel !== this.lastselectedChannel) {
                     this.OffSetPos = 0;
@@ -23481,6 +23488,8 @@
             },
             OldgameSelected: '',
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 ScreensObj_TopLableAgameInit(this.screen);
                 this.SetPeriod();
             },
@@ -23547,6 +23556,8 @@
                 );
             },
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 this.SetPeriod();
                 ScreensObj_TopLableUserInit(this.screen);
             },
@@ -23910,6 +23921,8 @@
                 ScreensObj_SetTopLable(STR_CLIPS, Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 this.SetPeriod();
                 Sidepannel_SetDefaultLables();
                 Main_values.Sidepannel_IsUser = false;
@@ -23946,6 +23959,8 @@
                     Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id)
                     ChannelContent_RestoreChannelValue();
                 if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
@@ -23984,6 +23999,8 @@
                     Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
+                ScreensObj_CheckUser(this.screen);
+
                 ScreensObj_TopLableAgameInit(this.screen);
                 this.SetPeriod();
             },
@@ -24511,11 +24528,15 @@
     }
 
     function ScreensObj_TopLableUserInit(key) {
-        if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
-        ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
+        ScreensObj_CheckUser(key);
 
         Sidepannel_SetUserLables();
         Sidepannel_SetTopOpacity(ScreenObj[key].screen);
+    }
+
+    function ScreensObj_CheckUser(key) {
+        if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
+        ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
     }
 
     function ScreensObj_SetTopLable(text, small_text) {
