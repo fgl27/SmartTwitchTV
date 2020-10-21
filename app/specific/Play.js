@@ -489,7 +489,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
 
             var id = ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX;
 
-            if (ScreenObj[Main_HistoryClip].histPosX[1]) {
+            if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
                 //Save as we have watched it all
 
                 var data = JSON.parse(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + id).getAttribute(Main_DataAttribute));
