@@ -2110,44 +2110,52 @@ function Main_SetHistoryworker() {
 
     BradcastCheckerWorker.addEventListener('message',
         function(event) {
-            var index;
+            Main_setTimeout(
+                function() {
 
-            if (event.data.type === 1) {//live that is now a valid vod
+                    var index;
 
-                if (event.data.ended) {
+                    if (event.data.type === 1) {//live that is now a valid vod
 
-                    index = Main_history_Exist('live', event.data.data);
+                        if (event.data.ended) {
 
-                    if (index > -1) {
+                            index = Main_history_Exist('live', event.data.data);
 
-                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-                                {
-                                    forceVod: true
-                                }
-                            );
-                        } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
+                            if (index > -1) {
+
+                                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+                                        {
+                                            forceVod: true
+                                        }
+                                    );
+                                } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
+                            }
+
+                        } else {
+
+                            Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
+                        }
+
+                    } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
+
+                        index = Main_history_Exist(event.data.type, event.data.data);
+
+                        if (index > -1) {
+
+                            //delete the vod entry as it no longer exist
+                            Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                        }
+
                     }
 
-                } else {
+                },
+                10
+            );
 
-                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
-
-                }
-
-            } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
-
-                index = Main_history_Exist(event.data.type, event.data.data);
-
-                if (index > -1) {
-
-                    //delete the vod entry as it no longer exist
-                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
-
-                }
-
-            }
 
         }
 
