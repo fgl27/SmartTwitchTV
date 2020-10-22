@@ -2110,7 +2110,7 @@ function Main_SetHistoryworker() {
 
     BradcastCheckerWorker.addEventListener('message',
         function(event) {
-            //Minor dealy to not block Main tread when the workers return values
+            //Minor delay to not block Main tread when the workers return values
             Main_setTimeout(
                 function() {
 
