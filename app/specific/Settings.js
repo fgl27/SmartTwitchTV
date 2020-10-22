@@ -1000,7 +1000,7 @@ function Settings_SetAnimations() {
         }
     );
 
-    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+    if (UserLiveFeed_DataObj.length) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
 
     array = document.getElementsByClassName(Main_classThumb);
 
