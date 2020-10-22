@@ -11531,11 +11531,15 @@
     }
 
     function PlayClip_PlayNext() {
+        PlayClip_PreshutdownStream(false);
+
         Screens_KeyLeftRight(1, 0, Screens_Current_Key);
         PlayClip_PlayNextPreviously();
     }
 
     function PlayClip_PlayPreviously() {
+        PlayClip_PreshutdownStream(false);
+
         Screens_KeyLeftRight(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1, Screens_Current_Key);
         PlayClip_PlayNextPreviously();
     }
@@ -11544,7 +11548,6 @@
         Play_ForceHidePannel();
         Main_ready(function() {
             PlayClip_replayOrNext = true;
-            PlayClip_PreshutdownStream(false);
             Main_OpenClip(
                 Screens_GetObj(Screens_Current_Key),
                 ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
