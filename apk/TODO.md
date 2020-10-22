@@ -29,8 +29,6 @@ TODO list
 
 * General improve
 * Make screen to use only one value X, not X_Y, this will make easier to understand and use the screens
-* Store the added div data in a obj part of the screen, this will make it faster to access and faster to create screens
-* The above also affect how side panel and prayer preview store stream info so update there too
 * Add some proper check to prevent preview on screens to remove and add thumbnail on a browser when exiting the player... browser only check probably can improve general use of the app
 
 ### Add a dialog that add extra options to the player preview
