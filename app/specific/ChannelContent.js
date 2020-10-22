@@ -756,9 +756,7 @@ function ChannelContent_LoadPreviewWarn(ErrorText, time) {
 function ChannelContent_RestoreThumb(play_data) {
     if (ChannelContent_isoffline) return false;
 
-    var doc = Main_getElementById('channel_content_cell0_1');
-
-    if (doc && ChannelContent_cursorY) {
+    if (ChannelContent_cursorY) {
 
         return Main_A_equals_B(
             ChannelContent_DataObj[14],

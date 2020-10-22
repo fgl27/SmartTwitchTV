@@ -1147,7 +1147,9 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
     } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
 
         if (Main_values.Main_Go === Main_ChannelContent) {
+
             restorePreview = ChannelContent_RestoreThumb(Play_data);
+
         } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
