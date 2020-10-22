@@ -99,7 +99,6 @@ public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
-
     private final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,//0
             KeyEvent.KEYCODE_DPAD_DOWN,//1
