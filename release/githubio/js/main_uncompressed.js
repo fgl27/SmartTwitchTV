@@ -832,7 +832,7 @@
      *
      */
 
-    //Spacing for reease maker not trow erros frm jshint
+    //Spacing for release maker not trow errors from jshint
     function en_USLang() {
         // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
         Main_IsDayFirst = false;
@@ -1514,7 +1514,7 @@
      *
      */
 
-    //Spacing for release maker not trow erros from jshint
+    //Spacing for release maker not trow errors from jshint
     var IMG_404_GAME = "data:image/png;base64,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";
 
     var IMG_404_LOGO = "data:image/png;base64,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";
@@ -20852,10 +20852,10 @@
 
                     var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                    if (index > -1 &&
-                        (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                    if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
                         ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+
                     }
                 }
 
@@ -20942,8 +20942,7 @@
 
                 if (index > -1) {
 
-                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                         id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                         token = Play_vod_token;
@@ -21064,8 +21063,7 @@
                             if (index > -1) {
 
                                 //Live that is now a vod
-                                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                    Main_A_includes_B(Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
+                                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                                     Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
@@ -21146,8 +21144,7 @@
 
             if (index > -1) {
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                     error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
@@ -21491,7 +21488,10 @@
         if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
             pos = !y ? (y + pos) : y;
             if (ScreenObj[key].Cells[pos]) {
-                ScreenObj[key].offsettop = (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
+                ScreenObj[key].offsettop =
+                    (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
             } else ScreenObj[key].offsettop = 1;
 
             ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -21626,6 +21626,7 @@
             if (Screens_ObjNotNull(key) && ScreenObj[key].FirstRunEnd) {
 
                 Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+
                 Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
 
             }
@@ -22052,14 +22053,20 @@
         var maxValue = 5000;
 
         if (pos > 0 && pos < maxValue) {
+
             Main_getElementById("dialog_OffSet_left").style.opacity = "1";
             Main_getElementById("dialog_OffSet_right").style.opacity = "1";
+
         } else if (pos === maxValue) {
+
             Main_getElementById("dialog_OffSet_left").style.opacity = "1";
             Main_getElementById("dialog_OffSet_right").style.opacity = "0.2";
+
         } else {
+
             Main_getElementById("dialog_OffSet_left").style.opacity = "0.2";
             Main_getElementById("dialog_OffSet_right").style.opacity = "1";
+
         }
     }
 
@@ -22257,17 +22264,25 @@
         Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
         if (maxValue === 1) {
+
             Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
             Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+
         } else if (!pos) {
+
             Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
             Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+
         } else if (pos === (maxValue - 1)) {
+
             Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
             Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
+
         } else {
+
             Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
             Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+
         }
     }
 
@@ -22386,9 +22401,12 @@
 
         Main_innerHTML('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : STR_EMPTY));
 
-        if (ScreenObj[key].screen === Main_HistoryLive &&
-            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+        var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+        if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
             Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
+
         } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
         Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
@@ -22556,14 +22574,21 @@
             else if (Screens_ThumbOptionPosY === 3) {
 
                 if (!ScreenObj[key].screenType) {
-                    if (ScreenObj[key].screen === Main_HistoryLive &&
-                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+
+                    var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+                    if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
                         ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                         Main_setItem(ScreenObj[Main_HistoryVod].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
+
                     } else {
+
                         ScreenObj[Main_HistoryLive].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                         Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryLive].histPosX));
+
                     }
+
                 } else if (ScreenObj[key].screenType === 1) {
                     ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                     Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
@@ -22762,9 +22787,13 @@
         Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguagesTitles, Screens_ThumbOptionScreens];
 
         var historyType = Screens_ThumbOptionStringGetHistory(key);
-        if (ScreenObj[key].screen === Main_HistoryLive &&
-            Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+
+        var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+        if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
             historyType = Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1];
+
         }
 
         Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
@@ -22828,7 +22857,7 @@
      *
      */
 
-    //Spacing for reease maker not trow erros frm jshint
+    //Spacing for release maker not trow errors from jshint
     var Main_ItemsLimitMax = 100;
 
     //The values of thumbnail and related for it screen type
@@ -28353,7 +28382,7 @@
      *
      */
 
-    //Spacing for reease maker not trow erros frm jshint
+    //Spacing for release maker not trow errors from jshint
     var Sidepannel_PosFeed = 0;
     var Sidepannel_Sidepannel_Pos = 2;
     var Sidepannel_Callback;
@@ -28389,11 +28418,20 @@
             Sidepannel_Scroll(skipAnimation);
             Sidepannel_UpdateThumb();
         } else {
-            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos])
+
+            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+
                 Main_getElementById('side_panel_warn').style.display = 'inline-block';
 
+            }
+
             Main_HideElement('side_panel_feed_thumb');
-            if (Sidepannel_isShowing()) Sidepannel_CheckIfIsLiveSTop();
+
+            if (Sidepannel_isShowing()) {
+
+                Sidepannel_CheckIfIsLiveSTop();
+
+            }
         }
     }
 
@@ -28410,19 +28448,19 @@
         return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
     }
 
-    function Sidepannel_GetObj(pos) {
-        return Main_Slice(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
+    function Sidepannel_GetObj() {
+        return Main_Slice(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
     }
 
-    function Sidepannel_ObjNotNull(pos) {
-        return Boolean(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
+    function Sidepannel_ObjNotNull() {
+        return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
     }
 
     function Sidepannel_UpdateThumbDiv() {
 
-        if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
+        if (Sidepannel_ObjNotNull()) {
 
-            var info = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
+            var info = Sidepannel_GetObj();
 
             Sidepannel_UpdateThumbDoc.onerror = function() {
                 this.onerror = null;
@@ -28446,7 +28484,7 @@
 
             if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
 
-                if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
+                if (Sidepannel_ObjNotNull()) {
 
                     var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
@@ -28497,7 +28535,7 @@
             return;
         }
 
-        if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
+        if (Sidepannel_ObjNotNull()) {
 
             var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
@@ -28519,10 +28557,10 @@
 
         if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
-            if (StreamData && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
+            if (StreamData && Sidepannel_ObjNotNull()) {
                 StreamData = JSON.parse(StreamData);
 
-                var StreamInfo = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
+                var StreamInfo = Sidepannel_GetObj();
 
                 if (StreamData.status === 200) {
 
@@ -28760,10 +28798,14 @@
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
 
         if ((ForceRefresh || !UserLiveFeed_status[UserLiveFeedobj_UserLivePos]) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+
             UserLiveFeed_RefreshLive();
-        } else if (Main_getElementById(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed) !== null) {
+
+        } else if (Sidepannel_ObjNotNull()) {
+
             Sidepannel_PreloadImgs();
             Sidepannel_AddFocusFeed(true);
+
         }
 
         Sidepannel_SetLastRefresh();
@@ -28945,14 +28987,20 @@
             center = 6;
 
         if (Sidepannel_PosFeed > center) { //Start scrolling in the middle
-            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center))
+            if (Sidepannel_PosFeed < (Sidepannel_GetSize() - center)) {
+
                 value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_PosFeed - center)).offsetTop;
-            else if (((Sidepannel_GetSize() - center) - center) > 0) //if we are in the 7 left
+
+            } else if (((Sidepannel_GetSize() - center) - center) > 0) { //if we are in the 7 left
+
                 value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+
+            }
         }
 
         if (!skipAnimation && Sidepannel_ChangeFocusAnimationFinished && Screens_SettingDoAnimations &&
             !Sidepannel_ChangeFocusAnimationFast) {
+
             Sidepannel_ChangeFocusAnimationFinished = false;
             Sidepannel_ChangeFocusAnimationFast = true;
 
@@ -28966,8 +29014,10 @@
             );
 
         } else {
+
             if (skipAnimation) Sidepannel_ChangeFocusAnimationFast = false;
             Sidepannel_ScroolDoc.style.transition = 'none';
+
         }
 
         Sidepannel_ScroolDoc.style.transform = 'translateY(-' + (value / BodyfontSize) + 'em)';
@@ -29018,7 +29068,7 @@
                     Main_values.Play_isHost = false;
 
                     Main_OpenLiveStream(
-                        Sidepannel_GetObj(UserLiveFeedobj_UserLivePos),
+                        Sidepannel_GetObj(),
                         Sidepannel_PosFeed,
                         UserLiveFeed_side_ids,
                         Sidepannel_handleKeyDown,
@@ -29138,7 +29188,7 @@
      *
      */
 
-    //Spacing for reease maker not trow erros frm jshint
+    //Spacing for release maker not trow errors from jshint
     var UserLiveFeed_loadingData = [];
     var UserLiveFeed_loadingDataTry = [];
     var UserLiveFeed_loadChannelOffsset = 0;
@@ -29636,16 +29686,21 @@
 
                     var data = UserLiveFeed_GetObj(pos);
 
-                    if (Main_history_Watched_Obj[data[7]])
+                    if (Main_history_Watched_Obj[data[7]]) {
+
                         Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                    }
 
                 }
             }
         }
 
         if (!UserLiveFeed_obj[pos].AddCellsize) {
+
             UserLiveFeed_obj[pos].AddCellsize =
                 (Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
+
         }
 
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
@@ -29694,11 +29749,9 @@
 
                 var index = Main_history_Exist('live', data[7]);
 
-                if (index > -1) {
+                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                    if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
-                        return false;
-                    }
+                    return false;
 
                 }
             }
