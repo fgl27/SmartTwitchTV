@@ -1971,40 +1971,37 @@ function Main_SetHistoryworker() {
 
                     if (event.data.type === 1) {//Live check if is a vod
 
-                        theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.obj.data[14] + '?api_version=5';
+                        theUrl = 'https://api.twitch.tv/kraken/streams/?stream_type=all&channel=' + event.data.obj.data[14] + '&api_version=5';
 
                         onload = function(obj) {
 
                             if (obj.status === 200) {
                                 var response = JSON.parse(obj.responseText);
 
-                                if (response.stream !== null) {
+                                if (response.streams && response.streams.length) {
 
-                                    if (!Array.isArray(response.stream)) {
+                                    if (obj.mData.obj.data[7] !== response.streams[0]._id) {
 
-                                        if (obj.mData.obj.data[7] !== response.stream._id) {
+                                        this.postMessage(
+                                            {
+                                                data: obj.mData.obj.data[7],
+                                                ended: true,
+                                                type: event.data.type
+                                            }
+                                        );
 
-                                            this.postMessage(
-                                                {
-                                                    data: obj.mData.obj.data[7],
-                                                    ended: true,
-                                                    type: event.data.type
-                                                }
-                                            );
+                                    } else {
 
-                                        } else {
-
-                                            this.postMessage(
-                                                {
-                                                    data: response.stream,
-                                                    ended: false,
-                                                    type: event.data.type
-                                                }
-                                            );
-
-                                        }
+                                        this.postMessage(
+                                            {
+                                                data: response.streams[0],
+                                                ended: false,
+                                                type: event.data.type
+                                            }
+                                        );
 
                                     }
+
                                 } else {
 
                                     this.postMessage(
@@ -2134,6 +2131,7 @@ function Main_SetHistoryworker() {
                                     );
 
                                 } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
+
                             }
 
                         } else {
