@@ -97,6 +97,7 @@ function ChannelContent_StartLoad() {
     ChannelContent_itemsCount = 0;
     ChannelContent_cursorX = 0;
     ChannelContent_cursorY = 0;
+    ChannelContent_DataObj = null;
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
     ChannelContent_loadDataPrepare();
@@ -386,6 +387,7 @@ function ChannelContent_removeAllFollowFocus() {
 }
 
 function ChannelContent_keyEnter() {
+
     if (!ChannelContent_cursorY) {
         if (!ChannelContent_cursorX) {
             Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
@@ -412,6 +414,7 @@ function ChannelContent_keyEnter() {
             }
         }
     } else {
+
         Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
         Main_HideElement('channel_content_scroll');
 
@@ -451,7 +454,7 @@ function ChannelContent_keyEnter() {
                 'ChannelContent'
             );
 
-        } else {
+        } else if (ChannelContent_DataObj) {
 
             Main_values_Play_data = Main_Slice(ChannelContent_DataObj);
 
