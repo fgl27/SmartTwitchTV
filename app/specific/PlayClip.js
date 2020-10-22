@@ -467,7 +467,18 @@ function PlayClip_shutdownStream() {
 function PlayClip_PreshutdownStream(closePlayer) {
     //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-    Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10, 'clip');
+    if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
+        //Save as we have watched it all
+
+        var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
+
+        if (ScreenObj[Main_values.Main_Go].screenType === 2)
+            Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+
+        Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
+
+    }
+
     PlayClip_hidePanel();
     if (Main_IsOn_OSInterface && !Play_PreviewId) {
 
