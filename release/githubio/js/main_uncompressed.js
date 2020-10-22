@@ -2860,6 +2860,8 @@
     var ChannelContent_profile_banner = '';
     var ChannelContent_KeyEnterID;
     var ChannelContent_clear = false;
+    var ChannelContent_DataObj;
+
     //Variable initialization end
 
     function ChannelContent_init() {
@@ -3124,7 +3126,7 @@
 
         var ishosting = ChannelContent_TargetId !== undefined;
 
-        Main_getElementById('channel_content_cell0_1').setAttribute(Main_DataAttribute, JSON.stringify(valuesArray));
+        ChannelContent_DataObj = valuesArray;
 
         Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
@@ -3272,7 +3274,7 @@
 
             } else {
 
-                Main_values_Play_data = JSON.parse(Main_getElementById('channel_content_cell0_1').getAttribute(Main_DataAttribute));
+                Main_values_Play_data = Main_Slice(ChannelContent_DataObj);
 
                 Play_data.data = Main_values_Play_data;
                 Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
@@ -3429,14 +3431,13 @@
     }
 
     function ChannelContent_LoadPreview() {
+
         if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
             Main_isScene1DocVisible() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
 
-            var doc = Main_getElementById('channel_content_cell0_1');
+            if (ChannelContent_DataObj) {
 
-            if (doc) {
-
-                var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var obj = Main_Slice(ChannelContent_DataObj);
 
                 if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
 
@@ -3452,6 +3453,7 @@
             }
 
         }
+
     }
 
     function ChannelContent_LoadPreviewRestore() {
@@ -3515,18 +3517,16 @@
 
     function ChannelContent_LoadPreviewResult(StreamData, x) { //Called by Java
 
-        var doc = Main_getElementById('channel_content_cell0_1');
-
         if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
             !Main_isElementShowing('dialog_thumb_opt') &&
             (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
-            x === Main_values.Main_Go && doc &&
+            x === Main_values.Main_Go && ChannelContent_DataObj &&
             Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
-            if (StreamData && doc) {
+            if (StreamData) {
                 StreamData = JSON.parse(StreamData);
 
-                var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var StreamInfo = Main_Slice(ChannelContent_DataObj);
 
                 if (StreamData.status === 200) {
 
@@ -3580,7 +3580,7 @@
         if (doc && ChannelContent_cursorY) {
 
             return Main_A_equals_B(
-                JSON.parse(doc.getAttribute(Main_DataAttribute))[14],
+                ChannelContent_DataObj[14],
                 play_data.data[14]
             );
         }
@@ -7007,10 +7007,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.267';
-    var Main_version_java = 50; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 21 2020';
-    var Main_version_web = 112; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.268';
+    var Main_version_java = 268; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'October 22 2020';
+    var Main_version_web = 500; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7600,11 +7600,18 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.268 - Web Version October 22 2020",
+                changes: [
+                    "Automatic cleanup history unreachable Lives that became a VOD but the VOD is now deleted",
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Web Version October 21 2020",
                 changes: [
                     "Add a progress indicator to already watched VOD/Clip",
                     "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)",
-                    "Automatic remove from history unreachable (deleted from the server) VOD/Clip",
+                    "Automatic cleanup history unreachable (deleted from the server) VOD/Clip",
                     "General performance improves and bug fixes",
                 ]
             },
@@ -8130,12 +8137,12 @@
         return Main_getElementById(thumbnail + id) === null;
     }
 
-    function Main_OpenLiveStream(id, idsArray, handleKeyDownFunction, checkHistory, screen) {
+    function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHistory, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         var isHosting = false;
 
         Main_removeEventListener("keydown", handleKeyDownFunction);
-        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = data;
         Play_data.data = Main_values_Play_data;
 
         if (checkHistory) {
@@ -8144,8 +8151,7 @@
 
             if (index > -1) {
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(Main_getElementById(idsArray[1] + id).src, 's3_vods')) {
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                     Main_OPenAsVod(index);
                     return;
@@ -8357,13 +8363,13 @@
         );
     }
 
-    function Main_OpenClip(id, idsArray, handleKeyDownFunction, screen) {
+    function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
 
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
-        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = data;
 
         ChannelClip_playUrl = Main_values_Play_data[0];
         Play_DurationSeconds = parseInt(Main_values_Play_data[1]);
@@ -8409,12 +8415,12 @@
 
     }
 
-    function Main_OpenVodStart(id, idsArray, handleKeyDownFunction, screen) {
+    function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
         if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
         Main_removeEventListener("keydown", handleKeyDownFunction);
         Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
-        Main_values_Play_data = JSON.parse(Main_getElementById(idsArray[3] + id).getAttribute(Main_DataAttribute));
+        Main_values_Play_data = data;
 
         Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[1];
         ChannelVod_createdAt = Main_values_Play_data[2];
@@ -8959,7 +8965,7 @@
                     function(event) {
                         var theUrl, onload;
 
-                        if (event.data.type === 1) { //Live
+                        if (event.data.type === 1) { //Live check if is a vod
 
                             theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.obj.data[14] + '?api_version=5';
 
@@ -8977,7 +8983,7 @@
                                                 this.postMessage({
                                                     data: obj.mData.obj.data[7],
                                                     ended: true,
-                                                    type: 1
+                                                    type: event.data.type
                                                 });
 
                                             } else {
@@ -8985,7 +8991,7 @@
                                                 this.postMessage({
                                                     data: response.stream,
                                                     ended: false,
-                                                    type: 1
+                                                    type: event.data.type
                                                 });
 
                                             }
@@ -8996,16 +9002,16 @@
                                         this.postMessage({
                                             data: obj.mData.obj.data[7],
                                             ended: true,
-                                            type: 1
+                                            type: event.data.type
                                         });
 
                                     }
                                 }
 
                             };
-                        } else if (event.data.type === 2) { //VOD
+                        } else if (event.data.type === 'live' || event.data.type === 'vod') { //Live that is not a VOD and VOD
 
-                            theUrl = 'https://api.twitch.tv/kraken/videos/' + event.data.obj.data[7] + '?api_version=5';
+                            theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
 
                             onload = function(obj) {
 
@@ -9014,14 +9020,14 @@
                                     var message = JSON.parse(obj.responseText).message;
 
                                     //VOD was deleted
-                                    if (message && typeof message === "string") {
+                                    if (message && (typeof message === "string")) {
                                         message = message.toLowerCase();
 
-                                        if (message.indexOf('not found') > -1 && message.indexOf(obj.mData.obj.data[7] > -1)) {
+                                        if ((message.indexOf('not found') > -1) && (message.indexOf(obj.mData.obj.data[7] > -1))) {
 
                                             this.postMessage({
                                                 data: obj.mData.obj.data[7],
-                                                type: 2
+                                                type: obj.mData.type
                                             });
                                         }
 
@@ -9030,7 +9036,7 @@
                                 }
 
                             };
-                        } else if (event.data.type === 3) { //Clip
+                        } else if (event.data.type === 'clip') { //Clip
 
                             theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
 
@@ -9041,11 +9047,11 @@
                                     var message = JSON.parse(obj.responseText).message;
 
                                     //Clip was deleted
-                                    if (message && typeof message === "string" && message.toLowerCase().indexOf('clip does not exist') > -1) {
+                                    if (message && (typeof message === "string") && (message.toLowerCase().indexOf('clip does not exist') > -1)) {
 
                                         this.postMessage({
                                             data: obj.mData.obj.data[7],
-                                            type: 3
+                                            type: obj.mData.type
                                         });
 
                                     }
@@ -9095,7 +9101,7 @@
             function(event) {
                 var index;
 
-                if (event.data.type === 1) {
+                if (event.data.type === 1) { //live that is now a valid vod
 
                     if (event.data.ended) {
 
@@ -9118,25 +9124,14 @@
 
                     }
 
-                } else if (event.data.type === 2) {
+                } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
 
-                    index = Main_history_Exist('vod', event.data.data);
-
-                    if (index > -1) {
-
-                        //delete the vod entry as it no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id].vod.splice(index, 1);
-
-                    }
-
-                } else if (event.data.type === 3) {
-
-                    index = Main_history_Exist('clip', event.data.data);
+                    index = Main_history_Exist(event.data.type, event.data.data);
 
                     if (index > -1) {
 
                         //delete the vod entry as it no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id].clip.splice(index, 1);
+                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
 
                     }
 
@@ -9181,11 +9176,31 @@
             len = array.length;
 
         for (i; i < len; i++) {
+
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
-                type: 2,
+                type: 'vod',
                 delay: i
             });
+
+        }
+
+        array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+
+        i = 0;
+        len = array.length;
+
+        for (i; i < len; i++) {
+
+            if (array[i].forceVod && array[i].vodid) {
+
+                BradcastCheckerWorker.postMessage({
+                    obj: array[i],
+                    type: 'live'
+                });
+
+            }
+
         }
     }
 
@@ -9199,25 +9214,32 @@
             len = array.length;
 
         for (i; i < len; i++) {
+
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
-                type: 3,
+                type: 'clip',
                 delay: i
             });
+
         }
     }
 
     //the internet connection may be down do to standby after resume
     //java will not call Main_CheckResume() until the internet connection is recognized
     function Main_PreventClick(prevent) {
+
         if (prevent) {
+
             window.addEventListener("keydown", Main_PreventClickfun, true);
             window.addEventListener("keyup", Main_PreventClickfun, true);
             window.addEventListener("keypress", Main_PreventClickfun, true);
+
         } else {
+
             window.removeEventListener("keydown", Main_PreventClickfun, true);
             window.removeEventListener("keyup", Main_PreventClickfun, true);
             window.removeEventListener("keypress", Main_PreventClickfun, true);
+
         }
     }
 
@@ -11399,8 +11421,9 @@
         PlayClip_HasBack = false;
 
         if (nextid) {
+
             PlayClip_HasNext = true;
-            data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + nextid).getAttribute(Main_DataAttribute));
+            data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[nextid]);
 
             PlayClip_NextImg(Play_BottonIcons_Next_img, data[15]);
             Main_innerHTMLWithEle(Play_BottonIcons_Next_name, Main_ReplaceLargeFont(data[4]));
@@ -11411,19 +11434,24 @@
             Main_innerHTMLWithEle(Play_BottonIcons_End_title, Main_ReplaceLargeFont(data[10]));
 
             PlayClip_HideShowNext(0, 1);
+
         } else {
+
             PlayClip_HideShowNext(0, 0);
             Main_HideElementWithEle(Play_BottonIcons_End_img);
+
         }
 
         if (backid) {
+
             PlayClip_HasBack = true;
-            data = JSON.parse(Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + backid).getAttribute(Main_DataAttribute));
+            data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[backid]);
 
             PlayClip_NextImg(Play_BottonIcons_Back_img, data[15]);
             Main_innerHTMLWithEle(Play_BottonIcons_Back_name, Main_ReplaceLargeFont(data[4]));
             Main_innerHTMLWithEle(Play_BottonIcons_Back_title, Main_ReplaceLargeFont(data[10]));
             PlayClip_HideShowNext(1, 1);
+
         } else PlayClip_HideShowNext(1, 0);
     }
 
@@ -11437,10 +11465,16 @@
     }
 
     function PlayClip_getIdNext(y, x) {
-        if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY), (ScreenObj[Screens_Current_Key].posX + y), ScreenObj[Screens_Current_Key].ids[0]))
+
+        if (ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y)]) {
+
             return ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y);
-        else if (Main_ThumbNull((ScreenObj[Screens_Current_Key].posY + y), x, ScreenObj[Screens_Current_Key].ids[0]))
+
+        } else if (ScreenObj[Screens_Current_Key].DataObj[(ScreenObj[Screens_Current_Key].posY + y) + '_' + x]) {
+
             return (ScreenObj[Screens_Current_Key].posY + y) + '_' + x;
+
+        }
 
         return null;
     }
@@ -11472,6 +11506,7 @@
             PlayClip_replayOrNext = true;
             PlayClip_PreshutdownStream(false);
             Main_OpenClip(
+                Screens_GetObj(Screens_Current_Key),
                 ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
                 ScreenObj[Screens_Current_Key].ids,
                 ScreenObj[Screens_Current_Key].key_fun,
@@ -11598,10 +11633,11 @@
     function PlayClip_CheckPreviewClip() {
         var restorePreview = false;
 
-        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[3] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-        if (doc) {
+        var data = ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX];
 
-            restorePreview = Main_A_equals_B(JSON.parse(doc.getAttribute(Main_DataAttribute))[0], ChannelClip_playUrl);
+        if (data) {
+
+            restorePreview = Main_A_equals_B(data[0], ChannelClip_playUrl);
 
         }
 
@@ -12793,11 +12829,10 @@
 
     function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
-        var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]),
-            error = STR_STREAM_ERROR;
+        var error = STR_STREAM_ERROR;
 
-        if (doc) {
-            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+        if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
+            var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX);
 
             //prevent bad saved obj
             if (!obj[14]) {
@@ -12973,14 +13008,16 @@
 
             //if side panel is showing, try to find if current stream is on side panel to keep player open
             if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
+
                 Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
                 Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
                 Sidepannel_AddFocusFeed(true);
+
             }
 
-            restorePreview = Sidepannel_RestoreThumb(
-                Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed),
-                Play_data
+            restorePreview = Main_A_equals_B(
+                UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14],
+                Play_data.data[14]
             );
 
             //live
@@ -12991,9 +13028,9 @@
             } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
                 !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
-                restorePreview = Sidepannel_RestoreThumb(
-                    Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX),
-                    Play_data
+                restorePreview = Main_A_equals_B(
+                    ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14],
+                    Play_data.data[14]
                 );
 
             }
@@ -15598,12 +15635,11 @@
 
         if (isOn && response) {
 
-            var responseObj = JSON.parse(response),
-                doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            var responseObj = JSON.parse(response);
 
-            if (doc && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+            if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX) && responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
-                var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                var StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                     isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                     error = StreamInfo[6] + STR_SPACE;
 
@@ -15659,12 +15695,11 @@
     var Play_PreviewVideoEnded = false;
 
     function Play_CheckIfIsLiveStart(callback) {
-        var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
 
-        if (doc) {
+        if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
             Play_showBufferDialog();
 
-            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+            var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 id, token, link;
 
             if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) { //vod
@@ -15723,7 +15758,7 @@
                 if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
                     //Save as we have watched it all
 
-                    var data = JSON.parse(Main_getElementById(ScreenObj[Main_values.Main_Go].ids[3] + id).getAttribute(Main_DataAttribute));
+                    var data = Screens_GetObj(Main_values.Main_Go);
 
                     Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + id).style.width = '100%';
 
@@ -17326,6 +17361,7 @@
             if (!Play_PreviewOffset) Play_PreviewOffset = UserLiveFeed_PreviewOffset;
 
             Main_OpenVodStart(
+                UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
                 UserLiveFeed_ids,
                 keyfun,
@@ -17343,6 +17379,7 @@
 
     function Play_OpenLiveStream(keyfun) {
         Main_OpenLiveStream(
+            UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
             UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX],
             UserLiveFeed_ids,
             keyfun,
@@ -19212,13 +19249,9 @@
     function PlayVod_CheckPreviewVod() {
         var restorePreview = false;
 
-        var doc =
-            Main_getElementById(
-                ScreenObj[Main_values.Main_Go].ids[3] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
-            );
+        if (ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX]) {
 
-        if (doc) {
-            var obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            var obj = Screens_GetObj(Main_values.Main_Go);
 
             if (ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) {
 
@@ -20206,6 +20239,8 @@
         Play_PreviewVideoEnded = false;
         Main_HideWarningDialog();
 
+        ScreenObj[key].tempHtml = '';
+        ScreenObj[key].DataObj = {};
         ScreenObj[key].SetPreviewEnable();
         ScreenObj[key].cursor = null;
         ScreenObj[key].after = '';
@@ -20364,12 +20399,6 @@
 
         if (response_items) {
 
-            if (!ScreenObj[key].row_id) {
-
-                Screens_createRow(key);
-
-            }
-
             var response_rows = Math.ceil(response_items / ScreenObj[key].ColoumnsCount),
                 max_row = ScreenObj[key].row_id + response_rows;
 
@@ -20377,7 +20406,6 @@
 
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
 
-                    Screens_createRow(key);
                     ScreenObj[key].coloumn_id = 0;
 
                 }
@@ -20391,12 +20419,13 @@
 
                 if (ScreenObj[key].coloumn_id === ScreenObj[key].ColoumnsCount) {
 
-                    ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+                    ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
                     ScreenObj[key].row_id++;
+                    ScreenObj[key].tempHtml = '';
 
                 } else if (ScreenObj[key].data_cursor >= data_length) {
 
-                    if (ScreenObj[key].row.innerHTML !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+                    if (ScreenObj[key].tempHtml !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
                     break;
 
                 }
@@ -20409,61 +20438,49 @@
 
     function Screens_createRow(key) {
 
-        ScreenObj[key].row = document.createElement('div');
-        if (ScreenObj[key].rowClass) ScreenObj[key].row.className = ScreenObj[key].rowClass;
-        ScreenObj[key].row.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
-
-    }
-
-    function Screens_createCell(id_attribute, Data_content, html_content, key) {
         var div = document.createElement('div');
-
-        div.setAttribute('id', id_attribute);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(Data_content));
-        div.className = ScreenObj[key].thumbclass;
-        div.innerHTML = html_content;
+        if (ScreenObj[key].rowClass) div.className = ScreenObj[key].rowClass;
+        div.id = ScreenObj[key].ids[6] + ScreenObj[key].row_id;
+        div.innerHTML = ScreenObj[key].tempHtml;
 
         return div;
     }
 
     function Screens_createCellChannel(id, idArray, valuesArray, key) {
-        return Screens_createCell(
-            idArray[3] + id,
-            valuesArray,
-            '<div id="' + idArray[0] + id + '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
+        ScreenObj[key].DataObj[id] = valuesArray;
+
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id +
+            '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
             id + '" alt="" class="stream_img" src="' + valuesArray[2] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
             '<div class="stream_thumbnail_channel_text_holder">' +
             '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
             (valuesArray[4] ? STR_SPACE + STR_SPACE +
                 '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
-                IMG_PARTNER + '">' : "") + '</div></div></div>',
-            key
-        );
+                IMG_PARTNER + '">' : "") + '</div></div></div></div>';
     }
 
     function Screens_createCellGame(id, idArray, valuesArray, key) {
-        return Screens_createCell(
-            idArray[3] + id,
-            valuesArray,
-            '<div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
+
+        ScreenObj[key].DataObj[id] = valuesArray;
+
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';"></div><div class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
             idArray[2] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
             (valuesArray[2] !== '' ? '<div class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
-                '</div>' : '') + '</div></div></div>',
-            key
-        );
+                '</div>' : '') + '</div></div></div></div>';
     }
 
     function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra_until) {
-        var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
 
-        return Screens_createCell(
-            idArray[3] + id,
-            valuesArray,
-            '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
+        var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
+        ScreenObj[key].DataObj[id] = valuesArray;
+
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
@@ -20478,17 +20495,15 @@
             Play_timeS(valuesArray[1]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
-            '</div></div></div></div>',
-            key
-        );
+            '</div></div></div></div></div>';
     }
 
     function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
-        return Screens_createCell(
-            idArray[3] + id,
-            valuesArray,
-            '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
+        ScreenObj[key].DataObj[id] = valuesArray;
+
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
             (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
             '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
@@ -20504,9 +20519,7 @@
             Play_timeS(valuesArray[11]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
-            '</div></div></div>',
-            key
-        );
+            '</div></div></div></div>';
     }
 
     //TODO uncomplicate this ifs
@@ -20517,10 +20530,9 @@
         var ishosting = valuesArray[16],
             image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
-        return Screens_createCell(
-            idArray[3] + id,
-            valuesArray,
-            '<div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
+        ScreenObj[key].DataObj[id] = valuesArray;
+
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';" ></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
@@ -20536,9 +20548,7 @@
             '</div><div class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
-            '</div></div></div>',
-            key
-        );
+            '</div></div></div></div>';
     }
 
     function Screens_loadDataSuccessFinish(key) {
@@ -20803,6 +20813,14 @@
         }
     }
 
+    function Screens_GetObj(key) {
+        return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+    }
+
+    function Screens_ObjNotNull(key) {
+        return Boolean(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+    }
+
     var Screens_LoadPreviewId;
     //Clips load too fast, so only call this function after animations have ended
     //Also help to prevent lag on animation
@@ -20811,11 +20829,9 @@
         if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-            var doc = Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
-
-            if (doc) {
+            if (Screens_ObjNotNull(key)) {
                 var id = 0, //Clip
-                    obj = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                    obj = Screens_GetObj(key);
 
                 if (ScreenObj[key].screenType === 0) id = 14; //live
                 else if (ScreenObj[key].screenType === 1) id = 7; //vod
@@ -20960,18 +20976,14 @@
 
     function Screens_LoadPreviewResult(StreamData, x, y) { //Called by Java
 
-        var doc = Main_getElementById(ScreenObj[x].ids[0] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
-
         if (!Main_isStoped && Screens_IsInUse(x) && !Main_isElementShowing('dialog_thumb_opt') &&
             y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
-            doc && Main_A_includes_B(doc.className, 'stream_thumbnail_focused')) {
+            (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
 
-            doc = Main_getElementById(ScreenObj[x].ids[3] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
-
-            if (StreamData && doc) {
+            if (StreamData && Screens_ObjNotNull(x)) {
 
                 var StreamDataObj = JSON.parse(StreamData),
-                    StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                    StreamInfo = Screens_GetObj(x),
                     index,
                     UserIsSet = AddUser_UserIsSet();
 
@@ -21156,10 +21168,6 @@
         );
     }
 
-    function Screens_ThumbNotNull(thumbnail) {
-        return Main_getElementById(thumbnail) !== null;
-    }
-
     function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_offset, eleRemovePos, down, key) {
         Screens_ChangeFocusAnimationFinished = false;
         Screens_ChangeFocusAnimationFast = true;
@@ -21171,8 +21179,36 @@
 
         //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
         Main_ready(function() {
-            for (var i = for_in; i < for_out; i++)
-                Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, '', key);
+
+            //First calculate the changes then set it
+            var array = [],
+                i = for_in,
+                pos;
+
+            for (i; i < for_out; i++) {
+
+                pos = y + i;
+
+                if (ScreenObj[key].Cells[pos]) {
+
+                    ScreenObj[key].Cells[pos].style.transition = '';
+
+                    array.push({
+                        transform: 'translateY(' + (ScreenObj[key].offsettop * (for_offset + i)) + 'em)',
+                        pos: pos
+                    });
+
+                }
+            }
+
+            var len = array.length;
+            i = 0;
+
+            for (i; i < len; i++) {
+
+                ScreenObj[key].Cells[array[i].pos].style.transform = array[i].transform;
+
+            }
 
             Main_setTimeout(
                 function() {
@@ -21195,20 +21231,17 @@
         });
     }
 
-    function Screens_addrowtransition(pos, offset, transition, key) {
-        if (ScreenObj[key].Cells[pos]) {
-            ScreenObj[key].Cells[pos].style.transition = transition;
-            ScreenObj[key].Cells[pos].style.transform = 'translateY(' + offset + 'em)';
-        }
-    }
-
     function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down, key) {
 
         if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
         else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
 
-        for (var i = for_in; i < for_out; i++)
-            Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, 'none', key);
+        for (var i = for_in; i < for_out; i++) {
+            if (ScreenObj[key].Cells[y + i]) {
+                ScreenObj[key].Cells[y + i].style.transition = 'none';
+                ScreenObj[key].Cells[y + i].style.transform = 'translateY(' + ((for_offset + i) * ScreenObj[key].offsettop) + 'em)';
+            }
+        }
 
         UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
 
@@ -21421,14 +21454,13 @@
             var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
             Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
+            ScreenObj[key].focusPos = id;
 
             if (ScreenObj[key].screenType === 1 || ScreenObj[key].screenType === 2) {
 
-                var doc = Main_getElementById(ScreenObj[key].ids[3] + id);
+                if (Screens_ObjNotNull(key)) {
 
-                if (doc) {
-
-                    var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                    var data = Screens_GetObj(key);
 
                     if (Main_history_Watched_Obj[data[7]])
                         Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
@@ -21515,10 +21547,13 @@
     }
 
     function Screens_addFocusFollow(key) {
+        if (!ScreenObj[key].status) return;
+
         if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
         else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
         Main_AddClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
+        ScreenObj[key].focusPos = -1;
     }
 
     function Screens_removeFocusFollow(key) {
@@ -21539,47 +21574,72 @@
     }
 
     function Screens_KeyUpDown(y, key) {
+        if (!ScreenObj[key].status) return;
+
         //TODO improve this
         if (ScreenObj[key].HasSwitches && !ScreenObj[key].posY && y === -1 && !ScreenObj[key].emptyContent) {
+
             Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
             Screens_ClearAnimation(key);
             ScreenObj[key].posY = -1;
             if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 1;
             Screens_addFocusFollow(key);
-        } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 && (Main_ThumbNull(0, ScreenObj[key].posX, ScreenObj[key].ids[0]))) {
+
+        } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 &&
+            ScreenObj[key].DataObj['0_' + ScreenObj[key].posX]) {
+
             ScreenObj[key].posY = 0;
             Screens_addFocus(false, key);
             Screens_removeFocusFollow(key);
+
         } else {
+
             for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
-                if (Main_ThumbNull((ScreenObj[key].posY + y), (ScreenObj[key].posX - i), ScreenObj[key].ids[0])) {
+                if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + (ScreenObj[key].posX - i)]) {
+
                     Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
                     return;
+
                 }
             }
+
         }
     }
 
     function Screens_ClearAnimation(key) {
         if (ScreenObj[key].HasAnimateThumb) {
+
             Main_clearInterval(ScreenObj[key].AnimateThumbId);
-            if (Screens_ThumbNotNull(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX)) {
+
+            if (Screens_ObjNotNull(key) && ScreenObj[key].status) {
+
                 Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
                 Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
             }
+
         }
     }
 
     function Screens_KeyLeftRight(y, x, key) {
+        if (!ScreenObj[key].status) return;
+
         if (ScreenObj[key].HasSwitches && ScreenObj[key].posY === -1) {
+
             ScreenObj[key].posY = -1;
             Screens_removeFocusFollow(key);
             ScreenObj[key].posX += (!x ? 1 : -1);
             Screens_addFocusFollow(key);
-        } else if (Main_ThumbNull((ScreenObj[key].posY), (ScreenObj[key].posX + y), ScreenObj[key].ids[0]))
+
+        } else if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + (ScreenObj[key].posX + y)]) {
+
             Screens_ChangeFocus(0, (ScreenObj[key].posX + y), key);
-        else if (Main_ThumbNull((ScreenObj[key].posY + y), x, ScreenObj[key].ids[0]))
+
+        } else if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + x]) {
+
             Screens_ChangeFocus(y, x, key);
+
+        }
     }
 
     function Screens_OpenSidePanel(forceFeed, key) {
@@ -21592,12 +21652,17 @@
     }
 
     function Screens_RemoveAllFocus(key) {
-        if (Main_ThumbNull(ScreenObj[key].posY, ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX] &&
+            ScreenObj[key].status) {
+
             Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
+
         } else if (ScreenObj[key].posY < 0) {
+
             Screens_removeFocusFollow(key);
             ScreenObj[key].posY = 0;
             ScreenObj[key].posX = 0;
+
         }
     }
 
@@ -21607,17 +21672,25 @@
         //Main_Log('Screens_handleKeyUp e.keyCode ' + e.keyCode + ' key ' + key);
 
         if (e.keyCode === KEY_ENTER) {
+
             Screens_handleKeyUpClear(key);
             if (!Screens_clear) ScreenObj[key].key_play();
+
         } else if (e.keyCode === KEY_LEFT) {
+
             Main_clearTimeout(Screens_KeyEnterID);
             Main_removeEventListener("keyup", ScreenObj[key].key_up);
+
             if (!Screens_clear) {
+
                 if (!ScreenObj[key].posX) Screens_OpenSidePanel(false, key);
                 else {
+
                     Screens_KeyLeftRight(-1, ScreenObj[key].ColoumnsCount - 1, key);
                     Main_addEventListener("keydown", ScreenObj[key].key_fun);
+
                 }
+
             }
         }
         Screens_handleKeyUpIsClear = true;
@@ -21636,14 +21709,20 @@
     }
 
     function Screens_keyRight(key) {
+        if (!ScreenObj[key].status) return;
+
         //Prevent scroll too fast out of ScreenObj[key].Cells.length
         //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
         if (ScreenObj[key].dataEnded ||
             ScreenObj[key].posX < (ScreenObj[key].ColoumnsCount - 1) ||
             (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1)) {
+
             if (ScreenObj[key].posX === (ScreenObj[key].ColoumnsCount - 1)) {
+
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
+
             } else Screens_KeyLeftRight(1, 0, key);
+
         } else Screens_addFocus(true, key);
     }
 
@@ -21789,12 +21868,16 @@
     }
 
     function AGame_headerOptionsExit(key) {
+
         if (ScreenObj[key].status && ScreenObj[key].posY === -1) {
+
             Screens_removeFocusFollow(key);
             ScreenObj[key].posY = 0;
             ScreenObj[key].posX = 0;
             Main_AddClass(ScreenObj[key].ids[0] + '0_' + ScreenObj[key].posX, Main_classThumb);
+
         }
+
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
     }
@@ -22270,7 +22353,7 @@
 
     function Screens_ThumbOptionStringSet(key) {
         Screens_canFollow = false;
-        Screens_values_Play_data = JSON.parse(Main_getElementById(ScreenObj[key].ids[3] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).getAttribute(Main_DataAttribute));
+        Screens_values_Play_data = Screens_GetObj(key);
 
         if (AddUser_UserIsSet()) {
             Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -22706,10 +22789,7 @@
     }
 
     function Screens_Isfocused() {
-        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[0] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
-        return doc &&
-            Main_A_includes_B(doc.className, 'stream_thumbnail_focused') &&
-            Main_isScene1DocVisible();
+        return (ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX) === ScreenObj[Screens_Current_Key].focusPos && Main_isScene1DocVisible();
     }
 
     //TODO add screen.isInuse prop to adress this fun use
@@ -22811,13 +22891,15 @@
             emptyContent: true,
             itemsCountCheck: false,
             isRefreshing: false,
-            row: 0,
             Headers: Main_Headers,
             data: null,
             token: null,
             data_cursor: 0,
             lastRefresh: 0,
             PreviewEnable: 0,
+            DataObj: {},
+            tempHtml: '',
+            focusPos: '',
             SetPreviewEnable: function() {
                 this.PreviewEnable =
                     (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -22900,6 +22982,40 @@
                 if (this.ScreenName)
                     Main_EventScreen(this.ScreenName);
             },
+            OpenVodStart: function() {
+
+                Main_OpenVodStart(
+                    Screens_GetObj(this.screen),
+                    this.posY + '_' + this.posX,
+                    this.ids,
+                    this.key_fun,
+                    this.ScreenName
+                );
+
+            },
+            OpenClip: function() {
+
+                Main_OpenClip(
+                    Screens_GetObj(this.screen),
+                    this.posY + '_' + this.posX,
+                    this.ids,
+                    this.key_fun,
+                    this.ScreenName
+                );
+
+            },
+            OpenLiveStream: function(checkHistory) {
+
+                Main_OpenLiveStream(
+                    Screens_GetObj(this.screen),
+                    this.posY + '_' + this.posX,
+                    this.ids,
+                    this.key_fun,
+                    checkHistory,
+                    this.ScreenName
+                );
+
+            },
         };
 
         Base_Vod_obj = {
@@ -22937,14 +23053,13 @@
                     this.itemsCount++;
                     this.idObject[cell._id] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellVod(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             ScreensObj_VodCellArray(cell),
                             this.screen
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -22992,13 +23107,11 @@
                     this.itemsCount++;
                     this.idObject[cell.channel._id] = 1;
 
-                    this.row.appendChild(
-                        Screens_createCellLive(
-                            this.row_id + '_' + this.coloumn_id,
-                            this.ids,
-                            ScreensObj_LiveCellArray(cell),
-                            this.screen
-                        )
+                    this.tempHtml += Screens_createCellLive(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        ScreensObj_LiveCellArray(cell),
+                        this.screen
                     );
 
                     this.coloumn_id++;
@@ -23007,7 +23120,7 @@
             key_play: function() {
                 if (this.itemsCount) {
                     Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                    Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, false, this.ScreenName);
+                    this.OpenLiveStream(false);
                 }
             }
         };
@@ -23051,18 +23164,29 @@
                 if (this.cursor === '') this.dataEnded = true;
             },
             key_play: function() {
+
                 if (this.posY === -1) {
+
                     if (!this.loadingData) {
-                        if (!this.posX) Screens_PeriodStart(this.screen);
-                        else {
+
+                        if (!this.posX) {
+
+                            Screens_PeriodStart(this.screen);
+                            return;
+
+                        } else {
+
                             PlayClip_All = true;
                             Screens_removeFocusFollow(this.screen);
                             this.posX = 0;
                             this.posY = 0;
-                            Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
                         }
-                    }
-                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
+                    } else return;
+                }
+
+                this.OpenClip();
             },
             Cells: [],
             addCell: function(cell) {
@@ -23070,14 +23194,13 @@
                     this.itemsCount++;
                     this.idObject[cell.tracking_id] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellClip(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             ScreensObj_ClipCellArray(cell),
                             this.screen
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -23101,9 +23224,10 @@
             key_play: function() {
                 Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
-                Main_values.Main_gameSelected = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
-                Main_values.Main_gameSelected_id = Main_values.Main_gameSelected[3];
-                Main_values.Main_gameSelected = Main_values.Main_gameSelected[1];
+                var data = Screens_GetObj(this.screen);
+
+                Main_values.Main_gameSelected_id = data[3];
+                Main_values.Main_gameSelected = data[1];
 
                 Main_removeEventListener("keydown", this.key_fun);
                 Main_values.Main_BeforeAgame = this.screen;
@@ -23130,19 +23254,18 @@
                     this.itemsCount++;
                     this.idObject[game._id] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellGame(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
-                            [game.box.template.replace("{width}x{height}", Main_GameSize),
-                                game.name,
+                            [game.box.template.replace("{width}x{height}", Main_GameSize), //0
+                                game.name, //1
                                 hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',
-                                game._id
+                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '', //2
+                                game._id //3
                             ],
                             this.screen
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -23172,14 +23295,13 @@
                     this.itemsCount++;
                     this.idObject[cell._id] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellChannel(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             [cell.name, cell._id, cell.logo, cell.display_name, cell.partner],
                             this.screen
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -23187,14 +23309,12 @@
             base_key_play: function(go_screen, IsFollowing) {
                 if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
-                Main_values.Main_selectedChannel = JSON.parse(Main_getElementById(this.ids[3] + this.posY + '_' + this.posX).getAttribute(Main_DataAttribute));
+                var data = Screens_GetObj(this.screen);
 
-                Main_values.Main_selectedChannel_id = Main_values.Main_selectedChannel[1];
-                Main_values.Main_selectedChannelDisplayname = Main_values.Main_selectedChannel[3];
-                Main_values.Main_selectedChannelLogo = Main_values.Main_selectedChannel[2];
-                Main_values.Main_selectedChannel = Main_values.Main_selectedChannel[0];
-                //console.log(Main_values.Main_selectedChannel);
-                //console.log(Main_values.Main_selectedChannel_id);
+                Main_values.Main_selectedChannel_id = data[1];
+                Main_values.Main_selectedChannelDisplayname = data[3];
+                Main_values.Main_selectedChannelLogo = data[2];
+                Main_values.Main_selectedChannel = data[0];
 
                 Main_removeEventListener("keydown", this.key_fun);
                 Main_values.Main_BeforeChannel = go_screen;
@@ -23333,7 +23453,7 @@
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                } else this.OpenVodStart();
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -23400,7 +23520,7 @@
                         this.SetPeriod();
                         Screens_StartLoad(this.screen);
                     } else Screens_OffSetStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                } else this.OpenVodStart();
             },
             SwitchesIcons: ['movie-play', 'history', 'offset'],
             addSwitches: function() {
@@ -23474,7 +23594,7 @@
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                } else this.OpenVodStart();
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -23543,7 +23663,7 @@
                         this.SetPeriod();
                         Screens_StartLoad(this.screen);
                     }
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                } else this.OpenVodStart();
             },
             SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function() {
@@ -23786,14 +23906,13 @@
                 this.itemsCount++;
                 this.idObject[cell.target._id] = 1;
 
-                this.row.appendChild(
+                this.tempHtml +=
                     Screens_createCellLive(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         ScreensObj_HostCellArray(cell),
                         this.screen
-                    )
-                );
+                    );
 
                 this.coloumn_id++;
             }
@@ -23852,13 +23971,7 @@
             if (this.itemsCount && this.posY !== -1) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
-                Main_OpenLiveStream(
-                    this.posY + '_' + this.posX,
-                    this.ids,
-                    this.key_fun,
-                    false,
-                    Main_values.Main_BeforeAgameisSet && ScreenObj[Main_values.Main_BeforeAgame].ScreenName ? ScreenObj[Main_values.Main_BeforeAgame].ScreenName : this.ScreenName
-                );
+                this.OpenLiveStream(false);
 
             } else AGame_headerOptions(this.screen);
         };
@@ -24248,7 +24361,7 @@
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellLive(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
@@ -24257,8 +24370,7 @@
                             cell.date,
                             cell.vodimg,
                             (this.streamerID[cell.data[14]] && cell.vodid) || cell.forceVod
-                        )
-                    );
+                        );
 
                     //If there is alredy one stream shoing all the rest is a VOD
                     this.streamerID[cell.data[14]] = 1;
@@ -24295,7 +24407,7 @@
             } else {
                 if (this.itemsCount) {
                     Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
-                    Main_OpenLiveStream(this.posY + '_' + this.posX, this.ids, this.key_fun, true, this.ScreenName);
+                    this.OpenLiveStream(true);
                 }
             }
         };
@@ -24349,7 +24461,7 @@
                         this.history_exit();
                         Main_SwitchScreen();
                     } else Screens_histStart(this.screen);
-                } else Main_OpenVodStart(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+                } else this.OpenVodStart();
 
             },
             addCell: function(cell) {
@@ -24358,7 +24470,7 @@
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellVod(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
@@ -24366,8 +24478,7 @@
                             this.screen,
                             cell.date,
                             cell.watched
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -24432,16 +24543,26 @@
             key_play: function() {
 
                 if (this.posY === -1) {
+
                     if (this.posX === 0) {
+
                         Main_values.Main_Go = Main_HistoryLive;
                         this.history_exit();
                         Main_SwitchScreen();
+
                     } else if (this.posX === 1) {
+
                         Main_values.Main_Go = Main_HistoryVod;
                         this.history_exit();
                         Main_SwitchScreen();
+
                     } else Screens_histStart(this.screen);
-                } else Main_OpenClip(this.posY + '_' + this.posX, this.ids, this.key_fun, this.ScreenName);
+
+                } else {
+
+                    this.OpenClip();
+
+                }
 
             },
             addCell: function(cell) {
@@ -24450,7 +24571,7 @@
                     this.itemsCount++;
                     this.idObject[cell.data[7]] = 1;
 
-                    this.row.appendChild(
+                    this.tempHtml +=
                         Screens_createCellClip(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
@@ -24458,8 +24579,7 @@
                             this.screen,
                             cell.date,
                             cell.watched
-                        )
-                    );
+                        );
 
                     this.coloumn_id++;
                 }
@@ -28235,6 +28355,7 @@
     var Sidepannel_FixDiv;
     var Sidepannel_MovelDiv;
     var Sidepannel_ScroolDoc;
+    var Sidepannel_Html;
     var Sidepannel_SidepannelDoc;
     var Sidepannel_ChangeFocusAnimationFinished = true;
     var Sidepannel_ChangeFocusAnimationFast = false;
@@ -28277,12 +28398,19 @@
         return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
     }
 
+    function Sidepannel_GetObj(pos) {
+        return Main_Slice(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
+    }
+
+    function Sidepannel_ObjNotNull(pos) {
+        return Boolean(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
+    }
+
     function Sidepannel_UpdateThumbDiv() {
 
-        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-        if (doc) {
-            var info = JSON.parse(doc.getAttribute(Main_DataAttribute));
+            var info = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
             Sidepannel_UpdateThumbDoc.onerror = function() {
                 this.onerror = null;
@@ -28305,11 +28433,10 @@
             Main_ShowElement('side_panel_feed_thumb');
 
             if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
-                var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
 
-                if (doc) {
+                if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-                    var ChannelId = JSON.parse(doc.getAttribute(Main_DataAttribute))[14];
+                    var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
                     if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                         Sidepannel_CheckIfIsLiveStart();
@@ -28323,17 +28450,6 @@
 
         }
 
-    }
-
-    function Sidepannel_RestoreThumb(doc, play_data) {
-        if (doc) {
-            return Main_A_equals_B(
-                JSON.parse(doc.getAttribute(Main_DataAttribute))[14],
-                play_data.data[14]
-            );
-        }
-
-        return false;
     }
 
     function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
@@ -28369,17 +28485,15 @@
             return;
         }
 
-        var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-        if (doc) {
-
-            var channel = JSON.parse(doc.getAttribute(Main_DataAttribute))[6];
+            var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
             OSInterface_CheckIfIsLiveFeed(
                 Play_live_token.replace('%x', channel),
                 Play_live_links.replace('%x', channel),
                 "Sidepannel_CheckIfIsLiveResult",
-                1,
+                0,
                 (Sidepannel_PosFeed % 100),
                 NewDefaultHttpGetTimeout
             );
@@ -28391,13 +28505,12 @@
 
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (!Main_isStoped && Sidepannel_isShowing() && x === 1 && y === (Sidepannel_PosFeed % 100)) {
-            var doc = Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed);
+        if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
-            if (StreamData && doc) {
+            if (StreamData && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
                 StreamData = JSON.parse(StreamData);
 
-                var StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var StreamInfo = Sidepannel_GetObj(UserLiveFeedobj_UserLivePos);
 
                 if (StreamData.status === 200) {
 
@@ -28627,8 +28740,7 @@
         var ForceRefresh = false;
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
-        if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name ||
-            !UserLiveFeed_ThumbNull(UserLiveFeedobj_UserLivePos + '_' + UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos], UserLiveFeed_ids[0]) ||
+        if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
             ForceRefresh = true;
         }
@@ -28894,6 +29006,7 @@
                     Main_values.Play_isHost = false;
 
                     Main_OpenLiveStream(
+                        Sidepannel_GetObj(UserLiveFeedobj_UserLivePos),
                         Sidepannel_PosFeed,
                         UserLiveFeed_side_ids,
                         Sidepannel_handleKeyDown,
@@ -29039,6 +29152,7 @@
     var UserLiveFeed_FeedSetPosLast = [];
     var UserLiveFeed_lastRefresh = [];
     var UserLiveFeed_RefreshId = [];
+    var UserLiveFeed_DataObj = [];
 
     var UserLiveFeed_ChangeFocusAnimationFast = false;
     var UserLiveFeed_ChangeFocusAnimationFinished = [];
@@ -29098,6 +29212,7 @@
             UserLiveFeed_obj[i].checkPreview = true;
             UserLiveFeed_RefreshId[i] = null;
             UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
+            UserLiveFeed_DataObj[i] = {};
         }
 
         //User vod
@@ -29479,10 +29594,18 @@
         }
     }
 
+    function UserLiveFeed_GetObj(pos) {
+        return Main_Slice(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
+    }
+
+    function UserLiveFeed_ObjNotNull(pos) {
+        return Boolean(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
+    }
+
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         var total = UserLiveFeed_GetSize(pos);
 
-        if (!total || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0])) {
+        if (!total || !UserLiveFeed_ObjNotNull(pos) || UserLiveFeed_loadingData[pos]) {
             if (!total && UserLiveFeed_isPreviewShowing()) UserLiveFeed_CheckIfIsLiveSTop();
             UserLiveFeed_ResetFeedId();
             return;
@@ -29496,10 +29619,10 @@
             Main_AddClass(UserLiveFeed_ids[0] + id, UserLiveFeed_FocusClass);
 
             if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
-                var doc = Main_getElementById(UserLiveFeed_ids[3] + id);
-                if (doc) {
 
-                    var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                if (UserLiveFeed_ObjNotNull(pos)) {
+
+                    var data = UserLiveFeed_GetObj(pos);
 
                     if (Main_history_Watched_Obj[data[7]])
                         Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
@@ -29550,12 +29673,13 @@
     }
 
     function UserLiveFeed_CheckVod() {
+
         if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
 
-            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
+            if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
-            if (doc) {
-                var data = JSON.parse(doc.getAttribute(Main_DataAttribute));
+                var data = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX);
+
                 var index = Main_history_Exist('live', data[7]);
 
                 if (index > -1) {
@@ -29567,6 +29691,7 @@
                 }
             }
         }
+
         return true;
     }
 
@@ -29682,12 +29807,10 @@
             (!Play_isEndDialogVisible() || !Play_EndFocus) &&
             UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
 
-            var doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
-
-            if (StreamData && doc) {
+            if (StreamData && UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
                 var StreamDataObj = JSON.parse(StreamData),
-                    StreamInfo = JSON.parse(doc.getAttribute(Main_DataAttribute)),
+                    StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                     isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                     error;
 
@@ -29805,11 +29928,39 @@
         UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translateX(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em)';
 
         Main_ready(function() {
-            for (var i = for_in; i < for_out; i++) {
-                if (UserLiveFeed_cell[pos][x + i]) {
-                    if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
-                    UserLiveFeed_cell[pos][x + i].style.transform = 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)';
+
+            //First calculate the changes then set it
+            var array = [],
+                i = for_in,
+                mpos;
+
+            for (i; i < for_out; i++) {
+
+                mpos = x + i;
+
+                if (UserLiveFeed_cell[pos][mpos]) {
+
+                    if (UserLiveFeed_cell[pos][mpos]) {
+
+                        UserLiveFeed_cell[pos][mpos].style.transition = '';
+
+                        array.push({
+                            transform: 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)',
+                            pos: mpos
+                        });
+                    }
+
                 }
+
+            }
+
+            var len = array.length;
+            i = 0;
+
+            for (i; i < len; i++) {
+
+                UserLiveFeed_cell[pos][array[i].pos].style.transform = array[i].transform;
+
             }
 
             Main_setTimeout(
@@ -29987,12 +30138,8 @@
     function UserLiveFeed_FeedRemoveFocus(pos) {
         UserLiveFeed_CheckIfIsLiveSTop();
 
-        if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
+        if (UserLiveFeed_ObjNotNull(pos))
             Main_RemoveClass(UserLiveFeed_ids[0] + pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_FocusClass);
-    }
-
-    function UserLiveFeed_ThumbNull(y, thumbnail) {
-        return Main_getElementById(thumbnail + y) !== null;
     }
 
     function UserLiveFeed_SetFeedPicText() {
@@ -30104,15 +30251,19 @@
     }
 
     function UserLiveFeed_KeyEnter(pos) {
-        var doc;
-        if (pos === UserLiveFeedobj_UserGamesPos) {
-            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
-            if (doc !== null) UserLiveFeedobj_CurrentUserAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
-            if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
+        if (pos === UserLiveFeedobj_UserGamesPos) {
+
+            if (UserLiveFeed_ObjNotNull(pos))
+                UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_GetObj(pos);
+
+            if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
+
                 Play_showWarningMidleDialog(STR_NO_GAME, 1000);
                 return;
+
             }
+
             UserLiveFeedobj_CurrentUserAGameEnable = true;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
@@ -30127,10 +30278,11 @@
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
 
         } else if (pos === UserLiveFeedobj_GamesPos) {
-            doc = Main_getElementById(UserLiveFeed_ids[3] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]);
-            if (doc !== null) UserLiveFeedobj_CurrentAGameNameEnter = JSON.parse(doc.getAttribute(Main_DataAttribute))[0];
 
-            if (doc === null || Main_A_equals_B(UserLiveFeedobj_CurrentAGameNameEnter, '')) {
+            if (UserLiveFeed_ObjNotNull(pos))
+                UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_GetObj(pos);
+
+            if (!UserLiveFeed_ObjNotNull(pos)) {
                 Play_showWarningMidleDialog(STR_NO_GAME, 1000);
                 return;
             }
@@ -30235,9 +30387,10 @@
 
     function UserLiveFeedobj_StartDefault(pos) {
         if (UserLiveFeed_status[pos]) {
-            if (UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]))
-                UserLiveFeed_LastPos[pos] =
-                JSON.parse(Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).getAttribute(Main_DataAttribute))[14];
+
+            if (UserLiveFeed_ObjNotNull(pos))
+                UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][14];
+
         } else {
             UserLiveFeed_LastPos[pos] = null;
         }
@@ -30247,6 +30400,7 @@
         UserLiveFeed_obj[pos].offsettopFontsize = Settings_Obj_default('global_font_offset');
         UserLiveFeed_cell[pos] = [];
         UserLiveFeed_idObject[pos] = {};
+        UserLiveFeed_DataObj[pos] = {};
 
         UserLiveFeed_itemsCount[pos] = 0;
         Main_emptyWithEle(UserLiveFeed_obj[pos].div);
@@ -30268,14 +30422,17 @@
     function UserLiveFeedobj_CheckToken() {
         Main_clearTimeout(Main_CheckResumeFeedId);
 
-        if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && UserLiveFeed_ThumbNull(Sidepannel_PosFeed, UserLiveFeed_side_ids[0])) {
-            UserSidePannel_LastPos = JSON.parse(Main_getElementById(UserLiveFeed_side_ids[3] + Sidepannel_PosFeed).getAttribute(Main_DataAttribute))[14];
+        if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
+
+            UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+
         } else UserSidePannel_LastPos = null;
 
         Main_ShowElement('dialog_loading_side_feed');
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
-        Main_empty('side_panel_holder');
+        Main_emptyWithEle(Sidepannel_ScroolDoc);
+        Sidepannel_Html = '';
         Main_getElementById('side_panel_warn').style.display = 'none';
 
         UserLiveFeed_loadChannelOffsset = 0;
@@ -30505,7 +30662,7 @@
 
         if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
-        if (forceRefressh || !UserLiveFeed_ThumbNull(pos + '_' + UserLiveFeed_FeedPosY[pos], UserLiveFeed_ids[0]) ||
+        if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
             UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
 
@@ -30595,6 +30752,8 @@
 
                         UserLiveFeed_cell[pos][itemsCount] =
                             UserLiveFeedobj_CreatFeed(
+                                pos,
+                                itemsCount,
                                 pos + '_' + itemsCount,
                                 cell.data,
                                 cell.date,
@@ -30983,12 +31142,8 @@
 
     function UserLiveFeedobj_CreatSideFeed(id, data) {
 
-        var div = document.createElement('div');
-        div.setAttribute('id', UserLiveFeed_side_ids[3] + id);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
-        div.className = 'side_panel_feed';
-
-        div.innerHTML = '<div id="' + UserLiveFeed_side_ids[0] + id +
+        return '<div id="' + UserLiveFeed_side_ids[3] + id +
+            '" class="side_panel_feed"><div id="' + UserLiveFeed_side_ids[0] + id +
             '" class="side_panel_div"><div id="' + UserLiveFeed_side_ids[2] + id +
             '" style="width: 100%;"><div style="display: none;">' + data[1] +
             '</div><div class="side_panel_iner_div1"><img id="' + UserLiveFeed_side_ids[1] + id +
@@ -30998,17 +31153,16 @@
             '</div><div class="side_panel_new_game">' + data[3] +
             '</div></div><div class="side_panel_iner_div3"><div style="text-align: center;"><i class="icon-' +
             (!data[8] ? 'circle" style="color: red;' : 'refresh" style="') +
-            ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div>';
+            ' font-size: 55%; "></i><div style="font-size: 58%;">' + Main_addCommas(data[13]) + '</div></div></div></div></div></div></div>';
 
-        return div;
     }
 
-    function UserLiveFeedobj_CreatFeed(id, data, Extra_when, Extra_vodimg, force_VOD) {
+    function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, force_VOD) {
         if (!data[1]) data[1] = data[6];
         var div = document.createElement('div');
 
         div.setAttribute('id', UserLiveFeed_ids[3] + id);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+        UserLiveFeed_DataObj[pos][y] = data;
 
         div.className = 'user_feed_thumb';
 
@@ -31037,11 +31191,11 @@
         return div;
     }
 
-    function UserLiveFeedobj_CreatVodFeed(id, data, Extra_when, Extra_until) {
+    function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until) {
         var div = document.createElement('div');
 
         div.setAttribute('id', UserLiveFeed_ids[3] + id);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+        UserLiveFeed_DataObj[pos][x] = data;
 
         div.className = 'user_feed_thumb';
 
@@ -31064,12 +31218,12 @@
         return div;
     }
 
-    function UserLiveFeedobj_CreatGameFeed(id, data) {
+    function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
         var div = document.createElement('div');
         data[14] = data[2]; //To make UserLiveFeed_LastPos work
 
         div.setAttribute('id', UserLiveFeed_ids[3] + id);
-        div.setAttribute(Main_DataAttribute, JSON.stringify(data));
+        UserLiveFeed_DataObj[pos][x] = data;
 
         div.className = 'user_feed_thumb_game';
         div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
@@ -31144,22 +31298,25 @@
 
                     UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
+                            UserLiveFeedobj_UserLivePos,
+                            itemsCount,
                             UserLiveFeedobj_UserLivePos + '_' + itemsCount,
                             mArray
                         );
 
-                    Sidepannel_ScroolDoc.appendChild(
+                    Sidepannel_Html +=
                         UserLiveFeedobj_CreatSideFeed(
                             itemsCount,
                             mArray
-                        )
-                    );
+                        );
 
                     itemsCount++;
                 }
             }
 
         } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+
+        Main_innerHTMLWithEle(Sidepannel_ScroolDoc, Sidepannel_Html);
 
         // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
         //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
@@ -31297,6 +31454,8 @@
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatVodFeed(
+                            pos,
+                            itemsCount,
                             pos + '_' + itemsCount,
                             mArray
                         );
@@ -31383,6 +31542,8 @@
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatVodFeed(
+                            pos,
+                            itemsCount,
                             pos + '_' + itemsCount,
                             cell.data,
                             cell.date,
@@ -31463,6 +31624,8 @@
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
+                            pos,
+                            itemsCount,
                             pos + '_' + itemsCount,
                             mArray
                         );
@@ -31557,6 +31720,8 @@
 
                     UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
+                            UserLiveFeedobj_UserHostPos,
+                            itemsCount,
                             UserLiveFeedobj_UserHostPos + '_' + itemsCount,
                             ScreensObj_HostCellArray(stream)
                         );
@@ -31642,6 +31807,8 @@
 
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatGameFeed(
+                            pos,
+                            itemsCount,
                             pos + '_' + itemsCount,
                             [
                                 game.name, //0
