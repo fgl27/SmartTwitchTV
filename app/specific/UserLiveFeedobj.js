@@ -75,7 +75,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
 
         if (UserLiveFeed_ObjNotNull(pos))
-            UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][pos + '_' + UserLiveFeed_FeedPosY[pos]][14];
+            UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][14];
 
     } else {
         UserLiveFeed_LastPos[pos] = null;
@@ -110,7 +110,7 @@ function UserLiveFeedobj_CheckToken() {
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-        UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14];
+        UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
     } else UserSidePannel_LastPos = null;
 
@@ -437,6 +437,7 @@ function UserLiveFeedobj_History() {
                     UserLiveFeed_cell[pos][itemsCount] =
                         UserLiveFeedobj_CreatFeed(
                             pos,
+                            itemsCount,
                             pos + '_' + itemsCount,
                             cell.data,
                             cell.date,
@@ -832,12 +833,12 @@ function UserLiveFeedobj_CreatSideFeed(id, data) {
 
 }
 
-function UserLiveFeedobj_CreatFeed(pos, id, data, Extra_when, Extra_vodimg, force_VOD) {
+function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, force_VOD) {
     if (!data[1]) data[1] = data[6];
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    UserLiveFeed_DataObj[pos][id] = data;
+    UserLiveFeed_DataObj[pos][y] = data;
 
     div.className = 'user_feed_thumb';
 
@@ -866,11 +867,11 @@ function UserLiveFeedobj_CreatFeed(pos, id, data, Extra_when, Extra_vodimg, forc
     return div;
 }
 
-function UserLiveFeedobj_CreatVodFeed(pos, id, data, Extra_when, Extra_until) {
+function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until) {
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    UserLiveFeed_DataObj[pos][id] = data;
+    UserLiveFeed_DataObj[pos][x] = data;
 
     div.className = 'user_feed_thumb';
 
@@ -893,12 +894,12 @@ function UserLiveFeedobj_CreatVodFeed(pos, id, data, Extra_when, Extra_until) {
     return div;
 }
 
-function UserLiveFeedobj_CreatGameFeed(pos, id, data) {
+function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
     var div = document.createElement('div');
     data[14] = data[2];//To make UserLiveFeed_LastPos work
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    UserLiveFeed_DataObj[pos][id] = data;
+    UserLiveFeed_DataObj[pos][x] = data;
 
     div.className = 'user_feed_thumb_game';
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id +
@@ -974,6 +975,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserLivePos,
+                        itemsCount,
                         UserLiveFeedobj_UserLivePos + '_' + itemsCount,
                         mArray
                     );
@@ -1128,6 +1130,7 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatVodFeed(
                         pos,
+                        itemsCount,
                         pos + '_' + itemsCount,
                         mArray
                     );
@@ -1214,6 +1217,7 @@ function UserLiveFeedobj_UserVodHistory() {
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatVodFeed(
                         pos,
+                        itemsCount,
                         pos + '_' + itemsCount,
                         cell.data,
                         cell.date,
@@ -1295,6 +1299,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         pos,
+                        itemsCount,
                         pos + '_' + itemsCount,
                         mArray
                     );
@@ -1390,6 +1395,7 @@ function UserLiveFeedobj_loadDataUserHostSuccess(responseText) {
                 UserLiveFeed_cell[UserLiveFeedobj_UserHostPos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
                         UserLiveFeedobj_UserHostPos,
+                        itemsCount,
                         UserLiveFeedobj_UserHostPos + '_' + itemsCount,
                         ScreensObj_HostCellArray(stream)
                     );
@@ -1476,6 +1482,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatGameFeed(
                         pos,
+                        itemsCount,
                         pos + '_' + itemsCount,
                         [
                             game.name,//0

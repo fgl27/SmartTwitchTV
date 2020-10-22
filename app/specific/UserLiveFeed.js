@@ -482,11 +482,11 @@ function UserLiveFeed_ResetAddCellsize() {
 }
 
 function UserLiveFeed_GetObj(pos) {
-    return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + UserLiveFeed_FeedPosY[pos]]);
+    return Main_Slice(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
 }
 
 function UserLiveFeed_ObjNotNull(pos) {
-    return Boolean(UserLiveFeed_DataObj[pos][pos + '_' + UserLiveFeed_FeedPosY[pos]]);
+    return Boolean(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
 }
 
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
@@ -1114,8 +1114,7 @@ function UserLiveFeed_KeyEnter(pos) {
         if (UserLiveFeed_ObjNotNull(pos))
             UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_GetObj(pos);
 
-        if (!UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]] ||
-            Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
+        if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
 
             Play_showWarningMidleDialog(STR_NO_GAME, 1000);
             return;
@@ -1140,7 +1139,7 @@ function UserLiveFeed_KeyEnter(pos) {
         if (UserLiveFeed_ObjNotNull(pos))
             UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_GetObj(pos);
 
-        if (!UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]]) {
+        if (!UserLiveFeed_ObjNotNull(pos)) {
             Play_showWarningMidleDialog(STR_NO_GAME, 1000);
             return;
         }

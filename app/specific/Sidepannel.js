@@ -76,11 +76,11 @@ function Sidepannel_isShowingSide() {
 }
 
 function Sidepannel_GetObj(pos) {
-    return Main_Slice(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
+    return Main_Slice(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
 }
 
 function Sidepannel_ObjNotNull(pos) {
-    return Boolean(UserLiveFeed_DataObj[pos][pos + '_' + Sidepannel_PosFeed]);
+    return Boolean(UserLiveFeed_DataObj[pos][Sidepannel_PosFeed]);
 }
 
 function Sidepannel_UpdateThumbDiv() {
@@ -113,7 +113,7 @@ function Sidepannel_UpdateThumb() {
 
             if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-                var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][14];
+                var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
                 if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                     Sidepannel_CheckIfIsLiveStart();
@@ -163,7 +163,7 @@ function Sidepannel_CheckIfIsLive() {
 
     if (Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-        var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][UserLiveFeedobj_UserLivePos + '_' + Sidepannel_PosFeed][6];
+        var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
         OSInterface_CheckIfIsLiveFeed(
             Play_live_token.replace('%x', channel),
