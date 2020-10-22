@@ -425,8 +425,12 @@ function AddUser_UserMakeOne(position) {
 
     OSInterface_UpdateUserId(AddUser_UsernameArray[0]);
 
+    //Reset history obj and check for deleted vod/clips
     Main_history_SetVod_Watched();
-    //Reset user emotes on chage
+    Main_RunVODWorker();
+    Main_RunClipWorker();
+
+    //Reset user emotes on change
     userEmote = {};
 }
 
