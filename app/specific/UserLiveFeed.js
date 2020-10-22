@@ -1145,7 +1145,7 @@ function UserLiveFeed_KeyEnter(pos) {
     if (pos === UserLiveFeedobj_UserGamesPos) {
 
         if (UserLiveFeed_ObjNotNull(pos))
-            UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_GetObj(pos);
+            UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
 
         if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
 
@@ -1170,7 +1170,7 @@ function UserLiveFeed_KeyEnter(pos) {
     } else if (pos === UserLiveFeedobj_GamesPos) {
 
         if (UserLiveFeed_ObjNotNull(pos))
-            UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_GetObj(pos);
+            UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
 
         if (!UserLiveFeed_ObjNotNull(pos)) {
             Play_showWarningMidleDialog(STR_NO_GAME, 1000);
