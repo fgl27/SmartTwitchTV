@@ -7015,7 +7015,7 @@
     var Main_stringVersion_Min = '.268';
     var Main_version_java = 268; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 22 2020';
-    var Main_version_web = 501; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 502; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7379,14 +7379,14 @@
         Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
         Main_SetHistoryworker();
-        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 15000, Main_CheckResumeVodsId);
+        Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
         Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
 
-        Main_setTimeout(Main_RunVODWorker, 15000);
+        Main_setTimeout(Main_RunVODWorker, 40000);
         Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360)); //Check it 6 hours
 
-        Main_setTimeout(Main_RunClipWorker, 15000);
-        Main_setInterval(Main_RunClipWorker, (1000 * 60 * 360)); //Check it 6 hours
+        Main_setTimeout(Main_RunClipWorker, 80000);
+        Main_setInterval(Main_RunClipWorker, (1000 * 60 * 370)); //Check it 6 hours
 
         Main_SetStringsSecondary();
         Main_checkVersion();
@@ -9175,9 +9175,8 @@
 
         if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
-        var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod;
-
-        var i = 0,
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
+            i = 0,
             len = array.length;
 
         for (i; i < len; i++) {
@@ -9190,10 +9189,15 @@
 
         }
 
-        array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+        Main_setTimeout(Main_RunLiveVODWorker, 60000);
 
-        i = 0;
-        len = array.length;
+    }
+
+    function Main_RunLiveVODWorker() {
+
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
+            i = 0,
+            len = array.length;
 
         for (i; i < len; i++) {
 
@@ -9201,7 +9205,8 @@
 
                 BradcastCheckerWorker.postMessage({
                     obj: array[i],
-                    type: 'live'
+                    type: 'live',
+                    delay: i
                 });
 
             }
