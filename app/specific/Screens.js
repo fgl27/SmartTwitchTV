@@ -350,6 +350,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].cursor = null;
     ScreenObj[key].after = '';
     ScreenObj[key].status = false;
+    ScreenObj[key].FirstRunEnd = false;
     ScreenObj[key].TopRowCreated = false;
     ScreenObj[key].offset = 0;
     ScreenObj[key].offsettop = 0;
@@ -463,6 +464,7 @@ function Screens_loadDatafail(key) {
 
     ScreenObj[key].loadingData = false;
     ScreenObj[key].loadingDataTry = 0;
+    ScreenObj[key].FirstRunEnd = true;
 
     if (!ScreenObj[key].itemsCount) {
 
@@ -658,6 +660,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
 
 function Screens_loadDataSuccessFinish(key) {
     //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
+    ScreenObj[key].FirstRunEnd = true;
     if (!ScreenObj[key].status) {
 
         if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
@@ -1649,13 +1652,15 @@ function Screens_RemoveFocus(key) {
 }
 
 function Screens_addFocusFollow(key) {
-    if (!ScreenObj[key].status) return;
+
+    if (!ScreenObj[key].FirstRunEnd) return;
 
     if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
     else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
     Main_AddClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
     ScreenObj[key].focusPos = -1;
+
 }
 
 function Screens_removeFocusFollow(key) {
@@ -1676,7 +1681,7 @@ function Screens_BasicExit(before, key) {
 }
 
 function Screens_KeyUpDown(y, key) {
-    if (!ScreenObj[key].status) return;
+    if (!ScreenObj[key].FirstRunEnd) return;
 
     //TODO improve this
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].posY && y === -1 && !ScreenObj[key].emptyContent) {
@@ -1713,7 +1718,7 @@ function Screens_ClearAnimation(key) {
 
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
 
-        if (Screens_ObjNotNull(key) && ScreenObj[key].status) {
+        if (Screens_ObjNotNull(key) && ScreenObj[key].FirstRunEnd) {
 
             Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
             Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
@@ -1724,7 +1729,7 @@ function Screens_ClearAnimation(key) {
 }
 
 function Screens_KeyLeftRight(y, x, key) {
-    if (!ScreenObj[key].status) return;
+    if (!ScreenObj[key].FirstRunEnd) return;
 
     if (ScreenObj[key].HasSwitches && ScreenObj[key].posY === -1) {
 
@@ -1754,8 +1759,7 @@ function Screens_OpenSidePanel(forceFeed, key) {
 }
 
 function Screens_RemoveAllFocus(key) {
-    if (ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX] &&
-        ScreenObj[key].status) {
+    if (Screens_ObjNotNull(key) && ScreenObj[key].FirstRunEnd) {
 
         Main_removeFocus(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids);
 
@@ -1811,7 +1815,7 @@ function Screens_handleKeyUpAnimationFast() {
 }
 
 function Screens_keyRight(key) {
-    if (!ScreenObj[key].status) return;
+    if (!ScreenObj[key].FirstRunEnd) return;
 
     //Prevent scroll too fast out of ScreenObj[key].Cells.length
     //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])

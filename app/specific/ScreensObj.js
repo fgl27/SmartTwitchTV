@@ -89,6 +89,7 @@ function ScreensObj_StartAllVars() {
         offset: 0,
         visiblerows: 3,
         status: false,
+        FirstRunEnd: false,
         emptyContent: true,
         itemsCountCheck: false,
         isRefreshing: false,
