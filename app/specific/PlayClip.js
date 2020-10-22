@@ -473,8 +473,11 @@ function PlayClip_PreshutdownStream(closePlayer) {
         var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
         var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
 
-        if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7])
-            Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+        if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7]) {
+
+            Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[1]) * 100) + '%';
+
+        }
 
         Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
 
