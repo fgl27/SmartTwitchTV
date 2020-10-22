@@ -813,11 +813,41 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
     UserLiveFeed_cell[pos][x + x_plus].style.transform = 'translateX(' + (x_plus_offset * UserLiveFeed_obj[pos].AddCellsize) + 'em)';
 
     Main_ready(function() {
-        for (var i = for_in; i < for_out; i++) {
-            if (UserLiveFeed_cell[pos][x + i]) {
-                if (UserLiveFeed_cell[pos][x + i]) UserLiveFeed_cell[pos][x + i].style.transition = '';
-                UserLiveFeed_cell[pos][x + i].style.transform = 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)';
+
+        //First calculate the changes then set it
+        var array = [],
+            i = for_in,
+            mpos;
+
+        for (i; i < for_out; i++) {
+
+            mpos = x + i;
+
+            if (UserLiveFeed_cell[pos][mpos]) {
+
+                if (UserLiveFeed_cell[pos][mpos]) {
+
+                    UserLiveFeed_cell[pos][mpos].style.transition = '';
+
+                    array.push(
+                        {
+                            transform: 'translateX(' + (UserLiveFeed_obj[pos].AddCellsize * (for_offset + i)) + 'em)',
+                            pos: mpos
+                        }
+                    );
+                }
+
             }
+
+        }
+
+        var len = array.length;
+        i = 0;
+
+        for (i; i < len; i++) {
+
+            UserLiveFeed_cell[pos][array[i].pos].style.transform = array[i].transform;
+
         }
 
         Main_setTimeout(

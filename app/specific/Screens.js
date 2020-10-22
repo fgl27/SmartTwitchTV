@@ -1279,8 +1279,38 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 
     //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
     Main_ready(function() {
-        for (var i = for_in; i < for_out; i++)
-            Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, '', key);
+
+        //First calculate the changes then set it
+        var array = [],
+            i = for_in,
+            pos;
+
+        for (i; i < for_out; i++) {
+
+            pos = y + i;
+
+            if (ScreenObj[key].Cells[pos]) {
+
+                ScreenObj[key].Cells[pos].style.transition = '';
+
+                array.push(
+                    {
+                        transform: 'translateY(' + (ScreenObj[key].offsettop * (for_offset + i)) + 'em)',
+                        pos: pos
+                    }
+                );
+
+            }
+        }
+
+        var len = array.length;
+        i = 0;
+
+        for (i; i < len; i++) {
+
+            ScreenObj[key].Cells[array[i].pos].style.transform = array[i].transform;
+
+        }
 
         Main_setTimeout(
             function() {
@@ -1303,20 +1333,17 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
     });
 }
 
-function Screens_addrowtransition(pos, offset, transition, key) {
-    if (ScreenObj[key].Cells[pos]) {
-        ScreenObj[key].Cells[pos].style.transition = transition;
-        ScreenObj[key].Cells[pos].style.transform = 'translateY(' + offset + 'em)';
-    }
-}
-
 function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down, key) {
 
     if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
     else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
 
-    for (var i = for_in; i < for_out; i++)
-        Screens_addrowtransition(y + i, (for_offset + i) * ScreenObj[key].offsettop, 'none', key);
+    for (var i = for_in; i < for_out; i++) {
+        if (ScreenObj[key].Cells[y + i]) {
+            ScreenObj[key].Cells[y + i].style.transition = 'none';
+            ScreenObj[key].Cells[y + i].style.transform = 'translateY(' + ((for_offset + i) * ScreenObj[key].offsettop) + 'em)';
+        }
+    }
 
     UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
 
