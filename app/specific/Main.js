@@ -2171,17 +2171,24 @@ function Main_StartHistoryworker() {
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
     var i = 0, len = array.length;
+
     for (i; i < len; i++) {
+
         if (!array[i].forceVod) {
+
             if (array[i].data[14] && array[i].data[14] !== '') {
+
                 BradcastCheckerWorker.postMessage(
                     {
                         obj: array[i],
                         type: 1
                     }
                 );
+
             } else {
+
                 array.splice(i, 1);
+
             }
         }
     }
