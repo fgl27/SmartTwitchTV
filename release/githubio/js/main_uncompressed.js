@@ -18909,10 +18909,14 @@
             if (time > 0 && (Play_DurationSeconds - 300) > time) {
                 PlayVod_SaveVodIds(time);
 
-                var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
+                if (!ScreenObj[Main_HistoryVod].histPosX[1]) {
 
-                if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7])
-                    Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+                    var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
+
+                    if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7])
+                        Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+
+                }
             }
         }
         if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
