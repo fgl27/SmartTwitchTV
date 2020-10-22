@@ -2800,8 +2800,8 @@
 
         //Reset history obj and check for deleted vod/clips
         Main_history_SetVod_Watched();
-        Main_RunVODWorker();
-        Main_RunClipWorker();
+        Main_setTimeout(Main_RunVODWorker, 10000);
+        Main_setTimeout(Main_RunClipWorker, 30000);
 
         //Reset user emotes on change
         userEmote = {};
@@ -7015,7 +7015,7 @@
     var Main_stringVersion_Min = '.268';
     var Main_version_java = 268; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 22 2020';
-    var Main_version_web = 502; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 503; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -9104,43 +9104,51 @@
 
         BradcastCheckerWorker.addEventListener('message',
             function(event) {
-                var index;
+                Main_setTimeout(
+                    function() {
 
-                if (event.data.type === 1) { //live that is now a valid vod
+                        var index;
 
-                    if (event.data.ended) {
+                        if (event.data.type === 1) { //live that is now a valid vod
 
-                        index = Main_history_Exist('live', event.data.data);
+                            if (event.data.ended) {
 
-                        if (index > -1) {
+                                index = Main_history_Exist('live', event.data.data);
 
-                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
-                                        forceVod: true
-                                    }
-                                );
-                            } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                                if (index > -1) {
+
+                                    if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
+                                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
+                                                forceVod: true
+                                            }
+                                        );
+                                    } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                                }
+
+                            } else {
+
+                                Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
+
+                            }
+
+                        } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
+
+                            index = Main_history_Exist(event.data.type, event.data.data);
+
+                            if (index > -1) {
+
+                                //delete the vod entry as it no longer exist
+                                Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                            }
+
                         }
 
-                    } else {
+                    },
+                    10
+                );
 
-                        Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
-
-                    }
-
-                } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
-
-                    index = Main_history_Exist(event.data.type, event.data.data);
-
-                    if (index > -1) {
-
-                        //delete the vod entry as it no longer exist
-                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
-
-                    }
-
-                }
 
             }
 
