@@ -7015,7 +7015,7 @@
     var Main_stringVersion_Min = '.268';
     var Main_version_java = 268; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 22 2020';
-    var Main_version_web = 503; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 504; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -11426,8 +11426,11 @@
             var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
             var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
 
-            if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7])
-                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+            if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7]) {
+
+                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[1]) * 100) + '%';
+
+            }
 
             Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
 
@@ -18906,8 +18909,8 @@
     function PlayVod_PreshutdownStream(saveOffset) {
         //Main_Log('PlayVod_PreshutdownStream');
 
-        if (saveOffset && Main_IsOn_OSInterface) {
-            var time = parseInt(OSInterface_gettime() / 1000);
+        if (saveOffset) {
+            var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
 
             if (time > 0 && (Play_DurationSeconds - 300) > time) {
                 PlayVod_SaveVodIds(time);
@@ -18916,8 +18919,11 @@
 
                     var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
 
-                    if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7])
-                        Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+                    if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
+
+                        Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[11]) * 100) + '%';
+
+                    }
 
                 }
             }
