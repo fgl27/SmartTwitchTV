@@ -11420,7 +11420,19 @@
     function PlayClip_PreshutdownStream(closePlayer) {
         //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
 
-        Main_history_UpdateVodClip(ChannelClip_Id, Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10, 'clip');
+        if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
+            //Save as we have watched it all
+
+            var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
+            var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
+
+            if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7])
+                Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
+
+            Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
+
+        }
+
         PlayClip_hidePanel();
         if (Main_IsOn_OSInterface && !Play_PreviewId) {
 
@@ -18893,8 +18905,14 @@
 
         if (saveOffset && Main_IsOn_OSInterface) {
             var time = parseInt(OSInterface_gettime() / 1000);
+
             if (time > 0 && (Play_DurationSeconds - 300) > time) {
                 PlayVod_SaveVodIds(time);
+
+                var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
+
+                if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7])
+                    Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
             }
         }
         if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
