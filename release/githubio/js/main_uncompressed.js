@@ -3582,9 +3582,7 @@
     function ChannelContent_RestoreThumb(play_data) {
         if (ChannelContent_isoffline) return false;
 
-        var doc = Main_getElementById('channel_content_cell0_1');
-
-        if (doc && ChannelContent_cursorY) {
+        if (ChannelContent_cursorY) {
 
             return Main_A_equals_B(
                 ChannelContent_DataObj[14],
@@ -7017,7 +7015,7 @@
     var Main_stringVersion_Min = '.268';
     var Main_version_java = 268; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 22 2020';
-    var Main_version_web = 500; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 501; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -13031,7 +13029,9 @@
         } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
 
             if (Main_values.Main_Go === Main_ChannelContent) {
+
                 restorePreview = ChannelContent_RestoreThumb(Play_data);
+
             } else if (ScreenObj[Main_values.Main_Go].screenType === 0 && ScreenObj[Main_values.Main_Go].posY > -1 &&
                 !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
@@ -22778,6 +22778,7 @@
         Main_ContentLang_old = Main_ContentLang;
         Screens_ThumbOptionLanguages = [];
         Screens_ThumbOptionLanguagesTitles = [];
+
         for (var property in Languages_value) {
             Screens_ThumbOptionLanguages.push(property);
             Screens_ThumbOptionLanguagesTitles.push(Languages_value[property].title);
@@ -22788,7 +22789,7 @@
 
         var historyType = Screens_ThumbOptionStringGetHistory(key);
 
-        var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+        var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7]) : -1;
 
         if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
