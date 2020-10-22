@@ -18,7 +18,7 @@
  *
  */
 
-//Spacing for reease maker not trow erros frm jshint
+//Spacing for release maker not trow errors from jshint
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;

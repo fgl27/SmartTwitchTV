@@ -18,7 +18,7 @@
  *
  */
 
-//Spacing for reease maker not trow erros frm jshint
+//Spacing for release maker not trow errors from jshint
 var UserLiveFeed_loadingData = [];
 var UserLiveFeed_loadingDataTry = [];
 var UserLiveFeed_loadChannelOffsset = 0;

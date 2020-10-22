@@ -18,7 +18,7 @@
  *
  */
 
-//Spacing for reease maker not trow erros frm jshint
+//Spacing for release maker not trow errors from jshint
 var Main_ItemsLimitMax = 100;
 
 //The values of thumbnail and related for it screen type
