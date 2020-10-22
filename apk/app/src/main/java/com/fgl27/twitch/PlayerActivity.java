@@ -592,15 +592,17 @@ public class PlayerActivity extends Activity {
             NetActivityAVG = 0;
             NetCounter = 0;
 
-        } else if (PlayerObj[PlayerObjPosition].Type > 1) {
+        } else {
             //Preview player
             SetAudio(4, PreviewAudio);
 
-            SmallPlayerCurrentPosition =
-                    PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
-                            0 : PlayerObj[PlayerObjPosition].ResumePosition;
+            if (PlayerObj[PlayerObjPosition].Type > 1) {
+                SmallPlayerCurrentPosition =
+                        PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
+                                0 : PlayerObj[PlayerObjPosition].ResumePosition;
 
-            GetCurrentPositionSmall();
+                GetCurrentPositionSmall();
+            }
 
         }
 
