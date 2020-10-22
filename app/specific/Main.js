@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.267';
-var Main_version_java = 50;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'October 21 2020';
-var Main_version_web = 112;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.268';
+var Main_version_java = 268;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'October 22 2020';
+var Main_version_web = 500;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -617,11 +617,18 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.268 - Web Version October 22 2020",
+            changes: [
+                "Automatic cleanup history unreachable Lives that became a VOD but the VOD is now deleted",
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
             title: "Web Version October 21 2020",
             changes: [
                 "Add a progress indicator to already watched VOD/Clip",
                 "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)",
-                "Automatic remove from history unreachable (deleted from the server) VOD/Clip",
+                "Automatic cleanup history unreachable (deleted from the server) VOD/Clip",
                 "General performance improves and bug fixes",
             ]
         },
