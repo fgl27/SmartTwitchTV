@@ -394,7 +394,7 @@ function Main_initWindows() {
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
     Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
 
-    Main_setTimeout(Main_RunVODWorker, 40000);
+    Main_setTimeout(Main_RunVODWorker, 50000);
     Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360));//Check it 6 hours
 
     Main_setTimeout(Main_RunClipWorker, 80000);
@@ -2125,12 +2125,14 @@ function Main_SetHistoryworker() {
                             if (index > -1) {
 
                                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+
                                     Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
                                         Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
                                         {
                                             forceVod: true
                                         }
                                     );
+
                                 } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
                             }
 
