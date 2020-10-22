@@ -470,9 +470,10 @@ function PlayClip_PreshutdownStream(closePlayer) {
     if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
         //Save as we have watched it all
 
+        var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
         var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
 
-        if (ScreenObj[Main_values.Main_Go].screenType === 2)
+        if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7])
             Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = (time / Play_DurationSeconds) + '%';
 
         Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
