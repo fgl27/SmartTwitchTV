@@ -1962,7 +1962,7 @@ function Main_SetHistoryworker() {
                 function(event) {
                     var theUrl, onload;
 
-                    if (event.data.type === 1) {//Live
+                    if (event.data.type === 1) {//Live check if is a vod
 
                         theUrl = 'https://api.twitch.tv/kraken/streams/' + event.data.obj.data[14] + '?api_version=5';
 
@@ -1981,7 +1981,7 @@ function Main_SetHistoryworker() {
                                                 {
                                                     data: obj.mData.obj.data[7],
                                                     ended: true,
-                                                    type: 1
+                                                    type: event.data.type
                                                 }
                                             );
 
@@ -1991,7 +1991,7 @@ function Main_SetHistoryworker() {
                                                 {
                                                     data: response.stream,
                                                     ended: false,
-                                                    type: 1
+                                                    type: event.data.type
                                                 }
                                             );
 
@@ -2004,7 +2004,7 @@ function Main_SetHistoryworker() {
                                         {
                                             data: obj.mData.obj.data[7],
                                             ended: true,
-                                            type: 1
+                                            type: event.data.type
                                         }
                                     );
 
@@ -2012,9 +2012,9 @@ function Main_SetHistoryworker() {
                             }
 
                         };
-                    } else if (event.data.type === 2) {//VOD
+                    } else if (event.data.type === 'live' || event.data.type === 'vod') {//Live that is not a VOD and VOD
 
-                        theUrl = 'https://api.twitch.tv/kraken/videos/' + event.data.obj.data[7] + '?api_version=5';
+                        theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
 
                         onload = function(obj) {
 
@@ -2023,15 +2023,15 @@ function Main_SetHistoryworker() {
                                 var message = JSON.parse(obj.responseText).message;
 
                                 //VOD was deleted
-                                if (message && typeof message === "string") {
+                                if (message && (typeof message === "string")) {
                                     message = message.toLowerCase();
 
-                                    if (message.indexOf('not found') > -1 && message.indexOf(obj.mData.obj.data[7] > -1)) {
+                                    if ((message.indexOf('not found') > -1) && (message.indexOf(obj.mData.obj.data[7] > -1))) {
 
                                         this.postMessage(
                                             {
                                                 data: obj.mData.obj.data[7],
-                                                type: 2
+                                                type: obj.mData.type
                                             }
                                         );
                                     }
@@ -2041,7 +2041,7 @@ function Main_SetHistoryworker() {
                             }
 
                         };
-                    } else if (event.data.type === 3) {//Clip
+                    } else if (event.data.type === 'clip') {//Clip
 
                         theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
 
@@ -2052,12 +2052,12 @@ function Main_SetHistoryworker() {
                                 var message = JSON.parse(obj.responseText).message;
 
                                 //Clip was deleted
-                                if (message && typeof message === "string" && message.toLowerCase().indexOf('clip does not exist') > -1) {
+                                if (message && (typeof message === "string") && (message.toLowerCase().indexOf('clip does not exist') > -1)) {
 
                                     this.postMessage(
                                         {
                                             data: obj.mData.obj.data[7],
-                                            type: 3
+                                            type: obj.mData.type
                                         }
                                     );
 
@@ -2105,7 +2105,7 @@ function Main_SetHistoryworker() {
         function(event) {
             var index;
 
-            if (event.data.type === 1) {
+            if (event.data.type === 1) {//live that is now a valid vod
 
                 if (event.data.ended) {
 
@@ -2129,25 +2129,14 @@ function Main_SetHistoryworker() {
 
                 }
 
-            } else if (event.data.type === 2) {
+            } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
 
-                index = Main_history_Exist('vod', event.data.data);
-
-                if (index > -1) {
-
-                    //delete the vod entry as it no longer exist
-                    Main_values_History_data[AddUser_UsernameArray[0].id].vod.splice(index, 1);
-
-                }
-
-            } else if (event.data.type === 3) {
-
-                index = Main_history_Exist('clip', event.data.data);
+                index = Main_history_Exist(event.data.type, event.data.data);
 
                 if (index > -1) {
 
                     //delete the vod entry as it no longer exist
-                    Main_values_History_data[AddUser_UsernameArray[0].id].clip.splice(index, 1);
+                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
 
                 }
 
@@ -2191,13 +2180,35 @@ function Main_RunVODWorker() {
     var i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
         BradcastCheckerWorker.postMessage(
             {
                 obj: array[i],
-                type: 2,
+                type: 'vod',
                 delay: i
             }
         );
+
+    }
+
+    array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+
+    i = 0;
+    len = array.length;
+
+    for (i; i < len; i++) {
+
+        if (array[i].forceVod && array[i].vodid) {
+
+            BradcastCheckerWorker.postMessage(
+                {
+                    obj: array[i],
+                    type: 'live'
+                }
+            );
+
+        }
+
     }
 }
 
@@ -2210,27 +2221,34 @@ function Main_RunClipWorker() {
     var i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
         BradcastCheckerWorker.postMessage(
             {
                 obj: array[i],
-                type: 3,
+                type: 'clip',
                 delay: i
             }
         );
+
     }
 }
 
 //the internet connection may be down do to standby after resume
 //java will not call Main_CheckResume() until the internet connection is recognized
 function Main_PreventClick(prevent) {
+
     if (prevent) {
+
         window.addEventListener("keydown", Main_PreventClickfun, true);
         window.addEventListener("keyup", Main_PreventClickfun, true);
         window.addEventListener("keypress", Main_PreventClickfun, true);
+
     } else {
+
         window.removeEventListener("keydown", Main_PreventClickfun, true);
         window.removeEventListener("keyup", Main_PreventClickfun, true);
         window.removeEventListener("keypress", Main_PreventClickfun, true);
+
     }
 }
 
