@@ -511,16 +511,21 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
                 var data = UserLiveFeed_GetObj(pos);
 
-                if (Main_history_Watched_Obj[data[7]])
+                if (Main_history_Watched_Obj[data[7]]) {
+
                     Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+
+                }
 
             }
         }
     }
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
+
         UserLiveFeed_obj[pos].AddCellsize =
             (Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth) / BodyfontSize;
+
     }
 
     if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
@@ -569,11 +574,9 @@ function UserLiveFeed_CheckVod() {
 
             var index = Main_history_Exist('live', data[7]);
 
-            if (index > -1) {
+            if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
-                    return false;
-                }
+                return false;
 
             }
         }

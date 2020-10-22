@@ -945,10 +945,10 @@ function Screens_LoadPreview(key) {
 
                 var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                if (index > -1 &&
-                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods'))) {
+                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
                     ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
+
                 }
             }
 
@@ -1035,8 +1035,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
             if (index > -1) {
 
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                    Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                     id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                     token = Play_vod_token;
@@ -1157,8 +1156,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                         if (index > -1) {
 
                             //Live that is now a vod
-                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                                Main_A_includes_B(Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX).src, 's3_vods')) {
+                            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                                 Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
@@ -1239,8 +1237,7 @@ function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x)
 
         if (index > -1) {
 
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod ||
-                Main_A_includes_B(Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX).src, 's3_vods')) {
+            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                 error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
@@ -1586,7 +1583,10 @@ function Screens_setOffset(pos, y, key) {
     if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? (y + pos) : y;
         if (ScreenObj[key].Cells[pos]) {
-            ScreenObj[key].offsettop = (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
+            ScreenObj[key].offsettop =
+                (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+
         } else ScreenObj[key].offsettop = 1;
 
         ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -1721,6 +1721,7 @@ function Screens_ClearAnimation(key) {
         if (Screens_ObjNotNull(key) && ScreenObj[key].FirstRunEnd) {
 
             Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).style.backgroundSize = 0;
+
             Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
 
         }
@@ -2147,14 +2148,20 @@ function Screens_OffSetAddFocus(pos) {
     var maxValue = 5000;
 
     if (pos > 0 && pos < maxValue) {
+
         Main_getElementById("dialog_OffSet_left").style.opacity = "1";
         Main_getElementById("dialog_OffSet_right").style.opacity = "1";
+
     } else if (pos === maxValue) {
+
         Main_getElementById("dialog_OffSet_left").style.opacity = "1";
         Main_getElementById("dialog_OffSet_right").style.opacity = "0.2";
+
     } else {
+
         Main_getElementById("dialog_OffSet_left").style.opacity = "0.2";
         Main_getElementById("dialog_OffSet_right").style.opacity = "1";
+
     }
 }
 
@@ -2352,17 +2359,25 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
     Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
     if (maxValue === 1) {
+
         Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+
     } else if (!pos) {
+
         Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0.2";
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+
     } else if (pos === (maxValue - 1)) {
+
         Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0.2";
+
     } else {
+
         Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "1";
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
+
     }
 }
 
@@ -2481,9 +2496,12 @@ function Screens_ThumbOptionStringSet(key) {
 
     Main_innerHTML('dialog_thumb_opt_val_1', (Screens_values_Play_data[3] !== "" ? Screens_values_Play_data[3] : STR_EMPTY));
 
-    if (ScreenObj[key].screen === Main_HistoryLive &&
-        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+    var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+    if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
         Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1]]);
+
     } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
     Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
@@ -2650,14 +2668,21 @@ function Screens_ThumbOptionDialogHide(Update, key) {
         else if (Screens_ThumbOptionPosY === 3) {
 
             if (!ScreenObj[key].screenType) {
-                if (ScreenObj[key].screen === Main_HistoryLive &&
-                    Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+
+                var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
                     ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                     Main_setItem(ScreenObj[Main_HistoryVod].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
+
                 } else {
+
                     ScreenObj[Main_HistoryLive].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                     Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryLive].histPosX));
+
                 }
+
             } else if (ScreenObj[key].screenType === 1) {
                 ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
                 Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[Main_HistoryVod].histPosX));
@@ -2856,9 +2881,13 @@ function Screens_ThumbOptionSetArrowArray(key) {
     Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguagesTitles, Screens_ThumbOptionScreens];
 
     var historyType = Screens_ThumbOptionStringGetHistory(key);
-    if (ScreenObj[key].screen === Main_HistoryLive &&
-        Main_A_includes_B(Main_getElementById(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX).src, 's3_vods')) {
+
+    var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+
+    if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+
         historyType = Main_getItemJson(ScreenObj[Main_HistoryVod].histPosXName, [0, 0, 0])[1];
+
     }
 
     Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
