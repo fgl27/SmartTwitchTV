@@ -78,7 +78,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
 
 function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
     Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities);
-    Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+    if (Sidepannel_ObjNotNull()) Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
 }
 
 function Sidepannel_isShowing() {
