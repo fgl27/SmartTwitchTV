@@ -7014,8 +7014,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.269';
     var Main_version_java = 269; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 22 2020';
-    var Main_version_web = 506; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 23 2020';
+    var Main_version_web = 507; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -28496,7 +28496,7 @@
 
     function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
         Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities);
-        Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+        if (Sidepannel_ObjNotNull()) Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
     }
 
     function Sidepannel_isShowing() {
