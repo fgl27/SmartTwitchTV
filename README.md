@@ -22,13 +22,23 @@ Readme content:
 About the project:
 ==============
 
-This is an web application designed to watch Twitch broadcasts on SmartTV's , a official Twitch app is not available for most devices, that is way this project exist.
+This is an web application designed to give access to Twitch features on SmartTV's, a official Twitch app is not available for most devices, that is why this project exist.
 
-The intention of this is to make a web app that runs on all modern browser and can be easily ported to any OS that can run a web app's.
+The intention of this is to make a web app that works on all modern browser and can be easily ported to any OS that can run a web app.
 
-This project is the main project but originally this is a port of this repo [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) using separated repo to make easier use of github pages and commit history.
+This app has no affiliation with Twitch, this is a user made app, but is only possible because Twitch provide all the API that allows the app to show Twitch content.
 
-Because Samsung Tizen OS is very limited not all features of the Android project can be ported to Samsung, but from time to time I will port the features from the Android version to the Samsung version.
+Those API are documented here:
+
+[Twitch Developer Documentation](https://dev.twitch.tv/docs/)
+
+This app has be registered to access Twitch API, that registration process is described here:
+
+[Twitch Registration process](https://dev.twitch.tv/docs/authentication#registration)
+
+This project is the main project of two Twitch project I current maintain, originally I start working on the [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) repo, I'm using separated repos to make easier use of github pages and commit history.
+
+The original project runs on Samsung Tizen OS, with is very limited because of that the Android version has become the main project, not all features of the Android project can be ported to the Samsung one, but from time to time I will port the features from the Android version to the Samsung version.
 
 ### About this fork
 
