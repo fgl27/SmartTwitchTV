@@ -1120,7 +1120,7 @@ function ScreensObj_InitUserHost() {
         }
     };
     ScreenObj[Main_UserHost].Set_Scroll();
-    ScreenObj[Main_UserHost].Headers = Main_Headers_Priv;
+    ScreenObj[Main_UserHost].Headers = Main_Headers_Backup;
 }
 
 function ScreensObj_InitAGame() {
@@ -1403,7 +1403,7 @@ function ScreensObj_InitUserGames() {
         if (!this.loadingData) this.key_refresh();
     };
     ScreenObj[Main_usergames].Set_Scroll();
-    ScreenObj[Main_usergames].Headers = Main_Headers_Priv;
+    ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
 }
 
 function ScreensObj_InitSearchGames() {

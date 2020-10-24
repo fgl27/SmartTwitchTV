@@ -1429,7 +1429,7 @@ function PlayVod_updateChapters() {
             NewDefaultHttpGetTimeout,//timeout
             PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId),//postMessage, null for get
             'POST',//Method, null for get
-            Play_base_back_headers,//JsonString
+            Play_base_backup_headers,//JsonString
             'PlayVod_updateChaptersResult',//callback
             0,//checkResult
             PlayVod_updateChaptersId,//key

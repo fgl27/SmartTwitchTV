@@ -84,7 +84,7 @@ var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s
 var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token";
 var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
-var Play_base_back_headers = '';
+var Play_base_backup_headers = '';
 
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
@@ -236,23 +236,23 @@ function Play_PreStart() {
 
     var clientIdHeader = 'Client-ID';
     var AcceptHeader = 'Accept';
-    var TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+    var TwitchV5Json = 'application/vnd.twitchtv.v5+json';
 
     Main_Headers = [
         [clientIdHeader, AddCode_clientId],
-        [AcceptHeader, TwithcV5Json],
+        [AcceptHeader, TwitchV5Json],
         [Main_Authorization, null]
     ];
 
-    Main_Headers_Priv = [
-        [clientIdHeader, AddCode_priv_client_id],
-        [AcceptHeader, TwithcV5Json],
+    Main_Headers_Backup = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [AcceptHeader, TwitchV5Json],
         [Main_Authorization, null]
     ];
 
-    Play_base_back_headers = JSON.stringify(
+    Play_base_backup_headers = JSON.stringify(
         [
-            [clientIdHeader, Main_Headers_Priv[0][1]]
+            [clientIdHeader, Main_Headers_Backup[0][1]]
         ]
     );
 }

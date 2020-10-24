@@ -38,6 +38,7 @@ var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.
 //Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
 var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";//public but get yours link above is free
 var AddCode_client_secret;//none public get yours link above is free
+var AddCode_backup_client_id;
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 //Variable initialization end
@@ -272,7 +273,7 @@ function AddCode_CheckTokenStart(position) {
     if (!position) AddCode_CheckTokenSync(position, 0);
     else AddCode_CheckToken(position, 0);
 }
-var AddCode_priv_client_id;
+
 //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
 function AddCode_CheckTokenSync(position, tryes) {
     //Main_Log('AddCode_CheckToken');
@@ -685,10 +686,10 @@ function AddCode_BasexmlHttpGetBack(theUrl, type, HeaderQuatity, access_token, c
     xmlHttp.open(type, theUrl, true);
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
-    Main_Headers_Priv[2][1] = access_token;
+    Main_Headers_Backup[2][1] = access_token;
 
     for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(Main_Headers_Priv[i][0], Main_Headers_Priv[i][1]);
+        xmlHttp.setRequestHeader(Main_Headers_Backup[i][0], Main_Headers_Backup[i][1]);
 
     xmlHttp.onreadystatechange = function() {
         callbackready(xmlHttp, tryes);

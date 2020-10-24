@@ -230,7 +230,7 @@ function PlayClip_loadDataRequest() {
         NewDefaultHttpGetTimeout,//timeout
         PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
-        Play_base_back_headers,//JsonString
+        Play_base_backup_headers,//JsonString
         'PlayClip_loadDataResult',//callback
         0,//checkResult
         PlayClip_loadDataRequestId,//key

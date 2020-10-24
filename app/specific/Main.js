@@ -126,7 +126,7 @@ var Main_RunningTime = 0;
 var Main_PreventCheckResume = false;
 
 var Main_Headers = [];
-var Main_Headers_Priv = [];
+var Main_Headers_Backup = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
@@ -1674,7 +1674,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 }
 
 function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Priv, key);
+    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Backup, key);
 }
 
 function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
