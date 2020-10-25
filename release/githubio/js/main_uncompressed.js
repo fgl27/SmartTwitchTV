@@ -1696,6 +1696,7 @@
     //Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
     var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9"; //public but get yours link above is free
     var AddCode_client_secret; //none public get yours link above is free
+    var AddCode_backup_client_id;
     var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
     var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
     //Variable initialization end
@@ -1931,7 +1932,7 @@
         if (!position) AddCode_CheckTokenSync(position, 0);
         else AddCode_CheckToken(position, 0);
     }
-    var AddCode_priv_client_id;
+
     //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
     function AddCode_CheckTokenSync(position, tryes) {
         //Main_Log('AddCode_CheckToken');
@@ -2344,10 +2345,10 @@
         xmlHttp.open(type, theUrl, true);
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
-        Main_Headers_Priv[2][1] = access_token;
+        Main_Headers_Backup[2][1] = access_token;
 
         for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers_Priv[i][0], Main_Headers_Priv[i][1]);
+            xmlHttp.setRequestHeader(Main_Headers_Backup[i][0], Main_Headers_Backup[i][1]);
 
         xmlHttp.onreadystatechange = function() {
             callbackready(xmlHttp, tryes);
@@ -2365,7 +2366,7 @@
         "kimne78kx3" //4 -           tw 1
     ];
 
-    AddCode_priv_client_id = obj[4] + obj[0] + obj[2];
+    AddCode_backup_client_id = obj[4] + obj[0] + obj[2];
     AddCode_client_secret = obj[3] + obj[1];
 
     //HIDE_END
@@ -7012,10 +7013,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.269';
-    var Main_version_java = 269; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 23 2020';
-    var Main_version_web = 507; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.270';
+    var Main_version_java = 270; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'October 25 2020';
+    var Main_version_web = 508; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7114,7 +7115,7 @@
     var Main_PreventCheckResume = false;
 
     var Main_Headers = [];
-    var Main_Headers_Priv = [];
+    var Main_Headers_Backup = [];
     var Main_kraken_api = 'https://api.twitch.tv/kraken/';
     var Main_Authorization = 'Authorization';
     var Main_OAuth = 'OAuth ';
@@ -7605,6 +7606,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.270 - Web Version October 25 2020",
+                changes: [
+                    "Fix random cases that cause playback issues after there was an internet lags",
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Apk Version 3.0.268 and 3.0.269 - Web Version October 22 2020",
                 changes: [
                     "Fix preview volume control",
@@ -8668,7 +8676,7 @@
     }
 
     function BasexmlHttpHlsGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Priv, key);
+        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers_Backup, key);
     }
 
     function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
@@ -11182,7 +11190,7 @@
             NewDefaultHttpGetTimeout, //timeout
             PlayClip_postMessage.replace('%x', ChannelClip_playUrl), //postMessage, null for get
             'POST', //Method, null for get
-            Play_base_back_headers, //JsonString
+            Play_base_backup_headers, //JsonString
             'PlayClip_loadDataResult', //callback
             0, //checkResult
             PlayClip_loadDataRequestId, //key
@@ -15398,7 +15406,7 @@
     var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token";
     var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
-    var Play_base_back_headers = '';
+    var Play_base_backup_headers = '';
 
     //counterclockwise movement, Vertical/horizontal Play_ChatPositions
     //sizeOffset in relation to the size
@@ -15551,23 +15559,23 @@
 
         var clientIdHeader = 'Client-ID';
         var AcceptHeader = 'Accept';
-        var TwithcV5Json = 'application/vnd.twitchtv.v5+json';
+        var TwitchV5Json = 'application/vnd.twitchtv.v5+json';
 
         Main_Headers = [
             [clientIdHeader, AddCode_clientId],
-            [AcceptHeader, TwithcV5Json],
+            [AcceptHeader, TwitchV5Json],
             [Main_Authorization, null]
         ];
 
-        Main_Headers_Priv = [
-            [clientIdHeader, AddCode_priv_client_id],
-            [AcceptHeader, TwithcV5Json],
+        Main_Headers_Backup = [
+            [clientIdHeader, AddCode_backup_client_id],
+            [AcceptHeader, TwitchV5Json],
             [Main_Authorization, null]
         ];
 
-        Play_base_back_headers = JSON.stringify(
+        Play_base_backup_headers = JSON.stringify(
             [
-                [clientIdHeader, Main_Headers_Priv[0][1]]
+                [clientIdHeader, Main_Headers_Backup[0][1]]
             ]
         );
     }
@@ -19787,7 +19795,7 @@
                 NewDefaultHttpGetTimeout, //timeout
                 PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId), //postMessage, null for get
                 'POST', //Method, null for get
-                Play_base_back_headers, //JsonString
+                Play_base_backup_headers, //JsonString
                 'PlayVod_updateChaptersResult', //callback
                 0, //checkResult
                 PlayVod_updateChaptersId, //key
@@ -20973,7 +20981,7 @@
                 NewDefaultHttpGetTimeout, //timeout
                 PlayClip_postMessage.replace('%x', obj[0]), //postMessage, null for get
                 'POST', //Method, null for get
-                Play_base_back_headers, //JsonString
+                Play_base_backup_headers, //JsonString
                 'Screens_LoadPreviewResult', //callback
                 (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100), //checkResult
                 key, //key
@@ -24013,7 +24021,7 @@
             }
         };
         ScreenObj[Main_UserHost].Set_Scroll();
-        ScreenObj[Main_UserHost].Headers = Main_Headers_Priv;
+        ScreenObj[Main_UserHost].Headers = Main_Headers_Backup;
     }
 
     function ScreensObj_InitAGame() {
@@ -24296,7 +24304,7 @@
             if (!this.loadingData) this.key_refresh();
         };
         ScreenObj[Main_usergames].Set_Scroll();
-        ScreenObj[Main_usergames].Headers = Main_Headers_Priv;
+        ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
     }
 
     function ScreensObj_InitSearchGames() {
