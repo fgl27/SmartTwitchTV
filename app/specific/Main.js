@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.269';
-var Main_version_java = 269;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'October 23 2020';
-var Main_version_web = 507;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.270';
+var Main_version_java = 270;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'October 25 2020';
+var Main_version_web = 508;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -616,6 +616,13 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Apk Version 3.0.270 - Web Version October 25 2020",
+            changes: [
+                "Fix random cases that cause playback issues after there was an internet lags",
+                "General performance improves and bug fixes",
+            ]
+        },
         {
             title: "Apk Version 3.0.268 and 3.0.269 - Web Version October 22 2020",
             changes: [
