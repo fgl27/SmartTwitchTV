@@ -755,11 +755,19 @@ public class PlayerActivity extends Activity {
     }
 
     private void updateResumePosition(int position) {
-        // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
-        // is already gone and we already saved the correct PlayerObj[position].ResumePosition
-        if (PlayerObj[position].player != null && PlayerObj[position].CheckCounter < 2) {
+
+        if (PlayerObj[position].Type == 1) {//Live
+
+            clearResumePosition(position);
+
+        } else if (PlayerObj[position].player != null && PlayerObj[position].CheckCounter < 2) {//VOD/Clip
+            // If PlayerCheckCounter > 1 we already have restarted the player so the value of getCurrentPosition
+            // is already gone and we already saved the correct PlayerObj[position].ResumePosition
+
             PlayerObj[position].ResumePosition = GetResumePosition(position);
+
         }
+
     }
 
     private long GetResumePosition(int position) {
@@ -2020,24 +2028,29 @@ public class PlayerActivity extends Activity {
         if (position < 4) {
             //Main players
 
-            if (PlayerObj[position].CheckCounter < 4 && PlayerObj[position].CheckCounter > 1 && PlayerObj[position].Type < 3) {
+            if (PlayerObj[position].CheckCounter == 1) {//first check just reset
 
-                if (CheckSource && !IsInAutoMode && !MultiStreamEnable && !PicturePicture)//force go back to auto freeze for too long auto will resolve
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
-                else//already on auto just restart the player
+                PlayerEventListenerCheckCounterEnd(position);
+
+            } else if (PlayerObj[position].CheckCounter < 4) {
+
+                if ((PlayerObj[position].isScreenPreview || !CheckSource || IsInAutoMode || MultiStreamEnable || PicturePicture) && //General reset only cases
+                        (PlayerObj[position].isScreenPreview || PlayerObj[position].Type < 3)) {//If is clip always call js unless in screen preview
+
                     PlayerEventListenerCheckCounterEnd(position);
 
-            } else if (PlayerObj[position].CheckCounter > 3) {
+                } else {
 
-                // try == 3 Give up internet is probably down or something related
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
+
+                }
+
+
+            } else {// CheckCounter == 3 Give up internet is probably down or something related
+
                 PlayerEventListenerClear(position, fail_type);
 
-            } else if (PlayerObj[position].CheckCounter > 1) {//only for clips
-
-                // Second check drop quality as it freezes too much
-                LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
-
-            } else PlayerEventListenerCheckCounterEnd(position);//first check just reset
+            }
 
         } else {
             //Preview player
@@ -2062,8 +2075,7 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "PlayerEventListenerCheckCounterEnd position " + position + " PlayerObj[position].CheckCounter " + PlayerObj[position].CheckCounter + " Type " + PlayerObj[position].Type);
         }
 
-        if (PlayerObj[position].Type == 1) clearResumePosition(position);
-        else if (PlayerObj[position].Type == 2) updateResumePosition(position);//VOD
+        updateResumePosition(position);
 
         //Simple release to make sure player is reseated before start a new playback
         SimpleReleasePlayer(position);
@@ -3552,7 +3564,6 @@ public class PlayerActivity extends Activity {
 
             Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
 
-            PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
             PlayerEventListenerCheckCounter(position, 1);//player_Erro
 
         }
