@@ -1442,7 +1442,7 @@
         STR_COLOR_TYPE = "Color type";
         STR_STYLES = "Styles";
         STR_ENTER = "Press enter";
-        STR_COLOR_ARRAY = "Background,Text,Border";
+        STR_COLOR_ARRAY = "Background,Text,Border,Watched progress";
         STR_STYLES_ARRAY = "Default,Custom,White,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
         STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
         STR_THUMB_STYLE = "Selected thumbnail style";
@@ -7015,7 +7015,7 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.270';
     var Main_version_java = 270; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 25 2020';
+    var Main_minversion = 'October 26 2020';
     var Main_version_web = 508; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
@@ -7606,8 +7606,9 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.270 - Web Version October 25 2020",
+                title: "Apk Version 3.0.270 - Web Version October 26 2020",
                 changes: [
+                    "Add controls over the color of VOD/Clip thumbnails Watched progress",
                     "Fix random cases that cause playback issues after there was an internet lags",
                     "General performance improves and bug fixes",
                 ]
@@ -25122,55 +25123,66 @@
         [ //Default
             'rgba(0,0,0,1)', //background
             'rgba(255,255,255,1)', //TextColor
-            'rgba(235,235,235,1)' //border
+            'rgba(235,235,235,1)', //border
+            'rgba(195,0,0,1)' //progressColor
         ],
         [], //Custom
         [ //White
             'rgba(235,235,235,1)',
             'rgba(0,0,0,1)',
-            'rgba(235,235,235,1)'
+            'rgba(235,235,235,1)',
+            'rgba(195,0,0,1)'
         ],
         [ //Grey
             'rgba(56,56,56,1)',
             'rgba(255,255,255,1)',
             'rgba(56,56,56,1)',
+            'rgba(195,0,0,1)'
         ],
         [ //Red
             'rgba(235,0,0,1)',
             'rgba(255,255,255,1)',
-            'rgba(235,0,0,1)'
+            'rgba(235,0,0,1)',
+            'rgba(255,255,255,1)'
         ],
         [ //Orange
             'rgba(255,75,0,1)',
             'rgba(255,255,255,1)',
             'rgba(255,75,0,1)',
+            'rgba(255,255,255,1)'
         ],
         [ //Yellow
             'rgba(255,208,0,1)',
             'rgba(0,0,0,1)',
             'rgba(255,208,0,1)',
+            'rgba(255,0,0,1)'
         ],
         [ //Green
             'rgba(0,200,0,1)',
             'rgba(0,0,0,1)',
             'rgba(0,200,0,1)',
+            'rgba(255,0,0,1)'
         ],
         [ //Blue
             'rgba(0,0,255,1)',
             'rgba(255,255,255,1)',
             'rgba(0,0,255,1)',
+            'rgba(255,0,0,1)'
         ],
         [ //Purple
             'rgba(100,65,164,1)',
             'rgba(255,255,255,1)',
             'rgba(100,65,164,1)',
+            'rgba(255,0,0,1)'
         ],
         [ //Pink
             'rgba(255,0,180,1)',
             'rgba(255,255,255,1)',
             'rgba(255,0,180,1)',
+            'rgba(255,255,255,1)',
         ],
     ];
+    var SettingsColor_DefaultColors_Len = SettingsColor_DefaultColors[0].length;
 
     var SettingsColor_InitialColors = [];
 
@@ -25293,6 +25305,7 @@
     }
 
     function SettingsColor_ColorUPdateResult(rgba) {
+
         SettingsColor_ColorTemp = "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", 1)";
 
         SettingsColor_DivColorResult.style.backgroundColor = SettingsColor_ColorTemp;
@@ -25442,11 +25455,13 @@
         i = 0;
         len = tempArray.length;
         for (i; i < len; i++) {
+
             rgba.push(
                 [
                     parseInt(tempArray[0][i]),
                     parseInt(tempArray[1][i]),
-                    parseInt(tempArray[2][i])
+                    parseInt(tempArray[2][i]),
+                    parseInt(tempArray[3][i])
                 ]
             );
         }
@@ -25477,7 +25492,7 @@
         }
 
         i = 0;
-        len = rgba.length;
+        len = SettingsColor_DefaultColors_Len;
         for (i; i < len; i++) {
             SettingsColor_DefaultColors[1][i] = "rgba(" +
                 rgba[0][i] + ", " +
@@ -25492,6 +25507,7 @@
         var background = SettingsColor_DefaultColors[pos][0],
             TextColor = SettingsColor_DefaultColors[pos][1],
             border = SettingsColor_DefaultColors[pos][2],
+            progressColor = SettingsColor_DefaultColors[pos][3],
             cssClass = '.feed_thumbnail_focused_no_ani,.feed_thumbnail_focused,.stream_thumbnail_focused_no_ani,.stream_thumbnail_focused {background-color:' +
             background + ' !important;color:' + TextColor + ' !important;border-color:' + border + ' !important;}' +
             //feed_thumbnail_focused same animation time as user_feed_scroll
@@ -25499,21 +25515,28 @@
             //stream_thumbnail_focused same animation time as animate_height_transition
             '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
 
+        cssClass += '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
+
         Main_innerHTML(
             'focus_class_holder',
             cssClass
         );
 
         SettingsColor_SetAnimationStyleTest(
-            background,
-            TextColor,
-            border
+            [
+                background,
+                TextColor,
+                border,
+                progressColor
+            ]
         );
     }
 
-    function SettingsColor_SetAnimationStyleTest(background, TextColor, border) {
+    function SettingsColor_SetAnimationStyleTest(arrayColors) {
         var cssClass = '.stream_thumbnail_focused_test {background-color:' +
-            background + ' !important;color:' + TextColor + ' !important;border-color:' + border + ' !important;}';
+            arrayColors[0] + ' !important;color:' + arrayColors[1] + ' !important;border-color:' + arrayColors[2] + ' !important;}';
+
+        cssClass += '.vod_watched_test{background:' + arrayColors[3] + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
         Main_innerHTML(
             'focus_class_test',
@@ -25647,7 +25670,7 @@
                 Main_setItem('colo_rgb' + i, JSON.stringify(SettingsColor_ColorsObj[i].pos));
             }
 
-            for (i = 0; i < 3; i++) {
+            for (i = 0; i < SettingsColor_DefaultColors_Len; i++) {
                 SettingsColor_DefaultColors[1][i] = "rgba(" +
                     SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[i] + ", " +
                     SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[i] + ", " +
@@ -25660,10 +25683,14 @@
 
     function SettingsColor_SetRGB() {
         SettingsColor_DialogColorsResultSet();
+
         for (var i = 0; i < 3; i++) {
+
             SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_DialogColorsResultRGBA[i];
             Main_textContent("color_options" + (i + SettingsColor_ColorsObjR), SettingsColor_DialogColorsResultRGBA[i]);
+
         }
+
     }
 
     function SettingsColor_DialogColorsLeftRight(adder) {
@@ -25712,6 +25739,7 @@
     function SettingsColor_ColorsSetRGBTest() {
 
         if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
+
             var rgba = [],
                 colors = [],
                 i = SettingsColor_ColorsObjR,
@@ -25722,7 +25750,7 @@
             }
 
             i = 0;
-            len = rgba.length;
+            len = SettingsColor_DefaultColors_Len;
             for (i; i < len; i++) {
                 colors.push("rgba(" +
                     rgba[0][i] + ", " +
@@ -25733,17 +25761,14 @@
 
             colors[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_ColorTemp;
 
-            SettingsColor_SetAnimationStyleTest(
-                colors[0],
-                colors[1],
-                colors[2]
-            );
+            SettingsColor_SetAnimationStyleTest(colors);
+
         } else {
+
             SettingsColor_SetAnimationStyleTest(
-                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][0],
-                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][1],
-                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos][2]
+                SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos]
             );
+
         }
     }
 
@@ -25764,7 +25789,7 @@
     }
 
     function SettingsColor_ColorsObjLeftRight(obj, adder, maxValue) {
-        var currpos = obj.pos;
+        var CurPos = obj.pos;
 
         obj.pos += adder;
 
@@ -25772,10 +25797,10 @@
         else if (obj.pos < 0) obj.pos = 0;
 
         obj.focus();
-        SettingsColor_ColorsReset(obj, currpos);
+        SettingsColor_ColorsReset(obj, CurPos);
     }
 
-    function SettingsColor_ColorsReset(obj, currpos) {
+    function SettingsColor_ColorsReset(obj, CurPos) {
         if (obj.property === SettingsColor_ColorsObjStyles) {
             var i,
                 array = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[obj.pos]),
@@ -25790,11 +25815,11 @@
                     }
                     SettingsColor_RBG_temp = null;
                 }
-            } else if (currpos === 1) {
+            } else if (CurPos === 1) {
 
                 SettingsColor_RBG_temp = [];
                 i = 0;
-                len = array.length;
+                len = 3;
                 for (i; i < len; i++) {
                     SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos);
                 }
@@ -25802,7 +25827,8 @@
             }
 
             i = 0;
-            len = array.length;
+            len = 3;
+
             for (i; i < len; i++) {
                 SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos = array[i];
             }

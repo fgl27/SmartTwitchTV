@@ -413,7 +413,7 @@ function SettingsColor_SetAnimationStyle(pos) {
             //stream_thumbnail_focused same animation time as animate_height_transition
             '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
 
-    cssClass += '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}'
+    cssClass += '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
     Main_innerHTML(
         'focus_class_holder',
@@ -434,7 +434,7 @@ function SettingsColor_SetAnimationStyleTest(arrayColors) {
     var cssClass = '.stream_thumbnail_focused_test {background-color:' +
         arrayColors[0] + ' !important;color:' + arrayColors[1] + ' !important;border-color:' + arrayColors[2] + ' !important;}';
 
-    cssClass += '.vod_watched_test{background:' + arrayColors[3] + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}'
+    cssClass += '.vod_watched_test{background:' + arrayColors[3] + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
     Main_innerHTML(
         'focus_class_test',
