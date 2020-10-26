@@ -628,7 +628,7 @@ function en_USLang() {
     STR_COLOR_TYPE = "Color type";
     STR_STYLES = "Styles";
     STR_ENTER = "Press enter";
-    STR_COLOR_ARRAY = "Background,Text,Border,Watched progress";
+    STR_COLOR_ARRAY = "Background,Text,Border,Watched progress bar";
     STR_STYLES_ARRAY = "Default,Custom,White,Grey,Red,Orange,Yellow,Green,Blue,Purple,Pink";
     STR_ENTER_RGB = STR_ENTER + " to accept RGB change";
     STR_THUMB_STYLE = "Selected thumbnail style";
