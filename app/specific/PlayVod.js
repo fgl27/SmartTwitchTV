@@ -619,13 +619,14 @@ function PlayVod_ClearProgressJumptime(jumpCount) {
 
 function PlayVod_hidePanel() {
     //return;//return;
+    Play_ForceHidePannel();
+
     //Reset values
     PlayVod_qualityReset();
     Play_ResetSpeed();
-    Play_BottonIconsResetFocus();
+    Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();
-    Play_ForceHidePannel();
     PlayVod_previews_hide();
     PlayVod_jumpStepsIncreaseLock = false;
     PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);

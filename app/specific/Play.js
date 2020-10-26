@@ -1575,24 +1575,24 @@ function Play_ForceShowPannel() {
 
 function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.opacity = 0;
+
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 function Play_hidePanel() {
     //return;//return;
+    Play_ForceHidePannel();
 
     //Reset values
     Play_qualityReset();
-    Play_BottonIconsResetFocus();
     Play_ResetSpeed();
     Play_ResetLowlatency();
+    Play_BottonIconsResetFocus(true);
 
     if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
 
-
     Play_clearHidePanel();
-    Play_ForceHidePannel();
     PlayVod_ClearProgressJumptime(0);
     Play_ProgressBarrSkipAnimation = false;
 }

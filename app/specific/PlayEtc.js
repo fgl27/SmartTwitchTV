@@ -2871,13 +2871,13 @@ function Play_BottonIconsSet() {
     }
 }
 
-function Play_BottonIconsResetFocus() {
+function Play_BottonIconsResetFocus(skipInfo) {
     PlayVod_PanelY = 1;
     PlayClip_EnterPos = 0;
-    Play_BottonIconsFocus();
+    Play_BottonIconsFocus(skipInfo);
 }
 
-function Play_BottonIconsFocus() {
+function Play_BottonIconsFocus(skipInfo) {
 
     if (PlayVod_PanelY < 0) {
         PlayVod_PanelY = 0;
@@ -2906,7 +2906,7 @@ function Play_BottonIconsFocus() {
 
     } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
 
-        Play_BottonIconsProgressBarHide();
+        Play_BottonIconsProgressBarHide(skipInfo);
 
         if (!PlayClip_EnterPos) { //pause
 
@@ -2930,7 +2930,7 @@ function Play_BottonIconsFocus() {
 
     } else if (PlayVod_PanelY === 2) { //botton icons
 
-        Play_BottonIconsProgressBarHide();
+        Play_BottonIconsProgressBarHide(skipInfo);
         Play_IconsAddFocus();
         Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
         Play_BottonIcons_Progress_Steps.style.display = 'none';
@@ -2947,11 +2947,15 @@ function Play_BottonIconsProgressBarShow() {
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
-function Play_BottonIconsProgressBarHide() {
+function Play_BottonIconsProgressBarHide(skipInfo) {
     Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_info_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+    if (!skipInfo) {
+
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+
+    }
 }

@@ -613,14 +613,14 @@ function PlayClip_PlayNextPreviously() {
 
 function PlayClip_hidePanel() {
     //return;//return;
+    Play_ForceHidePannel();
 
     //Reset values
-    Play_BottonIconsResetFocus();
     Play_ResetSpeed();
     PlayClip_qualityReset();
+    Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();
-    Play_ForceHidePannel();
     PlayVod_ClearProgressJumptime(0);
     Play_ProgressBarrSkipAnimation = false;
 
