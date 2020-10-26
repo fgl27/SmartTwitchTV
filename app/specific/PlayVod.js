@@ -737,12 +737,14 @@ function PlayVod_getQualitiesCount() {
 
 function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
     Play_ProgresBarrElm.style.transition = 'none';
+    Play_ProgresBarrBufferElm.style.transition = 'none';
     PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
 
     if (Settings_Obj_default("app_animations")) {
         Main_setTimeout(
             function() {
                 Play_ProgresBarrElm.style.transition = '';
+                Play_ProgresBarrBufferElm.style.transition = '';
             },
             25
         );
