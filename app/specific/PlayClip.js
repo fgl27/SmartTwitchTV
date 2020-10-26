@@ -53,7 +53,7 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    PlayVod_ProgresBarrUpdate(0, 0);
+    PlayVod_ProgresBarrUpdateNoAnimation(0, 1);
 
     Play_BottonIcons_Next_img.src = IMG_404_BANNER;
     Play_BottonIcons_Back_img.src = IMG_404_BANNER;
@@ -97,10 +97,11 @@ function PlayClip_Start() {
     Play_BottomHide(Play_controlsChapters);
 
     PlayExtra_UnSetPanel();
+    Play_BottonIconsResetFocus();
+
     Play_CurrentSpeed = 3;
     Play_BufferSize = 0;
     PlayVod_previews_clear();
-    Play_IconsResetFocus();
     Main_empty('inner_progress_bar_muted');
 
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
@@ -311,6 +312,7 @@ function PlayClip_loadDataSuccessFake() {
     ];
     Play_SetExternalQualities(PlayClip_qualities, 1);
     PlayClip_state = Play_STATE_PLAYING;
+    PlayClip_qualityReset();
     PlayClip_qualityChanged();
     Main_Set_history('clip', Main_values_Play_data);
 }
@@ -360,6 +362,7 @@ function PlayClip_QualityStart(qualities) {
     Play_SetExternalQualities(PlayClip_qualities, 0);
     PlayClip_state = Play_STATE_PLAYING;
     PlayClip_qualityChanged();
+    PlayClip_qualityReset();
     Main_Set_history('clip', Main_values_Play_data);
 }
 
@@ -610,21 +613,37 @@ function PlayClip_PlayNextPreviously() {
 
 function PlayClip_hidePanel() {
     //return;//return;
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
+
+    //Reset values
+    Play_BottonIconsResetFocus();
+    Play_ResetSpeed();
+    PlayClip_qualityReset();
+
     Play_clearHidePanel();
-    PlayClip_quality = PlayClip_qualityPlaying;
     Play_ForceHidePannel();
-    PlayVod_ClearProgressJumptime();
+    PlayVod_ClearProgressJumptime(0);
+    Play_ProgressBarrSkipAnimation = false;
+
+}
+
+function PlayClip_qualityReset() {
+    PlayClip_quality = PlayClip_qualityPlaying;
+
+    PlayClip_qualityIndexReset();
+
+    Play_qualityDisplay(
+        PlayClip_getQualitiesCount,
+        PlayClip_qualityIndex,
+        PlayClip_SetHtmlQuality,
+        Play_controls[Play_controlsQuality]
+    );
 }
 
 function PlayClip_showPanel() {
+    Play_ProgressBarrSkipAnimation = true;
+
     PlayVod_RefreshProgressBarrStart(false, 2);
     Play_CleanHideExit();
-    Play_BottonIconsResetFocus();
-    PlayClip_qualityIndexReset();
-    Play_ResetSpeed();
-    Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
     Play_ForceShowPannel();
     Play_clearHidePanel();
     PlayClip_setHidePanel();

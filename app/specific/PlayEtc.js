@@ -2575,6 +2575,7 @@ function Play_BottomUpDown(PlayVodClip, adder) {
 }
 
 function Play_IconsAddFocus() {
+
     Main_AddClassWitEle(
         Play_controls[Play_Panelcounter].button,
         Play_BottonIcons_Focus_Class

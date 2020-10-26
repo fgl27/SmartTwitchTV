@@ -298,6 +298,7 @@ function Play_Start(offline_chat) {
     Play_BottomHide(Play_controlsChapters);
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+    Play_BottonIconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
@@ -343,7 +344,6 @@ function Play_Start(offline_chat) {
 
     Play_CurrentSpeed = 3;
     Play_ShowPanelStatus(1);
-    Play_IconsResetFocus();
 
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
@@ -1087,6 +1087,7 @@ function Play_loadDataSuccessFake() {
     ];
     Play_SetExternalQualities(Play_data.qualities, 1);
     Play_state = Play_STATE_PLAYING;
+    Play_qualityReset();
     if (Play_isOn) Play_qualityChanged();
     if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
 
@@ -1121,6 +1122,7 @@ function Play_getQualities(Who_Called, skipchange) {
     var result;
 
     if (baseQualities) {
+
         Play_getQualitiesFail = false;
         result = JSON.parse(baseQualities);
 
@@ -1143,6 +1145,7 @@ function Play_getQualities(Who_Called, skipchange) {
                 Main_Log('Play_data.playlist\n' + Play_data.playlist);
             }
 
+            Play_qualityReset();
         } else {
 
             PlayVod_qualities = result;
@@ -1159,7 +1162,9 @@ function Play_getQualities(Who_Called, skipchange) {
                 Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
                 Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
             }
+            PlayVod_qualityReset();
         }
+
     } else Play_getQualitiesFail = true;
 }
 
@@ -1264,7 +1269,12 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
 
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(1, 0, 0);
-        Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
+        Play_qualityDisplay(
+            Play_getQualitiesCount,
+            0,
+            Play_SetHtmlQuality,
+            Play_controls[Play_controlsQuality]
+        );
         Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
     } else if (mwhocall === 2) {
@@ -1508,36 +1518,6 @@ function Play_ExitDialogVisible() {
     return Main_isElementShowing('play_dialog_exit');
 }
 
-function Play_isPanelShowing() {
-    return parseInt(Play_PanneInfoDoclId.style.opacity);
-}
-
-function Play_hidePanel() {
-    //return;//return;
-    PlayVod_jumpCount = 0;
-    PlayVod_IsJumping = false;
-    Play_clearHidePanel();
-    Play_ForceHidePannel();
-    Play_data.quality = Play_data.qualityPlaying;
-    Play_data_base.quality = Play_data.quality;
-    PlayVod_ClearProgressJumptime();
-}
-
-function Play_ForceShowPannel() {
-    Play_PanneInfoDoclId.style.opacity = 1;
-
-    if (Play_StayDialogVisible()) return;
-
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
-}
-
-function Play_ForceHidePannel() {
-    Play_PanneInfoDoclId.style.opacity = 0;
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
-}
-
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
 
@@ -1576,18 +1556,68 @@ function Play_UpdateStatus(who_called) {
     OSInterface_getVideoStatus(isLive, who_called);
 }
 
-function Play_showPanel() {
-    if (Play_getQualitiesFail) Play_getQualities(1, true);
-    Play_BottonIconsResetFocus();
-    Play_qualityIndexReset();
-    Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-    Play_ResetSpeed();
-    Play_ResetLowlatency();
-    if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
-    if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
+
+function Play_isPanelShowing() {
+    return parseInt(Play_PanneInfoDoclId.style.opacity);
+}
+
+function Play_ForceShowPannel() {
+    Play_PanneInfoDoclId.style.opacity = 1;
 
     if (!Play_StayDialogVisible()) {
 
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+
+    }
+
+}
+
+function Play_ForceHidePannel() {
+    Play_PanneInfoDoclId.style.opacity = 0;
+    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+}
+
+function Play_hidePanel() {
+    //return;//return;
+
+    //Reset values
+    Play_qualityReset();
+    Play_BottonIconsResetFocus();
+    Play_ResetSpeed();
+    Play_ResetLowlatency();
+
+    if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
+
+
+    Play_clearHidePanel();
+    Play_ForceHidePannel();
+    PlayVod_ClearProgressJumptime(0);
+    Play_ProgressBarrSkipAnimation = false;
+}
+
+function Play_qualityReset() {
+    Play_data.quality = Play_data.qualityPlaying;
+    Play_data_base.quality = Play_data.quality;
+    Play_qualityIndexReset();
+    Play_qualityDisplay(
+        Play_getQualitiesCount,
+        Play_data.qualityIndex,
+        Play_SetHtmlQuality,
+        Play_controls[Play_controlsQuality]
+    );
+
+    if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
+}
+
+var Play_ProgressBarrSkipAnimation = false;
+
+function Play_showPanel() {
+    if (Play_getQualitiesFail) Play_getQualities(1, true);
+
+    if (!Play_StayDialogVisible()) {
+        Play_ProgressBarrSkipAnimation = true;
         PlayVod_RefreshProgressBarrStart(true, 0);
 
     } else {
@@ -1686,7 +1716,12 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
-    PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+    if (Play_ProgressBarrSkipAnimation) {
+
+        PlayVod_ProgresBarrUpdateNoAnimation((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+        Play_ProgressBarrSkipAnimation = false;
+
+    } else PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
 
 }
 

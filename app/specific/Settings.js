@@ -985,7 +985,9 @@ function Settings_SetAnimations() {
             'side_panel_fix',
             'side_panel_movel',
             'side_panel',
-            'user_feed'
+            'user_feed',
+            'inner_progress_bar',
+            'inner_progress_bar_muted'
         ],
         animate = Settings_Obj_default("app_animations"),
         mtransition = animate ? '' : 'none';
