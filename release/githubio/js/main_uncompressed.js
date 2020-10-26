@@ -11567,14 +11567,14 @@
 
     function PlayClip_hidePanel() {
         //return;//return;
+        Play_ForceHidePannel();
 
         //Reset values
-        Play_BottonIconsResetFocus();
         Play_ResetSpeed();
         PlayClip_qualityReset();
+        Play_BottonIconsResetFocus(true);
 
         Play_clearHidePanel();
-        Play_ForceHidePannel();
         PlayVod_ClearProgressJumptime(0);
         Play_ProgressBarrSkipAnimation = false;
 
@@ -14814,13 +14814,13 @@
         }
     }
 
-    function Play_BottonIconsResetFocus() {
+    function Play_BottonIconsResetFocus(skipInfo) {
         PlayVod_PanelY = 1;
         PlayClip_EnterPos = 0;
-        Play_BottonIconsFocus();
+        Play_BottonIconsFocus(skipInfo);
     }
 
-    function Play_BottonIconsFocus() {
+    function Play_BottonIconsFocus(skipInfo) {
 
         if (PlayVod_PanelY < 0) {
             PlayVod_PanelY = 0;
@@ -14849,7 +14849,7 @@
 
         } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
 
-            Play_BottonIconsProgressBarHide();
+            Play_BottonIconsProgressBarHide(skipInfo);
 
             if (!PlayClip_EnterPos) { //pause
 
@@ -14873,7 +14873,7 @@
 
         } else if (PlayVod_PanelY === 2) { //botton icons
 
-            Play_BottonIconsProgressBarHide();
+            Play_BottonIconsProgressBarHide(skipInfo);
             Play_IconsAddFocus();
             Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
             Play_BottonIcons_Progress_Steps.style.display = 'none';
@@ -14890,13 +14890,17 @@
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
     }
 
-    function Play_BottonIconsProgressBarHide() {
+    function Play_BottonIconsProgressBarHide(skipInfo) {
         Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
         Main_RemoveClassWithEle(Play_info_div, 'opacity_zero');
         Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+        if (!skipInfo) {
+
+            if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+            else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -16918,24 +16922,24 @@
 
     function Play_ForceHidePannel() {
         Play_PanneInfoDoclId.style.opacity = 0;
+
         if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
         else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
     }
 
     function Play_hidePanel() {
         //return;//return;
+        Play_ForceHidePannel();
 
         //Reset values
         Play_qualityReset();
-        Play_BottonIconsResetFocus();
         Play_ResetSpeed();
         Play_ResetLowlatency();
+        Play_BottonIconsResetFocus(true);
 
         if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
 
-
         Play_clearHidePanel();
-        Play_ForceHidePannel();
         PlayVod_ClearProgressJumptime(0);
         Play_ProgressBarrSkipAnimation = false;
     }
@@ -19028,13 +19032,14 @@
 
     function PlayVod_hidePanel() {
         //return;//return;
+        Play_ForceHidePannel();
+
         //Reset values
         PlayVod_qualityReset();
         Play_ResetSpeed();
-        Play_BottonIconsResetFocus();
+        Play_BottonIconsResetFocus(true);
 
         Play_clearHidePanel();
-        Play_ForceHidePannel();
         PlayVod_previews_hide();
         PlayVod_jumpStepsIncreaseLock = false;
         PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);
