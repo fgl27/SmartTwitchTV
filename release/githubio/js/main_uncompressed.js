@@ -11007,7 +11007,7 @@
 
         PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
         Chat_title = STR_CLIP;
-        PlayVod_ProgresBarrUpdate(0, 0);
+        PlayVod_ProgresBarrUpdateNoAnimation(0, 1);
 
         Play_BottonIcons_Next_img.src = IMG_404_BANNER;
         Play_BottonIcons_Back_img.src = IMG_404_BANNER;
@@ -11051,10 +11051,11 @@
         Play_BottomHide(Play_controlsChapters);
 
         PlayExtra_UnSetPanel();
+        Play_BottonIconsResetFocus();
+
         Play_CurrentSpeed = 3;
         Play_BufferSize = 0;
         PlayVod_previews_clear();
-        Play_IconsResetFocus();
         Main_empty('inner_progress_bar_muted');
 
         Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
@@ -11264,6 +11265,7 @@
         ];
         Play_SetExternalQualities(PlayClip_qualities, 1);
         PlayClip_state = Play_STATE_PLAYING;
+        PlayClip_qualityReset();
         PlayClip_qualityChanged();
         Main_Set_history('clip', Main_values_Play_data);
     }
@@ -11314,6 +11316,7 @@
         Play_SetExternalQualities(PlayClip_qualities, 0);
         PlayClip_state = Play_STATE_PLAYING;
         PlayClip_qualityChanged();
+        PlayClip_qualityReset();
         Main_Set_history('clip', Main_values_Play_data);
     }
 
@@ -11564,21 +11567,37 @@
 
     function PlayClip_hidePanel() {
         //return;//return;
-        PlayVod_jumpCount = 0;
-        PlayVod_IsJumping = false;
+
+        //Reset values
+        Play_BottonIconsResetFocus();
+        Play_ResetSpeed();
+        PlayClip_qualityReset();
+
         Play_clearHidePanel();
-        PlayClip_quality = PlayClip_qualityPlaying;
         Play_ForceHidePannel();
-        PlayVod_ClearProgressJumptime();
+        PlayVod_ClearProgressJumptime(0);
+        Play_ProgressBarrSkipAnimation = false;
+
+    }
+
+    function PlayClip_qualityReset() {
+        PlayClip_quality = PlayClip_qualityPlaying;
+
+        PlayClip_qualityIndexReset();
+
+        Play_qualityDisplay(
+            PlayClip_getQualitiesCount,
+            PlayClip_qualityIndex,
+            PlayClip_SetHtmlQuality,
+            Play_controls[Play_controlsQuality]
+        );
     }
 
     function PlayClip_showPanel() {
+        Play_ProgressBarrSkipAnimation = true;
+
         PlayVod_RefreshProgressBarrStart(false, 2);
         Play_CleanHideExit();
-        Play_BottonIconsResetFocus();
-        PlayClip_qualityIndexReset();
-        Play_ResetSpeed();
-        Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
         Play_ForceShowPannel();
         Play_clearHidePanel();
         PlayClip_setHidePanel();
@@ -14499,6 +14518,7 @@
     }
 
     function Play_IconsAddFocus() {
+
         Main_AddClassWitEle(
             Play_controls[Play_Panelcounter].button,
             Play_BottonIcons_Focus_Class
@@ -15615,6 +15635,7 @@
         Play_BottomHide(Play_controlsChapters);
 
         if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+        Play_BottonIconsResetFocus();
 
         PlayClip_HideShowNext(0, 0);
         PlayClip_HideShowNext(1, 0);
@@ -15660,7 +15681,6 @@
 
         Play_CurrentSpeed = 3;
         Play_ShowPanelStatus(1);
-        Play_IconsResetFocus();
 
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
@@ -16405,6 +16425,7 @@
         ];
         Play_SetExternalQualities(Play_data.qualities, 1);
         Play_state = Play_STATE_PLAYING;
+        Play_qualityReset();
         if (Play_isOn) Play_qualityChanged();
         if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
 
@@ -16440,6 +16461,7 @@
         var result;
 
         if (baseQualities) {
+
             Play_getQualitiesFail = false;
             result = JSON.parse(baseQualities);
 
@@ -16462,6 +16484,7 @@
                     Main_Log('Play_data.playlist\n' + Play_data.playlist);
                 }
 
+                Play_qualityReset();
             } else {
 
                 PlayVod_qualities = result;
@@ -16478,7 +16501,9 @@
                     Play_SetExternalQualities(Play_extractQualities(PlayVod_playlist), 0);
                     Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
                 }
+                PlayVod_qualityReset();
             }
+
         } else Play_getQualitiesFail = true;
     }
 
@@ -16584,7 +16609,12 @@
 
             OSInterface_SetQuality(-1);
             OSInterface_RestartPlayer(1, 0, 0);
-            Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
+            Play_qualityDisplay(
+                Play_getQualitiesCount,
+                0,
+                Play_SetHtmlQuality,
+                Play_controls[Play_controlsQuality]
+            );
             Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
 
         } else if (mwhocall === 2) {
@@ -16830,36 +16860,6 @@
         return Main_isElementShowing('play_dialog_exit');
     }
 
-    function Play_isPanelShowing() {
-        return parseInt(Play_PanneInfoDoclId.style.opacity);
-    }
-
-    function Play_hidePanel() {
-        //return;//return;
-        PlayVod_jumpCount = 0;
-        PlayVod_IsJumping = false;
-        Play_clearHidePanel();
-        Play_ForceHidePannel();
-        Play_data.quality = Play_data.qualityPlaying;
-        Play_data_base.quality = Play_data.quality;
-        PlayVod_ClearProgressJumptime();
-    }
-
-    function Play_ForceShowPannel() {
-        Play_PanneInfoDoclId.style.opacity = 1;
-
-        if (Play_StayDialogVisible()) return;
-
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
-    }
-
-    function Play_ForceHidePannel() {
-        Play_PanneInfoDoclId.style.opacity = 0;
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
-    }
-
     var Play_ShowPanelStatusId;
 
     function Play_ShowPanelStatus(mwhocall) {
@@ -16899,18 +16899,68 @@
         OSInterface_getVideoStatus(isLive, who_called);
     }
 
-    function Play_showPanel() {
-        if (Play_getQualitiesFail) Play_getQualities(1, true);
-        Play_BottonIconsResetFocus();
-        Play_qualityIndexReset();
-        Play_qualityDisplay(Play_getQualitiesCount, Play_data.qualityIndex, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-        Play_ResetSpeed();
-        Play_ResetLowlatency();
-        if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
-        if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
+
+    function Play_isPanelShowing() {
+        return parseInt(Play_PanneInfoDoclId.style.opacity);
+    }
+
+    function Play_ForceShowPannel() {
+        Play_PanneInfoDoclId.style.opacity = 1;
 
         if (!Play_StayDialogVisible()) {
 
+            if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
+            else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+
+        }
+
+    }
+
+    function Play_ForceHidePannel() {
+        Play_PanneInfoDoclId.style.opacity = 0;
+        if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
+        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    }
+
+    function Play_hidePanel() {
+        //return;//return;
+
+        //Reset values
+        Play_qualityReset();
+        Play_BottonIconsResetFocus();
+        Play_ResetSpeed();
+        Play_ResetLowlatency();
+
+        if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
+
+
+        Play_clearHidePanel();
+        Play_ForceHidePannel();
+        PlayVod_ClearProgressJumptime(0);
+        Play_ProgressBarrSkipAnimation = false;
+    }
+
+    function Play_qualityReset() {
+        Play_data.quality = Play_data.qualityPlaying;
+        Play_data_base.quality = Play_data.quality;
+        Play_qualityIndexReset();
+        Play_qualityDisplay(
+            Play_getQualitiesCount,
+            Play_data.qualityIndex,
+            Play_SetHtmlQuality,
+            Play_controls[Play_controlsQuality]
+        );
+
+        if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
+    }
+
+    var Play_ProgressBarrSkipAnimation = false;
+
+    function Play_showPanel() {
+        if (Play_getQualitiesFail) Play_getQualities(1, true);
+
+        if (!Play_StayDialogVisible()) {
+            Play_ProgressBarrSkipAnimation = true;
             PlayVod_RefreshProgressBarrStart(true, 0);
 
         } else {
@@ -17011,7 +17061,12 @@
 
         if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
-        PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+        if (Play_ProgressBarrSkipAnimation) {
+
+            PlayVod_ProgresBarrUpdateNoAnimation((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+            Play_ProgressBarrSkipAnimation = false;
+
+        } else PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
 
     }
 
@@ -18416,7 +18471,8 @@
         PlayVod_previewsId = 0;
         PlayVod_updateChaptersId = 0;
         PlayVod_ChaptersArray = [];
-        PlayVod_ProgresBarrUpdate(0, 0);
+        PlayVod_ProgresBarrUpdateNoAnimation(0, 1);
+
         Main_textContentWithEle(Play_infoLiveTime, '');
         Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
         Chat_title = " VOD";
@@ -18436,8 +18492,9 @@
         Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
         PlayExtra_UnSetPanel();
+        Play_BottonIconsResetFocus();
+
         Play_CurrentSpeed = 3;
-        Play_IconsResetFocus();
         UserLiveFeed_Unset();
         Play_ShowPanelStatus(2);
 
@@ -18742,6 +18799,7 @@
         ];
         Play_SetExternalQualities(PlayVod_qualities, 1);
         PlayVod_state = Play_STATE_PLAYING;
+        PlayVod_qualityReset();
         if (PlayVod_isOn) PlayVod_qualityChanged();
     }
 
@@ -18956,20 +19014,10 @@
         Play_DurationSeconds = 0;
     }
 
-    function PlayVod_hidePanel() {
-        //return;//return;
-        PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
+    function PlayVod_ClearProgressJumptime(jumpCount) {
+        Play_ProgresBarrElm.style.transition = '';
+        PlayVod_jumpCount = jumpCount;
         PlayVod_IsJumping = false;
-        Play_clearHidePanel();
-        Play_ForceHidePannel();
-        PlayVod_previews_hide();
-        PlayVod_quality = PlayVod_qualityPlaying;
-        PlayVod_jumpStepsIncreaseLock = false;
-        PlayVod_ClearProgressJumptime();
-    }
-
-    function PlayVod_ClearProgressJumptime() {
-
         if (Main_IsOn_OSInterface) PlayVod_ProgresBarrUpdate((OSInterface_gettime() / 1000), Play_DurationSeconds, true);
         PlayVod_addToJump = 0;
         Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
@@ -18978,20 +19026,45 @@
 
     }
 
+    function PlayVod_hidePanel() {
+        //return;//return;
+        //Reset values
+        PlayVod_qualityReset();
+        Play_ResetSpeed();
+        Play_BottonIconsResetFocus();
+
+        Play_clearHidePanel();
+        Play_ForceHidePannel();
+        PlayVod_previews_hide();
+        PlayVod_jumpStepsIncreaseLock = false;
+        PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);
+        Play_ProgressBarrSkipAnimation = false;
+    }
+
+    function PlayVod_qualityReset() {
+        PlayVod_quality = PlayVod_qualityPlaying;
+
+        PlayVod_qualityIndexReset();
+        Play_qualityDisplay(
+            PlayVod_getQualitiesCount,
+            PlayVod_qualityIndex,
+            PlayVod_SetHtmlQuality,
+            Play_controls[Play_controlsQuality]
+        );
+        if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality(Play_info_quality);
+
+    }
+
     function PlayVod_showPanel(autoHide) {
         if (Play_getQualitiesFail) Play_getQualities(2, true);
+        Play_ProgressBarrSkipAnimation = true;
 
         PlayVod_SetChapters();
         PlayVod_RefreshProgressBarrStart(autoHide, 1);
         Play_CleanHideExit();
 
         if (autoHide) {
-            Play_BottonIconsResetFocus();
-            PlayVod_qualityIndexReset();
-            Play_qualityDisplay(PlayVod_getQualitiesCount, PlayVod_qualityIndex, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-            if (!Main_A_includes_B(PlayVod_qualityPlaying, 'Auto')) PlayVod_SetHtmlQuality(Play_info_quality);
             Play_clearHidePanel();
-            Play_ResetSpeed();
             PlayVod_setHidePanel();
         }
 
@@ -19072,11 +19145,32 @@
         return PlayVod_qualities.length;
     }
 
+    function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
+        Play_ProgresBarrElm.style.transition = 'none';
+        PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+
+        if (Settings_Obj_default("app_animations")) {
+            Main_setTimeout(
+                function() {
+                    Play_ProgresBarrElm.style.transition = '';
+                },
+                25
+            );
+        }
+
+    }
+
     function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
         Main_textContentWithEle(
             Play_BottonIcons_Progress_CurrentTime,
             Play_timeS(current_time_seconds)
         );
+
+        //Prevent divider by null or zero
+        if (!duration_seconds) {
+            duration_seconds = 1;
+            current_time_seconds = 0;
+        }
 
         Play_ProgresBarrBufferElm.style.width = Math.ceil(((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0) + '%';
 
@@ -19109,6 +19203,7 @@
         PlayVod_IsJumping = false;
         Play_BufferSize = Play_BufferSize - PlayVod_addToJump;
         PlayVod_addToJump = 0;
+        Play_ProgresBarrElm.style.transition = '';
         if (PlayVod_isOn) PlayVod_ProgresBarrUpdate(PlayVod_TimeToJump, Play_DurationSeconds, true);
         PlayVod_TimeToJump = 0;
     }
@@ -19207,6 +19302,7 @@
 
         PlayVod_jumpTime();
         var position = (PlayVod_TimeToJump / duration_seconds);
+        Play_ProgresBarrElm.style.transition = 'none';
         Play_ProgresBarrElm.style.width = (position * 100) + '%';
 
         PlayVod_previews_move(position);
@@ -26859,7 +26955,9 @@
                 'side_panel_fix',
                 'side_panel_movel',
                 'side_panel',
-                'user_feed'
+                'user_feed',
+                'inner_progress_bar',
+                'inner_progress_bar_muted'
             ],
             animate = Settings_Obj_default("app_animations"),
             mtransition = animate ? '' : 'none';
