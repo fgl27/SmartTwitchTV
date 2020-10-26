@@ -7657,13 +7657,6 @@
                     "General performance improves and bug fixes",
                 ]
             },
-            {
-                title: "Apk Version 3.0.263 and 3.0.264 - Web Version October 12 2020",
-                changes: [
-                    "Fix Multistream audio issue, sometimes a stream that didn't had audio enable changed the audio to enable without user interaction",
-                    "General performance improves and bug fixes",
-                ]
-            },
         ];
 
         var i = 0;
