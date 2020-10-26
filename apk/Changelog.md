@@ -12,8 +12,8 @@ The app has a building update check function, so whenever there is a update a re
 Apk Version 3.0.270 - Web Version October 26 2020
 ==============
 
-* Add controls over the color of VOD/Clip thumbnails Watched progress
-* Fix random cases that cause playback issues after there was an internet lags
+* Add controls over the color of VOD/Clip thumbnails Watched progress bar
+* Fix random cases that cause playback issues after an internet lag
 * General performance improves and bug fixes
 
 Apk Version 3.0.268 and 3.0.269 - Web Version October 22 2020

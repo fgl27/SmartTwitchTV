@@ -619,8 +619,8 @@ function Main_Changelog() {
         {
             title: "Apk Version 3.0.270 - Web Version October 26 2020",
             changes: [
-                "Add controls over the color of VOD/Clip thumbnails Watched progress",
-                "Fix random cases that cause playback issues after there was an internet lags",
+                "Add controls over the color of VOD/Clip thumbnails Watched progress bar",
+                "Fix random cases that cause playback issues after an internet lag",
                 "General performance improves and bug fixes",
             ]
         },
