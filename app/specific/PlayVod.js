@@ -712,10 +712,10 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
 function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
 
-    Play_ProgresBarrElm.style.transition = 'none';
-    Play_ProgresBarrBufferElm.style.transition = 'none';
-
     if (Settings_Obj_default("app_animations")) {
+
+        Play_ProgresBarrElm.style.transition = 'none';
+        Play_ProgresBarrBufferElm.style.transition = 'none';
 
         //Sends a minus one to set the progress bar before show
         PlayVod_ProgresBarrUpdate(current_time_seconds - 1, duration_seconds, update_bar);
@@ -725,9 +725,15 @@ function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_sec
                 Play_ProgresBarrElm.style.transition = '';
                 Play_ProgresBarrBufferElm.style.transition = '';
                 //Sends a the normal and show the animation
-                PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+                Main_setTimeout(
+                    function() {
+                        //Sends a the normal and show the animation
+                        PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+                    },
+                    10
+                );
             },
-            25
+            10
         );
     } else {
 
