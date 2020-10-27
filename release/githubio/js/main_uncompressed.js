@@ -7015,8 +7015,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.270';
     var Main_version_java = 270; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 26 2020';
-    var Main_version_web = 508; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 27 2020';
+    var Main_version_web = 509; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7606,6 +7606,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version October 27 2020",
+                changes: [
+                    "General performance improves",
+                ]
+            },
+            {
                 title: "Apk Version 3.0.270 - Web Version October 26 2020",
                 changes: [
                     "Add controls over the color of VOD/Clip thumbnails Watched progress bar",
@@ -7650,13 +7656,7 @@
                     "Fix issue that sometimes a stream didn't play and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) and multistream was enable one of the stream may not properly load do to error, now the app will try to prevent it if not possible will warn",
                     "General performance improves and bug fixes",
                 ]
-            },
-            {
-                title: "Web Version October 13 2020",
-                changes: [
-                    "General performance improves and bug fixes",
-                ]
-            },
+            }
         ];
 
         var i = 0;
@@ -8913,13 +8913,14 @@
         try {
             array = arrayTocopy.slice();
         } catch (e) {
-            Main_Log('Main_Slice ' + e);
             array = [];
             var i = 0,
                 len = arrayTocopy.length;
             for (i; i < len; i++) {
                 array.push(arrayTocopy[i]);
             }
+
+            Main_Log('Main_Slice ' + e);
         }
         return array;
     }
@@ -10347,6 +10348,15 @@
         return Main_IsOn_OSInterface ? Android.gettimepreview() : 0;
     }
 
+    //public void SetCurrentPositionTimeout()
+    //Android specific: true
+    //set how fast the get player position handler will refresh
+    // function OSInterface_SetCurrentPositionTimeout(timeout) {
+    //     try {
+    //         Android.SetCurrentPositionTimeout(timeout);
+    //     } catch (e) {}
+    // }
+
     //public void stopVideo(int who_called)
     //who_called = 0 live, 1 vod, 2 clip
     //Android specific: false
@@ -10471,13 +10481,7 @@
     //Android specific: true
     //Sets small player max Bitrate
     function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
-        } catch (e) {
-            try {
-                if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
-            } catch (e) {}
-        }
+        if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
     }
 
     //public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
@@ -10485,15 +10489,7 @@
     //Android specific: true
     //Sets Big player max Bitrate
     function OSInterface_SetMainPlayerBitrate(Bitrate, Resolution) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
-        } catch (e) {
-            try {
-                if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
-            } catch (e) {
-
-            }
-        }
+        if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
     }
 
     //public String getcodecCapabilities(String CodecType)
@@ -10517,9 +10513,7 @@
     //Android specific: true
     //Returns the codecCapabilities for that codec type
     function OSInterface_setBlackListQualities(qualitiesList) {
-        try {
-            Android.setBlackListQualities(qualitiesList);
-        } catch (e) {}
+        Android.setBlackListQualities(qualitiesList);
     }
 
     //public void mshowLoading(boolean show)
@@ -10571,9 +10565,7 @@
     //Android specific: true
     //request the video status dropped frames, buffer size etc
     function OSInterface_getVideoStatus(showLatency, Who_Called) {
-        try {
-            Android.getVideoStatus(Boolean(showLatency), Who_Called);
-        } catch (e) {}
+        Android.getVideoStatus(Boolean(showLatency), Who_Called);
     }
 
     //public void getVideoQuality(int who_called)
@@ -10599,9 +10591,7 @@
     //Android specific: true
     //Start MultiStream at position
     function OSInterface_StartMultiStream(position, uri, mainPlaylistString, Restart) {
-        try {
-            Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
-        } catch (e) {}
+        Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
     }
 
     //public void EnableMultiStream(boolean MainBig, int offset)
@@ -10764,9 +10754,10 @@
     //Android specific: true
     //Clear the side panel or small player over the live feed play removes it from the screen
     function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
-        try {
-            Android.ClearFeedPlayer(Boolean(PreventClean), Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1);
-        } catch (e) {}
+        Android.ClearFeedPlayer(
+            Boolean(PreventClean),
+            Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1
+        );
     }
 
     //public void ClearFeedPlayer()
@@ -10910,9 +10901,7 @@
     //Android specific: true
     //Check to see if DefectedCodecExist
     function OSInterface_CheckReUsePlayer() {
-        try {
-            if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
-        } catch (e) {}
+        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
     }
 
     //public void getDuration()
@@ -11576,7 +11565,6 @@
 
         Play_clearHidePanel();
         PlayVod_ClearProgressJumptime(0);
-        Play_ProgressBarrSkipAnimation = false;
 
     }
 
@@ -11594,7 +11582,6 @@
     }
 
     function PlayClip_showPanel() {
-        Play_ProgressBarrSkipAnimation = true;
 
         PlayVod_RefreshProgressBarrStart(false, 2);
         Play_CleanHideExit();
@@ -15367,6 +15354,7 @@
     var Play_PanelHideID = null;
     var Play_isFullScreen = true;
     var Play_Buffer = 2000;
+    var PlayVod_RefreshProgressBarrTimeout = 1000;
     var Play_CurrentSpeed = 3;
     var Play_PicturePicturePos = 4;
     var Play_PicturePictureSize = 2;
@@ -15553,6 +15541,7 @@
             Settings_PP_Workaround();
             OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
             OSInterface_SetFullScreenSize(Play_FullScreenSize);
+            //OSInterface_SetCurrentPositionTimeout(PlayVod_RefreshProgressBarrTimeout / 2);
         }
 
         Play_SetQuality();
@@ -16941,7 +16930,6 @@
 
         Play_clearHidePanel();
         PlayVod_ClearProgressJumptime(0);
-        Play_ProgressBarrSkipAnimation = false;
     }
 
     function Play_qualityReset() {
@@ -16958,21 +16946,19 @@
         if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
     }
 
-    var Play_ProgressBarrSkipAnimation = false;
-
     function Play_showPanel() {
         if (Play_getQualitiesFail) Play_getQualities(1, true);
 
         if (!Play_StayDialogVisible()) {
-            Play_ProgressBarrSkipAnimation = true;
+
             PlayVod_RefreshProgressBarrStart(true, 0);
 
         } else {
 
             PlayVod_PanelY = 2;
             Play_BottonIconsFocus();
-            Play_RefreshWatchingtime();
-            PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
+            Play_RefreshWatchingTime();
+            PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingTime, 1000, PlayVod_RefreshProgressBarrID);
 
         }
 
@@ -16981,7 +16967,7 @@
         Play_Resetpanel(1);
     }
 
-    function Play_RefreshWatchingtime() {
+    function Play_RefreshWatchingTime() {
 
         if (Play_MultiEnable) {
 
@@ -17065,12 +17051,11 @@
 
         if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
-        if (Play_ProgressBarrSkipAnimation) {
-
-            PlayVod_ProgresBarrUpdateNoAnimation((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
-            Play_ProgressBarrSkipAnimation = false;
-
-        } else PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+        PlayVod_ProgresBarrUpdate(
+            (timeMs / 1000),
+            Play_DurationSeconds,
+            !PlayVod_IsJumping
+        );
 
     }
 
@@ -18913,7 +18898,7 @@
     }
 
     function PlayVod_qualityChanged() {
-        PlayVod_qualityIndex = 1;
+        PlayVod_qualityIndex = 0;
 
         for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
             if (PlayVod_qualities[i].id === PlayVod_quality) {
@@ -19043,7 +19028,6 @@
         PlayVod_previews_hide();
         PlayVod_jumpStepsIncreaseLock = false;
         PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);
-        Play_ProgressBarrSkipAnimation = false;
     }
 
     function PlayVod_qualityReset() {
@@ -19062,7 +19046,6 @@
 
     function PlayVod_showPanel(autoHide) {
         if (Play_getQualitiesFail) Play_getQualities(2, true);
-        Play_ProgressBarrSkipAnimation = true;
 
         PlayVod_SetChapters();
         PlayVod_RefreshProgressBarrStart(autoHide, 1);
@@ -19079,28 +19062,42 @@
 
 
     function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
-        if (Play_isOn) Play_RefreshWatchingtime();
+        PlayVod_getVideoQualityRate = 0;
+
+        if (Play_isOn) Play_RefreshWatchingTime();
+
+        PlayVod_ProgresBarrUpdateNoAnimation(
+            (OSInterface_gettime() / 1000),
+            Play_DurationSeconds,
+            !PlayVod_IsJumping
+        );
         PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
 
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
                 PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
             },
-            1000,
+            PlayVod_RefreshProgressBarrTimeout,
             PlayVod_RefreshProgressBarrID
         );
     }
 
+    var PlayVod_getVideoQualityRate = 0;
+
     function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
+
         var Update_status = Settings_Obj_default("keep_panel_info_visible");
 
-        if (!Update_status && Main_IsOn_OSInterface && showVideoQuality &&
+        if (!PlayVod_getVideoQualityRate && !Update_status && Main_IsOn_OSInterface && showVideoQuality &&
             ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
                 (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
             OSInterface_getVideoQuality(who_called);
 
         }
+
+        PlayVod_getVideoQualityRate++;
+        if (PlayVod_getVideoQualityRate > 2) PlayVod_getVideoQualityRate = 0;
 
         if (Update_status !== 1) {
 
@@ -19109,45 +19106,7 @@
 
         }
 
-        if (Play_isOn) Play_RefreshWatchingtime();
-    }
-
-    function PlayVod_setHidePanel() {
-        Play_PanelHideID = Main_setTimeout(PlayVod_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
-    }
-
-    function PlayVod_qualityIndexReset() {
-        PlayVod_qualityIndex = 0;
-        var i = 0,
-            len = PlayVod_getQualitiesCount();
-
-        for (i; i < len; i++) {
-            if (PlayVod_qualities[i].id === PlayVod_quality) {
-                PlayVod_qualityIndex = i;
-                break;
-            } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_qualities[i].id)) { //make shore to set a value before break out
-                PlayVod_qualityIndex = i;
-            }
-        }
-        if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
-    }
-
-    function PlayVod_SetHtmlQuality(element) {
-        if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
-
-        PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-
-        var quality_string = '';
-        if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
-        else quality_string = PlayVod_quality;
-
-        quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
-
-        Main_textContentWithEle(element, quality_string);
-    }
-
-    function PlayVod_getQualitiesCount() {
-        return PlayVod_qualities.length;
+        if (Play_isOn) Play_RefreshWatchingTime();
     }
 
     function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
@@ -19182,6 +19141,46 @@
         Play_ProgresBarrBufferElm.style.width = Math.ceil(((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0) + '%';
 
         if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+
+    }
+
+    function PlayVod_setHidePanel() {
+        Play_PanelHideID = Main_setTimeout(PlayVod_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
+    }
+
+    function PlayVod_qualityIndexReset() {
+        PlayVod_qualityIndex = 0;
+        var i = 0,
+            len = PlayVod_getQualitiesCount();
+
+        for (i; i < len; i++) {
+            if (PlayVod_qualities[i].id === PlayVod_quality) {
+                PlayVod_qualityIndex = i;
+                break;
+            } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_qualities[i].id)) { //make shore to set a value before break out
+                PlayVod_qualityIndex = i;
+            }
+        }
+
+        if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+    }
+
+    function PlayVod_SetHtmlQuality(element) {
+        if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
+
+        PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
+
+        var quality_string = '';
+        if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+        else quality_string = PlayVod_quality;
+
+        quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
+
+        Main_textContentWithEle(element, quality_string);
+    }
+
+    function PlayVod_getQualitiesCount() {
+        return PlayVod_qualities.length;
     }
 
     function PlayVod_jump() {
