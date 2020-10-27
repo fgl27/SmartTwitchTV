@@ -17043,7 +17043,9 @@
 
         }
 
-        var timeMs = value[9] ? value[9] : OSInterface_gettime();
+        //var timeMs = value[9] ? value[9] : OSInterface_gettime();
+        var timeMs = OSInterface_gettime();
+
         Play_BufferSize = parseFloat(value[7]);
 
         if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
