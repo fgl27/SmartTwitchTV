@@ -200,9 +200,10 @@
 
     function Set_DpadOpacity() {
         if (!Main_IsOn_OSInterface) return;
+        Main_scenekeysDoc.style.opacity = dpad_opacity;
+
         Main_clearHideButtons();
         Main_setHideButtons();
-        Main_scenekeysDoc.style.opacity = dpad_opacity;
     }
 
     function Set_dpad_opacity(value) {
