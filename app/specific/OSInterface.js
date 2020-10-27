@@ -450,6 +450,15 @@ function OSInterface_gettimepreview() {
     return Main_IsOn_OSInterface ? Android.gettimepreview() : 0;
 }
 
+//public void SetCurrentPositionTimeout()
+//Android specific: true
+//set how fast the get player position handler will refresh
+function OSInterface_SetCurrentPositionTimeout() {
+    try {
+        Android.SetCurrentPositionTimeout(500);
+    } catch (e) {}
+}
+
 //public void stopVideo(int who_called)
 //who_called = 0 live, 1 vod, 2 clip
 //Android specific: false
@@ -574,13 +583,7 @@ function OSInterface_keyEvent(key, keyaction) {
 //Android specific: true
 //Sets small player max Bitrate
 function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
-    } catch (e) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate);
-        } catch (e) {}
-    }
+    if (Main_IsOn_OSInterface) Android.SetSmallPlayerBitrate(Bitrate, Resolution);
 }
 
 //public void SetSmallPlayerBandwidth(int Bitrate, int Resolution)
@@ -588,15 +591,7 @@ function OSInterface_SetSmallPlayerBitrate(Bitrate, Resolution) {
 //Android specific: true
 //Sets Big player max Bitrate
 function OSInterface_SetMainPlayerBitrate(Bitrate, Resolution) {
-    try {
-        if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
-    } catch (e) {
-        try {
-            if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate);
-        } catch (e) {
-
-        }
-    }
+    if (Main_IsOn_OSInterface) Android.SetMainPlayerBitrate(Bitrate, Resolution);
 }
 
 //public String getcodecCapabilities(String CodecType)
@@ -620,9 +615,7 @@ function OSInterface_setBlackListMediaCodec(CodecList) {
 //Android specific: true
 //Returns the codecCapabilities for that codec type
 function OSInterface_setBlackListQualities(qualitiesList) {
-    try {
-        Android.setBlackListQualities(qualitiesList);
-    } catch (e) {}
+    Android.setBlackListQualities(qualitiesList);
 }
 
 //public void mshowLoading(boolean show)
@@ -674,9 +667,7 @@ function OSInterface_LongLog(log) {
 //Android specific: true
 //request the video status dropped frames, buffer size etc
 function OSInterface_getVideoStatus(showLatency, Who_Called) {
-    try {
-        Android.getVideoStatus(Boolean(showLatency), Who_Called);
-    } catch (e) {}
+    Android.getVideoStatus(Boolean(showLatency), Who_Called);
 }
 
 //public void getVideoQuality(int who_called)
@@ -702,9 +693,7 @@ function OSInterface_DisableMultiStream() {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartMultiStream(position, uri, mainPlaylistString, Restart) {
-    try {
-        Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
-    } catch (e) {}
+    Android.StartMultiStream(position, uri, mainPlaylistString, Boolean(Restart));
 }
 
 //public void EnableMultiStream(boolean MainBig, int offset)
@@ -867,9 +856,10 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
 function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
-    try {
-        Android.ClearFeedPlayer(Boolean(PreventClean), Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1);
-    } catch (e) {}
+    Android.ClearFeedPlayer(
+        Boolean(PreventClean),
+        Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1
+    );
 }
 
 //public void ClearFeedPlayer()
@@ -1013,9 +1003,7 @@ function OSInterface_mKeepScreenOn(keepOn) {//Not be used
 //Android specific: true
 //Check to see if DefectedCodecExist
 function OSInterface_CheckReUsePlayer() {
-    try {
-        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
-    } catch (e) {}
+    if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
 }
 
 //public void getDuration()

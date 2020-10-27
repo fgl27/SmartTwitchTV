@@ -213,6 +213,7 @@ function Play_PreStart() {
         Settings_PP_Workaround();
         OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
         OSInterface_SetFullScreenSize(Play_FullScreenSize);
+        OSInterface_SetCurrentPositionTimeout();
     }
 
     Play_SetQuality();

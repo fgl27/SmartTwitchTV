@@ -158,6 +158,7 @@ public class PlayerActivity extends Activity {
     private boolean mWebViewKeyIsShowing = false;
     private long PlayerCurrentPosition = 0L;
     private long SmallPlayerCurrentPosition = 0L;
+    private int CurrentPositionTimeout = 250;
 
     private long droppedFrames = 0;
     private float conSpeed = 0f;
@@ -1213,7 +1214,7 @@ public class PlayerActivity extends Activity {
 
             GetCurrentPosition();
 
-        }, 500);
+        }, CurrentPositionTimeout);
     }
 
     private void GetCurrentPositionSmall() {
@@ -1225,7 +1226,7 @@ public class PlayerActivity extends Activity {
 
             GetCurrentPositionSmall();
 
-        }, 500);
+        }, CurrentPositionTimeout);
     }
 
     private void ShowNoNetworkWarning() {
@@ -3088,6 +3089,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public long gettimepreview() {
             return SmallPlayerCurrentPosition > 0 ? SmallPlayerCurrentPosition : 0;
+        }
+
+        @JavascriptInterface
+        public void SetCurrentPositionTimeout(int mCurrentPosition) {
+            CurrentPositionTimeout = Math.max(mCurrentPosition, 100);
         }
 
         @JavascriptInterface
