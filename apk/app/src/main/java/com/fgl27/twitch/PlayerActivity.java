@@ -158,7 +158,7 @@ public class PlayerActivity extends Activity {
     private boolean mWebViewKeyIsShowing = false;
     private long PlayerCurrentPosition = 0L;
     private long SmallPlayerCurrentPosition = 0L;
-    private int CurrentPositionTimeout = 250;
+    private int CurrentPositionTimeout = 500;
 
     private long droppedFrames = 0;
     private float conSpeed = 0f;
