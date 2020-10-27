@@ -741,7 +741,7 @@ function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_sec
 
                 }
             },
-            10
+            25
         );
     } else {
 
