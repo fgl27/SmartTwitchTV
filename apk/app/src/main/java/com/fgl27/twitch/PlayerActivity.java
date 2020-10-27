@@ -3214,11 +3214,13 @@ public class PlayerActivity extends Activity {
                 long buffer = 0L;
                 long LiveOffset = 0L;
                 long Duration = 0L;
+                long Position = 0L;
 
                 if (PlayerObj[0].player != null) {
                     buffer = PlayerObj[0].player.getTotalBufferedDuration();
                     LiveOffset = PlayerObj[0].player.getCurrentLiveOffset();
                     Duration = PlayerObj[0].player.getDuration();
+                    Position = PlayerObj[0].player.getCurrentPosition();
                 }
 
                 getVideoStatusResult = new Gson().toJson(
@@ -3231,7 +3233,8 @@ public class PlayerActivity extends Activity {
                                 Tools.getTime(LiveOffset),//5
                                 Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"),//6
                                 (buffer / 1000.0),//7
-                                Duration//8
+                                Duration,//8
+                                Position//9
                         }
                 );
                 //Erase after read
