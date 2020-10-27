@@ -17043,7 +17043,7 @@
 
         }
 
-        var timeMs = OSInterface_gettime();
+        var timeMs = value[9] ? value[9] : OSInterface_gettime();
         Play_BufferSize = parseFloat(value[7]);
 
         if (Who_Called !== 2) Play_BufferSize = Math.ceil(Play_BufferSize);
@@ -19110,18 +19110,28 @@
     }
 
     function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
+
         Play_ProgresBarrElm.style.transition = 'none';
         Play_ProgresBarrBufferElm.style.transition = 'none';
-        PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
 
         if (Settings_Obj_default("app_animations")) {
+
+            //Sends a minus one to set the progress bar before show
+            PlayVod_ProgresBarrUpdate(current_time_seconds - 1, duration_seconds, update_bar);
+
             Main_setTimeout(
                 function() {
                     Play_ProgresBarrElm.style.transition = '';
                     Play_ProgresBarrBufferElm.style.transition = '';
+                    //Sends a the normal and show the animation
+                    PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
                 },
                 25
             );
+        } else {
+
+            PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+
         }
 
     }
