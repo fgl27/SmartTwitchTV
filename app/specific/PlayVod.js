@@ -500,7 +500,7 @@ function PlayVod_WarnEnd(text) {
 }
 
 function PlayVod_qualityChanged() {
-    PlayVod_qualityIndex = 1;
+    PlayVod_qualityIndex = 0;
 
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
         if (PlayVod_qualities[i].id === PlayVod_quality) {
@@ -630,7 +630,6 @@ function PlayVod_hidePanel() {
     PlayVod_previews_hide();
     PlayVod_jumpStepsIncreaseLock = false;
     PlayVod_ClearProgressJumptime(Settings_value.vod_seek_min.defaultValue);
-    Play_ProgressBarrSkipAnimation = false;
 }
 
 function PlayVod_qualityReset() {
@@ -649,7 +648,6 @@ function PlayVod_qualityReset() {
 
 function PlayVod_showPanel(autoHide) {
     if (Play_getQualitiesFail) Play_getQualities(2, true);
-    Play_ProgressBarrSkipAnimation = true;
 
     PlayVod_SetChapters();
     PlayVod_RefreshProgressBarrStart(autoHide, 1);
@@ -666,28 +664,41 @@ function PlayVod_showPanel(autoHide) {
 
 
 function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
-    if (Play_isOn) Play_RefreshWatchingtime();
+    PlayVod_getVideoQualityRate = 0;
+
+    if (Play_isOn) Play_RefreshWatchingTime();
+
+    PlayVod_ProgresBarrUpdateNoAnimation(
+        (OSInterface_gettime() / 1000),
+        Play_DurationSeconds,
+        !PlayVod_IsJumping
+    );
     PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
 
     PlayVod_RefreshProgressBarrID = Main_setInterval(
         function() {
             PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
         },
-        1000,
+        PlayVod_RefreshProgressBarrTimeout,
         PlayVod_RefreshProgressBarrID
     );
 }
 
+var PlayVod_getVideoQualityRate = 0;
 function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
+
     var Update_status = Settings_Obj_default("keep_panel_info_visible");
 
-    if (!Update_status && Main_IsOn_OSInterface && showVideoQuality &&
+    if (!PlayVod_getVideoQualityRate && !Update_status && Main_IsOn_OSInterface && showVideoQuality &&
         ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
             (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
         OSInterface_getVideoQuality(who_called);
 
     }
+
+    PlayVod_getVideoQualityRate++;
+    if (PlayVod_getVideoQualityRate > 2) PlayVod_getVideoQualityRate = 0;
 
     if (Update_status !== 1) {
 
@@ -696,44 +707,7 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
     }
 
-    if (Play_isOn) Play_RefreshWatchingtime();
-}
-
-function PlayVod_setHidePanel() {
-    Play_PanelHideID = Main_setTimeout(PlayVod_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
-}
-
-function PlayVod_qualityIndexReset() {
-    PlayVod_qualityIndex = 0;
-    var i = 0, len = PlayVod_getQualitiesCount();
-
-    for (i; i < len; i++) {
-        if (PlayVod_qualities[i].id === PlayVod_quality) {
-            PlayVod_qualityIndex = i;
-            break;
-        } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_qualities[i].id)) { //make shore to set a value before break out
-            PlayVod_qualityIndex = i;
-        }
-    }
-    if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
-}
-
-function PlayVod_SetHtmlQuality(element) {
-    if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
-
-    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
-
-    var quality_string = '';
-    if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
-    else quality_string = PlayVod_quality;
-
-    quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
-
-    Main_textContentWithEle(element, quality_string);
-}
-
-function PlayVod_getQualitiesCount() {
-    return PlayVod_qualities.length;
+    if (Play_isOn) Play_RefreshWatchingTime();
 }
 
 function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
@@ -768,6 +742,45 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
     Play_ProgresBarrBufferElm.style.width = Math.ceil(((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0) + '%';
 
     if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+
+}
+
+function PlayVod_setHidePanel() {
+    Play_PanelHideID = Main_setTimeout(PlayVod_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
+}
+
+function PlayVod_qualityIndexReset() {
+    PlayVod_qualityIndex = 0;
+    var i = 0, len = PlayVod_getQualitiesCount();
+
+    for (i; i < len; i++) {
+        if (PlayVod_qualities[i].id === PlayVod_quality) {
+            PlayVod_qualityIndex = i;
+            break;
+        } else if (Main_A_includes_B(PlayVod_qualities[i].id, PlayVod_qualities[i].id)) { //make shore to set a value before break out
+            PlayVod_qualityIndex = i;
+        }
+    }
+
+    if (PlayVod_qualities[PlayVod_qualityIndex]) Play_qualityTitleReset(PlayVod_qualities[PlayVod_qualityIndex].id);
+}
+
+function PlayVod_SetHtmlQuality(element) {
+    if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
+
+    PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
+
+    var quality_string = '';
+    if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+    else quality_string = PlayVod_quality;
+
+    quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
+
+    Main_textContentWithEle(element, quality_string);
+}
+
+function PlayVod_getQualitiesCount() {
+    return PlayVod_qualities.length;
 }
 
 function PlayVod_jump() {

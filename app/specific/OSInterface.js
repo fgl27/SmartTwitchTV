@@ -453,11 +453,11 @@ function OSInterface_gettimepreview() {
 //public void SetCurrentPositionTimeout()
 //Android specific: true
 //set how fast the get player position handler will refresh
-function OSInterface_SetCurrentPositionTimeout() {
-    try {
-        Android.SetCurrentPositionTimeout(500);
-    } catch (e) {}
-}
+// function OSInterface_SetCurrentPositionTimeout(timeout) {
+//     try {
+//         Android.SetCurrentPositionTimeout(timeout);
+//     } catch (e) {}
+// }
 
 //public void stopVideo(int who_called)
 //who_called = 0 live, 1 vod, 2 clip

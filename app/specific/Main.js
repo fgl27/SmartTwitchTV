@@ -1916,12 +1916,13 @@ function Main_Slice(arrayTocopy) {
     try {
         array = arrayTocopy.slice();
     } catch (e) {
-        Main_Log('Main_Slice ' + e);
         array = [];
         var i = 0, len = arrayTocopy.length;
         for (i; i < len; i++) {
             array.push(arrayTocopy[i]);
         }
+
+        Main_Log('Main_Slice ' + e);
     }
     return array;
 }

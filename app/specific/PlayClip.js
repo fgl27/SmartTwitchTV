@@ -622,7 +622,6 @@ function PlayClip_hidePanel() {
 
     Play_clearHidePanel();
     PlayVod_ClearProgressJumptime(0);
-    Play_ProgressBarrSkipAnimation = false;
 
 }
 
@@ -640,7 +639,6 @@ function PlayClip_qualityReset() {
 }
 
 function PlayClip_showPanel() {
-    Play_ProgressBarrSkipAnimation = true;
 
     PlayVod_RefreshProgressBarrStart(false, 2);
     Play_CleanHideExit();

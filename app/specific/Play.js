@@ -27,6 +27,7 @@ var Play_MaxChatSizeValue = 4;
 var Play_PanelHideID = null;
 var Play_isFullScreen = true;
 var Play_Buffer = 2000;
+var PlayVod_RefreshProgressBarrTimeout = 1000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
 var Play_PicturePictureSize = 2;
@@ -213,7 +214,7 @@ function Play_PreStart() {
         Settings_PP_Workaround();
         OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
         OSInterface_SetFullScreenSize(Play_FullScreenSize);
-        OSInterface_SetCurrentPositionTimeout();
+        //OSInterface_SetCurrentPositionTimeout(PlayVod_RefreshProgressBarrTimeout / 2);
     }
 
     Play_SetQuality();
@@ -1595,7 +1596,6 @@ function Play_hidePanel() {
 
     Play_clearHidePanel();
     PlayVod_ClearProgressJumptime(0);
-    Play_ProgressBarrSkipAnimation = false;
 }
 
 function Play_qualityReset() {
@@ -1612,21 +1612,19 @@ function Play_qualityReset() {
     if (!Main_A_includes_B(Play_data.qualityPlaying, 'Auto')) Play_SetHtmlQuality(Play_info_quality);
 }
 
-var Play_ProgressBarrSkipAnimation = false;
-
 function Play_showPanel() {
     if (Play_getQualitiesFail) Play_getQualities(1, true);
 
     if (!Play_StayDialogVisible()) {
-        Play_ProgressBarrSkipAnimation = true;
+
         PlayVod_RefreshProgressBarrStart(true, 0);
 
     } else {
 
         PlayVod_PanelY = 2;
         Play_BottonIconsFocus();
-        Play_RefreshWatchingtime();
-        PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingtime, 1000, PlayVod_RefreshProgressBarrID);
+        Play_RefreshWatchingTime();
+        PlayVod_RefreshProgressBarrID = Main_setInterval(Play_RefreshWatchingTime, 1000, PlayVod_RefreshProgressBarrID);
 
     }
 
@@ -1635,7 +1633,7 @@ function Play_showPanel() {
     Play_Resetpanel(1);
 }
 
-function Play_RefreshWatchingtime() {
+function Play_RefreshWatchingTime() {
 
     if (Play_MultiEnable) {
 
@@ -1717,12 +1715,11 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     if (value[8] > 0) Play_UpdateDurationDiv(value[8]);
 
-    if (Play_ProgressBarrSkipAnimation) {
-
-        PlayVod_ProgresBarrUpdateNoAnimation((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
-        Play_ProgressBarrSkipAnimation = false;
-
-    } else PlayVod_ProgresBarrUpdate((timeMs / 1000), Play_DurationSeconds, !PlayVod_IsJumping);
+    PlayVod_ProgresBarrUpdate(
+        (timeMs / 1000),
+        Play_DurationSeconds,
+        !PlayVod_IsJumping
+    );
 
 }
 
