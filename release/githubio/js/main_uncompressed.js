@@ -19071,9 +19071,11 @@
         PlayVod_ProgresBarrUpdateNoAnimation(
             (OSInterface_gettime() / 1000),
             Play_DurationSeconds,
-            !PlayVod_IsJumping
+            !PlayVod_IsJumping,
+            true,
+            showVideoQuality,
+            who_called
         );
-        PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
 
         PlayVod_RefreshProgressBarrID = Main_setInterval(
             function() {
@@ -19111,29 +19113,46 @@
         if (Play_isOn) Play_RefreshWatchingTime();
     }
 
-    function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar) {
-
-        Play_ProgresBarrElm.style.transition = 'none';
-        Play_ProgresBarrBufferElm.style.transition = 'none';
+    function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_seconds, update_bar, callVideoQuality, showVideoQuality, who_called) {
 
         if (Settings_Obj_default("app_animations")) {
 
+            Play_ProgresBarrElm.style.transition = 'none';
+            Play_ProgresBarrBufferElm.style.transition = 'none';
+
             //Sends a minus one to set the progress bar before show
-            PlayVod_ProgresBarrUpdate(current_time_seconds - 1, duration_seconds, update_bar);
+            PlayVod_ProgresBarrUpdate(current_time_seconds - 1.5, duration_seconds, update_bar);
 
             Main_setTimeout(
                 function() {
                     Play_ProgresBarrElm.style.transition = '';
                     Play_ProgresBarrBufferElm.style.transition = '';
-                    //Sends a the normal and show the animation
-                    PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
+
+                    //This will update PlayVod_ProgresBarrUpdate with animation to the correct value
+                    if (callVideoQuality) {
+
+                        Main_setTimeout(
+                            function() {
+
+                                PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
+
+                            },
+                            10
+                        );
+
+                    }
                 },
-                25
+                10
             );
         } else {
 
             PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar);
 
+            if (callVideoQuality) {
+
+                PlayVod_RefreshProgressBarr(showVideoQuality, who_called);
+
+            }
         }
 
     }
