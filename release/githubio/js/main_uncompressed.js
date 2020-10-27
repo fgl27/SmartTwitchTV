@@ -19121,7 +19121,7 @@
         if (Settings_Obj_default("app_animations")) {
 
             //Sends a minus one to set the progress bar before show
-            PlayVod_ProgresBarrUpdate(current_time_seconds > 1.5 ? (current_time_seconds - 1.5) : current_time_seconds, duration_seconds, update_bar);
+            PlayVod_ProgresBarrUpdate(current_time_seconds > 1.5 ? (current_time_seconds - 1.5) : 0, duration_seconds, update_bar);
 
             Main_setTimeout(
                 function() {
