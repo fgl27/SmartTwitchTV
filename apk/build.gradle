@@ -11,7 +11,12 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:' + versions.benmanes
-        //classpath 'com.google.firebase:firebase-crashlytics-gradle:' + versions.crashlyticsgradle
+
+        //Crashlytics
+        classpath 'com.google.gms:google-services:' + versions.google_services
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:' + versions.firebase_crashlytics_gradle
+        //Crashlytics end
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -34,8 +39,8 @@ class GreetingTask extends DefaultTask {
 
 task gradleUpdates(type: GreetingTask) {
     doLast {
-    println ''
-    group = "wrapper"
+        println ''
+        group = "wrapper"
         ["nightly": "nightly",
          "rc"     : "release-candidate",
          "current": "current"].each {
@@ -51,18 +56,19 @@ task gradleUpdates(type: GreetingTask) {
 }
 
 dependencyUpdates.resolutionStrategy {
-  componentSelection { rules ->
-    rules.all { ComponentSelection selection ->
-      boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
-        selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-      }
-      if (rejected) {
-        selection.reject('Release candidate')
-      }
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview', 'b', 'ea'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
     }
-  }
 }
 
-subprojects { //check dependecies that may cause error contains -> ./gradlew -q allDeps --configuration releaseUnitTestCompileClasspath | grep ' -> ' -B 3
+subprojects {
+    //check dependecies that may cause error contains -> ./gradlew -q allDeps --configuration releaseUnitTestCompileClasspath | grep ' -> ' -B 3
     task allDeps(type: DependencyReportTask) {}
 }

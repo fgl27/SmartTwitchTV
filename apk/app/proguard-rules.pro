@@ -20,6 +20,10 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#Crashlytics
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
+
 -keepattributes InnerClasses
 -keep class com.fgl27.twitch.Tools**
 -keepclassmembers class com.fgl27.twitch.Tools** {

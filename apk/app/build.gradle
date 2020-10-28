@@ -1,6 +1,11 @@
 apply from: '../versions.gradle'
 apply plugin: 'com.android.application'
 
+//Crashlytics
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+//Crashlytics end
+
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -56,9 +61,16 @@ repositories {
 }
 
 dependencies {
+    //Exoplayer
     implementation project(':exoplayer-library-core')
     implementation project(':exoplayer-library-ui')
     implementation project(':exoplayer-library-hls')
+
+    //Crashlytics
+    implementation platform('com.google.firebase:firebase-bom:' + versions.firebase_bom)
+    implementation 'com.google.firebase:firebase-crashlytics'
+    //Crashlytics end
+
     implementation 'androidx.leanback:leanback:' + versions.leanback
     implementation 'androidx.webkit:webkit:' + versions.webkit
     implementation 'com.google.code.gson:gson:' + versions.googlegson
