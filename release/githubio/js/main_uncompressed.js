@@ -7015,8 +7015,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.270';
     var Main_version_java = 270; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 27 2020';
-    var Main_version_web = 511; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'October 28 2020';
+    var Main_version_web = 512; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -15406,7 +15406,7 @@
     var Play_DefaultjumpTimers = [];
 
     //To pass to Java
-    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_";
+    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?platform=_&player_type=frontpage";
     var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
 
     var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
