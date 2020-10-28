@@ -206,19 +206,24 @@ mkdir -p "$temp_maker_folder"
 # this var is used for debugging
 sed -i 's/Main_Start();/\/\/Main_Start();/g' app/specific/Main.js;
 
-# make the release/index.min.html
-cp -rf app/index.html release/index.min.html
-sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/index.min.html
+# make the release/index.html
+cp -rf app/index.html release/index.html
+sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/index.html
 old='<!-- httpmin-->'
-new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/main.js" defer></script>'
-sed --in-place "s%$old%$new%g" release/index.min.html
+new='<script src="githubio/js/main.js" defer></script>'
+sed --in-place "s%$old%$new%g" release/index.html
 
-cp -rf app/Extrapage/index.html release/extrapageindex.min.html
-sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/extrapageindex.min.html
+cp -rf app/Extrapage/index.html release/extrapageindex.html
+sed -i ':a;N;$!ba;s/jsstart.*jsend/httpmin/g' release/extrapageindex.html
 old='<!-- httpmin-->'
-new='<script src="https://fgl27.github.io/SmartTwitchTV/release/githubio/js/Extrapage.js" defer></script>'
-sed --in-place "s%$old%$new%g" release/extrapageindex.min.html
+new='<script src="githubio/js/Extrapage.js" defer></script>'
+sed --in-place "s%$old%$new%g" release/extrapageindex.html
 cp -rf app/Extrapage/Extrapage.js release/githubio/js/Extrapage.js;
+
+old='https://fgl27.github.io/SmartTwitchTV/release/'
+new=''
+sed --in-place "s%$old%$new%g" release/index.html
+sed --in-place "s%$old%$new%g" release/extrapageindex.html
 
 # update webversion & javaversion
 version=`echo $(grep 'Main_version_web ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
@@ -232,10 +237,14 @@ echo -e "\\n${bldgrn}Compressing Start\\n";
 # run the cleans/compress tools
 
 if [ "$canhtmlminifier" == 1 ]; then
-	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/index.min.html -o release/index.min.html
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/index.html -o release/index.html
 
-	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/extrapageindex.min.html -o release/extrapageindex.min.html
+	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/extrapageindex.html -o release/extrapageindex.html
 fi;
+
+#TODO remove this cps after some app updates
+cp -rf release/index.html release/index.min.html
+cp -rf release/extrapageindex.html extrapageindex.min.html
 
 echo "" > release/main.js;
 echo "$main_start" > release/main.js;

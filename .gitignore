@@ -39,3 +39,4 @@ index_release.html
 icon.png
 apk/app/src/main/assets/*
 release/scripts/testing.sh
+.firebase/*

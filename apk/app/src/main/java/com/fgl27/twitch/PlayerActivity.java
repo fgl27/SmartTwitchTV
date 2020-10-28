@@ -52,7 +52,9 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -131,6 +133,8 @@ public class PlayerActivity extends Activity {
             R.id.player_view4_texture_view,//3
             R.id.player_view_e_texture_view//4
     };
+
+    private String AppUrl;
 
     private String userAgent;
     private WebView mWebView;
@@ -1788,6 +1792,42 @@ public class PlayerActivity extends Activity {
                 return false;
             }
 
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                CheckURL(failingUrl);
+
+            }
+
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+
+                CheckURL(request.getUrl().toString());
+
+            }
+
+            //TODO onReceivedError may not always work but onReceivedHttpError does, find a older API workaround
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+
+                CheckURL(request.getUrl().toString());
+
+            }
+
+
+            void CheckURL(String url) {
+
+                if (Objects.equals(url, Constants.PageUrl)) {
+
+                    AppUrl = Constants.PageUrlBackup;
+                    mWebView.loadUrl(AppUrl);
+
+                }
+
+            }
+
         });
 
         if (Tools.isConnected(this)) initializeWebViewEnd();
@@ -1804,8 +1844,8 @@ public class PlayerActivity extends Activity {
             mWebViewKey = findViewById(R.id.WebViewKey);
             mWebViewKey.setVisibility(View.GONE);
         }
-
-        mWebView.loadUrl(Constants.PageUrl);
+        AppUrl = Constants.PageUrl;
+        mWebView.loadUrl(AppUrl);
         WebviewLoaded = true;
         mWebView.requestFocus();
 
@@ -1884,6 +1924,39 @@ public class PlayerActivity extends Activity {
                 runOnUiThread(() -> mWebView.dispatchKeyEvent(event));
                 //If return true, WebView will not handle the key event
                 return true;
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                CheckURL(failingUrl);
+
+            }
+
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+
+                CheckURL(request.getUrl().toString());
+
+            }
+
+            @TargetApi(Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+
+                CheckURL(request.getUrl().toString());
+
+            }
+
+            void CheckURL(String url) {
+
+                if (Objects.equals(url, Constants.KeyPageUrl)) {
+
+                    mWebView.loadUrl(Constants.KeyPageUrlBackup);
+
+                }
+
             }
 
         });
@@ -2172,7 +2245,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public String mPageUrl() {
-            return Constants.PageUrl;
+            return AppUrl;
         }
 
         @JavascriptInterface

@@ -2356,20 +2356,6 @@
 
         xmlHttp.send(null);
     }
-    //HIDE_START
-
-    var obj = [
-        "ncx6brgo", //0 -           tw 3
-        "w33bmnvni9xmhg6g", //1 - my 2
-        "4mv6wki5h1ko", //2 -           tw 2
-        "jwipybtq9ek7uo", //3 - my 1
-        "kimne78kx3" //4 -           tw 1
-    ];
-
-    AddCode_backup_client_id = obj[4] + obj[0] + obj[2];
-    AddCode_client_secret = obj[3] + obj[1];
-
-    //HIDE_END
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
