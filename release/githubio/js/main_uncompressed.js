@@ -7013,10 +7013,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.270';
-    var Main_version_java = 270; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.271';
+    var Main_version_java = 271; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 28 2020';
-    var Main_version_web = 512; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 513; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7606,6 +7606,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.271 - Web Version October 28 2020",
+                changes: [
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Web Version October 27 2020",
                 changes: [
                     "General performance improves",
@@ -7647,13 +7653,6 @@
                 title: "Apk Version 3.0.267 - Web Version October 19 2020",
                 changes: [
                     "Allow the settings blocked resolution to also work on clips",
-                    "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Apk Version 3.0.265 and 3.0.266 - Web Version October 18 2020",
-                changes: [
-                    "Fix issue that sometimes a stream didn't play and the app did noting about it, this was most noticeable after a resume (restoring the app from background AKA change apps) and multistream was enable one of the stream may not properly load do to error, now the app will try to prevent it if not possible will warn",
                     "General performance improves and bug fixes",
                 ]
             }
@@ -17043,8 +17042,8 @@
 
         }
 
-        //var timeMs = value[9] ? value[9] : OSInterface_gettime();
-        var timeMs = OSInterface_gettime();
+        //Remove the check after some app updates
+        var timeMs = value[9] ? value[9] : OSInterface_gettime();
 
         Play_BufferSize = parseFloat(value[7]);
 
