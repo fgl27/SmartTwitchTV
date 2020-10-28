@@ -68,6 +68,7 @@ dependencies {
 
     //Crashlytics
     implementation platform('com.google.firebase:firebase-bom:' + versions.firebase_bom)
+    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
     //Crashlytics end
 
