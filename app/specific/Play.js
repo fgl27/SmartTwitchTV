@@ -80,7 +80,7 @@ var Play_DefaultjumpTimers = [];
 
 //To pass to Java
 var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?player_type=frontpage";
-var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
+var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
 
 var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
 var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
