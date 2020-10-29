@@ -398,12 +398,28 @@ function OSInterface_UpdateUserId(user) {
 //Android specific: true
 //Set app id and etc related
 function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
-    if (Main_IsOn_OSInterface)
+    if (Main_IsOn_OSInterface) {
+
         Android.setAppIds(
             client_id,
             client_secret ? client_secret : null,
             redirect_uri
         );
+
+    }
+}
+
+//public void SetStreamDataHeaders(String header)
+//Android specific: true
+//Set app play header if necessary
+function OSInterface_SetStreamDataHeaders(header) {
+    if (Main_IsOn_OSInterface) {
+
+        Android.SetStreamDataHeaders(
+            header ? header : null
+        );
+
+    }
 }
 
 //public void BackupFile(String file, String file_content)

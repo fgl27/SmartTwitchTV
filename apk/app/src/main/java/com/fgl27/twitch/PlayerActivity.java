@@ -2714,6 +2714,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void SetStreamDataHeaders(String header) {
+            Tools.SetStreamDataHeaders(header);
+        }
+
+        @JavascriptInterface
         public String getStreamData(String token_url, String hls_url, int Timeout) {
             try {
                 return Tools.getStreamData(token_url, hls_url, 0L, Timeout);

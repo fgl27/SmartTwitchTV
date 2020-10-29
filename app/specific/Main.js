@@ -217,7 +217,9 @@ function Main_loadTranslations(language) {
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
             Main_isDebug = OSInterface_getdebug();
             Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
+
             OSInterface_setAppIds(AddCode_clientId, AddCode_client_secret, AddCode_redirect_uri);
+            OSInterface_SetStreamDataHeaders(Play_Headers);
 
         } catch (e) {
             Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;

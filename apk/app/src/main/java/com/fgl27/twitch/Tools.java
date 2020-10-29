@@ -105,6 +105,8 @@ public final class Tools {
     private static final Type ArrayType = new TypeToken<String[][]>() {
     }.getType();
 
+    private static String[][] StreamDataHeaders = new String[0][0];
+
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
             "1", "1.1", "1.2", "1.3", "1.b",
@@ -261,6 +263,14 @@ public final class Tools {
         );
     }
 
+    static void SetStreamDataHeaders(String header) {
+
+        StreamDataHeaders = header == null ?
+                new String[0][0] :
+                new Gson().fromJson(header, ArrayType);
+
+    }
+
     private static ResponseObj GetResponseObj(String urlString, int Timeout) {
         HttpURLConnection urlConnection = null;
 
@@ -268,6 +278,9 @@ public final class Tools {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
             urlConnection.setConnectTimeout(Timeout);
             urlConnection.setReadTimeout(Timeout);
+
+            for (String[] header : StreamDataHeaders)
+                urlConnection.setRequestProperty(header[0], header[1]);
 
             urlConnection.connect();
 

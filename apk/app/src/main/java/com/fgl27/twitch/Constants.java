@@ -23,7 +23,7 @@ package com.fgl27.twitch;
 public final class Constants {
 
     //Keep page url here as is easy to access and modify the value for when running test from local file
-    
+
     //final static String PageUrl = "file:///android_asset/app/index.html";
     //final static String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
 
