@@ -26742,8 +26742,6 @@
         Settings_SetResBitRate(0);
 
         if (!Main_isTV) {
-            Settings_SetDpad();
-
             //Do it again after a delay to make sure the view is ready to receive the update
             Main_setTimeout(
                 Settings_SetDpad,
