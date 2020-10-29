@@ -1691,14 +1691,6 @@
         'chat:edit',
         'chat:read'
     ];
-
-    var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
-    //Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
-    var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9"; //public but get yours link above is free
-    var AddCode_client_secret; //none public get yours link above is free
-    var AddCode_backup_client_id;
-    var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
-    var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
     //Variable initialization end
 
     function AddCode_CheckNewCode(code) {
@@ -2356,6 +2348,22 @@
 
         xmlHttp.send(null);
     }
+
+    var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
+    //Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
+    var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9"; //public but get yours link above is free
+    var AddCode_client_secret; //none public get yours link above is free
+    var AddCode_backup_client_id;
+    var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
+    var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
+
+    //To pass to Java
+    var Play_Headers;
+    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token";
+    var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
+
+    var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token";
+    var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -6999,10 +7007,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.272';
-    var Main_version_java = 272; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 28 2020';
-    var Main_version_web = 515; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.273';
+    var Main_version_java = 273; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'October 29 2020';
+    var Main_version_web = 516; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7192,7 +7200,9 @@
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
                 Main_isDebug = OSInterface_getdebug();
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
+
                 OSInterface_setAppIds(AddCode_clientId, AddCode_client_secret, AddCode_redirect_uri);
+                OSInterface_SetStreamDataHeaders(Play_Headers);
 
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;
@@ -7592,6 +7602,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.273 - Web Version October 29 2020",
+                changes: [
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Apk Version 3.0.272 - Web Version October 28 2020",
                 changes: [
                     "General performance improves and bug fixes",
@@ -7633,13 +7649,6 @@
                 changes: [
                     "Improve player progressbar use, by hiding etc information not needed when using it",
                     "General performance improves",
-                ]
-            },
-            {
-                title: "Apk Version 3.0.267 - Web Version October 19 2020",
-                changes: [
-                    "Allow the settings blocked resolution to also work on clips",
-                    "General performance improves and bug fixes",
                 ]
             }
         ];
@@ -10281,12 +10290,31 @@
     //Android specific: true
     //Set app id and etc related
     function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
-        if (Main_IsOn_OSInterface)
+        if (Main_IsOn_OSInterface) {
+
             Android.setAppIds(
                 client_id,
                 client_secret ? client_secret : null,
                 redirect_uri
             );
+
+        }
+    }
+
+    //public void SetStreamDataHeaders(String header)
+    //Android specific: true
+    //Set app play header if necessary
+    function OSInterface_SetStreamDataHeaders(header) {
+        if (Main_IsOn_OSInterface) {
+
+            try {
+
+                Android.SetStreamDataHeaders(
+                    header ? header : null
+                );
+            } catch (e) {}
+
+        }
     }
 
     //public void BackupFile(String file, String file_content)
@@ -15389,13 +15417,6 @@
     var Play_ProgresBarrElm;
     var Play_ProgresBarrBufferElm;
     var Play_DefaultjumpTimers = [];
-
-    //To pass to Java
-    var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token?player_type=frontpage";
-    var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
-
-    var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token?platform=_";
-    var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";
 
     var Play_base_backup_headers = '';
 

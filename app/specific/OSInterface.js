@@ -415,9 +415,12 @@ function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
 function OSInterface_SetStreamDataHeaders(header) {
     if (Main_IsOn_OSInterface) {
 
-        Android.SetStreamDataHeaders(
-            header ? header : null
-        );
+        try {
+
+            Android.SetStreamDataHeaders(
+                header ? header : null
+            );
+        } catch (e) {}
 
     }
 }
