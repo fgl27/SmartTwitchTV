@@ -32,19 +32,30 @@ import net.grandcentrix.tray.AppPreferences;
 public class SyncChannelJobService extends JobService {
 
     private static final String TAG = "STTV_ChannelJobService";
-    private Handler UpdateHandler;
 
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
-        Context context = getApplicationContext();
 
-        Handler MainJobHandler = new Handler(Looper.getMainLooper());
+        try {
+            UpdateChannels(getApplicationContext(), jobParameters);
+        } catch (Exception e) {
+            Log.w(TAG, "onStartJob e ", e);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onStopJob(JobParameters jobParameters) {
+        return true;
+    }
+
+    private void UpdateChannels(Context context, JobParameters jobParameters) {
 
         HandlerThread updateThread = new HandlerThread("UpdateThread");
         updateThread.start();
-        UpdateHandler = new Handler(updateThread.getLooper());
 
-        UpdateHandler.post(() -> {
+        new Handler(updateThread.getLooper()).post(() -> {
 
             try {
 
@@ -54,19 +65,12 @@ public class SyncChannelJobService extends JobService {
                 );
 
             } catch (Exception e) {
-                Log.w(TAG, "updateChannels e ", e);
+                Log.w(TAG, "UpdateChannels e ", e);
             }
 
-            MainJobHandler.post(() -> jobFinished(jobParameters, false));
+            new Handler(Looper.getMainLooper()).post(() -> jobFinished(jobParameters, false));
         });
 
-        return true;
-    }
-
-    @Override
-    public boolean onStopJob(JobParameters jobParameters) {
-        UpdateHandler.removeCallbacksAndMessages(null);
-        return true;
     }
 
 }
