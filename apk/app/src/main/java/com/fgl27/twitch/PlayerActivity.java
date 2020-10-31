@@ -317,7 +317,21 @@ public class PlayerActivity extends Activity {
             intent.setAction(null);
             setIntent(intent);
 
-            setContentView(R.layout.activity_player);
+            try {
+                setContentView(R.layout.activity_player);
+            } catch (Exception e) {
+                if (e.getMessage() != null && e.getMessage().contains("webview")) {
+                    // If the system failed to inflate this view because of the WebView (which could
+                    // be one of several types of exceptions), it likely means that the system WebView
+                    // is either not present (unlikely) OR in the process of being updated (also unlikely).
+                    // It's unlikely but we have been receiving a lot of crashes.
+                    // In this case, show the user a message and finish the activity
+                    Toast.makeText(this, getString(R.string.webview_exception), Toast.LENGTH_LONG).show();
+                    finishAndRemoveTask();
+                    return;
+                } else throw e;
+            }
+
             SetDefaultLoadingLayout();
 
             IsStopped = false;
