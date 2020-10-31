@@ -321,7 +321,7 @@ function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
 function Play_IconsResetFocus() {
     Play_IconsRemoveFocus();
     Play_Panelcounter = Play_controlsDefault;
-    Play_IconsAddFocus();
+    if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
 }
 
 function Play_updownquality(adder, PlayVodClip, Play_controls_Pos) {
