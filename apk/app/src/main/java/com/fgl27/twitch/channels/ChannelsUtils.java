@@ -511,6 +511,7 @@ public final class ChannelsUtils {
     }
 
     public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS) {
+        if (!Tools.isConnected(context)) return;
 
         String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
 
@@ -547,6 +548,8 @@ public final class ChannelsUtils {
     }
 
     public static void SetUserLive(Context context, String userId, AppPreferences appPreferences) {
+        if (!Tools.isConnected(context)) return;
+
         long channelId = getChannelIdFromTvProvider(
                 context,
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE]
@@ -599,6 +602,8 @@ public final class ChannelsUtils {
     }
 
     public static void StartUserHost(Context context, String name) {
+        if (!Tools.isConnected(context)) return;
+
         long channelId = getChannelIdFromTvProvider(
                 context,
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST]
@@ -639,6 +644,8 @@ public final class ChannelsUtils {
     }
 
     public static void StartFeatured(Context context, String[][] DEFAULT_HEADERS) {
+        if (!Tools.isConnected(context)) return;
+
         List<ChannelContentObj> content = null;
 
         long channelId = getChannelIdFromTvProvider(
@@ -672,6 +679,8 @@ public final class ChannelsUtils {
     }
 
     public static void StartGames(Context context, String[][] DEFAULT_HEADERS) {
+        if (!Tools.isConnected(context)) return;
+
         long channelId = getChannelIdFromTvProvider(
                 context,
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES]
@@ -714,6 +723,8 @@ public final class ChannelsUtils {
     }
 
     public static void StartUserGames(Context context, String name) {
+        if (!Tools.isConnected(context)) return;
+
         long channelId = getChannelIdFromTvProvider(
                 context,
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES]
