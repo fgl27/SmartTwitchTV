@@ -7010,7 +7010,7 @@
     var Main_stringVersion_Min = '.276';
     var Main_version_java = 276; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'October 31 2020';
-    var Main_version_web = 519; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 520; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -12314,16 +12314,21 @@
         PlayVod_state = -1;
         PlayClip_state = -1;
         Play_hideChat();
-        Play_hidePanel();
-        PlayClip_hidePanel();
-        PlayVod_hidePanel();
+
+        if (PlayVodClip === 1) Play_hidePanel();
+        else if (PlayVodClip === 2) PlayVod_hidePanel();
+        else if (PlayVodClip === 3) PlayClip_hidePanel();
+
         if (!Play_IsWarning) Play_HideWarningDialog();
+
         Play_HideBufferDialog();
         Play_CleanHideExit();
+
         if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) {
             Play_EndIconsRemoveFocus();
             Play_Endcounter = -1;
         }
+
         Play_EndIconsAddFocus();
     }
 
