@@ -1331,7 +1331,7 @@
         STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview volume";
         STR_PREVIEW_OTHERS_VOLUME = "Main players volume";
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "The main player (All players picture in picture, multistream players) volume can be lower when the preview player is showing";
-        STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
+        STR_SIDE_PANEL_PLAYER = "Preview thumbnail players settings";
         STR_START_AT_USER = "Always start the app in the user screen";
         STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
         STR_LAST_REFRESH = "last refresh: ";
