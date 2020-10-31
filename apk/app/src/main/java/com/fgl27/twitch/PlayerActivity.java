@@ -84,6 +84,8 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -317,10 +319,14 @@ public class PlayerActivity extends Activity {
             intent.setAction(null);
             setIntent(intent);
 
+            FirebaseApp.initializeApp(this);
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+
             try {
                 setContentView(R.layout.activity_player);
             } catch (Exception e) {
                 if (e.getMessage() != null && e.getMessage().contains("webview")) {
+                    Tools.recordException(TAG, "webview onCreate e ", e);
                     // If the system failed to inflate this view because of the WebView (which could
                     // be one of several types of exceptions), it likely means that the system WebView
                     // is either not present (unlikely) OR in the process of being updated (also unlikely).
@@ -406,6 +412,8 @@ public class PlayerActivity extends Activity {
             initializeWebview();
 
             StopNotificationService();
+
+            FirebaseCrashlytics.getInstance().sendUnsentReports();
         }
     }
 
@@ -804,7 +812,7 @@ public class PlayerActivity extends Activity {
             else
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } catch (Exception e) {
-            Log.w(TAG, "KeepScreenOn Exception ", e);
+            Tools.recordException(TAG, "KeepScreenOn Exception ", e);
         }
     }
 
@@ -1466,7 +1474,7 @@ public class PlayerActivity extends Activity {
                 }
 
             } catch (Exception e) {
-                Log.w(TAG, "RefreshChannel Type" + Type + " Exception ", e);
+                Tools.recordException(TAG, "RefreshChannel Type" + Type + " Exception ", e);
             }
 
             if (!skipToast) RefreshChannelToast(Type, context);
@@ -1636,7 +1644,7 @@ public class PlayerActivity extends Activity {
             }, timeout + (delay > 0 ? delay : 0));
 
         } catch (Exception e) {
-            Log.w(TAG, "InitNotifications e ", e);
+            Tools.recordException(TAG, "InitNotifications e ", e);
         }
     }
 
@@ -1879,7 +1887,7 @@ public class PlayerActivity extends Activity {
                     try {
                         ChannelsUtils.UpdateAllChannels(this, appPreferences);
                     } catch (Exception e) {
-                        Log.w(TAG, "UpdateAllChannels Exception ", e);
+                        Tools.recordException(TAG, "UpdateAllChannels Exception ", e);
                     }
 
                 }
@@ -2471,7 +2479,7 @@ public class PlayerActivity extends Activity {
                     try {
                         ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
                     } catch (Exception e) {
-                        Log.w(TAG, "UpdateUserChannels Exception ", e);
+                        Tools.recordException(TAG, "UpdateUserChannels Exception ", e);
                     }
 
                 });
@@ -2502,7 +2510,7 @@ public class PlayerActivity extends Activity {
                     try {
                         ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
                     } catch (Exception e) {
-                        Log.w(TAG, "UpdateUserChannels Exception ", e);
+                        Tools.recordException(TAG, "UpdateUserChannels Exception ", e);
                     }
 
                 });
@@ -2705,7 +2713,7 @@ public class PlayerActivity extends Activity {
                             try {
                                 PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
                             } catch (Exception e) {
-                                Log.w(TAG, "CheckIfIsLiveFeed Exception ", e);
+                                Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
                             }
 
                             if (PreviewFeedResult[x][y] != null)
@@ -2714,10 +2722,12 @@ public class PlayerActivity extends Activity {
 
                         }
                 );
-            } catch (Exception ignore) {//Most are RejectedExecutionException
+            } catch (Exception e) {//Most are RejectedExecutionException
                 if (tryAgain) {//try again after a minor delay
                     MainThreadHandler.postDelayed(() -> CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, false), 250);
                 } else CheckIfIsLiveFeedError(x, y, callback);
+
+                Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
             }
         }
 
@@ -2737,7 +2747,7 @@ public class PlayerActivity extends Activity {
             try {
                 return Tools.getStreamData(token_url, hls_url, 0L, Timeout);
             } catch (Exception e) {
-                Log.w(TAG, "getStreamData Exception ", e);
+                Tools.recordException(TAG, "getStreamData Exception ", e);
             }
 
             return null;
@@ -2758,7 +2768,7 @@ public class PlayerActivity extends Activity {
                             try {
                                 StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
                             } catch (Exception e) {
-                                Log.w(TAG, "getStreamDataAsync Exception ", e);
+                                Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
                             }
 
                             if (StreamDataResult[position] != null) {
@@ -2773,11 +2783,13 @@ public class PlayerActivity extends Activity {
 
                         }
                 );
-            } catch (Exception ignore) {//Most are RejectedExecutionException
+            } catch (Exception e) {//Most are RejectedExecutionException
 
                 if (tryAgain) {//try again after a minor delay
                     MainThreadHandler.postDelayed(() -> getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, false), 250);
                 } else getStreamDataAsyncError(position, callback, checkResult);
+
+                Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
 
             }
 
@@ -2838,11 +2850,14 @@ public class PlayerActivity extends Activity {
 
                         }
                 );
-            } catch (Exception ignore) {//Most are RejectedExecutionException
+            } catch (Exception e) {//Most are RejectedExecutionException
                 if (tryAgain) {//try again after a minor delay
                     MainThreadHandler.postDelayed(() -> GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
                             callback, checkResult, key, thread, false), 250);
                 } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+
+                Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
+
             }
         }
 
@@ -3496,7 +3511,7 @@ public class PlayerActivity extends Activity {
                 ) == 1;
 
             } catch (Settings.SettingNotFoundException e) {
-                Log.w(TAG, "isAccessibilitySettingsOn SettingNotFoundException ", e);
+                Tools.recordException(TAG, "isAccessibilitySettingsOn SettingNotFoundException ", e);
             }
 
             return false;
@@ -3663,7 +3678,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
 
-            Log.w(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
+            Tools.recordException(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
 
             PlayerEventListenerCheckCounter(position, 1);//player_Erro
 

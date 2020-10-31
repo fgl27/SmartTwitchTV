@@ -69,6 +69,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -297,7 +298,7 @@ public final class Tools {
                 return null;
             }
         } catch (Exception e) {
-            Log.w(TAG, "GetResponseObj ", e);
+            recordException(TAG, "GetResponseObj ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -370,7 +371,7 @@ public final class Tools {
                 return null;
             }
         } catch (Exception e) {
-            Log.w(TAG, "Internal_MethodUrl ", e);
+            recordException(TAG, "Internal_MethodUrl ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -515,7 +516,7 @@ public final class Tools {
                     )
                     : null;
         } catch (Exception e) {
-            Log.w(TAG, "codecframeRate Exception width " + width + " height " + height, e);
+            recordException(TAG, "codecframeRate Exception width " + width + " height " + height, e);
             return null;
         }
     }
@@ -647,7 +648,7 @@ public final class Tools {
                 closeQuietly(mWriter);
 
             } catch (IOException e) {
-                Log.w(TAG, "BackupJson IOException ", e);
+                recordException(TAG, "BackupJson IOException ", e);
             }
         }
     }
@@ -688,7 +689,7 @@ public final class Tools {
 
             return result;
         } catch (FileNotFoundException e) {
-            Log.w(TAG, "RestoreBakupFile FileNotFoundException ", e);
+            recordException(TAG, "RestoreBakupFile FileNotFoundException ", e);
         }
         return null;
     }
@@ -880,8 +881,9 @@ public final class Tools {
             Intent intent = new Intent(context, NotificationService.class);
             intent.setAction(action);
             ContextCompat.startForegroundService(context, intent);
-        } catch (Exception ignored) {
-        }//silent Exception caused on android 8.1 and up when notification fail to
+        } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
+            recordException(TAG, "SendNotificationIntent e ", e);
+        }
     }
 
     public static boolean isConnected(Context context) {
@@ -964,7 +966,7 @@ public final class Tools {
             File dir = context.getCacheDir();
             deleteDir(dir);
         } catch (Exception e) {
-            Log.w(TAG, "deleteCache e ", e);
+            recordException(TAG, "deleteCache e ", e);
         }
     }
 
@@ -1042,7 +1044,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "checkTokens e ", e);
+            recordException(TAG, "checkTokens e ", e);
         }
     }
 
@@ -1128,7 +1130,7 @@ public final class Tools {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "refreshTokens e ", e);
+            recordException(TAG, "refreshTokens e ", e);
         }
 
         return false;
@@ -1138,5 +1140,27 @@ public final class Tools {
         appPreferences.put(UserId + Constants.PREF_REFRESH_TOKEN, null);
         appPreferences.put(UserId + Constants.PREF_ACCESS_TOKEN, null);
         appPreferences.put(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0);
+    }
+
+    public static void recordException(String TAG, String message, Exception e) {
+
+        try {
+
+            if (e != null) {
+
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Log.w(TAG, message, e);
+
+            } else {
+
+                FirebaseCrashlytics.getInstance().recordException(new RuntimeException(TAG + " e " + message));
+                Log.w(TAG, message);
+
+            }
+
+            FirebaseCrashlytics.getInstance().sendUnsentReports();
+        } catch (Exception ignore) {//Just in case prevent a crash sending a crash
+        }
+
     }
 }

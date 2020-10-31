@@ -29,7 +29,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Handler;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -77,8 +76,10 @@ public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
 
-    private static final Type SetStringType = new TypeToken<Set<String>>() {}.getType();
-    private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {}.getType();
+    private static final Type SetStringType = new TypeToken<Set<String>>() {
+    }.getType();
+    private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {
+    }.getType();
 
     private static final int[] ToastPositions = {
             Gravity.RIGHT | Gravity.TOP,//0
@@ -255,7 +256,7 @@ public final class NotificationUtils {
             } while (StreamsSize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveStreamsListToken e ", e);
+            Tools.recordException(TAG, "GetLiveStreamsListToken e ", e);
         }
 
         //Log.i(TAG, "GetLiveStreamsListToken StreamsResult " + StreamsResult.size());
@@ -371,7 +372,7 @@ public final class NotificationUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveStreamsListNoToken e ", e);
+            Tools.recordException(TAG, "GetLiveStreamsListNoToken e ", e);
         }
 
         //Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
@@ -473,7 +474,7 @@ public final class NotificationUtils {
             } while (arraySize > 0 && AddedToArray > 0);//last array was empty or didn't had noting new
 
         } catch (Exception e) {
-            Log.w(TAG, "GetChannels e ", e);
+            Tools.recordException(TAG, "GetChannels e ", e);
         }
 
         return HttpRequestSuccess ? Result : null;
@@ -608,7 +609,7 @@ public final class NotificationUtils {
                 }
             }
         } catch (Exception e) {
-            Log.w(TAG, "GetNotifications e ", e);
+            Tools.recordException(TAG, "GetNotifications e ", e);
         }
 
         SaveOldStreamList(
@@ -683,7 +684,7 @@ public final class NotificationUtils {
                 }
             }
         } catch (Exception e) {
-            Log.w(TAG, "GetGamesNotifications e ", e);
+            Tools.recordException(TAG, "GetGamesNotifications e ", e);
         }
 
         SaveOldGamesList(
@@ -724,7 +725,7 @@ public final class NotificationUtils {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "SetOldList e ", e);
+            Tools.recordException(TAG, "SetOldList e ", e);
         }
 
         SaveOldStreamList(
@@ -748,7 +749,7 @@ public final class NotificationUtils {
 
             }
         } catch (Exception e) {
-            Log.w(TAG, "SetOldList e ", e);
+            Tools.recordException(TAG, "SetOldList e ", e);
         }
 
         SaveOldGamesList(
@@ -943,7 +944,7 @@ public final class NotificationUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "CheckNotifications e ", e);
+            Tools.recordException(TAG, "CheckNotifications e ", e);
         }
     }
 
@@ -963,8 +964,9 @@ public final class NotificationUtils {
                         textSizeSmall,
                         textSizeBig
                 );
-            } catch (Exception ignored) {
-            }//silent Exception caused on android 8.1 and up when notification fail to show or user block it
+            } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
+                Tools.recordException(TAG, "ShowNotification e ", e);
+            }
         }, 5000 * delay);
 
     }

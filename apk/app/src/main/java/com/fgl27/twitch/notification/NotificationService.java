@@ -30,7 +30,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -99,8 +98,9 @@ public class NotificationService extends Service {
 
             }
 
-        } catch (Exception ignored) {
-        }//silent Exception caused on android 8.1 and up when notification fail to
+        } catch (Exception e) {//Exception caused on android 8.1 and up when notification fail to
+            Tools.recordException(TAG, "onStartCommand e ", e);
+        }
         return START_NOT_STICKY;
     }
 
@@ -197,7 +197,7 @@ public class NotificationService extends Service {
                 }, timeout + (delay > 0 ? delay : 0));
             }
         } catch (Exception e) {
-            Log.w(TAG, "InitHandler e " + e.getMessage());
+            Tools.recordException(TAG, "InitHandler e ", e);
         }
     }
 

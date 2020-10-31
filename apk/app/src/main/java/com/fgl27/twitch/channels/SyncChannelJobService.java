@@ -25,7 +25,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.Log;
+
+import com.fgl27.twitch.Tools;
 
 import net.grandcentrix.tray.AppPreferences;
 
@@ -39,7 +40,7 @@ public class SyncChannelJobService extends JobService {
         try {
             UpdateChannels(getApplicationContext(), jobParameters);
         } catch (Exception e) {
-            Log.w(TAG, "onStartJob e ", e);
+            Tools.recordException(TAG, "onStartJob e ", e);
         }
 
         return true;
@@ -65,7 +66,7 @@ public class SyncChannelJobService extends JobService {
                 );
 
             } catch (Exception e) {
-                Log.w(TAG, "UpdateChannels e ", e);
+                Tools.recordException(TAG, "UpdateChannels e ", e);
             }
 
             new Handler(Looper.getMainLooper()).post(() -> jobFinished(jobParameters, false));

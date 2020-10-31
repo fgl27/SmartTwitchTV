@@ -34,7 +34,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.media.tv.TvContract;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -182,7 +181,7 @@ public final class ChannelsUtils {
                 TvContractCompat.buildChannelUri(channelId), builder.build().toContentValues(), null, null);
 
         if (rowsUpdated < 1) {
-            Log.w(TAG, "Update channel failed " + channel.name);
+            Tools.recordException(TAG, "Update channel failed " + channel.name, null);
         }
     }
 
@@ -200,11 +199,11 @@ public final class ChannelsUtils {
                     );
 
         } catch (Exception e) { // channels not supported
-            Log.w(TAG, "createChannel e ", e);
+            Tools.recordException(TAG, "createChannel e ", e);
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
-            Log.w(TAG, "Insert channel failed " + channel.name);
+            Tools.recordException(TAG, "Insert channel failed " + channel.name, null);
             return -1L;
         }
 
@@ -257,11 +256,11 @@ public final class ChannelsUtils {
                     builder.build().toContentValues()
             );
         } catch (Exception e) {
-            Log.w(TAG, "programUri e ", e);
+            Tools.recordException(TAG, "programUri e ", e);
         }
 
         if (programUri == null || programUri.equals(Uri.EMPTY)) {
-            Log.w(TAG, "Insert program failed " + ContentObj.title);
+            Tools.recordException(TAG, "Insert program failed " + ContentObj.title, null);
         }
     }
 
@@ -296,7 +295,7 @@ public final class ChannelsUtils {
                 );
 
             } catch (Exception e) {
-                Log.w(TAG, "writeChannelLogo ", e);
+                Tools.recordException(TAG, "writeChannelLogo ", e);
             }
 
         }
@@ -393,7 +392,7 @@ public final class ChannelsUtils {
             );
 
         } catch (Exception e) {
-            Log.w(TAG, "scheduleSyncingChannel ", e);
+            Tools.recordException(TAG, "scheduleSyncingChannel ", e);
         }
 
     }
@@ -801,7 +800,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetHostContent e ", e);
+            Tools.recordException(TAG, "GetHostContent e ", e);
         }
 
         return null;
@@ -847,7 +846,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveContent e ", e);
+            Tools.recordException(TAG, "GetLiveContent e ", e);
         }
 
         return null;
@@ -1031,7 +1030,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "ProcessLiveArray e " + e.getMessage());
+            Tools.recordException(TAG, "ProcessLiveArray e ", e);
         }
 
         return contentSize > 0 ? content : null;
@@ -1088,7 +1087,7 @@ public final class ChannelsUtils {
             if (content.size() > 0) return content;
 
         } catch (Exception e) {
-            Log.w(TAG, "GetGamesContent e ", e);
+            Tools.recordException(TAG, "GetGamesContent e ", e);
         }
 
         return null;
@@ -1162,7 +1161,7 @@ public final class ChannelsUtils {
             }
 
         } catch (Exception e) {
-            Log.w(TAG, "GetLiveGames e ", e);
+            Tools.recordException(TAG, "GetLiveGames e ", e);
         }
 
         return status == 200 ? Result : null;
