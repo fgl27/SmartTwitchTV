@@ -7007,10 +7007,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.273';
-    var Main_version_java = 273; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'October 30 2020';
-    var Main_version_web = 517; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.274';
+    var Main_version_java = 274; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'October 31 2020';
+    var Main_version_web = 518; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7602,6 +7602,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.274 - Web Version October 31 2020",
+                changes: [
+                    "General performance improves and bug fixes",
+                ]
+            },
+            {
                 title: "Web Version October 30 2020",
                 changes: [
                     "General performance improves and bug fixes",
@@ -7648,13 +7654,6 @@
                     "Save a clip as watched when the previewed clip ends (of course if history is enabled for clips)",
                     "Automatic cleanup history unreachable (deleted from the server) VOD/Clip",
                     "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Web Version October 20 2020",
-                changes: [
-                    "Improve player progressbar use, by hiding etc information not needed when using it",
-                    "General performance improves",
                 ]
             }
         ];
