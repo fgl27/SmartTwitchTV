@@ -32,29 +32,26 @@ import net.grandcentrix.tray.AppPreferences;
 public class SyncChannelJobService extends JobService {
 
     private static final String TAG = "STTV_ChannelJobService";
-
-    public Context context;
-
-    public Handler MainJobHandler;
-    public Handler UpdateHandler;
-    public HandlerThread UpdateThread;
+    private Handler UpdateHandler;
 
     @Override
     public boolean onStartJob(final JobParameters jobParameters) {
-        context = getApplicationContext();
+        Context context = getApplicationContext();
 
-        MainJobHandler = new Handler(Looper.getMainLooper());
-        UpdateThread = new HandlerThread("UpdateThread");
-        UpdateThread.start();
-        UpdateHandler = new Handler(UpdateThread.getLooper());
+        Handler MainJobHandler = new Handler(Looper.getMainLooper());
 
-        AppPreferences appPreferences = new AppPreferences(context);
+        HandlerThread updateThread = new HandlerThread("UpdateThread");
+        updateThread.start();
+        UpdateHandler = new Handler(updateThread.getLooper());
 
         UpdateHandler.post(() -> {
 
             try {
 
-                ChannelsUtils.UpdateAllChannels(context, appPreferences);
+                ChannelsUtils.UpdateAllChannels(
+                        context,
+                        new AppPreferences(context)
+                );
 
             } catch (Exception e) {
                 Log.w(TAG, "updateChannels e ", e);
