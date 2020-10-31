@@ -367,16 +367,21 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     PlayVod_state = -1;
     PlayClip_state = -1;
     Play_hideChat();
-    Play_hidePanel();
-    PlayClip_hidePanel();
-    PlayVod_hidePanel();
+
+    if (PlayVodClip === 1) Play_hidePanel();
+    else if (PlayVodClip === 2) PlayVod_hidePanel();
+    else if (PlayVodClip === 3) PlayClip_hidePanel();
+
     if (!Play_IsWarning) Play_HideWarningDialog();
+
     Play_HideBufferDialog();
     Play_CleanHideExit();
+
     if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) {
         Play_EndIconsRemoveFocus();
         Play_Endcounter = -1;
     }
+
     Play_EndIconsAddFocus();
 }
 
