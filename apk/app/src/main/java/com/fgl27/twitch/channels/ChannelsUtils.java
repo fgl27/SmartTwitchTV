@@ -287,11 +287,17 @@ public final class ChannelsUtils {
     static private void writeChannelLogo(Context context, long channelId, @DrawableRes int drawableId) {
         if (channelId != -1 && drawableId != -1) {
 
-            ChannelLogoUtils.storeChannelLogo(
-                    context,
-                    channelId,
-                    convertToBitmap(context, drawableId)
-            );
+            try {
+
+                ChannelLogoUtils.storeChannelLogo(
+                        context,
+                        channelId,
+                        convertToBitmap(context, drawableId)
+                );
+
+            } catch (Exception e) {
+                Log.w(TAG, "writeChannelLogo ", e);
+            }
 
         }
     }
