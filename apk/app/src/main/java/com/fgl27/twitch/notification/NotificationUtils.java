@@ -310,64 +310,67 @@ public final class NotificationUtils {
                     len--;
                 }
 
-                Channels = new StringBuilder(Channels.substring(0, Channels.length() - 1));
+                if (Channels.length() > 0) {
+                    
+                    Channels = new StringBuilder(Channels.substring(0, Channels.length() - 1));
 
-                url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
-                        Channels.toString()
-                );
-
-                for (int i = 0; i < 3; i++) {
-
-                    response = Tools.Internal_MethodUrl(
-                            url,
-                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                            null,
-                            null,
-                            0,
-                            DEFAULT_HEADERS
+                    url = String.format(
+                            Locale.US,
+                            "https://api.twitch.tv/kraken/streams/?channel=%s&limit=100&offset=0&stream_type=all&api_version=5",
+                            Channels.toString()
                     );
 
-                    if (response != null) {
+                    for (int i = 0; i < 3; i++) {
 
-                        if (response.status == 200) {
-                            HttpRequestSuccess = true;
+                        response = Tools.Internal_MethodUrl(
+                                url,
+                                Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                                null,
+                                null,
+                                0,
+                                DEFAULT_HEADERS
+                        );
 
-                            obj = parseString(response.responseText).getAsJsonObject();
+                        if (response != null) {
 
-                            if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
+                            if (response.status == 200) {
+                                HttpRequestSuccess = true;
 
-                                TempStreams = obj.get("streams").getAsJsonArray();//Get the follows array
-                                StreamsSize = TempStreams.size();
+                                obj = parseString(response.responseText).getAsJsonObject();
 
-                                if (StreamsSize < 1) {
-                                    break;
-                                }
+                                if (obj.isJsonObject() && !obj.get("streams").isJsonNull()) {
 
-                                for (int j = 0; j < StreamsSize; j++) {
+                                    TempStreams = obj.get("streams").getAsJsonArray();//Get the follows array
+                                    StreamsSize = TempStreams.size();
 
-                                    obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
+                                    if (StreamsSize < 1) {
+                                        break;
+                                    }
 
-                                    if (obj.isJsonObject() && !obj.get("_id").isJsonNull() && !obj.get("channel").isJsonNull()) {//Prevent null channelObj or Broadcast id
+                                    for (int j = 0; j < StreamsSize; j++) {
 
-                                        id = obj.get("_id").getAsString();//Broadcast id
+                                        obj = TempStreams.get(j).getAsJsonObject();//Get the position in the follows
 
-                                        if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
-                                            TempArray.add(id);
-                                            StreamsResult.add(obj);
+                                        if (obj.isJsonObject() && !obj.get("_id").isJsonNull() && !obj.get("channel").isJsonNull()) {//Prevent null channelObj or Broadcast id
+
+                                            id = obj.get("_id").getAsString();//Broadcast id
+
+                                            if (!TempArray.contains(id)) {//Prevent add duplicated or empty obj and infinity loop
+                                                TempArray.add(id);
+                                                StreamsResult.add(obj);
+                                            }
+
                                         }
 
                                     }
 
                                 }
-
+                                break;
                             }
-                            break;
+
                         }
 
                     }
-
                 }
             }
 
