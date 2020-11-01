@@ -91,8 +91,8 @@ public final class Constants {
     public static final int CHANNEL_TYPE_USER_HOST = 6;
 
     public static final int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
-    public static final int DEFAULT_HTTP_TIMEOUT = 30000;
-    public static final int DEFAULT_HTTP_EXTRA_TIMEOUT = 3000;
+    public static final int DEFAULT_HTTP_TIMEOUT = 60000;
+    public static final int DEFAULT_HTTP_EXTRA_TIMEOUT = 10000;
 
     public static final String VIDEO_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_video.png";
     public static final String LOGO_404 = "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/404_logo.png";
