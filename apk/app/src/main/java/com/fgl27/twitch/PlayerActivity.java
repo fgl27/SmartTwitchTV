@@ -2474,15 +2474,7 @@ public class PlayerActivity extends Activity {
 
                 StopNotifications();
 
-                ChannelHandler.post(() -> {
-
-                    try {
-                        ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
-                    } catch (Exception e) {
-                        Tools.recordException(TAG, "UpdateUserChannels Exception ", e);
-                    }
-
-                });
+                mUpdateUserChannels();
 
             } else if (!Objects.equals(tempUserId, id)) {
                 //User has changed stop notifications and reset list
@@ -2507,13 +2499,10 @@ public class PlayerActivity extends Activity {
 
                     } else Tools.eraseTokens(id, appPreferences);
 
-                    try {
-                        ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
-                    } catch (Exception e) {
-                        Tools.recordException(TAG, "UpdateUserChannels Exception ", e);
-                    }
+                    mUpdateUserChannels();
 
                 });
+
             } else if (refresh_token != null) {
 
                 if (temp_refresh_token == null ||
@@ -2533,6 +2522,21 @@ public class PlayerActivity extends Activity {
                 Tools.eraseTokens(id, appPreferences);
 
             }
+        }
+
+        void mUpdateUserChannels() {
+            if (!canRunChannel) return;
+
+            ChannelHandler.post(() -> {
+
+                try {
+                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+                } catch (Exception e) {
+                    Tools.recordException(TAG, "mUpdateUserChannels Exception ", e);
+                }
+
+            });
+
         }
 
         @JavascriptInterface
