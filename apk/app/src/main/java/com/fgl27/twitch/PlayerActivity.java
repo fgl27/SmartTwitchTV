@@ -3514,8 +3514,7 @@ public class PlayerActivity extends Activity {
                         android.provider.Settings.Secure.ACCESSIBILITY_ENABLED
                 ) == 1;
 
-            } catch (Settings.SettingNotFoundException e) {
-                Tools.recordException(TAG, "isAccessibilitySettingsOn SettingNotFoundException ", e);
+            } catch (Settings.SettingNotFoundException ignore) {
             }
 
             return false;
