@@ -1146,6 +1146,8 @@ public final class Tools {
 
         try {
 
+            FirebaseCrashlytics.getInstance().log(TAG + " " + message);
+
             if (e != null) {
 
                 FirebaseCrashlytics.getInstance().recordException(e);
