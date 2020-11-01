@@ -261,6 +261,7 @@ public final class NotificationUtils {
 
         //Log.i(TAG, "GetLiveStreamsListToken StreamsResult " + StreamsResult.size());
 
+        //If stream result is null the http request fail else even streams.size() < 1 that is the result
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
@@ -311,7 +312,7 @@ public final class NotificationUtils {
                 }
 
                 if (Channels.length() > 0) {
-                    
+
                     Channels = new StringBuilder(Channels.substring(0, Channels.length() - 1));
 
                     url = String.format(
@@ -380,6 +381,7 @@ public final class NotificationUtils {
 
         //Log.i(TAG, "GetLiveStreamsListNoToken size " + StreamsResult.size());
 
+        //If stream result is null the http request fail else even streams.size() < 1 that is the result
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
