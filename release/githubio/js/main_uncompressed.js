@@ -5903,7 +5903,6 @@
             atuser = false,
             hasbits = false,
             action,
-            emotes,
             badges, badge,
             i, len;
 
@@ -6004,12 +6003,9 @@
         }
         div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
-        //Add default emotes
-        emotes = ChatLive_checkEmotes(tags);
-
         div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
             ChatLive_extraMessageTokenize(
-                emoticonize(mmessage, emotes),
+                emoticonize(mmessage, ChatLive_checkEmotes(tags)),
                 chat_number,
                 (hasbits ? parseInt(tags.bits) : 0)
             ) + '</span>';
@@ -6963,7 +6959,7 @@
     var Main_stringVersion_Min = '.278';
     var Main_version_java = 278; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 02 2020';
-    var Main_version_web = 523; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 524; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
