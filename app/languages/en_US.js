@@ -241,7 +241,7 @@ function en_USLang() {
     STR_FROM = "From:" + STR_BR;
     STR_FROM_START = STR_FROM + "Start";
     STR_CHAT_END = "Chat: The Chat has ended!";
-    STR_TIME = ", Most recent";
+    STR_RECENT = ", Most recent";
     STR_VIWES = ", Most views";
     STR_NOKEY_VIDEO_WARN = "Add an user authorization key to be able to see followed videos";
     STR_SWITCH_TYPE = "Switch: Most recent or views";
@@ -597,11 +597,6 @@ function en_USLang() {
     STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
     STR_CHAT_LOGGING = "Logging in chat with current user";
     STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
-    STR_CHAT_JUST_SUB = "Subscribed with Tier";
-    STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
-    STR_GIFT_SUB_SENDER = " has gift a Tier";
-    STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
-    STR_GIFT_SUB_MYSTERY = " has gift the channel ";
     STR_CHAT_TIMESTAMP = "Show message timestamp";
     STR_CHAT_NICK_COLOR = "Readable nick colors";
     STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";

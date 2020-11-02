@@ -755,7 +755,7 @@ function ScreensObj_InitChannelVod() {
 
             ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
+                (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
 
         },
         label_exit: function() {
@@ -887,7 +887,7 @@ function ScreensObj_InitUserVod() {
             Main_setItem('UserVod_periodPos', this.periodPos);
 
             ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                (this.periodPos === 1 ? STR_TIME : STR_VIWES));
+                (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
         }
     }, Base_obj);
 
