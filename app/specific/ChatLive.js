@@ -1305,7 +1305,8 @@ function ChatLive_CheckIfSub(message, chat_number) {
 }
 
 function ChatLive_CheckIfSubSend(message, chat_number) {
-    ChatLive_LineAdd(
+    ChatLive_LineAddCheckDelay(
+        chat_number,
         {
             chat_number: chat_number,
             message: '<span class="message">' + message + '</span>',
@@ -1320,6 +1321,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         nick,
         nickColor,
         highlighted = '',
+        extraMessage,
         atstreamer = false,
         atuser = false,
         hasbits = false,
@@ -1332,28 +1334,19 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     }
 
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
-        if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
-            highlighted = ' chat_highlighted ';
 
-            ChatLive_LineAdd(
-                {
-                    chat_number: chat_number,
-                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_HIGH),
-                    skip_addline: 1
-                }
-            );
+        if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
+
+            highlighted = ' chat_highlighted ';
+            extraMessage = STR_CHAT_REDEEMED_MESSAGE_HIGH;
 
         } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
-            highlighted = ' chat_highlighted ';
 
-            ChatLive_LineAdd(
-                {
-                    chat_number: chat_number,
-                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_SUB),
-                    skip_addline: 1
-                }
-            );
+            highlighted = ' chat_highlighted ';
+            extraMessage = STR_CHAT_REDEEMED_MESSAGE_SUB;
+
         }
+
     }
 
     if (ChatLive_Show_TimeStamp) {
@@ -1442,11 +1435,18 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atuser: atuser,
         hasbits: (hasbits && ChatLive_Highlight_Bits),
         user_id: tags['user-id'] || '_',
-        message_id: tags.id || '_'
+        message_id: tags.id || '_',
+        extraMessage: extraMessage
     };
+
+    ChatLive_LineAddCheckDelay(chat_number, messageObj);
+}
+
+function ChatLive_LineAddCheckDelay(chat_number, messageObj) {
 
     if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
     else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
+
 }
 
 function ChatLive_LineAddDelay(chat_number, id, messageObj) {
@@ -1599,6 +1599,19 @@ function ChatLive_ElemntAdd(messageObj) {
 
     elem.className = classname;
     elem.innerHTML = messageObj.message;
+
+    if (messageObj.extraMessage) {//REDEEMED_MESSAGE or etc related
+
+        ChatLive_ElemntAdd(
+            {
+                chat_number: messageObj.chat_number,
+                user_id: messageObj.user_id,
+                message: ChatLive_LineAddSimple(messageObj.extraMessage),
+                skip_addline: 1,
+            }
+        );
+
+    }
 
     Chat_div[messageObj.chat_number].appendChild(elem);
 
