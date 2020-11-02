@@ -1322,7 +1322,6 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atuser = false,
         hasbits = false,
         action,
-        emotes,
         badges, badge,
         i, len;
 
@@ -1427,12 +1426,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     }
     div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
-    //Add default emotes
-    emotes = ChatLive_checkEmotes(tags);
-
     div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(
-            emoticonize(mmessage, emotes),
+            emoticonize(mmessage, ChatLive_checkEmotes(tags)),
             chat_number,
             (hasbits ? parseInt(tags.bits) : 0)
         ) + '</span>';
