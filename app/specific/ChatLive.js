@@ -1605,7 +1605,6 @@ function ChatLive_ElemntAdd(messageObj) {
         ChatLive_ElemntAdd(
             {
                 chat_number: messageObj.chat_number,
-                user_id: messageObj.user_id,
                 message: ChatLive_LineAddSimple(messageObj.extraMessage),
                 skip_addline: 1,
             }
