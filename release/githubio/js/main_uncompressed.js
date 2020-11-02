@@ -5888,11 +5888,13 @@
     }
 
     function ChatLive_CheckIfSubSend(message, chat_number) {
-        ChatLive_LineAdd({
-            chat_number: chat_number,
-            message: '<span class="message">' + message + '</span>',
-            sub: 1,
-        });
+        ChatLive_LineAddCheckDelay(
+            chat_number, {
+                chat_number: chat_number,
+                message: '<span class="message">' + message + '</span>',
+                sub: 1,
+            }
+        );
     }
 
     function ChatLive_loadChatSuccess(message, chat_number) {
@@ -5901,6 +5903,7 @@
             nick,
             nickColor,
             highlighted = '',
+            extraMessage,
             atstreamer = false,
             atuser = false,
             hasbits = false,
@@ -5913,24 +5916,19 @@
         }
 
         if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
-            if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
-                highlighted = ' chat_highlighted ';
 
-                ChatLive_LineAdd({
-                    chat_number: chat_number,
-                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_HIGH),
-                    skip_addline: 1
-                });
+            if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
+
+                highlighted = ' chat_highlighted ';
+                extraMessage = STR_CHAT_REDEEMED_MESSAGE_HIGH;
 
             } else if (Main_A_includes_B(tags['msg-id'], "skip-subs-mode-message")) {
-                highlighted = ' chat_highlighted ';
 
-                ChatLive_LineAdd({
-                    chat_number: chat_number,
-                    message: ChatLive_LineAddSimple(STR_CHAT_REDEEMED_MESSAGE_SUB),
-                    skip_addline: 1
-                });
+                highlighted = ' chat_highlighted ';
+                extraMessage = STR_CHAT_REDEEMED_MESSAGE_SUB;
+
             }
+
         }
 
         if (ChatLive_Show_TimeStamp) {
@@ -6019,11 +6017,18 @@
             atuser: atuser,
             hasbits: (hasbits && ChatLive_Highlight_Bits),
             user_id: tags['user-id'] || '_',
-            message_id: tags.id || '_'
+            message_id: tags.id || '_',
+            extraMessage: extraMessage
         };
+
+        ChatLive_LineAddCheckDelay(chat_number, messageObj);
+    }
+
+    function ChatLive_LineAddCheckDelay(chat_number, messageObj) {
 
         if (!Play_ChatDelayPosition) ChatLive_LineAdd(messageObj);
         else ChatLive_LineAddDelay(chat_number, Chat_Id[chat_number], messageObj);
+
     }
 
     function ChatLive_LineAddDelay(chat_number, id, messageObj) {
@@ -6176,6 +6181,17 @@
 
         elem.className = classname;
         elem.innerHTML = messageObj.message;
+
+        if (messageObj.extraMessage) { //REDEEMED_MESSAGE or etc related
+
+            ChatLive_ElemntAdd({
+                chat_number: messageObj.chat_number,
+                user_id: messageObj.user_id,
+                message: ChatLive_LineAddSimple(messageObj.extraMessage),
+                skip_addline: 1,
+            });
+
+        }
 
         Chat_div[messageObj.chat_number].appendChild(elem);
 
@@ -6961,7 +6977,7 @@
     var Main_stringVersion_Min = '.278';
     var Main_version_java = 278; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 02 2020';
-    var Main_version_web = 525; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 526; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
