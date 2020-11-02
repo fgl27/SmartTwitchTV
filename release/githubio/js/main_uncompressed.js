@@ -1353,7 +1353,7 @@
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
         STR_GIFT_SUB = " has gift you a sub!";
-        STR_ANONYMOUS_USER = "Anonymous user";
+        STR_ANONYMOUS_USER = "Anonymous";
         STR_GIFT_ANONYMOUS = "An " + STR_ANONYMOUS_USER;
         STR_CHAT_BANNED = "You are permanently banned from talking in  ";
         STR_CHAT_WRITE = "Write to chat";
