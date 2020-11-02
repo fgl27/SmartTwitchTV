@@ -1353,8 +1353,8 @@
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
         STR_GIFT_SUB = " has gift you a sub!";
-        STR_ANONYMOUS_USER = "anonymous user ";
-        STR_GIFT_ANONYMOUS = "A " + STR_ANONYMOUS_USER;
+        STR_ANONYMOUS_USER = "Anonymous user";
+        STR_GIFT_ANONYMOUS = "An " + STR_ANONYMOUS_USER;
         STR_CHAT_BANNED = "You are permanently banned from talking in  ";
         STR_CHAT_WRITE = "Write to chat";
         STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
@@ -5843,22 +5843,13 @@
             recipientId = tags['msg-param-recipient-id'] || null,
             msg = tags['system-msg'] || null;
 
-        if (msg) {
+        if (msg && msgid) {
+
+            var isAnon = Main_A_includes_B(msgid + '', 'anon');
 
             msg = msg.replace(ChatLive_sub_replace, ' ');
 
             if (gifter_Or_name) {
-
-                if (params && params[1]) {
-
-                    msg += (params && params[1] ? STR_BR + STR_BR +
-                        "<span style='color: #0fffff; font-weight: bold'>" + gifter_Or_name + "</span>: " +
-                        ChatLive_extraMessageTokenize(
-                            emoticonize(params[1], ChatLive_checkEmotes(tags)),
-                            chat_number,
-                            0
-                        ) : '');
-                }
 
                 msg = msg.replace(gifter_Or_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
@@ -5866,6 +5857,17 @@
 
                 msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
+            }
+
+            if (params && params[1]) {
+
+                msg += (params && params[1] ? STR_BR + STR_BR +
+                    "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_name ? STR_ANONYMOUS_USER : gifter_Or_name) + "</span>: " +
+                    ChatLive_extraMessageTokenize(
+                        emoticonize(params[1], ChatLive_checkEmotes(tags)),
+                        chat_number,
+                        0
+                    ) : '');
             }
 
             ChatLive_CheckIfSubSend(
@@ -5877,7 +5879,7 @@
                 (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
                     Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
 
-                ChatLive_Warn((Main_A_includes_B(msgid + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
+                ChatLive_Warn((isAnon ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
 
             }
 
@@ -6959,7 +6961,7 @@
     var Main_stringVersion_Min = '.278';
     var Main_version_java = 278; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 02 2020';
-    var Main_version_web = 524; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 525; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
