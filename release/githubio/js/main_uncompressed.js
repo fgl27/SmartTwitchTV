@@ -5849,7 +5849,16 @@
 
             if (gifter_Or_name) {
 
-                msg += (params && params[1] ? STR_BR + STR_BR + "<span style='color: #0fffff; font-weight: bold'>" + gifter_Or_name + "</span>: " + params[1] : '');
+                if (params && params[1]) {
+
+                    msg += (params && params[1] ? STR_BR + STR_BR +
+                        "<span style='color: #0fffff; font-weight: bold'>" + gifter_Or_name + "</span>: " +
+                        ChatLive_extraMessageTokenize(
+                            emoticonize(params[1], ChatLive_checkEmotes(tags)),
+                            chat_number,
+                            0
+                        ) : '');
+                }
 
                 msg = msg.replace(gifter_Or_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
@@ -5894,7 +5903,7 @@
             atuser = false,
             hasbits = false,
             action,
-            emotes = null,
+            emotes,
             badges, badge,
             i, len;
 
@@ -5996,30 +6005,7 @@
         div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
         //Add default emotes
-        if (tags.hasOwnProperty('emotes')) {
-
-            if (typeof tags.emotes === 'string') {
-
-                tags.emotes = tags.emotes.split('/');
-
-                var emote, replacements, replacement, j, len_j;
-                emotes = {};
-
-                for (i = 0, len = tags.emotes.length; i < len; i++) {
-                    emote = tags.emotes[i].split(':');
-
-                    if (!emotes[emote[0]]) emotes[emote[0]] = [];
-
-                    replacements = emote[1].split(',');
-
-                    for (j = 0, len_j = replacements.length; j < len_j; j++) {
-                        replacement = replacements[j].split('-');
-
-                        emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
-                    }
-                }
-            }
-        }
+        emotes = ChatLive_checkEmotes(tags);
 
         div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
             ChatLive_extraMessageTokenize(
@@ -6049,6 +6035,37 @@
             },
             Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition
         );
+    }
+
+    function ChatLive_checkEmotes(tags) {
+        var emotes = null;
+
+        if (tags.hasOwnProperty('emotes')) {
+
+            if (typeof tags.emotes === 'string') {
+
+                tags.emotes = tags.emotes.split('/');
+
+                var emote, replacements, replacement, j, len_j;
+                emotes = {};
+
+                for (var i = 0, len = tags.emotes.length; i < len; i++) {
+                    emote = tags.emotes[i].split(':');
+
+                    if (!emotes[emote[0]]) emotes[emote[0]] = [];
+
+                    replacements = emote[1].split(',');
+
+                    for (j = 0, len_j = replacements.length; j < len_j; j++) {
+                        replacement = replacements[j].split('-');
+
+                        emotes[emote[0]].push([parseInt(replacement[0]), parseInt(replacement[1])]);
+                    }
+                }
+            }
+        }
+
+        return emotes;
     }
 
     function ChatLive_extraMessageTokenize(tokenizedMessage, chat_number, tags) {
