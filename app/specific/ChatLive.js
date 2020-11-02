@@ -1260,22 +1260,13 @@ function ChatLive_CheckIfSub(message, chat_number) {
         recipientId = tags['msg-param-recipient-id'] || null,
         msg = tags['system-msg'] || null;
 
-    if (msg) {
+    if (msg && msgid) {
+
+        var isAnon = Main_A_includes_B(msgid + '', 'anon');
 
         msg = msg.replace(ChatLive_sub_replace, ' ');
 
         if (gifter_Or_name) {
-
-            if (params && params[1]) {
-
-                msg += (params && params[1] ? STR_BR + STR_BR +
-                    "<span style='color: #0fffff; font-weight: bold'>" + gifter_Or_name + "</span>: " +
-                    ChatLive_extraMessageTokenize(
-                        emoticonize(params[1], ChatLive_checkEmotes(tags)),
-                        chat_number,
-                        0
-                    ) : '');
-            }
 
             msg = msg.replace(gifter_Or_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
@@ -1283,6 +1274,17 @@ function ChatLive_CheckIfSub(message, chat_number) {
 
             msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
+        }
+
+        if (params && params[1]) {
+
+            msg += (params && params[1] ? STR_BR + STR_BR +
+                "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_name ? STR_ANONYMOUS_USER : gifter_Or_name) + "</span>: " +
+                ChatLive_extraMessageTokenize(
+                    emoticonize(params[1], ChatLive_checkEmotes(tags)),
+                    chat_number,
+                    0
+                ) : '');
         }
 
         ChatLive_CheckIfSubSend(
@@ -1294,7 +1296,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
             (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
                 Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
 
-            ChatLive_Warn((Main_A_includes_B(msgid + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
+            ChatLive_Warn((isAnon ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
 
         }
 
