@@ -207,7 +207,7 @@
     var STR_FROM;
     var STR_FROM_START;
     var STR_CHAT_END;
-    var STR_TIME;
+    var STR_RECENT;
     var STR_VIWES;
     var STR_NOKEY_VIDEO_WARN;
     var STR_SWITCH_TYPE;
@@ -499,11 +499,6 @@
     var STR_CHAT_LOGGING;
     var STR_CHAT_LOGGING_SUMMARY;
     var STR_CHAT_HIGHLIGHT_REDEEMED;
-    var STR_CHAT_JUST_SUB;
-    var STR_CHAT_JUST_SUB_PRIME;
-    var STR_GIFT_SUB_SENDER;
-    var STR_GIFT_SUB_SENDER_PRIME;
-    var STR_GIFT_SUB_MYSTERY;
     var STR_CHAT_INDIVIDUAL_LINE;
     var STR_BRIGHT_MODE;
     var STR_DARK_MODE;
@@ -1055,7 +1050,7 @@
         STR_FROM = "From:" + STR_BR;
         STR_FROM_START = STR_FROM + "Start";
         STR_CHAT_END = "Chat: The Chat has ended!";
-        STR_TIME = ", Most recent";
+        STR_RECENT = ", Most recent";
         STR_VIWES = ", Most views";
         STR_NOKEY_VIDEO_WARN = "Add an user authorization key to be able to see followed videos";
         STR_SWITCH_TYPE = "Switch: Most recent or views";
@@ -1411,11 +1406,6 @@
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
         STR_CHAT_LOGGING = "Logging in chat with current user";
         STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
-        STR_CHAT_JUST_SUB = "Subscribed with Tier";
-        STR_CHAT_JUST_SUB_PRIME = "Subscribed with Prime";
-        STR_GIFT_SUB_SENDER = " has gift a Tier";
-        STR_GIFT_SUB_SENDER_PRIME = " has gift a Prime sub to";
-        STR_GIFT_SUB_MYSTERY = " has gift the channel ";
         STR_CHAT_TIMESTAMP = "Show message timestamp";
         STR_CHAT_NICK_COLOR = "Readable nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
@@ -4650,6 +4640,7 @@
     var ChatLive_PingId = [];
     var ChatLive_SendPingId;
     var ChatLive_selectedChannel = [];
+    var ChatLive_sub_replace = new RegExp('\\\\s', 'gi');
 
     var emoteReplace = {
         "B-?\\)": "B)",
@@ -5840,110 +5831,55 @@
     function ChatLive_CheckIfSub(message, chat_number) {
         if (!ChatLive_Show_SUB) return;
 
+        //reference smartTwitchTV/jsonreferences/sub.json
         var tags = message.tags;
+        var params = message.params;
 
-        if (!tags || !tags.hasOwnProperty('msg-id')) return; //bad formatted message
+        if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) return; //bad formatted message
 
-        var name = tags['display-name'] || '';
-        var msgid = tags['msg-id'] || '';
-        var plan = tags['msg-param-sub-plan'] || '';
-        var plan_is_numer = !isNaN(plan);
-        var gifter;
+        var gifter_Or_name = tags['display-name'] || null,
+            msgid = tags['msg-id'] || null,
+            recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || null,
+            recipientId = tags['msg-param-recipient-id'] || null,
+            msg = tags['system-msg'] || null;
 
-        if (Main_A_equals_B(msgid, 'resub')) {
+        if (msg) {
 
-            if (plan_is_numer) {
+            msg = msg.replace(ChatLive_sub_replace, ' ');
 
-                ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
+            if (gifter_Or_name) {
 
-            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
+                msg += (params && params[1] ? STR_BR + STR_BR + "<span style='color: #0fffff; font-weight: bold'>" + gifter_Or_name + "</span>: " + params[1] : '');
 
-                ChatLive_CheckIfSubSend(name, 'Re' + STR_SPACE + STR_CHAT_JUST_SUB_PRIME, chat_number);
-            }
+                msg = msg.replace(gifter_Or_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
-        } else if (Main_A_equals_B(msgid, 'sub')) {
+            } else if (recipient) {
 
-            if (plan_is_numer) {
-
-                ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB + STR_SPACE + plan.charAt(0), chat_number);
-
-            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
-
-                ChatLive_CheckIfSubSend(name, STR_CHAT_JUST_SUB_PRIME, chat_number);
+                msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
             }
 
-        } else if (Main_A_includes_B(msgid, 'subgift')) {
+            ChatLive_CheckIfSubSend(
+                msg,
+                chat_number
+            );
 
-            gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
-            var recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || '';
+            if (ChatLive_User_Set && recipient && recipientId &&
+                (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
+                    Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
 
-            recipient = '<span style="color: #0fffff;">' + recipient + '</span>';
-
-            if (plan_is_numer) {
-
-                ChatLive_CheckIfSubSend(
-                    gifter,
-                    STR_GIFT_SUB_SENDER + STR_SPACE + plan.charAt(0) + ' sub to ' + recipient,
-                    chat_number
-                );
-
-            } else if (Main_A_includes_B(plan.toLowerCase(), 'prime')) {
-
-                ChatLive_CheckIfSubSend(
-                    gifter,
-                    STR_GIFT_SUB_SENDER_PRIME + STR_SPACE + ' sub to ' + recipient,
-                    chat_number
-                );
+                ChatLive_Warn((Main_A_includes_B(msgid + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
 
             }
-
-            if (ChatLive_User_Set && Main_A_equals_B(tags['msg-param-recipient-id'] + '', AddUser_UsernameArray[0].id + '') ||
-                Main_A_equals_B(tags['msg-param-recipient-user-name'].toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + '')) {
-
-                ChatLive_Warn((Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
-            }
-
-        } else if (Main_A_includes_B(msgid, 'submysterygift')) {
-
-            gifter = Main_A_includes_B(tags['msg-id'] + '', 'anon') ? STR_GIFT_ANONYMOUS : name;
-            var count = tags["msg-param-mass-gift-count"] || '';
-
-            ChatLive_CheckIfSubSend(gifter, STR_GIFT_SUB_MYSTERY + STR_SPACE + count + ' Tier ' + plan.charAt(0), chat_number);
 
         }
 
-        // tag:
-        // badge-info: "subscriber/2"
-        // badges: "subscriber/0,premium/1"
-        // color: true
-        // display-name: "marti_c16"
-        // emotes: true
-        // flags: true
-        // id: "2748827c-cd12-4b9f-b73f-34aff4c53c41"
-        // login: "marti_c16"
-        // mod: "0"
-        // msg-id: "subgift"
-        // msg-param-months: "2"
-        // msg-param-origin-id: "da\s39\sa3\see\s5e\s6b\s4b\s0d\s32\s55\sbf\sef\s95\s60\s18\s90\saf\sd8\s07\s09"
-        // msg-param-recipient-display-name: "Mayohnee"
-        // msg-param-recipient-id: "208812945"
-        // msg-param-recipient-user-name: "mayohnee"
-        // msg-param-sender-count: "0"
-        // msg-param-sub-plan: "1000"
-        // msg-param-sub-plan-name: "Channel\sSubscription\s(fedmyster)"
-        // room-id: "39040630"
-        // subscriber: "1"
-        // system-msg: "marti_c16\sgifted\sa\sTier\s1\ssub\sto\sMayohnee!"
-        // tmi-sent-ts: "1586752394924"
-        // user-id: "496014406"
-        // user-type: true
     }
 
-    function ChatLive_CheckIfSubSend(name, type, chat_number) {
+    function ChatLive_CheckIfSubSend(message, chat_number) {
         ChatLive_LineAdd({
             chat_number: chat_number,
-            message: '<span style="color: #0fffff;">' + name + '</span><span class="message"><br>' + type + '</span>',
+            message: '<span class="message">' + message + '</span>',
             sub: 1,
         });
     }
@@ -7009,8 +6945,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.278';
     var Main_version_java = 278; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 01 2020';
-    var Main_version_web = 522; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'November 02 2020';
+    var Main_version_web = 523; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7602,6 +7538,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version November 02 2020",
+                changes: [
+                    "Improve the sub message displayed in chat",
+                ]
+            },
+            {
                 title: "Apk Version 3.0.278 - Web Version November 01 2020",
                 changes: [
                     "General performance improves and bug fixes",
@@ -23796,7 +23738,7 @@
 
                 ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                     (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    (this.periodPos === 1 ? STR_TIME : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
+                    (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
 
             },
             label_exit: function() {
@@ -23928,7 +23870,7 @@
                 Main_setItem('UserVod_periodPos', this.periodPos);
 
                 ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    (this.periodPos === 1 ? STR_TIME : STR_VIWES));
+                    (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
             }
         }, Base_obj);
 

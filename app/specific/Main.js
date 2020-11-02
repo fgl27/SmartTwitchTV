@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.278';
 var Main_version_java = 278;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 01 2020';
-var Main_version_web = 522;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'November 02 2020';
+var Main_version_web = 523;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -618,6 +618,12 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Web Version November 02 2020",
+            changes: [
+                "Improve the sub message displayed in chat",
+            ]
+        },
         {
             title: "Apk Version 3.0.278 - Web Version November 01 2020",
             changes: [
