@@ -1254,7 +1254,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
 
     if (!tags || !tags.hasOwnProperty('msg-id') || !tags['system-msg']) return; //bad formatted message
 
-    var gifter_Or_name = tags['display-name'] || null,
+    var gifter_Or_Sub_name = tags['display-name'] || null,
         msgid = tags['msg-id'] || null,
         recipient = tags['msg-param-recipient-display-name'] || tags["msg-param-recipient-user-name"] || null,
         recipientId = tags['msg-param-recipient-id'] || null,
@@ -1266,20 +1266,25 @@ function ChatLive_CheckIfSub(message, chat_number) {
 
         msg = msg.replace(ChatLive_sub_replace, ' ');
 
-        if (gifter_Or_name) {
+        //who sub or gift a sub
+        if (gifter_Or_Sub_name) {
 
-            msg = msg.replace(gifter_Or_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
+            msg = msg.replace(gifter_Or_Sub_name, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
-        } else if (recipient) {
+        }
+
+        //who received a sub
+        if (recipient) {
 
             msg = msg.replace(recipient, "<span style='color: #0fffff; font-weight: bold'>$&</span>");
 
         }
 
+        //who sub or gift a sub message
         if (params && params[1]) {
 
             msg += (params && params[1] ? STR_BR + STR_BR +
-                "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_name ? STR_ANONYMOUS_USER : gifter_Or_name) + "</span>: " +
+                "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS_USER : gifter_Or_Sub_name) + "</span>: " +
                 ChatLive_extraMessageTokenize(
                     emoticonize(params[1], ChatLive_checkEmotes(tags)),
                     chat_number,
@@ -1292,6 +1297,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
             chat_number
         );
 
+        //check if who received a sub is current active user
         if (ChatLive_User_Set && recipient && recipientId &&
             (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
                 Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
