@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.278';
 var Main_version_java = 278;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 02 2020';
-var Main_version_web = 526;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'November 03 2020';
+var Main_version_web = 527;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -619,6 +619,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version November 03 2020",
+            changes: [
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
             title: "Web Version November 02 2020",
             changes: [
                 "Improve the sub message displayed in chat",
@@ -665,14 +671,6 @@ function Main_Changelog() {
             changes: [
                 "Add controls over the color of VOD/Clip thumbnails Watched progress bar",
                 "Fix random cases that cause playback issues after an internet lag",
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.268 and 3.0.269 - Web Version October 22 2020",
-            changes: [
-                "Fix preview volume control",
-                "Automatic cleanup history unreachable Lives that became a VOD but the VOD is now deleted",
                 "General performance improves and bug fixes",
             ]
         }
