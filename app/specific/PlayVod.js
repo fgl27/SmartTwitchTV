@@ -569,7 +569,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
 
                 var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
 
-                if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
+                if (data && ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
 
                     Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[11]) * 100) + '%';
 
