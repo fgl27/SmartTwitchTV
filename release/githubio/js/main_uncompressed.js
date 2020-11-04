@@ -6982,7 +6982,7 @@
     var Main_stringVersion_Min = '.279';
     var Main_version_java = 279; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 03 2020';
-    var Main_version_web = 528; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 529; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -18958,7 +18958,7 @@
 
                     var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
 
-                    if (ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
+                    if (data && ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
 
                         Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[11]) * 100) + '%';
 
