@@ -325,7 +325,7 @@ public class PlayerActivity extends Activity {
             try {
                 setContentView(R.layout.activity_player);
             } catch (Exception e) {
-                if (e.getMessage() != null && e.getMessage().contains("webview")) {
+                if (e.getMessage() != null && e.getMessage().toLowerCase().contains("webview")) {
                     Tools.recordException(TAG, "webview onCreate e ", e);
                     // If the system failed to inflate this view because of the WebView (which could
                     // be one of several types of exceptions), it likely means that the system WebView
