@@ -27,7 +27,6 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import com.fgl27.twitch.Tools;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.upstream.BaseDataSource;
 import com.google.android.exoplayer2.upstream.DataSourceException;
@@ -151,8 +150,8 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
         if (!TextUtils.isEmpty(contentLengthHeader)) {
             try {
                 contentLength = Long.parseLong(contentLengthHeader);
-            } catch (NumberFormatException e) {
-                Tools.recordException(TAG, "Unexpected Content-Length [" + contentLengthHeader + "]", e);
+            } catch (NumberFormatException ignore) {
+                //Tools.recordException(TAG, "Unexpected Content-Length [" + contentLengthHeader + "]", e);
             }
         }
         String contentRangeHeader = connection.getHeaderField("Content-Range");
@@ -171,12 +170,11 @@ public class mDefaultHttpDataSource extends BaseDataSource implements HttpDataSo
                         // assume the one with the larger value is correct. We have seen cases where carrier
                         // change one of them to reduce the size of a request, but it is unlikely anybody would
                         // increase it.
-                        Tools.recordException(TAG, "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader
-                                + "]", null);
+                        //Tools.recordException(TAG, "Inconsistent headers [" + contentLengthHeader + "] [" + contentRangeHeader + "]", null);
                         contentLength = Math.max(contentLength, contentLengthFromRange);
                     }
-                } catch (NumberFormatException e) {
-                    Tools.recordException(TAG, "Unexpected Content-Range [" + contentRangeHeader + "]", e);
+                } catch (NumberFormatException ignore) {
+                    //Tools.recordException(TAG, "Unexpected Content-Range [" + contentRangeHeader + "]", e);
                 }
             }
         }

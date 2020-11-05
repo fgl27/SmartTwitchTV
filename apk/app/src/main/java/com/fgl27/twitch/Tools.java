@@ -297,8 +297,8 @@ public final class Tools {
             } else {
                 return null;
             }
-        } catch (Exception e) {
-            recordException(TAG, "GetResponseObj ", e);
+        } catch (Exception ignore) {
+            //recordException(TAG, "GetResponseObj ", e);
             return null;
         } finally {
             if (urlConnection != null)
@@ -370,8 +370,8 @@ public final class Tools {
             } else {
                 return null;
             }
-        } catch (Exception e) {
-            recordException(TAG, "Internal_MethodUrl ", e);
+        } catch (Exception ignore) {
+            //recordException(TAG, "Internal_MethodUrl ", e);
             return null;
         } finally {
             if (urlConnection != null)
