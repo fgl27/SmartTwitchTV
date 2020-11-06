@@ -289,10 +289,12 @@ public final class Tools {
 
             if (status != -1) {
                 if (status == 200) {
-                    return new ResponseObj(
+                    String result = readFullyString(urlConnection.getInputStream());
+
+                    return result != null ? new ResponseObj(
                             status,
-                            readFullyString(urlConnection.getInputStream())
-                    );
+                            result
+                    ) : null;
                 } else return new ResponseObj(status, "");
             } else {
                 return null;
@@ -358,15 +360,18 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                return new ResponseObj(
-                        status,
-                        readFullyString(
-                                status == HttpURLConnection.HTTP_OK ?
-                                        urlConnection.getInputStream() :
-                                        urlConnection.getErrorStream()
-                        ),
-                        checkResult
+                
+                String result = readFullyString(
+                        status == HttpURLConnection.HTTP_OK ?
+                                urlConnection.getInputStream() :
+                                urlConnection.getErrorStream()
                 );
+
+                return result != null ? new ResponseObj(
+                        status,
+                        result,
+                        checkResult
+                ) : null;
             } else {
                 return null;
             }
@@ -388,6 +393,9 @@ public final class Tools {
                 bytes.write(buffer, 0, count);
             }
             return bytes.toString("UTF-8");
+        } catch (OutOfMemoryError e) {
+            recordException(TAG, "readFullyString OutOfMemoryError ", e);
+            return null;
         } finally {
             closeQuietly(in);
         }
@@ -1142,7 +1150,7 @@ public final class Tools {
         appPreferences.put(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0);
     }
 
-    public static void recordException(String TAG, String message, Exception e) {
+    public static void recordException(String TAG, String message, Throwable e) {
 
         try {
 
