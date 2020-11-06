@@ -150,9 +150,15 @@ TODO list
 * Making current option not working on that sdk when targeting 30, works if targeting 29
 * Update the process to work on all OS
 
-### Check all the logic regarding Handler.post and runOnUiThread as it may not work sometimes
+### Improve searches
 
-* some slow end devices when starting a multistream some times will just not start the player but all will be set just the player will not start
+* General improve
+* Add a side panel to the search panel that stores and allows to reuse a search save it per user
+* Separated from the above check how to add voice search
+
+### Add some proper test scripts
+
+* General improve
 
 ### Improve the main app README.md
 
