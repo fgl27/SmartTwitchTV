@@ -907,7 +907,8 @@ public final class NotificationUtils {
                 float textSizeBig = 0;
 
                 if (window != null) {
-
+                    //TODO check deprecation
+                    //noinspection deprecation
                     Point ScreenSize = Tools.ScreenSize(window.getDefaultDisplay());
 
                     //The device may be a phone that changes from landscape to portrait
@@ -1045,6 +1046,8 @@ public final class NotificationUtils {
         Toast toast = new Toast(context);
         toast.setGravity(ToastPositions[ToastPosition], 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
+        //TODO check deprecation
+        //noinspection deprecation
         toast.setView(layout);
         toast.show();
     }

@@ -382,7 +382,7 @@ public final class Tools {
                 return null;
 
             }
-            
+
         } catch (Throwable ignore) {
             //recordException(TAG, "Internal_MethodUrl ", e);
             return null;
@@ -745,6 +745,8 @@ public final class Tools {
 
     public static Point ScreenSize(Display display) {
         Point size = new Point();
+        //TODO check deprecation
+        //noinspection deprecation
         display.getSize(size);
 
         return size;

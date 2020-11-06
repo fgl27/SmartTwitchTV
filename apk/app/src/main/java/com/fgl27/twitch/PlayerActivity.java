@@ -418,6 +418,8 @@ public class PlayerActivity extends Activity {
     }
 
     private void SetDefaultLoadingLayout() {
+        //TODO check deprecation
+        //noinspection deprecation
         ScreenSize = Tools.ScreenSize(getWindowManager().getDefaultDisplay());
         float Density = this.getResources().getDisplayMetrics().density;
 
@@ -1678,6 +1680,8 @@ public class PlayerActivity extends Activity {
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
         // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         View decorView = getWindow().getDecorView();
+        //TODO check deprecation
+        //noinspection deprecation
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                         // Set the content to appear under the system bars so that the
@@ -1788,7 +1792,10 @@ public class PlayerActivity extends Activity {
         websettings.setDomStorageEnabled(true);
         websettings.setAllowFileAccess(true);
         websettings.setAllowContentAccess(true);
+        //TODO check deprecation
+        //noinspection deprecation
         websettings.setAllowFileAccessFromFileURLs(true);
+        //noinspection deprecation
         websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
@@ -1913,7 +1920,10 @@ public class PlayerActivity extends Activity {
         websettings.setDomStorageEnabled(true);
         websettings.setAllowFileAccess(true);
         websettings.setAllowContentAccess(true);
+        //TODO check deprecation
+        //noinspection deprecation
         websettings.setAllowFileAccessFromFileURLs(true);
+        //noinspection deprecation
         websettings.setAllowUniversalAccessFromFileURLs(true);
         websettings.setUseWideViewPort(true);
         websettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
