@@ -1364,18 +1364,12 @@ public class PlayerActivity extends Activity {
 
             }
 
-            String result = Tools.readFullyString(PingProcess.getInputStream());
+            Matcher pingMatcher = TIME_NAME.matcher(Tools.readFullyString(PingProcess.getInputStream()));
             PingProcess.getErrorStream();
 
-            Matcher pingMatcher = null;
-            if (result != null) {
-                pingMatcher = TIME_NAME.matcher(result);
-            }
+            return pingMatcher.find() ? pingMatcher.group(1) : null;
 
-
-            return (pingMatcher != null && pingMatcher.find()) ? pingMatcher.group(1) : null;
-
-        } catch (Exception ignore) {
+        } catch (Throwable ignore) {
         } finally {
             if (PingProcess != null) PingProcess.destroy();
         }

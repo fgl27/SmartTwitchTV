@@ -288,18 +288,24 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                if (status == 200) {
-                    String result = readFullyString(urlConnection.getInputStream());
 
-                    return result != null ? new ResponseObj(
+                if (status == 200) {
+
+                    return new ResponseObj(
                             status,
-                            result
-                    ) : null;
-                } else return new ResponseObj(status, "");
+                            readFullyString(urlConnection.getInputStream())
+                    );
+
+                } else {
+
+                    return new ResponseObj(status, "");
+
+                }
+
             } else {
                 return null;
             }
-        } catch (Exception ignore) {
+        } catch (Throwable ignore) {
             //recordException(TAG, "GetResponseObj ", e);
             return null;
         } finally {
@@ -360,22 +366,24 @@ public final class Tools {
             int status = urlConnection.getResponseCode();
 
             if (status != -1) {
-                
-                String result = readFullyString(
-                        status == HttpURLConnection.HTTP_OK ?
-                                urlConnection.getInputStream() :
-                                urlConnection.getErrorStream()
+
+                return new ResponseObj(
+                        status,
+                        readFullyString(
+                                status == HttpURLConnection.HTTP_OK ?
+                                        urlConnection.getInputStream() :
+                                        urlConnection.getErrorStream()
+                        ),
+                        checkResult
                 );
 
-                return result != null ? new ResponseObj(
-                        status,
-                        result,
-                        checkResult
-                ) : null;
             } else {
+
                 return null;
+
             }
-        } catch (Exception ignore) {
+            
+        } catch (Throwable ignore) {
             //recordException(TAG, "Internal_MethodUrl ", e);
             return null;
         } finally {
@@ -384,7 +392,7 @@ public final class Tools {
         }
     }
 
-    static String readFullyString(InputStream in) throws Exception {//IOException and or NullPointerException
+    static String readFullyString(InputStream in) throws Throwable {//OutOfMemoryError, IOException or NullPointerException
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
@@ -393,9 +401,6 @@ public final class Tools {
                 bytes.write(buffer, 0, count);
             }
             return bytes.toString("UTF-8");
-        } catch (OutOfMemoryError e) {
-            recordException(TAG, "readFullyString OutOfMemoryError ", e);
-            return null;
         } finally {
             closeQuietly(in);
         }
