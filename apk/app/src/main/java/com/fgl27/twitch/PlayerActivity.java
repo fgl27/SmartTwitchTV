@@ -1340,7 +1340,12 @@ public class PlayerActivity extends Activity {
     private void DestroyGetPing() {
         try {
             if (PingProcess != null) PingProcess.destroy();
-        } catch (Exception ignore) {
+
+            Tools.closeQuietly(PingProcess.getInputStream());
+            Tools.closeQuietly(PingProcess.getOutputStream());
+            Tools.closeQuietly(PingProcess.getErrorStream());
+
+        } catch (Exception ignored) {
         }
     }
 
@@ -1366,14 +1371,16 @@ public class PlayerActivity extends Activity {
 
             }
 
-            Matcher pingMatcher = TIME_NAME.matcher(Tools.readFullyString(PingProcess.getInputStream()));
-            PingProcess.getErrorStream();
+            if (PingProcess.exitValue() == 0) {
 
-            return pingMatcher.find() ? pingMatcher.group(1) : null;
+                Matcher pingMatcher = TIME_NAME.matcher(Tools.readFullyString(PingProcess.getInputStream()));
+                return pingMatcher.find() ? pingMatcher.group(1) : null;
+
+            } else return null;
 
         } catch (Throwable ignore) {
         } finally {
-            if (PingProcess != null) PingProcess.destroy();
+            DestroyGetPing();
         }
 
         return null;

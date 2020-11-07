@@ -406,12 +406,12 @@ public final class Tools {
         }
     }
 
-    private static void closeQuietly(@Nullable Closeable closeable) {
-        try {
-            if (closeable != null) {
+    static void closeQuietly(@Nullable Closeable closeable) {
+        if (closeable != null) {
+            try {
                 closeable.close();
+            } catch (Exception ignored) {
             }
-        } catch (IOException ignored) {
         }
     }
 
