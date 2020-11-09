@@ -71,6 +71,7 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -94,6 +95,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -246,9 +248,16 @@ public final class Tools {
         JsonObject Token = parseString(token).getAsJsonObject();
 
         if (Token.isJsonObject() && !Token.get("chansub").isJsonNull()) {
+
             JsonElement restricted_bitrates = Token.get("chansub").getAsJsonObject().get("restricted_bitrates");
 
-            return !restricted_bitrates.isJsonNull() && restricted_bitrates.getAsJsonArray().size() > 0;
+            if (!restricted_bitrates.isJsonNull()) {
+
+                JsonArray restricted_Array = restricted_bitrates.getAsJsonArray();
+
+                return restricted_Array.size() > 0 && !Objects.equals(restricted_Array.get(0).getAsString().toLowerCase(), "archives");
+            }
+
         }
 
         return false;
