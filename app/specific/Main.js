@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.279';
-var Main_version_java = 279;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 03 2020';
-var Main_version_web = 529;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.283';
+var Main_version_java = 283;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'November 9 2020';
+var Main_version_web = 530;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -477,7 +477,7 @@ function Main_CheckDevice() {
             var getcodec = null;
             try {
                 if (Main_IsOn_OSInterface) getcodec = JSON.parse(OSInterface_getcodecCapabilities('avc'));
-            } catch (e) {}
+            } catch (e) { }
 
             if (getcodec) {
 
@@ -618,6 +618,12 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Apk Version 3.0.280 to 3.0.283 - Web Version November 09 2020",
+            changes: [
+                "General performance improves and bug fixes",
+            ]
+        },
         {
             title: "Apk Version 3.0.279 - Web Version November 03 2020",
             changes: [
