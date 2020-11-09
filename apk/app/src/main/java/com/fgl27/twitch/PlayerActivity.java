@@ -310,8 +310,9 @@ public class PlayerActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
+        if (!onCreateReady) setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+
         //On create is called onResume so prevent it if already set
         if (!onCreateReady) {
             Intent intent = getIntent();
