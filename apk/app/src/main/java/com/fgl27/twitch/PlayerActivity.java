@@ -1340,11 +1340,13 @@ public class PlayerActivity extends Activity {
 
     private void DestroyGetPing() {
         try {
-            if (PingProcess != null) PingProcess.destroy();
+            if (PingProcess != null) {
+                PingProcess.destroy();
 
-            Tools.closeQuietly(PingProcess.getInputStream());
-            Tools.closeQuietly(PingProcess.getOutputStream());
-            Tools.closeQuietly(PingProcess.getErrorStream());
+                Tools.closeQuietly(PingProcess.getInputStream());
+                Tools.closeQuietly(PingProcess.getOutputStream());
+                Tools.closeQuietly(PingProcess.getErrorStream());
+            }
 
         } catch (Exception ignored) {
         }
