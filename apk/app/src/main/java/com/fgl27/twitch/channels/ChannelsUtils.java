@@ -78,6 +78,8 @@ public final class ChannelsUtils {
 
     private static final String TAG = "STTV_ChannelsUtils";
 
+    private static final Uri AppLogo = Uri.parse("https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_launcher.png");
+
     private static final String[] TV_CONTRACT_ARRAY = {
             TvContractCompat.Channels._ID,
             TvContract.Channels.COLUMN_DISPLAY_NAME
@@ -203,7 +205,7 @@ public final class ChannelsUtils {
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
-            Tools.recordException(TAG, "Insert channel failed " + channel.name, null);
+            Tools.recordException(TAG, "createChannel failed " + channel.name + " channelUri " + channelUri, null);
             return -1L;
         }
 
@@ -256,11 +258,11 @@ public final class ChannelsUtils {
                     builder.build().toContentValues()
             );
         } catch (Exception e) {
-            Tools.recordException(TAG, "programUri e ", e);
+            Tools.recordException(TAG, "PreviewProgramAdd e ", e);
         }
 
         if (programUri == null || programUri.equals(Uri.EMPTY)) {
-            Tools.recordException(TAG, "Insert program failed " + ContentObj.title, null);
+            Tools.recordException(TAG, "PreviewProgramAdd failed " + ContentObj.title + " programUri " + programUri, null);
         }
     }
 
@@ -287,12 +289,25 @@ public final class ChannelsUtils {
         if (channelId != -1 && drawableId != -1) {
 
             try {
+                Bitmap bmp = convertToBitmap(context, drawableId);
 
-                ChannelLogoUtils.storeChannelLogo(
-                        context,
-                        channelId,
-                        convertToBitmap(context, drawableId)
-                );
+                if (bmp != null) {
+
+                    ChannelLogoUtils.storeChannelLogo(
+                            context,
+                            channelId,
+                            bmp
+                    );
+
+                } else {
+
+                    ChannelLogoUtils.storeChannelLogo(
+                            context,
+                            channelId,
+                            AppLogo
+                    );
+
+                }
 
             } catch (Exception e) {
                 Tools.recordException(TAG, "writeChannelLogo ", e);
@@ -304,6 +319,7 @@ public final class ChannelsUtils {
     @NonNull
     private static Bitmap convertToBitmap(Context context, int resourceId) {
         Drawable drawable = context.getDrawable(resourceId);
+
         if (drawable instanceof VectorDrawable) {
 
             Bitmap bitmap =
@@ -325,40 +341,53 @@ public final class ChannelsUtils {
     private static void DeleteProgram(Context context, long channelId) {
         if (channelId != -1L) {
 
-            context.getContentResolver().delete(
-                    TvContractCompat.buildPreviewProgramsUriForChannel(channelId),
-                    null,
-                    null
-            );
+            try {
+
+                context.getContentResolver().delete(
+                        TvContractCompat.buildPreviewProgramsUriForChannel(channelId),
+                        null,
+                        null
+                );
+
+            } catch (Exception e) {
+                Tools.recordException(TAG, "DeleteProgram ", e);
+            }
 
         }
     }
 
     private static long getChannelIdFromTvProvider(Context context, String channel_name) {
-        Cursor cursor =
-                context.getContentResolver()
-                        .query(
-                                TvContractCompat.Channels.CONTENT_URI,
-                                TV_CONTRACT_ARRAY,
-                                null,
-                                null,
-                                null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                Channel channel = Channel.fromCursor(cursor);
-                if (channel_name.equals(channel.getDisplayName())) {
-                    return channel.getId();
-                }
-            } while (cursor.moveToNext());
+        try (Cursor cursor =
+                     context.getContentResolver()
+                             .query(
+                                     TvContractCompat.Channels.CONTENT_URI,
+                                     TV_CONTRACT_ARRAY,
+                                     null,
+                                     null,
+                                     null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Channel channel = Channel.fromCursor(cursor);
+                    if (channel_name.equals(channel.getDisplayName())) {
+                        return channel.getId();
+                    }
+                } while (cursor.moveToNext());
 
-            cursor.close();
+                cursor.close();
+            }
+
+        } catch (Exception e) {
+
+            Tools.recordException(TAG, "getChannelIdFromTvProvider ", e);
+
         }
 
         return -1L;
     }
 
     private static boolean getChannelIsBrowsable(Context context, long channelId) {
+
         try (Cursor cursor =
                      context.getContentResolver()
                              .query(
@@ -371,6 +400,11 @@ public final class ChannelsUtils {
                 Channel channel = Channel.fromCursor(cursor);
                 return channel.isBrowsable();
             }
+
+        } catch (Exception e) {
+
+            Tools.recordException(TAG, "getChannelIsBrowsable ", e);
+
         }
 
         return false;
