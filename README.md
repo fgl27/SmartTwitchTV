@@ -171,19 +171,9 @@ Yes but is limited, you need to use the APK from [release](https://github.com/fg
 The user can add a authorization key (not demanding to use the app), here is the complete description of what that keys is and how it's used by the app.<br>
 That key will be used to access Twitch specific content of that user, it permission requested has a reason and bellow is the full description of what it permission will be used for:<br>
 
-### when accessing Twitch authorization site it will show:
+### when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information:
 
-```markdown
-SmartTV Android TV by fgl27
-wants to access your account
-
-This will allow SmartTV Android TV by fgl27 to:
-- Manage your followed channels
-- Send live Stream Chat and Rooms messages
-- View your email address
-- View your paid subscriptions
-- View live Stream Chat and Rooms messages
-```
+![logging](https://fgl27.github.io/SmartTwitchTV/screenshot/logging.png)
 
 **The app uses the following permission:**
 
