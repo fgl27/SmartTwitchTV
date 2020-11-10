@@ -670,7 +670,7 @@ public final class Tools {
                 closeQuietly(mWriter);
 
             } catch (IOException e) {
-                recordException(TAG, "BackupJson IOException ", e);
+                recordException(TAG, "BackupJson IOException Dir " + Dir.getAbsolutePath() + " isDirCreated " + isDirCreated + " file " + file, e);
             }
         }
     }
@@ -691,6 +691,8 @@ public final class Tools {
                     getExternalSD(),
                     String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
             );
+
+            if (!mFile.exists()) return null;
 
             StringBuilder data = new StringBuilder();
             Scanner mReader = new Scanner(mFile);
