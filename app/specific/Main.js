@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.284';
-var Main_version_java = 284;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 9 2020';
-var Main_version_web = 531;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.285';
+var Main_version_java = 285;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'November 10 2020';
+var Main_version_web = 532;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -619,7 +619,13 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.280 to 3.0.284 - Web Version November 09 2020",
+            title: "Apk Version 3.0.284 to 3.0.285 - Web Version November 10 2020",
+            changes: [
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
+            title: "Apk Version 3.0.280 to 3.0.283 - Web Version November 09 2020",
             changes: [
                 "General performance improves and bug fixes",
             ]
@@ -670,14 +676,6 @@ function Main_Changelog() {
             title: "Web Version October 27 2020",
             changes: [
                 "General performance improves",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.270 - Web Version October 26 2020",
-            changes: [
-                "Add controls over the color of VOD/Clip thumbnails Watched progress bar",
-                "Fix random cases that cause playback issues after an internet lag",
-                "General performance improves and bug fixes",
             ]
         }
     ];
