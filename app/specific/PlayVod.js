@@ -804,7 +804,7 @@ function PlayVod_qualityIndexReset() {
 }
 
 function PlayVod_SetHtmlQuality(element) {
-    if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
+    if (!PlayVod_qualities.length || !PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
 
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 

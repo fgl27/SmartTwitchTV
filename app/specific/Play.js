@@ -1242,7 +1242,7 @@ function Play_onPlayer() {
 }
 
 function Play_SetHtmlQuality(element) {
-    if (!Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
+    if (!Play_data.qualities.length || !Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
 
     Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
     Play_data_base.quality = Play_data.quality;
