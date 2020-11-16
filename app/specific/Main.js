@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.285';
 var Main_version_java = 285;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 10 2020';
-var Main_version_web = 532;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'November 16 2020';
+var Main_version_web = 533;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -619,6 +619,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version November 16 2020",
+            changes: [
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
             title: "Apk Version 3.0.284 to 3.0.285 - Web Version November 10 2020",
             changes: [
                 "General performance improves and bug fixes",
@@ -670,12 +676,6 @@ function Main_Changelog() {
             title: "Apk Version 3.0.272 - Web Version October 28 2020",
             changes: [
                 "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Web Version October 27 2020",
-            changes: [
-                "General performance improves",
             ]
         }
     ];
