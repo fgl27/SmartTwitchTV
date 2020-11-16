@@ -16605,7 +16605,7 @@
     }
 
     function Play_SetHtmlQuality(element) {
-        if (!Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
+        if (!Play_data.qualities.length || !Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
 
         Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
         Play_data_base.quality = Play_data.quality;
@@ -19232,7 +19232,7 @@
     }
 
     function PlayVod_SetHtmlQuality(element) {
-        if (!PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
+        if (!PlayVod_qualities.length || !PlayVod_qualities[PlayVod_qualityIndex] || !PlayVod_qualities[PlayVod_qualityIndex].hasOwnProperty('id')) return;
 
         PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
