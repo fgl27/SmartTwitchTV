@@ -221,6 +221,7 @@ function PlayVod_PosStart() {
         }
 
     } else {
+
         PlayVod_autoUrl = Play_PreviewURL;
         PlayVod_playlist = Play_PreviewResponseText;
 
@@ -545,11 +546,11 @@ function PlayVod_onPlayerStartPlay(time) {
     }
 }
 
-function PlayVod_shutdownStream() {
+function PlayVod_shutdownStream(SkipSaveOffset) {
     //Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
 
     if (PlayVod_isOn) {
-        PlayVod_PreshutdownStream(true);
+        PlayVod_PreshutdownStream(!SkipSaveOffset);
         PlayVod_qualities = [];
         PlayVod_playlist = null;
         Play_exitMain();
@@ -559,25 +560,8 @@ function PlayVod_shutdownStream() {
 function PlayVod_PreshutdownStream(saveOffset) {
     //Main_Log('PlayVod_PreshutdownStream');
 
-    if (saveOffset) {
-        var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
+    PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
-        if (time > 0 && (Play_DurationSeconds - 300) > time) {
-            PlayVod_SaveVodIds(time);
-
-            if (!ScreenObj[Main_HistoryVod].histPosX[1]) {
-
-                var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
-
-                if (data && ScreenObj[Main_values.Main_Go].screenType === 1 && Main_values.ChannelVod_vodId === data[7]) {
-
-                    Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[11]) * 100) + '%';
-
-                }
-
-            }
-        }
-    }
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
@@ -596,7 +580,32 @@ function PlayVod_PreshutdownStream(saveOffset) {
     PlayVod_ClearVod();
 }
 
+function PlayVod_UpdateHistory(screen, saveOffset) {
+    if (saveOffset) {
+
+        var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
+
+        if (time > 0 && (Play_DurationSeconds - 300) > time) {
+            PlayVod_SaveVodIds(time);
+
+            if (!ScreenObj[Main_HistoryVod].histPosX[1] && ScreenObj[screen].screenType === 1) {
+
+                var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
+
+                if (data && Main_values.ChannelVod_vodId === data[7]) {
+
+                    Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[11]) * 100) + '%';
+
+                }
+
+            }
+        }
+
+    }
+}
+
 function PlayVod_ClearVod() {
+
     //Main_Log('PlayVod_ClearVod');
 
     Main_removeEventListener("keydown", PlayVod_handleKeyDown);

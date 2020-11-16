@@ -469,30 +469,17 @@ function PlayClip_shutdownStream() {
 
 function PlayClip_PreshutdownStream(closePlayer) {
     //Main_Log('PlayClip_PreshutdownStream ' + closePlayer);
-
-    if (!ScreenObj[Main_HistoryClip].histPosX[1]) {
-        //Save as we have watched it all
-
-        var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
-        var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
-
-        if (ScreenObj[Main_values.Main_Go].screenType === 2 && ChannelClip_Id === data[7]) {
-
-            Main_getElementById(ScreenObj[Main_values.Main_Go].ids[7] + (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)).style.width = ((time / data[1]) * 100) + '%';
-
-        }
-
-        Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
-
-    }
+    PlayClip_UpdateHistory(Main_values.Main_Go);
 
     PlayClip_hidePanel();
+
     if (Main_IsOn_OSInterface && !Play_PreviewId) {
 
         if (closePlayer) OSInterface_stopVideo();
         else OSInterface_PlayPause(false);
 
     }
+
     if (closePlayer) PlayClip_isOn = false;
     Chat_Clear();
     Play_ClearPlayer();
@@ -503,6 +490,25 @@ function PlayClip_PreshutdownStream(closePlayer) {
     PlayClip_qualities = [];
     Main_removeEventListener("keydown", PlayClip_handleKeyDown);
     ChannelVod_vodOffset = 0;
+}
+
+function PlayClip_UpdateHistory(screen) {
+
+    if (ScreenObj[Main_values.Main_Go].screenType === 2 && !ScreenObj[Main_HistoryClip].histPosX[1]) {
+
+        var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
+        var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
+
+        if (ChannelClip_Id === data[7]) {
+
+            Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[1]) * 100) + '%';
+
+        }
+
+        Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
+
+    }
+
 }
 
 function PlayClip_UpdateNext() {
@@ -668,7 +674,7 @@ function PlayClip_getQualitiesCount() {
 }
 
 function PlayClip_SetHtmlQuality(element) {
-    if (!PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
+    if (!PlayClip_qualities.length || !PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
 
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 

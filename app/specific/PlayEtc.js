@@ -485,8 +485,10 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
+
                 if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
+
             }
 
         } else {
@@ -859,9 +861,12 @@ function Play_StayCheckLiveErrorFinish(Isforbiden) {
 }
 
 function Play_OpenChannel(PlayVodClip) {
+
     if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
+
         Main_values.Main_BeforeChannel = (Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame) ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
         Main_values.Main_BeforeChannelisSet = true;
+
     }
 
     if (Sidepannel_isShowingSide()) {
@@ -882,8 +887,18 @@ function Play_OpenChannel(PlayVodClip) {
         Main_values.Main_selectedChannelDisplayname = Play_data.data[1];
         ChannelContent_UserChannels = AddCode_IsFollowing;
         Play_shutdownStream();
-    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
-    else if (PlayVodClip === 3) PlayClip_shutdownStream();
+
+    } else if (PlayVodClip === 2) {
+
+        PlayVod_UpdateHistory(Main_values.Main_BeforeChannel);
+        PlayVod_shutdownStream(true);
+
+    } else if (PlayVodClip === 3) {
+
+        PlayClip_UpdateHistory(Main_values.Main_BeforeChannel);
+        PlayClip_shutdownStream();
+
+    }
 }
 
 function Play_OpenSearch(PlayVodClip) {
@@ -933,10 +948,21 @@ function Play_OpenGame(PlayVodClip) {
 
     Play_hideChat();
     if (PlayVodClip === 1) {
+
         Play_ClearPP();
         Play_shutdownStream();
-    } else if (PlayVodClip === 2) PlayVod_shutdownStream();
-    else if (PlayVodClip === 3) PlayClip_shutdownStream();
+
+    } else if (PlayVodClip === 2) {
+
+        PlayVod_UpdateHistory(Main_values.Main_BeforeAgame);
+        PlayVod_shutdownStream(true);
+
+    } else if (PlayVodClip === 3) {
+
+        PlayClip_UpdateHistory(Main_values.Main_BeforeAgame);
+        PlayClip_shutdownStream();
+
+    }
 }
 
 function Play_ClearPP() {

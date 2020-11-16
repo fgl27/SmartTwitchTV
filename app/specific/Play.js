@@ -1358,6 +1358,7 @@ function Play_shutdownStream() {
 
 function Play_PreshutdownStream(closePlayer) {
     //Main_Log('Play_PreshutdownStream ' + closePlayer);
+
     if (Main_IsOn_OSInterface) {
         if (closePlayer) {
             //We are closing the player on error or on end
