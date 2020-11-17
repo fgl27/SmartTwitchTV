@@ -586,6 +586,7 @@ function PlayVod_UpdateHistory(screen, saveOffset) {
         var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
 
         if (time > 0 && (Play_DurationSeconds - 300) > time) {
+
             PlayVod_SaveVodIds(time);
 
             if (!ScreenObj[Main_HistoryVod].histPosX[1] && ScreenObj[screen].screenType === 1) {

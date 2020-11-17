@@ -494,19 +494,23 @@ function PlayClip_PreshutdownStream(closePlayer) {
 
 function PlayClip_UpdateHistory(screen) {
 
-    if (ScreenObj[Main_values.Main_Go].screenType === 2 && !ScreenObj[Main_HistoryClip].histPosX[1]) {
+    var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
 
-        var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
-        var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
-
-        if (ChannelClip_Id === data[7]) {
-
-            Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[1]) * 100) + '%';
-
-        }
+    if (time > 0) {
 
         Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
 
+        if (!ScreenObj[Main_HistoryClip].histPosX[1] && ScreenObj[screen].screenType === 2) {
+
+            var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
+
+            if (data && ChannelClip_Id === data[7]) {
+
+                Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[1]) * 100) + '%';
+
+            }
+
+        }
     }
 
 }
