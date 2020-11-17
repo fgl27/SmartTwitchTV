@@ -670,7 +670,7 @@ public final class Tools {
                 closeQuietly(mWriter);
 
             } catch (IOException e) {
-                recordException(TAG, "BackupJson IOException Dir " + Dir.getAbsolutePath() + " isDirCreated " + isDirCreated + " file " + file, e);
+                recordException(TAG, "BackupJson IOException Dir " + Dir.getAbsolutePath() + " isDirCreated " + " file " + file, e);
             }
         }
     }
