@@ -6982,7 +6982,7 @@
     var Main_stringVersion_Min = '.285';
     var Main_version_java = 285; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 16 2020';
-    var Main_version_web = 533; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 534; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -11432,19 +11432,23 @@
 
     function PlayClip_UpdateHistory(screen) {
 
-        if (ScreenObj[Main_values.Main_Go].screenType === 2 && !ScreenObj[Main_HistoryClip].histPosX[1]) {
+        var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
 
-            var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
-            var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
-
-            if (ChannelClip_Id === data[7]) {
-
-                Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[1]) * 100) + '%';
-
-            }
+        if (time > 0) {
 
             Main_history_UpdateVodClip(ChannelClip_Id, time, 'clip');
 
+            if (!ScreenObj[Main_HistoryClip].histPosX[1] && ScreenObj[screen].screenType === 2) {
+
+                var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
+
+                if (data && ChannelClip_Id === data[7]) {
+
+                    Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = ((time / data[1]) * 100) + '%';
+
+                }
+
+            }
         }
 
     }
@@ -19012,6 +19016,7 @@
             var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
 
             if (time > 0 && (Play_DurationSeconds - 300) > time) {
+
                 PlayVod_SaveVodIds(time);
 
                 if (!ScreenObj[Main_HistoryVod].histPosX[1] && ScreenObj[screen].screenType === 1) {
