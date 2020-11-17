@@ -78,8 +78,6 @@ public final class ChannelsUtils {
 
     private static final String TAG = "STTV_ChannelsUtils";
 
-    private static final Uri AppLogo = Uri.parse("https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_launcher.png");
-
     private static final String[] TV_CONTRACT_ARRAY = {
             TvContractCompat.Channels._ID,
             TvContract.Channels.COLUMN_DISPLAY_NAME
@@ -289,25 +287,12 @@ public final class ChannelsUtils {
         if (channelId != -1 && drawableId != -1) {
 
             try {
-                Bitmap bmp = convertToBitmap(context, drawableId);
 
-                if (bmp != null) {
-
-                    ChannelLogoUtils.storeChannelLogo(
-                            context,
-                            channelId,
-                            bmp
-                    );
-
-                } else {
-
-                    ChannelLogoUtils.storeChannelLogo(
-                            context,
-                            channelId,
-                            AppLogo
-                    );
-
-                }
+                ChannelLogoUtils.storeChannelLogo(
+                        context,
+                        channelId,
+                        convertToBitmap(context, drawableId)
+                );
 
             } catch (Exception e) {
                 Tools.recordException(TAG, "writeChannelLogo ", e);
