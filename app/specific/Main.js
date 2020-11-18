@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.285';
-var Main_version_java = 285;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 16 2020';
-var Main_version_web = 534;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.286';
+var Main_version_java = 286;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'November 18 2020';
+var Main_version_web = 535;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -619,6 +619,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.286 - Web Version November 16 2020",
+            changes: [
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
             title: "Web Version November 16 2020",
             changes: [
                 "General performance improves and bug fixes",
@@ -662,18 +668,6 @@ function Main_Changelog() {
         },
         {
             title: "Web Version October 30 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.273 - Web Version October 29 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.272 - Web Version October 28 2020",
             changes: [
                 "General performance improves and bug fixes",
             ]
