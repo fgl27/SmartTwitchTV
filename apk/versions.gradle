@@ -11,12 +11,12 @@ ext.versions = [
         tray                       : '0.12.0',
         leanback                   : '1.0.0',
         tvprovider                 : '1.0.0',
-        benmanes                   : '0.33.0',
+        benmanes                   : '0.36.0',
         googlegson                 : '2.8.6',
         webkit                     : '1.3.0',
 
         //Crashlytics
-        firebase_bom               : '26.0.0',
-        firebase_crashlytics_gradle: '2.3.0',
+        firebase_bom               : '26.1.0',
+        firebase_crashlytics_gradle: '2.4.1',
         google_services            : '4.3.4',
 ]
