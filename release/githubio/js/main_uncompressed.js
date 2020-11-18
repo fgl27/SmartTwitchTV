@@ -5866,7 +5866,7 @@
             //who sub or gift a sub message
             if (params && params[1]) {
 
-                msg += (params && params[1] ? STR_BR + STR_BR +
+                msg += (params && params[1] ? STR_BR + STR_BR + ChatLive_GetBadges(tags, chat_number) +
                     "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS_USER : gifter_Or_Sub_name) + "</span>: " +
                     ChatLive_extraMessageTokenize(
                         emoticonize(params[1], ChatLive_checkEmotes(tags)),
@@ -5913,9 +5913,7 @@
             atstreamer = false,
             atuser = false,
             hasbits = false,
-            action,
-            badges, badge,
-            i, len;
+            action;
 
         if (!tags || !tags.hasOwnProperty('display-name')) {
             return; //bad formatted message
@@ -5942,18 +5940,7 @@
         }
 
         //Add badges
-        if (tags.hasOwnProperty('badges')) {
-            if (typeof tags.badges === 'string') {
-
-                badges = tags.badges.split(',');
-
-                for (i = 0, len = badges.length; i < len; i++) {
-                    badge = badges[i].split('/');
-
-                    div += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
-                }
-            }
-        }
+        div += ChatLive_GetBadges(tags, chat_number);
 
         //Add message
         var mmessage = message.params[1];
@@ -6044,6 +6031,31 @@
             },
             Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition
         );
+    }
+
+    function ChatLive_GetBadges(tags, chat_number) {
+
+        if (tags.hasOwnProperty('badges')) {
+
+            if (typeof tags.badges === 'string') {
+
+                var badges = tags.badges.split(','),
+                    badge,
+                    ret = '';
+
+                for (var i = 0, len = badges.length; i < len; i++) {
+                    badge = badges[i].split('/');
+
+                    ret += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
+                }
+
+                return ret;
+            }
+
+        }
+
+        return '';
+
     }
 
     function ChatLive_checkEmotes(tags) {
@@ -6982,7 +6994,7 @@
     var Main_stringVersion_Min = '.286';
     var Main_version_java = 286; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 18 2020';
-    var Main_version_web = 535; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 536; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
