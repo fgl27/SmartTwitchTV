@@ -1283,7 +1283,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
         //who sub or gift a sub message
         if (params && params[1]) {
 
-            msg += (params && params[1] ? STR_BR + STR_BR +
+            msg += (params && params[1] ? STR_BR + STR_BR + ChatLive_GetBadges(tags, chat_number) +
                 "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS_USER : gifter_Or_Sub_name) + "</span>: " +
                 ChatLive_extraMessageTokenize(
                     emoticonize(params[1], ChatLive_checkEmotes(tags)),
@@ -1331,9 +1331,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atstreamer = false,
         atuser = false,
         hasbits = false,
-        action,
-        badges, badge,
-        i, len;
+        action;
 
     if (!tags || !tags.hasOwnProperty('display-name')) {
         return; //bad formatted message
@@ -1360,18 +1358,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     }
 
     //Add badges
-    if (tags.hasOwnProperty('badges')) {
-        if (typeof tags.badges === 'string') {
-
-            badges = tags.badges.split(',');
-
-            for (i = 0, len = badges.length; i < len; i++) {
-                badge = badges[i].split('/');
-
-                div += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
-            }
-        }
-    }
+    div += ChatLive_GetBadges(tags, chat_number);
 
     //Add message
     var mmessage = message.params[1];
@@ -1462,6 +1449,31 @@ function ChatLive_LineAddDelay(chat_number, id, messageObj) {
         },
         Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition
     );
+}
+
+function ChatLive_GetBadges(tags, chat_number) {
+
+    if (tags.hasOwnProperty('badges')) {
+
+        if (typeof tags.badges === 'string') {
+
+            var badges = tags.badges.split(','),
+                badge,
+                ret = '';
+
+            for (var i = 0, len = badges.length; i < len; i++) {
+                badge = badges[i].split('/');
+
+                ret += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
+            }
+
+            return ret;
+        }
+
+    }
+
+    return '';
+
 }
 
 function ChatLive_checkEmotes(tags) {
