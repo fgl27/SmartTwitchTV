@@ -16027,14 +16027,19 @@
     }
 
     function Play_UpdateMainStream(startChat, refreshInfo) {
-        if (startChat) {
-            ChatLive_Init(0);
-            Play_CheckFollow(Play_data.data[14]);
-        }
+
+        if (startChat) ChatLive_Init(0);
+
+        Play_CheckFollow(Play_data.data[14]);
         Play_UpdateMainStreamDiv();
-        //Restore info panel from web
-        Play_loadingInfoDataTry = 0;
-        if (refreshInfo) Play_updateStreamInfoStart();
+
+        if (refreshInfo) {
+
+            Play_loadingInfoDataTry = 0;
+            Play_updateStreamInfoStart();
+
+        }
+
     }
 
 
@@ -16054,8 +16059,6 @@
     }
 
     function Play_updateStreamInfoStartValues(response) {
-        Play_CheckFollow(Play_data.data[14]);
-
         var obj = JSON.parse(response);
 
         if (obj.streams && obj.streams.length) {
