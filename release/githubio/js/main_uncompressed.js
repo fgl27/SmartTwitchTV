@@ -24455,6 +24455,7 @@
             },
             label_init: function() {
                 ScreensObj_TopLableUserInit(this.screen);
+                ScreensObj_SetTopLable(STR_USER, STR_FOLLOW_GAMES);
             },
             label_exit: function() {
                 Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
