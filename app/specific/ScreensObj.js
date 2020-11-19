@@ -60,7 +60,7 @@ var NewDefaultHttpGetTimeout = 25000;
 var DefaultHttpGetTimeout = 20000;
 var DefaultHttpGetTimeoutPlus = 5000;
 var DefaultHttpGetReTryMax = 2;
-var empty_fun = function() {};
+var empty_fun = function() { };
 
 var Base_obj;
 var Base_Vod_obj;
@@ -450,7 +450,7 @@ function ScreensObj_StartAllVars() {
         },
         addCell: function(cell) {
             var hasLive = this.isLive || this.screen === Main_games;
-            var game = hasLive ? cell.game : cell;
+            var game = cell.game;
             if (!this.idObject[game._id]) {
 
                 this.itemsCount++;
@@ -1364,33 +1364,20 @@ function ScreensObj_InitUserGames() {
         key_pgDownNext: Main_UserChannels,
         key_pgDown: Main_UserVod,
         key_pgUp: Main_UserHost,
-        isLive: Main_getItemBool('user_Games_live', true),
+        isLive: false,
         OldUserName: '',
         IsUser: true,
         object: 'follows',
-        base_url: 'https://api.twitch.tv/api/users/',
+        base_url: Main_kraken_api + 'users/',
         set_url: function() {
-
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games';
 
-            if (this.isLive) this.url += '/live?limit=250';
-            else this.url += '?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
-        },
-        key_refresh: function() {
-            this.isLive = !this.isLive;
+            this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) +
+                '/follows/games?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
 
-            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
-
-            Screens_StartLoad(this.screen);
-
-            Main_setItem('user_Games_live', this.isLive ? 'true' : 'false');
         },
         label_init: function() {
             ScreensObj_TopLableUserInit(this.screen);
-            Main_IconLoad('label_refresh', 'icon-refresh', STR_USER_GAMES_CHANGE + STR_LIVE_GAMES + '/' + STR_FOLLOW_GAMES + ":" + STR_GUIDE);
-
-            ScreensObj_SetTopLable(STR_USER, (this.isLive ? STR_LIVE_GAMES : STR_FOLLOW_GAMES));
         },
         label_exit: function() {
             Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -1399,9 +1386,6 @@ function ScreensObj_InitUserGames() {
 
     ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
     ScreenObj[Main_usergames].HeaderQuatity = 1;
-    ScreenObj[Main_usergames].start_fun = function() {
-        if (!this.loadingData) this.key_refresh();
-    };
     ScreenObj[Main_usergames].Set_Scroll();
     ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
 }

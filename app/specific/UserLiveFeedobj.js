@@ -44,14 +44,14 @@ var UserLiveFeedobj_FeedSort = [
     [null, 'created_at', 1]//7
 ];
 
-var UserLiveFeedobj_FeedSortGames = [
-    [null, 'viewers', 0],//0
-    [null, 'viewers', 1],//2
-    ['game', 'name', 1],//3
-    ['game', 'name', 0],//4
-    [null, 'channels', 0],//5
-    [null, 'channels', 1]//6
-];
+// var UserLiveFeedobj_FeedSortGames = [
+//     [null, 'viewers', 0],//0
+//     [null, 'viewers', 1],//2
+//     ['game', 'name', 1],//3
+//     ['game', 'name', 0],//4
+//     [null, 'channels', 0],//5
+//     [null, 'channels', 1]//6
+// ];
 
 var UserLiveFeedobj_FeedSortHost = [
     [null, 'viewers', 0],//0
@@ -620,23 +620,19 @@ function UserLiveFeedobj_HideUserHost() {
 
 //User Games Start
 function UserLiveFeedobj_UserGames() {
-    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserGamesPos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserGamesPos);
     UserLiveFeedobj_loadUserGames();
 }
 
 function UserLiveFeedobj_loadUserGames() {
-    var theUrl = 'https://api.twitch.tv/api/users/' + encodeURIComponent(AddUser_UsernameArray[0].name) + '/follows/games/live?limit=250';//follows
-
-    BasexmlHttpHlsGet(
-        theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserGamesPos] * DefaultHttpGetTimeoutPlus),
-
-        1,
-        null,
+    UserLiveFeedobj_BaseLoad(
+        Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+        '/follows/games?limit=' + Main_ItemsLimitMax + '&offset=' +
+        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].offset + Main_TwithcV5Flag,
+        2,
         UserLiveFeedobj_loadDataUserGamesSuccess,
-        function() {
-            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
-        }
+        true,
+        UserLiveFeedobj_UserGamesPos
     );
 }
 
@@ -1435,41 +1431,43 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
 
     if (response_items) {
 
-        if (pos === UserLiveFeedobj_UserGamesPos) {
-            var sorting = Settings_Obj_default('game_feed_sort');
+        // if (pos === UserLiveFeedobj_UserGamesPos) {
+        //     var sorting = Settings_Obj_default('game_feed_sort');
 
-            var sorting_type1 = UserLiveFeedobj_FeedSortGames[sorting][0],
-                sorting_type2 = UserLiveFeedobj_FeedSortGames[sorting][1],
-                sorting_direction = UserLiveFeedobj_FeedSortGames[sorting][2];
+        //     var sorting_type1 = UserLiveFeedobj_FeedSortGames[sorting][0],
+        //         sorting_type2 = UserLiveFeedobj_FeedSortGames[sorting][1],
+        //         sorting_direction = UserLiveFeedobj_FeedSortGames[sorting][2];
 
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] < b[sorting_type2] ? -1 :
-                            (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
-                            (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
-                    });
-                } else {
-                    response.sort(function(a, b) {
-                        return (a[sorting_type2] > b[sorting_type2] ? -1 :
-                            (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
-                    });
-                }
-            }
-        }
+        //     if (sorting_direction) {
+        //         //A-Z
+        //         if (sorting_type1) {
+        //             response.sort(function(a, b) {
+        //                 return (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 :
+        //                     (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0));
+        //             });
+        //         } else {
+        //             response.sort(function(a, b) {
+        //                 return (a[sorting_type2] < b[sorting_type2] ? -1 :
+        //                     (a[sorting_type2] > b[sorting_type2] ? 1 : 0));
+        //             });
+        //         }
+        //     } else {
+        //         //Z-A
+        //         if (sorting_type1) {
+        //             response.sort(function(a, b) {
+        //                 return (a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 :
+        //                     (a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0));
+        //             });
+        //         } else {
+        //             response.sort(function(a, b) {
+        //                 return (a[sorting_type2] > b[sorting_type2] ? -1 :
+        //                     (a[sorting_type2] < b[sorting_type2] ? 1 : 0));
+        //             });
+        //         }
+        //     }
+        // }
+
+        var isntUser = pos !== UserLiveFeedobj_UserGamesPos;
 
         for (i; i < response_items; i++) {
             cell = response[i];
@@ -1486,8 +1484,8 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
                         pos + '_' + itemsCount,
                         [
                             game.name,//0
-                            Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//1
+                            isntUser ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
+                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',//1
                             game._id,//2
                             game.box.template//3
                         ]

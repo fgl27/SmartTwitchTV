@@ -173,6 +173,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].AddCell = UserLiveFeed_FeedAddCellGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
+    UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
     //Games
