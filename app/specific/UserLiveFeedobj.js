@@ -172,14 +172,16 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_loadDataErrorElse(pos) {
+
     if (!UserLiveFeed_obj[pos].loadingMore) {
+
         UserLiveFeed_loadingDataTry[pos] = 0;
         UserLiveFeed_loadingData[pos] = false;
         Screens_Some_Screen_Is_Refreshing = false;
         UserLiveFeed_Showloading(false);
         Main_HideElement('dialog_loading_side_feed');
 
-        if (UserLiveFeed_isPreviewShowing()) {
+        if (UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
             UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
         }
 
@@ -187,10 +189,12 @@ function UserLiveFeedobj_loadDataErrorElse(pos) {
             Main_HideWarningDialog();
             Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
         }
+
     } else {
         UserLiveFeed_obj[pos].loadingMore = false;
         UserLiveFeed_obj[pos].dataEnded = true;
     }
+
 }
 
 function UserLiveFeedobj_Empty(pos) {
