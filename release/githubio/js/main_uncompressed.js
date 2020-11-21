@@ -6994,7 +6994,7 @@
     var Main_stringVersion_Min = '.286';
     var Main_version_java = 286; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 18 2020';
-    var Main_version_web = 537; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 538; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -30805,14 +30805,16 @@
     }
 
     function UserLiveFeedobj_loadDataErrorElse(pos) {
+
         if (!UserLiveFeed_obj[pos].loadingMore) {
+
             UserLiveFeed_loadingDataTry[pos] = 0;
             UserLiveFeed_loadingData[pos] = false;
             Screens_Some_Screen_Is_Refreshing = false;
             UserLiveFeed_Showloading(false);
             Main_HideElement('dialog_loading_side_feed');
 
-            if (UserLiveFeed_isPreviewShowing()) {
+            if (UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
                 UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
             }
 
@@ -30820,10 +30822,12 @@
                 Main_HideWarningDialog();
                 Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
             }
+
         } else {
             UserLiveFeed_obj[pos].loadingMore = false;
             UserLiveFeed_obj[pos].dataEnded = true;
         }
+
     }
 
     function UserLiveFeedobj_Empty(pos) {
