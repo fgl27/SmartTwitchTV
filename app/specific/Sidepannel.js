@@ -310,7 +310,7 @@ function Sidepannel_GetSize() {
 }
 
 function Sidepannel_KeyEnterUser() {
-    if (Sidepannel_Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
+    if (Sidepannel_Sidepannel_Pos === 5 && !AddUser_UsernameArray[0].access_token) {
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
     }

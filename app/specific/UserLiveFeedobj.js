@@ -314,7 +314,10 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-        AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+
+        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+        else UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
+
     } else {
         UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
     }
@@ -1050,7 +1053,10 @@ function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-        AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+
+        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+        else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
+
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     }

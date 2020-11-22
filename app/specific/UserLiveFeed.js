@@ -1123,13 +1123,24 @@ function UserLiveFeed_KeyUpDown(Adder) {
         UserLiveFeed_FeedPosX = NextPos;
 
         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos && UserLiveFeedobj_CurrentUserAGameEnable) {
+
             UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
             return;
+
         } else if (UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos && UserLiveFeedobj_CurrentAGameEnable) {
+
             UserLiveFeed_FeedPosX = UserLiveFeedobj_AGamesPos;
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
             return;
+
+        } else if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserVodPos && (!userSet || !AddUser_UsernameArray[0].access_token)) {
+
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+            UserLiveFeed_FeedPosX = NextPos;
+            UserLiveFeed_KeyUpDown(Adder);
+            return;
+
         }
 
         Main_AddClass('icon_feed_back', 'opacity_zero');

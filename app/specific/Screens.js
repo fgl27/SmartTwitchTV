@@ -52,7 +52,7 @@ function Screens_InitScreens() {
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
     ScreensObj_InitAGame();
-    //Live user screens
+    //Live user screensC
     ScreensObj_InitUserLive();
 
     //Clips screens
@@ -437,7 +437,8 @@ function Screens_HttpResultStatus(resultObj, key) {
         }
     } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
-        AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+        else Screens_loadDataError(key);
 
     } else if (resultObj.status === 500 && Screens_IsInUse(key) && key === Main_usergames) {
 

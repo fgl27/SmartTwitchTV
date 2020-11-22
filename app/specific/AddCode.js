@@ -43,7 +43,12 @@ function AddCode_CheckNewCode(code) {
 
 function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
     //Main_Log('AddCode_refreshTokens');
-    if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
+    if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
+
+        if (callbackFuncNOK) callbackFuncNOK();
+
+        return;
+    }
 
     var xmlHttp,
         url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +

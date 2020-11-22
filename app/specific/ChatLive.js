@@ -243,16 +243,25 @@ function ChatLive_checkSub(tryes, chat_number, id) {
     xmlHttp.onreadystatechange = function() {
         if (xmlHttp.readyState === 4) {
             if (xmlHttp.status === 200) { //yes
+
                 ChatLive_SubState[chat_number].state = true;
+
             } else if (xmlHttp.status === 404) {
+
                 var response = JSON.parse(xmlHttp.responseText);
                 if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
                     ChatLive_SubState[chat_number].state = false;
                 } else ChatLive_checkSubError(tryes, chat_number, id);
+
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, null, null);
+
+                if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                else ChatLive_checkSubError(tryes, chat_number, id);
+
             } else { // internet error
+
                 ChatLive_checkSubError(tryes, chat_number, id);
+
             }
         }
     };
@@ -1082,8 +1091,10 @@ function ChatLive_SendPrepared(chat_number, id) {
                 break;
             case "NOTICE":
                 if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+
                     ChatLive_LineAddErro(message.params[1], 0, true);
-                    AddCode_refreshTokens(0, 0, null, null);
+                    if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
                 } else ChatLive_UserNoticeWarn(message);
                 break;
             // case "USERSTATE":
@@ -1178,8 +1189,10 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id, 0);
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+
         ChatLive_LineAddErro(message.params[1], chat_number);
-        AddCode_refreshTokens(0, 0, null, null);
+        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
     } else ChatLive_UserNoticeWarn(message);
 
 }
@@ -1751,13 +1764,21 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
+
         if (xmlHttp.readyState === 4) {
+
             if (xmlHttp.status === 200) {
+
                 callbackSucess(xmlHttp.responseText, chat_number, id);
+
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                AddCode_refreshTokens(0, 0, null, null);
+
+                if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
             } else if (xmlHttp.status !== 404) {//404 ignore the result is empty
+
                 callbackError(tryes, chat_number, id);
+
             }
         }
     };
