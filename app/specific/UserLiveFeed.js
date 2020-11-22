@@ -136,13 +136,6 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div = Main_getElementById('user_live_history_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
-    //User Host
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].load = UserLiveFeedobj_UserHost;
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].show = UserLiveFeedobj_ShowUserHost;
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].hide = UserLiveFeedobj_HideUserHost;
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].div = Main_getElementById('user_host_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_UserHostPos].Screen = 'preview_user_host';
-
     //User a game
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
@@ -224,9 +217,8 @@ function UserLiveFeed_Prepare() {
     Main_innerHTML('feed_end_3', STR_LIVE);
     Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
     Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
-    Main_innerHTML('feed_end_6', STR_USER + STR_SPACE + STR_LIVE_HOSTS);
-    Main_innerHTML('feed_end_8', STR_USER + STR_SPACE + 'VOD');
-    Main_innerHTML('feed_end_9', 'VOD ' + STR_HISTORY);
+    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
+    Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
     Main_innerHTML('icon_feed_back', STR_SPACE);
 
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
