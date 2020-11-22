@@ -157,6 +157,16 @@ TODO list
 * Add a side panel to the search panel that stores and allows to reuse a search save it per user
 * Separated from the above check how to add voice search
 
+### Check if is possible to re add some removed features
+
+* General improve
+* User followed live games and host
+
+### Add more option on video sizes
+
+* General improve
+* for the 50/50 mode but also for others Multi and PP mode, check what is possible to do and add more
+
 ### Add some proper test scripts
 
 * General improve
