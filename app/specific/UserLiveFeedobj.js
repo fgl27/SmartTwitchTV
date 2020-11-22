@@ -52,16 +52,16 @@ var UserLiveFeedobj_FeedSort = [
 //     [null, 'channels', 1]//6
 // ];
 
-var UserLiveFeedobj_FeedSortHost = [
-    [null, 'viewers', 0],//0
-    [null, 'viewers', 1],//1
-    ['channel', 'name', 1],//2
-    ['channel', 'name', 0],//3
-    [null, 'meta_game', 1],//4
-    [null, 'meta_game', 0],//5
-    [null, 'created_at', 0],//6
-    [null, 'created_at', 1]//7
-];
+// var UserLiveFeedobj_FeedSortHost = [
+//     [null, 'viewers', 0],//0
+//     [null, 'viewers', 1],//1
+//     ['channel', 'name', 1],//2
+//     ['channel', 'name', 0],//3
+//     [null, 'meta_game', 1],//4
+//     [null, 'meta_game', 0],//5
+//     [null, 'created_at', 0],//6
+//     [null, 'created_at', 1]//7
+// ];
 
 //Check bellow java before define more current max is 0 to 24, 1 is used by the side panel
 //public String[][] ExtraPlayerHandlerResult = new String[25][100];
