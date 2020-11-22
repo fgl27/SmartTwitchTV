@@ -353,7 +353,7 @@ public final class ChannelsUtils {
                 );
 
             } catch (Exception e) {
-                Tools.recordException(TAG, "DeleteProgram ", e);
+                Tools.recordException(TAG, "DeleteChannel ", e);
             }
 
         }
