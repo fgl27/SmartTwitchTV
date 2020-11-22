@@ -163,17 +163,6 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
-    "game_feed_sort": {//Migrated to dialog
-        "values": [
-            "views_more",
-            "views_less",
-            "name_a-z",
-            "name_z-a",
-            "channel_more",
-            "channel_less"
-        ],
-        "defaultValue": 1
-    },
     "open_host": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -191,10 +180,6 @@ var Settings_value = {
         "defaultValue": 1
     },
     "game_notification": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "game_live_notification": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
     },
@@ -814,7 +799,6 @@ function Settings_SetDefault(position) {
     if (position === "live_notification") Settings_notification();
     else if (position === "title_notification") Settings_notification_title();
     else if (position === "game_notification") Settings_notification_game();
-    else if (position === "game_live_notification") Settings_notification_game_live();
     else if (position === "live_notification_background") Settings_notification_background();
     else if (position === "live_notification_position") Settings_notification_position();
     else if (position === "repeat_notification") Settings_notification_repeat();
@@ -888,8 +872,7 @@ function Settings_notification_check_any_enable() {
 
     if (!Settings_Obj_default("live_notification") &&
         !Settings_Obj_default("title_notification") &&
-        !Settings_Obj_default("game_notification") &&
-        !Settings_Obj_default("game_live_notification")) {
+        !Settings_Obj_default("game_notification")) {
         OSInterface_StopNotificationService();
         return false;
     }
@@ -916,11 +899,6 @@ function Settings_notification_title() {
 
 function Settings_notification_game() {
     OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
-    Settings_notification_background();
-}
-
-function Settings_notification_game_live() {
-    OSInterface_SetNotificationGameLive(Settings_Obj_default("game_live_notification") === 1);
     Settings_notification_background();
 }
 
@@ -1604,7 +1582,6 @@ function Settings_DialogShowNotification() {
     Settings_value.live_notification_background.values = [STR_NO, STR_YES];
     Settings_value.title_notification.values = [STR_NO, STR_YES];
     Settings_value.game_notification.values = [STR_NO, STR_YES];
-    Settings_value.game_live_notification.values = [STR_NO, STR_YES];
     Settings_value.live_notification_position.values = STR_NOTIFICATION_POS_ARRAY;
     Settings_value.since_notification.values[0] = STR_DISABLED;
 
@@ -1625,12 +1602,6 @@ function Settings_DialogShowNotification() {
             defaultValue: Settings_value.game_notification.defaultValue,
             values: Settings_value.game_notification.values,
             title: STR_GAME_CHANGE_SHOW,
-            summary: null
-        },
-        game_live_notification: {
-            defaultValue: Settings_value.game_live_notification.defaultValue,
-            values: Settings_value.game_live_notification.values,
-            title: STR_NOW_LIVE_GAME_SHOW,
             summary: null
         },
         live_notification_background: {
@@ -1753,27 +1724,12 @@ function Settings_DialogShowCustomOpt() {
         STR_CREATED_OLDEST
     ];
 
-    Settings_value.game_feed_sort.values = [
-        STR_VIWES_MOST,
-        STR_VIWES_LOWEST,
-        STR_NAME_A_Z,
-        STR_NAME_Z_A,
-        STR_CHANNELS_MOST,
-        STR_CHANNELS_LOWEST
-    ];
-
     var obj = {
         live_feed_sort: {
             defaultValue: Settings_value.live_feed_sort.defaultValue,
             values: Settings_value.live_feed_sort.values,
             title: STR_LIVE_FEED_SORT,
             summary: STR_LIVE_FEED_SORT_SUMMARY
-        },
-        game_feed_sort: {
-            defaultValue: Settings_value.game_feed_sort.defaultValue,
-            values: Settings_value.game_feed_sort.values,
-            title: STR_GAME_SORT,
-            summary: null
         },
         auto_refresh_screen: {
             defaultValue: Settings_value.auto_refresh_screen.defaultValue,

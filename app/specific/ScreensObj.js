@@ -53,8 +53,6 @@ var ChannelVod_views = '';
 var ChannelVod_title = '';
 var ChannelVod_game = '';
 
-var AGame_following = false;
-
 var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var DefaultHttpGetTimeout = 25000;
 var DefaultHttpGetTimeoutPlus = 5000;
@@ -1153,13 +1151,12 @@ function ScreensObj_InitAGame() {
             ScreensObj_TopLableAgameExit(this.screen);
         },
         HasSwitches: true,
-        SwitchesIcons: ['movie-play', 'movie', 'heart-o'],
+        SwitchesIcons: ['movie-play', 'movie'],
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
                     STR_SPACE + STR_SPACE + STR_VIDEOS,
-                    STR_SPACE + STR_SPACE + STR_CLIPS,
-                    STR_SPACE + STR_SPACE + STR_FOLLOW
+                    STR_SPACE + STR_SPACE + STR_CLIPS
                 ],
                 this.screen
             );

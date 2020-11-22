@@ -94,14 +94,6 @@ function OSInterface_SetNotificationGame(Notify) {
     if (Main_IsOn_OSInterface) Android.SetNotificationGame(Boolean(Notify));
 }
 
-//public void SetNotificationLive(boolean Notify)
-//Notify  background notification are enable
-//Android specific: true
-//Set if live games notifications are enable
-function OSInterface_SetNotificationGameLive(Notify) {
-    if (Main_IsOn_OSInterface) Android.SetNotificationGameLive(Boolean(Notify));
-}
-
 //public void Settings_SetPingWarning(boolean warning)
 //warning enable or not the warning if ping fail for too long
 //Android specific: true

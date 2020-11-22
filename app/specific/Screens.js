@@ -306,7 +306,6 @@ function Screens_init(key, preventRefresh) {
 
     } else {
         ScreenObj[key].SetPreviewEnable();
-        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
         Screens_SetLastRefresh(key);
@@ -662,8 +661,6 @@ function Screens_loadDataSuccessFinish(key) {
     //Main_Log('Screens_loadDataSuccessFinish ' + ScreenObj[key].screen);
     ScreenObj[key].FirstRunEnd = true;
     if (!ScreenObj[key].status) {
-
-        if (Main_values.Main_Go === Main_aGame && key === Main_aGame) AGame_Checkfollow();
 
         if (ScreenObj[key].emptyContent) {
             if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
@@ -1970,12 +1967,12 @@ function AGame_headerOptions(key) {
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
-    } else if (ScreenObj[key].posX === 1) {
+    } else {
         Main_values.Main_Go = Main_AGameClip;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
-    } else AGame_follow(key);
+    }
 }
 
 function AGame_headerOptionsExit(key) {
@@ -1991,46 +1988,6 @@ function AGame_headerOptionsExit(key) {
 
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElementWithEle(ScreenObj[key].ScrollDoc);
-}
-
-function AGame_follow(key) {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-        if (AGame_following) AddCode_UnFollowGame();
-        else AddCode_FollowGame();
-    } else {
-        Main_showWarningDialog(STR_NOKEY_WARN);
-        Main_setTimeout(
-            function() {
-                if (ScreenObj[key].emptyContent && Main_values.Main_Go === Main_aGame) Main_showWarningDialog(STR_NO + STR_LIVE_GAMES);
-                else Main_HideWarningDialog();
-            },
-            2000
-        );
-    }
-}
-
-function AGame_Checkfollow() {
-    if (AddUser_UserIsSet()) AddCode_CheckFollowGame();
-    else {
-        AGame_following = false;
-        AGame_setFollow();
-    }
-}
-
-function AGame_setFollow() {
-    if (Main_values.Main_Go !== Main_aGame) return;
-
-    if (AGame_following) {
-        Main_innerHTML(
-            ScreenObj[Main_aGame].ids[2] + "y_2",
-            '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING
-        );
-    } else {
-        Main_innerHTML(
-            ScreenObj[Main_aGame].ids[2] + "y_2",
-            '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY)
-        );
-    }
 }
 
 var Screens_PeriodDialogID;

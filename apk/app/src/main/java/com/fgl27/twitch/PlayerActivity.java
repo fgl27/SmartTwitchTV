@@ -1471,16 +1471,10 @@ public class PlayerActivity extends Activity {
                         ChannelsUtils.StartGames(context, DEFAULT_HEADERS);
                         break;
                     case Constants.CHANNEL_TYPE_USER_GAMES:
-                        ChannelsUtils.StartUserGames(
-                                context,
-                                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                        );
+                        ChannelsUtils.StartUserGames(context);
                         break;
                     case Constants.CHANNEL_TYPE_USER_HOST:
-                        ChannelsUtils.StartUserHost(
-                                context,
-                                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                        );
+                        ChannelsUtils.StartUserHost(context);
                         break;
                     default:
                         break;
@@ -2469,11 +2463,6 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void SetNotificationGameLive(boolean Notify) {
-            appPreferences.put(Constants.PREF_NOTIFICATION_GAME, Notify);
-        }
-
-        @JavascriptInterface
         public void setAppIds(String client_id, String client_secret, String redirect_uri) {
             appPreferences.put(Constants.PREF_CLIENT_ID, client_id);
             appPreferences.put(Constants.PREF_CLIENT_SECRET, client_secret);
@@ -2487,7 +2476,7 @@ public class PlayerActivity extends Activity {
             String temp_refresh_token = Tools.getString(id + Constants.PREF_REFRESH_TOKEN, null, appPreferences);
 
             appPreferences.put(Constants.PREF_USER_ID, id);
-            appPreferences.put(Constants.PREF_USER_NAME, name);
+            //appPreferences.put(Constants.PREF_USER_NAME, name);
             if (id != null)
                 appPreferences.put(id + Constants.PREF_REFRESH_TOKEN, refresh_token);
 

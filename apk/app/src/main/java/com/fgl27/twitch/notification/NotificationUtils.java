@@ -44,7 +44,6 @@ import androidx.core.app.NotificationCompat;
 import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.R;
 import com.fgl27.twitch.Tools;
-import com.fgl27.twitch.channels.ChannelsUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -56,7 +55,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,8 +74,6 @@ public final class NotificationUtils {
 
     private static final String TAG = "STTV_NotificationUtils";
 
-    private static final Type SetStringType = new TypeToken<Set<String>>() {
-    }.getType();
     private static final Type MapStringType = new TypeToken<Map<String, StreamObj>>() {
     }.getType();
 
@@ -625,81 +621,6 @@ public final class NotificationUtils {
 
     }
 
-    private static void GetGamesNotifications(Set<String> oldLive, JsonArray games, String UserId,
-                                              AppPreferences appPreferences, int Repeat,
-                                              Context context,
-                                              ArrayList<NotifyList> result) {
-
-        Set<String> currentLive = new HashSet<>();
-
-        int GamesSize = games.size();
-        int viewers;
-        int channels;
-
-        String id;
-        String name;
-
-        JsonObject obj;
-        JsonObject objGame;
-        JsonObject objPreview;
-
-        String game_notification_title = context.getString(R.string.notification_live_game);
-        DecimalFormat decimalFormat = ChannelsUtils.getDecimalFormat();
-
-        try {
-            //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() and etc here as was already checked before reaching here
-            for (int i = 0; i < GamesSize; i++) {
-
-                obj = games.get(i).getAsJsonObject();//Get the position in the follows array
-                objGame = obj.get("game").getAsJsonObject(); //Get the channel obj in position
-
-                name = !objGame.get("name").isJsonNull() ? objGame.get("name").getAsString() : null;
-
-                if (name != null) {
-
-                    viewers = !obj.get("viewers").isJsonNull() ? obj.get("viewers").getAsInt() : 0;
-                    channels = !obj.get("channels").isJsonNull() ? obj.get("channels").getAsInt() : 0;
-                    objPreview = !objGame.get("box").isJsonNull() ? objGame.get("box").getAsJsonObject() : null;
-                    id = !objGame.get("_id").isJsonNull() ? objGame.get("_id").getAsString() : null;
-
-                    currentLive.add(id);
-
-                    if (!oldLive.contains(id)) {
-
-                        NotifyListResultAdd(
-                                new NotifyList(
-                                        true,
-                                        game_notification_title,
-                                        decimalFormat.format(viewers) + " viewers",
-                                        name,
-                                        GetBitmap(
-                                                objPreview != null && !objPreview.get("large").isJsonNull() ?
-                                                        objPreview.get("large").getAsString() :
-                                                        Constants.GAME_404
-                                        ),
-                                        decimalFormat.format(channels) + " Channels",
-                                        false
-                                ),
-                                Repeat,
-                                result
-                        );
-
-                    }
-
-                }
-            }
-        } catch (Exception e) {
-            Tools.recordException(TAG, "GetGamesNotifications e ", e);
-        }
-
-        SaveOldGamesList(
-                currentLive,
-                appPreferences,
-                UserId
-        );
-
-    }
-
     private static void NotifyListResultAdd(NotifyList notifyList, int Repeat, ArrayList<NotifyList> result) {
         //Toast can only run for about 3s allow the user to repeat same notification
         for (int x = 0; x < Repeat; x++) {
@@ -740,39 +661,6 @@ public final class NotificationUtils {
         );
     }
 
-    private static void SetOldGamesList(JsonArray games, String UserId, AppPreferences appPreferences) {
-        Set<String> currentLive = new HashSet<>();
-        JsonObject obj;
-        int GamesSize = games.size();
-
-        try {
-            for (int i = 0; i < GamesSize; i++) {
-
-                //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() here as was already checked before reaching here
-                obj = games.get(i).getAsJsonObject().get("game").getAsJsonObject();//Get the position in the game array
-                currentLive.add(obj.get("_id").getAsString());//Broadcast id
-
-            }
-        } catch (Exception e) {
-            Tools.recordException(TAG, "SetOldList e ", e);
-        }
-
-        SaveOldGamesList(
-                currentLive,
-                appPreferences,
-                UserId
-        );
-    }
-
-    private static void SaveOldGamesList(Set<String> currentLive, AppPreferences appPreferences, String UserId) {
-
-        appPreferences.put(
-                UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST,
-                new Gson().toJson(currentLive)
-        );
-
-    }
-
     private static void SaveOldStreamList(Map<String, StreamObj> currentLive, AppPreferences appPreferences, String UserId) {
 
         appPreferences.put(
@@ -810,7 +698,6 @@ public final class NotificationUtils {
             boolean DoStreamLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_LIVE, false, appPreferences);
             boolean DoStreamTitle = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_TITLE, false, appPreferences);
             boolean DoStreamGame = Tools.getBoolean(Constants.PREF_NOTIFICATION_STREAM_GAME, false, appPreferences);
-            boolean DoGameLive = Tools.getBoolean(Constants.PREF_NOTIFICATION_GAME, false, appPreferences);
 
             int Repeat = Tools.getInt(Constants.PREF_NOTIFICATION_REPEAT, 1, appPreferences);
 
@@ -847,45 +734,6 @@ public final class NotificationUtils {
                     } else {
 
                         SetOldLiveList(streams, UserId, appPreferences);
-
-                    }
-                }
-
-            }
-
-            if (DoGameLive) {
-
-                JsonArray Games = ChannelsUtils.GetLiveGames(
-                        String.format(
-                                Locale.US,
-                                "https://api.twitch.tv/api/users/%s/follows/games/live?limit=250",
-                                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-                        ),
-                        "follows",
-                        new String[0][0]
-                );
-
-                //If Games result is null the http request fail else even if Games.size() < 1 that is the result
-                if (Games != null) {
-
-                    tempOldLiveList = Tools.getString(UserId + Constants.PREF_NOTIFY_OLD_GAME_LIST, null, appPreferences);
-
-                    //Null list was never created or user changed
-                    if (tempOldLiveList != null) {
-
-                        GetGamesNotifications(
-                                new Gson().fromJson(tempOldLiveList, SetStringType),
-                                Games,
-                                UserId,
-                                appPreferences,
-                                Repeat,
-                                context,
-                                NotifyListResult
-                        );
-
-                    } else {
-
-                        SetOldGamesList(Games, UserId, appPreferences);
 
                     }
                 }

@@ -341,6 +341,24 @@ public final class ChannelsUtils {
         }
     }
 
+    private static void DeleteChannel(Context context, long channelId) {
+        if (channelId != -1L) {
+
+            try {
+
+                context.getContentResolver().delete(
+                        TvContractCompat.buildChannelUri(channelId),
+                        null,
+                        null
+                );
+
+            } catch (Exception e) {
+                Tools.recordException(TAG, "DeleteProgram ", e);
+            }
+
+        }
+    }
+
     private static long getChannelIdFromTvProvider(Context context, String channel_name) {
 
         try (Cursor cursor =
@@ -428,7 +446,7 @@ public final class ChannelsUtils {
         return true;
     }
 
-    private static ChannelContentObj getNoUserContent(int screen) {
+    private static ChannelContentObj getNoUserContent() {
         return
                 new ChannelContentObj(
                         "Add User",
@@ -436,7 +454,7 @@ public final class ChannelsUtils {
                         "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
                         1,
-                        new Gson().toJson(new PreviewObj(null, "USER", screen)),
+                        new Gson().toJson(new PreviewObj(null, "USER", Constants.CHANNEL_TYPE_USER_LIVE)),
                         false
                 );
     }
@@ -480,7 +498,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static DecimalFormat getDecimalFormat() {
+    private static DecimalFormat getDecimalFormat() {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setGroupingUsed(true);
         decimalFormat.setGroupingSize(3);
@@ -518,14 +536,8 @@ public final class ChannelsUtils {
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
                 appPreferences
         );
-        StartUserGames(
-                context,
-                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-        );
-        StartUserHost(
-                context,
-                Tools.getString(Constants.PREF_USER_NAME, null, appPreferences)
-        );
+        StartUserGames(context);
+        StartUserHost(context);
     }
 
     public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS) {
@@ -600,7 +612,7 @@ public final class ChannelsUtils {
         } else {
 
             List<ChannelContentObj> content = new ArrayList<>();
-            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_LIVE));
+            content.add(getNoUserContent());
             StartUserLive(context, content, channelId);
 
         }
@@ -619,7 +631,7 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartUserHost(Context context, String name) {
+    public static void StartUserHost(Context context) {
         if (!Tools.isConnected(context)) return;
 
         long channelId = getChannelIdFromTvProvider(
@@ -627,38 +639,7 @@ public final class ChannelsUtils {
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST]
         );
 
-        List<ChannelContentObj> content = null;
-
-        if (name != null) {
-
-            if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
-
-                String url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/api/users/%s/followed/hosting?limit=100",
-                        name
-                );
-
-                content = GetHostContent(url);
-
-            }
-        } else {
-
-            content = new ArrayList<>();
-            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_HOST));
-
-        }
-
-        StartChannel(
-                context,
-                new ChannelObj(
-                        R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST],
-                        Constants.CHANNEL_TYPE_USER_HOST,
-                        content
-                ),
-                channelId
-        );
+        if (channelId != -1L) DeleteChannel(context, channelId);
     }
 
     public static void StartFeatured(Context context, String[][] DEFAULT_HEADERS) {
@@ -708,10 +689,7 @@ public final class ChannelsUtils {
         if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
 
             content = GetGamesContent(
-                    "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
-                    "top",
-                    DEFAULT_HEADERS,
-                    Constants.CHANNEL_TYPE_GAMES
+                    DEFAULT_HEADERS
             );
 
             if (content != null) {
@@ -740,7 +718,7 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartUserGames(Context context, String name) {
+    public static void StartUserGames(Context context) {
         if (!Tools.isConnected(context)) return;
 
         long channelId = getChannelIdFromTvProvider(
@@ -748,81 +726,7 @@ public final class ChannelsUtils {
                 Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES]
         );
 
-        List<ChannelContentObj> content = null;
-
-        if (name != null) {
-
-            if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
-                String url = String.format(
-                        Locale.US,
-                        "https://api.twitch.tv/api/users/%s/follows/games/live?limit=250",
-                        name
-                );
-
-                content = GetGamesContent(
-                        url,
-                        "follows",
-                        new String[0][0],
-                        Constants.CHANNEL_TYPE_USER_GAMES
-                );
-            }
-        } else {
-
-            content = new ArrayList<>();
-            content.add(getNoUserContent(Constants.CHANNEL_TYPE_USER_GAMES));
-
-        }
-
-        StartChannel(
-                context,
-                new ChannelObj(
-                        R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES],
-                        Constants.CHANNEL_TYPE_USER_GAMES,
-                        content
-                ),
-                channelId
-        );
-    }
-
-    private static List<ChannelContentObj> GetHostContent(String url) {
-
-        try {
-            Tools.ResponseObj response;
-
-            for (int i = 0; i < 3; i++) {
-
-                response = Tools.Internal_MethodUrl(
-                        url,
-                        Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
-                        null,
-                        null,
-                        0,
-                        new String[0][0]
-                );
-
-                if (response != null) {
-
-                    if (response.status == 200) {
-
-                        JsonObject obj = parseString(response.responseText).getAsJsonObject();
-
-                        if (obj.isJsonObject() && !obj.get("hosts").isJsonNull()) {
-
-                            return ProcessHostArray(obj.get("hosts").getAsJsonArray());
-                        }
-
-                        break;
-                    }
-
-                }
-            }
-
-        } catch (Exception e) {
-            Tools.recordException(TAG, "GetHostContent e ", e);
-        }
-
-        return null;
+        if (channelId != -1L) DeleteChannel(context, channelId);
 
     }
 
@@ -870,81 +774,6 @@ public final class ChannelsUtils {
 
         return null;
 
-    }
-
-    private static List<ChannelContentObj> ProcessHostArray(JsonArray Streams) {
-        List<ChannelContentObj> content = new ArrayList<>();
-        Set<String> TempArray = new HashSet<>();
-
-        JsonObject obj;
-        JsonObject objTarget;
-        JsonObject objChannel;
-        JsonObject objPreview;
-
-        String channelId;
-        String description;
-
-        int viewers;
-        int objSize = Streams.size();
-
-        DecimalFormat decimalFormat = getDecimalFormat();
-
-        if (objSize < 1) return null;
-        else content.add(getRefreshContent());
-
-        for (int j = 0; j < objSize; j++) {
-
-            obj = Streams.get(j).getAsJsonObject();//Get the position in the follows array
-
-            if (obj.isJsonObject() && !obj.get("target").isJsonNull()) {
-                objTarget = obj.get("target").getAsJsonObject(); //Get the channel obj in position
-
-                channelId = objTarget.get("_id").getAsString();
-
-                if (!TempArray.contains(channelId) && !obj.get("display_name").isJsonNull()) {//Prevent add duplicated
-
-                    TempArray.add(channelId);
-
-                    objPreview = !objTarget.get("preview_urls").isJsonNull() ? objTarget.get("preview_urls").getAsJsonObject() : null;
-
-                    description = !objTarget.get("meta_game").isJsonNull() ? objTarget.get("meta_game").getAsString() : "";
-                    if (!Objects.equals(description, ""))
-                        description = "Playing " + description + ", for ";
-
-                    viewers = !objTarget.get("viewers").isJsonNull() ? objTarget.get("viewers").getAsInt() : 0;
-
-                    objChannel = !objTarget.get("channel").isJsonNull() ? objTarget.get("channel").getAsJsonObject() : null;
-
-                    if (objChannel != null && !objChannel.get("display_name").isJsonNull()) {
-
-                        content.add(
-                                new ChannelContentObj(
-                                        obj.get("display_name").getAsString() + " hosting " + objChannel.get("display_name").getAsString(),
-                                        description + decimalFormat.format(viewers) + " viewers\n" + (!objTarget.get("title").isJsonNull() ? objTarget.get("title").getAsString() : ""),
-                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.VIDEO_404,
-                                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
-                                        viewers,
-                                        new Gson().toJson(new PreviewObj(obj, "HOST", Constants.CHANNEL_TYPE_USER_HOST)),
-                                        true
-                                )
-                        );
-
-                    }
-                }
-
-            }
-        }
-
-        int contentSize = content.size();
-
-        if (contentSize > 1) {
-            Collections.sort(
-                    content.subList(1, contentSize),
-                    compareViewers
-            );
-        }
-
-        return contentSize > 0 ? content : null;
     }
 
     private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen) {
@@ -1055,9 +884,9 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> GetGamesContent(String url, String object, String[][] HEADERS, int screen) {
+    private static List<ChannelContentObj> GetGamesContent(String[][] HEADERS) {
 
-        JsonArray Games = GetLiveGames(url, object, HEADERS);//Get the Games array
+        JsonArray Games = GetLiveGames(HEADERS);//Get the Games array
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Games != null ? Games.size() : 0;
@@ -1094,7 +923,7 @@ public final class ChannelsUtils {
                                     objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.GAME_404,
                                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
                                     viewers,
-                                    new Gson().toJson(new PreviewObj(objGame, "GAME", screen)),
+                                    new Gson().toJson(new PreviewObj(objGame, "GAME", Constants.CHANNEL_TYPE_GAMES)),
                                     false
                             )
                     );
@@ -1113,7 +942,7 @@ public final class ChannelsUtils {
 
     }
 
-    public static JsonArray GetLiveGames(String url, String object, String[][] HEADERS) {
+    private static JsonArray GetLiveGames(String[][] HEADERS) {
         JsonArray Result = new JsonArray();
         int status = 0;
 
@@ -1131,7 +960,7 @@ public final class ChannelsUtils {
             for (int i = 0; i < 3; i++) {
 
                 response = Tools.Internal_MethodUrl(
-                        url,
+                        "https://api.twitch.tv/kraken/games/top?limit=100&offset=0&api_version=5",
                         Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
                         null,
                         null,
@@ -1146,9 +975,9 @@ public final class ChannelsUtils {
 
                         obj = parseString(response.responseText).getAsJsonObject();
 
-                        if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
+                        if (obj.isJsonObject() && !obj.get("top").isJsonNull()) {
 
-                            Games = obj.get(object).getAsJsonArray();//Get the Games array
+                            Games = obj.get("top").getAsJsonArray();//Get the Games array
                             objSize = Games.size();
 
                             if (objSize < 1) return Result;
