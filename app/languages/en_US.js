@@ -487,7 +487,7 @@ function en_USLang() {
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ', Press return to go back to top menu';
     STR_BACK_USER_GAMES = ' Press return key to go back to ';
-    STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
+    STR_NO_LIVE_CONTENT = 'No content for this now, try again later';
     STR_SHOW_LIVE_PLAYER = 'Show preview on Live streams Screens';
     STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
     STR_SHOW_VOD_PLAYER = 'Show preview on VOD Screens';
