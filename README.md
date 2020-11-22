@@ -1,6 +1,6 @@
 **SmartTV Twitch AndroidTV APK**
 
-- [About the project:](#about-the-project)
+- [About the project](#about-the-project)
 - [About this fork](#about-this-fork)
 - [How the application works](#how-the-application-works)
 	- [The web app](#the-web-app)
@@ -19,9 +19,9 @@
 	- [Apk Dependencies](#apk-dependencies)
 - [Are phones and tablets supported?](#are-phones-and-tablets-supported)
 - [Authorization](#authorization)
-	- [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information:](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
+	- [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
 - [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
-	- [Code Languages used by the project.](#code-languages-used-by-the-project)
+	- [Code Languages used by the project](#code-languages-used-by-the-project)
 	- [How to Build](#how-to-build)
 	- [Building The web app](#building-the-web-app)
 	- [Javascript (building The web app)](#javascript-building-the-web-app)
@@ -35,7 +35,7 @@
 - [Donations](#donations)
 - [In doubt open a issue](#in-doubt-open-a-issue)
 
-## About the project:
+## About the project
 
 This is an web application designed to give access to Twitch features on SmartTV's, a official Twitch app is not available for most devices, that is why this project exist.
 
@@ -173,7 +173,7 @@ Yes but is limited, you need to use the APK from [release](https://github.com/fg
 The user can add a authorization key (not demanding to use the app), here is the complete description of what that keys is and how it's used by the app.<br>
 That key will be used to access Twitch specific content of that user, it permission requested has a reason and bellow is the full description of what it permission will be used for:<br>
 
-### when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information:
+### when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information
 
 ![logging](https://fgl27.github.io/SmartTwitchTV/screenshot/logging.png)
 
@@ -213,7 +213,7 @@ That key will be used to access Twitch specific content of that user, it permiss
 
 ## How to build, languages and etc related
 
-### Code Languages used by the project.
+### Code Languages used by the project
 
 - The web app code is compose of html/CSS (UI code) and a Javascript files (logic code), to edit those files use VS code (recommend) or any text editor of yours choice.
 - The apk code is compose of JAVA (logic code), xml (UI and related code) and basic build files use android Studio to edit and build apk.
