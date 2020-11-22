@@ -1788,6 +1788,8 @@ function ScreensObj_TopLableUserInit(key) {
 }
 
 function ScreensObj_CheckUser(key) {
+    if (!AddUser_UserIsSet()) return;
+
     if (ScreenObj[key].OldUserName !== AddUser_UsernameArray[0].name) ScreenObj[key].status = false;
     ScreenObj[key].OldUserName = AddUser_UsernameArray[0].name;
 }
