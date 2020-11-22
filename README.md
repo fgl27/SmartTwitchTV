@@ -19,7 +19,7 @@
 	- [Apk Dependencies](#apk-dependencies)
 - [Are phones and tablets supported?](#are-phones-and-tablets-supported)
 - [Authorization](#authorization)
-	- [when accessing Twitch authorization site it will show:](#when-accessing-twitch-authorization-site-it-will-show)
+	- [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information:](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
 - [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
 	- [Code Languages used by the project.](#code-languages-used-by-the-project)
 	- [How to Build](#how-to-build)
@@ -30,6 +30,8 @@
 	- [Build The apk](#build-the-apk)
 - [Contributing instructions](#contributing-instructions)
 - [How to make changes and test it](#how-to-make-changes-and-test-it)
+- [Changelog](#changelog)
+- [TODO list](#todo-list)
 - [Donations](#donations)
 - [In doubt open a issue](#in-doubt-open-a-issue)
 
@@ -277,6 +279,14 @@ If the changes that you are making are on a part of the app that interacts with 
 To do that create a `assets` folder on [SmartTwitchTV/apk/app/src/main/](https://github.com/fgl27/SmartTwitchTV/tree/master/apk/app/src/main) folder copy the [SmartTwitchTV/app](https://github.com/fgl27/SmartTwitchTV/tree/master/app) folder to it, after before build modify the [Constants.java](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/java/com/fgl27/twitch/Constants.java) file, un-comment the first two lines `//final static String PageUrl` and `//final static String KeyPageUrl` and comment-out the next two lines that are of the same variables. Now build the app and test yours changes.
 
 To make changes to the app apk, just use the **Android Studio** to make the changes, to build and test use the [build process of the apk](#build-the-apk).
+
+## Changelog
+
+[To check the latest app changes click here](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/Changelog.md)
+
+## TODO list
+
+[To check the project TODO list click here](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/TODO.md) the TODO list contains all user request and future project improves and features
 
 ## Donations
 
