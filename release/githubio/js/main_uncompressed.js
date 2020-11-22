@@ -28735,6 +28735,7 @@
         else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_UserVod);
         else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_UserChannels);
         else if (Sidepannel_Sidepannel_Pos === 7) {
+
             Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
             Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
             Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
@@ -28747,6 +28748,7 @@
             Main_ExitCurrent(Main_values.Main_BeforeChannel);
             Main_values.My_channel = true;
             Main_SwitchScreen();
+
         } else if (Sidepannel_Sidepannel_Pos === 8) Sidepannel_Go(Main_History[Main_HistoryPos]);
         else Sidepannel_KeyEnterBase();
 
@@ -29779,7 +29781,7 @@
 
                 var index = Main_history_Exist('live', data[7]);
 
-                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+                if (index > -1 && AddUser_UserIsSet() && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                     return false;
 
