@@ -196,7 +196,6 @@ public final class Tools {
             if (status == 200) {
                 Token = parseString(response.responseText).getAsJsonObject();
 
-
                 if (Token.isJsonObject() && !Token.get("data").isJsonNull()) {
                     JsonObject data = Token.get("data").getAsJsonObject();
 

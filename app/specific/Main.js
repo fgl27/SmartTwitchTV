@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.286';
-var Main_version_java = 286;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 18 2020';
-var Main_version_web = 538;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.287';
+var Main_version_java = 287;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'November 22 2020';
+var Main_version_web = 539;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -618,6 +618,19 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.287 - Web Version November 22 2020",
+            changes: [
+                "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
+                "User followed host content was fully removed",
+                "User followed games content was changed, there is no longer the option to get all user live games the only API is limited to 100 MAX, because of that the app will only show the list of followed game and will no logger be able to do Live games notifications, the sort of this list is locked and will always show the first game you followed first in the list",
+                "Is no longer possible to see on the 'A Game' screen if you follow that game, also not possible to follow or un-follow a game",
+                "Channels on the home screen features will no logger have user followed host or followed games",
+                "If in the future a new way to access this content changed/removed is available this features will be revised",
+                "Is demanding to update to the latest APK if you don't the app will no longer work",
+                "General performance improves and bug fixes",
+            ]
+        },
+        {
             title: "Apk Version 3.0.286 - Web Version November 16 2020",
             changes: [
                 "General performance improves and bug fixes",
@@ -637,36 +650,6 @@ function Main_Changelog() {
         },
         {
             title: "Apk Version 3.0.280 to 3.0.283 - Web Version November 09 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.279 - Web Version November 03 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Web Version November 02 2020",
-            changes: [
-                "Improve the sub message displayed in chat",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.278 - Web Version November 01 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.274 to 3.0.277 - Web Version October 31 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Web Version October 30 2020",
             changes: [
                 "General performance improves and bug fixes",
             ]

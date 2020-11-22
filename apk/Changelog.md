@@ -9,6 +9,18 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.287 - Web Version November 22 2020
+==============
+
+ * Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow
+ * User followed host content was fully removed
+ * User followed games content was changed, there is no longer the option to get all user live games the only API is limited to 100 MAX, because of that the app will only show the list of followed game and will no logger be able to do Live games notifications, the sort of this list is locked and will always show the first game you followed first in the list
+ * Is no longer possible to see on the 'A Game' screen if you follow that game, also not possible to follow or un-follow a game
+ * Channels on the home screen features will no logger have user followed host or followed games
+ * If in the future a new way to access this content changed/removed is available this features will be revised
+ * Is demanding to update to the latest APK if you don't the app will no longer work
+ * General performance improves and bug fixes
+
 Apk Version 3.0.286 - Web Version November 16 2020
 ==============
 
