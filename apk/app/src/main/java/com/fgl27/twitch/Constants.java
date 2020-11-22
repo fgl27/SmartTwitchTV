@@ -24,11 +24,11 @@ public final class Constants {
 
     //Keep page url here as is easy to access and modify the value for when running test from local file
 
-    final static String PageUrl = "file:///android_asset/app/index.html";
-    final static String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
+    //final static String PageUrl = "file:///android_asset/app/index.html";
+    //final static String KeyPageUrl = "file:///android_asset/app/Extrapage/index.html";
 
-    //final static String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.html";
-    //final static String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.html";
+    final static String PageUrl = "https://fgl27.github.io/SmartTwitchTV/release/index.html";
+    final static String KeyPageUrl = "https://fgl27.github.io/SmartTwitchTV/release/extrapageindex.html";
 
     final static String PageUrlBackup = "https://smarttv-client-for-twitch.web.app/index.html";
     final static String KeyPageUrlBackup = "https://smarttv-client-for-twitch.web.app/extrapageindex.html";
