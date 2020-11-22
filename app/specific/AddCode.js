@@ -43,7 +43,7 @@ function AddCode_CheckNewCode(code) {
 
 function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
     //Main_Log('AddCode_refreshTokens');
-    if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
+    if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
 
         if (callbackFuncNOK) callbackFuncNOK();
 

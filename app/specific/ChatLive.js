@@ -255,7 +255,7 @@ function ChatLive_checkSub(tryes, chat_number, id) {
 
             } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
 
-                if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
                 else ChatLive_checkSubError(tryes, chat_number, id);
 
             } else { // internet error
@@ -1093,7 +1093,7 @@ function ChatLive_SendPrepared(chat_number, id) {
                 if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
                     ChatLive_LineAddErro(message.params[1], 0, true);
-                    if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
                 } else ChatLive_UserNoticeWarn(message);
                 break;
@@ -1191,7 +1191,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
         ChatLive_LineAddErro(message.params[1], chat_number);
-        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
     } else ChatLive_UserNoticeWarn(message);
 
@@ -1755,7 +1755,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
 
     if (Headers) {
 
-        if (HeaderQuatity > 2) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+        if (HeaderQuatity > 2 && AddUser_UserIsSet()) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
 
         for (var i = 0; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
@@ -1773,7 +1773,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
 
             } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
 
-                if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
             } else if (xmlHttp.status !== 404) {//404 ignore the result is empty
 

@@ -437,7 +437,7 @@ function Screens_HttpResultStatus(resultObj, key) {
         }
     } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
-        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
         else Screens_loadDataError(key);
 
     } else if (resultObj.status === 500 && Screens_IsInUse(key) && key === Main_usergames) {
@@ -1126,6 +1126,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     Play_PreviewId = StreamInfo[7];
 
                     if (Settings_Obj_default('vod_dialog') < 2) {
+
                         //Check if the vod exist in the history
                         var VodIdex = UserIsSet ? Main_history_Exist('vod', Play_PreviewId) : -1;
                         offset = (VodIdex > -1) ?
@@ -1846,12 +1847,18 @@ function Screens_handleKeyDown(key, event) {
         case KEY_PG_UP:
             //TODO improve this pg up and down so many unnecessary ifs
             if (ScreenObj[key].key_pgUp) {
+
                 Screens_RemoveAllFocus(key);
-                if (ScreenObj[key].screen === Main_UserChannels)
+
+                if (ScreenObj[key].screen === Main_UserChannels) {
+
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp);
-                else if (ScreenObj[key].screen === Main_UserLive)
+
+                } else if (ScreenObj[key].screen === Main_UserLive) {
+
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                else if (ScreenObj[key].screen === Main_aGame) {
+
+                } else if (ScreenObj[key].screen === Main_aGame) {
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_usergames);
                     else Sidepannel_Go(Main_Featured);
@@ -1862,12 +1869,18 @@ function Screens_handleKeyDown(key, event) {
         case KEY_MEDIA_FAST_FORWARD:
         case KEY_PG_DOWN:
             if (ScreenObj[key].key_pgDown) {
+
                 Screens_RemoveAllFocus(key);
-                if (ScreenObj[key].screen === Main_usergames)
+
+                if (ScreenObj[key].screen === Main_usergames) {
+
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown);
-                else if (ScreenObj[key].screen === Main_UserChannels)
+
+                } else if (ScreenObj[key].screen === Main_UserChannels) {
+
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                else if (ScreenObj[key].screen === Main_aGame) {
+
+                } else if (ScreenObj[key].screen === Main_aGame) {
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
                     else Sidepannel_Go(Main_Vod);
@@ -2273,11 +2286,15 @@ function Screens_histDeleteKeyDown(key, event) {
 }
 
 function Screens_histDelete(key) {
+
     if (Screens_DeleteDialogAll) {
+
         Main_values_History_data[AddUser_UsernameArray[0].id][ScreenObj[key].Type] = [];
         Main_setHistoryItem();
         Main_ReloadScreen();
+
     } else {
+
         var type = 'live';
 
         if (ScreenObj[key].screen === Main_HistoryVod) type = 'vod';
@@ -2288,7 +2305,9 @@ function Screens_histDelete(key) {
             Main_values_History_data[AddUser_UsernameArray[0].id][type].splice(index, 1);
             Main_setHistoryItem();
         }
+
     }
+
 }
 
 function Screens_histAddFocus(divPos, key) {
@@ -2478,6 +2497,7 @@ function Screens_ThumbOption_CheckFollow(data, key) {
 }
 
 function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
+
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
     var xmlHttp = new XMLHttpRequest();
@@ -2493,6 +2513,7 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
     };
 
     xmlHttp.send(null);
+
 }
 
 function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID) {
@@ -2674,19 +2695,29 @@ function Screens_SetLang() {
 }
 
 function Screens_FollowUnfollow(key) {
+
     if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
         var theUrl, channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
 
         if (Screens_isFollowing) {
+
             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
             AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_UnFollowRequestReady, 3);
+
         } else {
+
             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
             AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FollowRequestReady, 3);
+
         }
+
     } else {
+
         Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+
     }
+
 }
 
 function Screens_UnFollowRequestReady(xmlHttp) {
@@ -2716,9 +2747,11 @@ function Screens_FollowRequestReady(xmlHttp) {
 
 function Screens_OpenScreen() {
 
-    if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && !AddUser_UsernameArray[0].access_token) {
+    if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] === 8 && AddUser_UserIsSet() && !AddUser_UsernameArray[0].access_token) {
+
         Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
         return;
+
     }
 
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
