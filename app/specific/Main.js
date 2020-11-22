@@ -622,7 +622,7 @@ function Main_Changelog() {
             changes: [
                 "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
                 "User followed host content was fully removed",
-                "User followed games content was changed, there is no longer the option to get all user live games the only API is limited to 100 MAX, because of that the app will only show the list of followed game and will no logger be able to do Live games notifications, the sort of this list is locked and will always show the first game you followed first in the list",
+                "User followed games content was changed, there is no longer the option to get all user live games the only API is limited to 100 MAX, because of that the app will only show the list of followed games and will no logger be able to do Live games notifications, the sort of this list is locked and will always show the first game you followed first in the list",
                 "Is no longer possible to see on the 'A Game' screen if you follow that game, also not possible to follow or un-follow a game",
                 "Channels on the home screen features will no logger have user followed host or followed games",
                 "If in the future a new way to access this content changed/removed is available this features will be revised",
