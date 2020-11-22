@@ -567,7 +567,7 @@ function UserLiveFeed_CheckVod() {
 
             var index = Main_history_Exist('live', data[7]);
 
-            if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+            if (index > -1 && AddUser_UserIsSet() && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
                 return false;
 

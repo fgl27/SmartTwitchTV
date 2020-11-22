@@ -327,6 +327,7 @@ function Sidepannel_KeyEnterUser() {
     else if (Sidepannel_Sidepannel_Pos === 5) Sidepannel_Go(Main_UserVod);
     else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_UserChannels);
     else if (Sidepannel_Sidepannel_Pos === 7) {
+
         Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
         Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
         Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
@@ -339,6 +340,7 @@ function Sidepannel_KeyEnterUser() {
         Main_ExitCurrent(Main_values.Main_BeforeChannel);
         Main_values.My_channel = true;
         Main_SwitchScreen();
+
     } else if (Sidepannel_Sidepannel_Pos === 8) Sidepannel_Go(Main_History[Main_HistoryPos]);
     else Sidepannel_KeyEnterBase();
 
