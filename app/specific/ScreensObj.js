@@ -970,7 +970,7 @@ function ScreensObj_InitUserLive() {
         screen: Main_UserLive,
         object: 'streams',
         IsUser: true,
-        key_pgDown: Main_UserHost,
+        key_pgDown: Main_usergames,
         key_pgUp: Main_HistoryLive,
         base_url: Main_kraken_api + 'streams/',
         loadChannelOffsset: 0,
@@ -1068,56 +1068,6 @@ function ScreensObj_InitUserLive() {
         }
     };
     ScreenObj[Main_UserLive].Set_Scroll();
-}
-
-function ScreensObj_InitUserHost() {
-    ScreenObj[Main_UserHost] = Screens_assign({
-        HeaderQuatity: 1,
-        ids: Screens_ScreenIds('UserHost'),
-        ScreenName: 'UserHost',
-        table: 'stream_table_user_host',
-        screen: Main_UserHost,
-        object: 'hosts',
-        IsUser: true,
-        key_pgDown: Main_usergames,
-        key_pgUp: Main_UserLive,
-        base_url: 'https://api.twitch.tv/api/users/',
-        set_url: function() {
-            if ((typeof this.MaxOffset !== 'undefined') &&
-                this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
-
-            this.url = this.base_url +
-                encodeURIComponent(AddUser_UsernameArray[0].name) +
-                '/followed/hosting?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
-        },
-        label_init: function() {
-            ScreensObj_TopLableUserInit(this.screen);
-
-            ScreensObj_SetTopLable(STR_USER, STR_LIVE_HOSTS);
-        },
-    }, Base_obj);
-
-    ScreenObj[Main_UserHost] = Screens_assign(ScreenObj[Main_UserHost], Base_Live_obj);
-
-    ScreenObj[Main_UserHost].addCell = function(cell) {
-        if (!this.idObject[cell.target._id]) { //combined id host and hosted
-
-            this.itemsCount++;
-            this.idObject[cell.target._id] = 1;
-
-            this.tempHtml +=
-                Screens_createCellLive(
-                    this.row_id + '_' + this.coloumn_id,
-                    this.ids,
-                    ScreensObj_HostCellArray(cell),
-                    this.screen
-                );
-
-            this.coloumn_id++;
-        }
-    };
-    ScreenObj[Main_UserHost].Set_Scroll();
-    ScreenObj[Main_UserHost].Headers = Main_Headers_Backup;
 }
 
 function ScreensObj_InitAGame() {
@@ -1359,7 +1309,7 @@ function ScreensObj_InitUserGames() {
         screen: Main_usergames,
         key_pgDownNext: Main_UserChannels,
         key_pgDown: Main_UserVod,
-        key_pgUp: Main_UserHost,
+        key_pgUp: Main_UserLive,
         isLive: false,
         OldUserName: '',
         IsUser: true,
@@ -1819,7 +1769,8 @@ function ScreensObj_TopLableAgameInit(key) {
     if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
     else Sidepannel_SetDefaultLables();
 
-    Sidepannel_SetTopOpacity(ScreenObj[key].screen);
+    Sidepannel_Sidepannel_Pos = Main_values.Main_BeforeAgame === Main_usergames ? 4 : 5;
+    Sidepannel_SetTopOpacity(Main_values.Main_Go);
 
     Main_EventAgame(Main_values.Main_gameSelected);
 }

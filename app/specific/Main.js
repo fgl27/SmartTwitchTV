@@ -40,23 +40,22 @@ var Main_games = 4;
 var Main_Vod = 5;
 var Main_Clip = 6;
 var Main_UserLive = 7;
-var Main_UserHost = 8;
-var Main_usergames = 9;
-var Main_UserVod = 10;
-var Main_UserChannels = 11;
-var Main_SearchGames = 12;
-var Main_SearchLive = 13;
-var Main_SearchChannels = 14;
-var Main_ChannelContent = 15;
-var Main_ChannelVod = 16;
-var Main_ChannelClip = 17;
-var Main_addUser = 18;
-var Main_aGame = 19;
-var Main_AGameVod = 20;
-var Main_AGameClip = 21;
-var Main_HistoryLive = 22;
-var Main_HistoryVod = 23;
-var Main_HistoryClip = 24;
+var Main_usergames = 8;
+var Main_UserVod = 9;
+var Main_UserChannels = 10;
+var Main_SearchGames = 11;
+var Main_SearchLive = 12;
+var Main_SearchChannels = 13;
+var Main_ChannelContent = 14;
+var Main_ChannelVod = 15;
+var Main_ChannelClip = 16;
+var Main_addUser = 17;
+var Main_aGame = 18;
+var Main_AGameVod = 19;
+var Main_AGameClip = 20;
+var Main_HistoryLive = 21;
+var Main_HistoryVod = 22;
+var Main_HistoryClip = 23;
 
 var Main_History = [Main_HistoryLive, Main_HistoryVod, Main_HistoryClip];
 var Main_HistoryPos = 0;
@@ -2695,9 +2694,6 @@ function Main_onNewIntentGetScreen(obj) {
             break;
         case 5:
             if (UserIsSet) goTo = Main_usergames;
-            break;
-        case 6:
-            if (UserIsSet) goTo = Main_UserHost;
             break;
         default:
             break;

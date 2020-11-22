@@ -53,7 +53,6 @@ function Screens_InitScreens() {
     ScreensObj_InitFeatured();
     ScreensObj_InitAGame();
     //Live user screens
-    ScreensObj_InitUserHost();
     ScreensObj_InitUserLive();
 
     //Clips screens
@@ -1853,7 +1852,7 @@ function Screens_handleKeyDown(key, event) {
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
                 else if (ScreenObj[key].screen === Main_aGame) {
 
-                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserHost);
+                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_usergames);
                     else Sidepannel_Go(Main_Featured);
 
                 } else Sidepannel_Go(ScreenObj[key].key_pgUp);
@@ -2816,7 +2815,6 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE);
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE_HOSTS);
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_GAMES);
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_VIDEOS);
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_CHANNELS);
@@ -2861,7 +2859,6 @@ function Screens_ThumbOptionSetArrowArray(key) {
         Main_Vod,
         Main_Clip,
         Main_UserLive,
-        Main_UserHost,
         Main_usergames,
         Main_UserVod,
         Main_UserChannels,
