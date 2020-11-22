@@ -1296,7 +1296,7 @@
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ', Press return to go back to top menu';
         STR_BACK_USER_GAMES = ' Press return key to go back to ';
-        STR_NO_LIVE_CONTENT = 'No Live content for this now, try again later';
+        STR_NO_LIVE_CONTENT = 'No content for this now, try again later';
         STR_SHOW_LIVE_PLAYER = 'Show preview on Live streams Screens';
         STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
         STR_SHOW_VOD_PLAYER = 'Show preview on VOD Screens';
@@ -1691,7 +1691,12 @@
 
     function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
         //Main_Log('AddCode_refreshTokens');
-        if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) return;
+        if (!AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
+
+            if (callbackFuncNOK) callbackFuncNOK();
+
+            return;
+        }
 
         var xmlHttp,
             url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
@@ -4694,16 +4699,25 @@
         xmlHttp.onreadystatechange = function() {
             if (xmlHttp.readyState === 4) {
                 if (xmlHttp.status === 200) { //yes
+
                     ChatLive_SubState[chat_number].state = true;
+
                 } else if (xmlHttp.status === 404) {
+
                     var response = JSON.parse(xmlHttp.responseText);
                     if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) { //no
                         ChatLive_SubState[chat_number].state = false;
                     } else ChatLive_checkSubError(tryes, chat_number, id);
+
                 } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                    AddCode_refreshTokens(0, 0, null, null);
+
+                    if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                    else ChatLive_checkSubError(tryes, chat_number, id);
+
                 } else { // internet error
+
                     ChatLive_checkSubError(tryes, chat_number, id);
+
                 }
             }
         };
@@ -5526,8 +5540,10 @@
                     break;
                 case "NOTICE":
                     if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+
                         ChatLive_LineAddErro(message.params[1], 0, true);
-                        AddCode_refreshTokens(0, 0, null, null);
+                        if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
                     } else ChatLive_UserNoticeWarn(message);
                     break;
                     // case "USERSTATE":
@@ -5622,8 +5638,10 @@
             Main_clearTimeout(ChatLive_CheckId[chat_number]);
             ChatLive_Check(chat_number, id, 0);
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
+
             ChatLive_LineAddErro(message.params[1], chat_number);
-            AddCode_refreshTokens(0, 0, null, null);
+            if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
         } else ChatLive_UserNoticeWarn(message);
 
     }
@@ -6193,13 +6211,21 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
+
             if (xmlHttp.readyState === 4) {
+
                 if (xmlHttp.status === 200) {
+
                     callbackSucess(xmlHttp.responseText, chat_number, id);
+
                 } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
-                    AddCode_refreshTokens(0, 0, null, null);
+
+                    if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+
                 } else if (xmlHttp.status !== 404) { //404 ignore the result is empty
+
                     callbackError(tryes, chat_number, id);
+
                 }
             }
         };
@@ -6855,7 +6881,7 @@
     var Main_stringVersion_Min = '.287';
     var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 22 2020';
-    var Main_version_web = 540; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 541; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -20060,7 +20086,7 @@
         ScreensObj_InitLive();
         ScreensObj_InitFeatured();
         ScreensObj_InitAGame();
-        //Live user screens
+        //Live user screensC
         ScreensObj_InitUserLive();
 
         //Clips screens
@@ -20445,7 +20471,8 @@
             }
         } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
-            AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            else Screens_loadDataError(key);
 
         } else if (resultObj.status === 500 && Screens_IsInUse(key) && key === Main_usergames) {
 
@@ -28656,7 +28683,7 @@
     }
 
     function Sidepannel_KeyEnterUser() {
-        if (Sidepannel_Sidepannel_Pos === 6 && !AddUser_UsernameArray[0].access_token) {
+        if (Sidepannel_Sidepannel_Pos === 5 && !AddUser_UsernameArray[0].access_token) {
             Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
             return;
         }
@@ -30273,13 +30300,24 @@
             UserLiveFeed_FeedPosX = NextPos;
 
             if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserGamesPos && UserLiveFeedobj_CurrentUserAGameEnable) {
+
                 UserLiveFeed_FeedPosX = UserLiveFeedobj_UserAGamesPos;
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
                 return;
+
             } else if (UserLiveFeed_FeedPosX === UserLiveFeedobj_GamesPos && UserLiveFeedobj_CurrentAGameEnable) {
+
                 UserLiveFeed_FeedPosX = UserLiveFeedobj_AGamesPos;
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
                 return;
+
+            } else if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserVodPos && (!userSet || !AddUser_UsernameArray[0].access_token)) {
+
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+                UserLiveFeed_FeedPosX = NextPos;
+                UserLiveFeed_KeyUpDown(Adder);
+                return;
+
             }
 
             Main_AddClass('icon_feed_back', 'opacity_zero');
@@ -30665,7 +30703,10 @@
         } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-            AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+
+            if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+            else UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
+
         } else {
             UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
         }
@@ -31411,7 +31452,10 @@
         } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
-            AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+
+            if (AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+            else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
+
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         }

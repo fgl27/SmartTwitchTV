@@ -52,7 +52,7 @@ function Screens_InitScreens() {
     ScreensObj_InitLive();
     ScreensObj_InitFeatured();
     ScreensObj_InitAGame();
-    //Live user screensC
+    //Live user screens
     ScreensObj_InitUserLive();
 
     //Clips screens
