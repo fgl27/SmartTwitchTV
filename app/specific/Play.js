@@ -427,10 +427,11 @@ function Play_CheckIfIsLiveStart(callback) {
         Play_showBufferDialog();
 
         var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
-            id, token, link;
+            id, token, link, isVod;
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
 
+            isVod = true;
             id = obj[7];
             token = Play_vod_token;
             link = Play_vod_links;
@@ -445,12 +446,14 @@ function Play_CheckIfIsLiveStart(callback) {
         Play_PreviewCheckId = (new Date().getTime());
 
         OSInterface_getStreamDataAsync(
-            token.replace('%x', id),
+            PlayClip_BaseUrl,
             link.replace('%x', id),
             callback,
             Play_PreviewCheckId,
             2,//Main player runs on 0 extra player on 1 the check on 2
-            NewDefaultHttpGetTimeout
+            DefaultHttpGetTimeout,
+            isVod,
+            token.replace('%x', id)
         );
     }
 
@@ -624,9 +627,11 @@ function Play_ResumeAfterOnline() {
 function Play_getStreamData(channel_name) {
 
     return OSInterface_getStreamData(
-        Play_live_token.replace('%x', channel_name),
+        PlayClip_BaseUrl,
         Play_live_links.replace('%x', channel_name),
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        false,
+        Play_live_token.replace('%x', channel_name)
     );
 
 }
@@ -923,14 +928,18 @@ function Play_loadData(synchronous) {
             else Play_loadDataErrorFinish();
 
         } else {
+
             OSInterface_getStreamDataAsync(
-                Play_live_token.replace('%x', Play_data.data[6]),
+                PlayClip_BaseUrl,
                 Play_live_links.replace('%x', Play_data.data[6]),
                 'Play_loadDataResult',
                 Play_loadDataId,
                 0,
-                NewDefaultHttpGetTimeout
+                DefaultHttpGetTimeout,
+                false,
+                Play_live_token.replace('%x', Play_data.data[6])
             );
+
         }
 
     } else Play_loadDataSuccessFake();
@@ -1956,14 +1965,14 @@ function Play_loadDataCheckHost() {
 
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,//urlString
-                NewDefaultHttpGetTimeout,//timeout
+                DefaultHttpGetTimeout,//timeout
                 null,//postMessage, null for get
                 null,//Method, null for get
                 null,//JsonString
                 'Play_CheckHostResult',//callback
                 0,//checkResult
                 Play_loadDataCheckHostId,//key
-                3//thread
+                7//thread
             );
 
         },

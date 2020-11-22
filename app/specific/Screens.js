@@ -1004,25 +1004,26 @@ function Screens_LoadPreviewStart(key, obj) {
         return;
     }
 
-    var id, token, link;
+    var id, token, link, isVod;
 
     if (ScreenObj[key].screenType === 2) {//clip
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayClip_BaseUrl,//urlString
-            NewDefaultHttpGetTimeout,//timeout
+            DefaultHttpGetTimeout,//timeout
             PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
             'POST',//Method, null for get
             Play_base_backup_headers,//JsonString
             'Screens_LoadPreviewResult',//callback
             (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
             key,//key
-            0//thread
+            1//thread
         );
 
         return;
     } else if (ScreenObj[key].screenType === 1) {//vod
 
+        isVod = true;
         id = obj[7];
         token = Play_vod_token;
         link = Play_vod_links;
@@ -1037,6 +1038,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
+                    isVod = true;
                     id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                     token = Play_vod_token;
                     link = Play_vod_links;
@@ -1066,12 +1068,14 @@ function Screens_LoadPreviewStart(key, obj) {
     }
 
     OSInterface_CheckIfIsLiveFeed(
-        token.replace('%x', id),
+        PlayClip_BaseUrl,
         link.replace('%x', id),
         "Screens_LoadPreviewResult",
         key,
         (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        isVod,
+        token.replace('%x', id)
     );
 
 }

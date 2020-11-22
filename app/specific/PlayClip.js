@@ -228,14 +228,14 @@ function PlayClip_loadDataRequest() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         PlayClip_BaseUrl,//urlString
-        NewDefaultHttpGetTimeout,//timeout
+        DefaultHttpGetTimeout,//timeout
         PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
         'POST',//Method, null for get
         Play_base_backup_headers,//JsonString
         'PlayClip_loadDataResult',//callback
         0,//checkResult
         PlayClip_loadDataRequestId,//key
-        0//thread
+        9//thread
     );
 }
 

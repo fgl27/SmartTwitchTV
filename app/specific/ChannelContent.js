@@ -155,18 +155,19 @@ function ChannelContent_loadDataError() {
 var ChannelContent_loadDataCheckHostId;
 function ChannelContent_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
+
     ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
-        NewDefaultHttpGetTimeout,//timeout
+        DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
         ChannelContent_loadDataCheckHostId,//key
-        3//thread
+        5//thread
     );
 
 }
@@ -686,12 +687,14 @@ function ChannelContent_LoadPreviewRun(obj) {
     }
 
     OSInterface_CheckIfIsLiveFeed(
-        Play_live_token.replace('%x', obj[6]),
+        PlayClip_BaseUrl,
         Play_live_links.replace('%x', obj[6]),
         "ChannelContent_LoadPreviewResult",
         Main_ChannelContent,
         0,
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        false,
+        Play_live_token.replace('%x', obj[6])
     );
 
 }

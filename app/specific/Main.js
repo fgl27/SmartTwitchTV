@@ -1053,14 +1053,14 @@ function Main_checkWebVersionRun(web) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             baseUrl + (web ? 'webversion' : 'javaversion'),//urlString
-            NewDefaultHttpGetTimeout,//timeout
+            DefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             null,//JsonString
             'Main_checkWebVersion',//callback
             0,//checkResult
             web ? 1 : 0,//key
-            3//thread
+            4//thread
         );
     }
 }

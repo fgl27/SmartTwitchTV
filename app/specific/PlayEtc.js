@@ -735,14 +735,14 @@ function Play_StayCheckHost() {
 
     OSInterface_GetMethodUrlHeadersAsync(
         theUrl,//urlString
-        NewDefaultHttpGetTimeout,//timeout
+        DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString
         'Play_StayCheckHostResult',//callback
         0,//checkResult
         Play_StayCheckHostId,//key
-        3//thread
+        8//thread
     );
 }
 
@@ -790,12 +790,14 @@ function Play_StayCheckLive() {
     Play_loadDataId = new Date().getTime();
 
     OSInterface_getStreamDataAsync(
-        Play_live_token.replace('%x', Play_data.data[6]),
+        PlayClip_BaseUrl,
         Play_live_links.replace('%x', Play_data.data[6]),
         'Play_StayCheckLiveResult',
         Play_loadDataId,
         0,
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        false,
+        Play_live_token.replace('%x', Play_data.data[6])
     );
 
 }

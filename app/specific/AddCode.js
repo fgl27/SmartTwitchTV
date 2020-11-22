@@ -700,8 +700,10 @@ var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 
 //To pass to Java
 var Play_Headers;
-var Play_live_token = "https://api.twitch.tv/api/channels/%x/access_token";
+var Play_live_token_prop = 'streamPlaybackAccessToken';
+var Play_live_token = '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_live_links = "https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d";
 
-var Play_vod_token = "https://api.twitch.tv/api/vods/%x/access_token";
+var Play_vod_token_prop = 'videoPlaybackAccessToken';
+var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_vod_links = "https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d";

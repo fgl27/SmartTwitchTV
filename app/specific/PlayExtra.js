@@ -98,12 +98,14 @@ function PlayExtra_Resume(synchronous) {
 
         } else {
             OSInterface_getStreamDataAsync(
-                Play_live_token.replace('%x', PlayExtra_data.data[6]),
+                PlayClip_BaseUrl,
                 Play_live_links.replace('%x', PlayExtra_data.data[6]),
                 'PlayExtra_ResumeResult',
                 PlayExtra_ResumeId,
                 1,
-                NewDefaultHttpGetTimeout
+                DefaultHttpGetTimeout,
+                false,
+                Play_live_token.replace('%x', PlayExtra_data.data[6])
             );
         }
 
@@ -266,14 +268,14 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
-        NewDefaultHttpGetTimeout,//timeout
+        DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString
         'PlayExtra_CheckHostResult',//callback
         PlayExtra_loadDataCheckHostId,//checkResult
         doSwitch,//key
-        3//thread
+        6//thread
     );
 
 }

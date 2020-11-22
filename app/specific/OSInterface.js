@@ -128,15 +128,23 @@ function OSInterface_SetQuality(position) {
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout) {
-    Android.getStreamDataAsync(
-        token_url,
-        hls_url,
-        callback,
-        checkResult,
-        position,
-        Timeout
-    );
+function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
+
+    try {
+
+        Android.getStreamDataAsync(
+            token_url,
+            hls_url,
+            callback,
+            checkResult,
+            position,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
+
+    } catch (e) { }
+
 }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
@@ -147,15 +155,23 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout) {
-    Android.CheckIfIsLiveFeed(
-        token_url,
-        hls_url,
-        callback,
-        x,
-        y,
-        Timeout
-    );
+function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
+
+    try {
+
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            callback,
+            x,
+            y,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
+
+    } catch (e) { }
+
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -165,12 +181,19 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamData(token_url, hls_url, Timeout) {
-    return Android.getStreamData(
-        token_url,
-        hls_url,
-        Timeout
-    );
+function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
+
+    try {
+        return Android.getStreamData(
+            token_url,
+            hls_url,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
+    } catch (e) { }
+
+    return null;
 }
 
 //public String getQualities()
@@ -420,7 +443,7 @@ function OSInterface_SetStreamDataHeaders(header) {
             Android.SetStreamDataHeaders(
                 header ? header : null
             );
-        } catch (e) {}
+        } catch (e) { }
 
     }
 }

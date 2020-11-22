@@ -180,12 +180,14 @@ function Sidepannel_CheckIfIsLive() {
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
         OSInterface_CheckIfIsLiveFeed(
-            Play_live_token.replace('%x', channel),
+            PlayClip_BaseUrl,
             Play_live_links.replace('%x', channel),
             "Sidepannel_CheckIfIsLiveResult",
             0,
             (Sidepannel_PosFeed % 100),
-            NewDefaultHttpGetTimeout
+            DefaultHttpGetTimeout,
+            false,
+            Play_live_token.replace('%x', channel)
         );
 
     } else Play_CheckIfIsLiveCleanEnd();

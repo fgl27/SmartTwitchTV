@@ -180,14 +180,14 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout) throws Exception {
+    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout, String dataProp, String POST) throws Exception {
         ResponseObj response;
         int status;
         JsonObject Token;
         String StreamSig = null;
         String StreamToken = null;
 
-        response = GetResponseObj(token_url, Timeout);
+        response = Internal_MethodUrl(token_url, Timeout, POST, "POST", checkResult, StreamDataHeaders);
 
         if (response != null) {
 
@@ -196,10 +196,19 @@ public final class Tools {
             if (status == 200) {
                 Token = parseString(response.responseText).getAsJsonObject();
 
-                if (Token.isJsonObject() && !Token.get("token").isJsonNull() && !Token.get("sig").isJsonNull()) {
-                    StreamToken = Token.get("token").getAsString();
-                    StreamSig = Token.get("sig").getAsString();
-                    //Log.d(TAG, "StreamToken " + StreamToken);
+
+                if (Token.isJsonObject() && !Token.get("data").isJsonNull()) {
+                    JsonObject data = Token.get("data").getAsJsonObject();
+
+                    data = !data.get(dataProp).isJsonNull() ? data.get(dataProp).getAsJsonObject() : null;
+
+                    if (data != null) {
+
+                        StreamToken = data.get("value").getAsString();
+                        StreamSig = data.get("signature").getAsString();
+                        //Log.d(TAG, "StreamToken " + StreamToken);
+
+                    }
                 }
 
             } else if (status == 403 || status == 404 || status == 410)
@@ -288,9 +297,6 @@ public final class Tools {
             urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
             urlConnection.setConnectTimeout(Timeout);
             urlConnection.setReadTimeout(Timeout);
-
-            for (String[] header : StreamDataHeaders)
-                urlConnection.setRequestProperty(header[0], header[1]);
 
             urlConnection.connect();
 
@@ -822,6 +828,7 @@ public final class Tools {
             this.band = extractBand(band);
             this.codec = extractCodec(codec);
         }
+
     }
 
     private static String extractBand(int band) {

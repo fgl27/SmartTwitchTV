@@ -381,12 +381,14 @@ function Play_MultiStart(pos) {
     Play_MultiArray[pos].resultId = (new Date().getTime());
 
     OSInterface_getStreamDataAsync(
-        Play_live_token.replace('%x', Play_MultiArray[pos].data[6]),
+        PlayClip_BaseUrl,
         Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
         'Play_MultiResult',
         Play_MultiArray[pos].resultId,
         pos,
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        false,
+        Play_live_token.replace('%x', Play_MultiArray[pos].data[6])
     );
 
 }

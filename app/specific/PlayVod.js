@@ -407,12 +407,14 @@ function PlayVod_loadData() {
         PlayVod_loadDataId = (new Date().getTime());
 
         OSInterface_getStreamDataAsync(
-            Play_vod_token.replace('%x', Main_values.ChannelVod_vodId),
+            PlayClip_BaseUrl,
             Play_vod_links.replace('%x', Main_values.ChannelVod_vodId),
             'PlayVod_loadDataResult',
             PlayVod_loadDataId,
             0,
-            NewDefaultHttpGetTimeout
+            DefaultHttpGetTimeout,
+            true,
+            Play_vod_token.replace('%x', Main_values.ChannelVod_vodId)
         );
 
     } else PlayVod_loadDataSuccessFake();
@@ -1316,7 +1318,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayVod_previews_url,//urlString
-            NewDefaultHttpGetTimeout,//timeout
+            DefaultHttpGetTimeout,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             null,//JsonString
@@ -1522,7 +1524,7 @@ function PlayVod_updateChapters() {
 
         OSInterface_GetMethodUrlHeadersAsync(
             PlayClip_BaseUrl,//urlString
-            NewDefaultHttpGetTimeout,//timeout
+            DefaultHttpGetTimeout,//timeout
             PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId),//postMessage, null for get
             'POST',//Method, null for get
             Play_base_backup_headers,//JsonString

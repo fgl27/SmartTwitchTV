@@ -663,10 +663,11 @@ function UserLiveFeed_CheckIfIsLive(obj) {
 
     if (!Main_IsOn_OSInterface) return;
 
-    var id, token, link;
+    var id, token, link, isVod;
 
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {//vod
 
+        isVod = true;
         id = obj[7];
         token = Play_vod_token;
         link = Play_vod_links;
@@ -679,13 +680,16 @@ function UserLiveFeed_CheckIfIsLive(obj) {
     }
 
     OSInterface_CheckIfIsLiveFeed(
-        token.replace('%x', id),
+        PlayClip_BaseUrl,
         link.replace('%x', id),
         "UserLiveFeed_CheckIfIsLiveResult",
         UserLiveFeed_FeedPosX,
         (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100),
-        NewDefaultHttpGetTimeout
+        DefaultHttpGetTimeout,
+        isVod,
+        token.replace('%x', id)
     );
+
 }
 
 var UserLiveFeed_CheckIfIsLiveResultThumb;

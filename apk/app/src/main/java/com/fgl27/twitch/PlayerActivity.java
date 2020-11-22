@@ -235,7 +235,8 @@ public class PlayerActivity extends Activity {
     private final int PlayerAccountPlus = PlayerAccount + 1;
 
     private final String[][] PreviewFeedResult = new String[25][100];
-    private final String[] StreamDataResult = new String[PlayerAccount];
+    private final String[] StreamDataResult = new String[PlayerAccount * 2];
+    private final String[] GetMethodUrlDataResult = new String[100];
 
     private final ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
@@ -2724,18 +2725,18 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout) {
-            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, true);
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String dataProp, String POST) {
+            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, POST, dataProp, true);
         }
 
-        void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, boolean tryAgain) {
+        void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String POST, String dataProp, boolean tryAgain) {
             PreviewFeedResult[x][y] = null;
 
             try {
                 DataThreadPool.execute(() ->
                         {
                             try {
-                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, POST);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
                             }
@@ -2748,7 +2749,9 @@ public class PlayerActivity extends Activity {
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
                 if (tryAgain) {//try again after a minor delay
-                    MainThreadHandler.postDelayed(() -> CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, false), 250);
+
+                    MainThreadHandler.postDelayed(() -> CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, POST, dataProp, false), 250);
+
                 } else CheckIfIsLiveFeedError(x, y, callback);
 
                 Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
@@ -2767,9 +2770,9 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url, int Timeout) {
+        public String getStreamData(String token_url, String hls_url, int Timeout, String dataProp, String POST) {
             try {
-                return Tools.getStreamData(token_url, hls_url, 0L, Timeout);
+                return Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, POST);
             } catch (Exception e) {
                 Tools.recordException(TAG, "getStreamData Exception ", e);
             }
@@ -2778,11 +2781,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout) {
-            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, true);
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String POST) {
+            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, dataProp, POST, true);
         }
 
-        void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, boolean tryAgain) {
+        void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String POST, boolean tryAgain) {
             StreamDataResult[position] = null;
 
             try {
@@ -2790,7 +2793,7 @@ public class PlayerActivity extends Activity {
                         {
 
                             try {
-                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout);
+                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout, dataProp, POST);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
                             }
@@ -2810,7 +2813,7 @@ public class PlayerActivity extends Activity {
             } catch (Exception e) {//Most are RejectedExecutionException
 
                 if (tryAgain) {//try again after a minor delay
-                    MainThreadHandler.postDelayed(() -> getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, false), 250);
+                    MainThreadHandler.postDelayed(() -> getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, dataProp, POST, false), 250);
                 } else getStreamDataAsyncError(position, callback, checkResult);
 
                 Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
@@ -2835,6 +2838,11 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public String GetMethodUrlHeadersAsyncResult(int DataResultPos) {
+            return GetMethodUrlDataResult[DataResultPos];
+        }
+
+        @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                              String callback, long checkResult, long key, int thread) {
 
@@ -2844,8 +2852,8 @@ public class PlayerActivity extends Activity {
         }
 
         void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                      String callback, long checkResult, long key, int thread, boolean tryAgain) {
-            StreamDataResult[thread] = null;
+                                      String callback, long checkResult, long key, int DataResultPos, boolean tryAgain) {
+            GetMethodUrlDataResult[DataResultPos] = null;
 
             try {
                 DataThreadPool.execute(() ->
@@ -2863,12 +2871,12 @@ public class PlayerActivity extends Activity {
 
                             if (response != null) {
 
-                                StreamDataResult[thread] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
+                                GetMethodUrlDataResult[DataResultPos] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlHeadersAsyncResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
 
                             } else {
 
-                                GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+                                GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
 
                             }
 
@@ -2877,18 +2885,18 @@ public class PlayerActivity extends Activity {
             } catch (Exception e) {//Most are RejectedExecutionException
                 if (tryAgain) {//try again after a minor delay
                     MainThreadHandler.postDelayed(() -> GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
-                            callback, checkResult, key, thread, false), 250);
-                } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, thread);
+                            callback, checkResult, key, DataResultPos, false), 250);
+                } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
 
                 Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
 
             }
         }
 
-        void GetMethodUrlHeadersAsyncError(String callback, long checkResult, long key, int thread) {
+        void GetMethodUrlHeadersAsyncError(String callback, long checkResult, long key, int DataResultPos) {
             //MethodUrl is null inform JS callback
-            StreamDataResult[thread] = Tools.ResponseObjToString(0, "", checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + thread + "), " + key + "," + checkResult + ")");
+            GetMethodUrlDataResult[DataResultPos] = Tools.ResponseObjToString(0, "", checkResult);
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
         }
 
         @JavascriptInterface

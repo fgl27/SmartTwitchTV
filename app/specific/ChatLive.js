@@ -337,14 +337,14 @@ function ChatLive_loadChattersLoad(chat_number, id) {
 
     OSInterface_GetMethodUrlHeadersAsync(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-        NewDefaultHttpGetTimeout,//timeout
+        DefaultHttpGetTimeout,//timeout
         null,//postMessage, null for get
         null,//Method, null for get
         null,//JsonString
         'ChatLive_loadChattersSuccess',//callback
         id,//checkResult
         chat_number,//key
-        3//thread
+        10//thread
     );
 
 }
