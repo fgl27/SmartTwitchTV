@@ -7486,7 +7486,7 @@
         var changelogObj = [{
                 title: "Web Version November 23 2020",
                 changes: [
-                    "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Interface customization's, color style, animations and related",
+                    "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related",
                     "General performance improves and bug fixes"
                 ]
             },

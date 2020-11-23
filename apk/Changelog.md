@@ -12,7 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version November 23 2020
 ==============
 
-* Add new settings options to hide UI elements as clock, navigation help and etc... See it on Interface customization's, color style, animations and related
+* Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related
 * General performance improves and bug fixes
 
 Apk Version 3.0.287 - Web Version November 22 2020
