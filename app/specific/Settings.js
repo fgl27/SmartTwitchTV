@@ -448,6 +448,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "hide_main_screen_title": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -697,6 +701,7 @@ function Settings_SetDefautls() {
     Settings_SetClock();
     Settings_HideMainClock();
     Settings_HidePlayerClock();
+    Settings_HideScreenTitle();
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Settings_notification_background();
@@ -834,6 +839,7 @@ function Settings_SetDefault(position) {
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
     else if (position === "hide_main_clock") Settings_HideMainClock();
     else if (position === "hide_player_clock") Settings_HidePlayerClock();
+    else if (position === "hide_main_screen_title") Settings_HideScreenTitle()();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -1100,6 +1106,10 @@ function Settings_HideMainClock() {
 
 function Settings_HidePlayerClock() {
     Settings_HideElem('stream_clock', Settings_Obj_default("hide_player_clock") === 1);
+}
+
+function Settings_HideScreenTitle() {
+    Settings_HideElem('top_lable', Settings_Obj_default("hide_main_screen_title") === 1);
 }
 
 function Settings_HideElem(elem, hide) {
@@ -1687,6 +1697,7 @@ function Settings_DialogShowUIOpt() {
 
     Settings_value.hide_main_clock.values = [STR_NO, STR_YES];
     Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
+    Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
 
     var obj = {
         thumb_background: {
@@ -1742,6 +1753,12 @@ function Settings_DialogShowUIOpt() {
             defaultValue: Settings_value.hide_player_clock.defaultValue,
             values: Settings_value.hide_player_clock.values,
             title: STR_HIDE_PLAYER_CLOCK,
+            summary: null
+        },
+        hide_main_screen_title: {
+            defaultValue: Settings_value.hide_main_screen_title.defaultValue,
+            values: Settings_value.hide_main_screen_title.values,
+            title: STR_HIDE_MAIN_SCREEN_TITLE,
             summary: null
         },
     };

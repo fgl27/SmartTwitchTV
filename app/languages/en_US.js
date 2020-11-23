@@ -650,5 +650,6 @@ function en_USLang() {
     STR_FROM_SIMPLE = " from ";
     STR_HIDE_MAIN_CLOCK = "Hide main screen clock";
     STR_HIDE_PLAYER_CLOCK = "Hide player clock";
+    STR_HIDE_MAIN_SCREEN_TITLE = "Hide main screen title";
 
 }
