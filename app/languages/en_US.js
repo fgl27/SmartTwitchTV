@@ -180,14 +180,14 @@ function en_USLang() {
     STR_OAUTH_WRONG2 = " but this key is for user ";
     STR_FOLLOWING = " Following";
     STR_FOLLOW = " Follow";
-    STR_IS_SUB_NOOAUTH = " And you haven't set a authorization key the app can\'t check yours sub status.";
+    STR_IS_SUB_NOOAUTH = " And you haven't added a authorization key the app can\'t check yours sub status.";
     STR_IS_SUB_NOT_SUB = " And you aren't a sub of this channel";
     STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
     STR_OAUTH_FAIL = "Fail authorization check with the provider key, please check and try again";
     STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
     STR_NOKEY = "No user";
     STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
-    STR_NOKUSER_WARN = "Set a user first";
+    STR_NOKUSER_WARN = "Add a user first";
     STR_RESET = "Restart the";
     STR_CLIP = " Clip";
     STR_CHANNEL_CONT = "Channel content";
@@ -377,8 +377,8 @@ function en_USLang() {
     STR_MAIN_MENU = "Main Menu";
     STR_USER_MENU = "User Menu";
     STR_CH_IS_OFFLINE = "Is offline";
-    STR_SCREEN_COUNTER = "Show thumbnail position counter";
-    STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
+    STR_SCREEN_COUNTER = "Hide thumbnail position counter";
+    STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
     STR_SWITCH_POS = "Switch: Starting Position offset";
     STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
     STR_USER_OPTION = "Choose a option for user";
@@ -651,5 +651,8 @@ function en_USLang() {
     STR_HIDE_MAIN_CLOCK = "Hide main screen clock";
     STR_HIDE_PLAYER_CLOCK = "Hide player clock";
     STR_HIDE_MAIN_SCREEN_TITLE = "Hide main screen title";
+    STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "The center title, Live, Clip, Settings etc...";
+    STR_HIDE_ETC_HELP_INFO = "Hide on screen navigation tips";
+    STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips as, hold a key for a action and related";
 
 }

@@ -658,7 +658,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter));
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
-    Main_RemoveClass('icon_feed_back', 'opacity_zero');
+    if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
     Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
 }
 
@@ -738,7 +738,7 @@ function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentAGameName, UserLiveFeedobj_CurrentAGameNameEnter));
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
-    Main_RemoveClass('icon_feed_back', 'opacity_zero');
+    if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
     Main_EventAgame(UserLiveFeedobj_CurrentAGameName);
 }
 
@@ -748,6 +748,7 @@ function UserLiveFeedobj_HideCurrentAGame() {
 }
 //Current a game end
 
+var UserLiveFeedobj_SetBottomTextId;
 function UserLiveFeedobj_SetBottomText(pos) {
     Play_HideWarningMidleDialog();
 
@@ -779,6 +780,17 @@ function UserLiveFeedobj_SetBottomText(pos) {
     Main_innerHTML('feed_end_2', (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME));
     Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)));
 
+    if (Settings_Obj_default("hide_etc_help_text") === 1) {
+        Main_RemoveClass('feed_end', 'opacity_zero');
+
+        UserLiveFeedobj_SetBottomTextId = Main_setTimeout(
+            function() {
+                Main_AddClass('feed_end', 'opacity_zero');
+            },
+            1500,
+            UserLiveFeedobj_SetBottomTextId
+        );
+    }
 }
 
 function UserLiveFeedobj_CreatSideFeed(id, data) {

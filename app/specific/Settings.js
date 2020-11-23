@@ -67,10 +67,6 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "show_screen_counter": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
     "show_feed_player": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -452,6 +448,14 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "hide_etc_help_text": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "hide_screen_counter": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -702,6 +706,7 @@ function Settings_SetDefautls() {
     Settings_HideMainClock();
     Settings_HidePlayerClock();
     Settings_HideScreenTitle();
+    Settings_HideEtcHelp();
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Settings_notification_background();
@@ -709,7 +714,7 @@ function Settings_SetDefautls() {
     Settings_notification_repeat();
     Settings_notification_sicetime();
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-    Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+    Settings_ShowCounter();
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
 
@@ -836,10 +841,11 @@ function Settings_SetDefault(position) {
         AddUser_UpdateSidepanelAfterShow();
         UserLiveFeed_ResetAddCellsize();
     }
-    else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+    else if (position === "hide_screen_counter") Settings_ShowCounter();
     else if (position === "hide_main_clock") Settings_HideMainClock();
     else if (position === "hide_player_clock") Settings_HidePlayerClock();
-    else if (position === "hide_main_screen_title") Settings_HideScreenTitle()();
+    else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
+    else if (position === "hide_etc_help_text") Settings_HideEtcHelp();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -1016,16 +1022,6 @@ function Settings_SetAnimations() {
     Screens_SettingDoAnimations = animate;
 }
 
-function Settings_ShowCounter(show) {
-    if (show) {
-        Main_ShowElement('dialog_counter_text');
-        Main_ShowElement('feed_counter');
-    } else {
-        Main_HideElement('dialog_counter_text');
-        Main_HideElement('feed_counter');
-    }
-}
-
 function Settings_SetResBitRate(whocall) {
     if (Main_IsOn_OSInterface) {
         if (!whocall) {
@@ -1110,6 +1106,37 @@ function Settings_HidePlayerClock() {
 
 function Settings_HideScreenTitle() {
     Settings_HideElem('top_lable', Settings_Obj_default("hide_main_screen_title") === 1);
+}
+
+function Settings_HideEtcHelp() {
+    var hide = Settings_Obj_default("hide_etc_help_text") === 1;
+    var eleArray = [
+        'top_lable_etc',
+        'label_thumb',
+        'icon_feed_refresh',
+        'feed_last_refresh',
+        'feed_end',
+        'icon_feed_back',
+        'side_panel_top_text'
+    ];
+    var i = 0, len = eleArray.length;
+
+    for (i; i < len; i++) {
+        Settings_HideElem(eleArray[i], hide);
+    }
+
+    if (hide) Main_AddClass('side_panel_row_0', 'hide');
+    else Main_RemoveClass('side_panel_row_0', 'hide');
+
+    Sidepannel_Scroll_Offset = hide ? 1 : 0;
+}
+
+
+function Settings_ShowCounter() {
+    var hide = Settings_Obj_default("hide_screen_counter") === 1;
+
+    Settings_HideElem('dialog_counter_text', hide);
+    Settings_HideElem('feed_counter', hide);
 }
 
 function Settings_HideElem(elem, hide) {
@@ -1692,12 +1719,13 @@ function Settings_DialogShowDpad() {
 function Settings_DialogShowUIOpt() {
     Settings_value.app_animations.values = [STR_NO, STR_YES];
     Settings_value.videos_animation.values = [STR_NO, STR_YES];
-    Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
+    Settings_value.hide_screen_counter.values = [STR_NO, STR_YES];
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
     Settings_value.hide_main_clock.values = [STR_NO, STR_YES];
     Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
     Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
+    Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
 
     var obj = {
         thumb_background: {
@@ -1731,9 +1759,9 @@ function Settings_DialogShowUIOpt() {
             title: STR_GLOBAL_FONT,
             summary: STR_GLOBAL_FONT_SUMMARY
         },
-        show_screen_counter: {
-            defaultValue: Settings_value.show_screen_counter.defaultValue,
-            values: Settings_value.show_screen_counter.values,
+        hide_screen_counter: {
+            defaultValue: Settings_value.hide_screen_counter.defaultValue,
+            values: Settings_value.hide_screen_counter.values,
             title: STR_SCREEN_COUNTER,
             summary: STR_SCREEN_COUNTER_SUMMARY
         },
@@ -1759,7 +1787,13 @@ function Settings_DialogShowUIOpt() {
             defaultValue: Settings_value.hide_main_screen_title.defaultValue,
             values: Settings_value.hide_main_screen_title.values,
             title: STR_HIDE_MAIN_SCREEN_TITLE,
-            summary: null
+            summary: STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY
+        },
+        hide_etc_help_text: {
+            defaultValue: Settings_value.hide_etc_help_text.defaultValue,
+            values: Settings_value.hide_etc_help_text.values,
+            title: STR_HIDE_ETC_HELP_INFO,
+            summary: STR_HIDE_ETC_HELP_INFO_SUMMARY
         },
     };
 

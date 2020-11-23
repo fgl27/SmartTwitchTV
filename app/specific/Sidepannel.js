@@ -613,6 +613,8 @@ function Sidepannel_SetIcons(div, icon) {
     else Main_textContent(div, '');
 }
 
+var Sidepannel_Scroll_Offset = 0;
+
 function Sidepannel_Scroll(skipAnimation) {
     var value = '0', //default
         center = 6;
@@ -624,7 +626,7 @@ function Sidepannel_Scroll(skipAnimation) {
 
         } else if (((Sidepannel_GetSize() - center) - center) > 0) { //if we are in the 7 left
 
-            value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+            value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2) - Sidepannel_Scroll_Offset)).offsetTop;
 
         }
     }
