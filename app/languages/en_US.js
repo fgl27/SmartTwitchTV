@@ -648,5 +648,7 @@ function en_USLang() {
     STR_PLAYED = "Played ";
     STR_CHAPTERS = "Chapters";
     STR_FROM_SIMPLE = " from ";
+    STR_HIDE_MAIN_CLOCK = "Hide main screen clock";
+    STR_HIDE_PLAYER_CLOCK = "Hide player clock";
 
 }

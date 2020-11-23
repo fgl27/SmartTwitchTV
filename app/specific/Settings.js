@@ -440,6 +440,14 @@ var Settings_value = {
         "values": ["enabled", "disabled"],
         "defaultValue": 1
     },
+    "hide_main_clock": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "hide_player_clock": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -687,6 +695,8 @@ function Settings_SetDefautls() {
 
     Settings_SetBuffers(0);
     Settings_SetClock();
+    Settings_HideMainClock();
+    Settings_HidePlayerClock();
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
     Settings_notification_background();
@@ -822,6 +832,8 @@ function Settings_SetDefault(position) {
         UserLiveFeed_ResetAddCellsize();
     }
     else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+    else if (position === "hide_main_clock") Settings_HideMainClock();
+    else if (position === "hide_player_clock") Settings_HidePlayerClock();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -1080,6 +1092,19 @@ function Settings_SetBuffers(whocall) {
 function Settings_SetClock() {
     var time = Settings_Obj_default("clock_offset");
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
+}
+
+function Settings_HideMainClock() {
+    Settings_HideElem('clock_holder', Settings_Obj_default("hide_main_clock") === 1);
+}
+
+function Settings_HidePlayerClock() {
+    Settings_HideElem('stream_clock', Settings_Obj_default("hide_player_clock") === 1);
+}
+
+function Settings_HideElem(elem, hide) {
+    if (hide) Main_AddClass(elem, 'opacity_zero');
+    else Main_RemoveClass(elem, 'opacity_zero');
 }
 
 var Settings_CurY = 0;
@@ -1660,6 +1685,9 @@ function Settings_DialogShowUIOpt() {
     Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
+    Settings_value.hide_main_clock.values = [STR_NO, STR_YES];
+    Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
+
     var obj = {
         thumb_background: {
             defaultValue: Settings_value.thumb_background.defaultValue,
@@ -1703,6 +1731,18 @@ function Settings_DialogShowUIOpt() {
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
             summary: STR_CLOCK_OFFSET_SUMMARY
+        },
+        hide_main_clock: {
+            defaultValue: Settings_value.hide_main_clock.defaultValue,
+            values: Settings_value.hide_main_clock.values,
+            title: STR_HIDE_MAIN_CLOCK,
+            summary: null
+        },
+        hide_player_clock: {
+            defaultValue: Settings_value.hide_player_clock.defaultValue,
+            values: Settings_value.hide_player_clock.values,
+            title: STR_HIDE_PLAYER_CLOCK,
+            summary: null
         },
     };
 
