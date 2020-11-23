@@ -395,7 +395,7 @@ function en_USLang() {
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
     STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-    STR_UI_SETTINGS = "Interface customizations, color style, animations and related";
+    STR_UI_SETTINGS = "Interface customization's, color style, animations and related";
     STR_GENERAL_CUSTOM = "Content customizations, sorting, auto refresh, timeouts and related";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get video link";

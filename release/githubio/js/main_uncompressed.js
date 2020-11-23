@@ -644,6 +644,12 @@
     var STR_PLAYER_MAIN;
     var STR_PLAYER_RES_MAIN;
     var STR_PLAYER_RES_SMALL;
+    var STR_HIDE_PLAYER_CLOCK;
+    var STR_HIDE_MAIN_CLOCK;
+    var STR_HIDE_MAIN_SCREEN_TITLE;
+    var STR_HIDE_ETC_HELP_INFO;
+    var STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY;
+    var STR_HIDE_ETC_HELP_INFO_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -989,14 +995,14 @@
         STR_OAUTH_WRONG2 = " but this key is for user ";
         STR_FOLLOWING = " Following";
         STR_FOLLOW = " Follow";
-        STR_IS_SUB_NOOAUTH = " And you haven't set a authorization key the app can\'t check yours sub status.";
+        STR_IS_SUB_NOOAUTH = " And you haven't added a authorization key the app can\'t check yours sub status.";
         STR_IS_SUB_NOT_SUB = " And you aren't a sub of this channel";
         STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
         STR_OAUTH_FAIL = "Fail authorization check with the provider key, please check and try again";
         STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
         STR_NOKEY = "No user";
         STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
-        STR_NOKUSER_WARN = "Set a user first";
+        STR_NOKUSER_WARN = "Add a user first";
         STR_RESET = "Restart the";
         STR_CLIP = " Clip";
         STR_CHANNEL_CONT = "Channel content";
@@ -1186,8 +1192,8 @@
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
-        STR_SCREEN_COUNTER = "Show thumbnail position counter";
-        STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
+        STR_SCREEN_COUNTER = "Hide thumbnail position counter";
+        STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
         STR_SWITCH_POS = "Switch: Starting Position offset";
         STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
         STR_USER_OPTION = "Choose a option for user";
@@ -1204,7 +1210,7 @@
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
-        STR_UI_SETTINGS = "Interface customizations, color style, animations and related";
+        STR_UI_SETTINGS = "Interface customization's, color style, animations and related";
         STR_GENERAL_CUSTOM = "Content customizations, sorting, auto refresh, timeouts and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get video link";
@@ -1457,6 +1463,12 @@
         STR_PLAYED = "Played ";
         STR_CHAPTERS = "Chapters";
         STR_FROM_SIMPLE = " from ";
+        STR_HIDE_MAIN_CLOCK = "Hide main screen clock";
+        STR_HIDE_PLAYER_CLOCK = "Hide player clock";
+        STR_HIDE_MAIN_SCREEN_TITLE = "Hide main screen title";
+        STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "The center title, Live, Clip, Settings etc...";
+        STR_HIDE_ETC_HELP_INFO = "Hide on screen navigation tips";
+        STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips as, hold a key for a action and related";
 
     }
     /*
@@ -6880,8 +6892,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.287';
     var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 22 2020';
-    var Main_version_web = 542; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'November 23 2020';
+    var Main_version_web = 543; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7472,6 +7484,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version November 23 2020",
+                changes: [
+                    "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Interface customization's, color style, animations and related",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.287 - Web Version November 22 2020",
                 changes: [
                     "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
@@ -7493,18 +7512,6 @@
             },
             {
                 title: "Web Version November 16 2020",
-                changes: [
-                    "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Apk Version 3.0.284 to 3.0.285 - Web Version November 10 2020",
-                changes: [
-                    "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Apk Version 3.0.280 to 3.0.283 - Web Version November 09 2020",
                 changes: [
                     "General performance improves and bug fixes",
                 ]
@@ -25941,10 +25948,6 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
-        "show_screen_counter": { //Migrated to dialog
-            "values": ["no", "yes"],
-            "defaultValue": 2
-        },
         "show_feed_player": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -26316,6 +26319,26 @@
             "values": ["enabled", "disabled"],
             "defaultValue": 1
         },
+        "hide_main_clock": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "hide_player_clock": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "hide_main_screen_title": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "hide_etc_help_text": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "hide_screen_counter": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
     };
 
     function Settings_GenerateClock() {
@@ -26565,6 +26588,10 @@
 
         Settings_SetBuffers(0);
         Settings_SetClock();
+        Settings_HideMainClock();
+        Settings_HidePlayerClock();
+        Settings_HideScreenTitle();
+        Settings_HideEtcHelp();
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
         Settings_notification_background();
@@ -26572,7 +26599,7 @@
         Settings_notification_repeat();
         Settings_notification_sicetime();
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-        Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+        Settings_ShowCounter();
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
         Settings_CodecsSet();
 
@@ -26698,7 +26725,11 @@
             calculateFontSize();
             AddUser_UpdateSidepanelAfterShow();
             UserLiveFeed_ResetAddCellsize();
-        } else if (position === "show_screen_counter") Settings_ShowCounter(Settings_Obj_default("show_screen_counter"));
+        } else if (position === "hide_screen_counter") Settings_ShowCounter();
+        else if (position === "hide_main_clock") Settings_HideMainClock();
+        else if (position === "hide_player_clock") Settings_HidePlayerClock();
+        else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
+        else if (position === "hide_etc_help_text") Settings_HideEtcHelp();
         else if (position === "clock_offset") {
             Settings_SetClock();
             Main_updateclock();
@@ -26875,16 +26906,6 @@
         Screens_SettingDoAnimations = animate;
     }
 
-    function Settings_ShowCounter(show) {
-        if (show) {
-            Main_ShowElement('dialog_counter_text');
-            Main_ShowElement('feed_counter');
-        } else {
-            Main_HideElement('dialog_counter_text');
-            Main_HideElement('feed_counter');
-        }
-    }
-
     function Settings_SetResBitRate(whocall) {
         if (Main_IsOn_OSInterface) {
             if (!whocall) {
@@ -26959,6 +26980,55 @@
     function Settings_SetClock() {
         var time = Settings_Obj_default("clock_offset");
         Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
+    }
+
+    function Settings_HideMainClock() {
+        Settings_HideElem('clock_holder', Settings_Obj_default("hide_main_clock") === 1);
+    }
+
+    function Settings_HidePlayerClock() {
+        Settings_HideElem('stream_clock', Settings_Obj_default("hide_player_clock") === 1);
+    }
+
+    function Settings_HideScreenTitle() {
+        Settings_HideElem('top_lable', Settings_Obj_default("hide_main_screen_title") === 1);
+    }
+
+    function Settings_HideEtcHelp() {
+        var hide = Settings_Obj_default("hide_etc_help_text") === 1;
+        var eleArray = [
+            'top_lable_etc',
+            'label_thumb',
+            'icon_feed_refresh',
+            'feed_last_refresh',
+            'feed_end',
+            'icon_feed_back',
+            'side_panel_top_text'
+        ];
+        var i = 0,
+            len = eleArray.length;
+
+        for (i; i < len; i++) {
+            Settings_HideElem(eleArray[i], hide);
+        }
+
+        if (hide) Main_AddClass('side_panel_row_0', 'hide');
+        else Main_RemoveClass('side_panel_row_0', 'hide');
+
+        Sidepannel_Scroll_Offset = hide ? 1 : 0;
+    }
+
+
+    function Settings_ShowCounter() {
+        var hide = Settings_Obj_default("hide_screen_counter") === 1;
+
+        Settings_HideElem('dialog_counter_text', hide);
+        Settings_HideElem('feed_counter', hide);
+    }
+
+    function Settings_HideElem(elem, hide) {
+        if (hide) Main_AddClass(elem, 'opacity_zero');
+        else Main_RemoveClass(elem, 'opacity_zero');
     }
 
     var Settings_CurY = 0;
@@ -27561,8 +27631,13 @@
     function Settings_DialogShowUIOpt() {
         Settings_value.app_animations.values = [STR_NO, STR_YES];
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
-        Settings_value.show_screen_counter.values = [STR_NO, STR_YES];
+        Settings_value.hide_screen_counter.values = [STR_NO, STR_YES];
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
+
+        Settings_value.hide_main_clock.values = [STR_NO, STR_YES];
+        Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
+        Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
+        Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
 
         var obj = {
             thumb_background: {
@@ -27596,17 +27671,41 @@
                 title: STR_GLOBAL_FONT,
                 summary: STR_GLOBAL_FONT_SUMMARY
             },
-            show_screen_counter: {
-                defaultValue: Settings_value.show_screen_counter.defaultValue,
-                values: Settings_value.show_screen_counter.values,
-                title: STR_SCREEN_COUNTER,
-                summary: STR_SCREEN_COUNTER_SUMMARY
-            },
             clock_offset: {
                 defaultValue: Settings_value.clock_offset.defaultValue,
                 values: Settings_value.clock_offset.values,
                 title: STR_CLOCK_OFFSET,
                 summary: STR_CLOCK_OFFSET_SUMMARY
+            },
+            hide_screen_counter: {
+                defaultValue: Settings_value.hide_screen_counter.defaultValue,
+                values: Settings_value.hide_screen_counter.values,
+                title: STR_SCREEN_COUNTER,
+                summary: STR_SCREEN_COUNTER_SUMMARY
+            },
+            hide_main_clock: {
+                defaultValue: Settings_value.hide_main_clock.defaultValue,
+                values: Settings_value.hide_main_clock.values,
+                title: STR_HIDE_MAIN_CLOCK,
+                summary: null
+            },
+            hide_player_clock: {
+                defaultValue: Settings_value.hide_player_clock.defaultValue,
+                values: Settings_value.hide_player_clock.values,
+                title: STR_HIDE_PLAYER_CLOCK,
+                summary: null
+            },
+            hide_main_screen_title: {
+                defaultValue: Settings_value.hide_main_screen_title.defaultValue,
+                values: Settings_value.hide_main_screen_title.values,
+                title: STR_HIDE_MAIN_SCREEN_TITLE,
+                summary: STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY
+            },
+            hide_etc_help_text: {
+                defaultValue: Settings_value.hide_etc_help_text.defaultValue,
+                values: Settings_value.hide_etc_help_text.values,
+                title: STR_HIDE_ETC_HELP_INFO,
+                summary: STR_HIDE_ETC_HELP_INFO_SUMMARY
             },
         };
 
@@ -29021,6 +29120,8 @@
         else Main_textContent(div, '');
     }
 
+    var Sidepannel_Scroll_Offset = 0;
+
     function Sidepannel_Scroll(skipAnimation) {
         var value = '0', //default
             center = 6;
@@ -29032,7 +29133,7 @@
 
             } else if (((Sidepannel_GetSize() - center) - center) > 0) { //if we are in the 7 left
 
-                value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2))).offsetTop;
+                value = Main_getElementById(UserLiveFeed_side_ids[3] + (Sidepannel_GetSize() - (center * 2) - Sidepannel_Scroll_Offset)).offsetTop;
 
             }
         }
@@ -31090,7 +31191,7 @@
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter));
         UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
-        Main_RemoveClass('icon_feed_back', 'opacity_zero');
+        if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
     }
 
@@ -31172,7 +31273,7 @@
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentAGameName, UserLiveFeedobj_CurrentAGameNameEnter));
         UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
-        Main_RemoveClass('icon_feed_back', 'opacity_zero');
+        if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentAGameName);
     }
 
@@ -31181,6 +31282,8 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
     }
     //Current a game end
+
+    var UserLiveFeedobj_SetBottomTextId;
 
     function UserLiveFeedobj_SetBottomText(pos) {
         Play_HideWarningMidleDialog();
@@ -31214,6 +31317,17 @@
         Main_innerHTML('feed_end_2', (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME));
         Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)));
 
+        if (Settings_Obj_default("hide_etc_help_text") === 1) {
+            Main_RemoveClass('feed_end', 'opacity_zero');
+
+            UserLiveFeedobj_SetBottomTextId = Main_setTimeout(
+                function() {
+                    Main_AddClass('feed_end', 'opacity_zero');
+                },
+                1500,
+                UserLiveFeedobj_SetBottomTextId
+            );
+        }
     }
 
     function UserLiveFeedobj_CreatSideFeed(id, data) {

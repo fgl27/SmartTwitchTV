@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.287';
 var Main_version_java = 287;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 22 2020';
-var Main_version_web = 542;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'November 23 2020';
+var Main_version_web = 543;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -618,6 +618,13 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version November 23 2020",
+            changes: [
+                "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Interface customization's, color style, animations and related",
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
             title: "Apk Version 3.0.287 - Web Version November 22 2020",
             changes: [
                 "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
@@ -639,18 +646,6 @@ function Main_Changelog() {
         },
         {
             title: "Web Version November 16 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.284 to 3.0.285 - Web Version November 10 2020",
-            changes: [
-                "General performance improves and bug fixes",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.280 to 3.0.283 - Web Version November 09 2020",
             changes: [
                 "General performance improves and bug fixes",
             ]

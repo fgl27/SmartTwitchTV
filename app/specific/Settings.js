@@ -1759,17 +1759,17 @@ function Settings_DialogShowUIOpt() {
             title: STR_GLOBAL_FONT,
             summary: STR_GLOBAL_FONT_SUMMARY
         },
-        hide_screen_counter: {
-            defaultValue: Settings_value.hide_screen_counter.defaultValue,
-            values: Settings_value.hide_screen_counter.values,
-            title: STR_SCREEN_COUNTER,
-            summary: STR_SCREEN_COUNTER_SUMMARY
-        },
         clock_offset: {
             defaultValue: Settings_value.clock_offset.defaultValue,
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
             summary: STR_CLOCK_OFFSET_SUMMARY
+        },
+        hide_screen_counter: {
+            defaultValue: Settings_value.hide_screen_counter.defaultValue,
+            values: Settings_value.hide_screen_counter.values,
+            title: STR_SCREEN_COUNTER,
+            summary: STR_SCREEN_COUNTER_SUMMARY
         },
         hide_main_clock: {
             defaultValue: Settings_value.hide_main_clock.defaultValue,
