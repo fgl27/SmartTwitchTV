@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.287';
 var Main_version_java = 287;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 23 2020';
-var Main_version_web = 543;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'November 24 2020';
+var Main_version_web = 544;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -617,6 +617,13 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Web Version November 24 2020",
+            changes: [
+                "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customizations, sorting, auto refresh, timeouts and related",
+                "General performance improves and bug fixes"
+            ]
+        },
         {
             title: "Web Version November 23 2020",
             changes: [

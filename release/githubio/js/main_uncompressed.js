@@ -650,6 +650,9 @@
     var STR_HIDE_ETC_HELP_INFO;
     var STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY;
     var STR_HIDE_ETC_HELP_INFO_SUMMARY;
+    var STR_INACTIVE_SETTINGS;
+    var STR_INACTIVE_SETTINGS_SUMMARY;
+    var STR_INACTIVE_WARNING;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1342,7 +1345,7 @@
         STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
-        STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
+        STR_AUTO_REFRESH = "Auto refresh timeout";
         STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
         STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
         STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
@@ -1469,6 +1472,9 @@
         STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "The center title, Live, Clip, Settings etc...";
         STR_HIDE_ETC_HELP_INFO = "Hide on screen navigation tips";
         STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips as, hold a key for a action and related";
+        STR_INACTIVE_SETTINGS = "Automatic minimize the app when inactive for";
+        STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from be running when no one is using, a warning will show up giving the user 15 seconds to press any key to prevent the minimizing";
+        STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
 
     }
     /*
@@ -6892,8 +6898,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.287';
     var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 23 2020';
-    var Main_version_web = 543; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'November 24 2020';
+    var Main_version_web = 544; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7484,6 +7490,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version November 24 2020",
+                changes: [
+                    "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customizations, sorting, auto refresh, timeouts and related",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version November 23 2020",
                 changes: [
                     "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related",
@@ -9142,6 +9155,7 @@
         ChatLive_Clear(0);
         ChatLive_Clear(1);
         Chat_Clear();
+        Settings_DisableAutoMinimizeTimeout();
 
         Main_clearInterval(Play_ResumeAfterOnlineId);
         Main_clearInterval(Play_streamInfoTimerId);
@@ -9256,6 +9270,8 @@
         Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
         if (!skipPlay) Main_CheckAccessibility();
+
+        Settings_SetAutoMinimizeTimeout();
     }
 
     function Main_CheckResumeUpdateToken(UserIsSet) {
@@ -20796,7 +20812,7 @@
         if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background") &&
             (key !== Main_SearchGames && key !== Main_SearchLive && ScreenObj[key].screenType !== 4)) {
 
-            Screens_CheckAutoRefresh(key, (Settings_Obj_values("auto_refresh_screen") * 60000));
+            Screens_CheckAutoRefresh(key, Settings_GetAutoRefreshTimeout());
 
         } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
 
@@ -20843,7 +20859,7 @@
                 if (ScreenObj[i] && ScreenObj[i].lastRefresh &&
                     (i !== Main_SearchGames && i !== Main_SearchLive && ScreenObj[i].screenType !== 4) &&
                     (UserIsSet || !ScreenObj[i].IsUser) && //prevent check a user screen in case all users have be deleted
-                    date > (ScreenObj[i].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+                    date > (ScreenObj[i].lastRefresh + Settings_GetAutoRefreshTimeout())) {
 
                     Screens_CheckAutoRefresh(i, run * 5000);
                     run++;
@@ -22957,7 +22973,7 @@
             Main_values.Main_Go === Main_Search || ScreenObj[key].screenType === 4 ||
             Main_values.Main_Go === Main_addUser || !ScreenObj || !Settings_Obj_default("auto_refresh_screen")) return false;
 
-        return (new Date().getTime()) > (ScreenObj[key].lastRefresh + (Settings_Obj_values("auto_refresh_screen") * 60000));
+        return (new Date().getTime()) > (ScreenObj[key].lastRefresh + Settings_GetAutoRefreshTimeout());
     }
 
     function Screens_Isfocused() {
@@ -26001,9 +26017,11 @@
             "defaultValue": 1
         },
         "auto_refresh_screen": { //Migrated to dialog
-            "values": [
-                'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
-            ],
+            "values": Settings_GetnotificationTime(),
+            "defaultValue": 6
+        },
+        "auto_minimize_inactive": { //Migrated to dialog
+            "values": Settings_GetnotificationTime(),
             "defaultValue": 6
         },
         "auto_refresh_background": { //Migrated to dialog
@@ -26373,6 +26391,38 @@
         return array;
     }
 
+    var Settings_GetnotificationTimeMs = [
+        0,
+        600000,
+        1200000,
+        1800000,
+        2700000,
+        3600000,
+        7200000,
+        10800000,
+        14400000,
+        18000000,
+        21600000,
+        25200000,
+        28800000,
+        32400000,
+        36000000,
+        39600000,
+        43200000,
+        46800000,
+        50400000,
+        54000000,
+        57600000,
+        61200000,
+        64800000,
+        68400000,
+        72000000,
+        75600000,
+        79200000,
+        82800000,
+        86400000
+    ];
+
     function Settings_GetnotificationTime() {
         var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
             i = 0;
@@ -26591,6 +26641,7 @@
         Settings_HideMainClock();
         Settings_HidePlayerClock();
         Settings_HideScreenTitle();
+        Settings_SetAutoMinimizeTimeout();
         Settings_HideEtcHelp();
         Main_SetThumb();
         if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
@@ -26742,6 +26793,7 @@
         else if (position === "PP_workaround") Settings_PP_Workaround();
         else if (position === "vod_seek_min") Settings_check_min_seek();
         else if (position === "vod_seek_max") Settings_check_max_seek();
+        else if (position === "auto_minimize_inactive") Settings_SetAutoMinimizeTimeout();
         else if (position === "block_qualities_21" || position === "block_qualities_16" ||
             position === "block_qualities_14" || position === "block_qualities_10" ||
             position === "block_qualities_9" || position === "block_qualities_7" ||
@@ -26823,19 +26875,11 @@
     }
 
     function Settings_notification_sicetime() {
-        var time = Settings_Obj_default("since_notification");
 
-        if (time) {
-            var value = Settings_Obj_values("since_notification").split(' ');
+        OSInterface_SetNotificationSinceTime(
+            Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")]
+        );
 
-            if (Main_A_includes_B(value[1], 'min')) {
-                time = parseInt(value[0]) * 60 * 1000;
-            } else {
-                time = parseInt(value[0]) * 60 * 60 * 1000;
-            }
-        }
-
-        OSInterface_SetNotificationSinceTime(time);
     }
 
     function Settings_SetPingWarning() {
@@ -26852,6 +26896,115 @@
 
     function Settings_DpadPOsition() {
         OSInterface_SetKeysPosition(Settings_Obj_default("dpad_position"));
+    }
+
+    function Settings_GetAutoRefreshTimeout() {
+
+        return Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")];
+
+    }
+
+    function Settings_GetAutoMinimizeTimeout() {
+
+        return Settings_GetnotificationTimeMs[Settings_Obj_default("auto_minimize_inactive")];
+
+    }
+
+    function Settings_SetAutoMinimizeTimeout() {
+
+        var timeout = Settings_GetAutoMinimizeTimeout();
+
+        if (timeout) {
+
+            Settings_SetWarningAutoMinimize();
+            Main_addEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+        } else {
+
+            Settings_DisableAutoMinimizeTimeout();
+
+        }
+
+    }
+
+
+    var Settings_AutoMinimizeTime = 15;
+    var Settings_AutoMinimizeId;
+    var Settings_AutoMinimizeWarningId;
+
+    function Settings_SetWarningAutoMinimize() {
+
+        Settings_AutoMinimizeId = Main_setTimeout(
+            Settings_StartWarningAutoMinimize,
+            Settings_GetAutoMinimizeTimeout(),
+            Settings_AutoMinimizeId
+        );
+
+    }
+
+    function Settings_StartWarningAutoMinimize() {
+
+        Settings_DisableAutoMinimizeTimeout();
+        Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+        window.addEventListener("keydown", Settings_MinimizePreventClickfun, true);
+        window.addEventListener("keyup", Settings_MinimizePreventClickfun, true);
+        window.addEventListener("keypress", Settings_MinimizePreventClickfun, true);
+
+        Settings_AutoMinimizeTime = 15;
+
+        Settings_CheckAutoMinimizeEnd();
+        Main_ShowElement('minimize_warning');
+
+    }
+
+    function Settings_CheckAutoMinimizeEnd() {
+
+        if (Settings_AutoMinimizeTime > 0) {
+
+            Settings_AutoMinimizeWarningId = Main_setTimeout(
+                Settings_CheckAutoMinimizeEnd,
+                1000,
+                Settings_AutoMinimizeWarningId
+            );
+
+            Main_innerHTML(
+                'minimize_warning',
+                STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND))
+            );
+
+        } else {
+
+            Settings_DisableAutoMinimizeTimeout();
+
+            if (Main_IsOn_OSInterface) OSInterface_mclose(false);
+
+        }
+
+        Settings_AutoMinimizeTime--;
+
+    }
+
+    function Settings_MinimizePreventClickfun(e) {
+
+        e.stopPropagation();
+        Settings_DisableAutoMinimizeTimeout();
+        Settings_SetAutoMinimizeTimeout();
+
+    }
+
+    function Settings_DisableAutoMinimizeTimeout() {
+
+        Main_clearTimeout(Settings_AutoMinimizeId);
+        Main_clearTimeout(Settings_AutoMinimizeWarningId);
+        Main_HideElement('minimize_warning');
+
+        Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+        window.removeEventListener("keydown", Settings_MinimizePreventClickfun, true);
+        window.removeEventListener("keyup", Settings_MinimizePreventClickfun, true);
+        window.removeEventListener("keypress", Settings_MinimizePreventClickfun, true);
+
     }
 
     function Settings_SetAnimations() {
@@ -27715,6 +27868,7 @@
     function Settings_DialogShowCustomOpt() {
         Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
         Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
+        Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
         Settings_value.live_feed_sort.values = [
             STR_VIWES_MOST,
@@ -27733,6 +27887,12 @@
                 values: Settings_value.live_feed_sort.values,
                 title: STR_LIVE_FEED_SORT,
                 summary: STR_LIVE_FEED_SORT_SUMMARY
+            },
+            auto_minimize_inactive: {
+                defaultValue: Settings_value.auto_minimize_inactive.defaultValue,
+                values: Settings_value.auto_minimize_inactive.values,
+                title: STR_INACTIVE_SETTINGS,
+                summary: STR_INACTIVE_SETTINGS_SUMMARY
             },
             auto_refresh_screen: {
                 defaultValue: Settings_value.auto_refresh_screen.defaultValue,
@@ -28938,7 +29098,7 @@
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
-            (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+            (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout())) {
             ForceRefresh = true;
         }
 
@@ -29647,7 +29807,7 @@
         if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background") &&
             pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
 
-            UserLiveFeed_CheckRefresh(pos, (Settings_Obj_values("auto_refresh_screen") * 60000));
+            UserLiveFeed_CheckRefresh(pos, Settings_GetAutoRefreshTimeout());
 
         } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
 
@@ -29692,7 +29852,7 @@
                 if (UserLiveFeed_lastRefresh[i] &&
                     i !== UserLiveFeedobj_UserLivePos && //User live already refresh on resume
                     i !== UserLiveFeedobj_UserVodHistoryPos && i !== UserLiveFeedobj_UserHistoryPos && //History screen don' need refresh
-                    date > (UserLiveFeed_lastRefresh[i] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+                    date > (UserLiveFeed_lastRefresh[i] + Settings_GetAutoRefreshTimeout())) {
 
                     UserLiveFeed_CheckRefresh(i, run * 5000);
                     run++;
@@ -30882,7 +31042,7 @@
         if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
         if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
-            (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
+            (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
             UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
 
             if (UserLiveFeed_loadingData[pos]) {
