@@ -762,8 +762,8 @@ function ChannelContent_RestoreThumb(play_data) {
     if (ChannelContent_cursorY) {
 
         return Main_A_equals_B(
-            ChannelContent_DataObj[14],
-            play_data.data[14]
+            parseInt(ChannelContent_DataObj[14]),
+            parseInt(play_data.data[14])
         );
     }
 
