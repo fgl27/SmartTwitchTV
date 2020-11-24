@@ -622,7 +622,7 @@ function ChannelContent_LoadPreview() {
 
             var obj = Main_Slice(ChannelContent_DataObj);
 
-            if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
+            if ((!Play_PreviewId || !Main_A_equals_B(parseInt(obj[14]), parseInt(Play_PreviewId))) && !Play_PreviewVideoEnded) {
 
                 ChannelContent_LoadPreviewStart(obj);
 
