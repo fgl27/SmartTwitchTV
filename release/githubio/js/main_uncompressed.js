@@ -3313,7 +3313,7 @@
 
                 var obj = Main_Slice(ChannelContent_DataObj);
 
-                if ((!Play_PreviewId || !Main_A_equals_B(obj[14], Play_PreviewId)) && !Play_PreviewVideoEnded) {
+                if ((!Play_PreviewId || !Main_A_equals_B(parseInt(obj[14]), parseInt(Play_PreviewId))) && !Play_PreviewVideoEnded) {
 
                     ChannelContent_LoadPreviewStart(obj);
 
@@ -6899,7 +6899,7 @@
     var Main_stringVersion_Min = '.287';
     var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'November 24 2020';
-    var Main_version_web = 545; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 546; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
