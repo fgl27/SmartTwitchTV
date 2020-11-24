@@ -1000,7 +1000,7 @@ function Settings_DpadPOsition() {
 
 function Settings_GetAutoRefreshTimeout() {
 
-    return Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")];
+    return Settings_GetnotificationTimeMs[Settings_Obj_default("auto_refresh_screen")];
 
 }
 
