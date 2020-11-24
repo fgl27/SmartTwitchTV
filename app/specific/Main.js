@@ -620,7 +620,7 @@ function Main_Changelog() {
         {
             title: "Web Version November 24 2020",
             changes: [
-                "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customizations, sorting, auto refresh, timeouts and related",
+                "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customization's, sorting, auto refresh, timeouts and related",
                 "General performance improves and bug fixes"
             ]
         },

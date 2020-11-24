@@ -1214,7 +1214,7 @@
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
         STR_UI_SETTINGS = "Interface customization's, color style, animations and related";
-        STR_GENERAL_CUSTOM = "Content customizations, sorting, auto refresh, timeouts and related";
+        STR_GENERAL_CUSTOM = "Content customization's, sorting, auto refresh, timeouts and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get video link";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
@@ -7492,7 +7492,7 @@
         var changelogObj = [{
                 title: "Web Version November 24 2020",
                 changes: [
-                    "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customizations, sorting, auto refresh, timeouts and related",
+                    "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customization's, sorting, auto refresh, timeouts and related",
                     "General performance improves and bug fixes"
                 ]
             },

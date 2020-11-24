@@ -12,7 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version November 24 2020
 ==============
 
-* Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customizations, sorting, auto refresh, timeouts and related
+* Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customization's, sorting, auto refresh, timeouts and related
 * General performance improves and bug fixes
 
 
