@@ -3454,8 +3454,8 @@
         if (ChannelContent_cursorY) {
 
             return Main_A_equals_B(
-                ChannelContent_DataObj[14],
-                play_data.data[14]
+                parseInt(ChannelContent_DataObj[14]),
+                parseInt(play_data.data[14])
             );
         }
 
@@ -13014,8 +13014,8 @@
             }
 
             restorePreview = Main_A_equals_B(
-                UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14],
-                Play_data.data[14]
+                parseInt(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14]),
+                parseInt(Play_data.data[14])
             );
 
             //live
@@ -13029,8 +13029,8 @@
                 !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
                 restorePreview = Main_A_equals_B(
-                    ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14],
-                    Play_data.data[14]
+                    parseInt(ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14]),
+                    parseInt(Play_data.data[14])
                 );
 
             }
