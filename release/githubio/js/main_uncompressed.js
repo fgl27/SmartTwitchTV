@@ -26917,7 +26917,7 @@
         if (timeout) {
 
             Settings_SetWarningAutoMinimize();
-            Main_addEventListener("keydown", Settings_SetWarningAutoMinimize);
+            Main_addEventListener("keyup", Settings_SetWarningAutoMinimize);
 
         } else {
 
@@ -26945,7 +26945,7 @@
     function Settings_StartWarningAutoMinimize() {
 
         Settings_DisableAutoMinimizeTimeout();
-        Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+        Main_removeEventListener("keyup", Settings_SetWarningAutoMinimize);
 
         window.addEventListener("keydown", Settings_MinimizePreventClickfun, true);
         window.addEventListener("keyup", Settings_MinimizePreventClickfun, true);
@@ -26999,7 +26999,7 @@
         Main_clearTimeout(Settings_AutoMinimizeWarningId);
         Main_HideElement('minimize_warning');
 
-        Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+        Main_removeEventListener("keyup", Settings_SetWarningAutoMinimize);
 
         window.removeEventListener("keydown", Settings_MinimizePreventClickfun, true);
         window.removeEventListener("keyup", Settings_MinimizePreventClickfun, true);
