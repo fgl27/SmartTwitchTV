@@ -431,7 +431,7 @@ function Sidepannel_ShowFeed() {
     Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
-        (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + (Settings_Obj_values("auto_refresh_screen") * 60000))) {
+        (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout())) {
         ForceRefresh = true;
     }
 

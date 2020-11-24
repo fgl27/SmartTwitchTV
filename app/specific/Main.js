@@ -2274,6 +2274,7 @@ function Main_CheckStop() { // Called only by JAVA
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     Chat_Clear();
+    Settings_DisableAutoMinimizeTimeout();
 
     Main_clearInterval(Play_ResumeAfterOnlineId);
     Main_clearInterval(Play_streamInfoTimerId);
@@ -2387,6 +2388,8 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Screens_CheckRefreshAfterResumeId = Main_setTimeout(Screens_CheckRefreshAfterResume, 2500, Screens_CheckRefreshAfterResumeId);
 
     if (!skipPlay) Main_CheckAccessibility();
+
+    Settings_SetAutoMinimizeTimeout();
 }
 
 function Main_CheckResumeUpdateToken(UserIsSet) {

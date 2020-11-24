@@ -120,9 +120,11 @@ var Settings_value = {
         "defaultValue": 1
     },
     "auto_refresh_screen": {//Migrated to dialog
-        "values": [
-            'disable', 5, 10, 15, 30, 60, 90, 180, 360, 720, 1440
-        ],
+        "values": Settings_GetnotificationTime(),
+        "defaultValue": 6
+    },
+    "auto_minimize_inactive": {//Migrated to dialog
+        "values": Settings_GetnotificationTime(),
         "defaultValue": 6
     },
     "auto_refresh_background": {//Migrated to dialog
@@ -490,6 +492,38 @@ function Settings_GetVolumes() {
     return array;
 }
 
+var Settings_GetnotificationTimeMs = [
+    0,
+    600000,
+    1200000,
+    1800000,
+    2700000,
+    3600000,
+    7200000,
+    10800000,
+    14400000,
+    18000000,
+    21600000,
+    25200000,
+    28800000,
+    32400000,
+    36000000,
+    39600000,
+    43200000,
+    46800000,
+    50400000,
+    54000000,
+    57600000,
+    61200000,
+    64800000,
+    68400000,
+    72000000,
+    75600000,
+    79200000,
+    82800000,
+    86400000
+];
+
 function Settings_GetnotificationTime() {
     var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
         i = 0;
@@ -706,6 +740,7 @@ function Settings_SetDefautls() {
     Settings_HideMainClock();
     Settings_HidePlayerClock();
     Settings_HideScreenTitle();
+    Settings_SetAutoMinimizeTimeout();
     Settings_HideEtcHelp();
     Main_SetThumb();
     if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
@@ -858,6 +893,7 @@ function Settings_SetDefault(position) {
     else if (position === "PP_workaround") Settings_PP_Workaround();
     else if (position === "vod_seek_min") Settings_check_min_seek();
     else if (position === "vod_seek_max") Settings_check_max_seek();
+    else if (position === "auto_minimize_inactive") Settings_SetAutoMinimizeTimeout();
     else if (position === "block_qualities_21" || position === "block_qualities_16" ||
         position === "block_qualities_14" || position === "block_qualities_10" ||
         position === "block_qualities_9" || position === "block_qualities_7" ||
@@ -939,19 +975,11 @@ function Settings_notification_repeat() {
 }
 
 function Settings_notification_sicetime() {
-    var time = Settings_Obj_default("since_notification");
 
-    if (time) {
-        var value = Settings_Obj_values("since_notification").split(' ');
+    OSInterface_SetNotificationSinceTime(
+        Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")]
+    );
 
-        if (Main_A_includes_B(value[1], 'min')) {
-            time = parseInt(value[0]) * 60 * 1000;
-        } else {
-            time = parseInt(value[0]) * 60 * 60 * 1000;
-        }
-    }
-
-    OSInterface_SetNotificationSinceTime(time);
 }
 
 function Settings_SetPingWarning() {
@@ -968,6 +996,115 @@ function Settings_DpadOpacity() {
 
 function Settings_DpadPOsition() {
     OSInterface_SetKeysPosition(Settings_Obj_default("dpad_position"));
+}
+
+function Settings_GetAutoRefreshTimeout() {
+
+    return Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")];
+
+}
+
+function Settings_GetAutoMinimizeTimeout() {
+
+    return Settings_GetnotificationTimeMs[Settings_Obj_default("auto_minimize_inactive")];
+
+}
+
+function Settings_SetAutoMinimizeTimeout() {
+
+    var timeout = Settings_GetAutoMinimizeTimeout();
+
+    if (timeout) {
+
+        Settings_SetWarningAutoMinimize();
+        Main_addEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+    } else {
+
+        Settings_DisableAutoMinimizeTimeout();
+
+    }
+
+}
+
+
+var Settings_AutoMinimizeTime = 15;
+var Settings_AutoMinimizeId;
+var Settings_AutoMinimizeWarningId;
+
+function Settings_SetWarningAutoMinimize() {
+
+    Settings_AutoMinimizeId = Main_setTimeout(
+        Settings_StartWarningAutoMinimize,
+        Settings_GetAutoMinimizeTimeout(),
+        Settings_AutoMinimizeId
+    );
+
+}
+
+function Settings_StartWarningAutoMinimize() {
+
+    Settings_DisableAutoMinimizeTimeout();
+    Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+    window.addEventListener("keydown", Settings_MinimizePreventClickfun, true);
+    window.addEventListener("keyup", Settings_MinimizePreventClickfun, true);
+    window.addEventListener("keypress", Settings_MinimizePreventClickfun, true);
+
+    Settings_AutoMinimizeTime = 15;
+
+    Settings_CheckAutoMinimizeEnd();
+    Main_ShowElement('minimize_warning');
+
+}
+
+function Settings_CheckAutoMinimizeEnd() {
+
+    if (Settings_AutoMinimizeTime > 0) {
+
+        Settings_AutoMinimizeWarningId = Main_setTimeout(
+            Settings_CheckAutoMinimizeEnd,
+            1000,
+            Settings_AutoMinimizeWarningId
+        );
+
+        Main_innerHTML(
+            'minimize_warning',
+            STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND))
+        );
+
+    } else {
+
+        Settings_DisableAutoMinimizeTimeout();
+
+        if (Main_IsOn_OSInterface) OSInterface_mclose(false);
+
+    }
+
+    Settings_AutoMinimizeTime--;
+
+}
+
+function Settings_MinimizePreventClickfun(e) {
+
+    e.stopPropagation();
+    Settings_DisableAutoMinimizeTimeout();
+    Settings_SetAutoMinimizeTimeout();
+
+}
+
+function Settings_DisableAutoMinimizeTimeout() {
+
+    Main_clearTimeout(Settings_AutoMinimizeId);
+    Main_clearTimeout(Settings_AutoMinimizeWarningId);
+    Main_HideElement('minimize_warning');
+
+    Main_removeEventListener("keydown", Settings_SetWarningAutoMinimize);
+
+    window.removeEventListener("keydown", Settings_MinimizePreventClickfun, true);
+    window.removeEventListener("keyup", Settings_MinimizePreventClickfun, true);
+    window.removeEventListener("keypress", Settings_MinimizePreventClickfun, true);
+
 }
 
 function Settings_SetAnimations() {
@@ -1803,6 +1940,7 @@ function Settings_DialogShowUIOpt() {
 function Settings_DialogShowCustomOpt() {
     Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
+    Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
     Settings_value.live_feed_sort.values = [
         STR_VIWES_MOST,
@@ -1821,6 +1959,12 @@ function Settings_DialogShowCustomOpt() {
             values: Settings_value.live_feed_sort.values,
             title: STR_LIVE_FEED_SORT,
             summary: STR_LIVE_FEED_SORT_SUMMARY
+        },
+        auto_minimize_inactive: {
+            defaultValue: Settings_value.auto_minimize_inactive.defaultValue,
+            values: Settings_value.auto_minimize_inactive.values,
+            title: STR_INACTIVE_SETTINGS,
+            summary: STR_INACTIVE_SETTINGS_SUMMARY
         },
         auto_refresh_screen: {
             defaultValue: Settings_value.auto_refresh_screen.defaultValue,

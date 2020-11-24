@@ -354,7 +354,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (Main_isScene2DocVisible() && !UserLiveFeed_isPreviewShowing()) UserLiveFeed_Show();
 
     if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
-        (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + (Settings_Obj_values("auto_refresh_screen") * 60000)) ||
+        (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
         UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
 
         if (UserLiveFeed_loadingData[pos]) {

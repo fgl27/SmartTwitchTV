@@ -527,7 +527,7 @@ function en_USLang() {
     STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
     STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
-    STR_AUTO_REFRESH = "Auto refresh timeout (time in minutes)";
+    STR_AUTO_REFRESH = "Auto refresh timeout";
     STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
     STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
     STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
@@ -654,5 +654,8 @@ function en_USLang() {
     STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "The center title, Live, Clip, Settings etc...";
     STR_HIDE_ETC_HELP_INFO = "Hide on screen navigation tips";
     STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips as, hold a key for a action and related";
+    STR_INACTIVE_SETTINGS = "Automatic minimize the app when inactive for";
+    STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from be running when no one is using, a warning will show up giving the user 15 seconds to press any key to prevent the minimizing";
+    STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
 
 }
