@@ -1339,6 +1339,10 @@ function Play_streamLiveAt(time) { //time in '2017-10-27T13:27:27Z'
     return Play_timeMs(Main_date_Ms - (new Date(time).getTime()));
 }
 
+function Play_streamLiveAtWitDate(dateNow, time) { //time in '2017-10-27T13:27:27Z'
+    return Play_timeMs(dateNow - (new Date(time).getTime()));
+}
+
 function Play_timeDay(time) {
     var minutes, hours, days;
 
@@ -1641,6 +1645,8 @@ function Play_showPanel() {
 
 function Play_RefreshWatchingTime() {
 
+    var dateNow = new Date().getTime();
+
     if (Play_MultiEnable) {
 
         var extraText = Play_Multi_MainBig ? 'big' : 'small', i;
@@ -1650,7 +1656,7 @@ function Play_RefreshWatchingTime() {
             if (Play_MultiArray[i].data.length > 0) {
 
                 Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_MultiArray[i].watching_time)));
-                Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], STR_SINCE + Play_streamLiveAt(Play_MultiArray[i].data[12]));
+                Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_MultiArray[i].data[12]));
 
             } else {
 
@@ -1664,10 +1670,10 @@ function Play_RefreshWatchingTime() {
     } else if (PlayExtra_PicturePicture) {
 
         Main_textContentWithEle(Play_infoPPWatchingTime[0], STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
-        Main_textContentWithEle(Play_infoPPLiveTime[0], STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
+        Main_textContentWithEle(Play_infoPPLiveTime[0], STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_data.data[12]));
 
         Main_textContentWithEle(Play_infoPPWatchingTime[1], STR_WATCHING + Play_timeMs((new Date().getTime()) - (PlayExtra_data.watching_time)));
-        Main_textContentWithEle(Play_infoPPLiveTime[1], STR_SINCE + Play_streamLiveAt(PlayExtra_data.data[12]));
+        Main_textContentWithEle(Play_infoPPLiveTime[1], STR_SINCE + Play_streamLiveAtWitDate(dateNow, PlayExtra_data.data[12]));
 
     } else if (Play_StayDialogVisible()) {
 
@@ -1680,7 +1686,7 @@ function Play_RefreshWatchingTime() {
     } else {
 
         Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs((new Date().getTime()) - (Play_data.watching_time)));
-        Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAt(Play_data.data[12]));
+        Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_data.data[12]));
 
     }
 
