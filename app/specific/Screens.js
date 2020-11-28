@@ -440,10 +440,6 @@ function Screens_HttpResultStatus(resultObj, key) {
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
         else Screens_loadDataError(key);
 
-    } else if (resultObj.status === 500 && Screens_IsInUse(key) && key === Main_usergames) {
-
-        ScreenObj[key].key_refresh();
-
     } else {
 
         Screens_loadDataError(key);
