@@ -6996,6 +6996,8 @@
     var Main_RunningTime = 0;
     var Main_PreventCheckResume = false;
 
+    var Main_Headers_Two = {};
+    var Main_Headers_Tree = {};
     var Main_Headers = [];
     var Main_Headers_Backup = [];
     var Main_kraken_api = 'https://api.twitch.tv/kraken/';
@@ -15525,6 +15527,14 @@
                 [clientIdHeader, Main_Headers_Backup[0][1]]
             ]
         );
+
+        Main_Headers_Two[Main_Headers[0][0]] = Main_Headers[0][1];
+        Main_Headers_Two[Main_Headers[1][0]] = Main_Headers[1][1];
+
+        Main_Headers_Tree[Main_Headers[0][0]] = Main_Headers[0][1];
+        Main_Headers_Tree[Main_Headers[1][0]] = Main_Headers[1][1];
+        Main_Headers_Tree[Main_Headers[2][0]] = null;
+
     }
 
     function Play_ResetDefaultQuality() {
@@ -20454,8 +20464,6 @@
 
             Screens_BasexmlHttpGet(
                 (ScreenObj[key].url + Main_TwithcV5Flag),
-                ScreenObj[key].HeaderQuatity,
-                ScreenObj[key].token,
                 ScreenObj[key].Headers,
                 key
             );
@@ -20464,34 +20472,54 @@
 
     }
 
-    function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-        var xmlHttp = new XMLHttpRequest();
+    function Screens_fetch_timeout(ms, promise) {
+        return new window.Promise(function(resolve, reject) {
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+            setTimeout(function() {
 
-        Main_Headers[2][1] = access_token;
+                reject(new Error("timeout"));
 
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+            }, ms);
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                Screens_HttpResultStatus(xmlHttp, key);
+            promise.then(resolve, reject);
+        });
+    }
+
+    function Screens_BasexmlHttpGet(theUrl, HeaderObj, key) {
+
+        Screens_fetch_timeout(
+            DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus),
+            fetch(theUrl, {
+                method: "GET",
+                headers: HeaderObj
+            })
+        ).then(
+
+            function(response) {
+
+                Screens_HttpResultStatus(response, key);
+
             }
-        };
 
-        xmlHttp.send(null);
+        ).catch(
+            function() {
+
+                Screens_loadDataError(key);
+            }
+        );
+
     }
 
     function Screens_HttpResultStatus(resultObj, key) {
+
         if (resultObj.status === 200) {
 
-            //console.log(resultObj.responseText);
-            Screens_concatenate(
-                JSON.parse(resultObj.responseText),
-                key
-            );
+            resultObj.json().then(function(data) {
+                Screens_concatenate(
+                    data,
+                    key
+                );
+            });
 
             //If the scroll position is at the end of the list after a loading success focus
             if (ScreenObj[key].itemsCount && Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
@@ -20512,6 +20540,7 @@
             Screens_loadDataError(key);
 
         }
+
     }
 
     function Screens_loadDataError(key) {
@@ -23083,7 +23112,6 @@
             emptyContent: true,
             itemsCountCheck: false,
             isRefreshing: false,
-            Headers: Main_Headers,
             data: null,
             token: null,
             data_cursor: 0,
@@ -23318,7 +23346,7 @@
         };
 
         Base_Clip_obj = {
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ItemsLimit: Main_ItemsLimitVideo,
             TopRowCreated: false,
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -23400,7 +23428,7 @@
         };
 
         Base_Game_obj = {
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             thumbclass: 'stream_thumbnail_game_holder',
             ItemsReloadLimit: Main_ItemsReloadLimitGame,
             ItemsLimit: Main_ItemsLimitGame,
@@ -23620,7 +23648,7 @@
     function ScreensObj_InitVod() {
         ScreenObj[Main_Vod] = Screens_assign({
             periodMaxPos: 4,
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             key_pgDown: Main_Clip,
             key_pgUp: Main_games,
             object: 'vods',
@@ -23679,7 +23707,7 @@
     function ScreensObj_InitChannelVod() {
         ScreenObj[Main_ChannelVod] = Screens_assign({
             periodMaxPos: 2,
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             key_pgDown: Main_ChannelClip,
             object: 'videos',
             ids: Screens_ScreenIds('ChannelVod'),
@@ -23760,7 +23788,7 @@
     function ScreensObj_InitAGameVod() {
         ScreenObj[Main_AGameVod] = Screens_assign({
             periodMaxPos: 4,
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             object: 'vods',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
@@ -23822,7 +23850,7 @@
     function ScreensObj_InitUserVod() {
         ScreenObj[Main_UserVod] = Screens_assign({
             periodMaxPos: 2,
-            HeaderQuatity: 3,
+            Headers: Main_Headers_Tree,
             object: 'videos',
             key_pgDown: Main_UserChannels,
             key_pgUp: Main_usergames,
@@ -23838,6 +23866,7 @@
             base_url: Main_kraken_api + 'videos/followed?limit=' + Main_ItemsLimitMax,
             set_url: function() {
                 this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
+                this.Headers[Main_Headers[2][0]] = this.token;
 
                 this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                     '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
@@ -23887,7 +23916,7 @@
 
     function ScreensObj_InitLive() {
         ScreenObj[Main_Live] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('Live'),
             table: 'stream_table_live',
             screen: Main_Live,
@@ -23917,7 +23946,7 @@
 
     function ScreensObj_InitSearchLive() {
         ScreenObj[Main_SearchLive] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('SearchLive'),
             ScreenName: 'SearchLive',
             table: 'stream_table_search_live',
@@ -23956,7 +23985,7 @@
 
     function ScreensObj_InitUserLive() {
         ScreenObj[Main_UserLive] = Screens_assign({
-            HeaderQuatity: 3,
+            Headers: Main_Headers_Tree,
             ids: Screens_ScreenIds('UserLive'),
             ScreenName: 'UserLive',
             table: 'stream_table_user_live',
@@ -23974,14 +24003,18 @@
 
                 if (AddUser_UsernameArray[0].access_token) {
                     //User has added a key
-                    this.HeaderQuatity = 3;
+                    this.Headers = Main_Headers_Tree;
                     this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
+                    this.Headers[Main_Headers[2][0]] = this.token;
+
                     this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
                         this.offset + '&stream_type=all';
                 } else {
                     //User didn't added a key
-                    this.HeaderQuatity = 2;
+                    this.Headers = 2;
+                    this.Headers = Main_Headers_Two;
                     this.token = null;
+
                     if (this.followerChannelsDone) {
                         //User followed channels list is done, load live channels
                         this.url = this.base_url + '?channel=' + this.followerChannels.join() + '&' +
@@ -24065,7 +24098,7 @@
 
     function ScreensObj_InitAGame() {
         ScreenObj[Main_aGame] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('AGame'),
             ScreenName: 'AGame',
             table: 'stream_table_a_game',
@@ -24120,7 +24153,7 @@
 
     function ScreensObj_InitFeatured() {
         ScreenObj[Main_Featured] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('Featured'),
             ScreenName: 'Featured',
             table: 'stream_table_featured',
@@ -24325,7 +24358,7 @@
         }, Base_obj);
 
         ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
-        ScreenObj[Main_usergames].HeaderQuatity = 1;
+        ScreenObj[Main_usergames].Headers = 1;
         ScreenObj[Main_usergames].Set_Scroll();
         ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
     }
@@ -24369,7 +24402,7 @@
 
     function ScreensObj_InitUserChannels() {
         ScreenObj[Main_UserChannels] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('UserChannels'),
             ScreenName: 'UserChannels',
             table: 'stream_table_user_channels',
@@ -24407,7 +24440,7 @@
 
     function ScreensObj_InitSearchChannels() {
         ScreenObj[Main_SearchChannels] = Screens_assign({
-            HeaderQuatity: 2,
+            Headers: Main_Headers_Two,
             ids: Screens_ScreenIds('SearchChannels'),
             ScreenName: 'SearchChannels',
             table: 'stream_table_search_channel',
