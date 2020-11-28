@@ -1706,12 +1706,30 @@ public class PlayerActivity extends Activity {
         }
         closeThisCalled = true;
         StopNotifications();
-        finishAndRemoveTask();
+
+        //For some random devices this may crash the app
+
+        try {
+
+            finishAndRemoveTask();
+
+        } catch (Exception e) {
+            Tools.recordException(TAG, "closeThis Exception ", e);
+        }
     }
 
     //Minimize the app
     private void minimizeThis() {
-        this.moveTaskToBack(true);
+
+        //For some random devices this may crash the app
+
+        try {
+
+            this.moveTaskToBack(true);
+
+        } catch (Exception e) {
+            Tools.recordException(TAG, "minimizeThis Exception ", e);
+        }
     }
 
     //https://android-developers.googleblog.com/2009/12/back-and-other-hard-keys-three-stories.html
