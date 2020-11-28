@@ -250,6 +250,14 @@ function Play_PreStart() {
             [clientIdHeader, Main_Headers_Backup[0][1]]
         ]
     );
+
+    Main_Headers_Two[Main_Headers[0][0]] = Main_Headers[0][1];
+    Main_Headers_Two[Main_Headers[1][0]] = Main_Headers[1][1];
+
+    Main_Headers_Tree[Main_Headers[0][0]] = Main_Headers[0][1];
+    Main_Headers_Tree[Main_Headers[1][0]] = Main_Headers[1][1];
+    Main_Headers_Tree[Main_Headers[2][0]] = null;
+
 }
 
 function Play_ResetDefaultQuality() {

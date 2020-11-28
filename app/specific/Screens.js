@@ -391,8 +391,6 @@ function Screens_loadDataRequest(key) {
 
         Screens_BasexmlHttpGet(
             (ScreenObj[key].url + Main_TwithcV5Flag),
-            ScreenObj[key].HeaderQuatity,
-            ScreenObj[key].token,
             ScreenObj[key].Headers,
             key
         );
@@ -401,34 +399,56 @@ function Screens_loadDataRequest(key) {
 
 }
 
-function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-    var xmlHttp = new XMLHttpRequest();
+function Screens_fetch_timeout(ms, promise) {
+    return new window.Promise(function(resolve, reject) {
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+        setTimeout(function() {
 
-    Main_Headers[2][1] = access_token;
+            reject(new Error("timeout"));
 
-    for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+        }, ms);
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            Screens_HttpResultStatus(xmlHttp, key);
+        promise.then(resolve, reject);
+    });
+}
+
+function Screens_BasexmlHttpGet(theUrl, HeaderObj, key) {
+
+    Screens_fetch_timeout(
+        DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus),
+        fetch(theUrl,
+            {
+                method: "GET",
+                headers: HeaderObj
+            }
+        )
+    ).then(
+
+        function(response) {
+
+            Screens_HttpResultStatus(response, key);
+
         }
-    };
 
-    xmlHttp.send(null);
+    ).catch(
+        function() {
+
+            Screens_loadDataError(key);
+        }
+    );
+
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
+
     if (resultObj.status === 200) {
 
-        //console.log(resultObj.responseText);
-        Screens_concatenate(
-            JSON.parse(resultObj.responseText),
-            key
-        );
+        resultObj.json().then(function(data) {
+            Screens_concatenate(
+                data,
+                key
+            );
+        });
 
         //If the scroll position is at the end of the list after a loading success focus
         if (ScreenObj[key].itemsCount && Main_ThumbOpenIsNull((ScreenObj[key].posY + 1) + '_0', ScreenObj[key].ids[0])) {
@@ -449,6 +469,7 @@ function Screens_HttpResultStatus(resultObj, key) {
         Screens_loadDataError(key);
 
     }
+
 }
 
 function Screens_loadDataError(key) {
