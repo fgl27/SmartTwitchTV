@@ -256,13 +256,21 @@ function UserLiveFeedobj_loadChannels() {
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    UserLiveFeedobj_loadChannelLive(this.responseText);
+
                 } else {
+
                     UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -385,7 +393,9 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
+
+            if (this.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(this);
+
         };
 
         xmlHttp.send(null);
@@ -1163,7 +1173,9 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
+
+            if (this.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(this);
+
         };
 
         xmlHttp.send(null);

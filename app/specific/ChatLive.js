@@ -179,15 +179,25 @@ function ChatLive_checkFallow(tryes, chat_number, id) {
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //yes
-                ChatLive_checkFallowSuccess(xmlHttp.responseText, chat_number, id);
-            } else if (xmlHttp.status === 404) { //no
-                ChatLive_RequestCheckFollowNOK(xmlHttp.responseText, tryes, chat_number, id);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) { //yes
+
+                ChatLive_checkFallowSuccess(this.responseText, chat_number, id);
+
+            } else if (this.status === 404) { //no
+
+                ChatLive_RequestCheckFollowNOK(this.responseText, tryes, chat_number, id);
+
             } else { // internet error
+
                 ChatLive_checkFallowError(tryes, chat_number, id);
+
             }
+
         }
+
     };
 
     xmlHttp.send(null);
@@ -241,19 +251,24 @@ function ChatLive_checkSub(tryes, chat_number, id) {
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //yes
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) { //yes
 
                 ChatLive_SubState[chat_number].state = true;
 
-            } else if (xmlHttp.status === 404) {
+            } else if (this.status === 404) {
 
-                var response = JSON.parse(xmlHttp.responseText);
+                var response = JSON.parse(this.responseText);
+
                 if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
+
                     ChatLive_SubState[chat_number].state = false;
+
                 } else ChatLive_checkSubError(tryes, chat_number, id);
 
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+            } else if (this.status === 401 || this.status === 403) { //token expired
 
                 if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
                 else ChatLive_checkSubError(tryes, chat_number, id);
@@ -263,7 +278,9 @@ function ChatLive_checkSub(tryes, chat_number, id) {
                 ChatLive_checkSubError(tryes, chat_number, id);
 
             }
+
         }
+
     };
 
     xmlHttp.send(null);
@@ -1765,17 +1782,17 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
 
     xmlHttp.onreadystatechange = function() {
 
-        if (xmlHttp.readyState === 4) {
+        if (this.readyState === 4) {
 
-            if (xmlHttp.status === 200) {
+            if (this.status === 200) {
 
-                callbackSucess(xmlHttp.responseText, chat_number, id);
+                callbackSucess(this.responseText, chat_number, id);
 
-            } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+            } else if (HeaderQuatity > 2 && (this.status === 401 || this.status === 403)) { //token expired
 
                 if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
-            } else if (xmlHttp.status !== 404) {//404 ignore the result is empty
+            } else if (this.status !== 404) {//404 ignore the result is empty
 
                 callbackError(tryes, chat_number, id);
 

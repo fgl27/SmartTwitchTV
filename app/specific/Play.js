@@ -776,9 +776,12 @@ function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) Play_updateVodInfoSuccess(xmlHttp.responseText, BroadcastID);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) Play_updateVodInfoSuccess(this.responseText, BroadcastID);
             else Play_updateVodInfoError(Channel_id, BroadcastID, tryes);
+
         }
     };
 
@@ -846,13 +849,21 @@ function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_updateStreamInfoValues(xmlHttp.responseText, Is_play);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) {
+
+                Play_updateStreamInfoValues(this.responseText, Is_play);
+
             } else {
+
                 Play_updateStreamInfoGetError(theUrl, tryes, Is_play);
+
             }
+
         }
+
     };
 
     xmlHttp.send(null);

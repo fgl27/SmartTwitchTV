@@ -46,13 +46,21 @@ function Play_RefreshMultiGet(theUrl, tryes, pos) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                Play_updateStreamInfoMultiValues(xmlHttp.responseText, pos);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) {
+
+                Play_updateStreamInfoMultiValues(this.responseText, pos);
+
             } else {
+
                 Play_updateStreamInfoMultiError(theUrl, tryes, pos);
+
             }
+
         }
+
     };
 
     xmlHttp.send(null);

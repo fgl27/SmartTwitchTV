@@ -416,9 +416,13 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
             xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                Screens_HttpResultStatus(xmlHttp, key);
+
+            if (this.readyState === 4) {
+
+                Screens_HttpResultStatus(this, key);
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -2533,7 +2537,7 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID);
+        if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(this, channel_id, tryes, ID);
     };
 
     xmlHttp.send(null);

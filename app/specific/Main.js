@@ -1678,13 +1678,20 @@ function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callb
         xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText, key);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) {
+
+                callbackSucess(this.responseText, key);
+
             } else {
+
                 calbackError(key);
+
             }
         }
+
     };
 
     xmlHttp.send(null);
@@ -2071,13 +2078,15 @@ function Main_SetHistoryworker() {
                             xmlHttp.mData = event.data;
 
                             xmlHttp.open("GET", theUrl, true);
-                            xmlHttp.timeout = 60000;
+                            xmlHttp.timeout = 30000;
 
                             xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                             xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
 
                             xmlHttp.onreadystatechange = function() {
-                                if (xmlHttp.readyState === 4) onload(xmlHttp);
+
+                                if (this.readyState === 4) onload(this);
+
                             };
 
                             xmlHttp.send(null);

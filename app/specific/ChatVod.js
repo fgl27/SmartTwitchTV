@@ -86,13 +86,21 @@ function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                callbackSucess(xmlHttp.responseText);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) {
+
+                callbackSucess(this.responseText);
+
             } else {
+
                 calbackError(tryes);
+
             }
+
         }
+
     };
 
     xmlHttp.send(null);
@@ -250,11 +258,13 @@ function Chat_loadChatRequest(id, tryes) {
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
 
-                Chat_loadChatCheckStatus(xmlHttp, id);
+            if (this.readyState === 4) {
+
+                Chat_loadChatCheckStatus(this, id);
 
             }
+
         };
 
         xmlHttp.send(null);
@@ -566,12 +576,20 @@ function Chat_loadChatNextRequest(id, tryes) {
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) {
+
+                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(this.responseText, id);
+
             } else {
+
                 if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id, tryes);
+
             }
+
+
         }
     };
 

@@ -295,10 +295,14 @@ function AddUser_UpdateUser(position, tryes) {
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) AddUser_UpdateUsertSuccess(xmlHttp.responseText, position);
+
+        if (this.readyState === 4) {
+
+            if (this.status === 200) AddUser_UpdateUsertSuccess(this.responseText, position);
             else AddUser_UpdateUserError(position, tryes);
+
         }
+
     };
 
     xmlHttp.send(null);

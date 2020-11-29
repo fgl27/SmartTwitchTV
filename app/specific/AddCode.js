@@ -85,10 +85,12 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
+
+            if (this.readyState === 4) {
                 //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, this, sync);
             }
+
         };
 
         xmlHttp.send(null);
@@ -530,7 +532,7 @@ function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, cal
         xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
-        callbackready(xmlHttp, tryes);
+        callbackready(this, tryes);
     };
 
     xmlHttp.send(null);
@@ -545,7 +547,7 @@ function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
     xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
     xmlHttp.onreadystatechange = function() {
-        callbackready(xmlHttp, position, tryes);
+        callbackready(this, position, tryes);
     };
 
     xmlHttp.send(null);
