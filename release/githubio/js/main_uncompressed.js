@@ -7248,6 +7248,7 @@
                         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
                         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+                        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
                         //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
                     };
                 }
@@ -31192,6 +31193,24 @@
         }
     }
 
+    function UserLiveFeedobj_CheckGetResult(result, pos) {
+
+        if (result) {
+
+            var obj = JSON.parse(result);
+
+            if (obj.status === 200) {
+
+                UserLiveFeed_obj[pos].success(obj.responseText);
+
+                return;
+            }
+
+        }
+
+        UserLiveFeedobj_loadDataErrorElse(pos);
+    }
+
     function UserLiveFeedobj_loadDataError(pos) {
         UserLiveFeed_loadingDataTry[pos]++;
 
@@ -34128,6 +34147,7 @@
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
         //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
     };
 
