@@ -1663,19 +1663,16 @@ function CheckPage(pageUrlCode) {
 }
 
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-    BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
-}
 
-function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
     var xmlHttp = new XMLHttpRequest();
 
     xmlHttp.open("GET", theUrl, true);
     xmlHttp.timeout = Timeout;
 
-    HeaderArray[2][1] = access_token;
+    Main_Headers[2][1] = access_token;
 
     for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
     xmlHttp.onreadystatechange = function() {
 

@@ -2733,10 +2733,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String dataProp, String POST) {
-            CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, POST, dataProp, true);
-        }
 
-        void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String POST, String dataProp, boolean tryAgain) {
             PreviewFeedResult[x][y] = null;
 
             try {
@@ -2755,11 +2752,7 @@ public class PlayerActivity extends Activity {
                         }
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
-                if (tryAgain) {//try again after a minor delay
-
-                    MainThreadHandler.postDelayed(() -> CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, POST, dataProp, false), 250);
-
-                } else CheckIfIsLiveFeedError(x, y, callback);
+                CheckIfIsLiveFeedError(x, y, callback);
 
                 Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
             }
@@ -2789,10 +2782,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String POST) {
-            getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, dataProp, POST, true);
-        }
 
-        void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String POST, boolean tryAgain) {
             StreamDataResult[position] = null;
 
             try {
@@ -2819,9 +2809,7 @@ public class PlayerActivity extends Activity {
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
 
-                if (tryAgain) {//try again after a minor delay
-                    MainThreadHandler.postDelayed(() -> getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, dataProp, POST, false), 250);
-                } else getStreamDataAsyncError(position, callback, checkResult);
+                getStreamDataAsyncError(position, callback, checkResult);
 
                 Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
 
@@ -2851,15 +2839,8 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                             String callback, long checkResult, long key, int thread) {
+                                             String callback, long checkResult, long key, int DataResultPos) {
 
-            GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
-                    callback, checkResult, key, thread, true);
-
-        }
-
-        void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                      String callback, long checkResult, long key, int DataResultPos, boolean tryAgain) {
             GetMethodUrlDataResult[DataResultPos] = null;
 
             try {
@@ -2891,12 +2872,7 @@ public class PlayerActivity extends Activity {
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
 
-                if (tryAgain) {//try again after a minor delay
-
-                    MainThreadHandler.postDelayed(() -> GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
-                            callback, checkResult, key, DataResultPos, false), 250);
-
-                } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
+                GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
 
                 Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
 
