@@ -84,7 +84,7 @@
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
-        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
+        //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */

@@ -218,7 +218,7 @@ function Main_loadTranslations(language) {
                     'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                     'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
                     'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
-                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
+                    //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
                 };
             }
 
@@ -1667,69 +1667,69 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
     Main_Headers[2][1] = access_token;
     var i = 0;
 
-    if (!Main_IsOn_OSInterface) {
+    // if (!Main_IsOn_OSInterface) {
 
-        var xmlHttp = new XMLHttpRequest();
+    var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Timeout;
+    xmlHttp.open("GET", theUrl, true);
+    xmlHttp.timeout = Timeout;
 
-        for (i; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+    for (i; i < HeaderQuatity; i++)
+        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-        xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function() {
 
-            if (this.readyState === 4) {
+        if (this.readyState === 4) {
 
-                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
+            Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
 
-            }
+        }
 
-        };
+    };
 
-        xmlHttp.send(null);
+    xmlHttp.send(null);
 
-    } else {
+    // } else {
 
-        var array = [];
+    //     var array = [];
 
-        for (i; i < HeaderQuatity; i++)
-            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+    //     for (i; i < HeaderQuatity; i++)
+    //         array.push([Main_Headers[i][0], Main_Headers[i][1]]);
 
-        OSInterface_BasexmlHttpGet(
-            theUrl,
-            Timeout,
-            null,
-            null,
-            JSON.stringify(array),
-            'Main_CheckBasexmlHttpGet',
-            0,
-            key,
-            callbackSucess.name,
-            calbackError.name
-        );
+    //     OSInterface_BasexmlHttpGet(
+    //         theUrl,
+    //         Timeout,
+    //         null,
+    //         null,
+    //         JSON.stringify(array),
+    //         'Main_CheckBasexmlHttpGet',
+    //         0,
+    //         key,
+    //         callbackSucess.name,
+    //         calbackError.name
+    //     );
 
-    }
-
-}
-
-function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
-
-    if (result) {
-
-        Main_BasexmlHttpStatus(
-            JSON.parse(result),
-            key,
-            eval(callbackSucess),// jshint ignore:line
-            eval(calbackError)// jshint ignore:line
-        );
-        return;
-
-    }
-
-    eval(calbackError)(key); // jshint ignore:line
+    // }
 
 }
+
+// function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
+
+//     if (result) {
+
+//         Main_BasexmlHttpStatus(
+//             JSON.parse(result),
+//             key,
+//             eval(callbackSucess),// jshint ignore:line
+//             eval(calbackError)// jshint ignore:line
+//         );
+//         return;
+
+//     }
+
+//     eval(calbackError)(key); // jshint ignore:line
+
+// }
 
 function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError) {
 
