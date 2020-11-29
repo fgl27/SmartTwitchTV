@@ -167,7 +167,7 @@ function ChannelContent_loadDataCheckHost() {
         'ChannelContent_CheckHostResult',//callback
         0,//checkResult
         ChannelContent_loadDataCheckHostId,//key
-        5//thread
+        55//thread
     );
 
 }

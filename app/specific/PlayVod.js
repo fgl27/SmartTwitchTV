@@ -1325,7 +1325,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             'PlayVod_previews_success',//callback
             0,//checkResult
             PlayVod_previewsId,//key
-            2//thread
+            52//thread
         );
     }
     //else PlayVod_previews_start_test();
@@ -1531,7 +1531,7 @@ function PlayVod_updateChapters() {
             'PlayVod_updateChaptersResult',//callback
             0,//checkResult
             PlayVod_updateChaptersId,//key
-            3//thread
+            53//thread
         );
 
     } else PlayVod_ProcessChaptersFake();

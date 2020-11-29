@@ -402,23 +402,52 @@ function Screens_loadDataRequest(key) {
 }
 
 function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-    var xmlHttp = new XMLHttpRequest();
+    HeaderArray[2][1] = access_token;
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+    if (!Main_IsOn_OSInterface) {
 
-    Main_Headers[2][1] = access_token;
+        var xmlHttp = new XMLHttpRequest();
 
-    for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            Screens_HttpResultStatus(xmlHttp, key);
-        }
-    };
+        HeaderArray[2][1] = access_token;
 
-    xmlHttp.send(null);
+        for (var i = 0; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+                Screens_HttpResultStatus(xmlHttp, key);
+            }
+        };
+
+        xmlHttp.send(null);
+
+    } else {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            theUrl,
+            DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
+            null,//postMessage, null for get
+            null,//Method, null for get
+            JSON.stringify(HeaderArray),//JsonHeadersArray
+            'Screens_CheckGetResult',//callback
+            key,//checkResult
+            key,//key
+            key//thread
+        );
+
+    }
+}
+
+
+function Screens_CheckGetResult(result, key) {
+    if (result) {
+
+        Screens_HttpResultStatus(JSON.parse(result), key);
+
+    } else Screens_loadDataError(key);
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
@@ -1010,7 +1039,7 @@ function Screens_LoadPreviewStart(key, obj) {
             'Screens_LoadPreviewResult',//callback
             (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
             key,//key
-            1//thread
+            51//thread
         );
 
         return;

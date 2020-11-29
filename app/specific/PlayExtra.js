@@ -275,7 +275,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
         'PlayExtra_CheckHostResult',//callback
         PlayExtra_loadDataCheckHostId,//checkResult
         doSwitch,//key
-        6//thread
+        56//thread
     );
 
 }

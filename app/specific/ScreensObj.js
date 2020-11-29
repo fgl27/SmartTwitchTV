@@ -1332,9 +1332,7 @@ function ScreensObj_InitUserGames() {
     }, Base_obj);
 
     ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
-    ScreenObj[Main_usergames].HeaderQuatity = 1;
     ScreenObj[Main_usergames].Set_Scroll();
-    ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
 }
 
 function ScreensObj_InitSearchGames() {

@@ -235,7 +235,7 @@ function PlayClip_loadDataRequest() {
         'PlayClip_loadDataResult',//callback
         0,//checkResult
         PlayClip_loadDataRequestId,//key
-        9//thread
+        59//thread
     );
 }
 

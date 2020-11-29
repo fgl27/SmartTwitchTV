@@ -1978,7 +1978,7 @@ function Play_loadDataCheckHost() {
                 'Play_CheckHostResult',//callback
                 0,//checkResult
                 Play_loadDataCheckHostId,//key
-                7//thread
+                57//thread
             );
 
         },

@@ -40,43 +40,48 @@
      * smartTwitchTV + all functions called by java
      */
     smartTwitchTV = {// smartTwitchTV var is defined in app/specific/Main.js
-        'mainstart': Main_Start, //Main_Start id Main_Start() func from app/specific/Main.js
-        'Play_PannelEndStart': Play_PannelEndStart, //Play_PannelEndStart() func from app/specific/Play.js
-        'Play_PlayerCheck': Play_PlayerCheck, //Play_PlayerCheck() func from app/specific/Play.js
-        'Play_UpdateDuration': Play_UpdateDuration, //Play_UpdateDuration() func from app/specific/Play.js
-        'PlayExtra_End': PlayExtra_End, //PlayExtra_End() func from app/specific/PlayExtra.js
-        'Play_MultiEnd': Play_MultiEnd, // Play_MultiEndede() func from app/specific/Play.js
-        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean, // Play_CheckIfIsLiveClean() func from app/specific/Play.js
-        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/UserLiveFeed.js
-        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult, // Sidepannel_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
-        'Main_CheckStop': Main_CheckStop, // Main_CheckStop() func from app/specific/Main.js
-        'Main_CheckResume': Main_CheckResume, // Main_CheckResume() func from app/specific/Main.js
-        'Play_getQualities': Play_getQualities, // Play_getQualities() func from app/specific/Play.js
-        'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
-        'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
-        'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
-        'Play_PlayPauseChange': Play_PlayPauseChange, // Play_KeyPause() func from app/specific/PlayEtc.js
-        'PlayClip_loadDataResult': PlayClip_loadDataResult, // PlayClip_QualityGenerate() func from app/specific/PlayClip.js
-        'PlayVod_loadDataResult': PlayVod_loadDataResult, // PlayVod_loadDataResult() func from app/specific/PlayVod.js
-        'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
-        'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
-        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
-        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
-        'Play_MultiResult': Play_MultiResult, // Play_MultiResult() func from app/specific/Play.js
-        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult, // ChannelContent_CheckHostResult() func from app/specific/ChannelContent.js
-        'Play_CheckHostResult': Play_CheckHostResult, // Play_CheckHostResult() func from app/specific/Play.js
-        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult, // PlayExtra_CheckHostResult() func from app/specific/PlayExtra.js
-        'Screens_LoadPreviewResult': Screens_LoadPreviewResult, // Screens_LoadPreviewResult() func from app/specific/Screens.js
-        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,// ChannelContent_LoadPreviewResult() func from app/specific/ChannelContent.js
-        'Play_StayCheckHostResult': Play_StayCheckHostResult,// Play_StayCheckHostResult() func from app/specific/PlayEtc.js
-        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,// Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
-        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
-        'Main_checkWebVersion': Main_checkWebVersion,// Main_checkWebVersion() func from app/specific/Main.js
-        'Main_onNewIntent': Main_onNewIntent,// Main_onNewIntent() func from app/specific/Main.js
-        'Main_EventChannelRefresh': Main_EventChannelRefresh,// Main_EventChannelRefresh() func from app/specific/Main.js
-        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,// ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
-        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,// PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
-        'ChatLive_SetLatency': ChatLive_SetLatency,// ChatLive_SetLatency() func from app/specific/ChatLive.js
+        'mainstart': Main_Start,
+        'Play_PannelEndStart': Play_PannelEndStart,
+        'Play_PlayerCheck': Play_PlayerCheck,
+        'Play_UpdateDuration': Play_UpdateDuration,
+        'PlayExtra_End': PlayExtra_End,
+        'Play_MultiEnd': Play_MultiEnd,
+        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+        'Main_CheckStop': Main_CheckStop,
+        'Main_CheckResume': Main_CheckResume,
+        'Play_getQualities': Play_getQualities,
+        'Play_ShowVideoStatus': Play_ShowVideoStatus,
+        'Play_ShowVideoQuality': Play_ShowVideoQuality,
+        'PlayVod_previews_success': PlayVod_previews_success,
+        'Play_PlayPauseChange': Play_PlayPauseChange,
+        'PlayClip_loadDataResult': PlayClip_loadDataResult,
+        'PlayVod_loadDataResult': PlayVod_loadDataResult,
+        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+        'Play_loadDataResult': Play_loadDataResult,
+        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+        'Play_MultiResult': Play_MultiResult,
+        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
+        'Play_CheckHostResult': Play_CheckHostResult,
+        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
+        'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
+        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
+        'Play_StayCheckHostResult': Play_StayCheckHostResult,
+        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
+        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+        'Main_checkWebVersion': Main_checkWebVersion,
+        'Main_onNewIntent': Main_onNewIntent,
+        'Main_EventChannelRefresh': Main_EventChannelRefresh,
+        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
+        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
+        'ChatLive_SetLatency': ChatLive_SetLatency,
+        'Screens_CheckGetResult': Screens_CheckGetResult,
+        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
+        'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
+        'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
+        'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult
     };
 
     /** Expose `smartTwitchTV` */

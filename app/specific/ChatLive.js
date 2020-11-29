@@ -353,7 +353,7 @@ function ChatLive_loadChattersLoad(chat_number, id) {
         'ChatLive_loadChattersSuccess',//callback
         id,//checkResult
         chat_number,//key
-        10//thread
+        60//thread
     );
 
 }

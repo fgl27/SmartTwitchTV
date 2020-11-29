@@ -209,7 +209,12 @@ function Main_loadTranslations(language) {
                     'Main_EventChannelRefresh': Main_EventChannelRefresh,
                     'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
                     'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
-                    'ChatLive_SetLatency': ChatLive_SetLatency
+                    'ChatLive_SetLatency': ChatLive_SetLatency,
+                    'Screens_CheckGetResult': Screens_CheckGetResult,
+                    'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
+                    'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
+                    'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
+                    'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult
                 };
             }
 
@@ -1045,7 +1050,7 @@ function Main_checkWebVersionRun(web) {
             'Main_checkWebVersion',//callback
             0,//checkResult
             web ? 1 : 0,//key
-            4//thread
+            54//thread
         );
     }
 }

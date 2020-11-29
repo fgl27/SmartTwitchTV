@@ -236,7 +236,7 @@ public class PlayerActivity extends Activity {
 
     private final String[][] PreviewFeedResult = new String[25][100];
     private final String[] StreamDataResult = new String[PlayerAccount * 2];
-    private final String[] GetMethodUrlDataResult = new String[100];
+    private final String[] GetMethodUrlDataResult = new String[100];//0 to 29 screen, 30 to 50 preview player, 50+ etc
 
     private final ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
 
@@ -2890,9 +2890,12 @@ public class PlayerActivity extends Activity {
                         }
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
+
                 if (tryAgain) {//try again after a minor delay
+
                     MainThreadHandler.postDelayed(() -> GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray,
                             callback, checkResult, key, DataResultPos, false), 250);
+
                 } else GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
 
                 Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);

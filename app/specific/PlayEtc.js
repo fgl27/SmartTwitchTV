@@ -742,7 +742,7 @@ function Play_StayCheckHost() {
         'Play_StayCheckHostResult',//callback
         0,//checkResult
         Play_StayCheckHostId,//key
-        8//thread
+        58//thread
     );
 }
 
