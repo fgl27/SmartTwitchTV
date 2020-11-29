@@ -7054,10 +7054,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.287';
-    var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 29 2020';
-    var Main_version_web = 547; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.288';
+    var Main_version_java = 288; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'November 30 2020';
+    var Main_version_web = 548; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7242,13 +7242,13 @@
                         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                         'ChatLive_SetLatency': ChatLive_SetLatency,
                         'Screens_CheckGetResult': Screens_CheckGetResult,
-                        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
                         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                         'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
                         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
                         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+                        //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
                     };
                 }
 
@@ -7657,6 +7657,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.288 - Web Version November 30 2020",
+                changes: [
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version November 29 2020",
                 changes: [
                     "General performance improves and bug fixes"
@@ -7674,20 +7680,6 @@
                 changes: [
                     "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related",
                     "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.287 - Web Version November 22 2020",
-                changes: [
-                    "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
-                    "User followed host content was fully removed",
-                    "Live followed game notification is no longer available",
-                    "User followed games content was changed the app will only display the full list of followed games all of yours followed games will be displayed, the user live games list is no longer available, the only other available user live game API is limited to displayed 100 games MAX and it will only show the first 100 you followed meaning that if you follow more then 100 games you will not be able to see any new game you followed after that 100 mark if that API was used, because of that the app will not used that 100 caped API and will use the full followed API that show the full list of followed games, the sort of this list is base on the game you followed first and can't be changed",
-                    "Is no longer possible to see on the 'A Game' screen if you follow that game, also not possible to follow or un-follow a game",
-                    "Channels on the home screen features will no logger have user followed host or followed games",
-                    "If in the future a new way to access this content changed/removed is available this features will be revised",
-                    "Is demanding to update to the latest APK if you don't the app will no longer work",
-                    "General performance improves and bug fixes",
                 ]
             }
         ];
@@ -8699,38 +8691,85 @@
     }
 
     function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
-        BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, Main_Headers, key);
-    }
 
-    function BasexmlHttpGetExtra(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, HeaderArray, key) {
+        Main_Headers[2][1] = access_token;
+        var i = 0;
+
+        // if (!Main_IsOn_OSInterface) {
+
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
-        HeaderArray[2][1] = access_token;
-
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+        for (i; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
 
             if (this.readyState === 4) {
 
-                if (this.status === 200) {
+                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
 
-                    callbackSucess(this.responseText, key);
-
-                } else {
-
-                    calbackError(key);
-
-                }
             }
 
         };
 
         xmlHttp.send(null);
+
+        // } else {
+
+        //     var array = [];
+
+        //     for (i; i < HeaderQuatity; i++)
+        //         array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+        //     OSInterface_BasexmlHttpGet(
+        //         theUrl,
+        //         Timeout,
+        //         null,
+        //         null,
+        //         JSON.stringify(array),
+        //         'Main_CheckBasexmlHttpGet',
+        //         0,
+        //         key,
+        //         callbackSucess.name,
+        //         calbackError.name
+        //     );
+
+        // }
+
+    }
+
+    // function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
+
+    //     if (result) {
+
+    //         Main_BasexmlHttpStatus(
+    //             JSON.parse(result),
+    //             key,
+    //             eval(callbackSucess),// jshint ignore:line
+    //             eval(calbackError)// jshint ignore:line
+    //         );
+    //         return;
+
+    //     }
+
+    //     eval(calbackError)(key); // jshint ignore:line
+
+    // }
+
+    function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError) {
+
+        if (obj.status === 200) {
+
+            eval(callbackSucess)(obj.responseText, key); // jshint ignore:line
+
+            return;
+        }
+
+        eval(calbackError)(key); // jshint ignore:line
+
     }
 
     function Main_SetThumb() {
@@ -9017,6 +9056,7 @@
                             onload = function(obj) {
 
                                 if (obj.status === 200) {
+
                                     var response = JSON.parse(obj.responseText);
 
                                     if (response.streams && response.streams.length) {
@@ -9048,10 +9088,12 @@
                                         });
 
                                     }
+
                                 }
 
                             };
-                        } else if (event.data.type === 'live' || event.data.type === 'vod') { //Live that is not a VOD and VOD
+
+                        } else if (event.data.type === 'live' || event.data.type === 'vod') { //Live that is not a VOD or VOD
 
                             theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
 
@@ -9200,6 +9242,7 @@
 
     var Main_StartHistoryworkerId;
 
+    //Check if a live in history has become a VOD
     function Main_StartHistoryworker() {
 
         if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
@@ -9229,6 +9272,7 @@
         }
     }
 
+    //Check if a VOD in history has ben deleted
     function Main_RunVODWorker() {
 
         if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
@@ -9251,6 +9295,7 @@
 
     }
 
+    //Check if a Live that is now VOD in Live history has ben deleted
     function Main_RunLiveVODWorker() {
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
@@ -9272,6 +9317,7 @@
         }
     }
 
+    //Check if a CLIP in history has ben deleted
     function Main_RunClipWorker() {
 
         if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
@@ -10156,6 +10202,34 @@
             thread
         );
     }
+
+    //public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+    //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
+    //Android specific: true
+    // function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
+
+    //     try {
+
+    //         Android.BasexmlHttpGet(
+    //             urlString,
+    //             timeout,
+    //             postMessage,
+    //             Method,
+    //             JsonHeadersArray,
+    //             callback,
+    //             checkResult,
+    //             key,
+    //             callbackSucess,
+    //             calbackError
+    //         );
+
+    //     } catch (e) {
+
+    //         calbackError(key);
+
+    //     }
+
+    // }
 
     //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
     //urlString = the url to to the http request
@@ -31097,9 +31171,8 @@
                 headers,
                 null,
                 callback,
-                function() {
-                    UserLiveFeedobj_loadDataError(pos);
-                }
+                UserLiveFeedobj_loadDataError,
+                pos
             );
 
         } else {
@@ -31117,24 +31190,6 @@
             );
 
         }
-    }
-
-    function UserLiveFeedobj_CheckGetResult(result, pos) {
-
-        if (result) {
-
-            var obj = JSON.parse(result);
-
-            if (obj.status === 200) {
-
-                UserLiveFeed_obj[pos].success(obj.responseText);
-
-                return;
-            }
-
-        }
-
-        UserLiveFeedobj_loadDataErrorElse(pos);
     }
 
     function UserLiveFeedobj_loadDataError(pos) {
@@ -34067,13 +34122,13 @@
         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Screens_CheckGetResult': Screens_CheckGetResult,
-        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+        //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */

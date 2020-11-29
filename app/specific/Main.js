@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.287';
-var Main_version_java = 287;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'November 29 2020';
-var Main_version_web = 547;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.288';
+var Main_version_java = 288;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'November 30 2020';
+var Main_version_web = 548;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -627,6 +627,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.288 - Web Version November 30 2020",
+            changes: [
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
             title: "Web Version November 29 2020",
             changes: [
                 "General performance improves and bug fixes"
@@ -644,20 +650,6 @@ function Main_Changelog() {
             changes: [
                 "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related",
                 "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.287 - Web Version November 22 2020",
-            changes: [
-                "Twitch disable some of they API used to get user content lists followed hosts and followed games, because of that some of the app features was removed or changed the changes see bellow",
-                "User followed host content was fully removed",
-                "Live followed game notification is no longer available",
-                "User followed games content was changed the app will only display the full list of followed games all of yours followed games will be displayed, the user live games list is no longer available, the only other available user live game API is limited to displayed 100 games MAX and it will only show the first 100 you followed meaning that if you follow more then 100 games you will not be able to see any new game you followed after that 100 mark if that API was used, because of that the app will not used that 100 caped API and will use the full followed API that show the full list of followed games, the sort of this list is base on the game you followed first and can't be changed",
-                "Is no longer possible to see on the 'A Game' screen if you follow that game, also not possible to follow or un-follow a game",
-                "Channels on the home screen features will no logger have user followed host or followed games",
-                "If in the future a new way to access this content changed/removed is available this features will be revised",
-                "Is demanding to update to the latest APK if you don't the app will no longer work",
-                "General performance improves and bug fixes",
             ]
         }
     ];
