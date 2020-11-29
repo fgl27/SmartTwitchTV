@@ -1974,6 +1974,7 @@ function Main_SetHistoryworker() {
                         onload = function(obj) {
 
                             if (obj.status === 200) {
+
                                 var response = JSON.parse(obj.responseText);
 
                                 if (response.streams && response.streams.length) {
@@ -2011,10 +2012,12 @@ function Main_SetHistoryworker() {
                                     );
 
                                 }
+
                             }
 
                         };
-                    } else if (event.data.type === 'live' || event.data.type === 'vod') {//Live that is not a VOD and VOD
+
+                    } else if (event.data.type === 'live' || event.data.type === 'vod') {//Live that is not a VOD or VOD
 
                         theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
 
@@ -2164,6 +2167,8 @@ function Main_SetHistoryworker() {
 }
 
 var Main_StartHistoryworkerId;
+
+//Check if a live in history has become a VOD
 function Main_StartHistoryworker() {
 
     if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
@@ -2194,6 +2199,7 @@ function Main_StartHistoryworker() {
     }
 }
 
+//Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
 
     if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
@@ -2217,6 +2223,7 @@ function Main_RunVODWorker() {
 
 }
 
+//Check if a Live that is now VOD in Live history has ben deleted
 function Main_RunLiveVODWorker() {
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
@@ -2239,6 +2246,7 @@ function Main_RunLiveVODWorker() {
     }
 }
 
+//Check if a CLIP in history has ben deleted
 function Main_RunClipWorker() {
 
     if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
