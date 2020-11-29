@@ -84,6 +84,7 @@
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
         //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
     };
 
