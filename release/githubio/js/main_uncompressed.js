@@ -1751,10 +1751,12 @@
             xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) {
+
+                if (this.readyState === 4) {
                     //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                    AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+                    AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, this, sync);
                 }
+
             };
 
             xmlHttp.send(null);
@@ -2197,7 +2199,7 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            callbackready(xmlHttp, tryes);
+            callbackready(this, tryes);
         };
 
         xmlHttp.send(null);
@@ -2212,7 +2214,7 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
 
         xmlHttp.onreadystatechange = function() {
-            callbackready(xmlHttp, position, tryes);
+            callbackready(this, position, tryes);
         };
 
         xmlHttp.send(null);
@@ -2534,10 +2536,14 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) AddUser_UpdateUsertSuccess(xmlHttp.responseText, position);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) AddUser_UpdateUsertSuccess(this.responseText, position);
                 else AddUser_UpdateUserError(position, tryes);
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -4730,15 +4736,25 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) { //yes
-                    ChatLive_checkFallowSuccess(xmlHttp.responseText, chat_number, id);
-                } else if (xmlHttp.status === 404) { //no
-                    ChatLive_RequestCheckFollowNOK(xmlHttp.responseText, tryes, chat_number, id);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) { //yes
+
+                    ChatLive_checkFallowSuccess(this.responseText, chat_number, id);
+
+                } else if (this.status === 404) { //no
+
+                    ChatLive_RequestCheckFollowNOK(this.responseText, tryes, chat_number, id);
+
                 } else { // internet error
+
                     ChatLive_checkFallowError(tryes, chat_number, id);
+
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -4792,19 +4808,24 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) { //yes
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) { //yes
 
                     ChatLive_SubState[chat_number].state = true;
 
-                } else if (xmlHttp.status === 404) {
+                } else if (this.status === 404) {
 
-                    var response = JSON.parse(xmlHttp.responseText);
+                    var response = JSON.parse(this.responseText);
+
                     if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) { //no
+
                         ChatLive_SubState[chat_number].state = false;
+
                     } else ChatLive_checkSubError(tryes, chat_number, id);
 
-                } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+                } else if (this.status === 401 || this.status === 403) { //token expired
 
                     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
                     else ChatLive_checkSubError(tryes, chat_number, id);
@@ -4814,7 +4835,9 @@
                     ChatLive_checkSubError(tryes, chat_number, id);
 
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -6307,17 +6330,17 @@
 
         xmlHttp.onreadystatechange = function() {
 
-            if (xmlHttp.readyState === 4) {
+            if (this.readyState === 4) {
 
-                if (xmlHttp.status === 200) {
+                if (this.status === 200) {
 
-                    callbackSucess(xmlHttp.responseText, chat_number, id);
+                    callbackSucess(this.responseText, chat_number, id);
 
-                } else if (HeaderQuatity > 2 && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+                } else if (HeaderQuatity > 2 && (this.status === 401 || this.status === 403)) { //token expired
 
                     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
-                } else if (xmlHttp.status !== 404) { //404 ignore the result is empty
+                } else if (this.status !== 404) { //404 ignore the result is empty
 
                     callbackError(tryes, chat_number, id);
 
@@ -6448,13 +6471,21 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    callbackSucess(this.responseText);
+
                 } else {
+
                     calbackError(tryes);
+
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -6612,11 +6643,13 @@
             xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) {
 
-                    Chat_loadChatCheckStatus(xmlHttp, id);
+                if (this.readyState === 4) {
+
+                    Chat_loadChatCheckStatus(this, id);
 
                 }
+
             };
 
             xmlHttp.send(null);
@@ -6922,12 +6955,20 @@
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(this.responseText, id);
+
                 } else {
+
                     if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id, tryes);
+
                 }
+
+
             }
         };
 
@@ -8673,13 +8714,20 @@
             xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    callbackSucess(xmlHttp.responseText, key);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    callbackSucess(this.responseText, key);
+
                 } else {
+
                     calbackError(key);
+
                 }
             }
+
         };
 
         xmlHttp.send(null);
@@ -9063,13 +9111,15 @@
                                 xmlHttp.mData = event.data;
 
                                 xmlHttp.open("GET", theUrl, true);
-                                xmlHttp.timeout = 60000;
+                                xmlHttp.timeout = 30000;
 
                                 xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                                 xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
 
                                 xmlHttp.onreadystatechange = function() {
-                                    if (xmlHttp.readyState === 4) onload(xmlHttp);
+
+                                    if (this.readyState === 4) onload(this);
+
                                 };
 
                                 xmlHttp.send(null);
@@ -16171,9 +16221,12 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) Play_updateVodInfoSuccess(xmlHttp.responseText, BroadcastID);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) Play_updateVodInfoSuccess(this.responseText, BroadcastID);
                 else Play_updateVodInfoError(Channel_id, BroadcastID, tryes);
+
             }
         };
 
@@ -16242,13 +16295,21 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_updateStreamInfoValues(xmlHttp.responseText, Is_play);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    Play_updateStreamInfoValues(this.responseText, Is_play);
+
                 } else {
+
                     Play_updateStreamInfoGetError(theUrl, tryes, Is_play);
+
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -17702,13 +17763,21 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    Play_updateStreamInfoMultiValues(xmlHttp.responseText, pos);
+
+            if (this.readyState === 4) {
+
+                if (this.status === 200) {
+
+                    Play_updateStreamInfoMultiValues(this.responseText, pos);
+
                 } else {
+
                     Play_updateStreamInfoMultiError(theUrl, tryes, pos);
+
                 }
+
             }
+
         };
 
         xmlHttp.send(null);
@@ -20606,9 +20675,13 @@
                 xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) {
-                    Screens_HttpResultStatus(xmlHttp, key);
+
+                if (this.readyState === 4) {
+
+                    Screens_HttpResultStatus(this, key);
+
                 }
+
             };
 
             xmlHttp.send(null);
@@ -22726,7 +22799,7 @@
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
         xmlHttp.onreadystatechange = function() {
-            if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID);
+            if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(this, channel_id, tryes, ID);
         };
 
         xmlHttp.send(null);
@@ -31125,13 +31198,21 @@
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) {
-                    if (xmlHttp.status === 200) {
-                        UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
+
+                if (this.readyState === 4) {
+
+                    if (this.status === 200) {
+
+                        UserLiveFeedobj_loadChannelLive(this.responseText);
+
                     } else {
+
                         UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+
                     }
+
                 }
+
             };
 
             xmlHttp.send(null);
@@ -31254,7 +31335,9 @@
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
+
+                if (this.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(this);
+
             };
 
             xmlHttp.send(null);
@@ -32043,7 +32126,9 @@
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
             xmlHttp.onreadystatechange = function() {
-                if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
+
+                if (this.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(this);
+
             };
 
             xmlHttp.send(null);
