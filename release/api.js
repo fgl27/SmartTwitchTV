@@ -83,6 +83,8 @@
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
+        'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
+        'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
     };
 
     /** Expose `smartTwitchTV` */
