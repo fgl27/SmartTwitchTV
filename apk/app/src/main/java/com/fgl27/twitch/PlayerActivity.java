@@ -2925,7 +2925,7 @@ public class PlayerActivity extends Activity {
 
                             } else {
 
-                                BasexmlHttpGetError(callback, checkResult, key, DataResultPos);
+                                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSucess, calbackError);
 
                             }
 
@@ -2933,17 +2933,17 @@ public class PlayerActivity extends Activity {
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
 
-                BasexmlHttpGetError(callback, checkResult, key, DataResultPos);
+                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSucess, calbackError);
 
                 Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
 
             }
         }
 
-        void BasexmlHttpGetError(String callback, long checkResult, long key, int DataResultPos) {
+        void BasexmlHttpGetError(String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
             //MethodUrl is null inform JS callback
             BasexmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(0, "", checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " + key + ",'" + callbackSucess + "','" + calbackError + "'," + checkResult + ")");
         }
 
         @JavascriptInterface
