@@ -2801,18 +2801,57 @@
     }
 
     function ChannelContent_loadDataRequest() {
+
         var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' +
             encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
             Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-            2,
-            null,
-            ChannelContent_loadDataRequestSuccess,
-            ChannelContent_loadDataError
-        );
+        if (!Main_IsOn_OSInterface) {
+
+            BasexmlHttpGet(
+                theUrl,
+                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+                2,
+                null,
+                ChannelContent_loadDataRequestSuccess,
+                ChannelContent_loadDataError
+            );
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                Main_base_string_header, //JsonHeadersArray
+                'ChannelContent_loadDataRequestResult', //callback
+                Main_ChannelContent, //checkResult
+                Main_ChannelContent, //key
+                Main_ChannelContent //thread
+            );
+
+        }
+
+    }
+
+    function ChannelContent_loadDataRequestResult(result) {
+
+        if (result) {
+
+            var obj = JSON.parse(result);
+
+            if (obj.status === 200) {
+
+                ChannelContent_loadDataRequestSuccess(obj.responseText);
+
+                return;
+            }
+
+        }
+
+        ChannelContent_loadDataError();
+
     }
 
     function ChannelContent_loadDataRequestSuccess(response) {
@@ -2858,7 +2897,7 @@
             'ChannelContent_CheckHostResult', //callback
             0, //checkResult
             ChannelContent_loadDataCheckHostId, //key
-            5 //thread
+            55 //thread
         );
 
     }
@@ -2907,14 +2946,52 @@
     function ChannelContent_GetStreamerInfo() {
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-            2,
-            null,
-            ChannelContent_GetStreamerInfoSuccess,
-            ChannelContent_GetStreamerInfoError
-        );
+        if (!Main_IsOn_OSInterface) {
+
+            BasexmlHttpGet(
+                theUrl,
+                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+                2,
+                null,
+                ChannelContent_GetStreamerInfoSuccess,
+                ChannelContent_GetStreamerInfoError
+            );
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                Main_base_string_header, //JsonHeadersArray
+                'ChannelContent_GetStreamerInfoResult', //callback
+                Main_ChannelContent, //checkResult
+                Main_ChannelContent, //key
+                Main_ChannelContent //thread
+            );
+
+        }
+
+    }
+
+    function ChannelContent_GetStreamerInfoResult(result) {
+
+        if (result) {
+
+            var obj = JSON.parse(result);
+
+            if (obj.status === 200) {
+
+                ChannelContent_GetStreamerInfoSuccess(obj.responseText);
+
+                return;
+            }
+
+        }
+
+        ChannelContent_GetStreamerInfoError();
+
     }
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
@@ -4827,7 +4904,7 @@
             'ChatLive_loadChattersSuccess', //callback
             id, //checkResult
             chat_number, //key
-            10 //thread
+            60 //thread
         );
 
     }
@@ -6522,25 +6599,65 @@
     }
 
     function Chat_loadChatRequest(id, tryes) {
+
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
-        var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
+        if (!Main_IsOn_OSInterface) {
 
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+            var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    if (Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-                } else {
-                    if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
+            xmlHttp.open("GET", theUrl, true);
+
+            xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+
+                    Chat_loadChatCheckStatus(xmlHttp, id);
+
                 }
-            }
-        };
+            };
 
-        xmlHttp.send(null);
+            xmlHttp.send(null);
+
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                null, //JsonHeadersArray
+                'Chat_loadChatRequestResult', //callback
+                id, //checkResult
+                tryes, //key
+                61 //thread
+            );
+
+        }
+    }
+
+    function Chat_loadChatRequestResult(result, tryes, id) {
+        if (result) {
+
+            Chat_loadChatCheckStatus(JSON.parse(result), id, tryes);
+
+        } else if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
+    }
+
+
+    function Chat_loadChatCheckStatus(obj, id, tryes) {
+
+        if (Chat_Id[0] === id) {
+
+            if (obj.status === 200) Chat_loadChatSuccess(obj.responseText, id);
+            else Chat_loadChatError(id, tryes);
+
+        }
+
+
     }
 
     function Chat_loadChatError(id, tryes) {
@@ -6898,8 +7015,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.287';
     var Main_version_java = 287; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 24 2020';
-    var Main_version_web = 546; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'November 29 2020';
+    var Main_version_web = 547; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -6996,6 +7113,7 @@
     var Main_RunningTime = 0;
     var Main_PreventCheckResume = false;
 
+    var Main_base_string_header;
     var Main_Headers = [];
     var Main_Headers_Backup = [];
     var Main_kraken_api = 'https://api.twitch.tv/kraken/';
@@ -7081,7 +7199,15 @@
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
                         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
                         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
-                        'ChatLive_SetLatency': ChatLive_SetLatency
+                        'ChatLive_SetLatency': ChatLive_SetLatency,
+                        'Screens_CheckGetResult': Screens_CheckGetResult,
+                        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
+                        'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
+                        'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
+                        'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
+                        'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
+                        'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
+                        'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
                     };
                 }
 
@@ -7490,6 +7616,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version November 29 2020",
+                changes: [
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version November 24 2020",
                 changes: [
                     "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customization's, sorting, auto refresh, timeouts and related",
@@ -7514,18 +7646,6 @@
                     "Channels on the home screen features will no logger have user followed host or followed games",
                     "If in the future a new way to access this content changed/removed is available this features will be revised",
                     "Is demanding to update to the latest APK if you don't the app will no longer work",
-                    "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Apk Version 3.0.286 - Web Version November 16 2020",
-                changes: [
-                    "General performance improves and bug fixes",
-                ]
-            },
-            {
-                title: "Web Version November 16 2020",
-                changes: [
                     "General performance improves and bug fixes",
                 ]
             }
@@ -7922,7 +8042,7 @@
                 'Main_checkWebVersion', //callback
                 0, //checkResult
                 web ? 1 : 0, //key
-                4 //thread
+                54 //thread
             );
         }
     }
@@ -11080,7 +11200,7 @@
             'PlayClip_loadDataResult', //callback
             0, //checkResult
             PlayClip_loadDataRequestId, //key
-            9 //thread
+            59 //thread
         );
     }
 
@@ -12584,7 +12704,7 @@
             'Play_StayCheckHostResult', //callback
             0, //checkResult
             Play_StayCheckHostId, //key
-            8 //thread
+            58 //thread
         );
     }
 
@@ -15113,7 +15233,7 @@
             'PlayExtra_CheckHostResult', //callback
             PlayExtra_loadDataCheckHostId, //checkResult
             doSwitch, //key
-            6 //thread
+            56 //thread
         );
 
     }
@@ -15523,6 +15643,13 @@
         Play_base_backup_headers = JSON.stringify(
             [
                 [clientIdHeader, Main_Headers_Backup[0][1]]
+            ]
+        );
+
+        Main_base_string_header = JSON.stringify(
+            [
+                [clientIdHeader, AddCode_clientId],
+                [AcceptHeader, TwitchV5Json]
             ]
         );
     }
@@ -17263,7 +17390,7 @@
                     'Play_CheckHostResult', //callback
                     0, //checkResult
                     Play_loadDataCheckHostId, //key
-                    7 //thread
+                    57 //thread
                 );
 
             },
@@ -19689,7 +19816,7 @@
                 'PlayVod_previews_success', //callback
                 0, //checkResult
                 PlayVod_previewsId, //key
-                2 //thread
+                52 //thread
             );
         }
         //else PlayVod_previews_start_test();
@@ -19899,7 +20026,7 @@
                 'PlayVod_updateChaptersResult', //callback
                 0, //checkResult
                 PlayVod_updateChaptersId, //key
-                3 //thread
+                53 //thread
             );
 
         } else PlayVod_ProcessChaptersFake();
@@ -20465,23 +20592,51 @@
     }
 
     function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-        var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+        if (!Main_IsOn_OSInterface) {
 
-        Main_Headers[2][1] = access_token;
+            var xmlHttp = new XMLHttpRequest();
 
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                Screens_HttpResultStatus(xmlHttp, key);
-            }
-        };
+            HeaderArray[2][1] = access_token;
 
-        xmlHttp.send(null);
+            for (var i = 0; i < HeaderQuatity; i++)
+                xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+                    Screens_HttpResultStatus(xmlHttp, key);
+                }
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                ScreenObj[key].HeadersString, //JsonHeadersArray
+                'Screens_CheckGetResult', //callback
+                key, //checkResult
+                key, //key
+                key //thread
+            );
+
+        }
+    }
+
+
+    function Screens_CheckGetResult(result, key) {
+        if (result) {
+
+            Screens_HttpResultStatus(JSON.parse(result), key);
+
+        } else Screens_loadDataError(key);
     }
 
     function Screens_HttpResultStatus(resultObj, key) {
@@ -21078,7 +21233,7 @@
                 'Screens_LoadPreviewResult', //callback
                 (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100), //checkResult
                 key, //key
-                1 //thread
+                51 //thread
             );
 
             return;
@@ -23315,6 +23470,7 @@
 
         Base_Clip_obj = {
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ItemsLimit: Main_ItemsLimitVideo,
             TopRowCreated: false,
             ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -23397,6 +23553,7 @@
 
         Base_Game_obj = {
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             thumbclass: 'stream_thumbnail_game_holder',
             ItemsReloadLimit: Main_ItemsReloadLimitGame,
             ItemsLimit: Main_ItemsLimitGame,
@@ -23617,6 +23774,7 @@
         ScreenObj[Main_Vod] = Screens_assign({
             periodMaxPos: 4,
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             key_pgDown: Main_Clip,
             key_pgUp: Main_games,
             object: 'vods',
@@ -23676,6 +23834,7 @@
         ScreenObj[Main_ChannelVod] = Screens_assign({
             periodMaxPos: 2,
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             key_pgDown: Main_ChannelClip,
             object: 'videos',
             ids: Screens_ScreenIds('ChannelVod'),
@@ -23757,6 +23916,7 @@
         ScreenObj[Main_AGameVod] = Screens_assign({
             periodMaxPos: 4,
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             object: 'vods',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
@@ -23834,6 +23994,8 @@
             base_url: Main_kraken_api + 'videos/followed?limit=' + Main_ItemsLimitMax,
             set_url: function() {
                 this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
+                Main_Headers[2][1] = this.token;
+                this.HeadersString = JSON.stringify(Main_Headers);
 
                 this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                     '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
@@ -23884,6 +24046,7 @@
     function ScreensObj_InitLive() {
         ScreenObj[Main_Live] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('Live'),
             table: 'stream_table_live',
             screen: Main_Live,
@@ -23914,6 +24077,7 @@
     function ScreensObj_InitSearchLive() {
         ScreenObj[Main_SearchLive] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('SearchLive'),
             ScreenName: 'SearchLive',
             table: 'stream_table_search_live',
@@ -23972,12 +24136,17 @@
                     //User has added a key
                     this.HeaderQuatity = 3;
                     this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
+                    Main_Headers[2][1] = this.token;
+                    this.HeadersString = JSON.stringify(Main_Headers);
+
                     this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
                         this.offset + '&stream_type=all';
                 } else {
                     //User didn't added a key
                     this.HeaderQuatity = 2;
                     this.token = null;
+                    this.HeadersString = Main_base_string_header;
+
                     if (this.followerChannelsDone) {
                         //User followed channels list is done, load live channels
                         this.url = this.base_url + '?channel=' + this.followerChannels.join() + '&' +
@@ -24062,6 +24231,7 @@
     function ScreensObj_InitAGame() {
         ScreenObj[Main_aGame] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('AGame'),
             ScreenName: 'AGame',
             table: 'stream_table_a_game',
@@ -24117,6 +24287,7 @@
     function ScreensObj_InitFeatured() {
         ScreenObj[Main_Featured] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('Featured'),
             ScreenName: 'Featured',
             table: 'stream_table_featured',
@@ -24321,9 +24492,7 @@
         }, Base_obj);
 
         ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
-        ScreenObj[Main_usergames].HeaderQuatity = 1;
         ScreenObj[Main_usergames].Set_Scroll();
-        ScreenObj[Main_usergames].Headers = Main_Headers_Backup;
     }
 
     function ScreensObj_InitSearchGames() {
@@ -24366,6 +24535,7 @@
     function ScreensObj_InitUserChannels() {
         ScreenObj[Main_UserChannels] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('UserChannels'),
             ScreenName: 'UserChannels',
             table: 'stream_table_user_channels',
@@ -24404,6 +24574,7 @@
     function ScreensObj_InitSearchChannels() {
         ScreenObj[Main_SearchChannels] = Screens_assign({
             HeaderQuatity: 2,
+            HeadersString: Main_base_string_header,
             ids: Screens_ScreenIds('SearchChannels'),
             ScreenName: 'SearchChannels',
             table: 'stream_table_search_channel',
@@ -29517,6 +29688,7 @@
     var UserLiveFeed_lastRefresh = [];
     var UserLiveFeed_RefreshId = [];
     var UserLiveFeed_DataObj = [];
+    var UserLiveFeed_Headers = [];
 
     var UserLiveFeed_ChangeFocusAnimationFast = false;
     var UserLiveFeed_ChangeFocusAnimationFinished = [];
@@ -29577,6 +29749,7 @@
             UserLiveFeed_RefreshId[i] = null;
             UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
             UserLiveFeed_DataObj[i] = {};
+            UserLiveFeed_Headers[i] = Main_base_string_header;
         }
 
         //User vod
@@ -29610,6 +29783,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].Screen = 'preview_user_live_history';
 
         //User a game
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].success = UserLiveFeedobj_loadDataCurrentUserGameSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].load = UserLiveFeedobj_CurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
@@ -29620,6 +29794,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
 
         //a game
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].success = UserLiveFeedobj_loadDataCurrentAGameSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].load = UserLiveFeedobj_CurrentAGame;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].show = UserLiveFeedobj_ShowCurrentAGame;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hide = UserLiveFeedobj_HideCurrentAGame;
@@ -29630,6 +29805,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
 
         //User Games
+        UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].load = UserLiveFeedobj_UserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].show = UserLiveFeedobj_ShowUserGames;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].hide = UserLiveFeedobj_HideUserGames;
@@ -29643,6 +29819,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
         //Games
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].success = UserLiveFeedobj_loadDataGamesSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].load = UserLiveFeedobj_Games;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].show = UserLiveFeedobj_ShowGames;
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].hide = UserLiveFeedobj_HideGames;
@@ -29656,6 +29833,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].Screen = 'preview_games';
 
         //Live
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].success = UserLiveFeedobj_loadDataLiveSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].load = UserLiveFeedobj_Live;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].show = UserLiveFeedobj_ShowLive;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].hide = UserLiveFeedobj_HideLive;
@@ -29666,6 +29844,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
 
         //Current Game
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].load = UserLiveFeedobj_CurrentGame;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].show = UserLiveFeedobj_ShowCurrentGame;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hide = UserLiveFeedobj_HideCurrentGame;
@@ -29676,6 +29855,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
 
         //Featured
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].load = UserLiveFeedobj_Featured;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].show = UserLiveFeedobj_ShowFeatured;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].hide = UserLiveFeedobj_HideFeatured;
@@ -30833,30 +31013,66 @@
     }
 
     function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
-        //Main_Log('UserLiveFeedobj_BaseLoad');
 
         if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-        BasexmlHttpGet(
-            url,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
-            headers,
-            null,
-            callback,
-            function() {
-                UserLiveFeedobj_loadDataError(pos);
+        if (!Main_IsOn_OSInterface) {
+
+            BasexmlHttpGet(
+                url,
+                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
+                headers,
+                null,
+                callback,
+                function() {
+                    UserLiveFeedobj_loadDataError(pos);
+                }
+            );
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                url,
+                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                UserLiveFeed_Headers[pos], //JsonHeadersArray
+                'UserLiveFeedobj_CheckGetResult', //callback
+                pos, //checkResult
+                pos, //key
+                30 + pos //thread
+            );
+
+        }
+    }
+
+    function UserLiveFeedobj_CheckGetResult(result, pos) {
+
+        if (result) {
+
+            var obj = JSON.parse(result);
+
+            if (obj.status === 200) {
+
+                UserLiveFeed_obj[pos].success(obj.responseText);
+
+                return;
             }
-        );
+
+        }
+
+        UserLiveFeedobj_loadDataErrorElse(pos);
     }
 
     function UserLiveFeedobj_loadDataError(pos) {
-        //Main_Log('UserLiveFeedobj_loadChannels');
         UserLiveFeed_loadingDataTry[pos]++;
+
         if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
             UserLiveFeed_obj[pos].load();
         } else {
             UserLiveFeedobj_loadDataErrorElse(pos);
         }
+
     }
 
     function UserLiveFeedobj_loadDataErrorElse(pos) {
@@ -30895,27 +31111,64 @@
     }
 
     function UserLiveFeedobj_loadChannels() {
-        var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+        var i = 0,
+            theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+        if (!Main_IsOn_OSInterface) {
 
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) {
-                if (xmlHttp.status === 200) {
-                    UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
-                } else {
-                    UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+            for (i; i < 2; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) {
+                    if (xmlHttp.status === 200) {
+                        UserLiveFeedobj_loadChannelLive(xmlHttp.responseText);
+                    } else {
+                        UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
+                    }
                 }
-            }
-        };
+            };
 
-        xmlHttp.send(null);
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                Main_base_string_header, //JsonHeadersArray
+                'UserLiveFeedobj_loadChannelsResult', //callback
+                UserLiveFeedobj_UserLivePos, //checkResult
+                UserLiveFeedobj_UserLivePos, //key
+                30 + UserLiveFeedobj_UserLivePos //thread
+            );
+
+        }
+    }
+
+    function UserLiveFeedobj_loadChannelsResult(result, key) {
+
+        if (result) {
+
+            var obj = JSON.parse(result);
+
+            if (obj.status === 200) {
+
+                UserLiveFeedobj_loadChannelLive(obj.responseText);
+                return;
+
+            }
+
+        }
+
+        UserLiveFeedobj_loadChannelsError(key);
     }
 
     function UserLiveFeedobj_loadChannelsError(pos) {
@@ -30980,21 +31233,56 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
-        //Main_Log('UserLiveFeedobj_loadChannelUserLiveGet');
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
 
-        if (UserLiveFeed_token) Main_Headers[2][1] = UserLiveFeed_token;
+        var len = UserLiveFeed_token ? 3 : 2,
+            i = 0;
 
-        for (var i = 0; i < (UserLiveFeed_token ? 3 : 2); i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+        var HeadersString = Main_base_string_header;
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
-        };
+        if (UserLiveFeed_token) {
+            Main_Headers[2][1] = UserLiveFeed_token;
+            HeadersString = JSON.stringify(Main_Headers);
+        }
 
-        xmlHttp.send(null);
+        if (!Main_IsOn_OSInterface) {
+
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+
+            for (i; i < len; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp);
+            };
+
+            xmlHttp.send(null);
+
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                HeadersString, //JsonHeadersArray
+                'UserLiveFeedobj_loadChannelUserLiveGetResult', //callback
+                UserLiveFeedobj_UserLivePos, //checkResult
+                UserLiveFeedobj_UserLivePos, //key
+                30 + UserLiveFeedobj_UserLivePos //thread
+            );
+
+        }
+    }
+
+    function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
+        if (result) {
+
+            UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
+
+        } else UserLiveFeedobj_loadChannelUserLiveGetEndError(key);
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
@@ -31741,21 +32029,48 @@
     }
 
     function UserLiveFeedobj_loadUserVodGet(theUrl) {
-        //Main_Log('UserLiveFeedobj_loadUserVodGet');
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
 
         Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
+        var i = 0;
 
-        for (var i = 0; i < 3; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+        if (!Main_IsOn_OSInterface) {
 
-        xmlHttp.onreadystatechange = function() {
-            if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
-        };
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", theUrl, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
 
-        xmlHttp.send(null);
+            for (i; i < 3; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(xmlHttp);
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                JSON.stringify(Main_Headers), //JsonHeadersArray
+                'UserLiveFeedobj_loadUserVodGetResult', //callback
+                UserLiveFeedobj_UserVodPos, //checkResult
+                UserLiveFeedobj_UserVodPos, //key
+                30 + UserLiveFeedobj_UserVodPos //thread
+            );
+
+        }
+    }
+
+    function UserLiveFeedobj_loadUserVodGetResult(result, key) {
+        if (result) {
+
+            UserLiveFeedobj_loadUserVodGetEnd(JSON.parse(result));
+
+        } else UserLiveFeedobj_loadDataError(key);
     }
 
     function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
@@ -33629,43 +33944,51 @@
      * smartTwitchTV + all functions called by java
      */
     smartTwitchTV = { // smartTwitchTV var is defined in app/specific/Main.js
-        'mainstart': Main_Start, //Main_Start id Main_Start() func from app/specific/Main.js
-        'Play_PannelEndStart': Play_PannelEndStart, //Play_PannelEndStart() func from app/specific/Play.js
-        'Play_PlayerCheck': Play_PlayerCheck, //Play_PlayerCheck() func from app/specific/Play.js
-        'Play_UpdateDuration': Play_UpdateDuration, //Play_UpdateDuration() func from app/specific/Play.js
-        'PlayExtra_End': PlayExtra_End, //PlayExtra_End() func from app/specific/PlayExtra.js
-        'Play_MultiEnd': Play_MultiEnd, // Play_MultiEndede() func from app/specific/Play.js
-        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean, // Play_CheckIfIsLiveClean() func from app/specific/Play.js
-        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult, // UserLiveFeed_CheckIfIsLiveResult() func from app/specific/UserLiveFeed.js
-        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult, // Sidepannel_CheckIfIsLiveResult() func from app/specific/Sidepannel.js
-        'Main_CheckStop': Main_CheckStop, // Main_CheckStop() func from app/specific/Main.js
-        'Main_CheckResume': Main_CheckResume, // Main_CheckResume() func from app/specific/Main.js
-        'Play_getQualities': Play_getQualities, // Play_getQualities() func from app/specific/Play.js
-        'Play_ShowVideoStatus': Play_ShowVideoStatus, // Play_ShowVideoStatus() func from app/specific/Play.js
-        'Play_ShowVideoQuality': Play_ShowVideoQuality, // Play_ShowVideoQuality() func from app/specific/Play.js
-        'PlayVod_previews_success': PlayVod_previews_success, // PlayVod_previews_success() func from app/specific/PlayVod.js
-        'Play_PlayPauseChange': Play_PlayPauseChange, // Play_KeyPause() func from app/specific/PlayEtc.js
-        'PlayClip_loadDataResult': PlayClip_loadDataResult, // PlayClip_QualityGenerate() func from app/specific/PlayClip.js
-        'PlayVod_loadDataResult': PlayVod_loadDataResult, // PlayVod_loadDataResult() func from app/specific/PlayVod.js
-        'PlayExtra_ResumeResult': PlayExtra_ResumeResult, // PlayExtra_ResumeResult() func from app/specific/PlayExtra.js
-        'Play_loadDataResult': Play_loadDataResult, // Play_loadDataResult() func from app/specific/Play.js
-        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult, // PlayClip_CheckIfIsLiveResult() func from app/specific/PlayClip.js
-        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult, // PlayVod_CheckIfIsLiveResult() func from app/specific/PlayVod.js
-        'Play_MultiResult': Play_MultiResult, // Play_MultiResult() func from app/specific/Play.js
-        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult, // ChannelContent_CheckHostResult() func from app/specific/ChannelContent.js
-        'Play_CheckHostResult': Play_CheckHostResult, // Play_CheckHostResult() func from app/specific/Play.js
-        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult, // PlayExtra_CheckHostResult() func from app/specific/PlayExtra.js
-        'Screens_LoadPreviewResult': Screens_LoadPreviewResult, // Screens_LoadPreviewResult() func from app/specific/Screens.js
-        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult, // ChannelContent_LoadPreviewResult() func from app/specific/ChannelContent.js
-        'Play_StayCheckHostResult': Play_StayCheckHostResult, // Play_StayCheckHostResult() func from app/specific/PlayEtc.js
-        'Play_StayCheckLiveResult': Play_StayCheckLiveResult, // Play_StayCheckLiveResult() func from app/specific/PlayEtc.js
-        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult, // Play_CheckIfIsLiveResult() func from app/specific/Play.js
-        'Main_checkWebVersion': Main_checkWebVersion, // Main_checkWebVersion() func from app/specific/Main.js
-        'Main_onNewIntent': Main_onNewIntent, // Main_onNewIntent() func from app/specific/Main.js
-        'Main_EventChannelRefresh': Main_EventChannelRefresh, // Main_EventChannelRefresh() func from app/specific/Main.js
-        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess, // ChatLive_loadChattersSuccess() func from app/specific/ChatLive.js
-        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult, // PlayVod_updateChaptersResult() func from app/specific/PlayVOd.js
-        'ChatLive_SetLatency': ChatLive_SetLatency, // ChatLive_SetLatency() func from app/specific/ChatLive.js
+        'mainstart': Main_Start,
+        'Play_PannelEndStart': Play_PannelEndStart,
+        'Play_PlayerCheck': Play_PlayerCheck,
+        'Play_UpdateDuration': Play_UpdateDuration,
+        'PlayExtra_End': PlayExtra_End,
+        'Play_MultiEnd': Play_MultiEnd,
+        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+        'Main_CheckStop': Main_CheckStop,
+        'Main_CheckResume': Main_CheckResume,
+        'Play_getQualities': Play_getQualities,
+        'Play_ShowVideoStatus': Play_ShowVideoStatus,
+        'Play_ShowVideoQuality': Play_ShowVideoQuality,
+        'PlayVod_previews_success': PlayVod_previews_success,
+        'Play_PlayPauseChange': Play_PlayPauseChange,
+        'PlayClip_loadDataResult': PlayClip_loadDataResult,
+        'PlayVod_loadDataResult': PlayVod_loadDataResult,
+        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+        'Play_loadDataResult': Play_loadDataResult,
+        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+        'Play_MultiResult': Play_MultiResult,
+        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
+        'Play_CheckHostResult': Play_CheckHostResult,
+        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
+        'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
+        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
+        'Play_StayCheckHostResult': Play_StayCheckHostResult,
+        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
+        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+        'Main_checkWebVersion': Main_checkWebVersion,
+        'Main_onNewIntent': Main_onNewIntent,
+        'Main_EventChannelRefresh': Main_EventChannelRefresh,
+        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
+        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
+        'ChatLive_SetLatency': ChatLive_SetLatency,
+        'Screens_CheckGetResult': Screens_CheckGetResult,
+        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
+        'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
+        'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
+        'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
+        'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
+        'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
+        'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
     };
 
     /** Expose `smartTwitchTV` */
