@@ -212,13 +212,13 @@ function Main_loadTranslations(language) {
                     'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                     'ChatLive_SetLatency': ChatLive_SetLatency,
                     'Screens_CheckGetResult': Screens_CheckGetResult,
-                    'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
                     'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                     'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
                     'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
                 };
             }
 
@@ -1664,34 +1664,84 @@ function CheckPage(pageUrlCode) {
 
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
 
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = Timeout;
-
     Main_Headers[2][1] = access_token;
+    var i = 0;
 
-    for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+    if (!Main_IsOn_OSInterface) {
 
-    xmlHttp.onreadystatechange = function() {
+        var xmlHttp = new XMLHttpRequest();
 
-        if (this.readyState === 4) {
+        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.timeout = Timeout;
 
-            if (this.status === 200) {
+        for (i; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-                callbackSucess(this.responseText, key);
+        xmlHttp.onreadystatechange = function() {
 
-            } else {
+            if (this.readyState === 4) {
 
-                calbackError(key);
+                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
 
             }
-        }
 
-    };
+        };
 
-    xmlHttp.send(null);
+        xmlHttp.send(null);
+
+    } else {
+
+        var array = [];
+
+        for (i; i < HeaderQuatity; i++)
+            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+        OSInterface_BasexmlHttpGet(
+            theUrl,
+            Timeout,
+            null,
+            null,
+            JSON.stringify(array),
+            'Main_CheckBasexmlHttpGet',
+            0,
+            key,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+    }
+
+}
+
+function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
+
+    if (result) {
+
+        Main_BasexmlHttpStatus(
+            JSON.parse(result),
+            key,
+            eval(callbackSucess),// jshint ignore:line
+            eval(calbackError)// jshint ignore:line
+        );
+        return;
+
+    }
+
+    eval(calbackError)(key); // jshint ignore:line
+
+}
+
+function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError) {
+
+    if (obj.status === 200) {
+
+        eval(callbackSucess)(obj.responseText, key); // jshint ignore:line
+
+        return;
+    }
+
+    eval(calbackError)(key); // jshint ignore:line
+
 }
 
 function Main_SetThumb() {

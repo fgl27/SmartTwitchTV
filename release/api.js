@@ -78,13 +78,13 @@
         'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Screens_CheckGetResult': Screens_CheckGetResult,
-        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
         'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
         'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
         'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
+        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */

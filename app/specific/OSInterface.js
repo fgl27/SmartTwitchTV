@@ -222,6 +222,34 @@ function OSInterface_GetMethodUrlHeadersAsync(urlString, timeout, postMessage, M
     );
 }
 
+//public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+//                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
+//Android specific: true
+function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
+
+    try {
+
+        Android.BasexmlHttpGet(
+            urlString,
+            timeout,
+            postMessage,
+            Method,
+            JsonHeadersArray,
+            callback,
+            checkResult,
+            key,
+            callbackSucess,
+            calbackError
+        );
+
+    } catch (e) {
+
+        calbackError(key);
+
+    }
+
+}
+
 //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
 //urlString = the url to to the http request
 //timeout = http request timeout

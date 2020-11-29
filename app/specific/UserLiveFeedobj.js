@@ -155,9 +155,8 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
             headers,
             null,
             callback,
-            function() {
-                UserLiveFeedobj_loadDataError(pos);
-            }
+            UserLiveFeedobj_loadDataError,
+            pos
         );
 
     } else {
@@ -175,24 +174,6 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
         );
 
     }
-}
-
-function UserLiveFeedobj_CheckGetResult(result, pos) {
-
-    if (result) {
-
-        var obj = JSON.parse(result);
-
-        if (obj.status === 200) {
-
-            UserLiveFeed_obj[pos].success(obj.responseText);
-
-            return;
-        }
-
-    }
-
-    UserLiveFeedobj_loadDataErrorElse(pos);
 }
 
 function UserLiveFeedobj_loadDataError(pos) {
