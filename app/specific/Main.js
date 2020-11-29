@@ -214,7 +214,8 @@ function Main_loadTranslations(language) {
                     'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
-                    'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult
+                    'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
+                    'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                 };
             }
 

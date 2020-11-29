@@ -237,25 +237,65 @@ function Chat_loadChat(id) {
 }
 
 function Chat_loadChatRequest(id, tryes) {
+
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
-    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
+    if (!Main_IsOn_OSInterface) {
 
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+        var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                if (Chat_Id[0] === id) Chat_loadChatSuccess(xmlHttp.responseText, id);
-            } else {
-                if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
+        xmlHttp.open("GET", theUrl, true);
+
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+
+        xmlHttp.onreadystatechange = function() {
+            if (xmlHttp.readyState === 4) {
+
+                Chat_loadChatCheckStatus(xmlHttp, id);
+
             }
-        }
-    };
+        };
 
-    xmlHttp.send(null);
+        xmlHttp.send(null);
+
+
+    } else {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            theUrl,
+            (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus),//timeout
+            null,//postMessage, null for get
+            null,//Method, null for get
+            null,//JsonHeadersArray
+            'Chat_loadChatRequestResult',//callback
+            id,//checkResult
+            tryes,//key
+            61//thread
+        );
+
+    }
+}
+
+function Chat_loadChatRequestResult(result, tryes, id) {
+    if (result) {
+
+        Chat_loadChatCheckStatus(JSON.parse(result), id, tryes);
+
+    } else if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
+}
+
+
+function Chat_loadChatCheckStatus(obj, id, tryes) {
+
+    if (Chat_Id[0] === id) {
+
+        if (obj.status === 200) Chat_loadChatSuccess(obj.responseText, id);
+        else Chat_loadChatError(id, tryes);
+
+    }
+
+
 }
 
 function Chat_loadChatError(id, tryes) {
