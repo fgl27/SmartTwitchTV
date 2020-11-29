@@ -402,7 +402,6 @@ function Screens_loadDataRequest(key) {
 }
 
 function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-    HeaderArray[2][1] = access_token;
 
     if (!Main_IsOn_OSInterface) {
 
@@ -431,7 +430,7 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
             DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify(HeaderArray),//JsonHeadersArray
+            ScreenObj[key].HeadersString,//JsonHeadersArray
             'Screens_CheckGetResult',//callback
             key,//checkResult
             key,//key

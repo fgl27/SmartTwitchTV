@@ -250,6 +250,13 @@ function Play_PreStart() {
             [clientIdHeader, Main_Headers_Backup[0][1]]
         ]
     );
+
+    Main_base_string_header = JSON.stringify(
+        [
+            [clientIdHeader, AddCode_clientId],
+            [AcceptHeader, TwitchV5Json]
+        ]
+    );
 }
 
 function Play_ResetDefaultQuality() {

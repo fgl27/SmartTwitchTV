@@ -124,6 +124,7 @@ var Main_FirstLoad = false;
 var Main_RunningTime = 0;
 var Main_PreventCheckResume = false;
 
+var Main_base_string_header;
 var Main_Headers = [];
 var Main_Headers_Backup = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';

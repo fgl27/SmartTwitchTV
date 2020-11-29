@@ -162,16 +162,12 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
     } else {
 
-        var array = [];
-        for (var i = 0; i < headers; i++)
-            array.push(Main_Headers[i]);
-
         OSInterface_GetMethodUrlHeadersAsync(
             url,
             DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify(array),//JsonHeadersArray
+            UserLiveFeed_Headers[pos],//JsonHeadersArray
             'UserLiveFeedobj_CheckGetResult',//callback
             pos,//checkResult
             pos,//key
@@ -273,17 +269,12 @@ function UserLiveFeedobj_loadChannels() {
 
     } else {
 
-        var array = [];
-
-        for (i; i < 2; i++)
-            array.push(Main_Headers[i]);
-
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
             DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify(array),//JsonHeadersArray
+            Main_base_string_header,//JsonHeadersArray
             'UserLiveFeedobj_loadChannelsResult',//callback
             UserLiveFeedobj_UserLivePos,//checkResult
             UserLiveFeedobj_UserLivePos,//key
@@ -374,9 +365,15 @@ function UserLiveFeedobj_loadChannelUserLive() {
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
-    if (UserLiveFeed_token) Main_Headers[2][1] = UserLiveFeed_token;
     var len = UserLiveFeed_token ? 3 : 2,
         i = 0;
+
+    var HeadersString = Main_base_string_header;
+
+    if (UserLiveFeed_token) {
+        Main_Headers[2][1] = UserLiveFeed_token;
+        HeadersString = JSON.stringify(Main_Headers);
+    }
 
     if (!Main_IsOn_OSInterface) {
 
@@ -396,16 +393,12 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
     } else {
 
-        var array = [];
-        for (i; i < len; i++)
-            array.push(Main_Headers[i]);
-
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
             DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify(array),//JsonHeadersArray
+            HeadersString,//JsonHeadersArray
             'UserLiveFeedobj_loadChannelUserLiveGetResult',//callback
             UserLiveFeedobj_UserLivePos,//checkResult
             UserLiveFeedobj_UserLivePos,//key
@@ -1166,8 +1159,6 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
 
-        Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-
         for (i; i < 3; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
@@ -1179,17 +1170,12 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
 
     } else {
 
-        var array = [];
-
-        for (i; i < 3; i++)
-            array.push(Main_Headers[i]);
-
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
             DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus),//timeout
             null,//postMessage, null for get
             null,//Method, null for get
-            JSON.stringify(array),//JsonHeadersArray
+            JSON.stringify(Main_Headers),//JsonHeadersArray
             'UserLiveFeedobj_loadUserVodGetResult',//callback
             UserLiveFeedobj_UserVodPos,//checkResult
             UserLiveFeedobj_UserVodPos,//key

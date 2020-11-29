@@ -45,6 +45,7 @@ var UserLiveFeed_FeedSetPosLast = [];
 var UserLiveFeed_lastRefresh = [];
 var UserLiveFeed_RefreshId = [];
 var UserLiveFeed_DataObj = [];
+var UserLiveFeed_Headers = [];
 
 var UserLiveFeed_ChangeFocusAnimationFast = false;
 var UserLiveFeed_ChangeFocusAnimationFinished = [];
@@ -104,6 +105,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_RefreshId[i] = null;
         UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
         UserLiveFeed_DataObj[i] = {};
+        UserLiveFeed_Headers[i] = Main_base_string_header;
     }
 
     //User vod
