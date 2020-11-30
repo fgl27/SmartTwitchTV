@@ -821,40 +821,23 @@ function Play_updateStreamInfo() {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(
             Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag,
-            0,
-            true
+            1
         );
     }
 }
 
-function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
-    var xmlHttp = new XMLHttpRequest();
+function Play_updateStreamInfoGet(theUrl, Is_play) {
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2),
+        2,
+        null,
+        Play_updateStreamInfoValues,
+        Play_updateStreamInfoGetError,
+        Is_play
+    );
 
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) {
-
-                Play_updateStreamInfoValues(this.responseText, Is_play);
-
-            } else {
-
-                Play_updateStreamInfoGetError(theUrl, tryes, Is_play);
-
-            }
-
-        }
-
-    };
-
-    xmlHttp.send(null);
 }
 
 function Play_updateStreamInfoValues(response, Is_play) {
@@ -883,29 +866,20 @@ function Play_updateStreamInfoValues(response, Is_play) {
     }
 }
 
-function Play_updateStreamInfoGetError(theUrl, tryes, Is_play) {
-    if (tryes < DefaultHttpGetReTryMax) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) Play_updateStreamInfoGet(theUrl, tryes + 1, Is_play);
-                //give a second for it retry as the TV may be on coming from resume
-            },
-            750
-        );
-    } else if (Play_isOn) {
-        if (Play_StayDialogVisible()) return;
+function Play_updateStreamInfoGetError(Is_play) {
 
-        //we fail but we still watching so update the time
-        if (Is_play && Play_data.data.length > 0) {
+    if (Play_StayDialogVisible()) return;
 
-            Main_Set_history('live', Play_data.data);
+    //we fail but we still watching so update the time
+    if (Is_play && Play_data.data.length > 0) {
 
-        } else if (!Is_play && PlayExtra_data.data.length > 0) {
+        Main_Set_history('live', Play_data.data);
 
-            Main_Set_history('live', PlayExtra_data.data);
-        }
+    } else if (!Is_play && PlayExtra_data.data.length > 0) {
 
+        Main_Set_history('live', PlayExtra_data.data);
     }
+
 }
 
 function Play_LoadLogo(ImgObjet, link) {
