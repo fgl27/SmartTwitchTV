@@ -2519,49 +2519,62 @@ function Screens_ThumbOptionStringSet(key) {
 var Screens_ThumbOption_CheckFollow_ID;
 
 function Screens_ThumbOption_CheckFollow(data, key) {
+
+    var channel_id = 0;
+
     Screens_ThumbOption_CheckFollow_ID = (new Date()).getTime();
-    if (ScreenObj[key].screenType < 2) Screens_ThumbOption_RequestCheckFollow(data[14], 0, Screens_ThumbOption_CheckFollow_ID);
-    else Screens_ThumbOption_RequestCheckFollow(data[2], 0, Screens_ThumbOption_CheckFollow_ID);
+
+    if (ScreenObj[key].screenType < 2) {
+
+        channel_id = data[14];
+
+    } else {
+
+        channel_id = data[2];
+
+    }
+
+    Screens_ThumbOption_RequestCheckFollow(
+        channel_id,
+        Screens_ThumbOption_CheckFollow_ID
+    );
 }
 
-function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
+function Screens_ThumbOption_RequestCheckFollow(channel_id, ID) {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-    var xmlHttp = new XMLHttpRequest();
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        2,
+        null,
+        Screens_ThumbOption_RequestCheckFollowSuccess,
+        Screens_ThumbOption_RequestCheckFollowFail,
+        ID
+    );
+}
 
-    xmlHttp.open('GET', theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+function Screens_ThumbOption_RequestCheckFollowSuccess(obj, ID) {
 
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
-    xmlHttp.onreadystatechange = function() {
-        if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(this, channel_id, tryes, ID);
-    };
-
-    xmlHttp.send(null);
+    Screens_canFollow = true;
+    Screens_isFollowing = true;
+    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+    Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
 
 }
 
-function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID) {
-    if (xmlHttp.readyState === 4) {
-        if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+function Screens_ThumbOption_RequestCheckFollowFail(ID) {
 
-        if (xmlHttp.status === 200) { //yes
-            Screens_canFollow = true;
-            Screens_isFollowing = true;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-        } else if (xmlHttp.status === 404) { //no
-            Screens_canFollow = true;
-            Screens_isFollowing = false;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
-        } else { // internet error
-            if (tryes < 5) Screens_ThumbOption_RequestCheckFollow(channel_id, tryes + 1, ID);
-        }
-    }
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+
+    Screens_canFollow = true;
+    Screens_isFollowing = false;
+    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+    Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+
 }
 
 function Screens_ThumbOptionStringGetHistory(key) {
