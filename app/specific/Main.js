@@ -406,12 +406,15 @@ function Main_initWindows() {
     Main_setTimeout(Main_RunClipWorker, 80000);
     Main_setInterval(Main_RunClipWorker, (1000 * 60 * 370));//Check it 6 hours
 
+    Main_setTimeout(AddUser_UpdateUserAllUsers, 30000);
+
     Main_SetStringsSecondary();
     Main_checkVersion();
 
     Main_SearchInput = Main_getElementById("search_input");
     Main_AddUserInput = Main_getElementById("user_input");
     Main_ChatLiveInput = Main_getElementById("chat_send_input");
+
 }
 
 function Main_CheckBackup() {

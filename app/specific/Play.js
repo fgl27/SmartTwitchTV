@@ -692,7 +692,7 @@ function Play_updateStreamInfoStart() {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus),
+        DefaultHttpGetTimeout * 2,
         2,
         null,
         Play_updateStreamInfoStartValues,
@@ -778,13 +778,9 @@ function Play_updateVodInfo(Channel_id, BroadcastID) {
         2,
         null,
         Play_updateVodInfoSuccess,
-        Play_updateVodInfoError,
+        empty_fun,
         BroadcastID
     );
-}
-
-function Play_updateVodInfoError() {
-    //no-op so BasexmlHttpGet can work
 }
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {

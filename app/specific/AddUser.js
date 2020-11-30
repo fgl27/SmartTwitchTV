@@ -211,8 +211,11 @@ function AddUser_RestoreUsers() {
 
         //Check and refresh all tokens at start
         var i = 0, len = AddUser_UsernameArray.length;
+
         for (i; i < len; i++) {
+
             AddUser_UsernameArray[i].timeout_id = null;
+
             if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 
             //Set user history obj
@@ -221,6 +224,7 @@ function AddUser_RestoreUsers() {
                 vod: [],
                 clip: []
             };
+
         }
 
         Main_Restore_history();
@@ -284,32 +288,34 @@ function AddUser_UserIsSet() {
     return AddUser_UsernameArray.length > 0;
 }
 
-function AddUser_UpdateUser(position, tryes) {
+function AddUser_UpdateUserAllUsers() {
+
+    var i = 0, len = AddUser_UsernameArray.length;
+
+    for (i; i < len; i++) {
+
+        AddUser_UpdateUser(i);
+
+    }
+}
+
+function AddUser_UpdateUser(position) {
     var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name) + Main_TwithcV5Flag;
-    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) AddUser_UpdateUsertSuccess(this.responseText, position);
-            else AddUser_UpdateUserError(position, tryes);
-
-        }
-
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        2,
+        null,
+        AddUser_UpdateUsertSuccess,
+        empty_fun,
+        position
+    );
 }
 
 function AddUser_UpdateUsertSuccess(response, position) {
     var user = JSON.parse(response);
+
     if (user._total) {
         Main_removeEventListener("keydown", AddUser_handleKeyDown);
         user = user.users[0];
@@ -317,12 +323,8 @@ function AddUser_UpdateUsertSuccess(response, position) {
         AddUser_UsernameArray[position].logo = user.logo;
         if (!position) AddUser_UpdateSidepanel();
     }
-    AddUser_SaveUserArray();
-}
 
-function AddUser_UpdateUserError(position, tryes) {
-    tryes++;
-    if (tryes < DefaultHttpGetReTryMax) AddUser_UpdateUser(position, tryes);
+    AddUser_SaveUserArray();
 }
 
 function AddUser_SaveNewUser(responseText) {
