@@ -213,22 +213,25 @@ function AddCode_requestTokensSucess(responseText) {
     var response = JSON.parse(responseText);
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
-    AddCode_CheckOauthToken(Main_values.Users_AddcodePosition, 0);
+
+    AddCode_BasexmlHttpGetValidate(
+        AddCode_requestTokensSucessValidate,
+        AddCode_requestTokensFail,
+        Main_values.Users_AddcodePosition
+    );
 }
 
-function AddCode_CheckOauthToken(position, tryes) {
-    AddCode_BasexmlHttpGetValidate(AddCode_CheckOauthTokenReady, position, tryes);
-}
+function AddCode_requestTokensSucessValidate(obj, position) {
 
-function AddCode_CheckOauthTokenReady(xmlHttp, position, tryes) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) AddCode_CheckOauthTokenSucess(xmlHttp.responseText);
-        else AddCode_CheckOauthTokenError(position, tryes);
-    }
+    if (obj.status === 200) AddCode_CheckOauthTokenSucess(obj.responseText);
+    else AddCode_requestTokensFail(position);
+
 }
 
 function AddCode_CheckOauthTokenSucess(response) {
+
     var token = JSON.parse(response);
+
     if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
         Main_setItem('New_User_Token_Added', 1);
         AddUser_SaveUserArray();
@@ -263,26 +266,13 @@ function AddCode_CheckOauthTokenSucess(response) {
     return;
 }
 
-function AddCode_CheckOauthTokenError(position, tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_CheckOauthToken(position, tryes + 1);
-    else AddCode_requestTokensFail();
-}
-
 function AddCode_CheckTokenStart(position) {
-    //Main_Log('AddCode_CheckTokenStart');
 
-    if (!position) AddCode_CheckTokenSync(position, 0);
-    else AddCode_CheckToken(position, 0);
-}
+    if (Main_IsOn_OSInterface && !position) {
 
-//Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
-function AddCode_CheckTokenSync(position, tryes) {
-    //Main_Log('AddCode_CheckToken');
-
-    if (Main_IsOn_OSInterface) {
-        var xmlHttp = OSInterface_mMethodUrlHeaders(
+        var obj = OSInterface_mMethodUrlHeaders(
             AddCode_ValidateUrl,
-            (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
+            (DefaultHttpGetTimeout * 2),
             null,
             null,
             0,
@@ -293,39 +283,41 @@ function AddCode_CheckTokenSync(position, tryes) {
             )
         );
 
-        if (xmlHttp) {
+        if (obj) {
 
-            xmlHttp = JSON.parse(xmlHttp);
+            obj = JSON.parse(obj);
 
-            if (xmlHttp) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+            if (obj) AddCode_CheckTokenReady(obj, position);
 
-            return;
         }
 
-        AddCode_CheckTokenError(position, tryes);
     } else {
-        AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
+
+        AddCode_BasexmlHttpGetValidate(
+            AddCode_CheckTokenReady,
+            empty_fun,
+            position
+        );
+
     }
 }
 
-function AddCode_CheckToken(position, tryes) {
-    //Main_Log('AddCode_CheckToken');
-    AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
-}
+function AddCode_CheckTokenReady(obj, position) {
 
-function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
-    if (xmlHttp.readyState === 4) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
-}
+    if (obj.status === 200) {
 
-function AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes) {
-    //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
-    if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-    else if (xmlHttp.status === 401 || xmlHttp.status === 403) AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
-    else AddCode_CheckTokenError(position, tryes);
+        AddCode_CheckTokenSuccess(obj.responseText, position);
+
+    } else if (obj.status === 401 || obj.status === 403) {
+
+        AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
+
+    }
+
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
-    //Main_Log('AddCode_CheckTokenSuccess ' + responseText);
+    Main_Log('AddCode_CheckTokenSuccess ' + responseText);
 
     var token = JSON.parse(responseText);
 
@@ -356,17 +348,6 @@ function AddCode_Refreshtimeout(position) {
     } else Main_clearTimeout(AddUser_UsernameArray[position].timeout_id);
 
     //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
-}
-
-function AddCode_CheckTokenError(position, tryes) {
-
-    if (tryes < DefaultHttpGetReTryMax) {
-
-        if (!position) AddCode_CheckTokenSync(position, tryes + 1);
-        else AddCode_CheckToken(position, tryes + 1);
-
-    }
-
 }
 
 function AddCode_CheckFollow() {
@@ -550,19 +531,60 @@ function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, cal
     xmlHttp.send(null);
 }
 
-function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
-    var xmlHttp = new XMLHttpRequest();
+function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
 
-    xmlHttp.open("GET", AddCode_ValidateUrl, true);
-    xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
+    if (!Main_IsOn_OSInterface) {
 
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+        var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function() {
-        callbackready(this, position, tryes);
-    };
+        xmlHttp.open("GET", AddCode_ValidateUrl, true);
+        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
 
-    xmlHttp.send(null);
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
+
+        xmlHttp.onreadystatechange = function() {
+
+            if (this.readyState === 4) {
+
+                callbackSucess(this, position, callbackSucess);
+
+            }
+
+        };
+
+        xmlHttp.send(null);
+
+    } else {
+
+        OSInterface_BasexmlHttpGet(
+            AddCode_ValidateUrl,
+            (DefaultHttpGetTimeout * 2),
+            null,
+            null,
+            JSON.stringify([[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]]),
+            'AddCode_BasexmlHttpGetValidateGet',
+            0,
+            position,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+    }
+
+}
+
+function AddCode_BasexmlHttpGetValidateGet(result, position, callbackSucess, calbackError) {
+
+    if (result) {
+
+        eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
+
+        return;
+
+    }
+
+    eval(calbackError)(key); // jshint ignore:line
+
 }
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';

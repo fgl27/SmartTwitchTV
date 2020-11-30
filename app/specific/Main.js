@@ -214,7 +214,8 @@ function Main_loadTranslations(language) {
                     'Screens_CheckGetResult': Screens_CheckGetResult,
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
-                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
+                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
+                    'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet
                 };
             }
 
@@ -1736,7 +1737,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
     if (obj.status === 200) {
 
-        eval(callbackSucess)(obj.responseText, key, checkResult); // jshint ignore:line
+        callbackSucess(obj.responseText, key, checkResult); // jshint ignore:line
 
         return;
 
@@ -1748,7 +1749,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
     }
 
-    eval(calbackError)(key, checkResult); // jshint ignore:line
+    calbackError(key, checkResult); // jshint ignore:line
 
 }
 
