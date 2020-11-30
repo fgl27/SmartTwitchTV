@@ -707,7 +707,11 @@ function Play_updateStreamInfoStartValues(response) {
 
         Play_updateStreamInfoEnd(obj.streams[0]);
         Play_loadingInfoDataTry = 0;
-        Play_updateVodInfo(obj.streams[0].channel._id, obj.streams[0]._id, 0);
+
+        Play_updateVodInfo(
+            obj.streams[0].channel._id,
+            obj.streams[0]._id
+        );
     }
 }
 
@@ -765,38 +769,22 @@ function Play_setFollow() {
     );
 }
 
-function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
-    var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time',
-        xmlHttp = new XMLHttpRequest();
+function Play_updateVodInfo(Channel_id, BroadcastID) {
+    var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) Play_updateVodInfoSuccess(this.responseText, BroadcastID);
-            else Play_updateVodInfoError(Channel_id, BroadcastID, tryes);
-
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2),
+        2,
+        null,
+        Play_updateVodInfoSuccess,
+        Play_updateVodInfoError,
+        BroadcastID
+    );
 }
 
-function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
-    if (tryes < 10) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes + 1);
-            },
-            500
-        );
-    }
+function Play_updateVodInfoError() {
+    //no-op so BasexmlHttpGet can work
 }
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {

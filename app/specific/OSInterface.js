@@ -216,8 +216,8 @@ function OSInterface_GetMethodUrlHeadersAsync(urlString, timeout, postMessage, M
         Method,
         JsonHeadersArray,
         callback,
-        checkResult,
-        key,
+        !checkResult ? 0 : checkResult,
+        !key ? 0 : key,
         thread
     );
 }
@@ -236,8 +236,8 @@ function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, Jso
             Method,
             JsonHeadersArray,
             callback,
-            checkResult,
-            key,
+            !checkResult ? 0 : checkResult,
+            !key ? 0 : key,
             callbackSucess,
             calbackError
         );
