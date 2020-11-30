@@ -391,7 +391,7 @@ public final class Tools {
                 return new ResponseObj(
                         status,
                         readFullyString(
-                                status == HttpURLConnection.HTTP_OK ?
+                                status == HttpURLConnection.HTTP_OK || status == HttpURLConnection.HTTP_NO_CONTENT ?
                                         urlConnection.getInputStream() :
                                         urlConnection.getErrorStream()
                         ),
@@ -414,6 +414,8 @@ public final class Tools {
     }
 
     static String readFullyString(InputStream in) throws Throwable {//OutOfMemoryError, IOException or NullPointerException
+        if (in == null) return "";
+
         try {
             ByteArrayOutputStream bytes = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
