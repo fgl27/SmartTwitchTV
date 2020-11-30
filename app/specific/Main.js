@@ -1665,6 +1665,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
         xmlHttp.timeout = Timeout;
 
         Main_Headers[2][1] = access_token;
+
         for (i; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
@@ -1738,6 +1739,13 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
         eval(callbackSucess)(obj.responseText, key, checkResult); // jshint ignore:line
 
         return;
+
+    } else if (obj.status === 401 || obj.status === 403 &&
+        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)) { //token expired
+
+        AddCode_refreshTokens(0, 0, null, null);
+        return;
+
     }
 
     eval(calbackError)(key, checkResult); // jshint ignore:line

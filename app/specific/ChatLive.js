@@ -100,9 +100,9 @@ function ChatLive_Init(chat_number) {
     ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
-    ChatLive_loadEmotesUser(0);
+    ChatLive_loadEmotesUser();
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
-    ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
+    ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
 
     ChatLive_Individual_Background_flip[chat_number] = 0;
 
@@ -156,11 +156,11 @@ function ChatLive_SetOptions(chat_number, id) {
         ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
     }
 
-    ChatLive_loadEmotesChannelbttv(0, chat_number, id);
-    ChatLive_loadEmotesChannelffz(0, chat_number, id);
+    ChatLive_loadEmotesChannelbttv(chat_number, id);
+    ChatLive_loadEmotesChannelffz(chat_number, id);
 
-    ChatLive_loadBadgesChannel(0, chat_number, id);
-    ChatLive_loadCheersChannel(0, chat_number, id);
+    ChatLive_loadBadgesChannel(chat_number, id);
+    ChatLive_loadCheersChannel(chat_number, id);
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -208,28 +208,27 @@ function ChatLive_GetMinutes(time) {// "2020-04-17T21:03:42Z"
     return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
 }
 
-function ChatLive_checkSub(tryes, chat_number, id) {
+function ChatLive_checkSub(chat_number, id) {
     ChatLive_SubState[chat_number] = {};
 
     if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) {
-        ChatLive_checkSubFail(tryes, chat_number, id);
+        ChatLive_checkSubFail(chat_number, id);
         return;
     }
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-    Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-
-    ChatLive_BaseLoadUrl(
-        id,
+    BasexmlHttpGet(
         theUrl,
-        chat_number,
-        tryes,
+        DefaultHttpGetTimeout * 2,
+        3,
+        Main_OAuth + AddUser_UsernameArray[0].access_token,
         ChatLive_checkSubSucess,
         ChatLive_checkSubFail,
-        Main_Headers,
-        3
+        chat_number,
+        id
     );
+
 }
 
 function ChatLive_checkSubSucess(responseText, chat_number, id) {
@@ -239,27 +238,32 @@ function ChatLive_checkSubSucess(responseText, chat_number, id) {
 
 }
 
-function ChatLive_checkSubFail(tryes, chat_number, id) {
+function ChatLive_checkSubFail(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_SubState[chat_number].state = false;
 }
 
-function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
+function ChatLive_loadBadgesChannel(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-        ChatLive_BaseLoadUrl(
-            id,
+
+        BasexmlHttpGet(
             'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
-            chat_number,
-            tryes,
+            DefaultHttpGetTimeout * 2,
+            0,
+            null,
             ChatLive_loadBadgesChannelSuccess,
-            ChatLive_loadBadgesChannelError
+            empty_fun,
+            chat_number,
+            id
         );
 
     } else {
+
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
+
     }
 }
 
@@ -269,10 +273,6 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
 
     Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
-}
-
-function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
 }
 
 function ChatLive_resetChatters(chat_number) {
@@ -352,29 +352,28 @@ function ChatLive_loadChattersSuccess(result, chat_number, id) {
     }
 }
 
-function ChatLive_loadEmotesUser(tryes) {
+function ChatLive_loadEmotesUser() {
     if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
-        ChatLive_BaseLoadUrl(
-            0,
+
+        BasexmlHttpGet(
             Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
-            0,
-            tryes,
+            DefaultHttpGetTimeout * 2,
+            3,
+            Main_OAuth + AddUser_UsernameArray[0].access_token,
             ChatLive_loadEmotesUserSuccess,
-            ChatLive_loadEmotesUserError,
-            Main_Headers,
-            3
+            empty_fun,
+            0,
+            0
         );
+
     }
 }
 
-function ChatLive_loadEmotesUserError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesUser(tryes + 1);
-}
 
-function ChatLive_loadEmotesUserSuccess(data) {
+function ChatLive_loadEmotesUserSuccess(result) {
     try {
 
-        data = JSON.parse(data);
+        var data = JSON.parse(result);
         if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
 
         var url, id;
@@ -417,25 +416,27 @@ function ChatLive_loadEmotesUserSuccess(data) {
     }
 }
 
-function ChatLive_loadEmotesChannelbttv(tryes, chat_number, id) {
+function ChatLive_loadEmotesChannelbttv(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
-        ChatLive_BaseLoadUrl(
-            id,
-            'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            chat_number,
-            tryes,
-            ChatLive_loadEmotesChannelbttvSuccess,
-            ChatLive_loadEmotesChannelError
-        );
-    } else {
-        ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
-    }
-}
 
-function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
+        BasexmlHttpGet(
+            'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+            DefaultHttpGetTimeout * 2,
+            0,
+            null,
+            ChatLive_loadEmotesChannelbttvSuccess,
+            empty_fun,
+            chat_number,
+            id
+        );
+
+    } else {
+
+        ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
+
+    }
 }
 
 function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
@@ -488,33 +489,30 @@ function ChatLive_loadEmotesbttvChannel(data, chat_number) {
 
 }
 
-function ChatLive_loadCheersChannel(tryes, chat_number, id) {
+function ChatLive_loadCheersChannel(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
 
-        ChatLive_BaseLoadUrl(
-            id,
+        BasexmlHttpGet(
             'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            chat_number,
-            tryes,
+            DefaultHttpGetTimeout * 2,
+            1,
+            null,
             ChatLive_loadCheersChannelSuccess,
-            ChatLive_loadCheersChannelError,
-            Main_Headers,
-            1
+            empty_fun,
+            chat_number,
+            id
         );
+
     }
 }
 
-function ChatLive_loadCheersChannelError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
-}
-
-function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
+function ChatLive_loadCheersChannelSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     cheers[ChatLive_selectedChannel_id[chat_number]] = {};
-    data = JSON.parse(data);
+    var data = JSON.parse(responseText);
 
     try {
         data.actions.forEach(
@@ -549,25 +547,25 @@ function ChatLive_updateExtraEmotes(obj) {
     }
 }
 
-function ChatLive_loadEmotesChannelffz(tryes, chat_number, id) {
+function ChatLive_loadEmotesChannelffz(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-        ChatLive_BaseLoadUrl(
-            id,
+
+        BasexmlHttpGet(
             'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
-            chat_number,
-            tryes,
+            DefaultHttpGetTimeout * 2,
+            0,
+            null,
             ChatLive_loadEmotesChannelffzSuccess,
-            ChatLive_loadEmotesChannelffzError
+            empty_fun,
+            chat_number,
+            id
         );
+
     } else {
         ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
     }
-}
-
-function ChatLive_loadEmotesChannelffzError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
 }
 
 function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
@@ -1717,45 +1715,6 @@ function ChatLive_Clear(chat_number) {
         ChatLive_SendClose();
     }
 
-}
-
-
-function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, callbackError, Headers, HeaderQuatity) {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-
-    if (Headers) {
-
-        if (HeaderQuatity > 2 && AddUser_UserIsSet()) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
-    }
-
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) {
-
-                callbackSucess(this.responseText, chat_number, id);
-
-            } else if (HeaderQuatity > 2 && (this.status === 401 || this.status === 403)) { //token expired
-
-                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
-
-            } else {//404 ignore the result is empty
-
-                callbackError(tryes, chat_number, id);
-
-            }
-        }
-    };
-
-    xmlHttp.send(null);
 }
 
 function ChatLive_CleanUser(chat_number, message) {
