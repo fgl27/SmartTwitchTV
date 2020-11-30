@@ -268,8 +268,6 @@ function Chat_loadChatSuccess(responseText, id) {
 
     if (Chat_hasEnded || Chat_Id[0] !== id) return;
 
-    console.log(responseText);
-
     responseText = JSON.parse(responseText);
     var div,
         mmessage, null_next = (Chat_next === null),
