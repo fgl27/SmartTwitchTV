@@ -214,7 +214,6 @@ function Main_loadTranslations(language) {
                     'Screens_CheckGetResult': Screens_CheckGetResult,
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
-                    'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
                 };
             }
@@ -1680,7 +1679,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
     } else {
 
-        var JsonHeadersArray = Main_base_string_header;
+        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
 
         if (HeaderQuatity !== 2) {
 

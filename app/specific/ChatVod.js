@@ -80,30 +80,17 @@ function Chat_loadBadgesGlobal() {
 }
 
 function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
-    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus),
+        0,
+        null,
+        callbackSucess,
+        calbackError,
+        tryes
+    );
 
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) {
-
-                callbackSucess(this.responseText);
-
-            } else {
-
-                calbackError(tryes);
-
-            }
-
-        }
-
-    };
-
-    xmlHttp.send(null);
 }
 
 function Chat_loadBadgesGlobalRequest(tryes) {
@@ -241,92 +228,48 @@ function Chat_loadEmotesSuccessffz(data) {
 }
 
 function Chat_loadChat(id) {
-    if (Chat_Id[0] === id) Chat_loadChatRequest(id, 0);
+    if (Chat_Id[0] === id) Chat_loadChatRequest(id);
 }
 
-function Chat_loadChatRequest(id, tryes) {
+function Chat_loadChatRequest(id) {
 
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-    if (!Main_IsOn_OSInterface) {
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        0,
+        null,
+        Chat_loadChatSuccess,
+        Chat_loadChatError,
+        id
+    );
+}
 
-        var xmlHttp = new XMLHttpRequest();
+function Chat_loadChatError(id) {
+    if (Chat_Id[0] === id) {
 
-        xmlHttp.open("GET", theUrl, true);
+        Chat_loadChatId = Main_setTimeout(
+            function() {
+                var time = (OSInterface_gettime() / 1000);
+                if (time && time < Chat_offset) Chat_offset = time;
 
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                Chat_loadChatCheckStatus(this, id);
-
-            }
-
-        };
-
-        xmlHttp.send(null);
-
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            null,//JsonHeadersArray
-            'Chat_loadChatRequestResult',//callback
-            id,//checkResult
-            tryes,//key
-            61//thread
+                Chat_loadChatRequest(id, 0);
+            },
+            2500,
+            Chat_loadChatId
         );
 
     }
 }
 
-function Chat_loadChatRequestResult(result, tryes, id) {
-    if (result) {
-
-        Chat_loadChatCheckStatus(JSON.parse(result), id, tryes);
-
-    } else if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
-}
-
-
-function Chat_loadChatCheckStatus(obj, id, tryes) {
-
-    if (Chat_Id[0] === id) {
-
-        if (obj.status === 200) Chat_loadChatSuccess(obj.responseText, id);
-        else Chat_loadChatError(id, tryes);
-
-    }
-
-
-}
-
-function Chat_loadChatError(id, tryes) {
-    if (Chat_Id[0] === id) {
-        if (tryes < DefaultHttpGetReTryMax) Chat_loadChatRequest(id, tryes + 1);
-        else {
-            Chat_loadChatId = Main_setTimeout(
-                function() {
-                    var time = (OSInterface_gettime() / 1000);
-                    if (time && time < Chat_offset) Chat_offset = time;
-
-                    Chat_loadChatRequest(id, 0);
-                },
-                2500,
-                Chat_loadChatId
-            );
-        }
-    }
-}
-
 function Chat_loadChatSuccess(responseText, id) {
+
+    if (Chat_hasEnded || Chat_Id[0] !== id) return;
+
+    console.log(responseText);
+
     responseText = JSON.parse(responseText);
     var div,
         mmessage, null_next = (Chat_next === null),
@@ -563,51 +506,35 @@ function Main_Addline(id) {
 }
 
 function Chat_loadChatNext(id) {
-    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id, 0);
+    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
 }
 
-function Chat_loadChatNextRequest(id, tryes) {
+function Chat_loadChatNextRequest(id) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
-    var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.open("GET", theUrl, true);
-
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) {
-
-                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(this.responseText, id);
-
-            } else {
-
-                if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id, tryes);
-
-            }
-
-
-        }
-    };
-
-    xmlHttp.send(null);
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        0,
+        null,
+        Chat_loadChatSuccess,
+        Chat_loadChatNextError,
+        id
+    );
 }
 
-function Chat_loadChatNextError(id, tryes) {
+function Chat_loadChatNextError(id) {
     if (Chat_Id[0] === id) {
-        if (tryes < DefaultHttpGetReTryMax) Chat_loadChatNextRequest(id, tryes + 1);
-        else {
-            Chat_loadChatNextId = Main_setTimeout(
-                function() {
-                    Chat_loadChatNextRequest(id, 0);
-                },
-                2500,
-                Chat_loadChatNextId
-            );
-        }
+
+        Chat_loadChatNextId = Main_setTimeout(
+            function() {
+                Chat_loadChatNextRequest(id, 0);
+            },
+            2500,
+            Chat_loadChatNextId
+        );
+
     }
 }
 
