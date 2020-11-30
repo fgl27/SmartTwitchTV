@@ -1653,7 +1653,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
     var i = 0;
 
@@ -1672,7 +1672,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
             if (this.readyState === 4) {
 
-                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
+                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
 
             }
 
@@ -1702,7 +1702,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
             null,
             JsonHeadersArray,
             'Main_CheckBasexmlHttpGet',
-            0,
+            checkResult,
             key,
             callbackSucess.name,
             calbackError.name
@@ -1712,7 +1712,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
 }
 
-function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
+function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
 
     if (result) {
 
@@ -1720,7 +1720,8 @@ function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
             JSON.parse(result),
             key,
             eval(callbackSucess),// jshint ignore:line
-            eval(calbackError)// jshint ignore:line
+            eval(calbackError),// jshint ignore:line
+            checkResult
         );
         return;
 
@@ -1730,16 +1731,16 @@ function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
 
 }
 
-function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError) {
+function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkResult) {
 
     if (obj.status === 200) {
 
-        eval(callbackSucess)(obj.responseText, key); // jshint ignore:line
+        eval(callbackSucess)(obj.responseText, key, checkResult); // jshint ignore:line
 
         return;
     }
 
-    eval(calbackError)(key); // jshint ignore:line
+    eval(calbackError)(key, checkResult); // jshint ignore:line
 
 }
 

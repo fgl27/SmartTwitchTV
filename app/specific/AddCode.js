@@ -427,17 +427,27 @@ function AddCode_FollowRequest(tryes) {
 
 function AddCode_FollowRequestReady(xmlHttp, tryes) {
     if (xmlHttp.readyState === 4) {
+
         if (xmlHttp.status === 200) { //success user now is following the channel
+
             AddCode_IsFollowing = true;
+
             if (AddCode_PlayRequest) {
+
                 Play_setFollow();
                 ChatLive_checkFallowSuccessUpdate(xmlHttp.responseText, 0);
+
             } else ChannelContent_setFollow();
+
             return;
         } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+
             AddCode_refreshTokens(0, 0, AddCode_Follow, null);
+
         } else {
+
             AddCode_FollowRequestError(tryes);
+
         }
     }
 }

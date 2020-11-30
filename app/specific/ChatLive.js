@@ -101,7 +101,7 @@ function ChatLive_Init(chat_number) {
 
     ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser(0);
-    ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
+    ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
 
     ChatLive_Individual_Background_flip[chat_number] = 0;
@@ -163,75 +163,49 @@ function ChatLive_SetOptions(chat_number, id) {
     ChatLive_loadCheersChannel(0, chat_number, id);
 }
 
-function ChatLive_checkFallow(tryes, chat_number, id) {
-    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+function ChatLive_checkFallow(chat_number, id) {
+    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
     ChatLive_FollowState[chat_number] = {};
-
-    var xmlHttp = new XMLHttpRequest();
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-    xmlHttp.open("GET", theUrl, true);
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        2,
+        null,
+        ChatLive_checkFallowSuccess,
+        ChatLive_RequestCheckFollowNOK,
+        chat_number,
+        id
+    );
 
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) { //yes
-
-                ChatLive_checkFallowSuccess(this.responseText, chat_number, id);
-
-            } else if (this.status === 404) { //no
-
-                ChatLive_RequestCheckFollowNOK(this.responseText, tryes, chat_number, id);
-
-            } else { // internet error
-
-                ChatLive_checkFallowError(tryes, chat_number, id);
-
-            }
-
-        }
-
-    };
-
-    xmlHttp.send(null);
 }
 
 function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
+
     ChatLive_checkFallowSuccessUpdate(responseText, chat_number);
 }
 
 function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
-    responseText = JSON.parse(responseText);
+    var obj = JSON.parse(responseText);
 
     ChatLive_FollowState[chat_number] = {
-        created_at: responseText.created_at,
+        created_at: obj.created_at,
         follows: true
     };
+}
+
+function ChatLive_RequestCheckFollowNOK(chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    ChatLive_FollowState[chat_number].follows = false;
 }
 
 function ChatLive_GetMinutes(time) {// "2020-04-17T21:03:42Z"
     time = (new Date().getTime()) - (new Date(time).getTime());
     return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
-}
-
-function ChatLive_RequestCheckFollowNOK(response, tryes, chat_number, id) {
-    response = JSON.parse(response);
-
-    if (response.message && Main_A_includes_B((response.message + ''), 'Follow not found')) {
-        ChatLive_FollowState[chat_number].follows = false;
-    } else ChatLive_checkFallowError(tryes, chat_number, id);
-}
-
-function ChatLive_checkFallowError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
 }
 
 function ChatLive_checkSub(tryes, chat_number, id) {
