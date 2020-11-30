@@ -209,59 +209,40 @@ function ChatLive_GetMinutes(time) {// "2020-04-17T21:03:42Z"
 }
 
 function ChatLive_checkSub(tryes, chat_number, id) {
-    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
-
     ChatLive_SubState[chat_number] = {};
 
-    var xmlHttp = new XMLHttpRequest();
+    if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) {
+        ChatLive_checkSubFail(tryes, chat_number, id);
+        return;
+    }
+
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-    xmlHttp.open("GET", theUrl, true);
-
     Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-    for (var i = 0; i < 3; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) { //yes
-
-                ChatLive_SubState[chat_number].state = true;
-
-            } else if (this.status === 404) {
-
-                var response = JSON.parse(this.responseText);
-
-                if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) {//no
-
-                    ChatLive_SubState[chat_number].state = false;
-
-                } else ChatLive_checkSubError(tryes, chat_number, id);
-
-            } else if (this.status === 401 || this.status === 403) { //token expired
-
-                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
-                else ChatLive_checkSubError(tryes, chat_number, id);
-
-            } else { // internet error
-
-                ChatLive_checkSubError(tryes, chat_number, id);
-
-            }
-
-        }
-
-    };
-
-    xmlHttp.send(null);
+    ChatLive_BaseLoadUrl(
+        id,
+        theUrl,
+        chat_number,
+        tryes,
+        ChatLive_checkSubSucess,
+        ChatLive_checkSubFail,
+        Main_Headers,
+        3
+    );
 }
 
-function ChatLive_checkSubError(tryes, chat_number, id) {
-    if (tryes < DefaultHttpGetReTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
+function ChatLive_checkSubSucess(responseText, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    ChatLive_SubState[chat_number].state = true;
+
+}
+
+function ChatLive_checkSubFail(tryes, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    ChatLive_SubState[chat_number].state = false;
 }
 
 function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
@@ -1766,7 +1747,7 @@ function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, ca
 
                 if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
 
-            } else if (this.status !== 404) {//404 ignore the result is empty
+            } else {//404 ignore the result is empty
 
                 callbackError(tryes, chat_number, id);
 
