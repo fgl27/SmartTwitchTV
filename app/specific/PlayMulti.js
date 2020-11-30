@@ -22,48 +22,17 @@
 var Play_MultiArray_length = 4;
 
 function Play_updateStreamInfoMulti(pos) {
-    Main_setTimeout(
-        function() {
-            if (Play_MultiArray[pos].data.length > 0) {
-                Play_RefreshMultiGet(
-                    Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
-                    0,
-                    pos
-                );
-            }
-        },
-        (pos * 1000)
+
+    BasexmlHttpGet(
+        Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
+        (DefaultHttpGetTimeout * 2),
+        2,
+        null,
+        Play_updateStreamInfoMultiValues,
+        Play_updateStreamInfoMultiError,
+        pos
     );
-}
 
-function Play_RefreshMultiGet(theUrl, tryes, pos) {
-    var xmlHttp = new XMLHttpRequest();
-
-    xmlHttp.open("GET", theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-    for (var i = 0; i < 2; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-    xmlHttp.onreadystatechange = function() {
-
-        if (this.readyState === 4) {
-
-            if (this.status === 200) {
-
-                Play_updateStreamInfoMultiValues(this.responseText, pos);
-
-            } else {
-
-                Play_updateStreamInfoMultiError(theUrl, tryes, pos);
-
-            }
-
-        }
-
-    };
-
-    xmlHttp.send(null);
 }
 
 function Play_updateStreamInfoMultiValues(response, pos) {
@@ -96,16 +65,9 @@ function Play_updateStreamInfoMultiValues(response, pos) {
     }
 }
 
-function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-    if (tryes < DefaultHttpGetReTryMax) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
-                //give a second for it retry as the TV may be on coming from resume
-            },
-            2500
-        );
-    } else if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
+function Play_updateStreamInfoMultiError(pos) {
+
+    if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
 
         //we fail but we still watching so update the time
         Main_Set_history('live', Play_MultiArray[pos].data);
