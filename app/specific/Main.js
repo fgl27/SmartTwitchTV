@@ -1653,7 +1653,6 @@ function CheckPage(pageUrlCode) {
 
 function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
 
-    Main_Headers[2][1] = access_token;
     var i = 0;
 
     if (!Main_IsOn_OSInterface) {
@@ -1663,6 +1662,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
+        Main_Headers[2][1] = access_token;
         for (i; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
@@ -1680,17 +1680,25 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
     } else {
 
-        var array = [];
+        var JsonHeadersArray = Main_base_string_header;
 
-        for (i; i < HeaderQuatity; i++)
-            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+        if (HeaderQuatity !== 2) {
+
+            var array = [];
+            Main_Headers[2][1] = access_token;
+
+            for (i; i < HeaderQuatity; i++)
+                array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+            JsonHeadersArray = JSON.stringify(array);
+        }
 
         OSInterface_BasexmlHttpGet(
             theUrl,
             Timeout,
             null,
             null,
-            JSON.stringify(array),
+            JsonHeadersArray,
             'Main_CheckBasexmlHttpGet',
             0,
             key,
