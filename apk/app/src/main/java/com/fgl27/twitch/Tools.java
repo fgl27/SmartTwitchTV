@@ -331,16 +331,23 @@ public final class Tools {
     static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
                                         String Method, long checkResult, String JsonHeadersArray) {
 
-        return Internal_MethodUrl(
-                urlString,
-                timeout,
-                postMessage,
-                Method,
-                checkResult,
-                JsonHeadersArray == null ?
-                        new String[0][0] :
-                        new Gson().fromJson(JsonHeadersArray, ArrayType)
-        );
+        try {
+
+            return Internal_MethodUrl(
+                    urlString,
+                    timeout,
+                    postMessage,
+                    Method,
+                    checkResult,
+                    JsonHeadersArray == null ?
+                            new String[0][0] :
+                            new Gson().fromJson(JsonHeadersArray, ArrayType)
+            );
+
+        } catch (Throwable e) {
+            recordException(TAG, "MethodUrlHeaders ", e);
+            return null;
+        }
 
     }
 
