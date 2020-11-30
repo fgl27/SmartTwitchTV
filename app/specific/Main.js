@@ -216,7 +216,8 @@ function Main_loadTranslations(language) {
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
                     'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
-                    'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult
+                    'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
+                    'AddCode_refreshTokensResult': AddCode_refreshTokensResult
                 };
             }
 
@@ -1745,7 +1746,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
     } else if (obj.status === 401 || obj.status === 403 &&
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)) { //token expired
 
-        AddCode_refreshTokens(0, 0, null, null);
+        AddCode_refreshTokens(0, null, null);
         return;
 
     }
@@ -2484,7 +2485,7 @@ function Main_CheckResumeUpdateToken(UserIsSet) {
     //If the app closes next reopen the same check will happen but somewhere else
     if (UserIsSet && AddUser_UsernameArray[0].access_token &&
         (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
-        AddCode_refreshTokens(0, 0, null, null, null, true);
+        AddCode_refreshTokens(0, null, null, null, true);
     }
 }
 

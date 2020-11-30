@@ -41,7 +41,7 @@ function AddCode_CheckNewCode(code) {
     AddCode_requestTokens();
 }
 
-function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
+function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
     //Main_Log('AddCode_refreshTokens');
     if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
 
@@ -60,7 +60,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
 
         xmlHttp = OSInterface_mMethodUrlHeaders(
             url,
-            (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
+            (DefaultHttpGetTimeout * 2),
             'POST',
             null,
             0,
@@ -71,38 +71,74 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
 
             xmlHttp = JSON.parse(xmlHttp);
 
-            if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+            if (xmlHttp) AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
 
             return;
         }
 
-        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+        AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
 
     } else {
 
-        xmlHttp = new XMLHttpRequest();
+        if (!Main_IsOn_OSInterface) {
 
-        xmlHttp.open("POST", url, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+            xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() {
+            xmlHttp.open("POST", url, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
-            if (this.readyState === 4) {
-                //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, this, sync);
-            }
+            xmlHttp.onreadystatechange = function() {
 
-        };
+                if (this.readyState === 4) {
+                    //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+                    AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
+                }
 
-        xmlHttp.send(null);
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_BasexmlHttpGet(
+                url,
+                (DefaultHttpGetTimeout * 2),
+                null,
+                'POST',
+                null,
+                'AddCode_refreshTokensResult',
+                position,
+                key,
+                callbackFunc ? callbackFunc.name : null,
+                callbackFuncNOK ? callbackFuncNOK.name : null
+            );
+
+        }
 
     }
 }
 
-function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync) {
+function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
+
+    if (result) {
+
+        AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result));// jshint ignore:line
+
+        return;
+
+    }
+
+    if (eval(calbackError)) eval(calbackError)(key); // jshint ignore:line
+
+}
+
+function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+
     if (xmlHttp.status === 200) {
+
         AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
         return;
+
     } else {
 
         try {
@@ -121,12 +157,12 @@ function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncN
         }
 
     }
-    AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+
+    AddCode_refreshTokensError(callbackFuncNOK, key);
 }
 
-function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key, sync) {
-    if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key, sync);
-    else if (callbackFuncNOK) callbackFuncNOK(key);
+function AddCode_refreshTokensError(callbackFuncNOK, key) {
+    if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
@@ -312,7 +348,7 @@ function AddCode_CheckTokenReady(obj, position) {
 
     } else if (obj.status === 401 || obj.status === 403) {
 
-        AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
+        AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
     }
 
@@ -339,7 +375,7 @@ function AddCode_Refreshtimeout(position) {
         AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
             function() {
 
-                AddCode_refreshTokens(position, 0, null, null);
+                AddCode_refreshTokens(position, null, null);
 
             },
             AddUser_UsernameArray[position].expires_in,
@@ -425,7 +461,7 @@ function AddCode_FollowSucess(obj) {
         return;
     } else if (obj.status === 401 || obj.status === 403) { //token expired
 
-        AddCode_refreshTokens(0, 0, AddCode_Follow, null);
+        AddCode_refreshTokens(0, AddCode_Follow, null);
 
     }
 
@@ -461,7 +497,7 @@ function AddCode_UnFollowSucess(xmlHttp) {
 
     } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
 
-        AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
+        AddCode_refreshTokens(0, AddCode_UnFollow, null);
 
     }
 
@@ -492,7 +528,7 @@ function AddCode_CheckSubSucess(obj) {
 
     } else if (obj.status === 401 || obj.status === 403) { //token expired
 
-        AddCode_refreshTokens(0, 0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
+        AddCode_refreshTokens(0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
 
     } else { // internet error
         AddCode_CheckSubSucessFail();
@@ -576,7 +612,6 @@ function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackE
     eval(calbackError)(key); // jshint ignore:line
 
 }
-
 
 function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
 

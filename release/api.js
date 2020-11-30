@@ -82,7 +82,8 @@
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
         'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
-        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult
+        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
+        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
     };
 
     /** Expose `smartTwitchTV` */
