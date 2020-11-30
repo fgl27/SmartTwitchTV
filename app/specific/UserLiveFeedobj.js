@@ -147,51 +147,15 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
     if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-    if (!Main_IsOn_OSInterface) {
-
-        BasexmlHttpGet(
-            url,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
-            headers,
-            null,
-            callback,
-            UserLiveFeedobj_loadDataError,
-            pos
-        );
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            url,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            UserLiveFeed_Headers[pos],//JsonHeadersArray
-            'UserLiveFeedobj_CheckGetResult',//callback
-            pos,//checkResult
-            pos,//key
-            30 + pos//thread
-        );
-
-    }
-}
-
-function UserLiveFeedobj_CheckGetResult(result, pos) {
-
-    if (result) {
-
-        var obj = JSON.parse(result);
-
-        if (obj.status === 200) {
-
-            UserLiveFeed_obj[pos].success(obj.responseText);
-
-            return;
-        }
-
-    }
-
-    UserLiveFeedobj_loadDataErrorElse(pos);
+    BasexmlHttpGet(
+        url,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
+        headers,
+        null,
+        callback,
+        UserLiveFeedobj_loadDataError,
+        pos
+    );
 }
 
 function UserLiveFeedobj_loadDataError(pos) {
@@ -241,72 +205,20 @@ function UserLiveFeedobj_HolderDiv(pos, text) {
 }
 
 function UserLiveFeedobj_loadChannels() {
-    var i = 0,
-        theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-            '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-    if (!Main_IsOn_OSInterface) {
+    var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        UserLiveFeedobj_loadChannelLive,
+        UserLiveFeedobj_loadChannelsError,
+        UserLiveFeedobj_UserLivePos
+    );
 
-        for (i; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    UserLiveFeedobj_loadChannelLive(this.responseText);
-
-                } else {
-
-                    UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            Main_base_string_header,//JsonHeadersArray
-            'UserLiveFeedobj_loadChannelsResult',//callback
-            UserLiveFeedobj_UserLivePos,//checkResult
-            UserLiveFeedobj_UserLivePos,//key
-            30 + UserLiveFeedobj_UserLivePos//thread
-        );
-
-    }
-}
-
-function UserLiveFeedobj_loadChannelsResult(result, key) {
-
-    if (result) {
-
-        var obj = JSON.parse(result);
-
-        if (obj.status === 200) {
-
-            UserLiveFeedobj_loadChannelLive(obj.responseText);
-            return;
-
-        }
-
-    }
-
-    UserLiveFeedobj_loadChannelsError(key);
 }
 
 function UserLiveFeedobj_loadChannelsError(pos) {

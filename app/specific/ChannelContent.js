@@ -116,51 +116,14 @@ function ChannelContent_loadDataRequest() {
         encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
         Main_TwithcV5Flag;
 
-    if (!Main_IsOn_OSInterface) {
-
-        BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-            2,
-            null,
-            ChannelContent_loadDataRequestSuccess,
-            ChannelContent_loadDataError
-        );
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            Main_base_string_header,//JsonHeadersArray
-            'ChannelContent_loadDataRequestResult',//callback
-            Main_ChannelContent,//checkResult
-            Main_ChannelContent,//key
-            Main_ChannelContent//thread
-        );
-
-    }
-
-}
-
-function ChannelContent_loadDataRequestResult(result) {
-
-    if (result) {
-
-        var obj = JSON.parse(result);
-
-        if (obj.status === 200) {
-
-            ChannelContent_loadDataRequestSuccess(obj.responseText);
-
-            return;
-        }
-
-    }
-
-    ChannelContent_loadDataError();
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        ChannelContent_loadDataRequestSuccess,
+        ChannelContent_loadDataError
+    );
 
 }
 
@@ -255,51 +218,14 @@ function ChannelContent_CheckHost(responseText) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    if (!Main_IsOn_OSInterface) {
-
-        BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-            2,
-            null,
-            ChannelContent_GetStreamerInfoSuccess,
-            ChannelContent_GetStreamerInfoError
-        );
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            Main_base_string_header,//JsonHeadersArray
-            'ChannelContent_GetStreamerInfoResult',//callback
-            Main_ChannelContent,//checkResult
-            Main_ChannelContent,//key
-            Main_ChannelContent//thread
-        );
-
-    }
-
-}
-
-function ChannelContent_GetStreamerInfoResult(result) {
-
-    if (result) {
-
-        var obj = JSON.parse(result);
-
-        if (obj.status === 200) {
-
-            ChannelContent_GetStreamerInfoSuccess(obj.responseText);
-
-            return;
-        }
-
-    }
-
-    ChannelContent_GetStreamerInfoError();
+    BasexmlHttpGet(
+        theUrl,
+        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+        2,
+        null,
+        ChannelContent_GetStreamerInfoSuccess,
+        ChannelContent_GetStreamerInfoError
+    );
 
 }
 
