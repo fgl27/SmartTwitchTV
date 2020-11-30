@@ -2744,12 +2744,28 @@ function Screens_FollowUnfollow(key) {
         if (Screens_isFollowing) {
 
             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-            AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_UnFollowRequestReady, 3);
+
+            AddCode_BasexmlHttpGet(
+                theUrl,
+                'DELETE',
+                3,
+                Main_OAuth + AddUser_UsernameArray[0].access_token,
+                Screens_UnFollowRequestReady,
+                empty_fun
+            );
 
         } else {
 
             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-            AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FollowRequestReady, 3);
+
+            AddCode_BasexmlHttpGet(
+                theUrl,
+                'PUT',
+                3,
+                Main_OAuth + AddUser_UsernameArray[0].access_token,
+                Screens_FollowRequestReady,
+                empty_fun
+            );
 
         }
 
@@ -2762,28 +2778,28 @@ function Screens_FollowUnfollow(key) {
 }
 
 function Screens_UnFollowRequestReady(xmlHttp) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 204) { //success user is now not following the channel
-            Screens_canFollow = true;
-            Screens_isFollowing = false;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
-        }// } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-        //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-        // }
+
+    if (xmlHttp.status === 204) { //success user is now not following the channel
+
+        Screens_canFollow = true;
+        Screens_isFollowing = false;
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+
     }
+
 }
 
 function Screens_FollowRequestReady(xmlHttp) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success user is now following the channel
-            Screens_isFollowing = true;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-        }// } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-        //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-        // }
+
+    if (xmlHttp.status === 200) { //success user is now following the channel
+
+        Screens_isFollowing = true;
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
+
     }
+
 }
 
 function Screens_OpenScreen() {

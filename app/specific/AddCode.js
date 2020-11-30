@@ -38,7 +38,7 @@ var AddCode_Scopes = [
 function AddCode_CheckNewCode(code) {
     AddCode_Code = code;
     Main_showLoadDialog();
-    AddCode_requestTokens(0);
+    AddCode_requestTokens();
 }
 
 function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
@@ -152,36 +152,49 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) 
 
 //Check if has all scopes, in canse they change
 function AddCode_TokensCheckScope(scope) {
+
     var i = 0, len = AddCode_Scopes.length;
+
     for (i; i < len; i++) {
         if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
     }
+
     return true;
 }
 
-function AddCode_requestTokens(tryes) {
+function AddCode_requestTokens() {
     var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
         '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
-    AddCode_BasexmlHttpGet(theUrl, 'POST', 0, null, AddCode_requestTokensReady, tryes);
+    AddCode_BasexmlHttpGet(
+        theUrl,
+        'POST',
+        0,
+        null,
+        AddCode_requestTokensSucess,
+        AddCode_requestTokensFail
+    );
 }
 
-function AddCode_requestTokensReady(xmlHttp, tryes) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) {
-            AddCode_requestTokensSucess(xmlHttp.responseText);
-        } else AddCode_requestTokensError(tryes);
-        return;
-    }
-}
+function AddCode_requestTokensSucess(obj) {
 
-function AddCode_requestTokensError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_requestTokens(tryes + 1);
-    else AddCode_requestTokensFail();
+    if (obj.status === 200) {
 
+        var response = JSON.parse(obj.responseText);
+        AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
+        AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
+
+        AddCode_BasexmlHttpGetValidate(
+            AddCode_requestTokensSucessValidate,
+            AddCode_requestTokensFail,
+            Main_values.Users_AddcodePosition
+        );
+
+    } else AddCode_requestTokensFail();
 }
 
 function AddCode_requestTokensFail() {
+
     Main_HideLoadDialog();
     Main_showWarningDialog(STR_OAUTH_FAIL);
     Main_setTimeout(
@@ -197,6 +210,7 @@ function AddCode_requestTokensFail() {
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
     AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
     AddUser_SaveUserArray();
+
 }
 
 function AddCode_requestTokensFailRunning(position) {
@@ -207,18 +221,6 @@ function AddCode_requestTokensFailRunning(position) {
     AddUser_UsernameArray[position].refresh_token = 0;
     AddUser_SaveUserArray();
     Main_SaveValues();
-}
-
-function AddCode_requestTokensSucess(responseText) {
-    var response = JSON.parse(responseText);
-    AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
-    AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
-
-    AddCode_BasexmlHttpGetValidate(
-        AddCode_requestTokensSucessValidate,
-        AddCode_requestTokensFail,
-        Main_values.Users_AddcodePosition
-    );
 }
 
 function AddCode_requestTokensSucessValidate(obj, position) {
@@ -317,7 +319,6 @@ function AddCode_CheckTokenReady(obj, position) {
 }
 
 function AddCode_CheckTokenSuccess(responseText, position) {
-    Main_Log('AddCode_CheckTokenSuccess ' + responseText);
 
     var token = JSON.parse(responseText);
 
@@ -352,184 +353,230 @@ function AddCode_Refreshtimeout(position) {
 
 function AddCode_CheckFollow() {
     AddCode_IsFollowing = false;
-    AddCode_RequestCheckFollow(0);
-}
-
-function AddCode_RequestCheckFollow(tryes) {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_RequestCheckFollowReady, tryes);
+    AddCode_BasexmlHttpGet(
+        theUrl,
+        'GET',
+        2,
+        null,
+        AddCode_RequestCheckFollowSucess,
+        AddCode_RequestCheckFollowError
+    );
 }
 
-function AddCode_RequestCheckFollowReady(xmlHttp, tryes) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //yes
-            AddCode_RequestCheckFollowOK();
-        } else if (xmlHttp.status === 404) { //no
-            AddCode_RequestCheckFollowNOK(xmlHttp.responseText);
-        } else { // internet error
-            AddCode_RequestCheckFollowError(tryes);
-        }
+function AddCode_RequestCheckFollowSucess(obj) {
+
+    if (obj.status === 200) { //yes
+
+        AddCode_RequestCheckFollowOK();
+
+    } else { // no
+
+        AddCode_RequestCheckFollowError();
+
     }
 }
 
 function AddCode_RequestCheckFollowOK() {
     AddCode_IsFollowing = true;
+    AddCode_RequestCheckFollowEnd();
+}
+
+function AddCode_RequestCheckFollowError() {
+    AddCode_IsFollowing = false;
+    AddCode_RequestCheckFollowEnd();
+}
+
+function AddCode_RequestCheckFollowEnd() {
+
     if (AddCode_PlayRequest) Play_setFollow();
     else ChannelContent_setFollow();
-}
 
-function AddCode_RequestCheckFollowNOK(response) {
-    response = JSON.parse(response);
-    if (response.error) {
-        if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
-            AddCode_IsFollowing = false;
-            if (AddCode_PlayRequest) Play_setFollow();
-            else ChannelContent_setFollow();
-        } else AddCode_RequestCheckFollowError();
-    } else AddCode_RequestCheckFollowError();
-}
-
-function AddCode_RequestCheckFollowError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_RequestCheckFollow(tryes + 1);
-    else {
-        if (AddCode_PlayRequest) Play_setFollow();
-        else ChannelContent_setFollow();
-    }
 }
 
 function AddCode_Follow() {
-    AddCode_FollowRequest(0);
-}
 
-function AddCode_FollowRequest(tryes) {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_FollowRequestReady, tryes);
+    AddCode_BasexmlHttpGet(
+        theUrl,
+        'PUT',
+        3,
+        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        AddCode_FollowSucess,
+        empty_fun
+    );
 }
 
-function AddCode_FollowRequestReady(xmlHttp, tryes) {
-    if (xmlHttp.readyState === 4) {
+function AddCode_FollowSucess(obj) {
 
-        if (xmlHttp.status === 200) { //success user now is following the channel
+    if (obj.status === 200) { //success user now is following the channel
 
-            AddCode_IsFollowing = true;
+        AddCode_IsFollowing = true;
 
-            if (AddCode_PlayRequest) {
+        if (AddCode_PlayRequest) {
 
-                Play_setFollow();
-                ChatLive_checkFallowSuccessUpdate(xmlHttp.responseText, 0);
+            Play_setFollow();
+            ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
 
-            } else ChannelContent_setFollow();
+        } else ChannelContent_setFollow();
 
-            return;
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+        return;
+    } else if (obj.status === 401 || obj.status === 403) { //token expired
 
-            AddCode_refreshTokens(0, 0, AddCode_Follow, null);
+        AddCode_refreshTokens(0, 0, AddCode_Follow, null);
 
-        } else {
-
-            AddCode_FollowRequestError(tryes);
-
-        }
     }
-}
 
-function AddCode_FollowRequestError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_FollowRequest(tryes + 1);
 }
 
 function AddCode_UnFollow() {
-    AddCode_UnFollowRequest(0);
-}
 
-function AddCode_UnFollowRequest(tryes) {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_UnFollowRequestReady, tryes);
+    AddCode_BasexmlHttpGet(
+        theUrl,
+        'DELETE',
+        3,
+        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        AddCode_UnFollowSucess,
+        empty_fun
+    );
 }
 
-function AddCode_UnFollowRequestReady(xmlHttp, tryes) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 204) { //success user is now not following the channel
-            AddCode_IsFollowing = false;
-            if (AddCode_PlayRequest) {
-                Play_setFollow();
-                ChatLive_FollowState[0].follows = false;
-            } else ChannelContent_setFollow();
-            return;
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
-        } else {
-            AddCode_UnFollowRequestError(tryes);
-        }
+function AddCode_UnFollowSucess(xmlHttp) {
+
+    if (xmlHttp.status === 204) { //success user is now not following the channel
+
+        AddCode_IsFollowing = false;
+
+        if (AddCode_PlayRequest) {
+
+            Play_setFollow();
+            ChatLive_FollowState[0].follows = false;
+
+        } else ChannelContent_setFollow();
+
+
+    } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+
+        AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
+
     }
-}
 
-function AddCode_UnFollowRequestError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_UnFollowRequest(tryes + 1);
 }
 
 function AddCode_CheckSub() {
     AddCode_IsSub = false;
-    AddCode_RequestCheckSub(0);
-}
 
-function AddCode_RequestCheckSub(tryes) {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(theUrl, 'GET', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_RequestCheckSubReady, tryes);
+    AddCode_BasexmlHttpGet(
+        theUrl,
+        'GET',
+        3,
+        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        AddCode_CheckSubSucess,
+        AddCode_CheckSubSucessFail
+    );
+
 }
 
-function AddCode_RequestCheckSubReady(xmlHttp, tryes) {
-    if (xmlHttp.readyState === 4) {
-        if (xmlHttp.status === 200) { //success yes user is a SUB
-            AddCode_IsSub = true;
-            PlayVod_isSub();
-        } else if (xmlHttp.status === 422) { //channel does not have a subscription program
-            AddCode_RequestCheckSubfail();
-        } else if (xmlHttp.status === 404) { //success no user is not a sub
-            var response = JSON.parse(xmlHttp.responseText);
-            if (response.error) {
-                if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
-                    AddCode_RequestCheckSubfail();
-                } else AddCode_RequestCheckSubError(tryes);
-            } else AddCode_RequestCheckSubError(tryes);
-        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            AddCode_refreshTokens(0, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-        } else { // internet error
-            AddCode_RequestCheckSubError(tryes);
-        }
+function AddCode_CheckSubSucess(obj) {
+
+    if (obj.status === 200) { //success yes user is a SUB
+
+        AddCode_IsSub = true;
+        PlayVod_isSub();
+
+    } else if (obj.status === 401 || obj.status === 403) { //token expired
+
+        AddCode_refreshTokens(0, 0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
+
+    } else { // internet error
+        AddCode_CheckSubSucessFail();
     }
+
 }
 
-function AddCode_RequestCheckSubError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) AddCode_RequestCheckSub(tryes + 1);
-    else AddCode_RequestCheckSubfail();
-}
-
-function AddCode_RequestCheckSubfail() {
+function AddCode_CheckSubSucessFail() {
     AddCode_IsSub = false;
     PlayVod_NotSub();
 }
 
-function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackready, tryes) {
-    var xmlHttp = new XMLHttpRequest();
+function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackSucess, calbackError) {
 
-    xmlHttp.open(Method, theUrl, true);
-    xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+    var i = 0;
 
-    Main_Headers[2][1] = access_token;
+    if (!Main_IsOn_OSInterface) {
 
-    for (var i = 0; i < HeaderQuatity; i++)
-        xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+        var xmlHttp = new XMLHttpRequest();
 
-    xmlHttp.onreadystatechange = function() {
-        callbackready(this, tryes);
-    };
+        xmlHttp.open(Method, theUrl, true);
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
-    xmlHttp.send(null);
+        Main_Headers[2][1] = access_token;
+        for (i; i < HeaderQuatity; i++)
+            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+        xmlHttp.onreadystatechange = function() {
+
+            if (this.readyState === 4) {
+
+                callbackSucess(this, 0, callbackSucess);
+
+            }
+
+        };
+
+        xmlHttp.send(null);
+
+    } else {
+
+        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+
+        if (HeaderQuatity !== 2) {
+
+            var array = [];
+            Main_Headers[2][1] = access_token;
+
+            for (i; i < HeaderQuatity; i++)
+                array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+            JsonHeadersArray = JSON.stringify(array);
+        }
+
+        OSInterface_BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2),
+            null,
+            Method,
+            JsonHeadersArray,
+            'AddCode_BasexmlHttpGetResult',
+            0,
+            0,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+    }
 }
+
+function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackError) {
+
+    if (result) {
+
+        eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
+
+        return;
+
+    }
+
+    eval(calbackError)(key); // jshint ignore:line
+
+}
+
 
 function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
 

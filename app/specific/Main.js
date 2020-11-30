@@ -215,7 +215,8 @@ function Main_loadTranslations(language) {
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                    'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet
+                    'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
+                    'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult
                 };
             }
 
@@ -1654,7 +1655,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, Method) {
 
     var i = 0;
 
@@ -1662,7 +1663,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.open(Method ? Method : "GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
         Main_Headers[2][1] = access_token;
@@ -1701,7 +1702,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
             theUrl,
             Timeout,
             null,
-            null,
+            Method ? Method : null,
             JsonHeadersArray,
             'Main_CheckBasexmlHttpGet',
             checkResult,
