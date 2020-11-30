@@ -140,7 +140,6 @@ function UserLiveFeedobj_CheckToken() {
 function UserLiveFeedobj_loadDataPrepare(pos) {
     UserLiveFeed_loadingData[pos] = true;
     Screens_Some_Screen_Is_Refreshing = true;
-    UserLiveFeed_loadingDataTry[pos] = 0;
 }
 
 function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
@@ -149,7 +148,7 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
     BasexmlHttpGet(
         url,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
+        DefaultHttpGetTimeout * 2,
         headers,
         null,
         callback,
@@ -159,21 +158,9 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 }
 
 function UserLiveFeedobj_loadDataError(pos) {
-    UserLiveFeed_loadingDataTry[pos]++;
-
-    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-        UserLiveFeed_obj[pos].load();
-    } else {
-        UserLiveFeedobj_loadDataErrorElse(pos);
-    }
-
-}
-
-function UserLiveFeedobj_loadDataErrorElse(pos) {
 
     if (!UserLiveFeed_obj[pos].loadingMore) {
 
-        UserLiveFeed_loadingDataTry[pos] = 0;
         UserLiveFeed_loadingData[pos] = false;
         Screens_Some_Screen_Is_Refreshing = false;
         UserLiveFeed_Showloading(false);
@@ -211,7 +198,7 @@ function UserLiveFeedobj_loadChannels() {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),
+        DefaultHttpGetTimeout * 2,
         2,
         null,
         UserLiveFeedobj_loadChannelLive,
@@ -222,13 +209,10 @@ function UserLiveFeedobj_loadChannels() {
 }
 
 function UserLiveFeedobj_loadChannelsError(pos) {
-    UserLiveFeed_loadingDataTry[pos]++;
-    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-        UserLiveFeedobj_loadChannels();
-    } else {
-        if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataErrorElse(pos);
-        else UserLiveFeedobj_loadChannelLiveEnd();
-    }
+
+    if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataError(pos);
+    else UserLiveFeedobj_loadChannelLiveEnd();
+
 }
 
 function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -298,7 +282,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+        xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
         for (i; i < len; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -316,7 +300,7 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus),//timeout
+            DefaultHttpGetTimeout * 2,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             HeadersString,//JsonHeadersArray
@@ -334,30 +318,26 @@ function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
 
         UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
 
-    } else UserLiveFeedobj_loadChannelUserLiveGetEndError(key);
+    } else UserLiveFeedobj_loadDataError(key);
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
     if (xmlHttp.status === 200) {
+
         UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
+
     } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
-        else UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
+        else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 
     } else {
-        UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
-    }
-}
 
-function UserLiveFeedobj_loadChannelUserLiveGetEndError(pos) {
-    UserLiveFeed_loadingDataTry[pos]++;
-    if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-        UserLiveFeedobj_loadChannelUserLive();
-    } else {
-        UserLiveFeedobj_loadDataErrorElse(pos);
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+
     }
 }
 
@@ -1078,7 +1058,7 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
 
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
+        xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
         for (i; i < 3; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -1095,7 +1075,7 @@ function UserLiveFeedobj_loadUserVodGet(theUrl) {
 
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
-            DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus),//timeout
+            DefaultHttpGetTimeout * 2,//timeout
             null,//postMessage, null for get
             null,//Method, null for get
             JSON.stringify(Main_Headers),//JsonHeadersArray
@@ -1124,17 +1104,12 @@ function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
 
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     }
-}
-
-function UserLiveFeedobj_loadUserVodGetError() {
-    //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
-    UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
 }
 
 function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {

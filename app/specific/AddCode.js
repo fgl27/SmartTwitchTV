@@ -79,6 +79,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
         AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
 
     } else {
+
         xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("POST", url, true);
@@ -94,6 +95,7 @@ function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, k
         };
 
         xmlHttp.send(null);
+
     }
 }
 

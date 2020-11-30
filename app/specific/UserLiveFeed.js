@@ -20,7 +20,6 @@
 
 //Spacing for release maker not trow errors from jshint
 var UserLiveFeed_loadingData = [];
-var UserLiveFeed_loadingDataTry = [];
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_followerChannels = [];
 var UserLiveFeed_maxChannels = 825;
@@ -100,7 +99,6 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].offsettopFontsize = 0;
         UserLiveFeed_lastRefresh[i] = 0;
         UserLiveFeed_loadingData[i] = false;
-        UserLiveFeed_loadingDataTry[i] = 0;
         UserLiveFeed_obj[i].checkPreview = true;
         UserLiveFeed_RefreshId[i] = null;
         UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
