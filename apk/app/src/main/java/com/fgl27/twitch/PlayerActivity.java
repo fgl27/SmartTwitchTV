@@ -2831,7 +2831,15 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray) {
-            return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray));
+            try {
+
+                return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray));
+
+            } catch (Exception e) {//Most are RejectedExecutionException
+                Tools.recordException(TAG, "mMethodUrlHeaders Exception ", e);
+            }
+
+            return Tools.ResponseObjToString(0, "", checkResult);
         }
 
         @JavascriptInterface
