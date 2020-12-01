@@ -72,9 +72,13 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
 
             xmlHttp = JSON.parse(xmlHttp);
 
-            if (xmlHttp) AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
+            if (xmlHttp) {
 
-            return;
+                AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
+                return;
+
+            }
+
         }
 
         AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
@@ -325,10 +329,16 @@ function AddCode_CheckTokenStart(position) {
 
             obj = JSON.parse(obj);
 
-            if (obj) AddCode_CheckTokenReady(obj, position);
-            else AddCode_refreshTokens(position, null, null, null, !position); //token expired
+            if (obj) {
 
-        } else AddCode_refreshTokens(position, null, null, null, !position); //token expired
+                AddCode_CheckTokenReady(obj, position);
+                return;
+
+            }
+
+        }
+
+        AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
     } else {
 
