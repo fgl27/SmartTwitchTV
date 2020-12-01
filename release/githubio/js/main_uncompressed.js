@@ -1738,9 +1738,13 @@
 
                 xmlHttp = JSON.parse(xmlHttp);
 
-                if (xmlHttp) AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
+                if (xmlHttp) {
 
-                return;
+                    AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
+                    return;
+
+                }
+
             }
 
             AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
@@ -1992,10 +1996,16 @@
 
                 obj = JSON.parse(obj);
 
-                if (obj) AddCode_CheckTokenReady(obj, position);
-                else AddCode_refreshTokens(position, null, null, null, !position); //token expired
+                if (obj) {
 
-            } else AddCode_refreshTokens(position, null, null, null, !position); //token expired
+                    AddCode_CheckTokenReady(obj, position);
+                    return;
+
+                }
+
+            }
+
+            AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
         } else {
 
@@ -6945,10 +6955,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.292';
-    var Main_version_java = 292; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.293';
+    var Main_version_java = 293; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'December 01 2020';
-    var Main_version_web = 556; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 557; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7550,7 +7560,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.290 to 3.0.292 - Web Version December 01 2020",
+                title: "Apk Version 3.0.290 to 3.0.293 - Web Version December 01 2020",
                 changes: [
                     "General performance improves and bug fixes"
                 ]
