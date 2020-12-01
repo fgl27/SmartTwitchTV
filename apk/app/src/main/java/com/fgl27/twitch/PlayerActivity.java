@@ -2835,7 +2835,7 @@ public class PlayerActivity extends Activity {
 
                 Tools.ResponseObj response = Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray);
 
-                if (response != null) new Gson().toJson(response);
+                if (response != null) return new Gson().toJson(response);
 
             } catch (Exception e) {//Most are RejectedExecutionException
                 Tools.recordException(TAG, "mMethodUrlHeaders Exception ", e);
