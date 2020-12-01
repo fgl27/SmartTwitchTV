@@ -2892,7 +2892,7 @@ public class PlayerActivity extends Activity {
         void GetMethodUrlHeadersAsyncError(String callback, long checkResult, long key, int DataResultPos) {
             //MethodUrl is null inform JS callback
             GetMethodUrlDataResult[DataResultPos] = Tools.ResponseObjToString(0, "", checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetDataResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlHeadersAsyncResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
         }
 
         @JavascriptInterface
