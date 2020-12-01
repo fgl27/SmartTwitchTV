@@ -2448,7 +2448,7 @@ function Main_CheckStop() { // Called only by JAVA
     }
 
     //Reset Screen img if hiden
-    var doc = Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX);
+    var doc = ScreenObj[Main_values.Main_Go].ids ? Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) : null;
     if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
     else if (ChannelContent_Isfocused()) {
         Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
