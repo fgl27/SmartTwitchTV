@@ -792,6 +792,10 @@ function Main_ExitCursorSet() {
     else Main_AddClass('exit_app_close', 'button_dialog_focused');
 }
 
+function Main_isExitDialogVisible() {
+    return Main_isElementShowing('main_dialog_exit');
+}
+
 function Main_CounterDialogRst() {
     Main_empty('dialog_counter_text');
 }
@@ -2427,6 +2431,20 @@ function Main_CheckStop() { // Called only by JAVA
         }
         Settings_exit();
         Main_SwitchScreen();
+    } else if (Main_isAboutDialogShown() || Main_isControlsDialogShown()) {//Hide about or related if showing
+
+        Main_HideControlsDialog();
+        Main_HideAboutDialog();
+        Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_controls);
+
+        Main_addEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+        if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
+        else ScreenObj[Main_values.Main_Go].init_fun();
+
+    } else if (Main_isExitDialogVisible()) {//Hide exit if showing
+
+        Main_HideExitDialog();
+
     }
 
     //Reset Screen img if hiden
