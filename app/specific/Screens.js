@@ -20,7 +20,6 @@
 
 //Variable initialization
 var ScreenObj = {};
-var Screens_Current_Key = 1;
 var Screens_clear = false;
 var Screens_KeyEnterID;
 var Screens_DialogHideTimout = 10000;
@@ -284,8 +283,7 @@ function Screens_first_init() {
 function Screens_init(key, preventRefresh) {
     //Main_Log('Screens_init ' + ScreenObj[key].screen);
     Main_addFocusVideoOffset = -1;
-    Screens_Current_Key = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
-    Main_values.Main_Go = key;
+    Main_values.Main_Go = key;//Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
     ScreenObj[key].label_init();
 
     if (Main_isScene1DocVisible() &&
@@ -2972,7 +2970,7 @@ function Screens_RefreshTimeout(key) {
 }
 
 function Screens_Isfocused() {
-    return (ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX) === ScreenObj[Screens_Current_Key].focusPos && Main_isScene1DocVisible();
+    return (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) === ScreenObj[Main_values.Main_Go].focusPos && Main_isScene1DocVisible();
 }
 
 //TODO add screen.isInuse prop to adress this fun use

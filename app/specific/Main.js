@@ -1542,7 +1542,7 @@ function Main_updateclock() {
 
     Main_randomimg = '?' + parseInt(Math.random() * 100000);
 
-    Screens_SetLastRefresh(Screens_Current_Key);
+    Screens_SetLastRefresh(Main_values.Main_Go);
     UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
     Sidepannel_SetLastRefresh();
 }
@@ -2399,7 +2399,7 @@ function Main_CheckStop() { // Called only by JAVA
     Main_clearTimeout(Main_setHistoryItemId);
     Main_SaveHistoryItem();
     //General related
-    Screens_ClearAnimation(Screens_Current_Key);
+    Screens_ClearAnimation(Main_values.Main_Go);
 
     Main_clearInterval(Main_updateclockId);
     Main_clearInterval(Main_StartHistoryworkerId);
@@ -2448,7 +2448,7 @@ function Main_CheckStop() { // Called only by JAVA
     }
 
     //Reset Screen img if hiden
-    var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+    var doc = Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX);
     if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
     else if (ChannelContent_Isfocused()) {
         Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
