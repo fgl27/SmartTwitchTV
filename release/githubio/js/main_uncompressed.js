@@ -1704,10 +1704,10 @@
     function AddCode_CheckNewCode(code) {
         AddCode_Code = code;
         Main_showLoadDialog();
-        AddCode_requestTokens(0);
+        AddCode_requestTokens();
     }
 
-    function AddCode_refreshTokens(position, tryes, callbackFunc, callbackFuncNOK, key, sync) {
+    function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
         //Main_Log('AddCode_refreshTokens');
         if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
 
@@ -1726,7 +1726,7 @@
 
             xmlHttp = OSInterface_mMethodUrlHeaders(
                 url,
-                (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
+                (DefaultHttpGetTimeout * 2),
                 'POST',
                 null,
                 0,
@@ -1737,36 +1737,74 @@
 
                 xmlHttp = JSON.parse(xmlHttp);
 
-                if (xmlHttp) AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync);
+                if (xmlHttp) AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
 
                 return;
             }
 
-            AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+            AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
 
         } else {
-            xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.open("POST", url, true);
-            xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+            if (!Main_IsOn_OSInterface) {
 
-            xmlHttp.onreadystatechange = function() {
+                xmlHttp = new XMLHttpRequest();
 
-                if (this.readyState === 4) {
-                    //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
-                    AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, this, sync);
-                }
+                xmlHttp.open("POST", url, true);
+                xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
-            };
+                xmlHttp.onreadystatechange = function() {
 
-            xmlHttp.send(null);
+                    if (this.readyState === 4) {
+                        //Main_Log('AddCode_refreshTokens ' + xmlHttp.status);
+                        AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, this);
+                    }
+
+                };
+
+                xmlHttp.send(null);
+
+            } else {
+
+                OSInterface_BasexmlHttpGet(
+                    url,
+                    (DefaultHttpGetTimeout * 2),
+                    null,
+                    'POST',
+                    null,
+                    'AddCode_refreshTokensResult',
+                    position,
+                    key,
+                    callbackFunc ? callbackFunc.name : null,
+                    callbackFuncNOK ? callbackFuncNOK.name : null
+                );
+
+            }
+
         }
     }
 
-    function AddCode_refreshTokensReady(position, tryes, callbackFunc, callbackFuncNOK, key, xmlHttp, sync) {
+    function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
+
+        if (result) {
+
+            AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
+
+            return;
+
+        }
+
+        if (eval(calbackError)) eval(calbackError)(key); // jshint ignore:line
+
+    }
+
+    function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+
         if (xmlHttp.status === 200) {
+
             AddCode_refreshTokensSucess(xmlHttp.responseText, position, callbackFunc, key);
             return;
+
         } else {
 
             try {
@@ -1785,12 +1823,12 @@
             }
 
         }
-        AddCode_refreshTokensError(position, tryes, callbackFunc, callbackFuncNOK, key, sync);
+
+        AddCode_refreshTokensError(callbackFuncNOK, key);
     }
 
-    function AddCode_refreshTokensError(position, tryes, callbackFuncOK, callbackFuncNOK, key, sync) {
-        if (tryes < 5) AddCode_refreshTokens(position, tryes + 1, callbackFuncOK, callbackFuncNOK, key, sync);
-        else if (callbackFuncNOK) callbackFuncNOK(key);
+    function AddCode_refreshTokensError(callbackFuncNOK, key) {
+        if (callbackFuncNOK) callbackFuncNOK(key);
     }
 
     function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
@@ -1816,37 +1854,50 @@
 
     //Check if has all scopes, in canse they change
     function AddCode_TokensCheckScope(scope) {
+
         var i = 0,
             len = AddCode_Scopes.length;
+
         for (i; i < len; i++) {
             if (!Main_A_includes_B(scope, AddCode_Scopes[i])) return false;
         }
+
         return true;
     }
 
-    function AddCode_requestTokens(tryes) {
+    function AddCode_requestTokens() {
         var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
             '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
-        AddCode_BasexmlHttpGet(theUrl, 'POST', 0, null, AddCode_requestTokensReady, tryes);
+        AddCode_BasexmlHttpGet(
+            theUrl,
+            'POST',
+            0,
+            null,
+            AddCode_requestTokensSucess,
+            AddCode_requestTokensFail
+        );
     }
 
-    function AddCode_requestTokensReady(xmlHttp, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) {
-                AddCode_requestTokensSucess(xmlHttp.responseText);
-            } else AddCode_requestTokensError(tryes);
-            return;
-        }
-    }
+    function AddCode_requestTokensSucess(obj) {
 
-    function AddCode_requestTokensError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_requestTokens(tryes + 1);
-        else AddCode_requestTokensFail();
+        if (obj.status === 200) {
 
+            var response = JSON.parse(obj.responseText);
+            AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
+            AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
+
+            AddCode_BasexmlHttpGetValidate(
+                AddCode_requestTokensSucessValidate,
+                AddCode_requestTokensFail,
+                Main_values.Users_AddcodePosition
+            );
+
+        } else AddCode_requestTokensFail();
     }
 
     function AddCode_requestTokensFail() {
+
         Main_HideLoadDialog();
         Main_showWarningDialog(STR_OAUTH_FAIL);
         Main_setTimeout(
@@ -1862,6 +1913,7 @@
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = 0;
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = 0;
         AddUser_SaveUserArray();
+
     }
 
     function AddCode_requestTokensFailRunning(position) {
@@ -1874,26 +1926,17 @@
         Main_SaveValues();
     }
 
-    function AddCode_requestTokensSucess(responseText) {
-        var response = JSON.parse(responseText);
-        AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
-        AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
-        AddCode_CheckOauthToken(Main_values.Users_AddcodePosition, 0);
-    }
+    function AddCode_requestTokensSucessValidate(obj, position) {
 
-    function AddCode_CheckOauthToken(position, tryes) {
-        AddCode_BasexmlHttpGetValidate(AddCode_CheckOauthTokenReady, position, tryes);
-    }
+        if (obj.status === 200) AddCode_CheckOauthTokenSucess(obj.responseText);
+        else AddCode_requestTokensFail(position);
 
-    function AddCode_CheckOauthTokenReady(xmlHttp, position, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) AddCode_CheckOauthTokenSucess(xmlHttp.responseText);
-            else AddCode_CheckOauthTokenError(position, tryes);
-        }
     }
 
     function AddCode_CheckOauthTokenSucess(response) {
+
         var token = JSON.parse(response);
+
         if (token.login && Main_A_includes_B(token.login, AddUser_UsernameArray[Main_values.Users_AddcodePosition].name)) {
             Main_setItem('New_User_Token_Added', 1);
             AddUser_SaveUserArray();
@@ -1928,26 +1971,13 @@
         return;
     }
 
-    function AddCode_CheckOauthTokenError(position, tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_CheckOauthToken(position, tryes + 1);
-        else AddCode_requestTokensFail();
-    }
-
     function AddCode_CheckTokenStart(position) {
-        //Main_Log('AddCode_CheckTokenStart');
 
-        if (!position) AddCode_CheckTokenSync(position, 0);
-        else AddCode_CheckToken(position, 0);
-    }
+        if (Main_IsOn_OSInterface && !position) {
 
-    //Run in synchronous mode to prevent anything happening until user token is checked and if needed restored
-    function AddCode_CheckTokenSync(position, tryes) {
-        //Main_Log('AddCode_CheckToken');
-
-        if (Main_IsOn_OSInterface) {
-            var xmlHttp = OSInterface_mMethodUrlHeaders(
+            var obj = OSInterface_mMethodUrlHeaders(
                 AddCode_ValidateUrl,
-                (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes),
+                (DefaultHttpGetTimeout * 2),
                 null,
                 null,
                 0,
@@ -1958,39 +1988,40 @@
                 )
             );
 
-            if (xmlHttp) {
+            if (obj) {
 
-                xmlHttp = JSON.parse(xmlHttp);
+                obj = JSON.parse(obj);
 
-                if (xmlHttp) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
+                if (obj) AddCode_CheckTokenReady(obj, position);
 
-                return;
             }
 
-            AddCode_CheckTokenError(position, tryes);
         } else {
-            AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
+
+            AddCode_BasexmlHttpGetValidate(
+                AddCode_CheckTokenReady,
+                empty_fun,
+                position
+            );
+
         }
     }
 
-    function AddCode_CheckToken(position, tryes) {
-        //Main_Log('AddCode_CheckToken');
-        AddCode_BasexmlHttpGetValidate(AddCode_CheckTokenReady, position, tryes);
-    }
+    function AddCode_CheckTokenReady(obj, position) {
 
-    function AddCode_CheckTokenReady(xmlHttp, position, tryes) {
-        if (xmlHttp.readyState === 4) AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes);
-    }
+        if (obj.status === 200) {
 
-    function AddCode_CheckTokenReadyEnd(xmlHttp, position, tryes) {
-        //Main_Log('AddCode_CheckTokenReady ' + xmlHttp.status);
-        if (xmlHttp.status === 200) AddCode_CheckTokenSuccess(xmlHttp.responseText, position);
-        else if (xmlHttp.status === 401 || xmlHttp.status === 403) AddCode_refreshTokens(position, 0, null, null, null, !position); //token expired
-        else AddCode_CheckTokenError(position, tryes);
+            AddCode_CheckTokenSuccess(obj.responseText, position);
+
+        } else if (obj.status === 401 || obj.status === 403) {
+
+            AddCode_refreshTokens(position, null, null, null, !position); //token expired
+
+        }
+
     }
 
     function AddCode_CheckTokenSuccess(responseText, position) {
-        //Main_Log('AddCode_CheckTokenSuccess ' + responseText);
 
         var token = JSON.parse(responseText);
 
@@ -2011,7 +2042,7 @@
             AddUser_UsernameArray[position].timeout_id = Main_setTimeout(
                 function() {
 
-                    AddCode_refreshTokens(position, 0, null, null);
+                    AddCode_refreshTokens(position, null, null);
 
                 },
                 AddUser_UsernameArray[position].expires_in,
@@ -2023,201 +2054,288 @@
         //Main_Log('AddCode_Refreshtimeout position ' + position + ' expires_in ' + AddUser_UsernameArray[position].expires_in + ' min ' + (AddUser_UsernameArray[position].expires_in / 60000) + ' plus offset ' + AddCode_Expires_in_offset + ' s');
     }
 
-    function AddCode_CheckTokenError(position, tryes) {
-
-        if (tryes < DefaultHttpGetReTryMax) {
-
-            if (!position) AddCode_CheckTokenSync(position, tryes + 1);
-            else AddCode_CheckToken(position, tryes + 1);
-
-        }
-
-    }
-
     function AddCode_CheckFollow() {
         AddCode_IsFollowing = false;
-        AddCode_RequestCheckFollow(0);
-    }
-
-    function AddCode_RequestCheckFollow(tryes) {
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(theUrl, 'GET', 2, null, AddCode_RequestCheckFollowReady, tryes);
+        AddCode_BasexmlHttpGet(
+            theUrl,
+            'GET',
+            2,
+            null,
+            AddCode_RequestCheckFollowSucess,
+            AddCode_RequestCheckFollowError
+        );
     }
 
-    function AddCode_RequestCheckFollowReady(xmlHttp, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //yes
-                AddCode_RequestCheckFollowOK();
-            } else if (xmlHttp.status === 404) { //no
-                AddCode_RequestCheckFollowNOK(xmlHttp.responseText);
-            } else { // internet error
-                AddCode_RequestCheckFollowError(tryes);
-            }
+    function AddCode_RequestCheckFollowSucess(obj) {
+
+        if (obj.status === 200) { //yes
+
+            AddCode_RequestCheckFollowOK();
+
+        } else { // no
+
+            AddCode_RequestCheckFollowError();
+
         }
     }
 
     function AddCode_RequestCheckFollowOK() {
         AddCode_IsFollowing = true;
+        AddCode_RequestCheckFollowEnd();
+    }
+
+    function AddCode_RequestCheckFollowError() {
+        AddCode_IsFollowing = false;
+        AddCode_RequestCheckFollowEnd();
+    }
+
+    function AddCode_RequestCheckFollowEnd() {
+
         if (AddCode_PlayRequest) Play_setFollow();
         else ChannelContent_setFollow();
-    }
 
-    function AddCode_RequestCheckFollowNOK(response) {
-        response = JSON.parse(response);
-        if (response.error) {
-            if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
-                AddCode_IsFollowing = false;
-                if (AddCode_PlayRequest) Play_setFollow();
-                else ChannelContent_setFollow();
-            } else AddCode_RequestCheckFollowError();
-        } else AddCode_RequestCheckFollowError();
-    }
-
-    function AddCode_RequestCheckFollowError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_RequestCheckFollow(tryes + 1);
-        else {
-            if (AddCode_PlayRequest) Play_setFollow();
-            else ChannelContent_setFollow();
-        }
     }
 
     function AddCode_Follow() {
-        AddCode_FollowRequest(0);
-    }
 
-    function AddCode_FollowRequest(tryes) {
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_FollowRequestReady, tryes);
+        AddCode_BasexmlHttpGet(
+            theUrl,
+            'PUT',
+            3,
+            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            AddCode_FollowSucess,
+            empty_fun
+        );
     }
 
-    function AddCode_FollowRequestReady(xmlHttp, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success user now is following the channel
-                AddCode_IsFollowing = true;
-                if (AddCode_PlayRequest) {
-                    Play_setFollow();
-                    ChatLive_checkFallowSuccessUpdate(xmlHttp.responseText, 0);
-                } else ChannelContent_setFollow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, AddCode_Follow, null);
-            } else {
-                AddCode_FollowRequestError(tryes);
-            }
+    function AddCode_FollowSucess(obj) {
+
+        if (obj.status === 200) { //success user now is following the channel
+
+            AddCode_IsFollowing = true;
+
+            if (AddCode_PlayRequest) {
+
+                Play_setFollow();
+                ChatLive_checkFallowSuccessUpdate(obj.responseText, 0);
+
+            } else ChannelContent_setFollow();
+
+            return;
+        } else if (obj.status === 401 || obj.status === 403) { //token expired
+
+            AddCode_refreshTokens(0, AddCode_Follow, null);
+
         }
-    }
 
-    function AddCode_FollowRequestError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_FollowRequest(tryes + 1);
     }
 
     function AddCode_UnFollow() {
-        AddCode_UnFollowRequest(0);
-    }
 
-    function AddCode_UnFollowRequest(tryes) {
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_UnFollowRequestReady, tryes);
+        AddCode_BasexmlHttpGet(
+            theUrl,
+            'DELETE',
+            3,
+            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            AddCode_UnFollowSucess,
+            empty_fun
+        );
     }
 
-    function AddCode_UnFollowRequestReady(xmlHttp, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 204) { //success user is now not following the channel
-                AddCode_IsFollowing = false;
-                if (AddCode_PlayRequest) {
-                    Play_setFollow();
-                    ChatLive_FollowState[0].follows = false;
-                } else ChannelContent_setFollow();
-                return;
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, AddCode_UnFollow, null);
-            } else {
-                AddCode_UnFollowRequestError(tryes);
-            }
+    function AddCode_UnFollowSucess(xmlHttp) {
+
+        if (xmlHttp.status === 204) { //success user is now not following the channel
+
+            AddCode_IsFollowing = false;
+
+            if (AddCode_PlayRequest) {
+
+                Play_setFollow();
+                ChatLive_FollowState[0].follows = false;
+
+            } else ChannelContent_setFollow();
+
+
+        } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
+
+            AddCode_refreshTokens(0, AddCode_UnFollow, null);
+
         }
-    }
 
-    function AddCode_UnFollowRequestError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_UnFollowRequest(tryes + 1);
     }
 
     function AddCode_CheckSub() {
         AddCode_IsSub = false;
-        AddCode_RequestCheckSub(0);
-    }
 
-    function AddCode_RequestCheckSub(tryes) {
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(theUrl, 'GET', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, AddCode_RequestCheckSubReady, tryes);
+        AddCode_BasexmlHttpGet(
+            theUrl,
+            'GET',
+            3,
+            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            AddCode_CheckSubSucess,
+            AddCode_CheckSubSucessFail
+        );
+
     }
 
-    function AddCode_RequestCheckSubReady(xmlHttp, tryes) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success yes user is a SUB
-                AddCode_IsSub = true;
-                PlayVod_isSub();
-            } else if (xmlHttp.status === 422) { //channel does not have a subscription program
-                AddCode_RequestCheckSubfail();
-            } else if (xmlHttp.status === 404) { //success no user is not a sub
-                var response = JSON.parse(xmlHttp.responseText);
-                if (response.error) {
-                    if (Main_A_includes_B((response.error + '').toLowerCase(), 'not found')) {
-                        AddCode_RequestCheckSubfail();
-                    } else AddCode_RequestCheckSubError(tryes);
-                } else AddCode_RequestCheckSubError(tryes);
-            } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-                AddCode_refreshTokens(0, 0, AddCode_CheckSub, AddCode_RequestCheckSubfail);
-            } else { // internet error
-                AddCode_RequestCheckSubError(tryes);
-            }
+    function AddCode_CheckSubSucess(obj) {
+
+        if (obj.status === 200) { //success yes user is a SUB
+
+            AddCode_IsSub = true;
+            PlayVod_isSub();
+
+        } else if (obj.status === 401 || obj.status === 403) { //token expired
+
+            AddCode_refreshTokens(0, AddCode_CheckSub, AddCode_CheckSubSucessFail);
+
+        } else { // internet error
+            AddCode_CheckSubSucessFail();
         }
+
     }
 
-    function AddCode_RequestCheckSubError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) AddCode_RequestCheckSub(tryes + 1);
-        else AddCode_RequestCheckSubfail();
-    }
-
-    function AddCode_RequestCheckSubfail() {
+    function AddCode_CheckSubSucessFail() {
         AddCode_IsSub = false;
         PlayVod_NotSub();
     }
 
-    function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackready, tryes) {
-        var xmlHttp = new XMLHttpRequest();
+    function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackSucess, calbackError) {
 
-        xmlHttp.open(Method, theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+        var i = 0;
 
-        Main_Headers[2][1] = access_token;
+        if (!Main_IsOn_OSInterface) {
 
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+            var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.onreadystatechange = function() {
-            callbackready(this, tryes);
-        };
+            xmlHttp.open(Method, theUrl, true);
+            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
-        xmlHttp.send(null);
+            Main_Headers[2][1] = access_token;
+            for (i; i < HeaderQuatity; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+
+                if (this.readyState === 4) {
+
+                    callbackSucess(this, 0, callbackSucess);
+
+                }
+
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+
+            if (HeaderQuatity !== 2) {
+
+                var array = [];
+                Main_Headers[2][1] = access_token;
+
+                for (i; i < HeaderQuatity; i++)
+                    array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+                JsonHeadersArray = JSON.stringify(array);
+            }
+
+            OSInterface_BasexmlHttpGet(
+                theUrl,
+                (DefaultHttpGetTimeout * 2),
+                null,
+                Method,
+                JsonHeadersArray,
+                'AddCode_BasexmlHttpGetResult',
+                0,
+                0,
+                callbackSucess.name,
+                calbackError.name
+            );
+
+        }
     }
 
-    function AddCode_BasexmlHttpGetValidate(callbackready, position, tryes) {
-        var xmlHttp = new XMLHttpRequest();
+    function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackError) {
 
-        xmlHttp.open("GET", AddCode_ValidateUrl, true);
-        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
+        if (result) {
 
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (DefaultHttpGetTimeoutPlus * tryes);
+            eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
 
-        xmlHttp.onreadystatechange = function() {
-            callbackready(this, position, tryes);
-        };
+            return;
 
-        xmlHttp.send(null);
+        }
+
+        eval(calbackError)(key); // jshint ignore:line
+
+    }
+
+    function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
+
+        if (!Main_IsOn_OSInterface) {
+
+            var xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.open("GET", AddCode_ValidateUrl, true);
+            xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
+
+            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
+
+            xmlHttp.onreadystatechange = function() {
+
+                if (this.readyState === 4) {
+
+                    callbackSucess(this, position, callbackSucess);
+
+                }
+
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_BasexmlHttpGet(
+                AddCode_ValidateUrl,
+                (DefaultHttpGetTimeout * 2),
+                null,
+                null,
+                JSON.stringify([
+                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
+                ]),
+                'AddCode_BasexmlHttpGetValidateGet',
+                0,
+                position,
+                callbackSucess.name,
+                calbackError.name
+            );
+
+        }
+
+    }
+
+    function AddCode_BasexmlHttpGetValidateGet(result, position, callbackSucess, calbackError) {
+
+        if (result) {
+
+            eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
+
+            return;
+
+        }
+
+        eval(calbackError)(key); // jshint ignore:line
+
     }
 
     var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
@@ -2289,8 +2407,8 @@
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
                 else {
                     AddUser_exit();
                     Main_SwitchScreen();
@@ -2357,8 +2475,8 @@
 
         switch (event.keyCode) {
             case KEY_RETURN:
-                if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
                 else {
                     AddUser_exit();
                     Main_SwitchScreen();
@@ -2452,8 +2570,11 @@
             //Check and refresh all tokens at start
             var i = 0,
                 len = AddUser_UsernameArray.length;
+
             for (i; i < len; i++) {
+
                 AddUser_UsernameArray[i].timeout_id = null;
+
                 if (AddUser_UsernameArray[i].access_token) AddCode_CheckTokenStart(i);
 
                 //Set user history obj
@@ -2462,6 +2583,7 @@
                     vod: [],
                     clip: []
                 };
+
             }
 
             Main_Restore_history();
@@ -2525,32 +2647,35 @@
         return AddUser_UsernameArray.length > 0;
     }
 
-    function AddUser_UpdateUser(position, tryes) {
+    function AddUser_UpdateUserAllUsers() {
+
+        var i = 0,
+            len = AddUser_UsernameArray.length;
+
+        for (i; i < len; i++) {
+
+            AddUser_UpdateUser(i);
+
+        }
+    }
+
+    function AddUser_UpdateUser(position) {
         var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name) + Main_TwithcV5Flag;
-        var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) AddUser_UpdateUsertSuccess(this.responseText, position);
-                else AddUser_UpdateUserError(position, tryes);
-
-            }
-
-        };
-
-        xmlHttp.send(null);
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            2,
+            null,
+            AddUser_UpdateUsertSuccess,
+            empty_fun,
+            position
+        );
     }
 
     function AddUser_UpdateUsertSuccess(response, position) {
         var user = JSON.parse(response);
+
         if (user._total) {
             Main_removeEventListener("keydown", AddUser_handleKeyDown);
             user = user.users[0];
@@ -2558,12 +2683,8 @@
             AddUser_UsernameArray[position].logo = user.logo;
             if (!position) AddUser_UpdateSidepanel();
         }
-        AddUser_SaveUserArray();
-    }
 
-    function AddUser_UpdateUserError(position, tryes) {
-        tryes++;
-        if (tryes < DefaultHttpGetReTryMax) AddUser_UpdateUser(position, tryes);
+        AddUser_SaveUserArray();
     }
 
     function AddUser_SaveNewUser(responseText) {
@@ -2812,51 +2933,14 @@
             encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
             Main_TwithcV5Flag;
 
-        if (!Main_IsOn_OSInterface) {
-
-            BasexmlHttpGet(
-                theUrl,
-                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-                2,
-                null,
-                ChannelContent_loadDataRequestSuccess,
-                ChannelContent_loadDataError
-            );
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                Main_base_string_header, //JsonHeadersArray
-                'ChannelContent_loadDataRequestResult', //callback
-                Main_ChannelContent, //checkResult
-                Main_ChannelContent, //key
-                Main_ChannelContent //thread
-            );
-
-        }
-
-    }
-
-    function ChannelContent_loadDataRequestResult(result) {
-
-        if (result) {
-
-            var obj = JSON.parse(result);
-
-            if (obj.status === 200) {
-
-                ChannelContent_loadDataRequestSuccess(obj.responseText);
-
-                return;
-            }
-
-        }
-
-        ChannelContent_loadDataError();
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+            2,
+            null,
+            ChannelContent_loadDataRequestSuccess,
+            ChannelContent_loadDataError
+        );
 
     }
 
@@ -2952,51 +3036,14 @@
     function ChannelContent_GetStreamerInfo() {
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        if (!Main_IsOn_OSInterface) {
-
-            BasexmlHttpGet(
-                theUrl,
-                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
-                2,
-                null,
-                ChannelContent_GetStreamerInfoSuccess,
-                ChannelContent_GetStreamerInfoError
-            );
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                Main_base_string_header, //JsonHeadersArray
-                'ChannelContent_GetStreamerInfoResult', //callback
-                Main_ChannelContent, //checkResult
-                Main_ChannelContent, //key
-                Main_ChannelContent //thread
-            );
-
-        }
-
-    }
-
-    function ChannelContent_GetStreamerInfoResult(result) {
-
-        if (result) {
-
-            var obj = JSON.parse(result);
-
-            if (obj.status === 200) {
-
-                ChannelContent_GetStreamerInfoSuccess(obj.responseText);
-
-                return;
-            }
-
-        }
-
-        ChannelContent_GetStreamerInfoError();
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
+            2,
+            null,
+            ChannelContent_GetStreamerInfoSuccess,
+            ChannelContent_GetStreamerInfoError
+        );
 
     }
 
@@ -3298,8 +3345,8 @@
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-                else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+                if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+                else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
                 else {
                     ChannelContent_removeFocus();
                     Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
@@ -4415,7 +4462,7 @@
 
     function ChatLiveControls_OptionsUpdate_defautls() {
         OptionsShowObj.keyboard_options = {};
-        OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 0);
+        OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 1);
         OptionsShowObj.emote_sorting = {};
         OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
         OptionsShowObj.force_show_chat_write = {};
@@ -4657,9 +4704,9 @@
         ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
         ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
-        ChatLive_loadEmotesUser(0);
-        ChatLive_checkFallow(0, chat_number, Chat_Id[chat_number]);
-        ChatLive_checkSub(0, chat_number, Chat_Id[chat_number]);
+        ChatLive_loadEmotesUser();
+        ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
+        ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
 
         ChatLive_Individual_Background_flip[chat_number] = 0;
 
@@ -4713,65 +4760,51 @@
             ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
         }
 
-        ChatLive_loadEmotesChannelbttv(0, chat_number, id);
-        ChatLive_loadEmotesChannelffz(0, chat_number, id);
+        ChatLive_loadEmotesChannelbttv(chat_number, id);
+        ChatLive_loadEmotesChannelffz(chat_number, id);
 
-        ChatLive_loadBadgesChannel(0, chat_number, id);
-        ChatLive_loadCheersChannel(0, chat_number, id);
+        ChatLive_loadBadgesChannel(chat_number, id);
+        ChatLive_loadCheersChannel(chat_number, id);
     }
 
-    function ChatLive_checkFallow(tryes, chat_number, id) {
-        if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
+    function ChatLive_checkFallow(chat_number, id) {
+        if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
         ChatLive_FollowState[chat_number] = {};
-
-        var xmlHttp = new XMLHttpRequest();
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-        xmlHttp.open("GET", theUrl, true);
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            2,
+            null,
+            ChatLive_checkFallowSuccess,
+            ChatLive_RequestCheckFollowNOK,
+            chat_number,
+            id
+        );
 
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) { //yes
-
-                    ChatLive_checkFallowSuccess(this.responseText, chat_number, id);
-
-                } else if (this.status === 404) { //no
-
-                    ChatLive_RequestCheckFollowNOK(this.responseText, tryes, chat_number, id);
-
-                } else { // internet error
-
-                    ChatLive_checkFallowError(tryes, chat_number, id);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
     }
 
     function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
+
         ChatLive_checkFallowSuccessUpdate(responseText, chat_number);
     }
 
     function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
-        responseText = JSON.parse(responseText);
+        var obj = JSON.parse(responseText);
 
         ChatLive_FollowState[chat_number] = {
-            created_at: responseText.created_at,
+            created_at: obj.created_at,
             follows: true
         };
+    }
+
+    function ChatLive_RequestCheckFollowNOK(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        ChatLive_FollowState[chat_number].follows = false;
     }
 
     function ChatLive_GetMinutes(time) { // "2020-04-17T21:03:42Z"
@@ -4779,89 +4812,62 @@
         return Math.floor(Math.floor(parseInt(time / 1000)) / 60);
     }
 
-    function ChatLive_RequestCheckFollowNOK(response, tryes, chat_number, id) {
-        response = JSON.parse(response);
-
-        if (response.message && Main_A_includes_B((response.message + ''), 'Follow not found')) {
-            ChatLive_FollowState[chat_number].follows = false;
-        } else ChatLive_checkFallowError(tryes, chat_number, id);
-    }
-
-    function ChatLive_checkFallowError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_checkFallow(tryes + 1, chat_number, id);
-    }
-
-    function ChatLive_checkSub(tryes, chat_number, id) {
-        if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) return;
-
+    function ChatLive_checkSub(chat_number, id) {
         ChatLive_SubState[chat_number] = {};
 
-        var xmlHttp = new XMLHttpRequest();
+        if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token || id !== Chat_Id[chat_number]) {
+            ChatLive_checkSubFail(chat_number, id);
+            return;
+        }
+
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-        xmlHttp.open("GET", theUrl, true);
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            3,
+            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            ChatLive_checkSubSucess,
+            ChatLive_checkSubFail,
+            chat_number,
+            id
+        );
 
-        Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-        for (var i = 0; i < 3; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) { //yes
-
-                    ChatLive_SubState[chat_number].state = true;
-
-                } else if (this.status === 404) {
-
-                    var response = JSON.parse(this.responseText);
-
-                    if (response.message && Main_A_includes_B((response.message + ''), 'has no subscriptions')) { //no
-
-                        ChatLive_SubState[chat_number].state = false;
-
-                    } else ChatLive_checkSubError(tryes, chat_number, id);
-
-                } else if (this.status === 401 || this.status === 403) { //token expired
-
-                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
-                    else ChatLive_checkSubError(tryes, chat_number, id);
-
-                } else { // internet error
-
-                    ChatLive_checkSubError(tryes, chat_number, id);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
     }
 
-    function ChatLive_checkSubError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_checkSub(tryes + 1, chat_number, id);
+    function ChatLive_checkSubSucess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        ChatLive_SubState[chat_number].state = true;
+
     }
 
-    function ChatLive_loadBadgesChannel(tryes, chat_number, id) {
+    function ChatLive_checkSubFail(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        ChatLive_SubState[chat_number].state = false;
+    }
+
+    function ChatLive_loadBadgesChannel(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_BaseLoadUrl(
-                id,
+
+            BasexmlHttpGet(
                 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
-                chat_number,
-                tryes,
+                DefaultHttpGetTimeout * 2,
+                0,
+                null,
                 ChatLive_loadBadgesChannelSuccess,
-                ChatLive_loadBadgesChannelError
+                empty_fun,
+                chat_number,
+                id
             );
 
         } else {
+
             Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
+
         }
     }
 
@@ -4871,10 +4877,6 @@
         extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
 
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
-    }
-
-    function ChatLive_loadBadgesChannelError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_loadBadgesChannel(tryes + 1, chat_number, id);
     }
 
     function ChatLive_resetChatters(chat_number) {
@@ -4954,29 +4956,28 @@
         }
     }
 
-    function ChatLive_loadEmotesUser(tryes) {
+    function ChatLive_loadEmotesUser() {
         if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
-            ChatLive_BaseLoadUrl(
-                0,
+
+            BasexmlHttpGet(
                 Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
-                0,
-                tryes,
+                DefaultHttpGetTimeout * 2,
+                3,
+                Main_OAuth + AddUser_UsernameArray[0].access_token,
                 ChatLive_loadEmotesUserSuccess,
-                ChatLive_loadEmotesUserError,
-                Main_Headers,
-                3
+                empty_fun,
+                0,
+                0
             );
+
         }
     }
 
-    function ChatLive_loadEmotesUserError(tryes) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesUser(tryes + 1);
-    }
 
-    function ChatLive_loadEmotesUserSuccess(data) {
+    function ChatLive_loadEmotesUserSuccess(result) {
         try {
 
-            data = JSON.parse(data);
+            var data = JSON.parse(result);
             if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
 
             var url, id;
@@ -5019,25 +5020,27 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelbttv(tryes, chat_number, id) {
+    function ChatLive_loadEmotesChannelbttv(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_BaseLoadUrl(
-                id,
-                'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                chat_number,
-                tryes,
-                ChatLive_loadEmotesChannelbttvSuccess,
-                ChatLive_loadEmotesChannelError
-            );
-        } else {
-            ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
-        }
-    }
 
-    function ChatLive_loadEmotesChannelError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelbttv(tryes + 1, chat_number, id);
+            BasexmlHttpGet(
+                'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+                DefaultHttpGetTimeout * 2,
+                0,
+                null,
+                ChatLive_loadEmotesChannelbttvSuccess,
+                empty_fun,
+                chat_number,
+                id
+            );
+
+        } else {
+
+            ChatLive_updateExtraEmotes(extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]);
+
+        }
     }
 
     function ChatLive_loadEmotesChannelbttvSuccess(data, chat_number, id) {
@@ -5090,33 +5093,30 @@
 
     }
 
-    function ChatLive_loadCheersChannel(tryes, chat_number, id) {
+    function ChatLive_loadCheersChannel(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
 
-            ChatLive_BaseLoadUrl(
-                id,
+            BasexmlHttpGet(
                 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                chat_number,
-                tryes,
+                DefaultHttpGetTimeout * 2,
+                1,
+                null,
                 ChatLive_loadCheersChannelSuccess,
-                ChatLive_loadCheersChannelError,
-                Main_Headers,
-                1
+                empty_fun,
+                chat_number,
+                id
             );
+
         }
     }
 
-    function ChatLive_loadCheersChannelError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_loadCheersChannel(tryes + 1, chat_number, id);
-    }
-
-    function ChatLive_loadCheersChannelSuccess(data, chat_number, id) {
+    function ChatLive_loadCheersChannelSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         cheers[ChatLive_selectedChannel_id[chat_number]] = {};
-        data = JSON.parse(data);
+        var data = JSON.parse(responseText);
 
         try {
             data.actions.forEach(
@@ -5151,25 +5151,25 @@
         }
     }
 
-    function ChatLive_loadEmotesChannelffz(tryes, chat_number, id) {
+    function ChatLive_loadEmotesChannelffz(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-            ChatLive_BaseLoadUrl(
-                id,
+
+            BasexmlHttpGet(
                 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
-                chat_number,
-                tryes,
+                DefaultHttpGetTimeout * 2,
+                0,
+                null,
                 ChatLive_loadEmotesChannelffzSuccess,
-                ChatLive_loadEmotesChannelffzError
+                empty_fun,
+                chat_number,
+                id
             );
+
         } else {
             ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
         }
-    }
-
-    function ChatLive_loadEmotesChannelffzError(tryes, chat_number, id) {
-        if (tryes < DefaultHttpGetReTryMax) ChatLive_loadEmotesChannelffz(tryes + 1, chat_number, id);
     }
 
     function ChatLive_loadEmotesChannelffzSuccess(data, chat_number, id) {
@@ -5660,7 +5660,7 @@
                     if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
                         ChatLive_LineAddErro(message.params[1], 0, true);
-                        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+                        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
 
                     } else ChatLive_UserNoticeWarn(message);
                     break;
@@ -5758,7 +5758,7 @@
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
             ChatLive_LineAddErro(message.params[1], chat_number);
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
 
         } else ChatLive_UserNoticeWarn(message);
 
@@ -5917,6 +5917,9 @@
         }
 
         if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
+
+            //Stringfy to prevent crashes
+            tags['msg-id'] = tags['msg-id'] + '';
 
             if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
 
@@ -6312,45 +6315,6 @@
 
     }
 
-
-    function ChatLive_BaseLoadUrl(id, theUrl, chat_number, tryes, callbackSucess, callbackError, Headers, HeaderQuatity) {
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-
-        if (Headers) {
-
-            if (HeaderQuatity > 2 && AddUser_UserIsSet()) Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-
-            for (var i = 0; i < HeaderQuatity; i++)
-                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
-        }
-
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    callbackSucess(this.responseText, chat_number, id);
-
-                } else if (HeaderQuatity > 2 && (this.status === 401 || this.status === 403)) { //token expired
-
-                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, null, null);
-
-                } else if (this.status !== 404) { //404 ignore the result is empty
-
-                    callbackError(tryes, chat_number, id);
-
-                }
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-
     function ChatLive_CleanUser(chat_number, message) {
         if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
@@ -6465,30 +6429,17 @@
     }
 
     function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
-        var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus),
+            0,
+            null,
+            callbackSucess,
+            calbackError,
+            tryes
+        );
 
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    callbackSucess(this.responseText);
-
-                } else {
-
-                    calbackError(tryes);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
     }
 
     function Chat_loadBadgesGlobalRequest(tryes) {
@@ -6626,92 +6577,46 @@
     }
 
     function Chat_loadChat(id) {
-        if (Chat_Id[0] === id) Chat_loadChatRequest(id, 0);
+        if (Chat_Id[0] === id) Chat_loadChatRequest(id);
     }
 
-    function Chat_loadChatRequest(id, tryes) {
+    function Chat_loadChatRequest(id) {
 
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-        if (!Main_IsOn_OSInterface) {
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            0,
+            null,
+            Chat_loadChatSuccess,
+            Chat_loadChatError,
+            id
+        );
+    }
 
-            var xmlHttp = new XMLHttpRequest();
+    function Chat_loadChatError(id) {
+        if (Chat_Id[0] === id) {
 
-            xmlHttp.open("GET", theUrl, true);
+            Chat_loadChatId = Main_setTimeout(
+                function() {
+                    var time = (OSInterface_gettime() / 1000);
+                    if (time && time < Chat_offset) Chat_offset = time;
 
-            xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) {
-
-                    Chat_loadChatCheckStatus(this, id);
-
-                }
-
-            };
-
-            xmlHttp.send(null);
-
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                null, //JsonHeadersArray
-                'Chat_loadChatRequestResult', //callback
-                id, //checkResult
-                tryes, //key
-                61 //thread
+                    Chat_loadChatRequest(id, 0);
+                },
+                2500,
+                Chat_loadChatId
             );
 
         }
     }
 
-    function Chat_loadChatRequestResult(result, tryes, id) {
-        if (result) {
-
-            Chat_loadChatCheckStatus(JSON.parse(result), id, tryes);
-
-        } else if (Chat_Id[0] === id) Chat_loadChatError(id, tryes);
-    }
-
-
-    function Chat_loadChatCheckStatus(obj, id, tryes) {
-
-        if (Chat_Id[0] === id) {
-
-            if (obj.status === 200) Chat_loadChatSuccess(obj.responseText, id);
-            else Chat_loadChatError(id, tryes);
-
-        }
-
-
-    }
-
-    function Chat_loadChatError(id, tryes) {
-        if (Chat_Id[0] === id) {
-            if (tryes < DefaultHttpGetReTryMax) Chat_loadChatRequest(id, tryes + 1);
-            else {
-                Chat_loadChatId = Main_setTimeout(
-                    function() {
-                        var time = (OSInterface_gettime() / 1000);
-                        if (time && time < Chat_offset) Chat_offset = time;
-
-                        Chat_loadChatRequest(id, 0);
-                    },
-                    2500,
-                    Chat_loadChatId
-                );
-            }
-        }
-    }
-
     function Chat_loadChatSuccess(responseText, id) {
+
+        if (Chat_hasEnded || Chat_Id[0] !== id) return;
+
         responseText = JSON.parse(responseText);
         var div,
             mmessage, null_next = (Chat_next === null),
@@ -6942,51 +6847,35 @@
     }
 
     function Chat_loadChatNext(id) {
-        if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id, 0);
+        if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextRequest(id);
     }
 
-    function Chat_loadChatNextRequest(id, tryes) {
+    function Chat_loadChatNextRequest(id) {
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
-        var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatSuccess(this.responseText, id);
-
-                } else {
-
-                    if (!Chat_hasEnded && Chat_Id[0] === id) Chat_loadChatNextError(id, tryes);
-
-                }
-
-
-            }
-        };
-
-        xmlHttp.send(null);
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            0,
+            null,
+            Chat_loadChatSuccess,
+            Chat_loadChatNextError,
+            id
+        );
     }
 
-    function Chat_loadChatNextError(id, tryes) {
+    function Chat_loadChatNextError(id) {
         if (Chat_Id[0] === id) {
-            if (tryes < DefaultHttpGetReTryMax) Chat_loadChatNextRequest(id, tryes + 1);
-            else {
-                Chat_loadChatNextId = Main_setTimeout(
-                    function() {
-                        Chat_loadChatNextRequest(id, 0);
-                    },
-                    2500,
-                    Chat_loadChatNextId
-                );
-            }
+
+            Chat_loadChatNextId = Main_setTimeout(
+                function() {
+                    Chat_loadChatNextRequest(id, 0);
+                },
+                2500,
+                Chat_loadChatNextId
+            );
+
         }
     }
 
@@ -7054,10 +6943,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.289';
-    var Main_version_java = 289; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'November 30 2020';
-    var Main_version_web = 549; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.290';
+    var Main_version_java = 290; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'December 01 2020';
+    var Main_version_web = 550; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7244,12 +7133,10 @@
                         'Screens_CheckGetResult': Screens_CheckGetResult,
                         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
-                        'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
-                        'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
-                        'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
-                        'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
-                        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
-                        //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
+                        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
+                        'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
+                        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
+                        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
                     };
                 }
 
@@ -7441,12 +7328,15 @@
         Main_setTimeout(Main_RunClipWorker, 80000);
         Main_setInterval(Main_RunClipWorker, (1000 * 60 * 370)); //Check it 6 hours
 
+        Main_setTimeout(AddUser_UpdateUserAllUsers, 30000);
+
         Main_SetStringsSecondary();
         Main_checkVersion();
 
         Main_SearchInput = Main_getElementById("search_input");
         Main_AddUserInput = Main_getElementById("user_input");
         Main_ChatLiveInput = Main_getElementById("chat_send_input");
+
     }
 
     function Main_CheckBackup() {
@@ -7658,6 +7548,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.290 - Web Version December 01 2020",
+                changes: [
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.288 and 3.0.289 - Web Version November 30 2020",
                 changes: [
                     "General performance improves and bug fixes"
@@ -7824,6 +7720,10 @@
         else Main_AddClass('exit_app_close', 'button_dialog_focused');
     }
 
+    function Main_isExitDialogVisible() {
+        return Main_isElementShowing('main_dialog_exit');
+    }
+
     function Main_CounterDialogRst() {
         Main_empty('dialog_counter_text');
     }
@@ -7872,7 +7772,7 @@
         Main_HideElement('dialog_about');
     }
 
-    function Main_isAboutDialogShown() {
+    function Main_isAboutDialogVisible() {
         return Main_isElementShowing('dialog_about');
     }
 
@@ -7911,7 +7811,7 @@
         Main_HideElement('dialog_controls');
     }
 
-    function Main_isControlsDialogShown() {
+    function Main_isControlsDialogVisible() {
         return Main_isElementShowing('dialog_controls');
     }
 
@@ -8573,7 +8473,7 @@
 
         Main_randomimg = '?' + parseInt(Math.random() * 100000);
 
-        Screens_SetLastRefresh(Screens_Current_Key);
+        Screens_SetLastRefresh(Main_values.Main_Go);
         UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
         Sidepannel_SetLastRefresh();
     }
@@ -8691,85 +8591,102 @@
         }
     }
 
-    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key) {
+    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, Method) {
 
-        Main_Headers[2][1] = access_token;
         var i = 0;
 
-        // if (!Main_IsOn_OSInterface) {
+        if (!Main_IsOn_OSInterface) {
 
-        var xmlHttp = new XMLHttpRequest();
+            var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Timeout;
+            xmlHttp.open(Method ? Method : "GET", theUrl, true);
+            xmlHttp.timeout = Timeout;
 
-        for (i; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+            Main_Headers[2][1] = access_token;
 
-        xmlHttp.onreadystatechange = function() {
+            for (i; i < HeaderQuatity; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
 
-            if (this.readyState === 4) {
+            xmlHttp.onreadystatechange = function() {
 
-                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError);
+                if (this.readyState === 4) {
 
+                    Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
+
+                }
+
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+
+            if (HeaderQuatity !== 2) {
+
+                var array = [];
+                Main_Headers[2][1] = access_token;
+
+                for (i; i < HeaderQuatity; i++)
+                    array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+                JsonHeadersArray = JSON.stringify(array);
             }
 
-        };
+            OSInterface_BasexmlHttpGet(
+                theUrl,
+                Timeout,
+                null,
+                Method ? Method : null,
+                JsonHeadersArray,
+                'Main_CheckBasexmlHttpGet',
+                checkResult,
+                key,
+                callbackSucess.name,
+                calbackError.name
+            );
 
-        xmlHttp.send(null);
-
-        // } else {
-
-        //     var array = [];
-
-        //     for (i; i < HeaderQuatity; i++)
-        //         array.push([Main_Headers[i][0], Main_Headers[i][1]]);
-
-        //     OSInterface_BasexmlHttpGet(
-        //         theUrl,
-        //         Timeout,
-        //         null,
-        //         null,
-        //         JSON.stringify(array),
-        //         'Main_CheckBasexmlHttpGet',
-        //         0,
-        //         key,
-        //         callbackSucess.name,
-        //         calbackError.name
-        //     );
-
-        // }
+        }
 
     }
 
-    // function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError) {
+    function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
 
-    //     if (result) {
+        if (result) {
 
-    //         Main_BasexmlHttpStatus(
-    //             JSON.parse(result),
-    //             key,
-    //             eval(callbackSucess),// jshint ignore:line
-    //             eval(calbackError)// jshint ignore:line
-    //         );
-    //         return;
-
-    //     }
-
-    //     eval(calbackError)(key); // jshint ignore:line
-
-    // }
-
-    function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError) {
-
-        if (obj.status === 200) {
-
-            eval(callbackSucess)(obj.responseText, key); // jshint ignore:line
-
+            Main_BasexmlHttpStatus(
+                JSON.parse(result),
+                key,
+                eval(callbackSucess), // jshint ignore:line
+                eval(calbackError), // jshint ignore:line
+                checkResult
+            );
             return;
+
         }
 
         eval(calbackError)(key); // jshint ignore:line
+
+    }
+
+    function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkResult) {
+
+        if (obj.status === 200) {
+
+            callbackSucess(obj.responseText, key, checkResult); // jshint ignore:line
+
+            return;
+
+        } else if (obj.status === 401 || obj.status === 403 &&
+            (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)) { //token expired
+
+            AddCode_refreshTokens(0, null, null);
+            return;
+
+        }
+
+        calbackError(key, checkResult); // jshint ignore:line
 
     }
 
@@ -9408,7 +9325,7 @@
         Main_clearTimeout(Main_setHistoryItemId);
         Main_SaveHistoryItem();
         //General related
-        Screens_ClearAnimation(Screens_Current_Key);
+        Screens_ClearAnimation(Main_values.Main_Go);
 
         Main_clearInterval(Main_updateclockId);
         Main_clearInterval(Main_StartHistoryworkerId);
@@ -9440,10 +9357,24 @@
             }
             Settings_exit();
             Main_SwitchScreen();
+        } else if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) { //Hide about or related if showing
+
+            Main_HideControlsDialog();
+            Main_HideAboutDialog();
+            Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_controls);
+
+            Main_addEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+            if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
+            else ScreenObj[Main_values.Main_Go].init_fun();
+
+        } else if (Main_isExitDialogVisible()) { //Hide exit if showing
+
+            Main_HideExitDialog();
+
         }
 
         //Reset Screen img if hiden
-        var doc = Main_getElementById(ScreenObj[Screens_Current_Key].ids[1] + ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX);
+        var doc = Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX);
         if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
         else if (ChannelContent_Isfocused()) {
             Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
@@ -9499,7 +9430,7 @@
         //If the app closes next reopen the same check will happen but somewhere else
         if (UserIsSet && AddUser_UsernameArray[0].access_token &&
             (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
-            AddCode_refreshTokens(0, 0, null, null, null, true);
+            AddCode_refreshTokens(0, null, null, null, true);
         }
     }
 
@@ -9550,7 +9481,7 @@
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
             case KEY_ENTER:
-                if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
+                if (!Main_isControlsDialogVisible() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
                     Main_CheckAccessibilityHide(true);
                 }
                 break;
@@ -10198,8 +10129,8 @@
             Method,
             JsonHeadersArray,
             callback,
-            checkResult,
-            key,
+            !checkResult ? 0 : checkResult,
+            !key ? 0 : key,
             thread
         );
     }
@@ -10207,30 +10138,30 @@
     //public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
     //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
     //Android specific: true
-    // function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
+    function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
 
-    //     try {
+        try {
 
-    //         Android.BasexmlHttpGet(
-    //             urlString,
-    //             timeout,
-    //             postMessage,
-    //             Method,
-    //             JsonHeadersArray,
-    //             callback,
-    //             checkResult,
-    //             key,
-    //             callbackSucess,
-    //             calbackError
-    //         );
+            Android.BasexmlHttpGet(
+                urlString,
+                timeout,
+                postMessage,
+                Method,
+                JsonHeadersArray,
+                callback,
+                !checkResult ? 0 : checkResult,
+                !key ? 0 : key,
+                callbackSucess,
+                calbackError
+            );
 
-    //     } catch (e) {
+        } catch (e) {
 
-    //         calbackError(key);
+            eval(calbackError)(key); // jshint ignore:line
 
-    //     }
+        }
 
-    // }
+    }
 
     //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
     //urlString = the url to to the http request
@@ -11607,7 +11538,7 @@
 
     function PlayClip_UpdateNext() {
         var nextid = PlayClip_getIdNext(1, 0);
-        var backid = PlayClip_getIdNext(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1);
+        var backid = PlayClip_getIdNext(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1);
         var data;
 
         PlayClip_HasNext = false;
@@ -11616,7 +11547,7 @@
         if (nextid) {
 
             PlayClip_HasNext = true;
-            data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[nextid]);
+            data = Main_Slice(ScreenObj[Main_values.Main_Go].DataObj[nextid]);
 
             PlayClip_NextImg(Play_BottonIcons_Next_img, data[15]);
             Main_innerHTMLWithEle(Play_BottonIcons_Next_name, Main_ReplaceLargeFont(data[4]));
@@ -11638,7 +11569,7 @@
         if (backid) {
 
             PlayClip_HasBack = true;
-            data = Main_Slice(ScreenObj[Screens_Current_Key].DataObj[backid]);
+            data = Main_Slice(ScreenObj[Main_values.Main_Go].DataObj[backid]);
 
             PlayClip_NextImg(Play_BottonIcons_Back_img, data[15]);
             Main_innerHTMLWithEle(Play_BottonIcons_Back_name, Main_ReplaceLargeFont(data[4]));
@@ -11659,13 +11590,13 @@
 
     function PlayClip_getIdNext(y, x) {
 
-        if (ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y)]) {
+        if (ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + (ScreenObj[Main_values.Main_Go].posX + y)]) {
 
-            return ScreenObj[Screens_Current_Key].posY + '_' + (ScreenObj[Screens_Current_Key].posX + y);
+            return ScreenObj[Main_values.Main_Go].posY + '_' + (ScreenObj[Main_values.Main_Go].posX + y);
 
-        } else if (ScreenObj[Screens_Current_Key].DataObj[(ScreenObj[Screens_Current_Key].posY + y) + '_' + x]) {
+        } else if (ScreenObj[Main_values.Main_Go].DataObj[(ScreenObj[Main_values.Main_Go].posY + y) + '_' + x]) {
 
-            return (ScreenObj[Screens_Current_Key].posY + y) + '_' + x;
+            return (ScreenObj[Main_values.Main_Go].posY + y) + '_' + x;
 
         }
 
@@ -11686,14 +11617,14 @@
     function PlayClip_PlayNext() {
         PlayClip_PreshutdownStream(false);
 
-        Screens_KeyLeftRight(1, 0, Screens_Current_Key);
+        Screens_KeyLeftRight(1, 0, Main_values.Main_Go);
         PlayClip_PlayNextPreviously();
     }
 
     function PlayClip_PlayPreviously() {
         PlayClip_PreshutdownStream(false);
 
-        Screens_KeyLeftRight(-1, ScreenObj[Screens_Current_Key].ColoumnsCount - 1, Screens_Current_Key);
+        Screens_KeyLeftRight(-1, ScreenObj[Main_values.Main_Go].ColoumnsCount - 1, Main_values.Main_Go);
         PlayClip_PlayNextPreviously();
     }
 
@@ -11702,11 +11633,11 @@
         Main_ready(function() {
             PlayClip_replayOrNext = true;
             Main_OpenClip(
-                Screens_GetObj(Screens_Current_Key),
-                ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX,
-                ScreenObj[Screens_Current_Key].ids,
-                ScreenObj[Screens_Current_Key].key_fun,
-                ScreenObj[Screens_Current_Key].ScreenName
+                Screens_GetObj(Main_values.Main_Go),
+                ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
+                ScreenObj[Main_values.Main_Go].ids,
+                ScreenObj[Main_values.Main_Go].key_fun,
+                ScreenObj[Main_values.Main_Go].ScreenName
             );
         });
     }
@@ -11828,8 +11759,8 @@
     function PlayClip_CheckPreview() {
 
         if (PlayClip_isOn && !Play_isEndDialogVisible() && Main_values.Main_Go !== Main_ChannelContent &&
-            Settings_Obj_default('show_clip_player') && ScreenObj[Screens_Current_Key].screenType === 2 && !Sidepannel_isShowing() &&
-            !Main_ThumbOpenIsNull(ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX, ScreenObj[Screens_Current_Key].ids[0])) {
+            Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowing() &&
+            !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             if (PlayClip_CheckPreviewClip()) {
                 Play_PreviewURL = PlayClip_qualities[0].url;
@@ -11843,7 +11774,7 @@
     function PlayClip_CheckPreviewClip() {
         var restorePreview = false;
 
-        var data = ScreenObj[Screens_Current_Key].DataObj[ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX];
+        var data = ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX];
 
         if (data) {
 
@@ -15513,8 +15444,7 @@
     function PlayExtra_updateStreamInfo() {
         Play_updateStreamInfoGet(
             Main_kraken_api + 'streams/?stream_type=all&channel=' + PlayExtra_data.data[14] + Main_TwithcV5Flag,
-            0,
-            false
+            0
         );
     }
     /*
@@ -16212,7 +16142,7 @@
 
         BasexmlHttpGet(
             theUrl,
-            (DefaultHttpGetTimeout * 2) + (Play_loadingInfoDataTry * DefaultHttpGetTimeoutPlus),
+            DefaultHttpGetTimeout * 2,
             2,
             null,
             Play_updateStreamInfoStartValues,
@@ -16227,7 +16157,11 @@
 
             Play_updateStreamInfoEnd(obj.streams[0]);
             Play_loadingInfoDataTry = 0;
-            Play_updateVodInfo(obj.streams[0].channel._id, obj.streams[0]._id, 0);
+
+            Play_updateVodInfo(
+                obj.streams[0].channel._id,
+                obj.streams[0]._id
+            );
         }
     }
 
@@ -16285,38 +16219,18 @@
         );
     }
 
-    function Play_updateVodInfo(Channel_id, BroadcastID, tryes) {
-        var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time',
-            xmlHttp = new XMLHttpRequest();
+    function Play_updateVodInfo(Channel_id, BroadcastID) {
+        var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) Play_updateVodInfoSuccess(this.responseText, BroadcastID);
-                else Play_updateVodInfoError(Channel_id, BroadcastID, tryes);
-
-            }
-        };
-
-        xmlHttp.send(null);
-    }
-
-    function Play_updateVodInfoError(Channel_id, BroadcastID, tryes) {
-        if (tryes < 10) {
-            Main_setTimeout(
-                function() {
-                    if (Play_isOn) Play_updateVodInfo(Channel_id, BroadcastID, tryes + 1);
-                },
-                500
-            );
-        }
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2),
+            2,
+            null,
+            Play_updateVodInfoSuccess,
+            empty_fun,
+            BroadcastID
+        );
     }
 
     function Play_updateVodInfoSuccess(response, BroadcastID) {
@@ -16354,40 +16268,23 @@
             //When update this also update PlayExtra_updateStreamInfo
             Play_updateStreamInfoGet(
                 Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag,
-                0,
-                true
+                1
             );
         }
     }
 
-    function Play_updateStreamInfoGet(theUrl, tryes, Is_play) {
-        var xmlHttp = new XMLHttpRequest();
+    function Play_updateStreamInfoGet(theUrl, Is_play) {
 
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+        BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2),
+            2,
+            null,
+            Play_updateStreamInfoValues,
+            Play_updateStreamInfoGetError,
+            Is_play
+        );
 
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    Play_updateStreamInfoValues(this.responseText, Is_play);
-
-                } else {
-
-                    Play_updateStreamInfoGetError(theUrl, tryes, Is_play);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
     }
 
     function Play_updateStreamInfoValues(response, Is_play) {
@@ -16416,29 +16313,20 @@
         }
     }
 
-    function Play_updateStreamInfoGetError(theUrl, tryes, Is_play) {
-        if (tryes < DefaultHttpGetReTryMax) {
-            Main_setTimeout(
-                function() {
-                    if (Play_isOn) Play_updateStreamInfoGet(theUrl, tryes + 1, Is_play);
-                    //give a second for it retry as the TV may be on coming from resume
-                },
-                750
-            );
-        } else if (Play_isOn) {
-            if (Play_StayDialogVisible()) return;
+    function Play_updateStreamInfoGetError(Is_play) {
 
-            //we fail but we still watching so update the time
-            if (Is_play && Play_data.data.length > 0) {
+        if (Play_StayDialogVisible()) return;
 
-                Main_Set_history('live', Play_data.data);
+        //we fail but we still watching so update the time
+        if (Is_play && Play_data.data.length > 0) {
 
-            } else if (!Is_play && PlayExtra_data.data.length > 0) {
+            Main_Set_history('live', Play_data.data);
 
-                Main_Set_history('live', PlayExtra_data.data);
-            }
+        } else if (!Is_play && PlayExtra_data.data.length > 0) {
 
+            Main_Set_history('live', PlayExtra_data.data);
         }
+
     }
 
     function Play_LoadLogo(ImgObjet, link) {
@@ -17580,7 +17468,7 @@
 
         if (Main_isScene1DocVisible()) {
 
-            if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Screens_Current_Key); //fix position after animation has endede after Player.STATE_READY
+            if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
 
         } else if (duration > 0) {
 
@@ -17814,48 +17702,17 @@
     var Play_MultiArray_length = 4;
 
     function Play_updateStreamInfoMulti(pos) {
-        Main_setTimeout(
-            function() {
-                if (Play_MultiArray[pos].data.length > 0) {
-                    Play_RefreshMultiGet(
-                        Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
-                        0,
-                        pos
-                    );
-                }
-            },
-            (pos * 1000)
+
+        BasexmlHttpGet(
+            Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
+            (DefaultHttpGetTimeout * 2),
+            2,
+            null,
+            Play_updateStreamInfoMultiValues,
+            Play_updateStreamInfoMultiError,
+            pos
         );
-    }
 
-    function Play_RefreshMultiGet(theUrl, tryes, pos) {
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
-
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                if (this.status === 200) {
-
-                    Play_updateStreamInfoMultiValues(this.responseText, pos);
-
-                } else {
-
-                    Play_updateStreamInfoMultiError(theUrl, tryes, pos);
-
-                }
-
-            }
-
-        };
-
-        xmlHttp.send(null);
     }
 
     function Play_updateStreamInfoMultiValues(response, pos) {
@@ -17888,16 +17745,9 @@
         }
     }
 
-    function Play_updateStreamInfoMultiError(theUrl, tryes, pos) {
-        if (tryes < DefaultHttpGetReTryMax) {
-            Main_setTimeout(
-                function() {
-                    if (Play_isOn) Play_RefreshMultiGet(theUrl, tryes + 1, pos);
-                    //give a second for it retry as the TV may be on coming from resume
-                },
-                2500
-            );
-        } else if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
+    function Play_updateStreamInfoMultiError(pos) {
+
+        if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
 
             //we fail but we still watching so update the time
             Main_Set_history('live', Play_MultiArray[pos].data);
@@ -20354,7 +20204,6 @@
 
     //Variable initialization
     var ScreenObj = {};
-    var Screens_Current_Key = 1;
     var Screens_clear = false;
     var Screens_KeyEnterID;
     var Screens_DialogHideTimout = 10000;
@@ -20618,8 +20467,7 @@
     function Screens_init(key, preventRefresh) {
         //Main_Log('Screens_init ' + ScreenObj[key].screen);
         Main_addFocusVideoOffset = -1;
-        Screens_Current_Key = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
-        Main_values.Main_Go = key;
+        Main_values.Main_Go = key; //Sidepannel, playclip, Main_updateclock Screens_Isfocused Main_CheckStop use this var
         ScreenObj[key].label_init();
 
         if (Main_isScene1DocVisible() &&
@@ -20803,7 +20651,7 @@
             }
         } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
             else Screens_loadDataError(key);
 
         } else {
@@ -22038,8 +21886,8 @@
     }
 
     function Screens_BasicExit(before, key) {
-        if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-        else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+        if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+        else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
         else {
             if (before === ScreenObj[key].screen) Main_values.Main_Go = Main_Live;
             else Main_values.Main_Go = before;
@@ -22856,49 +22704,62 @@
     var Screens_ThumbOption_CheckFollow_ID;
 
     function Screens_ThumbOption_CheckFollow(data, key) {
+
+        var channel_id = 0;
+
         Screens_ThumbOption_CheckFollow_ID = (new Date()).getTime();
-        if (ScreenObj[key].screenType < 2) Screens_ThumbOption_RequestCheckFollow(data[14], 0, Screens_ThumbOption_CheckFollow_ID);
-        else Screens_ThumbOption_RequestCheckFollow(data[2], 0, Screens_ThumbOption_CheckFollow_ID);
+
+        if (ScreenObj[key].screenType < 2) {
+
+            channel_id = data[14];
+
+        } else {
+
+            channel_id = data[2];
+
+        }
+
+        Screens_ThumbOption_RequestCheckFollow(
+            channel_id,
+            Screens_ThumbOption_CheckFollow_ID
+        );
     }
 
-    function Screens_ThumbOption_RequestCheckFollow(channel_id, tryes, ID) {
+    function Screens_ThumbOption_RequestCheckFollow(channel_id, ID) {
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-        var xmlHttp = new XMLHttpRequest();
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            2,
+            null,
+            Screens_ThumbOption_RequestCheckFollowSuccess,
+            Screens_ThumbOption_RequestCheckFollowFail,
+            ID
+        );
+    }
 
-        xmlHttp.open('GET', theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus);
+    function Screens_ThumbOption_RequestCheckFollowSuccess(obj, ID) {
 
-        for (var i = 0; i < 2; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+        if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
-        xmlHttp.onreadystatechange = function() {
-            if (Screens_ThumbOption_CheckFollow_ID === ID) Screens_ThumbOption_RequestCheckFollowReady(this, channel_id, tryes, ID);
-        };
-
-        xmlHttp.send(null);
+        Screens_canFollow = true;
+        Screens_isFollowing = true;
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
 
     }
 
-    function Screens_ThumbOption_RequestCheckFollowReady(xmlHttp, channel_id, tryes, ID) {
-        if (xmlHttp.readyState === 4) {
-            if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+    function Screens_ThumbOption_RequestCheckFollowFail(ID) {
 
-            if (xmlHttp.status === 200) { //yes
-                Screens_canFollow = true;
-                Screens_isFollowing = true;
-                Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
-                Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-            } else if (xmlHttp.status === 404) { //no
-                Screens_canFollow = true;
-                Screens_isFollowing = false;
-                Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
-                Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
-            } else { // internet error
-                if (tryes < 5) Screens_ThumbOption_RequestCheckFollow(channel_id, tryes + 1, ID);
-            }
-        }
+        if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+
+        Screens_canFollow = true;
+        Screens_isFollowing = false;
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+
     }
 
     function Screens_ThumbOptionStringGetHistory(key) {
@@ -23069,12 +22930,28 @@
             if (Screens_isFollowing) {
 
                 theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-                AddCode_BasexmlHttpGet(theUrl, 'DELETE', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_UnFollowRequestReady, 3);
+
+                AddCode_BasexmlHttpGet(
+                    theUrl,
+                    'DELETE',
+                    3,
+                    Main_OAuth + AddUser_UsernameArray[0].access_token,
+                    Screens_UnFollowRequestReady,
+                    empty_fun
+                );
 
             } else {
 
                 theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-                AddCode_BasexmlHttpGet(theUrl, 'PUT', 3, Main_OAuth + AddUser_UsernameArray[0].access_token, Screens_FollowRequestReady, 3);
+
+                AddCode_BasexmlHttpGet(
+                    theUrl,
+                    'PUT',
+                    3,
+                    Main_OAuth + AddUser_UsernameArray[0].access_token,
+                    Screens_FollowRequestReady,
+                    empty_fun
+                );
 
             }
 
@@ -23087,28 +22964,28 @@
     }
 
     function Screens_UnFollowRequestReady(xmlHttp) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 204) { //success user is now not following the channel
-                Screens_canFollow = true;
-                Screens_isFollowing = false;
-                Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
-                Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
-            } // } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-            // }
+
+        if (xmlHttp.status === 204) { //success user is now not following the channel
+
+            Screens_canFollow = true;
+            Screens_isFollowing = false;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+
         }
+
     }
 
     function Screens_FollowRequestReady(xmlHttp) {
-        if (xmlHttp.readyState === 4) {
-            if (xmlHttp.status === 200) { //success user is now following the channel
-                Screens_isFollowing = true;
-                Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
-                Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-            } // } else if (xmlHttp.status === 401 || xmlHttp.status === 403) { //token expired
-            //     AddCode_refreshTokens(0, 0, Screens_FollowUnfollow, null);
-            // }
+
+        if (xmlHttp.status === 200) { //success user is now following the channel
+
+            Screens_isFollowing = true;
+            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
+
         }
+
     }
 
     function Screens_OpenScreen() {
@@ -23282,7 +23159,7 @@
     }
 
     function Screens_Isfocused() {
-        return (ScreenObj[Screens_Current_Key].posY + '_' + ScreenObj[Screens_Current_Key].posX) === ScreenObj[Screens_Current_Key].focusPos && Main_isScene1DocVisible();
+        return (ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) === ScreenObj[Main_values.Main_Go].focusPos && Main_isScene1DocVisible();
     }
 
     //TODO add screen.isInuse prop to adress this fun use
@@ -25303,8 +25180,8 @@
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-                else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+                if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+                else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
                 else {
                     Search_exit();
                     Main_SwitchScreen();
@@ -25415,8 +25292,8 @@
     function Search_KeyboardEvent(event) {
         switch (event.keyCode) {
             case KEY_RETURN:
-                if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
                 else {
                     Search_exit();
                     Main_SwitchScreen();
@@ -27566,8 +27443,8 @@
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-                if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+                if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
                 else {
                     Settings_exit();
                     Main_SwitchScreen();
@@ -29811,7 +29688,6 @@
 
     //Spacing for release maker not trow errors from jshint
     var UserLiveFeed_loadingData = [];
-    var UserLiveFeed_loadingDataTry = [];
     var UserLiveFeed_loadChannelOffsset = 0;
     var UserLiveFeed_followerChannels = [];
     var UserLiveFeed_maxChannels = 825;
@@ -29892,7 +29768,6 @@
             UserLiveFeed_obj[i].offsettopFontsize = 0;
             UserLiveFeed_lastRefresh[i] = 0;
             UserLiveFeed_loadingData[i] = false;
-            UserLiveFeed_loadingDataTry[i] = 0;
             UserLiveFeed_obj[i].checkPreview = true;
             UserLiveFeed_RefreshId[i] = null;
             UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
@@ -31157,76 +31032,27 @@
     function UserLiveFeedobj_loadDataPrepare(pos) {
         UserLiveFeed_loadingData[pos] = true;
         Screens_Some_Screen_Is_Refreshing = true;
-        UserLiveFeed_loadingDataTry[pos] = 0;
     }
 
     function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
         if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-        if (!Main_IsOn_OSInterface) {
-
-            BasexmlHttpGet(
-                url,
-                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus),
-                headers,
-                null,
-                callback,
-                UserLiveFeedobj_loadDataError,
-                pos
-            );
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                url,
-                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[pos] * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                UserLiveFeed_Headers[pos], //JsonHeadersArray
-                'UserLiveFeedobj_CheckGetResult', //callback
-                pos, //checkResult
-                pos, //key
-                30 + pos //thread
-            );
-
-        }
-    }
-
-    function UserLiveFeedobj_CheckGetResult(result, pos) {
-
-        if (result) {
-
-            var obj = JSON.parse(result);
-
-            if (obj.status === 200) {
-
-                UserLiveFeed_obj[pos].success(obj.responseText);
-
-                return;
-            }
-
-        }
-
-        UserLiveFeedobj_loadDataErrorElse(pos);
+        BasexmlHttpGet(
+            url,
+            DefaultHttpGetTimeout * 2,
+            headers,
+            null,
+            callback,
+            UserLiveFeedobj_loadDataError,
+            pos
+        );
     }
 
     function UserLiveFeedobj_loadDataError(pos) {
-        UserLiveFeed_loadingDataTry[pos]++;
-
-        if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-            UserLiveFeed_obj[pos].load();
-        } else {
-            UserLiveFeedobj_loadDataErrorElse(pos);
-        }
-
-    }
-
-    function UserLiveFeedobj_loadDataErrorElse(pos) {
 
         if (!UserLiveFeed_obj[pos].loadingMore) {
 
-            UserLiveFeed_loadingDataTry[pos] = 0;
             UserLiveFeed_loadingData[pos] = false;
             Screens_Some_Screen_Is_Refreshing = false;
             UserLiveFeed_Showloading(false);
@@ -31258,82 +31084,27 @@
     }
 
     function UserLiveFeedobj_loadChannels() {
-        var i = 0,
-            theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
+
+        var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-        if (!Main_IsOn_OSInterface) {
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout * 2,
+            2,
+            null,
+            UserLiveFeedobj_loadChannelLive,
+            UserLiveFeedobj_loadChannelsError,
+            UserLiveFeedobj_UserLivePos
+        );
 
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
-
-            for (i; i < 2; i++)
-                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) {
-
-                    if (this.status === 200) {
-
-                        UserLiveFeedobj_loadChannelLive(this.responseText);
-
-                    } else {
-
-                        UserLiveFeedobj_loadChannelsError(UserLiveFeedobj_UserLivePos);
-
-                    }
-
-                }
-
-            };
-
-            xmlHttp.send(null);
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                Main_base_string_header, //JsonHeadersArray
-                'UserLiveFeedobj_loadChannelsResult', //callback
-                UserLiveFeedobj_UserLivePos, //checkResult
-                UserLiveFeedobj_UserLivePos, //key
-                30 + UserLiveFeedobj_UserLivePos //thread
-            );
-
-        }
-    }
-
-    function UserLiveFeedobj_loadChannelsResult(result, key) {
-
-        if (result) {
-
-            var obj = JSON.parse(result);
-
-            if (obj.status === 200) {
-
-                UserLiveFeedobj_loadChannelLive(obj.responseText);
-                return;
-
-            }
-
-        }
-
-        UserLiveFeedobj_loadChannelsError(key);
     }
 
     function UserLiveFeedobj_loadChannelsError(pos) {
-        UserLiveFeed_loadingDataTry[pos]++;
-        if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-            UserLiveFeedobj_loadChannels();
-        } else {
-            if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataErrorElse(pos);
-            else UserLiveFeedobj_loadChannelLiveEnd();
-        }
+
+        if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataError(pos);
+        else UserLiveFeedobj_loadChannelLiveEnd();
+
     }
 
     function UserLiveFeedobj_loadChannelLive(responseText) {
@@ -31403,7 +31174,7 @@
 
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus);
+            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
             for (i; i < len; i++)
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -31421,7 +31192,7 @@
 
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,
-                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserLivePos] * DefaultHttpGetTimeoutPlus), //timeout
+                DefaultHttpGetTimeout * 2, //timeout
                 null, //postMessage, null for get
                 null, //Method, null for get
                 HeadersString, //JsonHeadersArray
@@ -31439,30 +31210,26 @@
 
             UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
 
-        } else UserLiveFeedobj_loadChannelUserLiveGetEndError(key);
+        } else UserLiveFeedobj_loadDataError(key);
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
         if (xmlHttp.status === 200) {
+
             UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
+
         } else if (UserLiveFeed_token && (xmlHttp.status === 401 || xmlHttp.status === 403)) { //token expired
+
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
-            else UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+            else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 
         } else {
-            UserLiveFeedobj_loadChannelUserLiveGetEndError(UserLiveFeedobj_UserLivePos);
-        }
-    }
 
-    function UserLiveFeedobj_loadChannelUserLiveGetEndError(pos) {
-        UserLiveFeed_loadingDataTry[pos]++;
-        if (UserLiveFeed_loadingDataTry[pos] < DefaultHttpGetReTryMax) {
-            UserLiveFeedobj_loadChannelUserLive();
-        } else {
-            UserLiveFeedobj_loadDataErrorElse(pos);
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
+
         }
     }
 
@@ -32194,7 +31961,7 @@
 
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus);
+            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
 
             for (i; i < 3; i++)
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -32211,7 +31978,7 @@
 
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,
-                DefaultHttpGetTimeout + (UserLiveFeed_loadingDataTry[UserLiveFeedobj_UserVodPos] * DefaultHttpGetTimeoutPlus), //timeout
+                DefaultHttpGetTimeout * 2, //timeout
                 null, //postMessage, null for get
                 null, //Method, null for get
                 JSON.stringify(Main_Headers), //JsonHeadersArray
@@ -32240,17 +32007,12 @@
             //Token has change or because is new or because it is invalid because user delete in twitch settings
             // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, 0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadUserVodGetError);
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
             else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
 
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         }
-    }
-
-    function UserLiveFeedobj_loadUserVodGetError() {
-        //Main_Log('UserLiveFeedobj_loadDataRefreshTokenError');
-        UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     }
 
     function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
@@ -32920,8 +32682,8 @@
             case KEY_RETURN:
                 if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
                 else if (Users_isUserDialogShown()) Users_HideUserDialog();
-                else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-                else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+                else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+                else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
                 else {
                     Users_exit();
                     Sidepannel_RemoveFocusMain();
@@ -34143,12 +33905,10 @@
         'Screens_CheckGetResult': Screens_CheckGetResult,
         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
-        'UserLiveFeedobj_loadChannelsResult': UserLiveFeedobj_loadChannelsResult,
-        'Chat_loadChatRequestResult': Chat_loadChatRequestResult,
-        'ChannelContent_loadDataRequestResult': ChannelContent_loadDataRequestResult,
-        'ChannelContent_GetStreamerInfoResult': ChannelContent_GetStreamerInfoResult,
-        'UserLiveFeedobj_CheckGetResult': UserLiveFeedobj_CheckGetResult,
-        //'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet
+        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
+        'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
+        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
+        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
     };
 
     /** Expose `smartTwitchTV` */
