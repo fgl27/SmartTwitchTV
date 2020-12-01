@@ -2833,7 +2833,9 @@ public class PlayerActivity extends Activity {
         public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray) {
             try {
 
-                return new Gson().toJson(Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray));
+                Tools.ResponseObj response = Tools.MethodUrlHeaders(urlString, timeout, postMessage, Method, 0L, JsonHeadersArray);
+
+                if (response != null) new Gson().toJson(response);
 
             } catch (Exception e) {//Most are RejectedExecutionException
                 Tools.recordException(TAG, "mMethodUrlHeaders Exception ", e);

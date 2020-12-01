@@ -391,7 +391,9 @@ public final class Tools {
                 return new ResponseObj(
                         status,
                         readFullyString(
-                                urlConnection.getInputStream() != null ? urlConnection.getInputStream() : urlConnection.getErrorStream()
+                                status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE && urlConnection.getInputStream() != null ?
+                                        urlConnection.getInputStream() :
+                                        urlConnection.getErrorStream()
                         ),
                         checkResult
                 );

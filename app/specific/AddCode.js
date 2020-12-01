@@ -42,7 +42,8 @@ function AddCode_CheckNewCode(code) {
 }
 
 function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
-    //Main_Log('AddCode_refreshTokens');
+    //Main_Log('AddCode_refreshTokens ' + position);
+
     if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
 
         if (callbackFuncNOK) callbackFuncNOK();
@@ -162,12 +163,11 @@ function AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key
 }
 
 function AddCode_refreshTokensError(callbackFuncNOK, key) {
+
     if (callbackFuncNOK) callbackFuncNOK(key);
 }
 
 function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
-    //Main_Log('AddCode_refreshTokensSucess');
-    //Main_Log(responseText);
 
     var response = JSON.parse(responseText);
     if (AddCode_TokensCheckScope(response.scope)) {
@@ -326,8 +326,9 @@ function AddCode_CheckTokenStart(position) {
             obj = JSON.parse(obj);
 
             if (obj) AddCode_CheckTokenReady(obj, position);
+            else AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
-        }
+        } else AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
     } else {
 
@@ -344,9 +345,10 @@ function AddCode_CheckTokenReady(obj, position) {
 
     if (obj.status === 200) {
 
+        AddCode_refreshTokens(position, null, null, null, !position); //token expired
         AddCode_CheckTokenSuccess(obj.responseText, position);
 
-    } else if (obj.status === 401 || obj.status === 403) {
+    } else {
 
         AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
@@ -659,7 +661,7 @@ function AddCode_BasexmlHttpGetValidateGet(result, position, callbackSucess, cal
 
     if (result) {
 
-        eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
+        eval(callbackSucess)(JSON.parse(result), position); // jshint ignore:line
 
         return;
 
