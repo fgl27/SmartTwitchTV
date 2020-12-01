@@ -854,7 +854,7 @@ var ChatLiveControls_OptionsY = 0;
 
 function ChatLiveControls_OptionsUpdate_defautls() {
     OptionsShowObj.keyboard_options = {};
-    OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 0);
+    OptionsShowObj.keyboard_options.defaultValue = Main_getItemInt('keyboard_options', 1);
     OptionsShowObj.emote_sorting = {};
     OptionsShowObj.emote_sorting.defaultValue = Main_getItemInt('emote_sorting', 0);
     OptionsShowObj.force_show_chat_write = {};
