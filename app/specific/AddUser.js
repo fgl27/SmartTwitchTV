@@ -50,8 +50,8 @@ function AddUser_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
             else {
                 AddUser_exit();
                 Main_SwitchScreen();
@@ -117,8 +117,8 @@ function AddUser_KeyboardEvent(event) {
 
     switch (event.keyCode) {
         case KEY_RETURN:
-            if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
             else {
                 AddUser_exit();
                 Main_SwitchScreen();

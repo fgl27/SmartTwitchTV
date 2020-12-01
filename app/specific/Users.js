@@ -308,8 +308,8 @@ function Users_handleKeyDown(event) {
         case KEY_RETURN:
             if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
             else if (Users_isUserDialogShown()) Users_HideUserDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogShown()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+            else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
             else {
                 Users_exit();
                 Sidepannel_RemoveFocusMain();

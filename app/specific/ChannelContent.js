@@ -527,8 +527,8 @@ function ChannelContent_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+            if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+            else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
             else {
                 ChannelContent_removeFocus();
                 Main_removeEventListener("keydown", ChannelContent_handleKeyDown);

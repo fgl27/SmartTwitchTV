@@ -1701,8 +1701,8 @@ function Screens_removeFocusFollow(key) {
 }
 
 function Screens_BasicExit(before, key) {
-    if (Main_isControlsDialogShown()) Main_HideControlsDialog();
-    else if (Main_isAboutDialogShown()) Main_HideAboutDialog();
+    if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+    else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
     else {
         if (before === ScreenObj[key].screen) Main_values.Main_Go = Main_Live;
         else Main_values.Main_Go = before;

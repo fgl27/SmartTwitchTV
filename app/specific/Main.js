@@ -843,7 +843,7 @@ function Main_HideAboutDialog() {
     Main_HideElement('dialog_about');
 }
 
-function Main_isAboutDialogShown() {
+function Main_isAboutDialogVisible() {
     return Main_isElementShowing('dialog_about');
 }
 
@@ -882,7 +882,7 @@ function Main_HideControlsDialog() {
     Main_HideElement('dialog_controls');
 }
 
-function Main_isControlsDialogShown() {
+function Main_isControlsDialogVisible() {
     return Main_isElementShowing('dialog_controls');
 }
 
@@ -2431,7 +2431,7 @@ function Main_CheckStop() { // Called only by JAVA
         }
         Settings_exit();
         Main_SwitchScreen();
-    } else if (Main_isAboutDialogShown() || Main_isControlsDialogShown()) {//Hide about or related if showing
+    } else if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) {//Hide about or related if showing
 
         Main_HideControlsDialog();
         Main_HideAboutDialog();
@@ -2554,7 +2554,7 @@ function Main_CheckAccessibilityKey(event) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
         case KEY_ENTER:
-            if (!Main_isControlsDialogShown() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
+            if (!Main_isControlsDialogVisible() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
                 Main_CheckAccessibilityHide(true);
             }
             break;
