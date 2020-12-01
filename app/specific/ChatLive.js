@@ -1322,6 +1322,9 @@ function ChatLive_loadChatSuccess(message, chat_number) {
 
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
 
+        //Stringfy to prevent crashes
+        tags['msg-id'] = tags['msg-id'] + '';
+
         if (Main_A_includes_B(tags['msg-id'], "highlighted-message")) {
 
             highlighted = ' chat_highlighted ';
