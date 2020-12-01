@@ -1708,7 +1708,8 @@
     }
 
     function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, sync) {
-        //Main_Log('AddCode_refreshTokens');
+        //Main_Log('AddCode_refreshTokens ' + position);
+
         if (!AddUser_UserIsSet() || !AddUser_UsernameArray[position] || !AddUser_UsernameArray[position].access_token) {
 
             if (callbackFuncNOK) callbackFuncNOK();
@@ -1828,12 +1829,11 @@
     }
 
     function AddCode_refreshTokensError(callbackFuncNOK, key) {
+
         if (callbackFuncNOK) callbackFuncNOK(key);
     }
 
     function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) {
-        //Main_Log('AddCode_refreshTokensSucess');
-        //Main_Log(responseText);
 
         var response = JSON.parse(responseText);
         if (AddCode_TokensCheckScope(response.scope)) {
@@ -1993,8 +1993,9 @@
                 obj = JSON.parse(obj);
 
                 if (obj) AddCode_CheckTokenReady(obj, position);
+                else AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
-            }
+            } else AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
         } else {
 
@@ -2011,9 +2012,10 @@
 
         if (obj.status === 200) {
 
+            AddCode_refreshTokens(position, null, null, null, !position); //token expired
             AddCode_CheckTokenSuccess(obj.responseText, position);
 
-        } else if (obj.status === 401 || obj.status === 403) {
+        } else {
 
             AddCode_refreshTokens(position, null, null, null, !position); //token expired
 
@@ -2328,7 +2330,7 @@
 
         if (result) {
 
-            eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
+            eval(callbackSucess)(JSON.parse(result), position); // jshint ignore:line
 
             return;
 
@@ -6943,10 +6945,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.291';
-    var Main_version_java = 291; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.292';
+    var Main_version_java = 292; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'December 01 2020';
-    var Main_version_web = 552; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 556; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7548,7 +7550,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.290 and 3.0.291 - Web Version December 01 2020",
+                title: "Apk Version 3.0.290 to 3.0.292 - Web Version December 01 2020",
                 changes: [
                     "General performance improves and bug fixes"
                 ]
@@ -31190,6 +31192,8 @@
 
         } else {
 
+            console.log(HeadersString);
+
             OSInterface_GetMethodUrlHeadersAsync(
                 theUrl,
                 DefaultHttpGetTimeout * 2, //timeout
@@ -31206,6 +31210,8 @@
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
+        console.log(JSON.stringify(result));
+
         if (result) {
 
             UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
