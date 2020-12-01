@@ -348,11 +348,11 @@ public class PlayerActivity extends Activity {
             AlreadyStarted = true;
             onCreateReady = true;
 
-            int Number_of_Cores = Runtime.getRuntime().availableProcessors();
+            //int Number_of_Cores = Runtime.getRuntime().availableProcessors();
             //Background threads
             DataThreadPool = new ThreadPoolExecutor(
-                    Number_of_Cores * 2,
-                    Number_of_Cores * 2,
+                    12,
+                    12,
                     0,
                     TimeUnit.SECONDS,
                     new LinkedBlockingQueue<>()
