@@ -79,6 +79,7 @@ var Play_ProgresBarrBufferElm;
 var Play_DefaultjumpTimers = [];
 
 var Play_base_backup_headers = '';
+var Play_base_backup_headers_Array = [];
 
 //counterclockwise movement, Vertical/horizontal Play_ChatPositions
 //sizeOffset in relation to the size
@@ -245,11 +246,11 @@ function Play_PreStart() {
         [Main_Authorization, null]
     ];
 
-    Play_base_backup_headers = JSON.stringify(
-        [
-            [clientIdHeader, Main_Headers_Backup[0][1]]
-        ]
-    );
+    Play_base_backup_headers_Array = [
+        [clientIdHeader, Main_Headers_Backup[0][1]]
+    ];
+
+    Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
 
     Main_base_string_header = JSON.stringify(
         [
