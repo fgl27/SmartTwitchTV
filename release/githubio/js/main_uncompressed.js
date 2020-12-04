@@ -3303,13 +3303,13 @@
                 Main_addEventListener("keyup", ChannelContent_handleKeyUp);
                 ChannelContent_clear = false;
                 ChannelContent_KeyEnterID = Main_setTimeout(
-                    Main_ReloadScreen,
+                    ChannelContent_Refresh,
                     Screens_KeyUptimeout,
                     ChannelContent_KeyEnterID
                 );
                 break;
             case KEY_REFRESH:
-                Main_ReloadScreen();
+                ChannelContent_Refresh();
                 break;
             case KEY_CHAT:
                 ChannelContent_removeFocus();
@@ -3321,6 +3321,13 @@
             default:
                 break;
         }
+    }
+
+    function ChannelContent_Refresh() {
+
+        ChannelContent_removeFocus();
+        Main_ReloadScreen();
+
     }
 
     function ChannelContent_LoadPreview() {
