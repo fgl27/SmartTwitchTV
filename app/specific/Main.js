@@ -215,7 +215,6 @@ function Main_loadTranslations(language) {
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                    'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
                     'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
                     'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
                     'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
@@ -1758,14 +1757,14 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
 }
 
-function FullxmlHttpGet(theUrl, Timeout, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
+function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
 
     if (!Main_IsOn_OSInterface) {
 
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open(Method ? Method : "GET", theUrl, true);
-        xmlHttp.timeout = Timeout;
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
         var i = 0, len = Headers.length;
 
@@ -1776,7 +1775,7 @@ function FullxmlHttpGet(theUrl, Timeout, Headers, callbackSucess, calbackError, 
 
             if (this.readyState === 4) {
 
-                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
+                callbackSucess(this, key, checkResult);
 
             }
 
@@ -1788,7 +1787,7 @@ function FullxmlHttpGet(theUrl, Timeout, Headers, callbackSucess, calbackError, 
 
         OSInterface_BasexmlHttpGet(
             theUrl,
-            Timeout,
+            (DefaultHttpGetTimeout * 2),
             postMessage,
             Method ? Method : null,
             JSON.stringify(Headers),
@@ -1807,7 +1806,6 @@ function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, che
 
     eval(callbackSucess)(// jshint ignore:line
         JSON.parse(result),
-        eval(calbackError),// jshint ignore:line
         key,
         checkResult
     );

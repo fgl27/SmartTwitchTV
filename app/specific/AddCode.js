@@ -224,10 +224,17 @@ function AddCode_requestTokensSucess(obj) {
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
         AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
 
-        AddCode_BasexmlHttpGetValidate(
+        FullxmlHttpGet(
+            AddCode_ValidateUrl,
+            [
+                [Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]
+            ],
             AddCode_requestTokensSucessValidate,
-            AddCode_requestTokensFail,
-            Main_values.Users_AddcodePosition
+            empty_fun,
+            0,
+            0,
+            null,
+            null
         );
 
     } else AddCode_requestTokensFail();
@@ -342,10 +349,17 @@ function AddCode_CheckTokenStart(position) {
 
     } else {
 
-        AddCode_BasexmlHttpGetValidate(
+        FullxmlHttpGet(
+            AddCode_ValidateUrl,
+            [
+                [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
+            ],
             AddCode_CheckTokenReady,
             empty_fun,
-            position
+            position,
+            0,
+            null,
+            null
         );
 
     }
@@ -355,7 +369,6 @@ function AddCode_CheckTokenReady(obj, position) {
 
     if (obj.status === 200) {
 
-        AddCode_refreshTokens(position, null, null, null, !position); //token expired
         AddCode_CheckTokenSuccess(obj.responseText, position);
 
     } else {
@@ -616,62 +629,6 @@ function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackE
     if (result) {
 
         eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
-
-        return;
-
-    }
-
-    eval(calbackError)(key); // jshint ignore:line
-
-}
-
-function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
-
-    if (!Main_IsOn_OSInterface) {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", AddCode_ValidateUrl, true);
-        xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
-
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                callbackSucess(this, position, callbackSucess);
-
-            }
-
-        };
-
-        xmlHttp.send(null);
-
-    } else {
-
-        OSInterface_BasexmlHttpGet(
-            AddCode_ValidateUrl,
-            (DefaultHttpGetTimeout * 2),
-            null,
-            null,
-            JSON.stringify([[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]]),
-            'AddCode_BasexmlHttpGetValidateGet',
-            0,
-            position,
-            callbackSucess.name,
-            calbackError.name
-        );
-
-    }
-
-}
-
-function AddCode_BasexmlHttpGetValidateGet(result, position, callbackSucess, calbackError) {
-
-    if (result) {
-
-        eval(callbackSucess)(JSON.parse(result), position); // jshint ignore:line
 
         return;
 

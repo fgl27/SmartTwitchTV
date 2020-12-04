@@ -298,8 +298,6 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
     } else {
 
-        console.log(HeadersString);
-
         OSInterface_GetMethodUrlHeadersAsync(
             theUrl,
             DefaultHttpGetTimeout * 2,//timeout
@@ -316,7 +314,6 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
-    console.log(JSON.stringify(result));
 
     if (result) {
 
