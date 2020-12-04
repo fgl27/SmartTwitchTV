@@ -402,16 +402,17 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
 
     if (Main_IsOn_OSInterface) {
 
-        OSInterface_GetMethodUrlHeadersAsync(
+        OSInterface_BasexmlHttpGet(
             theUrl,
-            (DefaultHttpGetTimeout * 2),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            ScreenObj[key].HeadersString,//JsonHeadersArray
-            'Screens_CheckGetResult',//callback
-            key,//checkResult
-            key,//key
-            key//thread
+            (DefaultHttpGetTimeout * 2),
+            null,
+            null,
+            ScreenObj[key].HeadersString,
+            'Screens_CheckGetResult',
+            key,
+            key,
+            empty_fun.name,
+            empty_fun.name
         );
 
     } else {
