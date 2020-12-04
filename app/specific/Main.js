@@ -1757,7 +1757,6 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
         (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)) { //token expired
 
         AddCode_refreshTokens(0, null, null);
-        return;
 
     }
 
