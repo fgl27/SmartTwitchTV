@@ -81,7 +81,6 @@
         'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
         'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
         'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
         'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
     };

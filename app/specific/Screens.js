@@ -2737,35 +2737,19 @@ function Screens_FollowUnfollow(key) {
 
     if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
 
-        var theUrl, channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
-
-        if (Screens_isFollowing) {
-
+        var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-            AddCode_BasexmlHttpGet(
-                theUrl,
-                'DELETE',
-                3,
-                Main_OAuth + AddUser_UsernameArray[0].access_token,
-                Screens_UnFollowRequestReady,
-                empty_fun
-            );
-
-        } else {
-
-            theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-
-            AddCode_BasexmlHttpGet(
-                theUrl,
-                'PUT',
-                3,
-                Main_OAuth + AddUser_UsernameArray[0].access_token,
-                Screens_FollowRequestReady,
-                empty_fun
-            );
-
-        }
+        FullxmlHttpGet(
+            theUrl,
+            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+            Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
+            empty_fun,
+            0,
+            0,
+            Screens_isFollowing ? 'DELETE' : 'PUT',
+            null
+        );
 
     } else {
 

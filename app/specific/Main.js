@@ -215,7 +215,6 @@ function Main_loadTranslations(language) {
                     'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
                     'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                    'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
                     'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
                     'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
                 };
@@ -1677,7 +1676,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
-        Main_Headers[2][1] = access_token;
+        if (access_token) Main_Headers[2][1] = access_token;
 
         for (i; i < HeaderQuatity; i++)
             xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -1700,13 +1699,8 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
         if (HeaderQuatity !== 2) {
 
-            var array = [];
-            Main_Headers[2][1] = access_token;
+            JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
 
-            for (i; i < HeaderQuatity; i++)
-                array.push([Main_Headers[i][0], Main_Headers[i][1]]);
-
-            JsonHeadersArray = JSON.stringify(array);
         }
 
         OSInterface_BasexmlHttpGet(
@@ -1757,6 +1751,17 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
 }
 
+function Main_GetHeader(HeaderQuatity, access_token) {
+
+    var array = [];
+    if (access_token) Main_Headers[2][1] = access_token;
+
+    for (var i = 0; i < HeaderQuatity; i++)
+        array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+    return array;
+}
+
 function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
 
     if (!Main_IsOn_OSInterface) {
@@ -1766,7 +1771,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
         xmlHttp.open(Method ? Method : "GET", theUrl, true);
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
-        var i = 0, len = Headers.length;
+        var i = 0, len = Headers ? Headers.length : 0;
 
         for (i; i < len; i++)
             xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);

@@ -206,13 +206,15 @@ function AddCode_requestTokens() {
     var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
         '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
-    AddCode_BasexmlHttpGet(
+    FullxmlHttpGet(
         theUrl,
-        'POST',
-        0,
         null,
         AddCode_requestTokensSucess,
-        AddCode_requestTokensFail
+        empty_fun,
+        0,
+        0,
+        'POST',
+        null
     );
 }
 
@@ -416,13 +418,15 @@ function AddCode_CheckFollow() {
     AddCode_IsFollowing = false;
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(
+    FullxmlHttpGet(
         theUrl,
-        'GET',
-        2,
-        null,
+        Main_GetHeader(2, null),
         AddCode_RequestCheckFollowSucess,
-        AddCode_RequestCheckFollowError
+        empty_fun,
+        0,
+        0,
+        'GET',
+        null
     );
 }
 
@@ -460,13 +464,15 @@ function AddCode_Follow() {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(
+    FullxmlHttpGet(
         theUrl,
-        'PUT',
-        3,
-        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
         AddCode_FollowSucess,
-        empty_fun
+        empty_fun,
+        0,
+        0,
+        'PUT',
+        null
     );
 }
 
@@ -496,13 +502,15 @@ function AddCode_UnFollow() {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(
+    FullxmlHttpGet(
         theUrl,
-        'DELETE',
-        3,
-        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
         AddCode_UnFollowSucess,
-        empty_fun
+        empty_fun,
+        0,
+        0,
+        'DELETE',
+        null
     );
 }
 
@@ -533,13 +541,15 @@ function AddCode_CheckSub() {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    AddCode_BasexmlHttpGet(
+    FullxmlHttpGet(
         theUrl,
-        'GET',
-        3,
-        Main_OAuth + AddUser_UsernameArray[0].access_token,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
         AddCode_CheckSubSucess,
-        AddCode_CheckSubSucessFail
+        empty_fun,
+        0,
+        0,
+        'GET',
+        null
     );
 
 }
@@ -564,78 +574,6 @@ function AddCode_CheckSubSucess(obj) {
 function AddCode_CheckSubSucessFail() {
     AddCode_IsSub = false;
     PlayVod_NotSub();
-}
-
-function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackSucess, calbackError) {
-
-    var i = 0;
-
-    if (!Main_IsOn_OSInterface) {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open(Method, theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
-
-        Main_Headers[2][1] = access_token;
-        for (i; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                callbackSucess(this, 0, callbackSucess);
-
-            }
-
-        };
-
-        xmlHttp.send(null);
-
-    } else {
-
-        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
-
-        if (HeaderQuatity !== 2) {
-
-            var array = [];
-            Main_Headers[2][1] = access_token;
-
-            for (i; i < HeaderQuatity; i++)
-                array.push([Main_Headers[i][0], Main_Headers[i][1]]);
-
-            JsonHeadersArray = JSON.stringify(array);
-        }
-
-        OSInterface_BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2),
-            null,
-            Method,
-            JsonHeadersArray,
-            'AddCode_BasexmlHttpGetResult',
-            0,
-            0,
-            callbackSucess.name,
-            calbackError.name
-        );
-
-    }
-}
-
-function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackError) {
-
-    if (result) {
-
-        eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
-
-        return;
-
-    }
-
-    eval(calbackError)(key); // jshint ignore:line
-
 }
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
