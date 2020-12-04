@@ -268,61 +268,21 @@ function UserLiveFeedobj_loadChannelUserLive() {
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
-    var len = UserLiveFeed_token ? 3 : 2,
-        i = 0;
+    FullxmlHttpGet(
+        theUrl,
+        Main_GetHeader(UserLiveFeed_token ? 3 : 2, UserLiveFeed_token),
+        UserLiveFeedobj_loadChannelUserLiveGetEnd,
+        empty_fun,
+        UserLiveFeedobj_UserLivePos,
+        UserLiveFeedobj_UserLivePos,
+        null,
+        null
+    );
 
-    var HeadersString = Main_base_string_header;
-
-    if (UserLiveFeed_token) {
-        Main_Headers[2][1] = UserLiveFeed_token;
-        HeadersString = JSON.stringify(Main_Headers);
-    }
-
-    if (!Main_IsOn_OSInterface) {
-
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout * 2;
-
-        for (i; i < len; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(this);
-
-        };
-
-        xmlHttp.send(null);
-
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            DefaultHttpGetTimeout * 2,//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            HeadersString,//JsonHeadersArray
-            'UserLiveFeedobj_loadChannelUserLiveGetResult',//callback
-            UserLiveFeedobj_UserLivePos,//checkResult
-            UserLiveFeedobj_UserLivePos,//key
-            30 + UserLiveFeedobj_UserLivePos//thread
-        );
-
-    }
-}
-
-function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
-
-    if (result) {
-
-        UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
-
-    } else UserLiveFeedobj_loadDataError(key);
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
+
     if (xmlHttp.status === 200) {
 
         UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
@@ -340,6 +300,7 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 
     }
+
 }
 
 function UserLiveFeedobj_loadDataRefreshTokenError() {
@@ -1052,52 +1013,21 @@ function UserLiveFeedobj_loadUserVod() {
 
 function UserLiveFeedobj_loadUserVodGet(theUrl) {
 
-    Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-    var i = 0;
+    FullxmlHttpGet(
+        theUrl,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+        UserLiveFeedobj_loadUserVodGetEnd,
+        empty_fun,
+        UserLiveFeedobj_UserVodPos,
+        UserLiveFeedobj_UserVodPos,
+        null,
+        null
+    );
 
-    if (!Main_IsOn_OSInterface) {
-
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout * 2;
-
-        for (i; i < 3; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(this);
-
-        };
-
-        xmlHttp.send(null);
-
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            DefaultHttpGetTimeout * 2,//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            JSON.stringify(Main_Headers),//JsonHeadersArray
-            'UserLiveFeedobj_loadUserVodGetResult',//callback
-            UserLiveFeedobj_UserVodPos,//checkResult
-            UserLiveFeedobj_UserVodPos,//key
-            30 + UserLiveFeedobj_UserVodPos//thread
-        );
-
-    }
-}
-
-function UserLiveFeedobj_loadUserVodGetResult(result, key) {
-    if (result) {
-
-        UserLiveFeedobj_loadUserVodGetEnd(JSON.parse(result));
-
-    } else UserLiveFeedobj_loadDataError(key);
 }
 
 function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
+
     //Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
     if (xmlHttp.status === 200) {
         UserLiveFeedobj_loadDataBaseVodSuccess(xmlHttp.responseText, UserLiveFeedobj_UserVodPos);
@@ -1111,6 +1041,7 @@ function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     }
+
 }
 
 function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {

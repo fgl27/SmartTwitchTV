@@ -212,8 +212,6 @@ function Main_loadTranslations(language) {
                     'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                     'ChatLive_SetLatency': ChatLive_SetLatency,
                     'Screens_CheckGetResult': Screens_CheckGetResult,
-                    'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
-                    'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
                     'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
                     'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
