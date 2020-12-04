@@ -1717,43 +1717,35 @@
             return;
         }
 
-        var xmlHttp,
-            url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
+        var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
             '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
             '&redirect_uri=' + AddCode_redirect_uri;
 
         //Run in synchronous mode to prevent anything happening until user token is restored
         if (Main_IsOn_OSInterface && sync) {
 
-            xmlHttp = OSInterface_mMethodUrlHeaders(
-                url,
-                (DefaultHttpGetTimeout * 2),
-                'POST',
-                null,
-                0,
-                null
+            AddCode_refreshTokensReady(
+                position,
+                callbackFunc,
+                callbackFuncNOK,
+                key,
+                JSON.parse(
+                    OSInterface_mMethodUrlHeaders(
+                        url,
+                        (DefaultHttpGetTimeout * 2),
+                        'POST',
+                        null,
+                        0,
+                        null
+                    )
+                )
             );
-
-            if (xmlHttp) {
-
-                xmlHttp = JSON.parse(xmlHttp);
-
-                if (xmlHttp) {
-
-                    AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
-                    return;
-
-                }
-
-            }
-
-            AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
 
         } else {
 
             if (!Main_IsOn_OSInterface) {
 
-                xmlHttp = new XMLHttpRequest();
+                var xmlHttp = new XMLHttpRequest();
 
                 xmlHttp.open("POST", url, true);
                 xmlHttp.timeout = DefaultHttpGetTimeout * 2;
@@ -1791,15 +1783,7 @@
 
     function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
 
-        if (result) {
-
-            AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
-
-            return;
-
-        }
-
-        if (eval(calbackError)) eval(calbackError)(key); // jshint ignore:line
+        AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result)); // jshint ignore:line
 
     }
 
@@ -1873,13 +1857,15 @@
         var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
             '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
-        AddCode_BasexmlHttpGet(
+        FullxmlHttpGet(
             theUrl,
-            'POST',
-            0,
             null,
             AddCode_requestTokensSucess,
-            AddCode_requestTokensFail
+            empty_fun,
+            0,
+            0,
+            'POST',
+            null
         );
     }
 
@@ -1891,10 +1877,17 @@
             AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token = response.access_token;
             AddUser_UsernameArray[Main_values.Users_AddcodePosition].refresh_token = response.refresh_token;
 
-            AddCode_BasexmlHttpGetValidate(
+            FullxmlHttpGet(
+                AddCode_ValidateUrl,
+                [
+                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]
+                ],
                 AddCode_requestTokensSucessValidate,
-                AddCode_requestTokensFail,
-                Main_values.Users_AddcodePosition
+                empty_fun,
+                0,
+                0,
+                null,
+                null
             );
 
         } else AddCode_requestTokensFail();
@@ -2009,10 +2002,17 @@
 
         } else {
 
-            AddCode_BasexmlHttpGetValidate(
+            FullxmlHttpGet(
+                AddCode_ValidateUrl,
+                [
+                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
+                ],
                 AddCode_CheckTokenReady,
                 empty_fun,
-                position
+                position,
+                0,
+                null,
+                null
             );
 
         }
@@ -2022,7 +2022,6 @@
 
         if (obj.status === 200) {
 
-            AddCode_refreshTokens(position, null, null, null, !position); //token expired
             AddCode_CheckTokenSuccess(obj.responseText, position);
 
         } else {
@@ -2070,13 +2069,15 @@
         AddCode_IsFollowing = false;
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(
+        FullxmlHttpGet(
             theUrl,
-            'GET',
-            2,
-            null,
+            Main_GetHeader(2, null),
             AddCode_RequestCheckFollowSucess,
-            AddCode_RequestCheckFollowError
+            empty_fun,
+            0,
+            0,
+            'GET',
+            null
         );
     }
 
@@ -2114,13 +2115,15 @@
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(
+        FullxmlHttpGet(
             theUrl,
-            'PUT',
-            3,
-            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_FollowSucess,
-            empty_fun
+            empty_fun,
+            0,
+            0,
+            'PUT',
+            null
         );
     }
 
@@ -2150,13 +2153,15 @@
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(
+        FullxmlHttpGet(
             theUrl,
-            'DELETE',
-            3,
-            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_UnFollowSucess,
-            empty_fun
+            empty_fun,
+            0,
+            0,
+            'DELETE',
+            null
         );
     }
 
@@ -2187,13 +2192,15 @@
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-        AddCode_BasexmlHttpGet(
+        FullxmlHttpGet(
             theUrl,
-            'GET',
-            3,
-            Main_OAuth + AddUser_UsernameArray[0].access_token,
+            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_CheckSubSucess,
-            AddCode_CheckSubSucessFail
+            empty_fun,
+            0,
+            0,
+            'GET',
+            null
         );
 
     }
@@ -2218,136 +2225,6 @@
     function AddCode_CheckSubSucessFail() {
         AddCode_IsSub = false;
         PlayVod_NotSub();
-    }
-
-    function AddCode_BasexmlHttpGet(theUrl, Method, HeaderQuatity, access_token, callbackSucess, calbackError) {
-
-        var i = 0;
-
-        if (!Main_IsOn_OSInterface) {
-
-            var xmlHttp = new XMLHttpRequest();
-
-            xmlHttp.open(Method, theUrl, true);
-            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
-
-            Main_Headers[2][1] = access_token;
-            for (i; i < HeaderQuatity; i++)
-                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) {
-
-                    callbackSucess(this, 0, callbackSucess);
-
-                }
-
-            };
-
-            xmlHttp.send(null);
-
-        } else {
-
-            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
-
-            if (HeaderQuatity !== 2) {
-
-                var array = [];
-                Main_Headers[2][1] = access_token;
-
-                for (i; i < HeaderQuatity; i++)
-                    array.push([Main_Headers[i][0], Main_Headers[i][1]]);
-
-                JsonHeadersArray = JSON.stringify(array);
-            }
-
-            OSInterface_BasexmlHttpGet(
-                theUrl,
-                (DefaultHttpGetTimeout * 2),
-                null,
-                Method,
-                JsonHeadersArray,
-                'AddCode_BasexmlHttpGetResult',
-                0,
-                0,
-                callbackSucess.name,
-                calbackError.name
-            );
-
-        }
-    }
-
-    function AddCode_BasexmlHttpGetResult(result, position, callbackSucess, calbackError) {
-
-        if (result) {
-
-            eval(callbackSucess)(JSON.parse(result), position, callbackSucess); // jshint ignore:line
-
-            return;
-
-        }
-
-        eval(calbackError)(key); // jshint ignore:line
-
-    }
-
-    function AddCode_BasexmlHttpGetValidate(callbackSucess, calbackError, position) {
-
-        if (!Main_IsOn_OSInterface) {
-
-            var xmlHttp = new XMLHttpRequest();
-
-            xmlHttp.open("GET", AddCode_ValidateUrl, true);
-            xmlHttp.setRequestHeader(Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token);
-
-            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) {
-
-                    callbackSucess(this, position, callbackSucess);
-
-                }
-
-            };
-
-            xmlHttp.send(null);
-
-        } else {
-
-            OSInterface_BasexmlHttpGet(
-                AddCode_ValidateUrl,
-                (DefaultHttpGetTimeout * 2),
-                null,
-                null,
-                JSON.stringify([
-                    [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
-                ]),
-                'AddCode_BasexmlHttpGetValidateGet',
-                0,
-                position,
-                callbackSucess.name,
-                calbackError.name
-            );
-
-        }
-
-    }
-
-    function AddCode_BasexmlHttpGetValidateGet(result, position, callbackSucess, calbackError) {
-
-        if (result) {
-
-            eval(callbackSucess)(JSON.parse(result), position); // jshint ignore:line
-
-            return;
-
-        }
-
-        eval(calbackError)(key); // jshint ignore:line
-
     }
 
     var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.min.html';
@@ -7119,7 +6996,6 @@
                         'Play_getQualities': Play_getQualities,
                         'Play_ShowVideoStatus': Play_ShowVideoStatus,
                         'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                        'PlayVod_previews_success': PlayVod_previews_success,
                         'Play_PlayPauseChange': Play_PlayPauseChange,
                         'PlayClip_loadDataResult': PlayClip_loadDataResult,
                         'PlayVod_loadDataResult': PlayVod_loadDataResult,
@@ -7140,15 +7016,11 @@
                         'Main_onNewIntent': Main_onNewIntent,
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
                         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
-                        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
                         'ChatLive_SetLatency': ChatLive_SetLatency,
                         'Screens_CheckGetResult': Screens_CheckGetResult,
-                        'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
-                        'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
                         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                        'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
-                        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
-                        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
+                        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+                        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
                     };
                 }
 
@@ -8603,18 +8475,41 @@
         }
     }
 
-    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, Method) {
+    function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
         var i = 0;
 
-        if (!Main_IsOn_OSInterface) {
+        if (Main_IsOn_OSInterface) {
+
+            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+
+            if (HeaderQuatity !== 2) {
+
+                JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
+
+            }
+
+            OSInterface_BasexmlHttpGet(
+                theUrl,
+                Timeout,
+                null,
+                null,
+                JsonHeadersArray,
+                'Main_CheckBasexmlHttpGet',
+                checkResult,
+                key,
+                callbackSucess.name,
+                calbackError.name
+            );
+
+        } else {
 
             var xmlHttp = new XMLHttpRequest();
 
-            xmlHttp.open(Method ? Method : "GET", theUrl, true);
+            xmlHttp.open("GET", theUrl, true);
             xmlHttp.timeout = Timeout;
 
-            Main_Headers[2][1] = access_token;
+            if (access_token) Main_Headers[2][1] = access_token;
 
             for (i; i < HeaderQuatity; i++)
                 xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
@@ -8631,54 +8526,19 @@
 
             xmlHttp.send(null);
 
-        } else {
-
-            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
-
-            if (HeaderQuatity !== 2) {
-
-                var array = [];
-                Main_Headers[2][1] = access_token;
-
-                for (i; i < HeaderQuatity; i++)
-                    array.push([Main_Headers[i][0], Main_Headers[i][1]]);
-
-                JsonHeadersArray = JSON.stringify(array);
-            }
-
-            OSInterface_BasexmlHttpGet(
-                theUrl,
-                Timeout,
-                null,
-                Method ? Method : null,
-                JsonHeadersArray,
-                'Main_CheckBasexmlHttpGet',
-                checkResult,
-                key,
-                callbackSucess.name,
-                calbackError.name
-            );
-
         }
 
     }
 
     function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
 
-        if (result) {
-
-            Main_BasexmlHttpStatus(
-                JSON.parse(result),
-                key,
-                eval(callbackSucess), // jshint ignore:line
-                eval(calbackError), // jshint ignore:line
-                checkResult
-            );
-            return;
-
-        }
-
-        eval(calbackError)(key); // jshint ignore:line
+        Main_BasexmlHttpStatus(
+            JSON.parse(result),
+            key,
+            eval(callbackSucess), // jshint ignore:line
+            eval(calbackError), // jshint ignore:line
+            checkResult
+        );
 
     }
 
@@ -8698,6 +8558,75 @@
         }
 
         calbackError(key, checkResult); // jshint ignore:line
+
+    }
+
+    function Main_GetHeader(HeaderQuatity, access_token) {
+
+        var array = [];
+        if (access_token) Main_Headers[2][1] = access_token;
+
+        for (var i = 0; i < HeaderQuatity; i++)
+            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+        return array;
+    }
+
+    function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
+
+        if (Main_IsOn_OSInterface) {
+
+            OSInterface_BasexmlHttpGet(
+                theUrl,
+                (DefaultHttpGetTimeout * 2),
+                postMessage,
+                Method ? Method : null,
+                Headers ? JSON.stringify(Headers) : null,
+                'Main_CheckFullxmlHttpGet',
+                checkResult,
+                key,
+                callbackSucess.name,
+                calbackError.name
+            );
+
+
+        } else {
+
+            var xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.open(Method ? Method : "GET", theUrl, true);
+            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
+
+            var i = 0,
+                len = Headers ? Headers.length : 0;
+
+            for (i; i < len; i++)
+                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+
+            xmlHttp.onreadystatechange = function() {
+
+                if (this.readyState === 4) {
+
+                    callbackSucess(this, key, checkResult);
+
+                }
+
+            };
+
+            xmlHttp.send(postMessage ? postMessage : null);
+
+        }
+
+    }
+
+    function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
+
+        eval(callbackSucess)( // jshint ignore:line
+            JSON.parse(result),
+            key,
+            checkResult
+            //eval(calbackError)// jshint ignore:line
+        );
 
     }
 
@@ -15539,6 +15468,7 @@
     var Play_DefaultjumpTimers = [];
 
     var Play_base_backup_headers = '';
+    var Play_base_backup_headers_Array = [];
 
     //counterclockwise movement, Vertical/horizontal Play_ChatPositions
     //sizeOffset in relation to the size
@@ -15706,11 +15636,11 @@
             [Main_Authorization, null]
         ];
 
-        Play_base_backup_headers = JSON.stringify(
-            [
-                [clientIdHeader, Main_Headers_Backup[0][1]]
-            ]
-        );
+        Play_base_backup_headers_Array = [
+            [clientIdHeader, Main_Headers_Backup[0][1]]
+        ];
+
+        Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
 
         Main_base_string_header = JSON.stringify(
             [
@@ -19812,17 +19742,17 @@
 
             PlayVod_previewsId = new Date().getTime();
 
-            OSInterface_GetMethodUrlHeadersAsync(
-                PlayVod_previews_url, //urlString
-                DefaultHttpGetTimeout, //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                null, //JsonString
-                'PlayVod_previews_success', //callback
-                0, //checkResult
-                PlayVod_previewsId, //key
-                52 //thread
+            FullxmlHttpGet(
+                PlayVod_previews_url,
+                null,
+                PlayVod_previews_success,
+                empty_fun,
+                0,
+                PlayVod_previewsId,
+                null,
+                null
             );
+
         }
         //else PlayVod_previews_start_test();
     }
@@ -19852,17 +19782,16 @@
         Play_seek_previews.classList.remove('hideimp');
     }
 
-    function PlayVod_previews_success(result, id) {
+    function PlayVod_previews_success(resultObj, key, id) {
 
-        if (PlayVod_isOn && result && PlayVod_previewsId === id) {
-
-            var resultObj = JSON.parse(result);
+        if (PlayVod_isOn && PlayVod_previewsId === id) {
 
             if (resultObj.status === 200) {
 
                 resultObj = JSON.parse(resultObj.responseText);
 
                 if (resultObj.length) {
+
                     PlayVod_previews_obj = resultObj[resultObj.length - 1];
 
                     if (PlayVod_previews_obj.images.length && Main_A_includes_B(PlayVod_previews_obj.images[0], Main_values.ChannelVod_vodId)) {
@@ -19870,11 +19799,14 @@
                     } else PlayVod_previews_clear();
 
                 }
+
             } else {
+
                 PlayVod_previews_hide();
+
             }
 
-        } else PlayVod_previews_hide();
+        }
 
     }
 
@@ -20022,30 +19954,26 @@
 
             PlayVod_updateChaptersId = (new Date().getTime());
 
-            OSInterface_GetMethodUrlHeadersAsync(
-                PlayClip_BaseUrl, //urlString
-                DefaultHttpGetTimeout, //timeout
-                PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId), //postMessage, null for get
+            FullxmlHttpGet(
+                PlayClip_BaseUrl,
+                Play_base_backup_headers_Array,
+                PlayVod_updateChaptersResult,
+                empty_fun,
+                0,
+                PlayVod_updateChaptersId,
                 'POST', //Method, null for get
-                Play_base_backup_headers, //JsonString
-                'PlayVod_updateChaptersResult', //callback
-                0, //checkResult
-                PlayVod_updateChaptersId, //key
-                53 //thread
+                PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId) //postMessage, null for get
             );
 
         } else PlayVod_ProcessChaptersFake();
 
     }
 
-    function PlayVod_updateChaptersResult(response, id) {
-        if (PlayVod_isOn && response && PlayVod_updateChaptersId === id) {
+    function PlayVod_updateChaptersResult(responseObj, key, id) {
 
-            var responseObj = JSON.parse(response);
+        if (PlayVod_isOn && PlayVod_updateChaptersId === id && responseObj.status === 200) {
 
-            if (responseObj.status === 200) {
-                PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
-            }
+            PlayVod_ProcessChapters(JSON.parse(responseObj.responseText));
 
         }
 
@@ -20568,7 +20496,6 @@
 
     function Screens_loadDataRequestStart(key) {
         ScreenObj[key].loadingData = true;
-        ScreenObj[key].loadingDataTry = 0;
         Screens_loadDataRequest(key);
     }
 
@@ -20596,12 +20523,26 @@
 
     function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
 
-        if (!Main_IsOn_OSInterface) {
+        if (Main_IsOn_OSInterface) {
+
+            OSInterface_GetMethodUrlHeadersAsync(
+                theUrl,
+                (DefaultHttpGetTimeout * 2), //timeout
+                null, //postMessage, null for get
+                null, //Method, null for get
+                ScreenObj[key].HeadersString, //JsonHeadersArray
+                'Screens_CheckGetResult', //callback
+                key, //checkResult
+                key, //key
+                key //thread
+            );
+
+        } else {
 
             var xmlHttp = new XMLHttpRequest();
 
             xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+            xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
             HeaderArray[2][1] = access_token;
 
@@ -20620,33 +20561,16 @@
 
             xmlHttp.send(null);
 
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus), //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                ScreenObj[key].HeadersString, //JsonHeadersArray
-                'Screens_CheckGetResult', //callback
-                key, //checkResult
-                key, //key
-                key //thread
-            );
-
         }
     }
 
 
     function Screens_CheckGetResult(result, key) {
-        if (result) {
-
-            Screens_HttpResultStatus(JSON.parse(result), key);
-
-        } else Screens_loadDataError(key);
+        Screens_HttpResultStatus(JSON.parse(result), key);
     }
 
     function Screens_HttpResultStatus(resultObj, key) {
+
         if (resultObj.status === 200) {
 
             //console.log(resultObj.responseText);
@@ -20663,27 +20587,19 @@
         } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
-            else Screens_loadDataError(key);
+            else Screens_loadDataRequest(key);
 
         } else {
 
-            Screens_loadDataError(key);
+            Screens_loadDataRequest(key);
 
         }
-    }
 
-    function Screens_loadDataError(key) {
-        //Main_Log('Screens_loadDataError ' + ScreenObj[key].screen);
-        ScreenObj[key].loadingDataTry++;
-        if (ScreenObj[key].loadingDataTry < ScreenObj[key].loadingDataTryMax) {
-            Screens_loadDataRequest(key);
-        } else Screens_loadDatafail(key);
     }
 
     function Screens_loadDatafail(key) {
 
         ScreenObj[key].loadingData = false;
-        ScreenObj[key].loadingDataTry = 0;
         ScreenObj[key].FirstRunEnd = true;
 
         if (!ScreenObj[key].itemsCount) {
@@ -22936,35 +22852,19 @@
 
         if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
 
-            var theUrl, channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2];
-
-            if (Screens_isFollowing) {
-
+            var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
                 theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-                AddCode_BasexmlHttpGet(
-                    theUrl,
-                    'DELETE',
-                    3,
-                    Main_OAuth + AddUser_UsernameArray[0].access_token,
-                    Screens_UnFollowRequestReady,
-                    empty_fun
-                );
-
-            } else {
-
-                theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
-
-                AddCode_BasexmlHttpGet(
-                    theUrl,
-                    'PUT',
-                    3,
-                    Main_OAuth + AddUser_UsernameArray[0].access_token,
-                    Screens_FollowRequestReady,
-                    empty_fun
-                );
-
-            }
+            FullxmlHttpGet(
+                theUrl,
+                Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+                Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
+                empty_fun,
+                0,
+                0,
+                Screens_isFollowing ? 'DELETE' : 'PUT',
+                null
+            );
 
         } else {
 
@@ -23261,7 +23161,6 @@
             idObject: {},
             loadingData: false,
             itemsCount: 0,
-            loadingDataTryMax: DefaultHttpGetReTryMax,
             MaxOffset: 0,
             offset: 0,
             visiblerows: 3,
@@ -31171,64 +31070,21 @@
 
     function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
-        var len = UserLiveFeed_token ? 3 : 2,
-            i = 0;
+        FullxmlHttpGet(
+            theUrl,
+            Main_GetHeader(UserLiveFeed_token ? 3 : 2, UserLiveFeed_token),
+            UserLiveFeedobj_loadChannelUserLiveGetEnd,
+            empty_fun,
+            UserLiveFeedobj_UserLivePos,
+            UserLiveFeedobj_UserLivePos,
+            null,
+            null
+        );
 
-        var HeadersString = Main_base_string_header;
-
-        if (UserLiveFeed_token) {
-            Main_Headers[2][1] = UserLiveFeed_token;
-            HeadersString = JSON.stringify(Main_Headers);
-        }
-
-        if (!Main_IsOn_OSInterface) {
-
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
-
-            for (i; i < len; i++)
-                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) UserLiveFeedobj_loadChannelUserLiveGetEnd(this);
-
-            };
-
-            xmlHttp.send(null);
-
-
-        } else {
-
-            console.log(HeadersString);
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                DefaultHttpGetTimeout * 2, //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                HeadersString, //JsonHeadersArray
-                'UserLiveFeedobj_loadChannelUserLiveGetResult', //callback
-                UserLiveFeedobj_UserLivePos, //checkResult
-                UserLiveFeedobj_UserLivePos, //key
-                30 + UserLiveFeedobj_UserLivePos //thread
-            );
-
-        }
-    }
-
-    function UserLiveFeedobj_loadChannelUserLiveGetResult(result, key) {
-        console.log(JSON.stringify(result));
-
-        if (result) {
-
-            UserLiveFeedobj_loadChannelUserLiveGetEnd(JSON.parse(result));
-
-        } else UserLiveFeedobj_loadDataError(key);
     }
 
     function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
+
         if (xmlHttp.status === 200) {
 
             UserLiveFeedobj_loadDataSuccess(xmlHttp.responseText);
@@ -31246,6 +31102,7 @@
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
 
         }
+
     }
 
     function UserLiveFeedobj_loadDataRefreshTokenError() {
@@ -31969,52 +31826,21 @@
 
     function UserLiveFeedobj_loadUserVodGet(theUrl) {
 
-        Main_Headers[2][1] = Main_OAuth + AddUser_UsernameArray[0].access_token;
-        var i = 0;
+        FullxmlHttpGet(
+            theUrl,
+            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+            UserLiveFeedobj_loadUserVodGetEnd,
+            empty_fun,
+            UserLiveFeedobj_UserVodPos,
+            UserLiveFeedobj_UserVodPos,
+            null,
+            null
+        );
 
-        if (!Main_IsOn_OSInterface) {
-
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrl, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
-
-            for (i; i < 3; i++)
-                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
-
-            xmlHttp.onreadystatechange = function() {
-
-                if (this.readyState === 4) UserLiveFeedobj_loadUserVodGetEnd(this);
-
-            };
-
-            xmlHttp.send(null);
-
-        } else {
-
-            OSInterface_GetMethodUrlHeadersAsync(
-                theUrl,
-                DefaultHttpGetTimeout * 2, //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                JSON.stringify(Main_Headers), //JsonHeadersArray
-                'UserLiveFeedobj_loadUserVodGetResult', //callback
-                UserLiveFeedobj_UserVodPos, //checkResult
-                UserLiveFeedobj_UserVodPos, //key
-                30 + UserLiveFeedobj_UserVodPos //thread
-            );
-
-        }
-    }
-
-    function UserLiveFeedobj_loadUserVodGetResult(result, key) {
-        if (result) {
-
-            UserLiveFeedobj_loadUserVodGetEnd(JSON.parse(result));
-
-        } else UserLiveFeedobj_loadDataError(key);
     }
 
     function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
+
         //Main_Log('UserLiveFeedobj_loadUserVodGetEnd ' + xmlHttp.status);
         if (xmlHttp.status === 200) {
             UserLiveFeedobj_loadDataBaseVodSuccess(xmlHttp.responseText, UserLiveFeedobj_UserVodPos);
@@ -32028,6 +31854,7 @@
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
         }
+
     }
 
     function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
@@ -33894,7 +33721,6 @@
         'Play_getQualities': Play_getQualities,
         'Play_ShowVideoStatus': Play_ShowVideoStatus,
         'Play_ShowVideoQuality': Play_ShowVideoQuality,
-        'PlayVod_previews_success': PlayVod_previews_success,
         'Play_PlayPauseChange': Play_PlayPauseChange,
         'PlayClip_loadDataResult': PlayClip_loadDataResult,
         'PlayVod_loadDataResult': PlayVod_loadDataResult,
@@ -33915,15 +33741,11 @@
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
         'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
-        'PlayVod_updateChaptersResult': PlayVod_updateChaptersResult,
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Screens_CheckGetResult': Screens_CheckGetResult,
-        'UserLiveFeedobj_loadChannelUserLiveGetResult': UserLiveFeedobj_loadChannelUserLiveGetResult,
-        'UserLiveFeedobj_loadUserVodGetResult': UserLiveFeedobj_loadUserVodGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-        'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
-        'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
-        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
+        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */
