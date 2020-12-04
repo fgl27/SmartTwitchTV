@@ -81,7 +81,6 @@ function ScreensObj_StartAllVars() {
         idObject: {},
         loadingData: false,
         itemsCount: 0,
-        loadingDataTryMax: DefaultHttpGetReTryMax,
         MaxOffset: 0,
         offset: 0,
         visiblerows: 3,

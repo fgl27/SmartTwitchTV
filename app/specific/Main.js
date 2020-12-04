@@ -1669,7 +1669,30 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
     var i = 0;
 
-    if (!Main_IsOn_OSInterface) {
+    if (Main_IsOn_OSInterface) {
+
+        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+
+        if (HeaderQuatity !== 2) {
+
+            JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
+
+        }
+
+        OSInterface_BasexmlHttpGet(
+            theUrl,
+            Timeout,
+            null,
+            null,
+            JsonHeadersArray,
+            'Main_CheckBasexmlHttpGet',
+            checkResult,
+            key,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+    } else {
 
         var xmlHttp = new XMLHttpRequest();
 
@@ -1692,29 +1715,6 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
         };
 
         xmlHttp.send(null);
-
-    } else {
-
-        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
-
-        if (HeaderQuatity !== 2) {
-
-            JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
-
-        }
-
-        OSInterface_BasexmlHttpGet(
-            theUrl,
-            Timeout,
-            null,
-            null,
-            JsonHeadersArray,
-            'Main_CheckBasexmlHttpGet',
-            checkResult,
-            key,
-            callbackSucess.name,
-            calbackError.name
-        );
 
     }
 
@@ -1764,7 +1764,23 @@ function Main_GetHeader(HeaderQuatity, access_token) {
 
 function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
 
-    if (!Main_IsOn_OSInterface) {
+    if (Main_IsOn_OSInterface) {
+
+        OSInterface_BasexmlHttpGet(
+            theUrl,
+            (DefaultHttpGetTimeout * 2),
+            postMessage,
+            Method ? Method : null,
+            JSON.stringify(Headers),
+            'Main_CheckFullxmlHttpGet',
+            checkResult,
+            key,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+
+    } else {
 
         var xmlHttp = new XMLHttpRequest();
 
@@ -1787,21 +1803,6 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
         };
 
         xmlHttp.send(postMessage ? postMessage : null);
-
-    } else {
-
-        OSInterface_BasexmlHttpGet(
-            theUrl,
-            (DefaultHttpGetTimeout * 2),
-            postMessage,
-            Method ? Method : null,
-            JSON.stringify(Headers),
-            'Main_CheckFullxmlHttpGet',
-            checkResult,
-            key,
-            callbackSucess.name,
-            calbackError.name
-        );
 
     }
 

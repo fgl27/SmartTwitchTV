@@ -373,7 +373,6 @@ function Screens_StartLoad(key) {
 
 function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
-    ScreenObj[key].loadingDataTry = 0;
     Screens_loadDataRequest(key);
 }
 
@@ -401,12 +400,26 @@ function Screens_loadDataRequest(key) {
 
 function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
 
-    if (!Main_IsOn_OSInterface) {
+    if (Main_IsOn_OSInterface) {
+
+        OSInterface_GetMethodUrlHeadersAsync(
+            theUrl,
+            (DefaultHttpGetTimeout * 2),//timeout
+            null,//postMessage, null for get
+            null,//Method, null for get
+            ScreenObj[key].HeadersString,//JsonHeadersArray
+            'Screens_CheckGetResult',//callback
+            key,//checkResult
+            key,//key
+            key//thread
+        );
+
+    } else {
 
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus);
+        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
         HeaderArray[2][1] = access_token;
 
@@ -425,33 +438,16 @@ function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray
 
         xmlHttp.send(null);
 
-    } else {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            DefaultHttpGetTimeout + (ScreenObj[key].loadingDataTry * DefaultHttpGetTimeoutPlus),//timeout
-            null,//postMessage, null for get
-            null,//Method, null for get
-            ScreenObj[key].HeadersString,//JsonHeadersArray
-            'Screens_CheckGetResult',//callback
-            key,//checkResult
-            key,//key
-            key//thread
-        );
-
     }
 }
 
 
 function Screens_CheckGetResult(result, key) {
-    if (result) {
-
-        Screens_HttpResultStatus(JSON.parse(result), key);
-
-    } else Screens_loadDataError(key);
+    Screens_HttpResultStatus(JSON.parse(result), key);
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
+
     if (resultObj.status === 200) {
 
         //console.log(resultObj.responseText);
@@ -468,27 +464,19 @@ function Screens_HttpResultStatus(resultObj, key) {
     } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
-        else Screens_loadDataError(key);
+        else Screens_loadDataRequest(key);
 
     } else {
 
-        Screens_loadDataError(key);
+        Screens_loadDataRequest(key);
 
     }
-}
 
-function Screens_loadDataError(key) {
-    //Main_Log('Screens_loadDataError ' + ScreenObj[key].screen);
-    ScreenObj[key].loadingDataTry++;
-    if (ScreenObj[key].loadingDataTry < ScreenObj[key].loadingDataTryMax) {
-        Screens_loadDataRequest(key);
-    } else Screens_loadDatafail(key);
 }
 
 function Screens_loadDatafail(key) {
 
     ScreenObj[key].loadingData = false;
-    ScreenObj[key].loadingDataTry = 0;
     ScreenObj[key].FirstRunEnd = true;
 
     if (!ScreenObj[key].itemsCount) {
