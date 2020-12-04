@@ -51,43 +51,35 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
         return;
     }
 
-    var xmlHttp,
-        url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
-            '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
-            '&redirect_uri=' + AddCode_redirect_uri;
+    var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
+        '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
+        '&redirect_uri=' + AddCode_redirect_uri;
 
     //Run in synchronous mode to prevent anything happening until user token is restored
     if (Main_IsOn_OSInterface && sync) {
 
-        xmlHttp = OSInterface_mMethodUrlHeaders(
-            url,
-            (DefaultHttpGetTimeout * 2),
-            'POST',
-            null,
-            0,
-            null
+        AddCode_refreshTokensReady(
+            position,
+            callbackFunc,
+            callbackFuncNOK,
+            key,
+            JSON.parse(
+                OSInterface_mMethodUrlHeaders(
+                    url,
+                    (DefaultHttpGetTimeout * 2),
+                    'POST',
+                    null,
+                    0,
+                    null
+                )
+            )
         );
-
-        if (xmlHttp) {
-
-            xmlHttp = JSON.parse(xmlHttp);
-
-            if (xmlHttp) {
-
-                AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp);
-                return;
-
-            }
-
-        }
-
-        AddCode_refreshTokensError(position, callbackFunc, callbackFuncNOK, key);
 
     } else {
 
         if (!Main_IsOn_OSInterface) {
 
-            xmlHttp = new XMLHttpRequest();
+            var xmlHttp = new XMLHttpRequest();
 
             xmlHttp.open("POST", url, true);
             xmlHttp.timeout = DefaultHttpGetTimeout * 2;
@@ -125,15 +117,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
 
 function AddCode_refreshTokensResult(result, key, callbackSucess, calbackError, position) {
 
-    if (result) {
-
-        AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result));// jshint ignore:line
-
-        return;
-
-    }
-
-    if (eval(calbackError)) eval(calbackError)(key); // jshint ignore:line
+    AddCode_refreshTokensReady(position, eval(callbackSucess), eval(calbackError), key, JSON.parse(result));// jshint ignore:line
 
 }
 

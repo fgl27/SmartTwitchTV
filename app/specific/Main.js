@@ -1813,6 +1813,7 @@ function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, che
         JSON.parse(result),
         key,
         checkResult
+        //eval(calbackError)// jshint ignore:line
     );
 
 }
