@@ -217,7 +217,8 @@ function Main_loadTranslations(language) {
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
                     'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
                     'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
-                    'AddCode_refreshTokensResult': AddCode_refreshTokensResult
+                    'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+                    'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
                 };
             }
 
@@ -1666,7 +1667,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, Method) {
+function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
     var i = 0;
 
@@ -1674,7 +1675,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open(Method ? Method : "GET", theUrl, true);
+        xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = Timeout;
 
         Main_Headers[2][1] = access_token;
@@ -1713,7 +1714,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
             theUrl,
             Timeout,
             null,
-            Method ? Method : null,
+            null,
             JsonHeadersArray,
             'Main_CheckBasexmlHttpGet',
             checkResult,
@@ -1728,20 +1729,13 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
 function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
 
-    if (result) {
-
-        Main_BasexmlHttpStatus(
-            JSON.parse(result),
-            key,
-            eval(callbackSucess),// jshint ignore:line
-            eval(calbackError),// jshint ignore:line
-            checkResult
-        );
-        return;
-
-    }
-
-    eval(calbackError)(key); // jshint ignore:line
+    Main_BasexmlHttpStatus(
+        JSON.parse(result),
+        key,
+        eval(callbackSucess),// jshint ignore:line
+        eval(calbackError),// jshint ignore:line
+        checkResult
+    );
 
 }
 
@@ -1761,6 +1755,62 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
     }
 
     calbackError(key, checkResult); // jshint ignore:line
+
+}
+
+function FullxmlHttpGet(theUrl, Timeout, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
+
+    if (!Main_IsOn_OSInterface) {
+
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.open(Method ? Method : "GET", theUrl, true);
+        xmlHttp.timeout = Timeout;
+
+        var i = 0, len = Headers.length;
+
+        for (i; i < len; i++)
+            xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+
+        xmlHttp.onreadystatechange = function() {
+
+            if (this.readyState === 4) {
+
+                Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
+
+            }
+
+        };
+
+        xmlHttp.send(postMessage ? postMessage : null);
+
+    } else {
+
+        OSInterface_BasexmlHttpGet(
+            theUrl,
+            Timeout,
+            postMessage,
+            Method ? Method : null,
+            JSON.stringify(Headers),
+            'Main_CheckFullxmlHttpGet',
+            checkResult,
+            key,
+            callbackSucess.name,
+            calbackError.name
+        );
+
+    }
+
+}
+
+function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
+
+    eval(callbackSucess)(// jshint ignore:line
+        JSON.parse(result),
+        eval(calbackError),// jshint ignore:line
+        key,
+        checkResult
+    );
 
 }
 

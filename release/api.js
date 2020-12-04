@@ -83,7 +83,8 @@
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
         'AddCode_BasexmlHttpGetValidateGet': AddCode_BasexmlHttpGetValidateGet,
         'AddCode_BasexmlHttpGetResult': AddCode_BasexmlHttpGetResult,
-        'AddCode_refreshTokensResult': AddCode_refreshTokensResult
+        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */
