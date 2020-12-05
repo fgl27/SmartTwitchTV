@@ -69,7 +69,6 @@
         'Main_checkWebVersion': Main_checkWebVersion,
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
-        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Screens_CheckGetResult': Screens_CheckGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
