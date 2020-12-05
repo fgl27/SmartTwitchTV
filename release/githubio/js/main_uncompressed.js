@@ -1861,7 +1861,7 @@
             theUrl,
             null,
             AddCode_requestTokensSucess,
-            empty_fun,
+            noop_fun,
             0,
             0,
             'POST',
@@ -1883,7 +1883,7 @@
                     [Main_Authorization, Main_OAuth + AddUser_UsernameArray[Main_values.Users_AddcodePosition].access_token]
                 ],
                 AddCode_requestTokensSucessValidate,
-                empty_fun,
+                noop_fun,
                 0,
                 0,
                 null,
@@ -2008,7 +2008,7 @@
                     [Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]
                 ],
                 AddCode_CheckTokenReady,
-                empty_fun,
+                noop_fun,
                 position,
                 0,
                 null,
@@ -2073,7 +2073,7 @@
             theUrl,
             Main_GetHeader(2, null),
             AddCode_RequestCheckFollowSucess,
-            empty_fun,
+            noop_fun,
             0,
             0,
             'GET',
@@ -2119,7 +2119,7 @@
             theUrl,
             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_FollowSucess,
-            empty_fun,
+            noop_fun,
             0,
             0,
             'PUT',
@@ -2157,7 +2157,7 @@
             theUrl,
             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_UnFollowSucess,
-            empty_fun,
+            noop_fun,
             0,
             0,
             'DELETE',
@@ -2196,7 +2196,7 @@
             theUrl,
             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             AddCode_CheckSubSucess,
-            empty_fun,
+            noop_fun,
             0,
             0,
             'GET',
@@ -2557,7 +2557,7 @@
             2,
             null,
             AddUser_UpdateUsertSuccess,
-            empty_fun,
+            noop_fun,
             position
         );
     }
@@ -2834,19 +2834,28 @@
     }
 
     function ChannelContent_loadDataRequestSuccess(response) {
+
         var obj = JSON.parse(response);
+
         if (obj.streams && obj.streams.length) {
+
             ChannelContent_responseText = obj.streams;
             ChannelContent_loadDataPrepare();
             ChannelContent_GetStreamerInfo();
+
         } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
+
             ChannelContent_loadDataPrepare();
             ChannelContent_loadDataCheckHost();
+
         } else {
+
             ChannelContent_responseText = null;
             ChannelContent_loadDataPrepare();
             ChannelContent_GetStreamerInfo();
+
         }
+
     }
 
     function ChannelContent_loadDataError() {
@@ -2863,43 +2872,22 @@
     var ChannelContent_loadDataCheckHostId;
 
     function ChannelContent_loadDataCheckHost() {
+
         var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
         ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl, //urlString
-            DefaultHttpGetTimeout, //timeout
-            null, //postMessage, null for get
-            null, //Method, null for get
-            null, //JsonString
-            'ChannelContent_CheckHostResult', //callback
-            0, //checkResult
-            ChannelContent_loadDataCheckHostId, //key
-            55 //thread
+        BasexmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout,
+            0,
+            null,
+            ChannelContent_CheckHost,
+            ChannelContent_loadDataCheckHostError,
+            0,
+            ChannelContent_loadDataCheckHostId
         );
 
-    }
-
-    function ChannelContent_CheckHostResult(result, id) {
-        if (ChannelContent_loadDataCheckHostId === id) {
-
-            if (result) {
-
-                var resultObj = JSON.parse(result);
-
-                if (resultObj.status === 200) {
-
-                    ChannelContent_CheckHost(resultObj.responseText);
-
-                } else {
-
-                    ChannelContent_loadDataCheckHostError();
-
-                }
-
-            } else ChannelContent_loadDataCheckHostError();
-        }
     }
 
     function ChannelContent_loadDataCheckHostError() {
@@ -2908,17 +2896,22 @@
         ChannelContent_GetStreamerInfo();
     }
 
-    function ChannelContent_CheckHost(responseText) {
-        var response = JSON.parse(responseText);
-        ChannelContent_TargetId = response.hosts[0].target_id;
+    function ChannelContent_CheckHost(responseText, key, id) {
 
-        if (ChannelContent_TargetId !== undefined) {
-            ChannelContent_loadDataPrepare();
-            ChannelContent_loadDataRequest();
-        } else {
-            ChannelContent_responseText = null;
-            ChannelContent_loadDataPrepare();
-            ChannelContent_GetStreamerInfo();
+        if (ChannelContent_loadDataCheckHostId === id) {
+
+            var response = JSON.parse(responseText);
+            ChannelContent_TargetId = response.hosts[0].target_id;
+
+            if (ChannelContent_TargetId !== undefined) {
+                ChannelContent_loadDataPrepare();
+                ChannelContent_loadDataRequest();
+            } else {
+                ChannelContent_responseText = null;
+                ChannelContent_loadDataPrepare();
+                ChannelContent_GetStreamerInfo();
+            }
+
         }
     }
 
@@ -4755,7 +4748,7 @@
                 0,
                 null,
                 ChatLive_loadBadgesChannelSuccess,
-                empty_fun,
+                noop_fun,
                 chat_number,
                 id
             );
@@ -4816,37 +4809,33 @@
 
     function ChatLive_loadChattersLoad(chat_number, id) {
 
-        OSInterface_GetMethodUrlHeadersAsync(
+        BasexmlHttpGet(
             ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-            DefaultHttpGetTimeout, //timeout
-            null, //postMessage, null for get
-            null, //Method, null for get
-            null, //JsonString
-            'ChatLive_loadChattersSuccess', //callback
-            id, //checkResult
-            chat_number, //key
-            60 //thread
+            DefaultHttpGetTimeout,
+            0,
+            null,
+            ChatLive_loadChattersSuccess,
+            noop_fun,
+            chat_number,
+            id
         );
 
     }
 
-    function ChatLive_loadChattersSuccess(result, chat_number, id) {
+    function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
         try {
-            if (result && id === Chat_Id[chat_number]) {
 
-                var resultObj = JSON.parse(result);
+            if (id === Chat_Id[chat_number]) {
 
-                if (resultObj.status === 200) {
-                    resultObj = JSON.parse(resultObj.responseText);
+                var resultObj = JSON.parse(responseText);
 
-                    Main_innerHTML(
-                        "chat_loggedin" + chat_number,
-                        Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
-                    );
-
-                }
+                Main_innerHTML(
+                    "chat_loggedin" + chat_number,
+                    Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
+                );
 
             }
+
         } catch (e) {
             Main_Log('ChatLive_loadChattersSuccess ' + e);
         }
@@ -4861,7 +4850,7 @@
                 3,
                 Main_OAuth + AddUser_UsernameArray[0].access_token,
                 ChatLive_loadEmotesUserSuccess,
-                empty_fun,
+                noop_fun,
                 0,
                 0
             );
@@ -4927,7 +4916,7 @@
                 0,
                 null,
                 ChatLive_loadEmotesChannelbttvSuccess,
-                empty_fun,
+                noop_fun,
                 chat_number,
                 id
             );
@@ -5000,7 +4989,7 @@
                 1,
                 null,
                 ChatLive_loadCheersChannelSuccess,
-                empty_fun,
+                noop_fun,
                 chat_number,
                 id
             );
@@ -5058,7 +5047,7 @@
                 0,
                 null,
                 ChatLive_loadEmotesChannelffzSuccess,
-                empty_fun,
+                noop_fun,
                 chat_number,
                 id
             );
@@ -5372,10 +5361,10 @@
     }
 
     function ChatLive_reset(chat_number) {
-        ChatLive_socket[chat_number].onclose = empty_fun;
-        ChatLive_socket[chat_number].onerror = empty_fun;
-        ChatLive_socket[chat_number].onmessage = empty_fun;
-        ChatLive_socket[chat_number].onopen = empty_fun;
+        ChatLive_socket[chat_number].onclose = noop_fun;
+        ChatLive_socket[chat_number].onerror = noop_fun;
+        ChatLive_socket[chat_number].onmessage = noop_fun;
+        ChatLive_socket[chat_number].onopen = noop_fun;
     }
 
     function ChatLive_Close(chat_number) {
@@ -5595,10 +5584,10 @@
     }
 
     function ChatLive_SendReset() {
-        ChatLive_socketSend.onclose = empty_fun;
-        ChatLive_socketSend.onerror = empty_fun;
-        ChatLive_socketSend.onmessage = empty_fun;
-        ChatLive_socketSend.onopen = empty_fun;
+        ChatLive_socketSend.onclose = noop_fun;
+        ChatLive_socketSend.onerror = noop_fun;
+        ChatLive_socketSend.onmessage = noop_fun;
+        ChatLive_socketSend.onopen = noop_fun;
     }
 
     function ChatLive_SendClose() {
@@ -6841,8 +6830,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.293';
     var Main_version_java = 293; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'December 01 2020';
-    var Main_version_web = 557; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'December 05 2020';
+    var Main_version_web = 558; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7011,18 +7000,13 @@
                         'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
                         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
                         'Play_MultiResult': Play_MultiResult,
-                        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
-                        'Play_CheckHostResult': Play_CheckHostResult,
-                        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
                         'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
                         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-                        'Play_StayCheckHostResult': Play_StayCheckHostResult,
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
                         'Main_checkWebVersion': Main_checkWebVersion,
                         'Main_onNewIntent': Main_onNewIntent,
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
-                        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
                         'ChatLive_SetLatency': ChatLive_SetLatency,
                         'Screens_CheckGetResult': Screens_CheckGetResult,
                         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
@@ -7439,6 +7423,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version December 05 2020",
+                changes: [
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.290 to 3.0.293 - Web Version December 01 2020",
                 changes: [
                     "General performance improves and bug fixes"
@@ -8490,7 +8480,7 @@
 
             var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
 
-            if (HeaderQuatity !== 2) {
+            if (HeaderQuatity && HeaderQuatity !== 2) {
 
                 JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
 
@@ -8570,13 +8560,18 @@
 
     function Main_GetHeader(HeaderQuatity, access_token) {
 
-        var array = [];
-        if (access_token) Main_Headers[2][1] = access_token;
+        if (HeaderQuatity) {
 
-        for (var i = 0; i < HeaderQuatity; i++)
-            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+            var array = [];
+            if (access_token) Main_Headers[2][1] = access_token;
 
-        return array;
+            for (var i = 0; i < HeaderQuatity; i++)
+                array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+            return array;
+
+        } else return [];
+
     }
 
     function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
@@ -8604,11 +8599,15 @@
             xmlHttp.open(Method ? Method : "GET", theUrl, true);
             xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
-            var i = 0,
-                len = Headers ? Headers.length : 0;
+            if (Headers) {
 
-            for (i; i < len; i++)
-                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+                var i = 0,
+                    len = Headers.length;
+
+                for (i; i < len; i++)
+                    xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+
+            }
 
             xmlHttp.onreadystatechange = function() {
 
@@ -12698,56 +12697,51 @@
         var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
         Play_StayCheckHostId = new Date().getTime();
 
-        OSInterface_GetMethodUrlHeadersAsync(
+        BasexmlHttpGet(
             theUrl, //urlString
-            DefaultHttpGetTimeout, //timeout
-            null, //postMessage, null for get
-            null, //Method, null for get
-            null, //JsonString
-            'Play_StayCheckHostResult', //callback
-            0, //checkResult
-            Play_StayCheckHostId, //key
-            58 //thread
+            DefaultHttpGetTimeout,
+            0,
+            null,
+            Play_StayCheckHostSuccess,
+            Play_StayCheckLive,
+            0,
+            Play_StayCheckHostId
         );
     }
 
-    function Play_StayCheckHostResult(result, id) {
+    function Play_StayCheckHostSuccess(responseText, key, id) {
+
         if (Play_StayCheckHostId === id) {
 
-            if (result) {
-                var resultObj = JSON.parse(result);
-                if (resultObj.status === 200) {
-                    Play_StayCheckHostEnd(resultObj.responseText);
-                } else {
-                    Play_StayCheckLive();
-                }
-            } else Play_StayCheckLive();
+            Play_TargetHost = JSON.parse(responseText).hosts[0];
+            Play_state = Play_STATE_PLAYING;
 
-        }
-    }
+            if (Play_TargetHost.target_login !== undefined) {
 
-    function Play_StayCheckHostEnd(responseText) {
-        Play_TargetHost = JSON.parse(responseText).hosts[0];
-        Play_state = Play_STATE_PLAYING;
+                Play_IsWarning = true;
+                var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
 
-        if (Play_TargetHost.target_login !== undefined) {
-            Play_IsWarning = true;
-            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+                Main_values.Play_isHost = true;
 
-            Main_values.Play_isHost = true;
+                if (Settings_value.open_host.defaultValue) {
 
-            if (Settings_value.open_host.defaultValue) {
-                Play_OpenHost();
+                    Play_OpenHost();
+                    Play_showWarningDialog(warning_text, 4000);
+                    return;
+
+                } else Play_EndSet(0);
+
                 Play_showWarningDialog(warning_text, 4000);
-                return;
-            } else Play_EndSet(0);
+                Play_PlayEndStart(1);
 
-            Play_showWarningDialog(warning_text, 4000);
-            Play_PlayEndStart(1);
+            } else {
 
-        } else {
-            Play_StayCheckLive();
+                Play_StayCheckLive();
+
+            }
+
         }
+
     }
 
     function Play_StayCheckLive() {
@@ -15045,18 +15039,21 @@
     var PlayExtra_ResumeId = 0;
 
     function PlayExtra_Resume(synchronous) {
+
         if (Main_IsOn_OSInterface) {
 
             PlayExtra_ResumeId = (new Date().getTime());
 
             //On resume to avoid out of sync resumes we run PP synchronous
             if (synchronous) {
+
                 var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
-                else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), true);
+                else PlayExtra_End(false, 0);
 
             } else {
+
                 OSInterface_getStreamDataAsync(
                     PlayClip_BaseUrl,
                     Play_live_links.replace('%x', PlayExtra_data.data[6]),
@@ -15067,9 +15064,10 @@
                     false,
                     Play_live_token.replace('%x', PlayExtra_data.data[6])
                 );
+
             }
 
-        } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+        }
     }
 
     function PlayExtra_ResumeResult(response) {
@@ -15088,12 +15086,17 @@
 
     }
 
-    function PlayExtra_ResumeResultEnd(responseObj) {
+    function PlayExtra_ResumeResultEnd(responseObj, checkHost) {
 
         if (responseObj.status === 200) {
 
             PlayExtra_data.AutoUrl = responseObj.url;
             PlayExtra_loadDataSuccessEnd(responseObj.responseText);
+            return;
+
+        } else if (checkHost) {
+
+            PlayExtra_End(false, 0);
             return;
 
         } else if (responseObj.status === 1 || responseObj.status === 403) {
@@ -15190,6 +15193,7 @@
     }
 
     function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
+
         if (!fail_type && Settings_value.open_host.defaultValue) {
 
             Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
@@ -15202,6 +15206,7 @@
             );
 
         } else PlayExtra_End_success(doSwitch, fail_type);
+
     }
 
     function PlayExtra_End_success(doSwitch, fail_type) {
@@ -15225,78 +15230,80 @@
     var PlayExtra_loadDataCheckHostId;
 
     function PlayExtra_loadDataCheckHost(doSwitch) {
+
         PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-        OSInterface_GetMethodUrlHeadersAsync(
+        BasexmlHttpGet(
             ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]), //urlString
-            DefaultHttpGetTimeout, //timeout
-            null, //postMessage, null for get
-            null, //Method, null for get
-            null, //JsonString
-            'PlayExtra_CheckHostResult', //callback
-            PlayExtra_loadDataCheckHostId, //checkResult
-            doSwitch, //key
-            56 //thread
+            DefaultHttpGetTimeout,
+            0,
+            null,
+            PlayExtra_CheckHost,
+            PlayExtra_CheckHostError,
+            doSwitch,
+            PlayExtra_loadDataCheckHostId
         );
 
     }
 
-    function PlayExtra_CheckHostResult(result, doSwitch, id) {
+    function PlayExtra_CheckHostError(doSwitch, id) {
+
         if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
-            if (result) {
 
-                var resultObj = JSON.parse(result);
+            PlayExtra_End_success(doSwitch);
 
-                if (resultObj.status === 200) {
-                    PlayExtra_CheckHost(resultObj.responseText, doSwitch);
+        }
+
+    }
+
+    function PlayExtra_CheckHost(responseText, doSwitch, id) {
+
+        if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
+
+            var TargetHost = JSON.parse(responseText).hosts[0],
+                warning_text;
+
+            if (TargetHost.target_login !== undefined &&
+                TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
+
+                if (doSwitch) {
+
+                    Play_IsWarning = true;
+                    warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                    Main_values.Play_isHost = true;
+
+                    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                    Play_data.data[6] = TargetHost.target_login;
+                    Play_data.data[1] = TargetHost.target_display_name;
+                    Play_data.data[14] = TargetHost.target_id;
+
+                    Play_Start();
+
+                    Play_showWarningDialog(warning_text, 4000);
+                    //Java will reset audio source reset it
+                    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+
                 } else {
-                    PlayExtra_End_success(doSwitch);
+
+                    Play_IsWarning = true;
+                    warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                    PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                    PlayExtra_data.data[6] = TargetHost.target_login;
+                    PlayExtra_data.data[1] = TargetHost.target_display_name;
+                    PlayExtra_data.data[14] = TargetHost.target_id;
+                    PlayExtra_data.isHost = true;
+
+                    PlayExtra_Resume();
+
+                    Play_showWarningDialog(warning_text, 4000);
+
                 }
 
             } else PlayExtra_End_success(doSwitch);
+
         }
-    }
-
-    function PlayExtra_CheckHost(responseText, doSwitch) {
-        var TargetHost = JSON.parse(responseText).hosts[0],
-            warning_text;
-
-        if (TargetHost.target_login !== undefined &&
-            TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
-            if (doSwitch) {
-
-                Play_IsWarning = true;
-                warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
-
-                Main_values.Play_isHost = true;
-
-                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                Play_data.data[6] = TargetHost.target_login;
-                Play_data.data[1] = TargetHost.target_display_name;
-                Play_data.data[14] = TargetHost.target_id;
-
-                Play_Start();
-
-                Play_showWarningDialog(warning_text, 4000);
-                //Java will reset audio source reset it
-                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
-            } else {
-
-                Play_IsWarning = true;
-                warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
-
-                PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                PlayExtra_data.data[6] = TargetHost.target_login;
-                PlayExtra_data.data[1] = TargetHost.target_display_name;
-                PlayExtra_data.data[14] = TargetHost.target_id;
-                PlayExtra_data.isHost = true;
-
-                PlayExtra_Resume();
-
-                Play_showWarningDialog(warning_text, 4000);
-
-            }
-        } else PlayExtra_End_success(doSwitch);
 
     }
 
@@ -15375,8 +15382,10 @@
     }
 
     function PlayExtra_loadDataFail(Reason) {
+
         if (PlayExtra_Save_data.data.length > 0) PlayExtra_RestorePlayData();
         else {
+
             PlayExtra_PicturePicture = false;
             PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
             ChatLive_Clear(1);
@@ -15385,7 +15394,9 @@
             PlayExtra_UnSetPanel();
             Play_HideBufferDialog();
             Play_showWarningMidleDialog(Reason, 2500);
+
         }
+
     }
 
     function PlayExtra_updateStreamInfo() {
@@ -16176,7 +16187,7 @@
             2,
             null,
             Play_updateVodInfoSuccess,
-            empty_fun,
+            noop_fun,
             BroadcastID
         );
     }
@@ -17353,16 +17364,15 @@
         Main_setTimeout(
             function() {
 
-                OSInterface_GetMethodUrlHeadersAsync(
+                BasexmlHttpGet(
                     theUrl, //urlString
-                    DefaultHttpGetTimeout, //timeout
-                    null, //postMessage, null for get
-                    null, //Method, null for get
-                    null, //JsonString
-                    'Play_CheckHostResult', //callback
-                    0, //checkResult
-                    Play_loadDataCheckHostId, //key
-                    57 //thread
+                    DefaultHttpGetTimeout,
+                    0,
+                    null,
+                    Play_CheckHost,
+                    Play_CheckHostErro,
+                    0,
+                    Play_loadDataCheckHostId
                 );
 
             },
@@ -17370,46 +17380,42 @@
         );
     }
 
-    function Play_CheckHostResult(result, id) {
+    function Play_CheckHostErro(key, id) {
         if (Play_isOn && Play_loadDataCheckHostId === id) {
 
-            if (result) {
-
-                var resultObj = JSON.parse(result);
-                if (resultObj.status === 200) {
-                    Play_CheckHost(resultObj.responseText);
-                } else {
-                    Play_EndStart(false, 1);
-                }
-
-            } else Play_EndStart(false, 1);
+            Play_EndStart(key, 1);
 
         }
     }
 
-    function Play_CheckHost(responseText) {
-        Play_TargetHost = JSON.parse(responseText).hosts[0];
-        Play_state = Play_STATE_PLAYING;
+    function Play_CheckHost(responseText, key, id) {
 
-        if (Play_TargetHost.target_login !== undefined) {
-            Play_IsWarning = true;
-            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+        if (Play_isOn && Play_loadDataCheckHostId === id) {
 
-            Main_values.Play_isHost = true;
+            Play_TargetHost = JSON.parse(responseText).hosts[0];
+            Play_state = Play_STATE_PLAYING;
 
-            if (Settings_value.open_host.defaultValue) {
-                Play_OpenHost();
+            if (Play_TargetHost.target_login !== undefined) {
+                Play_IsWarning = true;
+                var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+
+                Main_values.Play_isHost = true;
+
+                if (Settings_value.open_host.defaultValue) {
+                    Play_OpenHost();
+                    Play_showWarningDialog(warning_text, 4000);
+                    return;
+                } else Play_EndSet(0);
+
                 Play_showWarningDialog(warning_text, 4000);
-                return;
-            } else Play_EndSet(0);
+            } else {
+                Play_EndSet(1);
+                Main_values.Play_isHost = false;
+            }
 
-            Play_showWarningDialog(warning_text, 4000);
-        } else {
-            Play_EndSet(1);
-            Main_values.Play_isHost = false;
+            Play_PlayEndStart(1);
         }
 
-        Play_PlayEndStart(1);
     }
 
     function Play_UpdateDuration(duration) { // Called only by JAVA
@@ -19753,7 +19759,7 @@
                 PlayVod_previews_url,
                 null,
                 PlayVod_previews_success,
-                empty_fun,
+                noop_fun,
                 0,
                 PlayVod_previewsId,
                 null,
@@ -19965,7 +19971,7 @@
                 PlayClip_BaseUrl,
                 Play_base_backup_headers_Array,
                 PlayVod_updateChaptersResult,
-                empty_fun,
+                noop_fun,
                 0,
                 PlayVod_updateChaptersId,
                 'POST', //Method, null for get
@@ -22866,7 +22872,7 @@
                 theUrl,
                 Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
                 Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
-                empty_fun,
+                noop_fun,
                 0,
                 0,
                 Screens_isFollowing ? 'DELETE' : 'PUT',
@@ -23144,7 +23150,7 @@
     var DefaultHttpGetTimeout = 25000;
     var DefaultHttpGetTimeoutPlus = 5000;
     var DefaultHttpGetReTryMax = 2;
-    var empty_fun = function() {};
+    var noop_fun = function() {};
 
     var Base_obj;
     var Base_Vod_obj;
@@ -23672,7 +23678,7 @@
                     [STR_PRESS_ENTER_D]
                 ];
             },
-            set_url: empty_fun,
+            set_url: noop_fun,
             empty_str: function() {
                 return STR_NO + STR_SPACE + STR_HISTORY;
             },
@@ -25747,8 +25753,8 @@
         };
 
         SettingsColor_ColorsObj[SettingsColor_ColorsObjApply] = {
-            left: empty_fun,
-            right: empty_fun,
+            left: noop_fun,
+            right: noop_fun,
             focus: SettingsColor_optFocus,
             removefocus: SettingsColor_RemoveoptFocus,
             enter: SettingsColor_CollorApply
@@ -31081,7 +31087,7 @@
             theUrl,
             Main_GetHeader(UserLiveFeed_token ? 3 : 2, UserLiveFeed_token),
             UserLiveFeedobj_loadChannelUserLiveGetEnd,
-            empty_fun,
+            noop_fun,
             UserLiveFeedobj_UserLivePos,
             UserLiveFeedobj_UserLivePos,
             null,
@@ -31837,7 +31843,7 @@
             theUrl,
             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             UserLiveFeedobj_loadUserVodGetEnd,
-            empty_fun,
+            noop_fun,
             UserLiveFeedobj_UserVodPos,
             UserLiveFeedobj_UserVodPos,
             null,
@@ -33736,18 +33742,13 @@
         'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
         'Play_MultiResult': Play_MultiResult,
-        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
-        'Play_CheckHostResult': Play_CheckHostResult,
-        'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
         'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-        'Play_StayCheckHostResult': Play_StayCheckHostResult,
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
         'Main_checkWebVersion': Main_checkWebVersion,
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
-        'ChatLive_loadChattersSuccess': ChatLive_loadChattersSuccess,
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Screens_CheckGetResult': Screens_CheckGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
