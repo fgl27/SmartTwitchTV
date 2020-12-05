@@ -57,7 +57,7 @@ var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var DefaultHttpGetTimeout = 25000;
 var DefaultHttpGetTimeoutPlus = 5000;
 var DefaultHttpGetReTryMax = 2;
-var empty_fun = function() { };
+var noop_fun = function() { };
 
 var Base_obj;
 var Base_Vod_obj;
@@ -585,7 +585,7 @@ function ScreensObj_StartAllVars() {
                 [STR_PRESS_ENTER_D]
             ];
         },
-        set_url: empty_fun,
+        set_url: noop_fun,
         empty_str: function() {
             return STR_NO + STR_SPACE + STR_HISTORY;
         },

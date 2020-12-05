@@ -1320,7 +1320,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             PlayVod_previews_url,
             null,
             PlayVod_previews_success,
-            empty_fun,
+            noop_fun,
             0,
             PlayVod_previewsId,
             null,
@@ -1528,7 +1528,7 @@ function PlayVod_updateChapters() {
             PlayClip_BaseUrl,
             Play_base_backup_headers_Array,
             PlayVod_updateChaptersResult,
-            empty_fun,
+            noop_fun,
             0,
             PlayVod_updateChaptersId,
             'POST',//Method, null for get

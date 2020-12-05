@@ -255,7 +255,7 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
             0,
             null,
             ChatLive_loadBadgesChannelSuccess,
-            empty_fun,
+            noop_fun,
             chat_number,
             id
         );
@@ -322,7 +322,7 @@ function ChatLive_loadChattersLoad(chat_number, id) {
         0,
         null,
         ChatLive_loadChattersSuccess,
-        empty_fun,
+        noop_fun,
         chat_number,
         id
     );
@@ -357,7 +357,7 @@ function ChatLive_loadEmotesUser() {
             3,
             Main_OAuth + AddUser_UsernameArray[0].access_token,
             ChatLive_loadEmotesUserSuccess,
-            empty_fun,
+            noop_fun,
             0,
             0
         );
@@ -423,7 +423,7 @@ function ChatLive_loadEmotesChannelbttv(chat_number, id) {
             0,
             null,
             ChatLive_loadEmotesChannelbttvSuccess,
-            empty_fun,
+            noop_fun,
             chat_number,
             id
         );
@@ -496,7 +496,7 @@ function ChatLive_loadCheersChannel(chat_number, id) {
             1,
             null,
             ChatLive_loadCheersChannelSuccess,
-            empty_fun,
+            noop_fun,
             chat_number,
             id
         );
@@ -554,7 +554,7 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
             0,
             null,
             ChatLive_loadEmotesChannelffzSuccess,
-            empty_fun,
+            noop_fun,
             chat_number,
             id
         );
@@ -874,10 +874,10 @@ function ChatLive_SetCheck(chat_number, id) {
 }
 
 function ChatLive_reset(chat_number) {
-    ChatLive_socket[chat_number].onclose = empty_fun;
-    ChatLive_socket[chat_number].onerror = empty_fun;
-    ChatLive_socket[chat_number].onmessage = empty_fun;
-    ChatLive_socket[chat_number].onopen = empty_fun;
+    ChatLive_socket[chat_number].onclose = noop_fun;
+    ChatLive_socket[chat_number].onerror = noop_fun;
+    ChatLive_socket[chat_number].onmessage = noop_fun;
+    ChatLive_socket[chat_number].onopen = noop_fun;
 }
 
 function ChatLive_Close(chat_number) {
@@ -1098,10 +1098,10 @@ function ChatLive_SendPrepared(chat_number, id) {
 }
 
 function ChatLive_SendReset() {
-    ChatLive_socketSend.onclose = empty_fun;
-    ChatLive_socketSend.onerror = empty_fun;
-    ChatLive_socketSend.onmessage = empty_fun;
-    ChatLive_socketSend.onopen = empty_fun;
+    ChatLive_socketSend.onclose = noop_fun;
+    ChatLive_socketSend.onerror = noop_fun;
+    ChatLive_socketSend.onmessage = noop_fun;
+    ChatLive_socketSend.onopen = noop_fun;
 }
 
 function ChatLive_SendClose() {

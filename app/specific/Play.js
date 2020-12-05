@@ -779,7 +779,7 @@ function Play_updateVodInfo(Channel_id, BroadcastID) {
         2,
         null,
         Play_updateVodInfoSuccess,
-        empty_fun,
+        noop_fun,
         BroadcastID
     );
 }

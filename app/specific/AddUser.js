@@ -308,7 +308,7 @@ function AddUser_UpdateUser(position) {
         2,
         null,
         AddUser_UpdateUsertSuccess,
-        empty_fun,
+        noop_fun,
         position
     );
 }

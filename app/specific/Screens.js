@@ -2732,7 +2732,7 @@ function Screens_FollowUnfollow(key) {
             theUrl,
             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
             Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
-            empty_fun,
+            noop_fun,
             0,
             0,
             Screens_isFollowing ? 'DELETE' : 'PUT',
