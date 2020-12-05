@@ -317,14 +317,21 @@ function AddUser_UpdateUsertSuccess(response, position) {
     var user = JSON.parse(response);
 
     if (user._total) {
-        Main_removeEventListener("keydown", AddUser_handleKeyDown);
+
         user = user.users[0];
-        AddUser_UsernameArray[position].display_name = user.display_name;
-        AddUser_UsernameArray[position].logo = user.logo;
-        if (!position) AddUser_UpdateSidepanel();
+
+        if (Main_A_equals_B(AddUser_UsernameArray[position].name, user.name)) {
+
+            AddUser_UsernameArray[position].display_name = user.display_name;
+            AddUser_UsernameArray[position].logo = user.logo;
+            if (!position) AddUser_UpdateSidepanel();
+
+            AddUser_SaveUserArray();
+
+        }
+
     }
 
-    AddUser_SaveUserArray();
 }
 
 function AddUser_SaveNewUser(responseText) {
