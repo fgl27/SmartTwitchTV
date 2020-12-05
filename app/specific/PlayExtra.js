@@ -293,9 +293,6 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
 function PlayExtra_CheckHostError(doSwitch, id) {
 
-    console.log(doSwitch);
-    console.log(id);
-
     if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
 
         PlayExtra_End_success(doSwitch);
