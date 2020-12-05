@@ -316,37 +316,33 @@ function ChatLive_loadChatters(chat_number, id) {
 
 function ChatLive_loadChattersLoad(chat_number, id) {
 
-    OSInterface_GetMethodUrlHeadersAsync(
+    BasexmlHttpGet(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-        DefaultHttpGetTimeout,//timeout
-        null,//postMessage, null for get
-        null,//Method, null for get
-        null,//JsonString
-        'ChatLive_loadChattersSuccess',//callback
-        id,//checkResult
-        chat_number,//key
-        60//thread
+        DefaultHttpGetTimeout,
+        0,
+        null,
+        ChatLive_loadChattersSuccess,
+        empty_fun,
+        chat_number,
+        id
     );
 
 }
 
-function ChatLive_loadChattersSuccess(result, chat_number, id) {
+function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
     try {
-        if (result && id === Chat_Id[chat_number]) {
 
-            var resultObj = JSON.parse(result);
+        if (id === Chat_Id[chat_number]) {
 
-            if (resultObj.status === 200) {
-                resultObj = JSON.parse(resultObj.responseText);
+            var resultObj = JSON.parse(responseText);
 
-                Main_innerHTML(
-                    "chat_loggedin" + chat_number,
-                    Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
-                );
-
-            }
+            Main_innerHTML(
+                "chat_loggedin" + chat_number,
+                Main_addCommas(resultObj.chatter_count) + STR_IN_CHAT
+            );
 
         }
+
     } catch (e) {
         Main_Log('ChatLive_loadChattersSuccess ' + e);
     }
