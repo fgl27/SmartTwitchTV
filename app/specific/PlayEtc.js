@@ -733,56 +733,51 @@ function Play_StayCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
     Play_StayCheckHostId = new Date().getTime();
 
-    OSInterface_GetMethodUrlHeadersAsync(
+    BasexmlHttpGet(
         theUrl,//urlString
-        DefaultHttpGetTimeout,//timeout
-        null,//postMessage, null for get
-        null,//Method, null for get
-        null,//JsonString
-        'Play_StayCheckHostResult',//callback
-        0,//checkResult
-        Play_StayCheckHostId,//key
-        58//thread
+        DefaultHttpGetTimeout,
+        0,
+        null,
+        Play_StayCheckHostSuccess,
+        Play_StayCheckLive,
+        0,
+        Play_StayCheckHostId
     );
 }
 
-function Play_StayCheckHostResult(result, id) {
+function Play_StayCheckHostSuccess(responseText, key, id) {
+
     if (Play_StayCheckHostId === id) {
 
-        if (result) {
-            var resultObj = JSON.parse(result);
-            if (resultObj.status === 200) {
-                Play_StayCheckHostEnd(resultObj.responseText);
-            } else {
-                Play_StayCheckLive();
-            }
-        } else Play_StayCheckLive();
+        Play_TargetHost = JSON.parse(responseText).hosts[0];
+        Play_state = Play_STATE_PLAYING;
 
-    }
-}
+        if (Play_TargetHost.target_login !== undefined) {
 
-function Play_StayCheckHostEnd(responseText) {
-    Play_TargetHost = JSON.parse(responseText).hosts[0];
-    Play_state = Play_STATE_PLAYING;
+            Play_IsWarning = true;
+            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
 
-    if (Play_TargetHost.target_login !== undefined) {
-        Play_IsWarning = true;
-        var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+            Main_values.Play_isHost = true;
 
-        Main_values.Play_isHost = true;
+            if (Settings_value.open_host.defaultValue) {
 
-        if (Settings_value.open_host.defaultValue) {
-            Play_OpenHost();
+                Play_OpenHost();
+                Play_showWarningDialog(warning_text, 4000);
+                return;
+
+            } else Play_EndSet(0);
+
             Play_showWarningDialog(warning_text, 4000);
-            return;
-        } else Play_EndSet(0);
+            Play_PlayEndStart(1);
 
-        Play_showWarningDialog(warning_text, 4000);
-        Play_PlayEndStart(1);
+        } else {
 
-    } else {
-        Play_StayCheckLive();
+            Play_StayCheckLive();
+
+        }
+
     }
+
 }
 
 function Play_StayCheckLive() {

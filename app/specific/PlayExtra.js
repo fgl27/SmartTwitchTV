@@ -85,18 +85,21 @@ function PlayExtra_KeyEnter() {
 
 var PlayExtra_ResumeId = 0;
 function PlayExtra_Resume(synchronous) {
+
     if (Main_IsOn_OSInterface) {
 
         PlayExtra_ResumeId = (new Date().getTime());
 
         //On resume to avoid out of sync resumes we run PP synchronous
         if (synchronous) {
+
             var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-            if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData));
-            else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+            if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), true);
+            else PlayExtra_End(false, 0);
 
         } else {
+
             OSInterface_getStreamDataAsync(
                 PlayClip_BaseUrl,
                 Play_live_links.replace('%x', PlayExtra_data.data[6]),
@@ -107,9 +110,10 @@ function PlayExtra_Resume(synchronous) {
                 false,
                 Play_live_token.replace('%x', PlayExtra_data.data[6])
             );
+
         }
 
-    } else PlayExtra_loadDataFail(STR_PLAYER_PROBLEM_2);
+    }
 }
 
 function PlayExtra_ResumeResult(response) {
@@ -128,12 +132,17 @@ function PlayExtra_ResumeResult(response) {
 
 }
 
-function PlayExtra_ResumeResultEnd(responseObj) {
+function PlayExtra_ResumeResultEnd(responseObj, checkHost) {
 
     if (responseObj.status === 200) {
 
         PlayExtra_data.AutoUrl = responseObj.url;
         PlayExtra_loadDataSuccessEnd(responseObj.responseText);
+        return;
+
+    } else if (checkHost) {
+
+        PlayExtra_End(false, 0);
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403) {
@@ -230,6 +239,7 @@ function PlayExtra_HideChat() {
 }
 
 function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
+
     if (!fail_type && Settings_value.open_host.defaultValue) {
 
         Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
@@ -242,6 +252,7 @@ function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
         );
 
     } else PlayExtra_End_success(doSwitch, fail_type);
+
 }
 
 function PlayExtra_End_success(doSwitch, fail_type) {
@@ -267,76 +278,80 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-    OSInterface_GetMethodUrlHeadersAsync(
+    BasexmlHttpGet(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
-        DefaultHttpGetTimeout,//timeout
-        null,//postMessage, null for get
-        null,//Method, null for get
-        null,//JsonString
-        'PlayExtra_CheckHostResult',//callback
-        PlayExtra_loadDataCheckHostId,//checkResult
-        doSwitch,//key
-        56//thread
+        DefaultHttpGetTimeout,
+        0,
+        null,
+        PlayExtra_CheckHost,
+        PlayExtra_CheckHostError,
+        doSwitch,
+        PlayExtra_loadDataCheckHostId
     );
 
 }
 
-function PlayExtra_CheckHostResult(result, doSwitch, id) {
+function PlayExtra_CheckHostError(doSwitch, id) {
+
+    console.log(doSwitch);
+    console.log(id);
+
     if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
-        if (result) {
 
-            var resultObj = JSON.parse(result);
+        PlayExtra_End_success(doSwitch);
 
-            if (resultObj.status === 200) {
-                PlayExtra_CheckHost(resultObj.responseText, doSwitch);
+    }
+
+}
+
+function PlayExtra_CheckHost(responseText, doSwitch, id) {
+
+    if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
+
+        var TargetHost = JSON.parse(responseText).hosts[0],
+            warning_text;
+
+        if (TargetHost.target_login !== undefined &&
+            TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
+
+            if (doSwitch) {
+
+                Play_IsWarning = true;
+                warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                Main_values.Play_isHost = true;
+
+                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                Play_data.data[6] = TargetHost.target_login;
+                Play_data.data[1] = TargetHost.target_display_name;
+                Play_data.data[14] = TargetHost.target_id;
+
+                Play_Start();
+
+                Play_showWarningDialog(warning_text, 4000);
+                //Java will reset audio source reset it
+                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+
             } else {
-                PlayExtra_End_success(doSwitch);
+
+                Play_IsWarning = true;
+                warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+
+                PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
+                PlayExtra_data.data[6] = TargetHost.target_login;
+                PlayExtra_data.data[1] = TargetHost.target_display_name;
+                PlayExtra_data.data[14] = TargetHost.target_id;
+                PlayExtra_data.isHost = true;
+
+                PlayExtra_Resume();
+
+                Play_showWarningDialog(warning_text, 4000);
+
             }
 
         } else PlayExtra_End_success(doSwitch);
+
     }
-}
-
-function PlayExtra_CheckHost(responseText, doSwitch) {
-    var TargetHost = JSON.parse(responseText).hosts[0],
-        warning_text;
-
-    if (TargetHost.target_login !== undefined &&
-        TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
-        if (doSwitch) {
-
-            Play_IsWarning = true;
-            warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
-
-            Main_values.Play_isHost = true;
-
-            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-            Play_data.data[6] = TargetHost.target_login;
-            Play_data.data[1] = TargetHost.target_display_name;
-            Play_data.data[14] = TargetHost.target_id;
-
-            Play_Start();
-
-            Play_showWarningDialog(warning_text, 4000);
-            //Java will reset audio source reset it
-            OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
-        } else {
-
-            Play_IsWarning = true;
-            warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
-
-            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-            PlayExtra_data.data[6] = TargetHost.target_login;
-            PlayExtra_data.data[1] = TargetHost.target_display_name;
-            PlayExtra_data.data[14] = TargetHost.target_id;
-            PlayExtra_data.isHost = true;
-
-            PlayExtra_Resume();
-
-            Play_showWarningDialog(warning_text, 4000);
-
-        }
-    } else PlayExtra_End_success(doSwitch);
 
 }
 
@@ -415,8 +430,10 @@ function PlayExtra_UpdatePanel() {
 }
 
 function PlayExtra_loadDataFail(Reason) {
+
     if (PlayExtra_Save_data.data.length > 0) PlayExtra_RestorePlayData();
     else {
+
         PlayExtra_PicturePicture = false;
         PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
         ChatLive_Clear(1);
@@ -425,7 +442,9 @@ function PlayExtra_loadDataFail(Reason) {
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
         Play_showWarningMidleDialog(Reason, 2500);
+
     }
+
 }
 
 function PlayExtra_updateStreamInfo() {

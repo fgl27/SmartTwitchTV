@@ -1946,16 +1946,15 @@ function Play_loadDataCheckHost() {
     Main_setTimeout(
         function() {
 
-            OSInterface_GetMethodUrlHeadersAsync(
+            BasexmlHttpGet(
                 theUrl,//urlString
-                DefaultHttpGetTimeout,//timeout
-                null,//postMessage, null for get
-                null,//Method, null for get
-                null,//JsonString
-                'Play_CheckHostResult',//callback
-                0,//checkResult
-                Play_loadDataCheckHostId,//key
-                57//thread
+                DefaultHttpGetTimeout,
+                0,
+                null,
+                Play_CheckHost,
+                Play_CheckHostErro,
+                0,
+                Play_loadDataCheckHostId
             );
 
         },
@@ -1963,46 +1962,42 @@ function Play_loadDataCheckHost() {
     );
 }
 
-function Play_CheckHostResult(result, id) {
+function Play_CheckHostErro(key, id) {
     if (Play_isOn && Play_loadDataCheckHostId === id) {
 
-        if (result) {
-
-            var resultObj = JSON.parse(result);
-            if (resultObj.status === 200) {
-                Play_CheckHost(resultObj.responseText);
-            } else {
-                Play_EndStart(false, 1);
-            }
-
-        } else Play_EndStart(false, 1);
+        Play_EndStart(key, 1);
 
     }
 }
 
-function Play_CheckHost(responseText) {
-    Play_TargetHost = JSON.parse(responseText).hosts[0];
-    Play_state = Play_STATE_PLAYING;
+function Play_CheckHost(responseText, key, id) {
 
-    if (Play_TargetHost.target_login !== undefined) {
-        Play_IsWarning = true;
-        var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+    if (Play_isOn && Play_loadDataCheckHostId === id) {
 
-        Main_values.Play_isHost = true;
+        Play_TargetHost = JSON.parse(responseText).hosts[0];
+        Play_state = Play_STATE_PLAYING;
 
-        if (Settings_value.open_host.defaultValue) {
-            Play_OpenHost();
+        if (Play_TargetHost.target_login !== undefined) {
+            Play_IsWarning = true;
+            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
+
+            Main_values.Play_isHost = true;
+
+            if (Settings_value.open_host.defaultValue) {
+                Play_OpenHost();
+                Play_showWarningDialog(warning_text, 4000);
+                return;
+            } else Play_EndSet(0);
+
             Play_showWarningDialog(warning_text, 4000);
-            return;
-        } else Play_EndSet(0);
+        } else {
+            Play_EndSet(1);
+            Main_values.Play_isHost = false;
+        }
 
-        Play_showWarningDialog(warning_text, 4000);
-    } else {
-        Play_EndSet(1);
-        Main_values.Play_isHost = false;
+        Play_PlayEndStart(1);
     }
 
-    Play_PlayEndStart(1);
 }
 
 function Play_UpdateDuration(duration) { // Called only by JAVA
