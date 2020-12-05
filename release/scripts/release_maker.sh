@@ -264,8 +264,8 @@ cd release/ || exit
 if [ "$canuglifyjs" == 1 ]; then
 	echo "$main_end" >> main.js;
 	echo -e "${bldblu}	uglifyjs  main.js";
-	uglifyjs main.js -c -m toplevel -o main.js;
-	uglifyjs githubio/js/Extrapage.js -c -m toplevel -o githubio/js/Extrapage.js;
+	uglifyjs main.js -c -m toplevel=true,eval=true -o main.js;
+	uglifyjs githubio/js/Extrapage.js -c -m toplevel=true,eval=true -o githubio/js/Extrapage.js;
 fi;
 
 echo -e "\\n${bldgrn}Compression done\\n";
