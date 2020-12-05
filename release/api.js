@@ -62,7 +62,6 @@
         'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
         'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
         'Play_MultiResult': Play_MultiResult,
-        'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
         'Play_CheckHostResult': Play_CheckHostResult,
         'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
         'Screens_LoadPreviewResult': Screens_LoadPreviewResult,

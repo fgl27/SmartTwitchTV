@@ -196,7 +196,6 @@ function Main_loadTranslations(language) {
                     'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
                     'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
                     'Play_MultiResult': Play_MultiResult,
-                    'ChannelContent_CheckHostResult': ChannelContent_CheckHostResult,
                     'Play_CheckHostResult': Play_CheckHostResult,
                     'PlayExtra_CheckHostResult': PlayExtra_CheckHostResult,
                     'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
@@ -1669,7 +1668,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
         var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
 
-        if (HeaderQuatity !== 2) {
+        if (HeaderQuatity && HeaderQuatity !== 2) {
 
             JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
 
@@ -1749,13 +1748,18 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
 function Main_GetHeader(HeaderQuatity, access_token) {
 
-    var array = [];
-    if (access_token) Main_Headers[2][1] = access_token;
+    if (HeaderQuatity) {
 
-    for (var i = 0; i < HeaderQuatity; i++)
-        array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+        var array = [];
+        if (access_token) Main_Headers[2][1] = access_token;
 
-    return array;
+        for (var i = 0; i < HeaderQuatity; i++)
+            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+
+        return array;
+
+    } else return [];
+
 }
 
 function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
@@ -1783,10 +1787,14 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
         xmlHttp.open(Method ? Method : "GET", theUrl, true);
         xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
 
-        var i = 0, len = Headers ? Headers.length : 0;
+        if (Headers) {
 
-        for (i; i < len; i++)
-            xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+            var i = 0, len = Headers.length;
+
+            for (i; i < len; i++)
+                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
+
+        }
 
         xmlHttp.onreadystatechange = function() {
 

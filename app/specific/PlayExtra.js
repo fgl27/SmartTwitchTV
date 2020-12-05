@@ -264,6 +264,7 @@ function PlayExtra_End_success(doSwitch, fail_type) {
 
 var PlayExtra_loadDataCheckHostId;
 function PlayExtra_loadDataCheckHost(doSwitch) {
+
     PlayExtra_loadDataCheckHostId = new Date().getTime();
 
     OSInterface_GetMethodUrlHeadersAsync(

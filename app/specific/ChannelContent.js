@@ -128,19 +128,28 @@ function ChannelContent_loadDataRequest() {
 }
 
 function ChannelContent_loadDataRequestSuccess(response) {
+
     var obj = JSON.parse(response);
+
     if (obj.streams && obj.streams.length) {
+
         ChannelContent_responseText = obj.streams;
         ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
+
     } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
+
         ChannelContent_loadDataPrepare();
         ChannelContent_loadDataCheckHost();
+
     } else {
+
         ChannelContent_responseText = null;
         ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
+
     }
+
 }
 
 function ChannelContent_loadDataError() {
@@ -156,43 +165,22 @@ function ChannelContent_loadDataError() {
 
 var ChannelContent_loadDataCheckHostId;
 function ChannelContent_loadDataCheckHost() {
+
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
 
     ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-    OSInterface_GetMethodUrlHeadersAsync(
-        theUrl,//urlString
-        DefaultHttpGetTimeout,//timeout
-        null,//postMessage, null for get
-        null,//Method, null for get
-        null,//JsonString
-        'ChannelContent_CheckHostResult',//callback
-        0,//checkResult
-        ChannelContent_loadDataCheckHostId,//key
-        55//thread
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout,
+        0,
+        null,
+        ChannelContent_CheckHost,
+        ChannelContent_loadDataCheckHostError,
+        0,
+        ChannelContent_loadDataCheckHostId
     );
 
-}
-
-function ChannelContent_CheckHostResult(result, id) {
-    if (ChannelContent_loadDataCheckHostId === id) {
-
-        if (result) {
-
-            var resultObj = JSON.parse(result);
-
-            if (resultObj.status === 200) {
-
-                ChannelContent_CheckHost(resultObj.responseText);
-
-            } else {
-
-                ChannelContent_loadDataCheckHostError();
-
-            }
-
-        } else ChannelContent_loadDataCheckHostError();
-    }
 }
 
 function ChannelContent_loadDataCheckHostError() {
@@ -201,17 +189,22 @@ function ChannelContent_loadDataCheckHostError() {
     ChannelContent_GetStreamerInfo();
 }
 
-function ChannelContent_CheckHost(responseText) {
-    var response = JSON.parse(responseText);
-    ChannelContent_TargetId = response.hosts[0].target_id;
+function ChannelContent_CheckHost(responseText, key, id) {
 
-    if (ChannelContent_TargetId !== undefined) {
-        ChannelContent_loadDataPrepare();
-        ChannelContent_loadDataRequest();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
+    if (ChannelContent_loadDataCheckHostId === id) {
+
+        var response = JSON.parse(responseText);
+        ChannelContent_TargetId = response.hosts[0].target_id;
+
+        if (ChannelContent_TargetId !== undefined) {
+            ChannelContent_loadDataPrepare();
+            ChannelContent_loadDataRequest();
+        } else {
+            ChannelContent_responseText = null;
+            ChannelContent_loadDataPrepare();
+            ChannelContent_GetStreamerInfo();
+        }
+
     }
 }
 
