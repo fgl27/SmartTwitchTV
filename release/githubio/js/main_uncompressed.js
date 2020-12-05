@@ -2566,14 +2566,21 @@
         var user = JSON.parse(response);
 
         if (user._total) {
-            Main_removeEventListener("keydown", AddUser_handleKeyDown);
+
             user = user.users[0];
-            AddUser_UsernameArray[position].display_name = user.display_name;
-            AddUser_UsernameArray[position].logo = user.logo;
-            if (!position) AddUser_UpdateSidepanel();
+
+            if (Main_A_equals_B(AddUser_UsernameArray[position].name, user.name)) {
+
+                AddUser_UsernameArray[position].display_name = user.display_name;
+                AddUser_UsernameArray[position].logo = user.logo;
+                if (!position) AddUser_UpdateSidepanel();
+
+                AddUser_SaveUserArray();
+
+            }
+
         }
 
-        AddUser_SaveUserArray();
     }
 
     function AddUser_SaveNewUser(responseText) {
@@ -6831,7 +6838,7 @@
     var Main_stringVersion_Min = '.293';
     var Main_version_java = 293; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'December 05 2020';
-    var Main_version_web = 558; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 559; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
