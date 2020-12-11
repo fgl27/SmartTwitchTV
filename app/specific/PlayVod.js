@@ -1282,9 +1282,12 @@ function PlayVod_handleKeyDown(e) {
 
                 break;
             case KEY_MEDIA_NEXT:
+                PlayVod_TimeToJump = (OSInterface_gettime() / 1000) + 30;
+                PlayVod_jump();
+                break;
             case KEY_MEDIA_PREVIOUS:
-                if (Play_isPanelShowing()) PlayVod_hidePanel();
-                else PlayVod_showPanel(true);
+                PlayVod_TimeToJump = (OSInterface_gettime() / 1000) - 30;
+                PlayVod_jump();
                 break;
             default:
                 break;
