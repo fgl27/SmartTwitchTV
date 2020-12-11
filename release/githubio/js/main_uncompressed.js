@@ -6570,6 +6570,8 @@
                 }
             }
 
+            hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
+
             for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
                 fragment = mmessage.fragments[j];
 
@@ -6602,8 +6604,6 @@
                 atuser = true;
 
             }
-
-            hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
             //Add nick
             if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
