@@ -29359,11 +29359,11 @@
         Main_innerHTML('side_panel_movel_new_7', STR_USER_MY_CHANNEL);
         Main_innerHTML('side_panel_movel_new_8', STR_HISTORY);
 
-        Sidepannel_SetIcons('side_panel_new_2', 'arrow-left');
-        Sidepannel_SetIcons('side_panel_new_4', 'users');
-        Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
-        Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
-        Sidepannel_SetIcons('side_panel_new_7', 'filmstrip');
+        Sidepannel_SetIcons('side_panel_new_2', 'arrow-left', 'font-size: 115%; position: relative; top: 2%;');
+        Sidepannel_SetIcons('side_panel_new_4', 'gamepad', 'font-size: 115%;');
+        Sidepannel_SetIcons('side_panel_new_5', 'movie-play');
+        Sidepannel_SetIcons('side_panel_new_6', 'filmstrip');
+        Sidepannel_SetIcons('side_panel_new_7', 'user', 'font-size: 115%; position: relative; top: 2%;');
 
     }
 
@@ -29392,13 +29392,11 @@
         Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_CHANGELOG);
 
         Sidepannel_SetIcons('side_panel_new_1', 'search');
-        Sidepannel_SetIcons('side_panel_new_2', 'user');
-        Sidepannel_SetIcons('side_panel_new_3', 'play');
-        Sidepannel_SetIcons('side_panel_new_4', 'star');
-        Sidepannel_SetIcons('side_panel_new_5', 'gamepad');
+        Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');
+        Sidepannel_SetIcons('side_panel_new_4', 'star', 'font-size: 115%; position: relative; top: 2%;');
+        Sidepannel_SetIcons('side_panel_new_5', 'gamepad', 'font-size: 115%;');
         Sidepannel_SetIcons('side_panel_new_6', 'movie-play');
         Sidepannel_SetIcons('side_panel_new_7', 'movie');
-        Sidepannel_SetIcons('side_panel_new_8', 'user');
     }
 
     function Sidepannel_SetUserlable(text) {
@@ -29406,8 +29404,8 @@
             '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>');
     }
 
-    function Sidepannel_SetIcons(div, icon) {
-        if (icon) Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad"></i>');
+    function Sidepannel_SetIcons(div, icon, extra_style) {
+        if (icon) Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad" ' + (extra_style ? ' style="' + extra_style + '"' : '') + '></i>');
         else Main_textContent(div, '');
     }
 
