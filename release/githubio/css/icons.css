@@ -100,6 +100,7 @@
 
 .icon-filmstrip:before {
   content: "\6f";
+  transform: translateY(0.1vh);
 }
 
 .icon-refresh:before {
@@ -112,18 +113,22 @@
 
 .icon-users:before {
   content: "\75";
+  transform: translateY(0.13vh);
 }
 
 .icon-movie-play:before {
   content: "\7a";
+  transform: translateY(0.16vh);
 }
 
 .icon-movie:before {
   content: "\41";
+  transform: translateY(0.15vh);
 }
 
 .icon-history:before {
   content: "\67";
+  transform: translateY(0.1vh);
 }
 
 .icon-play-1:before {
@@ -196,10 +201,12 @@
 
 .icon-star:before {
   content: "\61";
+  transform: translateY(0.1vh);
 }
 
 .icon-play:before {
   content: "\62";
+  transform: translateY(0.1vh);
 }
 
 .icon-key-right:before {
