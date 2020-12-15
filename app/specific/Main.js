@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.293';
 var Main_version_java = 293;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'December 05 2020';
-var Main_version_web = 559;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'December 14 2020';
+var Main_version_web = 560;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -631,6 +631,15 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Web Version December 14 2020",
+            changes: [
+                "Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue",
+                "Xiaomi Mi Box S: 90% frame drops on 9XXp60 but OK for 1080p60 - https://github.com/google/ExoPlayer/issues/7411 issue closed the resolution there is that the Manufacturer will update the OS to fix the problem, the problem is on the this device maybe on others that use Amlogic CPU",
+                "Fix games search",
+                "General performance improves and bug fixes"
+            ]
+        },
         {
             title: "Web Version December 05 2020",
             changes: [

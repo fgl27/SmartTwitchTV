@@ -12,6 +12,14 @@ The app has a building update check function, so whenever there is a update a re
 Web Version November December 05 2020
 ==============
 
+* Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue
+* [Xiaomi Mi Box S: 90% frame drops on 9XXp60 but OK for 1080p60](https://github.com/google/ExoPlayer/issues/7411) issue closed the resolution there is that the Manufacturer will update the OS to fix the problem, the problem is on the this device maybe on others that use Amlogic CPU
+* Fix games search
+* General performance improves and bug fixes
+
+Web Version November December 05 2020
+==============
+
 * General performance improves and bug fixes
 
 Apk Version 3.0.290 to 3.0.293 - Web Version December 01 2020
