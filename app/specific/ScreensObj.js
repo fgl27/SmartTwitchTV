@@ -447,8 +447,10 @@ function ScreensObj_StartAllVars() {
 
         },
         addCell: function(cell) {
+
             var hasLive = this.isLive || this.screen === Main_games;
-            var game = cell.game;
+            var game = this.hasGameProp ? cell.game : cell;
+
             if (!this.idObject[game._id]) {
 
                 this.itemsCount++;
@@ -1298,6 +1300,7 @@ function ScreensObj_InitGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         object: 'top',
+        hasGameProp: true,
         base_url: Main_kraken_api + 'games/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             if (this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset) this.dataEnded = true;
@@ -1326,6 +1329,7 @@ function ScreensObj_InitUserGames() {
         key_pgDown: Main_UserVod,
         key_pgUp: Main_UserLive,
         isLive: false,
+        hasGameProp: true,
         OldUserName: '',
         IsUser: true,
         object: 'follows',
