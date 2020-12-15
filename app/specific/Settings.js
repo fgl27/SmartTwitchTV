@@ -1591,7 +1591,7 @@ function Settings_Qualities() {
     if (Main_IsOn_OSInterface) OSInterface_setBlackListQualities(Settings_DisableQualities.join());
 }
 
-function Settings_ForceEnableAimations() {
+function Settings_ForceEnableAnimations() {
     Settings_value.app_animations.defaultValue = 1;
     Main_setItem('app_animations', 2);
     Settings_SetAnimations();

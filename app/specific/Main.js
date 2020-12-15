@@ -92,6 +92,7 @@ var Main_values = {
     "Sidepannel_IsUser": false,
     "My_channel": false,
     "DeviceCheck2": false,
+    "MiboxRevertCheck": false,
     "Never_run_phone": true,
     "Codec_is_Check": false,
     "OS_is_Check": false,
@@ -431,12 +432,17 @@ function Main_CheckBackup() {
 }
 
 function Main_CheckDevice() {
+
     if (Main_IsOn_OSInterface) {
+
+        var device;
 
         if (!Main_values.DeviceCheck2) {
 
             Main_values.DeviceCheck2 = true;
-            var device = OSInterface_getDevice();
+            Main_values.MiboxRevertCheck = true;
+
+            device = OSInterface_getDevice();
             var Manufacturer = OSInterface_getManufacturer();
 
             device = device ? device.toLowerCase() : "";
@@ -459,16 +465,23 @@ function Main_CheckDevice() {
                 Main_setItem('disable_feed_player_multi', 1);
 
                 //Enable app animations
-                Settings_ForceEnableAimations();
-            } else if (Main_A_includes_B(device, 'mibox4')) {//current my box 4 or S can't handle 9xxp
-
-                Settings_value.block_qualities_9.defaultValue = 1;
-                Main_setItem('block_qualities_9', 2);
-
-                Settings_DisableQualities = ['9'];
-                Main_setItem('Settings_DisableQualities', JSON.stringify(Settings_DisableQualities));
-                Settings_Qualities();
+                Settings_ForceEnableAnimations();
             }
+
+        } else if (!Main_values.MiboxRevertCheck) {
+
+            Main_values.MiboxRevertCheck = true;
+            device = OSInterface_getDevice();
+            device = device ? device.toLowerCase() : "";
+
+            if (Main_A_includes_B(device, 'mibox4')) {//revert enable workaround by default
+
+                Settings_value.block_qualities_9.defaultValue = 0;
+                Main_setItem('block_qualities_9', 1);
+
+                Settings_QualitiesCheck();
+            }
+
         }
 
         //Disable googles OMX.google.h264.decoder if another codec is available
@@ -508,7 +521,7 @@ function Main_CheckDevice() {
 
         }
 
-    }// else Settings_ForceEnableAimations();
+    }// else Settings_ForceEnableAnimations();
 }
 
 function Main_SetStringsMain(isStarting) {
