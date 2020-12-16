@@ -1282,17 +1282,22 @@ function PlayVod_handleKeyDown(e) {
 
                 break;
             case KEY_MEDIA_NEXT:
-                PlayVod_TimeToJump = (OSInterface_gettime() / 1000) + 30;
-                PlayVod_jump();
+                PlayVod_QuickJump(30);
                 break;
             case KEY_MEDIA_PREVIOUS:
-                PlayVod_TimeToJump = (OSInterface_gettime() / 1000) - 30;
-                PlayVod_jump();
+                PlayVod_QuickJump(-30);
                 break;
             default:
                 break;
         }
     }
+}
+
+function PlayVod_QuickJump(time) {
+
+    PlayVod_TimeToJump = (OSInterface_gettime() / 1000) + time;
+    PlayVod_jump();
+
 }
 
 function PlayVod_FastBackForward(position) {

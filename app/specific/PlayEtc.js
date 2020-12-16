@@ -1585,6 +1585,7 @@ function Play_handleKeyDown(e) {
 
                 if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(1);
                 else if (PlayExtra_PicturePicture) Play_AudioChangeRight();
+                else PlayVod_QuickJump(5);
 
                 break;
             case KEY_MEDIA_PREVIOUS:
@@ -1592,6 +1593,7 @@ function Play_handleKeyDown(e) {
 
                 if (Play_MultiEnable) Play_MultiEnableKeyRightLeft(-1);
                 else if (PlayExtra_PicturePicture) Play_AudioChangeLeft();
+                else PlayVod_QuickJump(-5);
 
                 break;
             case KEY_4:
