@@ -125,7 +125,7 @@ var Settings_value = {
     },
     "auto_minimize_inactive": {//Migrated to dialog
         "values": Settings_GetnotificationTime(),
-        "defaultValue": 6
+        "defaultValue": 1
     },
     "auto_refresh_background": {//Migrated to dialog
         "values": ["no", "yes"],
