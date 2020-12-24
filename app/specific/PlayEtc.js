@@ -2989,3 +2989,115 @@ function Play_BottonIconsProgressBarHide(skipInfo) {
 
     }
 }
+
+
+var Play_data_base = {
+    data: [],
+    isHost: false,
+    DisplaynameHost: '',
+    watching_time: 0,
+    qualities: [],
+    playlist: null,
+    qualityPlaying: "Auto",
+    quality: "Auto",
+    AutoUrl: '',
+    resultId: 0
+};
+
+var Play_data = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_data = JSON.parse(JSON.stringify(Play_data_base));
+
+var Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
+var PlayExtra_data_old = JSON.parse(JSON.stringify(Play_data_base));
+
+//Variable initialization end
+
+function Play_PreStart() {
+    Play_seek_previews = Main_getElementById('seek_previews');
+    Play_seek_previews_img = new Image();
+    Play_chat_container = Main_getElementById('chat_container0');
+    Play_ProgresBarrElm = Main_getElementById('inner_progress_bar');
+    Play_ProgresBarrBufferElm = Main_getElementById('inner_progress_bar_buffer');
+    Play_PanneInfoDoclId = Main_getElementById('scene_channel_panel');
+    Play_EndDialogElem = Main_getElementById('dialog_end_stream');
+    Play_MultiDialogElem = Main_getElementById('dialog_multi');
+
+    Play_ChatPositions = Main_getItemInt('ChatPositionsValue', 0);
+    Play_ChatSizeValue = Main_getItemInt('ChatSizeValue', 4);
+    Play_ChatEnable = Main_getItemBool('ChatEnable', false);
+    Play_isFullScreen = Main_getItemBool('Play_isFullScreen', true);
+    Play_ChatBackground = (Main_values.ChatBackground * 0.05).toFixed(2);
+    Play_ChatDelayPosition = Main_getItemInt('Play_ChatDelayPosition', 0);
+    Play_PicturePicturePos = Main_getItemInt('Play_PicturePicturePos', 4);
+    Play_PicturePictureSize = Main_getItemInt('Play_PicturePictureSize', 2);
+    Play_controlsAudioPos = Main_getItemInt('Play_controlsAudioPos', 1);
+
+    Play_FullScreenSize = Main_getItemInt('Play_FullScreenSize', 3);
+    Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
+
+    Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
+
+    if (Main_IsOn_OSInterface) {
+        //TODO remove this after some app updates
+        if (Play_PicturePictureSize > 4) {
+            Play_PicturePictureSize = 0;
+            Main_setItem('Play_PicturePictureSize', Play_PicturePictureSize);
+        }
+        OSInterface_mSetPlayerPosition(Play_PicturePicturePos);
+        OSInterface_mSetPlayerSize(Play_PicturePictureSize);
+        OSInterface_mSetlatency(Play_LowLatency);
+        Settings_PP_Workaround();
+        OSInterface_SetFullScreenPosition(Play_FullScreenPosition);
+        OSInterface_SetFullScreenSize(Play_FullScreenSize);
+        //OSInterface_SetCurrentPositionTimeout(PlayVod_RefreshProgressBarrTimeout / 2);
+    }
+
+    Play_SetQuality();
+
+    var i = 25, max = 301;
+    for (i; i < max; i++) {
+        Play_ChatFontObj.push(i);
+    }
+    if (Main_values.Chat_font_size_new > (Play_ChatFontObj.length - 1)) Main_values.Chat_font_size_new = Play_ChatFontObj.length - 1;
+
+    Play_MultiSetpannelInfo();
+
+    Play_MakeControls();
+    Play_SetControls();
+    Play_ChatSize(false);
+    Play_SetFullScreen(Play_isFullScreen);
+
+    Play_ChatBackgroundChange(false);
+    Play_SetChatFont();
+    //set base strings that don't change
+
+    var clientIdHeader = 'Client-ID';
+    var AcceptHeader = 'Accept';
+    var TwitchV5Json = 'application/vnd.twitchtv.v5+json';
+
+    Main_Headers = [
+        [clientIdHeader, AddCode_clientId],
+        [AcceptHeader, TwitchV5Json],
+        [Main_Authorization, null]
+    ];
+
+    Main_Headers_Backup = [
+        [clientIdHeader, AddCode_backup_client_id],
+        [AcceptHeader, TwitchV5Json],
+        [Main_Authorization, null]
+    ];
+
+    Play_base_backup_headers_Array = [
+        [clientIdHeader, Main_Headers_Backup[0][1]]
+    ];
+
+    Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
+
+    Main_base_string_header = JSON.stringify(
+        [
+            [clientIdHeader, AddCode_clientId],
+            [AcceptHeader, TwitchV5Json]
+        ]
+    );
+}
