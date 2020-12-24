@@ -10010,20 +10010,16 @@
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
 
-        try {
-
-            Android.getStreamDataAsync(
-                token_url,
-                hls_url,
-                callback,
-                checkResult,
-                position,
-                Timeout,
-                isVod ? Play_vod_token_prop : Play_live_token_prop,
-                POST
-            );
-
-        } catch (e) {}
+        Android.getStreamDataAsync(
+            token_url,
+            hls_url,
+            callback,
+            checkResult,
+            position,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
 
     }
 
@@ -10037,20 +10033,16 @@
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
 
-        try {
-
-            Android.CheckIfIsLiveFeed(
-                token_url,
-                hls_url,
-                callback,
-                x,
-                y,
-                Timeout,
-                isVod ? Play_vod_token_prop : Play_live_token_prop,
-                POST
-            );
-
-        } catch (e) {}
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            hls_url,
+            callback,
+            x,
+            y,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
 
     }
 
@@ -10063,17 +10055,13 @@
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
 
-        try {
-            return Android.getStreamData(
-                token_url,
-                hls_url,
-                Timeout,
-                isVod ? Play_vod_token_prop : Play_live_token_prop,
-                POST
-            );
-        } catch (e) {}
-
-        return null;
+        return Android.getStreamData(
+            token_url,
+            hls_url,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST
+        );
     }
 
     //public String getQualities()
@@ -10115,26 +10103,18 @@
     //Android specific: true
     function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
 
-        try {
-
-            Android.BasexmlHttpGet(
-                urlString,
-                timeout,
-                postMessage,
-                Method,
-                JsonHeadersArray,
-                callback,
-                !checkResult ? 0 : checkResult,
-                !key ? 0 : key,
-                callbackSucess,
-                calbackError
-            );
-
-        } catch (e) {
-
-            eval(calbackError)(key); // jshint ignore:line
-
-        }
+        Android.BasexmlHttpGet(
+            urlString,
+            timeout,
+            postMessage,
+            Method,
+            JsonHeadersArray,
+            callback,
+            !checkResult ? 0 : checkResult,
+            !key ? 0 : key,
+            callbackSucess,
+            calbackError
+        );
 
     }
 
@@ -10347,12 +10327,9 @@
     function OSInterface_SetStreamDataHeaders(header) {
         if (Main_IsOn_OSInterface) {
 
-            try {
-
-                Android.SetStreamDataHeaders(
-                    header ? header : null
-                );
-            } catch (e) {}
+            Android.SetStreamDataHeaders(
+                header ? header : null
+            );
 
         }
     }
@@ -10405,9 +10382,7 @@
     //Android specific: true
     //set how fast the get player position handler will refresh
     // function OSInterface_SetCurrentPositionTimeout(timeout) {
-    //     try {
-    //         Android.SetCurrentPositionTimeout(timeout);
-    //     } catch (e) {}
+    //     Android.SetCurrentPositionTimeout(timeout);
     // }
 
     //public void stopVideo(int who_called)
