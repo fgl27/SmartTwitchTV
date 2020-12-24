@@ -26,7 +26,7 @@ TODO list
 * Add a option to follow and unfollow channel and games
 * Maybe add some extra options that makes sense...
 
-### Update screens general use of storing stream data in attribute plus general improves
+### Update screens general improves
 
 * General improve
 * Make screen to use only one value X, not X_Y, this will make easier to understand and use the screens
@@ -64,15 +64,6 @@ TODO list
 * So in one click the player controls hide all other controls and show only chat controls
 * This will allow to add some of the controls that today are in setting to the player
 * Will also improve the UI as there will be less controls visible will make easier to use and understand
-
-### Improve hosting related screen and notifications
-
-* New feature and general improve
-* Multiple followed streamer can host the same stream, today the behavior is just excluded duplicate host change that
-* Add a option to setting to show duplicate/triplicate etc hosting
-* this option must be apply to the user hosting, preview user hosting and channels to the home screen user hosting
-* Add a new notification "Streamer is now hosting" showing Streamer A is not hosting Streamer B
-* the notification must also follow the duplicate/triplicate etc rules if enabled
 
 ### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
 
@@ -143,13 +134,18 @@ TODO list
 * Simpler obj initialization and use
 * Also this UserLiveFeed is old code and can be improve
 
-### Update the back process to work with targetSdk=30
+### Update the backup process to work with targetSdk=30
 
 * General improve
 * From [Meet Google Play's target API level requirement](https://developer.android.com/distribute/best-practices/develop/target-sdk) the min sdk of target changes every year and will on the end of 2021 change to 30
 * Permission to access external storage changed on sdk 30 https://developer.android.com/training/data-storage#permissions
 * Making current option not working on that sdk when targeting 30, works if targeting 29
 * Update the process to work on all OS
+
+### Update the background notifications process to work with targetSdk=30
+
+* General improve
+* From [Updates to toasts](https://developer.android.com/about/versions/11/behavior-changes-11#toasts) For security reasons and to maintain a good user experience, the system blocks toasts that contain custom views if those toasts are sent from the background by an app that targets Android 11 or higher.
 
 ### Improve searches
 
@@ -162,7 +158,7 @@ TODO list
 * General improve
 * User followed live games and host
 
-### Add more option on video sizes
+### Add more option on video sizes PP multistream
 
 * General improve
 * for the 50/50 mode but also for others Multi and PP mode, check what is possible to do and add more
