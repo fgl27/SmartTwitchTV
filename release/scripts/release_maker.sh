@@ -242,10 +242,6 @@ if [ "$canhtmlminifier" == 1 ]; then
 	html-minifier --collapse-whitespace --remove-comments --remove-optional-tags --remove-redundant-attributes --remove-script-type-attributes --use-short-doctype --minify-css true --minify-js true release/extrapageindex.html -o release/extrapageindex.html
 fi;
 
-#TODO remove this cps after some app updates
-cp -rf release/index.html release/index.min.html
-cp -rf release/extrapageindex.html extrapageindex.min.html
-
 echo "" > release/main.js;
 echo "$main_start" > release/main.js;
 
