@@ -1437,7 +1437,7 @@ function Play_handleKeyDown(e) {
 
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
-                        Play_BottonIconsFocus();
+                        Play_BottonIconsFocus(false, true);
                     } else Play_BottomUpDown(1, -1);
 
                     Play_setHidePanel();
@@ -2913,7 +2913,7 @@ function Play_BottonIconsResetFocus(skipInfo) {
     Play_BottonIconsFocus(skipInfo);
 }
 
-function Play_BottonIconsFocus(skipInfo) {
+function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     if (PlayVod_PanelY < 0) {
         PlayVod_PanelY = 0;
@@ -2935,7 +2935,7 @@ function Play_BottonIconsFocus(skipInfo) {
 
         if (PlayVod_addToJump) {
 
-            PlayVod_jumpTime();
+            PlayVod_jumpTime(PlayVod_TimeToJump / Play_DurationSeconds);
             Play_BottonIcons_Progress_Steps.style.display = 'inline-block';
 
         }
@@ -2961,17 +2961,30 @@ function Play_BottonIconsFocus(skipInfo) {
         }
 
         Play_IconsRemoveFocus();
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+
+        if (PlayVod_IsJumping && checkjump) Play_BottonIconsFocusResetProgress();
+
         Play_BottonIcons_Progress_Steps.style.display = 'none';
 
     } else if (PlayVod_PanelY === 2) { //botton icons
 
         Play_BottonIconsProgressBarHide(skipInfo);
         Play_IconsAddFocus();
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
         Play_BottonIcons_Progress_Steps.style.display = 'none';
 
     }
+}
+
+function Play_BottonIconsFocusResetProgress() {
+
+    var time = (OSInterface_gettime() / 1000);
+
+    PlayVod_ProgresBarrUpdateNoAnimation(
+        time > 1.5 ? (time + 1.5) : 0,
+        Play_DurationSeconds,
+        true
+    );
+
 }
 
 function Play_BottonIconsProgressBarShow() {

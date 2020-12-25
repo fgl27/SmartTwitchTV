@@ -1613,7 +1613,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
     PlayVod_ProgresBarrUpdate(
         (timeMs / 1000),
         Play_DurationSeconds,
-        !PlayVod_IsJumping
+        !PlayVod_IsJumping || PlayVod_PanelY
     );
 
 }

@@ -657,5 +657,5 @@ function en_USLang() {
     STR_INACTIVE_SETTINGS = "Automatic minimize the app when inactive for";
     STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from be running when no one is using, a warning will show up giving the user 15 seconds to press any key to prevent the minimizing";
     STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
-
+    STR_REMAINING = "Remaining: ";
 }

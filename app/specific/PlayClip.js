@@ -53,7 +53,7 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    PlayVod_ProgresBarrUpdateNoAnimation(0, 1);
+    PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
 
     Play_BottonIcons_Next_img.src = IMG_404_BANNER;
     Play_BottonIcons_Back_img.src = IMG_404_BANNER;
@@ -861,7 +861,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
-                        Play_BottonIconsFocus();
+                        Play_BottonIconsFocus(false, true);
                     } else Play_BottomUpDown(3, -1);
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
