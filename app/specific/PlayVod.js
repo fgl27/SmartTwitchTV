@@ -235,10 +235,10 @@ function PlayVod_PosStart() {
 
             Chat_offset = parseInt(OSInterface_gettime() / 1000);
             Chat_Init();
-            Play_getQualities(2, false);
 
         }
 
+        Play_getQualities(2, false);
         Play_CheckIfIsLiveCleanEnd();
 
         PlayVod_SaveOffset();
