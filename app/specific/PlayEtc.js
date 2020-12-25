@@ -1138,14 +1138,18 @@ function Play_KeyReturSetExit() {
 }
 
 function Play_CheckPreview() {
-    if (Play_isOn && !Play_isEndDialogVisible() && Play_data.data.length > 0) {
+    if (Play_isOn && Play_data.data.length > 0 && !Play_isEndDialogVisible() && !Play_StayDialogVisible()) {
+
         if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
 
         if (Play_CheckPreviewLive()) {
+
             Play_PreviewURL = Play_data.AutoUrl;
             Play_PreviewResponseText = Play_data.playlist;
             Play_PreviewId = Play_data.data[14];
+
         }
+
     }
 }
 
