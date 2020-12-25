@@ -55,6 +55,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
+        Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
     } else {
 
@@ -506,6 +507,8 @@ function Sidepannel_Hide(PreventCleanQualities) {
 function Sidepannel_HideEle(PreventCleanQualities) {
     Sidepannel_RemoveFocusFeed(PreventCleanQualities);
     if (!PreventCleanQualities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+
+    Main_SaveValues();
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {

@@ -96,7 +96,9 @@ var Main_values = {
     "Never_run_phone": true,
     "Codec_is_Check": false,
     "OS_is_Check": false,
-    "Restore_Backup_Check": false
+    "Restore_Backup_Check": false,
+    "UserSidePannel_LastPos": null,
+    "UserLiveFeed_LastPos": []
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];

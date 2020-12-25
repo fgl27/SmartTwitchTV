@@ -25,7 +25,6 @@ var UserLiveFeed_followerChannels = [];
 var UserLiveFeed_maxChannels = 825;
 var UserLiveFeed_idObject = [];
 var UserLiveFeed_status = [];
-var UserLiveFeed_LastPos = [];
 var UserLiveFeed_token = null;
 var UserLiveFeed_Feedid;
 var UserLiveFeed_FocusClass = 'feed_thumbnail_focused';
@@ -414,6 +413,8 @@ function UserLiveFeed_Hide(PreventCleanQualities) {
     //return;//return;
     UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     UserLiveFeed_HideAfter();
+
+    Main_SaveValues();
 }
 
 function UserLiveFeed_HideAfter() {
@@ -1060,6 +1061,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
     UserLiveFeed_ResetFeedId();
 
     if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
+
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
         if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
 
@@ -1068,6 +1070,8 @@ function UserLiveFeed_KeyRightLeft(Adder) {
         UserLiveFeed_FeedAddFocus(false, UserLiveFeed_FeedPosX, Adder);
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
+
+        Main_values.UserLiveFeed_LastPos[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
     }
 }
 
