@@ -387,6 +387,67 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
     );
 }
 
+//public void ReuseFeedPlayer(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
+//uri =  the url of the playlist or the clip
+//mainPlaylistString = the stringify version of the url playlist content
+//who_called = 0 live, 1 vod, 2 clip
+//ResumePosition =  the position to start the video, if a live this is always 0
+//player = the player position, there is several player to do multistream support
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
+
+    try {
+
+        Android.ReuseFeedPlayer(
+            uri,
+            mainPlaylistString,
+            who_called,
+            ResumePosition,
+            player
+        );
+
+    } catch (e) { }
+}
+
+//public void ReuseFeedPlayerPrepare(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
+//trackSelectorPos =  the trackSelectorPos of the player
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.ReuseFeedPlayerPrepare(
+                trackSelectorPos
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void FixViewPosition(int position)
+//position =  the position of the player
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_FixViewPosition(position) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.FixViewPosition(
+                position
+            );
+
+        }
+
+    } catch (e) { }
+}
+
 //public void mhideSystemUI()
 //Android specific: true
 //hides android SystemUI on a phone, top bar and sw navigation keys
@@ -887,16 +948,15 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
 
 }
 
-//public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
+//public void ClearFeedPlayer()
 //PreventClean prevent closing the player
-//trackSelectorPos the player that will use the not closed player trackSelector Position
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
-function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
-    Android.ClearFeedPlayer(
-        Boolean(PreventClean),
-        Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1
-    );
+function OSInterface_ClearFeedPlayer() {
+    try {
+        Android.ClearFeedPlayer();
+    } catch (e) {
+    }
 }
 
 //public void ClearFeedPlayer()

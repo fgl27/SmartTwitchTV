@@ -419,14 +419,25 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
 function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualities) {
 
     Play_MultiArray[pos].AutoUrl = theUrl;
+    var isFull = Play_MultiIsFull();
 
-    if (Play_MultiIsFull()) {
-        UserLiveFeed_Hide(PreventCleanQualities);
+    if (Play_PreviewId && Main_IsOn_OSInterface) {
+
+        OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
+
+        if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
+
+    } else if (isFull) {
 
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
         Main_setTimeout(
             function() {
-                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) OSInterface_StartMultiStream(pos, theUrl, playlist);
+                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped &&
+                    Play_isOn && Play_MultiEnable) {
+
+                    OSInterface_StartMultiStream(pos, theUrl, playlist);
+
+                }
             },
             25
         );
@@ -741,7 +752,14 @@ function Play_MultiSetUpdateDialog(obj) {
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
-    UserLiveFeed_Hide(Play_PreviewId);
+
+    if (Play_PreviewId) {
+
+        OSInterface_ReuseFeedPlayerPrepare(1);
+        UserLiveFeed_HideAfter();
+
+    } else UserLiveFeed_Hide();
+
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
@@ -775,12 +793,12 @@ function Play_ShowMultiDialog() {
     Main_ShowElementWithEle(Play_MultiDialogElem);
 }
 
-function Play_HideMultiDialog(PreventCleanQualities) {
+function Play_HideMultiDialog(preventClean) {
     //return;
     Main_HideElementWithEle(Play_MultiDialogElem);
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
-    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
+    if (!preventClean) UserLiveFeed_CheckIfIsLiveSTop(true);
 }
 
 function Play_MultiDialogVisible() {

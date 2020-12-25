@@ -162,7 +162,7 @@ function PlayExtra_ResumeResultEnd(responseObj, checkHost) {
 }
 
 function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
-    UserLiveFeed_Hide(PreventcleanQuailities);
+
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
     OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
@@ -170,15 +170,29 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {
+
         ChatLive_Init(1);
         OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_ShowChat();
         Play_SetChatSideBySide();
+
     } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
     if (Main_IsOn_OSInterface && Play_isOn) {
-        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        if (Play_PreviewId) {
+
+            OSInterface_ReuseFeedPlayer(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        } else {
+
+            OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        }
+
     }
+
+    UserLiveFeed_Hide(PreventcleanQuailities);
 
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
     PlayExtra_updateStreamInfo();

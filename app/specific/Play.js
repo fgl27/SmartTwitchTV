@@ -49,6 +49,7 @@ var Play_seek_previews;
 var Play_seek_previews_img;
 var Play_EndDialogElem;
 var Play_MultiDialogElem;
+var Play_SkipStartAuto = false;
 
 var Play_streamInfoTimerId = null;
 
@@ -228,7 +229,8 @@ function Play_Start(offline_chat) {
     } else {
 
         Play_data.AutoUrl = Play_PreviewURL;
-        Play_loadDataSuccessend(Play_PreviewResponseText, true, false, true);
+        Play_SkipStartAuto = true;
+        Play_loadDataSuccessEnd(Play_PreviewResponseText, true, false, true);
 
         Play_CheckIfIsLiveCleanEnd();
         Play_getQualities(1, false);
@@ -830,7 +832,7 @@ function Play_loadDataResultEnd(responseObj) {
     if (responseObj.status === 200) {
 
         Play_data.AutoUrl = responseObj.url;
-        Play_loadDataSuccessend(responseObj.responseText, true);
+        Play_loadDataSuccessEnd(responseObj.responseText, true);
         return;
 
     } else if (responseObj.status === 1 || responseObj.status === 403 ||
@@ -847,8 +849,8 @@ function Play_loadDataResultEnd(responseObj) {
     Play_loadDataErrorFinish();
 }
 
-function Play_loadDataSuccessend(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
-    UserLiveFeed_Hide(PreventcleanQuailities, 0);
+function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
+    UserLiveFeed_Hide(PreventcleanQuailities);
 
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
     else if (Play_EndDialogEnter === 3) {
@@ -1111,12 +1113,22 @@ function Play_onPlayer() {
     //Main_Log('Play_onPlayer');
 
     if (Main_IsOn_OSInterface && Play_isOn) {
-        OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+
+        if (Play_SkipStartAuto) {
+
+            OSInterface_FixViewPosition(0);
+
+        } else {
+
+            OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
+
+        }
     }
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
+    Play_SkipStartAuto = false;
 }
 
 function Play_SetHtmlQuality(element) {
@@ -1979,7 +1991,13 @@ function Play_OpenFeed(keyfun) {
             return;
         }
 
-        UserLiveFeed_Hide(Play_PreviewId, 0);
+        if (Play_PreviewId && Main_IsOn_OSInterface) {
+
+            OSInterface_ReuseFeedPlayer(Play_PreviewURL, Play_PreviewResponseText, 1, 0, 0);
+
+        }
+
+        UserLiveFeed_Hide(Play_PreviewId);
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
@@ -1999,9 +2017,16 @@ function Play_OpenFeed(keyfun) {
         );
 
     } else {
-        UserLiveFeed_Hide(Play_PreviewId, 0);
 
+        if (Play_PreviewId && Main_IsOn_OSInterface) {
+
+            OSInterface_ReuseFeedPlayer(Play_PreviewURL, Play_PreviewResponseText, 1, 0, 0);
+
+        }
+
+        UserLiveFeed_Hide(Play_PreviewId);
         Play_OpenLiveStream(keyfun);
+
     }
 
     Play_StopStay();

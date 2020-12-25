@@ -410,9 +410,9 @@ function UserLiveFeed_Show() {
     Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
 }
 
-function UserLiveFeed_Hide(PreventCleanQualities, trackSelectorPos) {
+function UserLiveFeed_Hide(PreventCleanQualities) {
     //return;//return;
-    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities, trackSelectorPos);
+    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     UserLiveFeed_HideAfter();
 }
 
@@ -599,12 +599,13 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
     return position;
 }
 
-function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities, trackSelectorPos) {
+function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
     Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
     if (Main_IsOn_OSInterface) {
 
-        OSInterface_ClearFeedPlayer(PreventCleanQualities, trackSelectorPos);
+        OSInterface_ClearFeedPlayer();
+
         if (Play_PreviewId && !PreventCleanQualities) {
 
             Play_CheckIfIsLiveCleanEnd();

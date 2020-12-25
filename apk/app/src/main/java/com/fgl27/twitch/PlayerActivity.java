@@ -2646,11 +2646,85 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void ReuseFeedPlayerPrepare(int trackSelectorPos) {
+
+            runOnUiThread(() -> {
+
+                PlayerObj[4].playerView.setLayoutParams(HideLayout);
+
+                if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
+
+                PlayerObjUpdateTrackSelector(
+                        4,
+                        trackSelectorPos
+                );
+
+            });
+
+        }
+
+        @JavascriptInterface
+        public void ReuseFeedPlayer(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
+            runOnUiThread(() -> {
+
+                if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
+
+                if (!MultiStreamEnable && position == 1) {
+                    PicturePicture = true;
+                    //Call this always before starting the player
+                    ResetPPView();
+                }
+
+                boolean mReUsePlayer = CanReUsePlayer(
+                        mainPlaylistString,
+                        MultiStreamEnable ? 1 : position
+                );
+
+                Set_PlayerObj(
+                        false,
+                        Type,
+                        ResumePosition,
+                        MultiStreamEnable ? 1 : position,// always 0 or 1... so safe to use position
+                        position
+                );
+
+                if (mReUsePlayer) {
+
+                    PlayerObjUpdateTrackSelector(
+                            4,
+                            PlayerObj[position].trackSelectorParametersPosition
+                    );
+
+                    ReUsePlayer(position);
+
+                } else {
+
+                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            Type,
+                            mLowLatency,
+                            mainPlaylistString,
+                            userAgent
+                    );
+
+                    SetupPlayer(position);
+
+                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
+                }
+
+                PreviewPlayerPlaylist = null;
+
+            });
+        }
+
+        @JavascriptInterface
         public void StartAuto(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
             runOnUiThread(() -> {
                 boolean startPlayer = PlayerObj[0].player == null || !PlayerObj[0].isScreenPreview;
 
                 if (startPlayer) {
+
                     if (position == 1) {
                         PicturePicture = true;
                         //Call this always before starting the player
@@ -2658,11 +2732,6 @@ public class PlayerActivity extends Activity {
                     }
 
                     VideoWebHolder.bringChildToFront(mWebView);
-
-                    boolean mReUsePlayer = CanReUsePlayer(
-                            mainPlaylistString,
-                            position// always 0 or 1... so safe to use position
-                    );
 
                     Set_PlayerObj(
                             false,
@@ -2672,41 +2741,47 @@ public class PlayerActivity extends Activity {
                             position
                     );
 
-                    if (mReUsePlayer) {
+                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
+                            Uri.parse(uri),
+                            mWebViewContext,
+                            Type,
+                            mLowLatency,
+                            mainPlaylistString,
+                            userAgent
+                    );
 
-                        ReUsePlayer(position);
+                    SetupPlayer(position);
 
-                    } else {
-
-                        PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                                Uri.parse(uri),
-                                mWebViewContext,
-                                Type,
-                                mLowLatency,
-                                mainPlaylistString,
-                                userAgent
-                        );
-
-                        SetupPlayer(position);
-
-                        if (PlayerObj[4].player != null) Clear_PreviewPlayer();
-                    }
+                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
                     PreviewPlayerPlaylist = null;
 
                 } else {
 
-                    hideLoading(5);
-                    PlayerObj[position].isScreenPreview = false;
-                    PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
+                    mFixViewPosition(position);
 
-                    if (PlayerObj[0].player != null)
-                        mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
-
-                    //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
-                    MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
                 }
+
             });
+        }
+
+        @JavascriptInterface
+        public void FixViewPosition(int position) {
+            runOnUiThread(() -> mFixViewPosition(position));
+        }
+
+        void mFixViewPosition(int position) {
+
+            hideLoading(5);
+            PlayerObj[position].isScreenPreview = false;
+            PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
+
+            if (PlayerObj[0].player != null)
+                mWebView.loadUrl("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[0].player.getDuration() + ")");
+
+            //Add a delay to make sure the PlayerView already change size before bring webview to front also webview may need a small delay to hide the screen UI and show the player
+            MainThreadHandler.postDelayed(() -> VideoWebHolder.bringChildToFront(mWebView), 100);
+
         }
 
         @JavascriptInterface
@@ -2973,21 +3048,10 @@ public class PlayerActivity extends Activity {
 //        }
 
         @JavascriptInterface
-        public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos) {
+        public void ClearFeedPlayer() {
             runOnUiThread(() -> {
 
-                if (PreventClean) {
-
-                    if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
-
-                    PlayerObjUpdateTrackSelector(
-                            4,
-                            trackSelectorPos > -1 && trackSelectorPos < 2 ? trackSelectorPos : 1
-                    );
-
-                    PlayerObj[4].playerView.setLayoutParams(HideLayout);
-
-                } else if (PlayerObj[4].player != null) Clear_PreviewPlayer();
+                if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
             });
         }
@@ -3553,11 +3617,6 @@ public class PlayerActivity extends Activity {
                 //The odd behavior will stay until the player is releasePlayer
                 if (Restart) SimpleReleasePlayer(position);
 
-                boolean mReUsePlayer = CanReUsePlayer(
-                        mainPlaylistString,
-                        1
-                );
-
                 Set_PlayerObj(
                         false,
                         1,
@@ -3566,26 +3625,18 @@ public class PlayerActivity extends Activity {
                         position
                 );
 
-                if (!Restart && mReUsePlayer) {
+                PlayerObj[position].mediaSources = Tools.buildMediaSource(
+                        Uri.parse(uri),
+                        mWebViewContext,
+                        1,
+                        mLowLatency,
+                        mainPlaylistString,
+                        userAgent
+                );
 
-                    ReUsePlayer(position);
+                SetupPlayer(position);
 
-                } else {
-
-                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                            Uri.parse(uri),
-                            mWebViewContext,
-                            1,
-                            mLowLatency,
-                            mainPlaylistString,
-                            userAgent
-                    );
-
-                    SetupPlayer(position);
-
-                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
-                }
-
+                if (PlayerObj[4].player != null) Clear_PreviewPlayer();
                 PreviewPlayerPlaylist = null;
 
             });

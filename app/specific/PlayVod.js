@@ -224,6 +224,7 @@ function PlayVod_PosStart() {
 
         PlayVod_autoUrl = Play_PreviewURL;
         PlayVod_playlist = Play_PreviewResponseText;
+        Play_SkipStartAuto = true;
 
         PlayVod_state = Play_STATE_PLAYING;
 
@@ -544,8 +545,20 @@ function PlayVod_onPlayer() {
 
 function PlayVod_onPlayerStartPlay(time) {
     if (Main_IsOn_OSInterface && PlayVod_isOn) {
-        OSInterface_StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
+
+        if (Play_SkipStartAuto) {
+
+            OSInterface_FixViewPosition(0);
+
+        } else {
+
+            OSInterface_StartAuto(PlayVod_autoUrl, PlayVod_playlist, 2, PlayVod_replay ? -1 : time, 0);
+
+        }
+
     }
+
+    Play_SkipStartAuto = false;
 }
 
 function PlayVod_shutdownStream(SkipSaveOffset) {

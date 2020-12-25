@@ -819,7 +819,7 @@ function Play_StayCheckLiveResultEnd(responseObj) {
 
         Play_StartStayShowBottom();
         Play_data.AutoUrl = responseObj.url;
-        Play_loadDataSuccessend(responseObj.responseText, false, true);
+        Play_loadDataSuccessEnd(responseObj.responseText, false, true);
         Play_ShowPanelStatus(1);
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
@@ -1404,6 +1404,7 @@ function Play_handleKeyDown(e) {
                     Play_setHidePanel();
 
                 } else if (Play_MultiDialogVisible()) {
+
                     Play_MultiRemoveFocus();
                     if (Play_Multi_MainBig) {
                         Play_MultiDialogPos = Play_MultiDialogPos ? 0 : 2;
@@ -1412,6 +1413,7 @@ function Play_handleKeyDown(e) {
                         if (Play_MultiDialogPos < 0) Play_MultiDialogPos += 4;
                     }
                     Play_MultiAddFocus();
+
                 } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
                     Play_EndTextClear();

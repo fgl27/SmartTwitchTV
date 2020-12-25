@@ -619,13 +619,13 @@ public final class Tools {
         return false;
     }
 
-    static MediaSource buildMediaSource(Uri uri, Context context, int who_called, int LowLatency, String mainPlaylist, String userAgent) {
-        if (who_called == 1) {
+    static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, String mainPlaylist, String userAgent) {
+        if (Type == 1) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency)
                     .createMediaSource(MediaItemBuilder(uri));
-        } else if (who_called == 2) {
+        } else if (Type == 2) {
             return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(MediaItemBuilder(uri));
