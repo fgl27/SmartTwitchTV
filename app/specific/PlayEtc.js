@@ -2929,7 +2929,8 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     if (!PlayVod_PanelY) { //progress_bar
 
-        Play_BottonIconsProgressBarShow();
+        if (PlayClip_EnterPos) Play_BottonIconsShow(skipInfo);
+        Play_BottonIconsHide(1);
         Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
         Play_IconsRemoveFocus();
 
@@ -2942,7 +2943,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
 
-        Play_BottonIconsProgressBarHide(skipInfo);
+        Play_BottonIconsShow(skipInfo);
 
         if (!PlayClip_EnterPos) { //pause
 
@@ -2950,11 +2951,13 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
         } else if (PlayClip_EnterPos === 1) { //next
 
+            Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
 
         } else if (PlayClip_EnterPos === -1) { //back
 
+            Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_End_img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
 
@@ -2968,7 +2971,9 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     } else if (PlayVod_PanelY === 2) { //botton icons
 
-        Play_BottonIconsProgressBarHide(skipInfo);
+        if (PlayClip_EnterPos) Play_BottonIconsShow(skipInfo);
+
+        Play_BottonIconsHide(0);
         Play_IconsAddFocus();
         Play_BottonIcons_Progress_Steps.style.display = 'none';
 
@@ -2987,19 +2992,35 @@ function Play_BottonIconsFocusResetProgress() {
 
 }
 
-function Play_BottonIconsProgressBarShow() {
-    Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
+function Play_BottonIconsHide(hideType) {
     Main_AddClassWitEle(Play_info_div, 'opacity_zero');
-    Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+
+    if (!hideType) {
+
+        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+
+    } else if (hideType === 1) {
+
+        Main_AddClassWitEle(Play_pause_next_div, 'opacity_zero');
+        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+
+    } else if (hideType === 2) {
+
+        Main_AddClassWitEle(Play_Controls_Holder, 'opacity_zero');
+        Main_AddClassWitEle(Play_BottonIcons_Progress, 'opacity_zero');
+
+    }
 
     if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
     else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
-function Play_BottonIconsProgressBarHide(skipInfo) {
+function Play_BottonIconsShow(skipInfo) {
     Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_info_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
+    Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
 
     if (!skipInfo) {
 
