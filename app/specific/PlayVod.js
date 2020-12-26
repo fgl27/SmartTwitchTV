@@ -72,18 +72,12 @@ function PlayVod_Start() {
     Play_BufferSize = 0;
 
     Play_StartStayShowBottom();
-    Play_BottomHide(Play_MultiStream);
-    Play_BottomHide(Play_controlsOpenVod);
-    Play_BottomHide(Play_controlsChatDelay);
-    Play_BottomHide(Play_controlsLowLatency);
-    Play_BottomHide(Play_controlsChatSend);
-    Play_BottomHide(Play_controlsChapters);
+    Play_SetControlsVisibility('ShowInVod');
 
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
-    PlayExtra_UnSetPanel();
     Play_BottonIconsResetFocus();
 
     Play_CurrentSpeed = 3;
@@ -655,6 +649,7 @@ function PlayVod_hidePanel() {
     //Reset values
     PlayVod_qualityReset();
     Play_ResetSpeed();
+    Play_controls[Play_controlsBack].enterKey(2, true);
     Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();
@@ -1633,7 +1628,6 @@ function PlayVod_ProcessChapters(obj) {
     }
 
     len = PlayVod_ChaptersArray.length;
-
 
     if (len) {
         Play_BottomShow(Play_controlsChapters);

@@ -1386,7 +1386,6 @@ function Main_openStream() {
         function() {
             Main_showScene2Doc();
             Main_addEventListener("keydown", Play_handleKeyDown);
-            Play_hidePanel();
             if (!Play_EndDialogEnter) Play_HideEndDialog();
             Play_Start();
         }
@@ -1427,10 +1426,6 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
             Main_showScene2Doc();
 
             Main_addEventListener("keydown", PlayClip_handleKeyDown);
-            Play_hideChat();
-            Play_HideWarningDialog();
-            Play_CleanHideExit();
-
             PlayClip_Start();
 
             Main_EventPlay(
@@ -1489,9 +1484,7 @@ function Main_openVod() {
             Main_showScene2Doc();
 
             Main_addEventListener("keydown", PlayVod_handleKeyDown);
-            PlayVod_hidePanel();
             Play_hideChat();
-            Play_CleanHideExit();
             PlayVod_Start();
         }
     );

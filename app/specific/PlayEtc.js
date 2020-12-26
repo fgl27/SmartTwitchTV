@@ -650,20 +650,11 @@ function Play_StopStay() {
 }
 
 function Play_StartStayHidebottom() {
-    Play_BottomHide(Play_MultiStream);
-    Play_BottomHide(Play_controlsQuality);
-    Play_BottomHide(Play_controlsExternal);
-    Play_BottomHide(Play_controlsLowLatency);
-    Play_BottomHide(Play_controlsSpeed);
+    Play_SetControlsVisibility('ShowInStay');
     Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
 function Play_StartStayShowBottom() {
-    Play_BottomShow(Play_MultiStream);
-    if (!PlayExtra_PicturePicture) Play_BottomShow(Play_controlsQuality);
-    Play_BottomShow(Play_controlsExternal);
-    Play_BottomShow(Play_controlsLowLatency);
-    Play_BottomShow(Play_controlsSpeed);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
@@ -1614,37 +1605,94 @@ function Play_handleKeyDown(e) {
 var Play_controls = {};
 var Play_controlsSize = -1;
 
-var Play_controlsSearch = 0;
-var Play_controlsChanelCont = 1;
-var Play_controlsGameCont = 2;
-var Play_controlsOpenVod = 3;
-var Play_controlsFollow = 4;
-var Play_controlsSpeed = 5;
-var Play_controlsExternal = 6;
-var Play_controlsQuality = 7;
-var Play_controlsQualityMini = 8;
-var Play_controlsQualityMulti = 9;
-var Play_controlsLowLatency = 10;
-var Play_controlsChapters = 11;
-var Play_MultiStream = 12;
-var Play_controlsAudio = 13;
-var Play_controlsAudioMulti = 14;
-var Play_controlsChat = 15;
-var Play_controlsChatSend = 16;
-var Play_controlsChatSide = 17;
-var Play_controlsChatForceDis = 18;
-var Play_controlsChatDelay = 19;
-var Play_controlsChatPos = 20;
-var Play_controlsChatSize = 21;
-var Play_controlsChatBright = 22;
-var Play_controlsChatFont = 23;
+var Play_controlsBack = 0;
+var Play_controlsSearch = 1;
+var Play_controlsChanelCont = 2;
+var Play_controlsGameCont = 3;
+var Play_controlsOpenVod = 4;
+var Play_controlsFollow = 5;
+var Play_controlsSpeed = 6;
+var Play_controlsExternal = 7;
+var Play_controlsQuality = 8;
+var Play_controlsQualityMini = 9;
+var Play_controlsQualityMulti = 10;
+var Play_controlsLowLatency = 11;
+var Play_controlsChapters = 12;
+var Play_MultiStream = 13;
+var Play_controlsAudio = 14;
+var Play_controlsAudioMulti = 15;
+var Play_controlsChatSide = 16;
+var Play_controlsChat = 17;
+var Play_controlsChatSend = 18;
+var Play_controlsChatSettings = 19;
+var Play_controlsChatForceDis = 20;
+var Play_controlsChatDelay = 21;
+var Play_controlsChatPos = 22;
+var Play_controlsChatSize = 23;
+var Play_controlsChatBright = 24;
+var Play_controlsChatFont = 25;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
+var Play_PanelcounterBefore = 0;
 
 function Play_MakeControls() {
 
+    Play_controls[Play_controlsBack] = { //Search
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: true,
+        ShowInPreview: true,
+        ShowInStay: false,
+        icons: "key-left",
+        string: STR_SIDE_PANEL_SETTINGS,
+        values: null,
+        defaultValue: null,
+        enterKey: function(PlayVodClip, skipAddfocus) {
+
+            if (!Play_PanelcounterBefore) return;
+
+            Play_IconsRemoveFocus();
+            Play_Panelcounter = Play_PanelcounterBefore;
+            Play_PanelcounterBefore = 0;
+
+            if (PlayVodClip === 1) {
+
+                if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
+                else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
+                else Play_SetControlsVisibility('ShowInLive');
+
+            } else if (PlayVodClip === 2) {
+
+                Play_SetControlsVisibility('ShowInVod');
+                if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
+
+            } else if (PlayVodClip === 3) {
+
+                Play_SetControlsVisibility('ShowInClip');
+                if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+
+            }
+
+            if (!skipAddfocus) Play_IconsAddFocus();
+
+        },
+    };
+
     Play_controls[Play_controlsSearch] = { //Search
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
         icons: "search",
         string: STR_SEARCH,
         values: null,
@@ -1656,6 +1704,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChanelCont] = { //channel content
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
         icons: "filmstrip",
         string: STR_CHANNEL_CONT,
         values: '',
@@ -1672,6 +1729,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsGameCont] = { //game content
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
         icons: "gamepad",
         string: STR_GAME_CONT,
         values: '',
@@ -1688,6 +1754,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsOpenVod] = { //open vod
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "movie-play",
         string: STR_OPEN_BROADCAST,
         values: '',
@@ -1705,6 +1780,15 @@ function Play_MakeControls() {
 
 
     Play_controls[Play_controlsFollow] = { //following
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
         icons: "heart-o",
         string: STR_FOLLOW,
         values: '',
@@ -1729,6 +1813,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsSpeed] = { //speed
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "speedometer",
         string: STR_SPEED,
         values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
@@ -1758,7 +1851,16 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsExternal] = { //quality
+    Play_controls[Play_controlsExternal] = { //External
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "external",
         string: STR_OPEN_EXTERNAL_PLAYER,
         values: ['1080p60 | Source | 10.00Mbps | avc'],
@@ -1796,6 +1898,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsQuality] = { //quality
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "videocamera",
         string: STR_QUALITY,
         values: ['1080p60 | Source | 10.00Mbps | avc'],
@@ -1853,6 +1964,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsQualityMini] = { //quality for picture in picture
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: true,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "videocamera",
         string: STR_PLAYER_RESYNC,
         values: STR_AUDIO_PP,
@@ -1893,6 +2013,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsQualityMulti] = { //quality for Multi
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "videocamera",
         string: STR_PLAYER_RESYNC,
         values: STR_QUALITY_MULTI,
@@ -1966,7 +2095,16 @@ function Play_MakeControls() {
 
     };
 
-    Play_controls[Play_controlsLowLatency] = { //quality
+    Play_controls[Play_controlsLowLatency] = { //LowLatenc
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "history",
         string: STR_LOW_LATENCY,
         values: STR_LOWLATENCY_ARRAY,
@@ -2025,6 +2163,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsAudio] = {//Audio
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: true,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "volume",
         string: STR_AUDIO_SOURCE,
         values: STR_AUDIO_PP,
@@ -2071,7 +2218,17 @@ function Play_MakeControls() {
         }
     };
 
+    //TODO remove this
     Play_controls[Play_controlsAudioMulti] = { //Audio multi
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "volume",
         string: STR_AUDIO_SOURCE,
         values: STR_AUDIO_MULTI,
@@ -2139,7 +2296,16 @@ function Play_MakeControls() {
         }
     };
 
-    Play_controls[Play_controlsChapters] = { //Audio multi
+    Play_controls[Play_controlsChapters] = { //Chapter
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "feed",
         string: STR_CHAPTERS,
         values: [],
@@ -2169,6 +2335,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_MultiStream] = { //multi
+        ShowInLive: true,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "multi",
         string: STR_4_WAY_MULTI,
         values: null,
@@ -2244,56 +2419,16 @@ function Play_MakeControls() {
         }
     };
 
-    Play_controls[Play_controlsChat] = { //chat enable disable
-        icons: "chat",
-        string: STR_CHAT_SHOW,
-        values: null,
-        defaultValue: null,
-        enterKey: function() {
-            if ((!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
-
-            if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
-                Play_showChat();
-                Play_ChatEnable = true;
-            } else {
-                Play_hideChat();
-                Play_ChatEnable = false;
-            }
-            Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
-            this.setLable();
-        },
-        setLable: function() {
-            var string = (Play_isChatShown() ? STR_YES : STR_NO);
-
-            if (!Play_isFullScreen && !Play_MultiEnable) {
-                string = PlayExtra_PicturePicture ? STR_CHAT_5050 : STR_CHAT_SIDE;
-            } else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
-
-            Main_textContent('extra_button_' + this.position, '(' + string + ')');
-        },
-    };
-
-    Play_controls[Play_controlsChatSend] = {
-        icons: "keyboard",
-        string: STR_CHAT_WRITE,
-        values: null,
-        defaultValue: null,
-        enterKey: function() {
-            if (Main_values.Play_ChatForceDisable) {
-                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
-                return;
-            } else if (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token) {
-                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
-                return;
-            }
-
-            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
-            else ChatLiveControls_Show();
-
-        }
-    };
-
     Play_controls[Play_controlsChatSide] = { //chat side
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
         icons: Play_isFullScreen ? "resize-down" : "resize-up",
         string: STR_CHAT_VIDEO_MODE,
         values: null,
@@ -2329,7 +2464,7 @@ function Play_MakeControls() {
 
             Main_textContent('extra_button_' + this.position, STR_PRESS_ENTER_TO_CHANGE + title);
 
-            Play_controls[Play_controlsChat].setLable();
+            if (Play_controls[Play_controlsChat].position) Play_controls[Play_controlsChat].setLable();
         },
         setIcon: function() {
             var icon = (Play_isFullScreen ? "resize-down" : "resize-up");
@@ -2340,7 +2475,109 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsChat] = { //chat enable disable
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: "chat",
+        string: STR_CHAT_SHOW,
+        values: null,
+        defaultValue: null,
+        enterKey: function() {
+            if ((!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig) return;
+
+            if (!Play_isChatShown() && !Play_isEndDialogVisible()) {
+                Play_showChat();
+                Play_ChatEnable = true;
+            } else {
+                Play_hideChat();
+                Play_ChatEnable = false;
+            }
+            Main_setItem('ChatEnable', Play_ChatEnable ? 'true' : 'false');
+            this.setLable();
+        },
+        setLable: function() {
+            var string = (Play_isChatShown() ? STR_YES : STR_NO);
+
+            if (!Play_isFullScreen && !Play_MultiEnable) {
+                string = PlayExtra_PicturePicture ? STR_CHAT_5050 : STR_CHAT_SIDE;
+            } else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
+
+            Main_textContent('extra_button_' + this.position, '(' + string + ')');
+        },
+    };
+
+    Play_controls[Play_controlsChatSend] = {
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: "keyboard",
+        string: STR_CHAT_WRITE,
+        values: null,
+        defaultValue: null,
+        enterKey: function() {
+            if (Main_values.Play_ChatForceDisable) {
+                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                return;
+            } else if (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token) {
+                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                return;
+            }
+
+            if (PlayExtra_PicturePicture && !Play_isFullScreen) ChatLiveControls_ShowChooseChat();
+            else ChatLiveControls_Show();
+
+        }
+    };
+
+
+    Play_controls[Play_controlsChatSettings] = {
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: "chat-settings",
+        string: STR_CHAT_EXTRA,
+        values: null,
+        defaultValue: null,
+        enterKey: function() {
+
+            Play_PanelcounterBefore = Play_controlsChatSettings;
+            Play_IconsRemoveFocus();
+            Play_Panelcounter = Play_controlsBack;
+            Play_SetControlsVisibility('ShowInChat');
+            Play_IconsAddFocus();
+
+        }
+    };
+
     Play_controls[Play_controlsChatForceDis] = { //force disable chat
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-stop",
         string: STR_F_DISABLE_CHAT,
         values: null,
@@ -2363,6 +2600,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChatDelay] = { //chat delay
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-delay",
         string: STR_CHAT_DELAY,
         values: [STR_DISABLED, STR_CHAT_DELAY_LATENCY_TO_BROADCASTER, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -2397,6 +2643,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChatPos] = { //chat position
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-pos",
         string: STR_CHAT_POS,
         values: STR_CHAT_BASE_ARRAY,
@@ -2441,6 +2696,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChatSize] = { //chat size
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-size",
         string: STR_CHAT_SIZE,
         values: ["12.5%", "25%", "50%", "75%", "100%"],
@@ -2497,6 +2761,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChatBright] = { //chat_brightness
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-brig",
         string: STR_CHAT_BRIGHTNESS,
         values: ["0%", "5%", "10%", "15%", "20%",
@@ -2532,6 +2805,15 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsChatFont] = { //Chat font size
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInPreview: false,
+        ShowInStay: false,
         icons: "chat-font",
         string: STR_CHAT_FONT,
         values: Play_ChatFontObj,
@@ -2558,6 +2840,58 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
     };
+
+    var div, doc = Main_getElementById('controls_holder');
+
+    for (var key in Play_controls) {
+        div = document.createElement('div');
+        div.className = 'controls_button_holder';
+        div.setAttribute('id', 'controls_' + key);
+
+        div.innerHTML = '<div id="controls_button_' + key +
+            '" class="controls_button"><div id="controls_icon_' + key +
+            '"><i class="pause_button3d icon-' + Play_controls[key].icons +
+            '" ></i></div></div><div id="controls_button_text_' + key +
+            '" class="extra_button_title_holder" style="opacity: 0;;"><div id="extra_button_title' +
+            key + '" class="extra_button_title strokedeline" >' +
+            Play_controls[key].string + '</div><div id="extra_button_' + key +
+            '" class="extra_button_title strokedeline" >' +
+            (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
+
+        doc.appendChild(div);
+        Play_controlsSize++;
+        Play_controls[key].position = key;
+
+        Play_controls[key].visible = true;
+        Play_controls[key].doc = div;
+        Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
+        Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
+        Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
+        Play_controls[key].button = Main_getElementById('controls_button_' + key);
+        Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
+
+        if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
+        if (Play_controls[key].setLable) Play_controls[key].setLable();
+    }
+
+}
+
+function Play_SetControlsArrows(key) {
+    return '<div id="controls_arrows_' + key +
+        '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+        key + '" class="up"></div><div id="control_arrow_down' + key +
+        '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
+        '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
+}
+
+function Play_SetControlsVisibility(prop) {
+
+    for (var key in Play_controls) {
+
+        if (Play_controls[key][prop]) Play_BottomShow(key);
+        else Play_BottomHide(key);
+
+    }
 
 }
 
@@ -2696,48 +3030,6 @@ function Play_BottomArrows(position) {
     }
 
     Main_textContentWithEle(Play_controls[position].doc_name, Play_controls[position].values[Play_controls[position].defaultValue]);
-}
-
-function Play_SetControls() {
-    var div, doc = Main_getElementById('controls_holder');
-    for (var key in Play_controls) {
-        div = document.createElement('div');
-        div.className = 'controls_button_holder';
-        div.setAttribute('id', 'controls_' + key);
-
-        div.innerHTML = '<div id="controls_button_' + key +
-            '" class="controls_button"><div id="controls_icon_' + key +
-            '"><i class="pause_button3d icon-' + Play_controls[key].icons +
-            '" ></i></div></div><div id="controls_button_text_' + key +
-            '" class="extra_button_title_holder" style="opacity: 0;;"><div id="extra_button_title' +
-            key + '" class="extra_button_title strokedeline" >' +
-            Play_controls[key].string + '</div><div id="extra_button_' + key +
-            '" class="extra_button_title strokedeline" >' +
-            (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
-
-        doc.appendChild(div);
-        Play_controlsSize++;
-        Play_controls[key].position = key;
-
-        Play_controls[key].visible = true;
-        Play_controls[key].doc = div;
-        Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
-        Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
-        Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
-        Play_controls[key].button = Main_getElementById('controls_button_' + key);
-        Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
-
-        if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
-        if (Play_controls[key].setLable) Play_controls[key].setLable();
-    }
-}
-
-function Play_SetControlsArrows(key) {
-    return '<div id="controls_arrows_' + key +
-        '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
-        key + '" class="up"></div><div id="control_arrow_down' + key +
-        '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
-        '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
 }
 
 function Play_showVodDialog(isFromVod) {
@@ -3020,6 +3312,7 @@ function Play_BottonIconsHide(hideType) {
 }
 
 function Play_BottonIconsShow(skipInfo) {
+
     Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_info_div, 'opacity_zero');
     Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
@@ -3107,7 +3400,6 @@ function Play_PreStart() {
     Play_MultiSetpannelInfo();
 
     Play_MakeControls();
-    Play_SetControls();
     Play_ChatSize(false);
     Play_SetFullScreen(Play_isFullScreen);
 

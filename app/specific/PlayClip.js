@@ -87,16 +87,11 @@ function PlayClip_Start() {
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
     Main_values.Play_isHost = false;
-    PlayClip_SetOpenVod();
 
     Play_StartStayShowBottom();
-    Play_BottomHide(Play_controlsChatDelay);
-    Play_BottomHide(Play_controlsLowLatency);
-    Play_BottomHide(Play_MultiStream);
-    Play_BottomHide(Play_controlsChatSend);
-    Play_BottomHide(Play_controlsChapters);
+    Play_SetControlsVisibility('ShowInClip');
+    PlayClip_SetOpenVod();
 
-    PlayExtra_UnSetPanel();
     Play_BottonIconsResetFocus();
 
     Play_CurrentSpeed = 3;
@@ -628,6 +623,7 @@ function PlayClip_hidePanel() {
     //Reset values
     Play_ResetSpeed();
     PlayClip_qualityReset();
+    Play_controls[Play_controlsBack].enterKey(3, true);
     Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();

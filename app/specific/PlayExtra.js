@@ -370,10 +370,7 @@ function PlayExtra_SetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
 
-    Play_BottomShow(Play_controlsAudio);
-    Play_BottomShow(Play_controlsQualityMini);
-
-    Play_BottomHide(Play_controlsQuality);
+    Play_SetControlsVisibility('ShowInPP');
 
     Play_IconsResetFocus();
     PlayExtra_UpdatePanel();
@@ -386,12 +383,7 @@ function PlayExtra_UnSetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
 
-    Play_BottomShow(Play_controlsQuality);
-
-    Play_BottomHide(Play_controlsAudio);
-    Play_BottomHide(Play_controlsQualityMini);
-    Play_BottomHide(Play_controlsQualityMulti);
-    Play_BottomHide(Play_controlsAudioMulti);
+    Play_SetControlsVisibility('ShowInLive');
 
     Play_IconsResetFocus();
     ChatLive_Clear(1);

@@ -183,12 +183,7 @@ function Play_Start(offline_chat) {
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
     Play_StartStayShowBottom();
-    Play_BottomShow(Play_MultiStream);
-    Play_BottomShow(Play_controlsChatDelay);
-    Play_BottomShow(Play_controlsLowLatency);
-    Play_BottomShow(Play_controlsChatSend);
-    Play_BottomHide(Play_controlsOpenVod);
-    Play_BottomHide(Play_controlsChapters);
+    Play_SetControlsVisibility('ShowInLive');
 
     if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
     Play_BottonIconsResetFocus();
@@ -1481,6 +1476,7 @@ function Play_hidePanel() {
     Play_qualityReset();
     Play_ResetSpeed();
     Play_ResetLowlatency();
+    Play_controls[Play_controlsBack].enterKey(1, true);
     Play_BottonIconsResetFocus(true);
 
     if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
