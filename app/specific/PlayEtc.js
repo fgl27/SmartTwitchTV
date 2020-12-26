@@ -2929,7 +2929,8 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     if (!PlayVod_PanelY) { //progress_bar
 
-        if (PlayClip_EnterPos) Play_BottonIconsShow(skipInfo);
+        if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_BottonIcons_Progress, 'opacity_zero');
+
         Play_BottonIconsHide(1);
         Main_AddClassWitEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
         Play_IconsRemoveFocus();
@@ -2943,20 +2944,22 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     } else if (PlayVod_PanelY === 1) { //pause/next/back buttons
 
-        Play_BottonIconsShow(skipInfo);
 
         if (!PlayClip_EnterPos) { //pause
 
+            Play_BottonIconsShow(skipInfo);
             Main_AddClassWitEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
 
         } else if (PlayClip_EnterPos === 1) { //next
 
+            Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
 
         } else if (PlayClip_EnterPos === -1) { //back
 
+            Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_End_img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
@@ -2971,7 +2974,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
     } else if (PlayVod_PanelY === 2) { //botton icons
 
-        if (PlayClip_EnterPos) Play_BottonIconsShow(skipInfo);
+        if (PlayClip_EnterPos) Main_RemoveClassWithEle(Play_Controls_Holder, 'opacity_zero');
 
         Play_BottonIconsHide(0);
         Play_IconsAddFocus();
