@@ -944,7 +944,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_REFRESH:
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
+                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(3);
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);
@@ -964,7 +964,7 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) break;
 
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else Play_controls[Play_controlsChatSide].enterKey();
+                else Play_controls[Play_controlsChatSide].enterKey(3);
                 break;
             case KEY_MEDIA_NEXT:
                 PlayClip_PlayNext();

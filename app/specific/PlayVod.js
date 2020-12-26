@@ -1296,7 +1296,7 @@ function PlayVod_handleKeyDown(e) {
             case KEY_REFRESH:
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
+                    !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(2);
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(2);
@@ -1316,7 +1316,7 @@ function PlayVod_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) break;
 
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else Play_controls[Play_controlsChatSide].enterKey();
+                else Play_controls[Play_controlsChatSide].enterKey(2);
 
                 break;
             case KEY_MEDIA_NEXT:

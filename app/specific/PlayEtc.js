@@ -1568,7 +1568,7 @@ function Play_handleKeyDown(e) {
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
 
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else Play_controls[Play_controlsChatSide].enterKey();
+                else Play_controls[Play_controlsChatSide].enterKey(1);
 
                 break;
             case KEY_MEDIA_REWIND:
