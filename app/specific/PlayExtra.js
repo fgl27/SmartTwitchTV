@@ -165,7 +165,6 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
 
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
-    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
@@ -340,8 +339,8 @@ function PlayExtra_CheckHost(responseText, doSwitch, id) {
                 Play_Start();
 
                 Play_showWarningDialog(warning_text, 4000);
-                //Java will reset audio source reset it
-                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+
+                Play_AudioReset(0);
 
             } else {
 
@@ -391,6 +390,8 @@ function PlayExtra_UnSetPanel() {
 
     Main_HideElement('stream_info_pp');
     Main_ShowElement('stream_info');
+
+    Play_AudioReset(0);
 }
 
 function PlayExtra_ClearExtra() {

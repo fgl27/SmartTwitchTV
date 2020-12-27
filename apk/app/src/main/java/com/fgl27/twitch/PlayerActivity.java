@@ -151,10 +151,7 @@ public class PlayerActivity extends Activity {
     private int PreviewSize = 1;//sizes are 0 , 1 , 2, 3
     private int FullScreenSize = 3;//sizes are 0 , 1 , 2, 3, 4 ... 2 default 75%
     private int FullScreenPosition = 1;//0 right 1 left
-    private int AudioSource = 1;
-    private int AudioMulti = 0;//window 0
-    private float PreviewOthersAudio = 0.3f;//window 0
-    private float PreviewAudio = 1f;//window 0
+    private float AudioMaxPreviewVisible = 0.3f;//window 0
     private float PingValue = 0f;
     private float PingValueAVG = 0f;
     private long PingCounter = 0L;
@@ -258,6 +255,8 @@ public class PlayerActivity extends Activity {
 
     private final PlayerObj[] PlayerObj = new PlayerObj[PlayerAccountPlus];
 
+    private final boolean[] AudioEnabled = {true, false, false, false, true};
+
     public class PlayerObj {
         boolean IsPlaying;
         boolean isScreenPreview;
@@ -268,6 +267,8 @@ public class PlayerActivity extends Activity {
         int loadControlRamDivider;
         int Type;
         int CheckCounter;
+
+        float volume;
 
         Handler CheckHandler;
 
@@ -281,7 +282,7 @@ public class PlayerActivity extends Activity {
         SimpleExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
-                  int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter,
+                  int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter, float volume,
                   Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
                   PlayerView playerView, SimpleExoPlayer player) {
 
@@ -294,6 +295,9 @@ public class PlayerActivity extends Activity {
 
             this.Type = Type;
             this.CheckCounter = CheckCounter;
+
+            this.volume = volume;
+
             this.CheckHandler = CheckHandler;
             this.ResumePosition = ResumePosition;
 
@@ -372,6 +376,7 @@ public class PlayerActivity extends Activity {
                         2,
                         0,
                         0,
+                        1.0f,
                         null,
                         0,
                         null,
@@ -545,11 +550,12 @@ public class PlayerActivity extends Activity {
         else
             PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
 
-        mSetMainPlayersAudio();
         if (PlayerObjPosition == 0) GetCurrentPosition();
 
         PlayerObj[4].playerView.setPlayer(null);
         Clear_PreviewPlayer();
+
+        ApplyAudioAll();
     }
 
     private void SetupPlayer(int PlayerObjPosition) {
@@ -609,7 +615,7 @@ public class PlayerActivity extends Activity {
 
         if (PlayerObjPosition < 4) {
             //Main players
-            mSetMainPlayersAudio();
+            ApplyAudioAll();
 
             //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
             if (PlayerObjPosition == 0) {
@@ -627,14 +633,16 @@ public class PlayerActivity extends Activity {
 
         } else {
             //Preview player
-            SetAudio(4, PreviewAudio);
+            SetAudio(PlayerObjPosition, PlayerObj[PlayerObjPosition].volume);
 
             if (PlayerObj[PlayerObjPosition].Type > 1) {
+
                 SmallPlayerCurrentPosition =
                         PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
                                 0 : PlayerObj[PlayerObjPosition].ResumePosition;
 
                 GetCurrentPositionSmall();
+
             }
 
         }
@@ -691,7 +699,7 @@ public class PlayerActivity extends Activity {
         }
 
         releasePlayer(4);
-        mSetMainPlayersAudio();
+        ApplyAudioAll();
 
         //Prevent odd error Decoder init failed: OMX.Nvidia.h264.decode... maybe also to other devices
         //That happens after a resume that before the resume you move the player using setplayer()
@@ -713,9 +721,6 @@ public class PlayerActivity extends Activity {
         }
 
         releasePlayer(position);
-        //Multi audio is deal on js side when a player closes
-        //Reset audio source to main window as PP closed
-        if (position == 1 && !MultiStreamEnable) SwitchPlayerAudio(1);
 
         CheckKeepScreenOn();
     }
@@ -733,7 +738,6 @@ public class PlayerActivity extends Activity {
     private void ResetPlayerState() {
 
         PicturePicture = false;
-        AudioSource = 1;
 
         for (int i = 0; i < PlayerAccount; i++) {
             releasePlayer(i);
@@ -1057,7 +1061,7 @@ public class PlayerActivity extends Activity {
             PlayerObjUpdateTrackSelector(i, i);
         }
 
-        SwitchPlayerAudio(AudioSource);
+        ApplyAudioAll();
 
     }
 
@@ -1075,48 +1079,15 @@ public class PlayerActivity extends Activity {
     }
 
     public void SetAudio(int pos, float volume) {
-        if (PlayerObj[pos].player != null) PlayerObj[pos].player.setVolume(volume);
+        if (PlayerObj[pos].player != null)
+            PlayerObj[pos].player.setVolume(volume);
     }
 
-    public void mSetMainPlayersAudio() {
-        if (MultiStreamEnable) SetPlayerAudioMulti();
-        else SwitchPlayerAudio(AudioSource);
-    }
-
-    public void SwitchPlayerAudio(int pos) {
-        float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
-        AudioSource = pos;
-
-        if (pos >= 2) {//both
-            AudioMulti = 4;
-            SetAudio(0, volume);
-            SetAudio(1, volume);
-        } else if (pos == 1) {//Main
-            AudioMulti = 0;
-            SetAudio(0, volume);
-            SetAudio(1, 0f);
-        } else {//Small
-            AudioMulti = 1;
-            SetAudio(0, 0f);
-            SetAudio(1, volume);
-        }
-    }
-
-    public void SetPlayerAudioMulti() {
-
-        float volume = PlayerObj[4].player == null ? 1f : PreviewOthersAudio;
-
-        boolean AudioAll = AudioMulti == 4;
+    public void ApplyAudioAll() {
+        float MaxVolume = PlayerObj[4].player == null ? 1f : AudioMaxPreviewVisible;
 
         for (int i = 0; i < PlayerAccount; i++) {
-
-            if (PlayerObj[i].player != null) {
-
-                if (AudioAll || AudioMulti == i) PlayerObj[i].player.setVolume(volume);
-                else PlayerObj[i].player.setVolume(0f);
-
-            }
-
+            SetAudio(i, AudioEnabled[i] ? Math.min(PlayerObj[i].volume, MaxVolume) : 0f);
         }
 
     }
@@ -1193,8 +1164,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[i].Listener.UpdatePosition(i);
         }
 
-        AudioMulti = AudioMulti == 4 ? AudioMulti : 0;
-        SetPlayerAudioMulti();
+        ApplyAudioAll();
 
     }
 
@@ -1229,7 +1199,7 @@ public class PlayerActivity extends Activity {
             PicturePicture = false;
             ClearPlayer(1);
 
-        } else SwitchPlayerAudio(AudioSource);
+        }
 
         PlayerObj[2].playerView.setVisibility(View.GONE);
         PlayerObj[3].playerView.setVisibility(View.GONE);
@@ -1549,9 +1519,6 @@ public class PlayerActivity extends Activity {
         IsStopped = true;
         if (!WebviewLoaded) return;
 
-        //ClearPlayer will reset multi audio position
-        int temp_AudioMulti = AudioMulti;
-
         updateResumePosition(0);//VOD only uses mainPlayer
         for (int i = 0; i < PlayerAccount; i++) {
             ClearPlayer(i);
@@ -1569,9 +1536,6 @@ public class PlayerActivity extends Activity {
         //Clear activity notification check and start background service if enable
         NotificationHandler.removeCallbacksAndMessages(null);
         StartNotificationService();
-
-        //ClearPlayer will reset multi audio position
-        AudioMulti = temp_AudioMulti;
 
         //Reset status values
         PingValue = 0f;
@@ -2248,7 +2212,7 @@ public class PlayerActivity extends Activity {
 
             Clear_PreviewPlayer();
             WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
-            mSetMainPlayersAudio();
+            ApplyAudioAll();
 
         }
 
@@ -3260,33 +3224,34 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void mSwitchPlayerAudio(int position) {
-            runOnUiThread(() -> SwitchPlayerAudio(position));
+        public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4) {
+            AudioEnabled[0] = pos1;
+            AudioEnabled[1] = pos2;
+            AudioEnabled[2] = pos3;
+            AudioEnabled[3] = pos4;
         }
 
         @JavascriptInterface
-        public void mSetAudio(int position, float volume) {
-            runOnUiThread(() -> SetAudio(position, volume));
+        public void SetVolumes(float pos1, float pos2, float pos3, float pos4) {
+            PlayerObj[0].volume = pos1;
+            PlayerObj[1].volume = pos2;
+            PlayerObj[2].volume = pos3;
+            PlayerObj[3].volume = pos4;
         }
 
         @JavascriptInterface
-        public void mSetPlayerAudioMulti(int position) {
-            runOnUiThread(() -> {
-
-                AudioMulti = position;
-                SetPlayerAudioMulti();
-
-            });
+        public void ApplyAudio() {
+            runOnUiThread(PlayerActivity.this::ApplyAudioAll);
         }
 
         @JavascriptInterface
         public void SetPreviewOthersAudio(int volume) {
-            PreviewOthersAudio = volume / 100f;
+            AudioMaxPreviewVisible = volume / 100f;
         }
 
         @JavascriptInterface
         public void SetPreviewAudio(int volume) {
-            PreviewAudio = volume / 100f;
+            PlayerObj[4].volume = volume / 100f;
         }
 
         @JavascriptInterface
@@ -3807,7 +3772,7 @@ public class PlayerActivity extends Activity {
                     //Preview player
 
                     PlayerObj[position].CheckCounter = 0;
-                    mSetMainPlayersAudio();
+                    ApplyAudioAll();
 
                 }
 

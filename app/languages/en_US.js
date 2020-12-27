@@ -305,7 +305,6 @@ function en_USLang() {
     STR_QUALITY = "Quality";
     STR_NORMAL = "Normal";
     STR_AUTO = "Auto";
-
     STR_VERY_LOW = "Very low";
     STR_LOW = "Low";
     STR_HIGH = "High";
@@ -316,12 +315,8 @@ function en_USLang() {
     STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
     STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
     STR_PLAYER_RESYNC = "Player Restart";
-    STR_PLAYER_AUTO_ALL = "Both";
     STR_PLAYER_MULTI_ALL = "All";
-    STR_AUDIO_PP = ["Small", "Big", STR_PLAYER_AUTO_ALL];
-    STR_AUDIO_5050 = ["Bottom", "Top", STR_PLAYER_AUTO_ALL];
-    STR_AUDIO_MULTI = ["Top lefth", "Top right", "Bottom lefth", "Bottom right", STR_PLAYER_MULTI_ALL];
-    STR_AUDIO_MULTI_BIG = ["Top ", "Bottom lefth", "Bottom center", "Bottom right", STR_PLAYER_MULTI_ALL];
+    STR_QUALITY_PP = ["Small", "Big", STR_PLAYER_MULTI_ALL];
     STR_QUALITY_MULTI = [STR_PLAYER_MULTI_ALL, "Top lefth", "Top right", "Bottom lefth", "Bottom right"];
     STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom lefth", "Bottom center", "Bottom right"];
     STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
@@ -339,7 +334,14 @@ function en_USLang() {
     STR_BLOCK_RES_SUMMARY_EXTRA = "The user can overwrite the selection manually during the playback<br><br>XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
     STR_BLOCKED = "Blocked";
     STR_BLOCKED_NOT = "Not blocked";
-    STR_AUDIO_SOURCE = "Audio source";
+    STR_AUDIO_SOURCE = "Audio source ";
+    STR_VOLUME_CONTROLS = "Audio & Volume controls";
+    STR_AUDIO_ALL = "Audio enable all";
+    STR_AUDIO_ALL_ENA = "All audio sources enabled";
+    STR_AUDIO_ALL_100 = "Volume all to 100%";
+    STR_AUDIO_ALL_100_SET = "All player volume set to 100%";
+    STR_VOLUME = "Volume - ";
+    STR_AUDIO = "Audio - ";
     STR_DEF_QUALITY = "Default player quality";
     STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "' + STR_PLAYER_BITRATE + '"';
     STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";

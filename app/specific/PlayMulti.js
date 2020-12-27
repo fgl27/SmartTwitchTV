@@ -114,7 +114,6 @@ function Play_Multi_UnSetPanelDiv(checkChat) {
     }
 
     Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI;
-    Play_controls[Play_controlsAudioMulti].values = STR_AUDIO_MULTI;
 }
 
 function Play_Multi_UnSetPanelDivCheckChat() {
@@ -148,7 +147,6 @@ function Play_Multi_UnSetPanel(shutdown) {
 
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
             PlayExtra_SetPanel();
-            OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
             if (!Play_isFullScreen) {
                 Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
@@ -156,14 +154,20 @@ function Play_Multi_UnSetPanel(shutdown) {
                 PlayExtra_ShowChat();
             }
 
-        }
+            Play_AudioCheckCloseMulti();
+
+        } else Play_AudioReset(0);
 
     } else {
 
         Play_Multi_UnSetPanelDivCheckChat();
+
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
         else Play_SetControlsVisibility('ShowInLive');
+
         PlayExtra_PicturePicture = false;
+
+        Play_AudioReset(0);
 
     }
 
@@ -196,7 +200,6 @@ function Play_Multi_UnSetPanel(shutdown) {
 
     }
 
-    Play_OldAudio = Play_controls[Play_controlsAudio].defaultValue;
 }
 
 function Play_MultiFirstAvailable() {
@@ -232,19 +235,23 @@ function Play_MultiEnd(position, fail_type) {
 
         if (Play_Multi_MainBig && !position) {//If main ended find a new main
 
-            var tempAudio = Play_DefaultAudio_Multi === 4;
             Play_MultiEnableKeyRightLeft(1);
-            if (tempAudio) Play_MultiKeyDownHold();
 
-        } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
 
-            if (Play_MultiArray[0].data.length) {//Set audio to main video if available
+        } else {
 
-                Play_DefaultAudio_Multi = 0;
-                Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-                Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+            for (var i = 0; i < 4; i++) {
 
-            } else Play_MultiEnableKeyRightLeft(1);//else find one
+                if (Play_MultiArray[i].data.length > 0 && Play_audio_enable[i]) {
+
+                    return;
+
+                }
+
+                Play_MultiInfoReset(i);
+            }
+
+            Play_MultiEnableKeyRightLeft(1);//find one to enable the audio
 
         }
 
@@ -494,10 +501,9 @@ function Play_MultiEnableKeyRightLeft(adder) {
                 return;
             }
 
-            if (Play_DefaultAudio_Multi !== 4) Play_DefaultAudio_Multi = 0;
-            OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
-            Play_ResetAudio();
-            Play_SetAudioMultiIcon();
+            Play_audio_enable = [1, 0, 0, 0];
+
+            Play_ResetQualityControls();
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
@@ -521,28 +527,29 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
     } else {
 
-        Play_DefaultAudio_Multi += adder;
+        var pos = Play_AudioGetFirst() + adder;
 
-        if (Play_DefaultAudio_Multi > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
+        if (pos > 3) pos = 0;
+        else if (pos < 0) pos = 3;
 
-            Play_DefaultAudio_Multi = 0;
+        Play_audio_enable = [0, 0, 0, 0];
+        Play_audio_enable[pos] = 1;
 
-        } else if (Play_DefaultAudio_Multi < 0) {
-
-            Play_DefaultAudio_Multi = Play_controls[Play_controlsAudioMulti].values.length - 2;
-
-        }
-
-        if (!Play_MultiArray[Play_DefaultAudio_Multi].data.length) {
+        if (!Play_MultiArray[pos].data.length) {
 
             Play_MultiEnableKeyRightLeft(adder);
             return;
         }
 
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+        Play_AudioReset(pos);
 
+        Play_showWarningMidleDialog(
+            STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[pos].data[1],
+            2000
+        );
     }
+
+    Play_SetAudioIcon();
 
 }
 
@@ -589,25 +596,6 @@ function Play_SetMultiStreamMainBig(offset) {
     }
 
 }
-
-var Play_OldAudio = 0;
-var Play_AudioAll = false;
-function Play_MultiKeyDownHold(preventShowWarning) {
-    Play_EndUpclear = true;
-
-    if (Play_DefaultAudio_Multi !== 4) {
-        Play_OldAudio = Play_DefaultAudio_Multi;
-        Play_DefaultAudio_Multi = 4;
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
-    } else {
-        Play_DefaultAudio_Multi = Play_OldAudio < 4 ? Play_OldAudio : 0;
-        Play_OldAudio = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
-    }
-}
-
 
 function Play_MultiUpdateinfoMainBig(extraText) {
     var i = 0;

@@ -251,14 +251,6 @@ function OSInterface_mMethodUrlHeaders(urlString, timeout, postMessage, Method, 
     );
 }
 
-//public void mSwitchPlayerAudio(int position)
-//position = the audio position, 2 enables both player audio, 1 only Main player, 0 small player
-//Android specific: false
-//Allows to change the audio source on PP or 50/50 mode
-function OSInterface_mSwitchPlayerAudio(position) {
-    if (Main_IsOn_OSInterface) Android.mSwitchPlayerAudio(position);
-}
-
 //public void mupdatesizePP(boolean FullScreen)
 //FullScreen = if true Main player full size small player will be small in relation to PlayerViewSmallSize[][], if false 50/50 mode
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
@@ -844,14 +836,6 @@ function OSInterface_SetPreviewOthersAudio(volume) {
     if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume);
 }
 
-//public void mSetPlayerAudioMulti(int position)
-//position = the player position to enable the audio 0 to 3, 4 all player enable
-//Android specific: true
-//Allows to set with player will produce audio
-function OSInterface_mSetPlayerAudioMulti(position) {
-    if (Main_IsOn_OSInterface) Android.mSetPlayerAudioMulti(position);
-}
-
 //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
 //mainPlaylistString = the stringify version of the url playlist content
@@ -1103,6 +1087,66 @@ function OSInterface_CheckReUsePlayer() {
     if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
 }
 
+//public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
+//posX =  player position
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_SetAudioEnabled() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.SetAudioEnabled(
+                Boolean(Play_audio_enable[0]),
+                Boolean(Play_audio_enable[1]),
+                Boolean(Play_audio_enable[2]),
+                Boolean(Play_audio_enable[3])
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
+//posX =  player position
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_SetVolumes() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.SetVolumes(
+                parseFloat(Play_volumes[0] / 100),
+                parseFloat(Play_volumes[1] / 100),
+                parseFloat(Play_volumes[2] / 100),
+                parseFloat(Play_volumes[3] / 100)
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void ApplyAudio()
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_ApplyAudio() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.ApplyAudio();
+
+        }
+
+    } catch (e) { }
+}
+
 //public void getDuration()
 //String callback = the fun to receive the value
 //Android specific: true
@@ -1130,13 +1174,4 @@ function OSInterface_CheckReUsePlayer() {
 //return the playback state
 // function OSInterface_getPlaybackState() {//Not be used
 //     return Android.getPlaybackState();
-// }
-
-//public void mSetAudio(int position, float volume)
-//position player position
-//volume the player volume
-//Android specific: true
-//Allows to control individual player volume
-// function OSInterface_mSetAudio(position, volume) {//Not be used
-//     Android.mSetAudio(position, volume);
 // }

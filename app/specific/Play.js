@@ -31,12 +31,10 @@ var PlayVod_RefreshProgressBarrTimeout = 1000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
 var Play_PicturePictureSize = 2;
-var Play_controlsAudioPos = 1;
 var Play_STATE_LOADING_TOKEN = 0;
 var Play_STATE_PLAYING = 1;
 var Play_state = 0;
 var Play_MultiEnable = false;
-var Play_MultiArray = [];
 var Play_LowLatency = 0;
 var Play_EndUpclear = false;
 var Play_EndUpclearID;
@@ -150,6 +148,8 @@ var Play_ChatSizeVal = [{
 
 var Play_ChatFontObj = [];
 
+//Variable initialization end
+
 function Play_ResetDefaultQuality() {
 
     if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
@@ -238,6 +238,7 @@ function Play_Start(offline_chat) {
     Main_SaveValues();
     //Check the Play_UpdateMainStream fun when on a browser
     if (!Main_IsOn_OSInterface && !offline_chat) Play_UpdateMainStream(true, true);
+
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -1479,7 +1480,7 @@ function Play_hidePanel() {
     Play_controls[Play_controlsBack].enterKey(1, true);
     Play_BottonIconsResetFocus(true);
 
-    if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetAudio();
+    if (Play_MultiEnable || PlayExtra_PicturePicture) Play_ResetQualityControls();
 
     Play_clearHidePanel();
     PlayVod_ClearProgressJumptime(0);
@@ -2103,18 +2104,6 @@ function Play_ResStoreChatPos() {
     Main_getElementById("play_chat_dialog").style.marginTop = Play_StoreChatPosValue.marginTop;
     Play_chat_container.style.top = Play_StoreChatPosValue.top;
     Play_chat_container.style.left = Play_StoreChatPosValue.left;
-}
-
-function Play_AudioChangeRight() {
-    Play_controls[Play_controlsAudio].defaultValue++;
-    if (Play_controls[Play_controlsAudio].defaultValue > (Play_controls[Play_controlsAudio].values.length - 2)) Play_controls[Play_controlsAudio].defaultValue = 0;
-    Play_controls[Play_controlsAudio].enterKey();
-}
-
-function Play_AudioChangeLeft() {
-    Play_controls[Play_controlsAudio].defaultValue--;
-    if (Play_controls[Play_controlsAudio].defaultValue < 0) Play_controls[Play_controlsAudio].defaultValue = (Play_controls[Play_controlsAudio].values.length - 2);
-    Play_controls[Play_controlsAudio].enterKey();
 }
 
 function Play_FastBackForward(position) {
