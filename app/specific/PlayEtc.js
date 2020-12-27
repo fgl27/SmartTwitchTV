@@ -1896,23 +1896,24 @@ var Play_controlsChatSide = 15;
 var Play_controlsChat = 16;
 var Play_controlsChatSend = 17;
 var Play_controlsChatSettings = 18;
-var Play_controlsChatForceDis = 19;
-var Play_controlsChatDelay = 20;
-var Play_controlsChatPos = 21;
-var Play_controlsChatSize = 22;
-var Play_controlsChatBright = 23;
-var Play_controlsChatFont = 24;
+var Play_controlsPlayerStatus = 19;
+var Play_controlsChatForceDis = 20;
+var Play_controlsChatDelay = 21;
+var Play_controlsChatPos = 22;
+var Play_controlsChatSize = 23;
+var Play_controlsChatBright = 24;
+var Play_controlsChatFont = 25;
 
-var Play_controlsAudioAll = 25;
-var Play_controlsAudio_Volume_100 = 26;
-var Play_controlsAudioEna0 = 27;
-var Play_controlsAudioVol0 = 28;
-var Play_controlsAudioEna1 = 29;
-var Play_controlsAudioVol1 = 30;
-var Play_controlsAudioEna2 = 31;
-var Play_controlsAudioVol2 = 32;
-var Play_controlsAudioEna3 = 33;
-var Play_controlsAudioVol3 = 34;
+var Play_controlsAudioAll = 26;
+var Play_controlsAudio_Volume_100 = 27;
+var Play_controlsAudioEna0 = 28;
+var Play_controlsAudioVol0 = 29;
+var Play_controlsAudioEna1 = 30;
+var Play_controlsAudioVol1 = 31;
+var Play_controlsAudioEna2 = 32;
+var Play_controlsAudioVol2 = 33;
+var Play_controlsAudioEna3 = 34;
+var Play_controlsAudioVol3 = 35;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2727,7 +2728,6 @@ function Play_MakeControls() {
         }
     };
 
-
     Play_controls[Play_controlsChatSettings] = {
         ShowInLive: true,
         ShowInVod: true,
@@ -2752,6 +2752,39 @@ function Play_MakeControls() {
             Play_IconsAddFocus();
 
         }
+    };
+
+    Play_controls[Play_controlsPlayerStatus] = {
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: 'status',
+        string: STR_CHAT_EXTRA,
+        values: STR_PLAYER_INFO_VISIBILITY_ARRAY,
+        defaultValue: Play_Status_Visible,
+        updown: function(adder, PlayVodClip) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
+
+            Play_Status_Visible = this.defaultValue;
+
+            Main_setItem('Play_Status_Visible', Play_Status_Visible);
+            this.bottomArrows();
+
+            Play_ShowPanelStatus(PlayVodClip);
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
     };
 
     Play_controls[Play_controlsChatForceDis] = { //force disable chat
@@ -3832,8 +3865,8 @@ function Play_BottonIconsHide(hideType) {
 
     }
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
+    else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 function Play_BottonIconsShow(skipInfo) {
@@ -3845,8 +3878,8 @@ function Play_BottonIconsShow(skipInfo) {
 
     if (!skipInfo) {
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+        if (!Play_Status_Visible) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Play_Status_Visible === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
     }
 }
@@ -3880,6 +3913,8 @@ Play_MultiArray[3] = JSON.parse(JSON.stringify(Play_data_base));
 var Play_volumes = [100, 100, 100, 100];
 var Play_audio_enable = [1, 0, 0, 0];
 
+var Play_Status_Visible = 0;
+
 function Play_PreStart() {
     Play_seek_previews = Main_getElementById('seek_previews');
     Play_seek_previews_img = new Image();
@@ -3901,6 +3936,7 @@ function Play_PreStart() {
 
     Play_FullScreenSize = Main_getItemInt('Play_FullScreenSize', 3);
     Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
+    Play_Status_Visible = Main_getItemInt('Play_Status_Visible', 0);
 
     Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
 

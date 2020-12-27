@@ -1410,7 +1410,7 @@ function Play_ExitDialogVisible() {
 var Play_ShowPanelStatusId;
 function Play_ShowPanelStatus(mwhocall) {
 
-    if (Settings_Obj_default("keep_panel_info_visible") === 1 && !Play_StayDialogVisible()) {
+    if (Play_Status_Visible === 1 && !Play_StayDialogVisible()) {
 
         if (Main_IsOn_OSInterface) {
 
@@ -1455,8 +1455,8 @@ function Play_ForceShowPannel() {
 
     if (!Play_StayDialogVisible()) {
 
-        if (!Settings_Obj_default("keep_panel_info_visible")) Main_ShowElementWithEle(Play_side_info_div);
-        else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
+        if (!Play_Status_Visible) Main_ShowElementWithEle(Play_side_info_div);
+        else if (Play_Status_Visible === 1) Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
     }
 
@@ -1465,8 +1465,8 @@ function Play_ForceShowPannel() {
 function Play_ForceHidePannel() {
     Play_PanneInfoDoclId.style.opacity = 0;
 
-    if (!Settings_Obj_default("keep_panel_info_visible")) Main_HideElementWithEle(Play_side_info_div);
-    else if (Settings_Obj_default("keep_panel_info_visible") === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+    if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
+    else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 }
 
 function Play_hidePanel() {
@@ -1585,7 +1585,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 
     var value = JSON.parse(valueString);
 
-    if (Settings_Obj_default("keep_panel_info_visible") !== 2) {
+    if (Play_Status_Visible !== 2) {
 
         Main_innerHTMLWithEle(Play_StreamStatus,
             STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +

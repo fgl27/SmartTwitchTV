@@ -715,7 +715,7 @@ function PlayVod_RefreshProgressBarrStart(showVideoQuality, who_called) {
 var PlayVod_getVideoQualityRate = 0;
 function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
-    var Update_status = Settings_Obj_default("keep_panel_info_visible");
+    var Update_status = Play_Status_Visible;
 
     if (!PlayVod_getVideoQualityRate && !Update_status && Main_IsOn_OSInterface && showVideoQuality &&
         ((Main_A_includes_B(PlayVod_qualityPlaying, 'Auto') && PlayVod_isOn) ||
