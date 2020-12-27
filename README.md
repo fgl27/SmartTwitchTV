@@ -70,7 +70,7 @@ The application is splinted in two parts, a web app and Android apk.
 
 ### The web app
 
-The web app is a web page [Click here to access it](https://fgl27.github.io/SmartTwitchTV/release/index.min.html), this page contains the app user interface and most of the app logic.
+The web app is a web page [Click here to access it](https://fgl27.github.io/SmartTwitchTV/release/index.html), this page contains the app user interface and most of the app logic.
 
 ### The Apk
 
@@ -124,7 +124,7 @@ This file is part of the web app to test that file the easiest way is to:<br>
 - Make sure you go to all app screens included the player (open Live, VOD and clips) and check if the translate string do not overflow and or cause the app to look odd
 - Make sure you open the fallowing side panel screens Settings, About and Controls as those are the screens that have more text so they usually need some work to make all look OK.
 - If any screen looks odd and isn't possible in any for or way to make the string to feet inform with string/screen has the problem when you share the file
-- If you wanna compare yours changes VS the original app side by side open on a new tab the [main app page](https://fgl27.github.io/SmartTwitchTV/release/index.min.html)
+- If you wanna compare yours changes VS the original app side by side open on a new tab the [main app page](https://fgl27.github.io/SmartTwitchTV/release/index.html)
 
 ### Testing [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 

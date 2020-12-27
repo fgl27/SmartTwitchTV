@@ -268,7 +268,43 @@
 .icon-external:before {
   content: "\4d";
 }
-
 .icon-globe:before {
   content: "\4e";
+}
+.icon-chat-settings:before {
+  content: "\74";
+}
+.icon-preview:before {
+  content: "\30";
+}
+.icon-speaker:before {
+  content: "\5a";
+}
+
+.icon-levels:before {
+  content: "\32";
+}
+
+.icon-vol-level-0:before {
+  content: "\59";
+}
+
+.icon-vol-level-1:before {
+  content: "\31";
+}
+
+.icon-vol-level-2:before {
+  content: "\33";
+}
+
+.icon-vol-level-3:before {
+  content: "\34";
+}
+
+.icon-vol-level-4:before {
+  content: "\35";
+}
+
+.icon-status:before {
+  content: "\37";
 }
