@@ -1553,6 +1553,13 @@ public class PlayerActivity extends Activity {
         NetActivityAVG = 0f;
         NetCounter = 0L;
 
+        //Reset the intent to avoid leaks that may happen when the app is killed (force close do to low ram for example)
+        //TODO find a way to read a intent after the app was killed
+        LastIntent = null;
+        Intent intent = getIntent();
+        intent.setAction(null);
+        setIntent(intent);
+
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "onStop");
         }
