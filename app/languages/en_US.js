@@ -548,7 +548,7 @@ function en_USLang() {
     STR_GIFT_ANONYMOUS = "An " + STR_ANONYMOUS_USER;
     STR_CHAT_BANNED = "You are permanently banned from talking in  ";
     STR_CHAT_WRITE = "Write to chat";
-    STR_CHAT_EXTRA = "Chat extra options";
+    STR_CHAT_EXTRA = "Chat extra settings";
     STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
     STR_CHAT_ROOMSTATE = "Chat ROOMSTATE:";
     STR_CHAT_NO_RESTRICTIONS = "No restrictions";
@@ -659,4 +659,8 @@ function en_USLang() {
     STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from be running when no one is using, a warning will show up giving the user 15 seconds to press any key to prevent the minimizing";
     STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
     STR_REMAINING = "Remaining: ";
+    STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
+    STR_PREVIEW_SET = "Preview settings";
+    STR_PREVIEW_SHOW = "Show preview";
+    STR_PREVIEW_SIZE_CONTROLS = "Preview size";
 }

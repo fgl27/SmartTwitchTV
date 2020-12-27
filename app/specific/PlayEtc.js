@@ -24,6 +24,20 @@ var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 
+function Play_PreviewUpDown(key, obj, adder) {
+
+    obj.defaultValue += adder;
+
+    if (obj.defaultValue < 0) obj.defaultValue = 0;
+    else if (obj.defaultValue > (obj.values.length - 1)) obj.defaultValue = (obj.values.length - 1);
+
+    obj.bottomArrows();
+
+    Settings_value[key].defaultValue = obj.defaultValue;
+    Main_setItem(key, obj.defaultValue + 1);
+
+}
+
 function Play_AudioCheckCloseMulti() {
 
     if ((!Play_audio_enable[0] && Play_audio_enable[1]) ||
@@ -1895,25 +1909,33 @@ var Play_controlsAudio = 14;
 var Play_controlsChatSide = 15;
 var Play_controlsChat = 16;
 var Play_controlsChatSend = 17;
+
 var Play_controlsChatSettings = 18;
 var Play_controlsPlayerStatus = 19;
-var Play_controlsChatForceDis = 20;
-var Play_controlsChatDelay = 21;
-var Play_controlsChatPos = 22;
-var Play_controlsChatSize = 23;
-var Play_controlsChatBright = 24;
-var Play_controlsChatFont = 25;
+var Play_controlsPreview = 20;
 
-var Play_controlsAudioAll = 26;
-var Play_controlsAudio_Volume_100 = 27;
-var Play_controlsAudioEna0 = 28;
-var Play_controlsAudioVol0 = 29;
-var Play_controlsAudioEna1 = 30;
-var Play_controlsAudioVol1 = 31;
-var Play_controlsAudioEna2 = 32;
-var Play_controlsAudioVol2 = 33;
-var Play_controlsAudioEna3 = 34;
-var Play_controlsAudioVol3 = 35;
+var Play_controlsChatForceDis = 21;
+var Play_controlsChatDelay = 22;
+var Play_controlsChatPos = 23;
+var Play_controlsChatSize = 24;
+var Play_controlsChatBright = 25;
+var Play_controlsChatFont = 26;
+
+var Play_controlsAudioAll = 27;
+var Play_controlsAudio_Volume_100 = 28;
+var Play_controlsAudioEna0 = 29;
+var Play_controlsAudioVol0 = 30;
+var Play_controlsAudioEna1 = 31;
+var Play_controlsAudioVol1 = 32;
+var Play_controlsAudioEna2 = 33;
+var Play_controlsAudioVol2 = 34;
+var Play_controlsAudioEna3 = 35;
+var Play_controlsAudioVol3 = 36;
+
+var Play_controlsPreviewEnable = 37;
+var Play_controlsPreviewSize = 38;
+var Play_controlsPreviewVolume = 39;
+var Play_controlsPreviewMainVolume = 40;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2766,7 +2788,7 @@ function Play_MakeControls() {
         ShowInPreview: false,
         ShowInStay: true,
         icons: 'status',
-        string: STR_CHAT_EXTRA,
+        string: STR_PLAYER_INFO_VISIBILITY,
         values: STR_PLAYER_INFO_VISIBILITY_ARRAY,
         defaultValue: Play_Status_Visible,
         updown: function(adder, PlayVodClip) {
@@ -2785,6 +2807,45 @@ function Play_MakeControls() {
         bottomArrows: function() {
             Play_BottomArrows(this.position);
         },
+    };
+
+    Play_controls[Play_controlsPreview] = {
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: "preview",
+        string: STR_PREVIEW_SET,
+        values: null,
+        defaultValue: null,
+        enterKey: function() {
+
+            Play_PanelcounterBefore = Play_controlsPreview;
+            Play_IconsRemoveFocus();
+            Play_Panelcounter = Play_controlsBack;
+
+            Play_controls[Play_controlsPreviewEnable].defaultValue = Settings_Obj_default('show_feed_player');
+            Play_controls[Play_controlsPreviewEnable].bottomArrows();
+
+            Play_controls[Play_controlsPreviewSize].defaultValue = Settings_Obj_default('preview_sizes');
+            Play_controls[Play_controlsPreviewSize].bottomArrows();
+
+            Play_controls[Play_controlsPreviewVolume].defaultValue = Settings_Obj_default('preview_volume');
+            Play_controls[Play_controlsPreviewVolume].bottomArrows();
+
+            Play_controls[Play_controlsPreviewMainVolume].defaultValue = Settings_Obj_default('preview_others_volume');
+            Play_controls[Play_controlsPreviewMainVolume].bottomArrows();
+
+            Play_SetControlsVisibility('ShowInPreview');
+            Play_IconsAddFocus();
+
+        }
     };
 
     Play_controls[Play_controlsChatForceDis] = { //force disable chat
@@ -3431,6 +3492,108 @@ function Play_MakeControls() {
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position, true);
+        },
+    };
+
+    Play_controls[Play_controlsPreviewEnable] = { //chat enable disable
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: true,
+        ShowInStay: false,
+        icons: 'preview',
+        string: STR_PREVIEW_SHOW,
+        values: [STR_NO, STR_YES],
+        defaultValue: Settings_value.show_feed_player.defaultValue,
+        updown: function(adder) {
+
+            Play_PreviewUpDown('show_feed_player', this, adder);
+
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsPreviewSize] = { //chat enable disable
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: true,
+        ShowInStay: false,
+        icons: 'pp',
+        string: STR_PREVIEW_SIZE_CONTROLS,
+        values: STR_PREVIEW_SIZE_ARRAY,
+        defaultValue: Settings_value.preview_sizes.defaultValue,
+        updown: function(adder) {
+
+            Play_PreviewUpDown('preview_sizes', this, adder);
+            OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
+
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+    Play_controls[Play_controlsPreviewVolume] = { //chat enable disable
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: true,
+        ShowInStay: false,
+        icons: 'volume',
+        string: STR_PREVIEW_VOLUME,
+        values: Settings_GetVolumes(),
+        defaultValue: Settings_value.preview_volume.defaultValue,
+        updown: function(adder) {
+
+            Play_PreviewUpDown('preview_volume', this, adder);
+            OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
+
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
+        },
+    };
+
+    Play_controls[Play_controlsPreviewMainVolume] = { //chat enable disable
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: true,
+        ShowInStay: false,
+        icons: 'speaker',
+        string: STR_PREVIEW_OTHERS_VOLUME,
+        values: Settings_GetVolumes(),
+        defaultValue: Settings_value.preview_others_volume.defaultValue,
+        updown: function(adder) {
+
+            Play_PreviewUpDown('preview_others_volume', this, adder);
+            OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
+
+        },
+        bottomArrows: function() {
+            Play_BottomArrows(this.position);
         },
     };
 
