@@ -2053,7 +2053,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_nickcolor.values = yes_no;
     Settings_value.chat_timestamp.values = yes_no;
     Settings_value.clear_chat.values = yes_no;
-    Settings_value.show_chatters.values = yes_no;
+    Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
 
     var obj = {
         chat_logging: {

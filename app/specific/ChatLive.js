@@ -288,31 +288,72 @@ function ChatLive_loadChatters(chat_number, id) {
 
         Main_innerHTML(
             "chat_loggedin" + chat_number,
-            '...' + STR_IN_CHAT
+            '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWER)
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
         Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
         if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
 
-        if (Main_IsOn_OSInterface) {
-
-            ChatLive_loadChattersLoad(chat_number, id);
-
-            ChatLive_loadChattersId[chat_number] = Main_setInterval(
-                function() {
-                    ChatLive_loadChattersLoad(chat_number, id);
-                },
-                5 * 60 * 1000,//5 min
-                ChatLive_loadChattersId[chat_number]
-            );
-
-        }
-
+        ChatLive_loadChattersCheckType(chat_number, id);
     }
 
 }
 
+function ChatLive_loadChattersCheckType(chat_number, id) {
+
+    if (Settings_value.show_chatters.defaultValue === 1 && Main_IsOn_OSInterface) ChatLive_loadChattersLoad(chat_number, id);
+    else ChatLive_loadChattersViewers(chat_number, id);
+
+    ChatLive_loadChattersId[chat_number] = Main_setInterval(
+        function() {
+            if (Settings_value.show_chatters.defaultValue === 1 && Main_IsOn_OSInterface) ChatLive_loadChattersLoad(chat_number, id);
+            else ChatLive_loadChattersViewers(chat_number, id);
+        },
+        5 * 60 * 1000,//5 min
+        ChatLive_loadChattersId[chat_number]
+    );
+
+}
+
+function ChatLive_loadChattersViewers(chat_number, id) {
+
+    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag;
+
+    BasexmlHttpGet(
+        theUrl,
+        DefaultHttpGetTimeout * 2,
+        2,
+        null,
+        ChatLive_loadChattersViewersSuccess,
+        noop_fun,
+        chat_number,
+        id
+    );
+
+}
+
+function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
+    try {
+
+        if (id === Chat_Id[chat_number]) {
+
+            var resultObj = JSON.parse(responseText);
+
+            if (resultObj.streams && resultObj.streams.length) {
+
+                Main_innerHTML(
+                    "chat_loggedin" + chat_number,
+                    Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE + STR_VIEWER
+                );
+            }
+
+        }
+
+    } catch (e) {
+        Main_Log('ChatLive_loadChattersSuccess ' + e);
+    }
+}
 
 function ChatLive_loadChattersLoad(chat_number, id) {
 
