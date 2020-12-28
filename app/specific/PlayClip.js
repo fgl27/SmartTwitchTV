@@ -53,7 +53,7 @@ function PlayClip_Start() {
 
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
-    PlayVod_ProgresBarrUpdateNoAnimation(0, 1);
+    PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
 
     Play_BottonIcons_Next_img.src = IMG_404_BANNER;
     Play_BottonIcons_Back_img.src = IMG_404_BANNER;
@@ -87,16 +87,11 @@ function PlayClip_Start() {
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
 
     Main_values.Play_isHost = false;
-    PlayClip_SetOpenVod();
 
     Play_StartStayShowBottom();
-    Play_BottomHide(Play_controlsChatDelay);
-    Play_BottomHide(Play_controlsLowLatency);
-    Play_BottomHide(Play_MultiStream);
-    Play_BottomHide(Play_controlsChatSend);
-    Play_BottomHide(Play_controlsChapters);
+    Play_SetControlsVisibility('ShowInClip');
+    PlayClip_SetOpenVod();
 
-    PlayExtra_UnSetPanel();
     Play_BottonIconsResetFocus();
 
     Play_CurrentSpeed = 3;
@@ -628,6 +623,7 @@ function PlayClip_hidePanel() {
     //Reset values
     Play_ResetSpeed();
     PlayClip_qualityReset();
+    Play_controls[Play_controlsBack].enterKey(3, true);
     Play_BottonIconsResetFocus(true);
 
     Play_clearHidePanel();
@@ -861,7 +857,7 @@ function PlayClip_handleKeyDown(e) {
                     Play_clearHidePanel();
                     if (PlayVod_PanelY < 2) {
                         PlayVod_PanelY++;
-                        Play_BottonIconsFocus();
+                        Play_BottonIconsFocus(false, true);
                     } else Play_BottomUpDown(3, -1);
                     PlayClip_setHidePanel();
                 } else if (Play_isEndDialogVisible()) {
@@ -948,7 +944,7 @@ function PlayClip_handleKeyDown(e) {
             case KEY_REFRESH:
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
                 else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey();
+                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(3);
                 break;
             case KEY_CHAT:
                 Play_controls[Play_controlsChat].enterKey(3);
@@ -968,7 +964,7 @@ function PlayClip_handleKeyDown(e) {
                 if (Play_isEndDialogVisible()) break;
 
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else Play_controls[Play_controlsChatSide].enterKey();
+                else Play_controls[Play_controlsChatSide].enterKey(3);
                 break;
             case KEY_MEDIA_NEXT:
                 PlayClip_PlayNext();

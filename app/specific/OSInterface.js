@@ -251,14 +251,6 @@ function OSInterface_mMethodUrlHeaders(urlString, timeout, postMessage, Method, 
     );
 }
 
-//public void mSwitchPlayerAudio(int position)
-//position = the audio position, 2 enables both player audio, 1 only Main player, 0 small player
-//Android specific: false
-//Allows to change the audio source on PP or 50/50 mode
-function OSInterface_mSwitchPlayerAudio(position) {
-    if (Main_IsOn_OSInterface) Android.mSwitchPlayerAudio(position);
-}
-
 //public void mupdatesizePP(boolean FullScreen)
 //FullScreen = if true Main player full size small player will be small in relation to PlayerViewSmallSize[][], if false 50/50 mode
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
@@ -385,6 +377,67 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
         ResumePosition,
         player
     );
+}
+
+//public void ReuseFeedPlayer(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
+//uri =  the url of the playlist or the clip
+//mainPlaylistString = the stringify version of the url playlist content
+//who_called = 0 live, 1 vod, 2 clip
+//ResumePosition =  the position to start the video, if a live this is always 0
+//player = the player position, there is several player to do multistream support
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
+
+    try {
+
+        Android.ReuseFeedPlayer(
+            uri,
+            mainPlaylistString,
+            who_called,
+            ResumePosition,
+            player
+        );
+
+    } catch (e) { }
+}
+
+//public void ReuseFeedPlayerPrepare(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
+//trackSelectorPos =  the trackSelectorPos of the player
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.ReuseFeedPlayerPrepare(
+                trackSelectorPos
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void FixViewPosition(int position)
+//position =  the position of the player
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_FixViewPosition(position) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.FixViewPosition(
+                position
+            );
+
+        }
+
+    } catch (e) { }
 }
 
 //public void mhideSystemUI()
@@ -783,14 +836,6 @@ function OSInterface_SetPreviewOthersAudio(volume) {
     if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume);
 }
 
-//public void mSetPlayerAudioMulti(int position)
-//position = the player position to enable the audio 0 to 3, 4 all player enable
-//Android specific: true
-//Allows to set with player will produce audio
-function OSInterface_mSetPlayerAudioMulti(position) {
-    if (Main_IsOn_OSInterface) Android.mSetPlayerAudioMulti(position);
-}
-
 //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
 //uri =  the url of the playlist or the clip
 //mainPlaylistString = the stringify version of the url playlist content
@@ -887,16 +932,15 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
 
 }
 
-//public void ClearFeedPlayer(boolean PreventClean, int trackSelectorPos)
+//public void ClearFeedPlayer()
 //PreventClean prevent closing the player
-//trackSelectorPos the player that will use the not closed player trackSelector Position
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
-function OSInterface_ClearFeedPlayer(PreventClean, trackSelectorPos) {
-    Android.ClearFeedPlayer(
-        Boolean(PreventClean),
-        Number.isInteger(trackSelectorPos) ? trackSelectorPos : 1
-    );
+function OSInterface_ClearFeedPlayer() {
+    try {
+        Android.ClearFeedPlayer();
+    } catch (e) {
+    }
 }
 
 //public void ClearFeedPlayer()
@@ -1043,6 +1087,66 @@ function OSInterface_CheckReUsePlayer() {
     if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
 }
 
+//public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
+//posX =  player position
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_SetAudioEnabled() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.SetAudioEnabled(
+                Boolean(Play_audio_enable[0]),
+                Boolean(Play_audio_enable[1]),
+                Boolean(Play_audio_enable[2]),
+                Boolean(Play_audio_enable[3])
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
+//posX =  player position
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_SetVolumes() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.SetVolumes(
+                parseFloat(Play_volumes[0] / 100),
+                parseFloat(Play_volumes[1] / 100),
+                parseFloat(Play_volumes[2] / 100),
+                parseFloat(Play_volumes[3] / 100)
+            );
+
+        }
+
+    } catch (e) { }
+}
+
+//public void ApplyAudio()
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_ApplyAudio() {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.ApplyAudio();
+
+        }
+
+    } catch (e) { }
+}
+
 //public void getDuration()
 //String callback = the fun to receive the value
 //Android specific: true
@@ -1070,13 +1174,4 @@ function OSInterface_CheckReUsePlayer() {
 //return the playback state
 // function OSInterface_getPlaybackState() {//Not be used
 //     return Android.getPlaybackState();
-// }
-
-//public void mSetAudio(int position, float volume)
-//position player position
-//volume the player volume
-//Android specific: true
-//Allows to control individual player volume
-// function OSInterface_mSetAudio(position, volume) {//Not be used
-//     Android.mSetAudio(position, volume);
 // }

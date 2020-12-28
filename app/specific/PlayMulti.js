@@ -76,13 +76,7 @@ function Play_updateStreamInfoMultiError(pos) {
 }
 
 function Play_Multi_SetPanel() {
-    Play_BottomShow(Play_controlsQualityMulti);
-    Play_BottomShow(Play_controlsAudioMulti);
-
-    Play_BottomHide(Play_controlsChatSide);
-    Play_BottomHide(Play_controlsQuality);
-    Play_BottomHide(Play_controlsQualityMini);
-    Play_BottomHide(Play_controlsAudio);
+    Play_SetControlsVisibility('ShowInMulti');
 
     UserLiveFeed_SetMulti();
     ChatLive_Clear(1);
@@ -97,34 +91,32 @@ function Play_Multi_SetPanel() {
     if (!Play_isFullScreen) Play_ResStoreChatFullScreen();
 }
 
-function Play_Multi_UnSetPanelDivs(checkChat) {
-    Play_BottomShow(Play_controlsChatSide);
-    Play_BottomShow(Play_controlsQuality);
-
-    Play_BottomHide(Play_controlsAudioMulti);
-    Play_BottomHide(Play_controlsAudio);
-    Play_BottomHide(Play_controlsQualityMini);
-    Play_BottomHide(Play_controlsQualityMulti);
-
+function Play_Multi_UnSetPanelDiv(checkChat) {
     UserLiveFeed_SetFeedPicText();
     Main_ShowElement('stream_info');
     Main_HideElement('stream_info_multi');
     Main_HideElement('stream_info_multi_big');
     Main_HideElement('dialog_multi_help');
-    if (checkChat) Play_Multi_UnSetPanelDivsCheckChat();
+
+    if (checkChat) Play_Multi_UnSetPanelDivCheckChat();
+
     Main_SaveValues();
     Play_IconsRemoveFocus();
     Play_Panelcounter = Play_MultiStream;
+
+
     if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
     if (Play_Multi_MainBig) {
+
         Play_ResStoreChatPos();
         Play_Multi_MainBig = false;
+
     }
+
     Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI;
-    Play_controls[Play_controlsAudioMulti].values = STR_AUDIO_MULTI;
 }
 
-function Play_Multi_UnSetPanelDivsCheckChat() {
+function Play_Multi_UnSetPanelDivCheckChat() {
     if (!Play_isFullScreen) {
         Play_controls[Play_controlsChat].enterKey();
         Play_SetChatSideBySide();
@@ -136,7 +128,7 @@ function Play_Multi_UnSetPanelDivsCheckChat() {
 
 function Play_Multi_UnSetPanel(shutdown) {
 
-    Play_Multi_UnSetPanelDivs();
+    Play_Multi_UnSetPanelDiv();
 
     for (var i = 0; i < 4; i++) {
 
@@ -155,7 +147,6 @@ function Play_Multi_UnSetPanel(shutdown) {
 
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
             PlayExtra_SetPanel();
-            OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
 
             if (!Play_isFullScreen) {
                 Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
@@ -163,17 +154,24 @@ function Play_Multi_UnSetPanel(shutdown) {
                 PlayExtra_ShowChat();
             }
 
-        }
+            Play_AudioCheckCloseMulti();
+
+        } else Play_AudioReset(0);
 
     } else {
 
-        Play_Multi_UnSetPanelDivsCheckChat();
+        Play_Multi_UnSetPanelDivCheckChat();
+
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+        else Play_SetControlsVisibility('ShowInLive');
+
         PlayExtra_PicturePicture = false;
+
+        Play_AudioReset(0);
 
     }
 
-    Play_Multi_UnSetPanelDivsCheckChat();
+    Play_Multi_UnSetPanelDivCheckChat();
 
     //Check if main player is open if not check if one is so it can be main
     var First = Play_MultiFirstAvailable();
@@ -202,7 +200,6 @@ function Play_Multi_UnSetPanel(shutdown) {
 
     }
 
-    Play_OldAudio = Play_controls[Play_controlsAudio].defaultValue;
 }
 
 function Play_MultiFirstAvailable() {
@@ -230,7 +227,7 @@ function Play_MultiEnd(position, fail_type) {
 
         Play_MultiEnable = false;
         OSInterface_DisableMultiStream();
-        Play_Multi_UnSetPanelDivs(true);
+        Play_Multi_UnSetPanelDiv(true);
         PlayExtra_ClearExtra();
         Play_CheckHostStart();
 
@@ -238,19 +235,23 @@ function Play_MultiEnd(position, fail_type) {
 
         if (Play_Multi_MainBig && !position) {//If main ended find a new main
 
-            var tempAudio = Play_DefaultAudio_Multi === 4;
             Play_MultiEnableKeyRightLeft(1);
-            if (tempAudio) Play_MultiKeyDownHold();
 
-        } else if (Play_DefaultAudio_Multi !== 4 && position === Play_DefaultAudio_Multi) {
 
-            if (Play_MultiArray[0].data.length) {//Set audio to main video if available
+        } else {
 
-                Play_DefaultAudio_Multi = 0;
-                Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-                Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+            for (var i = 0; i < 4; i++) {
 
-            } else Play_MultiEnableKeyRightLeft(1);//else find one
+                if (Play_MultiArray[i].data.length > 0 && Play_audio_enable[i]) {
+
+                    return;
+
+                }
+
+                Play_MultiInfoReset(i);
+            }
+
+            Play_MultiEnableKeyRightLeft(1);//find one to enable the audio
 
         }
 
@@ -409,7 +410,7 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
         if (!Play_MultiHasOne()) {
             Play_MultiEnable = false;
             OSInterface_DisableMultiStream();
-            Play_Multi_UnSetPanelDivs(true);
+            Play_Multi_UnSetPanelDiv(true);
             PlayExtra_ClearExtra();
             Play_CheckHostStart();
         }
@@ -419,14 +420,25 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
 function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualities) {
 
     Play_MultiArray[pos].AutoUrl = theUrl;
+    var isFull = Play_MultiIsFull();
 
-    if (Play_MultiIsFull()) {
-        UserLiveFeed_Hide(PreventCleanQualities);
+    if (Play_PreviewId && Main_IsOn_OSInterface) {
+
+        OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
+
+        if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
+
+    } else if (isFull) {
 
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
         Main_setTimeout(
             function() {
-                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) OSInterface_StartMultiStream(pos, theUrl, playlist);
+                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped &&
+                    Play_isOn && Play_MultiEnable) {
+
+                    OSInterface_StartMultiStream(pos, theUrl, playlist);
+
+                }
             },
             25
         );
@@ -489,10 +501,9 @@ function Play_MultiEnableKeyRightLeft(adder) {
                 return;
             }
 
-            if (Play_DefaultAudio_Multi !== 4) Play_DefaultAudio_Multi = 0;
-            OSInterface_mSetPlayerAudioMulti(Play_DefaultAudio_Multi);
-            Play_ResetAudio();
-            Play_SetAudioMultiIcon();
+            Play_audio_enable = [1, 0, 0, 0];
+
+            Play_ResetQualityControls();
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
@@ -516,28 +527,29 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
     } else {
 
-        Play_DefaultAudio_Multi += adder;
+        var pos = Play_AudioGetFirst() + adder;
 
-        if (Play_DefaultAudio_Multi > (Play_controls[Play_controlsAudioMulti].values.length - 2)) {
+        if (pos > 3) pos = 0;
+        else if (pos < 0) pos = 3;
 
-            Play_DefaultAudio_Multi = 0;
+        Play_audio_enable = [0, 0, 0, 0];
+        Play_audio_enable[pos] = 1;
 
-        } else if (Play_DefaultAudio_Multi < 0) {
-
-            Play_DefaultAudio_Multi = Play_controls[Play_controlsAudioMulti].values.length - 2;
-
-        }
-
-        if (!Play_MultiArray[Play_DefaultAudio_Multi].data.length) {
+        if (!Play_MultiArray[pos].data.length) {
 
             Play_MultiEnableKeyRightLeft(adder);
             return;
         }
 
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(false, true);
+        Play_AudioReset(pos);
 
+        Play_showWarningMidleDialog(
+            STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[pos].data[1],
+            2000
+        );
     }
+
+    Play_SetAudioIcon();
 
 }
 
@@ -584,25 +596,6 @@ function Play_SetMultiStreamMainBig(offset) {
     }
 
 }
-
-var Play_OldAudio = 0;
-var Play_AudioAll = false;
-function Play_MultiKeyDownHold(preventShowWarning) {
-    Play_EndUpclear = true;
-
-    if (Play_DefaultAudio_Multi !== 4) {
-        Play_OldAudio = Play_DefaultAudio_Multi;
-        Play_DefaultAudio_Multi = 4;
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
-    } else {
-        Play_DefaultAudio_Multi = Play_OldAudio < 4 ? Play_OldAudio : 0;
-        Play_OldAudio = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].defaultValue = Play_DefaultAudio_Multi;
-        Play_controls[Play_controlsAudioMulti].enterKey(preventShowWarning, true);
-    }
-}
-
 
 function Play_MultiUpdateinfoMainBig(extraText) {
     var i = 0;
@@ -741,7 +734,14 @@ function Play_MultiSetUpdateDialog(obj) {
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
-    UserLiveFeed_Hide(Play_PreviewId);
+
+    if (Play_PreviewId) {
+
+        OSInterface_ReuseFeedPlayerPrepare(1);
+        UserLiveFeed_HideAfter();
+
+    } else UserLiveFeed_Hide();
+
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
@@ -775,12 +775,12 @@ function Play_ShowMultiDialog() {
     Main_ShowElementWithEle(Play_MultiDialogElem);
 }
 
-function Play_HideMultiDialog(PreventCleanQualities) {
+function Play_HideMultiDialog(preventClean) {
     //return;
     Main_HideElementWithEle(Play_MultiDialogElem);
     Play_clearHideMultiDialog();
     Play_MultiRemoveFocus();
-    UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
+    if (!preventClean) UserLiveFeed_CheckIfIsLiveSTop(true);
 }
 
 function Play_MultiDialogVisible() {

@@ -269,17 +269,24 @@ function AddUser_UpdateSidepanelSize(logo, username) {
 
     var pos = Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth;
 
-    if (pos) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
-    else {
+    if (pos) {
+
+        if (!Sidepannel_MainisShowing()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
+
+    } else {
+
         var newsize = document.body.offsetWidth;
         newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
+
     }
 
     if (Settings_Obj_default("app_animations")) {
+
         Main_ready(function() {
             Sidepannel_MovelDiv.style.transition = '';
         });
+
     }
 
 }
@@ -324,6 +331,7 @@ function AddUser_UpdateUsertSuccess(response, position) {
 
             AddUser_UsernameArray[position].display_name = user.display_name;
             AddUser_UsernameArray[position].logo = user.logo;
+
             if (!position) AddUser_UpdateSidepanel();
 
             AddUser_SaveUserArray();

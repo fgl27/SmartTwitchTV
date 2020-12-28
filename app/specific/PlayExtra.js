@@ -162,23 +162,36 @@ function PlayExtra_ResumeResultEnd(responseObj, checkHost) {
 }
 
 function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
-    UserLiveFeed_Hide(PreventcleanQuailities);
+
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
-    OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
     PlayExtra_data.playlist = playlist;
     PlayExtra_SetPanel();
 
     if (!Play_isFullScreen) {
+
         ChatLive_Init(1);
         OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_ShowChat();
         Play_SetChatSideBySide();
+
     } else OSInterface_mSwitchPlayerSize(Play_PicturePictureSize);
 
     if (Main_IsOn_OSInterface && Play_isOn) {
-        OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        if (Play_PreviewId) {
+
+            OSInterface_ReuseFeedPlayer(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        } else {
+
+            OSInterface_StartAuto(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
+
+        }
+
     }
+
+    UserLiveFeed_Hide(PreventcleanQuailities);
 
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
     PlayExtra_updateStreamInfo();
@@ -326,8 +339,8 @@ function PlayExtra_CheckHost(responseText, doSwitch, id) {
                 Play_Start();
 
                 Play_showWarningDialog(warning_text, 4000);
-                //Java will reset audio source reset it
-                OSInterface_mSwitchPlayerAudio(Play_controls[Play_controlsAudio].defaultValue);
+
+                Play_AudioReset(0);
 
             } else {
 
@@ -356,10 +369,7 @@ function PlayExtra_SetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
 
-    Play_BottomShow(Play_controlsAudio);
-    Play_BottomShow(Play_controlsQualityMini);
-
-    Play_BottomHide(Play_controlsQuality);
+    Play_SetControlsVisibility('ShowInPP');
 
     Play_IconsResetFocus();
     PlayExtra_UpdatePanel();
@@ -372,12 +382,7 @@ function PlayExtra_UnSetPanel() {
     Play_controls[Play_controlsChatSide].setLable();
     Play_controls[Play_controlsChatSide].setIcon();
 
-    Play_BottomShow(Play_controlsQuality);
-
-    Play_BottomHide(Play_controlsAudio);
-    Play_BottomHide(Play_controlsQualityMini);
-    Play_BottomHide(Play_controlsQualityMulti);
-    Play_BottomHide(Play_controlsAudioMulti);
+    Play_SetControlsVisibility('ShowInLive');
 
     Play_IconsResetFocus();
     ChatLive_Clear(1);
@@ -385,6 +390,8 @@ function PlayExtra_UnSetPanel() {
 
     Main_HideElement('stream_info_pp');
     Main_ShowElement('stream_info');
+
+    Play_AudioReset(0);
 }
 
 function PlayExtra_ClearExtra() {

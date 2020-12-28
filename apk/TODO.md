@@ -12,6 +12,7 @@ Featured request list
 * **[Separate @ Mentions from Chat Scroll](https://github.com/fgl27/smarttv-twitch/issues/131)** ... Pin a chat message when the user is mention, all the logic need to be created
 * **[Select multiple languages](https://github.com/fgl27/SmartTwitchTV/issues/21)** ... Allow to select more then one language for app content, is not just allow, all the logic need to be created Twitch API doesn't support this
 * **Add a way to change the device screen refresh hate base on the app content** (requested via EMAIL), some user prefers to use a refresh other then 30 or 60 because of it they requested this, the app has too many player that work at the same time, one player may be using one refresh rate another other the refresh may change dynamically do to auto quality playback, all of that makes things very complicated, also I personalty don't like this feature as it can cause a device sync error after some changes mostly if you change too fast (something that may happens when playing in auto mode) the screen will just go black and never restore, forcing the user to do something as change/restart the video source or reboot the devices BOX and or TV, plus if the device is slow to change there may be a long 3+ seconds of noting bug black screen until the new refresh rate is accepted, as this is technically something unnecessary (as one can just keep the device at 60 as twitch content is most 30 or 60 no issue there will be) and can cause bugs I @fgl27 personalty will not add it, any one is welcome to do add it as long all described here is addressed is fine.
+* **[Ability to "follow" channels without any Twitch account whatsoever](https://github.com/fgl27/SmartTwitchTV/issues/30)** ... Too much work the app must be redesign to work as if there is a user when there is no user, with will take a complete redesign of almost all app, as a user or no user check is everywhere
 
 TODO list
 ==============
@@ -26,7 +27,7 @@ TODO list
 * Add a option to follow and unfollow channel and games
 * Maybe add some extra options that makes sense...
 
-### Update screens general use of storing stream data in attribute plus general improves
+### Update screens general improves
 
 * General improve
 * Make screen to use only one value X, not X_Y, this will make easier to understand and use the screens
@@ -50,29 +51,6 @@ TODO list
 * New feature
 * in player controls add a option that checks if the streamer is live from time to time and let the user know and open the live from the icon
 * make the warning a pop that can be disabled
-
-### Add a audio volume dialog to the player
-
-* New feature
-* Allows to control it player individual volume on PP and Multistream mode
-* This features need a UI with a slider 0 to 100% for it player that is visible, showing with video it belong to, the slider and the streamer name...
-* For the name just use the same logic that add the title and streamer name to the player `Play_controlsAudio` and `Play_controlsAudioMulti`
-
-### Convert all chat controls option to a single control
-
-* General improve
-* So in one click the player controls hide all other controls and show only chat controls
-* This will allow to add some of the controls that today are in setting to the player
-* Will also improve the UI as there will be less controls visible will make easier to use and understand
-
-### Improve hosting related screen and notifications
-
-* New feature and general improve
-* Multiple followed streamer can host the same stream, today the behavior is just excluded duplicate host change that
-* Add a option to setting to show duplicate/triplicate etc hosting
-* this option must be apply to the user hosting, preview user hosting and channels to the home screen user hosting
-* Add a new notification "Streamer is now hosting" showing Streamer A is not hosting Streamer B
-* the notification must also follow the duplicate/triplicate etc rules if enabled
 
 ### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
 
@@ -143,13 +121,18 @@ TODO list
 * Simpler obj initialization and use
 * Also this UserLiveFeed is old code and can be improve
 
-### Update the back process to work with targetSdk=30
+### Update the backup process to work with targetSdk=30
 
 * General improve
 * From [Meet Google Play's target API level requirement](https://developer.android.com/distribute/best-practices/develop/target-sdk) the min sdk of target changes every year and will on the end of 2021 change to 30
 * Permission to access external storage changed on sdk 30 https://developer.android.com/training/data-storage#permissions
 * Making current option not working on that sdk when targeting 30, works if targeting 29
 * Update the process to work on all OS
+
+### Update the background notifications process to work with targetSdk=30
+
+* General improve
+* From [Updates to toasts](https://developer.android.com/about/versions/11/behavior-changes-11#toasts) For security reasons and to maintain a good user experience, the system blocks toasts that contain custom views if those toasts are sent from the background by an app that targets Android 11 or higher.
 
 ### Improve searches
 
@@ -162,7 +145,7 @@ TODO list
 * General improve
 * User followed live games and host
 
-### Add more option on video sizes
+### Add more option on video sizes PP multistream
 
 * General improve
 * for the 50/50 mode but also for others Multi and PP mode, check what is possible to do and add more

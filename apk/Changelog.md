@@ -9,7 +9,21 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Web Version November December 05 2020
+Apk Version 3.0.294 and Web Version December XX 2020
+==============
+
+* Update how the player UI works, to improve the experience also to add more controls
+* Add a Preview settings to the player controls
+* Add a Chat settings to the  player controls, combine all etc chat options in to this
+* Add a Player status visibility control to the player controls, for PP and or MultiStream audio and volume controls
+* Add a Player status visibility controls
+* Add a options in settings -> chat to Allow to see viewers on top of chat
+* Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app
+* General performance improves and bug fixes
+* Is demanding to update to the latest APK if you don't the app will not work properly
+* Enjoy the app! Have a great new years
+
+Web Version December 05 2020
 ==============
 
 * Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue
@@ -17,7 +31,7 @@ Web Version November December 05 2020
 * Fix games search
 * General performance improves and bug fixes
 
-Web Version November December 05 2020
+Web Version December 05 2020
 ==============
 
 * General performance improves and bug fixes

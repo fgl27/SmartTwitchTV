@@ -47,10 +47,6 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
-    "keep_panel_info_visible": {
-        "values": ["with panel", "yes", "never"],
-        "defaultValue": 1
-    },
     "single_click_exit": {
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -604,8 +600,6 @@ function Settings_SetSettings() {
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
-    div += Settings_Content('keep_panel_info_visible', STR_PLAYER_INFO_VISIBILITY_ARRAY, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
-
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     div += Settings_Content('PP_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
@@ -709,10 +703,6 @@ function Settings_SetStrings() {
     key = "PP_workaround";
     Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
     Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
-
-    key = "keep_panel_info_visible";
-    Settings_DivOptionChangeLang(key, STR_PLAYER_INFO_VISIBILITY, STR_PLAYER_INFO_VISIBILITY_SUMMARY);
-    Settings_value[key].values = STR_PLAYER_INFO_VISIBILITY_ARRAY;
 
     key = "single_click_exit";
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -1284,10 +1274,11 @@ function Settings_HideElem(elem, hide) {
 var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
-    var doc,
+    var scroolPos = 11,
+        doc,
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (12 + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === ((scroolPos - 1) + offset)) {
         doc = Main_getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -2062,7 +2053,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_nickcolor.values = yes_no;
     Settings_value.chat_timestamp.values = yes_no;
     Settings_value.clear_chat.values = yes_no;
-    Settings_value.show_chatters.values = yes_no;
+    Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
 
     var obj = {
         chat_logging: {
