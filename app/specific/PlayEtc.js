@@ -1326,7 +1326,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 
 function Play_GetAudioIcon(pos) {
 
-    return '<i class="icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + ' strokicon" ></i>' + STR_SPACE +
+    return STR_SPACE + '<i class="icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + ' strokicon" ></i>' + STR_SPACE +
         '<i class="icon-' + Play_GetVolLevel(pos) + ' strokicon" ></i>';
 
 }
