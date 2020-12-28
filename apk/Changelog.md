@@ -20,6 +20,7 @@ Apk Version 3.0.294 and Web Version December XX 2020
 * Add a options in settings -> chat to Allow to see viewers on top of chat
 * Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app
 * General performance improves and bug fixes
+* Is demanding to update to the latest APK if you don't the app will not work properly
 * Enjoy the app! Have a great new years
 
 Web Version December 05 2020
