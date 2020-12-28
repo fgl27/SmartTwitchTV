@@ -422,7 +422,7 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
     Play_MultiArray[pos].AutoUrl = theUrl;
     var isFull = Play_MultiIsFull();
 
-    if (Play_PreviewId && Main_IsOn_OSInterface) {
+    if (PreventCleanQualities && Main_IsOn_OSInterface) {
 
         OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
 
