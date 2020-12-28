@@ -426,9 +426,7 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
 
         OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
 
-        if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
-
-    } else if (isFull) {
+    } else {
 
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
         Main_setTimeout(
@@ -443,7 +441,9 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
             25
         );
 
-    } else OSInterface_StartMultiStream(pos, theUrl, playlist);
+    }
+
+    if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
 
     Play_MultiArray[pos].playlist = playlist;
 
