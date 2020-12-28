@@ -7521,7 +7521,7 @@
                     "Fix all minor issues that was found on the past few weeks, if any one has any issue or request use the contact info in about of the app to inform",
                     "General performance improves and bug fixes",
                     "Is demanding to update to the latest APK if you don't the app will not work properly",
-                    "Enjoy the app! Have a great new years"
+                    "Enjoy the app! Have a great new years!"
                 ]
             },
             {
@@ -19300,9 +19300,7 @@
 
             OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
 
-            if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
-
-        } else if (isFull) {
+        } else {
 
             //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
             Main_setTimeout(
@@ -19317,7 +19315,9 @@
                 25
             );
 
-        } else OSInterface_StartMultiStream(pos, theUrl, playlist);
+        }
+
+        if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
 
         Play_MultiArray[pos].playlist = playlist;
 
