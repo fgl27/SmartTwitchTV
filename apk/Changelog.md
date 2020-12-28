@@ -15,7 +15,7 @@ Apk Version 3.0.294 and Web Version December XX 2020
 * Update how the player UI works, to improve the experience also to add more controls
 * Add a Preview settings to the player controls
 * Add a Chat settings to the  player controls, combine all etc chat options in to this
-* Add a Audio & Volume controls to the player controls
+* Add a Player status visibility control to the player controls, for PP and or MultiStream audio and volume controls
 * Add a Player status visibility controls
 * Add a options in settings -> chat to Allow to see viewers on top of chat
 * Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app

@@ -640,7 +640,7 @@ function Main_Changelog() {
                 "Add a Preview settings to the  player controls",
                 "Add a Chat settings to the  player controls, combine all etc chat options in to this",
                 "Add a Audio & Volume controls to the player controls",
-                "Add a Player status visibility control to the player controls",
+                "Add a Player status visibility control to the player controls, for PP and or MultiStream audio and volume controls",
                 "Add a options in settings -> chat to Allow to see viewers on top of chat",
                 "Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app",
                 "General performance improves and bug fixes",
