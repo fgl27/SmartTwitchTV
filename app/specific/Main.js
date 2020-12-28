@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.293';
+var Main_stringVersion_Min = '.294';
 var Main_version_java = 293;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'December 14 2020';
-var Main_version_web = 560;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'December 28 2020';
+var Main_version_web = 561;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -634,15 +634,15 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
-            title: "Apk Version 3.0.294 and Web Version December XX 2020",
+            title: "Apk Version 3.0.294 and Web Version December 28 2020",
             changes: [
                 "Update how the player UI works, to improve the experience also to add more controls",
                 "Add a Preview settings to the  player controls",
                 "Add a Chat settings to the  player controls, combine all etc chat options in to this",
-                "Add a Audio & Volume controls to the player controls",
-                "Add a Player status visibility control to the player controls, for PP and or MultiStream audio and volume controls",
+                "Add a Audio & Volume controls to the player controls, for PP and or MultiStream, now next to the streamer name there will be two icon one indicates if the audio is enable the other the approximated volume",
+                "Add a Player status visibility control to the player controls",
                 "Add a options in settings -> chat to Allow to see viewers on top of chat",
-                "Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app",
+                "Fix all minor issues that was found on the past few weeks, if any one has any issue or request use the contact info in about of the app to inform",
                 "General performance improves and bug fixes",
                 "Is demanding to update to the latest APK if you don't the app will not work properly",
                 "Enjoy the app! Have a great new years"
