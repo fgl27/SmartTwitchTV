@@ -634,6 +634,20 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Apk Version 3.0.294 and Web Version December XX 2020",
+            changes: [
+                "Update how the player UI works, to improve the experience also to add more controls",
+                "Add a Preview settings to the  player controls",
+                "Add a Chat settings to the  player controls, combine all etc chat options in to this",
+                "Add a Audio & Volume controls to the player controls",
+                "Add a Player status visibility control to the player controls",
+                "Add a options in settings -> chat to Allow to see viewers on top of chat",
+                "Fix all minor issues that was found on the past few weeks, if any one has any issue or request check contact info in about of the app",
+                "General performance improves and bug fixes",
+                "Enjoy the app! Have a great new years"
+            ]
+        },
+        {
             title: "Web Version December 14 2020",
             changes: [
                 "Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue",
@@ -657,26 +671,6 @@ function Main_Changelog() {
         {
             title: "Apk Version 3.0.288 and 3.0.289 - Web Version November 30 2020",
             changes: [
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version November 29 2020",
-            changes: [
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version November 24 2020",
-            changes: [
-                "Add new settings options to auto minimize the app do to inactivity... See it on Settings -> Content customization's, sorting, auto refresh, timeouts and related",
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version November 23 2020",
-            changes: [
-                "Add new settings options to hide UI elements as clock, navigation help and etc... See it on Settings -> Interface customization's, color style, animations and related",
                 "General performance improves and bug fixes"
             ]
         }
