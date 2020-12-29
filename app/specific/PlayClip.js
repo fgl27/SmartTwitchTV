@@ -875,7 +875,7 @@ function PlayClip_handleKeyDown(e) {
                             Play_EndDialogEnter = 3;
                             Play_EndUpclearCalback = PlayClip_handleKeyDown;
                             Play_SavePlayData();
-                            Play_OpenLiveStream(PlayClip_handleKeyDown);
+                            PlayClip_CheckIfIsLiveStart();
                         }
                     }
                 } else if (Play_isPanelShowing()) {
