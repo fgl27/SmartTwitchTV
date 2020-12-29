@@ -11997,7 +11997,7 @@
                                 Play_EndDialogEnter = 3;
                                 Play_EndUpclearCalback = PlayClip_handleKeyDown;
                                 Play_SavePlayData();
-                                Play_OpenLiveStream(PlayClip_handleKeyDown);
+                                PlayClip_CheckIfIsLiveStart();
                             }
                         }
                     } else if (Play_isPanelShowing()) {
@@ -20935,7 +20935,7 @@
                                 Play_EndDialogEnter = 2;
                                 Play_EndUpclearCalback = PlayVod_handleKeyDown;
                                 Play_SavePlayData();
-                                Play_OpenLiveStream(PlayVod_handleKeyDown);
+                                PlayVod_CheckIfIsLiveStart();
                             }
                         }
                     } else if (Play_isPanelShowing()) {
