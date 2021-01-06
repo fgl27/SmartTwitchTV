@@ -521,6 +521,8 @@ function UserLiveFeedobj_CurrentGame() {
 }
 
 function UserLiveFeedobj_loadCurrentGame() {
+    UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+
     UserLiveFeedobj_BaseLoad(
         Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
@@ -544,8 +546,10 @@ var UserLiveFeedobj_CurrentGameName = '';
 function UserLiveFeedobj_ShowCurrentGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_CurrentGamePos - 1);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[3]));
-    UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+    UserLiveFeedobj_ShowFeedCheck(
+        UserLiveFeedobj_CurrentGamePos,
+        !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[3])
+    );
 }
 
 function UserLiveFeedobj_HideCurrentGame() {
@@ -561,6 +565,8 @@ function UserLiveFeedobj_UserGames() {
 }
 
 function UserLiveFeedobj_loadUserGames() {
+    UserLiveFeedobj_GamesFeedOldUserName = AddUser_UsernameArray[0].name;
+
     UserLiveFeedobj_BaseLoad(
         Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/games?limit=' + Main_ItemsLimitMax + '&offset=' +
@@ -581,8 +587,12 @@ function UserLiveFeedobj_ShowUserGames() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserGamesPos - 1);
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserGamesPos, (UserLiveFeedobj_GamesFeedOldUserName !== AddUser_UsernameArray[0].name));
-        UserLiveFeedobj_GamesFeedOldUserName = AddUser_UsernameArray[0].name;
+
+        UserLiveFeedobj_ShowFeedCheck(
+            UserLiveFeedobj_UserGamesPos,
+            (UserLiveFeedobj_GamesFeedOldUserName !== AddUser_UsernameArray[0].name)
+        );
+
     }
 }
 
@@ -599,6 +609,8 @@ function UserLiveFeedobj_CurrentUserAGame() {
 }
 
 function UserLiveFeedobj_loadCurrentUserAGame() {
+    UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
+
     UserLiveFeedobj_BaseLoad(
         Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
         '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
@@ -623,8 +635,10 @@ var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserGamesPos - 1);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserAGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter));
-    UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
+    UserLiveFeedobj_ShowFeedCheck(
+        UserLiveFeedobj_UserAGamesPos,
+        !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter)
+    );
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
     if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
     Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
