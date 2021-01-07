@@ -20,7 +20,7 @@
  */
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" translatable="false">SmartTV for Twitch</string>
+    <string name="app_name" translatable="false">SmartTV Client for Twitch</string>
     <string name="notification_service">Notification service running</string>
     <string name="notification_live_game">Game is Live</string>
     <string name="notification_live">Streamer is Live</string>
