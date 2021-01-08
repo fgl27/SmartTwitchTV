@@ -16126,7 +16126,6 @@
     }
 
     function Play_BottonIconsHide(hideType) {
-        Main_AddClassWitEle(Play_info_div, 'opacity_zero');
 
         if (!hideType) {
 
@@ -16145,8 +16144,14 @@
 
         }
 
-        if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
-        else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+        if (!Play_StayDialogVisible()) {
+            Main_AddClassWitEle(Play_info_div, 'opacity_zero');
+
+            if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
+            else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+
+        }
+
     }
 
     function Play_BottonIconsShow(skipInfo) {
