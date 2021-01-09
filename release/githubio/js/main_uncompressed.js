@@ -6902,8 +6902,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.294';
     var Main_version_java = 293; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'December 28 2020';
-    var Main_version_web = 561; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'January 09 2020';
+    var Main_version_web = 562; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7510,6 +7510,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version January 09 2020",
+                changes: [
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.294 and Web Version December 28 2020",
                 changes: [
                     "Update how the player UI works, to improve the experience also to add more controls",
@@ -7535,18 +7541,6 @@
             },
             {
                 title: "Web Version December 05 2020",
-                changes: [
-                    "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.290 to 3.0.293 - Web Version December 01 2020",
-                changes: [
-                    "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.288 and 3.0.289 - Web Version November 30 2020",
                 changes: [
                     "General performance improves and bug fixes"
                 ]
@@ -13448,22 +13442,7 @@
         var i = 0,
             icon;
 
-        if (PlayExtra_PicturePicture) {
-            for (i; i < 2; i++) {
-
-                icon = Play_GetAudioIcon(i);
-
-                Main_innerHTML(
-                    "chat_container_sound_icon" + i,
-                    icon
-                );
-                Main_innerHTML(
-                    "stream_info_pp_audio_" + i,
-                    icon
-                );
-
-            }
-        } else {
+        if (Play_MultiEnable) {
 
             var extraText = Play_Multi_MainBig ? 'big' : '';
 
@@ -13475,6 +13454,24 @@
                     "stream_info_multi_audio_" + extraText + i,
                     STR_SPACE + icon
                 );
+            }
+
+        } else {
+
+            for (i; i < 2; i++) {
+
+                icon = Play_GetAudioIcon(i);
+
+                Main_innerHTML(
+                    "chat_container_sound_icon" + i,
+                    icon
+                );
+
+                Main_innerHTML(
+                    "stream_info_pp_audio_" + i,
+                    icon
+                );
+
             }
 
         }
@@ -16528,6 +16525,11 @@
         Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
         Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+
+        var temp_Volume_0 = Play_volumes[0];
+        Play_volumes[0] = Play_volumes[1];
+        Play_volumes[1] = temp_Volume_0;
+        Play_SetAudioIcon();
     }
 
     function PlayExtra_ShowChat() {
@@ -19438,6 +19440,7 @@
         if (!offset) return;
 
         var tempPosition,
+            temp_Volume,
             len = Math.abs(offset),
             i, j, j_len = Play_MultiArray_length - 1,
             left = offset > 0;
@@ -19449,26 +19452,32 @@
 
                 //Stores the first element of the array
                 tempPosition = Play_MultiArray[0];
+                temp_Volume = Play_volumes[0];
 
                 for (j = 0; j < j_len; j++) {
                     //Shift element of array by one
                     Play_MultiArray[j] = Play_MultiArray[j + 1];
+                    Play_volumes[j] = Play_volumes[j + 1];
                 }
                 //First element of array will be added to the end
                 Play_MultiArray[j] = tempPosition;
+                Play_volumes[j] = temp_Volume;
 
                 //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
             } else { // else if offset -1 result 3 0 1 2
 
                 //Stores the last element of array
                 tempPosition = Play_MultiArray[3];
+                temp_Volume = Play_volumes[3];
 
                 for (j = j_len; j > 0; j--) {
                     //Shift element of array by one
                     Play_MultiArray[j] = Play_MultiArray[j - 1];
+                    Play_volumes[j] = Play_volumes[j - 1];
                 }
                 //Last element of array will be added to the start of array.
                 Play_MultiArray[0] = tempPosition;
+                Play_volumes[0] = temp_Volume;
 
             }
 

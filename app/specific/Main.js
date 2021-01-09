@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.294';
 var Main_version_java = 293;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'December 28 2020';
-var Main_version_web = 561;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'January 09 2020';
+var Main_version_web = 562;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -634,6 +634,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version January 09 2020",
+            changes: [
+                "General performance improves and bug fixes"
+            ]
+        },
+        {
             title: "Apk Version 3.0.294 and Web Version December 28 2020",
             changes: [
                 "Update how the player UI works, to improve the experience also to add more controls",
@@ -659,18 +665,6 @@ function Main_Changelog() {
         },
         {
             title: "Web Version December 05 2020",
-            changes: [
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.290 to 3.0.293 - Web Version December 01 2020",
-            changes: [
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.288 and 3.0.289 - Web Version November 30 2020",
             changes: [
                 "General performance improves and bug fixes"
             ]
