@@ -559,6 +559,7 @@ function Play_SetMultiStreamMainBig(offset) {
     if (!offset) return;
 
     var tempPosition,
+        temp_Volume,
         len = Math.abs(offset),
         i, j, j_len = Play_MultiArray_length - 1,
         left = offset > 0;
@@ -570,26 +571,32 @@ function Play_SetMultiStreamMainBig(offset) {
 
             //Stores the first element of the array
             tempPosition = Play_MultiArray[0];
+            temp_Volume = Play_volumes[0];
 
             for (j = 0; j < j_len; j++) {
                 //Shift element of array by one
                 Play_MultiArray[j] = Play_MultiArray[j + 1];
+                Play_volumes[j] = Play_volumes[j + 1];
             }
             //First element of array will be added to the end
             Play_MultiArray[j] = tempPosition;
+            Play_volumes[j] = temp_Volume;
 
             //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
         } else {// else if offset -1 result 3 0 1 2
 
             //Stores the last element of array
             tempPosition = Play_MultiArray[3];
+            temp_Volume = Play_volumes[3];
 
             for (j = j_len; j > 0; j--) {
                 //Shift element of array by one
                 Play_MultiArray[j] = Play_MultiArray[j - 1];
+                Play_volumes[j] = Play_volumes[j - 1];
             }
             //Last element of array will be added to the start of array.
             Play_MultiArray[0] = tempPosition;
+            Play_volumes[0] = temp_Volume;
 
         }
 

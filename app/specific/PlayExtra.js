@@ -237,6 +237,11 @@ function PlayExtra_SwitchPlayer() {
     Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
     Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
     Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
+
+    var temp_Volume_0 = Play_volumes[0];
+    Play_volumes[0] = Play_volumes[1];
+    Play_volumes[1] = temp_Volume_0;
+    Play_SetAudioIcon();
 }
 
 function PlayExtra_ShowChat() {
