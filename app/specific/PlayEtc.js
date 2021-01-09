@@ -1335,22 +1335,7 @@ function Play_SetAudioIcon() {
     var i = 0,
         icon;
 
-    if (PlayExtra_PicturePicture) {
-        for (i; i < 2; i++) {
-
-            icon = Play_GetAudioIcon(i);
-
-            Main_innerHTML(
-                "chat_container_sound_icon" + i,
-                icon
-            );
-            Main_innerHTML(
-                "stream_info_pp_audio_" + i,
-                icon
-            );
-
-        }
-    } else {
+    if (Play_MultiEnable) {
 
         var extraText = Play_Multi_MainBig ? 'big' : '';
 
@@ -1362,6 +1347,24 @@ function Play_SetAudioIcon() {
                 "stream_info_multi_audio_" + extraText + i,
                 STR_SPACE + icon
             );
+        }
+
+    } else {
+
+        for (i; i < 2; i++) {
+
+            icon = Play_GetAudioIcon(i);
+
+            Main_innerHTML(
+                "chat_container_sound_icon" + i,
+                icon
+            );
+
+            Main_innerHTML(
+                "stream_info_pp_audio_" + i,
+                icon
+            );
+
         }
 
     }
