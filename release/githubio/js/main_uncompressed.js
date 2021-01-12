@@ -27701,7 +27701,7 @@
             "defaultValue": 2
         },
         "show_chatters": { //Migrated to dialog
-            "values": ["no", "yes"],
+            "values": ["no", "chatters", "viewers"],
             "defaultValue": 2
         },
         "individual_lines": { //Migrated to dialog
