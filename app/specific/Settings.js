@@ -1278,7 +1278,8 @@ function Settings_ScrollTable() {
         doc,
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === ((scroolPos - 1) + offset)) {
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (scroolPos + offset)) {
+
         doc = Main_getElementById('settings_scroll');
         doc.scrollTop = doc.scrollHeight;
         if (Settings_Obj_default("app_animations")) {
@@ -1286,10 +1287,13 @@ function Settings_ScrollTable() {
             doc.scrollTop = 0;
             scrollTo(doc, position, 200);
         }
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (11 + offset)) {
+
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (scroolPos - 1 + offset)) {
+
         doc = Main_getElementById('settings_scroll');
         if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
         else doc.scrollTop = 0;
+
     }
 
     Settings_CurY = Settings_cursorY;
