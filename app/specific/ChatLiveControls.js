@@ -623,7 +623,7 @@ function ChatLiveControls_EmotesScroll(position) {
 }
 
 function ChatLiveControls_UpdateTextInput(text) {
-    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !(Main_ChatLiveInput.value).endsWith(' ')) Main_ChatLiveInput.value += ' ';
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !Main_endsWith(Main_ChatLiveInput.value, ' ')) Main_ChatLiveInput.value += ' ';
     Main_ChatLiveInput.value += text + ' ';
     ChatLiveControls_UpdateResultText();
 }

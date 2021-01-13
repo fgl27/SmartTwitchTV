@@ -2090,6 +2090,14 @@ function Main_A_equals_B_No_Case(A, B) {// jshint ignore:line
     return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
 }
 
+function Main_endsWith(str, suffix) {
+    return str && suffix && str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+function Main_startsWith(str, suffix) {
+    return str && !str.indexOf(suffix);
+}
+
 var BradcastCheckerWorker;
 
 function Main_SetHistoryworker() {

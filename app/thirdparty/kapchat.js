@@ -49,11 +49,11 @@ function findCheerInToken(message, chat_number) {
 
     for (i; i < len; i++) {
         //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
-        if (message.startsWith(cheerPrefixes[i]))
+        if (Main_startsWith(message, cheerPrefixes[i]))
             return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
 
         //Try  case insensitive after
-        if (tokenLower.startsWith(cheerPrefixes[i].toLowerCase())) index = i;
+        if (Main_startsWith(tokenLower, cheerPrefixes[i].toLowerCase())) index = i;
     }
 
     return ((index > -1) ?

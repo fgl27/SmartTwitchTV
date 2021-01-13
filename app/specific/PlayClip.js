@@ -403,7 +403,7 @@ function PlayClip_CheckBlockedRes(pos, array) {
 
     for (var i = 0; i < Settings_DisableQualitiesLen; i++) {
 
-        if (array[pos].id.startsWith(Settings_DisableQualities[i]))
+        if (Main_startsWith(array[pos].id, Settings_DisableQualities[i]))
             return true;
 
     }
