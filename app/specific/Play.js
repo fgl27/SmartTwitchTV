@@ -1794,7 +1794,7 @@ function Play_qualityTitleReset(title) {
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 
-    //Stop all player to make sure no more end call happen
+    //Stop all players to make sure no more end call happen
     if (Main_IsOn_OSInterface) OSInterface_stopVideo();
 
     var reason = Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST;
