@@ -665,6 +665,6 @@ function en_USLang() {
     STR_PREVIEW_SET = "Preview settings";
     STR_PREVIEW_SHOW = "Show preview";
     STR_PREVIEW_SIZE_CONTROLS = "Preview size";
-    STR_OLED_BURN_IN = "Burn in protection";
+    STR_OLED_BURN_IN = "OLED Burn in protection";
     STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
 }

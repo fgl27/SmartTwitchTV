@@ -9,6 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.294 and Web Version January 15 2020
+==============
+
+* Add **OLED Burn in protection** option to Settings -> Content customization's, sorting, auto refresh, timeouts and related
+* General performance improves and bug fixes"
+
 Web Version January 09 2020
 ==============
 
