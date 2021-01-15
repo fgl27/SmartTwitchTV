@@ -7516,7 +7516,7 @@
         var changelogObj = [{
                 title: "Apk Version 3.0.295 and Web Version January 15 2020",
                 changes: [
-                    "Add OLED Burn in protection option to Settings -> Content customization's, sorting, auto refresh, timeouts and related",
+                    "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
                     "General performance improves and bug fixes"
                 ]
             },
@@ -29240,12 +29240,13 @@
         Settings_value.app_animations.values = [STR_NO, STR_YES];
         Settings_value.videos_animation.values = [STR_NO, STR_YES];
         Settings_value.hide_screen_counter.values = [STR_NO, STR_YES];
-        Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
-
+        Settings_value.burn_in_protection.values = [STR_NO, STR_YES];
         Settings_value.hide_main_clock.values = [STR_NO, STR_YES];
         Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
         Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
         Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
+
+        Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
         var obj = {
             thumb_background: {
@@ -29315,6 +29316,12 @@
                 title: STR_HIDE_ETC_HELP_INFO,
                 summary: STR_HIDE_ETC_HELP_INFO_SUMMARY
             },
+            burn_in_protection: {
+                defaultValue: Settings_value.burn_in_protection.defaultValue,
+                values: Settings_value.burn_in_protection.values,
+                title: STR_OLED_BURN_IN,
+                summary: STR_OLED_BURN_IN_SUMMARY
+            }
         };
 
         Settings_DialogShow(obj, STR_UI_SETTINGS);
@@ -29322,7 +29329,6 @@
 
     function Settings_DialogShowCustomOpt() {
         Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
-        Settings_value.burn_in_protection.values = [STR_NO, STR_YES];
         Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
         Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
@@ -29368,12 +29374,6 @@
                 title: STR_KEY_UP_TIMEOUT,
                 summary: STR_KEY_UP_TIMEOUT_SUMMARY
             },
-            burn_in_protection: {
-                defaultValue: Settings_value.burn_in_protection.defaultValue,
-                values: Settings_value.burn_in_protection.values,
-                title: STR_OLED_BURN_IN,
-                summary: STR_OLED_BURN_IN_SUMMARY
-            }
         };
 
         Settings_DialogShow(obj, STR_GENERAL_CUSTOM);
