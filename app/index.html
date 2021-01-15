@@ -89,6 +89,7 @@
 
         div.screen_size,
         div.scene_keys,
+        div.burn_in_protection,
         div.screens {
             position: absolute;
             background-color: rgba(0, 0, 0, 0);
@@ -110,6 +111,11 @@
 
         div.scene_keys {
             z-index: 200;
+        }
+
+        div.burn_in_protection {
+            z-index: 400;
+            background-color: rgba(0, 0, 0, 1);
         }
 
         .avoidclicks {
@@ -3739,10 +3745,10 @@
             </div>
         </div>
         <!-- Empty div over the app that prevents text imputs from malfunctioning-->
-        <div id="scene_keys" class="scene_keys">
-        </div>
+        <div id="scene_keys" class="scene_keys"> </div>
         <div id="minimize_warning" class="strokedelinebig dialog_text dialogs hide"
             style="top: 40vh;font-size: 6vh;height: auto;"></div>
+        <div id="burn_in_protection" class="burn_in_protection hide"> </div>
     </div>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->

@@ -157,6 +157,10 @@ var Settings_value = {
         ],
         "defaultValue": 1
     },
+    "burn_in_protection": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "open_host": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -764,8 +768,28 @@ function Settings_SetDefautls() {
             2500
         );
     }
+
+    if (Settings_Obj_default("burn_in_protection")) {
+
+        Main_setInterval(
+            Settings_burn_in_protection,
+            20 * 60 * 1000
+        );
+
+    }
 }
 
+function Settings_burn_in_protection() {
+
+    Main_ShowElement('burn_in_protection');
+
+    Main_setTimeout(
+        function() {
+            Main_HideElement('burn_in_protection');
+        },
+        50
+    );
+}
 
 function Settings_SetDpad() {
     Settings_DpadOpacity();
@@ -1934,6 +1958,7 @@ function Settings_DialogShowUIOpt() {
 
 function Settings_DialogShowCustomOpt() {
     Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
+    Settings_value.burn_in_protection.values = [STR_NO, STR_YES];
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
     Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
@@ -1978,6 +2003,12 @@ function Settings_DialogShowCustomOpt() {
             values: Settings_value.key_up_timeout.values,
             title: STR_KEY_UP_TIMEOUT,
             summary: STR_KEY_UP_TIMEOUT_SUMMARY
+        },
+        burn_in_protection: {
+            defaultValue: Settings_value.burn_in_protection.defaultValue,
+            values: Settings_value.burn_in_protection.values,
+            title: STR_OLED_BURN_IN,
+            summary: STR_OLED_BURN_IN_SUMMARY
         }
     };
 
