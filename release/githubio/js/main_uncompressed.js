@@ -662,6 +662,8 @@
     var STR_PLAYER_INFO_VISIBILITY;
     var STR_SHOW_IN_CHAT_VIEWERS;
     var STR_SHOW_IN_CHAT_CHATTERS;
+    var STR_OLED_BURN_IN;
+    var STR_OLED_BURN_IN_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1492,6 +1494,8 @@
         STR_PREVIEW_SET = "Preview settings";
         STR_PREVIEW_SHOW = "Show preview";
         STR_PREVIEW_SIZE_CONTROLS = "Preview size";
+        STR_OLED_BURN_IN = "OLED Burn in protection";
+        STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -6900,10 +6904,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.294';
-    var Main_version_java = 293; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'January 09 2020';
-    var Main_version_web = 562; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_stringVersion_Min = '.295';
+    var Main_version_java = 295; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_minversion = 'January 15 2020';
+    var Main_version_web = 563; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7510,6 +7514,13 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Apk Version 3.0.295 and Web Version January 15 2020",
+                changes: [
+                    "Add OLED Burn in protection option to Settings -> Content customization's, sorting, auto refresh, timeouts and related",
+                    "General performance improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version January 09 2020",
                 changes: [
                     "General performance improves and bug fixes"
@@ -18564,9 +18575,6 @@
     //called by android PlayerActivity
     function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 
-        //Stop all player to make sure no more end call happen
-        if (Main_IsOn_OSInterface) OSInterface_stopVideo();
-
         var reason = Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST;
         if (fail_type === 1) reason = STR_PLAYER_ERROR;
         if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
@@ -27489,6 +27497,10 @@
             ],
             "defaultValue": 1
         },
+        "burn_in_protection": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "open_host": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -28099,8 +28111,28 @@
                 2500
             );
         }
+
+        if (Settings_Obj_default("burn_in_protection")) {
+
+            Main_setInterval(
+                Settings_burn_in_protection,
+                20 * 60 * 1000
+            );
+
+        }
     }
 
+    function Settings_burn_in_protection() {
+
+        Main_ShowElement('burn_in_protection');
+
+        Main_setTimeout(
+            function() {
+                Main_HideElement('burn_in_protection');
+            },
+            50
+        );
+    }
 
     function Settings_SetDpad() {
         Settings_DpadOpacity();
@@ -29296,6 +29328,7 @@
 
     function Settings_DialogShowCustomOpt() {
         Settings_value.auto_refresh_background.values = [STR_NO, STR_YES];
+        Settings_value.burn_in_protection.values = [STR_NO, STR_YES];
         Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
         Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
@@ -29340,6 +29373,12 @@
                 values: Settings_value.key_up_timeout.values,
                 title: STR_KEY_UP_TIMEOUT,
                 summary: STR_KEY_UP_TIMEOUT_SUMMARY
+            },
+            burn_in_protection: {
+                defaultValue: Settings_value.burn_in_protection.defaultValue,
+                values: Settings_value.burn_in_protection.values,
+                title: STR_OLED_BURN_IN,
+                summary: STR_OLED_BURN_IN_SUMMARY
             }
         };
 
