@@ -7549,12 +7549,6 @@
                     "Fix games search",
                     "General performance improves and bug fixes"
                 ]
-            },
-            {
-                title: "Web Version December 05 2020",
-                changes: [
-                    "General performance improves and bug fixes"
-                ]
             }
         ];
 
