@@ -2,7 +2,7 @@
  * original files is from exoplayer source https://github.com/google/ExoPlayer
  *
  * This file works as DefaultHttpDataSource and ByteArrayDataSource
- * When dataSpec.uri.toString().equals(uri.toString()) == true it works ByteArrayDataSource
+ * When isPlaylist == true it works as ByteArrayDataSource
  *
  * Copyright (C) 2016 The Android Open Source Project
  *
