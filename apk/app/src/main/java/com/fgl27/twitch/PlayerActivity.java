@@ -2214,7 +2214,7 @@ public class PlayerActivity extends Activity {
                 WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + ")";
 
             }
-            
+
         } else {
             //Preview player
 
@@ -2781,7 +2781,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String dataProp, String POST) {
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, String callback, int x, int y, int Timeout, String dataProp, String postMessage) {
 
             PreviewFeedResult[x][y] = null;
 
@@ -2789,7 +2789,7 @@ public class PlayerActivity extends Activity {
                 DataThreadPool.execute(() ->
                         {
                             try {
-                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, POST);
+                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, postMessage);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
                             }
@@ -2819,9 +2819,9 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url, int Timeout, String dataProp, String POST) {
+        public String getStreamData(String token_url, String hls_url, int Timeout, String dataProp, String postMessage) {
             try {
-                return Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, POST);
+                return Tools.getStreamData(token_url, hls_url, 0L, Timeout, dataProp, postMessage);
             } catch (Exception e) {
                 Tools.recordException(TAG, "getStreamData Exception ", e);
             }
@@ -2830,7 +2830,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String POST) {
+        public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int Timeout, String dataProp, String postMessage) {
 
             StreamDataResult[position] = null;
 
@@ -2839,7 +2839,7 @@ public class PlayerActivity extends Activity {
                         {
 
                             try {
-                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout, dataProp, POST);
+                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, checkResult, Timeout, dataProp, postMessage);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
                             }

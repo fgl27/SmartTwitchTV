@@ -180,14 +180,14 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout, String dataProp, String POST) throws Exception {
+    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout, String dataProp, String postMessage) throws Exception {
         ResponseObj response;
         int status;
         JsonObject Token;
         String StreamSig = null;
         String StreamToken = null;
 
-        response = Internal_MethodUrl(token_url, Timeout, POST, "POST", checkResult, StreamDataHeaders);
+        response = Internal_MethodUrl(token_url, Timeout, postMessage, "POST", checkResult, StreamDataHeaders);
 
         if (response != null) {
 
