@@ -2195,25 +2195,26 @@ public class PlayerActivity extends Activity {
 
             hideLoading(5);
             hideLoading(position);
+            ClearPlayer(position);
 
             if (MultiStreamEnable) {
 
-                ClearPlayer(position);
                 WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
 
             } else if (PicturePicture) {
 
-                ClearPlayer(position);
                 WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
 
             } else if (PlayerObj[position].isScreenPreview) {
 
-                ClearPlayer(position);
                 WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
 
-            } else
+            } else {
+
                 WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + ")";
 
+            }
+            
         } else {
             //Preview player
 
