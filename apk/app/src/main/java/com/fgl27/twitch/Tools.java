@@ -49,7 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.webkit.WebViewCompat;
 
-import com.fgl27.twitch.DataSource.mDefaultHttpDataSourceFactory;
+import com.fgl27.twitch.DataSource.DefaultHttpDataSource;
 import com.fgl27.twitch.notification.NotificationService;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -641,15 +641,13 @@ public final class Tools {
 
         return new DefaultDataSourceFactory(
                 context,
-                new mDefaultHttpDataSourceFactory(
-                        userAgent,
-                        null,
-                        4000,
-                        4000,
-                        false,
-                        mainPlaylist.getBytes(),
-                        uri
-                )
+                new DefaultHttpDataSource.Factory()
+                        .setUserAgent(userAgent)
+                        .setConnectTimeoutMs(10000)
+                        .setReadTimeoutMs(10000)
+                        .setAllowCrossProtocolRedirects(false)
+                        .setMainPlaylistBytes(mainPlaylist.getBytes())
+                        .setUri(uri)
         );
     }
 
