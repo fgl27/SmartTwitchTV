@@ -636,7 +636,7 @@ function Main_Changelog() {
         {
             title: "Apk Version 3.0.295 and Web Version January 15 2020",
             changes: [
-                "Add OLED Burn in protection option to Settings -> Content customization's, sorting, auto refresh, timeouts and related",
+                "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
                 "General performance improves and bug fixes"
             ]
         },
