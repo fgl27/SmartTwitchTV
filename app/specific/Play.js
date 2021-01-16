@@ -1795,19 +1795,15 @@ function Play_qualityTitleReset(title) {
 function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 
     //Stop all players to make sure no more end call happen
-    if (Main_IsOn_OSInterface && fail_type) OSInterface_stopVideo();
+    if (Main_IsOn_OSInterface && fail_type) {
 
-    if (fail_type === 1) {
-
-        reason = STR_PLAYER_ERROR;
-
-    } else if (fail_type === 2) {
-
-        reason = STR_PLAYER_LAG_ERRO;
+        OSInterface_stopVideo();
+        Play_showWarningDialog(
+            (fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO,
+            2000
+        );
 
     }
-
-    if (fail_type) Play_showWarningDialog(reason, 2000);
 
     Main_setTimeout(
         function() {
