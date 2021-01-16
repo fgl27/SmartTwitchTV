@@ -2195,7 +2195,7 @@ public class PlayerActivity extends Activity {
 
             hideLoading(5);
             hideLoading(position);
-            
+
             if (MultiStreamEnable) {
 
                 ClearPlayer(position);
@@ -2213,6 +2213,7 @@ public class PlayerActivity extends Activity {
 
             } else {
 
+                //Don't call ClearPlayer so Play_Play_PannelEndStart works as intend
                 WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + ")";
 
             }
