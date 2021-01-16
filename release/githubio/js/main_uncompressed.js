@@ -6904,10 +6904,10 @@
     var Main_isDebug = false;
 
     var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.295';
-    var Main_version_java = 295; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+    var Main_stringVersion_Min = '.296';
+    var Main_version_java = 296; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
     var Main_minversion = 'January 15 2020';
-    var Main_version_web = 563; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_version_web = 564; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7514,7 +7514,7 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
-                title: "Apk Version 3.0.295 and Web Version January 15 2020",
+                title: "Apk Version 3.0.295 to 3.0.296 and Web Version January 15 2020",
                 changes: [
                     "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
                     "General performance improves and bug fixes"
@@ -18569,11 +18569,16 @@
     //called by android PlayerActivity
     function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
 
-        var reason = Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST;
-        if (fail_type === 1) reason = STR_PLAYER_ERROR;
-        if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
+        //Stop all players to make sure no more end call happen
+        if (Main_IsOn_OSInterface && fail_type) {
 
-        if (fail_type) Play_showWarningDialog(reason, 2000);
+            OSInterface_stopVideo();
+            Play_showWarningDialog(
+                (fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO,
+                2000
+            );
+
+        }
 
         Main_setTimeout(
             function() {

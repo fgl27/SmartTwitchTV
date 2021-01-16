@@ -1814,7 +1814,7 @@ function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
                 Play_PlayEndStart(PlayVodClip);
             }
         },
-        PlayVodClip === 1 ? 2000 : 0
+        PlayVodClip === 1 ? 2000 : 0//Allow a delay before check the host, to make sure the server has updated
     );
 }
 
