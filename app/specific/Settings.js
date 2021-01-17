@@ -769,17 +769,15 @@ function Settings_SetDefautls() {
         );
     }
 
-    if (Settings_Obj_default("burn_in_protection")) {
+    Main_setInterval(
+        Settings_burn_in_protection,
+        20 * 60 * 1000
+    );
 
-        Main_setInterval(
-            Settings_burn_in_protection,
-            20 * 60 * 1000
-        );
-
-    }
 }
 
 function Settings_burn_in_protection() {
+    if (!Settings_Obj_default("burn_in_protection")) return;
 
     Main_ShowElement('burn_in_protection');
 
