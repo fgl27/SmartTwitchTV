@@ -90,11 +90,6 @@ function ChatLiveControls_SetRoomState() {
 
         if (tags.hasOwnProperty('emote-only') && tags['emote-only']) text += "Emote-only, ";
 
-        //TODO convert this to strings
-        if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1) {
-            text += "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') + ', ';
-        }
-
         if (tags.hasOwnProperty('rk9') && tags.rk9) text += 'R9K messages with more than 9 characters must be unique, ';
 
         if (tags.hasOwnProperty('slow') && tags.slow) {
@@ -102,6 +97,11 @@ function ChatLiveControls_SetRoomState() {
         }
 
         if (tags.hasOwnProperty('subs-only') && tags['subs-only']) text += 'Subscribers-only, ';
+
+        //TODO convert this to strings
+        if (tags.hasOwnProperty('followers-only') && tags['followers-only'] !== -1) {
+            text += "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') + ', ';
+        }
 
         text = text.slice(0, -2);
     }
