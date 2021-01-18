@@ -664,6 +664,8 @@
     var STR_SHOW_IN_CHAT_CHATTERS;
     var STR_OLED_BURN_IN;
     var STR_OLED_BURN_IN_SUMMARY;
+    var STR_DELETE_UNREACHABLE;
+    var STR_DELETE_UNREACHABLE_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1267,6 +1269,8 @@
         STR_UNTIL = "until ";
         STR_SORTING = "Sorting";
         STR_DELETE_HISTORY = "Delete this history";
+        STR_DELETE_UNREACHABLE = "Automatic delete unreachable content";
+        STR_DELETE_UNREACHABLE_SUMMARY = "If this is enable, the app will automatic remove VODs and Clips that are unreachable (Have been deleted by the streamer/creator) from the history";
         STR_NAME_A_Z = "Name A - Z";
         STR_NAME_Z_A = "Name Z - A";
         STR_GAME_A_Z = "Game A - Z";
@@ -1285,7 +1289,7 @@
             "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
             "If you don't give storage permission no backups will be ever made." + "<br><br>" +
             "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
-        STR_DELETE_SURE = "Are you sure you wanna to delete ";
+        STR_DELETE_SURE = "Are you sure you wanna to delete all ";
         STR_CREATED_NEWEST = "Created / Uptime newest";
         STR_CREATED_OLDEST = "Created / Uptime Oldest";
         STR_THUMB_OPTIONS = "Thumbnail Options";
@@ -7476,6 +7480,8 @@
         Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
         Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
         Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
+        Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
+        Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);
         Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
         Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
 
@@ -9230,7 +9236,7 @@
     //Check if a VOD in history has ben deleted
     function Main_RunVODWorker() {
 
-        if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
             i = 0,
@@ -9252,6 +9258,8 @@
 
     //Check if a Live that is now VOD in Live history has ben deleted
     function Main_RunLiveVODWorker() {
+
+        if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
             i = 0,
@@ -9275,7 +9283,7 @@
     //Check if a CLIP in history has ben deleted
     function Main_RunClipWorker() {
 
-        if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
@@ -23657,7 +23665,7 @@
     function Screens_SethistDialogId(key) {
         Screens_histDialogID = Main_setTimeout(
             function() {
-                Screens_histDialogHide(key);
+                Screens_histDialogHide(false, key);
             },
             Screens_DialogHideTimout,
             Screens_histDialogID
@@ -23669,7 +23677,6 @@
     function Screens_histDialogHide(Update, key) {
         Screens_histRemoveFocus(ScreenObj[key].histPosY, 'hist');
 
-        Screens_histAddFocus(0, key);
         Main_clearTimeout(Screens_histDialogID);
         Main_removeEventListener("keydown", ScreenObj[key].key_hist);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
@@ -23691,6 +23698,7 @@
             Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[key].histPosX));
         }
         ScreenObj[key].histPosY = 0;
+        Screens_histAddFocus(0, key);
     }
 
     function Screens_showDeleteDialog(text, key) {
@@ -23786,10 +23794,12 @@
     }
 
     function Screens_histRemoveFocus(divPos, dialog) {
+
         Main_RemoveClass('dialog_' + dialog + '_setting_' + divPos, 'settings_div_focus');
         Main_RemoveClass('dialog_' + dialog + '_val_' + divPos, 'settings_value_focus');
         Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+
     }
 
     function Screens_histSetArrow(key) {
@@ -23805,6 +23815,7 @@
     }
 
     function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
+
         Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
         if (maxValue === 1) {
@@ -23828,6 +23839,7 @@
             Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
 
         }
+
     }
 
     function Screens_histhandleKeyDown(key, event) {
@@ -24951,7 +24963,7 @@
             key_pgDown: Main_UserLive,
             key_pgUp: Main_UserChannels,
             histPosY: 0,
-            histPosXTemp: [0, 0, 0],
+            histPosXTemp: [0, 0, 0, 0],
             sorting: [],
             sortingValues: [
                 ['date', 0],
@@ -24982,18 +24994,28 @@
             },
             histEna: [],
             histEnaPos: 0,
+            histClean: [],
+            histCleanPos: 0,
             UpEna: function() {
+
                 this.histEna = [
                     STR_YES,
                     STR_NO
                 ];
+
+                this.histClean = [
+                    STR_YES,
+                    STR_NO
+                ];
+
             },
             histArrays: [],
             UpArrays: function() {
                 this.histArrays = [
                     this.sorting,
                     this.histEna,
-                    [STR_PRESS_ENTER_D]
+                    [STR_PRESS_ENTER_D],
+                    this.histClean
                 ];
             },
             set_url: noop_fun,
@@ -25029,6 +25051,15 @@
                     'dialog_hist_val_1',
                     this.histArrays[1][this.histPosX[1]]
                 );
+
+                //History dialog pos 4 was added after, push in case was saved before the change
+                if (this.histPosX.length < 4) this.histPosX.push(0);
+
+                Main_textContent(
+                    'dialog_hist_val_3',
+                    this.histArrays[3][this.histPosX[3]]
+                );
+
                 Main_getElementById("dialog_hist_left_1").style.opacity = "0";
                 Main_getElementById("dialog_hist_right_1").style.opacity = "0";
                 this.histPosXTemp = Main_Slice(this.histPosX);
@@ -25890,9 +25921,9 @@
             img_404: IMG_404_VIDEO,
             histPosXName: 'HistoryLive_histPosX',
             screenType: 0,
-            histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
+            histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId();
+                Screens_SethistDialogId(this.screen);
                 Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
                 this.sethistMainDialog();
             },
@@ -25987,9 +26018,9 @@
             HasAnimateThumb: true,
             AnimateThumb: ScreensObj_AnimateThumbId,
             histPosXName: 'HistoryVod_histPosX',
-            histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0]),
+            histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId();
+                Screens_SethistDialogId(this.screen);
                 Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
                 this.sethistMainDialog();
             },
@@ -26077,9 +26108,9 @@
             img_404: IMG_404_VOD,
             screenType: 2,
             histPosXName: 'HistoryClip_histPosX',
-            histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
+            histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId();
+                Screens_SethistDialogId(this.screen);
                 Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
                 this.sethistMainDialog();
             },
