@@ -458,7 +458,7 @@ function en_USLang() {
         "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
         "If you don't give storage permission no backups will be ever made." + "<br><br>" +
         "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
-    STR_DELETE_SURE = "Are you sure you wanna to delete ";
+    STR_DELETE_SURE = "Are you sure you wanna to delete all ";
     STR_CREATED_NEWEST = "Created / Uptime newest";
     STR_CREATED_OLDEST = "Created / Uptime Oldest";
     STR_THUMB_OPTIONS = "Thumbnail Options";
