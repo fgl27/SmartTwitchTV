@@ -542,7 +542,7 @@ function ScreensObj_StartAllVars() {
         key_pgDown: Main_UserLive,
         key_pgUp: Main_UserChannels,
         histPosY: 0,
-        histPosXTemp: [0, 0, 0],
+        histPosXTemp: [0, 0, 0, 0],
         sorting: [],
         sortingValues: [
             ['date', 0],
@@ -573,18 +573,28 @@ function ScreensObj_StartAllVars() {
         },
         histEna: [],
         histEnaPos: 0,
+        histClean: [],
+        histCleanPos: 0,
         UpEna: function() {
+
             this.histEna = [
                 STR_YES,
                 STR_NO
             ];
+
+            this.histClean = [
+                STR_YES,
+                STR_NO
+            ];
+
         },
         histArrays: [],
         UpArrays: function() {
             this.histArrays = [
                 this.sorting,
                 this.histEna,
-                [STR_PRESS_ENTER_D]
+                [STR_PRESS_ENTER_D],
+                this.histClean
             ];
         },
         set_url: noop_fun,
@@ -620,6 +630,15 @@ function ScreensObj_StartAllVars() {
                 'dialog_hist_val_1',
                 this.histArrays[1][this.histPosX[1]]
             );
+
+            //History dialog pos 4 was added after, push in case was saved before the change
+            if (this.histPosX.length < 4) this.histPosX.push(0);
+
+            Main_textContent(
+                'dialog_hist_val_3',
+                this.histArrays[3][this.histPosX[3]]
+            );
+
             Main_getElementById("dialog_hist_left_1").style.opacity = "0";
             Main_getElementById("dialog_hist_right_1").style.opacity = "0";
             this.histPosXTemp = Main_Slice(this.histPosX);
@@ -1481,9 +1500,9 @@ function ScreensObj_HistoryLive() {
         img_404: IMG_404_VIDEO,
         histPosXName: 'HistoryLive_histPosX',
         screenType: 0,
-        histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0]),
+        histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId();
+            Screens_SethistDialogId(this.screen);
             Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
         },
@@ -1578,9 +1597,9 @@ function ScreensObj_HistoryVod() {
         HasAnimateThumb: true,
         AnimateThumb: ScreensObj_AnimateThumbId,
         histPosXName: 'HistoryVod_histPosX',
-        histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0]),
+        histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId();
+            Screens_SethistDialogId(this.screen);
             Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
         },
@@ -1668,9 +1687,9 @@ function ScreensObj_HistoryClip() {
         img_404: IMG_404_VOD,
         screenType: 2,
         histPosXName: 'HistoryClip_histPosX',
-        histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0]),
+        histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId();
+            Screens_SethistDialogId(this.screen);
             Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
             this.sethistMainDialog();
         },

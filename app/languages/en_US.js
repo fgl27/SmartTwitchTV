@@ -438,6 +438,8 @@ function en_USLang() {
     STR_UNTIL = "until ";
     STR_SORTING = "Sorting";
     STR_DELETE_HISTORY = "Delete this history";
+    STR_DELETE_UNREACHABLE = "Automatic delete unreachable content";
+    STR_DELETE_UNREACHABLE_SUMMARY = "If this is enable, the app will automatic remove VODs and Clips that are unreachable (Have been deleted by the streamer/creator) from the history";
     STR_NAME_A_Z = "Name A - Z";
     STR_NAME_Z_A = "Name Z - A";
     STR_GAME_A_Z = "Game A - Z";

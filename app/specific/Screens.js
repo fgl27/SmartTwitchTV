@@ -2202,7 +2202,7 @@ function Screens_histStart(key) {
 function Screens_SethistDialogId(key) {
     Screens_histDialogID = Main_setTimeout(
         function() {
-            Screens_histDialogHide(key);
+            Screens_histDialogHide(false, key);
         },
         Screens_DialogHideTimout,
         Screens_histDialogID
@@ -2214,7 +2214,6 @@ var Screens_DeleteDialogAll = true;
 function Screens_histDialogHide(Update, key) {
     Screens_histRemoveFocus(ScreenObj[key].histPosY, 'hist');
 
-    Screens_histAddFocus(0, key);
     Main_clearTimeout(Screens_histDialogID);
     Main_removeEventListener("keydown", ScreenObj[key].key_hist);
     Main_addEventListener("keydown", ScreenObj[key].key_fun);
@@ -2236,6 +2235,7 @@ function Screens_histDialogHide(Update, key) {
         Main_setItem(ScreenObj[key].histPosXName, JSON.stringify(ScreenObj[key].histPosX));
     }
     ScreenObj[key].histPosY = 0;
+    Screens_histAddFocus(0, key);
 }
 
 function Screens_showDeleteDialog(text, key) {
@@ -2331,10 +2331,12 @@ function Screens_histAddFocus(divPos, key) {
 }
 
 function Screens_histRemoveFocus(divPos, dialog) {
+
     Main_RemoveClass('dialog_' + dialog + '_setting_' + divPos, 'settings_div_focus');
     Main_RemoveClass('dialog_' + dialog + '_val_' + divPos, 'settings_value_focus');
     Main_getElementById('dialog_' + dialog + '_left_' + divPos).style.opacity = "0";
     Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "0";
+
 }
 
 function Screens_histSetArrow(key) {
@@ -2350,6 +2352,7 @@ function Screens_histSetArrow(key) {
 }
 
 function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
+
     Main_innerHTML('dialog_' + dialog + '_val_' + divPos, text);
 
     if (maxValue === 1) {
@@ -2373,6 +2376,7 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
         Main_getElementById('dialog_' + dialog + '_right_' + divPos).style.opacity = "1";
 
     }
+
 }
 
 function Screens_histhandleKeyDown(key, event) {

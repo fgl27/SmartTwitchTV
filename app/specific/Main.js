@@ -595,6 +595,8 @@ function Main_SetStringsSecondary() {
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
     Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
     Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
+    Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
+    Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);
     Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
     Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
 
@@ -2345,7 +2347,7 @@ function Main_StartHistoryworker() {
 //Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
 
-    if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0, len = array.length;
@@ -2368,6 +2370,8 @@ function Main_RunVODWorker() {
 
 //Check if a Live that is now VOD in Live history has ben deleted
 function Main_RunLiveVODWorker() {
+
+    if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
         i = 0, len = array.length;
@@ -2392,7 +2396,7 @@ function Main_RunLiveVODWorker() {
 //Check if a CLIP in history has ben deleted
 function Main_RunClipWorker() {
 
-    if (Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
