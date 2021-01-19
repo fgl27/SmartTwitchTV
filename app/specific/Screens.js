@@ -2459,6 +2459,7 @@ var Screens_isFollowing = false;
 function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
     Screens_values_Play_data = Screens_GetObj(key);
+    Screens_ThumbOption_CheckFollow_ID = 0;
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -2535,23 +2536,35 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
 function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
-    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) {
+
+        Screens_ThumbOption_CheckFollow_ID = 0;
+        return;
+
+    }
 
     Screens_canFollow = true;
     Screens_isFollowing = true;
     Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
     Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
+    Screens_ThumbOption_CheckFollow_ID = 0;
 
 }
 
 function Screens_ThumbOption_RequestCheckFollowFail(key, ID) {
 
-    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) {
+
+        Screens_ThumbOption_CheckFollow_ID = 0;
+        return;
+
+    }
 
     Screens_canFollow = true;
     Screens_isFollowing = false;
     Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
     Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+    Screens_ThumbOption_CheckFollow_ID = 0;
 
 }
 
@@ -2700,6 +2713,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 
     Screens_ThumbOptionPosY = 0;
     Screens_ThumbOptionAddFocus(0);
+    Screens_ThumbOption_CheckFollow_ID = 0;
 }
 
 function Screens_SetLang() {
