@@ -2536,12 +2536,7 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
 function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
-    if (Screens_ThumbOption_CheckFollow_ID !== ID) {
-
-        Screens_ThumbOption_CheckFollow_ID = 0;
-        return;
-
-    }
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
     Screens_canFollow = true;
     Screens_isFollowing = true;
@@ -2553,12 +2548,7 @@ function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
 function Screens_ThumbOption_RequestCheckFollowFail(key, ID) {
 
-    if (Screens_ThumbOption_CheckFollow_ID !== ID) {
-
-        Screens_ThumbOption_CheckFollow_ID = 0;
-        return;
-
-    }
+    if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
     Screens_canFollow = true;
     Screens_isFollowing = false;
