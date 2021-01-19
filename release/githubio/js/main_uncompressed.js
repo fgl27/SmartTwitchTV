@@ -875,7 +875,7 @@
         STR_SWITCH_USER = "Switch user screen";
         STR_SWITCH_VOD = "Switch: Past Broadcasts or Highlights";
         STR_SWITCH_CLIP = "Switch: Period (24h, 7d, 30d, all)";
-        STR_GO_TO = "Go to ";
+        STR_GO_TO = "Go to screen ";
         STR_USER = "User";
         STR_LIVE = "Live";
         STR_GAMES = "Games";
@@ -1300,7 +1300,7 @@
         STR_OPEN_CHANNEL = "Open the channel";
         STR_THUMB_OPTIONS_KEY = "Press enter above a action (to open or apply it), return to exit without applying";
         STR_DELETE_FROM_HISTORY = "Delete this from history";
-        STR_CHECK_HISTORY = "Checking follow status";
+        STR_CHECK_HISTORY = "Checking follow status...";
         STR_REFRESH_DELETE = "Refresh the screen after delete to see the change.";
         STR_THUMB_OPTIONS_TOP = "Hold left for thumbnail options";
         STR_REPLACE_MULTI = "Choose with to replace by the above?";
@@ -1470,7 +1470,7 @@
         STR_LOWLATENCY_ARRAY = [STR_DISABLE, "Normal mode, may cause re-buffers", "Lowest mode, may cause even more re-buffers"];
         STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + ' - ' + STR_DISABLED, STR_LOW_LATENCY + " - Normal mode", STR_LOW_LATENCY + " - Lowest mode"];
         STR_VOD_SEEK = "VOD fast backwards/forward controls";
-        STR_VOD_SEEK_SUMMARY = "Controls how fast backwards/forward steps will work, when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.<br><br>Pressing up will overwrite the mim/max value allowing you to go thru all possible steps and will lock the value until the progress bar is dismissed<br><br>Doing single clicks without hold the key will not increase the time<br><br>This options only work on VODs for Clip the step is always 5 seconds";
+        STR_VOD_SEEK_SUMMARY = "Controls how fast backwards/forward steps will work, when click and hold left/right the step time will increase after the increase timeout has passed, it will increase up to the maximum step time, after releasing the key and not clicking for one second the step time will reset back to the minimum step time.<br><br>Pressing up will overwrite the mim/max value allowing you to go thru all possible steps and will lock the value until the progress bar is dismissed<br><br>Doing single clicks without hold the key will not increase the time<br><br>This options only work on VODs for Clip the step is always 1 seconds";
         STR_VOD_SEEK_MIN = "Minimum (starting) step time";
         STR_VOD_SEEK_MAX = "Maximum step time";
         STR_VOD_SEEK_TIME = "Increase timeout after holding for";
@@ -9606,12 +9606,11 @@
     }
 
     function Main_onNewIntent(mobj) {
-        var obj = JSON.parse(mobj);
-        var isLive = Main_A_equals_B(obj.type, "LIVE");
-        var isHost = Main_A_equals_B(obj.type, "HOST");
+        var obj = JSON.parse(mobj),
+            isLive = Main_A_equals_B(obj.type, "LIVE");
 
         //TODO check more cases for problems
-        if (isLive || isHost) {
+        if (isLive) {
 
             Play_showBufferDialog();
             Main_CheckResume(true);
@@ -9627,14 +9626,7 @@
             } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            if (isLive) {
-                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-            } else {
-                Play_data.data = ScreensObj_HostCellArray(obj.obj);
-                Main_values.Play_isHost = true;
-                Play_data.DisplaynameHost = Play_data.data[1];
-                Play_data.data[1] = Play_data.data[15];
-            }
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
             Main_openStream();
 
@@ -21618,7 +21610,6 @@
         var Last_obj = OSInterface_GetLastIntentObj(),
             obj,
             live_channel_call,
-            host_channel_call,
             game_channel_call,
             screen_channel_call,
             tempGame;
@@ -21626,9 +21617,8 @@
         if (Last_obj) {
             obj = JSON.parse(Last_obj);
             live_channel_call = Main_A_equals_B(obj.type, "LIVE");
-            host_channel_call = Main_A_equals_B(obj.type, "HOST");
 
-            if (!live_channel_call && !host_channel_call) {
+            if (!live_channel_call) {
                 game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
                 if (!game_channel_call) {
@@ -21647,24 +21637,12 @@
         var StartUser = Settings_value.start_user_screen.defaultValue;
         var restore_playback = Settings_value.restor_playback.defaultValue;
 
-        if (live_channel_call || host_channel_call) {
+        if (live_channel_call) {
 
             Main_values.Play_WasPlaying = 1;
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-            if (live_channel_call) {
-
-                Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-
-            } else {
-
-                Play_data.data = ScreensObj_HostCellArray(obj.obj);
-                Main_values.Play_isHost = true;
-                Play_data.DisplaynameHost = Play_data.data[1];
-                Play_data.data[1] = Play_data.data[15];
-
-            }
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
             StartUser = false;
             restore_playback = true;
@@ -23989,11 +23967,12 @@
 
         Screens_ThumbOption_RequestCheckFollow(
             channel_id,
-            Screens_ThumbOption_CheckFollow_ID
+            Screens_ThumbOption_CheckFollow_ID,
+            key
         );
     }
 
-    function Screens_ThumbOption_RequestCheckFollow(channel_id, ID) {
+    function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
@@ -24004,28 +23983,29 @@
             null,
             Screens_ThumbOption_RequestCheckFollowSuccess,
             Screens_ThumbOption_RequestCheckFollowFail,
+            key,
             ID
         );
     }
 
-    function Screens_ThumbOption_RequestCheckFollowSuccess(obj, ID) {
+    function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
         if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
         Screens_canFollow = true;
         Screens_isFollowing = true;
-        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
         Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
 
     }
 
-    function Screens_ThumbOption_RequestCheckFollowFail(ID) {
+    function Screens_ThumbOption_RequestCheckFollowFail(key, ID) {
 
         if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
         Screens_canFollow = true;
         Screens_isFollowing = false;
-        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
         Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
 
     }
@@ -26276,29 +26256,6 @@
             cell.viewers, //13
             cell.channel._id, //14
             cell.channel.broadcaster_language //15
-        ];
-    }
-
-    function ScreensObj_HostCellArray(cell) {
-        return [
-            cell.target.preview_urls.template, //0
-            cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name, //1
-            cell.target.title, //2
-            cell.target.meta_game, //3
-            STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-            Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER, //4
-            '', //5 quality
-            cell.target.channel.name, //6
-            '', //7 broadcast id
-            false, //8
-            cell.target.channel.logo, //9
-            '', //10 partner
-            '', //11 stream creat at string
-            '', //12 stream creat at
-            cell.target.viewers, //13
-            cell.target._id, //14
-            cell.target.channel.display_name, //15
-            true //16 is hosting
         ];
     }
 
