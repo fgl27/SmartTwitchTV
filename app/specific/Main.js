@@ -2717,12 +2717,11 @@ function Main_onNewIntentClearPlay() {
 }
 
 function Main_onNewIntent(mobj) {
-    var obj = JSON.parse(mobj);
-    var isLive = Main_A_equals_B(obj.type, "LIVE");
-    var isHost = Main_A_equals_B(obj.type, "HOST");
+    var obj = JSON.parse(mobj),
+        isLive = Main_A_equals_B(obj.type, "LIVE");
 
     //TODO check more cases for problems
-    if (isLive || isHost) {
+    if (isLive) {
 
         Play_showBufferDialog();
         Main_CheckResume(true);
@@ -2738,14 +2737,7 @@ function Main_onNewIntent(mobj) {
         } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        if (isLive) {
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-        } else {
-            Play_data.data = ScreensObj_HostCellArray(obj.obj);
-            Main_values.Play_isHost = true;
-            Play_data.DisplaynameHost = Play_data.data[1];
-            Play_data.data[1] = Play_data.data[15];
-        }
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
         Main_openStream();
 

@@ -1857,29 +1857,6 @@ function ScreensObj_LiveCellArray(cell) {
     ];
 }
 
-function ScreensObj_HostCellArray(cell) {
-    return [
-        cell.target.preview_urls.template,//0
-        cell.display_name + STR_USER_HOSTING + cell.target.channel.display_name,//1
-        cell.target.title, //2
-        cell.target.meta_game,//3
-        STR_FOR.charAt(0).toUpperCase() + STR_FOR.slice(1) +
-        Main_addCommas(cell.target.viewers) + STR_SPACE + STR_VIEWER,//4
-        '',//5 quality
-        cell.target.channel.name,//6
-        '',//7 broadcast id
-        false,//8
-        cell.target.channel.logo,//9
-        '',//10 partner
-        '',//11 stream creat at string
-        '',//12 stream creat at
-        cell.target.viewers,//13
-        cell.target._id,//14
-        cell.target.channel.display_name,//15
-        true//16 is hosting
-    ];
-}
-
 function ScreensObj_VodCellArray(cell) {
     return [
         //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used

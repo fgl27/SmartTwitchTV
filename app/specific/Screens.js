@@ -158,7 +158,6 @@ function Screens_first_init() {
     var Last_obj = OSInterface_GetLastIntentObj(),
         obj,
         live_channel_call,
-        host_channel_call,
         game_channel_call,
         screen_channel_call,
         tempGame;
@@ -166,9 +165,8 @@ function Screens_first_init() {
     if (Last_obj) {
         obj = JSON.parse(Last_obj);
         live_channel_call = Main_A_equals_B(obj.type, "LIVE");
-        host_channel_call = Main_A_equals_B(obj.type, "HOST");
 
-        if (!live_channel_call && !host_channel_call) {
+        if (!live_channel_call) {
             game_channel_call = Main_A_equals_B(obj.type, "GAME");
 
             if (!game_channel_call) {
@@ -187,24 +185,12 @@ function Screens_first_init() {
     var StartUser = Settings_value.start_user_screen.defaultValue;
     var restore_playback = Settings_value.restor_playback.defaultValue;
 
-    if (live_channel_call || host_channel_call) {
+    if (live_channel_call) {
 
         Main_values.Play_WasPlaying = 1;
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-
-        if (live_channel_call) {
-
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
-
-        } else {
-
-            Play_data.data = ScreensObj_HostCellArray(obj.obj);
-            Main_values.Play_isHost = true;
-            Play_data.DisplaynameHost = Play_data.data[1];
-            Play_data.data[1] = Play_data.data[15];
-
-        }
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
         StartUser = false;
         restore_playback = true;
@@ -2526,11 +2512,12 @@ function Screens_ThumbOption_CheckFollow(data, key) {
 
     Screens_ThumbOption_RequestCheckFollow(
         channel_id,
-        Screens_ThumbOption_CheckFollow_ID
+        Screens_ThumbOption_CheckFollow_ID,
+        key
     );
 }
 
-function Screens_ThumbOption_RequestCheckFollow(channel_id, ID) {
+function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
@@ -2541,28 +2528,29 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID) {
         null,
         Screens_ThumbOption_RequestCheckFollowSuccess,
         Screens_ThumbOption_RequestCheckFollowFail,
+        key,
         ID
     );
 }
 
-function Screens_ThumbOption_RequestCheckFollowSuccess(obj, ID) {
+function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
     if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
     Screens_canFollow = true;
     Screens_isFollowing = true;
-    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
+    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
     Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
 
 }
 
-function Screens_ThumbOption_RequestCheckFollowFail(ID) {
+function Screens_ThumbOption_RequestCheckFollowFail(key, ID) {
 
     if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
 
     Screens_canFollow = true;
     Screens_isFollowing = false;
-    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
+    Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
     Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
 
 }
