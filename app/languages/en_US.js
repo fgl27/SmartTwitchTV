@@ -218,6 +218,7 @@ function en_USLang() {
     STR_STAY_CHECK = "Check if stream is online in:";
     STR_STAY_CHECKING = "Checking if is online...";
     STR_STAY_CHECK_LAST = "Last result:";
+    STR_STAY_IS_OFFLINE = "The stream was offline";
     STR_NO_BROADCAST = "No Broadcast";
     STR_NO_BROADCAST_WARNING = "There are no Past Broadcasts for this clip";
     STR_NO_CHAT = "And because of that no chat";

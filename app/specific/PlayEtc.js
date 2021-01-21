@@ -834,7 +834,7 @@ function Play_StartStayCheck(time) {
     time--;
     Main_innerHTML(
         "play_dialog_retry_text",
-        (Play_StartStayTryedResult !== '' ? (STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR) : '') + STR_STAY_CHECK + STR_BR + time
+        (Play_StartStayTryedResult !== '' ? (STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR) : '') + STR_STAY_CHECK + STR_BR + time
     );
 
     Play_StartStayTryId = Main_setTimeout(
@@ -966,11 +966,11 @@ function Play_StayCheckLiveResultEnd(responseObj) {
 
 function Play_StayCheckLiveErrorFinish(Isforbiden) {
 
-    Play_StartStayTryedResult = Isforbiden ? STR_FORBIDDEN : STR_410_ERROR;
+    Play_StartStayTryedResult = Isforbiden ? STR_FORBIDDEN : STR_STAY_IS_OFFLINE;
 
     Main_innerHTML(
         "play_dialog_retry_text",
-        STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_STAY_CHECK + STR_BR + 10
+        STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR + STR_STAY_CHECK + STR_BR + 10
     );
 
     Play_StartStayTryId = Main_setTimeout(
