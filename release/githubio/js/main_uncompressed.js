@@ -13065,11 +13065,23 @@
             Main_HideElement('play_dialog_retry');
 
             Play_StartStayShowBottom();
+            Play_SetControlsVisibility('ShowInLive');
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessEnd(responseObj.responseText, false, true);
             Play_ShowPanelStatus(1);
             Main_values.Play_WasPlaying = 1;
             Main_SaveValues();
+
+            //Update stream info after 10s as the information may not be correct right after stream comes back online 
+            Main_setTimeout(
+                function() {
+
+                    if (Play_isOn && !Play_StayDialogVisible()) Play_updateStreamInfo();
+
+                },
+                10000
+            );
+
             return;
 
         } else if (responseObj.status === 1 || responseObj.status === 403 ||
@@ -14915,7 +14927,7 @@
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
-            ShowInStay: true,
+            ShowInStay: false,
             icons: 'status',
             string: STR_PLAYER_INFO_VISIBILITY,
             values: STR_PLAYER_INFO_VISIBILITY_ARRAY,
