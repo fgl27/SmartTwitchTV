@@ -32526,14 +32526,13 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].div.classList.add('hide');
     }
 
-    var UserLiveFeedobj_ShowHistoryLength = -1;
-
     function UserLiveFeedobj_ShowHistory() {
         UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserHistoryPos - 1);
 
         if (AddUser_UserIsSet()) {
-            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true); //(UserLiveFeedobj_ShowHistoryLength !== Main_values_History_data[AddUser_UsernameArray[0].id].live.length)
-            UserLiveFeedobj_ShowHistoryLength = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
+
+            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);
+
         }
 
     }
@@ -32541,20 +32540,22 @@
     function UserLiveFeedobj_History() {
         UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
 
-        var pos = UserLiveFeedobj_UserHistoryPos,
-            response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].live)),
-            response_items,
-            len = response.length,
-            cell, id,
-            i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos],
-            streamerID = {};
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
-        response.sort(
+        array.sort(
             function(a, b) {
                 return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
             }
         );
+
+        var pos = UserLiveFeedobj_UserHistoryPos,
+            response = JSON.parse(JSON.stringify(array.slice(0, 100))), //first 100 only
+            len = response.length,
+            response_items = Math.min(len, 100),
+            cell, id,
+            i = 0,
+            itemsCount = UserLiveFeed_itemsCount[pos],
+            streamerID = {};
 
         response_items = Math.min(len, 100);
 
@@ -33315,21 +33316,21 @@
     function UserLiveFeedobj_UserVodHistory() {
         UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserVodHistoryPos);
 
-        var pos = UserLiveFeedobj_UserVodHistoryPos,
-            response = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id].vod)),
-            response_items,
-            len = response.length,
-            cell, id,
-            i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos];
+        var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod;
 
-        response.sort(
+        array.sort(
             function(a, b) {
                 return (a.date > b.date ? -1 : (a.date < b.date ? 1 : 0));
             }
         );
 
-        response_items = Math.min(len, 100);
+        var pos = UserLiveFeedobj_UserVodHistoryPos,
+            response = JSON.parse(JSON.stringify(array.slice(0, 100))), // first 100 only
+            len = response.length,
+            response_items = Math.min(len, 100),
+            cell, id,
+            i = 0,
+            itemsCount = UserLiveFeed_itemsCount[pos];
 
         if (response_items) {
 
