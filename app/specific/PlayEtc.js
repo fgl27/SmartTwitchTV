@@ -2789,7 +2789,7 @@ function Play_MakeControls() {
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
-        ShowInStay: true,
+        ShowInStay: false,
         icons: 'status',
         string: STR_PLAYER_INFO_VISIBILITY,
         values: STR_PLAYER_INFO_VISIBILITY_ARRAY,
