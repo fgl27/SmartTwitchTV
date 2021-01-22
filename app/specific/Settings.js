@@ -458,6 +458,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "round_images": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -744,6 +748,7 @@ function Settings_SetDefautls() {
     Settings_notification_sicetime();
     Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
     Settings_ShowCounter();
+    Settings_UpdateRoundImages();
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
     Settings_CodecsSet();
 
@@ -889,6 +894,7 @@ function Settings_SetDefault(position) {
         UserLiveFeed_ResetAddCellsize();
     }
     else if (position === "hide_screen_counter") Settings_ShowCounter();
+    else if (position === "round_images") Settings_UpdateRoundImages();
     else if (position === "hide_main_clock") Settings_HideMainClock();
     else if (position === "hide_player_clock") Settings_HidePlayerClock();
     else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
@@ -1287,6 +1293,24 @@ function Settings_ShowCounter() {
 
     Settings_HideElem('dialog_counter_text', hide);
     Settings_HideElem('feed_counter', hide);
+}
+
+function Settings_UpdateRoundImages() {
+
+    Main_innerHTML(
+        'round_images',
+        Settings_Obj_default("round_images") ?
+            'img.side_panel_channel_img {border-radius: 50%;}' +
+            'img.stream_img_channels {border-radius: 50%;}' +
+            'img.stream_info_icon {border-radius: 50%;}' +
+            'img.panel_pp_img {border-radius: 50%;}' +
+            'img.multi_info_img {border-radius: 50%;}' +
+            'img.multi_info_img_big {border-radius: 50%;}' +
+            //'img.stream_img_channel_logo {border-radius: 50%;}' +//Let this square so we an have a reference of what is square or not by default
+            'img.side_panel_new_img {border-radius: 50%;}' :
+            ''
+    );
+
 }
 
 function Settings_HideElem(elem, hide) {
@@ -1880,6 +1904,7 @@ function Settings_DialogShowUIOpt() {
     Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
     Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
     Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
+    Settings_value.round_images.values = [STR_NO, STR_YES];
 
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -1920,6 +1945,12 @@ function Settings_DialogShowUIOpt() {
             values: Settings_value.clock_offset.values,
             title: STR_CLOCK_OFFSET,
             summary: STR_CLOCK_OFFSET_SUMMARY
+        },
+        round_images: {
+            defaultValue: Settings_value.round_images.defaultValue,
+            values: Settings_value.round_images.values,
+            title: STR_ROUND_IMAGES,
+            summary: STR_ROUND_IMAGES_SUMMARY
         },
         hide_screen_counter: {
             defaultValue: Settings_value.hide_screen_counter.defaultValue,

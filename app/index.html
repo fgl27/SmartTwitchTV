@@ -45,6 +45,7 @@
         href="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/favicon.png" />
     <style id="focus_class_holder"></style>
     <style id="focus_class_test"></style>
+    <style id="round_images"></style>
     <style>
         body,
         html {
@@ -568,6 +569,7 @@
         }
 
         img.stream_img_side,
+        img.stream_img_channels,
         img.stream_img {
             width: 100%;
             position: absolute;
@@ -2235,6 +2237,14 @@
             width: 8.75%;
         }
 
+        img.stream_info_icon {
+            margin-left: 1%;
+            margin-top: 1%;
+            margin-bottom: 2.5%;
+            display: inline-block;
+            width: 9.5%;
+        }
+
         div.stream_info_timers {
             display: inline-block;
             width: auto !important;
@@ -3056,9 +3066,7 @@
                 <div id="playerinfo" class="playerinfo">
                     <div id="stream_clock" class="playclock"></div>
                     <div id="stream_info" class="shadow_text">
-                        <img id="stream_info_icon"
-                            style="padding-left: 1%; padding-top: 1%; padding-bottom: 2.5%; display: inline-block; width: 9.5%;"
-                            alt=""
+                        <img id="stream_info_icon" class="stream_info_icon" alt=""
                             src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
                         <div class="playmaininfo">
                             <div id="stream_info_name" class="class_bold multi_info_line" style="font-size: 160%;">

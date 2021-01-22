@@ -145,7 +145,7 @@ function Users_createCell(id, pos) {
 
     div.innerHTML = '<div id="' + Users_ids[0] + id +
         '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
-        id + '" alt="" class="stream_img" src="' + AddUser_UsernameArray[pos].logo +
+        id + '" alt="" class="stream_img_channels" src="' + AddUser_UsernameArray[pos].logo +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></div>' +
         '<div  class="stream_thumbnail_user_text_holder">' +
         '<div class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +

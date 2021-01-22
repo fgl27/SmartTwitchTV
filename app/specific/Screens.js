@@ -557,7 +557,7 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
 
     return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id +
         '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
-        id + '" alt="" class="stream_img" src="' + valuesArray[2] +
+        id + '" alt="" class="stream_img_channels" src="' + valuesArray[2] +
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
         '<div class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +

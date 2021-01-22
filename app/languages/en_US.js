@@ -378,6 +378,8 @@ function en_USLang() {
     STR_MAIN_MENU = "Main Menu";
     STR_USER_MENU = "User Menu";
     STR_CH_IS_OFFLINE = "Is offline";
+    STR_ROUND_IMAGES = "Use round channel images";
+    STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
     STR_SCREEN_COUNTER = "Hide thumbnail position counter";
     STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
     STR_SWITCH_POS = "Switch: Starting Position offset";
