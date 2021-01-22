@@ -1437,7 +1437,7 @@ function ChatLive_loadChatSuccess(message, chat_number) {
     }
     div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
-    div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
+    div += '<span ' + (tags.id ? 'id="' + tags.id + '"' : '') + ' class="' + (tags['user-id'] ? tags['user-id'] : '') + ' message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
         ChatLive_extraMessageTokenize(
             emoticonize(mmessage, ChatLive_checkEmotes(tags)),
             chat_number,
@@ -1450,8 +1450,6 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atstreamer: atstreamer,
         atuser: atuser,
         hasbits: (hasbits && ChatLive_Highlight_Bits),
-        user_id: tags['user-id'] || '_',
-        message_id: tags.id || '_',
         extraMessage: extraMessage
     };
 
@@ -1578,8 +1576,6 @@ function ChatLive_LineAdd(messageObj) {
 //     hasbits: hasbits,
 //     sub: sub,
 //     skip_addline: skip_addline,
-//     user_id: user_id,
-//     message_id: message_id
 // };
 
 function ChatLive_ElemntAdd(messageObj) {
@@ -1633,11 +1629,6 @@ function ChatLive_ElemntAdd(messageObj) {
     if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
     else classname += ' chat_line_slim';
 
-    if (messageObj.message_id) {
-        elem.setAttribute('id', messageObj.message_id);
-        classname += ' ' + messageObj.user_id;
-    }
-
     elem.className = classname;
     elem.innerHTML = messageObj.message;
 
@@ -1653,31 +1644,13 @@ function ChatLive_ElemntAdd(messageObj) {
 
     }
 
+    // <div class="chat_line chat_line_ind">
+    // <span style="color: #D463FF;">USER Name</span>:&nbsp;
+    // <span id="msg-id" class="user-id message">message <img class="emoticon" alt="" src="https://cdn.betterttv.net/emote/60007afdc96152314ad6629f/3x">
+    // </span>
+    // </div>
+
     Chat_div[messageObj.chat_number].appendChild(elem);
-
-    // Main_setTimeout(
-    //     function() {
-    //         if (messageObj.message_id) {
-    //             var objss = {
-    //                 tags: {
-    //                     'target-msg-id': messageObj.message_id
-    //                 }
-    //             }
-    //             ChatLive_CleanMessage(objss);
-    //         }
-    //     }, 1000);
-
-    // Main_setTimeout(
-    //     function() {
-    //         if (messageObj.message_id) {
-    //             var objss = {
-    //                 tags: {
-    //                     'target-user-id': messageObj.user_id
-    //                 }
-    //             }
-    //             ChatLive_CleanUser(0, objss);
-    //         }
-    //     }, 1000);
 }
 
 function ChatLive_MessagesRunAfterPause() {
@@ -1757,18 +1730,44 @@ function ChatLive_Clear(chat_number) {
 
 }
 
+// {
+// 	"raw": "@ban-duration=5;room-id=1234;target-user-id=1234;tmi-sent-ts=1611278054054 :tmi.twitch.tv CLEARCHAT #streamer :user",
+// 	"tags": {
+// 		"ban-duration": "5",
+// 		"room-id": "1234",
+// 		"target-user-id": "1234",
+// 		"tmi-sent-ts": "1611278054054"
+// 	},
+// 	"prefix": "tmi.twitch.tv",
+// 	"command": "CLEARCHAT",
+// 	"params": ["#streamer", "user name"]
+// }
+
 function ChatLive_CleanUser(chat_number, message) {
+
     if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
-        var array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']);//The user id is added as a class
+        var duration = message.tags['ban-duration'] || 0,
+            timeout = '',
+            array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']);//The user id is added as a class
+
+        if (duration) {
+
+            timeout = duration + (duration > 1 ? STR_SECONDS : STR_SECOND);
+
+        }
 
         try {
             //Array.prototype maybe not supported by all browsers
             Array.prototype.forEach.call(array,
                 function(el) {
                     if (el) {
-                        if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
-                        Main_AddClassWitEle(el, 'chat_purged');
+
+                        if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE_TIMEOUT + timeout;
+                        else el.innerHTML += STR_PURGED_MESSAGE_TIMEOUT + timeout;
+
+                        Main_AddClassWitEle(el.parentElement, 'chat_purged');
+
                     }
                 }
             );
@@ -1776,15 +1775,34 @@ function ChatLive_CleanUser(chat_number, message) {
             Main_Log('ChatLive_Clean Array.prototype message ' + JSON.stringify(message) + ' e ' + e);
         }
     }
+
 }
 
+// {
+// 	"raw": "@login=user name;room-id=;target-msg-id=a long hash;tmi-sent-ts=1611277844517 :tmi.twitch.tv CLEARMSG #streamer :the message",
+// 	"tags": {
+// 		"login": "user name",
+// 		"room-id": true,
+// 		"target-msg-id": "a long hash",
+// 		"tmi-sent-ts": "1611277844517"
+// 	},
+// 	"prefix": "tmi.twitch.tv",
+// 	"command": "CLEARMSG",
+// 	"params": ["#streamer", "the message"]
+// }
+
 function ChatLive_CleanMessage(message) {
+
     if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
         //Elem may not be there anymore
         var el = Main_getElementById(message.tags['target-msg-id']);
         if (el) {
+
             if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
-            Main_AddClassWitEle(el, 'chat_purged');
+            else el.innerHTML += STR_PURGED_MESSAGE;
+
+            Main_AddClassWitEle(el.parentElement, 'chat_purged');
         }
     }
+
 }

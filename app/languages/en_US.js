@@ -604,9 +604,10 @@ function en_USLang() {
     STR_CHAT_TIMESTAMP = "Show message timestamp";
     STR_CHAT_NICK_COLOR = "Readable nick colors";
     STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
-    STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
-    STR_PURGED_MESSAGE = "Message purged";
-    STR_CHAT_CLEAR_MSG_SUMMARY = 'Purges chat messages from a specific user (typically after a timeout or ban), purged messages will always have a blue background, the message will be replaced with "' + STR_PURGED_MESSAGE + '" if this is set to yes';
+    STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
+    STR_PURGED_MESSAGE = " - Single user message deleted";
+    STR_PURGED_MESSAGE_TIMEOUT = " - All messages from this user was deleted, they was timeout for ";
+    STR_CHAT_CLEAR_MSG_SUMMARY = 'Delete chat messages from a specific user (typically after they received a timeout or ban), deleted messages will always have a blue background, the message will be removed if this is set to yes if not only';
     STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
     STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
     STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
