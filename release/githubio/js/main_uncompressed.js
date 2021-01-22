@@ -605,6 +605,7 @@
     var STR_UP_LOCKED;
     var STR_LOCKED;
     var STR_PURGED_MESSAGE;
+    var STR_PURGED_MESSAGE_TIMEOUT;
     var STR_IN_CHAT;
     var STR_SHOW_IN_CHAT;
     var STR_PLAYED;
@@ -1436,9 +1437,10 @@
         STR_CHAT_TIMESTAMP = "Show message timestamp";
         STR_CHAT_NICK_COLOR = "Readable nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
-        STR_CHAT_CLEAR_MSG = "Clear chat, purge a user’s message";
-        STR_PURGED_MESSAGE = "Message purged";
-        STR_CHAT_CLEAR_MSG_SUMMARY = 'Purges chat messages from a specific user (typically after a timeout or ban), purged messages will always have a blue background, the message will be replaced with "' + STR_PURGED_MESSAGE + '" if this is set to yes';
+        STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
+        STR_PURGED_MESSAGE = " - Single user message deleted";
+        STR_PURGED_MESSAGE_TIMEOUT = " - All messages from this user was deleted, they was timeout for ";
+        STR_CHAT_CLEAR_MSG_SUMMARY = 'Delete chat messages from a specific user (typically after they received a timeout or ban), deleted messages will always have a blue background, the message will be removed if this is set to yes if not only';
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
         STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
         STR_PING_WARNING = 'Show "Ping to Twitch fail warning"';
@@ -5963,7 +5965,7 @@
         }
         div += '<span ' + (action ? 'class="class_bold" ' : '') + nickColor + '>' + nick + '</span>' + (action ? '' : '&#58;') + '&nbsp;';
 
-        div += '<span class="message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
+        div += '<span ' + (tags.id ? 'id="' + tags.id + '"' : '') + ' class="' + (tags['user-id'] ? tags['user-id'] : '') + ' message' + highlighted + (action ? (' class_bold" ' + nickColor) : '"') + '>' +
             ChatLive_extraMessageTokenize(
                 emoticonize(mmessage, ChatLive_checkEmotes(tags)),
                 chat_number,
@@ -5976,8 +5978,6 @@
             atstreamer: atstreamer,
             atuser: atuser,
             hasbits: (hasbits && ChatLive_Highlight_Bits),
-            user_id: tags['user-id'] || '_',
-            message_id: tags.id || '_',
             extraMessage: extraMessage
         };
 
@@ -6104,8 +6104,6 @@
     //     hasbits: hasbits,
     //     sub: sub,
     //     skip_addline: skip_addline,
-    //     user_id: user_id,
-    //     message_id: message_id
     // };
 
     function ChatLive_ElemntAdd(messageObj) {
@@ -6159,11 +6157,6 @@
         if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
         else classname += ' chat_line_slim';
 
-        if (messageObj.message_id) {
-            elem.setAttribute('id', messageObj.message_id);
-            classname += ' ' + messageObj.user_id;
-        }
-
         elem.className = classname;
         elem.innerHTML = messageObj.message;
 
@@ -6177,31 +6170,13 @@
 
         }
 
+        // <div class="chat_line chat_line_ind">
+        // <span style="color: #D463FF;">USER Name</span>:&nbsp;
+        // <span id="msg-id" class="user-id message">message <img class="emoticon" alt="" src="https://cdn.betterttv.net/emote/60007afdc96152314ad6629f/3x">
+        // </span>
+        // </div>
+
         Chat_div[messageObj.chat_number].appendChild(elem);
-
-        // Main_setTimeout(
-        //     function() {
-        //         if (messageObj.message_id) {
-        //             var objss = {
-        //                 tags: {
-        //                     'target-msg-id': messageObj.message_id
-        //                 }
-        //             }
-        //             ChatLive_CleanMessage(objss);
-        //         }
-        //     }, 1000);
-
-        // Main_setTimeout(
-        //     function() {
-        //         if (messageObj.message_id) {
-        //             var objss = {
-        //                 tags: {
-        //                     'target-user-id': messageObj.user_id
-        //                 }
-        //             }
-        //             ChatLive_CleanUser(0, objss);
-        //         }
-        //     }, 1000);
     }
 
     function ChatLive_MessagesRunAfterPause() {
@@ -6282,18 +6257,44 @@
 
     }
 
+    // {
+    // 	"raw": "@ban-duration=5;room-id=1234;target-user-id=1234;tmi-sent-ts=1611278054054 :tmi.twitch.tv CLEARCHAT #streamer :user",
+    // 	"tags": {
+    // 		"ban-duration": "5",
+    // 		"room-id": "1234",
+    // 		"target-user-id": "1234",
+    // 		"tmi-sent-ts": "1611278054054"
+    // 	},
+    // 	"prefix": "tmi.twitch.tv",
+    // 	"command": "CLEARCHAT",
+    // 	"params": ["#streamer", "user name"]
+    // }
+
     function ChatLive_CleanUser(chat_number, message) {
+
         if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
-            var array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']); //The user id is added as a class
+            var duration = message.tags['ban-duration'] || 0,
+                timeout = '',
+                array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']); //The user id is added as a class
+
+            if (duration) {
+
+                timeout = duration + (duration > 1 ? STR_SECONDS : STR_SECOND);
+
+            }
 
             try {
                 //Array.prototype maybe not supported by all browsers
                 Array.prototype.forEach.call(array,
                     function(el) {
                         if (el) {
-                            if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
-                            Main_AddClassWitEle(el, 'chat_purged');
+
+                            if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE_TIMEOUT + timeout;
+                            else el.innerHTML += STR_PURGED_MESSAGE_TIMEOUT + timeout;
+
+                            Main_AddClassWitEle(el.parentElement, 'chat_purged');
+
                         }
                     }
                 );
@@ -6301,17 +6302,36 @@
                 Main_Log('ChatLive_Clean Array.prototype message ' + JSON.stringify(message) + ' e ' + e);
             }
         }
+
     }
 
+    // {
+    // 	"raw": "@login=user name;room-id=;target-msg-id=a long hash;tmi-sent-ts=1611277844517 :tmi.twitch.tv CLEARMSG #streamer :the message",
+    // 	"tags": {
+    // 		"login": "user name",
+    // 		"room-id": true,
+    // 		"target-msg-id": "a long hash",
+    // 		"tmi-sent-ts": "1611277844517"
+    // 	},
+    // 	"prefix": "tmi.twitch.tv",
+    // 	"command": "CLEARMSG",
+    // 	"params": ["#streamer", "the message"]
+    // }
+
     function ChatLive_CleanMessage(message) {
+
         if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
             //Elem may not be there anymore
             var el = Main_getElementById(message.tags['target-msg-id']);
             if (el) {
+
                 if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
-                Main_AddClassWitEle(el, 'chat_purged');
+                else el.innerHTML += STR_PURGED_MESSAGE;
+
+                Main_AddClassWitEle(el.parentElement, 'chat_purged');
             }
         }
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -6912,8 +6932,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.296';
     var Main_version_java = 296; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'January 15 2020';
-    var Main_version_web = 564; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'January 21 2020';
+    var Main_version_web = 565; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7522,6 +7542,12 @@
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
         var changelogObj = [{
+                title: "Web Version January 21 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.295 to 3.0.296 and Web Version January 15 2020",
                 changes: [
                     "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
@@ -7547,15 +7573,6 @@
                     "General performance improves and bug fixes",
                     "Is demanding to update to the latest APK if you don't the app will not work properly",
                     "Enjoy the app! Have a great new years!"
-                ]
-            },
-            {
-                title: "Web Version December 14 2020",
-                changes: [
-                    "Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue",
-                    "Xiaomi Mi Box S: 90% frame drops on 9XXp60 but OK for 1080p60 - https://github.com/google/ExoPlayer/issues/7411 issue closed the resolution there is that the Manufacturer will update the OS to fix the problem, the problem is on the this device maybe on others that use Amlogic CPU",
-                    "Fix games search",
-                    "General performance improves and bug fixes"
                 ]
             }
         ];

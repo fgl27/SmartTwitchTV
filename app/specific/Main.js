@@ -26,8 +26,8 @@ var Main_isDebug = false;
 var Main_stringVersion = '3.0';
 var Main_stringVersion_Min = '.296';
 var Main_version_java = 296;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'January 15 2020';
-var Main_version_web = 564;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_minversion = 'January 21 2020';
+var Main_version_web = 565;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -636,6 +636,12 @@ function Main_Changelog() {
 
     var changelogObj = [
         {
+            title: "Web Version January 21 2020",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
+        {
             title: "Apk Version 3.0.295 to 3.0.296 and Web Version January 15 2020",
             changes: [
                 "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
@@ -661,15 +667,6 @@ function Main_Changelog() {
                 "General performance improves and bug fixes",
                 "Is demanding to update to the latest APK if you don't the app will not work properly",
                 "Enjoy the app! Have a great new years!"
-            ]
-        },
-        {
-            title: "Web Version December 14 2020",
-            changes: [
-                "Revert 9XXp60 be disable by default on Xiaomi Mi Box S, as the device received a OS update to fix the problem, if you didn't received yet check the device update in settings, device preference, about then system upgrade, this closes the bellow issue",
-                "Xiaomi Mi Box S: 90% frame drops on 9XXp60 but OK for 1080p60 - https://github.com/google/ExoPlayer/issues/7411 issue closed the resolution there is that the Manufacturer will update the OS to fix the problem, the problem is on the this device maybe on others that use Amlogic CPU",
-                "Fix games search",
-                "General performance improves and bug fixes"
             ]
         }
     ];
