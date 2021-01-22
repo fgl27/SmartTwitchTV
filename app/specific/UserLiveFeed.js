@@ -230,9 +230,13 @@ function UserLiveFeed_Prepare() {
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
     Sidepannel_SidepannelInnerDoc = Main_getElementById('side_panel_inner');
-    Sidepannel_SidepannelRow_0 = Main_getElementById('side_panel_row_0');
+    Sidepannel_SidepannelRow_0 = Main_getElementById('side_panel_cell0_1');
+    Sidepannel_SidepannelLoadingDialog = Main_getElementById('dialog_loading_side_feed');
+
     UserLiveFeed_FeedHolderDocId = Main_getElementById('user_feed');
     Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
+    Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
+
 }
 
 function UserLiveFeed_RefreshLive() {
@@ -332,7 +336,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
     UserLiveFeed_Showloading(false);
 
     if (pos === UserLiveFeedobj_UserLivePos) {
-        Main_HideElement('dialog_loading_side_feed');
+        Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
         if (Sidepannel_isShowing()) Sidepannel_AddFocusFeed(true);
         Sidepannel_SetLastRefresh();
     }

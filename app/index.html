@@ -635,13 +635,50 @@
 
         div.stream_channel_follow_game,
         .pause_button3d {
-            text-shadow: -0.1em 0 0 #000000, 0.05em -0.05em 0 #000000, 0.05em 0.05em 0 #000000, 0 0.05em 0 #000000, -0.05em 0 0 #000000, -0.05em 0.05em 0 #000000, 0 -0.05em 0 #000000, 0 0.0375em 0 #777777, 0 0.075em 0 #666666, 0 0.1125em 0 #555555, 0 0.2em 0 #000000, 0 0.2em 0 #000000, 0.1em 0.1em 0 #000000, 0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.05em 0.15em 0 #000000, 0.05em 0.15em 0 #000000;
+            text-shadow: -0.1em 0 0 #000000,
+                0.05em -0.05em 0 #000000,
+                0.05em 0.05em 0 #000000,
+                0 0.05em 0 #000000,
+                -0.05em 0 0 #000000,
+                -0.05em 0.05em 0 #000000,
+                0 -0.05em 0 #000000,
+                0 0.0375em 0 #777777,
+                0 0.075em 0 #666666,
+                0 0.1125em 0 #555555,
+                0 0.2em 0 #000000,
+                0 0.2em 0 #000000,
+                0.1em 0.1em 0 #000000,
+                0.1em 0.1em 0 #000000,
+                -0.1em 0.1em 0 #000000,
+                -0.1em 0.1em 0 #000000,
+                -0.05em 0.15em 0 #000000,
+                0.05em 0.15em 0 #000000;
+        }
+
+        .sidepanel_heart {
+            text-shadow: 0.05em -0.05em 0 #ffffff,
+                0.05em 0 0 #ffffff,
+                -0.05em 0 0 #ffffff,
+                0 -0.05em 0 #ffffff,
+                0 0.075em 0 #ffffff
         }
 
         .strokicon {
             font-size: 90%;
             color: #FFFFFF;
-            text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
+            text-shadow: 0 0.025em 0 #000000,
+                -0.025em 0 0 #000000,
+                0 0.0375em 0 #777777,
+                0 0.055em 0 #666666,
+                0 0.07em 0 #555455,
+                -0.03em -0.03em 0 #000000,
+                0.03em -0.03em 0 #000000,
+                -0.03em 0.08em 0 #000000,
+                0.03em 0.08em 0 #000000,
+                -0.04em 0.03em 0 #000000,
+                0.04em 0.03em 0 #000000,
+                0 0.1em 0 #000000,
+                0 -0.04em 0 #000000;
         }
 
         div.seek_previews_holder {
@@ -1159,12 +1196,14 @@
         div.side_panel_feed_thumb {
             box-sizing: border-box;
             position: absolute;
-            width: 74%;
-            height: 97%;
-            top: 2.25%;
-            left: 25.25%;
+            width: 75%;
+            height: 97.5%;
+            top: 2.1%;
+            left: 24.4%;
             background-color: #000000;
             border: 0.06em solid #ebebeb;
+            will-change: opacity;
+            transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.side_panel_dialog {
@@ -1291,7 +1330,7 @@
         div.side_panel {
             position: absolute;
             bottom: 0;
-            left: -1.7%;
+            left: -1.9%;
             height: 100%;
             width: 25.5%;
             overflow: hidden;
@@ -1302,7 +1341,7 @@
         }
 
         div.side_panel_hide {
-            transform: translateX(-76.5%);
+            transform: translateX(-76.52%);
         }
 
         div.side_panel_hide_full {
@@ -1312,25 +1351,27 @@
         div.side_panel_inner {
             transform: translateX(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            will-change: transform;
             width: 100%;
             position: absolute;
         }
 
         div.side_panel_inner_hide {
-            transform: translateX(77%);
+            /* 0.5% more then side_panel_hide */
+            transform: translateX(77.02%);
             width: 100%;
             position: absolute;
         }
 
         div.side_panel_border {
-            border-right: 0.3vh solid;
+            border-right: 0.275vh solid;
             border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
         }
 
         .side_panel_icons {
             vertical-align: middle;
             display: inline-block;
-            margin-left: 1%;
+            margin-left: 1.5%;
         }
 
         div.dialog_end_stream_text {
@@ -2122,8 +2163,8 @@
 
         div.side_panel_iner_div2_multi_dialog,
         div.side_panel_iner_div2 {
-            width: 60%;
-            padding-left: 0.2em;
+            width: 59.5%;
+            padding-left: 0.4em;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
@@ -2895,7 +2936,7 @@
                     <div id="sidepannel_dialog_warning_text" class="strokedeline dialog_text" style="font-size: 150%;">
                     </div>
                 </div>
-                <div id="side_panel_feed_thumb" class="side_panel_feed_thumb hide">
+                <div id="side_panel_feed_thumb" class="side_panel_feed_thumb opacity_zero">
                     <div class="stream_thumbnail_side"><img id="feed_thumb_img" class="stream_img_side" alt=""
                             src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
                     </div>
@@ -2923,8 +2964,15 @@
                                 </div>
                             </div>
                             <div id="side_panel_row_0">
-                                <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%;">
-                                    <div id="side_panel_thumbdiv0_0" class="side_panel_div">
+                                <div id="side_panel_cell0_0"
+                                    style="width: 100%; display: inline-block; padding: 1%; position: absolute;top: 20%;font-size: 150%;margin-left: 3.5%;">
+                                    <div>
+                                        <i class="sidepanel_heart icon icon-heart" style="color: #6441a4;"></i>
+                                    </div>
+                                </div>
+                                <div id="side_panel_cell0_1" style="width: 100%; display: inline-block; padding: 1%;">
+                                    <div id="side_panel_thumbdiv0_0" class="side_panel_div"
+                                        style="background: #000000;">
                                         <div id="side_panel_feed_1" class="side_panel_feed_top">
                                             <div class="side_panel_icons">
                                                 <i class="icon icon-arrow-right"></i>

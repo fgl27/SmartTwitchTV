@@ -110,7 +110,7 @@ function UserLiveFeedobj_CheckToken() {
 
     }
 
-    Main_ShowElement('dialog_loading_side_feed');
+    Main_ShowElementWithEle(Sidepannel_SidepannelLoadingDialog);
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_emptyWithEle(Sidepannel_ScroolDoc);
@@ -161,7 +161,7 @@ function UserLiveFeedobj_loadDataError(pos) {
         UserLiveFeed_loadingData[pos] = false;
         Screens_Some_Screen_Is_Refreshing = false;
         UserLiveFeed_Showloading(false);
-        Main_HideElement('dialog_loading_side_feed');
+        Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
 
         if (UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
             UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);

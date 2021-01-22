@@ -22,7 +22,6 @@
 var Sidepannel_PosFeed = 0;
 var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;
-var Sidepannel_UpdateThumbDoc;
 var Sidepannel_IsMain = true;
 
 var Sidepannel_MoveldefaultMargin = 13.5;
@@ -33,9 +32,14 @@ var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
 var Sidepannel_Html;
+
 var Sidepannel_SidepannelDoc;
 var Sidepannel_SidepannelInnerDoc;
 var Sidepannel_SidepannelRow_0;
+var Sidepannel_SidepannelLoadingDialog;
+var Sidepannel_UpdateThumbDoc;
+var Sidepannel_ThumbDoc;
+
 var Sidepannel_ChangeFocusAnimationFinished = true;
 var Sidepannel_ChangeFocusAnimationFast = false;
 var Sidepannel_Positions = {};
@@ -67,7 +71,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
 
         }
 
-        Main_HideElement('side_panel_feed_thumb');
+        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
         if (Sidepannel_isShowing()) {
 
@@ -124,7 +128,7 @@ function Sidepannel_UpdateThumb() {
     Sidepannel_UpdateThumbDiv();
 
     if (Sidepannel_isShowing()) {
-        Main_ShowElement('side_panel_feed_thumb');
+        Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
         if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
 
@@ -246,7 +250,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 }
 
 function Sidepannel_SetPlayerViewSidePanel() {
-    var Rect = Main_getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
+    var Rect = Sidepannel_UpdateThumbDoc.parentElement.getBoundingClientRect();
     OSInterface_SetPlayerViewSidePanel(
         Rect.bottom,
         Rect.right,
@@ -423,11 +427,13 @@ function Sidepannel_Start(callback, forceFeed) {
 function Sidepannel_StartFeed() {
     Sidepannel_IsMain = false;
     Main_addEventListener("keydown", Sidepannel_handleKeyDown);
+
     Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
     Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide_full');
     Main_RemoveClassWithEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
     Main_RemoveClassWithEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
-    Main_RemoveClass('dialog_loading_side_feed', 'side_panel_dialog_hide');
+    Main_RemoveClassWithEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
     Sidepannel_SetLastRefresh();
@@ -501,7 +507,7 @@ function Sidepannel_Hide(PreventCleanQualities) {
         Sidepannel_HideMain();
         Sidepannel_RemoveFocusMain();
         Sidepannel_FixDiv.style.marginLeft = '';
-        Main_HideElement('side_panel_feed_thumb');
+        Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
         Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
     }
     Sidepannel_HideEle(PreventCleanQualities);
@@ -518,7 +524,7 @@ function Sidepannel_HideEle(PreventCleanQualities, full) {
         Main_AddClassWitEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
         Main_AddClassWitEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
         Main_AddClassWitEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
-        Main_AddClass('dialog_loading_side_feed', 'side_panel_dialog_hide');
+        Main_AddClassWitEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
 
     }
 
@@ -682,7 +688,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_RIGHT:
             Sidepannel_HideEle(false, true);
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-            Main_HideElement('side_panel_feed_thumb');
+            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
             Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
             break;
