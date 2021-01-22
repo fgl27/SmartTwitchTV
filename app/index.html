@@ -1177,6 +1177,10 @@
             position: absolute;
         }
 
+        div.side_panel_dialog_hide {
+            margin-left: -15.75%;
+        }
+
         div.side_panel_fix,
         div.side_panel_movel {
             position: absolute;
@@ -1287,17 +1291,35 @@
         div.side_panel {
             position: absolute;
             bottom: 0;
-            left: -1%;
+            left: -1.7%;
             height: 100%;
             width: 25.5%;
             overflow: hidden;
             transform: translateX(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
+            background: #000000;
         }
 
         div.side_panel_hide {
+            transform: translateX(-76.5%);
+        }
+
+        div.side_panel_hide_full {
             transform: translateX(-100%);
+        }
+
+        div.side_panel_inner {
+            transform: translateX(0);
+            transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            width: 100%;
+            position: absolute;
+        }
+
+        div.side_panel_inner_hide {
+            transform: translateX(77%);
+            width: 100%;
+            position: absolute;
         }
 
         div.side_panel_border {
@@ -1307,7 +1329,8 @@
 
         .side_panel_icons {
             vertical-align: middle;
-            display: inline-block
+            display: inline-block;
+            margin-left: 1%;
         }
 
         div.dialog_end_stream_text {
@@ -2888,8 +2911,8 @@
                         </div>
                     </div>
                 </div>
-                <div id="side_panel" class="side_panel side_panel_border side_panel_background_color side_panel_hide">
-                    <div id="side_panel_new" style="width: 100%; position: absolute;">
+                <div id="side_panel" class="side_panel side_panel_border side_panel_hide_full">
+                    <div id="side_panel_inner" class="side_panel_inner">
                         <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                             <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
                                 <div class="loading">
