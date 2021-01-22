@@ -308,6 +308,8 @@
     var STR_USER_MENU;
     var STR_CH_IS_OFFLINE;
     var STR_SCREEN_COUNTER;
+    var STR_ROUND_IMAGES;
+    var STR_ROUND_IMAGES_SUMMARY;
     var STR_SWITCH_POS;
     var STR_SWITCH_POS_SUMMARY;
     var STR_MAIN_USER;
@@ -1211,6 +1213,8 @@
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
+        STR_ROUND_IMAGES = "Use round channel images";
+        STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
         STR_SCREEN_COUNTER = "Hide thumbnail position counter";
         STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
         STR_SWITCH_POS = "Switch: Starting Position offset";
@@ -6932,8 +6936,8 @@
     var Main_stringVersion = '3.0';
     var Main_stringVersion_Min = '.296';
     var Main_version_java = 296; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'January 21 2020';
-    var Main_version_web = 565; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    var Main_minversion = 'January 22 2020';
+    var Main_version_web = 566; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
     var Main_cursorYAddFocus = -1;
@@ -7541,7 +7545,17 @@
         var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
             STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
-        var changelogObj = [{
+        var changelogObj = [
+
+            {
+                title: "Web Version January 22 2020",
+                changes: [
+                    "Add new setting options 'Use round channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
+                    "Improve live channels side panel looks",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version January 21 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -22040,7 +22054,7 @@
 
         return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id +
             '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
-            id + '" alt="" class="stream_img" src="' + valuesArray[2] +
+            id + '" alt="" class="stream_img_channels" src="' + valuesArray[2] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
             '<div class="stream_thumbnail_channel_text_holder">' +
             '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
@@ -27821,6 +27835,10 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
+        "round_images": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
     };
 
     function Settings_GenerateClock() {
@@ -28109,6 +28127,7 @@
         Settings_notification_sicetime();
         Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
         Settings_ShowCounter();
+        Settings_UpdateRoundImages();
         Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
         Settings_CodecsSet();
 
@@ -28253,6 +28272,7 @@
             AddUser_UpdateSidepanelAfterShow();
             UserLiveFeed_ResetAddCellsize();
         } else if (position === "hide_screen_counter") Settings_ShowCounter();
+        else if (position === "round_images") Settings_UpdateRoundImages();
         else if (position === "hide_main_clock") Settings_HideMainClock();
         else if (position === "hide_player_clock") Settings_HidePlayerClock();
         else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
@@ -28498,6 +28518,7 @@
                 'side_panel_fix',
                 'side_panel_movel',
                 'side_panel',
+                'side_panel_inner',
                 'user_feed',
                 'inner_progress_bar',
                 'inner_progress_bar_muted'
@@ -28653,6 +28674,24 @@
 
         Settings_HideElem('dialog_counter_text', hide);
         Settings_HideElem('feed_counter', hide);
+    }
+
+    function Settings_UpdateRoundImages() {
+
+        Main_innerHTML(
+            'round_images',
+            Settings_Obj_default("round_images") ?
+            'img.side_panel_channel_img {border-radius: 50%;}' +
+            'img.stream_img_channels {border-radius: 50%;}' +
+            'img.stream_info_icon {border-radius: 50%;}' +
+            'img.panel_pp_img {border-radius: 50%;}' +
+            'img.multi_info_img {border-radius: 50%;}' +
+            'img.multi_info_img_big {border-radius: 50%;}' +
+            //'img.stream_img_channel_logo {border-radius: 50%;}' +//Let this square so we an have a reference of what is square or not by default
+            'img.side_panel_new_img {border-radius: 50%;}' :
+            ''
+        );
+
     }
 
     function Settings_HideElem(elem, hide) {
@@ -29271,6 +29310,7 @@
         Settings_value.hide_player_clock.values = [STR_NO, STR_YES];
         Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
         Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
+        Settings_value.round_images.values = [STR_NO, STR_YES];
 
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -29311,6 +29351,12 @@
                 values: Settings_value.clock_offset.values,
                 title: STR_CLOCK_OFFSET,
                 summary: STR_CLOCK_OFFSET_SUMMARY
+            },
+            round_images: {
+                defaultValue: Settings_value.round_images.defaultValue,
+                values: Settings_value.round_images.values,
+                title: STR_ROUND_IMAGES,
+                summary: STR_ROUND_IMAGES_SUMMARY
             },
             hide_screen_counter: {
                 defaultValue: Settings_value.hide_screen_counter.defaultValue,
@@ -30173,7 +30219,6 @@
     var Sidepannel_PosFeed = 0;
     var Sidepannel_Sidepannel_Pos = 2;
     var Sidepannel_Callback;
-    var Sidepannel_UpdateThumbDoc;
     var Sidepannel_IsMain = true;
 
     var Sidepannel_MoveldefaultMargin = 13.5;
@@ -30184,7 +30229,14 @@
     var Sidepannel_MovelDiv;
     var Sidepannel_ScroolDoc;
     var Sidepannel_Html;
+
     var Sidepannel_SidepannelDoc;
+    var Sidepannel_SidepannelInnerDoc;
+    var Sidepannel_SidepannelRow_0;
+    var Sidepannel_SidepannelLoadingDialog;
+    var Sidepannel_UpdateThumbDoc;
+    var Sidepannel_ThumbDoc;
+
     var Sidepannel_ChangeFocusAnimationFinished = true;
     var Sidepannel_ChangeFocusAnimationFast = false;
     var Sidepannel_Positions = {};
@@ -30216,7 +30268,7 @@
 
             }
 
-            Main_HideElement('side_panel_feed_thumb');
+            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
             if (Sidepannel_isShowing()) {
 
@@ -30273,7 +30325,7 @@
         Sidepannel_UpdateThumbDiv();
 
         if (Sidepannel_isShowing()) {
-            Main_ShowElement('side_panel_feed_thumb');
+            Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
             if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
 
@@ -30397,7 +30449,7 @@
     }
 
     function Sidepannel_SetPlayerViewSidePanel() {
-        var Rect = Main_getElementById('feed_thumb_img').parentElement.getBoundingClientRect();
+        var Rect = Sidepannel_UpdateThumbDoc.parentElement.getBoundingClientRect();
         OSInterface_SetPlayerViewSidePanel(
             Rect.bottom,
             Rect.right,
@@ -30576,7 +30628,13 @@
     function Sidepannel_StartFeed() {
         Sidepannel_IsMain = false;
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
+
         Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+        Main_RemoveClassWithEle(Sidepannel_SidepannelDoc, 'side_panel_hide_full');
+        Main_RemoveClassWithEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
+        Main_RemoveClassWithEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
+        Main_RemoveClassWithEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+
         Sidepannel_ShowFeed();
         Sidepannel_HideMain(true);
         Sidepannel_SetLastRefresh();
@@ -30650,7 +30708,7 @@
             Sidepannel_HideMain();
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
-            Main_HideElement('side_panel_feed_thumb');
+            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
             Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
         }
         Sidepannel_HideEle(PreventCleanQualities);
@@ -30659,9 +30717,17 @@
         Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
     }
 
-    function Sidepannel_HideEle(PreventCleanQualities) {
+    function Sidepannel_HideEle(PreventCleanQualities, full) {
         Sidepannel_RemoveFocusFeed(PreventCleanQualities);
-        if (!PreventCleanQualities) Main_AddClassWitEle(Sidepannel_SidepannelDoc, 'side_panel_hide');
+
+        if (!PreventCleanQualities) {
+
+            Main_AddClassWitEle(Sidepannel_SidepannelDoc, full ? 'side_panel_hide_full' : 'side_panel_hide');
+            Main_AddClassWitEle(Sidepannel_SidepannelInnerDoc, 'side_panel_inner_hide');
+            Main_AddClassWitEle(Sidepannel_SidepannelRow_0, 'opacity_zero');
+            Main_AddClassWitEle(Sidepannel_SidepannelLoadingDialog, 'side_panel_dialog_hide');
+
+        }
 
         Main_SaveValues();
     }
@@ -30821,9 +30887,9 @@
                 Main_SwitchScreen();
                 break;
             case KEY_RIGHT:
-                Sidepannel_HideEle();
+                Sidepannel_HideEle(false, true);
                 Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
-                Main_HideElement('side_panel_feed_thumb');
+                Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
                 Sidepannel_StartMain();
                 break;
@@ -31189,8 +31255,14 @@
 
         Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
         Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
+        Sidepannel_SidepannelInnerDoc = Main_getElementById('side_panel_inner');
+        Sidepannel_SidepannelRow_0 = Main_getElementById('side_panel_cell0_1');
+        Sidepannel_SidepannelLoadingDialog = Main_getElementById('dialog_loading_side_feed');
+
         UserLiveFeed_FeedHolderDocId = Main_getElementById('user_feed');
         Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
+        Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
+
     }
 
     function UserLiveFeed_RefreshLive() {
@@ -31290,8 +31362,8 @@
         UserLiveFeed_Showloading(false);
 
         if (pos === UserLiveFeedobj_UserLivePos) {
-            Main_HideElement('dialog_loading_side_feed');
-            Sidepannel_AddFocusFeed(true);
+            Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
+            if (Sidepannel_isShowing()) Sidepannel_AddFocusFeed(true);
             Sidepannel_SetLastRefresh();
         }
 
@@ -32298,7 +32370,7 @@
 
         }
 
-        Main_ShowElement('dialog_loading_side_feed');
+        Main_ShowElementWithEle(Sidepannel_SidepannelLoadingDialog);
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
         Main_emptyWithEle(Sidepannel_ScroolDoc);
@@ -32349,7 +32421,7 @@
             UserLiveFeed_loadingData[pos] = false;
             Screens_Some_Screen_Is_Refreshing = false;
             UserLiveFeed_Showloading(false);
-            Main_HideElement('dialog_loading_side_feed');
+            Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
 
             if (UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
                 UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
@@ -33759,7 +33831,7 @@
 
         div.innerHTML = '<div id="' + Users_ids[0] + id +
             '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
-            id + '" alt="" class="stream_img" src="' + AddUser_UsernameArray[pos].logo +
+            id + '" alt="" class="stream_img_channels" src="' + AddUser_UsernameArray[pos].logo +
             '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></div>' +
             '<div  class="stream_thumbnail_user_text_holder">' +
             '<div class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
