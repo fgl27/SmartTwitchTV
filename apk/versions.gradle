@@ -3,7 +3,7 @@ ext.versions = [
         targetSdk                  : 29,
         compileSdk                 : 30,
         buildTools                 : '30.0.2',
-        gradlePlugin               : '4.1.1',
+        gradlePlugin               : '4.1.2',
 
         publishVersion             : '3.0.',
         publishVersionCode         : 296,
