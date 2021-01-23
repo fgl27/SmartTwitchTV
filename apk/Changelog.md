@@ -12,7 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version January 22 2020
 ==============
 
-* Add new setting options 'Use round channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related
+* Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related
 * Improve live channels side panel looks
 * General improves and bug fixes
 

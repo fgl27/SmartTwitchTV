@@ -639,7 +639,7 @@ function Main_Changelog() {
         {
             title: "Web Version January 22 2020",
             changes: [
-                "Add new setting options 'Use round channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
+                "Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
                 "Improve live channels side panel looks",
                 "General improves and bug fixes"
             ]
