@@ -292,8 +292,9 @@ function ChatLive_loadChatters(chat_number, id) {
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
-        Main_getElementById('chat_box_holder' + chat_number).style.height = 'calc(100% - 2.74vh)';
-        if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3vh';
+        Main_getElementById('chat_box_holder' + chat_number).style.height = '97.1%';
+
+        if (!chat_number) Main_getElementById('chat_container_name' + chat_number).style.top = '3%';
 
         ChatLive_loadChattersCheckType(chat_number, id);
     }
