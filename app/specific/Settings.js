@@ -1141,6 +1141,7 @@ function Settings_SetAnimations() {
             'side_panel_movel',
             'side_panel',
             'side_panel_inner',
+            'side_panel_feed_thumb',
             'user_feed',
             'inner_progress_bar',
             'inner_progress_bar_muted'
