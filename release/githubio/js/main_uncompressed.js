@@ -1213,7 +1213,7 @@
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
-        STR_ROUND_IMAGES = "Use round channel images";
+        STR_ROUND_IMAGES = "Use rounded channel images";
         STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
         STR_SCREEN_COUNTER = "Hide thumbnail position counter";
         STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
@@ -7550,7 +7550,7 @@
             {
                 title: "Web Version January 22 2020",
                 changes: [
-                    "Add new setting options 'Use round channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
+                    "Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
                     "Improve live channels side panel looks",
                     "General improves and bug fixes"
                 ]
@@ -28519,6 +28519,7 @@
                 'side_panel_movel',
                 'side_panel',
                 'side_panel_inner',
+                'side_panel_feed_thumb',
                 'user_feed',
                 'inner_progress_bar',
                 'inner_progress_bar_muted'
