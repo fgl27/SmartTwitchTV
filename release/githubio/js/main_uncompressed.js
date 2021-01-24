@@ -23961,6 +23961,7 @@
         Screens_canFollow = false;
         Screens_values_Play_data = Screens_GetObj(key);
         Screens_ThumbOption_CheckFollow_ID = 0;
+        Screens_ThumbOption_Follow_ID = 0;
 
         if (AddUser_UserIsSet()) {
             Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -24037,25 +24038,31 @@
 
     function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
-        if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
-
-        Screens_canFollow = true;
-        Screens_isFollowing = true;
-        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
-        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
-        Screens_ThumbOption_CheckFollow_ID = 0;
+        if (Screens_ThumbOption_CheckFollow_ID === ID)
+            Screens_ThumbOption_RequestCheckFollowEnd(key, true);
 
     }
 
     function Screens_ThumbOption_RequestCheckFollowFail(key, ID) {
 
-        if (Screens_ThumbOption_CheckFollow_ID !== ID) return;
+        if (Screens_ThumbOption_CheckFollow_ID === ID)
+            Screens_ThumbOption_RequestCheckFollowEnd(key, false);
+
+    }
+
+    function Screens_ThumbOption_RequestCheckFollowEnd(key, FollowState) {
 
         Screens_canFollow = true;
-        Screens_isFollowing = false;
-        Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
-        Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+        Screens_ThumbOption_UpdateFollow(key, FollowState);
         Screens_ThumbOption_CheckFollow_ID = 0;
+
+    }
+
+    function Screens_ThumbOption_UpdateFollow(key, FollowState) {
+
+        Screens_isFollowing = FollowState;
+        Main_textContent('dialog_thumb_opt_setting_name_2', (FollowState ? STR_FOLLOWING : STR_FOLLOW) + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
+        Main_textContent('dialog_thumb_opt_val_2', (FollowState ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW).replace('(', '').replace(')', ''));
 
     }
 
@@ -24129,6 +24136,7 @@
     var Screens_ThumbOptionDialogID;
 
     function Screens_SeTODialogId(key) {
+
         Screens_ThumbOptionDialogID = Main_setTimeout(
             function() {
                 Screens_ThumbOptionDialogHide(false, key);
@@ -24136,9 +24144,11 @@
             Screens_DialogHideTimout,
             Screens_ThumbOptionDialogID
         );
+
     }
 
     function Screens_ThumbOptionDialogHide(Update, key) {
+
         Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
         Main_clearTimeout(Screens_ThumbOptionDialogID);
@@ -24206,9 +24216,12 @@
         Screens_ThumbOptionPosY = 0;
         Screens_ThumbOptionAddFocus(0);
         Screens_ThumbOption_CheckFollow_ID = 0;
+        Screens_ThumbOption_Follow_ID = 0;
+
     }
 
     function Screens_SetLang() {
+
         if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
 
         var key = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
@@ -24217,11 +24230,16 @@
         Languages_SetLang();
 
         if (!Main_A_equals_B(Main_ContentLang_old, Main_ContentLang)) Main_ReloadScreen();
+
     }
+
+    var Screens_ThumbOption_Follow_ID = 0;
 
     function Screens_FollowUnfollow(key) {
 
         if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+            Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 
             var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
                 theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
@@ -24231,8 +24249,8 @@
                 Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
                 Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
                 noop_fun,
-                0,
-                0,
+                key,
+                Screens_ThumbOption_Follow_ID,
                 Screens_isFollowing ? 'DELETE' : 'PUT',
                 null
             );
@@ -24245,28 +24263,30 @@
 
     }
 
-    function Screens_UnFollowRequestReady(xmlHttp) {
+    function Screens_UnFollowRequestReady(xmlHttp, key, ID) {
 
-        if (xmlHttp.status === 204) { //success user is now not following the channel
+        if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 204) { //success user is now not following the channel
 
-            Screens_canFollow = true;
-            Screens_isFollowing = false;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOW);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_FOLLOW.replace('(', '').replace(')', ''));
+            Screens_FollowRequestEnd(key, false);
 
         }
 
     }
 
-    function Screens_FollowRequestReady(xmlHttp) {
+    function Screens_FollowRequestReady(xmlHttp, key, ID) {
 
-        if (xmlHttp.status === 200) { //success user is now following the channel
+        if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 200) { //success user is now following the channel
 
-            Screens_isFollowing = true;
-            Main_textContent('dialog_thumb_opt_setting_name_2', STR_FOLLOWING);
-            Main_textContent('dialog_thumb_opt_val_2', STR_CLICK_UNFOLLOW.replace('(', '').replace(')', ''));
+            Screens_FollowRequestEnd(key, true);
 
         }
+
+    }
+
+    function Screens_FollowRequestEnd(key, FollowState) {
+
+        Screens_ThumbOption_UpdateFollow(key, FollowState);
+        Screens_ThumbOption_Follow_ID = 0;
 
     }
 
