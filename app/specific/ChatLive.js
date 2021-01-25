@@ -1749,12 +1749,13 @@ function ChatLive_CleanUser(chat_number, message) {
     if (message.tags && message.tags.hasOwnProperty('target-user-id')) {
 
         var duration = message.tags['ban-duration'] || 0,
-            timeout = '',
-            array = Chat_div[chat_number].getElementsByClassName(message.tags['target-user-id']);//The user id is added as a class
+            msg = STR_CHAT_MESSAGE_DELETED_ALL,
+            classId = message.tags['target-user-id'],
+            array = Chat_div[chat_number].getElementsByClassName(classId);//The user id is added as a class
 
         if (duration) {
 
-            timeout = duration + (duration > 1 ? STR_SECONDS : STR_SECOND);
+            msg += STR_CHAT_MESSAGE_DELETED_TIMEOUT + duration + (duration > 1 ? STR_SECONDS : STR_SECOND);
 
         }
 
@@ -1764,10 +1765,12 @@ function ChatLive_CleanUser(chat_number, message) {
                 function(el) {
                     if (el) {
 
-                        if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE_TIMEOUT + timeout;
-                        else el.innerHTML += STR_PURGED_MESSAGE_TIMEOUT + timeout;
+                        if (ChatLive_ClearChat) el.innerHTML = msg;
+                        else el.innerHTML += msg;
 
                         Main_AddClassWitEle(el.parentElement, 'chat_purged');
+                        //Prevent duplicate removal
+                        Main_RemoveClassWithEle(el, classId);
 
                     }
                 }
@@ -1797,12 +1800,15 @@ function ChatLive_CleanMessage(message) {
     if (message.tags && message.tags.hasOwnProperty('target-msg-id')) {
         //Elem may not be there anymore
         var el = Main_getElementById(message.tags['target-msg-id']);
+
         if (el) {
 
-            if (ChatLive_ClearChat) el.innerHTML = STR_PURGED_MESSAGE;
-            else el.innerHTML += STR_PURGED_MESSAGE;
+            if (ChatLive_ClearChat) el.innerHTML = STR_CHAT_MESSAGE_DELETED;
+            else el.innerHTML += STR_CHAT_MESSAGE_DELETED;
 
             Main_AddClassWitEle(el.parentElement, 'chat_purged');
+            //Prevent duplicate removal
+            el.id = '_';
         }
     }
 
