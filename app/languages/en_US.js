@@ -265,7 +265,8 @@ function en_USLang() {
     STR_JUMPING_STEP = "Jump step ";
     STR_SECOND = " second";
     STR_SECONDS = STR_SECOND + "s";
-    STR_MINUTES = " minutes";
+    STR_MINUTE = " minute";
+    STR_MINUTES = STR_MINUTE + "s";
     STR_CLOCK_OFFSET = "Clock offset";
     STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
     STR_APP_LANG = "Application language";
@@ -571,7 +572,7 @@ function en_USLang() {
     STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
     STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
     STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
-    STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you only fallows for ";
+    STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you are only fallowing for ";
     STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
     STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
     STR_CHAT_OPTIONS_TITLE = "Write to chat options";
