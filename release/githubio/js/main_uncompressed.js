@@ -224,6 +224,7 @@
     var STR_FORBIDDEN;
     var STR_JUMPING_STEP;
     var STR_SECONDS;
+    var STR_MINUTE;
     var STR_MINUTES;
     var STR_RESTORE_PLAYBACK_WARN;
     var STR_CLOCK_OFFSET;
@@ -1101,7 +1102,8 @@
         STR_JUMPING_STEP = "Jump step ";
         STR_SECOND = " second";
         STR_SECONDS = STR_SECOND + "s";
-        STR_MINUTES = " minutes";
+        STR_MINUTE = " minute";
+        STR_MINUTES = STR_MINUTE + "s";
         STR_CLOCK_OFFSET = "Clock offset";
         STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
         STR_APP_LANG = "Application language";
@@ -1407,7 +1409,7 @@
         STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
         STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
         STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
-        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you only fallows for ";
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you are only fallowing for ";
         STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
         STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
         STR_CHAT_OPTIONS_TITLE = "Write to chat options";
@@ -3745,19 +3747,25 @@
     }
 
     function ChatLiveControls_HandleKeyEnter() {
-        if (!ChatLiveControls_cursor) ChatLiveControls_OptionsShow();
-        if (ChatLiveControls_cursor === 1 && ChatLiveControls_CanSend()) {
+
+        if (!ChatLiveControls_cursor) {
+
+            ChatLiveControls_OptionsShow();
+
+        } else if (ChatLiveControls_cursor === 1 && ChatLiveControls_CanSend()) {
+
             Main_ChatLiveInput.value = '';
             ChatLiveControls_UpdateResultTextEmpty();
-        } else if (ChatLiveControls_cursor === 2 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+
+        } else if (ChatLiveControls_cursor === 2) {
 
             ChatLiveControls_SetEmojisDiv();
 
-        } else if (ChatLiveControls_cursor === 3 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 3) {
 
             ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttvGlobal, STR_CHAT_BTTV_GLOBAL);
 
-        } else if (ChatLiveControls_cursor === 4 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 4) {
 
             ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
 
@@ -3778,19 +3786,19 @@
 
             } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
 
-        } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CanSendAnyEmote() && ChatLiveControls_CanSend()) {
 
             ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
 
-        } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 7) {
 
             ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES);
 
-        } else if (ChatLiveControls_cursor === 8 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 8) {
 
             ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BTTV_STREAM);
 
-        } else if (ChatLiveControls_cursor === 9 && ChatLiveControls_CheckEmoteStatus() && ChatLiveControls_CanSend()) {
+        } else if (ChatLiveControls_cursor === 9) {
 
             ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
 
@@ -4098,7 +4106,8 @@
                 ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
                 break;
             case KEY_ENTER:
-                ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
+                if ((ChatLiveControls_EmotesPos === 7 || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
+                    ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
                 break;
             default:
                 break;
@@ -4205,13 +4214,15 @@
         return '<span class="message">' + twemoji.parse(message.join(' '), true, true) + '</span>';
     }
 
-    function ChatLiveControls_CheckEmoteStatus() {
+    function ChatLiveControls_CanSendAnyEmote() {
 
         var tags = ChatLive_RoomState[ChatLiveControls_Channel];
 
         if (tags && tags.hasOwnProperty('emote-only') && tags['emote-only']) {
+
             ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_ONLY, 1500);
             return false;
+
         }
 
         return true;
@@ -4363,8 +4374,11 @@
 
                 } else if (tags['followers-only'] && user_fallow.hasOwnProperty('created_at') && (tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at))) {
 
+                    var time = ChatLive_GetMinutes(user_fallow.created_at);
+
                     ChatLiveControls_CanSendText = "Followers-only" + (tags['followers-only'] ? (' minimum ' + tags['followers-only'] + ' minute(s) fallowing') : '') +
-                        ' ' + STR_CHAT_FOLLOWER_ONLY_USER_TIME + ChatLive_GetMinutes(user_fallow.created_at);
+                        ' ' + STR_CHAT_FOLLOWER_ONLY_USER_TIME + time + (time > 1 ? STR_MINUTES : STR_MINUTE);
+
                     ChatLiveControls_CanSendBool = false;
                     ChatLiveControls_PreventInput();
 
