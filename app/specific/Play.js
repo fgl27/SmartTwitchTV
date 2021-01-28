@@ -1429,6 +1429,7 @@ function Play_ShowPanelStatus(mwhocall) {
 
     } else {
 
+        Main_clearTimeout(Play_ShowPanelStatusId);
         Main_HideElementWithEle(Play_side_info_div);
         Main_RemoveClassWithEle(Play_side_info_div, 'playsideinfofocus');
 
