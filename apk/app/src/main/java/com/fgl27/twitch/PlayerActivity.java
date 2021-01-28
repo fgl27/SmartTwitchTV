@@ -273,6 +273,7 @@ public class PlayerActivity extends Activity {
         Handler CheckHandler;
 
         long ResumePosition;
+        long LatencyOffSet;
 
         MediaSource mediaSources;
 
@@ -284,7 +285,7 @@ public class PlayerActivity extends Activity {
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
                   int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter, float volume,
                   Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
-                  PlayerView playerView, SimpleExoPlayer player) {
+                  PlayerView playerView, SimpleExoPlayer player, long LatencyOffSet) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
@@ -300,6 +301,7 @@ public class PlayerActivity extends Activity {
 
             this.CheckHandler = CheckHandler;
             this.ResumePosition = ResumePosition;
+            this.LatencyOffSet = LatencyOffSet;
 
             this.mediaSources = mediaSources;
             this.Listener = Listener;
@@ -382,7 +384,8 @@ public class PlayerActivity extends Activity {
                         null,
                         null,
                         null,
-                        null
+                        null,
+                        0
                 );
                 PlayerObj[i].CheckHandler = new Handler(MainLooper);
             }
@@ -570,6 +573,7 @@ public class PlayerActivity extends Activity {
         }
 
         PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
+        PlayerObj[PlayerObjPosition].LatencyOffSet = 0;
 
         //Change the visibility before starting the player, as some device will have error on visibility changes
         if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
@@ -771,6 +775,8 @@ public class PlayerActivity extends Activity {
 
         PlayerObj[position].CheckCounter = 0;
         PlayerObj[position].IsPlaying = false;
+
+        PlayerObj[position].LatencyOffSet = 0;
     }
 
     //Simple release function
@@ -784,6 +790,38 @@ public class PlayerActivity extends Activity {
             PlayerObj[position].player = null;
         }
 
+    }
+
+    // After a stream loses connection with the serve the stream will not end
+    // as there is a twitch feature to keep the stream open for sometime to see if it recuperates
+    // so the stream doesn't loses views.
+    // But when that happens the stream TS tag EXT-X-PROGRAM-DATE-TIME get out of sink
+    // causing the LiveOffset to be wrong using a simple check we can prevent it.
+    private long getCurrentLiveOffset(int PlayerObjPosition, long Duration, long Position, long LiveOffset) {
+
+        long Offset = Duration - Position;
+
+        if (PlayerObj[PlayerObjPosition].LatencyOffSet == 0 && Offset > 0 && LiveOffset > (Offset + 3000)) {// 3000 minor extra offset as some streams LiveOffset maybe very close to Offset
+
+            PlayerObj[PlayerObjPosition].LatencyOffSet = LiveOffset - Offset;
+
+//            Log.d("TAG1", "Duration " + Duration);
+//            Log.d("TAG1", "Position " + Position);
+//            Log.d("TAG1", "LiveOffset " + LiveOffset);
+//            Log.d("TAG1", "LatencyOffSet " + PlayerObj[PlayerObjPosition].LatencyOffSet);
+//            Log.d("TAG1", "LiveOffset " + (LiveOffset - PlayerObj[PlayerObjPosition].LatencyOffSet));
+
+        }
+
+        LiveOffset -= PlayerObj[0].LatencyOffSet;
+
+        if (LiveOffset < 0) {
+
+            PlayerObj[0].LatencyOffSet = 0;
+
+        }
+
+        return LiveOffset;
     }
 
     //Basic player position setting, for resume playback
@@ -3453,10 +3491,18 @@ public class PlayerActivity extends Activity {
                 long Position = 0L;
 
                 if (PlayerObj[0].player != null) {
+
                     buffer = PlayerObj[0].player.getTotalBufferedDuration();
-                    LiveOffset = PlayerObj[0].player.getCurrentLiveOffset();
                     Duration = PlayerObj[0].player.getDuration();
                     Position = PlayerObj[0].player.getCurrentPosition();
+
+                    LiveOffset = getCurrentLiveOffset(
+                            0,
+                            Duration,
+                            Position,
+                            PlayerObj[0].player.getCurrentLiveOffset()
+                    );
+
                 }
 
                 getVideoStatusResult = new Gson().toJson(
@@ -3487,7 +3533,14 @@ public class PlayerActivity extends Activity {
 
                 if (PlayerObj[chat_number].player != null) {
 
-                    mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + PlayerObj[chat_number].player.getCurrentLiveOffset() + ")");
+                    long LiveOffset = getCurrentLiveOffset(
+                            chat_number,
+                            PlayerObj[chat_number].player.getDuration(),
+                            PlayerObj[chat_number].player.getCurrentPosition(),
+                            PlayerObj[chat_number].player.getCurrentLiveOffset()
+                    );
+
+                    mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + LiveOffset + ")");
 
                 }
 
@@ -3758,9 +3811,6 @@ public class PlayerActivity extends Activity {
                                     PlayerObj[i].player.setPlayWhenReady(true);
                             }
 
-                            if (position == 0)
-                                LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(0," + PlayerObj[position].player.getCurrentLiveOffset() + ")");
-
                         } else {
 
                             int OtherPlayer = position ^ 1;
@@ -3769,7 +3819,18 @@ public class PlayerActivity extends Activity {
                                     PlayerObj[OtherPlayer].player.setPlayWhenReady(true);
                             }
 
-                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + PlayerObj[position].player.getCurrentLiveOffset() + ")");
+                        }
+
+                        if (position < 2) {
+
+                            long LiveOffset = getCurrentLiveOffset(
+                                    position,
+                                    PlayerObj[position].player.getDuration(),
+                                    PlayerObj[position].player.getCurrentPosition(),
+                                    PlayerObj[position].player.getCurrentLiveOffset()
+                            );
+
+                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + LiveOffset + ")");
 
                         }
 
