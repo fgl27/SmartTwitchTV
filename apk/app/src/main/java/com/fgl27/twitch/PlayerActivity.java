@@ -797,8 +797,9 @@ public class PlayerActivity extends Activity {
     // so the stream doesn't loses views.
     // But when that happens the stream TS tag EXT-X-PROGRAM-DATE-TIME get out of sink
     // causing the LiveOffset to be wrong using a simple check we can prevent it.
-    private long getCurrentLiveOffset(int PlayerObjPosition, long Duration, long Position, long LiveOffset) {
+    private long getCurrentLiveOffset(int PlayerObjPosition, long Duration, long Position) {
 
+        long LiveOffset = PlayerObj[PlayerObjPosition].player.getCurrentLiveOffset();
         long Offset = Duration - Position;
 
         if (PlayerObj[PlayerObjPosition].LatencyOffSet == 0 && Offset > 0 && LiveOffset > (Offset + 3000)) {// 3000 minor extra offset as some streams LiveOffset maybe very close to Offset
@@ -3499,8 +3500,7 @@ public class PlayerActivity extends Activity {
                     LiveOffset = getCurrentLiveOffset(
                             0,
                             Duration,
-                            Position,
-                            PlayerObj[0].player.getCurrentLiveOffset()
+                            Position
                     );
 
                 }
@@ -3533,11 +3533,13 @@ public class PlayerActivity extends Activity {
 
                 if (PlayerObj[chat_number].player != null) {
 
+                    //Reset the offset to force a recalculation on it update
+                    PlayerObj[chat_number].LatencyOffSet = 0;
+
                     long LiveOffset = getCurrentLiveOffset(
                             chat_number,
                             PlayerObj[chat_number].player.getDuration(),
-                            PlayerObj[chat_number].player.getCurrentPosition(),
-                            PlayerObj[chat_number].player.getCurrentLiveOffset()
+                            PlayerObj[chat_number].player.getCurrentPosition()
                     );
 
                     mWebView.loadUrl("javascript:smartTwitchTV.ChatLive_SetLatency(" + chat_number + "," + LiveOffset + ")");
@@ -3823,11 +3825,13 @@ public class PlayerActivity extends Activity {
 
                         if (position < 2) {
 
+                            //Reset the offset to force a recalculation on it update
+                            PlayerObj[position].LatencyOffSet = 0;
+
                             long LiveOffset = getCurrentLiveOffset(
                                     position,
                                     PlayerObj[position].player.getDuration(),
-                                    PlayerObj[position].player.getCurrentPosition(),
-                                    PlayerObj[position].player.getCurrentLiveOffset()
+                                    PlayerObj[position].player.getCurrentPosition()
                             );
 
                             LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + LiveOffset + ")");
