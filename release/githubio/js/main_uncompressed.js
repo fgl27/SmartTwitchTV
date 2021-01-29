@@ -4106,7 +4106,7 @@
                 ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
                 break;
             case KEY_ENTER:
-                if ((ChatLiveControls_EmotesPos === 7 || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
+                if ((ChatLiveControls_cursor === 7 || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
                     ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
                 break;
             default:
