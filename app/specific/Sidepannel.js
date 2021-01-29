@@ -436,7 +436,6 @@ function Sidepannel_StartFeed() {
 
     Sidepannel_ShowFeed();
     Sidepannel_HideMain(true);
-    Sidepannel_SetLastRefresh();
 }
 
 function Sidepannel_ShowFeed() {
@@ -458,10 +457,10 @@ function Sidepannel_ShowFeed() {
 
         Sidepannel_PreloadImgs();
         Sidepannel_AddFocusFeed(true);
+        Sidepannel_SetLastRefresh();
 
     }
 
-    Sidepannel_SetLastRefresh();
     Main_EventScreen('Side_panel_user_live');
 }
 

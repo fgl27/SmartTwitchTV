@@ -336,9 +336,16 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
     UserLiveFeed_Showloading(false);
 
     if (pos === UserLiveFeedobj_UserLivePos) {
+
         Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
-        if (Sidepannel_isShowing()) Sidepannel_AddFocusFeed(true);
-        Sidepannel_SetLastRefresh();
+
+        if (Sidepannel_isShowing()) {
+
+            Sidepannel_AddFocusFeed(true);
+            Sidepannel_SetLastRefresh();
+
+        } else if (Sidepannel_GetSize()) Sidepannel_Scroll(true);
+
     }
 
     //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
