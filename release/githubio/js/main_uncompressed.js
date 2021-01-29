@@ -30672,7 +30672,6 @@
 
         Sidepannel_ShowFeed();
         Sidepannel_HideMain(true);
-        Sidepannel_SetLastRefresh();
     }
 
     function Sidepannel_ShowFeed() {
@@ -30694,10 +30693,10 @@
 
             Sidepannel_PreloadImgs();
             Sidepannel_AddFocusFeed(true);
+            Sidepannel_SetLastRefresh();
 
         }
 
-        Sidepannel_SetLastRefresh();
         Main_EventScreen('Side_panel_user_live');
     }
 
@@ -31397,9 +31396,16 @@
         UserLiveFeed_Showloading(false);
 
         if (pos === UserLiveFeedobj_UserLivePos) {
+
             Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
-            if (Sidepannel_isShowing()) Sidepannel_AddFocusFeed(true);
-            Sidepannel_SetLastRefresh();
+
+            if (Sidepannel_isShowing()) {
+
+                Sidepannel_AddFocusFeed(true);
+                Sidepannel_SetLastRefresh();
+
+            } else if (Sidepannel_GetSize()) Sidepannel_Scroll(true);
+
         }
 
         //Main_Log('UserLiveFeed_loadDataSuccessFinish end');
