@@ -236,7 +236,8 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_FeedHolderDocId = Main_getElementById('user_feed');
     Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
     Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
-
+    Sidepannel_LastRefreshDiv = Main_getElementById("side_panel_feed_refresh");
+    Sidepannel_SetLastRefreshUpDiv(0);
 }
 
 function UserLiveFeed_RefreshLive() {

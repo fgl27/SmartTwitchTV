@@ -464,14 +464,23 @@ function Sidepannel_ShowFeed() {
     Main_EventScreen('Side_panel_user_live');
 }
 
+var Sidepannel_LastRefreshDiv;
 function Sidepannel_SetLastRefresh() {
     if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
 
-    Main_innerHTML(
-        "side_panel_feed_refresh",
-        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
-        Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) + ')'
+    Sidepannel_SetLastRefreshUpDiv(
+        (new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]
     );
+}
+
+function Sidepannel_SetLastRefreshUpDiv(date) {
+
+    Main_innerHTMLWithEle(
+        Sidepannel_LastRefreshDiv,
+        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+        Play_timeDay(date) + ')'
+    );
+
 }
 
 function Sidepannel_StartMain() {
