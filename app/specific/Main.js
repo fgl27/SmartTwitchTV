@@ -24,10 +24,10 @@ var Main_isTV;
 var Main_isDebug = false;
 
 var Main_stringVersion = '3.0';
-var Main_stringVersion_Min = '.297';
-var Main_version_java = 297;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-var Main_minversion = 'January 28 2020';
-var Main_version_web = 567;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+var Main_stringVersion_Min = '.298';
+var Main_version_java = 298;//Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
+var Main_minversion = 'January 30 2020';
+var Main_version_web = 56;//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
 var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
 
 var Main_cursorYAddFocus = -1;
@@ -635,6 +635,12 @@ function Main_Changelog() {
         STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
 
     var changelogObj = [
+        {
+            title: "Apk Version 3.0.298 and Web Version January 30 2020",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.297 and Web Version January 28 2020",
             changes: [
