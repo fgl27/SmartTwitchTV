@@ -1218,8 +1218,8 @@
         STR_CH_IS_OFFLINE = "Is offline";
         STR_ROUND_IMAGES = "Use rounded channel images";
         STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
-        STR_SCREEN_COUNTER = "Hide thumbnail position counter";
-        STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
+        STR_SCREEN_COUNTER = "Hide Position/Total counter";
+        STR_SCREEN_COUNTER_SUMMARY = "There is a position counter that informs the current position and the total loaded content on screens that have playable content, as you scrolls more content wil be load and the total gets updated";
         STR_SWITCH_POS = "Switch: Starting Position offset";
         STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
         STR_USER_OPTION = "Choose a option for user";
@@ -28709,6 +28709,7 @@
 
         Settings_HideElem('dialog_counter_text', hide);
         Settings_HideElem('feed_counter', hide);
+        Settings_HideElem('sidepannel_counter', hide);
     }
 
     function Settings_UpdateRoundImages() {
@@ -30271,6 +30272,8 @@
     var Sidepannel_SidepannelLoadingDialog;
     var Sidepannel_UpdateThumbDoc;
     var Sidepannel_ThumbDoc;
+    var Sidepannel_LastRefreshDiv;
+    var Sidepannel_PosCounter;
 
     var Sidepannel_ChangeFocusAnimationFinished = true;
     var Sidepannel_ChangeFocusAnimationFast = false;
@@ -30287,13 +30290,15 @@
     }
 
     function Sidepannel_AddFocusFeed(skipAnimation) {
+        var size = Sidepannel_GetSize();
 
-        if (Sidepannel_GetSize()) {
+        if (size) {
 
             Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
             Sidepannel_Scroll(skipAnimation);
             Sidepannel_UpdateThumb();
             Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+            Main_textContentWithEle(Sidepannel_PosCounter, (Sidepannel_PosFeed + 1) + '/' + size);
 
         } else {
 
@@ -30311,6 +30316,7 @@
 
             }
 
+            Main_textContentWithEle(Sidepannel_PosCounter, '');
         }
 
     }
@@ -30700,14 +30706,23 @@
         Main_EventScreen('Side_panel_user_live');
     }
 
+
     function Sidepannel_SetLastRefresh() {
         if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
 
-        Main_innerHTML(
-            "side_panel_feed_refresh",
-            STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
-            Play_timeDay((new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) + ')'
+        Sidepannel_SetLastRefreshUpDiv(
+            (new Date().getTime()) - UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]
         );
+    }
+
+    function Sidepannel_SetLastRefreshUpDiv(date) {
+
+        Main_innerHTMLWithEle(
+            Sidepannel_LastRefreshDiv,
+            STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+            Play_timeDay(date) + ')'
+        );
+
     }
 
     function Sidepannel_StartMain() {
@@ -31296,7 +31311,9 @@
         UserLiveFeed_FeedHolderDocId = Main_getElementById('user_feed');
         Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
         Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
-
+        Sidepannel_LastRefreshDiv = Main_getElementById("side_panel_feed_refresh");
+        Sidepannel_PosCounter = Main_getElementById("sidepannel_counter");
+        Sidepannel_SetLastRefreshUpDiv(0);
     }
 
     function UserLiveFeed_RefreshLive() {
@@ -32415,6 +32432,7 @@
         UserLiveFeed_PreloadImgs = [];
         Sidepannel_PosFeed = 0;
         Main_emptyWithEle(Sidepannel_ScroolDoc);
+        Main_textContentWithEle(Sidepannel_PosCounter, '');
         Sidepannel_Html = '';
         Main_getElementById('side_panel_warn').style.display = 'none';
 
