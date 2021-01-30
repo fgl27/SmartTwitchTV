@@ -65,7 +65,16 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
         Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
-        Main_textContentWithEle(Sidepannel_PosCounter, (Sidepannel_PosFeed + 1) + '/' + size);
+
+        var pos = (Sidepannel_PosFeed + 1);
+
+        if (pos < 10) pos = STR_SPACE + STR_SPACE + STR_SPACE + STR_SPACE + pos;
+        else if (pos < 100) pos = STR_SPACE + STR_SPACE + pos;
+
+        Main_innerHTMLWithEle(
+            Sidepannel_PosCounter,
+            pos + '/' + size
+        );
 
     } else {
 
