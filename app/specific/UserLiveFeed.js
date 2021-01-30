@@ -237,6 +237,7 @@ function UserLiveFeed_Prepare() {
     Sidepannel_UpdateThumbDoc = Main_getElementById("feed_thumb_img");
     Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
     Sidepannel_LastRefreshDiv = Main_getElementById("side_panel_feed_refresh");
+    Sidepannel_PosCounter = Main_getElementById("sidepannel_counter");
     Sidepannel_SetLastRefreshUpDiv(0);
 }
 

@@ -39,6 +39,8 @@ var Sidepannel_SidepannelRow_0;
 var Sidepannel_SidepannelLoadingDialog;
 var Sidepannel_UpdateThumbDoc;
 var Sidepannel_ThumbDoc;
+var Sidepannel_LastRefreshDiv;
+var Sidepannel_PosCounter;
 
 var Sidepannel_ChangeFocusAnimationFinished = true;
 var Sidepannel_ChangeFocusAnimationFast = false;
@@ -55,13 +57,15 @@ function Sidepannel_RemoveFocusMain() {
 }
 
 function Sidepannel_AddFocusFeed(skipAnimation) {
+    var size = Sidepannel_GetSize();
 
-    if (Sidepannel_GetSize()) {
+    if (size) {
 
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
         Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+        Main_textContentWithEle(Sidepannel_PosCounter, (Sidepannel_PosFeed + 1) + '/' + size);
 
     } else {
 
@@ -79,6 +83,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
 
         }
 
+        Main_textContentWithEle(Sidepannel_PosCounter, '');
     }
 
 }
@@ -464,7 +469,7 @@ function Sidepannel_ShowFeed() {
     Main_EventScreen('Side_panel_user_live');
 }
 
-var Sidepannel_LastRefreshDiv;
+
 function Sidepannel_SetLastRefresh() {
     if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
 

@@ -381,8 +381,8 @@ function en_USLang() {
     STR_CH_IS_OFFLINE = "Is offline";
     STR_ROUND_IMAGES = "Use rounded channel images";
     STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
-    STR_SCREEN_COUNTER = "Hide thumbnail position counter";
-    STR_SCREEN_COUNTER_SUMMARY = "On bottom right corner on the main screen and on the player preview thumbnails, a counter displays total already loaded thumbnail and current position (the maximum thumbnail number will only show when you scroll to the end)";
+    STR_SCREEN_COUNTER = "Hide Position/Total counter";
+    STR_SCREEN_COUNTER_SUMMARY = "There is a position counter that informs the current position and the total loaded content on screens that have playable content, as you scrolls more content wil be load and the total gets updated";
     STR_SWITCH_POS = "Switch: Starting Position offset";
     STR_SWITCH_POS_SUMMARY = "Instead of starting on the first possible video, start a a lower position on the list, prevents having to go down and down to find a older video";
     STR_USER_OPTION = "Choose a option for user";

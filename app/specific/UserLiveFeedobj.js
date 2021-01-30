@@ -114,6 +114,7 @@ function UserLiveFeedobj_CheckToken() {
     UserLiveFeed_PreloadImgs = [];
     Sidepannel_PosFeed = 0;
     Main_emptyWithEle(Sidepannel_ScroolDoc);
+    Main_textContentWithEle(Sidepannel_PosCounter, '');
     Sidepannel_Html = '';
     Main_getElementById('side_panel_warn').style.display = 'none';
 

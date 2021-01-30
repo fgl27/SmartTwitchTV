@@ -1294,6 +1294,7 @@ function Settings_ShowCounter() {
 
     Settings_HideElem('dialog_counter_text', hide);
     Settings_HideElem('feed_counter', hide);
+    Settings_HideElem('sidepannel_counter', hide);
 }
 
 function Settings_UpdateRoundImages() {
