@@ -1445,8 +1445,8 @@
         STR_CHAT_NICK_COLOR = "Readable nick colors";
         STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
         STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
-        STR_CHAT_MESSAGE_DELETED = "Single user message deleted";
-        STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user was deleted";
+        STR_CHAT_MESSAGE_DELETED = "This single user message was requested to be deleted";
+        STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user was requested to be deleted";
         STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've be timeout for ";
         STR_CHAT_CLEAR_MSG_SUMMARY = 'Delete chat messages from a specific user (typically after they received a timeout or ban), deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not only the background color will change';
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
