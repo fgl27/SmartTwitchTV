@@ -22,6 +22,7 @@
 var version = {
     VersionBase: '3.0',
     publishVersionCode: 298,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/298/SmartTV_twitch_3_0_298.apk',
     WebVersion: 'January 30 2020',
     WebTag: 56,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
