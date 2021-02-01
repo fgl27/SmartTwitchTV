@@ -424,8 +424,10 @@ public class PlayerActivity extends Activity {
             initializeWebview();
 
             StopNotificationService();
-
             FirebaseCrashlytics.getInstance().sendUnsentReports();
+
+            //Context context = getApplicationContext();
+            DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
         }
     }
 
@@ -3724,7 +3726,56 @@ public class PlayerActivity extends Activity {
                 return false;
 
             }
-            
+
+        }
+
+        @JavascriptInterface
+        public void UpdateAPK(String apkURL, String failAll, String failDownload) {
+
+            final String appPackageName = getApplicationContext().getPackageName();
+
+            try {
+
+                if (apkURL == null) {
+
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+
+                } else {
+
+                    try {
+                        DataThreadPool.execute(() ->
+                                {
+                                    Context context = getApplicationContext();
+                                    String file = Tools.DownloadAPK(apkURL, context);
+
+                                    if (file != null) {
+
+                                        Tools.installPackage(context, file);
+
+                                    } else {
+
+                                        runOnUiThread(() -> Toast.makeText(mWebViewContext, failDownload, Toast.LENGTH_LONG).show());
+
+                                    }
+
+
+                                }
+                        );
+                    } catch (Exception e) {//Most are RejectedExecutionException
+
+                        Tools.recordException(TAG, "UpdateAPK Exception ", e);
+
+                    }
+
+                }
+
+
+            } catch (Exception ignore) {
+
+                runOnUiThread(() -> Toast.makeText(mWebViewContext, failAll, Toast.LENGTH_LONG).show());
+
+            }
+
         }
     }
 

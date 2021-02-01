@@ -135,6 +135,24 @@ mainfolder="$(dirname "$mainfolder")";
 
 cd "$mainfolder" || exit
 
+version_up() {
+
+    # update version obj
+    echo "$(cat ./app/general/version.js)" > ./release/version.js
+    echo "$(cat ./release/scripts/version.js)" >> ./release/version.js
+    noderun=$(node ./release/version.js);
+    rm ./release/version.js
+    echo -e "${bldgrn}$noderun";
+
+}
+
+if [ "$1" == 2 ]; then
+    echo -e "\\n";
+	version_up;
+    echo -e "\\n";
+	exit 0;
+fi;
+
 # uglifyjs cleans/compress js related files
 js_comp_ugf() {
 	array=( "$@" );
@@ -225,12 +243,7 @@ new=''
 sed --in-place "s%$old%$new%g" release/index.html
 sed --in-place "s%$old%$new%g" release/extrapageindex.html
 
-# update version obj
-echo "$(cat ./app/general/version.js)" > ./release/version.js
-echo "$(cat ./release/scripts/version.js)" >> ./release/version.js
-noderun=$(node ./release/version.js);
-rm ./release/version.js
-echo -e "${bldgrn}$noderun";
+version_up
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 

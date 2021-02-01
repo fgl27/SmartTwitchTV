@@ -389,17 +389,14 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
 
-    try {
+    Android.ReuseFeedPlayer(
+        uri,
+        mainPlaylistString,
+        who_called,
+        ResumePosition,
+        player
+    );
 
-        Android.ReuseFeedPlayer(
-            uri,
-            mainPlaylistString,
-            who_called,
-            ResumePosition,
-            player
-        );
-
-    } catch (e) { }
 }
 
 //public void ReuseFeedPlayerPrepare(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
@@ -408,17 +405,14 @@ function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, Resume
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
 
-    try {
+    if (Main_IsOn_OSInterface) {
 
-        if (Main_IsOn_OSInterface) {
+        Android.ReuseFeedPlayerPrepare(
+            trackSelectorPos
+        );
 
-            Android.ReuseFeedPlayerPrepare(
-                trackSelectorPos
-            );
+    }
 
-        }
-
-    } catch (e) { }
 }
 
 //public void FixViewPosition(int position)
@@ -427,17 +421,14 @@ function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
 //Sets mediaSources and start the player
 function OSInterface_FixViewPosition(position) {
 
-    try {
+    if (Main_IsOn_OSInterface) {
 
-        if (Main_IsOn_OSInterface) {
+        Android.FixViewPosition(
+            position
+        );
 
-            Android.FixViewPosition(
-                position
-            );
+    }
 
-        }
-
-    } catch (e) { }
 }
 
 //public void mhideSystemUI()
@@ -937,10 +928,7 @@ function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_ca
 //Android specific: true
 //Clear the side panel or small player over the live feed play removes it from the screen
 function OSInterface_ClearFeedPlayer() {
-    try {
-        Android.ClearFeedPlayer();
-    } catch (e) {
-    }
+    Android.ClearFeedPlayer();
 }
 
 //public void ClearFeedPlayer()
@@ -1093,20 +1081,17 @@ function OSInterface_CheckReUsePlayer() {
 //Sets a audio enable or not
 function OSInterface_SetAudioEnabled() {
 
-    try {
+    if (Main_IsOn_OSInterface) {
 
-        if (Main_IsOn_OSInterface) {
+        Android.SetAudioEnabled(
+            Boolean(Play_audio_enable[0]),
+            Boolean(Play_audio_enable[1]),
+            Boolean(Play_audio_enable[2]),
+            Boolean(Play_audio_enable[3])
+        );
 
-            Android.SetAudioEnabled(
-                Boolean(Play_audio_enable[0]),
-                Boolean(Play_audio_enable[1]),
-                Boolean(Play_audio_enable[2]),
-                Boolean(Play_audio_enable[3])
-            );
+    }
 
-        }
-
-    } catch (e) { }
 }
 
 //public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
@@ -1115,20 +1100,18 @@ function OSInterface_SetAudioEnabled() {
 //Sets a audio enable or not
 function OSInterface_SetVolumes() {
 
-    try {
+    if (Main_IsOn_OSInterface) {
 
-        if (Main_IsOn_OSInterface) {
+        Android.SetVolumes(
+            parseFloat(Play_volumes[0] / 100),
+            parseFloat(Play_volumes[1] / 100),
+            parseFloat(Play_volumes[2] / 100),
+            parseFloat(Play_volumes[3] / 100)
+        );
 
-            Android.SetVolumes(
-                parseFloat(Play_volumes[0] / 100),
-                parseFloat(Play_volumes[1] / 100),
-                parseFloat(Play_volumes[2] / 100),
-                parseFloat(Play_volumes[3] / 100)
-            );
+    }
 
-        }
 
-    } catch (e) { }
 }
 
 //public void ApplyAudio()
@@ -1136,11 +1119,44 @@ function OSInterface_SetVolumes() {
 //Sets a audio enable or not
 function OSInterface_ApplyAudio() {
 
+    if (Main_IsOn_OSInterface) {
+
+        Android.ApplyAudio();
+
+    }
+}
+
+//public boolean getInstallFromPLay()
+//Android specific: true
+//Sets a audio enable or not
+function OSInterface_getInstallFromPLay() {
+
     try {
 
         if (Main_IsOn_OSInterface) {
 
-            Android.ApplyAudio();
+            return Android.getInstallFromPLay();
+
+        }
+
+    } catch (e) { }
+
+    return false;
+}
+
+//public void UpdateAPK(String apkURL, String failAll, String failDownload)
+//String apkURL if install from play this is null else the apk link from release
+//String failAll a fail warning
+//String failDownload a fail apk download warning
+//Android specific: true
+//Allow to update the app
+function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.UpdateAPK(apkURL, failAll, failDownload);
 
         }
 

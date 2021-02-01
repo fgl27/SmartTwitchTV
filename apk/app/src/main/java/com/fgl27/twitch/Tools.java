@@ -47,6 +47,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.webkit.WebViewCompat;
 
 import com.fgl27.twitch.DataSource.DefaultHttpDataSource;
@@ -82,6 +83,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1216,5 +1218,126 @@ public final class Tools {
 
         // true if your app has been downloaded from Play Store
         return installer != null && validInstallers.contains(installer);
+    }
+
+    static String DownloadAPK(String apkURL, Context context) {
+        HttpURLConnection urlConnection = null;
+        InputStream input = null;
+        OutputStream output = null;
+
+        try {
+            urlConnection = (HttpURLConnection) new URL(apkURL).openConnection();
+            urlConnection.setConnectTimeout(Constants.DEFAULT_HTTP_TIMEOUT);
+            urlConnection.setReadTimeout(Constants.DEFAULT_HTTP_TIMEOUT * 10);
+
+            urlConnection.connect();
+
+            int status = urlConnection.getResponseCode();
+
+            if (status != -1) {
+
+                if (status == 200) {
+
+                    File file = GetUpdateFile(context);
+                    if (file == null) return null;
+
+                    input = urlConnection.getInputStream();
+                    output = new FileOutputStream(file);
+
+                    byte[] buffer = new byte[1024];
+                    int count;
+                    while ((count = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, count);
+                    }
+
+                    return file.getAbsolutePath();
+
+                } else {
+
+                    return null;
+
+                }
+
+            } else {
+                return null;
+            }
+        } catch (Throwable e) {
+            //recordException(TAG, "DownloadAPK ", e);
+            Log.w("UpdateAPK", "DownloadAPK", e);
+            return null;
+        } finally {
+
+            closeQuietly(input);
+            closeQuietly(output);
+
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+    }
+
+    private static File getCacheDir(Context context) {
+        File cacheDir;
+
+        // Android 6.0 fix (providers not supported)
+        cacheDir = context.getExternalCacheDir();
+
+        if (cacheDir == null || !cacheDir.canWrite()) { // no storage, try to use internal one
+            cacheDir = Environment.getExternalStorageDirectory();
+
+            if (cacheDir == null || !cacheDir.canWrite()) {
+                // Android 7.0 and above (supports install from internal dirs)
+                cacheDir = context.getCacheDir();
+            }
+        }
+
+        return cacheDir;
+    }
+
+    static File GetUpdateFile(Context context) {
+
+        try {
+            String path = getCacheDir(context).getAbsolutePath() + "/update.apk";
+            File file = new File(path);
+
+            if (file.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+            }
+
+            return file;
+        } catch (Throwable e) {
+            recordException(TAG, "GetUpdateFile ", e);
+        }
+
+        return null;
+    }
+
+    static void installPackage(Context context, String packagePath) {
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri file = getFileUri(context, packagePath);
+        intent.setDataAndType(file, "application/vnd.android.package-archive");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION); // without this flag android returned a intent error!
+
+        try {
+            context.startActivity(intent);
+        } catch (Throwable e) {
+            recordException(TAG, "installPackage ", e);
+        }
+
+    }
+
+    private static Uri getFileUri(Context context, String filePath) {
+        // If your targetSdkVersion is 24 (Android 7.0 Nougat) or higher, we have to use FileProvider class
+        // https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+            return FileProvider.getUriForFile(context, context.getPackageName() + ".update_provider", new File(filePath));
+
+        } else {
+
+            return Uri.fromFile(new File(filePath));
+
+        }
     }
 }
