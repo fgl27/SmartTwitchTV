@@ -1080,7 +1080,7 @@ function PlayVod_OpenLiveStream() {
 function PlayVod_CheckPreview() {
     if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && Main_values.Main_Go !== Main_ChannelContent &&
         (ScreenObj[Main_values.Main_Go].screenType === 1 || ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) &&
-        !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
+        !Play_isEndDialogVisible() && !Sidepannel_isShowingUserLive() &&
         !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
         if (PlayVod_CheckPreviewVod()) PlayVod_SetPreview();

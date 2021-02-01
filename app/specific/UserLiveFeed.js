@@ -341,7 +341,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
         Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
 
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowingUserLive()) {
 
             Sidepannel_AddFocusFeed(true);
             Sidepannel_SetLastRefresh();
@@ -371,7 +371,7 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
             if (Main_isStoped ||
                 !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
                 ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isPreviewShowing()) &&
-                    (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) {//the screen is not selected
+                    (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowingUserLive()))) {//the screen is not selected
 
                 if (!Screens_Some_Screen_Is_Refreshing) {
                     UserLiveFeed_CounterDialogRst();

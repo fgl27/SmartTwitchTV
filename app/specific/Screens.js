@@ -273,8 +273,8 @@ function Screens_init(key, preventRefresh) {
     ScreenObj[key].label_init();
 
     if (Main_isScene1DocVisible() &&
-        !Sidepannel_isShowing() &&
-        !Sidepannel_MainisShowing()) {
+        !Sidepannel_isShowingUserLive() &&
+        !Sidepannel_isShowingMenus()) {
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
     }
 
@@ -1962,6 +1962,7 @@ function Screens_handleKeyDown(key, event) {
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;
+        case KEY_0:
         case KEY_U:
             Screens_RemoveFocus(key);
             Main_UpdateDialogShowCheck();
@@ -2967,6 +2968,6 @@ function Screens_Isfocused() {
 
 //TODO add screen.isInuse prop to adress this fun use
 function Screens_IsInUse(key) {
-    return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowing() &&
-        !Sidepannel_MainisShowing() && !Settings_isVisible() && !Main_isUpdateDialogVisible();
+    return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowingUserLive() &&
+        !Sidepannel_isShowingMenus() && !Settings_isVisible() && !Main_isUpdateDialogVisible();
 }

@@ -86,7 +86,7 @@ function Sidepannel_AddFocusFeed(skipAnimation) {
 
         Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowingUserLive()) {
 
             Sidepannel_CheckIfIsLiveSTop();
 
@@ -102,11 +102,11 @@ function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
     if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
 }
 
-function Sidepannel_isShowing() {
-    return Sidepannel_isShowingSide() && Main_isScene1DocVisible();
+function Sidepannel_isShowingUserLive() {
+    return Sidepannel_isShowingUserLiveSide() && Main_isScene1DocVisible();
 }
 
-function Sidepannel_isShowingSide() {
+function Sidepannel_isShowingUserLiveSide() {
     return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
 }
 
@@ -141,7 +141,7 @@ function Sidepannel_UpdateThumbDiv() {
 function Sidepannel_UpdateThumb() {
     Sidepannel_UpdateThumbDiv();
 
-    if (Sidepannel_isShowing()) {
+    if (Sidepannel_isShowingUserLive()) {
         Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
         if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
@@ -217,7 +217,7 @@ function Sidepannel_CheckIfIsLive() {
 var Sidepannel_PlayerViewSidePanelSet;
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
+    if (!Main_isStoped && Sidepannel_isShowingUserLive() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
 
         if (StreamData && Sidepannel_ObjNotNull()) {
             StreamData = JSON.parse(StreamData);
@@ -309,7 +309,7 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
 }
 
 function Sidepannel_PreloadImgs() {
-    if (!Sidepannel_isShowing()) return;
+    if (!Sidepannel_isShowingUserLive()) return;
 
     if (UserLiveFeed_PreloadImgs[Sidepannel_PosFeed]) {
         Main_ImageLoaderWorker.postMessage(
@@ -336,7 +336,7 @@ function Sidepannel_KeyEnterUser() {
         return;
     }
 
-    if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
+    if (Sidepannel_Sidepannel_Pos !== 2 && Sidepannel_Sidepannel_Pos !== 13) Sidepannel_Hide();
 
     if (Sidepannel_Sidepannel_Pos === 2) {
         Main_values.Sidepannel_IsUser = false;
@@ -368,26 +368,50 @@ function Sidepannel_KeyEnterUser() {
 }
 
 function Sidepannel_KeyEnterBase() {
+
     if (!Sidepannel_Sidepannel_Pos) {
+
         Main_values.Main_Before = Main_values.Main_Go;
         Main_ExitCurrent(Main_values.Main_Go);
         if (AddUser_UserIsSet()) Users_init();
         else AddUser_init();
+
     } else if (Sidepannel_Sidepannel_Pos === 1) {
+
         if (Main_values.Main_Go !== Main_Search) {
+
             if (!Main_values.Search_isSearching &&
-                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
+                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod)) {
+
                 ChannelContent_SetChannelValue();
+
+            }
+
             Main_OpenSearch();
-        } else Main_addEventListener("keydown", Sidepannel_Callback);
+
+        } else {
+
+            Main_addEventListener("keydown", Sidepannel_Callback);
+
+        }
+
     } else if (Sidepannel_Sidepannel_Pos === 9) {
+
         Main_showSettings();
-    } else if (Sidepannel_Sidepannel_Pos === 10)
+
+    } else if (Sidepannel_Sidepannel_Pos === 10) {
+
         Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
-    else if (Sidepannel_Sidepannel_Pos === 11)
+
+    } else if (Sidepannel_Sidepannel_Pos === 11) {
+
         Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
-    else if (Sidepannel_Sidepannel_Pos === 12) Main_showExitDialog();
-    else if (Sidepannel_Sidepannel_Pos === 13) {
+
+    } else if (Sidepannel_Sidepannel_Pos === 12) {
+
+        Main_showExitDialog();
+
+    } else if (Sidepannel_Sidepannel_Pos === 13) {
 
         Main_UpdateDialogShowCheck();
 
@@ -400,7 +424,7 @@ function Sidepannel_KeyEnter() {
         return;
     }
 
-    if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
+    if (Sidepannel_Sidepannel_Pos !== 2 && Sidepannel_Sidepannel_Pos !== 13) Sidepannel_Hide();
 
     if (Sidepannel_Sidepannel_Pos === 2) {
         if (AddUser_IsUserSet()) {
@@ -511,7 +535,7 @@ function Sidepannel_StartMain() {
     Main_EventScreen('Side_panel_main');
 }
 
-function Sidepannel_MainisShowing() {
+function Sidepannel_isShowingMenus() {
     return Main_A_equals_B(Sidepannel_MovelDiv.style.transform, 'translateX(' + Sidepannel_FixdefaultMargin + '%)');
 }
 
@@ -776,6 +800,12 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_9:
             Main_showExitDialog();
             Sidepannel_Hide();
+            break;
+        case KEY_0:
+        case KEY_U:
+            Main_UpdateDialogShowCheck();
+            Sidepannel_Hide();
+            Main_SwitchScreen();
             break;
         default:
             break;

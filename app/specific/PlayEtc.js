@@ -1003,7 +1003,7 @@ function Play_OpenChannel(PlayVodClip) {
 
     }
 
-    if (Sidepannel_isShowingSide()) {
+    if (Sidepannel_isShowingUserLiveSide()) {
         Sidepannel_Hide(false);
     }
 
@@ -1036,7 +1036,7 @@ function Play_OpenChannel(PlayVodClip) {
 }
 
 function Play_OpenSearch(PlayVodClip) {
-    if (Sidepannel_isShowingSide()) {
+    if (Sidepannel_isShowingUserLiveSide()) {
         Sidepannel_Hide(false);
     }
 
@@ -1054,7 +1054,7 @@ function Play_OpenSearch(PlayVodClip) {
 }
 
 function Play_OpenGame(PlayVodClip) {
-    if (Sidepannel_isShowingSide()) {
+    if (Sidepannel_isShowingUserLiveSide()) {
         Sidepannel_Hide(false);
     }
 
@@ -1294,7 +1294,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
     var restorePreview = false;
 
     //Side panel
-    if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
+    if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingUserLiveSide()) {
 
         if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) return false;
 
@@ -1313,7 +1313,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         );
 
         //live
-    } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
+    } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowingUserLive()) {
 
         if (Main_values.Main_Go === Main_ChannelContent) {
 

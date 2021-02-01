@@ -732,7 +732,7 @@ function PlayClip_OpenLiveStream() {
 function PlayClip_CheckPreview() {
 
     if (PlayClip_isOn && !Play_isEndDialogVisible() && Main_values.Main_Go !== Main_ChannelContent &&
-        Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowing() &&
+        Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowingUserLive() &&
         !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
         if (PlayClip_CheckPreviewClip()) {

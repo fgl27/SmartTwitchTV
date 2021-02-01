@@ -367,7 +367,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
     if (fail_type === 1) reason = STR_PLAYER_ERROR;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
 
-    if (Sidepannel_isShowing()) {
+    if (Sidepannel_isShowingUserLive()) {
 
         Sidepannel_CheckIfIsLiveWarn(
             reason,
@@ -442,7 +442,7 @@ function Play_CheckResume() {
     if (Play_isOn) Play_Resume();
     else if (PlayVod_isOn) PlayVod_Resume();
     else if (PlayClip_isOn) PlayClip_Resume();
-    else if (Sidepannel_isShowing()) {
+    else if (Sidepannel_isShowingUserLive()) {
         Sidepannel_UpdateThumbDiv();
         Play_CheckIfIsLiveCleanEnd();
         Sidepannel_ShowFeed();
@@ -1911,7 +1911,7 @@ function Play_UpdateDuration(duration) { // Called only by JAVA
 
     if (Main_isScene1DocVisible()) {
 
-        if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Main_values.Main_Go);//fix position after animation has endede after Player.STATE_READY
+        if (!Sidepannel_isShowingUserLive()) Screens_LoadPreviewRestore(Main_values.Main_Go);//fix position after animation has endede after Player.STATE_READY
 
     } else if (duration > 0) {
 

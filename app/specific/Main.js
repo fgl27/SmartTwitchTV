@@ -866,7 +866,7 @@ function Main_ThumbNull(y, x, thumbnail) {
 }
 
 function Main_ReStartScreens(preventRefresh) {
-    if (Sidepannel_isShowing()) {
+    if (Sidepannel_isShowingUserLive()) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
         if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
@@ -1065,7 +1065,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
     } else if (!Settings_value.update_show.defaultValue && !skipShowUpdateDialog) {
 
         //Clear preveiw as it is on top of the view
-        if (Sidepannel_isShowing()) Sidepannel_RemoveFocusFeed();
+        if (Sidepannel_isShowingUserLive()) Sidepannel_RemoveFocusFeed();
         else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
 
@@ -1258,7 +1258,7 @@ function Main_HideUpdateDialog(preventFocus) {
 
     Main_PreventClick(false, Main_UpdateDialogKeyFun);
 
-    if (Sidepannel_isShowing()) {
+    if (Sidepannel_isShowingUserLive()) {
 
         Sidepannel_AddFocusFeed(true);
 
@@ -1266,7 +1266,7 @@ function Main_HideUpdateDialog(preventFocus) {
 
         UserLiveFeed_FeedAddFocus(true, UserLiveFeed_FeedPosX);
 
-    } else if (Main_isScene1DocVisible()) {
+    } else if (Main_isScene1DocVisible() && !Sidepannel_isShowingMenus()) {
 
         if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
         else ScreenObj[Main_values.Main_Go].init_fun();
@@ -1747,7 +1747,7 @@ function Main_updateUserFeed() {
     //Main_Log('Main_updateUserFeed');
 
     if (AddUser_UserIsSet() && !UserLiveFeed_isPreviewShowing() &&
-        !Sidepannel_isShowing() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+        !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
     }
@@ -2746,7 +2746,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
     Main_updateclock();
 
-    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowing())) Play_CheckResume();
+    if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
@@ -2790,7 +2790,7 @@ function Main_CheckAccessibility(skipRefresCheck) {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
             if ((Screens_Isfocused() || ChannelContent_Isfocused()) &&
-                (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+                (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) &&
                 !skipRefresCheck) {
                 Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
@@ -2807,7 +2807,7 @@ function Main_CheckAccessibilitySet() {
     Main_ShowElement('dialog_accessibility');
     Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
     Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
-    if (!Sidepannel_isShowing() && Main_isScene1DocVisible()) {
+    if (!Sidepannel_isShowingUserLive() && Main_isScene1DocVisible()) {
         Sidepannel_Hide();
         Main_addEventListener("keydown", Main_CheckAccessibilityKey);
     }
@@ -2919,9 +2919,9 @@ function Main_onNewIntent(mobj) {
 
             Main_onNewIntentClearPlay();
 
-        } else if (Sidepannel_MainisShowing()) {
+        } else if (Sidepannel_isShowingMenus()) {
             Sidepannel_Hide(false);
-        } else if (Sidepannel_isShowingSide()) {
+        } else if (Sidepannel_isShowingUserLiveSide()) {
             Sidepannel_Hide(true);
         } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
@@ -2948,7 +2948,7 @@ function Main_onNewIntent(mobj) {
 
             Main_hideScene2Doc();
             Main_showScene1Doc();
-        } else if (Sidepannel_MainisShowing()) {
+        } else if (Sidepannel_isShowingMenus()) {
             Sidepannel_Hide(false);
         }
 
@@ -2976,7 +2976,7 @@ function Main_onNewIntent(mobj) {
             Play_OpenGame(PlayVodClip);
         } else {
 
-            if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+            if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
                 Sidepannel_Hide(false);
             }
 
@@ -3004,7 +3004,7 @@ function Main_onNewIntent(mobj) {
             Main_hideScene2Doc();
             Main_showScene1Doc();
 
-        } else if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+        } else if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
             Sidepannel_Hide(false);
         }
 

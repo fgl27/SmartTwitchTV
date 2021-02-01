@@ -168,7 +168,7 @@ function UserLiveFeedobj_loadDataError(pos) {
             UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
         }
 
-        if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+        if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowingUserLive()) {
             Main_HideWarningDialog();
             Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
         }
