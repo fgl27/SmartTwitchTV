@@ -98,6 +98,10 @@ function en_USLang() {
     STR_WEB_UPDATE_AVAILABLE = "Web Update available";
     STR_UPDATE_CHECK_SIDE = ", check side panel update";
     STR_UPDATE_LAST_CHECK = "Last checked: ";
+    STR_UPDATE_OPT = "Updates options";
+    STR_UPDATE_CHECK_FOR = "Check for updates in background";
+    STR_UPDATE_SHOW = "Show updates dialog when updates are available";
+    STR_UPDATE_SHOW_ARRAY = ["Yes", "Only a toast message", "No"];
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
     STR_CANCEL = "Cancel";
@@ -130,6 +134,7 @@ function en_USLang() {
     STR_TWITCH_TV = "SmartTV Client for Twitch";
     STR_CLOSE_THIS = "Press return or enter to close this.";
     STR_CLOSE_THIS2 = "Press return to close this.";
+    STR_CLOSE_THIS3 = "Press return to show the update dialog or enter to close this.";
     STR_PLAYER = "Player Related:";
     STR_CHAT = "Chat Related:";
     STR_CHAT_SHOW = "Chat show";

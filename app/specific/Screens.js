@@ -1964,7 +1964,7 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_U:
             Screens_RemoveFocus(key);
-            Main_showUpdateDialog();
+            Main_UpdateDialogShowCheck();
             break;
         case KEY_CHAT:
             var UserIsSet = AddUser_UserIsSet();

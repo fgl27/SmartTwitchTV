@@ -387,7 +387,11 @@ function Sidepannel_KeyEnterBase() {
     else if (Sidepannel_Sidepannel_Pos === 11)
         Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
     else if (Sidepannel_Sidepannel_Pos === 12) Main_showExitDialog();
-    else if (Sidepannel_Sidepannel_Pos === 13) Main_showUpdateDialog();
+    else if (Sidepannel_Sidepannel_Pos === 13) {
+
+        Main_UpdateDialogShowCheck();
+
+    }
 }
 
 function Sidepannel_KeyEnter() {

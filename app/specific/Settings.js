@@ -298,6 +298,11 @@ var Settings_value = {
         "set_values": [""],
         "defaultValue": 1
     },
+    "update_settings": {
+        "values": ["None"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
     "player_bitrate": {
         "values": ["None"],
         "set_values": [""],
@@ -462,6 +467,16 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "update_background": {
+        "values": ["yes", "no"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
+    "update_show": {
+        "values": ["yes", "toast", "no"],
+        "set_values": [""],
+        "defaultValue": 1
+    },
 };
 
 function Settings_GenerateClock() {
@@ -594,6 +609,7 @@ function Settings_SetSettings() {
     div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
     div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
     div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
+    div += Settings_Content('update_settings', [STR_CONTENT_LANG_SUMMARY], STR_UPDATE_OPT, null);
     div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
     if (!Main_isTV || !Main_IsOn_OSInterface) {
@@ -1435,6 +1451,7 @@ function Settings_handleKeyDown(event) {
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'custom_opt')) Settings_DialogShowCustomOpt();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings();
+            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'update_settings')) Settings_UpdateSettings();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
             break;
         default:
@@ -2067,6 +2084,29 @@ function Settings_DialogShowWarnings() {
     };
 
     Settings_DialogShow(obj, STR_WARNINGS);
+}
+
+
+function Settings_UpdateSettings() {
+    Settings_value.update_background.values = [STR_YES, STR_NO];
+    Settings_value.update_show.values = STR_UPDATE_SHOW_ARRAY;
+
+    var obj = {
+        update_background: {
+            defaultValue: Settings_value.update_background.defaultValue,
+            values: Settings_value.update_background.values,
+            title: STR_UPDATE_CHECK_FOR,
+            summary: null
+        },
+        update_show: {
+            defaultValue: Settings_value.update_show.defaultValue,
+            values: Settings_value.update_show.values,
+            title: STR_UPDATE_SHOW,
+            summary: null
+        }
+    };
+
+    Settings_DialogShow(obj, STR_UPDATE_OPT);
 }
 
 function Settings_PlayerEnd() {

@@ -776,17 +776,17 @@ function Main_AboutDialogUpdateTime() {
     Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
 }
 
-function Main_showAboutDialog(removeEventListener, addEventListener, isChangelog) {
+function Main_showAboutDialog(removeEventListener, addEventListener) {
     Main_removeEventListener("keydown", removeEventListener);
     Main_addEventListener("keydown", addEventListener);
 
-    Main_AddClass(isChangelog ? 'dialog_about_text' : 'dialog_changelod_text', 'hideimp');
-    Main_RemoveClass(isChangelog ? 'dialog_changelod_text' : 'dialog_about_text', 'hideimp');
+    Main_AddClass('dialog_changelod_text', 'hideimp');
+    Main_RemoveClass('dialog_about_text', 'hideimp');
 
     Main_HideControlsDialog();
     Main_AboutDialogUpdateTime();
     Main_ShowElement('dialog_about');
-    Main_EventScreen(isChangelog ? 'Changelog' : 'About');
+    Main_EventScreen('About');
 }
 
 function Main_HideAboutDialog() {
@@ -952,8 +952,14 @@ function Main_checkVersion() {
             (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + ' - ' + device +
             ' Sdk: ' + Main_AndroidSDK;
 
-        if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_WarnUpdate(false);
-        else Main_CheckUpdate();
+        var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
+
+        if (!Settings_value.update_background.defaultValue) {
+
+            if (needUpdate) Main_WarnUpdate(false);
+            else Main_CheckUpdate();
+
+        }
 
         Main_EventVersion(
             Main_IsOn_OSInterfaceVersion,
@@ -974,8 +980,8 @@ function Main_checkVersion() {
             'Browser',
             'Browser'
         );
-        //T0 test he position
-        Main_WarnUpdate(true);
+        //To test the position
+        Main_WarnUpdate(true, true);
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
@@ -990,7 +996,7 @@ var Main_HasUpdate;
 var Main_Ischecking;
 function Main_CheckUpdate(forceUpdate) {
 
-    if (Main_HasUpdate && Main_isUpdateDialogVisible() && !forceUpdate) return;
+    if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
     if (Main_IsOn_OSInterface) {
 
@@ -1041,7 +1047,7 @@ function Main_CheckUpdateResult(responseText) {
     Main_UpdateDialogSetTitle();
 }
 
-function Main_WarnUpdate(web) {
+function Main_WarnUpdate(web, skipShowUpdateDialog) {
     Main_innerHTML(
         'label_update',
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
@@ -1056,12 +1062,22 @@ function Main_WarnUpdate(web) {
 
         Main_UpdateDialogTitle();
 
-    } else if (!Main_update_show_toast) {
+    } else if (!Settings_value.update_show.defaultValue && !skipShowUpdateDialog) {
+
+        //Clear preveiw as it is on top of the view
+        if (Sidepannel_isShowing()) Sidepannel_RemoveFocusFeed();
+        else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
+
+        Main_showUpdateDialog();
+
+    } else if (!Main_update_show_toast && Settings_value.update_show.defaultValue === 1) {
 
         OSInterface_showToast((web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE);
         Main_update_show_toast = true;
 
     }
+
 }
 
 function Main_needUpdate(check_version) {
@@ -1095,6 +1111,14 @@ function Main_UpdateDialogSetTitle() {
 
 }
 
+function Main_showChangelogDialog() {
+    Main_AddClass('dialog_about_text', 'hideimp');
+    Main_RemoveClass('dialog_changelod_text', 'hideimp');
+
+    Main_ShowElement('dialog_about');
+    Main_EventScreen('Changelog');
+}
+
 var Main_UpdateCursor = 0;
 function Main_UpdateDialogKeyFun(event) {
     event.stopPropagation();
@@ -1102,7 +1126,17 @@ function Main_UpdateDialogKeyFun(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            Main_HideUpdateDialog();
+            if (Main_isAboutDialogVisible()) {
+
+                Main_HideAboutDialog();
+                Main_showUpdateDialog();
+
+            } else {
+
+                Main_HideUpdateDialog();
+
+            }
+
             break;
         case KEY_RIGHT:
         case KEY_LEFT:
@@ -1111,15 +1145,15 @@ function Main_UpdateDialogKeyFun(event) {
             break;
         case KEY_ENTER:
 
-            if (Main_UpdateCursor) {
+            if (Main_isAboutDialogVisible()) {
+
+                Main_HideAboutDialog();
+                Main_HideUpdateDialog();
+
+            } else if (Main_UpdateCursor) {
 
                 Main_HideUpdateDialog(true);
-
-                Main_showAboutDialog(
-                    ScreenObj[Main_values.Main_Go].key_fun,
-                    ScreenObj[Main_values.Main_Go].key_controls,
-                    true
-                );
+                Main_showChangelogDialog();
 
             } else {
 
@@ -1143,11 +1177,7 @@ function Main_UpdateDialogKeyFun(event) {
                 } else {
 
                     if (Main_Ischecking) return;
-
-                    Main_Ischecking = true;
-                    Main_getElementById('update_dialog_upbutton').style.width = "37%";
-                    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
-                    Main_CheckUpdate(true);
+                    Main_UpdateDialogStartCheck();
 
                 }
 
@@ -1157,6 +1187,22 @@ function Main_UpdateDialogKeyFun(event) {
         default:
             break;
     }
+}
+
+function Main_UpdateDialogShowCheck() {
+
+    Main_UpdateDialogStartCheck();
+    Main_showUpdateDialog();
+
+}
+
+function Main_UpdateDialogStartCheck() {
+
+    Main_Ischecking = true;
+    Main_getElementById('update_dialog_upbutton').style.width = "37%";
+    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
+    Main_CheckUpdate(true);
+
 }
 
 var Main_UpdateDialogLastCheck;
@@ -1195,12 +1241,21 @@ function Main_showUpdateDialog() {
 
 function Main_HideUpdateDialog(preventFocus) {
     Main_UpdateCursor = 0;
-    Main_PreventClick(false, Main_UpdateDialogKeyFun);
     Main_HideElement('update_dialog');
+    if (preventFocus) return;
 
-    if (!preventFocus) {
+    Main_PreventClick(false, Main_UpdateDialogKeyFun);
 
-        Main_addEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+    if (Sidepannel_isShowing()) {
+
+        Sidepannel_AddFocusFeed(true);
+
+    } else if (UserLiveFeed_isPreviewShowing()) {
+
+        UserLiveFeed_FeedAddFocus(true, UserLiveFeed_FeedPosX);
+
+    } else if (Main_isScene1DocVisible()) {
+
         if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
         else ScreenObj[Main_values.Main_Go].init_fun();
 
@@ -1232,7 +1287,7 @@ function Main_Changelog() {
         innerHtml += '</div><br>';
     }
 
-    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
+    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS3 + '</div></div>');
 }
 
 function Main_empty(el) {
