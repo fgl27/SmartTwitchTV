@@ -1066,7 +1066,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
 
         //Clear preveiw as it is on top of the view
         if (Sidepannel_isShowing()) Sidepannel_RemoveFocusFeed();
-        else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
 
         Main_showUpdateDialog();
