@@ -225,12 +225,12 @@ new=''
 sed --in-place "s%$old%$new%g" release/index.html
 sed --in-place "s%$old%$new%g" release/extrapageindex.html
 
-# update webversion & javaversion
-version=`echo $(grep 'Main_version_web ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
-echo "$version" > release/githubio/version/webversion
-
-version=`echo $(grep 'Main_version_java ' app/specific/Main.js | cut -d'=' -f2 | cut -d';' -f1)`
-echo "$version" > release/githubio/version/javaversion
+# update version obj
+echo "$(cat ./app/general/version.js)" > ./release/version.js
+echo "$(cat ./release/scripts/version.js)" >> ./release/version.js
+noderun=$(node ./release/version.js);
+rm ./release/version.js
+echo -e "${bldgrn}$noderun";
 
 echo -e "\\n${bldgrn}Compressing Start\\n";
 

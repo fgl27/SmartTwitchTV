@@ -66,7 +66,6 @@
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-        'Main_checkWebVersion': Main_checkWebVersion,
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
         'ChatLive_SetLatency': ChatLive_SetLatency,

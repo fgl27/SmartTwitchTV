@@ -60,3 +60,4 @@ var KEY_9 = 57;
 var KEY_A = 65;
 var KEY_C = 67;
 var KEY_E = 69;
+var KEY_U = 85;

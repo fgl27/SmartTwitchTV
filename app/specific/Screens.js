@@ -1962,6 +1962,10 @@ function Screens_handleKeyDown(key, event) {
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;
+        case KEY_U:
+            Screens_RemoveFocus(key);
+            Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls, true);
+            break;
         case KEY_CHAT:
             var UserIsSet = AddUser_UserIsSet();
             Screens_OpenSidePanel(UserIsSet, key);
