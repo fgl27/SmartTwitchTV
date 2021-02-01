@@ -382,7 +382,7 @@ function Main_initWindows() {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
 
-    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+    Main_SetUpdateclock();
     Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
@@ -519,7 +519,6 @@ function Main_CheckDevice() {
 }
 
 function Main_SetStringsMain(isStarting) {
-    Main_updateclock();
     Main_Setworker();
 
     //set top bar labels
@@ -1713,6 +1712,35 @@ function Main_ready(func) {
     } else document.addEventListener("DOMContentLoaded", func);
 }
 
+function Main_SetUpdateclock() {
+    Main_updateclock();
+    Main_clearInterval(Main_updateclockId);
+    var seconds = 60 - (new Date().getSeconds());
+
+    //sinc with MS
+    Main_setTimeout(
+        function() {
+
+            Main_updateclock();
+            Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+
+        },
+        seconds * 1000
+    );
+}
+
+function Main_updateclock() {
+    var clock = Main_getclock();
+    Main_textContent("stream_clock", clock);
+    Main_textContent('label_clock', clock);
+
+    Main_randomimg = '?' + parseInt(Math.random() * 100000);
+
+    Screens_SetLastRefresh(Main_values.Main_Go);
+    UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
+    Sidepannel_SetLastRefresh();
+}
+
 var Main_clock_H_M = '';
 var Main_date_Ms = 0;
 function Main_getclock() {
@@ -1729,18 +1757,6 @@ function Main_getclock() {
     Main_clock_H_M = Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
 
     return dayMonth + ' ' + Main_clock_H_M;
-}
-
-function Main_updateclock() {
-    var clock = Main_getclock();
-    Main_textContent("stream_clock", clock);
-    Main_textContent('label_clock', clock);
-
-    Main_randomimg = '?' + parseInt(Math.random() * 100000);
-
-    Screens_SetLastRefresh(Main_values.Main_Go);
-    UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
-    Sidepannel_SetLastRefresh();
 }
 
 function Main_updateUserFeed() {
@@ -2743,8 +2759,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
 
     Main_CheckResumeUpdateToken(UserIsSet);
 
-    Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-    Main_updateclock();
+    Main_SetUpdateclock();
 
     if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
     else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
