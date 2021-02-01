@@ -1964,7 +1964,7 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_U:
             Screens_RemoveFocus(key);
-            Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls, true);
+            Main_showUpdateDialog();
             break;
         case KEY_CHAT:
             var UserIsSet = AddUser_UserIsSet();
@@ -2968,5 +2968,5 @@ function Screens_Isfocused() {
 //TODO add screen.isInuse prop to adress this fun use
 function Screens_IsInUse(key) {
     return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowing() &&
-        !Sidepannel_MainisShowing() && !Settings_isVisible();
+        !Sidepannel_MainisShowing() && !Settings_isVisible() && !Main_isUpdateDialogVisible();
 }

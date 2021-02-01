@@ -387,7 +387,7 @@ function Sidepannel_KeyEnterBase() {
     else if (Sidepannel_Sidepannel_Pos === 11)
         Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
     else if (Sidepannel_Sidepannel_Pos === 12) Main_showExitDialog();
-    else if (Sidepannel_Sidepannel_Pos === 13) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls, true);
+    else if (Sidepannel_Sidepannel_Pos === 13) Main_showUpdateDialog();
 }
 
 function Sidepannel_KeyEnter() {
@@ -636,7 +636,7 @@ function Sidepannel_SetDefaultLables() {
     Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
     Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
     Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
-    Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_CHANGELOG);
+    Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_UPDATE_CHANGELOG);
 
     Sidepannel_SetIcons('side_panel_new_1', 'search');
     Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');

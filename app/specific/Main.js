@@ -618,30 +618,9 @@ function Main_SetStringsSecondary() {
     Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
     Main_textContent("chat_result", STR_CHAT_RESULT);
     ChatLiveControls_OptionsUpdate_defautls();
-}
 
-function Main_Changelog() {
-
-    var STR_ABOUT_CHANGELOG = "https://tinyurl.com/sttvchanges",
-        innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
-            STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>',
-        changelog = version.changelog;
-
-    var i = 0; var len = changelog.length, j, lenj;
-
-    for (i; i < len; i++) {
-
-        innerHtml += STR_DIV_TITLE + changelog[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
-
-        lenj = changelog[i].changes.length;
-
-        for (j = 0; j < lenj; j++) {
-            innerHtml += STR_DOT + changelog[i].changes[j] + STR_BR;
-        }
-        innerHtml += '</div><br>';
-    }
-
-    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
+    Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
+    Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -1007,7 +986,11 @@ function Main_checkVersion() {
 
 var Main_checkWebVersionId;
 var Main_checkWebVersionResumeId;
-function Main_CheckUpdate() {
+var Main_HasUpdate;
+var Main_Ischecking;
+function Main_CheckUpdate(forceUpdate) {
+
+    if (Main_HasUpdate && Main_isUpdateDialogVisible() && !forceUpdate) return;
 
     if (Main_IsOn_OSInterface) {
 
@@ -1017,7 +1000,7 @@ function Main_CheckUpdate() {
             0,
             null,
             Main_CheckUpdateResult,
-            noop_fun,
+            Main_CheckUpdateFail,
             0,
             0
         );
@@ -1026,19 +1009,36 @@ function Main_CheckUpdate() {
 
 }
 
+function Main_CheckUpdateFail() {
+    OSInterface_showToast(STR_UPDATE_CHECKING_FAIL);
+}
+
+var Main_IsWebupdate;
 function Main_CheckUpdateResult(responseText) {
+    Main_Ischecking = false;
+    Main_UpdateDialogLastCheck = Main_getclock();
 
     var response = JSON.parse(responseText),
         webupdate = response.WebTag > version.WebTag,
         apkupdate = response.publishVersionCode > version.publishVersionCode;
 
     if (webupdate || apkupdate) {
+        Main_HasUpdate = true;
 
-        version.publishVersionCode = JSON.parse(JSON.stringify(response.publishVersionCode));
+        version.changelog = JSON.parse(JSON.stringify(response.changelog));
+        version.ApkUrl = response.ApkUrl;
+        Main_IsWebupdate = !apkupdate && webupdate;
 
-        Main_WarnUpdate(!apkupdate && webupdate);
+        Main_WarnUpdate(Main_IsWebupdate);
+
+    } else if (Main_isUpdateDialogVisible()) {
+
+        Main_UpdateDialogTitle();
+        OSInterface_showToast(STR_NO_UPDATES);
 
     }
+
+    Main_UpdateDialogSetTitle();
 }
 
 function Main_WarnUpdate(web) {
@@ -1047,14 +1047,18 @@ function Main_WarnUpdate(web) {
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
         (web ? 'globe' : 'play-1') +
         '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
-        (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + '</div>'
+        (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
     );
 
     Main_ShowElement('label_update');
 
-    if (!Main_update_show_toast) {
+    if (Main_isUpdateDialogVisible()) {
 
-        OSInterface_showToast(web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE);
+        Main_UpdateDialogTitle();
+
+    } else if (!Main_update_show_toast) {
+
+        OSInterface_showToast((web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE);
         Main_update_show_toast = true;
 
     }
@@ -1073,6 +1077,162 @@ function Main_needUpdate(check_version) {
     version.publishVersionCode = MinVersion;
 
     return needUpdate;
+}
+
+function Main_UpdateDialogSet() {
+
+    if (!Main_Ischecking) Main_UpdateDialogSetTitle();
+    Main_RemoveClass('update_dialog_upbutton', 'button_dialog_focused');
+    Main_RemoveClass('update_dialog_changebutton', 'button_dialog_focused');
+    Main_AddClass(!Main_UpdateCursor ? 'update_dialog_upbutton' : 'update_dialog_changebutton', 'button_dialog_focused');
+
+}
+
+function Main_UpdateDialogSetTitle() {
+
+    Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "37%" : "25%";
+    Main_innerHTML("update_dialog_upbutton", Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
+
+}
+
+var Main_UpdateCursor = 0;
+function Main_UpdateDialogKeyFun(event) {
+    event.stopPropagation();
+
+    switch (event.keyCode) {
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Main_HideUpdateDialog();
+            break;
+        case KEY_RIGHT:
+        case KEY_LEFT:
+            Main_UpdateCursor = Main_UpdateCursor ^ 1;
+            Main_UpdateDialogSet();
+            break;
+        case KEY_ENTER:
+
+            if (Main_UpdateCursor) {
+
+                Main_HideUpdateDialog(true);
+
+                Main_showAboutDialog(
+                    ScreenObj[Main_values.Main_Go].key_fun,
+                    ScreenObj[Main_values.Main_Go].key_controls,
+                    true
+                );
+
+            } else {
+
+                if (Main_HasUpdate) {
+
+                    if (Main_IsWebupdate) {
+
+                        OSInterface_mloadUrl(OSInterface_mPageUrl());
+
+                    } else {
+
+                        OSInterface_UpdateAPK(
+                            OSInterface_getInstallFromPLay() ? null : version.ApkUrl,
+                            STR_UPDATE_FAIL,
+                            STR_UPDATE_FAIL_DOWNLOAD
+                        );
+
+                    }
+
+
+                } else {
+
+                    if (Main_Ischecking) return;
+
+                    Main_Ischecking = true;
+                    Main_getElementById('update_dialog_upbutton').style.width = "37%";
+                    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
+                    Main_CheckUpdate(true);
+
+                }
+
+            }
+
+            break;
+        default:
+            break;
+    }
+}
+
+var Main_UpdateDialogLastCheck;
+function Main_UpdateDialogTitle() {
+
+    var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
+        (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
+        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE) + '</div>' + STR_BR +
+        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE + '</div>' + STR_BR,
+        changelog = version.changelog;
+
+    innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;
+
+    var len = changelog[0].changes.length,
+        i = 0;
+
+    for (i; i < len; i++) {
+        innerHtml += STR_DOT + changelog[0].changes[i] + STR_BR;
+    }
+    innerHtml += '</div>';
+
+    Main_innerHTML(
+        'update_dialog_text',
+        innerHtml
+    );
+
+}
+
+function Main_showUpdateDialog() {
+    Main_UpdateDialogTitle();
+    Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
+    Main_UpdateDialogSet();
+    Main_ShowElement('update_dialog');
+    Main_EventScreen('UpdateDialog');
+}
+
+function Main_HideUpdateDialog(preventFocus) {
+    Main_UpdateCursor = 0;
+    Main_PreventClick(false, Main_UpdateDialogKeyFun);
+    Main_HideElement('update_dialog');
+
+    if (!preventFocus) {
+
+        Main_addEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+        if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
+        else ScreenObj[Main_values.Main_Go].init_fun();
+
+    }
+}
+
+function Main_isUpdateDialogVisible() {
+    return Main_isElementShowing('update_dialog');
+}
+
+function Main_Changelog() {
+
+    var STR_CHANGELOG_LINK = "https://tinyurl.com/sttvchanges",
+        innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
+            STR_DIV_LINK + STR_CHANGELOG_LINK + '</div><br><br>',
+        changelog = version.changelog;
+
+    var i = 0; var len = changelog.length, j, lenj;
+
+    for (i; i < len; i++) {
+
+        innerHtml += STR_DIV_TITLE + changelog[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
+
+        lenj = changelog[i].changes.length;
+
+        for (j = 0; j < lenj; j++) {
+            innerHtml += STR_DOT + changelog[i].changes[j] + STR_BR;
+        }
+        innerHtml += '</div><br>';
+    }
+
+    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
 }
 
 function Main_empty(el) {
@@ -2375,19 +2535,23 @@ function Main_RunClipWorker() {
 
 //the internet connection may be down do to standby after resume
 //java will not call Main_CheckResume() until the internet connection is recognized
-function Main_PreventClick(prevent) {
+function Main_PreventClick(prevent, fun, skipUpPress) {
 
     if (prevent) {
 
-        window.addEventListener("keydown", Main_PreventClickfun, true);
-        window.addEventListener("keyup", Main_PreventClickfun, true);
-        window.addEventListener("keypress", Main_PreventClickfun, true);
+        window.addEventListener("keydown", fun, true);
+        if (!skipUpPress) {
+
+            window.addEventListener("keyup", fun, true);
+            window.addEventListener("keypress", fun, true);
+
+        }
 
     } else {
 
-        window.removeEventListener("keydown", Main_PreventClickfun, true);
-        window.removeEventListener("keyup", Main_PreventClickfun, true);
-        window.removeEventListener("keypress", Main_PreventClickfun, true);
+        window.removeEventListener("keydown", fun, true);
+        window.removeEventListener("keyup", fun, true);
+        window.removeEventListener("keypress", fun, true);
 
     }
 }
@@ -2400,7 +2564,7 @@ var Main_isStoped = false;
 
 function Main_CheckStop() { // Called only by JAVA
     Main_isStoped = true;
-    Main_PreventClick(true);
+    Main_PreventClick(true, Main_PreventClickfun);
 
     //Player related
     ChatLive_Clear(0);
@@ -2501,7 +2665,7 @@ function Main_CheckStop() { // Called only by JAVA
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
 function Main_CheckResume(skipPlay) { // Called only by JAVA
-    Main_PreventClick(false);
+    Main_PreventClick(false, Main_PreventClickfun);
     Main_isStoped = false;
 
     //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
@@ -2527,7 +2691,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
     Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
-    Main_checkWebVersionResumeId = Main_setTimeout(Main_CheckUpdate, 10000, Main_checkWebVersionResumeId);
+    Main_checkWebVersionResumeId = Main_setTimeout(Main_CheckUpdate, 3000, Main_checkWebVersionResumeId);
 
     //Tecnicly this are only neede if the app fail to refresh when is on background
     UserLiveFeed_CheckRefreshAfterResume();
