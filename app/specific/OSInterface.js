@@ -1163,6 +1163,23 @@ function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
     } catch (e) { }
 }
 
+//public void CleanAndLoadUrl(String url)
+//String app web url
+//Android specific: true
+//Allow to update the app
+function OSInterface_CleanAndLoadUrl(url) {
+
+    try {
+
+        if (Main_IsOn_OSInterface) {
+
+            Android.CleanAndLoadUrl(url);
+
+        }
+
+    } catch (e) { }
+}
+
 //public void getDuration()
 //String callback = the fun to receive the value
 //Android specific: true

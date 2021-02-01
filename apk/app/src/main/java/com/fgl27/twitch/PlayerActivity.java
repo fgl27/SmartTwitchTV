@@ -1537,14 +1537,22 @@ public class PlayerActivity extends Activity {
         }, 250);
     }
 
-    private void ClearWebViewChache() {
+    private void ClearWebViewChache(boolean deleteBackground) {
         if (mWebView != null) {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
             mWebView.clearCache(true);
             mWebView.clearHistory();
 
-            DeleteHandler.post(() -> Tools.deleteCache(this));
+            if (deleteBackground) {
+
+                DeleteHandler.post(() -> Tools.deleteCache(this));
+
+            } else {
+
+                Tools.deleteCache(this);
+
+            }
         }
     }
 
@@ -1566,7 +1574,7 @@ public class PlayerActivity extends Activity {
         Clear_PreviewPlayer();
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
-        ClearWebViewChache();
+        ClearWebViewChache(true);
 
         //Prevent java timeout and related on background
         if (mWebView != null && AlreadyStarted) {
@@ -2323,6 +2331,18 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mloadUrl(String url) {
             LoadUrlWebview(url);
+        }
+
+        @JavascriptInterface
+        public void CleanAndLoadUrl(String url) {
+
+            runOnUiThread(() -> {
+
+                ClearWebViewChache(false);
+                mWebView.loadUrl(url);
+
+            });
+
         }
 
         @JavascriptInterface

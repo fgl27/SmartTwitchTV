@@ -1161,7 +1161,19 @@ function Main_UpdateDialogKeyFun(event) {
 
                     if (Main_IsWebupdate) {
 
-                        OSInterface_mloadUrl(OSInterface_mPageUrl());
+                        Main_showLoadDialog();
+                        Main_SaveValues();
+                        Main_SaveHistoryItem();
+
+                        //delay to make sure all was saved OK
+                        Main_setTimeout(
+                            function() {
+
+                                OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+
+                            },
+                            250
+                        );
 
                     } else {
 
