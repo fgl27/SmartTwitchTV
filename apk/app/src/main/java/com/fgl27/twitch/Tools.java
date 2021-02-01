@@ -94,6 +94,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
@@ -1203,5 +1204,17 @@ public final class Tools {
         } catch (Exception ignore) {//Just in case prevent a crash sending a crash
         }
 
+    }
+
+    //TODO check deprecation
+    static boolean InstallFromPLay(Context context) {
+        // A list with valid installers package name
+        final List<String> validInstallers = new ArrayList<>(Arrays.asList("com.android.vending", "com.google.android.feedback"));
+
+        // The package name of the app that has installed your app
+        @SuppressWarnings("deprecation") final String installer = context.getPackageManager().getInstallerPackageName(context.getPackageName());
+
+        // true if your app has been downloaded from Play Store
+        return installer != null && validInstallers.contains(installer);
     }
 }

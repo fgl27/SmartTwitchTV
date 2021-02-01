@@ -3711,6 +3711,21 @@ public class PlayerActivity extends Activity {
         public void LongLog(String log) {
             Tools.LongLog(TAG, log);
         }
+
+        @JavascriptInterface
+        public boolean getInstallFromPLay() {
+
+            try {
+
+                return Tools.InstallFromPLay(getApplicationContext());
+
+            } catch (Exception ignore) {
+
+                return false;
+
+            }
+            
+        }
     }
 
     // Basic EventListener for exoplayer
