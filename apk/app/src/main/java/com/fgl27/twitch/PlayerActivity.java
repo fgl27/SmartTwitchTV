@@ -426,7 +426,6 @@ public class PlayerActivity extends Activity {
             StopNotificationService();
             FirebaseCrashlytics.getInstance().sendUnsentReports();
 
-            //Context context = getApplicationContext();
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
         }
     }

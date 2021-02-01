@@ -1262,8 +1262,7 @@ public final class Tools {
                 return null;
             }
         } catch (Throwable e) {
-            //recordException(TAG, "DownloadAPK ", e);
-            Log.w("UpdateAPK", "DownloadAPK", e);
+            recordException(TAG, "DownloadAPK ", e);
             return null;
         } finally {
 

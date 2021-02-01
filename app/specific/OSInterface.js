@@ -1128,7 +1128,7 @@ function OSInterface_ApplyAudio() {
 
 //public boolean getInstallFromPLay()
 //Android specific: true
-//Sets a audio enable or not
+//Gets if the app was instaled from play store
 function OSInterface_getInstallFromPLay() {
 
     try {
