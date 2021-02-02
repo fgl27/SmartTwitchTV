@@ -1162,6 +1162,7 @@ function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
 
     } catch (e) {
 
+        OSInterface_showToast(STR_UPDATE_ERROR);
         OSInterface_mshowLoading(false);
 
     }

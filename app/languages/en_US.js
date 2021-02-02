@@ -103,6 +103,7 @@ function en_USLang() {
     STR_UPDATE_SHOW = "Show updates dialog when updates are available";
     STR_UPDATE_SHOW_ARRAY = ["Yes", "Only a toast message", "No"];
     STR_UPDATE_START = "Update process started this may take a few seconds, please await!";
+    STR_UPDATE_ERROR = "You need APK version 3.0.299 or UP to be able to use this, please update the old way";
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
     STR_CANCEL = "Cancel";
