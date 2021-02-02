@@ -1259,8 +1259,12 @@ function Main_showUpdateDialog() {
     Main_UpdateDialogSet();
 
     //Clear preveiw as it is on top of the view
-    if (Sidepannel_isShowingUserLive()) Sidepannel_RemoveFocusFeed();
-    else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+    if (Sidepannel_isShowingUserLive()) {
+
+        Sidepannel_RemoveFocusFeed();
+        Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
+
+    } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
     else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
 
     Main_ShowElement('update_dialog');
