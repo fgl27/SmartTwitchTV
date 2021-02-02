@@ -1160,7 +1160,11 @@ function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
 
         }
 
-    } catch (e) { }
+    } catch (e) {
+
+        OSInterface_mshowLoading(false);
+
+    }
 }
 
 //public void CleanAndLoadUrl(String url)
