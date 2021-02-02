@@ -1405,8 +1405,13 @@ public class PlayerActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!IsStopped)
+
+        if (!IsStopped) {
+
             return;//Prevent onResume call after startActivityForResult() from OpenExternal()
+
+        }
+
         IsStopped = false;
 
         if (!WebviewLoaded) return;
@@ -1417,16 +1422,22 @@ public class PlayerActivity extends Activity {
         setIntent(intent);
 
         if (Tools.isConnected(this)) {
+
             if (isChannelIntent && AlreadyStarted) CheckIntent(intent);
             DoResume(isChannelIntent);
+
         } else if (AlreadyStarted) {
+
             ShowNoNetworkResumeWarning(isChannelIntent);
+
         }
 
         StopNotificationService();
 
         if (BuildConfig.DEBUG) {
+
             Log.i(TAG, "onResume end");
+
         }
     }
 
