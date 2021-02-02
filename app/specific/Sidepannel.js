@@ -217,7 +217,8 @@ function Sidepannel_CheckIfIsLive() {
 var Sidepannel_PlayerViewSidePanelSet;
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && Sidepannel_isShowingUserLive() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
+    if (!Main_isStoped && Sidepannel_isShowingUserLive() && x === 0 && y === (Sidepannel_PosFeed % 100) &&
+        !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible()) {
 
         if (StreamData && Sidepannel_ObjNotNull()) {
             StreamData = JSON.parse(StreamData);

@@ -995,7 +995,8 @@ var Main_HasUpdate;
 var Main_Ischecking;
 function Main_CheckUpdate(forceUpdate) {
 
-    if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
+    if (Main_HasUpdate && Main_isUpdateDialogVisible() &&
+        Settings_value.update_background.defaultValue && !forceUpdate) return;
 
     if (Main_IsOn_OSInterface) {
 
@@ -1105,12 +1106,23 @@ function Main_UpdateDialogSetTitle() {
 
 }
 
+var Main_ChangeDialogVisible;
+function Main_isChangeDialogVisible() {
+    return Main_ChangeDialogVisible;
+}
+
 function Main_showChangelogDialog() {
     Main_AddClass('dialog_about_text', 'hideimp');
     Main_RemoveClass('dialog_changelod_text', 'hideimp');
 
+    Main_ChangeDialogVisible = true;
     Main_ShowElement('dialog_about');
     Main_EventScreen('Changelog');
+}
+
+function Main_HideChangeDialog() {
+    Main_HideElement('dialog_about');
+    Main_ChangeDialogVisible = false;
 }
 
 var Main_UpdateCursor = 0;
@@ -1122,7 +1134,7 @@ function Main_UpdateDialogKeyFun(event) {
         case KEY_RETURN:
             if (Main_isAboutDialogVisible()) {
 
-                Main_HideAboutDialog();
+                Main_HideChangeDialog();
                 Main_showUpdateDialog();
 
             } else {
@@ -1141,7 +1153,7 @@ function Main_UpdateDialogKeyFun(event) {
 
             if (Main_isAboutDialogVisible()) {
 
-                Main_HideAboutDialog();
+                Main_HideChangeDialog();
                 Main_HideUpdateDialog();
 
             } else if (Main_UpdateCursor) {
@@ -1155,6 +1167,7 @@ function Main_UpdateDialogKeyFun(event) {
 
                     if (Main_IsWebupdate) {
 
+                        Main_HideElement('update_dialog');
                         Main_showLoadDialog();
                         Main_SaveValues();
                         Main_SaveHistoryItem();
@@ -1251,12 +1264,17 @@ function Main_showUpdateDialog() {
     else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
 
     Main_ShowElement('update_dialog');
+    Main_UpdateDialogVisible = true;
+
     Main_EventScreen('UpdateDialog');
 }
 
 function Main_HideUpdateDialog(preventFocus) {
+
     Main_UpdateCursor = 0;
     Main_HideElement('update_dialog');
+    Main_UpdateDialogVisible = false;
+
     if (preventFocus) return;
 
     Main_PreventClick(false, Main_UpdateDialogKeyFun);
@@ -1275,10 +1293,12 @@ function Main_HideUpdateDialog(preventFocus) {
         else ScreenObj[Main_values.Main_Go].init_fun();
 
     }
+
 }
 
+var Main_UpdateDialogVisible;
 function Main_isUpdateDialogVisible() {
-    return Main_isElementShowing('update_dialog');
+    return Main_UpdateDialogVisible;
 }
 
 function Main_Changelog() {

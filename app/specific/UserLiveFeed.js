@@ -714,7 +714,8 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
     if (!Main_isStoped && UserLiveFeed_isPreviewShowing() &&
         (!Play_isEndDialogVisible() || !Play_EndFocus) &&
-        UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+        UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y &&
+        !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible()) {
 
         if (StreamData && UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
