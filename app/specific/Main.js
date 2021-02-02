@@ -1715,9 +1715,9 @@ function Main_ready(func) {
 function Main_SetUpdateclock() {
     Main_updateclock();
     Main_clearInterval(Main_updateclockId);
-    var seconds = 60 - (new Date().getSeconds());
 
-    //sinc with MS
+    //sinc with device clock
+    var seconds = 61 - (new Date().getSeconds());
     Main_setTimeout(
         function() {
 
