@@ -1852,16 +1852,31 @@ function Screens_handleKeyDown(key, event) {
 
                 if (ScreenObj[key].screen === Main_UserChannels) {
 
-                    Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp);
+                    Sidepannel_Go(
+                        !AddUser_UsernameArray[0].access_token ?
+                            ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp
+                    );
 
                 } else if (ScreenObj[key].screen === Main_UserLive) {
 
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
 
-                } else if (ScreenObj[key].screen === Main_aGame) {
+                } else if (ScreenObj[key].screen === Main_aGame ||
+                    ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_usergames);
-                    else Sidepannel_Go(Main_Featured);
+                    ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+
+                    if (Main_values.Main_BeforeAgame === Main_usergames) {
+
+                        ScreenObj[key].IsOpen = Main_usergames;
+                        Sidepannel_Go(Main_UserLive);
+
+                    } else {
+
+                        ScreenObj[key].IsOpen = Main_games;
+                        Sidepannel_Go(Main_Featured);
+
+                    }
 
                 } else Sidepannel_Go(ScreenObj[key].key_pgUp);
             }
@@ -1874,22 +1889,38 @@ function Screens_handleKeyDown(key, event) {
 
                 if (ScreenObj[key].screen === Main_usergames) {
 
-                    Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown);
+                    Sidepannel_Go(
+                        !AddUser_UsernameArray[0].access_token ?
+                            ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown
+                    );
 
                 } else if (ScreenObj[key].screen === Main_UserChannels) {
 
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
 
-                } else if (ScreenObj[key].screen === Main_aGame) {
+                } else if (ScreenObj[key].screen === Main_aGame ||
+                    ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                    if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
-                    else Sidepannel_Go(Main_Vod);
+                    ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+
+                    if (Main_values.Main_BeforeAgame === Main_usergames) {
+
+                        ScreenObj[key].IsOpen = Main_usergames;
+                        Sidepannel_Go(Main_UserVod);
+
+                    } else {
+
+                        ScreenObj[key].IsOpen = Main_games;
+                        Sidepannel_Go(Main_Vod);
+
+                    }
 
                 } else Sidepannel_Go(ScreenObj[key].key_pgDown);
             }
             break;
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+            ScreenObj[key].IsOpen = 0;
             ScreenObj[key].key_exit();
             break;
         case KEY_LEFT:

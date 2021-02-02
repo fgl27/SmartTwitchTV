@@ -98,6 +98,7 @@ function ScreensObj_StartAllVars() {
         DataObj: {},
         tempHtml: '',
         focusPos: '',
+        IsOpen: 0,
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -129,29 +130,42 @@ function ScreensObj_StartAllVars() {
             Screens_RemoveAllFocus(this.screen);
 
             if ((this.screen === Main_aGame) && !goSidepanel) {
+
                 if (Main_values.Games_return) {
+
                     Main_values.Main_Go = Main_SearchGames;
                     Main_values.Main_gameSelected = Main_values.gameSelectedOld;
                     Main_values.gameSelectedOld = null;
+
                 } else {
+
                     Main_values.Main_Go = Main_values.Main_BeforeAgame;
                     Main_values.Main_BeforeAgame = Main_games;
+
                 }
+
                 Screens_BasicExit(Main_values.Main_Go, this.screen);
                 Main_SwitchScreen();
+
             } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
                 this.screen === Main_SearchChannels) && !goSidepanel) {
+
                 if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                 else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                 Main_values.Search_isSearching = false;
                 Screens_BasicExit(Main_values.Main_Go, this.screen);
                 Main_SwitchScreen();
+
             } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
+
                 Screens_BasicExit(Main_aGame, this.screen);
                 Main_SwitchScreen();
+
             } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
+
                 Screens_BasicExit(Main_ChannelContent, this.screen);
                 Main_SwitchScreen();
+
             } else Screens_OpenSidePanel(false, this.screen);
         },
         concatenate: function(responseObj) {
@@ -1131,6 +1145,9 @@ function ScreensObj_InitAGame() {
             } else Main_values.gameSelectedOld = null;
 
             ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
+
+            ScreenObj[Main_AGameVod].IsOpen = 0;
+            ScreenObj[Main_AGameClip].IsOpen = 0;
         },
         label_exit: function() {
             ScreensObj_TopLableAgameExit(this.screen);
@@ -1157,6 +1174,8 @@ function ScreensObj_InitAGame() {
             this.OpenLiveStream(false);
 
         } else AGame_headerOptions(this.screen);
+
+        ScreenObj[this.screen].IsOpen = 0;
     };
 }
 
@@ -1336,6 +1355,13 @@ function ScreensObj_InitGame() {
 
     ScreenObj[Main_games] = Screens_assign(ScreenObj[Main_games], Base_Game_obj);
     ScreenObj[Main_games].Set_Scroll();
+
+
+    ScreenObj[Main_games].init_fun = function(preventRefresh) {
+
+        ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+
+    };
 }
 
 function ScreensObj_InitUserGames() {
@@ -1371,6 +1397,12 @@ function ScreensObj_InitUserGames() {
 
     ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
     ScreenObj[Main_usergames].Set_Scroll();
+
+    ScreenObj[Main_usergames].init_fun = function(preventRefresh) {
+
+        ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+
+    };
 }
 
 function ScreensObj_InitSearchGames() {
@@ -1789,6 +1821,28 @@ function ScreensObj_addSwitches(StringsArray, key) {
         ScreenObj[key].row.appendChild(div);
     }
     ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+}
+
+function ScreensObj_CheckIsOpen(key, preventRefresh) {
+
+    if (ScreenObj[Main_aGame].IsOpen === key) {
+
+        ScreenObj[Main_aGame].IsOpen = 0;
+        key = Main_aGame;
+
+    } else if (ScreenObj[Main_AGameVod].IsOpen === key) {
+
+        ScreenObj[Main_AGameVod].IsOpen = 0;
+        key = Main_AGameVod;
+
+    } else if (ScreenObj[Main_AGameClip].IsOpen === key) {
+
+        ScreenObj[Main_AGameClip].IsOpen = 0;
+        key = Main_AGameClip;
+
+    }
+
+    Screens_init(key, preventRefresh);
 }
 
 function ScreensObj_TopLableAgameInit(key) {
