@@ -1063,11 +1063,6 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
 
     } else if (!Settings_value.update_show.defaultValue && !skipShowUpdateDialog) {
 
-        //Clear preveiw as it is on top of the view
-        if (Sidepannel_isShowingUserLive()) Sidepannel_RemoveFocusFeed();
-        else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
-        else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
-
         Main_showUpdateDialog();
 
     } else if (!Main_update_show_toast && Settings_value.update_show.defaultValue === 1) {
@@ -1203,22 +1198,6 @@ function Main_UpdateDialogKeyFun(event) {
     }
 }
 
-function Main_UpdateDialogShowCheck() {
-
-    Main_UpdateDialogStartCheck();
-    Main_showUpdateDialog();
-
-}
-
-function Main_UpdateDialogStartCheck() {
-
-    Main_Ischecking = true;
-    Main_getElementById('update_dialog_upbutton').style.width = "37%";
-    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
-    Main_CheckUpdate(true);
-
-}
-
 var Main_UpdateDialogLastCheck;
 function Main_UpdateDialogTitle() {
 
@@ -1245,10 +1224,32 @@ function Main_UpdateDialogTitle() {
 
 }
 
+function Main_UpdateDialogShowCheck() {
+
+    Main_UpdateDialogStartCheck();
+    Main_showUpdateDialog();
+
+}
+
+function Main_UpdateDialogStartCheck() {
+
+    Main_Ischecking = true;
+    Main_getElementById('update_dialog_upbutton').style.width = "37%";
+    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
+    Main_CheckUpdate(true);
+
+}
+
 function Main_showUpdateDialog() {
     Main_UpdateDialogTitle();
     Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
     Main_UpdateDialogSet();
+
+    //Clear preveiw as it is on top of the view
+    if (Sidepannel_isShowingUserLive()) Sidepannel_RemoveFocusFeed();
+    else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+    else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
+
     Main_ShowElement('update_dialog');
     Main_EventScreen('UpdateDialog');
 }

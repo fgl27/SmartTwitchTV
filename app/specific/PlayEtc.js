@@ -1897,6 +1897,10 @@ function Play_handleKeyDown(e) {
             case KEY_4:
                 Play_controls[Play_controlsChatSend].enterKey();
                 break;
+            case KEY_0:
+            case KEY_U:
+                Main_UpdateDialogShowCheck();
+                break;
             default:
                 break;
         }

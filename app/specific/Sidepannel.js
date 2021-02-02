@@ -804,8 +804,6 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_0:
         case KEY_U:
             Main_UpdateDialogShowCheck();
-            Sidepannel_Hide();
-            Main_SwitchScreen();
             break;
         default:
             break;
