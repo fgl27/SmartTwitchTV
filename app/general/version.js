@@ -21,7 +21,7 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 299,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    publishVersionCode: 303,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/303/SmartTV_twitch_3_0_303.apk',
     WebVersion: 'February 02 2020',
     WebTag: 569,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
