@@ -1141,7 +1141,7 @@ function OSInterface_getInstallFromPLay() {
 
     } catch (e) { }
 
-    return false;
+    return true;
 }
 
 //public void UpdateAPK(String apkURL, String failAll, String failDownload)
@@ -1177,7 +1177,11 @@ function OSInterface_CleanAndLoadUrl(url) {
 
         }
 
-    } catch (e) { }
+    } catch (e) {
+
+        Android.mloadUrl(url);
+
+    }
 }
 
 //public void getDuration()

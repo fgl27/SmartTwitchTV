@@ -1163,6 +1163,9 @@ function Main_UpdateDialogKeyFun(event) {
                         Main_showLoadDialog();
                         Main_SaveValues();
                         Main_SaveHistoryItem();
+                        OSInterface_stopVideo();
+                        Main_hideScene1Doc();
+                        Main_hideScene2Doc();
 
                         //delay to make sure all was saved OK
                         Main_setTimeout(
