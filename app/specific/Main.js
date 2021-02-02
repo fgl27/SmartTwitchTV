@@ -955,8 +955,12 @@ function Main_checkVersion() {
 
         if (!Settings_value.update_background.defaultValue) {
 
-            if (needUpdate) Main_WarnUpdate(false);
-            else Main_CheckUpdate();
+            if (needUpdate) {
+
+                Main_HasUpdate = true;
+                Main_WarnUpdate(false);
+
+            } else Main_CheckUpdate();
 
         }
 
@@ -1187,6 +1191,7 @@ function Main_UpdateDialogKeyFun(event) {
 
                     } else {
 
+                        Main_showLoadDialog();
                         OSInterface_UpdateAPK(
                             OSInterface_getInstallFromPLay() ? null : version.ApkUrl,
                             STR_UPDATE_FAIL,
@@ -2782,6 +2787,8 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
     //but the aap is not ready for the rest of the check on this fun
     if (Main_PreventCheckResume) return;
+
+    if (Main_isUpdateDialogVisible()) Main_HideLoadDialog();
 
     var UserIsSet = AddUser_UserIsSet();
 
