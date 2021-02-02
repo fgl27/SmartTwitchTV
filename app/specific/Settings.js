@@ -908,6 +908,7 @@ function Settings_SetDefault(position) {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
         UserLiveFeed_ResetAddCellsize();
+        Sidepannel_Scroll(true);
     }
     else if (position === "hide_screen_counter") Settings_ShowCounter();
     else if (position === "round_images") Settings_UpdateRoundImages();
