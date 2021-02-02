@@ -9,6 +9,19 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.298 and Web Version February 02 2020
+==============
+
+* Add a new in app update process to update the APP the APK and Web app
+* Change side panel option 'Changelog' to 'Update & Changelog'
+* Add a new settings 'Update options' to controls if the app will check for updates and if will show a dialog informing a update is available and allowing to click to update
+* This new dialog allows to check for updates, and when updates are available you can update on one click, also allows to read the changelog
+* If you install the app from Play store (TV only device), this dialog will inform and allow you to open the play store direct on the app page so you can update easily
+* If you install manually, the app can now just update it self by downloading the APK and allowing to install, if you are on Android 8 or newer make sure to give the APP install permission
+* If the update is only on the Web app now you can use the update dialog to update on one click, no longer need to close the app to update
+* As this feature was added on APK version 3.0.299 you need to be on that version or newer so all features can work
+* General improves and bug fixes
+                
 Apk Version 3.0.297 and Web Version January 28 2020
 ==============
 

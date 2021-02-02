@@ -22,10 +22,24 @@
 var version = {
     VersionBase: '3.0',
     publishVersionCode: 298,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/298/SmartTV_twitch_3_0_298.apk',
-    WebVersion: 'January 30 2020',
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/299/SmartTV_twitch_3_0_299.apk',
+    WebVersion: 'February 02 2020',
     WebTag: 56,//567Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.299 and Web Version February 02 2020",
+            changes: [
+                "Add a new in app update process to update the APP the APK and Web app",
+                "Change side panel option 'Changelog' to 'Update & Changelog'",
+                "Add a new settings 'Update options' to controls if the app will check for updates and if will show a dialog informing a update is available and allowing to click to update",
+                "This new dialog allows to check for updates, and when updates are available you can update on one click, also allows to read the changelog",
+                "If you install the app from Play store (TV only device), this dialog will inform and allow you to open the play store direct on the app page so you can update easily",
+                "If you install manually, the app can now just update it self by downloading the APK and allowing to install, if you are on Android 8 or newer make sure to give the APP install permission",
+                "If the update is only on the Web app now you can use the update dialog to update on one click, no longer need to close the app to update",
+                "As this feature was added on APK version 3.0.299 you need to be on that version or newer so all features can work",
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.298 and Web Version January 30 2020",
             changes: [
@@ -45,25 +59,6 @@ var version = {
                 "Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
                 "Improve live channels side panel looks",
                 "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version January 21 2020",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.295 to 3.0.296 and Web Version January 15 2020",
-            changes: [
-                "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
-                "General performance improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version January 09 2020",
-            changes: [
-                "General performance improves and bug fixes"
             ]
         }
     ]
