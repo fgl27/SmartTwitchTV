@@ -108,9 +108,10 @@
     var STR_SOURCE;
     var STR_TWITCH_TV;
     var STR_CLOSE_THIS;
+    var STR_CLOSE_THIS2;
+    var STR_CLOSE_THIS3;
     var STR_PLAYER;
     var STR_CHAT;
-    var STR_UPDATE;
     var STR_CURRENT_VERSION;
     var STR_LATEST_VERSION;
     var STR_CONTROLS_MAIN_2;
@@ -150,7 +151,6 @@
     var STR_CONTROLS_PLAY_11;
     var STR_CONTROLS_PLAY_12;
     var STR_CONTROLS_PLAY_14;
-    var STR_UPDATE_AVAILABLE;
     var STR_OAUTH_IN;
     var STR_USER_CODE;
     var STR_USER_CODE_OK;
@@ -355,7 +355,6 @@
     var STR_USER_LIVE;
     var STR_PP_WORKAROUND;
     var STR_PP_WORKAROUND_SUMMARY;
-    var STR_CLOSE_THIS2;
     var STR_HISTORY;
     var STR_WATCHED;
     var STR_UNTIL;
@@ -587,7 +586,6 @@
     var STR_ALWAYS_STAY;
     var STR_NOTIFICATION_REPEAT;
     var STR_NOTIFICATION_REPEAT_SUMMARY;
-    var STR_WEB_UPDATE_AVAILABLE;
     var STR_CHAT_TIMESTAMP;
     var STR_PLAYER_INFO_VISIBILITY_ARRAY;
     var STR_OPEN_CHAT;
@@ -625,7 +623,27 @@
     var STR_TITLE_CHANGE_SHOW;
     var STR_GAME_CHANGE_SHOW;
     var STR_CHANGELOG;
+    var STR_FULL_CHANGELOG;
     var STR_CHANGELOG_SUMMARY;
+    var STR_UPDATE;
+    var STR_UPDATE_CHECK;
+    var STR_UPDATE_CHANGELOG;
+    var STR_UPDATE_LATEST;
+    var STR_UPDATE_FAIL;
+    var STR_UPDATE_FAIL_DOWNLOAD;
+    var STR_UPDATE_CHECKING;
+    var STR_UPDATE_CHECKING_FAIL;
+    var STR_NO_UPDATES;
+    var STR_UPDATE_AVAILABLE;
+    var STR_WEB_UPDATE_AVAILABLE;
+    var STR_UPDATE_LAST_CHECK;
+    var STR_UPDATE_CHECK_SIDE;
+    var STR_UPDATE_OPT;
+    var STR_UPDATE_CHECK_FOR;
+    var STR_UPDATE_SHOW;
+    var STR_UPDATE_SHOW_ARRAY;
+    var STR_UPDATE_START;
+    var STR_UPDATE_ERROR;
     var STR_DISABLE;
     var STR_ENABLE;
     var STR_LOWLATENCY_ENABLE_ARRAY;
@@ -728,9 +746,9 @@
         STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
         STR_GOBACK = STR_GOBACK_START;
         STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-            STR_PAYPAL_SUMMARY + '</div></div>';
+            STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">http://tiny.cc/donotofgl27</div></div></div>';
         STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-            STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + STR_BITCOIN_WALLET + '</div></div>';
+            STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
         STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
             STR_DIV_MIDLE_LEFT +
@@ -920,7 +938,27 @@
         STR_EXIT_MESSAGE = "Do you want to exit SmartTV Client for Twitch?";
         STR_EXIT = "Exit";
         STR_CHANGELOG = "Changelog";
+        STR_FULL_CHANGELOG = "Full changelog";
         STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
+        STR_UPDATE = 'Click to Update';
+        STR_UPDATE_CHECK = 'Click to Check for Updates';
+        STR_UPDATE_CHECKING = 'Checking for Updates ...';
+        STR_UPDATE_CHECKING_FAIL = 'Update check fail';
+        STR_NO_UPDATES = 'The app is fully updated';
+        STR_UPDATE_CHANGELOG = "Update & Changelog";
+        STR_UPDATE_LATEST = "Latest change:";
+        STR_UPDATE_FAIL = "Update process fail, please try manually!";
+        STR_UPDATE_FAIL_DOWNLOAD = "Update process fail to download the APK, please try manually!";
+        STR_UPDATE_AVAILABLE = "Apk Update available";
+        STR_WEB_UPDATE_AVAILABLE = "Web Update available";
+        STR_UPDATE_CHECK_SIDE = ", check side panel update";
+        STR_UPDATE_LAST_CHECK = "Last checked: ";
+        STR_UPDATE_OPT = "Updates options";
+        STR_UPDATE_CHECK_FOR = "Check for updates in background";
+        STR_UPDATE_SHOW = "Show updates dialog when updates are available";
+        STR_UPDATE_SHOW_ARRAY = ["Yes", "Only a toast message", "No"];
+        STR_UPDATE_START = "Update process started this may take a few seconds, please await!";
+        STR_UPDATE_ERROR = "You need APK version 3.0.299 or UP to be able to use this, please update the old way";
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
@@ -953,10 +991,10 @@
         STR_TWITCH_TV = "SmartTV Client for Twitch";
         STR_CLOSE_THIS = "Press return or enter to close this.";
         STR_CLOSE_THIS2 = "Press return to close this.";
+        STR_CLOSE_THIS3 = "Press return to show the update dialog or enter to close this.";
         STR_PLAYER = "Player Related:";
         STR_CHAT = "Chat Related:";
         STR_CHAT_SHOW = "Chat show";
-        STR_UPDATE = 'Update';
         STR_CURRENT_VERSION = "Current installed version ";
         STR_LATEST_VERSION = " latest available version ";
         STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause or previews track media keys or key 1";
@@ -1007,8 +1045,6 @@
         STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) some are used as shortcuts for audio and video mode changes";
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
-        STR_UPDATE_AVAILABLE = "Update available, check google play store";
-        STR_WEB_UPDATE_AVAILABLE = "Web Update available, close and reopen the app to update";
         STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
         STR_USER_CODE = "Add authorization key";
         STR_USER_CODE_OK = "Key added OK";
@@ -1150,7 +1186,7 @@
         STR_VERY_HIGH = "Very high";
         STR_THUMB_RESOLUTION = "Thumbnails quality";
         STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
-        STR_PAYPAL_SUMMARY = "Paypal donations use above Email.";
+        STR_PAYPAL_SUMMARY = "Paypal donations use bellow link:";
         STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
         STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
         STR_PLAYER_RESYNC = "Player Restart";
@@ -1689,6 +1725,7 @@
     var KEY_MEDIA_FAST_FORWARD = 228;
     var KEY_MEDIA_REWIND = 227;
 
+    var KEY_0 = 96;
     var KEY_1 = 49;
     var KEY_4 = 52;
     //var KEY_5 = 53;
@@ -1700,6 +1737,71 @@
     var KEY_A = 65;
     var KEY_C = 67;
     var KEY_E = 69;
+    var KEY_U = 85;
+    /*
+     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    //Spacing for release maker not trow errors from jshint
+    var version = {
+        VersionBase: '3.0',
+        publishVersionCode: 299, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/299/SmartTV_twitch_3_0_299.apk',
+        WebVersion: 'February 02 2020',
+        WebTag: 568, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        changelog: [{
+                title: "Apk Version 3.0.299 and Web Version February 02 2020",
+                changes: [
+                    "Add a new in app update process to update the APP the APK and Web app",
+                    "Change side panel option 'Changelog' to 'Update & Changelog'",
+                    "Add a new settings 'Update options' to controls if the app will check for updates and if will show a dialog informing a update is available and allowing to click to update",
+                    "This new dialog allows to check for updates, and when updates are available you can update on one click, also allows to read the changelog",
+                    "If you install the app from Play store (TV only device), this dialog will inform and allow you to open the play store direct on the app page so you can update easily",
+                    "If you install manually, the app can now just update it self by downloading the APK and allowing to install, if you are on Android 8 or newer make sure to give the APP install permission",
+                    "If the update is only on the Web app now you can use the update dialog to update on one click, no longer need to close the app to update",
+                    "As this feature was added on APK version 3.0.299 you need to be on that version or newer so all features can work",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
+                title: "Apk Version 3.0.298 and Web Version January 30 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
+                title: "Apk Version 3.0.297 and Web Version January 28 2020",
+                changes: [
+                    "Prevent to show wrong value for Latency to broadcaster, may take 5 to 30 seconds for the value correct it self after the next problem happens, only happens after a stream goes offline unintentionally and to prevent closing the stream Twitch keeps the stream open until the stream comes back, on this case for internal reason the clock generated by the server became delay with makes the value of the latency way too offsetted",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
+                title: "Web Version January 22 2020",
+                changes: [
+                    "Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
+                    "Improve live channels side panel looks",
+                    "General improves and bug fixes"
+                ]
+            }
+        ]
+    };
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -2555,7 +2657,7 @@
 
         if (pos) {
 
-            if (!Sidepannel_MainisShowing()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
+            if (!Sidepannel_isShowingMenus()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
 
         } else {
 
@@ -3377,7 +3479,7 @@
     function ChannelContent_LoadPreview() {
 
         if (!Main_isStoped && !ChannelContent_isoffline && Settings_Obj_default('show_live_player') &&
-            Main_isScene1DocVisible() && (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible()) {
+            Main_isScene1DocVisible() && (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) && !Settings_isVisible()) {
 
             if (ChannelContent_DataObj) {
 
@@ -3465,7 +3567,7 @@
 
         if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
             !Main_isElementShowing('dialog_thumb_opt') &&
-            (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) && !Settings_isVisible() &&
+            (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && ChannelContent_DataObj &&
             Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
 
@@ -6956,13 +7058,6 @@
     var Main_isTV;
     var Main_isDebug = false;
 
-    var Main_stringVersion = '3.0';
-    var Main_stringVersion_Min = '.298';
-    var Main_version_java = 298; //Always update (+1 to current value) Main_version_java after update Main_stringVersion_Min or a major update of the apk is released
-    var Main_minversion = 'January 30 2020';
-    var Main_version_web = 56; //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
-    var Main_versionTag = Main_stringVersion + Main_stringVersion_Min + '-' + Main_minversion;
-
     var Main_cursorYAddFocus = -1;
 
     var Main_Search = 0;
@@ -7136,7 +7231,6 @@
                         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-                        'Main_checkWebVersion': Main_checkWebVersion,
                         'Main_onNewIntent': Main_onNewIntent,
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
                         'ChatLive_SetLatency': ChatLive_SetLatency,
@@ -7155,7 +7249,7 @@
                 OSInterface_SetStreamDataHeaders(Play_Headers);
 
             } catch (e) {
-                Main_IsOn_OSInterfaceVersion = Main_stringVersion + Main_stringVersion_Min;
+                Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
                 Main_IsOn_OSInterface = 0;
                 Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)"; //default rgba(0, 0, 0, 1)
                 Main_isDebug = true;
@@ -7323,11 +7417,11 @@
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
         }
 
-        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+        Main_SetUpdateclock();
         Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId); //Check it 3 min
         Main_SetHistoryworker();
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
-        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
+        Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
 
         Main_setTimeout(Main_RunVODWorker, 50000);
         Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360)); //Check it 6 hours
@@ -7461,7 +7555,6 @@
     }
 
     function Main_SetStringsMain(isStarting) {
-        Main_updateclock();
         Main_Setworker();
 
         //set top bar labels
@@ -7560,73 +7653,9 @@
         Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
         Main_textContent("chat_result", STR_CHAT_RESULT);
         ChatLiveControls_OptionsUpdate_defautls();
-    }
 
-    function Main_Changelog() {
-
-        var STR_ABOUT_CHANGELOG = "https://tinyurl.com/sttvchanges";
-        var innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
-            STR_DIV_LINK + STR_ABOUT_CHANGELOG + '</div><br><br>';
-
-        var changelogObj = [{
-                title: "Apk Version 3.0.298 and Web Version January 30 2020",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.297 and Web Version January 28 2020",
-                changes: [
-                    "Prevent to show wrong value for Latency to broadcaster, may take 5 to 30 seconds for the value correct it self after the next problem happens, only happens after a stream goes offline unintentionally and to prevent closing the stream Twitch keeps the stream open until the stream comes back, on this case for internal reason the clock generated by the server became delay with makes the value of the latency way too offsetted",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version January 22 2020",
-                changes: [
-                    "Add new setting options 'Use rounded channel images' (disabled by default) to settings -> Interface customization's, color style, animations and related",
-                    "Improve live channels side panel looks",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version January 21 2020",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.295 to 3.0.296 and Web Version January 15 2020",
-                changes: [
-                    "Add OLED Burn in protection option to Settings -> Interface customization's, color style, animations and related",
-                    "General performance improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version January 09 2020",
-                changes: [
-                    "General performance improves and bug fixes"
-                ]
-            }
-        ];
-
-        var i = 0;
-        var len = changelogObj.length,
-            j, lenj;
-
-        for (i; i < len; i++) {
-
-            innerHtml += STR_DIV_TITLE + changelogObj[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
-
-            lenj = changelogObj[i].changes.length;
-
-            for (j = 0; j < lenj; j++) {
-                innerHtml += STR_DOT + changelogObj[i].changes[j] + STR_BR;
-            }
-            innerHtml += '</div><br>';
-        }
-
-        Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>');
+        Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
+        Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
     }
 
     function Main_IconLoad(lable, icon, string) {
@@ -7784,17 +7813,17 @@
         Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
     }
 
-    function Main_showAboutDialog(removeEventListener, addEventListener, isChangelog) {
+    function Main_showAboutDialog(removeEventListener, addEventListener) {
         Main_removeEventListener("keydown", removeEventListener);
         Main_addEventListener("keydown", addEventListener);
 
-        Main_AddClass(isChangelog ? 'dialog_about_text' : 'dialog_changelod_text', 'hideimp');
-        Main_RemoveClass(isChangelog ? 'dialog_changelod_text' : 'dialog_about_text', 'hideimp');
+        Main_AddClass('dialog_changelod_text', 'hideimp');
+        Main_RemoveClass('dialog_about_text', 'hideimp');
 
         Main_HideControlsDialog();
         Main_AboutDialogUpdateTime();
         Main_ShowElement('dialog_about');
-        Main_EventScreen(isChangelog ? 'Changelog' : 'About');
+        Main_EventScreen('About');
     }
 
     function Main_HideAboutDialog() {
@@ -7874,7 +7903,7 @@
     }
 
     function Main_ReStartScreens(preventRefresh) {
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowingUserLive()) {
             Main_addEventListener("keydown", Sidepannel_handleKeyDown);
             if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
             if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
@@ -7946,6 +7975,8 @@
     }
 
     function Main_checkVersion() {
+        var Main_versionTag;
+
         if (Main_IsOn_OSInterface) {
             var device = OSInterface_getDevice();
             var Webviewversion = OSInterface_getWebviewVersion();
@@ -7954,32 +7985,44 @@
 
             Main_Log('Webviewversion ' + Webviewversion);
 
-            Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + Main_minversion +
+            Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + version.WebVersion +
                 (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + ' - ' + device +
                 ' Sdk: ' + Main_AndroidSDK;
 
-            if (Main_needUpdate(Main_IsOn_OSInterfaceVersion)) Main_checkWebVersionUpdate(false);
-            else Main_checkWebVersionRun();
+            var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
+
+            if (!Settings_value.update_background.defaultValue) {
+
+                if (needUpdate) {
+
+                    Main_HasUpdate = true;
+                    Main_WarnUpdate(false);
+
+                } else Main_CheckUpdate();
+
+            }
 
             Main_EventVersion(
                 Main_IsOn_OSInterfaceVersion,
-                Main_minversion,
+                version.WebVersion,
                 Webviewversion,
                 device,
                 Main_AndroidSDK,
                 Manufacturer
             );
         } else {
+            Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
+
             Main_EventVersion(
                 Main_IsOn_OSInterfaceVersion,
-                Main_minversion,
+                version.WebVersion,
                 navigator.appVersion,
                 navigator.platform,
                 'Browser',
                 'Browser'
             );
-            //T0 test he position
-            Main_checkWebVersionUpdate(true);
+            //To test the position
+            Main_WarnUpdate(true, true);
         }
 
         Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
@@ -7990,72 +8033,352 @@
 
     var Main_checkWebVersionId;
     var Main_checkWebVersionResumeId;
+    var Main_HasUpdate;
+    var Main_Ischecking;
 
-    function Main_checkWebVersionRun(web) {
+    function Main_CheckUpdate(forceUpdate) {
+
+        if (Main_HasUpdate && Main_isUpdateDialogVisible() &&
+            Settings_value.update_background.defaultValue && !forceUpdate) return;
 
         if (Main_IsOn_OSInterface) {
-            var baseUrl = 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/';
 
-            OSInterface_GetMethodUrlHeadersAsync(
-                baseUrl + (web ? 'webversion' : 'javaversion'), //urlString
-                DefaultHttpGetTimeout, //timeout
-                null, //postMessage, null for get
-                null, //Method, null for get
-                null, //JsonString
-                'Main_checkWebVersion', //callback
-                0, //checkResult
-                web ? 1 : 0, //key
-                54 //thread
+            BasexmlHttpGet(
+                'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
+                DefaultHttpGetTimeout,
+                0,
+                null,
+                Main_CheckUpdateResult,
+                Main_CheckUpdateFail,
+                0,
+                0
             );
-        }
-    }
-
-    function Main_checkWebVersion(result, web) {
-        if (result) {
-
-            var resultObj = JSON.parse(result);
-
-            if (resultObj.status === 200) {
-                var responseInt = parseInt(resultObj.responseText);
-
-                if (web) {
-
-                    if (responseInt > Main_version_web) Main_checkWebVersionUpdate(true);
-
-                } else {
-
-                    if (responseInt > Main_version_java) Main_checkWebVersionUpdate(false);
-                    else Main_checkWebVersionRun(true);
-
-                }
-            }
 
         }
+
     }
 
-    function Main_checkWebVersionUpdate(web) {
+    function Main_CheckUpdateFail() {
+        OSInterface_showToast(STR_UPDATE_CHECKING_FAIL);
+    }
+
+    var Main_IsWebupdate;
+
+    function Main_CheckUpdateResult(responseText) {
+        Main_Ischecking = false;
+        Main_UpdateDialogLastCheck = Main_getclock();
+
+        var response = JSON.parse(responseText),
+            webupdate = response.WebTag > version.WebTag,
+            apkupdate = response.publishVersionCode > version.publishVersionCode;
+
+        if (webupdate || apkupdate) {
+            Main_HasUpdate = true;
+
+            version.changelog = JSON.parse(JSON.stringify(response.changelog));
+            version.ApkUrl = response.ApkUrl;
+            Main_IsWebupdate = !apkupdate && webupdate;
+
+            Main_WarnUpdate(Main_IsWebupdate);
+
+        } else if (Main_isUpdateDialogVisible()) {
+
+            Main_UpdateDialogTitle();
+            OSInterface_showToast(STR_NO_UPDATES);
+
+        }
+
+        Main_UpdateDialogSetTitle();
+    }
+
+    function Main_WarnUpdate(web, skipShowUpdateDialog) {
         Main_innerHTML(
             'label_update',
             '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
             (web ? 'globe' : 'play-1') +
             '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
-            (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + '</div>'
+            (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
         );
 
         Main_ShowElement('label_update');
 
-        if (!Main_update_show_toast) {
+        if (Main_isUpdateDialogVisible()) {
 
-            OSInterface_showToast(web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE);
+            Main_UpdateDialogTitle();
+
+        } else if (!Settings_value.update_show.defaultValue && !skipShowUpdateDialog) {
+
+            Main_showUpdateDialog();
+
+        } else if (!Main_update_show_toast && Settings_value.update_show.defaultValue === 1) {
+
+            OSInterface_showToast((web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE);
             Main_update_show_toast = true;
 
         }
+
     }
 
-    function Main_needUpdate(version) {
-        version = version.split(".");
-        return (parseFloat(version[0] + '.' + version[1]) < parseFloat(Main_stringVersion)) ||
-            (parseInt(version[2]) < parseInt(Main_stringVersion_Min.split(".")[1]));
+    function Main_needUpdate(check_version) {
+
+        var versionArray = check_version.split("."),
+            MajorVersion = versionArray[0] + '.' + versionArray[1],
+            MinVersion = parseInt(versionArray[2]),
+            needUpdate = (parseFloat(MajorVersion) < parseFloat(version.VersionBase)) ||
+            (MinVersion < version.publishVersionCode);
+
+        //Update so futures updates checks work
+        version.VersionBase = MajorVersion;
+        version.publishVersionCode = MinVersion;
+
+        return needUpdate;
+    }
+
+    function Main_UpdateDialogSet() {
+
+        if (!Main_Ischecking) Main_UpdateDialogSetTitle();
+        Main_RemoveClass('update_dialog_upbutton', 'button_dialog_focused');
+        Main_RemoveClass('update_dialog_changebutton', 'button_dialog_focused');
+        Main_AddClass(!Main_UpdateCursor ? 'update_dialog_upbutton' : 'update_dialog_changebutton', 'button_dialog_focused');
+
+    }
+
+    function Main_UpdateDialogSetTitle() {
+
+        Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "37%" : "25%";
+        Main_innerHTML("update_dialog_upbutton", Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
+
+    }
+
+    var Main_ChangeDialogVisible;
+
+    function Main_isChangeDialogVisible() {
+        return Main_ChangeDialogVisible;
+    }
+
+    function Main_showChangelogDialog() {
+        Main_AddClass('dialog_about_text', 'hideimp');
+        Main_RemoveClass('dialog_changelod_text', 'hideimp');
+
+        Main_ChangeDialogVisible = true;
+        Main_ShowElement('dialog_about');
+        Main_EventScreen('Changelog');
+    }
+
+    function Main_HideChangeDialog() {
+        Main_HideElement('dialog_about');
+        Main_ChangeDialogVisible = false;
+    }
+
+    var Main_UpdateCursor = 0;
+
+    function Main_UpdateDialogKeyFun(event) {
+        event.stopPropagation();
+
+        switch (event.keyCode) {
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                if (Main_isAboutDialogVisible()) {
+
+                    Main_HideChangeDialog();
+                    Main_showUpdateDialog();
+
+                } else {
+
+                    Main_HideUpdateDialog();
+
+                }
+
+                break;
+            case KEY_RIGHT:
+            case KEY_LEFT:
+                Main_UpdateCursor = Main_UpdateCursor ^ 1;
+                Main_UpdateDialogSet();
+                break;
+            case KEY_ENTER:
+
+                if (Main_isAboutDialogVisible()) {
+
+                    Main_HideChangeDialog();
+                    Main_HideUpdateDialog();
+
+                } else if (Main_UpdateCursor) {
+
+                    Main_HideUpdateDialog(true);
+                    Main_showChangelogDialog();
+
+                } else {
+
+                    if (Main_HasUpdate) {
+
+                        if (Main_IsWebupdate) {
+
+                            Main_HideElement('update_dialog');
+                            Main_showLoadDialog();
+                            Main_SaveValues();
+                            Main_SaveHistoryItem();
+                            OSInterface_stopVideo();
+                            Main_hideScene1Doc();
+                            Main_hideScene2Doc();
+
+                            //delay to make sure all was saved OK
+                            Main_setTimeout(
+                                function() {
+
+                                    OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+
+                                },
+                                250
+                            );
+
+                        } else {
+
+                            Main_showLoadDialog();
+                            OSInterface_showToast(STR_UPDATE_START);
+                            OSInterface_UpdateAPK(
+                                OSInterface_getInstallFromPLay() ? null : version.ApkUrl,
+                                STR_UPDATE_FAIL,
+                                STR_UPDATE_FAIL_DOWNLOAD
+                            );
+
+                        }
+
+
+                    } else {
+
+                        if (Main_Ischecking) return;
+                        Main_UpdateDialogStartCheck();
+
+                    }
+
+                }
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    var Main_UpdateDialogLastCheck;
+
+    function Main_UpdateDialogTitle() {
+
+        var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
+            (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
+            (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE) + '</div>' + STR_BR +
+            STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE + '</div>' + STR_BR,
+            changelog = version.changelog;
+
+        innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;
+
+        var len = changelog[0].changes.length,
+            i = 0;
+
+        for (i; i < len; i++) {
+            innerHtml += STR_DOT + changelog[0].changes[i] + STR_BR;
+        }
+        innerHtml += '</div>';
+
+        Main_innerHTML(
+            'update_dialog_text',
+            innerHtml
+        );
+
+    }
+
+    function Main_UpdateDialogShowCheck() {
+
+        Main_UpdateDialogStartCheck();
+        Main_showUpdateDialog();
+
+    }
+
+    function Main_UpdateDialogStartCheck() {
+
+        Main_Ischecking = true;
+        Main_getElementById('update_dialog_upbutton').style.width = "37%";
+        Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
+        Main_CheckUpdate(true);
+
+    }
+
+    function Main_showUpdateDialog() {
+        Main_UpdateDialogTitle();
+        Main_PreventClick(true, Main_UpdateDialogKeyFun, true);
+        Main_UpdateDialogSet();
+
+        //Clear preveiw as it is on top of the view
+        if (Sidepannel_isShowingUserLive()) {
+
+            Sidepannel_RemoveFocusFeed();
+            Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
+
+        } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
+
+        Main_ShowElement('update_dialog');
+        Main_UpdateDialogVisible = true;
+
+        Main_EventScreen('UpdateDialog');
+    }
+
+    function Main_HideUpdateDialog(preventFocus) {
+
+        Main_UpdateCursor = 0;
+        Main_HideElement('update_dialog');
+        Main_UpdateDialogVisible = false;
+
+        if (preventFocus) return;
+
+        Main_PreventClick(false, Main_UpdateDialogKeyFun);
+
+        if (Sidepannel_isShowingUserLive()) {
+
+            Sidepannel_AddFocusFeed(true);
+
+        } else if (UserLiveFeed_isPreviewShowing()) {
+
+            UserLiveFeed_FeedAddFocus(true, UserLiveFeed_FeedPosX);
+
+        } else if (Main_isScene1DocVisible() && !Sidepannel_isShowingMenus()) {
+
+            if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
+            else ScreenObj[Main_values.Main_Go].init_fun();
+
+        }
+
+    }
+
+    var Main_UpdateDialogVisible;
+
+    function Main_isUpdateDialogVisible() {
+        return Main_UpdateDialogVisible;
+    }
+
+    function Main_Changelog() {
+
+        var STR_CHANGELOG_LINK = "https://tinyurl.com/sttvchanges",
+            innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
+            STR_DIV_LINK + STR_CHANGELOG_LINK + '</div><br><br>',
+            changelog = version.changelog;
+
+        var i = 0;
+        var len = changelog.length,
+            j, lenj;
+
+        for (i; i < len; i++) {
+
+            innerHtml += STR_DIV_TITLE + changelog[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
+
+            lenj = changelog[i].changes.length;
+
+            for (j = 0; j < lenj; j++) {
+                innerHtml += STR_DOT + changelog[i].changes[j] + STR_BR;
+            }
+            innerHtml += '</div><br>';
+        }
+
+        Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS3 + '</div></div>');
     }
 
     function Main_empty(el) {
@@ -8469,6 +8792,35 @@
         } else document.addEventListener("DOMContentLoaded", func);
     }
 
+    function Main_SetUpdateclock() {
+        Main_updateclock();
+        Main_clearInterval(Main_updateclockId);
+
+        //sinc with device clock
+        var seconds = 61 - (new Date().getSeconds());
+        Main_setTimeout(
+            function() {
+
+                Main_updateclock();
+                Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+
+            },
+            seconds * 1000
+        );
+    }
+
+    function Main_updateclock() {
+        var clock = Main_getclock();
+        Main_textContent("stream_clock", clock);
+        Main_textContent('label_clock', clock);
+
+        Main_randomimg = '?' + parseInt(Math.random() * 100000);
+
+        Screens_SetLastRefresh(Main_values.Main_Go);
+        UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
+        Sidepannel_SetLastRefresh();
+    }
+
     var Main_clock_H_M = '';
     var Main_date_Ms = 0;
 
@@ -8488,23 +8840,11 @@
         return dayMonth + ' ' + Main_clock_H_M;
     }
 
-    function Main_updateclock() {
-        var clock = Main_getclock();
-        Main_textContent("stream_clock", clock);
-        Main_textContent('label_clock', clock);
-
-        Main_randomimg = '?' + parseInt(Math.random() * 100000);
-
-        Screens_SetLastRefresh(Main_values.Main_Go);
-        UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
-        Sidepannel_SetLastRefresh();
-    }
-
     function Main_updateUserFeed() {
         //Main_Log('Main_updateUserFeed');
 
         if (AddUser_UserIsSet() && !UserLiveFeed_isPreviewShowing() &&
-            !Sidepannel_isShowing() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+            !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             UserLiveFeed_RefreshLive();
             UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
         }
@@ -9355,19 +9695,23 @@
 
     //the internet connection may be down do to standby after resume
     //java will not call Main_CheckResume() until the internet connection is recognized
-    function Main_PreventClick(prevent) {
+    function Main_PreventClick(prevent, fun, skipUpPress) {
 
         if (prevent) {
 
-            window.addEventListener("keydown", Main_PreventClickfun, true);
-            window.addEventListener("keyup", Main_PreventClickfun, true);
-            window.addEventListener("keypress", Main_PreventClickfun, true);
+            window.addEventListener("keydown", fun, true);
+            if (!skipUpPress) {
+
+                window.addEventListener("keyup", fun, true);
+                window.addEventListener("keypress", fun, true);
+
+            }
 
         } else {
 
-            window.removeEventListener("keydown", Main_PreventClickfun, true);
-            window.removeEventListener("keyup", Main_PreventClickfun, true);
-            window.removeEventListener("keypress", Main_PreventClickfun, true);
+            window.removeEventListener("keydown", fun, true);
+            window.removeEventListener("keyup", fun, true);
+            window.removeEventListener("keypress", fun, true);
 
         }
     }
@@ -9380,7 +9724,7 @@
 
     function Main_CheckStop() { // Called only by JAVA
         Main_isStoped = true;
-        Main_PreventClick(true);
+        Main_PreventClick(true, Main_PreventClickfun);
 
         //Player related
         ChatLive_Clear(0);
@@ -9482,21 +9826,22 @@
     var Main_CheckResumeVodsId;
 
     function Main_CheckResume(skipPlay) { // Called only by JAVA
-        Main_PreventClick(false);
+        Main_PreventClick(false, Main_PreventClickfun);
         Main_isStoped = false;
 
         //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
         //but the aap is not ready for the rest of the check on this fun
         if (Main_PreventCheckResume) return;
 
+        if (Main_isUpdateDialogVisible()) Main_HideLoadDialog();
+
         var UserIsSet = AddUser_UserIsSet();
 
         Main_CheckResumeUpdateToken(UserIsSet);
 
-        Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-        Main_updateclock();
+        Main_SetUpdateclock();
 
-        if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowing())) Play_CheckResume();
+        if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
         else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
         if (UserIsSet) {
@@ -9507,8 +9852,8 @@
 
         Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
-        Main_checkWebVersionId = Main_setInterval(Main_checkWebVersionRun, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
-        Main_checkWebVersionResumeId = Main_setTimeout(Main_checkWebVersionRun, 10000, Main_checkWebVersionResumeId);
+        Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, (1000 * 60 * 30), Main_checkWebVersionId); //Check it 60 min
+        Main_checkWebVersionResumeId = Main_setTimeout(Main_CheckUpdate, 3000, Main_checkWebVersionResumeId);
 
         //Tecnicly this are only neede if the app fail to refresh when is on background
         UserLiveFeed_CheckRefreshAfterResume();
@@ -9540,7 +9885,7 @@
                 Main_CheckAccessibilityHide(false);
                 //if focused and showing force a refresh check
                 if ((Screens_Isfocused() || ChannelContent_Isfocused()) &&
-                    (!Sidepannel_isShowing() && !Sidepannel_MainisShowing()) &&
+                    (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) &&
                     !skipRefresCheck) {
                     Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
                     Main_SwitchScreen();
@@ -9557,7 +9902,7 @@
         Main_ShowElement('dialog_accessibility');
         Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
         Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
-        if (!Sidepannel_isShowing() && Main_isScene1DocVisible()) {
+        if (!Sidepannel_isShowingUserLive() && Main_isScene1DocVisible()) {
             Sidepannel_Hide();
             Main_addEventListener("keydown", Main_CheckAccessibilityKey);
         }
@@ -9671,9 +10016,9 @@
 
                 Main_onNewIntentClearPlay();
 
-            } else if (Sidepannel_MainisShowing()) {
+            } else if (Sidepannel_isShowingMenus()) {
                 Sidepannel_Hide(false);
-            } else if (Sidepannel_isShowingSide()) {
+            } else if (Sidepannel_isShowingUserLiveSide()) {
                 Sidepannel_Hide(true);
             } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
@@ -9700,7 +10045,7 @@
 
                 Main_hideScene2Doc();
                 Main_showScene1Doc();
-            } else if (Sidepannel_MainisShowing()) {
+            } else if (Sidepannel_isShowingMenus()) {
                 Sidepannel_Hide(false);
             }
 
@@ -9728,7 +10073,7 @@
                 Play_OpenGame(PlayVodClip);
             } else {
 
-                if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+                if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
                     Sidepannel_Hide(false);
                 }
 
@@ -9756,7 +10101,7 @@
                 Main_hideScene2Doc();
                 Main_showScene1Doc();
 
-            } else if (Sidepannel_isShowingSide() || Sidepannel_MainisShowing()) {
+            } else if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
                 Sidepannel_Hide(false);
             }
 
@@ -10392,17 +10737,14 @@
     //Sets mediaSources and start the player
     function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
 
-        try {
+        Android.ReuseFeedPlayer(
+            uri,
+            mainPlaylistString,
+            who_called,
+            ResumePosition,
+            player
+        );
 
-            Android.ReuseFeedPlayer(
-                uri,
-                mainPlaylistString,
-                who_called,
-                ResumePosition,
-                player
-            );
-
-        } catch (e) {}
     }
 
     //public void ReuseFeedPlayerPrepare(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
@@ -10411,17 +10753,14 @@
     //Sets mediaSources and start the player
     function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
+            Android.ReuseFeedPlayerPrepare(
+                trackSelectorPos
+            );
 
-                Android.ReuseFeedPlayerPrepare(
-                    trackSelectorPos
-                );
+        }
 
-            }
-
-        } catch (e) {}
     }
 
     //public void FixViewPosition(int position)
@@ -10430,17 +10769,14 @@
     //Sets mediaSources and start the player
     function OSInterface_FixViewPosition(position) {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
+            Android.FixViewPosition(
+                position
+            );
 
-                Android.FixViewPosition(
-                    position
-                );
+        }
 
-            }
-
-        } catch (e) {}
     }
 
     //public void mhideSystemUI()
@@ -10940,9 +11276,7 @@
     //Android specific: true
     //Clear the side panel or small player over the live feed play removes it from the screen
     function OSInterface_ClearFeedPlayer() {
-        try {
-            Android.ClearFeedPlayer();
-        } catch (e) {}
+        Android.ClearFeedPlayer();
     }
 
     //public void ClearFeedPlayer()
@@ -11095,20 +11429,17 @@
     //Sets a audio enable or not
     function OSInterface_SetAudioEnabled() {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
+            Android.SetAudioEnabled(
+                Boolean(Play_audio_enable[0]),
+                Boolean(Play_audio_enable[1]),
+                Boolean(Play_audio_enable[2]),
+                Boolean(Play_audio_enable[3])
+            );
 
-                Android.SetAudioEnabled(
-                    Boolean(Play_audio_enable[0]),
-                    Boolean(Play_audio_enable[1]),
-                    Boolean(Play_audio_enable[2]),
-                    Boolean(Play_audio_enable[3])
-                );
+        }
 
-            }
-
-        } catch (e) {}
     }
 
     //public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
@@ -11117,20 +11448,18 @@
     //Sets a audio enable or not
     function OSInterface_SetVolumes() {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
+            Android.SetVolumes(
+                parseFloat(Play_volumes[0] / 100),
+                parseFloat(Play_volumes[1] / 100),
+                parseFloat(Play_volumes[2] / 100),
+                parseFloat(Play_volumes[3] / 100)
+            );
 
-                Android.SetVolumes(
-                    parseFloat(Play_volumes[0] / 100),
-                    parseFloat(Play_volumes[1] / 100),
-                    parseFloat(Play_volumes[2] / 100),
-                    parseFloat(Play_volumes[3] / 100)
-                );
+        }
 
-            }
 
-        } catch (e) {}
     }
 
     //public void ApplyAudio()
@@ -11138,15 +11467,74 @@
     //Sets a audio enable or not
     function OSInterface_ApplyAudio() {
 
+        if (Main_IsOn_OSInterface) {
+
+            Android.ApplyAudio();
+
+        }
+    }
+
+    //public boolean getInstallFromPLay()
+    //Android specific: true
+    //Gets if the app was instaled from play store
+    function OSInterface_getInstallFromPLay() {
+
         try {
 
             if (Main_IsOn_OSInterface) {
 
-                Android.ApplyAudio();
+                return Android.getInstallFromPLay();
 
             }
 
         } catch (e) {}
+
+        return true;
+    }
+
+    //public void UpdateAPK(String apkURL, String failAll, String failDownload)
+    //String apkURL if install from play this is null else the apk link from release
+    //String failAll a fail warning
+    //String failDownload a fail apk download warning
+    //Android specific: true
+    //Allow to update the app
+    function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
+
+        try {
+
+            if (Main_IsOn_OSInterface) {
+
+                Android.UpdateAPK(apkURL, failAll, failDownload);
+
+            }
+
+        } catch (e) {
+
+            OSInterface_showToast(STR_UPDATE_ERROR);
+            OSInterface_mshowLoading(false);
+
+        }
+    }
+
+    //public void CleanAndLoadUrl(String url)
+    //String app web url
+    //Android specific: true
+    //Allow to update the app
+    function OSInterface_CleanAndLoadUrl(url) {
+
+        try {
+
+            if (Main_IsOn_OSInterface) {
+
+                Android.CleanAndLoadUrl(url);
+
+            }
+
+        } catch (e) {
+
+            Android.mloadUrl(url);
+
+        }
     }
 
     //public void getDuration()
@@ -11913,7 +12301,7 @@
     function PlayClip_CheckPreview() {
 
         if (PlayClip_isOn && !Play_isEndDialogVisible() && Main_values.Main_Go !== Main_ChannelContent &&
-            Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowing() &&
+            Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowingUserLive() &&
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             if (PlayClip_CheckPreviewClip()) {
@@ -13175,7 +13563,7 @@
 
         }
 
-        if (Sidepannel_isShowingSide()) {
+        if (Sidepannel_isShowingUserLiveSide()) {
             Sidepannel_Hide(false);
         }
 
@@ -13208,7 +13596,7 @@
     }
 
     function Play_OpenSearch(PlayVodClip) {
-        if (Sidepannel_isShowingSide()) {
+        if (Sidepannel_isShowingUserLiveSide()) {
             Sidepannel_Hide(false);
         }
 
@@ -13226,7 +13614,7 @@
     }
 
     function Play_OpenGame(PlayVodClip) {
-        if (Sidepannel_isShowingSide()) {
+        if (Sidepannel_isShowingUserLiveSide()) {
             Sidepannel_Hide(false);
         }
 
@@ -13466,7 +13854,7 @@
         var restorePreview = false;
 
         //Side panel
-        if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingSide()) {
+        if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingUserLiveSide()) {
 
             if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) return false;
 
@@ -13485,7 +13873,7 @@
             );
 
             //live
-        } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowing()) {
+        } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowingUserLive()) {
 
             if (Main_values.Main_Go === Main_ChannelContent) {
 
@@ -14072,6 +14460,10 @@
                     break;
                 case KEY_4:
                     Play_controls[Play_controlsChatSend].enterKey();
+                    break;
+                case KEY_0:
+                case KEY_U:
+                    Main_UpdateDialogShowCheck();
                     break;
                 default:
                     break;
@@ -17197,7 +17589,7 @@
         if (fail_type === 1) reason = STR_PLAYER_ERROR;
         if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO;
 
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowingUserLive()) {
 
             Sidepannel_CheckIfIsLiveWarn(
                 reason,
@@ -17272,7 +17664,7 @@
         if (Play_isOn) Play_Resume();
         else if (PlayVod_isOn) PlayVod_Resume();
         else if (PlayClip_isOn) PlayClip_Resume();
-        else if (Sidepannel_isShowing()) {
+        else if (Sidepannel_isShowingUserLive()) {
             Sidepannel_UpdateThumbDiv();
             Play_CheckIfIsLiveCleanEnd();
             Sidepannel_ShowFeed();
@@ -18751,7 +19143,7 @@
 
         if (Main_isScene1DocVisible()) {
 
-            if (!Sidepannel_isShowing()) Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
+            if (!Sidepannel_isShowingUserLive()) Screens_LoadPreviewRestore(Main_values.Main_Go); //fix position after animation has endede after Player.STATE_READY
 
         } else if (duration > 0) {
 
@@ -20856,7 +21248,7 @@
     function PlayVod_CheckPreview() {
         if (PlayVod_isOn && Settings_Obj_default('show_vod_player') && Main_values.Main_Go !== Main_ChannelContent &&
             (ScreenObj[Main_values.Main_Go].screenType === 1 || ScreenObj[Main_values.Main_Go].screen === Main_HistoryLive) &&
-            !Play_isEndDialogVisible() && !Sidepannel_isShowing() &&
+            !Play_isEndDialogVisible() && !Sidepannel_isShowingUserLive() &&
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
             if (PlayVod_CheckPreviewVod()) PlayVod_SetPreview();
@@ -21790,8 +22182,8 @@
         ScreenObj[key].label_init();
 
         if (Main_isScene1DocVisible() &&
-            !Sidepannel_isShowing() &&
-            !Sidepannel_MainisShowing()) {
+            !Sidepannel_isShowingUserLive() &&
+            !Sidepannel_isShowingMenus()) {
             Main_addEventListener("keydown", ScreenObj[key].key_fun);
         }
 
@@ -23372,16 +23764,31 @@
 
                     if (ScreenObj[key].screen === Main_UserChannels) {
 
-                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp);
+                        Sidepannel_Go(
+                            !AddUser_UsernameArray[0].access_token ?
+                            ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp
+                        );
 
                     } else if (ScreenObj[key].screen === Main_UserLive) {
 
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
 
-                    } else if (ScreenObj[key].screen === Main_aGame) {
+                    } else if (ScreenObj[key].screen === Main_aGame ||
+                        ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                        if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_usergames);
-                        else Sidepannel_Go(Main_Featured);
+                        ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+
+                        if (Main_values.Main_BeforeAgame === Main_usergames) {
+
+                            ScreenObj[key].IsOpen = Main_usergames;
+                            Sidepannel_Go(Main_UserLive);
+
+                        } else {
+
+                            ScreenObj[key].IsOpen = Main_games;
+                            Sidepannel_Go(Main_Featured);
+
+                        }
 
                     } else Sidepannel_Go(ScreenObj[key].key_pgUp);
                 }
@@ -23394,22 +23801,38 @@
 
                     if (ScreenObj[key].screen === Main_usergames) {
 
-                        Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown);
+                        Sidepannel_Go(
+                            !AddUser_UsernameArray[0].access_token ?
+                            ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown
+                        );
 
                     } else if (ScreenObj[key].screen === Main_UserChannels) {
 
                         Sidepannel_Go(Main_History[Main_HistoryPos]);
 
-                    } else if (ScreenObj[key].screen === Main_aGame) {
+                    } else if (ScreenObj[key].screen === Main_aGame ||
+                        ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                        if (Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_Go(Main_UserVod);
-                        else Sidepannel_Go(Main_Vod);
+                        ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+
+                        if (Main_values.Main_BeforeAgame === Main_usergames) {
+
+                            ScreenObj[key].IsOpen = Main_usergames;
+                            Sidepannel_Go(Main_UserVod);
+
+                        } else {
+
+                            ScreenObj[key].IsOpen = Main_games;
+                            Sidepannel_Go(Main_Vod);
+
+                        }
 
                     } else Sidepannel_Go(ScreenObj[key].key_pgDown);
                 }
                 break;
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
+                ScreenObj[key].IsOpen = 0;
                 ScreenObj[key].key_exit();
                 break;
             case KEY_LEFT:
@@ -23481,6 +23904,11 @@
                 Screens_RemoveFocus(key);
                 Main_removeEventListener("keydown", ScreenObj[key].key_fun);
                 Main_showExitDialog();
+                break;
+            case KEY_0:
+            case KEY_U:
+                Screens_RemoveFocus(key);
+                Main_UpdateDialogShowCheck();
                 break;
             case KEY_CHAT:
                 var UserIsSet = AddUser_UserIsSet();
@@ -24485,8 +24913,8 @@
 
     //TODO add screen.isInuse prop to adress this fun use
     function Screens_IsInUse(key) {
-        return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowing() &&
-            !Sidepannel_MainisShowing() && !Settings_isVisible();
+        return key === Main_values.Main_Go && Main_isScene1DocVisible() && !Sidepannel_isShowingUserLive() &&
+            !Sidepannel_isShowingMenus() && !Settings_isVisible() && !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible();
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -24588,6 +25016,7 @@
             DataObj: {},
             tempHtml: '',
             focusPos: '',
+            IsOpen: 0,
             SetPreviewEnable: function() {
                 this.PreviewEnable =
                     (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -24619,29 +25048,42 @@
                 Screens_RemoveAllFocus(this.screen);
 
                 if ((this.screen === Main_aGame) && !goSidepanel) {
+
                     if (Main_values.Games_return) {
+
                         Main_values.Main_Go = Main_SearchGames;
                         Main_values.Main_gameSelected = Main_values.gameSelectedOld;
                         Main_values.gameSelectedOld = null;
+
                     } else {
+
                         Main_values.Main_Go = Main_values.Main_BeforeAgame;
                         Main_values.Main_BeforeAgame = Main_games;
+
                     }
+
                     Screens_BasicExit(Main_values.Main_Go, this.screen);
                     Main_SwitchScreen();
+
                 } else if ((this.screen === Main_SearchLive || this.screen === Main_SearchGames ||
                         this.screen === Main_SearchChannels) && !goSidepanel) {
+
                     if (Main_values.Main_Go === Main_values.Main_BeforeSearch) Main_values.Main_Go = Main_Live;
                     else Main_values.Main_Go = Main_values.Main_BeforeSearch;
                     Main_values.Search_isSearching = false;
                     Screens_BasicExit(Main_values.Main_Go, this.screen);
                     Main_SwitchScreen();
+
                 } else if ((this.screen === Main_AGameClip || this.screen === Main_AGameVod) && !goSidepanel) {
+
                     Screens_BasicExit(Main_aGame, this.screen);
                     Main_SwitchScreen();
+
                 } else if ((this.screen === Main_ChannelClip || this.screen === Main_ChannelVod) && !goSidepanel) {
+
                     Screens_BasicExit(Main_ChannelContent, this.screen);
                     Main_SwitchScreen();
+
                 } else Screens_OpenSidePanel(false, this.screen);
             },
             concatenate: function(responseObj) {
@@ -25621,6 +26063,9 @@
                 } else Main_values.gameSelectedOld = null;
 
                 ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
+
+                ScreenObj[Main_AGameVod].IsOpen = 0;
+                ScreenObj[Main_AGameClip].IsOpen = 0;
             },
             label_exit: function() {
                 ScreensObj_TopLableAgameExit(this.screen);
@@ -25647,6 +26092,8 @@
                 this.OpenLiveStream(false);
 
             } else AGame_headerOptions(this.screen);
+
+            ScreenObj[this.screen].IsOpen = 0;
         };
     }
 
@@ -25826,6 +26273,13 @@
 
         ScreenObj[Main_games] = Screens_assign(ScreenObj[Main_games], Base_Game_obj);
         ScreenObj[Main_games].Set_Scroll();
+
+
+        ScreenObj[Main_games].init_fun = function(preventRefresh) {
+
+            ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+
+        };
     }
 
     function ScreensObj_InitUserGames() {
@@ -25861,6 +26315,12 @@
 
         ScreenObj[Main_usergames] = Screens_assign(ScreenObj[Main_usergames], Base_Game_obj);
         ScreenObj[Main_usergames].Set_Scroll();
+
+        ScreenObj[Main_usergames].init_fun = function(preventRefresh) {
+
+            ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+
+        };
     }
 
     function ScreensObj_InitSearchGames() {
@@ -26280,6 +26740,28 @@
             ScreenObj[key].row.appendChild(div);
         }
         ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+    }
+
+    function ScreensObj_CheckIsOpen(key, preventRefresh) {
+
+        if (ScreenObj[Main_aGame].IsOpen === key) {
+
+            ScreenObj[Main_aGame].IsOpen = 0;
+            key = Main_aGame;
+
+        } else if (ScreenObj[Main_AGameVod].IsOpen === key) {
+
+            ScreenObj[Main_AGameVod].IsOpen = 0;
+            key = Main_AGameVod;
+
+        } else if (ScreenObj[Main_AGameClip].IsOpen === key) {
+
+            ScreenObj[Main_AGameClip].IsOpen = 0;
+            key = Main_AGameClip;
+
+        }
+
+        Screens_init(key, preventRefresh);
     }
 
     function ScreensObj_TopLableAgameInit(key) {
@@ -27714,6 +28196,11 @@
             "set_values": [""],
             "defaultValue": 1
         },
+        "update_settings": {
+            "values": ["None"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
         "player_bitrate": {
             "values": ["None"],
             "set_values": [""],
@@ -27879,6 +28366,16 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
+        "update_background": {
+            "values": ["yes", "no"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
+        "update_show": {
+            "values": ["yes", "toast", "no"],
+            "set_values": [""],
+            "defaultValue": 1
+        },
     };
 
     function Settings_GenerateClock() {
@@ -28013,6 +28510,7 @@
         div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
         div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
         div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
+        div += Settings_Content('update_settings', [STR_CONTENT_LANG_SUMMARY], STR_UPDATE_OPT, null);
         div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
 
         if (!Main_isTV || !Main_IsOn_OSInterface) {
@@ -28856,6 +29354,7 @@
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'ui_opt')) Settings_DialogShowUIOpt();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'custom_opt')) Settings_DialogShowCustomOpt();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'warnings_opt')) Settings_DialogShowWarnings();
+                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'update_settings')) Settings_UpdateSettings();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'chat_opt')) Settings_DialogShowChat();
                 break;
             default:
@@ -29513,6 +30012,29 @@
         };
 
         Settings_DialogShow(obj, STR_WARNINGS);
+    }
+
+
+    function Settings_UpdateSettings() {
+        Settings_value.update_background.values = [STR_YES, STR_NO];
+        Settings_value.update_show.values = STR_UPDATE_SHOW_ARRAY;
+
+        var obj = {
+            update_background: {
+                defaultValue: Settings_value.update_background.defaultValue,
+                values: Settings_value.update_background.values,
+                title: STR_UPDATE_CHECK_FOR,
+                summary: null
+            },
+            update_show: {
+                defaultValue: Settings_value.update_show.defaultValue,
+                values: Settings_value.update_show.values,
+                title: STR_UPDATE_SHOW,
+                summary: null
+            }
+        };
+
+        Settings_DialogShow(obj, STR_UPDATE_OPT);
     }
 
     function Settings_PlayerEnd() {
@@ -30325,7 +30847,7 @@
 
             Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
-            if (Sidepannel_isShowing()) {
+            if (Sidepannel_isShowingUserLive()) {
 
                 Sidepannel_CheckIfIsLiveSTop();
 
@@ -30338,14 +30860,18 @@
 
     function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
         Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities);
-        if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+
+        if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+
+            Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
+        }
     }
 
-    function Sidepannel_isShowing() {
-        return Sidepannel_isShowingSide() && Main_isScene1DocVisible();
+    function Sidepannel_isShowingUserLive() {
+        return Sidepannel_isShowingUserLiveSide() && Main_isScene1DocVisible();
     }
 
-    function Sidepannel_isShowingSide() {
+    function Sidepannel_isShowingUserLiveSide() {
         return !Main_A_includes_B(Sidepannel_SidepannelDoc.className, 'side_panel_hide');
     }
 
@@ -30380,7 +30906,7 @@
     function Sidepannel_UpdateThumb() {
         Sidepannel_UpdateThumbDiv();
 
-        if (Sidepannel_isShowing()) {
+        if (Sidepannel_isShowingUserLive()) {
             Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
             if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
@@ -30458,7 +30984,8 @@
 
     function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) { //Called by Java
 
-        if (!Main_isStoped && Sidepannel_isShowing() && x === 0 && y === (Sidepannel_PosFeed % 100)) {
+        if (!Main_isStoped && Sidepannel_isShowingUserLive() && x === 0 && y === (Sidepannel_PosFeed % 100) &&
+            !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible()) {
 
             if (StreamData && Sidepannel_ObjNotNull()) {
                 StreamData = JSON.parse(StreamData);
@@ -30551,7 +31078,7 @@
     }
 
     function Sidepannel_PreloadImgs() {
-        if (!Sidepannel_isShowing()) return;
+        if (!Sidepannel_isShowingUserLive()) return;
 
         if (UserLiveFeed_PreloadImgs[Sidepannel_PosFeed]) {
             Main_ImageLoaderWorker.postMessage(
@@ -30579,7 +31106,7 @@
             return;
         }
 
-        if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
+        if (Sidepannel_Sidepannel_Pos !== 2 && Sidepannel_Sidepannel_Pos !== 13) Sidepannel_Hide();
 
         if (Sidepannel_Sidepannel_Pos === 2) {
             Main_values.Sidepannel_IsUser = false;
@@ -30611,26 +31138,54 @@
     }
 
     function Sidepannel_KeyEnterBase() {
+
         if (!Sidepannel_Sidepannel_Pos) {
+
             Main_values.Main_Before = Main_values.Main_Go;
             Main_ExitCurrent(Main_values.Main_Go);
             if (AddUser_UserIsSet()) Users_init();
             else AddUser_init();
+
         } else if (Sidepannel_Sidepannel_Pos === 1) {
+
             if (Main_values.Main_Go !== Main_Search) {
+
                 if (!Main_values.Search_isSearching &&
-                    (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod))
+                    (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod)) {
+
                     ChannelContent_SetChannelValue();
+
+                }
+
                 Main_OpenSearch();
-            } else Main_addEventListener("keydown", Sidepannel_Callback);
+
+            } else {
+
+                Main_addEventListener("keydown", Sidepannel_Callback);
+
+            }
+
         } else if (Sidepannel_Sidepannel_Pos === 9) {
+
             Main_showSettings();
-        } else if (Sidepannel_Sidepannel_Pos === 10)
+
+        } else if (Sidepannel_Sidepannel_Pos === 10) {
+
             Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
-        else if (Sidepannel_Sidepannel_Pos === 11)
+
+        } else if (Sidepannel_Sidepannel_Pos === 11) {
+
             Main_showControlsDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls);
-        else if (Sidepannel_Sidepannel_Pos === 12) Main_showExitDialog();
-        else if (Sidepannel_Sidepannel_Pos === 13) Main_showAboutDialog(Sidepannel_Callback, ScreenObj[Main_values.Main_Go].key_controls, true);
+
+        } else if (Sidepannel_Sidepannel_Pos === 12) {
+
+            Main_showExitDialog();
+
+        } else if (Sidepannel_Sidepannel_Pos === 13) {
+
+            Main_UpdateDialogShowCheck();
+
+        }
     }
 
     function Sidepannel_KeyEnter() {
@@ -30639,7 +31194,7 @@
             return;
         }
 
-        if (Sidepannel_Sidepannel_Pos !== 2) Sidepannel_Hide();
+        if (Sidepannel_Sidepannel_Pos !== 2 && Sidepannel_Sidepannel_Pos !== 13) Sidepannel_Hide();
 
         if (Sidepannel_Sidepannel_Pos === 2) {
             if (AddUser_IsUserSet()) {
@@ -30750,7 +31305,7 @@
         Main_EventScreen('Side_panel_main');
     }
 
-    function Sidepannel_MainisShowing() {
+    function Sidepannel_isShowingMenus() {
         return Main_A_equals_B(Sidepannel_MovelDiv.style.transform, 'translateX(' + Sidepannel_FixdefaultMargin + '%)');
     }
 
@@ -30879,7 +31434,7 @@
         Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
         Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
         Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
-        Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_CHANGELOG);
+        Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_UPDATE_CHANGELOG);
 
         Sidepannel_SetIcons('side_panel_new_1', 'search');
         Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');
@@ -31015,6 +31570,10 @@
             case KEY_9:
                 Main_showExitDialog();
                 Sidepannel_Hide();
+                break;
+            case KEY_0:
+            case KEY_U:
+                Main_UpdateDialogShowCheck();
                 break;
             default:
                 break;
@@ -31431,7 +31990,7 @@
 
             Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
 
-            if (Sidepannel_isShowing()) {
+            if (Sidepannel_isShowingUserLive()) {
 
                 Sidepannel_AddFocusFeed(true);
                 Sidepannel_SetLastRefresh();
@@ -31461,7 +32020,7 @@
                 if (Main_isStoped ||
                     !UserLiveFeed_loadingData[pos] && !UserLiveFeed_obj[pos].loadingMore &&
                     ((!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isPreviewShowing()) &&
-                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowing()))) { //the screen is not selected
+                        (UserLiveFeedobj_UserLivePos !== pos || !Sidepannel_isShowingUserLive()))) { //the screen is not selected
 
                     if (!Screens_Some_Screen_Is_Refreshing) {
                         UserLiveFeed_CounterDialogRst();
@@ -31810,7 +32369,8 @@
 
         if (!Main_isStoped && UserLiveFeed_isPreviewShowing() &&
             (!Play_isEndDialogVisible() || !Play_EndFocus) &&
-            UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y) {
+            UserLiveFeed_FeedPosX === x && (UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100) === y &&
+            !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible()) {
 
             if (StreamData && UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
 
@@ -32501,7 +33061,7 @@
                 UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
             }
 
-            if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowing()) {
+            if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowingUserLive()) {
                 Main_HideWarningDialog();
                 Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
             }
@@ -35277,7 +35837,6 @@
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-        'Main_checkWebVersion': Main_checkWebVersion,
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
         'ChatLive_SetLatency': ChatLive_SetLatency,
