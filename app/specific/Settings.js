@@ -1317,7 +1317,7 @@ function Settings_ShowCounter() {
 function Settings_UpdateRoundImages() {
 
     Main_innerHTML(
-        'round_images',
+        'round_images_css',
         Settings_Obj_default("round_images") ?
             'img.side_panel_channel_img {border-radius: 50%;}' +
             'img.stream_img_channels {border-radius: 50%;}' +
