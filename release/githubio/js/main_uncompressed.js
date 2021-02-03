@@ -8311,7 +8311,7 @@
         if (Sidepannel_isShowingUserLive()) {
 
             Sidepannel_RemoveFocusFeed();
-            Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
+            Sidepannel_UpdateThumbDiv();
 
         } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
         else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
