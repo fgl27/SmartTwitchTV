@@ -30,7 +30,6 @@ var PlayClip_replay = false;
 var PlayClip_state = 0;
 var PlayClip_HasVOD = false;
 var PlayClip_Buffer = 2000;
-var PlayClip_loadData410 = false;
 
 var PlayClip_jumpTimers = [1];
 
@@ -115,7 +114,7 @@ function PlayClip_Start() {
 
     if (!Play_PreviewId) {
 
-        if (!PlayClip_replay) PlayClip_loadData();//Play_PlayEndStart(3);
+        if (!PlayClip_replay) PlayClip_loadDataRequest();//Play_PlayEndStart(3);
         else PlayClip_qualityChanged();
 
     } else {
@@ -204,43 +203,28 @@ function PlayClip_GetStreamerInfoSuccess(response) {
     );
 }
 
-function PlayClip_loadData() {
-    if (!Main_IsOn_OSInterface) {
-        PlayClip_loadDataSuccessFake();
-        return;
-    } else if (PlayClip_loadData410) {
-        PlayClip_loadDataSuccess410();
-        return;
-    }
-    PlayClip_loadDataRequest();
-}
-
 var PlayClip_loadDataRequestId;
-
 function PlayClip_loadDataRequest() {
 
     PlayClip_loadDataRequestId = (new Date().getTime());
 
-    OSInterface_GetMethodUrlHeadersAsync(
-        PlayClip_BaseUrl,//urlString
-        DefaultHttpGetTimeout,//timeout
-        PlayClip_postMessage.replace('%x', ChannelClip_playUrl),//postMessage, null for get
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Play_base_backup_headers_Array,
+        PlayClip_loadDataResult,
+        noop_fun,
+        0,
+        PlayClip_loadDataRequestId,
         'POST',//Method, null for get
-        Play_base_backup_headers,//JsonString
-        'PlayClip_loadDataResult',//callback
-        0,//checkResult
-        PlayClip_loadDataRequestId,//key
-        59//thread
+        PlayClip_postMessage.replace('%x', ChannelClip_playUrl)//postMessage, null for get
     );
 }
 
-function PlayClip_loadDataResult(response, id) {
-
-    if (PlayClip_isOn && response && PlayClip_loadDataRequestId === id) {
-
-        var responseObj = JSON.parse(response);
+function PlayClip_loadDataResult(responseObj, key, id) {
+    if (PlayClip_isOn && PlayClip_loadDataRequestId === id) {
 
         if (responseObj.status === 200) {
+
             var tempArray = PlayClip_QualityGenerate(responseObj.responseText);
 
             if (tempArray.length) {
@@ -248,11 +232,6 @@ function PlayClip_loadDataResult(response, id) {
                 return;
             }
 
-        } else if (responseObj.status === 410) { //Workaround for future 410 issue
-            PlayClip_loadData410 = true;
-            PlayClip_loadData410Recheck();
-            PlayClip_loadDataSuccess410();
-            return;
         }
 
         PlayClip_loadDataError();
@@ -261,67 +240,17 @@ function PlayClip_loadDataResult(response, id) {
 
 }
 
-function PlayClip_loadData410Recheck() {
-    Main_Log('PlayClip_loadData410Recheck');
+function PlayClip_loadDataError() {
+    Play_HideBufferDialog();
+
+    Play_showWarningDialog(STR_410_ERROR, 2000);
+
     Main_setTimeout(
         function() {
-            PlayClip_loadData410 = false;
+            Play_PlayEndStart(3);
         },
-        (30 * 60 * 1000)//try again after 30min
+        2000
     );
-}
-
-function PlayClip_loadDataError() {
-    if (Main_IsOn_OSInterface) {
-        Play_HideBufferDialog();
-
-        Play_showWarningDialog(STR_410_ERROR, 2000);
-
-        Main_setTimeout(
-            function() {
-                Play_PlayEndStart(3);
-            },
-            2000
-        );
-    } else PlayClip_loadDataSuccessFake();
-}
-
-function PlayClip_loadDataSuccessFake() {
-    PlayClip_qualities = [
-        {
-            'id': '1080p60 | source | mp4',
-            'url': 'https://fake_1080p60'
-        },
-        {
-            'id': '720p60 | mp4',
-            'url': 'https://fake_720p60'
-        },
-        {
-            'id': '720p | mp4',
-            'url': 'https://fake_720p'
-        },
-        {
-            'id': '480p | mp4',
-            'url': 'https://fake_480p'
-        },
-    ];
-    Play_SetExternalQualities(PlayClip_qualities, 1);
-    PlayClip_state = Play_STATE_PLAYING;
-    PlayClip_qualityReset();
-    PlayClip_qualityChanged();
-    Main_Set_history('clip', Main_values_Play_data);
-}
-
-function PlayClip_loadDataSuccess410() {
-    PlayClip_qualities = [];
-    PlayClip_qualities.push({
-        'id': 'Auto',
-        'url': ChannelClip_playUrl2
-    });
-
-    PlayClip_state = Play_STATE_PLAYING;
-    PlayClip_qualityChanged();
-    Main_Set_history('clip', Main_values_Play_data);
 }
 
 function PlayClip_QualityGenerate(mresponse) {
