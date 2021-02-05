@@ -1566,22 +1566,22 @@ function PlayVod_muted_WarningDialog() {
 var PlayVod_updateChaptersId;
 function PlayVod_updateChapters() {
 
-    if (Main_IsOn_OSInterface) {
+    // if (Main_IsOn_OSInterface) {
 
-        PlayVod_updateChaptersId = (new Date().getTime());
+    PlayVod_updateChaptersId = (new Date().getTime());
 
-        FullxmlHttpGet(
-            PlayClip_BaseUrl,
-            Play_base_backup_headers_Array,
-            PlayVod_updateChaptersResult,
-            noop_fun,
-            0,
-            PlayVod_updateChaptersId,
-            'POST',//Method, null for get
-            PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId)//postMessage, null for get
-        );
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Play_base_backup_headers_Array,
+        PlayVod_updateChaptersResult,
+        noop_fun,
+        0,
+        PlayVod_updateChaptersId,
+        'POST',//Method, null for get
+        PlayVod_postChapters.replace('%x', Main_values.ChannelVod_vodId)//postMessage, null for get
+    );
 
-    } else PlayVod_ProcessChaptersFake();
+    //} else PlayVod_ProcessChaptersFake();
 
 }
 
@@ -1677,64 +1677,64 @@ function PlayVod_ChaptersSetGame(timeMs) {
     }
 }
 
-function PlayVod_ProcessChaptersFake() {
-    var obj = {
-        "data": {
-            "video": {
-                "moments": {
-                    "edges": [{
-                        "node": {
-                            "durationMilliseconds": 67000,
-                            "positionMilliseconds": 0,
-                            "type": "GAME_CHANGE",
-                            "description": "Barotrauma",
-                            "details": {
-                                "game": {
-                                    "id": "496735",
-                                    "displayName": "Barotrauma"
-                                }
-                            }
-                        }
-                    }, {
-                        "node": {
-                            "durationMilliseconds": 5422000,
-                            "positionMilliseconds": 67000,
-                            "type": "GAME_CHANGE",
-                            "description": "Just Chatting",
-                            "details": {
-                                "game": {
-                                    "id": "509658",
-                                    "displayName": "Just Chatting"
-                                }
-                            }
-                        }
-                    }, {
-                        "node": {
-                            "durationMilliseconds": 3658000,
-                            "positionMilliseconds": 5489000,
-                            "type": "GAME_CHANGE",
-                            "description": "Bad Guys at School",
-                            "details": {
-                                "game": null
-                            }
-                        }
-                    }, {
-                        "node": {
-                            "durationMilliseconds": 5505000,
-                            "positionMilliseconds": 9147000,
-                            "type": "GAME_CHANGE",
-                            "description": "Grounded",
-                            "details": {
-                                "game": {
-                                    "id": "516086",
-                                    "displayName": "Grounded"
-                                }
-                            }
-                        }
-                    }]
-                }
-            }
-        }
-    };
-    PlayVod_ProcessChapters(obj);
-}
+// function PlayVod_ProcessChaptersFake() {
+//     var obj = {
+//         "data": {
+//             "video": {
+//                 "moments": {
+//                     "edges": [{
+//                         "node": {
+//                             "durationMilliseconds": 67000,
+//                             "positionMilliseconds": 0,
+//                             "type": "GAME_CHANGE",
+//                             "description": "Barotrauma",
+//                             "details": {
+//                                 "game": {
+//                                     "id": "496735",
+//                                     "displayName": "Barotrauma"
+//                                 }
+//                             }
+//                         }
+//                     }, {
+//                         "node": {
+//                             "durationMilliseconds": 5422000,
+//                             "positionMilliseconds": 67000,
+//                             "type": "GAME_CHANGE",
+//                             "description": "Just Chatting",
+//                             "details": {
+//                                 "game": {
+//                                     "id": "509658",
+//                                     "displayName": "Just Chatting"
+//                                 }
+//                             }
+//                         }
+//                     }, {
+//                         "node": {
+//                             "durationMilliseconds": 3658000,
+//                             "positionMilliseconds": 5489000,
+//                             "type": "GAME_CHANGE",
+//                             "description": "Bad Guys at School",
+//                             "details": {
+//                                 "game": null
+//                             }
+//                         }
+//                     }, {
+//                         "node": {
+//                             "durationMilliseconds": 5505000,
+//                             "positionMilliseconds": 9147000,
+//                             "type": "GAME_CHANGE",
+//                             "description": "Grounded",
+//                             "details": {
+//                                 "game": {
+//                                     "id": "516086",
+//                                     "displayName": "Grounded"
+//                                 }
+//                             }
+//                         }
+//                     }]
+//                 }
+//             }
+//         }
+//     };
+//     PlayVod_ProcessChapters(obj);
+// }
