@@ -1185,7 +1185,7 @@ function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
 }
 
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
-    //Main_Log(message);
+    //Main_Log(JSON.stringify(message));
 
     if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
@@ -1206,7 +1206,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 }
 
 function ChatLive_UserNoticeWarn(message) {
-    //Main_Log(message);
+    //Main_Log(JSON.stringify(message));
 
     if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
@@ -1267,6 +1267,8 @@ function ChatLive_SendMessage(message, chat_number) {
 // }
 
 function ChatLive_CheckIfSub(message, chat_number) {
+    //Main_Log(JSON.stringify(message));
+
     if (!ChatLive_Show_SUB) return;
 
     //reference smartTwitchTV/jsonreferences/sub.json
