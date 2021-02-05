@@ -4182,10 +4182,10 @@ function Play_PreStart() {
 
     Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
 
-    Main_base_string_header = JSON.stringify(
-        [
-            [clientIdHeader, AddCode_clientId],
-            [AcceptHeader, TwitchV5Json]
-        ]
-    );
+    Main_base_array_header = [
+        [clientIdHeader, AddCode_clientId],
+        [AcceptHeader, TwitchV5Json]
+    ];
+
+    Main_base_string_header = JSON.stringify(Main_base_array_header);
 }

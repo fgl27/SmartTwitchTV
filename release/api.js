@@ -68,7 +68,6 @@
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
         'ChatLive_SetLatency': ChatLive_SetLatency,
-        'Screens_CheckGetResult': Screens_CheckGetResult,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
         'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
         'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet

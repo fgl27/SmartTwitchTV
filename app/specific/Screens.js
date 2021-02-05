@@ -372,64 +372,19 @@ function Screens_loadDataRequest(key) {
 
     } else {
 
-        Screens_BasexmlHttpGet(
+        FullxmlHttpGet(
             (ScreenObj[key].url + Main_TwithcV5Flag),
-            ScreenObj[key].HeaderQuatity,
-            ScreenObj[key].token,
-            ScreenObj[key].Headers,
-            key
-        );
-
-    }
-
-}
-
-function Screens_BasexmlHttpGet(theUrl, HeaderQuatity, access_token, HeaderArray, key) {
-
-    if (Main_IsOn_OSInterface) {
-
-        OSInterface_GetMethodUrlHeadersAsync(
-            theUrl,
-            (DefaultHttpGetTimeout * 2),//timeout
-            null,//postMessage, null for get
+            ScreenObj[key].HeadersArray,
+            Screens_HttpResultStatus,
+            noop_fun,
+            key,
+            key,
             null,//Method, null for get
-            ScreenObj[key].HeadersString,//JsonHeadersArray
-            'Screens_CheckGetResult',//callback
-            key,//checkResult
-            key,//key
-            key//thread
+            null
         );
 
-    } else {
-
-        var xmlHttp = new XMLHttpRequest();
-
-        xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
-
-        HeaderArray[2][1] = access_token;
-
-        for (var i = 0; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(HeaderArray[i][0], HeaderArray[i][1]);
-
-        xmlHttp.onreadystatechange = function() {
-
-            if (this.readyState === 4) {
-
-                Screens_HttpResultStatus(this, key);
-
-            }
-
-        };
-
-        xmlHttp.send(null);
-
     }
-}
 
-
-function Screens_CheckGetResult(result, key) {
-    Screens_HttpResultStatus(JSON.parse(result), key);
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
@@ -447,7 +402,7 @@ function Screens_HttpResultStatus(resultObj, key) {
             Screens_addFocus(true, key);
 
         }
-    } else if (ScreenObj[key].HeaderQuatity > 2 && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
+    } else if (ScreenObj[key].UseToken && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
         else Screens_loadDataRequest(key);

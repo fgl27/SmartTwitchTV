@@ -121,6 +121,7 @@ var Main_RunningTime = 0;
 var Main_PreventCheckResume = false;
 
 var Main_base_string_header;
+var Main_base_array_header;
 var Main_Headers = [];
 var Main_Headers_Backup = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
@@ -198,7 +199,6 @@ function Main_loadTranslations(language) {
                     'Main_onNewIntent': Main_onNewIntent,
                     'Main_EventChannelRefresh': Main_EventChannelRefresh,
                     'ChatLive_SetLatency': ChatLive_SetLatency,
-                    'Screens_CheckGetResult': Screens_CheckGetResult,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
                     'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
                     'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet

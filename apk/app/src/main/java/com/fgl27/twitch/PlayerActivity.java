@@ -233,7 +233,6 @@ public class PlayerActivity extends Activity {
 
     private final String[][] PreviewFeedResult = new String[25][100];
     private final String[] StreamDataResult = new String[PlayerAccount * 2];
-    private final String[] GetMethodUrlDataResult = new String[100];//0 to 29 screen, 30 to 50 preview player, 50+ etc
     private final String[] BasexmlHttpGetResultArray = new String[500];//0 to 29 screen, 30 to 50 preview player, 50+ etc
     private int BasexmlHttpGetResultpos = 0;
 
@@ -2963,59 +2962,6 @@ public class PlayerActivity extends Activity {
             }
 
             return Tools.ResponseObjToString(0, "", checkResult);
-        }
-
-        @JavascriptInterface
-        public String GetMethodUrlHeadersAsyncResult(int DataResultPos) {
-            return GetMethodUrlDataResult[DataResultPos];
-        }
-
-        @JavascriptInterface
-        public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                             String callback, long checkResult, long key, int DataResultPos) {
-
-            GetMethodUrlDataResult[DataResultPos] = null;
-
-            try {
-                DataThreadPool.execute(() ->
-                        {
-                            Tools.ResponseObj response;
-
-                            response = Tools.MethodUrlHeaders(
-                                    urlString,
-                                    timeout,
-                                    postMessage,
-                                    Method,
-                                    checkResult,
-                                    JsonHeadersArray
-                            );
-
-                            if (response != null) {
-
-                                GetMethodUrlDataResult[DataResultPos] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlHeadersAsyncResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
-
-                            } else {
-
-                                GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
-
-                            }
-
-                        }
-                );
-            } catch (Exception e) {//Most are RejectedExecutionException
-
-                GetMethodUrlHeadersAsyncError(callback, checkResult, key, DataResultPos);
-
-                Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
-
-            }
-        }
-
-        void GetMethodUrlHeadersAsyncError(String callback, long checkResult, long key, int DataResultPos) {
-            //MethodUrl is null inform JS callback
-            GetMethodUrlDataResult[DataResultPos] = Tools.ResponseObjToString(0, "", checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.GetMethodUrlHeadersAsyncResult(" + DataResultPos + "), " + key + "," + checkResult + ")");
         }
 
         @JavascriptInterface

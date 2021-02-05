@@ -338,8 +338,7 @@ function ScreensObj_StartAllVars() {
     };
 
     Base_Clip_obj = {
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ItemsLimit: Main_ItemsLimitVideo,
         TopRowCreated: false,
         ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -421,8 +420,7 @@ function ScreensObj_StartAllVars() {
     };
 
     Base_Game_obj = {
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         thumbclass: 'stream_thumbnail_game_holder',
         ItemsReloadLimit: Main_ItemsReloadLimitGame,
         ItemsLimit: Main_ItemsLimitGame,
@@ -663,8 +661,7 @@ function ScreensObj_StartAllVars() {
 function ScreensObj_InitVod() {
     ScreenObj[Main_Vod] = Screens_assign({
         periodMaxPos: 4,
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         key_pgDown: Main_Clip,
         key_pgUp: Main_games,
         object: 'vods',
@@ -723,8 +720,7 @@ function ScreensObj_InitVod() {
 function ScreensObj_InitChannelVod() {
     ScreenObj[Main_ChannelVod] = Screens_assign({
         periodMaxPos: 2,
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         key_pgDown: Main_ChannelClip,
         object: 'videos',
         ids: Screens_ScreenIds('ChannelVod'),
@@ -805,8 +801,7 @@ function ScreensObj_InitChannelVod() {
 function ScreensObj_InitAGameVod() {
     ScreenObj[Main_AGameVod] = Screens_assign({
         periodMaxPos: 4,
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         object: 'vods',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
@@ -868,7 +863,7 @@ function ScreensObj_InitAGameVod() {
 function ScreensObj_InitUserVod() {
     ScreenObj[Main_UserVod] = Screens_assign({
         periodMaxPos: 2,
-        HeaderQuatity: 3,
+        UseToken: true,
         object: 'videos',
         key_pgDown: Main_UserChannels,
         key_pgUp: Main_usergames,
@@ -885,7 +880,7 @@ function ScreensObj_InitUserVod() {
         set_url: function() {
             this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
             Main_Headers[2][1] = this.token;
-            this.HeadersString = JSON.stringify(Main_Headers);
+            this.HeadersArray = Main_Headers;
 
             this.url = this.base_url + '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') +
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
@@ -935,8 +930,7 @@ function ScreensObj_InitUserVod() {
 
 function ScreensObj_InitLive() {
     ScreenObj[Main_Live] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('Live'),
         table: 'stream_table_live',
         screen: Main_Live,
@@ -966,8 +960,7 @@ function ScreensObj_InitLive() {
 
 function ScreensObj_InitSearchLive() {
     ScreenObj[Main_SearchLive] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('SearchLive'),
         ScreenName: 'SearchLive',
         table: 'stream_table_search_live',
@@ -1006,7 +999,7 @@ function ScreensObj_InitSearchLive() {
 
 function ScreensObj_InitUserLive() {
     ScreenObj[Main_UserLive] = Screens_assign({
-        HeaderQuatity: 3,
+        UseToken: true,
         ids: Screens_ScreenIds('UserLive'),
         ScreenName: 'UserLive',
         table: 'stream_table_user_live',
@@ -1024,18 +1017,18 @@ function ScreensObj_InitUserLive() {
 
             if (AddUser_UsernameArray[0].access_token) {
                 //User has added a key
-                this.HeaderQuatity = 3;
+                this.UseToken = true;
                 this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
                 Main_Headers[2][1] = this.token;
-                this.HeadersString = JSON.stringify(Main_Headers);
+                this.HeadersArray = Main_Headers;
 
                 this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
                     this.offset + '&stream_type=all';
             } else {
                 //User didn't added a key
-                this.HeaderQuatity = 2;
+                this.UseToken = false;
                 this.token = null;
-                this.HeadersString = Main_base_string_header;
+                this.HeadersArray = Main_base_array_header;
 
                 if (this.followerChannelsDone) {
                     //User followed channels list is done, load live channels
@@ -1120,8 +1113,7 @@ function ScreensObj_InitUserLive() {
 
 function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('AGame'),
         ScreenName: 'AGame',
         table: 'stream_table_a_game',
@@ -1181,8 +1173,7 @@ function ScreensObj_InitAGame() {
 
 function ScreensObj_InitFeatured() {
     ScreenObj[Main_Featured] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('Featured'),
         ScreenName: 'Featured',
         table: 'stream_table_featured',
@@ -1444,8 +1435,7 @@ function ScreensObj_InitSearchGames() {
 
 function ScreensObj_InitUserChannels() {
     ScreenObj[Main_UserChannels] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('UserChannels'),
         ScreenName: 'UserChannels',
         table: 'stream_table_user_channels',
@@ -1483,8 +1473,7 @@ function ScreensObj_InitUserChannels() {
 
 function ScreensObj_InitSearchChannels() {
     ScreenObj[Main_SearchChannels] = Screens_assign({
-        HeaderQuatity: 2,
-        HeadersString: Main_base_string_header,
+        HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('SearchChannels'),
         ScreenName: 'SearchChannels',
         table: 'stream_table_search_channel',

@@ -183,33 +183,6 @@ function OSInterface_getQualities() {
     return Android.getQualities();
 }
 
-//public void GetMethodUrlHeadersAsync(String urlString, int timeout, String postMessage, String Method, String JsonString,
-//                                            String callback, long checkResult, int key, int thread)
-//urlString = the url to to the http request
-//timeout = http request timeout
-//postMessage = if is a output message if not null
-//Method = http Method 'GET, POST, PUT, DELETE'
-//JsonHeadersArray = The stringify array contain the http request headers
-//callback = the call back function
-//checkResult = a uniq ID number to prevent the callback answer to the wrong request, as this is a Async fun
-//key = the return key used by Screens, 0 if not a Screen call
-//thread = the thread number to be used there is 4 thread, 0 to 3
-//Android specific: false
-//Allows to make a http request in a async function on a url that if called from JS will fail do to CORS error
-function OSInterface_GetMethodUrlHeadersAsync(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, thread) {
-    Android.GetMethodUrlHeadersAsync(
-        urlString,
-        timeout,
-        postMessage,
-        Method,
-        JsonHeadersArray,
-        callback,
-        !checkResult ? 0 : checkResult,
-        !key ? 0 : key,
-        thread
-    );
-}
-
 //public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
 //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
 //Android specific: true
