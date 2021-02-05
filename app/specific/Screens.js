@@ -1005,16 +1005,15 @@ function Screens_LoadPreviewStart(key, obj) {
 
     if (ScreenObj[key].screenType === 2) {//clip
 
-        OSInterface_GetMethodUrlHeadersAsync(
-            PlayClip_BaseUrl,//urlString
-            DefaultHttpGetTimeout,//timeout
-            PlayClip_postMessage.replace('%x', obj[0]),//postMessage, null for get
-            'POST',//Method, null for get
-            Play_base_backup_headers,//JsonString
-            'Screens_LoadPreviewResult',//callback
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
+            Screens_LoadPreviewResult,
+            noop_fun,
+            key,
             (((ScreenObj[key].posY * ScreenObj[key].ColoumnsCount) + ScreenObj[key].posX) % 100),//checkResult
-            key,//key
-            51//thread
+            'POST',//Method, null for get
+            PlayClip_postMessage.replace('%x', obj[0])//postMessage, null for get
         );
 
         return;
@@ -1085,7 +1084,8 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
         if (StreamData && Screens_ObjNotNull(x)) {
 
-            var StreamDataObj = JSON.parse(StreamData),
+            var isClip = ScreenObj[x].screenType === 2,
+                StreamDataObj = !isClip ? JSON.parse(StreamData) : StreamData,
                 StreamInfo = Screens_GetObj(x),
                 index,
                 UserIsSet = AddUser_UserIsSet();
@@ -1100,7 +1100,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
                     lang,
                     who_called;
 
-                if (ScreenObj[x].screenType === 2) {//clip
+                if (isClip) {//clip
 
                     Play_PreviewId = StreamInfo[0];
                     Play_PreviewResponseText = PlayClip_QualityGenerate(PreviewResponseText);
