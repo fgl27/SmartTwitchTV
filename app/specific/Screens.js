@@ -606,7 +606,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[5] + '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
         '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div><div class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
+        '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</div></div></div></div>';
@@ -1506,11 +1506,13 @@ function Screens_addrowDown(y, key) {
 }
 
 function Screens_addrowEnd(forceScroll, key) {
+
     Main_ready(function() {
 
         if (!ScreenObj[key].Cells[ScreenObj[key].posY]) return;
 
-        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
+            data;
 
         Main_AddClass(ScreenObj[key].ids[0] + id, Main_classThumb);
         ScreenObj[key].focusPos = id;
@@ -1519,12 +1521,24 @@ function Screens_addrowEnd(forceScroll, key) {
 
             if (Screens_ObjNotNull(key)) {
 
-                var data = Screens_GetObj(key);
+                data = Screens_GetObj(key);
 
-                if (Main_history_Watched_Obj[data[7]])
+                if (Main_history_Watched_Obj[data[7]]) {
+
                     Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
 
+                }
+
             }
+
+        } else if (Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
+
+            data = Screens_GetObj(key);
+
+            Main_innerHTML(
+                ScreenObj[key].ids[4] + id,
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+            );
 
         }
 
