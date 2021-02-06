@@ -140,8 +140,7 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
         Main_innerHTML(
             'feed_thum_views',
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE +
-            STR_FOR + info[4] + STR_SPACE + STR_VIEWER
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE + info[4]
         );
 
     }
