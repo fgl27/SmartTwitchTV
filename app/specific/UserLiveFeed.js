@@ -514,10 +514,12 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         return;
     }
 
-    var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus;
+    var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus,
+        isGame = UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame;
 
     if (add_focus) {
-        var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+        var id = pos + '_' + UserLiveFeed_FeedPosY[pos],
+            data;
 
         Main_AddClass(UserLiveFeed_ids[0] + id, UserLiveFeed_FocusClass);
 
@@ -525,7 +527,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
             if (UserLiveFeed_ObjNotNull(pos)) {
 
-                var data = UserLiveFeed_GetObj(pos);
+                data = UserLiveFeed_GetObj(pos);
 
                 if (Main_history_Watched_Obj[data[7]]) {
 
@@ -534,6 +536,20 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
                 }
 
             }
+
+        } else if (!isGame) {
+
+            if (UserLiveFeed_ObjNotNull(pos)) {
+
+                data = UserLiveFeed_GetObj(pos);
+
+                Main_innerHTML(
+                    UserLiveFeed_ids[4] + id,
+                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                );
+
+            }
+
         }
     }
 
@@ -544,7 +560,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     }
 
-    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+    if (isGame) {
 
         if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
             UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);

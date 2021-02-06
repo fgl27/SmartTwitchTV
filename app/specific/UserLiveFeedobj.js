@@ -819,7 +819,7 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
         '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
-        '</div><div class="stream_info_live">' + data[11] + data[4] + '</div>' +
+        '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + data[11] + data[4] + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</div></div></div>';
