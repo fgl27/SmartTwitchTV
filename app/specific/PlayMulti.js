@@ -25,7 +25,6 @@ function Play_updateStreamInfoMulti(pos) {
 
     BasexmlHttpGet(
         Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
-        (DefaultHttpGetTimeout * 2),
         2,
         null,
         Play_updateStreamInfoMultiValues,

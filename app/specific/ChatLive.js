@@ -171,7 +171,6 @@ function ChatLive_checkFallow(chat_number, id) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         ChatLive_checkFallowSuccess,
@@ -220,7 +219,6 @@ function ChatLive_checkSub(chat_number, id) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         3,
         Main_OAuth + AddUser_UsernameArray[0].access_token,
         ChatLive_checkSubSucess,
@@ -251,7 +249,6 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
 
         BasexmlHttpGet(
             'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
-            DefaultHttpGetTimeout * 2,
             0,
             null,
             ChatLive_loadBadgesChannelSuccess,
@@ -323,7 +320,6 @@ function ChatLive_loadChattersViewers(chat_number, id) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         ChatLive_loadChattersViewersSuccess,
@@ -360,7 +356,6 @@ function ChatLive_loadChattersLoad(chat_number, id) {
 
     BasexmlHttpGet(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
-        DefaultHttpGetTimeout,
         0,
         null,
         ChatLive_loadChattersSuccess,
@@ -395,7 +390,6 @@ function ChatLive_loadEmotesUser() {
 
         BasexmlHttpGet(
             Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
-            DefaultHttpGetTimeout * 2,
             3,
             Main_OAuth + AddUser_UsernameArray[0].access_token,
             ChatLive_loadEmotesUserSuccess,
@@ -461,7 +455,6 @@ function ChatLive_loadEmotesChannelbttv(chat_number, id) {
 
         BasexmlHttpGet(
             'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            DefaultHttpGetTimeout * 2,
             0,
             null,
             ChatLive_loadEmotesChannelbttvSuccess,
@@ -534,7 +527,6 @@ function ChatLive_loadCheersChannel(chat_number, id) {
 
         BasexmlHttpGet(
             'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            DefaultHttpGetTimeout * 2,
             1,
             null,
             ChatLive_loadCheersChannelSuccess,
@@ -592,7 +584,6 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
 
         BasexmlHttpGet(
             'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
-            DefaultHttpGetTimeout * 2,
             0,
             null,
             ChatLive_loadEmotesChannelffzSuccess,

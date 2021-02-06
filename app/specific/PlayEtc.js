@@ -860,7 +860,6 @@ function Play_StayCheckHost() {
 
     BasexmlHttpGet(
         theUrl,//urlString
-        DefaultHttpGetTimeout,
         0,
         null,
         Play_StayCheckHostSuccess,

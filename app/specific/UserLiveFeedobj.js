@@ -146,7 +146,6 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
     BasexmlHttpGet(
         url,
-        DefaultHttpGetTimeout * 2,
         headers,
         null,
         callback,
@@ -196,7 +195,6 @@ function UserLiveFeedobj_loadChannels() {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         UserLiveFeedobj_loadChannelLive,

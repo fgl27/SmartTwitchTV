@@ -54,8 +54,6 @@ var Play_streamInfoTimerId = null;
 var Play_ChatEnable = false;
 var Play_exitID = null;
 
-var Play_loadingInfoDataTry = 0;
-
 var Play_ResumeAfterOnlineCounter = 0;
 var Play_ResumeAfterOnlineId;
 var Play_isOn = false;
@@ -565,7 +563,6 @@ function Play_UpdateMainStream(startChat, refreshInfo) {
 
     if (refreshInfo) {
 
-        Play_loadingInfoDataTry = 0;
         Play_updateStreamInfoStart();
 
     }
@@ -580,7 +577,6 @@ function Play_updateStreamInfoStart() {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         Play_updateStreamInfoStartValues,
@@ -594,7 +590,6 @@ function Play_updateStreamInfoStartValues(response) {
     if (obj.streams && obj.streams.length) {
 
         Play_updateStreamInfoEnd(obj.streams[0]);
-        Play_loadingInfoDataTry = 0;
 
         Play_updateVodInfo(
             obj.streams[0].channel._id,
@@ -618,23 +613,13 @@ function Play_updateStreamInfoEnd(response) {
 }
 
 function Play_updateStreamInfoStartError() {
-    if (Play_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        Main_setTimeout(
-            function() {
-                if (Play_isOn) Play_updateStreamInfoStart();
-            },
-            750
-        );
-        Play_loadingInfoDataTry++;
-    } else {
-        Play_loadingInfoDataTry = 0;
 
-        if (Play_isOn && Play_data.data.length > 0 && !Play_StayDialogVisible()) {
+    if (Play_isOn && Play_data.data.length > 0 && !Play_StayDialogVisible()) {
 
-            Main_Set_history('live', Play_data.data);
+        Main_Set_history('live', Play_data.data);
 
-        }
     }
+
 }
 
 function Play_CheckFollow(id) {
@@ -662,7 +647,6 @@ function Play_updateVodInfo(Channel_id, BroadcastID) {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2),
         2,
         null,
         Play_updateVodInfoSuccess,
@@ -714,7 +698,6 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2),
         2,
         null,
         Play_updateStreamInfoValues,
@@ -1855,7 +1838,6 @@ function Play_loadDataCheckHost() {
 
             BasexmlHttpGet(
                 theUrl,//urlString
-                DefaultHttpGetTimeout,
                 0,
                 null,
                 Play_CheckHost,

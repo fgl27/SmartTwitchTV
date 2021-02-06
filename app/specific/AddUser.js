@@ -19,7 +19,6 @@
  */
 
 //Variable initialization
-var AddUser_loadingDataTry = 0;
 var AddUser_UsernameArray = [];
 var AddUser_Username = null;
 var AddUser_loadingData = false;
@@ -140,12 +139,14 @@ function AddUser_KeyboardDismiss() {
         AddUser_Username = Main_AddUserInput.value;
 
         if (!AddUser_UserCodeExist(AddUser_Username)) {
-            AddUser_loadingDataTry = 0;
+
             AddUser_loadingData = true;
             Main_HideElement('add_user_scroll');
             Main_showLoadDialog();
             AddUser_loadDataRequest();
+
         } else {
+
             Main_HideLoadDialog();
             Main_showWarningDialog(STR_USER + " " + AddUser_Username + STR_USER_SET);
             Main_setTimeout(
@@ -155,6 +156,7 @@ function AddUser_KeyboardDismiss() {
                 },
                 1500
             );
+
         }
     } else AddUser_inputFocus();
 }
@@ -164,10 +166,10 @@ function AddUser_loadDataRequest() {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2) + (AddUser_loadingDataTry * DefaultHttpGetTimeoutPlus),
         2,
         null,
-        AddUser_loadDataRequestSuccess, AddUser_loadDataError
+        AddUser_loadDataRequestSuccess,
+        AddUser_loadDataNoUser
     );
 }
 
@@ -176,13 +178,6 @@ function AddUser_loadDataRequestSuccess(response) {
         Main_AddUserInput.value = '';
         Main_removeEventListener("keydown", AddUser_handleKeyDown);
         AddUser_SaveNewUser(response);
-    } else AddUser_loadDataNoUser();
-}
-
-function AddUser_loadDataError() {
-    AddUser_loadingDataTry++;
-    if (AddUser_loadingDataTry < DefaultHttpGetReTryMax) {
-        AddUser_loadDataRequest();
     } else AddUser_loadDataNoUser();
 }
 
@@ -311,7 +306,6 @@ function AddUser_UpdateUser(position) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         AddUser_UpdateUsertSuccess,

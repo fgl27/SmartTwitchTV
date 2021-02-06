@@ -73,37 +73,30 @@ function Chat_Init() {
 var Chat_LoadGlobalBadges = false;
 function Chat_loadBadgesGlobal() {
     //return;
-    if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest(0);
-    if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes(0);
-    if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz(0);
+    if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest();
+    if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
+    if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
     ChatLiveControls_SetEmojisObj();
 }
 
-function Chat_BaseLoadUrl(theUrl, tryes, callbackSucess, calbackError) {
+function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2) + (tryes * DefaultHttpGetTimeoutPlus),
         0,
         null,
         callbackSucess,
-        calbackError,
-        tryes
+        calbackError
     );
 
 }
 
-function Chat_loadBadgesGlobalRequest(tryes) {
+function Chat_loadBadgesGlobalRequest() {
     Chat_BaseLoadUrl(
         'https://badges.twitch.tv/v1/badges/global/display',
-        tryes,
         Chat_loadBadgesGlobalSuccess,
-        Chat_loadBadgesGlobalError
+        noop_fun
     );
-}
-
-function Chat_loadBadgesGlobalError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) Chat_loadBadgesGlobalRequest(tryes + 1);
 }
 
 function Chat_loadBadgesGlobalSuccess(responseText) {
@@ -161,17 +154,12 @@ function Chat_tagCSS(content, doc) {
     });
 }
 
-function Chat_loadBTTVGlobalEmotes(tryes) {
+function Chat_loadBTTVGlobalEmotes() {
     Chat_BaseLoadUrl(
         'https://api.betterttv.net/3/cached/emotes/global',
-        tryes,
         Chat_loadEmotesSuccessBttv,
-        Chat_loadEmotesBttvError
+        noop_fun
     );
-}
-
-function Chat_loadEmotesBttvError(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) Chat_loadBTTVGlobalEmotes(tryes + 1);
 }
 
 function Chat_loadEmotesSuccessBttv(data) {
@@ -210,17 +198,12 @@ function Chat_loadEmotesbttvGlobal(data) {
 
 }
 
-function Chat_loadEmotesffz(tryes) {
+function Chat_loadEmotesffz() {
     Chat_BaseLoadUrl(
         'https://api.frankerfacez.com/v1/set/global',
-        tryes,
         Chat_loadEmotesSuccessffz,
-        Chat_loadEmotesErrorffz
+        noop_fun
     );
-}
-
-function Chat_loadEmotesErrorffz(tryes) {
-    if (tryes < DefaultHttpGetReTryMax) Chat_loadEmotesffz(tryes + 1);
 }
 
 function Chat_loadEmotesSuccessffz(data) {
@@ -238,7 +221,6 @@ function Chat_loadChatRequest(id) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         0,
         null,
         Chat_loadChatSuccess,
@@ -513,7 +495,6 @@ function Chat_loadChatNextRequest(id) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         0,
         null,
         Chat_loadChatSuccess,

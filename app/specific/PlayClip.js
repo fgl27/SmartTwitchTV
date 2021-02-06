@@ -38,7 +38,6 @@ var PlayClip_HasBack = false;
 var PlayClip_HideShowNextDiv;
 var PlayClip_EnterPos = 0;
 var PlayClip_All = false;
-var PlayClip_loadingtreamerInfoTry = 0;
 //Variable initialization end
 
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
@@ -131,14 +130,16 @@ function PlayClip_Start() {
 
     PlayClip_replay = false;
 
-    PlayClip_loadingtreamerInfoTry = 0;
     PlayClip_GetStreamerInfo();
     if (PlayClip_HasVOD) {
-        PlayVod_loadingInfoDataTry = 0;
+
         PlayClip_updateVodInfo();
+
     } else {
+
         Main_textContent("end_vod_name_text", '');
         Main_innerHTML("end_vod_title_text", '');
+
         Play_controls[Play_controlsOpenVod].setLable('');
     }
 
@@ -162,7 +163,13 @@ function PlayClip_updateVodInfo() {
     if (!Main_values.ChannelVod_vodId) return;
 
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_updateVodInfoSucess, PlayClip_updateVodInfoError);
+    BasexmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayClip_updateVodInfoSucess,
+        noop_fun
+    );
 }
 
 function PlayClip_updateVodInfoSucess(response) {
@@ -171,23 +178,17 @@ function PlayClip_updateVodInfoSucess(response) {
     Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
 }
 
-function PlayClip_updateVodInfoError() {
-    PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        PlayClip_updateVodInfo();
-    }
-}
-
 function PlayClip_GetStreamerInfo() {
     //Main_Log('PlayClip_GetStreamerInfo');
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayClip_loadingtreamerInfoTry * DefaultHttpGetTimeoutPlus), 2, null, PlayClip_GetStreamerInfoSuccess, PlayClip_GetStreamerInfoSuccessError);
-}
-
-function PlayClip_GetStreamerInfoSuccessError() {
-    PlayClip_loadingtreamerInfoTry++;
-    if (PlayClip_loadingtreamerInfoTry < DefaultHttpGetReTryMax) PlayClip_GetStreamerInfo();
+    BasexmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayClip_GetStreamerInfoSuccess,
+        noop_fun
+    );
 }
 
 function PlayClip_GetStreamerInfoSuccess(response) {

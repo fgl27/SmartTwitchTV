@@ -199,7 +199,6 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
 
 
     if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
-    Play_loadingInfoDataTry = 0;
     Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
 }
 
@@ -228,7 +227,6 @@ function PlayExtra_SwitchPlayer() {
     Play_data = JSON.parse(JSON.stringify(PlayExtra_data));
 
     if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
-    Play_loadingInfoDataTry = 0;
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
@@ -298,7 +296,6 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     BasexmlHttpGet(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
-        DefaultHttpGetTimeout,
         0,
         null,
         PlayExtra_CheckHost,

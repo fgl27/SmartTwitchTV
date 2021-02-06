@@ -23,7 +23,6 @@ var ChannelContent_cursorY = 0;
 var ChannelContent_cursorX = 0;
 var ChannelContent_dataEnded = false;
 var ChannelContent_itemsCount = 0;
-var ChannelContent_loadingDataTry = 0;
 var ChannelContent_itemsCountOffset = 0;
 var ChannelContent_isoffline = false;
 var ChannelContent_UserChannels = false;
@@ -100,14 +99,9 @@ function ChannelContent_StartLoad() {
     ChannelContent_DataObj = null;
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
-    ChannelContent_loadDataPrepare();
+    Main_FirstLoad = true;
     ChannelContent_loadDataRequest();
     Main_EventScreen('ChannelContent');
-}
-
-function ChannelContent_loadDataPrepare() {
-    Main_FirstLoad = true;
-    ChannelContent_loadingDataTry = 0;
 }
 
 function ChannelContent_loadDataRequest() {
@@ -118,7 +112,6 @@ function ChannelContent_loadDataRequest() {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
         2,
         null,
         ChannelContent_loadDataRequestSuccess,
@@ -134,18 +127,15 @@ function ChannelContent_loadDataRequestSuccess(response) {
     if (obj.streams && obj.streams.length) {
 
         ChannelContent_responseText = obj.streams;
-        ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
 
     } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
 
-        ChannelContent_loadDataPrepare();
         ChannelContent_loadDataCheckHost();
 
     } else {
 
         ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
         ChannelContent_GetStreamerInfo();
 
     }
@@ -153,14 +143,8 @@ function ChannelContent_loadDataRequestSuccess(response) {
 }
 
 function ChannelContent_loadDataError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_loadDataRequest();
-    } else {
-        ChannelContent_responseText = null;
-        ChannelContent_loadDataPrepare();
-        ChannelContent_GetStreamerInfo();
-    }
+    ChannelContent_responseText = null;
+    ChannelContent_GetStreamerInfo();
 }
 
 var ChannelContent_loadDataCheckHostId;
@@ -172,7 +156,6 @@ function ChannelContent_loadDataCheckHost() {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout,
         0,
         null,
         ChannelContent_CheckHost,
@@ -185,7 +168,6 @@ function ChannelContent_loadDataCheckHost() {
 
 function ChannelContent_loadDataCheckHostError() {
     ChannelContent_responseText = null;
-    ChannelContent_loadDataPrepare();
     ChannelContent_GetStreamerInfo();
 }
 
@@ -197,11 +179,9 @@ function ChannelContent_CheckHost(responseText, key, id) {
         ChannelContent_TargetId = response.hosts[0].target_id;
 
         if (ChannelContent_TargetId !== undefined) {
-            ChannelContent_loadDataPrepare();
             ChannelContent_loadDataRequest();
         } else {
             ChannelContent_responseText = null;
-            ChannelContent_loadDataPrepare();
             ChannelContent_GetStreamerInfo();
         }
 
@@ -213,7 +193,6 @@ function ChannelContent_GetStreamerInfo() {
 
     BasexmlHttpGet(
         theUrl,
-        (DefaultHttpGetTimeout * 2) + (ChannelContent_loadingDataTry * DefaultHttpGetTimeoutPlus),
         2,
         null,
         ChannelContent_GetStreamerInfoSuccess,
@@ -237,18 +216,13 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
 }
 
 function ChannelContent_GetStreamerInfoError() {
-    ChannelContent_loadingDataTry++;
-    if (ChannelContent_loadingDataTry < DefaultHttpGetReTryMax) {
-        ChannelContent_GetStreamerInfo();
-    } else {
-        ChannelContent_offline_image = null;
-        ChannelContent_profile_banner = IMG_404_BANNER;
-        ChannelContent_selectedChannelViews = '';
-        ChannelContent_selectedChannelFollower = '';
-        ChannelContent_description = '';
-        Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
-        ChannelContent_loadDataSuccess();
-    }
+    ChannelContent_offline_image = null;
+    ChannelContent_profile_banner = IMG_404_BANNER;
+    ChannelContent_selectedChannelViews = '';
+    ChannelContent_selectedChannelFollower = '';
+    ChannelContent_description = '';
+    Main_values.Main_selectedChannelLogo = IMG_404_LOGO;
+    ChannelContent_loadDataSuccess();
 }
 
 function ChannelContent_setFollow() {

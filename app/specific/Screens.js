@@ -2516,7 +2516,6 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
     BasexmlHttpGet(
         theUrl,
-        DefaultHttpGetTimeout * 2,
         2,
         null,
         Screens_ThumbOption_RequestCheckFollowSuccess,

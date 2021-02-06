@@ -1005,7 +1005,6 @@ function Main_CheckUpdate(forceUpdate) {
 
         BasexmlHttpGet(
             'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
-            DefaultHttpGetTimeout,
             0,
             null,
             Main_CheckUpdateResult,
@@ -1441,12 +1440,10 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
 
 var Main_CheckBroadcastIDex;
 var Main_CheckBroadcastIDoc;
-var Main_CheckBroadcastIDErrorTry = 0;
 
 function Main_CheckBroadcastID(index, doc) {
     Main_CheckBroadcastIDex = index;
     Main_CheckBroadcastIDoc = doc;
-    Main_CheckBroadcastIDErrorTry = 0;
     Main_CheckBroadcastIDStart();
 }
 
@@ -1454,11 +1451,10 @@ function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
     BasexmlHttpGet(
         theUrl,
-        10000,
         2,
         null,
         Main_CheckBroadcastIDStartSucess,
-        Main_CheckBroadcastIDStartError,
+        Main_openStream,
         false
     );
 }
@@ -1485,13 +1481,6 @@ function Main_CheckBroadcastIDStartSucess(response) {
     doc.childNodes[2].classList.remove('hideimp');
 
     Main_OPenAsVod(Main_CheckBroadcastIDex);
-}
-
-function Main_CheckBroadcastIDStartError() {
-    if (Main_CheckBroadcastIDErrorTry < DefaultHttpGetReTryMax) {
-        Main_CheckBroadcastIDStart();
-        Main_CheckBroadcastIDErrorTry++;
-    } else Main_openStream();
 }
 
 function Main_getElementById(elemString) {
@@ -1905,9 +1894,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
-
-    var i = 0;
+function BasexmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
     if (Main_IsOn_OSInterface) {
 
@@ -1921,7 +1908,7 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
         OSInterface_BasexmlHttpGet(
             theUrl,
-            Timeout,
+            DefaultHttpGetTimeout,
             null,
             null,
             JsonHeadersArray,
@@ -1934,10 +1921,11 @@ function BasexmlHttpGet(theUrl, Timeout, HeaderQuatity, access_token, callbackSu
 
     } else {
 
-        var xmlHttp = new XMLHttpRequest();
+        var xmlHttp = new XMLHttpRequest(),
+            i = 0;
 
         xmlHttp.open("GET", theUrl, true);
-        xmlHttp.timeout = Timeout;
+        xmlHttp.timeout = DefaultHttpGetTimeout;
 
         if (access_token) Main_Headers[2][1] = access_token;
 
@@ -2013,7 +2001,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
 
         OSInterface_BasexmlHttpGet(
             theUrl,
-            (DefaultHttpGetTimeout * 2),
+            DefaultHttpGetTimeout,
             postMessage,
             Method ? Method : null,
             Headers ? JSON.stringify(Headers) : null,
@@ -2030,7 +2018,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.open(Method ? Method : "GET", theUrl, true);
-        xmlHttp.timeout = (DefaultHttpGetTimeout * 2);
+        xmlHttp.timeout = DefaultHttpGetTimeout;
 
         if (Headers) {
 

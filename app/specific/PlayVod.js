@@ -31,8 +31,6 @@ var PlayVod_playlist = null;
 var PlayVod_isOn = false;
 var PlayVod_Buffer = 2000;
 
-var PlayVod_loadingInfoDataTry = 0;
-
 var Play_jumping = false;
 var PlayVod_SizeClearID;
 var PlayVod_addToJump = 0;
@@ -176,8 +174,6 @@ function PlayVod_Start() {
 
 function PlayVod_SetStart() {
 
-    PlayVod_loadingInfoDataTry = 0;
-
     PlayVod_muted_segments_value = null;
     PlayVod_previews_clear();
     PlayVod_updateVodInfo();
@@ -247,14 +243,14 @@ function PlayVod_PosStart() {
 
 function PlayVod_updateVodInfo() {
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(theUrl, (DefaultHttpGetTimeout * 2) + (PlayVod_loadingInfoDataTry * DefaultHttpGetTimeoutPlus), 2, null, PlayVod_updateVodInfoPannel, PlayVod_updateVodInfoError);
-}
 
-function PlayVod_updateVodInfoError() {
-    PlayVod_loadingInfoDataTry++;
-    if (PlayVod_loadingInfoDataTry < DefaultHttpGetReTryMax) {
-        PlayVod_updateVodInfo();
-    }
+    BasexmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayVod_updateVodInfoPannel,
+        noop_fun
+    );
 }
 
 function PlayVod_updateVodInfoPannel(response) {

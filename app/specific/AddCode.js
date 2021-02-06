@@ -66,7 +66,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
             JSON.parse(
                 OSInterface_mMethodUrlHeaders(
                     url,
-                    (DefaultHttpGetTimeout * 2),
+                    DefaultHttpGetTimeout,
                     'POST',
                     null,
                     0,
@@ -82,7 +82,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
             var xmlHttp = new XMLHttpRequest();
 
             xmlHttp.open("POST", url, true);
-            xmlHttp.timeout = DefaultHttpGetTimeout * 2;
+            xmlHttp.timeout = DefaultHttpGetTimeout;
 
             xmlHttp.onreadystatechange = function() {
 
@@ -99,7 +99,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
 
             OSInterface_BasexmlHttpGet(
                 url,
-                (DefaultHttpGetTimeout * 2),
+                DefaultHttpGetTimeout,
                 null,
                 'POST',
                 null,
@@ -307,7 +307,7 @@ function AddCode_CheckTokenStart(position) {
 
         var obj = OSInterface_mMethodUrlHeaders(
             AddCode_ValidateUrl,
-            (DefaultHttpGetTimeout * 2),
+            DefaultHttpGetTimeout,
             null,
             null,
             0,
