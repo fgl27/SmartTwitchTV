@@ -343,7 +343,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 
         if (Sidepannel_isShowingUserLive()) {
 
-            Sidepannel_AddFocusFeed(true);
+            Sidepannel_AddFocusLiveFeed(true);
             Sidepannel_SetLastRefresh();
 
         } else if (Sidepannel_GetSize()) Sidepannel_Scroll(true);

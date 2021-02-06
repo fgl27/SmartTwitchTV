@@ -1302,7 +1302,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 
             Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
             Sidepannel_PosFeed = Sidepannel_Positions[Play_data.data[14]];
-            Sidepannel_AddFocusFeed(true);
+            Sidepannel_AddFocusLiveFeed(true);
 
         }
 

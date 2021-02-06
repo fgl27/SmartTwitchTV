@@ -56,7 +56,7 @@ function Sidepannel_RemoveFocusMain() {
     Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
 }
 
-function Sidepannel_AddFocusFeed(skipAnimation) {
+function Sidepannel_AddFocusLiveFeed(skipAnimation) {
     var size = Sidepannel_GetSize();
 
     if (size) {
@@ -138,7 +138,12 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTML('feed_thum_quality', info[5]);
         Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-        Main_innerHTML('feed_thum_views', info[11] + STR_FOR + info[4] + STR_SPACE + STR_VIEWER);
+        Main_innerHTML(
+            'feed_thum_views',
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE +
+            STR_FOR + info[4] + STR_SPACE + STR_VIEWER
+        );
+
     }
 }
 
@@ -503,7 +508,7 @@ function Sidepannel_ShowFeed() {
     } else if (Sidepannel_ObjNotNull()) {
 
         Sidepannel_PreloadImgs();
-        Sidepannel_AddFocusFeed(true);
+        Sidepannel_AddFocusLiveFeed(true);
         Sidepannel_SetLastRefresh();
 
     }
@@ -756,7 +761,7 @@ function Sidepannel_handleKeyDown(event) {
             if (Sidepannel_ChangeFocusAnimationFinished && Sidepannel_PosFeed && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed--;
-                Sidepannel_AddFocusFeed();
+                Sidepannel_AddFocusLiveFeed();
             }
             break;
         case KEY_PG_DOWN:
@@ -764,7 +769,7 @@ function Sidepannel_handleKeyDown(event) {
             if (Sidepannel_ChangeFocusAnimationFinished && Sidepannel_PosFeed < (Sidepannel_GetSize() - 1) && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
-                Sidepannel_AddFocusFeed();
+                Sidepannel_AddFocusLiveFeed();
             }
             break;
         case KEY_1:

@@ -868,7 +868,7 @@ function Main_ReStartScreens(preventRefresh) {
         Main_addEventListener("keydown", Sidepannel_handleKeyDown);
         if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
-        Sidepannel_AddFocusFeed(true);
+        Sidepannel_AddFocusLiveFeed(true);
         Main_SaveValues();
     } else Main_SwitchScreen(false, preventRefresh);
 }
@@ -1289,7 +1289,7 @@ function Main_HideUpdateDialog(preventFocus) {
 
     if (Sidepannel_isShowingUserLive()) {
 
-        Sidepannel_AddFocusFeed(true);
+        Sidepannel_AddFocusLiveFeed(true);
 
     } else if (UserLiveFeed_isPreviewShowing()) {
 
