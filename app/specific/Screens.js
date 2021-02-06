@@ -1531,7 +1531,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
             }
 
-        } else if (Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
+        } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
 
             data = Screens_GetObj(key);
 
