@@ -1715,12 +1715,18 @@ function Play_handleKeyDown(e) {
 
                 } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
                 else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
+
                     Play_EndTextClear();
                     Main_removeEventListener("keydown", Play_handleKeyDown);
                     Main_addEventListener("keyup", Play_handleKeyUp);
                     Play_EndUpclear = false;
                     Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
+                    Play_EndUpclearID = Main_setTimeout(
+                        Play_keyUpEnd,
+                        Screens_KeyUptimeout,
+                        Play_EndUpclearID
+                    );
+
                 }
                 break;
             case KEY_DOWN:

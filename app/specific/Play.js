@@ -181,9 +181,9 @@ function Play_Start(offline_chat) {
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
     Play_StartStayShowBottom();
-    Play_SetControlsVisibility('ShowInLive');
 
-    if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+    if (!PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInLive');
+
     Play_BottonIconsResetFocus();
 
     PlayClip_HideShowNext(0, 0);

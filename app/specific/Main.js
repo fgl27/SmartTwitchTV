@@ -2921,6 +2921,7 @@ function Main_clearInterval(id) {
 }
 
 function Main_onNewIntentClearPlay() {
+
     Play_ClearPlayer();
     Main_removeEventListener("keydown", Play_handleKeyDown);
     Main_removeEventListener("keydown", PlayVod_handleKeyDown);
@@ -2931,16 +2932,21 @@ function Main_onNewIntentClearPlay() {
     PlayClip_isOn = false;
 
     if (Play_MultiEnable) {
+
         //Make sure PP is disabled first, then disable Multistream at last close all players
         PlayExtra_PicturePicture = false;
 
         Play_controls[Play_MultiStream].enterKey();
 
         OSInterface_stopVideo();
+
     } else if (PlayExtra_PicturePicture) {
+
         PlayExtra_UnSetPanel();
         PlayExtra_PicturePicture = false;
+
     }
+
 }
 
 function Main_onNewIntent(mobj) {
