@@ -9907,6 +9907,7 @@
     }
 
     function Main_onNewIntentClearPlay() {
+
         Play_ClearPlayer();
         Main_removeEventListener("keydown", Play_handleKeyDown);
         Main_removeEventListener("keydown", PlayVod_handleKeyDown);
@@ -9917,16 +9918,21 @@
         PlayClip_isOn = false;
 
         if (Play_MultiEnable) {
+
             //Make sure PP is disabled first, then disable Multistream at last close all players
             PlayExtra_PicturePicture = false;
 
             Play_controls[Play_MultiStream].enterKey();
 
             OSInterface_stopVideo();
+
         } else if (PlayExtra_PicturePicture) {
+
             PlayExtra_UnSetPanel();
             PlayExtra_PicturePicture = false;
+
         }
+
     }
 
     function Main_onNewIntent(mobj) {
@@ -14111,12 +14117,18 @@
 
                     } else if (!UserLiveFeed_isPreviewShowing()) UserLiveFeed_ShowFeed();
                     else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
+
                         Play_EndTextClear();
                         Main_removeEventListener("keydown", Play_handleKeyDown);
                         Main_addEventListener("keyup", Play_handleKeyUp);
                         Play_EndUpclear = false;
                         Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
+                        Play_EndUpclearID = Main_setTimeout(
+                            Play_keyUpEnd,
+                            Screens_KeyUptimeout,
+                            Play_EndUpclearID
+                        );
+
                     }
                     break;
                 case KEY_DOWN:
@@ -17231,9 +17243,9 @@
         Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
 
         Play_StartStayShowBottom();
-        Play_SetControlsVisibility('ShowInLive');
 
-        if (!PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
+        if (!PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInLive');
+
         Play_BottonIconsResetFocus();
 
         PlayClip_HideShowNext(0, 0);
