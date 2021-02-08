@@ -1104,6 +1104,21 @@ public class PlayerActivity extends Activity {
 
     }
 
+    public void PlayerObjUpdateTrackSelectorParameters(int ParametersPos, Context context, int width) {
+
+        trackSelectorParameters[ParametersPos] = DefaultTrackSelector.Parameters.getDefaults(context)
+                .buildUpon()
+                .setMaxVideoBitrate(PlayerBitrate[ParametersPos])
+                .setMaxVideoSize(width, PlayerResolution[ParametersPos])
+                .setAllowVideoNonSeamlessAdaptiveness(true)
+                .setExceedAudioConstraintsIfNecessary(true)
+                .setExceedVideoConstraintsIfNecessary(true)
+                .setExceedRendererCapabilitiesIfNecessary(true)
+                .setForceHighestSupportedBitrate(true)
+                .build();
+
+    }
+
     public void PlayerObjUpdateTrackSelector(int PlayerObjPos, int ParametersPos) {
         PlayerObj[PlayerObjPos].trackSelectorParametersPosition = ParametersPos;
 
@@ -3289,20 +3304,22 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void SetMainPlayerBitrate(int Bitrate, int Resolution) {
+
             PlayerBitrate[0] = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
             PlayerResolution[0] = Resolution == 0 ? Integer.MAX_VALUE : (Resolution + 10);
             int width = Resolution == 0 ? Integer.MAX_VALUE : (int) ((PlayerResolution[0] * 16.0f) / 9.0f);
 
-            trackSelectorParameters[0] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
-                    .buildUpon()
-                    .setMaxVideoBitrate(PlayerBitrate[0])
-                    .setMaxVideoSize(width, PlayerResolution[0])
-                    .build();
+            PlayerObjUpdateTrackSelectorParameters(
+                    0,
+                    mWebViewContext,
+                    width
+            );
 
         }
 
         @JavascriptInterface
         public void SetSmallPlayerBitrate(int Bitrate, int Resolution) {
+
             PlayerBitrate[1] = Bitrate == 0 ? Integer.MAX_VALUE : Bitrate;
             PlayerResolution[1] = Resolution == 0 ? Integer.MAX_VALUE : (Resolution + 10);
             int width = Resolution == 0 ? Integer.MAX_VALUE : (int) ((PlayerResolution[1] * 16.0f) / 9.0f);
@@ -3310,22 +3327,21 @@ public class PlayerActivity extends Activity {
             // Prevent small window causing lag to the device
             // Bitrates bigger then 8Mbs on two simultaneous video playback side by side can slowdown some devices
             // even though that device can play a 2160p60 at 30+Mbs on a single playback without problem
-            trackSelectorParameters[1] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
-                    .buildUpon()
-                    .setMaxVideoBitrate(PlayerBitrate[1])
-                    .setMaxVideoSize(width, PlayerResolution[1])
-                    .build();
+            PlayerObjUpdateTrackSelectorParameters(
+                    1,
+                    mWebViewContext,
+                    width
+            );
 
-            //Technically the trackSelectorParameters[2] is requires less performance, when all player are in use this will be used
-            //Max 720p60
+            //When all player are in use this will be used Max 720p60 res
             PlayerBitrate[2] = Math.min(PlayerBitrate[1], 4000000);
             PlayerResolution[2] = Math.min(PlayerResolution[1], 730);
 
-            trackSelectorParameters[2] = DefaultTrackSelector.Parameters.getDefaults(mWebViewContext)
-                    .buildUpon()
-                    .setMaxVideoBitrate(PlayerBitrate[2])
-                    .setMaxVideoSize(width, PlayerResolution[2])
-                    .build();
+            PlayerObjUpdateTrackSelectorParameters(
+                    2,
+                    mWebViewContext,
+                    width
+            );
 
         }
 
