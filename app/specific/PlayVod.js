@@ -178,6 +178,7 @@ function PlayVod_SetStart() {
     PlayVod_previews_clear();
     PlayVod_updateVodInfo();
     PlayVod_updateChapters();
+    Play_HasLive = false;
     Play_EndSet(2);
 
 }
@@ -1166,11 +1167,15 @@ function PlayVod_handleKeyDown(e) {
                     else PlayVod_VodPositions++;
                     PlayVod_IconsAddFocus();
                 } else if (Play_isEndDialogVisible()) {
+
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < 0) Play_Endcounter = 3;
-                    if (Play_Endcounter === 1) Play_Endcounter = 0;
+
+                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+
+                    if (Play_Endcounter < 0) Play_Endcounter = 4;
+                    if (Play_Endcounter === 2) Play_Endcounter = Play_HasLive ? 1 : 0;
                     Play_EndIconsAddFocus();
                 } else PlayVod_FastBackForward(-1);
                 break;
@@ -1194,8 +1199,11 @@ function PlayVod_handleKeyDown(e) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = 0;
-                    if (Play_Endcounter === 1) Play_Endcounter = 2;
+
+                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+
+                    if (Play_Endcounter > 4) Play_Endcounter = 0;
+                    if (Play_Endcounter === 2) Play_Endcounter = 3;
                     Play_EndIconsAddFocus();
                 } else PlayVod_FastBackForward(1);
                 break;

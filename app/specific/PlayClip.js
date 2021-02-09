@@ -105,6 +105,7 @@ function PlayClip_Start() {
     PlayClip_state = Play_STATE_LOADING_TOKEN;
     UserLiveFeed_PreventHide = false;
     PlayClip_UpdateNext();
+    Play_HasLive = false;
     Play_EndSet(3);
     UserLiveFeed_Unset();
     Play_IsWarning = false;
@@ -731,11 +732,17 @@ function PlayClip_handleKeyDown(e) {
                 } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                     UserLiveFeed_KeyRightLeft(-1);
                 } else if (Play_isEndDialogVisible()) {
+
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter--;
-                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 3;
+
+                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+
+                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 4;
+
                     Play_EndIconsAddFocus();
+
                 } else PlayClip_FastBackForward(-1);
                 break;
             case KEY_RIGHT:
@@ -756,11 +763,17 @@ function PlayClip_handleKeyDown(e) {
                 } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                     UserLiveFeed_KeyRightLeft(1);
                 } else if (Play_isEndDialogVisible()) {
+
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_Endcounter++;
-                    if (Play_Endcounter > 3) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+
+                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+
+                    if (Play_Endcounter > 4) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+
                     Play_EndIconsAddFocus();
+
                 } else PlayClip_FastBackForward(1);
                 break;
             case KEY_UP:
@@ -994,10 +1007,12 @@ function PlayClip_SetOpenLive(response, key, ID) {
         }
 
         Play_HasLive = true;
+        Play_EndSet(PlayClip_isOn ? 3 : 2);
 
     } else PlayClip_SetOpenLiveError();
 
     PlayClip_CheckIsLiveId = 0;
+
 }
 
 function PlayClip_SetOpenLiveError() {
@@ -1008,6 +1023,12 @@ function PlayClip_SetOpenLiveError() {
 
         Play_IconsResetFocus();
         Play_BottonIconsResetFocus(true);
+
+    }
+
+    if (Play_isEndDialogVisible()) {
+
+        Play_EndTextsSetHasLive();
 
     }
 }

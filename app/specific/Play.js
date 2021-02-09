@@ -199,6 +199,7 @@ function Play_Start(offline_chat) {
     Main_values.Play_isHost = false;
     Play_loadDataCheckHostId = 0;
     Play_StayCheckHostId = 0;
+    Play_HasLive = false;
 
     Play_data.watching_time = new Date().getTime();
     Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeS(0));

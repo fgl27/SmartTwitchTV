@@ -607,7 +607,7 @@
             overflow: hidden;
             font-family: 'Roboto';
             font-size: 75%;
-            height: 2.35em;
+            height: 6.2vh;
             text-align: left;
         }
 
@@ -621,7 +621,7 @@
         }
 
         .end_texts_holder {
-            font-size: 80%;
+            font-size: 83%;
         }
 
         div.stream_channel_follow_game {
@@ -1586,11 +1586,11 @@
 
         div.dialog_end_icons_start,
         div.dialog_end_icons {
-            font-size: 3.25vh;
+            font-size: 2.75vh;
             vertical-align: top;
             display: inline-block;
             padding: 0.25em;
-            width: 17.5%;
+            width: 15.1%;
             height: 19%;
             border-radius: 0.2em;
             border: 0.04em solid rgba(0, 0, 0, 0);
@@ -1913,7 +1913,7 @@
 
         div.end_img_holder {
             position: absolute;
-            transform: translate(-13.5%, -104%);
+            transform: translate(-6.5%, -104%);
             width: 43vh;
         }
 
@@ -3725,9 +3725,18 @@
                         <div id="end_replay_title_text" class="next_info_dialog strokedeline"></div>
                     </div>
                 </div>
-                <!-- open vod-->
+                <!-- open live-->
                 <div id="dialog_end_1" class="dialog_end_icons">
                     <i class="icon-play strokicon icon_end"></i>
+                    <div id="dialog_end_live_text" class="strokedeline"></div>
+                    <div class="end_texts_holder">
+                        <div id="end_live_name_text" class="end_text next_channel strokedeline"></div>
+                        <div id="end_live_title_text" class="next_info_dialog strokedeline"></div>
+                    </div>
+                </div>
+                <!-- open vod-->
+                <div id="dialog_end_2" class="dialog_end_icons">
+                    <i class="icon-movie-play strokicon icon_end"></i>
                     <div id="dialog_end_vod_text" class="strokedeline"></div>
                     <div class="end_texts_holder">
                         <div id="end_vod_name_text" class="end_text next_channel strokedeline"></div>
@@ -3735,14 +3744,14 @@
                     </div>
                 </div>
                 <!-- channel content-->
-                <div id="dialog_end_2" class="dialog_end_icons">
+                <div id="dialog_end_3" class="dialog_end_icons">
                     <i class="icon-filmstrip strokicon icon_end"></i>
                     <div id="dialog_end_channel_text" class="strokedeline"></div>
                     <div id="end_channel_name_text" class="strokedeline"
                         style="font-size: 85%; overflow: hidden; text-overflow: ellipsis;"></div>
                 </div>
                 <!-- game content-->
-                <div id="dialog_end_3" class="dialog_end_icons">
+                <div id="dialog_end_4" class="dialog_end_icons">
                     <i class="icon-gamepad strokicon" style="font-size: 6.75vh;"></i>
                     <div id="dialog_end_game_text" class="strokedeline"></div>
                     <div class="end_texts_holder">
