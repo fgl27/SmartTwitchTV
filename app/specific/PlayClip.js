@@ -921,10 +921,34 @@ function PlayClip_FastBackForward(position) {
     PlayClip_setHidePanel();
 }
 
+var PlayClip_CheckIsLiveId;
+var PlayClip_CheckIsLiveTimeoutId;
 
-function PlayClip_CheckIsLive(id) {
-    Play_HasLive = false;
+function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
+
     if (!id) return;
+    Play_HasLive = false;
+    if (!SkipHide) PlayClip_SetOpenLiveError();
+
+    if (SetInterval) {
+
+        PlayClip_CheckIsLiveTimeoutId = Main_setTimeout(
+            function() {
+
+                PlayClip_CheckIsLive(id, SetInterval, true);
+
+            },
+            3 * 60 * 1000,
+            PlayClip_CheckIsLiveTimeoutId
+        );
+
+    } else {
+
+        Main_clearTimeout(PlayClip_CheckIsLiveTimeoutId);
+
+    }
+
+    PlayClip_CheckIsLiveId = (new Date().getTime());
 
     var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
 
@@ -933,12 +957,16 @@ function PlayClip_CheckIsLive(id) {
         2,
         null,
         PlayClip_SetOpenLive,
-        PlayClip_SetOpenLiveError
+        PlayClip_SetOpenLiveError,
+        0,
+        PlayClip_CheckIsLiveId
     );
 }
 
 var PlayClip_SetOpenLiveData;
-function PlayClip_SetOpenLive(response) {
+function PlayClip_SetOpenLive(response, key, ID) {
+
+    if (ID !== PlayClip_CheckIsLiveId) return;
 
     var obj = JSON.parse(response);
 
@@ -957,6 +985,8 @@ function PlayClip_SetOpenLive(response) {
         PlayClip_SetOpenLiveData = tempData;
 
     } else PlayClip_SetOpenLiveError();
+
+    PlayClip_CheckIsLiveId = 0;
 }
 
 function PlayClip_SetOpenLiveError() {

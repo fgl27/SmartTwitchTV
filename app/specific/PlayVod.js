@@ -237,7 +237,7 @@ function PlayVod_PosStart() {
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
-    PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
+    PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
     Main_values.Play_WasPlaying = 2;
     Main_SaveValues();
@@ -577,6 +577,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);
     Main_clearTimeout(PlayVod_WarnEndId);
+    Main_clearTimeout(PlayClip_CheckIsLiveTimeoutId);
     Main_values.Play_WasPlaying = 0;
     Chat_Clear();
 
