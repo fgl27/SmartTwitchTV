@@ -3771,6 +3771,12 @@ function Play_SetControlsVisibility(prop) {
 
     }
 
+    if (!Play_controls[Play_Panelcounter].visible) {
+
+        Play_IconsResetFocus();
+
+    }
+
 }
 
 function Play_KeyChatSizeChage() {

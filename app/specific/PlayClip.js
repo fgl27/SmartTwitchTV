@@ -632,7 +632,6 @@ function PlayClip_OpenVod() {
         Main_vodOffset = ChannelVod_vodOffset;
         PlayClip_PreshutdownStream(true);
         Main_addEventListener("keydown", PlayVod_handleKeyDown);
-        Play_IconsResetFocus();
         PlayClip_OpenAVod = true;
         PlayVod_Start();
     } else {

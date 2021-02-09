@@ -383,7 +383,6 @@ function PlayExtra_SetPanel() {
 
     Play_SetControlsVisibility('ShowInPP');
 
-    Play_IconsResetFocus();
     PlayExtra_UpdatePanel();
     Main_HideElement('stream_info');
     Main_ShowElement('stream_info_pp');
@@ -396,7 +395,6 @@ function PlayExtra_UnSetPanel() {
 
     Play_SetControlsVisibility('ShowInLive');
 
-    Play_IconsResetFocus();
     ChatLive_Clear(1);
     PlayExtra_HideChat();
 
