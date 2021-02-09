@@ -2062,7 +2062,7 @@ function Play_MakeControls() {
         },
         setLable: function(title) {
             Main_innerHTML('extra_button_' + this.position,
-                '<div style="max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
+                '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
                 title + '</div>');
         },
     };
@@ -2089,7 +2089,7 @@ function Play_MakeControls() {
         },
         setLable: function(title) {
             Main_innerHTML('extra_button_' + this.position,
-                '<div style="max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
+                '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
                 (title === "" ? STR_NO_GAME : title) + '</div>');
         },
     };
@@ -2122,7 +2122,7 @@ function Play_MakeControls() {
         },
         setLable: function(title, name) {
             Main_innerHTML('extra_button_' + this.position,
-                '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>');
 
 
@@ -2155,7 +2155,7 @@ function Play_MakeControls() {
         },
         setLable: function(title) {
             Main_innerHTML('extra_button_' + this.position,
-                '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>'
             );
         },
@@ -3752,7 +3752,7 @@ function Play_MakeControls() {
 
 function Play_SetControlsArrows(key) {
     return '<div id="controls_arrows_' + key +
-        '" style="position: absolute; margin-left: -0.5%; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+        '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
         key + '" class="up"></div><div id="control_arrow_down' + key +
         '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
         '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
