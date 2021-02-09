@@ -2557,7 +2557,17 @@ function Play_MakeControls() {
         string: STR_4_WAY_MULTI,
         values: null,
         enterKey: function(shutdown) {
+
             if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
+
+            if (Play_MaxMaxInstances < 4) {
+
+                Play_showWarningMidleDialog(
+                    STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_4_WAY_MULTI,
+                    3000
+                );
+                return;
+            }
 
             Play_MultiEnable = !Play_MultiEnable;
             if (Play_MultiEnable) {

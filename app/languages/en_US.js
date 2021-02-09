@@ -498,6 +498,8 @@ function en_USLang() {
     STR_REPLACE_MULTI_ENTER = "Press enter to replace or return to exit without.";
     STR_ALREDY_PLAYING = "Already playing this";
     STR_STREAM_ERROR = "Unable to open preview";
+    STR_PP_MODO = "Picture in Picture Mode";
+    STR_4_WAY_MULTI_INSTANCES = "Yours device only support %x codec instances (player playing) at the same time, can't use ";
     STR_MULTI_EMPTY = "Ended and/or empty";
     STR_4_WAY_MULTI = "4 way multistream";
     STR_CONTROLS_MULTI_0 = "Multistream help:";
