@@ -59,6 +59,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "live_warn": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "app_animations": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -2133,6 +2137,7 @@ function Settings_DialogShowCustomOpt() {
 function Settings_DialogShowWarnings() {
     Settings_value.accessibility_warn.values = [STR_NO, STR_YES];
     Settings_value.ping_warn.values = [STR_NO, STR_YES];
+    Settings_value.live_warn.values = [STR_NO, STR_YES];
 
     var obj = {
         accessibility_warn: {
@@ -2146,6 +2151,12 @@ function Settings_DialogShowWarnings() {
             values: Settings_value.ping_warn.values,
             title: STR_PING_WARNING,
             summary: STR_PING_WARNING_SUMMARY
+        },
+        live_warn: {
+            defaultValue: Settings_value.live_warn.defaultValue,
+            values: Settings_value.live_warn.values,
+            title: STR_SHOW_ISLIVE_WARNING,
+            summary: STR_SHOW_ISLIVE_WARNING_SUMMARY
         }
     };
 
