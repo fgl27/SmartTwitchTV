@@ -2731,7 +2731,7 @@ function Main_CheckStop() { // Called only by JAVA
         Main_SwitchScreen();
     } else if (Settings_isVisible()) {
         if (Settings_Codecs_isVisible()) {
-            if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+            if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
             Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {

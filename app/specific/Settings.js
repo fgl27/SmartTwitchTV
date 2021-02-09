@@ -1465,22 +1465,17 @@ var Settings_CodecsPos;
 var Settings_DisableCodecsNames = [];
 var Settings_DisableQualities = [];
 var Settings_DisableQualitiesLen = 0;
+var Settings_CodecsDialogSet = false;
 
 function Settings_CodecsShow() {
     Main_removeEventListener("keydown", Settings_handleKeyDown);
 
-    if (!Settings_CodecsValue.length) {
+    if (!Settings_CodecsDialogSet) {
 
-        if (!Main_IsOn_OSInterface) Settings_CodecsValue = [{"instances": 32, "maxbitrate": "120 Mbps", "maxlevel": "5.2", "maxresolution": "3840x2176", "name": "OMX.Nvidia.h264.decode", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps", "type": "video/avc"}, {"instances": 32, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.google.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}, {"instances": -1, "maxbitrate": "48 Mbps", "maxlevel": "5.2", "maxresolution": "4080x4080", "name": "OMX.chico.h264.decoder", "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps", "type": "video/avc"}];
-        else {
-            try {
-                Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
-            } catch (e) {
-                Settings_CodecsValue = [];
-            }
-        }
+        Settings_SetCodecsValue();
 
         if (Settings_CodecsValue.length) {
+
             var dialogContent = '',
                 DivContent,
                 spacer = " | ";
@@ -1507,6 +1502,7 @@ function Settings_CodecsShow() {
             }
 
             Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+            Settings_CodecsDialogSet = true;
         }
 
     }
@@ -1626,6 +1622,75 @@ function Settings_CodecsRightLeft(offset) {
 
 function Settings_CodecsSet() {
     if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+    Settings_SetMaxInstances();
+}
+
+function Settings_SetMaxInstances() {
+    if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
+    Play_MaxMaxInstances = 0;
+
+    var i = 0, len = Settings_CodecsValue.length;
+    for (i; i < len; i++) {
+
+        if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) &&
+            !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : "", 'google')) {
+
+
+            Play_MaxMaxInstances = (Settings_CodecsValue[i].instances > -1) ?
+                Settings_CodecsValue[i].instances : 0;
+
+            break;
+        }
+
+    }
+
+}
+
+function Settings_SetCodecsValue() {
+    if (Settings_CodecsValue.length) return;
+
+    if (!Main_IsOn_OSInterface) {
+
+        // Settings_CodecsValue = [
+        //     {
+        //         "instances": 32,
+        //         "maxbitrate": "120 Mbps",
+        //         "maxlevel": "5.2",
+        //         "maxresolution": "3840x2176",
+        //         "name": "OMX.Nvidia.h264.decode",
+        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps",
+        //         "type": "video/avc"
+        //     },
+        //     {
+        //         "instances": 32, "maxbitrate": "48 Mbps",
+        //         "maxlevel": "5.2",
+        //         "maxresolution": "4080x4080",
+        //         "name": "OMX.google.h264.decoder",
+        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
+        //         "type": "video/avc"
+        //     },
+        //     {
+        //         "instances": -1, "maxbitrate": "48 Mbps",
+        //         "maxlevel": "5.2",
+        //         "maxresolution": "4080x4080",
+        //         "name": "OMX.chico.h264.decoder",
+        //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
+        //         "type": "video/avc"
+        //     }
+        // ];
+
+        Settings_CodecsValue = JSON.parse('[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]');
+
+    } else {
+
+        try {
+            Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+        } catch (e) {
+            Settings_CodecsValue = [];
+        }
+
+    }
+
 }
 
 function Settings_QualitiesCheck() {
