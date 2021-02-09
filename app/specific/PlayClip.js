@@ -926,7 +926,7 @@ var PlayClip_CheckIsLiveTimeoutId;
 function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
 
     if (!id) return;
-    Play_HasLive = false;
+
     if (!SkipHide) PlayClip_SetOpenLiveError();
 
     if (SetInterval) {
@@ -989,7 +989,15 @@ function PlayClip_SetOpenLive(response, key, ID) {
 }
 
 function PlayClip_SetOpenLiveError() {
+    Play_HasLive = false;
     Play_BottomHide(Play_controlsOpenLive);
+
+    if (Play_Panelcounter === Play_controlsOpenLive) {
+
+        Play_IconsResetFocus();
+        Play_BottonIconsResetFocus(true);
+
+    }
 }
 
 
@@ -1021,20 +1029,37 @@ function Play_ClipCheckIfIsLive(id) {
 
 function Play_ClipCheckIfIsLiveEnd(response) {
 
-    Play_CheckIfIsLiveResultEnd(
-        response,
-        PlayClip_isOn || PlayVod_isOn,
-        PlayClip_ClipCheckIfIsLiveOpen
-    );
+    if ((PlayClip_isOn || PlayVod_isOn) && response) {
+
+        var responseObj = JSON.parse(response);
+
+        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+
+            var error = PlayClip_SetOpenLiveData[6] + STR_SPACE;
+
+            Play_CheckIfIsLiveResultCheck(
+                response,
+                responseObj,
+                error,
+                false,
+                PlayClip_ClipCheckIfIsLiveOpen,
+                PlayClip_SetOpenLiveError
+            );
+
+        }
+
+    }
 
 }
 
+var PlayClip_DontSkipStartAuto;
 function PlayClip_ClipCheckIfIsLiveOpen() {
-
     var keyfun;
 
     Main_values_Play_data = PlayClip_SetOpenLiveData;
     Play_data.data = Main_values_Play_data;
+    Play_PreviewId = Play_data.data[14];
+    PlayClip_DontSkipStartAuto = true;
 
     if (PlayClip_isOn) {
 

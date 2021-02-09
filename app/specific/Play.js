@@ -224,7 +224,7 @@ function Play_Start(offline_chat) {
     } else {
 
         Play_data.AutoUrl = Play_PreviewURL;
-        Play_SkipStartAuto = true;
+        Play_SkipStartAuto = !PlayClip_DontSkipStartAuto;
         Play_loadDataSuccessEnd(Play_PreviewResponseText, true, false, true);
 
         Play_CheckIfIsLiveCleanEnd();
@@ -238,7 +238,7 @@ function Play_Start(offline_chat) {
     Main_SaveValues();
     //Check the Play_UpdateMainStream fun when on a browser
     if (!Main_IsOn_OSInterface && !offline_chat) Play_UpdateMainStream(true, true);
-
+    PlayClip_DontSkipStartAuto = false;
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -253,7 +253,7 @@ function Play_CheckIfIsLiveResult(response) {
 
 }
 
-function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
+function Play_CheckIfIsLiveResultEnd(response, isOn, callback, callbackError) {
 
     if (isOn && response) {
 
@@ -265,26 +265,41 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                 error = StreamInfo[6] + STR_SPACE;
 
-            if (responseObj.status === 200) {
-
-                Play_PreviewURL = responseObj.url;
-                Play_PreviewResponseText = responseObj.responseText;
-                callback();
-                return;
-
-            } else {
-
-                error += Play_CheckIfIsLiveGetEror(response, isVod);
-
-            }
-
-            Play_CheckIfIsLiveStartFail(
+            Play_CheckIfIsLiveResultCheck(
+                response,
+                responseObj,
                 error,
-                2000
+                isVod,
+                callback,
+                callbackError
             );
+
         }
 
     }
+
+}
+
+function Play_CheckIfIsLiveResultCheck(response, responseObj, error, isVod, callback, callbackError) {
+
+    if (responseObj.status === 200) {
+
+        Play_PreviewURL = responseObj.url;
+        Play_PreviewResponseText = responseObj.responseText;
+        callback();
+        return;
+
+    } else {
+
+        error += Play_CheckIfIsLiveGetEror(response, isVod);
+
+    }
+
+    Play_CheckIfIsLiveStartFail(
+        error,
+        2000,
+        callbackError
+    );
 
 }
 
@@ -354,11 +369,13 @@ function Play_CheckIfIsLiveStart(callback) {
 
 }
 
-function Play_CheckIfIsLiveStartFail(text, time) {
+function Play_CheckIfIsLiveStartFail(text, time, callbackError) {
     Play_HideBufferDialog();
     Play_CheckIfIsLiveCleanEnd();
 
     Play_showWarningMidleDialog(text, time);
+
+    if (callbackError) callbackError();
 }
 
 function Play_CheckIfIsLiveClean(fail_type) {//called from java
