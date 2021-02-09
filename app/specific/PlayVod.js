@@ -237,6 +237,8 @@ function PlayVod_PosStart() {
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
+    PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
+
     Main_values.Play_WasPlaying = 2;
     Main_SaveValues();
 }

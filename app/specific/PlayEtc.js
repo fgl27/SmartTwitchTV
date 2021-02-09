@@ -1915,51 +1915,53 @@ function Play_handleKeyDown(e) {
 var Play_controls = {};
 var Play_controlsSize = -1;
 
-var Play_controlsBack = 0;
-var Play_controlsSearch = 1;
-var Play_controlsChanelCont = 2;
-var Play_controlsGameCont = 3;
-var Play_controlsOpenVod = 4;
-var Play_controlsFollow = 5;
-var Play_controlsSpeed = 6;
-var Play_controlsExternal = 7;
-var Play_controlsQuality = 8;
-var Play_controlsQualityMini = 9;
-var Play_controlsQualityMulti = 10;
-var Play_controlsLowLatency = 11;
-var Play_controlsChapters = 12;
-var Play_MultiStream = 13;
-var Play_controlsAudio = 14;
-var Play_controlsChatSide = 15;
-var Play_controlsChat = 16;
-var Play_controlsChatSend = 17;
+var temp_controls_pos = 0;
+var Play_controlsBack = temp_controls_pos++;
+var Play_controlsSearch = temp_controls_pos++;
+var Play_controlsChanelCont = temp_controls_pos++;
+var Play_controlsGameCont = temp_controls_pos++;
+var Play_controlsOpenLive = temp_controls_pos++;
+var Play_controlsOpenVod = temp_controls_pos++;
+var Play_controlsFollow = temp_controls_pos++;
+var Play_controlsSpeed = temp_controls_pos++;
+var Play_controlsExternal = temp_controls_pos++;
+var Play_controlsQuality = temp_controls_pos++;
+var Play_controlsQualityMini = temp_controls_pos++;
+var Play_controlsQualityMulti = temp_controls_pos++;
+var Play_controlsLowLatency = temp_controls_pos++;
+var Play_controlsChapters = temp_controls_pos++;
+var Play_MultiStream = temp_controls_pos++;
+var Play_controlsAudio = temp_controls_pos++;
+var Play_controlsChatSide = temp_controls_pos++;
+var Play_controlsChat = temp_controls_pos++;
+var Play_controlsChatSend = temp_controls_pos++;
 
-var Play_controlsChatSettings = 18;
-var Play_controlsPlayerStatus = 19;
-var Play_controlsPreview = 20;
+var Play_controlsChatSettings = temp_controls_pos++;
+var Play_controlsPlayerStatus = temp_controls_pos++;
+var Play_controlsPreview = temp_controls_pos++;
 
-var Play_controlsChatForceDis = 21;
-var Play_controlsChatDelay = 22;
-var Play_controlsChatPos = 23;
-var Play_controlsChatSize = 24;
-var Play_controlsChatBright = 25;
-var Play_controlsChatFont = 26;
+var Play_controlsChatForceDis = temp_controls_pos++;
+var Play_controlsChatDelay = temp_controls_pos++;
+var Play_controlsChatPos = temp_controls_pos++;
+var Play_controlsChatSize = temp_controls_pos++;
+var Play_controlsChatBright = temp_controls_pos++;
+var Play_controlsChatFont = temp_controls_pos++;
 
-var Play_controlsAudioAll = 27;
-var Play_controlsAudio_Volume_100 = 28;
-var Play_controlsAudioEna0 = 29;
-var Play_controlsAudioVol0 = 30;
-var Play_controlsAudioEna1 = 31;
-var Play_controlsAudioVol1 = 32;
-var Play_controlsAudioEna2 = 33;
-var Play_controlsAudioVol2 = 34;
-var Play_controlsAudioEna3 = 35;
-var Play_controlsAudioVol3 = 36;
+var Play_controlsAudioAll = temp_controls_pos++;
+var Play_controlsAudio_Volume_100 = temp_controls_pos++;
+var Play_controlsAudioEna0 = temp_controls_pos++;
+var Play_controlsAudioVol0 = temp_controls_pos++;
+var Play_controlsAudioEna1 = temp_controls_pos++;
+var Play_controlsAudioVol1 = temp_controls_pos++;
+var Play_controlsAudioEna2 = temp_controls_pos++;
+var Play_controlsAudioVol2 = temp_controls_pos++;
+var Play_controlsAudioEna3 = temp_controls_pos++;
+var Play_controlsAudioVol3 = temp_controls_pos++;
 
-var Play_controlsPreviewEnable = 37;
-var Play_controlsPreviewSize = 38;
-var Play_controlsPreviewVolume = 39;
-var Play_controlsPreviewMainVolume = 40;
+var Play_controlsPreviewEnable = temp_controls_pos++;
+var Play_controlsPreviewSize = temp_controls_pos++;
+var Play_controlsPreviewVolume = temp_controls_pos++;
+var Play_controlsPreviewMainVolume = temp_controls_pos++;
 
 var Play_controlsDefault = Play_controlsChat;
 var Play_Panelcounter = Play_controlsDefault;
@@ -2001,11 +2003,13 @@ function Play_MakeControls() {
 
                 Play_SetControlsVisibility('ShowInVod');
                 if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
+                if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
 
             } else if (PlayVodClip === 3) {
 
                 Play_SetControlsVisibility('ShowInClip');
                 if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+                if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
 
             }
 
@@ -2090,6 +2094,45 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsOpenLive] = { //open live
+        ShowInLive: false,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: false,
+        ShowInMulti: false,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: "play",
+        offsetY: -8,
+        string: STR_OPEN_LIVE,
+        values: '',
+        defaultValue: null,
+        enterKey: function() {
+
+            Play_ForceHidePannel();
+            Play_SavePlayData();
+
+            Play_ClipCheckIfIsLive(
+                Main_values.Main_selectedChannel
+            );
+
+        },
+        setLable: function(title, name) {
+            Main_innerHTML('extra_button_' + this.position,
+                '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                title + '</div>');
+
+
+            Main_textContentWithEle(
+                Play_controls[this.position].doc_title,
+                this.string + name
+            );
+        },
+    };
+
     Play_controls[Play_controlsOpenVod] = { //open vod
         ShowInLive: false,
         ShowInVod: false,
@@ -2102,7 +2145,7 @@ function Play_MakeControls() {
         ShowInPreview: false,
         ShowInStay: false,
         icons: "movie-play",
-        offsetY: -8,
+        offsetY: -9,
         string: STR_OPEN_BROADCAST,
         values: '',
         defaultValue: null,
@@ -2113,10 +2156,10 @@ function Play_MakeControls() {
         setLable: function(title) {
             Main_innerHTML('extra_button_' + this.position,
                 '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
-                title + '</div>');
+                title + '</div>'
+            );
         },
     };
-
 
     Play_controls[Play_controlsFollow] = { //following
         ShowInLive: true,
@@ -2683,7 +2726,7 @@ function Play_MakeControls() {
         ShowInPreview: false,
         ShowInStay: true,
         icons: Play_isFullScreen ? "resize-down" : "resize-up",
-        offsetY: -5,
+        offsetY: -7,
         string: STR_CHAT_VIDEO_MODE,
         values: null,
         defaultValue: null,

@@ -196,6 +196,7 @@ function Main_loadTranslations(language) {
                     'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
                     'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                     'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+                    'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
                     'Main_onNewIntent': Main_onNewIntent,
                     'Main_EventChannelRefresh': Main_EventChannelRefresh,
                     'ChatLive_SetLatency': ChatLive_SetLatency,

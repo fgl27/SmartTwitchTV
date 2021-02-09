@@ -230,6 +230,8 @@ function en_USLang() {
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = "Created ";
     STR_OPEN_BROADCAST = "Open the Broadcast";
+    STR_OPEN_LIVE = "Open the Live - ";
+    STR_IS_LIVE = "Is now Live";
     STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
     STR_STAY_OPEN = "Stay on the stream";
     STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";

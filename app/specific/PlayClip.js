@@ -147,6 +147,8 @@ function PlayClip_Start() {
     Play_ShowPanelStatus(3);
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+    PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
 }
 
 function PlayClip_SetProgressBarJumpers() {
@@ -167,12 +169,12 @@ function PlayClip_updateVodInfo() {
         theUrl,
         2,
         null,
-        PlayClip_updateVodInfoSucess,
+        PlayClip_updateVodInfoSuccess,
         noop_fun
     );
 }
 
-function PlayClip_updateVodInfoSucess(response) {
+function PlayClip_updateVodInfoSuccess(response) {
     ChannelVod_title = Main_ReplaceLargeFont(twemoji.parse(JSON.parse(response).title, false, false));
     Main_innerHTML("end_vod_title_text", ChannelVod_title);
     Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
@@ -919,3 +921,113 @@ function PlayClip_FastBackForward(position) {
     PlayClip_setHidePanel();
 }
 
+
+function PlayClip_CheckIsLive(id) {
+    Play_HasLive = false;
+    if (!id) return;
+
+    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
+
+    BasexmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayClip_SetOpenLive,
+        PlayClip_SetOpenLiveError
+    );
+}
+
+var PlayClip_SetOpenLiveData;
+function PlayClip_SetOpenLive(response) {
+
+    var obj = JSON.parse(response);
+
+    if (obj.streams && obj.streams.length) {
+
+        var tempData = ScreensObj_LiveCellArray(obj.streams[0]),
+            playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] : "") + ', ' + tempData[4];
+
+        Play_controls[Play_controlsOpenLive].setLable(
+            playing,
+            tempData[1]
+        );
+
+        Play_BottomShow(Play_controlsOpenLive);
+
+        PlayClip_SetOpenLiveData = tempData;
+
+    } else PlayClip_SetOpenLiveError();
+}
+
+function PlayClip_SetOpenLiveError() {
+    Play_BottomHide(Play_controlsOpenLive);
+}
+
+
+function Play_ClipCheckIfIsLive(id) {
+
+    Play_showBufferDialog();
+
+    if (!Main_IsOn_OSInterface) {
+
+        PlayClip_ClipCheckIfIsLiveOpen();
+
+    } else {
+
+        Play_PreviewCheckId = (new Date().getTime());
+
+        OSInterface_getStreamDataAsync(
+            PlayClip_BaseUrl,
+            Play_live_links.replace('%x', id),
+            'Play_ClipCheckIfIsLiveEnd',
+            Play_PreviewCheckId,
+            2,//Main player runs on 0 extra player on 1 the check on 2
+            DefaultHttpGetTimeout,
+            false,
+            Play_live_token.replace('%x', id)
+        );
+
+    }
+}
+
+function Play_ClipCheckIfIsLiveEnd(response) {
+
+    Play_CheckIfIsLiveResultEnd(
+        response,
+        PlayClip_isOn || PlayVod_isOn,
+        PlayClip_ClipCheckIfIsLiveOpen
+    );
+
+}
+
+function PlayClip_ClipCheckIfIsLiveOpen() {
+
+    var keyfun;
+
+    Main_values_Play_data = PlayClip_SetOpenLiveData;
+    Play_data.data = Main_values_Play_data;
+
+    if (PlayClip_isOn) {
+
+        PlayClip_PreshutdownStream(true);
+        keyfun = PlayClip_handleKeyDown;
+
+    } else {
+
+        PlayVod_PreshutdownStream(true);
+        keyfun = PlayVod_handleKeyDown;
+
+    }
+
+    Main_removeEventListener("keydown", keyfun);
+    Main_openStream();
+
+    Main_EventPlay(
+        'live',
+        Main_values_Play_data[6],
+        Main_values_Play_data[3],
+        Main_values_Play_data[15],
+        screen
+    );
+
+}
