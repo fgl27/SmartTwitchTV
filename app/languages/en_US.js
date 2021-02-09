@@ -235,7 +235,7 @@ function en_USLang() {
     STR_SHOW_ISLIVE_WARNING_SUMMARY = "When watching a Clip or a VOD the app can check when that streamer is live if this is set to YES a warning will show, to open the live just use the player bottom controls option";
     STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
     STR_STAY_OPEN = "Stay on the stream";
-    STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
+    STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back Live";
     STR_STAY_CHECK = "Check if stream is online in:";
     STR_STAY_CHECKING = "Checking if is online...";
     STR_STAY_CHECK_LAST = "Last result:";

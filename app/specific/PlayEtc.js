@@ -859,12 +859,12 @@ function Play_StartStay() {
     Play_state = Play_STATE_PLAYING;
     Play_StayCheckHostId = 0;
 
-    Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
+    Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 1);
     Main_ShowElement('play_dialog_retry');
 
     Play_StartStayTryId = Main_setTimeout(
         function() {
-            Play_StartStayCheck(10);
+            Play_StartStayCheck(1);
         },
         1000,
         Play_StartStayTryId
@@ -891,7 +891,7 @@ function Play_StartStayCheck(time) {
 
     Play_StartStayTryId = Main_setTimeout(
         function() {
-            if (!time) Play_StartStayStartCheck();
+            if (time < 1) Play_StartStayStartCheck();
             else Play_StartStayCheck(time);
         },
         1000,
