@@ -177,7 +177,7 @@ function PlayClip_updateVodInfo() {
 function PlayClip_updateVodInfoSuccess(response) {
     ChannelVod_title = Main_ReplaceLargeFont(twemoji.parse(JSON.parse(response).title, false, false));
     Main_innerHTML("end_vod_title_text", ChannelVod_title);
-    Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
+    Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
 }
 
 function PlayClip_GetStreamerInfo() {
@@ -945,7 +945,7 @@ function PlayClip_SetOpenLive(response) {
     if (obj.streams && obj.streams.length) {
 
         var tempData = ScreensObj_LiveCellArray(obj.streams[0]),
-            playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] : "") + ', ' + tempData[4];
+            playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : "") + tempData[4];
 
         Play_controls[Play_controlsOpenLive].setLable(
             playing,

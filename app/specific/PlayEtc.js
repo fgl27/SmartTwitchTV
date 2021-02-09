@@ -2107,7 +2107,7 @@ function Play_MakeControls() {
         ShowInStay: false,
         icons: "play",
         offsetY: -8,
-        string: STR_OPEN_LIVE,
+        string: STR_IS_LIVE,
         values: '',
         defaultValue: null,
         enterKey: function() {
@@ -2125,10 +2125,9 @@ function Play_MakeControls() {
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>');
 
-
-            Main_textContentWithEle(
+            Main_innerHTMLWithEle(
                 Play_controls[this.position].doc_title,
-                this.string + name
+                name + STR_SPACE + this.string
             );
         },
     };
@@ -2153,10 +2152,15 @@ function Play_MakeControls() {
             Play_ForceHidePannel();
             PlayClip_OpenVod();
         },
-        setLable: function(title) {
+        setLable: function(title, name) {
             Main_innerHTML('extra_button_' + this.position,
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>'
+            );
+
+            Main_textContentWithEle(
+                Play_controls[this.position].doc_title,
+                this.string + ' - ' + name
             );
         },
     };
