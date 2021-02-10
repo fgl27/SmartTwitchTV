@@ -1191,9 +1191,12 @@ function Main_UpdateDialogKeyFun(event) {
                     } else {
 
                         Main_showLoadDialog();
-                        OSInterface_showToast(STR_UPDATE_START);
+                        var fromPlay = OSInterface_getInstallFromPLay();
+
+                        OSInterface_showToast(fromPlay ? STR_UPDATE_PLAY : STR_UPDATE_START);
+
                         OSInterface_UpdateAPK(
-                            OSInterface_getInstallFromPLay() ? null : version.ApkUrl,
+                            fromPlay ? null : version.ApkUrl,
                             STR_UPDATE_FAIL,
                             STR_UPDATE_FAIL_DOWNLOAD
                         );
