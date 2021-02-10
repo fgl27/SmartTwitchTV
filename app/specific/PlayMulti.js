@@ -323,12 +323,11 @@ function Play_MultiStartPrestart(position) {
         Play_MultiStart(position);
 
         Main_EventPlay(
-            'live',
+            'MultiStream',
             Play_MultiArray[position].data[6],
             Play_MultiArray[position].data[3],
             !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
-            'MULTI'
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
         );
     }
 }

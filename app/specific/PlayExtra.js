@@ -82,12 +82,11 @@ function PlayExtra_KeyEnter() {
         }
 
         Main_EventPlay(
-            'live',
+            'PictureInPicture',
             PlayExtra_data.data[6],
             PlayExtra_data.data[3],
             !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
-            'PP'
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
         );
 
     }

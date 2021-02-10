@@ -2739,6 +2739,13 @@ function Play_MakeControls() {
                 if (Play_MultiChatBeffore) Play_controls[Play_controlsChat].enterKey();
                 Play_SetAudioIcon();
 
+                Main_EventPlay(
+                    'MultiStream',
+                    Play_MultiArray[0].data[6],
+                    Play_MultiArray[0].data[3],
+                    !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTING) ? Play_MultiArray[0].data[15] : 'HOSTING'
+                );
+
             } else {
                 OSInterface_DisableMultiStream();
                 Play_Multi_UnSetPanel(shutdown);
