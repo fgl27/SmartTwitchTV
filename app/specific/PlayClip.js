@@ -1013,6 +1013,7 @@ function PlayClip_SetOpenLive(response, key, ID) {
 
     PlayClip_CheckIsLiveId = 0;
 
+    //Play_PlayEndStart(PlayClip_isOn ? 3 : 2);//To test end dialog
 }
 
 function PlayClip_SetOpenLiveError() {

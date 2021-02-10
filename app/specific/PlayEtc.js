@@ -799,12 +799,12 @@ function Play_EndTextsSetHasLive() {
         );
 
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
-        Main_getElementById('end_button_img_holder').style.transform = 'translate(-6.5%, -104%)';
+        Main_getElementById('end_button_img_holder').style.transform = 'translate(-5%, -104%)';
 
     } else {
 
         Main_getElementById('dialog_end_1').style.display = 'none';
-        Main_getElementById('end_button_img_holder').style.transform = 'translate(-19.5%, -104%)';
+        Main_getElementById('end_button_img_holder').style.transform = 'translate(-24.5%, -104%)';
 
     }
 
