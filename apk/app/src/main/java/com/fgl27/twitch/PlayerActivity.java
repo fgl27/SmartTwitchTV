@@ -3776,11 +3776,11 @@ public class PlayerActivity extends Activity {
 
         private int position;
         private final int Delay_ms;
+        private final int defaultDelayPlayerCheck = 8000;
         private TrackGroupArray lastSeenTrackGroupArray = null;
 
         private PlayerEventListener(int position) {
             this.position = position;
-            int defaultDelayPlayerCheck = 8000;
             this.Delay_ms = BUFFER_SIZE[PlayerObj[position].Type - 1] + defaultDelayPlayerCheck + (MultiStreamEnable ? (defaultDelayPlayerCheck / 2) : 0);
         }
 
@@ -3855,12 +3855,6 @@ public class PlayerActivity extends Activity {
                 if (position < 4) {
                     //Main players
 
-                    //Delay the counter reset to make sure the connection is fine now when not on a auto mode
-                    if (!IsInAutoMode || PlayerObj[position].Type == 3)
-                        PlayerObj[position].CheckHandler.postDelayed(() -> PlayerObj[position].CheckCounter = 0, 10000);
-                    else
-                        PlayerObj[position].CheckCounter = 0;
-
                     if (PlayerObj[position].Type == 1) {
 
                         //If other not playing just play it so they stay in sync
@@ -3905,10 +3899,12 @@ public class PlayerActivity extends Activity {
                 } else {
                     //Preview player
 
-                    PlayerObj[position].CheckCounter = 0;
                     ApplyAudioAll();
 
                 }
+
+                //Delay the counter reset to make sure the connection is fine
+                PlayerObj[position].CheckHandler.postDelayed(() -> PlayerObj[position].CheckCounter = 0, defaultDelayPlayerCheck);
 
             }
         }
