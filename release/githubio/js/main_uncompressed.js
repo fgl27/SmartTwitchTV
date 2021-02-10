@@ -643,6 +643,7 @@
     var STR_UPDATE_SHOW;
     var STR_UPDATE_SHOW_ARRAY;
     var STR_UPDATE_START;
+    var STR_UPDATE_PLAY;
     var STR_UPDATE_ERROR;
     var STR_DISABLE;
     var STR_ENABLE;
@@ -963,6 +964,7 @@
         STR_UPDATE_SHOW = "Show updates dialog when updates are available";
         STR_UPDATE_SHOW_ARRAY = ["Yes", "Only a toast message", "No"];
         STR_UPDATE_START = "Update process started this may take a few seconds, please await!";
+        STR_UPDATE_PLAY = "If Play Store doesn't show the update try again after a few minutes!";
         STR_UPDATE_ERROR = "You need APK version 3.0.303 or UP to be able to use this, please update the old way";
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
@@ -8186,9 +8188,12 @@
                         } else {
 
                             Main_showLoadDialog();
-                            OSInterface_showToast(STR_UPDATE_START);
+                            var fromPlay = OSInterface_getInstallFromPLay();
+
+                            OSInterface_showToast(fromPlay ? STR_UPDATE_PLAY : STR_UPDATE_START);
+
                             OSInterface_UpdateAPK(
-                                OSInterface_getInstallFromPLay() ? null : version.ApkUrl,
+                                fromPlay ? null : version.ApkUrl,
                                 STR_UPDATE_FAIL,
                                 STR_UPDATE_FAIL_DOWNLOAD
                             );
