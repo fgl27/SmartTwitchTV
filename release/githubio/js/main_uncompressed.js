@@ -670,6 +670,8 @@
     var STR_INACTIVE_SETTINGS;
     var STR_INACTIVE_SETTINGS_SUMMARY;
     var STR_INACTIVE_WARNING;
+    var STR_SHOW_ISLIVE_WARNING;
+    var STR_SHOW_ISLIVE_WARNING_SUMMARY;
     var STR_REMAINING;
     var STR_CHAT_EXTRA;
     var STR_AUDIO_ALL;
@@ -690,6 +692,9 @@
     var STR_OLED_BURN_IN_SUMMARY;
     var STR_DELETE_UNREACHABLE;
     var STR_DELETE_UNREACHABLE_SUMMARY;
+    var STR_4_WAY_MULTI_INSTANCES;
+    var STR_PP_MODO;
+    var STR_IS_LIVE;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1085,11 +1090,14 @@
         STR_FEATURED = 'Featured';
         STR_CREATED_AT = "Created ";
         STR_OPEN_BROADCAST = "Open the Broadcast";
-        STR_OPEN_CHAT = "Click to open chat and/or wait to be back online";
+        STR_IS_LIVE = "Is now Live";
+        STR_SHOW_ISLIVE_WARNING = 'Show "Streamer ' + STR_IS_LIVE + '" Warning';
+        STR_SHOW_ISLIVE_WARNING_SUMMARY = "When watching a Clip or a VOD the app can check when that streamer is live if this is set to YES a warning will show, to open the live just use the player bottom controls option";
+        STR_OPEN_CHAT = "Click to open chat and/or wait to be back Live";
         STR_STAY_OPEN = "Stay on the stream";
-        STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back online";
-        STR_STAY_CHECK = "Check if stream is online in:";
-        STR_STAY_CHECKING = "Checking if is online...";
+        STR_STAY_OPEN_SUMMARY = "Stay on and recheck to see if it comes back Live";
+        STR_STAY_CHECK = "Check if stream is Live in:";
+        STR_STAY_CHECKING = "Checking if is Live...";
         STR_STAY_CHECK_LAST = "Last result:";
         STR_STAY_IS_OFFLINE = "The stream was offline";
         STR_NO_BROADCAST = "No Broadcast";
@@ -1353,6 +1361,8 @@
         STR_REPLACE_MULTI_ENTER = "Press enter to replace or return to exit without.";
         STR_ALREDY_PLAYING = "Already playing this";
         STR_STREAM_ERROR = "Unable to open preview";
+        STR_PP_MODO = "Picture in Picture Mode";
+        STR_4_WAY_MULTI_INSTANCES = "Yours device only support %x codec instances (player playing) at the same time, can't use ";
         STR_MULTI_EMPTY = "Ended and/or empty";
         STR_4_WAY_MULTI = "4 way multistream";
         STR_CONTROLS_MULTI_0 = "Multistream help:";
@@ -1761,11 +1771,21 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 303, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/303/SmartTV_twitch_3_0_303.apk',
-        WebVersion: 'February 06 2020',
-        WebTag: 570, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 304, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/304/SmartTV_twitch_3_0_304.apk',
+        WebVersion: 'February 10 2020',
+        WebTag: 571, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.304 and Web Version February 10 2020",
+                changes: [
+                    "Add new End dialog and player controls button, \"Streamer is now Live\", let you know when watching a VOD or a Clip that the streamer come online",
+                    "Add a new warning in Setting -> Warnings, Show \"Streamer is now Live\" warning, disable by default, small pop warning that show the first time the streamer comes online",
+                    "General improve on playback experience",
+                    "General improves on player controls looks",
+                    "Others general improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version February 06 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -1788,13 +1808,6 @@
             {
                 title: "Apk Version 3.0.298 and Web Version January 30 2020",
                 changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.297 and Web Version January 28 2020",
-                changes: [
-                    "Prevent to show wrong value for Latency to broadcaster, may take 5 to 30 seconds for the value correct it self after the next problem happens, only happens after a stream goes offline unintentionally and to prevent closing the stream Twitch keeps the stream open until the stream comes back, on this case for internal reason the clock generated by the server became delay with makes the value of the latency way too offsetted",
                     "General improves and bug fixes"
                 ]
             }
@@ -7171,6 +7184,7 @@
                         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
                         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
                         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+                        'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
                         'Main_onNewIntent': Main_onNewIntent,
                         'Main_EventChannelRefresh': Main_EventChannelRefresh,
                         'ChatLive_SetLatency': ChatLive_SetLatency,
@@ -9714,7 +9728,7 @@
             Main_SwitchScreen();
         } else if (Settings_isVisible()) {
             if (Settings_Codecs_isVisible()) {
-                if (Settings_CodecsValue.length) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
+                if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
                 Main_HideElement('dialog_codecs');
                 Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
             } else if (Settings_Dialog_isVisible()) {
@@ -11578,6 +11592,7 @@
         PlayClip_state = Play_STATE_LOADING_TOKEN;
         UserLiveFeed_PreventHide = false;
         PlayClip_UpdateNext();
+        Play_HasLive = false;
         Play_EndSet(3);
         UserLiveFeed_Unset();
         Play_IsWarning = false;
@@ -11620,6 +11635,8 @@
         Play_ShowPanelStatus(3);
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+        PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
     }
 
     function PlayClip_SetProgressBarJumpers() {
@@ -11640,15 +11657,15 @@
             theUrl,
             2,
             null,
-            PlayClip_updateVodInfoSucess,
+            PlayClip_updateVodInfoSuccess,
             noop_fun
         );
     }
 
-    function PlayClip_updateVodInfoSucess(response) {
+    function PlayClip_updateVodInfoSuccess(response) {
         ChannelVod_title = Main_ReplaceLargeFont(twemoji.parse(JSON.parse(response).title, false, false));
         Main_innerHTML("end_vod_title_text", ChannelVod_title);
-        Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title);
+        Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
     }
 
     function PlayClip_GetStreamerInfo() {
@@ -12107,7 +12124,6 @@
             Main_vodOffset = ChannelVod_vodOffset;
             PlayClip_PreshutdownStream(true);
             Main_addEventListener("keydown", PlayVod_handleKeyDown);
-            Play_IconsResetFocus();
             PlayClip_OpenAVod = true;
             PlayVod_Start();
         } else {
@@ -12207,11 +12223,17 @@
                     } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                         UserLiveFeed_KeyRightLeft(-1);
                     } else if (Play_isEndDialogVisible()) {
+
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter--;
-                        if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 3;
+
+                        if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+
+                        if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 4;
+
                         Play_EndIconsAddFocus();
+
                     } else PlayClip_FastBackForward(-1);
                     break;
                 case KEY_RIGHT:
@@ -12232,11 +12254,17 @@
                     } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
                         UserLiveFeed_KeyRightLeft(1);
                     } else if (Play_isEndDialogVisible()) {
+
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter++;
-                        if (Play_Endcounter > 3) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+
+                        if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+
+                        if (Play_Endcounter > 4) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+
                         Play_EndIconsAddFocus();
+
                     } else PlayClip_FastBackForward(1);
                     break;
                 case KEY_UP:
@@ -12395,6 +12423,194 @@
         PlayClip_setHidePanel();
     }
 
+    var PlayClip_CheckIsLiveId;
+    var PlayClip_CheckIsLiveTimeoutId;
+
+    function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
+
+        if (!id) return;
+
+        if (!SkipHide) PlayClip_SetOpenLiveError();
+
+        if (SetInterval) {
+
+            PlayClip_CheckIsLiveTimeoutId = Main_setTimeout(
+                function() {
+
+                    PlayClip_CheckIsLive(id, SetInterval, true);
+
+                },
+                3 * 60 * 1000,
+                PlayClip_CheckIsLiveTimeoutId
+            );
+
+        } else {
+
+            Main_clearTimeout(PlayClip_CheckIsLiveTimeoutId);
+
+        }
+
+        PlayClip_CheckIsLiveId = (new Date().getTime());
+
+        var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
+
+        BasexmlHttpGet(
+            theUrl,
+            2,
+            null,
+            PlayClip_SetOpenLive,
+            PlayClip_SetOpenLiveError,
+            0,
+            PlayClip_CheckIsLiveId
+        );
+    }
+
+    var PlayClip_SetOpenLiveData;
+
+    function PlayClip_SetOpenLive(response, key, ID) {
+
+        if (ID !== PlayClip_CheckIsLiveId) return;
+
+        var obj = JSON.parse(response);
+
+        if (obj.streams && obj.streams.length) {
+
+            var tempData = ScreensObj_LiveCellArray(obj.streams[0]),
+                playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : "") + tempData[4];
+
+            Play_controls[Play_controlsOpenLive].setLable(
+                playing,
+                tempData[1]
+            );
+
+            Play_BottomShow(Play_controlsOpenLive);
+
+            PlayClip_SetOpenLiveData = tempData;
+
+            if (!Play_HasLive && Settings_value.live_warn.defaultValue === 1) {
+
+                Play_showWarningMidleDialog(
+                    tempData[1] + STR_BR + Play_controls[Play_controlsOpenLive].string,
+                    3000,
+                    true
+                );
+
+            }
+
+            Play_HasLive = true;
+            Play_EndSet(PlayClip_isOn ? 3 : 2);
+
+        } else PlayClip_SetOpenLiveError();
+
+        PlayClip_CheckIsLiveId = 0;
+
+        //Play_PlayEndStart(PlayClip_isOn ? 3 : 2);//To test end dialog
+    }
+
+    function PlayClip_SetOpenLiveError() {
+        Play_HasLive = false;
+        Play_BottomHide(Play_controlsOpenLive);
+
+        if (Play_Panelcounter === Play_controlsOpenLive) {
+
+            Play_IconsResetFocus();
+            Play_BottonIconsResetFocus(true);
+
+        }
+
+        if (Play_isEndDialogVisible()) {
+
+            Play_EndTextsSetHasLive();
+
+        }
+    }
+
+
+    function Play_ClipCheckIfIsLive(id) {
+
+        Play_showBufferDialog();
+
+        if (!Main_IsOn_OSInterface) {
+
+            PlayClip_ClipCheckIfIsLiveOpen();
+
+        } else {
+
+            Play_PreviewCheckId = (new Date().getTime());
+
+            OSInterface_getStreamDataAsync(
+                PlayClip_BaseUrl,
+                Play_live_links.replace('%x', id),
+                'Play_ClipCheckIfIsLiveEnd',
+                Play_PreviewCheckId,
+                2, //Main player runs on 0 extra player on 1 the check on 2
+                DefaultHttpGetTimeout,
+                false,
+                Play_live_token.replace('%x', id)
+            );
+
+        }
+    }
+
+    function Play_ClipCheckIfIsLiveEnd(response) {
+
+        if ((PlayClip_isOn || PlayVod_isOn) && response) {
+
+            var responseObj = JSON.parse(response);
+
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
+
+                var error = PlayClip_SetOpenLiveData[6] + STR_SPACE;
+
+                Play_CheckIfIsLiveResultCheck(
+                    response,
+                    responseObj,
+                    error,
+                    false,
+                    PlayClip_ClipCheckIfIsLiveOpen,
+                    PlayClip_SetOpenLiveError
+                );
+
+            }
+
+        }
+
+    }
+
+    var PlayClip_DontSkipStartAuto;
+
+    function PlayClip_ClipCheckIfIsLiveOpen() {
+        var keyfun;
+
+        Main_values_Play_data = PlayClip_SetOpenLiveData;
+        Play_data.data = Main_values_Play_data;
+        Play_PreviewId = Play_data.data[14];
+        PlayClip_DontSkipStartAuto = true;
+
+        if (PlayClip_isOn) {
+
+            PlayClip_PreshutdownStream(true);
+            keyfun = PlayClip_handleKeyDown;
+
+        } else {
+
+            PlayVod_PreshutdownStream(true);
+            keyfun = PlayVod_handleKeyDown;
+
+        }
+
+        Main_removeEventListener("keydown", keyfun);
+        Main_openStream();
+
+        Main_EventPlay(
+            'live',
+            Main_values_Play_data[6],
+            Main_values_Play_data[3],
+            Main_values_Play_data[15],
+            screen
+        );
+
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -13074,14 +13290,27 @@
                 }
             }
         } else if (Play_Endcounter === 1) {
+
             if (Main_values.Play_isHost) Play_OpenHost();
             else if (PlayVodClip === 1) Play_StartStay();
-            else if (PlayVodClip === 3) {
+            else if (PlayVodClip === 2 || PlayVodClip === 3) {
+
+                canhide = false;
+                Play_ClipCheckIfIsLive(
+                    Main_values.Main_selectedChannel
+                );
+
+            }
+
+        } else if (Play_Endcounter === 2) {
+
+            if (PlayVodClip === 3) {
                 PlayClip_OpenVod();
                 if (!PlayClip_HasVOD) canhide = false;
             }
-        } else if (Play_Endcounter === 2) Play_OpenChannel(PlayVodClip);
-        else if (Play_Endcounter === 3) {
+
+        } else if (Play_Endcounter === 3) Play_OpenChannel(PlayVodClip);
+        else if (Play_Endcounter === 4) {
             Play_OpenGame(PlayVodClip);
             if (Play_data.data[3] === '') canhide = false;
         }
@@ -13101,29 +13330,32 @@
             Play_EndIconsAddFocus();
             Main_getElementById('dialog_end_-1').style.display = 'none';
             Main_getElementById('dialog_end_0').style.display = 'none';
+            Main_getElementById('dialog_end_2').style.display = 'none';
             Main_getElementById('dialog_end_1').style.display = 'inline-block';
-            Main_textContent("dialog_end_vod_text", STR_OPEN_HOST);
+            Main_textContent("dialog_end_live_text", STR_OPEN_HOST);
 
             Play_EndTextsReset();
             Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-            Main_innerHTML("end_vod_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
+            Main_innerHTML("end_live_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
         } else if (PlayVodClip === 1) { // play
             Play_EndIconsRemoveFocus();
             Play_Endcounter = 1;
             Play_EndIconsAddFocus();
             Main_getElementById('dialog_end_-1').style.display = 'none';
             Main_getElementById('dialog_end_0').style.display = 'none';
+            Main_getElementById('dialog_end_2').style.display = 'none';
             Main_getElementById('dialog_end_1').style.display = 'inline-block';
 
             Play_EndTextsReset();
             Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-            Main_textContent("dialog_end_vod_text", STR_STAY_OPEN);
-            Main_innerHTML("end_vod_title_text", STR_STAY_OPEN_SUMMARY);
+            Main_textContent("dialog_end_live_text", STR_STAY_OPEN);
+            Main_innerHTML("end_live_title_text", STR_STAY_OPEN_SUMMARY);
         } else if (PlayVodClip === 2) { // vod
             Play_EndIconsResetFocus();
             Main_getElementById('dialog_end_-1').style.display = 'none';
             Main_getElementById('dialog_end_0').style.display = 'inline-block';
-            Main_getElementById('dialog_end_1').style.display = 'none';
+            Main_getElementById('dialog_end_2').style.display = 'none';
+            Play_EndTextsSetHasLive();
 
             Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
             Main_innerHTML("end_replay_title_text", ChannelVod_title);
@@ -13133,11 +13365,13 @@
 
             Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
         } else if (PlayVodClip === 3) { // clip
+
             Play_EndIconsResetFocus();
             Main_getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
             Main_getElementById('dialog_end_0').style.display = 'inline-block';
-            Main_getElementById('dialog_end_1').style.display = 'inline-block';
             Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
+            Play_EndTextsSetHasLive();
+            Main_getElementById('dialog_end_2').style.display = 'inline-block';
 
             Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
             Main_innerHTML("end_replay_title_text", ChannelClip_title);
@@ -13154,6 +13388,40 @@
         Main_textContent("end_replay_title_text", '');
         Main_textContent("end_vod_name_text", '');
         Main_textContent("end_vod_title_text", '');
+        Main_textContent("end_live_title_text", '');
+        Main_textContent("end_live_name_text", '');
+    }
+
+    function Play_EndTextsSetHasLive() {
+
+        if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
+
+            Main_innerHTML(
+                "dialog_end_live_text",
+                PlayClip_SetOpenLiveData[1]
+            );
+
+            Main_innerHTML(
+                "end_live_title_text",
+                (PlayClip_SetOpenLiveData[3] !== STR_IS_LIVE ? STR_PLAYING + PlayClip_SetOpenLiveData[3] + ', ' : "") + PlayClip_SetOpenLiveData[4]
+            );
+
+            Main_innerHTML(
+                "end_live_name_text",
+                Play_controls[Play_controlsOpenLive].string
+            );
+
+            Main_getElementById('dialog_end_1').style.display = 'inline-block';
+            Main_getElementById('end_button_img_holder').style.transform = 'translate(-5%, -104%)';
+
+        } else {
+
+            Main_getElementById('dialog_end_1').style.display = 'none';
+            Main_getElementById('end_button_img_holder').style.transform = 'translate(-24.5%, -104%)';
+
+        }
+
+
     }
 
     function Play_OpenHost() {
@@ -13204,12 +13472,12 @@
         Play_state = Play_STATE_PLAYING;
         Play_StayCheckHostId = 0;
 
-        Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 10);
+        Main_innerHTML("play_dialog_retry_text", STR_STAY_CHECK + STR_BR + 1);
         Main_ShowElement('play_dialog_retry');
 
         Play_StartStayTryId = Main_setTimeout(
             function() {
-                Play_StartStayCheck(10);
+                Play_StartStayCheck(1);
             },
             1000,
             Play_StartStayTryId
@@ -13236,7 +13504,7 @@
 
         Play_StartStayTryId = Main_setTimeout(
             function() {
-                if (!time) Play_StartStayStartCheck();
+                if (time < 1) Play_StartStayStartCheck();
                 else Play_StartStayCheck(time);
             },
             1000,
@@ -14040,11 +14308,15 @@
                         !PlayExtra_PicturePicture) {
                         Play_KeyChatPosChage();
                     } else if (Play_isEndDialogVisible()) {
+
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter--;
-                        if (Play_Endcounter < 1) Play_Endcounter = 3;
+                        if (Play_Endcounter === 2) Play_Endcounter = 1;
+
+                        if (Play_Endcounter < 1) Play_Endcounter = 4;
                         Play_EndIconsAddFocus();
+
                     } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                         Play_PicturePicturePos++;
                         if (Play_PicturePicturePos > 7) Play_PicturePicturePos = 0;
@@ -14078,11 +14350,14 @@
                         (!PlayExtra_PicturePicture || Play_MultiEnable)) {
                         Play_KeyChatSizeChage();
                     } else if (Play_isEndDialogVisible()) {
+
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter++;
-                        if (Play_Endcounter > 3) Play_Endcounter = 1;
+                        if (Play_Endcounter === 2) Play_Endcounter = 3;
+                        if (Play_Endcounter > 4) Play_Endcounter = 1;
                         Play_EndIconsAddFocus();
+
                     } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
                         Play_PicturePictureSize++;
                         if (Play_PicturePictureSize > 4) Play_PicturePictureSize = 0;
@@ -14317,51 +14592,53 @@
     var Play_controls = {};
     var Play_controlsSize = -1;
 
-    var Play_controlsBack = 0;
-    var Play_controlsSearch = 1;
-    var Play_controlsChanelCont = 2;
-    var Play_controlsGameCont = 3;
-    var Play_controlsOpenVod = 4;
-    var Play_controlsFollow = 5;
-    var Play_controlsSpeed = 6;
-    var Play_controlsExternal = 7;
-    var Play_controlsQuality = 8;
-    var Play_controlsQualityMini = 9;
-    var Play_controlsQualityMulti = 10;
-    var Play_controlsLowLatency = 11;
-    var Play_controlsChapters = 12;
-    var Play_MultiStream = 13;
-    var Play_controlsAudio = 14;
-    var Play_controlsChatSide = 15;
-    var Play_controlsChat = 16;
-    var Play_controlsChatSend = 17;
+    var temp_controls_pos = 0;
+    var Play_controlsBack = temp_controls_pos++;
+    var Play_controlsSearch = temp_controls_pos++;
+    var Play_controlsChanelCont = temp_controls_pos++;
+    var Play_controlsGameCont = temp_controls_pos++;
+    var Play_controlsOpenLive = temp_controls_pos++;
+    var Play_controlsOpenVod = temp_controls_pos++;
+    var Play_controlsFollow = temp_controls_pos++;
+    var Play_controlsSpeed = temp_controls_pos++;
+    var Play_controlsExternal = temp_controls_pos++;
+    var Play_controlsQuality = temp_controls_pos++;
+    var Play_controlsQualityMini = temp_controls_pos++;
+    var Play_controlsQualityMulti = temp_controls_pos++;
+    var Play_controlsLowLatency = temp_controls_pos++;
+    var Play_controlsChapters = temp_controls_pos++;
+    var Play_MultiStream = temp_controls_pos++;
+    var Play_controlsAudio = temp_controls_pos++;
+    var Play_controlsChatSide = temp_controls_pos++;
+    var Play_controlsChat = temp_controls_pos++;
+    var Play_controlsChatSend = temp_controls_pos++;
 
-    var Play_controlsChatSettings = 18;
-    var Play_controlsPlayerStatus = 19;
-    var Play_controlsPreview = 20;
+    var Play_controlsChatSettings = temp_controls_pos++;
+    var Play_controlsPlayerStatus = temp_controls_pos++;
+    var Play_controlsPreview = temp_controls_pos++;
 
-    var Play_controlsChatForceDis = 21;
-    var Play_controlsChatDelay = 22;
-    var Play_controlsChatPos = 23;
-    var Play_controlsChatSize = 24;
-    var Play_controlsChatBright = 25;
-    var Play_controlsChatFont = 26;
+    var Play_controlsChatForceDis = temp_controls_pos++;
+    var Play_controlsChatDelay = temp_controls_pos++;
+    var Play_controlsChatPos = temp_controls_pos++;
+    var Play_controlsChatSize = temp_controls_pos++;
+    var Play_controlsChatBright = temp_controls_pos++;
+    var Play_controlsChatFont = temp_controls_pos++;
 
-    var Play_controlsAudioAll = 27;
-    var Play_controlsAudio_Volume_100 = 28;
-    var Play_controlsAudioEna0 = 29;
-    var Play_controlsAudioVol0 = 30;
-    var Play_controlsAudioEna1 = 31;
-    var Play_controlsAudioVol1 = 32;
-    var Play_controlsAudioEna2 = 33;
-    var Play_controlsAudioVol2 = 34;
-    var Play_controlsAudioEna3 = 35;
-    var Play_controlsAudioVol3 = 36;
+    var Play_controlsAudioAll = temp_controls_pos++;
+    var Play_controlsAudio_Volume_100 = temp_controls_pos++;
+    var Play_controlsAudioEna0 = temp_controls_pos++;
+    var Play_controlsAudioVol0 = temp_controls_pos++;
+    var Play_controlsAudioEna1 = temp_controls_pos++;
+    var Play_controlsAudioVol1 = temp_controls_pos++;
+    var Play_controlsAudioEna2 = temp_controls_pos++;
+    var Play_controlsAudioVol2 = temp_controls_pos++;
+    var Play_controlsAudioEna3 = temp_controls_pos++;
+    var Play_controlsAudioVol3 = temp_controls_pos++;
 
-    var Play_controlsPreviewEnable = 37;
-    var Play_controlsPreviewSize = 38;
-    var Play_controlsPreviewVolume = 39;
-    var Play_controlsPreviewMainVolume = 40;
+    var Play_controlsPreviewEnable = temp_controls_pos++;
+    var Play_controlsPreviewSize = temp_controls_pos++;
+    var Play_controlsPreviewVolume = temp_controls_pos++;
+    var Play_controlsPreviewMainVolume = temp_controls_pos++;
 
     var Play_controlsDefault = Play_controlsChat;
     var Play_Panelcounter = Play_controlsDefault;
@@ -14381,6 +14658,7 @@
             ShowInPreview: true,
             ShowInStay: false,
             icons: "key-left",
+            offsetY: -5,
             string: STR_SIDE_PANEL_SETTINGS,
             values: null,
             defaultValue: null,
@@ -14402,11 +14680,13 @@
 
                     Play_SetControlsVisibility('ShowInVod');
                     if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
+                    if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
 
                 } else if (PlayVodClip === 3) {
 
                     Play_SetControlsVisibility('ShowInClip');
                     if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+                    if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
 
                 }
 
@@ -14427,6 +14707,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "search",
+            offsetY: -8,
             string: STR_SEARCH,
             values: null,
             defaultValue: null,
@@ -14448,6 +14729,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "filmstrip",
+            offsetY: -8,
             string: STR_CHANNEL_CONT,
             values: '',
             defaultValue: null,
@@ -14457,7 +14739,7 @@
             },
             setLable: function(title) {
                 Main_innerHTML('extra_button_' + this.position,
-                    '<div style="max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
+                    '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
                     title + '</div>');
             },
         };
@@ -14474,6 +14756,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "gamepad",
+            offsetY: -8,
             string: STR_GAME_CONT,
             values: '',
             defaultValue: null,
@@ -14483,8 +14766,46 @@
             },
             setLable: function(title) {
                 Main_innerHTML('extra_button_' + this.position,
-                    '<div style="max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
+                    '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
                     (title === "" ? STR_NO_GAME : title) + '</div>');
+            },
+        };
+
+        Play_controls[Play_controlsOpenLive] = { //open live
+            ShowInLive: false,
+            ShowInVod: false,
+            ShowInClip: false,
+            ShowInPP: false,
+            ShowInMulti: false,
+            ShowInChat: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: false,
+            icons: "play",
+            offsetY: -8,
+            string: STR_IS_LIVE,
+            values: '',
+            defaultValue: null,
+            enterKey: function() {
+
+                Play_ForceHidePannel();
+                Play_SavePlayData();
+
+                Play_ClipCheckIfIsLive(
+                    Main_values.Main_selectedChannel
+                );
+
+            },
+            setLable: function(title, name) {
+                Main_innerHTML('extra_button_' + this.position,
+                    '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                    title + '</div>');
+
+                Main_innerHTMLWithEle(
+                    Play_controls[this.position].doc_title,
+                    name + STR_SPACE + this.string
+                );
             },
         };
 
@@ -14500,6 +14821,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "movie-play",
+            offsetY: -9,
             string: STR_OPEN_BROADCAST,
             values: '',
             defaultValue: null,
@@ -14507,13 +14829,18 @@
                 Play_ForceHidePannel();
                 PlayClip_OpenVod();
             },
-            setLable: function(title) {
+            setLable: function(title, name) {
                 Main_innerHTML('extra_button_' + this.position,
-                    '<div style="max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
-                    title + '</div>');
+                    '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                    title + '</div>'
+                );
+
+                Main_textContentWithEle(
+                    Play_controls[this.position].doc_title,
+                    this.string + ' - ' + name
+                );
             },
         };
-
 
         Play_controls[Play_controlsFollow] = { //following
             ShowInLive: true,
@@ -14527,6 +14854,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "heart-o",
+            offsetY: -5,
             string: STR_FOLLOW,
             values: '',
             defaultValue: null,
@@ -14561,6 +14889,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "speedometer",
+            offsetY: -5,
             string: STR_SPEED,
             values: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
             defaultValue: 3,
@@ -14648,6 +14977,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "videocamera",
+            offsetY: -6,
             string: STR_QUALITY,
             values: ['1080p60 | Source | 10.00Mbps | avc'],
             defaultValue: 0,
@@ -14715,6 +15045,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "videocamera",
+            offsetY: -6,
             string: STR_PLAYER_RESYNC,
             values: STR_QUALITY_PP,
             defaultValue: 2,
@@ -14765,6 +15096,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "videocamera",
+            offsetY: -6,
             string: STR_PLAYER_RESYNC,
             values: STR_QUALITY_MULTI,
             defaultValue: 0,
@@ -14839,8 +15171,8 @@
 
         Play_controls[Play_controlsLowLatency] = { //LowLatenc
             ShowInLive: true,
-            ShowInVod: true,
-            ShowInClip: true,
+            ShowInVod: false,
+            ShowInClip: false,
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
@@ -14849,6 +15181,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "history",
+            offsetY: -7,
             string: STR_LOW_LATENCY,
             values: STR_LOWLATENCY_ARRAY,
             defaultValue: Play_LowLatency,
@@ -14917,6 +15250,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "feed",
+            offsetY: -5,
             string: STR_CHAPTERS,
             values: [],
             defaultValue: 0,
@@ -14959,7 +15293,17 @@
             string: STR_4_WAY_MULTI,
             values: null,
             enterKey: function(shutdown) {
+
                 if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
+
+                if (Play_MaxMaxInstances < 4) {
+
+                    Play_showWarningMidleDialog(
+                        STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_4_WAY_MULTI,
+                        3000
+                    );
+                    return;
+                }
 
                 Play_MultiEnable = !Play_MultiEnable;
                 if (Play_MultiEnable) {
@@ -15013,6 +15357,13 @@
                     if (Play_MultiChatBeffore) Play_controls[Play_controlsChat].enterKey();
                     Play_SetAudioIcon();
 
+                    Main_EventPlay(
+                        'MultiStream',
+                        Play_MultiArray[0].data[6],
+                        Play_MultiArray[0].data[3],
+                        !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTING) ? Play_MultiArray[0].data[15] : 'HOSTING'
+                    );
+
                 } else {
                     OSInterface_DisableMultiStream();
                     Play_Multi_UnSetPanel(shutdown);
@@ -15034,6 +15385,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "volume",
+            offsetY: -4,
             string: STR_VOLUME_CONTROLS,
             values: null,
             defaultValue: null,
@@ -15062,6 +15414,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: Play_isFullScreen ? "resize-down" : "resize-up",
+            offsetY: -7,
             string: STR_CHAT_VIDEO_MODE,
             values: null,
             defaultValue: null,
@@ -15119,6 +15472,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "chat",
+            offsetY: -3,
             string: STR_CHAT_SHOW,
             values: null,
             defaultValue: null,
@@ -15158,6 +15512,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "keyboard",
+            offsetY: -5,
             string: STR_CHAT_WRITE,
             values: null,
             defaultValue: null,
@@ -15188,6 +15543,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "chat-settings",
+            offsetY: -6,
             string: STR_CHAT_EXTRA,
             values: null,
             defaultValue: null,
@@ -15214,6 +15570,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: 'status',
+            offsetY: -5,
             string: STR_PLAYER_INFO_VISIBILITY,
             values: STR_PLAYER_INFO_VISIBILITY_ARRAY,
             defaultValue: Play_Status_Visible,
@@ -15247,6 +15604,7 @@
             ShowInPreview: false,
             ShowInStay: true,
             icons: "preview",
+            offsetY: -4,
             string: STR_PREVIEW_SET,
             values: null,
             defaultValue: null,
@@ -15286,6 +15644,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-stop",
+            offsetY: -5,
             string: STR_F_DISABLE_CHAT,
             values: null,
             defaultValue: null,
@@ -15318,6 +15677,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-delay",
+            offsetY: -5,
             string: STR_CHAT_DELAY,
             values: [STR_DISABLED, STR_CHAT_DELAY_LATENCY_TO_BROADCASTER, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                 20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300
@@ -15362,6 +15722,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-pos",
+            offsetY: -6,
             string: STR_CHAT_POS,
             values: STR_CHAT_BASE_ARRAY,
             defaultValue: Play_ChatPositions,
@@ -15416,6 +15777,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-size",
+            offsetY: -5,
             string: STR_CHAT_SIZE,
             values: ["12.5%", "25%", "50%", "75%", "100%"],
             defaultValue: Play_ChatSizeValue,
@@ -15482,6 +15844,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-brig",
+            offsetY: -5,
             string: STR_CHAT_BRIGHTNESS,
             values: ["0%", "5%", "10%", "15%", "20%",
                 "25%", "30%", "35%", "40%", "45%",
@@ -15527,6 +15890,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "chat-font",
+            offsetY: -6,
             string: STR_CHAT_FONT,
             values: Play_ChatFontObj,
             defaultValue: Main_values.Chat_font_size_new,
@@ -15565,6 +15929,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "speaker",
+            offsetY: -4,
             string: STR_AUDIO_ALL,
             values: null,
             defaultValue: null,
@@ -15600,6 +15965,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "levels",
+            offsetY: -5,
             string: STR_AUDIO_ALL_100,
             values: null,
             defaultValue: null,
@@ -15628,6 +15994,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "volume",
+            offsetY: -5,
             string: '',
             values: [STR_DISABLE, STR_ENABLED],
             defaultValue: Play_audio_enable[0],
@@ -15666,6 +16033,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: 'vol-level-4',
+            offsetY: -5,
             string: '',
             values: new Array(101),
             defaultValue: Play_volumes[0],
@@ -15704,6 +16072,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "volume",
+            offsetY: -5,
             string: '',
             values: [STR_DISABLE, STR_ENABLED],
             defaultValue: Play_audio_enable[1],
@@ -15742,6 +16111,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: 'vol-level-4',
+            offsetY: -5,
             string: '',
             values: new Array(101),
             defaultValue: Play_volumes[1],
@@ -15781,6 +16151,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "volume",
+            offsetY: -5,
             string: '',
             values: [STR_DISABLE, STR_ENABLED],
             defaultValue: Play_audio_enable[2],
@@ -15819,6 +16190,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: 'vol-level-4',
+            offsetY: -5,
             string: '',
             values: new Array(101),
             defaultValue: Play_volumes[2],
@@ -15857,6 +16229,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: "volume",
+            offsetY: -5,
             string: '',
             values: [STR_DISABLE, STR_ENABLED],
             defaultValue: Play_audio_enable[3],
@@ -15895,6 +16268,7 @@
             ShowInPreview: false,
             ShowInStay: false,
             icons: 'vol-level-4',
+            offsetY: -5,
             string: '',
             values: new Array(101),
             defaultValue: Play_volumes[3],
@@ -15933,6 +16307,7 @@
             ShowInPreview: true,
             ShowInStay: false,
             icons: 'preview',
+            offsetY: -5,
             string: STR_PREVIEW_SHOW,
             values: [STR_NO, STR_YES],
             defaultValue: Settings_value.show_feed_player.defaultValue,
@@ -15958,6 +16333,7 @@
             ShowInPreview: true,
             ShowInStay: false,
             icons: 'pp',
+            offsetY: -9,
             string: STR_PREVIEW_SIZE_CONTROLS,
             values: STR_PREVIEW_SIZE_ARRAY,
             defaultValue: Settings_value.preview_sizes.defaultValue,
@@ -15983,6 +16359,7 @@
             ShowInPreview: true,
             ShowInStay: false,
             icons: 'volume',
+            offsetY: -5,
             string: STR_PREVIEW_VOLUME,
             values: Settings_GetVolumes(),
             defaultValue: Settings_value.preview_volume.defaultValue,
@@ -16009,6 +16386,7 @@
             ShowInPreview: true,
             ShowInStay: false,
             icons: 'speaker',
+            offsetY: -4,
             string: STR_PREVIEW_OTHERS_VOLUME,
             values: Settings_GetVolumes(),
             defaultValue: Settings_value.preview_others_volume.defaultValue,
@@ -16032,9 +16410,10 @@
 
             div.innerHTML = '<div id="controls_button_' + key +
                 '" class="controls_button"><div id="controls_icon_' + key +
-                '"><i class="pause_button3d icon-' + Play_controls[key].icons +
+                (Play_controls[key].offsetY ? '" style="transform: translateY(' + Play_controls[key].offsetY + '%);"' : '"') +
+                '><i class="pause_button3d icon-' + Play_controls[key].icons +
                 '" ></i></div></div><div id="controls_button_text_' + key +
-                '" class="extra_button_title_holder" style="opacity: 0;;"><div id="extra_button_title' +
+                '" class="extra_button_title_holder" style="opacity: 0;"><div id="extra_button_title' +
                 key + '" class="extra_button_title strokedeline" >' +
                 Play_controls[key].string + '</div><div id="extra_button_' + key +
                 '" class="extra_button_title strokedeline" >' +
@@ -16061,7 +16440,7 @@
 
     function Play_SetControlsArrows(key) {
         return '<div id="controls_arrows_' + key +
-            '" style="font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
+            '" style="max-height: 3ch; font-size: 50%; display: inline-block; vertical-align: middle;"><div style="display: inline-block;"><div id="control_arrow_up_' +
             key + '" class="up"></div><div id="control_arrow_down' + key +
             '" class="down"></div></div></div>&nbsp;<div id="controls_name_' + key +
             '" class="arrows_text">' + Play_controls[key].values[Play_controls[key].defaultValue] + '</div>';
@@ -16073,6 +16452,12 @@
 
             if (Play_controls[key][prop]) Play_BottomShow(key);
             else Play_BottomHide(key);
+
+        }
+
+        if (!Play_controls[Play_Panelcounter].visible) {
+
+            Play_IconsResetFocus();
 
         }
 
@@ -16628,6 +17013,16 @@
         PlayExtra_clear = true;
         PlayExtra_loadDataCheckHostId = 0;
 
+        if (Play_MaxMaxInstances < 2) {
+
+            Play_showWarningMidleDialog(
+                STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_PP_MODO,
+                3000
+            );
+
+            return;
+        }
+
         var doc = Play_CheckLiveThumb();
         if (doc) {
 
@@ -16671,12 +17066,11 @@
             }
 
             Main_EventPlay(
-                'live',
+                'PictureInPicture',
                 PlayExtra_data.data[6],
                 PlayExtra_data.data[3],
                 !PlayExtra_data.isHost ? PlayExtra_data.data[15] : 'HOSTING',
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
-                'PP'
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
 
         }
@@ -16974,7 +17368,6 @@
 
         Play_SetControlsVisibility('ShowInPP');
 
-        Play_IconsResetFocus();
         PlayExtra_UpdatePanel();
         Main_HideElement('stream_info');
         Main_ShowElement('stream_info_pp');
@@ -16987,7 +17380,6 @@
 
         Play_SetControlsVisibility('ShowInLive');
 
-        Play_IconsResetFocus();
         ChatLive_Clear(1);
         PlayExtra_HideChat();
 
@@ -17110,6 +17502,8 @@
     var Play_EndDialogElem;
     var Play_MultiDialogElem;
     var Play_SkipStartAuto = false;
+    var Play_MaxMaxInstances = 0;
+    var Play_HasLive;
 
     var Play_streamInfoTimerId = null;
 
@@ -17259,6 +17653,7 @@
         Main_values.Play_isHost = false;
         Play_loadDataCheckHostId = 0;
         Play_StayCheckHostId = 0;
+        Play_HasLive = false;
 
         Play_data.watching_time = new Date().getTime();
         Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeS(0));
@@ -17284,7 +17679,7 @@
         } else {
 
             Play_data.AutoUrl = Play_PreviewURL;
-            Play_SkipStartAuto = true;
+            Play_SkipStartAuto = !PlayClip_DontSkipStartAuto;
             Play_loadDataSuccessEnd(Play_PreviewResponseText, true, false, true);
 
             Play_CheckIfIsLiveCleanEnd();
@@ -17298,7 +17693,7 @@
         Main_SaveValues();
         //Check the Play_UpdateMainStream fun when on a browser
         if (!Main_IsOn_OSInterface && !offline_chat) Play_UpdateMainStream(true, true);
-
+        PlayClip_DontSkipStartAuto = false;
     }
 
     // To Force a warn, not used regularly so keep commented out
@@ -17313,7 +17708,7 @@
 
     }
 
-    function Play_CheckIfIsLiveResultEnd(response, isOn, callback) {
+    function Play_CheckIfIsLiveResultEnd(response, isOn, callback, callbackError) {
 
         if (isOn && response) {
 
@@ -17325,26 +17720,41 @@
                     isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                     error = StreamInfo[6] + STR_SPACE;
 
-                if (responseObj.status === 200) {
-
-                    Play_PreviewURL = responseObj.url;
-                    Play_PreviewResponseText = responseObj.responseText;
-                    callback();
-                    return;
-
-                } else {
-
-                    error += Play_CheckIfIsLiveGetEror(response, isVod);
-
-                }
-
-                Play_CheckIfIsLiveStartFail(
+                Play_CheckIfIsLiveResultCheck(
+                    response,
+                    responseObj,
                     error,
-                    2000
+                    isVod,
+                    callback,
+                    callbackError
                 );
+
             }
 
         }
+
+    }
+
+    function Play_CheckIfIsLiveResultCheck(response, responseObj, error, isVod, callback, callbackError) {
+
+        if (responseObj.status === 200) {
+
+            Play_PreviewURL = responseObj.url;
+            Play_PreviewResponseText = responseObj.responseText;
+            callback();
+            return;
+
+        } else {
+
+            error += Play_CheckIfIsLiveGetEror(response, isVod);
+
+        }
+
+        Play_CheckIfIsLiveStartFail(
+            error,
+            2000,
+            callbackError
+        );
 
     }
 
@@ -17414,11 +17824,13 @@
 
     }
 
-    function Play_CheckIfIsLiveStartFail(text, time) {
+    function Play_CheckIfIsLiveStartFail(text, time, callbackError) {
         Play_HideBufferDialog();
         Play_CheckIfIsLiveCleanEnd();
 
         Play_showWarningMidleDialog(text, time);
+
+        if (callbackError) callbackError();
     }
 
     function Play_CheckIfIsLiveClean(fail_type) { //called from java
@@ -18411,11 +18823,17 @@
 
     var Play_showWarningMidleDialogId;
 
-    function Play_showWarningMidleDialog(text, timeout) {
+    function Play_showWarningMidleDialog(text, timeout, IsLiveWarning) {
         Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
+        Play_dialog_warning_play_middle.style.width = '';
 
         if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.marginTop = '90vh';
-        else Play_dialog_warning_play_middle.style.marginTop = '50vh';
+        else if (IsLiveWarning) {
+
+            Play_dialog_warning_play_middle.style.marginTop = '81.5vh';
+            Play_dialog_warning_play_middle.style.width = '62%';
+
+        } else Play_dialog_warning_play_middle.style.marginTop = '50vh';
 
         Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
@@ -19501,12 +19919,11 @@
             Play_MultiStart(position);
 
             Main_EventPlay(
-                'live',
+                'MultiStream',
                 Play_MultiArray[position].data[6],
                 Play_MultiArray[position].data[3],
                 !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
-                'MULTI'
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
         }
     }
@@ -20162,6 +20579,7 @@
         PlayVod_previews_clear();
         PlayVod_updateVodInfo();
         PlayVod_updateChapters();
+        Play_HasLive = false;
         Play_EndSet(2);
 
     }
@@ -20220,6 +20638,8 @@
 
         Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+
+        PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id, true);
 
         Main_values.Play_WasPlaying = 2;
         Main_SaveValues();
@@ -20560,6 +20980,7 @@
         PlayClip_OpenAVod = true;
         Main_clearInterval(PlayVod_SaveOffsetId);
         Main_clearTimeout(PlayVod_WarnEndId);
+        Main_clearTimeout(PlayClip_CheckIsLiveTimeoutId);
         Main_values.Play_WasPlaying = 0;
         Chat_Clear();
 
@@ -21152,11 +21573,15 @@
                         else PlayVod_VodPositions++;
                         PlayVod_IconsAddFocus();
                     } else if (Play_isEndDialogVisible()) {
+
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter--;
-                        if (Play_Endcounter < 0) Play_Endcounter = 3;
-                        if (Play_Endcounter === 1) Play_Endcounter = 0;
+
+                        if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+
+                        if (Play_Endcounter < 0) Play_Endcounter = 4;
+                        if (Play_Endcounter === 2) Play_Endcounter = Play_HasLive ? 1 : 0;
                         Play_EndIconsAddFocus();
                     } else PlayVod_FastBackForward(-1);
                     break;
@@ -21180,8 +21605,11 @@
                         Play_EndTextClear();
                         Play_EndIconsRemoveFocus();
                         Play_Endcounter++;
-                        if (Play_Endcounter > 3) Play_Endcounter = 0;
-                        if (Play_Endcounter === 1) Play_Endcounter = 2;
+
+                        if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+
+                        if (Play_Endcounter > 4) Play_Endcounter = 0;
+                        if (Play_Endcounter === 2) Play_Endcounter = 3;
                         Play_EndIconsAddFocus();
                     } else PlayVod_FastBackForward(1);
                     break;
@@ -27728,6 +28156,10 @@
             "values": ["no", "yes"],
             "defaultValue": 1
         },
+        "live_warn": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "app_animations": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 1
@@ -29140,46 +29572,17 @@
     var Settings_DisableCodecsNames = [];
     var Settings_DisableQualities = [];
     var Settings_DisableQualitiesLen = 0;
+    var Settings_CodecsDialogSet = false;
 
     function Settings_CodecsShow() {
         Main_removeEventListener("keydown", Settings_handleKeyDown);
 
-        if (!Settings_CodecsValue.length) {
+        if (!Settings_CodecsDialogSet) {
 
-            if (!Main_IsOn_OSInterface) Settings_CodecsValue = [{
-                "instances": 32,
-                "maxbitrate": "120 Mbps",
-                "maxlevel": "5.2",
-                "maxresolution": "3840x2176",
-                "name": "OMX.Nvidia.h264.decode",
-                "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps",
-                "type": "video/avc"
-            }, {
-                "instances": 32,
-                "maxbitrate": "48 Mbps",
-                "maxlevel": "5.2",
-                "maxresolution": "4080x4080",
-                "name": "OMX.google.h264.decoder",
-                "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-                "type": "video/avc"
-            }, {
-                "instances": -1,
-                "maxbitrate": "48 Mbps",
-                "maxlevel": "5.2",
-                "maxresolution": "4080x4080",
-                "name": "OMX.chico.h264.decoder",
-                "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
-                "type": "video/avc"
-            }];
-            else {
-                try {
-                    Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
-                } catch (e) {
-                    Settings_CodecsValue = [];
-                }
-            }
+            Settings_SetCodecsValue();
 
             if (Settings_CodecsValue.length) {
+
                 var dialogContent = '',
                     DivContent,
                     spacer = " | ";
@@ -29207,6 +29610,7 @@
                 }
 
                 Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + STR_CLOSE_THIS + '</div>');
+                Settings_CodecsDialogSet = true;
             }
 
         }
@@ -29326,6 +29730,76 @@
 
     function Settings_CodecsSet() {
         if (Main_IsOn_OSInterface) OSInterface_setBlackListMediaCodec(Settings_DisableCodecsNames.join());
+        Settings_SetMaxInstances();
+    }
+
+    function Settings_SetMaxInstances() {
+        if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
+        Play_MaxMaxInstances = 0;
+
+        var i = 0,
+            len = Settings_CodecsValue.length;
+        for (i; i < len; i++) {
+
+            if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) &&
+                !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : "", 'google')) {
+
+
+                Play_MaxMaxInstances = (Settings_CodecsValue[i].instances > -1) ?
+                    Settings_CodecsValue[i].instances : 0;
+
+                break;
+            }
+
+        }
+
+    }
+
+    function Settings_SetCodecsValue() {
+        if (Settings_CodecsValue.length) return;
+
+        if (!Main_IsOn_OSInterface) {
+
+            // Settings_CodecsValue = [
+            //     {
+            //         "instances": 32,
+            //         "maxbitrate": "120 Mbps",
+            //         "maxlevel": "5.2",
+            //         "maxresolution": "3840x2176",
+            //         "name": "OMX.Nvidia.h264.decode",
+            //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps",
+            //         "type": "video/avc"
+            //     },
+            //     {
+            //         "instances": 32, "maxbitrate": "48 Mbps",
+            //         "maxlevel": "5.2",
+            //         "maxresolution": "4080x4080",
+            //         "name": "OMX.google.h264.decoder",
+            //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
+            //         "type": "video/avc"
+            //     },
+            //     {
+            //         "instances": -1, "maxbitrate": "48 Mbps",
+            //         "maxlevel": "5.2",
+            //         "maxresolution": "4080x4080",
+            //         "name": "OMX.chico.h264.decoder",
+            //         "resolutions": "160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps",
+            //         "type": "video/avc"
+            //     }
+            // ];
+
+            Settings_CodecsValue = JSON.parse('[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]');
+
+        } else {
+
+            try {
+                Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+            } catch (e) {
+                Settings_CodecsValue = [];
+            }
+
+        }
+
     }
 
     function Settings_QualitiesCheck() {
@@ -29768,6 +30242,7 @@
     function Settings_DialogShowWarnings() {
         Settings_value.accessibility_warn.values = [STR_NO, STR_YES];
         Settings_value.ping_warn.values = [STR_NO, STR_YES];
+        Settings_value.live_warn.values = [STR_NO, STR_YES];
 
         var obj = {
             accessibility_warn: {
@@ -29781,6 +30256,12 @@
                 values: Settings_value.ping_warn.values,
                 title: STR_PING_WARNING,
                 summary: STR_PING_WARNING_SUMMARY
+            },
+            live_warn: {
+                defaultValue: Settings_value.live_warn.defaultValue,
+                values: Settings_value.live_warn.values,
+                title: STR_SHOW_ISLIVE_WARNING,
+                summary: STR_SHOW_ISLIVE_WARNING_SUMMARY
             }
         };
 
@@ -35627,6 +36108,7 @@
         'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
         'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
         'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+        'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
         'Main_onNewIntent': Main_onNewIntent,
         'Main_EventChannelRefresh': Main_EventChannelRefresh,
         'ChatLive_SetLatency': ChatLive_SetLatency,

@@ -9,6 +9,20 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.304 and Web Version February 10 2020
+==============
+
+* Add new End dialog and player controls button, "Streamer is now Live", let you know when watching a VOD or a Clip that the streamer come online
+* Add a new warning in Setting -> Warnings, Show "Streamer is now Live" warning, disable by default, small pop warning that show the first time the streamer comes online
+* General improve on playback experience
+* General improves on player controls looks
+* Others general improves and bug fixes
+
+Web Version February 06 2020
+==============
+
+* General improves and bug fixes
+
 Apk Version 3.0.303 and Web Version February 02 2020
 ==============
 
