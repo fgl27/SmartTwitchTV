@@ -12505,10 +12505,7 @@
 
             }
 
-            PlayClip_NextImg(
-                Play_BottonIcons_End_Live_Img,
-                (tempData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
-            );
+
             Play_HasLive = true;
             Play_EndSet(PlayClip_isOn ? 3 : 2);
 
@@ -13162,9 +13159,7 @@
     }
 
     function Play_showEndDialog(PlayVodClip) {
-        Play_EndCheckPreview(PlayVodClip);
 
-        Main_ShowElementWithEle(Play_EndDialogElem);
         UserLiveFeed_SetHoldUp();
         Play_EndFocus = true;
         UserLiveFeed_PreventHide = true;
@@ -13172,17 +13167,36 @@
         //Skip transitions when showing end dialog
         UserLiveFeed_FeedHolderDocId.style.transition = 'none';
         UserLiveFeed_ShowFeed();
-        if (Settings_Obj_default("app_animations")) {
-            Main_ready(function() {
-                UserLiveFeed_FeedHolderDocId.style.transition = '';
-            });
-        }
-        Main_values.Play_WasPlaying = 0;
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+
+        if (Settings_Obj_default("app_animations")) {
+            Main_setTimeout(
+                function() {
+                    UserLiveFeed_FeedHolderDocId.style.transition = '';
+                },
+                10
+            );
+        }
+
+        if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
+
+            PlayClip_NextImg(
+                Play_BottonIcons_End_Live_Img,
+                (PlayClip_SetOpenLiveData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
+            );
+
+        }
+
+        Play_EndCheckPreview(PlayVodClip);
+
+        Main_ShowElementWithEle(Play_EndDialogElem);
+
+        Main_values.Play_WasPlaying = 0;
         Main_SaveValues();
     }
 
     function Play_HideEndDialog() {
+        Play_EndFocus = false;
         Main_HideElementWithEle(Play_EndDialogElem);
         Play_EndTextClear();
         Play_EndIconsResetFocus();
@@ -23026,24 +23040,37 @@
     function Screens_addFocus(forceScroll, key) {
 
         if (ScreenObj[key].emptyContent) {
-            if (ScreenObj[key].HasSwitches) ScreenObj[key].posY = -1;
-            else {
+
+            if (ScreenObj[key].HasSwitches) {
+
+                ScreenObj[key].posY = -1;
+
+            } else {
+
                 ScreenObj[key].key_exit(ScreenObj[key].emptyContent);
                 return;
+
             }
+
         }
 
         if (ScreenObj[key].posY < 0) {
+
             Screens_addFocusFollow(key);
 
-            if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible())
+            if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
+
                 Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
+            }
+
             return;
+
         }
 
         //Load more as the data is getting used
         if (ScreenObj[key].data) {
+
             if ((ScreenObj[key].posY > 2) && (ScreenObj[key].data_cursor + Main_ItemsLimitMax) > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
 
                 Screens_loadDataRequestStart(key);
@@ -23083,49 +23110,47 @@
     //Also help to prevent lag on animation
     function Screens_LoadPreview(key) {
 
-        if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
+        if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-            if (Screens_ObjNotNull(key)) {
-                var id = 0, //Clip
-                    obj = Screens_GetObj(key);
+            var id = 0, //Clip
+                obj = Screens_GetObj(key);
 
-                if (ScreenObj[key].screenType === 0) id = 14; //live
-                else if (ScreenObj[key].screenType === 1) id = 7; //vod
+            if (ScreenObj[key].screenType === 0) id = 14; //live
+            else if (ScreenObj[key].screenType === 1) id = 7; //vod
 
-                var ThumbId = obj[id]; //streamer id
+            var ThumbId = obj[id]; //streamer id
 
-                if (ScreenObj[key].screen === Main_HistoryLive) {
+            if (ScreenObj[key].screen === Main_HistoryLive) {
 
-                    var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                    if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                        ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-
-                    }
-                }
-
-                if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
-
-                    Screens_LoadPreviewId = Main_setTimeout(
-                        function() {
-
-                            Screens_LoadPreviewStart(key, obj);
-
-                        },
-                        DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
-                        Screens_LoadPreviewId
-                    );
-
-                } else if (Play_PreviewId) {
-
-                    Screens_LoadPreviewRestore(key);
+                    ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
                 }
-
-                Play_PreviewVideoEnded = false;
             }
+
+            if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+
+                Screens_LoadPreviewId = Main_setTimeout(
+                    function() {
+
+                        Screens_LoadPreviewStart(key, obj);
+
+                    },
+                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                    Screens_LoadPreviewId
+                );
+
+            } else if (Play_PreviewId) {
+
+                Screens_LoadPreviewRestore(key);
+
+            }
+
+            Play_PreviewVideoEnded = false;
 
         }
     }
@@ -32369,16 +32394,20 @@
         return UserLiveFeed_itemsCount[pos];
     }
 
+    var UserLiveFeed_PreviewShowing;
+
     function UserLiveFeed_isPreviewShowing() {
-        return !Main_A_includes_B(UserLiveFeed_FeedHolderDocId.className, 'user_feed_hide');
+        return UserLiveFeed_PreviewShowing;
     }
 
     function UserLiveFeed_Show() {
+        UserLiveFeed_PreviewShowing = true;
         Main_RemoveClassWithEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
     }
 
     function UserLiveFeed_Hide(PreventCleanQualities) {
         //return;//return;
+        UserLiveFeed_PreviewShowing = false;
         UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
         UserLiveFeed_HideAfter();
 
@@ -32460,18 +32489,21 @@
     }
 
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
-        var total = UserLiveFeed_GetSize(pos);
+        var total = UserLiveFeed_GetSize(pos),
+            ObjNotNull = UserLiveFeed_ObjNotNull(pos);
 
-        if (!total || !UserLiveFeed_ObjNotNull(pos) || UserLiveFeed_loadingData[pos]) {
+        if (!total || !ObjNotNull || UserLiveFeed_loadingData[pos]) {
+
             if (!total && UserLiveFeed_isPreviewShowing()) UserLiveFeed_CheckIfIsLiveSTop();
             UserLiveFeed_ResetFeedId();
             return;
+
         }
 
-        var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus,
-            isGame = UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame;
+        var isGame = UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame;
 
-        if (add_focus) {
+        if (!Play_EndFocus) {
+
             var id = pos + '_' + UserLiveFeed_FeedPosY[pos],
                 data;
 
@@ -32479,7 +32511,7 @@
 
             if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
-                if (UserLiveFeed_ObjNotNull(pos)) {
+                if (ObjNotNull) {
 
                     data = UserLiveFeed_GetObj(pos);
 
@@ -32493,7 +32525,7 @@
 
             } else if (!isGame) {
 
-                if (UserLiveFeed_ObjNotNull(pos)) {
+                if (ObjNotNull) {
 
                     data = UserLiveFeed_GetObj(pos);
 
@@ -32517,36 +32549,76 @@
         if (isGame) {
 
             if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
-                UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true, pos, 0);
+
+                UserLiveFeed_FeedSetPos(
+                    (Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4) : true,
+                    pos,
+                    0
+                );
+
             } else if (UserLiveFeed_FeedPosY[pos] < (total - 4) || total < UserLiveFeed_cellVisible[pos]) {
-                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 5), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
+
+                UserLiveFeed_FeedSetPos(
+                    (Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 5),
+                    pos,
+                    -1 * UserLiveFeed_obj[pos].AddCellsize
+                );
+
             } else {
-                UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
+
+                UserLiveFeed_FeedSetPos(
+                    skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize
+                );
+
             }
 
         } else {
 
             if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
-                UserLiveFeed_FeedSetPos((Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2) : true, pos, 0);
+
+                UserLiveFeed_FeedSetPos(
+                    (Adder < 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2) : true,
+                    pos,
+                    0
+                );
+
             } else if (UserLiveFeed_FeedPosY[pos] < (total - 3) || total < UserLiveFeed_cellVisible[pos]) {
-                UserLiveFeed_FeedSetPos((Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 4), pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
+
+                UserLiveFeed_FeedSetPos(
+                    (Adder > 0) ? (skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3) : (true && (total - UserLiveFeed_FeedPosY[pos]) !== 4),
+                    pos,
+                    -1 * UserLiveFeed_obj[pos].AddCellsize
+                );
+
             } else {
-                UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
+
+                UserLiveFeed_FeedSetPos(
+                    skipAnimation,
+                    pos,
+                    -2 * UserLiveFeed_obj[pos].AddCellsize
+                );
+
             }
 
         }
 
-        if (UserLiveFeed_obj[pos].HasMore) {
+        if (!Play_EndFocus) UserLiveFeed_CheckIfIsLiveStart(pos);
+
+        if (pos === UserLiveFeed_FeedPosX) {
+
+            UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+
+        }
+
+        if (UserLiveFeed_obj[pos].HasMore &&
+            !UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
+
             //Load more as the data is getting used
-            if (!UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
-                UserLiveFeed_obj[pos].loadingMore = true;
-                UserLiveFeed_obj[pos].load();
-            }
+            UserLiveFeed_obj[pos].loadingMore = true;
+            UserLiveFeed_obj[pos].load();
+
         }
 
-        UserLiveFeed_CheckIfIsLiveStart(pos);
-
-        if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
         UserLiveFeed_ResetFeedId();
     }
 
