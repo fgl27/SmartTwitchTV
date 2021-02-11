@@ -663,12 +663,27 @@ public final class Tools {
     //as long one adds android:requestLegacyExternalStorage="true"to manifest
     @SuppressWarnings({"deprecation", "RedundantSuppression"})
     private static File getExternalSD() {
-        return Environment.getExternalStorageDirectory();
+
+        File Sdcard = null;
+
+        try {
+
+            Sdcard = Environment.getExternalStorageDirectory();
+
+        } catch (Exception e) {
+            recordException(TAG, "getExternalSD", e);
+        }
+
+        return Sdcard != null && Sdcard.canWrite() ? Sdcard : null;
     }
 
     static void BackupJson(String app_name, String file, String file_content) {
+        File Sdcard = getExternalSD();
+
+        if (Sdcard == null) return;
+
         File Dir = new File(
-                getExternalSD(),
+                Sdcard,
                 String.format(Locale.US, "data/%s/Backup", app_name)
         );
 
@@ -691,9 +706,12 @@ public final class Tools {
     }
 
     static boolean HasBackupFile(String file, Context context) {
+        File Sdcard = getExternalSD();
+
+        if (Sdcard == null) return false;
 
         File mFile = new File(
-                getExternalSD(),
+                Sdcard,
                 String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
         );
 
@@ -702,8 +720,12 @@ public final class Tools {
 
     static String RestoreBackupFile(String file, Context context) {
         try {
+            File Sdcard = getExternalSD();
+
+            if (Sdcard == null) return null;
+
             File mFile = new File(
-                    getExternalSD(),
+                    Sdcard,
                     String.format(Locale.US, "data/%s/Backup/" + file, context.getPackageName())
             );
 
@@ -1281,9 +1303,9 @@ public final class Tools {
         cacheDir = context.getExternalCacheDir();
 
         if (cacheDir == null || !cacheDir.canWrite()) { // no storage, try to use internal one
-            cacheDir = Environment.getExternalStorageDirectory();
+            cacheDir = getExternalSD();
 
-            if (cacheDir == null || !cacheDir.canWrite()) {
+            if (cacheDir == null) {
                 // Android 7.0 and above (supports install from internal dirs)
                 cacheDir = context.getCacheDir();
             }
