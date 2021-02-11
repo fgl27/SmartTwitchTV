@@ -175,7 +175,7 @@ function PlayClip_updateVodInfo() {
 }
 
 function PlayClip_updateVodInfoSuccess(response) {
-    tempData = ScreensObj_VodCellArray(JSON.parse(response));
+    var tempData = ScreensObj_VodCellArray(JSON.parse(response));
 
     ChannelVod_title = Main_ReplaceLargeFont(tempData[10]);
     Main_innerHTML("end_vod_title_text", ChannelVod_title);
