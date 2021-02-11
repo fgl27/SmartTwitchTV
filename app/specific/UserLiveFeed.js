@@ -514,10 +514,10 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         return;
     }
 
-    var add_focus = !Play_isEndDialogVisible() || !Play_EndFocus,
-        isGame = UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame;
+    var isGame = UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame;
 
-    if (add_focus) {
+    if (!Play_EndFocus) {
+
         var id = pos + '_' + UserLiveFeed_FeedPosY[pos],
             data;
 
@@ -590,7 +590,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         }
     }
 
-    UserLiveFeed_CheckIfIsLiveStart(pos);
+    if (!Play_EndFocus) UserLiveFeed_CheckIfIsLiveStart(pos);
 
     if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     UserLiveFeed_ResetFeedId();

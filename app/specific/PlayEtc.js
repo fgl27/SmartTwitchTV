@@ -537,9 +537,7 @@ function Play_EndCheckPreview(PlayVodClip) {
 }
 
 function Play_showEndDialog(PlayVodClip) {
-    Play_EndCheckPreview(PlayVodClip);
 
-    Main_ShowElementWithEle(Play_EndDialogElem);
     UserLiveFeed_SetHoldUp();
     Play_EndFocus = true;
     UserLiveFeed_PreventHide = true;
@@ -547,17 +545,36 @@ function Play_showEndDialog(PlayVodClip) {
     //Skip transitions when showing end dialog
     UserLiveFeed_FeedHolderDocId.style.transition = 'none';
     UserLiveFeed_ShowFeed();
-    if (Settings_Obj_default("app_animations")) {
-        Main_ready(function() {
-            UserLiveFeed_FeedHolderDocId.style.transition = '';
-        });
-    }
-    Main_values.Play_WasPlaying = 0;
     UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+
+    if (Settings_Obj_default("app_animations")) {
+        Main_setTimeout(
+            function() {
+                UserLiveFeed_FeedHolderDocId.style.transition = '';
+            },
+            10
+        );
+    }
+
+    if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
+
+        PlayClip_NextImg(
+            Play_BottonIcons_End_Live_Img,
+            (PlayClip_SetOpenLiveData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
+        );
+
+    }
+
+    Play_EndCheckPreview(PlayVodClip);
+
+    Main_ShowElementWithEle(Play_EndDialogElem);
+
+    Main_values.Play_WasPlaying = 0;
     Main_SaveValues();
 }
 
 function Play_HideEndDialog() {
+    Play_EndFocus = false;
     Main_HideElementWithEle(Play_EndDialogElem);
     Play_EndTextClear();
     Play_EndIconsResetFocus();

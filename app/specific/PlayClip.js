@@ -1009,10 +1009,7 @@ function PlayClip_SetOpenLive(response, key, ID) {
 
         }
 
-        PlayClip_NextImg(
-            Play_BottonIcons_End_Live_Img,
-            (tempData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
-        );
+
         Play_HasLive = true;
         Play_EndSet(PlayClip_isOn ? 3 : 2);
 
