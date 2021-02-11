@@ -824,24 +824,37 @@ function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
 function Screens_addFocus(forceScroll, key) {
 
     if (ScreenObj[key].emptyContent) {
-        if (ScreenObj[key].HasSwitches) ScreenObj[key].posY = -1;
-        else {
+
+        if (ScreenObj[key].HasSwitches) {
+
+            ScreenObj[key].posY = -1;
+
+        } else {
+
             ScreenObj[key].key_exit(ScreenObj[key].emptyContent);
             return;
+
         }
+
     }
 
     if (ScreenObj[key].posY < 0) {
+
         Screens_addFocusFollow(key);
 
-        if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible())
+        if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
+
             Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
+        }
+
         return;
+
     }
 
     //Load more as the data is getting used
     if (ScreenObj[key].data) {
+
         if ((ScreenObj[key].posY > 2) && (ScreenObj[key].data_cursor + Main_ItemsLimitMax) > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
 
             Screens_loadDataRequestStart(key);
@@ -881,49 +894,47 @@ var Screens_LoadPreviewId;
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
-    if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) &&
+    if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
         !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
-        if (Screens_ObjNotNull(key)) {
-            var id = 0,//Clip
-                obj = Screens_GetObj(key);
+        var id = 0,//Clip
+            obj = Screens_GetObj(key);
 
-            if (ScreenObj[key].screenType === 0) id = 14;//live
-            else if (ScreenObj[key].screenType === 1) id = 7;//vod
+        if (ScreenObj[key].screenType === 0) id = 14;//live
+        else if (ScreenObj[key].screenType === 1) id = 7;//vod
 
-            var ThumbId = obj[id];//streamer id
+        var ThumbId = obj[id];//streamer id
 
-            if (ScreenObj[key].screen === Main_HistoryLive) {
+        if (ScreenObj[key].screen === Main_HistoryLive) {
 
-                var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
+            var index = AddUser_UserIsSet() ? Main_history_Exist('live', obj[7]) : -1;
 
-                if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+            if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                    ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-
-                }
-            }
-
-            if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
-
-                Screens_LoadPreviewId = Main_setTimeout(
-                    function() {
-
-                        Screens_LoadPreviewStart(key, obj);
-
-                    },
-                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
-                    Screens_LoadPreviewId
-                );
-
-            } else if (Play_PreviewId) {
-
-                Screens_LoadPreviewRestore(key);
+                ThumbId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
             }
-
-            Play_PreviewVideoEnded = false;
         }
+
+        if ((!Play_PreviewId || !Main_A_equals_B(ThumbId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
+
+            Screens_LoadPreviewId = Main_setTimeout(
+                function() {
+
+                    Screens_LoadPreviewStart(key, obj);
+
+                },
+                DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                Screens_LoadPreviewId
+            );
+
+        } else if (Play_PreviewId) {
+
+            Screens_LoadPreviewRestore(key);
+
+        }
+
+        Play_PreviewVideoEnded = false;
 
     }
 }
