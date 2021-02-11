@@ -21,11 +21,17 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 304,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/304/SmartTV_twitch_3_0_304.apk',
-    WebVersion: 'February 10 2020',
-    WebTag: 571,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 305,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/305/SmartTV_twitch_3_0_305.apk',
+    WebVersion: 'February 11 2020',
+    WebTag: 572,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.305 and Web Version February 11 2020",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.304 and Web Version February 10 2020",
             changes: [
@@ -53,12 +59,6 @@ var version = {
                 "If you install manually, the app can now just update it self by downloading the APK and allowing to install, if you are on Android 8 or newer make sure to give the APP install permission",
                 "If the update is only on the Web app now you can use the update dialog to update on one click, no longer need to close the app to update",
                 "As this feature was added on APK version 3.0.303 you need to be on that version or newer so all features can work",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.298 and Web Version January 30 2020",
-            changes: [
                 "General improves and bug fixes"
             ]
         }
