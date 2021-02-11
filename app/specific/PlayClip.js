@@ -53,12 +53,11 @@ function PlayClip_Start() {
     Chat_title = STR_CLIP;
     PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
 
-    Play_BottonIcons_Next_img.src = IMG_404_BANNER;
-    Play_BottonIcons_Back_img.src = IMG_404_BANNER;
-    Play_BottonIcons_End_img.src = IMG_404_BANNER;
-    Main_ShowElementWithEle(Play_BottonIcons_Next_img);
-    Main_ShowElementWithEle(Play_BottonIcons_Back_img);
-    Main_ShowElementWithEle(Play_BottonIcons_End_img);
+    Play_BottonIcons_Next_img.src = IMG_404_VIDEO;
+    Play_BottonIcons_Back_img.src = IMG_404_VIDEO;
+    Play_BottonIcons_End_Next_Img.src = IMG_404_VIDEO;
+    Play_BottonIcons_End_Live_Img.src = IMG_404_VIDEO;
+    Play_BottonIcons_End_Vod_Img.src = IMG_404_VIDEO;
 
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTML(
@@ -176,9 +175,15 @@ function PlayClip_updateVodInfo() {
 }
 
 function PlayClip_updateVodInfoSuccess(response) {
-    ChannelVod_title = Main_ReplaceLargeFont(twemoji.parse(JSON.parse(response).title, false, false));
+    tempData = ScreensObj_VodCellArray(JSON.parse(response));
+
+    ChannelVod_title = Main_ReplaceLargeFont(tempData[10]);
     Main_innerHTML("end_vod_title_text", ChannelVod_title);
     Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
+    PlayClip_NextImg(
+        Play_BottonIcons_End_Vod_Img,
+        (tempData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
+    );
 }
 
 function PlayClip_GetStreamerInfo() {
@@ -460,7 +465,7 @@ function PlayClip_UpdateNext() {
         Main_innerHTMLWithEle(Play_BottonIcons_Next_name, Main_ReplaceLargeFont(data[4]));
         Main_innerHTMLWithEle(Play_BottonIcons_Next_title, Main_ReplaceLargeFont(data[10]));
 
-        PlayClip_NextImg(Play_BottonIcons_End_img, data[15]);
+        PlayClip_NextImg(Play_BottonIcons_End_Next_Img, data[15]);
         Main_innerHTMLWithEle(Play_BottonIcons_End_name, Main_ReplaceLargeFont(data[4]));
         Main_innerHTMLWithEle(Play_BottonIcons_End_title, Main_ReplaceLargeFont(data[10]));
 
@@ -469,7 +474,6 @@ function PlayClip_UpdateNext() {
     } else {
 
         PlayClip_HideShowNext(0, 0);
-        Main_HideElementWithEle(Play_BottonIcons_End_img);
 
     }
 
@@ -489,8 +493,7 @@ function PlayClip_UpdateNext() {
 function PlayClip_NextImg(ImgObjet, link) {
     ImgObjet.onerror = function() {
         this.onerror = null;
-        this.src = IMG_404_BANNER;
-        Main_HideElementWithEle(this);
+        this.src = IMG_404_VIDEO;
     };
     ImgObjet.src = link;
 }
@@ -735,11 +738,11 @@ function PlayClip_handleKeyDown(e) {
 
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter--;
+                    Play_EndCounter--;
 
-                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter--;
 
-                    if (Play_Endcounter < (PlayClip_HasNext ? -1 : 0)) Play_Endcounter = 4;
+                    if (Play_EndCounter < (PlayClip_HasNext ? -1 : 0)) Play_EndCounter = 4;
 
                     Play_EndIconsAddFocus();
 
@@ -766,11 +769,11 @@ function PlayClip_handleKeyDown(e) {
 
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter++;
+                    Play_EndCounter++;
 
-                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter++;
 
-                    if (Play_Endcounter > 4) Play_Endcounter = PlayClip_HasNext ? -1 : 0;
+                    if (Play_EndCounter > 4) Play_EndCounter = PlayClip_HasNext ? -1 : 0;
 
                     Play_EndIconsAddFocus();
 
@@ -1006,6 +1009,10 @@ function PlayClip_SetOpenLive(response, key, ID) {
 
         }
 
+        PlayClip_NextImg(
+            Play_BottonIcons_End_Live_Img,
+            (tempData[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)
+        );
         Play_HasLive = true;
         Play_EndSet(PlayClip_isOn ? 3 : 2);
 

@@ -513,7 +513,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
 
     if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default("clip_auto_play_next"))) {
         Play_EndIconsRemoveFocus();
-        Play_Endcounter = -1;
+        Play_EndCounter = -1;
     }
 
     Play_EndIconsAddFocus();
@@ -569,16 +569,42 @@ function Play_isEndDialogVisible() {
 
 function Play_EndIconsResetFocus() {
     Play_EndIconsRemoveFocus();
-    Play_Endcounter = 0;
+    Play_EndCounter = 0;
     Play_EndIconsAddFocus();
 }
 
 function Play_EndIconsAddFocus() {
-    Main_AddClass('dialog_end_' + Play_Endcounter, 'dialog_end_icons_focus');
+    Main_AddClass('dialog_end_' + Play_EndCounter, 'dialog_end_icons_focus');
+
+    if (Play_EndCounter === -1 && PlayClip_HasNext && PlayClip_isOn) {
+
+        Main_ShowElement('end_next_img_holder');
+        Main_HideElement('end_live_img_holder');
+        Main_HideElement('end_vod_img_holder');
+
+    } else if (Play_EndCounter === 1 && Play_HasLive && (PlayClip_isOn || PlayVod_isOn)) {
+
+        Main_ShowElement('end_live_img_holder');
+        Main_HideElement('end_next_img_holder');
+        Main_HideElement('end_vod_img_holder');
+
+    } else if (Play_EndCounter === 2 && PlayClip_HasVOD && PlayClip_isOn) {
+
+        Main_ShowElement('end_vod_img_holder');
+        Main_HideElement('end_live_img_holder');
+        Main_HideElement('end_next_img_holder');
+
+    } else {
+
+        Main_HideElement('end_vod_img_holder');
+        Main_HideElement('end_live_img_holder');
+        Main_HideElement('end_next_img_holder');
+
+    }
 }
 
 function Play_EndIconsRemoveFocus() {
-    Main_RemoveClass('dialog_end_' + Play_Endcounter, 'dialog_end_icons_focus');
+    Main_RemoveClass('dialog_end_' + Play_EndCounter, 'dialog_end_icons_focus');
 }
 
 function Play_EndText(PlayVodClip) {
@@ -653,8 +679,8 @@ function Play_EndTextClear() {
 
 function Play_EndDialogPressed(PlayVodClip) {
     var canhide = true;
-    if (Play_Endcounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
-    else if (!Play_Endcounter) {
+    if (Play_EndCounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
+    else if (!Play_EndCounter) {
         if (PlayVodClip === 2) {
             if (!PlayVod_qualities.length) {
                 canhide = false;
@@ -676,7 +702,7 @@ function Play_EndDialogPressed(PlayVodClip) {
                 PlayClip_Start();
             }
         }
-    } else if (Play_Endcounter === 1) {
+    } else if (Play_EndCounter === 1) {
 
         if (Main_values.Play_isHost) Play_OpenHost();
         else if (PlayVodClip === 1) Play_StartStay();
@@ -689,15 +715,15 @@ function Play_EndDialogPressed(PlayVodClip) {
 
         }
 
-    } else if (Play_Endcounter === 2) {
+    } else if (Play_EndCounter === 2) {
 
         if (PlayVodClip === 3) {
             PlayClip_OpenVod();
             if (!PlayClip_HasVOD) canhide = false;
         }
 
-    } else if (Play_Endcounter === 3) Play_OpenChannel(PlayVodClip);
-    else if (Play_Endcounter === 4) {
+    } else if (Play_EndCounter === 3) Play_OpenChannel(PlayVodClip);
+    else if (Play_EndCounter === 4) {
         Play_OpenGame(PlayVodClip);
         if (Play_data.data[3] === '') canhide = false;
     }
@@ -713,7 +739,7 @@ function Play_EndDialogPressed(PlayVodClip) {
 function Play_EndSet(PlayVodClip) {
     if (!PlayVodClip) { // Play is hosting
         Play_EndIconsRemoveFocus();
-        Play_Endcounter = 1;
+        Play_EndCounter = 1;
         Play_EndIconsAddFocus();
         Main_getElementById('dialog_end_-1').style.display = 'none';
         Main_getElementById('dialog_end_0').style.display = 'none';
@@ -726,7 +752,7 @@ function Play_EndSet(PlayVodClip) {
         Main_innerHTML("end_live_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
-        Play_Endcounter = 1;
+        Play_EndCounter = 1;
         Play_EndIconsAddFocus();
         Main_getElementById('dialog_end_-1').style.display = 'none';
         Main_getElementById('dialog_end_0').style.display = 'none';
@@ -799,12 +825,12 @@ function Play_EndTextsSetHasLive() {
         );
 
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
-        Main_getElementById('end_button_img_holder').style.transform = 'translate(-5%, -104%)';
+        Main_getElementById('end_next_img_holder').style.transform = 'translate(-5%, -104%)';
 
     } else {
 
         Main_getElementById('dialog_end_1').style.display = 'none';
-        Main_getElementById('end_button_img_holder').style.transform = 'translate(-24.5%, -104%)';
+        Main_getElementById('end_next_img_holder').style.transform = 'translate(-24.5%, -104%)';
 
     }
 
@@ -1693,10 +1719,10 @@ function Play_handleKeyDown(e) {
 
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter--;
-                    if (Play_Endcounter === 2) Play_Endcounter = 1;
+                    Play_EndCounter--;
+                    if (Play_EndCounter === 2) Play_EndCounter = 1;
 
-                    if (Play_Endcounter < 1) Play_Endcounter = 4;
+                    if (Play_EndCounter < 1) Play_EndCounter = 4;
                     Play_EndIconsAddFocus();
 
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
@@ -1735,9 +1761,9 @@ function Play_handleKeyDown(e) {
 
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter++;
-                    if (Play_Endcounter === 2) Play_Endcounter = 3;
-                    if (Play_Endcounter > 4) Play_Endcounter = 1;
+                    Play_EndCounter++;
+                    if (Play_EndCounter === 2) Play_EndCounter = 3;
+                    if (Play_EndCounter > 4) Play_EndCounter = 1;
                     Play_EndIconsAddFocus();
 
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
@@ -4004,10 +4030,12 @@ var Play_BottonIcons_Next;
 var Play_BottonIcons_Back;
 var Play_BottonIcons_Progress;
 var Play_BottonIcons_Next_Img_holder;
-var Play_BottonIcons_End_img_holder;
+var Play_BottonIcons_Back_Img_holder;
 var Play_BottonIcons_Next_img;
 var Play_BottonIcons_Back_img;
-var Play_BottonIcons_End_img;
+var Play_BottonIcons_End_Next_Img;
+var Play_BottonIcons_End_Live_Img;
+var Play_BottonIcons_End_Vod_Img;
 var Play_BottonIcons_Progress_Steps;
 var Play_BottonIcons_Progress_JumpTo;
 var Play_BottonIcons_Progress_CurrentTime;
@@ -4063,7 +4091,9 @@ function Play_BottonIconsSet() {
 
     Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
     Play_BottonIcons_Back_img = Main_getElementById('back_button_img');
-    Play_BottonIcons_End_img = Main_getElementById('end_button_img');
+    Play_BottonIcons_End_Next_Img = Main_getElementById('end_next_img');
+    Play_BottonIcons_End_Live_Img = Main_getElementById('end_live_img');
+    Play_BottonIcons_End_Vod_Img = Main_getElementById('end_vod_img');
 
     Play_BottonIcons_Next_name = Main_getElementById('next_button_text_name');
     Play_BottonIcons_Next_title = Main_getElementById('next_button_text_title');
@@ -4080,7 +4110,7 @@ function Play_BottonIconsSet() {
     PlayClip_HideShowNextDiv = [Play_BottonIcons_Next, Play_BottonIcons_Back];
     Play_BottonIcons_Progress = Main_getElementById('progress_bar_div');
     Play_BottonIcons_Next_Img_holder = Main_getElementById('next_button_img_holder');
-    Play_BottonIcons_End_img_holder = Main_getElementById('back_button_img_holder');
+    Play_BottonIcons_Back_Img_holder = Main_getElementById('back_button_img_holder');
     Play_BottonIcons_Progress_Steps = Main_getElementById('progress_bar_steps');
     Play_BottonIcons_Progress_JumpTo = Main_getElementById('progress_bar_jump_to');
     Play_BottonIcons_Progress_CurrentTime = Main_getElementById('progress_bar_current_time');
@@ -4131,7 +4161,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
     Main_RemoveClassWithEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
     Main_RemoveClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
     Main_HideElementWithEle(Play_BottonIcons_Next_Img_holder);
-    Main_HideElementWithEle(Play_BottonIcons_End_img_holder);
+    Main_HideElementWithEle(Play_BottonIcons_Back_Img_holder);
 
     if (!PlayVod_PanelY) { //progress_bar
 
@@ -4167,7 +4197,7 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
             Play_BottonIconsHide(2);
-            Main_ShowElementWithEle(Play_BottonIcons_End_img_holder);
+            Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
 
         }

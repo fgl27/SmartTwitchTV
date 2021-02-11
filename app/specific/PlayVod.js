@@ -179,6 +179,7 @@ function PlayVod_SetStart() {
     PlayVod_updateVodInfo();
     PlayVod_updateChapters();
     Play_HasLive = false;
+    Play_BottonIcons_End_Live_Img.src = IMG_404_VIDEO;
     Play_EndSet(2);
 
 }
@@ -1170,12 +1171,12 @@ function PlayVod_handleKeyDown(e) {
 
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter--;
+                    Play_EndCounter--;
 
-                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter--;
+                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter--;
 
-                    if (Play_Endcounter < 0) Play_Endcounter = 4;
-                    if (Play_Endcounter === 2) Play_Endcounter = Play_HasLive ? 1 : 0;
+                    if (Play_EndCounter < 0) Play_EndCounter = 4;
+                    if (Play_EndCounter === 2) Play_EndCounter = Play_HasLive ? 1 : 0;
                     Play_EndIconsAddFocus();
                 } else PlayVod_FastBackForward(-1);
                 break;
@@ -1198,12 +1199,12 @@ function PlayVod_handleKeyDown(e) {
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
-                    Play_Endcounter++;
+                    Play_EndCounter++;
 
-                    if (!Play_HasLive && Play_Endcounter === 1) Play_Endcounter++;
+                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter++;
 
-                    if (Play_Endcounter > 4) Play_Endcounter = 0;
-                    if (Play_Endcounter === 2) Play_Endcounter = 3;
+                    if (Play_EndCounter > 4) Play_EndCounter = 0;
+                    if (Play_EndCounter === 2) Play_EndCounter = 3;
                     Play_EndIconsAddFocus();
                 } else PlayVod_FastBackForward(1);
                 break;
