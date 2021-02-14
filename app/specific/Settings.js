@@ -1648,6 +1648,13 @@ function Settings_SetMaxInstances() {
 
     }
 
+    if (!Play_MaxMaxInstances && len) {
+
+        Play_MaxMaxInstances = (Settings_CodecsValue[0].instances > -1) ?
+            Settings_CodecsValue[0].instances : 0;
+
+    }
+
 }
 
 function Settings_SetCodecsValue() {
