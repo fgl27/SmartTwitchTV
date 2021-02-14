@@ -29814,7 +29814,7 @@
 
 
                 Play_MaxMaxInstances = (Settings_CodecsValue[i].instances > -1) ?
-                    Settings_CodecsValue[i].instances : 0;
+                    Settings_CodecsValue[i].instances : 10;
 
                 break;
             }
@@ -29824,7 +29824,7 @@
         if (!Play_MaxMaxInstances && len) {
 
             Play_MaxMaxInstances = (Settings_CodecsValue[0].instances > -1) ?
-                Settings_CodecsValue[0].instances : 0;
+                Settings_CodecsValue[0].instances : 10;
 
         }
 
