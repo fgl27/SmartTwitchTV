@@ -208,7 +208,10 @@ public final class Tools {
 
                         StreamToken = data.get("value").getAsString();
                         StreamSig = data.get("signature").getAsString();
-                        //Log.d(TAG, "StreamToken " + StreamToken);
+
+                        if (BuildConfig.DEBUG) {
+                            Log.d(TAG, "StreamToken" + StreamToken);
+                        }
 
                     }
                 }
