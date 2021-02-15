@@ -679,18 +679,24 @@ public class PlayerActivity extends Activity {
 
             if (TopSurfaceView != null && BottomSurfaceView != null) {
 
-                //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    VideoHolder.removeView(ViewOnBottom);
-                    VideoHolder.removeView(ViewOnTop);
-                }
+                //Try to prevent... The specified child already has a parent. You must call removeView() on the child's parent first.
+                try {
 
-                TopSurfaceView.setZOrderMediaOverlay(true);
-                BottomSurfaceView.setZOrderMediaOverlay(false);
+                    //Remove both player view so they order gets reset, with just setZOrderMediaOverlay the effect will not work on Android 7  and older OS
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        VideoHolder.removeView(ViewOnBottom);
+                        VideoHolder.removeView(ViewOnTop);
+                    }
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                    VideoHolder.addView(ViewOnBottom);
-                    VideoHolder.addView(ViewOnTop);
+                    TopSurfaceView.setZOrderMediaOverlay(true);
+                    BottomSurfaceView.setZOrderMediaOverlay(false);
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        VideoHolder.addView(ViewOnBottom);
+                        VideoHolder.addView(ViewOnTop);
+                    }
+
+                } catch (Exception ignore) {
                 }
             }
         }
@@ -705,12 +711,18 @@ public class PlayerActivity extends Activity {
         releasePlayer(4);
         ApplyAudioAll();
 
-        //Prevent odd error Decoder init failed: OMX.Nvidia.h264.decode... maybe also to other devices
-        //That happens after a resume that before the resume you move the player using setplayer()
-        //This also prevent the SurfaceView not be visible on the same situation
-        if (IsUsingSurfaceView) {
-            PreviewHolder.removeView(PlayerObj[4].playerView);
-            PreviewHolder.addView(PlayerObj[4].playerView);
+        //Try to prevent... The specified child already has a parent. You must call removeView() on the child's parent first.
+        try {
+
+            //This also prevent the SurfaceView not be visible on the same situation
+            if (IsUsingSurfaceView) {
+
+                PreviewHolder.removeView(PlayerObj[4].playerView);
+                PreviewHolder.addView(PlayerObj[4].playerView);
+
+            }
+
+        } catch (Exception ignore) {
         }
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
