@@ -4727,6 +4727,7 @@
         Chat_Id[chat_number] = (new Date()).getTime();
         ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
         ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
+        if (ChatLive_selectedChannel[chat_number]) ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
 
         ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
 
