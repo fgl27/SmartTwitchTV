@@ -31,9 +31,6 @@ var PlayVod_RefreshProgressBarrTimeout = 1000;
 var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
 var Play_PicturePictureSize = 2;
-var Play_STATE_LOADING_TOKEN = 0;
-var Play_STATE_PLAYING = 1;
-var Play_state = 0;
 var Play_MultiEnable = false;
 var Play_LowLatency = 0;
 var Play_EndUpclear = false;
@@ -184,7 +181,7 @@ function Play_Start(offline_chat) {
 
     Play_StartStayShowBottom();
 
-    if (!PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInLive');
+    Play_SetControlsVisibility('ShowInStay');
 
     Play_BottonIconsResetFocus();
 
@@ -211,7 +208,6 @@ function Play_Start(offline_chat) {
 
     Play_isOn = true;
     Play_Playing = false;
-    Play_state = Play_STATE_LOADING_TOKEN;
 
     if (offline_chat) {
 
@@ -523,7 +519,7 @@ function Play_ResumeAfterOnline() {
         } else {
 
             Play_data.watching_time = new Date().getTime();
-            Play_state = Play_STATE_LOADING_TOKEN;
+            Play_SetControlsVisibility('ShowInStay');
             // TO test a if a stream has ended during a resume process force change this
             //PlayExtra_data.data[6] = 'testtt';
             //PlayExtra_data.data[14] = 'id';
@@ -863,7 +859,6 @@ function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory, Preventcl
     Play_UpdateMainStream(startChat, true);
 
     Play_data.playlist = playlist;
-    Play_state = Play_STATE_PLAYING;
     if (Play_isOn) Play_onPlayer();
 
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
@@ -883,7 +878,6 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
 
         Main_removeEventListener("keydown", Play_handleKeyDown);
         Main_addEventListener("keydown", Play_EndUpclearCalback);
-        Play_state = Play_STATE_PLAYING;
 
         Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
             Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
@@ -960,9 +954,9 @@ function Play_loadDataSuccessFake() {
         },
     ];
     Play_SetExternalQualities(Play_data.qualities, 1);
-    Play_state = Play_STATE_PLAYING;
     Play_qualityReset();
     if (Play_isOn) Play_qualityChanged();
+
     if (!Play_data.isHost) Main_Set_history('live', Play_data.data);
 
     Main_setTimeout(Play_HideBufferDialog, 1000);
@@ -1128,6 +1122,9 @@ function Play_onPlayer() {
     Play_SetFullScreen(Play_isFullScreen);
     Play_Playing = true;
     Play_SkipStartAuto = false;
+
+    if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
+    else Play_SetControlsVisibility('ShowInLive');
 }
 
 function Play_SetHtmlQuality(element) {
@@ -1847,7 +1844,8 @@ function Play_CheckHostStart(error_410) {
     }
 
     Play_showBufferDialog();
-    Play_state = -1;
+    Play_SetControlsVisibility('ShowInStay');
+
     ChatLive_Clear(0);
     ChatLive_Clear(1);
     Main_clearInterval(Play_streamInfoTimerId);
@@ -1890,7 +1888,6 @@ function Play_CheckHost(responseText, key, id) {
     if (Play_isOn && Play_loadDataCheckHostId === id) {
 
         Play_TargetHost = JSON.parse(responseText).hosts[0];
-        Play_state = Play_STATE_PLAYING;
 
         if (Play_TargetHost.target_login !== undefined) {
             Play_IsWarning = true;
@@ -1940,7 +1937,6 @@ function Play_UpdateDurationDiv(duration) {
 
 function Play_CloseBigAndSwich(error_410) {
     Play_HideBufferDialog();
-    Play_state = Play_STATE_PLAYING;
 
     Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
         Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE,
@@ -2059,7 +2055,6 @@ function Play_OpenLiveStream(keyfun) {
 
 function Play_RestorePlayData(error_410, Isforbiden) {
     Play_HideBufferDialog();
-    Play_state = Play_STATE_PLAYING;
 
     Play_showWarningMidleDialog(error_410 ? STR_410_ERROR :
         Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),

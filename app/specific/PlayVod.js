@@ -22,8 +22,6 @@
 var PlayVod_quality = 'Auto';
 var PlayVod_qualityPlaying = PlayVod_quality;
 
-var PlayVod_state = 0;
-
 var PlayVod_qualities = [];
 var PlayVod_qualityIndex = 0;
 var PlayVod_playlist = null;
@@ -70,7 +68,7 @@ function PlayVod_Start() {
     Play_BufferSize = 0;
 
     Play_StartStayShowBottom();
-    Play_SetControlsVisibility('ShowInVod');
+
 
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
@@ -86,7 +84,7 @@ function PlayVod_Start() {
     Play_DefaultjumpTimers = Settings_jumpTimers;
     PlayVod_jump_max_step = Settings_value.vod_seek_max.defaultValue;
     PlayVod_jumpSteps(Settings_value.vod_seek_min.defaultValue);
-    PlayVod_state = Play_STATE_LOADING_TOKEN;
+    Play_SetControlsVisibility('ShowInStay');
     PlayClip_HasVOD = true;
     UserLiveFeed_PreventHide = false;
     ChannelVod_vodOffset = 0;
@@ -208,7 +206,6 @@ function PlayVod_PosStart() {
 
         if (!PlayVod_replay) PlayVod_loadData();
         else {
-            PlayVod_state = Play_STATE_PLAYING;
             PlayVod_onPlayer();
         }
 
@@ -217,8 +214,6 @@ function PlayVod_PosStart() {
         PlayVod_autoUrl = Play_PreviewURL;
         PlayVod_playlist = Play_PreviewResponseText;
         Play_SkipStartAuto = true;
-
-        PlayVod_state = Play_STATE_PLAYING;
 
         if (Play_PreviewOffset) Main_vodOffset = Play_PreviewOffset;
         PlayVod_onPlayer();
@@ -335,7 +330,7 @@ function PlayVod_Resume() {
 function PlayVod_ResumeAfterOnline(forced) {
     if (forced || navigator.onLine || Play_ResumeAfterOnlineCounter > 200) {
         Main_clearInterval(Play_ResumeAfterOnlineId);
-        PlayVod_state = Play_STATE_LOADING_TOKEN;
+        Play_SetControlsVisibility('ShowInStay');
         PlayVod_loadData();
     }
     Play_ResumeAfterOnlineCounter++;
@@ -387,7 +382,6 @@ function PlayVod_loadDataSuccessFake() {
         },
     ];
     Play_SetExternalQualities(PlayVod_qualities, 1);
-    PlayVod_state = Play_STATE_PLAYING;
     PlayVod_qualityReset();
     if (PlayVod_isOn) PlayVod_qualityChanged();
 }
@@ -460,7 +454,6 @@ function PlayVod_loadDataErrorFinish() {
 
 function PlayVod_loadDataSuccessEnd(playlist) {
     PlayVod_playlist = playlist;
-    PlayVod_state = Play_STATE_PLAYING;
     if (PlayVod_isOn) PlayVod_onPlayer();
 }
 
@@ -498,6 +491,7 @@ function PlayVod_WarnEnd(text) {
 }
 
 function PlayVod_qualityChanged() {
+
     PlayVod_qualityIndex = 0;
 
     for (var i = 0; i < PlayVod_getQualitiesCount(); i++) {
@@ -515,7 +509,7 @@ function PlayVod_qualityChanged() {
     PlayVod_SetHtmlQuality(Play_info_quality);
     if (Main_IsOn_OSInterface) OSInterface_SetQuality(PlayVod_qualityIndex - 1);
     else PlayVod_onPlayer();
-    //Play_PannelEndStart(2);
+
 }
 
 function PlayVod_onPlayer() {
@@ -535,6 +529,7 @@ function PlayVod_onPlayer() {
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
+    Play_SetControlsVisibility('ShowInVod');
 }
 
 function PlayVod_onPlayerStartPlay(time) {
@@ -1131,211 +1126,191 @@ function PlayVod_SetPreview() {
 }
 
 function PlayVod_handleKeyDown(e) {
-    if (PlayVod_state !== Play_STATE_PLAYING && !Play_isVodDialogVisible()) {
-        switch (e.keyCode) {
-            case KEY_STOP:
-                Play_CleanHideExit();
-                PlayVod_shutdownStream();
-                break;
-            case KEY_KEYBOARD_BACKSPACE:
-            case KEY_RETURN:
-                if (Play_ExitDialogVisible() || Settings_Obj_default("single_click_exit")) {
-                    Play_CleanHideExit();
-                    PlayVod_shutdownStream();
+    switch (e.keyCode) {
+        case KEY_LEFT:
+            if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
+                if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
+                else if (!PlayVod_PanelY) {
+                    PlayVod_jumpStart(-1, Play_DurationSeconds);
+                    PlayVod_ProgressBaroffset = 2500;
+                }
+                Play_clearHidePanel();
+                PlayVod_setHidePanel();
+            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                UserLiveFeed_KeyRightLeft(-1);
+            } else if (Play_isVodDialogVisible()) {
+                PlayVod_IconsRemoveFocus();
+                if (PlayVod_VodPositions) PlayVod_VodPositions--;
+                else PlayVod_VodPositions++;
+                PlayVod_IconsAddFocus();
+            } else if (Play_isEndDialogVisible()) {
+
+                Play_EndTextClear();
+                Play_EndIconsRemoveFocus();
+                Play_EndCounter--;
+
+                if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter--;
+
+                if (Play_EndCounter < 0) Play_EndCounter = 4;
+                if (Play_EndCounter === 2) Play_EndCounter = Play_HasLive ? 1 : 0;
+                Play_EndIconsAddFocus();
+            } else PlayVod_FastBackForward(-1);
+            break;
+        case KEY_RIGHT:
+            if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
+                if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
+                else if (!PlayVod_PanelY) {
+                    PlayVod_jumpStart(1, Play_DurationSeconds);
+                    PlayVod_ProgressBaroffset = 2500;
+                }
+                Play_clearHidePanel();
+                PlayVod_setHidePanel();
+            } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                UserLiveFeed_KeyRightLeft(1);
+            } else if (Play_isVodDialogVisible()) {
+                PlayVod_IconsRemoveFocus();
+                if (PlayVod_VodPositions) PlayVod_VodPositions--;
+                else PlayVod_VodPositions++;
+                PlayVod_IconsAddFocus();
+            } else if (Play_isEndDialogVisible()) {
+                Play_EndTextClear();
+                Play_EndIconsRemoveFocus();
+                Play_EndCounter++;
+
+                if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter++;
+
+                if (Play_EndCounter > 4) Play_EndCounter = 0;
+                if (Play_EndCounter === 2) Play_EndCounter = 3;
+                Play_EndIconsAddFocus();
+            } else PlayVod_FastBackForward(1);
+            break;
+        case KEY_UP:
+            if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
+                Play_clearHidePanel();
+
+                if (!PlayVod_PanelY) {
+
+                    PlayVod_jumpStepsIncrease();
+                    PlayVod_ProgressBaroffset = 2500;
+
+                } else if (PlayVod_PanelY < 2) {
+
+                    PlayVod_PanelY--;
+                    Play_BottonIconsFocus();
+
                 } else {
-                    Play_showExitDialog();
+
+                    Play_BottomUpDown(2, 1);
+
                 }
-                break;
-            default:
-                break;
-        }
-    } else {
-        switch (e.keyCode) {
-            case KEY_LEFT:
-                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, -1);
-                    else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(-1, Play_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    }
-                    Play_clearHidePanel();
-                    PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    UserLiveFeed_KeyRightLeft(-1);
-                } else if (Play_isVodDialogVisible()) {
-                    PlayVod_IconsRemoveFocus();
-                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
-                    else PlayVod_VodPositions++;
-                    PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogVisible()) {
 
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_EndCounter--;
-
-                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter--;
-
-                    if (Play_EndCounter < 0) Play_EndCounter = 4;
-                    if (Play_EndCounter === 2) Play_EndCounter = Play_HasLive ? 1 : 0;
-                    Play_EndIconsAddFocus();
-                } else PlayVod_FastBackForward(-1);
-                break;
-            case KEY_RIGHT:
-                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-                    if (PlayVod_PanelY === 2) Play_BottomLeftRigt(2, 1);
-                    else if (!PlayVod_PanelY) {
-                        PlayVod_jumpStart(1, Play_DurationSeconds);
-                        PlayVod_ProgressBaroffset = 2500;
-                    }
-                    Play_clearHidePanel();
-                    PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
-                    UserLiveFeed_KeyRightLeft(1);
-                } else if (Play_isVodDialogVisible()) {
-                    PlayVod_IconsRemoveFocus();
-                    if (PlayVod_VodPositions) PlayVod_VodPositions--;
-                    else PlayVod_VodPositions++;
-                    PlayVod_IconsAddFocus();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndTextClear();
-                    Play_EndIconsRemoveFocus();
-                    Play_EndCounter++;
-
-                    if (!Play_HasLive && Play_EndCounter === 1) Play_EndCounter++;
-
-                    if (Play_EndCounter > 4) Play_EndCounter = 0;
-                    if (Play_EndCounter === 2) Play_EndCounter = 3;
-                    Play_EndIconsAddFocus();
-                } else PlayVod_FastBackForward(1);
-                break;
-            case KEY_UP:
-                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-                    Play_clearHidePanel();
-
-                    if (!PlayVod_PanelY) {
-
-                        PlayVod_jumpStepsIncrease();
-                        PlayVod_ProgressBaroffset = 2500;
-
-                    } else if (PlayVod_PanelY < 2) {
-
-                        PlayVod_PanelY--;
-                        Play_BottonIconsFocus();
-
-                    } else {
-
-                        Play_BottomUpDown(2, 1);
-
-                    }
-
-                    PlayVod_setHidePanel();
-                } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
-                    Play_EndTextClear();
-                    Main_removeEventListener("keydown", PlayVod_handleKeyDown);
-                    Main_addEventListener("keyup", Play_handleKeyUp);
-                    Play_EndUpclear = false;
-                    Play_EndUpclearCalback = PlayVod_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
-                } else if (!UserLiveFeed_isPreviewShowing() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
-                else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
-                break;
-            case KEY_DOWN:
-                if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
-                    Play_clearHidePanel();
-                    if (PlayVod_PanelY < 2) {
-                        PlayVod_PanelY++;
-                        Play_BottonIconsFocus(false, true);
-                        PlayVod_previews_hide();
-                    } else Play_BottomUpDown(2, -1);
-                    PlayVod_setHidePanel();
-                } else if (Play_isEndDialogVisible()) {
-                    Play_EndDialogUpDown(1);
-                } else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
-                else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(2);
-                else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
-                break;
-            case KEY_ENTER:
-                if (Play_isVodDialogVisible()) PlayVod_DialogPressed(PlayVod_VodPositions);
-                else if (Play_isEndDialogVisible()) {
-                    if (Play_EndFocus) Play_EndDialogPressed(2);
+                PlayVod_setHidePanel();
+            } else if (Play_isEndDialogVisible() || UserLiveFeed_isPreviewShowing()) {
+                Play_EndTextClear();
+                Main_removeEventListener("keydown", PlayVod_handleKeyDown);
+                Main_addEventListener("keyup", Play_handleKeyUp);
+                Play_EndUpclear = false;
+                Play_EndUpclearCalback = PlayVod_handleKeyDown;
+                Play_EndUpclearID = Main_setTimeout(Play_keyUpEnd, Screens_KeyUptimeout, Play_EndUpclearID);
+            } else if (!UserLiveFeed_isPreviewShowing() && !Play_isVodDialogVisible()) UserLiveFeed_ShowFeed();
+            else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
+            break;
+        case KEY_DOWN:
+            if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
+                Play_clearHidePanel();
+                if (PlayVod_PanelY < 2) {
+                    PlayVod_PanelY++;
+                    Play_BottonIconsFocus(false, true);
+                    PlayVod_previews_hide();
+                } else Play_BottomUpDown(2, -1);
+                PlayVod_setHidePanel();
+            } else if (Play_isEndDialogVisible()) {
+                Play_EndDialogUpDown(1);
+            } else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
+            else if (Play_isFullScreen && !Play_isPanelShowing()) Play_controls[Play_controlsChat].enterKey(2);
+            else if (!Play_isVodDialogVisible()) PlayVod_showPanel(true);
+            break;
+        case KEY_ENTER:
+            if (Play_isVodDialogVisible()) PlayVod_DialogPressed(PlayVod_VodPositions);
+            else if (Play_isEndDialogVisible()) {
+                if (Play_EndFocus) Play_EndDialogPressed(2);
+                else {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else {
-                        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                        else {
-                            Play_EndDialogEnter = 2;
-                            Play_EndUpclearCalback = PlayVod_handleKeyDown;
-                            Play_SavePlayData();
-                            PlayVod_CheckIfIsLiveStart();
-                        }
+                        Play_EndDialogEnter = 2;
+                        Play_EndUpclearCalback = PlayVod_handleKeyDown;
+                        Play_SavePlayData();
+                        PlayVod_CheckIfIsLiveStart();
                     }
-                } else if (Play_isPanelShowing()) {
-                    Play_clearHidePanel();
-                    if (!PlayVod_PanelY) {
-                        if (PlayVod_IsJumping) PlayVod_jump();
-                    } else if (PlayVod_PanelY === 1) {
-                        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
-                    } else Play_BottomOptionsPressed(2);
-                    PlayVod_setHidePanel();
-                } else if (UserLiveFeed_isPreviewShowing()) {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else PlayVod_CheckIfIsLiveStart();
                 }
-                else PlayVod_showPanel(true);
-                break;
-            case KEY_STOP:
-                PlayVod_CheckPreview();
-                Play_CleanHideExit();
-                PlayVod_shutdownStream();
-                break;
-            case KEY_KEYBOARD_BACKSPACE:
-            case KEY_RETURN:
-                Play_KeyReturn(true);
-                break;
-            case KEY_PLAY:
-            case KEY_PLAYPAUSE:
-            case KEY_KEYBOARD_SPACE:
-                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
-                break;
-            case KEY_1:
-                if (UserLiveFeed_isPreviewShowing()) {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else PlayVod_CheckIfIsLiveStart();
-                }
-                break;
-            case KEY_REFRESH:
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(2);
-                break;
-            case KEY_CHAT:
-                Play_controls[Play_controlsChat].enterKey(2);
-                break;
-            case KEY_MEDIA_REWIND:
-            case KEY_PG_UP:
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
-                else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
-                else UserLiveFeed_ShowFeed();
-                break;
-            case KEY_PG_DOWN:
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
-                else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
-                else UserLiveFeed_ShowFeed();
-                break;
-            case KEY_MEDIA_FAST_FORWARD:
-                if (Play_isEndDialogVisible()) break;
+            } else if (Play_isPanelShowing()) {
+                Play_clearHidePanel();
+                if (!PlayVod_PanelY) {
+                    if (PlayVod_IsJumping) PlayVod_jump();
+                } else if (PlayVod_PanelY === 1) {
+                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                } else Play_BottomOptionsPressed(2);
+                PlayVod_setHidePanel();
+            } else if (UserLiveFeed_isPreviewShowing()) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                else PlayVod_CheckIfIsLiveStart();
+            }
+            else PlayVod_showPanel(true);
+            break;
+        case KEY_STOP:
+            PlayVod_CheckPreview();
+            Play_CleanHideExit();
+            PlayVod_shutdownStream();
+            break;
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Play_KeyReturn(true);
+            break;
+        case KEY_PLAY:
+        case KEY_PLAYPAUSE:
+        case KEY_KEYBOARD_SPACE:
+            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+            break;
+        case KEY_1:
+            if (UserLiveFeed_isPreviewShowing()) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                else PlayVod_CheckIfIsLiveStart();
+            }
+            break;
+        case KEY_REFRESH:
+            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
+            else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
+                !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(2);
+            break;
+        case KEY_CHAT:
+            Play_controls[Play_controlsChat].enterKey(2);
+            break;
+        case KEY_MEDIA_REWIND:
+        case KEY_PG_UP:
+            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
+            else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatPosChage();
+            else UserLiveFeed_ShowFeed();
+            break;
+        case KEY_PG_DOWN:
+            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
+            else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
+            else UserLiveFeed_ShowFeed();
+            break;
+        case KEY_MEDIA_FAST_FORWARD:
+            if (Play_isEndDialogVisible()) break;
 
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else Play_controls[Play_controlsChatSide].enterKey(2);
+            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
+            else Play_controls[Play_controlsChatSide].enterKey(2);
 
-                break;
-            case KEY_MEDIA_NEXT:
-                PlayVod_QuickJump(30);
-                break;
-            case KEY_MEDIA_PREVIOUS:
-                PlayVod_QuickJump(-30);
-                break;
-            default:
-                break;
-        }
+            break;
+        case KEY_MEDIA_NEXT:
+            PlayVod_QuickJump(30);
+            break;
+        case KEY_MEDIA_PREVIOUS:
+            PlayVod_QuickJump(-30);
+            break;
+        default:
+            break;
     }
 }
 
