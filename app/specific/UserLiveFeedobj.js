@@ -75,7 +75,8 @@ function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
 
         if (UserLiveFeed_ObjNotNull(pos))
-            Main_values.UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][14];
+            Main_values.UserLiveFeed_LastPos[pos] =
+                UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
     }
 
@@ -370,6 +371,7 @@ function UserLiveFeedobj_ShowHistory() {
 
     if (AddUser_UserIsSet()) {
 
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
         UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);
 
     }
@@ -377,7 +379,6 @@ function UserLiveFeedobj_ShowHistory() {
 }
 
 function UserLiveFeedobj_History() {
-    UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
@@ -401,8 +402,10 @@ function UserLiveFeedobj_History() {
     if (response_items) {
 
         for (i; i < response_items; i++) {
+
             cell = response[i];
             id = cell.data[7];
+
             if (!cell.forceVod) {
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
@@ -430,9 +433,13 @@ function UserLiveFeedobj_History() {
         }
 
         if (!itemsCount) UserLiveFeedobj_Empty(pos);
+
     } else UserLiveFeedobj_Empty(pos);
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
+        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
 
     UserLiveFeed_loadDataSuccessFinish(pos);
 }
@@ -1072,12 +1079,12 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
     if (response_items) {
 
         for (i; i < response_items; i++) {
-            id = response[i]._id;
+            mArray = ScreensObj_VodCellArray(response[i]);
+            id = mArray[7];
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
                 UserLiveFeed_idObject[pos][id] = itemsCount;
-                mArray = ScreensObj_VodCellArray(response[i]);
 
                 // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
                 //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
@@ -1109,8 +1116,10 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
+
         UserLiveFeed_obj[pos].loadingMore = false;
         if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+
     } else {
         Main_setTimeout(
             function() {
@@ -1127,13 +1136,11 @@ function UserLiveFeedobj_loadDataBaseVodSuccess(responseText, pos) {
 //User VOD end
 
 //User VOD history
-var UserLiveFeedobj_VodHistoryFeedOldUserName = '';
 function UserLiveFeedobj_ShowUserVodHistory() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserVodHistoryPos - 2);
 
     if (AddUser_UserIsSet()) {
-        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodHistoryPos, (UserLiveFeedobj_VodHistoryFeedOldUserName !== AddUser_UsernameArray[0].name));
-        UserLiveFeedobj_VodHistoryFeedOldUserName = AddUser_UsernameArray[0].name;
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodHistoryPos, true);
     }
 }
 
