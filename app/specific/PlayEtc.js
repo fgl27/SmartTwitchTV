@@ -1199,7 +1199,6 @@ function Play_FollowUnfollow() {
 }
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
-
     var error = STR_STREAM_ERROR;
 
     if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
@@ -1222,8 +1221,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
         if (isVodScreen) {
 
-            if (!PlayVod_isOn) return obj;
-            else if (Main_values.ChannelVod_vodId !== obj[7]) return obj;
+            if (!PlayVod_isOn || Main_values.ChannelVod_vodId !== obj[7]) return obj;
 
             error = STR_ALREDY_PLAYING;
 
@@ -1233,7 +1231,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
 
             if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
-                if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
+                if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD_ERROR;
                 else return obj;
 
             } else if (Play_MultiEnable) {
@@ -1883,7 +1881,7 @@ function Play_handleKeyDown(e) {
 
                     if (Play_MultiIsFull()) {
 
-                        var obj1 = Play_CheckLiveThumb();
+                        var obj1 = Play_preventVodOnPP() && Play_CheckLiveThumb();
                         if (obj1) Play_MultiSetUpdateDialog(obj1);
 
                     } else Play_MultiStartPrestart();
@@ -4381,4 +4379,19 @@ function Play_PreStart() {
     ];
 
     Main_base_string_header = JSON.stringify(Main_base_array_header);
+}
+
+function Play_preventVodOnPP() {
+
+    if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+
+        Play_showWarningMidleDialog(
+            STR_PP_VOD_ERROR,
+            1500
+        );
+
+        return false;
+    }
+
+    return true;
 }

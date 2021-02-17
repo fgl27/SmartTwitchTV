@@ -39,7 +39,10 @@ function PlayExtra_KeyEnter() {
         return;
     }
 
-    var doc = Play_CheckLiveThumb();
+    if (!Play_preventVodOnPP()) return;
+
+    var doc = Play_CheckLiveThumb(false, false);
+
     if (doc) {
 
         PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;

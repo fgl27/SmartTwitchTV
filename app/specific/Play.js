@@ -1997,7 +1997,7 @@ function Play_OpenFeed(keyfun) {
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
         if (Play_MultiEnable || PlayExtra_PicturePicture) {
-            Play_showWarningMidleDialog(STR_PP_VOD, 2500);
+            Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 2500);
             return;
         }
 

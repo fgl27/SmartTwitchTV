@@ -551,7 +551,7 @@ function en_USLang() {
     STR_START_AT_USER = "Always start the app in the user screen";
     STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
     STR_LAST_REFRESH = "last refresh: ";
-    STR_PP_VOD = "Exit PP or Multistream to open this VOD";
+    STR_PP_VOD_ERROR = "Exit PP or Multistream to open this VOD";
     STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
     STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has a accessibility service enabled the app will show a warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
     STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";

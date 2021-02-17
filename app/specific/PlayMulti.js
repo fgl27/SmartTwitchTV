@@ -300,6 +300,9 @@ function Play_MultiHasOne() {
 }
 
 function Play_MultiStartPrestart(position) {
+
+    if (!Play_preventVodOnPP()) return;
+
     var obj = Play_CheckLiveThumb();
 
     if (obj) {
