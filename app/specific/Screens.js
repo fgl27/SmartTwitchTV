@@ -2539,7 +2539,7 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

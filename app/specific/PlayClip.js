@@ -163,7 +163,7 @@ function PlayClip_updateVodInfo() {
     if (!Main_values.ChannelVod_vodId) return;
 
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -188,7 +188,7 @@ function PlayClip_GetStreamerInfo() {
     //Main_Log('PlayClip_GetStreamerInfo');
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -943,7 +943,7 @@ function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
 
     var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

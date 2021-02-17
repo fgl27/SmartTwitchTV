@@ -97,7 +97,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
 
         } else {
 
-            OSInterface_BasexmlHttpGet(
+            OSInterface_BaseXmlHttpGet(
                 url,
                 DefaultHttpGetTimeout,
                 null,

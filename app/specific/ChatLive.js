@@ -170,7 +170,7 @@ function ChatLive_checkFallow(chat_number, id) {
     ChatLive_FollowState[chat_number] = {};
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -218,7 +218,7 @@ function ChatLive_checkSub(chat_number, id) {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         3,
         Main_OAuth + AddUser_UsernameArray[0].access_token,
@@ -248,7 +248,7 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
 
     if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
             0,
             null,
@@ -319,7 +319,7 @@ function ChatLive_loadChattersViewers(chat_number, id) {
 
     var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -355,7 +355,7 @@ function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
 
 function ChatLive_loadChattersLoad(chat_number, id) {
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
         0,
         null,
@@ -389,7 +389,7 @@ function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
 function ChatLive_loadEmotesUser() {
     if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
             3,
             Main_OAuth + AddUser_UsernameArray[0].access_token,
@@ -454,7 +454,7 @@ function ChatLive_loadEmotesChannelbttv(chat_number, id) {
 
     if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
             0,
             null,
@@ -526,7 +526,7 @@ function ChatLive_loadCheersChannel(chat_number, id) {
 
     if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
             1,
             null,
@@ -583,7 +583,7 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
 
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
             0,
             null,

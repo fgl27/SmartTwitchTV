@@ -164,7 +164,7 @@ function AddUser_KeyboardDismiss() {
 function AddUser_loadDataRequest() {
     var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -304,7 +304,7 @@ function AddUser_UpdateUserAllUsers() {
 function AddUser_UpdateUser(position) {
     var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name) + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

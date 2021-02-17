@@ -145,7 +145,7 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
 
     if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         url,
         headers,
         null,
@@ -194,7 +194,7 @@ function UserLiveFeedobj_loadChannels() {
     var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
         '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

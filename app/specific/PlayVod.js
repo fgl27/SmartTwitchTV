@@ -246,7 +246,7 @@ function PlayVod_updateVodInfo() {
 
     PlayVod_updateVodInfoId = (new Date().getTime());
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

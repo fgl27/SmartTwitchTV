@@ -110,7 +110,7 @@ function ChannelContent_loadDataRequest() {
         encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
         Main_TwithcV5Flag;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -154,7 +154,7 @@ function ChannelContent_loadDataCheckHost() {
 
     ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         0,
         null,
@@ -191,7 +191,7 @@ function ChannelContent_CheckHost(responseText, key, id) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,

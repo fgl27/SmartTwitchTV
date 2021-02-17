@@ -1004,7 +1004,7 @@ function Main_CheckUpdate(forceUpdate) {
 
     if (Main_IsOn_OSInterface) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
             0,
             null,
@@ -1453,7 +1453,7 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -1899,7 +1899,7 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BasexmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
+function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
     if (Main_IsOn_OSInterface) {
 
@@ -1911,7 +1911,7 @@ function BasexmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, cal
 
         }
 
-        OSInterface_BasexmlHttpGet(
+        OSInterface_BaseXmlHttpGet(
             theUrl,
             DefaultHttpGetTimeout,
             null,
@@ -2004,7 +2004,7 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
 
     if (Main_IsOn_OSInterface) {
 
-        OSInterface_BasexmlHttpGet(
+        OSInterface_BaseXmlHttpGet(
             theUrl,
             DefaultHttpGetTimeout,
             postMessage,

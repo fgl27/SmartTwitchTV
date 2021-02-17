@@ -183,10 +183,10 @@ function OSInterface_getQualities() {
     return Android.getQualities();
 }
 
-//public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+//public void BaseXmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
 //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
 //Android specific: true
-function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
+function OSInterface_BaseXmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
 
     Android.BasexmlHttpGet(
         urlString,

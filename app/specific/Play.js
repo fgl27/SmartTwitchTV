@@ -593,7 +593,7 @@ function Play_updateStreamInfoStart() {
 
     Play_updateStreamInfoStartId = new Date().getTime();
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -665,7 +665,7 @@ function Play_setFollow() {
 function Play_updateVodInfo(Channel_id, BroadcastID) {
     var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -719,7 +719,7 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
 
     Play_updateStreamInfoGetId = new Date().getTime();
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         2,
         null,
@@ -1869,7 +1869,7 @@ function Play_loadDataCheckHost() {
     Main_setTimeout(
         function() {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 theUrl,//urlString
                 0,
                 null,

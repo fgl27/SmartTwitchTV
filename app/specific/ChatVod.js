@@ -81,7 +81,7 @@ function Chat_loadBadgesGlobal() {
 
 function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         0,
         null,
@@ -219,7 +219,7 @@ function Chat_loadChatRequest(id) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         0,
         null,
@@ -493,7 +493,7 @@ function Chat_loadChatNextRequest(id) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
         '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,
         0,
         null,

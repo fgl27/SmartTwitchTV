@@ -944,7 +944,7 @@ function Play_StayCheckHost() {
 
     Play_StayCheckHostId = new Date().getTime();
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         theUrl,//urlString
         0,
         null,

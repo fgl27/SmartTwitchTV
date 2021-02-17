@@ -27,7 +27,7 @@ function Play_updateStreamInfoMulti(pos) {
     Play_updateStreamInfoMultiId[pos] = new Date().getTime();
 
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
         2,
         null,

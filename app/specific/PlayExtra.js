@@ -306,7 +306,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-    BasexmlHttpGet(
+    BaseXmlHttpGet(
         ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
         0,
         null,
