@@ -240,19 +240,27 @@ function PlayVod_PosStart() {
     Main_SaveValues();
 }
 
+var PlayVod_updateVodInfoId;
 function PlayVod_updateVodInfo() {
     var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
+
+    PlayVod_updateVodInfoId = (new Date().getTime());
 
     BasexmlHttpGet(
         theUrl,
         2,
         null,
         PlayVod_updateVodInfoPannel,
-        noop_fun
+        noop_fun,
+        0,
+        PlayVod_updateVodInfoId
     );
 }
 
-function PlayVod_updateVodInfoPannel(response) {
+function PlayVod_updateVodInfoPannel(response, key, ID) {
+
+    if (!PlayVod_isOn || PlayVod_updateVodInfoId !== ID) return;
+
     response = JSON.parse(response);
 
     //Update the value only if the Play_UpdateDuration() has not yet
