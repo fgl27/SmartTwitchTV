@@ -585,25 +585,29 @@ function Play_UpdateMainStream(startChat, refreshInfo) {
 
 }
 
-
+var Play_updateStreamInfoStartId;
 function Play_updateStreamInfoStart() {
     if (!Play_data.data[14]) return;
 
     var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag;
+
+    Play_updateStreamInfoStartId = new Date().getTime();
 
     BasexmlHttpGet(
         theUrl,
         2,
         null,
         Play_updateStreamInfoStartValues,
-        Play_updateStreamInfoStartError
+        Play_updateStreamInfoStartError,
+        0,
+        Play_updateStreamInfoStartId
     );
 }
 
-function Play_updateStreamInfoStartValues(response) {
+function Play_updateStreamInfoStartValues(response, key, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length) {
+    if (obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
 
         Play_updateStreamInfoEnd(obj.streams[0]);
 
@@ -1855,6 +1859,7 @@ function Play_CheckHostStart(error_410) {
 var Play_loadDataCheckHostId;
 function Play_loadDataCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
     Play_loadDataCheckHostId = new Date().getTime();
 
     Main_setTimeout(
