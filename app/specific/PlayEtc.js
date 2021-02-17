@@ -941,6 +941,7 @@ function Play_StartStayStartCheck() {
 var Play_StayCheckHostId;
 function Play_StayCheckHost() {
     var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
     Play_StayCheckHostId = new Date().getTime();
 
     BasexmlHttpGet(

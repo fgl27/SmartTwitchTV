@@ -21,7 +21,11 @@
 //All multistream related fun are placed here
 var Play_MultiArray_length = 4;
 
+var Play_updateStreamInfoMultiId = [];
 function Play_updateStreamInfoMulti(pos) {
+
+    Play_updateStreamInfoMultiId[pos] = new Date().getTime();
+
 
     BasexmlHttpGet(
         Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
@@ -29,15 +33,16 @@ function Play_updateStreamInfoMulti(pos) {
         null,
         Play_updateStreamInfoMultiValues,
         Play_updateStreamInfoMultiError,
-        pos
+        pos,
+        Play_updateStreamInfoMultiId[pos]
     );
 
 }
 
-function Play_updateStreamInfoMultiValues(response, pos) {
+function Play_updateStreamInfoMultiValues(response, pos, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length) {
+    if (obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
 
         var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
