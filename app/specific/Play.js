@@ -714,7 +714,10 @@ function Play_updateStreamInfo() {
     }
 }
 
+var Play_updateStreamInfoGetId;
 function Play_updateStreamInfoGet(theUrl, Is_play) {
+
+    Play_updateStreamInfoGetId = new Date().getTime();
 
     BasexmlHttpGet(
         theUrl,
@@ -722,15 +725,16 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
         null,
         Play_updateStreamInfoValues,
         Play_updateStreamInfoGetError,
-        Is_play
+        Is_play,
+        Play_updateStreamInfoGetId
     );
 
 }
 
-function Play_updateStreamInfoValues(response, Is_play) {
+function Play_updateStreamInfoValues(response, Is_play, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length) {
+    if (obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
 
         if (Is_play) {
             Play_updateStreamInfoEnd(obj.streams[0]);
