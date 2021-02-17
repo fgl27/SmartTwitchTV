@@ -170,7 +170,7 @@ function PlayExtra_ResumeResultEnd(responseObj, checkHost) {
 
 }
 
-function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
+function PlayExtra_loadDataSuccessEnd(playlist, PreventCleanQualities) {
 
     PlayExtra_data.watching_time = new Date().getTime();
     Play_SetAudioIcon();
@@ -188,7 +188,7 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
 
     if (Main_IsOn_OSInterface && Play_isOn) {
 
-        if (Play_PreviewId) {
+        if (PreventCleanQualities) {
 
             OSInterface_ReuseFeedPlayer(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
 
@@ -200,7 +200,7 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
 
     }
 
-    UserLiveFeed_Hide(PreventcleanQuailities);
+    UserLiveFeed_Hide(PreventCleanQualities);
 
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
     PlayExtra_updateStreamInfo();

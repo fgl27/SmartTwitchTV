@@ -678,11 +678,12 @@ function UserLiveFeed_CheckIfIsLiveGetPos(position) {
 }
 
 function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
+
     Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
     if (Main_IsOn_OSInterface) {
 
-        OSInterface_ClearFeedPlayer();
+        if (!PreventCleanQualities) OSInterface_ClearFeedPlayer();
 
         if (Play_PreviewId && !PreventCleanQualities) {
 

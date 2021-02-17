@@ -2739,53 +2739,66 @@ public class PlayerActivity extends Activity {
         public void ReuseFeedPlayer(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
             runOnUiThread(() -> {
 
-                if (PlayerObj[4].player != null) PlayerObj[4].player.setPlayWhenReady(false);
+                if (PlayerObj[4].player != null) {
+
+                    PlayerObj[4].player.setPlayWhenReady(false);
+
+                }
 
                 if (!MultiStreamEnable && position == 1) {
+
                     PicturePicture = true;
                     //Call this always before starting the player
                     ResetPPView();
+
                 }
 
-                boolean mReUsePlayer = CanReUsePlayer(
-                        mainPlaylistString,
-                        MultiStreamEnable ? 1 : position
-                );
+                // Minor delay to make sure there is no visual glitches
+                // that can happen when using setPlayer on active players
+                MainThreadHandler.postDelayed(() -> {
 
-                Set_PlayerObj(
-                        false,
-                        Type,
-                        ResumePosition,
-                        MultiStreamEnable ? 1 : position,// always 0 or 1... so safe to use position
-                        position
-                );
-
-                if (mReUsePlayer) {
-
-                    PlayerObjUpdateTrackSelector(
-                            4,
-                            PlayerObj[position].trackSelectorParametersPosition
-                    );
-
-                    ReUsePlayer(position);
-
-                } else {
-
-                    PlayerObj[position].mediaSources = Tools.buildMediaSource(
-                            Uri.parse(uri),
-                            mWebViewContext,
-                            Type,
-                            mLowLatency,
+                    boolean mReUsePlayer = CanReUsePlayer(
                             mainPlaylistString,
-                            userAgent
+                            MultiStreamEnable ? 1 : position
                     );
 
-                    SetupPlayer(position);
+                    Set_PlayerObj(
+                            false,
+                            Type,
+                            ResumePosition,
+                            MultiStreamEnable ? 1 : position,// always 0 or 1... so safe to use position
+                            position
+                    );
 
-                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
-                }
+                    if (mReUsePlayer) {
 
-                PreviewPlayerPlaylist = null;
+                        PlayerObjUpdateTrackSelector(
+                                4,
+                                PlayerObj[position].trackSelectorParametersPosition
+                        );
+
+                        ReUsePlayer(position);
+
+                    } else {
+
+                        if (PlayerObj[4].player != null) Clear_PreviewPlayer();
+
+                        PlayerObj[position].mediaSources = Tools.buildMediaSource(
+                                Uri.parse(uri),
+                                mWebViewContext,
+                                Type,
+                                mLowLatency,
+                                mainPlaylistString,
+                                userAgent
+                        );
+
+                        SetupPlayer(position);
+
+                    }
+
+                    PreviewPlayerPlaylist = null;
+
+                }, 50);
 
             });
         }
@@ -2823,8 +2836,6 @@ public class PlayerActivity extends Activity {
                     );
 
                     SetupPlayer(position);
-
-                    if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
                     PreviewPlayerPlaylist = null;
 
