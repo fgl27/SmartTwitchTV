@@ -415,7 +415,7 @@
     var STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY;
     var STR_START_AT_USER;
     var STR_LAST_REFRESH;
-    var STR_PP_VOD;
+    var STR_PP_VOD_ERROR;
     var STR_SETTINGS_ACCESSIBILITY;
     var STR_ACCESSIBILITY_WARN;
     var STR_ACCESSIBILITY_WARN_EXTRA;
@@ -1412,7 +1412,7 @@
         STR_START_AT_USER = "Always start the app in the user screen";
         STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
         STR_LAST_REFRESH = "last refresh: ";
-        STR_PP_VOD = "Exit PP or Multistream to open this VOD";
+        STR_PP_VOD_ERROR = "Exit PP or Multistream to open this VOD";
         STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
         STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has a accessibility service enabled the app will show a warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
         STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
@@ -1773,11 +1773,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 306, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/306/SmartTV_twitch_3_0_306.apk',
-        WebVersion: 'February 15 2020',
-        WebTag: 573, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 307, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/307/SmartTV_twitch_3_0_307.apk',
+        WebVersion: 'February 17 2020',
+        WebTag: 574, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.307 and Web Version February 17 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.306 and Web Version February 15 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -13791,7 +13797,6 @@
     }
 
     function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
-
         var error = STR_STREAM_ERROR;
 
         if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
@@ -13814,8 +13819,7 @@
 
             if (isVodScreen) {
 
-                if (!PlayVod_isOn) return obj;
-                else if (Main_values.ChannelVod_vodId !== obj[7]) return obj;
+                if (!PlayVod_isOn || Main_values.ChannelVod_vodId !== obj[7]) return obj;
 
                 error = STR_ALREDY_PLAYING;
 
@@ -13825,7 +13829,7 @@
 
                 if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
 
-                    if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD;
+                    if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD_ERROR;
                     else return obj;
 
                 } else if (Play_MultiEnable) {
@@ -14479,7 +14483,7 @@
 
                         if (Play_MultiIsFull()) {
 
-                            var obj1 = Play_CheckLiveThumb();
+                            var obj1 = Play_preventVodOnPP() && Play_CheckLiveThumb();
                             if (obj1) Play_MultiSetUpdateDialog(obj1);
 
                         } else Play_MultiStartPrestart();
@@ -16979,6 +16983,21 @@
 
         Main_base_string_header = JSON.stringify(Main_base_array_header);
     }
+
+    function Play_preventVodOnPP() {
+
+        if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
+
+            Play_showWarningMidleDialog(
+                STR_PP_VOD_ERROR,
+                1500
+            );
+
+            return false;
+        }
+
+        return true;
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -17020,7 +17039,10 @@
             return;
         }
 
-        var doc = Play_CheckLiveThumb();
+        if (!Play_preventVodOnPP()) return;
+
+        var doc = Play_CheckLiveThumb(false, false);
+
         if (doc) {
 
             PlayExtra_WasPicturePicture = PlayExtra_PicturePicture;
@@ -17152,7 +17174,7 @@
 
     }
 
-    function PlayExtra_loadDataSuccessEnd(playlist, PreventcleanQuailities) {
+    function PlayExtra_loadDataSuccessEnd(playlist, PreventCleanQualities) {
 
         PlayExtra_data.watching_time = new Date().getTime();
         Play_SetAudioIcon();
@@ -17170,7 +17192,7 @@
 
         if (Main_IsOn_OSInterface && Play_isOn) {
 
-            if (Play_PreviewId) {
+            if (PreventCleanQualities) {
 
                 OSInterface_ReuseFeedPlayer(PlayExtra_data.AutoUrl, PlayExtra_data.playlist, 1, 0, 1);
 
@@ -17182,7 +17204,7 @@
 
         }
 
-        UserLiveFeed_Hide(PreventcleanQuailities);
+        UserLiveFeed_Hide(PreventCleanQualities);
 
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
         PlayExtra_updateStreamInfo();
@@ -19458,7 +19480,7 @@
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
             if (Play_MultiEnable || PlayExtra_PicturePicture) {
-                Play_showWarningMidleDialog(STR_PP_VOD, 2500);
+                Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 2500);
                 return;
             }
 
@@ -19888,6 +19910,9 @@
     }
 
     function Play_MultiStartPrestart(position) {
+
+        if (!Play_preventVodOnPP()) return;
+
         var obj = Play_CheckLiveThumb();
 
         if (obj) {
@@ -32576,11 +32601,12 @@
     }
 
     function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
+
         Main_clearTimeout(UserLiveFeed_LoadPreviewId);
 
         if (Main_IsOn_OSInterface) {
 
-            OSInterface_ClearFeedPlayer();
+            if (!PreventCleanQualities) OSInterface_ClearFeedPlayer();
 
             if (Play_PreviewId && !PreventCleanQualities) {
 
@@ -33275,7 +33301,8 @@
         if (UserLiveFeed_status[pos]) {
 
             if (UserLiveFeed_ObjNotNull(pos))
-                Main_values.UserLiveFeed_LastPos[pos] = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][14];
+                Main_values.UserLiveFeed_LastPos[pos] =
+                UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
         }
 
@@ -33571,6 +33598,7 @@
 
         if (AddUser_UserIsSet()) {
 
+            UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
             UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserHistoryPos, true);
 
         }
@@ -33578,7 +33606,6 @@
     }
 
     function UserLiveFeedobj_History() {
-        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserHistoryPos);
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
 
@@ -33602,8 +33629,10 @@
         if (response_items) {
 
             for (i; i < response_items; i++) {
+
                 cell = response[i];
                 id = cell.data[7];
+
                 if (!cell.forceVod) {
 
                     if (!UserLiveFeed_idObject[pos].hasOwnProperty(id) && cell.data[14] && cell.data[14] !== '') {
@@ -33631,9 +33660,13 @@
             }
 
             if (!itemsCount) UserLiveFeedobj_Empty(pos);
+
         } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
+
+        if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
+            UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
 
         UserLiveFeed_loadDataSuccessFinish(pos);
     }
@@ -34282,12 +34315,12 @@
         if (response_items) {
 
             for (i; i < response_items; i++) {
-                id = response[i]._id;
+                mArray = ScreensObj_VodCellArray(response[i]);
+                id = mArray[7];
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
                     UserLiveFeed_idObject[pos][id] = itemsCount;
-                    mArray = ScreensObj_VodCellArray(response[i]);
 
                     // if (Main_A_includes_B(mArray[0] + '', '404_processing')) {
                     //     mArray[0] = 'https://static-cdn.jtvnw.net/s3_vods/' + mArray[8].split('/')[3] +
@@ -34319,8 +34352,10 @@
         }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
+
             UserLiveFeed_obj[pos].loadingMore = false;
             if (pos === UserLiveFeed_FeedPosX) UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
+
         } else {
             Main_setTimeout(
                 function() {
@@ -34337,14 +34372,11 @@
     //User VOD end
 
     //User VOD history
-    var UserLiveFeedobj_VodHistoryFeedOldUserName = '';
-
     function UserLiveFeedobj_ShowUserVodHistory() {
         UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserVodHistoryPos - 2);
 
         if (AddUser_UserIsSet()) {
-            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodHistoryPos, (UserLiveFeedobj_VodHistoryFeedOldUserName !== AddUser_UsernameArray[0].name));
-            UserLiveFeedobj_VodHistoryFeedOldUserName = AddUser_UsernameArray[0].name;
+            UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_UserVodHistoryPos, true);
         }
     }
 
