@@ -8678,6 +8678,7 @@
             Main_values_Play_data[9],
             screen
         );
+
     }
 
     function Main_openVod() {
@@ -13539,6 +13540,7 @@
 
     function Play_StayCheckHost() {
         var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
         Play_StayCheckHostId = new Date().getTime();
 
         BasexmlHttpGet(
@@ -18058,25 +18060,30 @@
 
     }
 
+    var Play_updateStreamInfoStartId;
 
     function Play_updateStreamInfoStart() {
         if (!Play_data.data[14]) return;
 
         var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag;
 
+        Play_updateStreamInfoStartId = new Date().getTime();
+
         BasexmlHttpGet(
             theUrl,
             2,
             null,
             Play_updateStreamInfoStartValues,
-            Play_updateStreamInfoStartError
+            Play_updateStreamInfoStartError,
+            0,
+            Play_updateStreamInfoStartId
         );
     }
 
-    function Play_updateStreamInfoStartValues(response) {
+    function Play_updateStreamInfoStartValues(response, key, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length) {
+        if (obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
 
             Play_updateStreamInfoEnd(obj.streams[0]);
 
@@ -18184,7 +18191,11 @@
         }
     }
 
+    var Play_updateStreamInfoGetId;
+
     function Play_updateStreamInfoGet(theUrl, Is_play) {
+
+        Play_updateStreamInfoGetId = new Date().getTime();
 
         BasexmlHttpGet(
             theUrl,
@@ -18192,15 +18203,16 @@
             null,
             Play_updateStreamInfoValues,
             Play_updateStreamInfoGetError,
-            Is_play
+            Is_play,
+            Play_updateStreamInfoGetId
         );
 
     }
 
-    function Play_updateStreamInfoValues(response, Is_play) {
+    function Play_updateStreamInfoValues(response, Is_play, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length) {
+        if (obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
 
             if (Is_play) {
                 Play_updateStreamInfoEnd(obj.streams[0]);
@@ -19338,6 +19350,7 @@
 
     function Play_loadDataCheckHost() {
         var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
+
         Play_loadDataCheckHostId = new Date().getTime();
 
         Main_setTimeout(
@@ -19631,7 +19644,12 @@
     //All multistream related fun are placed here
     var Play_MultiArray_length = 4;
 
+    var Play_updateStreamInfoMultiId = [];
+
     function Play_updateStreamInfoMulti(pos) {
+
+        Play_updateStreamInfoMultiId[pos] = new Date().getTime();
+
 
         BasexmlHttpGet(
             Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
@@ -19639,15 +19657,16 @@
             null,
             Play_updateStreamInfoMultiValues,
             Play_updateStreamInfoMultiError,
-            pos
+            pos,
+            Play_updateStreamInfoMultiId[pos]
         );
 
     }
 
-    function Play_updateStreamInfoMultiValues(response, pos) {
+    function Play_updateStreamInfoMultiValues(response, pos, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length) {
+        if (obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
 
             var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
@@ -20658,19 +20677,28 @@
         Main_SaveValues();
     }
 
+    var PlayVod_updateVodInfoId;
+
     function PlayVod_updateVodInfo() {
         var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
+
+        PlayVod_updateVodInfoId = (new Date().getTime());
 
         BasexmlHttpGet(
             theUrl,
             2,
             null,
             PlayVod_updateVodInfoPannel,
-            noop_fun
+            noop_fun,
+            0,
+            PlayVod_updateVodInfoId
         );
     }
 
-    function PlayVod_updateVodInfoPannel(response) {
+    function PlayVod_updateVodInfoPannel(response, key, ID) {
+
+        if (!PlayVod_isOn || PlayVod_updateVodInfoId !== ID) return;
+
         response = JSON.parse(response);
 
         //Update the value only if the Play_UpdateDuration() has not yet
