@@ -607,7 +607,7 @@ function Play_updateStreamInfoStart() {
 function Play_updateStreamInfoStartValues(response, key, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
+    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
 
         Play_updateStreamInfoEnd(obj.streams[0]);
 
@@ -734,7 +734,7 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
 function Play_updateStreamInfoValues(response, Is_play, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
+    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
 
         if (Is_play) {
             Play_updateStreamInfoEnd(obj.streams[0]);

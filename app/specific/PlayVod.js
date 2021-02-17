@@ -579,6 +579,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
     PlayVod_isOn = false;
+    PlayVod_updateVodInfoId = 0;
     PlayClip_OpenAVod = true;
     Main_clearInterval(PlayVod_SaveOffsetId);
     Main_clearTimeout(PlayVod_WarnEndId);

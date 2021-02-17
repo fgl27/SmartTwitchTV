@@ -957,7 +957,7 @@ function Play_StayCheckHost() {
 
 function Play_StayCheckHostSuccess(responseText, key, id) {
 
-    if (Play_StayCheckHostId === id) {
+    if (Play_StayDialogVisible() && Play_StayCheckHostId === id) {
 
         Play_TargetHost = JSON.parse(responseText).hosts[0];
 

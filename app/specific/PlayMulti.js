@@ -42,7 +42,7 @@ function Play_updateStreamInfoMulti(pos) {
 function Play_updateStreamInfoMultiValues(response, pos, ID) {
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
+    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
 
         var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
