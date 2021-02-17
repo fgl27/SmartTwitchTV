@@ -1912,7 +1912,7 @@
 
             } else {
 
-                OSInterface_BasexmlHttpGet(
+                OSInterface_BaseXmlHttpGet(
                     url,
                     DefaultHttpGetTimeout,
                     null,
@@ -2560,7 +2560,7 @@
     function AddUser_loadDataRequest() {
         var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -2702,7 +2702,7 @@
     function AddUser_UpdateUser(position) {
         var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name) + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -2974,7 +2974,7 @@
             encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
             Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -3019,7 +3019,7 @@
 
         ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             0,
             null,
@@ -3056,7 +3056,7 @@
     function ChannelContent_GetStreamerInfo() {
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -4807,7 +4807,7 @@
         ChatLive_FollowState[chat_number] = {};
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -4855,7 +4855,7 @@
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             3,
             Main_OAuth + AddUser_UsernameArray[0].access_token,
@@ -4885,7 +4885,7 @@
 
         if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
                 0,
                 null,
@@ -4956,7 +4956,7 @@
 
         var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -4992,7 +4992,7 @@
 
     function ChatLive_loadChattersLoad(chat_number, id) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
             0,
             null,
@@ -5026,7 +5026,7 @@
     function ChatLive_loadEmotesUser() {
         if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
                 3,
                 Main_OAuth + AddUser_UsernameArray[0].access_token,
@@ -5091,7 +5091,7 @@
 
         if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
                 0,
                 null,
@@ -5163,7 +5163,7 @@
 
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
                 1,
                 null,
@@ -5220,7 +5220,7 @@
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
                 0,
                 null,
@@ -6519,7 +6519,7 @@
 
     function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             0,
             null,
@@ -6657,7 +6657,7 @@
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             0,
             null,
@@ -6925,7 +6925,7 @@
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
             '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             0,
             null,
@@ -7997,7 +7997,7 @@
 
         if (Main_IsOn_OSInterface) {
 
-            BasexmlHttpGet(
+            BaseXmlHttpGet(
                 'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
                 0,
                 null,
@@ -8453,7 +8453,7 @@
 
     function Main_CheckBroadcastIDStart() {
         var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -8900,7 +8900,7 @@
         }
     }
 
-    function BasexmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
+    function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
 
         if (Main_IsOn_OSInterface) {
 
@@ -8912,7 +8912,7 @@
 
             }
 
-            OSInterface_BasexmlHttpGet(
+            OSInterface_BaseXmlHttpGet(
                 theUrl,
                 DefaultHttpGetTimeout,
                 null,
@@ -9005,7 +9005,7 @@
 
         if (Main_IsOn_OSInterface) {
 
-            OSInterface_BasexmlHttpGet(
+            OSInterface_BaseXmlHttpGet(
                 theUrl,
                 DefaultHttpGetTimeout,
                 postMessage,
@@ -10482,10 +10482,10 @@
         return Android.getQualities();
     }
 
-    //public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+    //public void BaseXmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
     //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
     //Android specific: true
-    function OSInterface_BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
+    function OSInterface_BaseXmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
 
         Android.BasexmlHttpGet(
             urlString,
@@ -11655,7 +11655,7 @@
         if (!Main_values.ChannelVod_vodId) return;
 
         var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -11680,7 +11680,7 @@
         //Main_Log('PlayClip_GetStreamerInfo');
         var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -12438,7 +12438,7 @@
 
         var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -13543,7 +13543,7 @@
 
         Play_StayCheckHostId = new Date().getTime();
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl, //urlString
             0,
             null,
@@ -13556,7 +13556,7 @@
 
     function Play_StayCheckHostSuccess(responseText, key, id) {
 
-        if (Play_StayCheckHostId === id) {
+        if (Play_StayDialogVisible() && Play_StayCheckHostId === id) {
 
             Play_TargetHost = JSON.parse(responseText).hosts[0];
 
@@ -17310,7 +17310,7 @@
 
         PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]), //urlString
             0,
             null,
@@ -18069,7 +18069,7 @@
 
         Play_updateStreamInfoStartId = new Date().getTime();
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -18083,7 +18083,7 @@
     function Play_updateStreamInfoStartValues(response, key, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
+        if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
 
             Play_updateStreamInfoEnd(obj.streams[0]);
 
@@ -18141,7 +18141,7 @@
     function Play_updateVodInfo(Channel_id, BroadcastID) {
         var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -18197,7 +18197,7 @@
 
         Play_updateStreamInfoGetId = new Date().getTime();
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -18212,7 +18212,7 @@
     function Play_updateStreamInfoValues(response, Is_play, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
+        if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
 
             if (Is_play) {
                 Play_updateStreamInfoEnd(obj.streams[0]);
@@ -19356,7 +19356,7 @@
         Main_setTimeout(
             function() {
 
-                BasexmlHttpGet(
+                BaseXmlHttpGet(
                     theUrl, //urlString
                     0,
                     null,
@@ -19651,7 +19651,7 @@
         Play_updateStreamInfoMultiId[pos] = new Date().getTime();
 
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
             2,
             null,
@@ -19666,7 +19666,7 @@
     function Play_updateStreamInfoMultiValues(response, pos, ID) {
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
+        if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
 
             var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
 
@@ -20684,7 +20684,7 @@
 
         PlayVod_updateVodInfoId = (new Date().getTime());
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -21018,6 +21018,7 @@
         Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
         PlayVod_isOn = false;
+        PlayVod_updateVodInfoId = 0;
         PlayClip_OpenAVod = true;
         Main_clearInterval(PlayVod_SaveOffsetId);
         Main_clearTimeout(PlayVod_WarnEndId);
@@ -24717,7 +24718,7 @@
 
         var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
@@ -33399,7 +33400,7 @@
 
         if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             url,
             headers,
             null,
@@ -33448,7 +33449,7 @@
         var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
             '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
 
-        BasexmlHttpGet(
+        BaseXmlHttpGet(
             theUrl,
             2,
             null,
