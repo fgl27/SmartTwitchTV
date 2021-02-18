@@ -428,7 +428,6 @@ function UserLiveFeed_Show() {
 
 function UserLiveFeed_Hide(PreventCleanQualities) {
     //return;//return;
-    UserLiveFeed_PreviewShowing = false;
     UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     UserLiveFeed_HideAfter();
 
@@ -439,6 +438,7 @@ function UserLiveFeed_HideAfter() {
     //return;//return;
     UserLiveFeed_Showloading(false);
     Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+    UserLiveFeed_PreviewShowing = false;
 }
 
 function UserLiveFeed_ShowFeed() {
