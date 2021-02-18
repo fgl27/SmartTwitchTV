@@ -519,27 +519,18 @@ public class PlayerActivity extends Activity {
 
     private void ReUsePlayer(int PlayerObjPosition) {
 
-        PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
-        PlayerObj[4].CheckHandler.removeCallbacksAndMessages(null);
+        //PP Multi player may not be in use, check and make visible
+        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE) {
 
-        if (PlayerObj[PlayerObjPosition].player != null) {
-            PlayerObj[PlayerObjPosition].player.setPlayWhenReady(false);
-            PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
-        }
-
-        if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE)
             PlayerObj[PlayerObjPosition].playerView.setVisibility(View.VISIBLE);
+
+        }
 
         PlayerObj[4].Listener.UpdatePosition(PlayerObjPosition);
         PlayerObj[PlayerObjPosition].Listener = PlayerObj[4].Listener;
 
-        DefaultTrackSelector tempTrackSelector = PlayerObj[PlayerObjPosition].trackSelector;
         PlayerObj[PlayerObjPosition].trackSelector = PlayerObj[4].trackSelector;
-        PlayerObj[4].trackSelector = tempTrackSelector;
-
-        MediaSource tempMediaSource = PlayerObj[PlayerObjPosition].mediaSources;
         PlayerObj[PlayerObjPosition].mediaSources = PlayerObj[4].mediaSources;
-        PlayerObj[4].mediaSources = tempMediaSource;
 
         SimpleExoPlayer tempPlayer = PlayerObj[PlayerObjPosition].player;
         PlayerObj[PlayerObjPosition].player = PlayerObj[4].player;
@@ -548,12 +539,25 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].playerView.setPlayer(PlayerObj[PlayerObjPosition].player);
         PlayerObj[PlayerObjPosition].player.setPlayWhenReady(true);
 
-        if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture))
-            setEnabledQualities(PlayerObjPosition);
-        else
-            PlayerObj[PlayerObjPosition].trackSelector.setParameters(trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]);
+        if (BLACKLISTED_QUALITIES != null && (IsInAutoMode || MultiStreamEnable || PicturePicture)) {
 
-        if (PlayerObjPosition == 0) GetCurrentPosition();
+            setEnabledQualities(PlayerObjPosition);
+
+        } else {
+
+
+            PlayerObj[PlayerObjPosition].trackSelector
+                    .setParameters(
+                            trackSelectorParameters[PlayerObj[PlayerObjPosition].trackSelectorParametersPosition]
+                    );
+
+        }
+
+        if (PlayerObjPosition == 0) {
+
+            GetCurrentPosition();
+
+        }
 
         PlayerObj[4].playerView.setPlayer(null);
         Clear_PreviewPlayer();
@@ -2736,54 +2740,68 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void ReuseFeedPlayer(String uri, String mainPlaylistString, int Type, long ResumePosition, int position) {
+        public void ReuseFeedPlayer(String uri, String mainPlaylistString, int Type, long ResumePosition, int PlayerObjPosition) {
             runOnUiThread(() -> {
 
+                //Make sure callbacks are removed before
                 if (PlayerObj[4].player != null) {
 
+                    PlayerObj[4].CheckHandler.removeCallbacksAndMessages(null);
                     PlayerObj[4].player.setPlayWhenReady(false);
+                    PlayerObj[4].playerView.setLayoutParams(HideLayout);
 
                 }
 
-                if (!MultiStreamEnable && position == 1) {
+                //Make sure the listener is removed also from the player that will be released
+                if (PlayerObj[PlayerObjPosition].player != null) {
+
+                    PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
+                    PlayerObj[PlayerObjPosition].player.setPlayWhenReady(false);
+                    PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
+
+                }
+
+                if (!MultiStreamEnable && PlayerObjPosition == 1) {
 
                     PicturePicture = true;
-                    //Call this always before starting the player
+                    //Call this always before starting the players
                     ResetPPView();
 
                 }
 
                 // Minor delay to make sure there is no visual glitches
                 // that can happen when using setPlayer on active players
+                // this also may help to prevent slowend devices lag
+                // as all players are on a paused state before doing the changes
                 MainThreadHandler.postDelayed(() -> {
 
                     boolean mReUsePlayer = CanReUsePlayer(
                             mainPlaylistString,
-                            MultiStreamEnable ? 1 : position
+                            MultiStreamEnable ? 1 : PlayerObjPosition
                     );
 
                     Set_PlayerObj(
                             false,
                             Type,
                             ResumePosition,
-                            MultiStreamEnable ? 1 : position,// always 0 or 1... so safe to use position
-                            position
+                            MultiStreamEnable ? 1 : PlayerObjPosition,// always 0 or 1... so safe to use position
+                            PlayerObjPosition
                     );
 
                     if (mReUsePlayer) {
 
                         PlayerObjUpdateTrackSelector(
                                 4,
-                                PlayerObj[position].trackSelectorParametersPosition
+                                PlayerObj[PlayerObjPosition].trackSelectorParametersPosition
                         );
 
-                        ReUsePlayer(position);
+                        ReUsePlayer(PlayerObjPosition);
 
                     } else {
 
                         if (PlayerObj[4].player != null) Clear_PreviewPlayer();
 
-                        PlayerObj[position].mediaSources = Tools.buildMediaSource(
+                        PlayerObj[PlayerObjPosition].mediaSources = Tools.buildMediaSource(
                                 Uri.parse(uri),
                                 mWebViewContext,
                                 Type,
@@ -2792,7 +2810,7 @@ public class PlayerActivity extends Activity {
                                 userAgent
                         );
 
-                        SetupPlayer(position);
+                        SetupPlayer(PlayerObjPosition);
 
                     }
 
