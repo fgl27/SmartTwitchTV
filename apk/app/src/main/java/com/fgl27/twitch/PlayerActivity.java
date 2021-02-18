@@ -3765,47 +3765,49 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void UpdateAPK(String apkURL, String failAll, String failDownload) {
 
-            final String appPackageName = getApplicationContext().getPackageName();
-
             try {
+                
+                final Context context = getApplicationContext();
+                final String appPackageName = context.getPackageName();
 
                 if (apkURL == null) {
 
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    startActivity(
+                            new Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("market://details?id=" + appPackageName)
+                            )
+                    );
 
                 } else {
 
-                    try {
-                        DataThreadPool.execute(() ->
-                                {
-                                    Context context = getApplicationContext();
-                                    String file = Tools.DownloadAPK(apkURL, context);
+                    DataThreadPool.execute(() ->
+                            {
 
-                                    if (file != null) {
+                                final String file = Tools.DownloadAPK(apkURL, context);
 
-                                        Tools.installPackage(context, file);
+                                if (file != null) {
 
-                                    } else {
+                                    Tools.installPackage(context, file);
 
-                                        runOnUiThread(() -> Toast.makeText(mWebViewContext, failDownload, Toast.LENGTH_LONG).show());
+                                } else {
 
-                                    }
-
+                                    runOnUiThread(() -> Toast.makeText(mWebViewContext, failDownload, Toast.LENGTH_LONG).show());
 
                                 }
-                        );
-                    } catch (Exception e) {//Most are RejectedExecutionException
 
-                        Tools.recordException(TAG, "UpdateAPK Exception ", e);
 
-                    }
+                            }
+                    );
 
                 }
 
 
-            } catch (Exception ignore) {
+            } catch (Exception e) {
 
                 runOnUiThread(() -> Toast.makeText(mWebViewContext, failAll, Toast.LENGTH_LONG).show());
+
+                Tools.recordException(TAG, "UpdateAPK Exception ", e);
 
             }
 
