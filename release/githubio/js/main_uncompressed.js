@@ -1776,7 +1776,7 @@
         publishVersionCode: 308, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/308/SmartTV_twitch_3_0_308.apk',
         WebVersion: 'February 18 2020',
-        WebTag: 575, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 576, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: "Apk Version 3.0.308 and Web Version February 18 2020",
                 changes: [
@@ -32385,7 +32385,6 @@
 
     function UserLiveFeed_Hide(PreventCleanQualities) {
         //return;//return;
-        UserLiveFeed_PreviewShowing = false;
         UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
         UserLiveFeed_HideAfter();
 
@@ -32396,6 +32395,7 @@
         //return;//return;
         UserLiveFeed_Showloading(false);
         Main_AddClassWitEle(UserLiveFeed_FeedHolderDocId, 'user_feed_hide');
+        UserLiveFeed_PreviewShowing = false;
     }
 
     function UserLiveFeed_ShowFeed() {
