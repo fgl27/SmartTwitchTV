@@ -679,7 +679,6 @@ function ChannelContent_LoadPreviewRun(obj) {
 function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
     if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
-        !Main_isElementShowing('dialog_thumb_opt') &&
         (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) && !Settings_isVisible() &&
         x === Main_values.Main_Go && ChannelContent_DataObj &&
         Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
