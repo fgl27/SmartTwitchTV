@@ -519,6 +519,13 @@ public class PlayerActivity extends Activity {
 
     private void ReUsePlayer(int PlayerObjPosition) {
 
+
+        if (PlayerObj[PlayerObjPosition].player != null) {
+
+            PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
+
+        }
+
         //PP Multi player may not be in use, check and make visible
         if (PlayerObj[PlayerObjPosition].playerView.getVisibility() != View.VISIBLE) {
 
@@ -2757,7 +2764,6 @@ public class PlayerActivity extends Activity {
 
                     PlayerObj[PlayerObjPosition].CheckHandler.removeCallbacksAndMessages(null);
                     PlayerObj[PlayerObjPosition].player.setPlayWhenReady(false);
-                    PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
 
                 }
 
@@ -3766,7 +3772,7 @@ public class PlayerActivity extends Activity {
         public void UpdateAPK(String apkURL, String failAll, String failDownload) {
 
             try {
-                
+
                 final Context context = getApplicationContext();
                 final String appPackageName = context.getPackageName();
 
