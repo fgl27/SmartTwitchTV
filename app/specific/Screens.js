@@ -30,6 +30,7 @@ var Screens_ChangeFocusAnimationFast = false;
 var Screens_SettingDoAnimations = true;
 var Screens_Some_Screen_Is_Refreshing = false;
 var Screens_dialog_thumb_div;
+var Screens_dialog_thumb_delete_div;
 //Start the app in async mode by default
 
 //FireBase support
@@ -116,6 +117,7 @@ function Screens_InitScreens() {
     ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
 
     Screens_dialog_thumb_div = Main_getElementById('dialog_thumb_opt');
+    Screens_dialog_thumb_delete_div = Main_getElementById('main_yes_no_dialog');
 
     Main_Startfirebase();
     Screens_first_init();
@@ -898,7 +900,8 @@ var Screens_LoadPreviewId;
 function Screens_LoadPreview(key) {
 
     if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
-        !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
+        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
         var id = 0,//Clip
             obj = Screens_GetObj(key);
@@ -967,7 +970,8 @@ function Screens_LoadPreviewStart(key, obj) {
     Play_CheckIfIsLiveCleanEnd();
 
     if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) ||
-        Main_isElementShowingWithEle(Screens_dialog_thumb_div)) {
+        Main_isElementShowingWithEle(Screens_dialog_thumb_div) ||
+        Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div)) {
         return;
     }
 
@@ -1048,7 +1052,8 @@ function Screens_LoadPreviewStart(key, obj) {
 
 function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && Screens_IsInUse(x) && !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
+    if (!Main_isStoped && Screens_IsInUse(x) &&
+        !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
         y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
 
@@ -2246,7 +2251,7 @@ function Screens_histDialogHide(Update, key) {
 
 function Screens_showDeleteDialog(text, key) {
     Main_innerHTML("main_dialog_remove", text);
-    Main_ShowElement('main_yes_no_dialog');
+    Main_ShowElementWithEle(Screens_dialog_thumb_delete_div);
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_histdelet);
     Screens_setRemoveDialog(key);
@@ -2266,7 +2271,7 @@ function Screens_HideRemoveDialog(key) {
     Users_clearRemoveDialog();
     Main_removeEventListener("keydown", ScreenObj[key].key_histdelet);
     Main_addEventListener("keydown", ScreenObj[key].key_fun);
-    Main_HideElement('main_yes_no_dialog');
+    Main_HideElementWithEle(Screens_dialog_thumb_delete_div);
     Users_RemoveCursor = 0;
     Users_UserCursorSet();
     Users_RemoveCursorSet();
