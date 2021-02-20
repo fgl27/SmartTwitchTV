@@ -1773,11 +1773,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 308, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/308/SmartTV_twitch_3_0_308.apk',
-        WebVersion: 'February 18 2020',
-        WebTag: 576, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 309, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/309/SmartTV_twitch_3_0_309.apk',
+        WebVersion: 'February 20 2020',
+        WebTag: 577, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.309 and Web Version February 20 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.308 and Web Version February 18 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -1797,22 +1803,6 @@
             },
             {
                 title: "Apk Version 3.0.305 and Web Version February 11 2020",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.304 and Web Version February 10 2020",
-                changes: [
-                    "Add new End dialog and player controls button, \"Streamer is now Live\", let you know when watching a VOD or a Clip that the streamer come online",
-                    "Add a new warning in Setting -> Warnings, Show \"Streamer is now Live\" warning, disable by default, small pop warning that show the first time the streamer comes online",
-                    "General improve on playback experience",
-                    "General improves on player controls looks",
-                    "Others general improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version February 06 2020",
                 changes: [
                     "General improves and bug fixes"
                 ]
@@ -3551,7 +3541,6 @@
     function ChannelContent_LoadPreviewResult(StreamData, x) { //Called by Java
 
         if (!Main_isStoped && Main_values.Main_Go === Main_ChannelContent && Main_isScene1DocVisible() &&
-            !Main_isElementShowing('dialog_thumb_opt') &&
             (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) && !Settings_isVisible() &&
             x === Main_values.Main_Go && ChannelContent_DataObj &&
             Main_A_includes_B(Main_getElementById('channel_content_thumbdiv0_0').className, 'stream_thumbnail_focused')) {
@@ -22211,6 +22200,8 @@
     var Screens_ChangeFocusAnimationFast = false;
     var Screens_SettingDoAnimations = true;
     var Screens_Some_Screen_Is_Refreshing = false;
+    var Screens_dialog_thumb_div;
+    var Screens_dialog_thumb_delete_div;
     //Start the app in async mode by default
 
     //FireBase support
@@ -22295,6 +22286,9 @@
             exit_fun: ChannelContent_exit
         };
         ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
+
+        Screens_dialog_thumb_div = Main_getElementById('dialog_thumb_opt');
+        Screens_dialog_thumb_delete_div = Main_getElementById('main_yes_no_dialog');
 
         Main_Startfirebase();
         Screens_first_init();
@@ -23082,6 +23076,7 @@
     function Screens_LoadPreview(key) {
 
         if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
+            !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
             !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
 
             var id = 0, //Clip
@@ -23150,7 +23145,9 @@
     function Screens_LoadPreviewStart(key, obj) {
         Play_CheckIfIsLiveCleanEnd();
 
-        if (!Main_IsOn_OSInterface) {
+        if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) ||
+            Main_isElementShowingWithEle(Screens_dialog_thumb_div) ||
+            Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div)) {
             return;
         }
 
@@ -23231,7 +23228,8 @@
 
     function Screens_LoadPreviewResult(StreamData, x, y) { //Called by Java
 
-        if (!Main_isStoped && Screens_IsInUse(x) && !Main_isElementShowing('dialog_thumb_opt') &&
+        if (!Main_isStoped && Screens_IsInUse(x) &&
+            !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
             y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
 
@@ -24427,7 +24425,7 @@
 
     function Screens_showDeleteDialog(text, key) {
         Main_innerHTML("main_dialog_remove", text);
-        Main_ShowElement('main_yes_no_dialog');
+        Main_ShowElementWithEle(Screens_dialog_thumb_delete_div);
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_addEventListener("keydown", ScreenObj[key].key_histdelet);
         Screens_setRemoveDialog(key);
@@ -24447,7 +24445,7 @@
         Users_clearRemoveDialog();
         Main_removeEventListener("keydown", ScreenObj[key].key_histdelet);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
-        Main_HideElement('main_yes_no_dialog');
+        Main_HideElementWithEle(Screens_dialog_thumb_delete_div);
         Users_RemoveCursor = 0;
         Users_UserCursorSet();
         Users_RemoveCursorSet();
@@ -24640,7 +24638,7 @@
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_addEventListener("keydown", ScreenObj[key].key_thumb);
 
-        Main_ShowElement('dialog_thumb_opt');
+        Main_ShowElementWithEle(Screens_dialog_thumb_div);
     }
 
     function Screens_ThumbOptionShowSpecial() {
@@ -24853,7 +24851,7 @@
         Main_clearTimeout(Screens_ThumbOptionDialogID);
         Main_removeEventListener("keydown", ScreenObj[key].key_thumb);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
-        Main_HideElement('dialog_thumb_opt');
+        Main_HideElementWithEle(Screens_dialog_thumb_div);
 
         if (Update) {
 
