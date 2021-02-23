@@ -19027,8 +19027,8 @@
 
                 if (Play_MultiArray[i].data.length > 0) {
 
-                    Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs(dateNow - (Play_MultiArray[i].watching_time)));
-                    Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_MultiArray[i].data[12]));
+                    Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs(dateNow - Play_MultiArray[i].watching_time));
+                    Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], Play_GetLiveTime(dateNow, Play_MultiArray[i].data[12], Play_MultiArray[i].watching_time));
 
                 } else {
 
@@ -19041,11 +19041,11 @@
 
         } else if (PlayExtra_PicturePicture) {
 
-            Main_textContentWithEle(Play_infoPPWatchingTime[0], STR_WATCHING + Play_timeMs(dateNow - (Play_data.watching_time)));
-            Main_textContentWithEle(Play_infoPPLiveTime[0], STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_data.data[12]));
+            Main_textContentWithEle(Play_infoPPWatchingTime[0], STR_WATCHING + Play_timeMs(dateNow - Play_data.watching_time));
+            Main_textContentWithEle(Play_infoPPLiveTime[0], Play_GetLiveTime(dateNow, Play_data.data[12], Play_data.watching_time));
 
-            Main_textContentWithEle(Play_infoPPWatchingTime[1], STR_WATCHING + Play_timeMs(dateNow - (PlayExtra_data.watching_time)));
-            Main_textContentWithEle(Play_infoPPLiveTime[1], STR_SINCE + Play_streamLiveAtWitDate(dateNow, PlayExtra_data.data[12]));
+            Main_textContentWithEle(Play_infoPPWatchingTime[1], STR_WATCHING + Play_timeMs(dateNow - PlayExtra_data.watching_time));
+            Main_textContentWithEle(Play_infoPPLiveTime[1], Play_GetLiveTime(dateNow, PlayExtra_data.data[12], Play_data.watching_time));
 
         } else if (Play_StayDialogVisible()) {
 
@@ -19057,11 +19057,22 @@
 
         } else {
 
-            Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs(dateNow - (Play_data.watching_time)));
-            Main_textContentWithEle(Play_infoLiveTime, STR_SINCE + Play_streamLiveAtWitDate(dateNow, Play_data.data[12]));
+            Main_textContentWithEle(Play_infoWatchingTime, ", " + STR_WATCHING + Play_timeMs(dateNow - Play_data.watching_time));
+            Main_textContentWithEle(
+                Play_infoLiveTime,
+                Play_GetLiveTime(dateNow, Play_data.data[12], Play_data.watching_time)
+            );
 
         }
 
+    }
+
+    //Server time info may be wrong resulting in too big time
+    function Play_GetLiveTime(dateNow, Time, watching_time) {
+        return STR_SINCE + Play_streamLiveAtWitDate(
+            dateNow,
+            Time && parseInt(Time) ? Time : watching_time
+        );
     }
 
     function Play_VideoStatusTest() {
