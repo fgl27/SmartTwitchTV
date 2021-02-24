@@ -1713,7 +1713,7 @@ public class PlayerActivity extends Activity {
 
                 if (!IsStopped) {
                     RunNotifications(context);
-                    InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL, context);//it 3 min refresh
+                    InitNotifications(Constants.NOTIFICATION_CHECK_INTERVAL, context);
                 }
 
             }, timeout + (delay > 0 ? delay : 0));
