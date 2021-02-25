@@ -2021,16 +2021,24 @@ function Play_OpenFeed(keyfun) {
             return;
         }
 
+        Play_PreviewOffset = OSInterface_gettimepreview();
+
         if (Play_PreviewId && Main_IsOn_OSInterface) {
 
-            OSInterface_ReuseFeedPlayer(Play_PreviewURL, Play_PreviewResponseText, 1, 0, 0);
+            OSInterface_ReuseFeedPlayer(
+                Play_PreviewURL,
+                Play_PreviewResponseText,
+                2,
+                Play_PreviewOffset,
+                0
+            );
 
         }
 
         UserLiveFeed_Hide(Play_PreviewId);
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
+        Play_PreviewOffset = Play_PreviewOffset * 1000;
         Main_clearInterval(Play_ShowPanelStatusId);
         Main_values.Play_WasPlaying = 0;
         Play_ClearPlay(true);

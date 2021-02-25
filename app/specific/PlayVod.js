@@ -111,9 +111,11 @@ function PlayVod_Start() {
 
         Main_replaceClassEmoji('stream_info_title');
     }
+
     PlayVod_SetStart();
 
     if (!Play_PreviewId) {
+
         Play_showBufferDialog();
         var isFromVod = true;
         var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -154,19 +156,25 @@ function PlayVod_Start() {
         }
 
         if (PlayVod_VodOffset && !Main_vodOffset) {
+
             Play_HideBufferDialog();
             Play_showVodDialog(isFromVod);
+
         } else {
+
             PlayVod_PosStart();
 
             if (!Main_vodOffset) {
                 Chat_offset = 0;
                 Chat_Init();
             }
+
         }
 
     } else {
+
         PlayVod_PosStart();
+
     }
 }
 
@@ -221,6 +229,7 @@ function PlayVod_PosStart() {
         if (!Play_PreviewOffset) {
 
             Chat_offset = parseInt(OSInterface_gettime() / 1000);
+
             Chat_Init();
 
         }
@@ -523,14 +532,19 @@ function PlayVod_qualityChanged() {
 function PlayVod_onPlayer() {
     //Main_Log('PlayVod_onPlayer');
     if (Main_IsOn_OSInterface) {
+
         if (Main_vodOffset) {
+
             PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
 
             Chat_offset = Main_vodOffset;
             Chat_Init();
             Main_vodOffset = 0;
+
         } else {
+
             PlayVod_onPlayerStartPlay(OSInterface_gettime());
+
         }
     }
 
