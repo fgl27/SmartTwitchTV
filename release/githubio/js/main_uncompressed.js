@@ -19538,7 +19538,7 @@
             UserLiveFeed_Hide(Play_PreviewId);
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_PreviewOffset = Play_PreviewOffset * 1000;
+            Play_PreviewOffset = Play_PreviewOffset / 1000;
             Main_clearInterval(Play_ShowPanelStatusId);
             Main_values.Play_WasPlaying = 0;
             Play_ClearPlay(true);
