@@ -107,7 +107,9 @@ function PlayExtra_Resume(synchronous) {
 
             var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-            if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), true);
+            //Do not check host on async, as both player may have endede with will cause a out of sync error
+            //causing the player to stop in a black state
+            if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), false);
             else PlayExtra_End(false, 0);
 
         } else {
@@ -306,15 +308,22 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
     PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-    BaseXmlHttpGet(
-        ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]),//urlString
-        0,
-        null,
-        PlayExtra_CheckHost,
-        PlayExtra_CheckHostError,
-        doSwitch,
-        PlayExtra_loadDataCheckHostId
-    );
+    //Check in case both players end at same time, internet error or something that can cause it
+    var Channel_ID = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
+
+    if (Channel_ID) {
+
+        BaseXmlHttpGet(
+            ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + Channel_ID,//urlString
+            0,
+            null,
+            PlayExtra_CheckHost,
+            PlayExtra_CheckHostError,
+            doSwitch,
+            PlayExtra_loadDataCheckHostId
+        );
+
+    } else PlayExtra_End_success(doSwitch);
 
 }
 
@@ -356,7 +365,7 @@ function PlayExtra_CheckHost(responseText, doSwitch, id) {
 
                 Play_AudioReset(0);
 
-            } else {
+            } else if (PlayExtra_PicturePicture) {
 
                 Play_IsWarning = true;
                 warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
