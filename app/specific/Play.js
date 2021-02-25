@@ -1117,7 +1117,7 @@ function Play_onPlayer() {
 
         if (Play_SkipStartAuto) {
 
-            OSInterface_FixViewPosition(0);
+            OSInterface_FixViewPosition(0, 1);
 
         } else {
 

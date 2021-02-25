@@ -2859,7 +2859,7 @@ public class PlayerActivity extends Activity {
 
                 } else {
 
-                    mFixViewPosition(position);
+                    mFixViewPosition(position, Type);
 
                 }
 
@@ -2867,14 +2867,15 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void FixViewPosition(int position) {
-            runOnUiThread(() -> mFixViewPosition(position));
+        public void FixViewPosition(int position, int Type) {
+            runOnUiThread(() -> mFixViewPosition(position, Type));
         }
 
-        void mFixViewPosition(int position) {
+        void mFixViewPosition(int position, int Type) {
 
             hideLoading(5);
             PlayerObj[position].isScreenPreview = false;
+            PlayerObj[position].Type = Type;
             PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
 
             if (PlayerObj[0].player != null)

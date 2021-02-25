@@ -545,7 +545,7 @@ function PlayVod_onPlayerStartPlay(time) {
 
         if (Play_SkipStartAuto) {
 
-            OSInterface_FixViewPosition(0);
+            OSInterface_FixViewPosition(0, 2);
 
         } else {
 

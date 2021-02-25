@@ -392,13 +392,24 @@ function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
 //position =  the position of the player
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
-function OSInterface_FixViewPosition(position) {
+function OSInterface_FixViewPosition(position, Type) {
 
     if (Main_IsOn_OSInterface) {
 
-        Android.FixViewPosition(
-            position
-        );
+        try {
+
+            Android.FixViewPosition(
+                position,
+                Type
+            );
+
+        } catch (e) {
+
+            Android.FixViewPosition(
+                position
+            );
+
+        }
 
     }
 
@@ -1147,17 +1158,9 @@ function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
 //Allow to update the app
 function OSInterface_CleanAndLoadUrl(url) {
 
-    try {
+    if (Main_IsOn_OSInterface) {
 
-        if (Main_IsOn_OSInterface) {
-
-            Android.CleanAndLoadUrl(url);
-
-        }
-
-    } catch (e) {
-
-        Android.mloadUrl(url);
+        Android.CleanAndLoadUrl(url);
 
     }
 }
