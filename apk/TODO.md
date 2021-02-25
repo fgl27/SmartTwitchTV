@@ -14,6 +14,11 @@ Featured request list
 * **Add a way to change the device screen refresh hate base on the app content** (requested via EMAIL), some user prefers to use a refresh other then 30 or 60 because of it they requested this, the app has too many player that work at the same time, one player may be using one refresh rate another other the refresh may change dynamically do to auto quality playback, all of that makes things very complicated, also I personalty don't like this feature as it can cause a device sync error after some changes mostly if you change too fast (something that may happens when playing in auto mode) the screen will just go black and never restore, forcing the user to do something as change/restart the video source or reboot the devices BOX and or TV, plus if the device is slow to change there may be a long 3+ seconds of noting bug black screen until the new refresh rate is accepted, as this is technically something unnecessary (as one can just keep the device at 60 as twitch content is most 30 or 60 no issue there will be) and can cause bugs I @fgl27 personalty will not add it, any one is welcome to do add it as long all described here is addressed is fine.
 * **[Ability to "follow" channels without any Twitch account whatsoever](https://github.com/fgl27/SmartTwitchTV/issues/30)** ... Too much work the app must be redesign to work as if there is a user when there is no user, with will take a complete redesign of almost all app, as a user or no user check is everywhere
 
+Issues list
+==============
+
+* Improve quality selection fun when not using source * **[Changing default player quality to 720p doesn't change bitrate](https://github.com/fgl27/SmartTwitchTV/issues/40)**
+
 TODO list
 ==============
 
@@ -45,12 +50,6 @@ TODO list
 * New feature
 * Update top option that today are 3 to 4 and on that forth add a "is following who" option so one can see what channel that channel/user follows
 * For this probably need to add a extra channel holder screen, on title show "Name is following channels" or something like that
-
-### Add a pop warning and a way to open a live from a clip and vod
-
-* New feature
-* in player controls add a option that checks if the streamer is live from time to time and let the user know and open the live from the icon
-* make the warning a pop that can be disabled
 
 ### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
 
@@ -149,6 +148,11 @@ TODO list
 
 * General improve
 * for the 50/50 mode but also for others Multi and PP mode, check what is possible to do and add more
+
+### Use chat notice to start a host
+
+* General improve
+* Chat notice {"raw":"@msg-id=host_on :tmi.twitch.tv NOTICE #Streamer_hosting :Now hosting Streamer_name.","tags":{"msg-id":"host_on"},"prefix":"tmi.twitch.tv","command":"NOTICE","params":["#Streamer_hosting","Now hosting Streamer_name."]} is received when a host start
 
 ### Add some proper test scripts
 
