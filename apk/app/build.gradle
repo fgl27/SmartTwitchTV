@@ -46,8 +46,7 @@ android {
                 'IconMissingDensityFolder', //IconMissingDensityFolder: Missing density folder
                 'IconLauncherShape', //IconLauncherShape: Looks better the way it's
                 'RtlHardcoded', //Not suporting it
-                'ObsoleteLintCustomCheck', //Firebase related ignore
-                'IidCompatibilityCheckFailure' //Firebase related ignore
+                'ObsoleteLintCustomCheck' //Firebase related ignore
     }
     productFlavors {
     }

@@ -1773,11 +1773,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 309, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/309/SmartTV_twitch_3_0_309.apk',
-        WebVersion: 'February 20 2020',
-        WebTag: 577, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 310, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/310/SmartTV_twitch_3_0_310.apk',
+        WebVersion: 'February 25 2020',
+        WebTag: 578, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.310 and Web Version February 25 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.309 and Web Version February 20 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -10687,13 +10693,24 @@
     //position =  the position of the player
     //Android specific: false in the OS has multi player supports Samsung TV for example don't have
     //Sets mediaSources and start the player
-    function OSInterface_FixViewPosition(position) {
+    function OSInterface_FixViewPosition(position, Type) {
 
         if (Main_IsOn_OSInterface) {
 
-            Android.FixViewPosition(
-                position
-            );
+            try {
+
+                Android.FixViewPosition(
+                    position,
+                    Type
+                );
+
+            } catch (e) {
+
+                Android.FixViewPosition(
+                    position
+                );
+
+            }
 
         }
 
@@ -11442,17 +11459,9 @@
     //Allow to update the app
     function OSInterface_CleanAndLoadUrl(url) {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
-
-                Android.CleanAndLoadUrl(url);
-
-            }
-
-        } catch (e) {
-
-            Android.mloadUrl(url);
+            Android.CleanAndLoadUrl(url);
 
         }
     }
@@ -17105,7 +17114,9 @@
 
                 var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
 
-                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), true);
+                //Do not check host on async, as both player may have endede with will cause a out of sync error
+                //causing the player to stop in a black state
+                if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), false);
                 else PlayExtra_End(false, 0);
 
             } else {
@@ -17305,15 +17316,22 @@
 
         PlayExtra_loadDataCheckHostId = new Date().getTime();
 
-        BaseXmlHttpGet(
-            ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(doSwitch ? Play_data.data[14] : PlayExtra_data.data[14]), //urlString
-            0,
-            null,
-            PlayExtra_CheckHost,
-            PlayExtra_CheckHostError,
-            doSwitch,
-            PlayExtra_loadDataCheckHostId
-        );
+        //Check in case both players end at same time, internet error or something that can cause it
+        var Channel_ID = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
+
+        if (Channel_ID) {
+
+            BaseXmlHttpGet(
+                ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + Channel_ID, //urlString
+                0,
+                null,
+                PlayExtra_CheckHost,
+                PlayExtra_CheckHostError,
+                doSwitch,
+                PlayExtra_loadDataCheckHostId
+            );
+
+        } else PlayExtra_End_success(doSwitch);
 
     }
 
@@ -17355,7 +17373,7 @@
 
                     Play_AudioReset(0);
 
-                } else {
+                } else if (PlayExtra_PicturePicture) {
 
                     Play_IsWarning = true;
                     warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
@@ -18592,7 +18610,7 @@
 
             if (Play_SkipStartAuto) {
 
-                OSInterface_FixViewPosition(0);
+                OSInterface_FixViewPosition(0, 1);
 
             } else {
 
@@ -19503,16 +19521,24 @@
                 return;
             }
 
+            Play_PreviewOffset = OSInterface_gettimepreview();
+
             if (Play_PreviewId && Main_IsOn_OSInterface) {
 
-                OSInterface_ReuseFeedPlayer(Play_PreviewURL, Play_PreviewResponseText, 1, 0, 0);
+                OSInterface_ReuseFeedPlayer(
+                    Play_PreviewURL,
+                    Play_PreviewResponseText,
+                    2,
+                    Play_PreviewOffset,
+                    0
+                );
 
             }
 
             UserLiveFeed_Hide(Play_PreviewId);
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_PreviewOffset = OSInterface_gettimepreview() / 1000;
+            Play_PreviewOffset = Play_PreviewOffset * 1000;
             Main_clearInterval(Play_ShowPanelStatusId);
             Main_values.Play_WasPlaying = 0;
             Play_ClearPlay(true);
@@ -20554,9 +20580,11 @@
 
             Main_replaceClassEmoji('stream_info_title');
         }
+
         PlayVod_SetStart();
 
         if (!Play_PreviewId) {
+
             Play_showBufferDialog();
             var isFromVod = true;
             var ShowDialog = Settings_Obj_default('vod_dialog');
@@ -20597,19 +20625,25 @@
             }
 
             if (PlayVod_VodOffset && !Main_vodOffset) {
+
                 Play_HideBufferDialog();
                 Play_showVodDialog(isFromVod);
+
             } else {
+
                 PlayVod_PosStart();
 
                 if (!Main_vodOffset) {
                     Chat_offset = 0;
                     Chat_Init();
                 }
+
             }
 
         } else {
+
             PlayVod_PosStart();
+
         }
     }
 
@@ -20664,6 +20698,7 @@
             if (!Play_PreviewOffset) {
 
                 Chat_offset = parseInt(OSInterface_gettime() / 1000);
+
                 Chat_Init();
 
             }
@@ -20968,14 +21003,19 @@
     function PlayVod_onPlayer() {
         //Main_Log('PlayVod_onPlayer');
         if (Main_IsOn_OSInterface) {
+
             if (Main_vodOffset) {
+
                 PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
 
                 Chat_offset = Main_vodOffset;
                 Chat_Init();
                 Main_vodOffset = 0;
+
             } else {
+
                 PlayVod_onPlayerStartPlay(OSInterface_gettime());
+
             }
         }
 
@@ -20990,7 +21030,7 @@
 
             if (Play_SkipStartAuto) {
 
-                OSInterface_FixViewPosition(0);
+                OSInterface_FixViewPosition(0, 2);
 
             } else {
 
