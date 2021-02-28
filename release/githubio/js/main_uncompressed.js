@@ -1775,9 +1775,15 @@
         VersionBase: '3.0',
         publishVersionCode: 310, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/310/SmartTV_twitch_3_0_310.apk',
-        WebVersion: 'February 25 2020',
-        WebTag: 578, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'February 28 2020',
+        WebTag: 579, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version February 28 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.310 and Web Version February 25 2020",
                 changes: [
                     "General improves and bug fixes"
@@ -11580,8 +11586,9 @@
 
         Main_values.Play_isHost = false;
 
+        Play_SetControlsVisibility('ShowInStay');
         Play_StartStayShowBottom();
-        PlayClip_SetOpenVod();
+        Play_HasLive = false;
 
         Play_BottonIconsResetFocus();
 
@@ -11595,10 +11602,9 @@
         Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
         Main_ShowElementWithEle(Play_Controls_Holder);
 
-        Play_SetControlsVisibility('ShowInStay');
         UserLiveFeed_PreventHide = false;
         PlayClip_UpdateNext();
-        Play_HasLive = false;
+
         Play_EndSet(3);
         UserLiveFeed_Unset();
         Play_IsWarning = false;
@@ -11873,7 +11879,7 @@
 
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         Play_SetFullScreen(Play_isFullScreen);
-        Play_SetControlsVisibility('ShowInClip');
+        Play_SetControlsVisibilityPlayer(3);
     }
 
     function PlayClip_Resume() {
@@ -12117,11 +12123,6 @@
 
     function PlayClip_setHidePanel() {
         Play_PanelHideID = Main_setTimeout(PlayClip_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
-    }
-
-    function PlayClip_SetOpenVod() {
-        if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
-        else Play_BottomHide(Play_controlsOpenVod);
     }
 
     var PlayClip_OpenAVod = false;
@@ -12415,7 +12416,6 @@
     var PlayClip_CheckIsLiveTimeoutId;
 
     function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
-
         if (!id) return;
 
         if (!SkipHide) PlayClip_SetOpenLiveError();
@@ -12625,6 +12625,30 @@
     var Play_isFullScreenold = true;
     var Play_FullScreenSize = 3;
     var Play_FullScreenPosition = 1;
+
+    function Play_SetControlsVisibilityPlayer(PlayVodClip) {
+
+        if (PlayVodClip === 1) {
+
+            if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
+            else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
+            else Play_SetControlsVisibility('ShowInLive');
+
+        } else if (PlayVodClip === 2) {
+
+            Play_SetControlsVisibility('ShowInVod');
+            if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
+            if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
+
+        } else if (PlayVodClip === 3) {
+
+            Play_SetControlsVisibility('ShowInClip');
+            if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+            if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
+
+        }
+
+    }
 
     function Play_PreviewUpDown(key, obj, adder) {
 
@@ -14673,25 +14697,7 @@
                 Play_Panelcounter = Play_PanelcounterBefore;
                 Play_PanelcounterBefore = 0;
 
-                if (PlayVodClip === 1) {
-
-                    if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
-                    else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
-                    else Play_SetControlsVisibility('ShowInLive');
-
-                } else if (PlayVodClip === 2) {
-
-                    Play_SetControlsVisibility('ShowInVod');
-                    if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
-                    if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
-
-                } else if (PlayVodClip === 3) {
-
-                    Play_SetControlsVisibility('ShowInClip');
-                    if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
-                    if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
-
-                }
+                Play_SetControlsVisibilityPlayer(PlayVodClip);
 
                 if (!skipAddfocus) Play_IconsAddFocus();
 
@@ -18624,8 +18630,7 @@
         Play_Playing = true;
         Play_SkipStartAuto = false;
 
-        if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
-        else Play_SetControlsVisibility('ShowInLive');
+        Play_SetControlsVisibilityPlayer(1);
     }
 
     function Play_SetHtmlQuality(element) {
@@ -21022,7 +21027,7 @@
         PlayVod_replay = false;
         if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
         Play_SetFullScreen(Play_isFullScreen);
-        Play_SetControlsVisibility('ShowInVod');
+        Play_SetControlsVisibilityPlayer(2);
     }
 
     function PlayVod_onPlayerStartPlay(time) {
