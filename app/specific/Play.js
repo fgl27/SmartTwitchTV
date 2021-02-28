@@ -1131,8 +1131,7 @@ function Play_onPlayer() {
     Play_Playing = true;
     Play_SkipStartAuto = false;
 
-    if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
-    else Play_SetControlsVisibility('ShowInLive');
+    Play_SetControlsVisibilityPlayer(1);
 }
 
 function Play_SetHtmlQuality(element) {

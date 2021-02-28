@@ -551,7 +551,7 @@ function PlayVod_onPlayer() {
     PlayVod_replay = false;
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
-    Play_SetControlsVisibility('ShowInVod');
+    Play_SetControlsVisibilityPlayer(2);
 }
 
 function PlayVod_onPlayerStartPlay(time) {

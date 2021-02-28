@@ -24,6 +24,30 @@ var Play_isFullScreenold = true;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 
+function Play_SetControlsVisibilityPlayer(PlayVodClip) {
+
+    if (PlayVodClip === 1) {
+
+        if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
+        else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
+        else Play_SetControlsVisibility('ShowInLive');
+
+    } else if (PlayVodClip === 2) {
+
+        Play_SetControlsVisibility('ShowInVod');
+        if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
+        if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
+
+    } else if (PlayVodClip === 3) {
+
+        Play_SetControlsVisibility('ShowInClip');
+        if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
+        if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
+
+    }
+
+}
+
 function Play_PreviewUpDown(key, obj, adder) {
 
     obj.defaultValue += adder;
@@ -2066,25 +2090,7 @@ function Play_MakeControls() {
             Play_Panelcounter = Play_PanelcounterBefore;
             Play_PanelcounterBefore = 0;
 
-            if (PlayVodClip === 1) {
-
-                if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
-                else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
-                else Play_SetControlsVisibility('ShowInLive');
-
-            } else if (PlayVodClip === 2) {
-
-                Play_SetControlsVisibility('ShowInVod');
-                if (PlayVod_ChaptersArray.length) Play_BottomShow(Play_controlsChapters);
-                if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
-
-            } else if (PlayVodClip === 3) {
-
-                Play_SetControlsVisibility('ShowInClip');
-                if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
-                if (Play_HasLive) Play_BottomShow(Play_controlsOpenLive);
-
-            }
+            Play_SetControlsVisibilityPlayer(PlayVodClip);
 
             if (!skipAddfocus) Play_IconsAddFocus();
 

@@ -84,8 +84,9 @@ function PlayClip_Start() {
 
     Main_values.Play_isHost = false;
 
+    Play_SetControlsVisibility('ShowInStay');
     Play_StartStayShowBottom();
-    PlayClip_SetOpenVod();
+    Play_HasLive = false;
 
     Play_BottonIconsResetFocus();
 
@@ -99,10 +100,9 @@ function PlayClip_Start() {
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElementWithEle(Play_Controls_Holder);
 
-    Play_SetControlsVisibility('ShowInStay');
     UserLiveFeed_PreventHide = false;
     PlayClip_UpdateNext();
-    Play_HasLive = false;
+
     Play_EndSet(3);
     UserLiveFeed_Unset();
     Play_IsWarning = false;
@@ -375,7 +375,7 @@ function PlayClip_onPlayer() {
 
     if (Play_ChatEnable && !Play_isChatShown()) Play_showChat();
     Play_SetFullScreen(Play_isFullScreen);
-    Play_SetControlsVisibility('ShowInClip');
+    Play_SetControlsVisibilityPlayer(3);
 }
 
 function PlayClip_Resume() {
@@ -618,11 +618,6 @@ function PlayClip_SetHtmlQuality(element) {
 
 function PlayClip_setHidePanel() {
     Play_PanelHideID = Main_setTimeout(PlayClip_hidePanel, (5000 + PlayVod_ProgressBaroffset), Play_PanelHideID); // time in ms
-}
-
-function PlayClip_SetOpenVod() {
-    if (PlayClip_HasVOD) Play_BottomShow(Play_controlsOpenVod);
-    else Play_BottomHide(Play_controlsOpenVod);
 }
 
 var PlayClip_OpenAVod = false;
@@ -916,7 +911,6 @@ var PlayClip_CheckIsLiveId;
 var PlayClip_CheckIsLiveTimeoutId;
 
 function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
-
     if (!id) return;
 
     if (!SkipHide) PlayClip_SetOpenLiveError();
