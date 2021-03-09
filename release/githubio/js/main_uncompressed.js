@@ -6307,15 +6307,7 @@
         elem.className = classname;
         elem.innerHTML = messageObj.message;
 
-        if (messageObj.extraMessage) { //REDEEMED_MESSAGE or etc related
 
-            ChatLive_ElemntAdd({
-                chat_number: messageObj.chat_number,
-                message: ChatLive_LineAddSimple(messageObj.extraMessage),
-                skip_addline: 1,
-            });
-
-        }
 
         // <div class="chat_line chat_line_ind">
         // <span style="color: #D463FF;">USER Name</span>:&nbsp;
@@ -6325,13 +6317,30 @@
 
         if (!messageObj.addToStart) {
 
+            ChatLive_ElemntAddCheckExtra(messageObj);
             Chat_div[messageObj.chat_number].appendChild(elem);
 
         } else {
 
             Chat_div[messageObj.chat_number].insertBefore(elem, Chat_div[messageObj.chat_number].childNodes[0]);
+            ChatLive_ElemntAddCheckExtra(messageObj);
 
         }
+    }
+
+    function ChatLive_ElemntAddCheckExtra(messageObj) {
+
+        if (messageObj.extraMessage) { //REDEEMED_MESSAGE or etc related
+
+            ChatLive_ElemntAdd({
+                chat_number: messageObj.chat_number,
+                message: ChatLive_LineAddSimple(messageObj.extraMessage),
+                skip_addline: 1,
+                addToStart: messageObj.addToStart
+            });
+
+        }
+
     }
 
     function ChatLive_MessagesRunAfterPause() {
