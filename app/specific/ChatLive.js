@@ -99,6 +99,7 @@ function ChatLive_Init(chat_number) {
     if (ChatLive_selectedChannel[chat_number]) ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
 
     ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
+    ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser();
@@ -661,6 +662,43 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
     }
 }
 
+function ChatLive_PreLoadChat(chat_number, id) {
+
+    BaseXmlHttpGet(
+        'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30',
+        0,
+        null,
+        ChatLive_PreLoadChatSuccess,
+        noop_fun,
+        chat_number,
+        id
+    );
+
+}
+
+function ChatLive_PreLoadChatSuccess(data, chat_number, id) {
+
+    if (id !== Chat_Id[chat_number]) return;
+
+    var obj = JSON.parse(data),
+        len = obj.messages.length,
+        i = 0,
+        message;
+
+    for (i; i < len; i++) {
+
+        message = window.parseIRC(obj.messages[i].trim());
+
+        if (message.command === "PRIVMSG") {
+
+            ChatLive_loadChatSuccess(message, chat_number, true);
+
+        }
+
+    }
+
+}
+
 var useToken = [];
 
 function ChatLive_loadChat(chat_number, id) {
@@ -671,8 +709,7 @@ function ChatLive_loadChat(chat_number, id) {
     ChatLive_LineAdd(
         {
             chat_number: chat_number,
-            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE + STR_LIVE + STR_SPACE + STR_CHANNEL + ': ' +
-                (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1]))
+            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE + STR_LIVE
         }
     );
 
@@ -1336,7 +1373,7 @@ function ChatLive_CheckIfSubSend(message, chat_number) {
     );
 }
 
-function ChatLive_loadChatSuccess(message, chat_number) {
+function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
     var div = '',
         tags = message.tags,
         nick,
@@ -1445,7 +1482,8 @@ function ChatLive_loadChatSuccess(message, chat_number) {
         atstreamer: atstreamer,
         atuser: atuser,
         hasbits: (hasbits && ChatLive_Highlight_Bits),
-        extraMessage: extraMessage
+        extraMessage: extraMessage,
+        addToStart: addToStart
     };
 
     ChatLive_LineAddCheckDelay(chat_number, messageObj);
@@ -1645,7 +1683,15 @@ function ChatLive_ElemntAdd(messageObj) {
     // </span>
     // </div>
 
-    Chat_div[messageObj.chat_number].appendChild(elem);
+    if (!messageObj.addToStart) {
+
+        Chat_div[messageObj.chat_number].appendChild(elem);
+
+    } else {
+
+        Chat_div[messageObj.chat_number].insertBefore(elem, Chat_div[messageObj.chat_number].childNodes[0]);
+
+    }
 }
 
 function ChatLive_MessagesRunAfterPause() {
