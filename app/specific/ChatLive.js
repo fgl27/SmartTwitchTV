@@ -682,10 +682,10 @@ function ChatLive_PreLoadChatSuccess(data, chat_number, id) {
 
     var obj = JSON.parse(data),
         len = obj.messages.length,
-        i = 0,
+        i = len - 1,
         message;
 
-    for (i; i < len; i++) {
+    for (i; i >= 0; i--) {
 
         message = window.parseIRC(obj.messages[i].trim());
 
