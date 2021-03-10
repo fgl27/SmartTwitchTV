@@ -132,6 +132,7 @@ function en_USLang() {
     STR_JUMP_TIME_BIG = " , jump time bigger then duration";
     STR_SEC = " Sec";
     STR_MIN = " Min";
+    STR_MS = " Ms";
     STR_HR = " Hr";
     STR_SOURCE = "Source";
     STR_TWITCH_TV = "SmartTV Client for Twitch";
@@ -542,7 +543,7 @@ function en_USLang() {
     STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview ";
     STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Thumbnail size", "Larger"];
     STR_SIDE_PANEL_PLAYER_DELAY = "Preview delay";
-    STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
+    STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the delay time that the preview will take to start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
     STR_PREVIEW_VOLUME = "Preview volume";
     STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview volume";
     STR_PREVIEW_OTHERS_VOLUME = "Main players volume";

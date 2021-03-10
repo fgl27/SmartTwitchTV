@@ -90,6 +90,7 @@ var STR_JUMP_CANCEL;
 var STR_JUMP_TIME_BIG;
 var STR_SEC;
 var STR_MIN;
+var STR_MS;
 var STR_HR;
 var STR_SOURCE;
 var STR_TWITCH_TV;

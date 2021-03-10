@@ -20,6 +20,12 @@
 
 //Variable initialization
 var Settings_cursorY = 0;
+var Settings_PreviewDelay = [
+    0, 100, 200, 300, 400, 500, 600,
+    700, 800, 900, 1000, 1100, 1200,
+    1300, 1400, 1500, 1600, 1700, 1800,
+    1900, 2000
+];
 var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
 var Settings_jumpTimers_String = [
     '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
@@ -132,11 +138,7 @@ var Settings_value = {
         "defaultValue": 2
     },
     "show_feed_player_delay": {//Migrated to dialog
-        "values": [
-            0, 100, 200, 300, 400, 500, 600,
-            700, 800, 900, 1000, 1100, 1200,
-            1300, 1400, 1500, 1600, 1700, 1800,
-            1900, 2000],
+        "values": Settings_GetPreviewDelay(),
         "defaultValue": 1
     },
     "key_up_timeout": {//Migrated to dialog
@@ -558,6 +560,22 @@ function Settings_GetnotificationTime() {
     return array;
 }
 
+function Settings_GetPreviewDelay() {
+    var i = 0,
+        len = Settings_PreviewDelay.length,
+        array = [],
+        time;
+
+    for (i; i < len; i++) {
+
+        if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ' Ms';
+        else time = (Settings_PreviewDelay[i] / 1000) + ' Sec';
+
+        array.push(time);
+    }
+
+    return array;
+}
 
 function Settings_GetBitrates(values) {
     var i = 0, len = values.length, array = [];

@@ -930,7 +930,7 @@ function Screens_LoadPreview(key) {
                     Screens_LoadPreviewStart(key, obj);
 
                 },
-                DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
                 Screens_LoadPreviewId
             );
 

@@ -651,7 +651,7 @@ function ChannelContent_LoadPreviewStart(obj) {
             ChannelContent_LoadPreviewRun(obj);
 
         },
-        50 + Settings_Obj_values('show_feed_player_delay'),
+        DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
         ChannelContent_LoadPreviewStartId
     );
 }
