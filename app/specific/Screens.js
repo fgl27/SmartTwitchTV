@@ -969,7 +969,7 @@ function Screens_LoadPreviewRestore(key) {
 function Screens_LoadPreviewStart(key, obj) {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) || !Screens_IsDivfocused(key) ||
+    if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) || !Screens_IsDivFocused(key) ||
         Main_isElementShowingWithEle(Screens_dialog_thumb_div) ||
         Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div)) {
         return;
@@ -1052,7 +1052,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
 function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
-    if (!Main_isStoped && Screens_IsInUse(x) && Screens_IsDivfocused(x) &&
+    if (!Main_isStoped && Screens_IsInUse(x) && Screens_IsDivFocused(x) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
         y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
         (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
@@ -2981,12 +2981,12 @@ function Screens_RefreshTimeout(key) {
     return (new Date().getTime()) > (ScreenObj[key].lastRefresh + Settings_GetAutoRefreshTimeout());
 }
 
-function Screens_IsDivfocused(key) {
+function Screens_IsDivFocused(key) {
     return (ScreenObj[key].posY + '_' + ScreenObj[key].posX) === ScreenObj[key].focusPos;
 }
 
 function Screens_Isfocused() {
-    return Screens_IsDivfocused(Main_values.Main_Go) && Main_isScene1DocVisible();
+    return Screens_IsDivFocused(Main_values.Main_Go) && Main_isScene1DocVisible();
 }
 
 //TODO add screen.isInuse prop to adress this fun use
