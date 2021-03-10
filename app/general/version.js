@@ -21,11 +21,17 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 310,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/310/SmartTV_twitch_3_0_310.apk',
-    WebVersion: 'March 8 2020',
-    WebTag: 580,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 311,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/311/SmartTV_twitch_3_0_311.apk',
+    WebVersion: 'March 10 2020',
+    WebTag: 581,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.311 and Web Version March 10 2020",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Web Version March 8 2020",
             changes: [
@@ -46,30 +52,6 @@ var version = {
         },
         {
             title: "Apk Version 3.0.309 and Web Version February 20 2020",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.308 and Web Version February 18 2020",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.307 and Web Version February 17 2020",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.306 and Web Version February 15 2020",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.305 and Web Version February 11 2020",
             changes: [
                 "General improves and bug fixes"
             ]
