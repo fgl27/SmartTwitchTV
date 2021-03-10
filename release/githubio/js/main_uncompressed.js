@@ -104,6 +104,7 @@
     var STR_JUMP_TIME_BIG;
     var STR_SEC;
     var STR_MIN;
+    var STR_MS;
     var STR_HR;
     var STR_SOURCE;
     var STR_TWITCH_TV;
@@ -993,6 +994,7 @@
         STR_JUMP_TIME_BIG = " , jump time bigger then duration";
         STR_SEC = " Sec";
         STR_MIN = " Min";
+        STR_MS = " Ms";
         STR_HR = " Hr";
         STR_SOURCE = "Source";
         STR_TWITCH_TV = "SmartTV Client for Twitch";
@@ -1403,7 +1405,7 @@
         STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview ";
         STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Thumbnail size", "Larger"];
         STR_SIDE_PANEL_PLAYER_DELAY = "Preview delay";
-        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the time (in milliseconds) that will take for the preview start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
+        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the delay time that the preview will take to start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
         STR_PREVIEW_VOLUME = "Preview volume";
         STR_PREVIEW_VOLUME_SUMMARY = "Allow to set what will be the feed preview volume";
         STR_PREVIEW_OTHERS_VOLUME = "Main players volume";
@@ -3531,7 +3533,7 @@
                 ChannelContent_LoadPreviewRun(obj);
 
             },
-            50 + Settings_Obj_values('show_feed_player_delay'),
+            DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
             ChannelContent_LoadPreviewStartId
         );
     }
@@ -23222,7 +23224,7 @@
                         Screens_LoadPreviewStart(key, obj);
 
                     },
-                    DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                    DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
                     Screens_LoadPreviewId
                 );
 
@@ -23261,7 +23263,7 @@
     function Screens_LoadPreviewStart(key, obj) {
         Play_CheckIfIsLiveCleanEnd();
 
-        if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) || !Screens_IsDivfocused(key) ||
+        if (!Main_IsOn_OSInterface || !Screens_IsInUse(key) || !Screens_IsDivFocused(key) ||
             Main_isElementShowingWithEle(Screens_dialog_thumb_div) ||
             Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div)) {
             return;
@@ -23344,7 +23346,7 @@
 
     function Screens_LoadPreviewResult(StreamData, x, y) { //Called by Java
 
-        if (!Main_isStoped && Screens_IsInUse(x) && Screens_IsDivfocused(x) &&
+        if (!Main_isStoped && Screens_IsInUse(x) && Screens_IsDivFocused(x) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
             y === (((ScreenObj[x].posY * ScreenObj[x].ColoumnsCount) + ScreenObj[x].posX) % 100) &&
             (ScreenObj[x].posY + '_' + ScreenObj[x].posX) === ScreenObj[x].focusPos) {
@@ -25273,12 +25275,12 @@
         return (new Date().getTime()) > (ScreenObj[key].lastRefresh + Settings_GetAutoRefreshTimeout());
     }
 
-    function Screens_IsDivfocused(key) {
+    function Screens_IsDivFocused(key) {
         return (ScreenObj[key].posY + '_' + ScreenObj[key].posX) === ScreenObj[key].focusPos;
     }
 
     function Screens_Isfocused() {
-        return Screens_IsDivfocused(Main_values.Main_Go) && Main_isScene1DocVisible();
+        return Screens_IsDivFocused(Main_values.Main_Go) && Main_isScene1DocVisible();
     }
 
     //TODO add screen.isInuse prop to adress this fun use
@@ -28274,6 +28276,12 @@
 
     //Variable initialization
     var Settings_cursorY = 0;
+    var Settings_PreviewDelay = [
+        0, 100, 200, 300, 400, 500, 600,
+        700, 800, 900, 1000, 1100, 1200,
+        1300, 1400, 1500, 1600, 1700, 1800,
+        1900, 2000
+    ];
     var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
     var Settings_jumpTimers_String = [
         '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
@@ -28386,12 +28394,7 @@
             "defaultValue": 2
         },
         "show_feed_player_delay": { //Migrated to dialog
-            "values": [
-                0, 100, 200, 300, 400, 500, 600,
-                700, 800, 900, 1000, 1100, 1200,
-                1300, 1400, 1500, 1600, 1700, 1800,
-                1900, 2000
-            ],
+            "values": Settings_GetPreviewDelay(),
             "defaultValue": 1
         },
         "key_up_timeout": { //Migrated to dialog
@@ -28814,6 +28817,22 @@
         return array;
     }
 
+    function Settings_GetPreviewDelay() {
+        var i = 0,
+            len = Settings_PreviewDelay.length,
+            array = [],
+            time;
+
+        for (i; i < len; i++) {
+
+            if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ' Ms';
+            else time = (Settings_PreviewDelay[i] / 1000) + ' Sec';
+
+            array.push(time);
+        }
+
+        return array;
+    }
 
     function Settings_GetBitrates(values) {
         var i = 0,
@@ -31372,7 +31391,7 @@
                 Sidepannel_CheckIfIsLive();
 
             },
-            DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+            DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
             Sidepannel_CheckIfIsLiveStartId
         );
     }
@@ -32798,7 +32817,7 @@
                             UserLiveFeed_CheckIfIsLive(obj);
 
                         },
-                        DefaultPreviewDelay + Settings_Obj_values('show_feed_player_delay'),
+                        DefaultPreviewDelay + Settings_PreviewDelay[Settings_Obj_default('show_feed_player_delay')],
                         UserLiveFeed_LoadPreviewId
                     );
 
