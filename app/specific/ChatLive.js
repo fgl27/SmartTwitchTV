@@ -93,23 +93,21 @@ function ChatLive_Init(chat_number) {
 
     Chat_loadBadgesGlobal();
 
-    Chat_Id[chat_number] = (new Date()).getTime();
-    ChatLive_selectedChannel_id[chat_number] = !chat_number ? Play_data.data[14] : PlayExtra_data.data[14];
-    ChatLive_selectedChannel[chat_number] = !chat_number ? Play_data.data[6] : PlayExtra_data.data[6];
-    if (ChatLive_selectedChannel[chat_number]) ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
+    ChatLive_SetOptions(
+        chat_number,
+        !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
+        !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
+    );
 
-    ChatLive_SetOptions(chat_number, Chat_Id[chat_number]);
     ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
+
+    ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
+    ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser();
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
-
-    ChatLive_Individual_Background_flip[chat_number] = 0;
-
-    ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
-    ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
 }
 
 var ChatLive_Logging;
@@ -134,7 +132,7 @@ var ChatLive_Custom_Nick_Color;
 var ChatLive_Show_TimeStamp;
 var ChatLive_ClearChat;
 
-function ChatLive_SetOptions(chat_number, id) {
+function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_User_Set = AddUser_IsUserSet();
 
     ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -150,19 +148,29 @@ function ChatLive_SetOptions(chat_number, id) {
     ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
     ChatLive_Show_TimeStamp = Settings_value.chat_timestamp.defaultValue;
     ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
+    ChatLive_Individual_Background_flip[chat_number] = 0;
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
     ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
+
     if (ChatLive_User_Set) {
         ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
         ChatLive_User_Regex_Replace = new RegExp('@' + AddUser_UsernameArray[0].name, "gi");
     }
 
-    ChatLive_loadEmotesChannelbttv(chat_number, id);
-    ChatLive_loadEmotesChannelffz(chat_number, id);
+    Chat_Id[chat_number] = (new Date()).getTime();
 
-    ChatLive_loadBadgesChannel(chat_number, id);
-    ChatLive_loadCheersChannel(chat_number, id);
+    ChatLive_selectedChannel_id[chat_number] = Channel_id;
+    ChatLive_selectedChannel[chat_number] = selectedChannel;
+    if (ChatLive_selectedChannel[chat_number])
+        ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
+
+    ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
+
+    ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
+
 }
 
 function ChatLive_checkFallow(chat_number, id) {
@@ -261,7 +269,10 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
 
     } else {
 
-        Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
+        Chat_tagCSS(
+            extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+            Chat_div[chat_number]
+        );
 
     }
 }
@@ -271,7 +282,10 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
 
     extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
 
-    Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number], Chat_div[chat_number]);
+    Chat_tagCSS(
+        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+        Chat_div[chat_number]
+    );
 }
 
 function ChatLive_resetChatters(chat_number) {
@@ -665,7 +679,7 @@ function ChatLive_loadEmotesffz(data, chat_number, skipChannel) {
 function ChatLive_PreLoadChat(chat_number, id) {
 
     BaseXmlHttpGet(
-        'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30',
+        'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30&hide_moderation_messages=true',
         0,
         null,
         ChatLive_PreLoadChatSuccess,
@@ -1373,6 +1387,12 @@ function ChatLive_CheckIfSubSend(message, chat_number) {
     );
 }
 
+function ChatLive_GetTimeStamp(time) {
+    var date = new Date(parseInt(time) + Main_ClockOffset);
+
+    return Play_lessthanten(date.getHours()) + ':' + Play_lessthanten(date.getMinutes());
+}
+
 function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
     var div = '',
         tags = message.tags,
@@ -1409,7 +1429,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
     }
 
     if (ChatLive_Show_TimeStamp) {
-        div += Main_clock_H_M + ' ';
+        div += addToStart && tags.hasOwnProperty('tmi-sent-ts') ? ChatLive_GetTimeStamp(tags['tmi-sent-ts']) + ' ' : Main_clock_H_M + ' ';
     }
 
     //Add badges

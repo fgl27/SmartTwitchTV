@@ -1773,10 +1773,9 @@ var Main_date_Ms = 0;
 function Main_getclock() {
     Main_date_Ms = new Date().getTime();
 
-    var date = Main_date_Ms + Main_ClockOffset,
-        dayMonth;
-
-    date = new Date(date);
+    var timems = Main_date_Ms + Main_ClockOffset,
+        dayMonth,
+        date = new Date(timems);
 
     if (Main_IsDayFirst) dayMonth = STR_DAYS[date.getDay()] + ' ' + date.getDate() + ' ' + STR_MONTHS[date.getMonth()];
     else dayMonth = STR_DAYS[date.getDay()] + ' ' + STR_MONTHS[date.getMonth()] + ' ' + date.getDate();
