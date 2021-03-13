@@ -22704,7 +22704,7 @@
         } else if (ScreenObj[key].UseToken && (resultObj.status === 401 || resultObj.status === 403)) { //token expired
 
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
-            else Screens_loadDataRequest(key);
+            else Screens_loadDatafail(key);
 
         } else {
 
