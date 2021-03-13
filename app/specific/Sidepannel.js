@@ -776,7 +776,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull()) {
                 Sidepannel_Hide(true);
                 Main_values.Play_isHost = false;
 

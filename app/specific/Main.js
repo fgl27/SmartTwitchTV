@@ -2269,12 +2269,15 @@ function Main_SaveHistoryItem() {
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
 function Main_Slice(arrayTocopy) {
+    if (!arrayTocopy) return [];
+
     var array;
     //slice may crash RangeError: Maximum call stack size exceeded
     try {
         array = arrayTocopy.slice();
     } catch (e) {
         array = [];
+
         var i = 0, len = arrayTocopy.length;
         for (i; i < len; i++) {
             array.push(arrayTocopy[i]);

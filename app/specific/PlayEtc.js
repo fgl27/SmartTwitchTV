@@ -1402,7 +1402,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
     //Side panel
     if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingUserLiveSide()) {
 
-        if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) return false;
+        if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] || !Sidepannel_ObjNotNull()) return false;
 
         //if side panel is showing, try to find if current stream is on side panel to keep player open
         if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
