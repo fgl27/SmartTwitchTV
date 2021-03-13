@@ -414,7 +414,7 @@ function Screens_HttpResultStatus(resultObj, key) {
 
     } else {
 
-        Screens_loadDataRequest(key);
+        Screens_loadDatafail(key);
 
     }
 
