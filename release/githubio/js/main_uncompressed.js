@@ -9345,12 +9345,15 @@
 
     //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
     function Main_Slice(arrayTocopy) {
+        if (!arrayTocopy) return [];
+
         var array;
         //slice may crash RangeError: Maximum call stack size exceeded
         try {
             array = arrayTocopy.slice();
         } catch (e) {
             array = [];
+
             var i = 0,
                 len = arrayTocopy.length;
             for (i; i < len; i++) {
@@ -14069,7 +14072,7 @@
         //Side panel
         if (Settings_Obj_default('show_side_player') && Sidepannel_isShowingUserLiveSide()) {
 
-            if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) return false;
+            if (UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] || !Sidepannel_ObjNotNull()) return false;
 
             //if side panel is showing, try to find if current stream is on side panel to keep player open
             if (!SkipSidepanelFocus && Sidepannel_Positions.hasOwnProperty(Play_data.data[14])) {
@@ -22705,7 +22708,7 @@
 
         } else {
 
-            Screens_loadDataRequest(key);
+            Screens_loadDatafail(key);
 
         }
 
@@ -31980,7 +31983,7 @@
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
             case KEY_ENTER:
-                if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+                if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull()) {
                     Sidepannel_Hide(true);
                     Main_values.Play_isHost = false;
 
