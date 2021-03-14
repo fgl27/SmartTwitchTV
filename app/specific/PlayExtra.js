@@ -309,80 +309,68 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
     PlayExtra_loadDataCheckHostId = new Date().getTime();
 
     //Check in case both players end at same time, internet error or something that can cause it
-    var Channel_ID = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
+    var Channel_Name = doSwitch ? Play_data.data[14] : PlayExtra_data.data[14];
 
-    if (Channel_ID) {
+    if (Channel_Name) {
 
-        BaseXmlHttpGet(
-            ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + Channel_ID,//urlString
-            0,
-            null,
+        Main_GetHost(
             PlayExtra_CheckHost,
-            PlayExtra_CheckHostError,
-            doSwitch,
-            PlayExtra_loadDataCheckHostId
+            0,
+            PlayExtra_loadDataCheckHostId,
+            Channel_Name
         );
 
     } else PlayExtra_End_success(doSwitch);
 
 }
 
-function PlayExtra_CheckHostError(doSwitch, id) {
+function PlayExtra_CheckHost(responseObj, doSwitch, id) {
 
     if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
 
-        PlayExtra_End_success(doSwitch);
+        if (responseObj.status === 200) {
 
-    }
+            var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
+                warning_text;
 
-}
-
-function PlayExtra_CheckHost(responseText, doSwitch, id) {
-
-    if (Play_isOn && PlayExtra_loadDataCheckHostId === id) {
-
-        var TargetHost = JSON.parse(responseText).hosts[0],
-            warning_text;
-
-        if (TargetHost.target_login !== undefined &&
-            TargetHost.target_id !== PlayExtra_data.data[14] && TargetHost.target_id !== Play_data.data[14]) {
-
-            if (doSwitch) {
+            if (TargetHost && TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
                 Play_IsWarning = true;
-                warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
+                warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
 
-                Main_values.Play_isHost = true;
+                if (doSwitch) {
 
-                Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                Play_data.data[6] = TargetHost.target_login;
-                Play_data.data[1] = TargetHost.target_display_name;
-                Play_data.data[14] = TargetHost.target_id;
+                    Main_values.Play_isHost = true;
 
-                Play_Start();
+                    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                    Play_data.data[6] = TargetHost.login;
+                    Play_data.data[1] = TargetHost.displayName;
+                    Play_data.data[14] = parseInt(TargetHost.id);
+
+                    Play_Start();
+
+                    Play_AudioReset(0);
+
+                } else if (PlayExtra_PicturePicture) {
+
+                    PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                    PlayExtra_data.data[6] = TargetHost.login;
+                    PlayExtra_data.data[1] = TargetHost.displayName;
+                    PlayExtra_data.data[14] = parseInt(TargetHost.id);
+                    PlayExtra_data.isHost = true;
+
+                    PlayExtra_Resume();
+
+                }
 
                 Play_showWarningDialog(warning_text, 4000);
-
-                Play_AudioReset(0);
-
-            } else if (PlayExtra_PicturePicture) {
-
-                Play_IsWarning = true;
-                warning_text = PlayExtra_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + TargetHost.target_display_name;
-
-                PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.target_display_name;
-                PlayExtra_data.data[6] = TargetHost.target_login;
-                PlayExtra_data.data[1] = TargetHost.target_display_name;
-                PlayExtra_data.data[14] = TargetHost.target_id;
-                PlayExtra_data.isHost = true;
-
-                PlayExtra_Resume();
-
-                Play_showWarningDialog(warning_text, 4000);
-
+                return;
             }
 
-        } else PlayExtra_End_success(doSwitch);
+
+        }
+
+        PlayExtra_End_success(doSwitch);
 
     }
 

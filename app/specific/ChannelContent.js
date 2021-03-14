@@ -71,6 +71,7 @@ function ChannelContent_init() {
         Main_SaveValues();
         Main_EventScreen('ChannelContent');
     } else ChannelContent_StartLoad();
+
 }
 
 function ChannelContent_exit() {
@@ -129,14 +130,13 @@ function ChannelContent_loadDataRequestSuccess(response) {
         ChannelContent_responseText = obj.streams;
         ChannelContent_GetStreamerInfo();
 
-    } else if (Main_IsOn_OSInterface && !ChannelContent_TargetId) {
+    } else if (!ChannelContent_TargetId) {
 
         ChannelContent_loadDataCheckHost();
 
     } else {
 
-        ChannelContent_responseText = null;
-        ChannelContent_GetStreamerInfo();
+        ChannelContent_loadDataCheckHostError();
 
     }
 
@@ -150,18 +150,13 @@ function ChannelContent_loadDataError() {
 var ChannelContent_loadDataCheckHostId;
 function ChannelContent_loadDataCheckHost() {
 
-    var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Main_values.Main_selectedChannel_id);
-
     ChannelContent_loadDataCheckHostId = (new Date().getTime());
 
-    BaseXmlHttpGet(
-        theUrl,
-        0,
-        null,
+    Main_GetHost(
         ChannelContent_CheckHost,
-        ChannelContent_loadDataCheckHostError,
         0,
-        ChannelContent_loadDataCheckHostId
+        ChannelContent_loadDataCheckHostId,
+        Main_values.Main_selectedChannel
     );
 
 }
@@ -171,19 +166,24 @@ function ChannelContent_loadDataCheckHostError() {
     ChannelContent_GetStreamerInfo();
 }
 
-function ChannelContent_CheckHost(responseText, key, id) {
+function ChannelContent_CheckHost(responseObj, key, id) {
 
     if (ChannelContent_loadDataCheckHostId === id) {
 
-        var response = JSON.parse(responseText);
-        ChannelContent_TargetId = response.hosts[0].target_id;
+        if (responseObj.status === 200) {
 
-        if (ChannelContent_TargetId !== undefined) {
-            ChannelContent_loadDataRequest();
-        } else {
-            ChannelContent_responseText = null;
-            ChannelContent_GetStreamerInfo();
+            var response = JSON.parse(responseObj.responseText).data.user.hosting;
+
+            if (response) {
+
+                ChannelContent_TargetId = parseInt(response.id);
+                ChannelContent_loadDataRequest();
+
+                return;
+            }
         }
+
+        ChannelContent_loadDataCheckHostError();
 
     }
 }

@@ -781,7 +781,7 @@ function Play_EndSet(PlayVodClip) {
 
         Play_EndTextsReset();
         Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-        Main_innerHTML("end_live_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name));
+        Main_innerHTML("end_live_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName));
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
         Play_EndCounter = 1;
@@ -870,14 +870,15 @@ function Play_EndTextsSetHasLive() {
 }
 
 function Play_OpenHost() {
-    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.target_display_name;
-    Play_data.data[6] = Play_TargetHost.target_login;
-    Play_data.data[1] = Play_TargetHost.target_display_name;
+    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.displayName;
+    Play_data.data[6] = Play_TargetHost.login;
+    Play_data.data[1] = Play_TargetHost.displayName;
     Play_PreshutdownStream(false);
 
     Main_addEventListener("keydown", Play_handleKeyDown);
 
-    Play_data.data[14] = Play_TargetHost.target_id;
+    Play_data.data[14] = parseInt(Play_TargetHost.id);
+
     Play_Start();
 }
 
@@ -964,44 +965,24 @@ function Play_StartStayStartCheck() {
 
 var Play_StayCheckHostId;
 function Play_StayCheckHost() {
-    var theUrl = ChatLive_Base_chat_url + 'hosts?include_logins=1&host=' + encodeURIComponent(Play_data.data[14]);
 
     Play_StayCheckHostId = new Date().getTime();
 
-    BaseXmlHttpGet(
-        theUrl,//urlString
-        0,
-        null,
+    Main_GetHost(
         Play_StayCheckHostSuccess,
-        Play_StayCheckLive,
         0,
-        Play_StayCheckHostId
+        Play_StayCheckHostId,
+        Play_data.data[6]
     );
 }
 
-function Play_StayCheckHostSuccess(responseText, key, id) {
+function Play_StayCheckHostSuccess(responseObj, key, id) {
 
     if (Play_StayDialogVisible() && Play_StayCheckHostId === id) {
 
-        Play_TargetHost = JSON.parse(responseText).hosts[0];
+        if (Play_CheckHostResult(responseObj)) {
 
-        if (Play_TargetHost.target_login !== undefined) {
-
-            Play_IsWarning = true;
-            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.target_display_name;
-
-            Main_values.Play_isHost = true;
-
-            if (Settings_value.open_host.defaultValue) {
-
-                Play_OpenHost();
-                Play_showWarningDialog(warning_text, 4000);
-                return;
-
-            } else Play_EndSet(0);
-
-            Play_showWarningDialog(warning_text, 4000);
-            Play_PlayEndStart(1);
+            if (!Settings_value.open_host.defaultValue) Play_PlayEndStart(1);
 
         } else {
 
@@ -1011,6 +992,37 @@ function Play_StayCheckHostSuccess(responseText, key, id) {
 
     }
 
+}
+
+function Play_CheckHostResult(responseObj) {
+
+    if (responseObj.status === 200) {
+
+        var response = JSON.parse(responseObj.responseText).data.user.hosting;
+
+        if (response) {
+
+            Play_TargetHost = response;
+
+            Play_IsWarning = true;
+            var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + response.displayName;
+
+            Main_values.Play_isHost = true;
+
+            if (Settings_value.open_host.defaultValue) {
+
+                Play_OpenHost();
+
+            } else Play_EndSet(0);
+
+            Play_showWarningDialog(warning_text, 4000);
+
+            return true;
+        }
+    }
+
+    Main_values.Play_isHost = false;
+    return false;
 }
 
 function Play_StayCheckLive() {
