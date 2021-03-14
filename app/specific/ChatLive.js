@@ -1256,7 +1256,7 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
 
                 PlayExtra_CheckHost(
                     responseObj,
-                    !chat_number,
+                    chat_number ^ 1,
                     PlayExtra_loadDataCheckHostId
                 );
 
