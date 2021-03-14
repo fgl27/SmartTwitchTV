@@ -129,6 +129,12 @@ else
 	echo -e "${bldred}Release wil work but it can be more compressed using crass"
 fi;
 
+if which 'firebase' >/dev/null  ; then
+	if [ "$1" == 1 ]; then
+		npm install firebase -g
+	fi;
+fi;
+
 # this .sh folder used for cd back and for
 mainfolder="$(dirname ""$(dirname "$0")"")";
 mainfolder="$(dirname "$mainfolder")";

@@ -5498,9 +5498,7 @@
                     // user-type: true
                     break;
                 case "NOTICE":
-                    if (useToken[chat_number]) {
-                        ChatLive_UserNoticeCheck(message, chat_number, id);
-                    }
+                    ChatLive_UserNoticeCheck(message, chat_number, id);
                     // command: "NOTICE"
                     // params: Array(2)
                     // 0: "#channel"
@@ -5860,10 +5858,66 @@
 
     }
 
+    function ChatLive_CheckHost(chat_number, id) {
+
+        if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+
+        Main_GetHost(
+            ChatLive_CheckHostResult,
+            chat_number,
+            id,
+            ChatLive_selectedChannel[chat_number]
+        );
+
+    }
+
+    function ChatLive_CheckHostResult(responseObj, chat_number, id) {
+
+        if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+
+        if (responseObj.status === 200) {
+
+            var response = JSON.parse(responseObj.responseText).data.user.hosting;
+
+            if (response) {
+
+                if (!chat_number) {
+
+                    Play_loadDataCheckHostId = new Date().getTime();
+
+                    Play_CheckHost(
+                        responseObj,
+                        0,
+                        Play_loadDataCheckHostId
+                    );
+
+                } else if (PlayExtra_PicturePicture) {
+
+                    PlayExtra_loadDataCheckHostId = new Date().getTime();
+
+                    PlayExtra_CheckHost(
+                        responseObj,
+                        0,
+                        PlayExtra_loadDataCheckHostId
+                    );
+
+                }
+
+            }
+        }
+
+    }
+
     function ChatLive_UserNoticeCheck(message, chat_number, id) {
         //Main_Log(JSON.stringify(message));
+        var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
 
-        if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
+        if (msgId && Main_A_includes_B(message.tags['msg-id'] + '', "host_on")) {
+
+            ChatLive_CheckHost(chat_number, id);
+
+        } else if (msgId && useToken[chat_number] &&
+            Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
             var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
             ChatLive_Warn(text, 3500);
@@ -5875,7 +5929,7 @@
         } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
             ChatLive_LineAddErro(message.params[1], chat_number);
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+            if (useToken[chat_number] && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
 
         } else ChatLive_UserNoticeWarn(message);
 
@@ -5883,13 +5937,13 @@
 
     function ChatLive_UserNoticeWarn(message) {
         //Main_Log(JSON.stringify(message));
-
         if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
             //Main_Log(message.params[1]);
             ChatLive_Warn(message.params[1], 3500);
 
         }
+
     }
 
     function ChatLive_Warn(message, time) {
@@ -13693,7 +13747,7 @@
 
             var response = JSON.parse(responseObj.responseText).data.user.hosting;
 
-            if (response) {
+            if (response && parseInt(response.id) !== Play_data.data[14]) {
 
                 Play_TargetHost = response;
 
@@ -17449,40 +17503,45 @@
                 var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
                     warning_text;
 
-                if (TargetHost && TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
+                if (TargetHost) {
 
-                    Play_IsWarning = true;
-                    warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
+                    TargetHost.id = parseInt(TargetHost.id);
 
-                    if (doSwitch) {
+                    if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
-                        Main_values.Play_isHost = true;
+                        Play_IsWarning = true;
+                        warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
 
-                        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
-                        Play_data.data[6] = TargetHost.login;
-                        Play_data.data[1] = TargetHost.displayName;
-                        Play_data.data[14] = parseInt(TargetHost.id);
+                        if (doSwitch) {
 
-                        Play_Start();
+                            Main_values.Play_isHost = true;
 
-                        Play_AudioReset(0);
+                            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                            Play_data.data[6] = TargetHost.login;
+                            Play_data.data[1] = TargetHost.displayName;
+                            Play_data.data[14] = parseInt(TargetHost.id);
 
-                    } else if (PlayExtra_PicturePicture) {
+                            Play_Start();
 
-                        PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
-                        PlayExtra_data.data[6] = TargetHost.login;
-                        PlayExtra_data.data[1] = TargetHost.displayName;
-                        PlayExtra_data.data[14] = parseInt(TargetHost.id);
-                        PlayExtra_data.isHost = true;
+                            Play_AudioReset(0);
 
-                        PlayExtra_Resume();
+                        } else if (PlayExtra_PicturePicture) {
 
+                            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                            PlayExtra_data.data[6] = TargetHost.login;
+                            PlayExtra_data.data[1] = TargetHost.displayName;
+                            PlayExtra_data.data[14] = parseInt(TargetHost.id);
+                            PlayExtra_data.isHost = true;
+
+                            PlayExtra_Resume();
+
+                        }
+
+                        Play_showWarningDialog(warning_text, 4000);
+                        return;
                     }
 
-                    Play_showWarningDialog(warning_text, 4000);
-                    return;
                 }
-
 
             }
 
