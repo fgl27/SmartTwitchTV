@@ -1000,7 +1000,7 @@ function Play_CheckHostResult(responseObj) {
 
         var response = JSON.parse(responseObj.responseText).data.user.hosting;
 
-        if (response) {
+        if (response && parseInt(response.id) !== Play_data.data[14]) {
 
             Play_TargetHost = response;
 

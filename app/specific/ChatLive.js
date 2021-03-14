@@ -864,9 +864,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 // user-type: true
                 break;
             case "NOTICE":
-                if (useToken[chat_number]) {
-                    ChatLive_UserNoticeCheck(message, chat_number, id);
-                }
+                ChatLive_UserNoticeCheck(message, chat_number, id);
                 // command: "NOTICE"
                 // params: Array(2)
                 // 0: "#channel"
@@ -1227,10 +1225,66 @@ function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
 
 }
 
+function ChatLive_CheckHost(chat_number, id) {
+
+    if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+
+    Main_GetHost(
+        ChatLive_CheckHostResult,
+        chat_number,
+        id,
+        ChatLive_selectedChannel[chat_number]
+    );
+
+}
+
+function ChatLive_CheckHostResult(responseObj, chat_number, id) {
+
+    if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+
+    if (responseObj.status === 200) {
+
+        var response = JSON.parse(responseObj.responseText).data.user.hosting;
+
+        if (response) {
+
+            if (!chat_number) {
+
+                Play_loadDataCheckHostId = new Date().getTime();
+
+                Play_CheckHost(
+                    responseObj,
+                    0,
+                    Play_loadDataCheckHostId
+                );
+
+            } else if (PlayExtra_PicturePicture) {
+
+                PlayExtra_loadDataCheckHostId = new Date().getTime();
+
+                PlayExtra_CheckHost(
+                    responseObj,
+                    0,
+                    PlayExtra_loadDataCheckHostId
+                );
+
+            }
+
+        }
+    }
+
+}
+
 function ChatLive_UserNoticeCheck(message, chat_number, id) {
     //Main_Log(JSON.stringify(message));
+    var msgId = message.tags && message.tags.hasOwnProperty('msg-id');
 
-    if (message.tags && message.tags.hasOwnProperty('msg-id') && Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
+    if (msgId && Main_A_includes_B(message.tags['msg-id'] + '', "host_on")) {
+
+        ChatLive_CheckHost(chat_number, id);
+
+    } else if (msgId && useToken[chat_number] &&
+        Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
 
         var text = message.params && message.params[1] ? message.params[1] : STR_CHAT_BANNED + ChatLive_selectedChannel[chat_number];
         ChatLive_Warn(text, 3500);
@@ -1242,7 +1296,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
         ChatLive_LineAddErro(message.params[1], chat_number);
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
+        if (useToken[chat_number] && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, null, null);
 
     } else ChatLive_UserNoticeWarn(message);
 
@@ -1250,13 +1304,13 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
 function ChatLive_UserNoticeWarn(message) {
     //Main_Log(JSON.stringify(message));
-
     if (message.params[1] && !Main_A_includes_B(message.params[1], "NICK already set")) {
 
         //Main_Log(message.params[1]);
         ChatLive_Warn(message.params[1], 3500);
 
     }
+
 }
 
 function ChatLive_Warn(message, time) {

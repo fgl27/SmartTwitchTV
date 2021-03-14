@@ -333,6 +333,8 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
             var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
                 warning_text;
 
+            if (TargetHost) TargetHost.id = parseInt(TargetHost.id);
+
             if (TargetHost && TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
                 Play_IsWarning = true;
