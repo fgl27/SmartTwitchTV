@@ -1227,6 +1227,7 @@ function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
 
 function ChatLive_CheckHost(chat_number, id) {
 
+    //If on multi or auto open host not enable, let the player end and do the checks
     if (id !== Chat_Id[chat_number] || Play_MultiEnable ||
         !Settings_value.open_host.defaultValue) return;
 
