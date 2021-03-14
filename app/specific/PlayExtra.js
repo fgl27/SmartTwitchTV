@@ -333,42 +333,45 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
             var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
                 warning_text;
 
-            if (TargetHost) TargetHost.id = parseInt(TargetHost.id);
+            if (TargetHost) {
 
-            if (TargetHost && TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
+                TargetHost.id = parseInt(TargetHost.id);
 
-                Play_IsWarning = true;
-                warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
+                if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
-                if (doSwitch) {
+                    Play_IsWarning = true;
+                    warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
 
-                    Main_values.Play_isHost = true;
+                    if (doSwitch) {
 
-                    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
-                    Play_data.data[6] = TargetHost.login;
-                    Play_data.data[1] = TargetHost.displayName;
-                    Play_data.data[14] = parseInt(TargetHost.id);
+                        Main_values.Play_isHost = true;
 
-                    Play_Start();
+                        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                        Play_data.data[6] = TargetHost.login;
+                        Play_data.data[1] = TargetHost.displayName;
+                        Play_data.data[14] = parseInt(TargetHost.id);
 
-                    Play_AudioReset(0);
+                        Play_Start();
 
-                } else if (PlayExtra_PicturePicture) {
+                        Play_AudioReset(0);
 
-                    PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
-                    PlayExtra_data.data[6] = TargetHost.login;
-                    PlayExtra_data.data[1] = TargetHost.displayName;
-                    PlayExtra_data.data[14] = parseInt(TargetHost.id);
-                    PlayExtra_data.isHost = true;
+                    } else if (PlayExtra_PicturePicture) {
 
-                    PlayExtra_Resume();
+                        PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                        PlayExtra_data.data[6] = TargetHost.login;
+                        PlayExtra_data.data[1] = TargetHost.displayName;
+                        PlayExtra_data.data[14] = parseInt(TargetHost.id);
+                        PlayExtra_data.isHost = true;
 
+                        PlayExtra_Resume();
+
+                    }
+
+                    Play_showWarningDialog(warning_text, 4000);
+                    return;
                 }
 
-                Play_showWarningDialog(warning_text, 4000);
-                return;
             }
-
 
         }
 
