@@ -1227,7 +1227,8 @@ function ChatLive_socketSendCheck(chat_number, id, timeout, silent) {
 
 function ChatLive_CheckHost(chat_number, id) {
 
-    if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+    if (id !== Chat_Id[chat_number] || Play_MultiEnable ||
+        !Settings_value.open_host.defaultValue) return;
 
     Main_GetHost(
         ChatLive_CheckHostResult,
@@ -1254,7 +1255,7 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
 
                 PlayExtra_CheckHost(
                     responseObj,
-                    chat_number,
+                    !chat_number,
                     PlayExtra_loadDataCheckHostId
                 );
 
