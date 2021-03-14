@@ -315,7 +315,7 @@ function PlayExtra_loadDataCheckHost(doSwitch) {
 
         Main_GetHost(
             PlayExtra_CheckHost,
-            0,
+            doSwitch,
             PlayExtra_loadDataCheckHostId,
             Channel_Name
         );

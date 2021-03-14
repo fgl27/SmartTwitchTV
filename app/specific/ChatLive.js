@@ -1248,7 +1248,17 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
 
         if (response) {
 
-            if (!chat_number) {
+            if (PlayExtra_PicturePicture) {
+
+                PlayExtra_loadDataCheckHostId = new Date().getTime();
+
+                PlayExtra_CheckHost(
+                    responseObj,
+                    chat_number,
+                    PlayExtra_loadDataCheckHostId
+                );
+
+            } else {
 
                 Play_loadDataCheckHostId = new Date().getTime();
 
@@ -1256,16 +1266,6 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
                     responseObj,
                     0,
                     Play_loadDataCheckHostId
-                );
-
-            } else if (PlayExtra_PicturePicture) {
-
-                PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-                PlayExtra_CheckHost(
-                    responseObj,
-                    0,
-                    PlayExtra_loadDataCheckHostId
                 );
 
             }
