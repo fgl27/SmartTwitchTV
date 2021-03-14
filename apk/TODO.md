@@ -149,11 +149,6 @@ TODO list
 * General improve
 * for the 50/50 mode but also for others Multi and PP mode, check what is possible to do and add more
 
-### Use chat notice to start a host
-
-* General improve
-* Chat notice {"raw":"@msg-id=host_on :tmi.twitch.tv NOTICE #Streamer_hosting :Now hosting Streamer_name.","tags":{"msg-id":"host_on"},"prefix":"tmi.twitch.tv","command":"NOTICE","params":["#Streamer_hosting","Now hosting Streamer_name."]} is received when a host start
-
 ### Add some proper test scripts
 
 * General improve
