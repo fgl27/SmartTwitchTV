@@ -5860,7 +5860,8 @@
 
     function ChatLive_CheckHost(chat_number, id) {
 
-        if (id !== Chat_Id[chat_number] || Play_MultiEnable) return;
+        if (id !== Chat_Id[chat_number] || Play_MultiEnable ||
+            !Settings_value.open_host.defaultValue) return;
 
         Main_GetHost(
             ChatLive_CheckHostResult,
@@ -5881,7 +5882,17 @@
 
             if (response) {
 
-                if (!chat_number) {
+                if (PlayExtra_PicturePicture) {
+
+                    PlayExtra_loadDataCheckHostId = new Date().getTime();
+
+                    PlayExtra_CheckHost(
+                        responseObj,
+                        !chat_number,
+                        PlayExtra_loadDataCheckHostId
+                    );
+
+                } else {
 
                     Play_loadDataCheckHostId = new Date().getTime();
 
@@ -5889,16 +5900,6 @@
                         responseObj,
                         0,
                         Play_loadDataCheckHostId
-                    );
-
-                } else if (PlayExtra_PicturePicture) {
-
-                    PlayExtra_loadDataCheckHostId = new Date().getTime();
-
-                    PlayExtra_CheckHost(
-                        responseObj,
-                        0,
-                        PlayExtra_loadDataCheckHostId
                     );
 
                 }
@@ -17485,7 +17486,7 @@
 
             Main_GetHost(
                 PlayExtra_CheckHost,
-                0,
+                doSwitch,
                 PlayExtra_loadDataCheckHostId,
                 Channel_Name
             );
