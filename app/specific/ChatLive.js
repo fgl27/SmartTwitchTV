@@ -1284,6 +1284,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
     if (msgId && Main_A_includes_B(message.tags['msg-id'] + '', "host_on")) {
 
         ChatLive_CheckHost(chat_number, id);
+        ChatLive_UserNoticeWarn(message);
 
     } else if (msgId && useToken[chat_number] &&
         Main_A_includes_B(message.tags['msg-id'] + '', "msg_banned")) {
@@ -1295,6 +1296,7 @@ function ChatLive_UserNoticeCheck(message, chat_number, id) {
 
         Main_clearTimeout(ChatLive_CheckId[chat_number]);
         ChatLive_Check(chat_number, id, 0);
+
     } else if (message.params && message.params[1] && Main_A_includes_B(message.params[1] + '', 'authentication failed')) {
 
         ChatLive_LineAddErro(message.params[1], chat_number);
