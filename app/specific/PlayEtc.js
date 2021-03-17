@@ -456,8 +456,7 @@ function Play_SetChatFont() {
 
 function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
     var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
-        (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">') : "");
+        (partner ? ('<img class="partnericon_img" alt="" src="' + IMG_PARTNER + '">') : "");
 
     if (!live_vod_clip) {
         var isStay = Play_StayDialogVisible();

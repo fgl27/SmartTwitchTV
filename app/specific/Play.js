@@ -59,7 +59,6 @@ var Play_isOn = false;
 var Play_ChatBackgroundID = null;
 var Play_Playing = false;
 var Play_IsWarning = false;
-var Play_LoadLogoSucess = false;
 var Play_EndCounter = 0;
 var Play_EndTextCounter = 3;
 var Play_EndSettingsCounter = 3;
@@ -175,9 +174,9 @@ function Play_SetPlayQuality(quality) {
 function Play_Start(offline_chat) {
     //Main_Log('Play_Start');
 
-    Play_LoadLogoSucess = false;
     //reset channel logo to prevent another channel logo
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+    Play_UpdateMainStreamDiv();
 
     Play_StartStayShowBottom();
 
@@ -546,6 +545,9 @@ function Play_getStreamData(channel_name) {
 }
 
 function Play_UpdateMainStreamDiv() {
+
+    if (!Play_data.data.length) return;
+
     //Restore or set info panel
     Main_innerHTML("stream_info_title", twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML(
@@ -560,8 +562,6 @@ function Play_UpdateMainStreamDiv() {
     );
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
-    Play_LoadLogoSucess = true;
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -778,8 +778,7 @@ function Play_updateStreamInfoGetError(Is_play) {
 function Play_LoadLogo(ImgObjet, link) {
     ImgObjet.onerror = function() {
         this.onerror = null;
-        this.src = IMG_404_LOGO; //img fail to load a predefined logo
-        Play_LoadLogoSucess = false;
+        this.src = IMG_404_BANNER; //img fail to load a predefined logo
     };
     ImgObjet.src = link;
 }
