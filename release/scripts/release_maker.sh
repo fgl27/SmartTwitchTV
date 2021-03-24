@@ -131,7 +131,7 @@ fi;
 
 if which 'firebase' >/dev/null  ; then
 	if [ "$1" == 1 ]; then
-		npm install firebase -g
+		npm install -g firebase-tools
 	fi;
 fi;
 
