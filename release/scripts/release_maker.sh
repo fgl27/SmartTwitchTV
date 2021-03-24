@@ -66,6 +66,7 @@ canjshint=0;
 if which 'jshint' >/dev/null  ; then
 	# call this .sh and 1 "this.sh 1" to update uglify-js
 	if [ "$1" == 1 ]; then
+    	echo -e "${bldred}npm install jshint -g\\n";
 		npm install jshint -g
 	fi;
 	canjshint=1;
@@ -90,6 +91,7 @@ canuglifyjs=0;
 if which 'uglifyjs' >/dev/null  ; then
 	# call this .sh and 1 "this.sh 1" to update uglify-js
 	if [ "$1" == 1 ]; then
+    	echo -e "${bldred}npm install uglify-js -g\\n";
 		npm install uglify-js -g
 	fi;
 	canuglifyjs=1;
@@ -105,6 +107,7 @@ canhtmlminifier=0;
 if which 'html-minifier' >/dev/null  ; then
 	# call this .sh and 1 "this.sh 1" to update uglify-js
 	if [ "$1" == 1 ]; then
+    	echo -e "${bldred}npm install html-minifier -g\\n";
 		npm install html-minifier -g
 	fi;
 	canhtmlminifier=1;
@@ -120,6 +123,7 @@ cancrass=0;
 if which 'crass' >/dev/null  ; then
 	# call this .sh and 1 "this.sh 1" to update uglify-js
 	if [ "$1" == 1 ]; then
+    	echo -e "${bldred}npm install crass -g\\n";
 		npm install crass -g
 	fi;
 	cancrass=1;
@@ -131,6 +135,7 @@ fi;
 
 if which 'firebase' >/dev/null  ; then
 	if [ "$1" == 1 ]; then
+    	echo -e "${bldred}npm install firebase-tools -g\\n";
 		npm install -g firebase-tools
 	fi;
 fi;
