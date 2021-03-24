@@ -17967,7 +17967,7 @@
     }
 
     var Play_PreviewURL = '';
-    var Play_PreviewId = 0;
+    var Play_PreviewId = null;
     var Play_PreviewOffset = 0;
     var Play_PreviewResponseText = '';
     var Play_PreviewCheckId = 0;
@@ -23242,7 +23242,7 @@
     function Screens_LoadPreviewSTop(PreventCleanQualities) {
         Main_clearTimeout(Screens_LoadPreviewId);
 
-        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
+        if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
             OSInterface_ClearSidePanelPlayer();
             Play_CheckIfIsLiveCleanEnd();
@@ -31443,7 +31443,7 @@
     function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
         Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-        if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
+        if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
             OSInterface_ClearSidePanelPlayer();
             Play_CheckIfIsLiveCleanEnd();
@@ -31848,6 +31848,7 @@
     }
 
     function Sidepannel_HideEle(PreventCleanQualities, full) {
+
         Sidepannel_RemoveFocusFeed(PreventCleanQualities);
 
         if (!PreventCleanQualities) {
@@ -32850,7 +32851,7 @@
 
             if (!PreventCleanQualities) OSInterface_ClearFeedPlayer();
 
-            if (Play_PreviewId && !PreventCleanQualities) {
+            if (!PreventCleanQualities) {
 
                 Play_CheckIfIsLiveCleanEnd();
 
