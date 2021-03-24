@@ -700,8 +700,7 @@ var UserLiveFeed_LoadPreviewId;
 function UserLiveFeed_CheckIfIsLiveStart(pos) {
 
     if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
-        Settings_Obj_default('show_feed_player') &&
-        UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
+        Settings_Obj_default('show_feed_player') && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
         UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
 
@@ -740,7 +739,8 @@ function UserLiveFeed_CheckIfIsLive(obj) {
 
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface) return;
+    if (!Main_IsOn_OSInterface || Main_isStoped || !UserLiveFeed_isPreviewShowing() ||
+        Main_isUpdateDialogVisible() || Main_isChangeDialogVisible()) return;
 
     var id, token, link, isVod;
 

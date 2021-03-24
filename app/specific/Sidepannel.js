@@ -204,7 +204,7 @@ function Sidepannel_CheckIfIsLive() {
         return;
     }
 
-    if (Sidepannel_ObjNotNull()) {
+    if (!Main_isStoped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
 
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
@@ -219,7 +219,7 @@ function Sidepannel_CheckIfIsLive() {
             Play_live_token.replace('%x', channel)
         );
 
-    } else Play_CheckIfIsLiveCleanEnd();
+    }
 }
 
 var Sidepannel_PlayerViewSidePanelSet;
