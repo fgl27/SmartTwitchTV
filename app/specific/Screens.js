@@ -878,7 +878,7 @@ function Screens_addFocus(forceScroll, key) {
 function Screens_LoadPreviewSTop(PreventCleanQualities) {
     Main_clearTimeout(Screens_LoadPreviewId);
 
-    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
+    if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
         OSInterface_ClearSidePanelPlayer();
         Play_CheckIfIsLiveCleanEnd();

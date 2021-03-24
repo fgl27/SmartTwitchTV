@@ -175,7 +175,7 @@ function Sidepannel_UpdateThumb() {
 function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
     Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
 
-    if (Main_IsOn_OSInterface && Play_PreviewId && !PreventCleanQualities) {
+    if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
         OSInterface_ClearSidePanelPlayer();
         Play_CheckIfIsLiveCleanEnd();
@@ -576,6 +576,7 @@ function Sidepannel_Hide(PreventCleanQualities) {
 }
 
 function Sidepannel_HideEle(PreventCleanQualities, full) {
+
     Sidepannel_RemoveFocusFeed(PreventCleanQualities);
 
     if (!PreventCleanQualities) {

@@ -321,7 +321,7 @@ function Play_CheckIfIsLiveGetEror(response, isVod) {
 }
 
 var Play_PreviewURL = '';
-var Play_PreviewId = 0;
+var Play_PreviewId = null;
 var Play_PreviewOffset = 0;
 var Play_PreviewResponseText = '';
 var Play_PreviewCheckId = 0;

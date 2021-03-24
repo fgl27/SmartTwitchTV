@@ -685,7 +685,7 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
 
         if (!PreventCleanQualities) OSInterface_ClearFeedPlayer();
 
-        if (Play_PreviewId && !PreventCleanQualities) {
+        if (!PreventCleanQualities) {
 
             Play_CheckIfIsLiveCleanEnd();
 
