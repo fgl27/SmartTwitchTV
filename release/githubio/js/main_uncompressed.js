@@ -1264,7 +1264,7 @@
         STR_MAIN_MENU = "Main Menu";
         STR_USER_MENU = "User Menu";
         STR_CH_IS_OFFLINE = "Is offline";
-        STR_ROUND_IMAGES = "Use rounded channel images";
+        STR_ROUND_IMAGES = "Rounded channel images";
         STR_ROUND_IMAGES_SUMMARY = "As most channel images are squares some images may not look OK";
         STR_SCREEN_COUNTER = "Hide Position/Total counter";
         STR_SCREEN_COUNTER_SUMMARY = "There is a position counter that informs the current position and the total loaded content on screens that have playable content, as you scrolls more content wil be load and the total gets updated";
