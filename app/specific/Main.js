@@ -3123,6 +3123,18 @@ function gtag() {
 
 var skipfirebase = false;
 function Main_Startfirebase() {
+
+    var firebaseConfig = {
+        apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
+        authDomain: "smarttv-twitch-web-android.firebaseapp.com",
+        databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
+        projectId: "smarttv-twitch-web-android",
+        storageBucket: "smarttv-twitch-web-android.appspot.com",
+        messagingSenderId: "871032203366",
+        appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
+        measurementId: "G-8YQ2JGNYDP"
+    };
+
     try {
 
         if (!Main_A_includes_B(window.location.href, 'code')) {

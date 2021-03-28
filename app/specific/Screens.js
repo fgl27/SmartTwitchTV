@@ -33,18 +33,6 @@ var Screens_dialog_thumb_div;
 var Screens_dialog_thumb_delete_div;
 //Start the app in async mode by default
 
-//FireBase support
-var firebaseConfig = {
-    apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
-    authDomain: "smarttv-twitch-web-android.firebaseapp.com",
-    databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
-    projectId: "smarttv-twitch-web-android",
-    storageBucket: "smarttv-twitch-web-android.appspot.com",
-    messagingSenderId: "871032203366",
-    appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
-    measurementId: "G-8YQ2JGNYDP"
-};
-
 //Initiate all Secondary screens obj and they properties
 function Screens_InitScreens() {
     ScreensObj_StartAllVars();
