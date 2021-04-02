@@ -1777,9 +1777,15 @@
         VersionBase: '3.0',
         publishVersionCode: 311, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/311/SmartTV_twitch_3_0_311.apk',
-        WebVersion: 'March 13 2020',
-        WebTag: 582, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'April 02 2020',
+        WebTag: 583, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version April 02 2020",
+                changes: [
+                    "Fix 'Highlight @streamer messages' not working some times"
+                ]
+            },
+            {
                 title: "Web Version March 13 2020",
                 changes: [
                     "Fix host checks"
@@ -4773,6 +4779,12 @@
     var ChatLive_ClearChat;
 
     function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
+
+        ChatLive_selectedChannel_id[chat_number] = Channel_id;
+        ChatLive_selectedChannel[chat_number] = selectedChannel;
+        if (ChatLive_selectedChannel[chat_number])
+            ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
+
         ChatLive_User_Set = AddUser_IsUserSet();
 
         ChatLive_Logging = Settings_value.chat_logging.defaultValue;
@@ -4799,11 +4811,6 @@
         }
 
         Chat_Id[chat_number] = (new Date()).getTime();
-
-        ChatLive_selectedChannel_id[chat_number] = Channel_id;
-        ChatLive_selectedChannel[chat_number] = selectedChannel;
-        if (ChatLive_selectedChannel[chat_number])
-            ChatLive_selectedChannel[chat_number] = ChatLive_selectedChannel[chat_number].toLowerCase();
 
         ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
