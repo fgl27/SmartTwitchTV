@@ -183,7 +183,9 @@ js_jshint() {
 	for i in "${array[@]}"; do
 		cd "$i" || exit;
 		for x in *.js; do
-			cat "$x" >> "$mainfolder"/release/main.js
+	    	if [ ! "$x" == "ru_Ru.js" ]; then
+    			cat "$x" >> "$mainfolder"/release/main.js
+			fi;
 		done
 		cd - &> /dev/null || exit;
 	done
