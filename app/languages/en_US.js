@@ -441,7 +441,7 @@ function en_USLang() {
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping to Twitch: ";
     STR_WARNING = "Warning";
-    STR_WARNINGS = STR_WARNING + 's';
+    STR_WARNINGS = 'Warnings';
     STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
@@ -555,7 +555,7 @@ function en_USLang() {
     STR_PP_VOD_ERROR = "Exit PP or Multistream to open this VOD";
     STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
     STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has a accessibility service enabled the app will show a warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
-    STR_ACCESSIBILITY_WARN = " accessibility service(s) detected";
+    STR_ACCESSIBILITY_WARN = "Accessibility service(s) detected";
     STR_ACCESSIBILITY_WARN_EXTRA = "Read more about on this link:";
     STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issue, close this app and disable all accessibility service after all issues will be gone.<br>To not show this warning ever again disable it on settings";
     STR_AUTO_REFRESH = "Auto refresh timeout";

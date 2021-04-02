@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ /*
+ * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" translatable="false">SmartTV Client for Twitch</string>
+    <string name="notification_service">Notification service running</string>
+    <string name="notification_live_game">Game is Live</string>
+    <string name="notification_live">Streamer is Live</string>
+    <string name="notification_title">Streamer changed title</string>
+    <string name="notification_game">Streamer changed game</string>
+    <string name="notification_title_game">Streamer changed game and title</string>
+    <string name="notification_text">Without this background notifications will not show</string>
+    <string name="no_network">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
+    <string name="no_internet">Ping to Twitch fail for the last 30 seconds!\n\nIf the app is not working properly revise yours local internet connection\n\nHold return key to close the app in case it freeze or stop working.\n\nThis will auto hide in 30 seconds or if the connection return\n\nThis warning can be disabled in settings</string>
+    <string name="external_player_fail">No external video player app available</string>
+    <string name="webview_exception">App fail to load because system Webview is either not present (unlikely) OR in the process of being updated, try again in a few seconds</string>
+</resources>
