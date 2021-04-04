@@ -442,6 +442,7 @@
     var STR_ABOUT_INFO_21;
     var STR_ABOUT_INFO_22;
     var STR_GIFT_SUB;
+    var STR_GIFT_ANONYMOUS;
     var STR_CHAT_BANNED;
     var STR_CHAT_WRITE;
     var STR_PLACEHOLDER_CHAT;
@@ -510,7 +511,7 @@
     var STR_SHOW_FEED_PLAYER_SUMMARY;
     var STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY;
     var STR_CHECK_HOST;
-    var STR_ANONYMOUS;
+    var STR_ANONYMOUS_USER;
     var STR_SCREEN_COUNTER_SUMMARY;
     var STR_WARNINGS;
     var STR_KEY_UP_TIMEOUT;
@@ -697,14 +698,6 @@
     var STR_4_WAY_MULTI_INSTANCES;
     var STR_PP_MODO;
     var STR_IS_LIVE;
-    var STR_AS;
-    var STR_MILLISECONDS;
-    var STR_HOUR;
-    var STR_HOURS;
-    var STR_RIGHT;
-    var STR_LEFT;
-    var STR_BOTTOM;
-    var STR_TOP;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1158,9 +1151,9 @@
         STR_FORBIDDEN = "Forbidden content, this is restricted on yours region or restrained to official Twitch app";
         STR_JUMPING_STEP = "Jump step ";
         STR_SECOND = " second";
-        STR_SECONDS = " seconds";
+        STR_SECONDS = STR_SECOND + "s";
         STR_MINUTE = " minute";
-        STR_MINUTES = " minutes";
+        STR_MINUTES = STR_MINUTE + "s";
         STR_CLOCK_OFFSET = "Clock offset";
         STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
         STR_APP_LANG = "Application language";
@@ -1446,7 +1439,8 @@
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
         STR_GIFT_SUB = " has gift you a sub!";
-        STR_ANONYMOUS = "Anonymous";
+        STR_ANONYMOUS_USER = "Anonymous";
+        STR_GIFT_ANONYMOUS = "An " + STR_ANONYMOUS_USER;
         STR_CHAT_BANNED = "You are permanently banned from talking in  ";
         STR_CHAT_WRITE = "Write to chat";
         STR_CHAT_EXTRA = "Chat extra settings";
@@ -1570,16 +1564,6 @@
         STR_PREVIEW_SIZE_CONTROLS = "Preview size";
         STR_OLED_BURN_IN = "OLED Burn in protection";
         STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
-
-        STR_AS = "as";
-        STR_MILLISECONDS = " milliseconds";
-        STR_HOUR = " hour";
-        STR_HOURS = " hours";
-
-        STR_RIGHT = "Right";
-        STR_LEFT = "Left";
-        STR_BOTTOM = "Bottom";
-        STR_TOP = "Top";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -5467,8 +5451,8 @@
 
                         ChatLive_LineAdd({
                             chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_AS +
-                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + " as " +
+                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS_USER))
                         });
 
                         if (Play_ChatDelayPosition) {
@@ -6066,7 +6050,7 @@
             if (params && params[1]) {
 
                 msg += (params && params[1] ? STR_BR + STR_BR + ChatLive_GetBadges(tags, chat_number) +
-                    "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS : gifter_Or_Sub_name) + "</span>: " +
+                    "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS_USER : gifter_Or_Sub_name) + "</span>: " +
                     ChatLive_extraMessageTokenize(
                         emoticonize(params[1], ChatLive_checkEmotes(tags)),
                         chat_number,
@@ -6084,7 +6068,7 @@
                 (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
                     Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
 
-                ChatLive_Warn((isAnon ? STR_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
+                ChatLive_Warn((isAnon ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
 
             }
 
@@ -19298,7 +19282,7 @@
 
     function Play_VideoStatusTest() {
         Main_innerHTMLWithEle(Play_StreamStatus, STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
-            STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 ' + STR_TODAY +
+            STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
             STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
             STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
             STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
@@ -21584,7 +21568,7 @@
         Main_innerHTMLWithEle(
             Play_BottonIcons_Progress_Steps,
             STR_JUMPING_STEP + (signal ? signal : '') +
-            (PlayVod_isOn ? Settings_value.vod_seek_min.values[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
+            (PlayVod_isOn ? Settings_jumpTimers_String[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
         );
 
         PlayVod_last_multiplier = signal;
@@ -21635,7 +21619,7 @@
         if (!PlayVod_jumpStepsIncreaseLock && PlayVod_jumpCount < PlayVod_jump_max_step && PlayVod_OldTime && timeNow > PlayVod_OldTime) {
 
             PlayVod_jumpCount++;
-            PlayVod_OldTime = timeNow + Settings_Seek_Time[Settings_value.vod_seek_time.defaultValue];
+            PlayVod_OldTime = timeNow + Settings_Time[Settings_value.vod_seek_time.defaultValue];
 
         } else if (!PlayVod_OldTime) {
 
@@ -28393,7 +28377,15 @@
         1900, 2000
     ];
     var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
-    var Settings_Seek_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+    var Settings_jumpTimers_String = [
+        '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
+        '5 minutes', '10 minutes', '15 minutes', '20 minutes', '30 minutes', '1 hour',
+    ];
+    var Settings_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+    var Settings_Time_String = [
+        '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
+        '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
+    ];
     var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
     var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
     var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -28484,11 +28476,11 @@
             "defaultValue": 1
         },
         "auto_refresh_screen": { //Migrated to dialog
-            "values": Settings_GetnotificationTime('m', 'h', 'hs'),
+            "values": Settings_GetnotificationTime(),
             "defaultValue": 6
         },
         "auto_minimize_inactive": { //Migrated to dialog
-            "values": Settings_GetnotificationTime('m', 'h', 'hs'),
+            "values": Settings_GetnotificationTime(),
             "defaultValue": 1
         },
         "auto_refresh_background": { //Migrated to dialog
@@ -28558,7 +28550,7 @@
             "defaultValue": 1
         },
         "since_notification": { //Migrated to dialog
-            "values": Settings_GetnotificationTime('m', 'h', 'hs'),
+            "values": Settings_GetnotificationTime(),
             "defaultValue": 7
         },
         "global_font_offset": { //Migrated to dialog
@@ -28698,15 +28690,15 @@
             "defaultValue": 1
         },
         "vod_seek_min": { //Migrated to dialog
-            "values": Settings_jumpTimers,
+            "values": Settings_jumpTimers_String,
             "defaultValue": 1
         },
         "vod_seek_max": { //Migrated to dialog
-            "values": Settings_jumpTimers,
+            "values": Settings_jumpTimers_String,
             "defaultValue": 11
         },
         "vod_seek_time": { //Migrated to dialog
-            "values": Settings_Seek_Time,
+            "values": Settings_Time_String,
             "defaultValue": 3
         },
         "dpad_position": { //Migrated to dialog
@@ -28908,12 +28900,12 @@
         86400000
     ];
 
-    function Settings_GetnotificationTime(min, hour, hours) {
+    function Settings_GetnotificationTime() {
         var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
             i = 0;
 
         for (i = 2; i < 25; i++) {
-            array.push(i + hours);
+            array.push(i + ' Hours');
         }
 
         return array;
@@ -29031,67 +29023,6 @@
 
         Main_innerHTML("settings_main", div);
         Settings_positions_length = Settings_value_keys.length;
-
-        //Update array that are base on strings
-        var i = 0,
-            len = Settings_Seek_Time.length,
-            time;
-
-        for (i; i < len; i++) {
-
-            if (Settings_Seek_Time[i] >= 1000) {
-
-                time = Settings_Seek_Time[i] / 1000;
-
-                Settings_value.vod_seek_time.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
-
-            } else {
-
-                Settings_value.vod_seek_time.values[i] = Settings_Seek_Time[i] + STR_MILLISECONDS;
-
-            }
-        }
-
-        i = 0;
-        len = Settings_jumpTimers.length;
-        for (i; i < len; i++) {
-
-            if (Settings_jumpTimers[i] >= 3600) {
-
-                time = Settings_jumpTimers[i] / 3600;
-
-                Settings_value.vod_seek_min.values[i] = time + STR_HOUR;
-
-            } else if (Settings_jumpTimers[i] >= 60) {
-
-                time = Settings_jumpTimers[i] / 60;
-
-
-                Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_MINUTES : STR_MINUTE);
-
-            } else {
-
-                time = Settings_jumpTimers[i];
-
-                Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
-
-            }
-
-        }
-
-        Settings_value.vod_seek_max.values = Settings_value.vod_seek_min.values;
-
-        Settings_value.auto_refresh_screen.values = Settings_GetnotificationTime(STR_MINUTES, STR_HOUR, STR_HOURS);
-        Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
-        Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
-
-        Settings_value.dpad_position.values = [
-            STR_RIGHT + '-' + STR_BOTTOM,
-            STR_RIGHT + '-' + STR_TOP,
-            STR_LEFT + '-' + STR_BOTTOM,
-            STR_LEFT + '-' + STR_TOP
-        ];
-
         Languages_SetSettings();
     }
 
