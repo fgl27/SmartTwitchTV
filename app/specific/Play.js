@@ -1598,7 +1598,7 @@ function Play_GetLiveTime(dateNow, Time, watching_time) {
 
 function Play_VideoStatusTest() {
     Main_innerHTMLWithEle(Play_StreamStatus, STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
-        STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 Today)' +
+        STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 ' + STR_TODAY +
         STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
         STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
         STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");

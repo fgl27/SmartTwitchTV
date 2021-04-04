@@ -928,7 +928,7 @@ function PlayVod_jumpSteps(pos, signal) {
     Main_innerHTMLWithEle(
         Play_BottonIcons_Progress_Steps,
         STR_JUMPING_STEP + (signal ? signal : '') +
-        (PlayVod_isOn ? Settings_jumpTimers_String[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
+        (PlayVod_isOn ? Settings_value.vod_seek_min.values[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
     );
 
     PlayVod_last_multiplier = signal;
@@ -979,7 +979,7 @@ function PlayVod_jumpStart(multiplier, duration_seconds) {
     if (!PlayVod_jumpStepsIncreaseLock && PlayVod_jumpCount < PlayVod_jump_max_step && PlayVod_OldTime && timeNow > PlayVod_OldTime) {
 
         PlayVod_jumpCount++;
-        PlayVod_OldTime = timeNow + Settings_Time[Settings_value.vod_seek_time.defaultValue];
+        PlayVod_OldTime = timeNow + Settings_Seek_Time[Settings_value.vod_seek_time.defaultValue];
 
     } else if (!PlayVod_OldTime) {
 

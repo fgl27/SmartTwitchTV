@@ -288,9 +288,9 @@ function en_USLang() {
     STR_FORBIDDEN = "Forbidden content, this is restricted on yours region or restrained to official Twitch app";
     STR_JUMPING_STEP = "Jump step ";
     STR_SECOND = " second";
-    STR_SECONDS = STR_SECOND + "s";
+    STR_SECONDS = " seconds";
     STR_MINUTE = " minute";
-    STR_MINUTES = STR_MINUTE + "s";
+    STR_MINUTES = " minutes";
     STR_CLOCK_OFFSET = "Clock offset";
     STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
     STR_APP_LANG = "Application language";
@@ -576,8 +576,7 @@ function en_USLang() {
     STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
     STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
     STR_GIFT_SUB = " has gift you a sub!";
-    STR_ANONYMOUS_USER = "Anonymous";
-    STR_GIFT_ANONYMOUS = "An " + STR_ANONYMOUS_USER;
+    STR_ANONYMOUS = "Anonymous";
     STR_CHAT_BANNED = "You are permanently banned from talking in  ";
     STR_CHAT_WRITE = "Write to chat";
     STR_CHAT_EXTRA = "Chat extra settings";
@@ -701,4 +700,14 @@ function en_USLang() {
     STR_PREVIEW_SIZE_CONTROLS = "Preview size";
     STR_OLED_BURN_IN = "OLED Burn in protection";
     STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
+
+    STR_AS = "as";
+    STR_MILLISECONDS = " milliseconds";
+    STR_HOUR = " hour";
+    STR_HOURS = " hours";
+
+    STR_RIGHT = "Right";
+    STR_LEFT = "Left";
+    STR_BOTTOM = "Bottom";
+    STR_TOP = "Top";
 }

@@ -27,15 +27,7 @@ var Settings_PreviewDelay = [
     1900, 2000
 ];
 var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
-var Settings_jumpTimers_String = [
-    '5 seconds', '10 seconds', '30 seconds', '1 minute', '2 minutes',
-    '5 minutes', '10 minutes', '15 minutes', '20 minutes', '30 minutes', '1 hour',
-];
-var Settings_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
-var Settings_Time_String = [
-    '250 milliseconds', '500 milliseconds', '1 second', '2 seconds', '3 seconds', '4 seconds', '5 seconds',
-    '6 seconds', '7 seconds', '8 seconds', '9 seconds', '10 seconds'
-];
+var Settings_Seek_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
 var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
 var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
 var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -126,11 +118,11 @@ var Settings_value = {
         "defaultValue": 1
     },
     "auto_refresh_screen": {//Migrated to dialog
-        "values": Settings_GetnotificationTime(),
+        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
         "defaultValue": 6
     },
     "auto_minimize_inactive": {//Migrated to dialog
-        "values": Settings_GetnotificationTime(),
+        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
         "defaultValue": 1
     },
     "auto_refresh_background": {//Migrated to dialog
@@ -200,7 +192,7 @@ var Settings_value = {
         "defaultValue": 1
     },
     "since_notification": {//Migrated to dialog
-        "values": Settings_GetnotificationTime(),
+        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
         "defaultValue": 7
     },
     "global_font_offset": {//Migrated to dialog
@@ -340,15 +332,15 @@ var Settings_value = {
         "defaultValue": 1
     },
     "vod_seek_min": {//Migrated to dialog
-        "values": Settings_jumpTimers_String,
+        "values": Settings_jumpTimers,
         "defaultValue": 1
     },
     "vod_seek_max": {//Migrated to dialog
-        "values": Settings_jumpTimers_String,
+        "values": Settings_jumpTimers,
         "defaultValue": 11
     },
     "vod_seek_time": {//Migrated to dialog
-        "values": Settings_Time_String,
+        "values": Settings_Seek_Time,
         "defaultValue": 3
     },
     "dpad_position": {//Migrated to dialog
@@ -549,12 +541,12 @@ var Settings_GetnotificationTimeMs = [
     86400000
 ];
 
-function Settings_GetnotificationTime() {
+function Settings_GetnotificationTime(min, hour, hours) {
     var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
         i = 0;
 
     for (i = 2; i < 25; i++) {
-        array.push(i + ' Hours');
+        array.push(i + hours);
     }
 
     return array;
@@ -670,6 +662,65 @@ function Settings_SetSettings() {
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
+
+    //Update array that are base on strings
+    var i = 0, len = Settings_Seek_Time.length, time;
+
+    for (i; i < len; i++) {
+
+        if (Settings_Seek_Time[i] >= 1000) {
+
+            time = Settings_Seek_Time[i] / 1000;
+
+            Settings_value.vod_seek_time.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
+
+        } else {
+
+            Settings_value.vod_seek_time.values[i] = Settings_Seek_Time[i] + STR_MILLISECONDS;
+
+        }
+    }
+
+    i = 0;
+    len = Settings_jumpTimers.length;
+    for (i; i < len; i++) {
+
+        if (Settings_jumpTimers[i] >= 3600) {
+
+            time = Settings_jumpTimers[i] / 3600;
+
+            Settings_value.vod_seek_min.values[i] = time + STR_HOUR;
+
+        } else if (Settings_jumpTimers[i] >= 60) {
+
+            time = Settings_jumpTimers[i] / 60;
+
+
+            Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_MINUTES : STR_MINUTE);
+
+        } else {
+
+            time = Settings_jumpTimers[i];
+
+            Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
+
+        }
+
+    }
+
+    Settings_value.vod_seek_max.values = Settings_value.vod_seek_min.values;
+
+    Settings_value.auto_refresh_screen.values = Settings_GetnotificationTime(STR_MINUTES, STR_HOUR, STR_HOURS);
+    Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
+    Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
+
+    Settings_value.dpad_position.values = [
+        STR_RIGHT + '-' + STR_BOTTOM,
+        STR_RIGHT + '-' + STR_TOP,
+        STR_LEFT + '-' + STR_BOTTOM,
+        STR_LEFT + '-' + STR_TOP
+    ];
+
     Languages_SetSettings();
 }
 

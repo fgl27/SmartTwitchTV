@@ -806,8 +806,8 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     ChatLive_LineAdd(
                         {
                             chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + " as " +
-                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS_USER))
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_AS +
+                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
                         }
                     );
 
@@ -1409,7 +1409,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
         if (params && params[1]) {
 
             msg += (params && params[1] ? STR_BR + STR_BR + ChatLive_GetBadges(tags, chat_number) +
-                "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS_USER : gifter_Or_Sub_name) + "</span>: " +
+                "<span style='color: #0fffff; font-weight: bold'>" + (isAnon || !gifter_Or_Sub_name ? STR_ANONYMOUS : gifter_Or_Sub_name) + "</span>: " +
                 ChatLive_extraMessageTokenize(
                     emoticonize(params[1], ChatLive_checkEmotes(tags)),
                     chat_number,
@@ -1427,7 +1427,7 @@ function ChatLive_CheckIfSub(message, chat_number) {
             (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
                 Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))) {
 
-            ChatLive_Warn((isAnon ? STR_GIFT_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
+            ChatLive_Warn((isAnon ? STR_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
 
         }
 
