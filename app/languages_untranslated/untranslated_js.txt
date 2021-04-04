@@ -1,7 +1,11 @@
-   //There is not enough space to display the translation of this line. This is the only line that has not been translated.
-   STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-
-
-   STR_MAX_INSTANCES = "Max instances: ";
-   //Translated, but I did not understand the meaning of this term, it would be helpful if you could describe the meaning a little.
-   
+STR_UPDATE_WARNING_OK
+STR_ABOUT_INFO_16
+STR_MAX_INSTANCES
+STR_AS
+STR_MILLISECONDS
+STR_HOUR
+STR_HOURS
+STR_RIGHT
+STR_LEFT
+STR_BOTTOM
+STR_TOP
