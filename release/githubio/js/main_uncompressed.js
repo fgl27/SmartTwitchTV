@@ -646,6 +646,7 @@
     var STR_UPDATE_START;
     var STR_UPDATE_PLAY;
     var STR_UPDATE_ERROR;
+    var STR_UPDATE_WARNING_OK;
     var STR_DISABLE;
     var STR_ENABLE;
     var STR_LOWLATENCY_ENABLE_ARRAY;
@@ -967,6 +968,7 @@
         STR_UPDATE_START = "Update process started this may take a few seconds, please await!";
         STR_UPDATE_PLAY = "If Play Store doesn't show the update try again after a few minutes!";
         STR_UPDATE_ERROR = "You need APK version 3.0.303 or UP to be able to use this, please update the old way";
+        STR_UPDATE_WARNING_OK = "App updated OK";
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
@@ -7223,7 +7225,8 @@
         "OS_is_Check": false,
         "Restore_Backup_Check": false,
         "UserSidePannel_LastPos": null,
-        "UserLiveFeed_LastPos": []
+        "UserLiveFeed_LastPos": [],
+        "IsUpDating": false
     };
 
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -8307,11 +8310,13 @@
 
                     if (Main_HasUpdate) {
 
+                        Main_values.IsUpDating = true;
+                        Main_SaveValues();
+
                         if (Main_IsWebupdate) {
 
                             Main_HideElement('update_dialog');
                             Main_showLoadDialog();
-                            Main_SaveValues();
                             Main_SaveHistoryItem();
                             OSInterface_stopVideo();
                             Main_hideScene1Doc();
@@ -9941,7 +9946,12 @@
         //but the aap is not ready for the rest of the check on this fun
         if (Main_PreventCheckResume) return;
 
-        if (Main_isUpdateDialogVisible()) Main_HideLoadDialog();
+        if (Main_isUpdateDialogVisible()) {
+
+            Main_HideLoadDialog();
+            Main_values.IsUpDating = false;
+
+        }
 
         var UserIsSet = AddUser_UserIsSet();
 
@@ -22600,7 +22610,8 @@
         } else if (restore_playback && Main_values.Play_WasPlaying) {
 
             Main_values.Main_Go = Main_GoBefore;
-            if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+            if (Main_values.IsUpDating) Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+            else if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
             if (Main_values.Play_WasPlaying === 1) {
 
@@ -22623,10 +22634,14 @@
 
         } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
 
+            if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+
             if (Main_newUsercode) Main_HideLoadDialog();
             ScreenObj[Main_GoBefore].init_fun();
 
         } else {
+
+            if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
 
             //Values that need to be reset to prevent app odd behavier
             Main_values.Search_isSearching = false;
@@ -22635,6 +22650,8 @@
 
             ScreenObj[Main_Live].init_fun();
         }
+
+        Main_values.IsUpDating = false;
     }
 
     function Screens_init(key, preventRefresh) {
