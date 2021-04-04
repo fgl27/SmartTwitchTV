@@ -105,6 +105,7 @@ function en_USLang() {
     STR_UPDATE_START = "Update process started this may take a few seconds, please await!";
     STR_UPDATE_PLAY = "If Play Store doesn't show the update try again after a few minutes!";
     STR_UPDATE_ERROR = "You need APK version 3.0.303 or UP to be able to use this, please update the old way";
+    STR_UPDATE_WARNING_OK = "App updated OK";
     STR_CLOSE = "Close";
     STR_MINIMIZE = "Minimize";
     STR_CANCEL = "Cancel";

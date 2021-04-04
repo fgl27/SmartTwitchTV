@@ -91,7 +91,8 @@ var Main_values = {
     "OS_is_Check": false,
     "Restore_Backup_Check": false,
     "UserSidePannel_LastPos": null,
-    "UserLiveFeed_LastPos": []
+    "UserLiveFeed_LastPos": [],
+    "IsUpDating": false
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -1168,11 +1169,13 @@ function Main_UpdateDialogKeyFun(event) {
 
                 if (Main_HasUpdate) {
 
+                    Main_values.IsUpDating = true;
+                    Main_SaveValues();
+
                     if (Main_IsWebupdate) {
 
                         Main_HideElement('update_dialog');
                         Main_showLoadDialog();
-                        Main_SaveValues();
                         Main_SaveHistoryItem();
                         OSInterface_stopVideo();
                         Main_hideScene1Doc();
@@ -2799,7 +2802,12 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     //but the aap is not ready for the rest of the check on this fun
     if (Main_PreventCheckResume) return;
 
-    if (Main_isUpdateDialogVisible()) Main_HideLoadDialog();
+    if (Main_isUpdateDialogVisible()) {
+
+        Main_HideLoadDialog();
+        Main_values.IsUpDating = false;
+
+    }
 
     var UserIsSet = AddUser_UserIsSet();
 

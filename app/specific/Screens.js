@@ -222,7 +222,8 @@ function Screens_first_init() {
     } else if (restore_playback && Main_values.Play_WasPlaying) {
 
         Main_values.Main_Go = Main_GoBefore;
-        if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
+        if (Main_values.IsUpDating) Play_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+        else if (!live_channel_call) Play_showWarningDialog(STR_RESTORE_PLAYBACK_WARN, 5000);
 
         if (Main_values.Play_WasPlaying === 1) {
 
@@ -245,10 +246,14 @@ function Screens_first_init() {
 
     } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
 
+        if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+
         if (Main_newUsercode) Main_HideLoadDialog();
         ScreenObj[Main_GoBefore].init_fun();
 
     } else {
+
+        if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
 
         //Values that need to be reset to prevent app odd behavier
         Main_values.Search_isSearching = false;
@@ -257,6 +262,8 @@ function Screens_first_init() {
 
         ScreenObj[Main_Live].init_fun();
     }
+
+    Main_values.IsUpDating = false;
 }
 
 function Screens_init(key, preventRefresh) {
