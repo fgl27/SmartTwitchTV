@@ -928,7 +928,7 @@ function PlayVod_jumpSteps(pos, signal) {
     Main_innerHTMLWithEle(
         Play_BottonIcons_Progress_Steps,
         STR_JUMPING_STEP + (signal ? signal : '') +
-        (PlayVod_isOn ? Settings_value.vod_seek_min.values[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1 seconds')
+        (PlayVod_isOn ? Settings_value.vod_seek_min.values[pos] + STR_BR + (PlayVod_jumpStepsIncreaseLock ? STR_LOCKED : STR_UP_LOCKED) : '1' + STR_SECONDS)
     );
 
     PlayVod_last_multiplier = signal;

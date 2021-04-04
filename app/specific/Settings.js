@@ -332,15 +332,15 @@ var Settings_value = {
         "defaultValue": 1
     },
     "vod_seek_min": {//Migrated to dialog
-        "values": Settings_jumpTimers,
+        "values": JSON.parse(JSON.stringify(Settings_jumpTimers)),
         "defaultValue": 1
     },
     "vod_seek_max": {//Migrated to dialog
-        "values": Settings_jumpTimers,
+        "values": JSON.parse(JSON.stringify(Settings_jumpTimers)),
         "defaultValue": 11
     },
     "vod_seek_time": {//Migrated to dialog
-        "values": Settings_Seek_Time,
+        "values": JSON.parse(JSON.stringify(Settings_Seek_Time)),
         "defaultValue": 3
     },
     "dpad_position": {//Migrated to dialog
