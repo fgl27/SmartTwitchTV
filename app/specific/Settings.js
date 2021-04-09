@@ -130,7 +130,7 @@ var Settings_value = {
         "defaultValue": 2
     },
     "show_feed_player_delay": {//Migrated to dialog
-        "values": Settings_GetPreviewDelay(),
+        "values": Settings_GetPreviewDelay('ms', 'sec'),
         "defaultValue": 1
     },
     "key_up_timeout": {//Migrated to dialog
@@ -552,7 +552,7 @@ function Settings_GetnotificationTime(min, hour, hours) {
     return array;
 }
 
-function Settings_GetPreviewDelay() {
+function Settings_GetPreviewDelay(ms, sec) {
     var i = 0,
         len = Settings_PreviewDelay.length,
         array = [],
@@ -560,8 +560,8 @@ function Settings_GetPreviewDelay() {
 
     for (i; i < len; i++) {
 
-        if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ' Ms';
-        else time = (Settings_PreviewDelay[i] / 1000) + ' Sec';
+        if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ms;
+        else time = (Settings_PreviewDelay[i] / 1000) + sec;
 
         array.push(time);
     }
@@ -710,9 +710,12 @@ function Settings_SetSettings() {
 
     Settings_value.vod_seek_max.values = Settings_value.vod_seek_min.values;
 
+    Settings_value.show_feed_player_delay.values = Settings_GetPreviewDelay(STR_MS, STR_SEC);
     Settings_value.auto_refresh_screen.values = Settings_GetnotificationTime(STR_MINUTES, STR_HOUR, STR_HOURS);
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
+
+
 
     Settings_value.dpad_position.values = [
         STR_RIGHT + '-' + STR_BOTTOM,
