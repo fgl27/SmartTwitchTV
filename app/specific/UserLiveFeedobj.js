@@ -181,7 +181,7 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_Empty(pos) {
-    UserLiveFeedobj_HolderDiv(pos, STR_NO_LIVE_CONTENT);
+    UserLiveFeedobj_HolderDiv(pos, STR_NO_CONTENT);
 }
 
 function UserLiveFeedobj_HolderDiv(pos, text) {
