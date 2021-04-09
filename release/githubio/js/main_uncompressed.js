@@ -705,7 +705,6 @@
     var STR_BOTTOM;
     var STR_TOP;
     var STR_AVG;
-    var STR_MB;
     var STR_OFFSET;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -1303,13 +1302,13 @@
         STR_CLICK_FOLLOW = "(Press enter to follow)";
         STR_TODAY = " Today";
         STR_DROOPED_FRAMES = "Skipped Frames: ";
-        STR_BUFFER_HEALT = " Buffer Size: ";
-        STR_NET_ACT = "Net Activity: ";
-        STR_NET_SPEED = "Net Speed:";
+        STR_BUFFER_HEALT = "Buffer Size (Sec): ";
+        STR_NET_ACT = "Net Activity (Mb): ";
+        STR_NET_SPEED = "Net Speed (Mb):";
         STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
-        STR_LATENCY = STR_LATENCY_TO_BROADCASTER + ": ";
+        STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
-        STR_PING = "Ping to Twitch: ";
+        STR_PING = "Ping to Twitch (Ms): ";
         STR_WARNING = "Warning";
         STR_WARNINGS = 'Warnings';
         STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
@@ -1577,9 +1576,7 @@
         STR_LEFT = "Left";
         STR_BOTTOM = "Bottom";
         STR_TOP = "Top";
-
         STR_AVG = " Avg";
-        STR_MB = " Mb";
         STR_OFFSET = " Offset ";
     }
     /*
@@ -19307,12 +19304,12 @@
 
     function Play_VideoStatusTest() {
         Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_MB + STR_BR +
-            STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_MB + STR_BR +
+            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
+            STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_BR +
             STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
-            STR_BUFFER_HEALT + '100.37' + STR_SEC + STR_BR +
-            STR_LATENCY + '100.27' + STR_SEC + STR_BR +
-            STR_PING + " 100.00 | 99.00" + STR_AVG + STR_MS);
+            STR_BUFFER_HEALT + '100.37' + STR_BR +
+            STR_LATENCY + '100.27' + STR_BR +
+            STR_PING + " 100.00 | 99.00" + STR_AVG);
     }
 
     var Play_BufferSize = 0;
@@ -19326,12 +19323,12 @@
         if (Play_Status_Visible !== 2) {
 
             Main_innerHTMLWithEle(Play_StreamStatus,
-                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_MB + STR_BR +
-                STR_NET_ACT + value[1] + STR_AVG + STR_MB + STR_BR +
+                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_BR +
+                STR_NET_ACT + value[1] + STR_AVG + STR_BR +
                 STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-                STR_BUFFER_HEALT + value[4] + STR_SEC +
-                (showLatency ? (STR_BR + STR_LATENCY + value[5] + STR_SEC) : '') +
-                STR_BR + STR_PING + value[6] + STR_AVG + STR_MS);
+                STR_BUFFER_HEALT + value[4] +
+                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+                STR_BR + STR_PING + value[6] + STR_AVG);
 
         }
 

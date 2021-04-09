@@ -1,0 +1,5 @@
+    STR_BUFFER_HEALT = "Buffer Size (Sec): ";
+    STR_NET_ACT = "Net Activity (Mb): ";
+    STR_NET_SPEED = "Net Speed (Mb):";
+    STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
+    STR_PING = "Ping to Twitch (Ms): ";
