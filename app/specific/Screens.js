@@ -246,14 +246,12 @@ function Screens_first_init() {
 
     } else if (Main_GoBefore !== Main_Live && Main_GoBefore !== Main_addUser && Main_GoBefore !== Main_Search) {
 
-        if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
-
         if (Main_newUsercode) Main_HideLoadDialog();
         ScreenObj[Main_GoBefore].init_fun();
 
-    } else {
-
         if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
+
+    } else {
 
         //Values that need to be reset to prevent app odd behavier
         Main_values.Search_isSearching = false;
@@ -261,6 +259,8 @@ function Screens_first_init() {
         Main_values.Main_BeforeAgameisSet = false;
 
         ScreenObj[Main_Live].init_fun();
+
+        if (Main_values.IsUpDating) Main_showWarningDialog(STR_UPDATE_WARNING_OK, 5000);
     }
 
     Main_values.IsUpDating = false;
