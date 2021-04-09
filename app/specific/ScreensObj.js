@@ -88,6 +88,7 @@ function ScreensObj_StartAllVars() {
         itemsCountCheck: false,
         isRefreshing: false,
         Headers: Main_Headers,
+        empty_str: STR_NO_LIVE_CONTENT,
         data: null,
         token: null,
         data_cursor: 0,
@@ -250,9 +251,6 @@ function ScreensObj_StartAllVars() {
         img_404: IMG_404_VOD,
         HasSwitches: true,
         period: ['day', 'week', 'month', 'all'],
-        empty_str: function() {
-            return STR_NO + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-        },
         AnimateThumbId: null,
         HasAnimateThumb: true,
         Vod_newImg: new Image(),
@@ -295,9 +293,6 @@ function ScreensObj_StartAllVars() {
             } else {
                 if (this.data.length >= this.MaxOffset) this.dataEnded = true;
             }
-        },
-        empty_str: function() {
-            return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
         },
         setTODialog: function() {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
@@ -351,9 +346,6 @@ function ScreensObj_StartAllVars() {
         object: 'clips',
         period: ['day', 'week', 'month', 'all'],
         img_404: IMG_404_VOD,
-        empty_str: function() {
-            return STR_NO + STR_SPACE + STR_CLIPS;
-        },
         setTODialog: function() {
             Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
             Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
@@ -427,9 +419,6 @@ function ScreensObj_StartAllVars() {
         addFocus: Screens_addFocusVideo,
         img_404: IMG_404_GAME,
         screenType: 3,
-        empty_str: function() {
-            return STR_NO + STR_SPACE + STR_LIVE_GAMES;
-        },
         setTODialog: Screens_ThumbOptionHideSpecial,
         key_play: function() {
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
@@ -498,9 +487,6 @@ function ScreensObj_StartAllVars() {
             if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
         },
         setTODialog: Screens_ThumbOptionHideSpecial,
-        empty_str: function() {
-            return STR_NO + STR_SPACE + STR_USER_CHANNEL;
-        },
         addCellTemp: function(cell) {
             if (!this.idObject[cell._id]) {
 
@@ -608,9 +594,6 @@ function ScreensObj_StartAllVars() {
             ];
         },
         set_url: noop_fun,
-        empty_str: function() {
-            return STR_NO + STR_SPACE + STR_HISTORY;
-        },
         history_concatenate: function() {
             this.streamerID = {};
             this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
