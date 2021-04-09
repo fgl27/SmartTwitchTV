@@ -1,3 +1,2 @@
     STR_MB = " Mb";
-    STR_S_SECOND = " s";
     STR_OFFSET = " Offset ";

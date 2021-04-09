@@ -692,5 +692,4 @@ var STR_BOTTOM;
 var STR_TOP;
 var STR_AVG;
 var STR_MB;
-var STR_S_SECOND;
 var STR_OFFSET;

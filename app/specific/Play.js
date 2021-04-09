@@ -1654,7 +1654,7 @@ function Play_getMbps(value) {
 function Play_getBuffer(value) {
     value = (value > 0 ? (value / 1000).toFixed(2) : 0);
 
-    return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + STR_S_SECOND;
+    return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + STR_SEC;
 }
 
 function Play_ShowVideoQuality(who_called, value) {
