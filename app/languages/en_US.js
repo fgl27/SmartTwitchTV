@@ -164,7 +164,6 @@ function en_USLang() {
     STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
     STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
     STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
-
     STR_ABOUT_INFO_14 = "Web:";
     STR_ABOUT_INFO_15 = "Android:";
     STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
@@ -176,7 +175,6 @@ function en_USLang() {
     STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
     STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
     STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
-
     STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press return key twice or media key Stop";
@@ -700,12 +698,10 @@ function en_USLang() {
     STR_PREVIEW_SIZE_CONTROLS = "Preview size";
     STR_OLED_BURN_IN = "OLED Burn in protection";
     STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
-
     STR_AS = "as";
     STR_MILLISECONDS = " milliseconds";
     STR_HOUR = " hour";
     STR_HOURS = " hours";
-
     STR_RIGHT = "Right";
     STR_LEFT = "Left";
     STR_BOTTOM = "Bottom";
