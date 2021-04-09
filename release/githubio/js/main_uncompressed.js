@@ -335,7 +335,6 @@
     var STR_TODAY;
     var STR_DROOPED_FRAMES;
     var STR_BUFFER_HEALT;
-    var STR_AVGMB;
     var STR_NET_SPEED;
     var STR_NET_ACT;
     var STR_LATENCY;
@@ -408,7 +407,7 @@
     var STR_FEED_END_DIALOG;
     var STR_MULTI_TITLE;
     var STR_BACK_USER_GAMES;
-    var STR_NO_LIVE_CONTENT;
+    var STR_NO_CONTENT;
     var STR_BITCOIN_SUMMARY;
     var STR_SHOW_FEED_PLAYER;
     var STR_DISABLED_FEED_PLAYER_MULTI;
@@ -705,6 +704,9 @@
     var STR_LEFT;
     var STR_BOTTOM;
     var STR_TOP;
+    var STR_AVG;
+    var STR_MB;
+    var STR_OFFSET;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1034,7 +1036,6 @@
         STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
         STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
         STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
-
         STR_ABOUT_INFO_14 = "Web:";
         STR_ABOUT_INFO_15 = "Android:";
         STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
@@ -1046,7 +1047,6 @@
         STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
         STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
         STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
-
         STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
         STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
         STR_CONTROLS_PLAY_2 = "Close the video: press return key twice or media key Stop";
@@ -1301,10 +1301,9 @@
         STR_PRESS_ENTER_TO_CHANGE = "Press enter to change to - ";
         STR_CLICK_UNFOLLOW = "(Press enter to unfollow)";
         STR_CLICK_FOLLOW = "(Press enter to follow)";
-        STR_TODAY = " Today)";
+        STR_TODAY = " Today";
         STR_DROOPED_FRAMES = "Skipped Frames: ";
         STR_BUFFER_HEALT = " Buffer Size: ";
-        STR_AVGMB = " Avg) Mb";
         STR_NET_ACT = "Net Activity: ";
         STR_NET_SPEED = "Net Speed:";
         STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
@@ -1389,7 +1388,7 @@
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ', Press return to go back to top menu';
         STR_BACK_USER_GAMES = ' Press return key to go back to ';
-        STR_NO_LIVE_CONTENT = 'No content for this now, try again later';
+        STR_NO_CONTENT = 'No content for this now, try again later';
         STR_SHOW_LIVE_PLAYER = 'Show preview on Live streams Screens';
         STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
         STR_SHOW_VOD_PLAYER = 'Show preview on VOD Screens';
@@ -1570,16 +1569,18 @@
         STR_PREVIEW_SIZE_CONTROLS = "Preview size";
         STR_OLED_BURN_IN = "OLED Burn in protection";
         STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
-
         STR_AS = "as";
         STR_MILLISECONDS = " milliseconds";
         STR_HOUR = " hour";
         STR_HOURS = " hours";
-
         STR_RIGHT = "Right";
         STR_LEFT = "Left";
         STR_BOTTOM = "Bottom";
         STR_TOP = "Top";
+
+        STR_AVG = " Avg";
+        STR_MB = " Mb";
+        STR_OFFSET = " Offset ";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -1793,11 +1794,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 311, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/311/SmartTV_twitch_3_0_311.apk',
-        WebVersion: 'April 02 2020',
-        WebTag: 583, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 312, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/312/SmartTV_twitch_3_0_312.apk',
+        WebVersion: 'April 09 2020',
+        WebTag: 584, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.312 and Web Version April 09 2020",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version April 02 2020",
                 changes: [
                     "Fix 'Highlight @streamer messages' not working some times"
@@ -19299,11 +19306,13 @@
     }
 
     function Play_VideoStatusTest() {
-        Main_innerHTMLWithEle(Play_StreamStatus, STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' (150.00 Avg) Mbps' +
-            STR_BR + STR_NET_ACT + Play_getMbps(45 * 1000000) + ' (150.00 Avg) Mbps' + STR_BR + STR_DROOPED_FRAMES + '1000 (1000 ' + STR_TODAY +
-            STR_BR + STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) +
-            STR_BR + STR_LATENCY + Play_getBuffer(100.37 * 1000) +
-            STR_BR + STR_PING + " 100.00 (99.00 Avg) ms");
+        Main_innerHTMLWithEle(Play_StreamStatus,
+            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_MB + STR_BR +
+            STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_MB + STR_BR +
+            STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
+            STR_BUFFER_HEALT + '100.37' + STR_SEC + STR_BR +
+            STR_LATENCY + '100.27' + STR_SEC + STR_BR +
+            STR_PING + " 100.00 | 99.00" + STR_AVG + STR_MS);
     }
 
     var Play_BufferSize = 0;
@@ -19317,12 +19326,12 @@
         if (Play_Status_Visible !== 2) {
 
             Main_innerHTMLWithEle(Play_StreamStatus,
-                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_BR +
-                STR_NET_ACT + value[1] + STR_BR +
-                STR_DROOPED_FRAMES + value[2] + " (" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-                STR_BUFFER_HEALT + value[4] +
-                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
-                STR_BR + STR_PING + value[6]);
+                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_MB + STR_BR +
+                STR_NET_ACT + value[1] + STR_AVG + STR_MB + STR_BR +
+                STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+                STR_BUFFER_HEALT + value[4] + STR_SEC +
+                (showLatency ? (STR_BR + STR_LATENCY + value[5] + STR_SEC) : '') +
+                STR_BR + STR_PING + value[6] + STR_AVG + STR_MS);
 
         }
 
@@ -19348,12 +19357,6 @@
         value = (parseInt(value) / 1000000).toFixed(2);
 
         return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
-    }
-
-    function Play_getBuffer(value) {
-        value = (value > 0 ? (value / 1000).toFixed(2) : 0);
-
-        return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + " s";
     }
 
     function Play_ShowVideoQuality(who_called, value) {
@@ -23024,7 +23027,7 @@
         if (!ScreenObj[key].status) {
 
             if (ScreenObj[key].emptyContent) {
-                if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
+                if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str);
             } else {
 
                 ScreenObj[key].status = true;
@@ -25490,6 +25493,7 @@
             itemsCountCheck: false,
             isRefreshing: false,
             Headers: Main_Headers,
+            empty_str: STR_NO_CONTENT,
             data: null,
             token: null,
             data_cursor: 0,
@@ -25652,9 +25656,6 @@
             img_404: IMG_404_VOD,
             HasSwitches: true,
             period: ['day', 'week', 'month', 'all'],
-            empty_str: function() {
-                return STR_NO + STR_SPACE + (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA);
-            },
             AnimateThumbId: null,
             HasAnimateThumb: true,
             Vod_newImg: new Image(),
@@ -25697,9 +25698,6 @@
                 } else {
                     if (this.data.length >= this.MaxOffset) this.dataEnded = true;
                 }
-            },
-            empty_str: function() {
-                return STR_NO + STR_SPACE + STR_LIVE_CHANNELS;
             },
             setTODialog: function() {
                 Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
@@ -25753,9 +25751,6 @@
             object: 'clips',
             period: ['day', 'week', 'month', 'all'],
             img_404: IMG_404_VOD,
-            empty_str: function() {
-                return STR_NO + STR_SPACE + STR_CLIPS;
-            },
             setTODialog: function() {
                 Main_AddClass('dialog_thumb_opt_setting_-1', 'hideimp');
                 Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_CLIP_DIS);
@@ -25829,9 +25824,6 @@
             addFocus: Screens_addFocusVideo,
             img_404: IMG_404_GAME,
             screenType: 3,
-            empty_str: function() {
-                return STR_NO + STR_SPACE + STR_LIVE_GAMES;
-            },
             setTODialog: Screens_ThumbOptionHideSpecial,
             key_play: function() {
                 Main_removeFocus(this.posY + '_' + this.posX, this.ids);
@@ -25900,9 +25892,6 @@
                 if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
             },
             setTODialog: Screens_ThumbOptionHideSpecial,
-            empty_str: function() {
-                return STR_NO + STR_SPACE + STR_USER_CHANNEL;
-            },
             addCellTemp: function(cell) {
                 if (!this.idObject[cell._id]) {
 
@@ -26010,9 +25999,6 @@
                 ];
             },
             set_url: noop_fun,
-            empty_str: function() {
-                return STR_NO + STR_SPACE + STR_HISTORY;
-            },
             history_concatenate: function() {
                 this.streamerID = {};
                 this.data = JSON.parse(JSON.stringify(Main_values_History_data[AddUser_UsernameArray[0].id][this.Type]));
@@ -26186,7 +26172,7 @@
 
                 ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                     (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
+                    (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + "," + STR_OFFSET + ScreenObj[this.screen].extraoffset);
 
             },
             label_exit: function() {
@@ -28498,7 +28484,7 @@
             "defaultValue": 2
         },
         "show_feed_player_delay": { //Migrated to dialog
-            "values": Settings_GetPreviewDelay(),
+            "values": Settings_GetPreviewDelay('ms', 'sec'),
             "defaultValue": 1
         },
         "key_up_timeout": { //Migrated to dialog
@@ -28911,7 +28897,7 @@
     ];
 
     function Settings_GetnotificationTime(min, hour, hours) {
-        var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
+        var array = [0, '10 ' + min, '20 ' + min, '30 ' + min, '45 ' + min, '1 ' + hour],
             i = 0;
 
         for (i = 2; i < 25; i++) {
@@ -28921,7 +28907,7 @@
         return array;
     }
 
-    function Settings_GetPreviewDelay() {
+    function Settings_GetPreviewDelay(ms, sec) {
         var i = 0,
             len = Settings_PreviewDelay.length,
             array = [],
@@ -28929,8 +28915,8 @@
 
         for (i; i < len; i++) {
 
-            if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ' Ms';
-            else time = (Settings_PreviewDelay[i] / 1000) + ' Sec';
+            if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ms;
+            else time = (Settings_PreviewDelay[i] / 1000) + sec;
 
             array.push(time);
         }
@@ -29083,9 +29069,13 @@
 
         Settings_value.vod_seek_max.values = Settings_value.vod_seek_min.values;
 
+        Settings_value.show_feed_player_delay.values = Settings_GetPreviewDelay(STR_MS, STR_SEC);
         Settings_value.auto_refresh_screen.values = Settings_GetnotificationTime(STR_MINUTES, STR_HOUR, STR_HOURS);
+        Settings_value.since_notification.values = Settings_value.auto_refresh_screen.values;
         Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
         Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
+
+
 
         Settings_value.dpad_position.values = [
             STR_RIGHT + '-' + STR_BOTTOM,
@@ -33745,7 +33735,7 @@
     }
 
     function UserLiveFeedobj_Empty(pos) {
-        UserLiveFeedobj_HolderDiv(pos, STR_NO_LIVE_CONTENT);
+        UserLiveFeedobj_HolderDiv(pos, STR_NO_CONTENT);
     }
 
     function UserLiveFeedobj_HolderDiv(pos, text) {
