@@ -919,7 +919,7 @@ public final class Tools {
 
         return String.format(
                 Locale.US,
-                "%s%.02f s",
+                "%s%.02f",
                 (time < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 time
         );

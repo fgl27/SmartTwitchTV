@@ -1603,8 +1603,8 @@ function Play_VideoStatusTest() {
         STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_MB + STR_BR +
         STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_MB + STR_BR +
         STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
-        STR_BUFFER_HEALT + Play_getBuffer(100.37 * 1000) + STR_BR +
-        STR_LATENCY + Play_getBuffer(100.37 * 1000) + STR_BR +
+        STR_BUFFER_HEALT + '100.37' + STR_SEC + STR_BR +
+        STR_LATENCY + '100.27' + STR_SEC + STR_BR +
         STR_PING + " 100.00 | 99.00" + STR_AVG + STR_MS);
 }
 
@@ -1621,8 +1621,8 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
             STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_MB + STR_BR +
             STR_NET_ACT + value[1] + STR_AVG + STR_MB + STR_BR +
             STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-            STR_BUFFER_HEALT + value[4] +
-            (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+            STR_BUFFER_HEALT + value[4] + STR_SEC +
+            (showLatency ? (STR_BR + STR_LATENCY + value[5] + STR_SEC) : '') +
             STR_BR + STR_PING + value[6] + STR_AVG + STR_MS);
 
     }
@@ -1649,12 +1649,6 @@ function Play_getMbps(value) {
     value = (parseInt(value) / 1000000).toFixed(2);
 
     return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
-}
-
-function Play_getBuffer(value) {
-    value = (value > 0 ? (value / 1000).toFixed(2) : 0);
-
-    return (parseInt(value) < 10 ? (STR_SPACE + value) : value) + STR_SEC;
 }
 
 function Play_ShowVideoQuality(who_called, value) {
