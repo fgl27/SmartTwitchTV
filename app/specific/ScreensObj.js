@@ -784,7 +784,7 @@ function ScreensObj_InitChannelVod() {
 
             ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname,
                 (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ", Offset " + ScreenObj[this.screen].extraoffset);
+                (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + "," + STR_OFFSET + ScreenObj[this.screen].extraoffset);
 
         },
         label_exit: function() {

@@ -709,4 +709,5 @@ function en_USLang() {
     STR_AVG = " Avg";
     STR_MB = " Mb";
     STR_S_SECOND = " s";
+    STR_OFFSET = " Offset ";
 }
