@@ -3543,13 +3543,13 @@ public class PlayerActivity extends Activity {
 
                 getVideoStatusResult = new Gson().toJson(
                         new Object[]{
-                                Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter, "Mb"),//0
-                                Tools.GetCounters(netActivity, NetActivityAVG, NetCounter, "Mb"),//1
+                                Tools.GetCounters(conSpeed, conSpeedAVG, SpeedCounter),//0
+                                Tools.GetCounters(netActivity, NetActivityAVG, NetCounter),//1
                                 droppedFrames,//2
                                 DroppedFramesTotal,//3
                                 Tools.getTime(buffer),//4
                                 Tools.getTime(LiveOffset),//5
-                                Tools.GetCounters(PingValue, PingValueAVG, PingCounter, "ms"),//6
+                                Tools.GetCounters(PingValue, PingValueAVG, PingCounter),//6
                                 (buffer / 1000.0),//7
                                 Duration,//8
                                 Position//9

@@ -901,17 +901,16 @@ public final class Tools {
         return (int) Math.ceil(fps);
     }
 
-    static String GetCounters(float FullValue, float FullValueAVG, long Counter, String end) {
+    static String GetCounters(float FullValue, float FullValueAVG, long Counter) {
         FullValueAVG = (Counter > 0 ? (FullValueAVG / Counter) : 0);
 
         return String.format(
                 Locale.US,
-                "%s%.02f (%s%.02f Avg) %s",
+                "%s%.02f | %s%.02f",
                 (FullValue < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
                 FullValue,
                 (FullValueAVG < 10 ? "&nbsp;&nbsp;" : ""),//Keeps the indentation when the values go bellow 10
-                FullValueAVG,
-                end
+                FullValueAVG
         );
     }
 

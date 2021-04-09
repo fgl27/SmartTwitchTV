@@ -425,10 +425,9 @@ function ru_RULang() {
     STR_PRESS_ENTER_TO_CHANGE = "Нажмите ОК, чтобы сменить на - ";
     STR_CLICK_UNFOLLOW = "(Нажмите ОК для отписки)";
     STR_CLICK_FOLLOW = "(Нажмите ОК для подписки)";
-    STR_TODAY = " Сегодня)";
+    STR_TODAY = " Сегодня";
     STR_DROOPED_FRAMES = "Проп. кадры: ";
     STR_BUFFER_HEALT = " Размер буфера: ";
-    STR_AVGMB = " ср.) Mb";
     STR_NET_ACT = "Сет. акт.: ";
     STR_NET_SPEED = "Скорость:";
     STR_LATENCY_TO_BROADCASTER = "Задержка до стримера";
@@ -701,4 +700,5 @@ function ru_RULang() {
     STR_LEFT = "Слева";
     STR_BOTTOM = "Снизу";
     STR_TOP = "Сверху";
+    STR_AVG = " ср.";
 }

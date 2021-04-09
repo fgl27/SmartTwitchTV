@@ -429,10 +429,9 @@ function en_USLang() {
     STR_PRESS_ENTER_TO_CHANGE = "Press enter to change to - ";
     STR_CLICK_UNFOLLOW = "(Press enter to unfollow)";
     STR_CLICK_FOLLOW = "(Press enter to follow)";
-    STR_TODAY = " Today)";
+    STR_TODAY = " Today";
     STR_DROOPED_FRAMES = "Skipped Frames: ";
     STR_BUFFER_HEALT = " Buffer Size: ";
-    STR_AVGMB = " Avg) Mb";
     STR_NET_ACT = "Net Activity: ";
     STR_NET_SPEED = "Net Speed:";
     STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
@@ -706,4 +705,8 @@ function en_USLang() {
     STR_LEFT = "Left";
     STR_BOTTOM = "Bottom";
     STR_TOP = "Top";
+
+    STR_AVG = " Avg";
+    STR_MB = " Mb";
+    STR_S_SECOND = " s";
 }
