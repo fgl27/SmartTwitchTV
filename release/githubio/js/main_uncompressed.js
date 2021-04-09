@@ -5467,7 +5467,7 @@
 
                         ChatLive_LineAdd({
                             chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_AS +
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE + STR_AS + STR_SPACE +
                                 (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
                         });
 
