@@ -431,13 +431,13 @@ function en_USLang() {
     STR_CLICK_FOLLOW = "(Press enter to follow)";
     STR_TODAY = " Today";
     STR_DROOPED_FRAMES = "Skipped Frames: ";
-    STR_BUFFER_HEALT = " Buffer Size: ";
-    STR_NET_ACT = "Net Activity: ";
-    STR_NET_SPEED = "Net Speed:";
+    STR_BUFFER_HEALT = "Buffer Size (Sec): ";
+    STR_NET_ACT = "Net Activity (Mb): ";
+    STR_NET_SPEED = "Net Speed (Mb):";
     STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
-    STR_LATENCY = STR_LATENCY_TO_BROADCASTER + ": ";
+    STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
-    STR_PING = "Ping to Twitch: ";
+    STR_PING = "Ping to Twitch (Ms): ";
     STR_WARNING = "Warning";
     STR_WARNINGS = 'Warnings';
     STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
@@ -705,8 +705,6 @@ function en_USLang() {
     STR_LEFT = "Left";
     STR_BOTTOM = "Bottom";
     STR_TOP = "Top";
-
     STR_AVG = " Avg";
-    STR_MB = " Mb";
     STR_OFFSET = " Offset ";
 }

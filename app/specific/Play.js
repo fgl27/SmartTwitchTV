@@ -1600,12 +1600,12 @@ function Play_GetLiveTime(dateNow, Time, watching_time) {
 
 function Play_VideoStatusTest() {
     Main_innerHTMLWithEle(Play_StreamStatus,
-        STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_MB + STR_BR +
-        STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_MB + STR_BR +
+        STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
+        STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_BR +
         STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
-        STR_BUFFER_HEALT + '100.37' + STR_SEC + STR_BR +
-        STR_LATENCY + '100.27' + STR_SEC + STR_BR +
-        STR_PING + " 100.00 | 99.00" + STR_AVG + STR_MS);
+        STR_BUFFER_HEALT + '100.37' + STR_BR +
+        STR_LATENCY + '100.27' + STR_BR +
+        STR_PING + " 100.00 | 99.00" + STR_AVG);
 }
 
 var Play_BufferSize = 0;
@@ -1618,12 +1618,12 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
     if (Play_Status_Visible !== 2) {
 
         Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_MB + STR_BR +
-            STR_NET_ACT + value[1] + STR_AVG + STR_MB + STR_BR +
+            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_BR +
+            STR_NET_ACT + value[1] + STR_AVG + STR_BR +
             STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
-            STR_BUFFER_HEALT + value[4] + STR_SEC +
-            (showLatency ? (STR_BR + STR_LATENCY + value[5] + STR_SEC) : '') +
-            STR_BR + STR_PING + value[6] + STR_AVG + STR_MS);
+            STR_BUFFER_HEALT + value[4] +
+            (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
+            STR_BR + STR_PING + value[6] + STR_AVG);
 
     }
 

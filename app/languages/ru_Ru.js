@@ -701,4 +701,5 @@ function ru_RULang() {
     STR_BOTTOM = "Снизу";
     STR_TOP = "Сверху";
     STR_AVG = " ср.";
+    STR_OFFSET = " Смещение ";
 }

@@ -1,2 +1,0 @@
-    STR_MB = " Mb";
-    STR_OFFSET = " Offset ";
