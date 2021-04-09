@@ -18626,7 +18626,7 @@
     //Browsers crash trying to get the streams link
     function Play_loadDataSuccessFake() {
         Play_data.qualities = [{
-                'id': 'Auto',
+                'id': STR_AUTO,
                 'band': 0,
                 'codec': 'avc',
             },
@@ -18839,7 +18839,9 @@
 
         var quality_string = '';
 
-        if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace("source", STR_SOURCE);
+        //Java getQualities fun will generate the first quality of the array as 'Auto'
+        if (Main_A_includes_B(Play_data.quality, 'Auto')) quality_string = Play_data.quality.replace("Auto", STR_AUTO);
+        else if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace("source", STR_SOURCE);
         else quality_string = Play_data.quality;
 
         quality_string += !Main_A_includes_B(Play_data.quality, 'Auto') ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
