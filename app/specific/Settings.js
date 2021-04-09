@@ -542,7 +542,7 @@ var Settings_GetnotificationTimeMs = [
 ];
 
 function Settings_GetnotificationTime(min, hour, hours) {
-    var array = [0, '10 min', '20 min', '30 min', '45 min', '1 Hour'],
+    var array = [0, '10 ' + min, '20 ' + min, '30 ' + min, '45 ' + min, '1 ' + hour],
         i = 0;
 
     for (i = 2; i < 25; i++) {
