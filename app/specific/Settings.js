@@ -712,6 +712,7 @@ function Settings_SetSettings() {
 
     Settings_value.show_feed_player_delay.values = Settings_GetPreviewDelay(STR_MS, STR_SEC);
     Settings_value.auto_refresh_screen.values = Settings_GetnotificationTime(STR_MINUTES, STR_HOUR, STR_HOURS);
+    Settings_value.since_notification.values = Settings_value.auto_refresh_screen.values
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
