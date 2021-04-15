@@ -86,6 +86,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_itemsCount[i] = 0;
         UserLiveFeed_cell[i] = [];
         UserLiveFeed_cellVisible[i] = 7;
+
         UserLiveFeed_obj[i].AddCell = UserLiveFeed_FeedAddCellVideo;
         UserLiveFeed_obj[i].before = 3;
         UserLiveFeed_obj[i].IsGame = false;
@@ -94,6 +95,11 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].loadingMore = false;
         UserLiveFeed_obj[i].dataEnded = false;
         UserLiveFeed_obj[i].MaxOffset = 0;
+        UserLiveFeed_obj[i].sorting = 0;
+        UserLiveFeed_obj[i].CheckSort = 0;
+        UserLiveFeed_obj[i].lang = Main_ContentLang;
+        UserLiveFeed_obj[i].CheckLang = 0;
+
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
         UserLiveFeed_lastRefresh[i] = 0;
@@ -103,6 +109,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
         UserLiveFeed_DataObj[i] = {};
         UserLiveFeed_Headers[i] = Main_base_string_header;
+
     }
 
     //User vod
@@ -126,6 +133,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = Main_getElementById('user_feed_scroll');
     UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Screen = 'preview_user_live';
+    UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].CheckSort = 1;
 
     //User live history
     UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
@@ -156,6 +164,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckLang = 1;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -195,6 +204,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckLang = 1;
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
@@ -206,6 +216,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckLang = 1;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -216,6 +227,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 

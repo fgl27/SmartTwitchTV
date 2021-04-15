@@ -282,7 +282,8 @@ function Screens_init(key, preventRefresh) {
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
-        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
+        (ScreenObj[key].CheckLang && !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang))) {
 
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
         else Main_showLoadDialog();// the isRefreshing is running so just show the loading dialog prevent reload the screen
@@ -353,6 +354,8 @@ function Screens_StartLoad(key) {
     ScreenObj[key].data = null;
     ScreenObj[key].data_cursor = 0;
     ScreenObj[key].dataEnded = false;
+    ScreenObj[key].Lang = Main_ContentLang;
+
     Main_CounterDialogRst();
     Screens_loadDataRequestStart(key);
 }
@@ -2725,7 +2728,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
             }
 
             Screens_LoadPreview(key);
-        } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
+        } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang(key);
         else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
 
     } else Screens_LoadPreview(key);
@@ -2737,16 +2740,17 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 
 }
 
-function Screens_SetLang() {
+function Screens_SetLang(key) {
 
     if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
 
-    var key = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
-    Languages_value[key].defaultValue = 1;
-    Main_setItem(key, Languages_Obj_default(key) + 1);
+    var thumbkey = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
+    Languages_value[thumbkey].defaultValue = 1;
+    Main_setItem(thumbkey, Languages_Obj_default(thumbkey) + 1);
     Languages_SetLang();
 
-    if (!Main_A_equals_B(Main_ContentLang_old, Main_ContentLang)) Main_ReloadScreen();
+    if (ScreenObj[key].CheckLang &&
+        !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang)) Main_ReloadScreen();
 
 }
 
@@ -2898,7 +2902,6 @@ var Screens_ThumbOptionPosXArrays = [];
 var Screens_ThumbOptionGOTO = [];
 var Screens_ThumbOptionLanguages = [];
 var Screens_ThumbOptionLanguagesTitles = [];
-var Main_ContentLang_old = '';
 
 function Screens_ThumbOptionSetArrowArray(key) {
     Screens_ThumbOptionScreens = [
@@ -2924,7 +2927,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     var default_lang = 0;
     var isAll = Main_ContentLang === "";
-    Main_ContentLang_old = Main_ContentLang;
+
     Screens_ThumbOptionLanguages = [];
     Screens_ThumbOptionLanguagesTitles = [];
 

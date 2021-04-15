@@ -97,8 +97,13 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].dataEnded = false;
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
+    UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
+    UserLiveFeed_obj[pos].lang = Main_ContentLang;
+
     if (UserLiveFeed_isPreviewShowing()) {
+
         UserLiveFeed_obj[pos].div.classList.remove('hide');
+
     }
 }
 
@@ -125,12 +130,17 @@ function UserLiveFeedobj_CheckToken() {
     UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
 
     UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
+
     if (UserLiveFeed_token) {
+
         UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
         UserLiveFeedobj_loadChannelUserLive();
+
     } else {
+
         UserLiveFeed_token = null;
         UserLiveFeedobj_loadChannels();
+
     }
 
     //Main_Log('UserLiveFeedobj_CheckToken end');
@@ -323,7 +333,9 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
     if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
-        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
+        UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize ||
+        (UserLiveFeed_obj[pos].CheckLang && !Main_A_equals_B(UserLiveFeed_obj[pos].lang, Main_ContentLang)) ||
+        (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue))) {
 
         if (UserLiveFeed_loadingData[pos]) {
 
@@ -347,6 +359,7 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
 
     if (UserLiveFeed_obj[pos].Screen)
         Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+
 }
 
 function UserLiveFeedobj_SetLastRefresh(pos) {
