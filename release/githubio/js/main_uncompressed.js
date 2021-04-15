@@ -22688,7 +22688,8 @@
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
-            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
+            (ScreenObj[key].CheckLang && !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang))) {
 
             if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
             else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
@@ -22759,6 +22760,8 @@
         ScreenObj[key].data = null;
         ScreenObj[key].data_cursor = 0;
         ScreenObj[key].dataEnded = false;
+        ScreenObj[key].Lang = Main_ContentLang;
+
         Main_CounterDialogRst();
         Screens_loadDataRequestStart(key);
     }
@@ -25135,7 +25138,7 @@
                 }
 
                 Screens_LoadPreview(key);
-            } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang();
+            } else if (Screens_ThumbOptionPosY === 4) Screens_SetLang(key);
             else if (Screens_ThumbOptionPosY === 5) Screens_OpenScreen();
 
         } else Screens_LoadPreview(key);
@@ -25147,16 +25150,17 @@
 
     }
 
-    function Screens_SetLang() {
+    function Screens_SetLang(key) {
 
         if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
 
-        var key = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
-        Languages_value[key].defaultValue = 1;
-        Main_setItem(key, Languages_Obj_default(key) + 1);
+        var thumbkey = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
+        Languages_value[thumbkey].defaultValue = 1;
+        Main_setItem(thumbkey, Languages_Obj_default(thumbkey) + 1);
         Languages_SetLang();
 
-        if (!Main_A_equals_B(Main_ContentLang_old, Main_ContentLang)) Main_ReloadScreen();
+        if (ScreenObj[key].CheckLang &&
+            !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang)) Main_ReloadScreen();
 
     }
 
@@ -25308,7 +25312,6 @@
     var Screens_ThumbOptionGOTO = [];
     var Screens_ThumbOptionLanguages = [];
     var Screens_ThumbOptionLanguagesTitles = [];
-    var Main_ContentLang_old = '';
 
     function Screens_ThumbOptionSetArrowArray(key) {
         Screens_ThumbOptionScreens = [
@@ -25334,7 +25337,7 @@
 
         var default_lang = 0;
         var isAll = Main_ContentLang === "";
-        Main_ContentLang_old = Main_ContentLang;
+
         Screens_ThumbOptionLanguages = [];
         Screens_ThumbOptionLanguagesTitles = [];
 
@@ -26053,6 +26056,8 @@
             table: 'stream_table_vod',
             screen: Main_Vod,
             highlightSTR: 'Vod_highlight',
+            CheckLang: 1,
+            Lang: '',
             highlight: Main_getItemBool('Vod_highlight', false),
             periodPos: Main_getItemInt('vod_periodPos', 2),
             base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
@@ -26192,6 +26197,8 @@
             ScreenName: 'AGameVod',
             table: 'stream_table_a_game_vod',
             screen: Main_AGameVod,
+            CheckLang: 1,
+            Lang: '',
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -26321,6 +26328,8 @@
             ScreenName: 'Live',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
+            CheckLang: 1,
+            Lang: '',
             base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
             set_url: function() {
                 this.check_offset();
@@ -26502,6 +26511,8 @@
             table: 'stream_table_a_game',
             screen: Main_aGame,
             object: 'streams',
+            CheckLang: 1,
+            Lang: '',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
@@ -26598,6 +26609,8 @@
             screen: Main_Clip,
             key_pgDown: Main_Live,
             key_pgUp: Main_Vod,
+            CheckLang: 1,
+            Lang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
             set_url: function() {
@@ -26674,6 +26687,8 @@
             screen: Main_AGameClip,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
+            CheckLang: 1,
+            Lang: '',
             periodPos: Main_getItemInt('AGameClip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?game=',
             set_url: function() {
@@ -31848,8 +31863,11 @@
         Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
-            (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout())) {
+            (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
+            !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue)) {
+
             ForceRefresh = true;
+
         }
 
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
@@ -31946,10 +31964,24 @@
     }
 
     function Sidepannel_SetTopOpacity(Main_Go) {
-        if (Sidepannel_Pos_Screens[Main_Go]) Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+
+        if (Sidepannel_Pos_Screens[Main_Go]) {
+
+            Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+
+        }
+
         Sidepannel_UnSetTopOpacity();
 
-        if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 9) Main_AddClass('side_panel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+        if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 9) {
+
+            Main_AddClass(
+                'side_panel_new_' + Sidepannel_Sidepannel_Pos,
+                'side_panel_new_icons_text'
+            );
+
+        }
+
     }
 
     var Sidepannel_Pos_Screens = [
@@ -32329,6 +32361,7 @@
             UserLiveFeed_itemsCount[i] = 0;
             UserLiveFeed_cell[i] = [];
             UserLiveFeed_cellVisible[i] = 7;
+
             UserLiveFeed_obj[i].AddCell = UserLiveFeed_FeedAddCellVideo;
             UserLiveFeed_obj[i].before = 3;
             UserLiveFeed_obj[i].IsGame = false;
@@ -32337,6 +32370,11 @@
             UserLiveFeed_obj[i].loadingMore = false;
             UserLiveFeed_obj[i].dataEnded = false;
             UserLiveFeed_obj[i].MaxOffset = 0;
+            UserLiveFeed_obj[i].sorting = 0;
+            UserLiveFeed_obj[i].CheckSort = 0;
+            UserLiveFeed_obj[i].lang = Main_ContentLang;
+            UserLiveFeed_obj[i].CheckLang = 0;
+
             UserLiveFeed_FeedSetPosLast[i] = 0;
             UserLiveFeed_obj[i].offsettopFontsize = 0;
             UserLiveFeed_lastRefresh[i] = 0;
@@ -32346,6 +32384,7 @@
             UserLiveFeed_ChangeFocusAnimationFinished[i] = true;
             UserLiveFeed_DataObj[i] = {};
             UserLiveFeed_Headers[i] = Main_base_string_header;
+
         }
 
         //User vod
@@ -32369,6 +32408,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].hide = UserLiveFeedobj_HideFeed;
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].div = Main_getElementById('user_feed_scroll');
         UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Screen = 'preview_user_live';
+        UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].CheckSort = 1;
 
         //User live history
         UserLiveFeed_obj[UserLiveFeedobj_UserHistoryPos].load = UserLiveFeedobj_History;
@@ -32399,6 +32439,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckLang = 1;
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -32438,6 +32479,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckLang = 1;
 
         //Current Game
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
@@ -32449,6 +32491,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckLang = 1;
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -32459,6 +32502,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
@@ -33648,8 +33692,13 @@
         UserLiveFeed_obj[pos].dataEnded = false;
         UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
+        UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
+        UserLiveFeed_obj[pos].lang = Main_ContentLang;
+
         if (UserLiveFeed_isPreviewShowing()) {
+
             UserLiveFeed_obj[pos].div.classList.remove('hide');
+
         }
     }
 
@@ -33676,12 +33725,17 @@
         UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserLivePos);
 
         UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
+
         if (UserLiveFeed_token) {
+
             UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
             UserLiveFeedobj_loadChannelUserLive();
+
         } else {
+
             UserLiveFeed_token = null;
             UserLiveFeedobj_loadChannels();
+
         }
 
         //Main_Log('UserLiveFeedobj_CheckToken end');
@@ -33875,7 +33929,9 @@
 
         if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
-            UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize) {
+            UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize ||
+            (UserLiveFeed_obj[pos].CheckLang && !Main_A_equals_B(UserLiveFeed_obj[pos].lang, Main_ContentLang)) ||
+            (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue))) {
 
             if (UserLiveFeed_loadingData[pos]) {
 
@@ -33899,6 +33955,7 @@
 
         if (UserLiveFeed_obj[pos].Screen)
             Main_EventScreen(UserLiveFeed_obj[pos].Screen);
+
     }
 
     function UserLiveFeedobj_SetLastRefresh(pos) {
