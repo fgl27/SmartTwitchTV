@@ -592,10 +592,24 @@ function Sidepannel_HideEle(PreventCleanQualities, full) {
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {
-    if (Sidepannel_Pos_Screens[Main_Go]) Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+
+    if (Sidepannel_Pos_Screens[Main_Go]) {
+
+        Sidepannel_Sidepannel_Pos = Sidepannel_Pos_Screens[Main_Go];
+
+    }
+
     Sidepannel_UnSetTopOpacity();
 
-    if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 9) Main_AddClass('side_panel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+    if (Sidepannel_Sidepannel_Pos && Sidepannel_Sidepannel_Pos < 9) {
+
+        Main_AddClass(
+            'side_panel_new_' + Sidepannel_Sidepannel_Pos,
+            'side_panel_new_icons_text'
+        );
+
+    }
+
 }
 
 var Sidepannel_Pos_Screens = [
