@@ -1748,20 +1748,22 @@ function Main_ready(func) {
     } else document.addEventListener("DOMContentLoaded", func);
 }
 
+var Main_SetUpdateclockId;
 function Main_SetUpdateclock() {
     Main_updateclock();
     Main_clearInterval(Main_updateclockId);
 
     //sinc with device clock
     var seconds = 61 - (new Date().getSeconds());
-    Main_setTimeout(
+    Main_SetUpdateclockId = Main_setTimeout(
         function() {
 
             Main_updateclock();
             Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
 
         },
-        seconds * 1000
+        seconds * 1000,
+        Main_SetUpdateclockId
     );
 }
 
