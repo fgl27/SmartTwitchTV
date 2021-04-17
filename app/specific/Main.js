@@ -1020,7 +1020,13 @@ function Main_CheckUpdate(forceUpdate) {
 }
 
 function Main_CheckUpdateFail() {
-    OSInterface_showToast(STR_UPDATE_CHECKING_FAIL);
+
+    if (Main_isUpdateDialogVisible()) {
+
+        OSInterface_showToast(STR_UPDATE_CHECKING_FAIL);
+
+    }
+
 }
 
 var Main_IsWebupdate;
