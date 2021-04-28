@@ -8919,7 +8919,7 @@
         Main_updateclock();
         Main_clearInterval(Main_updateclockId);
 
-        //sinc with device clock
+        //sync with device clock
         var seconds = 61 - (new Date().getSeconds());
         Main_SetUpdateclockId = Main_setTimeout(
             function() {
