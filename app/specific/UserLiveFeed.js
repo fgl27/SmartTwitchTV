@@ -99,7 +99,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].CheckSort = 0;
         UserLiveFeed_obj[i].Lang = Settings_AppLang;
         UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
-        UserLiveFeed_obj[i].CheckLang = 0;
+        UserLiveFeed_obj[i].CheckContentLang = 0;
 
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
@@ -165,7 +165,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -205,7 +205,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
-    UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckContentLang = 1;
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
@@ -217,7 +217,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
-    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
