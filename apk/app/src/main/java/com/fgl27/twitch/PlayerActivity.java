@@ -3822,7 +3822,7 @@ public class PlayerActivity extends Activity {
     }
 
     // Basic EventListener for exoplayer
-    private class PlayerEventListener implements Player.EventListener {
+    private class PlayerEventListener implements Player.Listener {
 
         private int position;
         private final int Delay_ms;
