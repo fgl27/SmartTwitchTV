@@ -20,5 +20,17 @@
  */
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="notification_service">Serviço de notificação em execução</string>
+    <string name="notification_live_game">O jogo está ao vivo</string>
+    <string name="notification_live">Streamer está ativo</string>
+    <string name="notification_title">Streamer mudou o título</string>
+    <string name="notification_game">Streamer mudou o jogo</string>
+    <string name="notification_title_game">Streamer mudou jogo e título</string>
     <string name="notification_text">Sem este as notificações não serão exibidas quando o app estiver em segundo plano</string>
+    <string name="no_network">Sem conexão com a Internet!\n\nConecte-se a uma rede para que o aplicativo possa carregar \n\n ou \n \nSegure a tecla Retornar para fechar o aplicativo.</string>
+    <string name="no_internet">Ping ao Twitch falhou nos últimos 30 segundos! \n \nSe o aplicativo não estiver funcionando corretamente, revise sua conexão de internet \n \nSegure a tecla Retornar para fechar o aplicativo caso ele congele ou pare de funcionar.\n\nEsta mensagem será ocultada automaticamente em 30 segundos ou se a conexão retornar \n \nEste aviso pode ser desativado nas configurações</string>
+    <string name="external_player_fail">Nenhum aplicativo de player de vídeo externo disponível</string>
+    <string name="webview_exception">O aplicativo falhou ao carregar porque o Webview não está presente (improvável) OU em processo de atualização, tente novamente em alguns segundos</string>
+
 </resources>

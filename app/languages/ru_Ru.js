@@ -20,13 +20,7 @@
 
 //Spacing for release maker not trow errors from jshint
 function ru_RULang() {
-    // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
-    Main_IsDayFirst = false;
 
-    // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
-    //document.getElementById("side_panel").style.width = "25%";
-
-    //Below are variables to translate
     STR_KEY_UP_DOWN = " Вверх/Вниз";
     STR_KEY_MEDIA_FF = " или кнопку перемотки";
     STR_GUIDE_EXTRA = STR_SPACE + "или 2";

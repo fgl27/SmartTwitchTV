@@ -21,10 +21,12 @@
 //Spacing for release maker not trow errors from jshint
 function en_USLang() {
     // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
+    //Then copy this and set it to true, if doesn't don't copy it
     Main_IsDayFirst = false;
 
     // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
-    //document.getElementById("side_panel").style.width = "25%";
+    // If it need ajustment or yours language just copy the bellow line and change it value until it does
+    Sidepannel_MoveldefaultMargin = 13.5;
 
     //Below are variables to translate
     STR_KEY_UP_DOWN = " PG Up/Down";
@@ -42,7 +44,7 @@ function en_USLang() {
     STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
     STR_SWITCH = "Switch screen";
     STR_SWITCH_USER = "Switch user screen";
-    STR_SWITCH_VOD = "Switch: Past Broadcasts or Highlights";
+    STR_SWITCH_VOD = "Switch: Vods or Highlights";
     STR_SWITCH_CLIP = "Switch: Period (24h, 7d, 30d, all)";
     STR_GO_TO = "Go to screen ";
     STR_USER = "User";
@@ -69,7 +71,7 @@ function en_USLang() {
     STR_NO = "No";
     STR_FOR_THIS = " for this ";
     STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
-    STR_PAST_BROA = " Past Broadcasts";
+    STR_PAST_BROA = " Vods";
     STR_PAST_HIGHL = " Highlights";
     STR_CLIPS = "Clips";
     STR_CONTENT = " Content";
@@ -242,7 +244,7 @@ function en_USLang() {
     STR_STAY_CHECK_LAST = "Last result:";
     STR_STAY_IS_OFFLINE = "The stream was offline";
     STR_NO_BROADCAST = "No Broadcast";
-    STR_NO_BROADCAST_WARNING = "There are no Past Broadcasts for this clip";
+    STR_NO_BROADCAST_WARNING = "There are no Vod for this clip";
     STR_NO_CHAT = "And because of that no chat";
     STR_IS_NOW = " is now";
     STR_OPEN_HOST = "Open the Hosting";

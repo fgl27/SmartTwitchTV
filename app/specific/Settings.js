@@ -878,8 +878,6 @@ function Settings_SetAppLang() {
     if (Main_A_includes_B(app_lang, 'pt_')) pt_BRLang();
     else if (Main_A_includes_B(app_lang, 'ru_')) ru_RULang();
 
-    Main_Log("language is " + app_lang);
-
     OSInterface_SetLanguage(app_lang);
 
     Settings_AppLang = app_lang;
@@ -898,6 +896,7 @@ function Settings_UpdateString() {
     Settings_inputFocus(Settings_cursorY);
     Main_updateclock();
     Main_checkVersion(true);
+    AddUser_UpdateSidepanel();
 
     Main_SaveValues();
 }

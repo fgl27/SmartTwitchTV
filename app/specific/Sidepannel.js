@@ -24,9 +24,9 @@ var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;
 var Sidepannel_IsMain = true;
 
-var Sidepannel_MoveldefaultMargin = 13.5;
 var Sidepannel_FixdefaultMargin = 5;
-var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
+//See en_USLang() for this values
+var Sidepannel_MoveldefaultMargin;
 
 var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
