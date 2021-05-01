@@ -926,10 +926,11 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
     return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
 }
 
-function Main_checkVersion() {
+function Main_checkVersion(skipCheck) {
     var Main_versionTag;
 
     if (Main_IsOn_OSInterface) {
+
         var device = OSInterface_getDevice();
         var Webviewversion = OSInterface_getWebviewVersion();
         var Manufacturer = OSInterface_getManufacturer();
@@ -950,7 +951,7 @@ function Main_checkVersion() {
                 Main_HasUpdate = true;
                 Main_WarnUpdate(false);
 
-            } else Main_CheckUpdate();
+            } else if (!skipCheck) Main_CheckUpdate();
 
         }
 
@@ -962,7 +963,9 @@ function Main_checkVersion() {
             Main_AndroidSDK,
             Manufacturer
         );
+
     } else {
+
         Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
 
         Main_EventVersion(

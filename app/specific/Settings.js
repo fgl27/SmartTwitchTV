@@ -960,6 +960,7 @@ function Settings_UpdateString() {
     Settings_SetStrings();
     Settings_inputFocus(Settings_cursorY);
     Main_updateclock();
+    Main_checkVersion(true);
 
     Main_SaveValues();
 }
