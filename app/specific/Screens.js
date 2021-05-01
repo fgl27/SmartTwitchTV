@@ -283,7 +283,7 @@ function Screens_init(key, preventRefresh) {
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
-        (ScreenObj[key].CheckLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
         !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang)) {
 
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
@@ -2749,7 +2749,15 @@ function Screens_SetLang(key) {
     Main_setItem(setting_lang_key, Settings_Obj_default(setting_lang_key) + 1);
     Settings_SetLang();
 
-    if (ScreenObj[key].CheckLang &&
+    var ele = Main_getElementById(setting_lang_key);
+    if (ele) {
+
+        Main_textContent(setting_lang_key, Settings_Obj_values(setting_lang_key));
+        Settings_SetarrowsKey(setting_lang_key);
+
+    }
+
+    if (ScreenObj[key].CheckContentLang &&
         !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
 
 }
