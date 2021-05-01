@@ -426,6 +426,7 @@ public class PlayerActivity extends Activity {
             FirebaseCrashlytics.getInstance().sendUnsentReports();
 
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
+
         }
     }
 
@@ -2363,6 +2364,11 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mCheckRefresh(int type) {
             RefreshChannel(type, true, mWebViewContext);
+        }
+
+        @JavascriptInterface
+        public void SetLanguage(String lang) {
+            Tools.SetLanguage(mWebViewContext, lang);
         }
 
         @JavascriptInterface

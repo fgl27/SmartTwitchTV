@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.media.MediaCodecInfo;
 import android.media.MediaCodecList;
@@ -36,6 +37,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.LocaleList;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
@@ -100,6 +102,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.google.gson.JsonParser.parseString;
@@ -1361,5 +1364,51 @@ public final class Tools {
             return Uri.fromFile(new File(filePath));
 
         }
+    }
+
+    //langCode in the format en_US, ru_RU
+    static void SetLanguage(Context context, String langCode) {
+
+        if (langCode == null || langCode.isEmpty()) {
+            return;
+        }
+
+        Locale locale = parseLangCode(langCode);
+        Locale oldLocale = Locale.getDefault();
+
+        if (oldLocale.equals(locale)) {
+
+            return;
+
+        }
+
+        Locale.setDefault(locale);
+        Resources resources = context.getResources();
+        Configuration config = resources.getConfiguration();
+        config.locale = locale;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+            config.setLocales(new LocaleList(locale));
+
+        }
+
+        resources.updateConfiguration(
+                config,
+                resources.getDisplayMetrics()
+        );
+
+    }
+
+    private static Locale parseLangCode(String langCode) {
+        if (langCode == null) {
+            return null;
+        }
+
+        StringTokenizer tokenizer = new StringTokenizer(langCode, "_");
+        String lang = tokenizer.nextToken();
+        String country = tokenizer.hasMoreTokens() ? tokenizer.nextToken() : "";
+
+        return new Locale(lang, country);
     }
 }
