@@ -959,6 +959,7 @@ function Settings_UpdateString() {
     Play_MultiSetpannelInfo();
     Settings_SetStrings();
     Settings_inputFocus(Settings_cursorY);
+    Main_updateclock();
 
     Main_SaveValues();
 }
