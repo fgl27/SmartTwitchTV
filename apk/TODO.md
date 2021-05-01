@@ -59,13 +59,6 @@ TODO list
 * Maybe some are on apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java
 * there is probably the needed to convert some of the final `ChannelContentObj` from `apk/app/src/main/java/com/fgl27/twitch/channels` to a function similar to `getRefreshContent()` fun as may be needed a context to get the string from the values/strings.xml as a static final obj can load strings
 
-### Update how content languages works
-
-* General improve
-* Old twitch API allowed multiple languages today that is not the case it only allows one language on most API calls
-* That is way the content language is not just a array left and right click option
-* So change the content language and update the related code to be just a array left and right click option
-
 ### Add translations, improve strings
 
 * General improve
@@ -143,6 +136,7 @@ TODO list
 
 * General improve
 * User followed live games and host
+* Multi language selection for screen
 
 ### Add more option on video sizes PP multistream
 
