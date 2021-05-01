@@ -437,7 +437,7 @@ function en_USLang() {
     STR_NET_ACT = "Net Activity (Mb): ";
     STR_NET_SPEED = "Net Speed (Mb):";
     STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
-    STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
+    STR_LATENCY = "Latency To Broadcaster (Sec): ";
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping to Twitch (Ms): ";
     STR_WARNING = "Warning";

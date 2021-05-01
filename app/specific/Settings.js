@@ -642,6 +642,8 @@ function Settings_SetSettings() {
         key,
         array_no_yes = [STR_NO, STR_YES];
 
+    Settings_value_keys = [];
+
     //Individual settings
     key = "content_lang";
     div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
@@ -747,8 +749,6 @@ function Settings_SetSettings() {
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
-
-
     Settings_value.dpad_position.values = [
         STR_RIGHT + '-' + STR_BOTTOM,
         STR_RIGHT + '-' + STR_TOP,
@@ -783,68 +783,6 @@ function Settings_DivOptionWithSummary(key, string_title, string_summary, fontSi
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
         '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
         '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
-}
-
-function Settings_DivOptionChangeLang(key, string_title, string_summary) {
-    Main_innerHTML(key + '_name', string_title +
-        '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div>');
-}
-
-// The order in Settings_SetStrings doesnot matter
-function Settings_SetStrings() {
-    var key = '';
-
-    //General settings
-    //Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
-
-    // Content Language selection
-    key = "content_lang";
-    Settings_DivOptionChangeLang(key, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
-
-    key = "app_lang";
-    Settings_DivOptionChangeLang(key, STR_APP_LANG, STR_APP_LANG_SUMMARY);
-
-    //Player settings
-    Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-    key = "vod_dialog";
-    Settings_DivOptionChangeLang(key, STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
-    Settings_value[key].values = [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START];
-
-    key = "start_user_screen";
-    Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    key = "restor_playback";
-    Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    key = "default_quality";
-    Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-    Settings_value[key].values[0] = STR_AUTO;
-    Settings_value[key].values[1] = STR_SOURCE;
-
-    key = "check_source";
-    Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
-    Settings_value[key].values = [STR_YES, STR_NO];
-
-    key = "PP_workaround";
-    Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
-    Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
-
-    key = "single_click_exit";
-    Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-    Settings_value[key].values = [STR_NO, STR_YES];
-
-    for (key in Settings_value) {
-        if (Settings_value.hasOwnProperty(key)) {
-
-            var ele = Main_getElementById(key);
-            if (ele) Main_textContentWithEle(ele, Settings_Obj_values(key));
-
-        }
-
-    }
 }
 
 function Settings_SetDefautls() {
@@ -957,7 +895,6 @@ function Settings_UpdateString() {
     Main_SetStringsSecondary();
     Play_MakeControls();
     Play_MultiSetpannelInfo();
-    Settings_SetStrings();
     Settings_inputFocus(Settings_cursorY);
     Main_updateclock();
     Main_checkVersion(true);
