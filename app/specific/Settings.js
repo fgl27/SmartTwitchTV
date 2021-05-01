@@ -1462,7 +1462,7 @@ function Settings_HideElem(elem, hide) {
 var Settings_CurY = 0;
 
 function Settings_ScrollTable() {
-    var scroolPos = 11,
+    var scroolPos = 12,
         doc,
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 

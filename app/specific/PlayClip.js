@@ -272,7 +272,7 @@ function PlayClip_QualityGenerate(mresponse) {
 
             if (!Array.length) {
                 Array.push({
-                    'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | source | mp4',
+                    'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | ' + STR_SOURCE + ' | mp4',
                     'url': response[i].sourceURL
                 });
             } else {

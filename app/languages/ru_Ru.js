@@ -23,7 +23,7 @@ function ru_RULang() {
 
     STR_KEY_UP_DOWN = "Вверх/Вниз";
     STR_KEY_MEDIA_FF = "или кнопку перемотки";
-    STR_GUIDE_EXTRA = STR_SPACE_HTML + "или 2";
+    STR_GUIDE_EXTRA = "или 2";
     STR_GUIDE_EXTRA2 = "или кнопку перемотки";
     STR_REFRESH = "Обновить";
     STR_SEARCH = "Поиск";
@@ -165,7 +165,7 @@ function ru_RULang() {
     STR_ABOUT_INFO_22 = "Tray: замена SharedPreferences для Android (https://github.com/grandcentrix/tray)";
     STR_ABOUT_INFO_23 = "punycode - Надежный конвертер Punycode, полностью соответствующий RFC 3492 и RFC 5891 (https://github.com/bestiejs/punycode.js)";
     STR_ABOUT_INFO_24 = "crass - Минификация CSS, красивая печать и общая служебная библиотека, написанная на JS (https://github.com/mattbasta/crass)";
-    STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + "или в нижних элементах управления плеером";
+    STR_CONTROLS_PLAY_0 = "или в нижних элементах управления плеером";
     STR_CONTROLS_PLAY_1 = "Показать информационную панель: нажмите кнопку ОК или кнопки D-pad, если чат и прямой эфир канала не отображаются";
     STR_CONTROLS_PLAY_2 = "Закрыть видео: дважды нажмите кнопку назад или кнопку Стоп.";
     STR_CONTROLS_PLAY_3 = "Плей/пауза видео: откройте информационную панель и нажмите символ паузы";
@@ -222,7 +222,7 @@ function ru_RULang() {
     STR_CREATED_AT = "Создано";
     STR_OPEN_BROADCAST = "Открыть трансляцию";
     STR_IS_LIVE = "Онлайн";
-    STR_SHOW_ISLIVE_WARNING = 'Показать "Стример ' + STR_IS_LIVE + '" Предупреждение';
+    STR_SHOW_ISLIVE_WARNING = 'Показать "Стример Онлайн" Предупреждение';
     STR_SHOW_ISLIVE_WARNING_SUMMARY = "При просмотре клипа или видео, приложение может проверить онлайн ли этот стример, если да, появится предупреждение. Чтобы открыть прямую трансляцию, просто используйте опцию нижнего элемента управления плеером.";
     STR_OPEN_CHAT = "Нажмите, чтобы открыть чат или дождитесь возвращения в прямой эфир";
     STR_STAY_OPEN = "Остаться на стриме";

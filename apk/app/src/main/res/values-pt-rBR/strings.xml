@@ -21,6 +21,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string name="app_name">Cliente SmartTV para Twitch</string>
     <string name="notification_service">Serviço de notificação em execução</string>
     <string name="notification_live_game">O jogo está ao vivo</string>
     <string name="notification_live">Streamer está ativo</string>

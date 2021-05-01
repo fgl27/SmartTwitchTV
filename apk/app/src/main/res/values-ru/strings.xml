@@ -20,6 +20,8 @@
  */
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">SmartTV Client для Twitch</string>
     <string name="notification_service">Служба уведомлений запущена</string>
     <string name="notification_live_game">Игра в эфире</string>
     <string name="notification_live">Стример в эфире</string>
@@ -31,4 +33,5 @@
     <string name="no_internet">Пинг to Twitch не проходит последние 30 секунд!\n\nЕсли приложение не работает должным образом, проверьте подключение к Интернету.\n\nУдерживайте кнопку назад, чтобы закрыть приложение, если оно зависло или перестало работать.\n\nЭто автоматически скроется через 30 секунд или если соединение вернется\n\nЭто предупреждение можно отключить в настройках</string>
     <string name="external_player_fail">Нет доступного внешнего видеоплеера</string>
     <string name="webview_exception">Приложение не загружается, потому что Webview либо отсутствует (маловероятно), либо находится в процессе обновления, попробуйте еще раз через несколько секунд</string>
+
 </resources>

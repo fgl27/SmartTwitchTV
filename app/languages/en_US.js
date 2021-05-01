@@ -31,7 +31,7 @@ function en_USLang() {
     //Below are variables to translate
     STR_KEY_UP_DOWN = "PG Up/Down";
     STR_KEY_MEDIA_FF = "or fast forward rewind media key";
-    STR_GUIDE_EXTRA = STR_SPACE_HTML + "or press key 2";
+    STR_GUIDE_EXTRA = "or press key 2";
     STR_GUIDE_EXTRA2 = "or media key next track";
     STR_REFRESH = "Refresh";
     STR_SEARCH = "Search";
@@ -91,7 +91,7 @@ function en_USLang() {
     STR_UPDATE_CHECK = 'Click to Check for Updates';
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
     STR_UPDATE_CHECKING_FAIL = 'Update check fail';
-    STR_NO_UPDATES = 'The app is fully updated';
+    STR_NO_UPDATES = 'The app is up to date';
     STR_UPDATE_CHANGELOG = "Update & Changelog";
     STR_UPDATE_LATEST = "Latest change:";
     STR_UPDATE_FAIL = "Update process fail, please try manually!";
@@ -177,7 +177,7 @@ function en_USLang() {
     STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
     STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
     STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
-    STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + "or in player bottom controls";
+    STR_CONTROLS_PLAY_0 = "or in player bottom controls";
     STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
     STR_CONTROLS_PLAY_2 = "Close the video: press return key twice or media key Stop";
     STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
@@ -193,7 +193,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) some are used as shortcuts for audio and video mode changes";
     STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
     STR_F_DISABLE_CHAT = "Chat force disable";
-    STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
+    STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
     STR_USER_CODE = "Add authorization key";
     STR_USER_CODE_OK = "Key added OK";
     STR_KEY_BAD = "Key test failed, new one needs to be added";
@@ -234,7 +234,7 @@ function en_USLang() {
     STR_CREATED_AT = "Created";
     STR_OPEN_BROADCAST = "Open the Broadcast";
     STR_IS_LIVE = "Is now Live";
-    STR_SHOW_ISLIVE_WARNING = 'Show "Streamer ' + STR_IS_LIVE + '" Warning';
+    STR_SHOW_ISLIVE_WARNING = 'Show "Streamer is live" Warning';
     STR_SHOW_ISLIVE_WARNING_SUMMARY = "When watching a Clip or a VOD the app can check when that streamer is live if this is set to YES a warning will show, to open the live just use the player bottom controls option";
     STR_OPEN_CHAT = "Click to open chat and/or wait to be back Live";
     STR_STAY_OPEN = "Stay on the stream";
@@ -258,7 +258,7 @@ function en_USLang() {
     STR_LOADING_CHAT = "Chat: Connecting to";
     STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
     STR_CHAT_CONNECTED = "Chat: Connected";
-    STR_CHAT_SEND_DELAY = "Message send, chat delay enabled, message will show in chat after";
+    STR_CHAT_SEND_DELAY = "Message send, but chat delay is enabled, message will show in chat after";
     STR_CHAT_DELAY = "Chat: delay";
     STR_VOD_HISTORY_BASE = "Play from the start or from where you stopped watching the";
     STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD?";
@@ -278,7 +278,7 @@ function en_USLang() {
     STR_BRIGHT_MODE = "Bright mode";
     STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring the playback";
     STR_RESTORE_PLAYBACK = "Restore playback";
-    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it or force closed by the user on those cases the app will restores what was previously playing on next start";
+    STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it, on this case the app will restores what was previously playing on next start";
     STR_CHAT_FONT = "Chat font size";
     STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
     STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
@@ -296,7 +296,7 @@ function en_USLang() {
     STR_CONTENT_LANG = "Content language";
     STR_CONTENT_LANG_SUMMARY = "The language of the content on it screen, live, vods, clips";
     STR_APP_LANG = "Application language";
-    STR_APP_LANG_SUMMARY = "The language of the app";
+    STR_APP_LANG_SUMMARY = "The language of the app text";
     STR_ENTER_TO_OPEN = "Press enter to access";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "No game from this";
@@ -320,7 +320,7 @@ function en_USLang() {
     STR_VOD_DIALOG_SHOW = "Always ask";
     STR_END_DIALOG_OPT = "Player end dialog options";
     STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
-    STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
+    STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOD/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
     STR_END_DIALOG_DISABLE = "Disable the timer";
     STR_CHAT_SIZE = "Chat size";
     STR_CHAT_POS = "Chat position";
@@ -384,7 +384,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
     STR_PICTURE_CONTROLS10 = 'Picture in Picture video quality: Check in app settings "' + STR_PLAYER_BITRATE + '"';
     STR_PICTURE_CONTROLS11 = "Close small or bottom video (Picture in Picture only): return key twice will exit PP or 50/50 mode";
-    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
+    STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter over a tile from preview feed";
     STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
     STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
     STR_SINGLE_EXIT = "Single return key press";

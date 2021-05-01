@@ -159,6 +159,8 @@ function DefaultLang() {
     STR_AVG = STR_SPACE + STR_AVG;
 
     //Making the finals strings of strings
+    STR_GUIDE_EXTRA = STR_SPACE_HTML + STR_GUIDE_EXTRA;
+    STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + STR_CONTROLS_PLAY_0;
     STR_CONTROL_KEY = STR_CONTROLS + " (C)";
     STR_SEARCH_KEY = STR_SEARCH + " (D)";
     STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
