@@ -289,7 +289,7 @@ function ru_RULang() {
     STR_CLOCK_OFFSET_SUMMARY = "Настройте разницу часов приложения в соответствии с вашим часовым поясом";
     STR_APP_LANG = "Язык приложения";
     STR_CONTENT_LANG = "Язык контента";
-    STR_CONTENT_LANG_SUMMARY = "Нажмите ОК";
+    STR_ENTER_TO_OPEN = "Нажмите ОК";
     STR_LANG_ALL = "Все";
     STR_NO_GAME = "Нет игры из этого";
     STR_EMPTY = "Пусто";

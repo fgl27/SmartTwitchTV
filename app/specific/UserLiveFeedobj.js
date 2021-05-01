@@ -98,7 +98,8 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
     UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
-    UserLiveFeed_obj[pos].lang = Main_ContentLang;
+    UserLiveFeed_obj[pos].ContentLang = Main_ContentLang;
+    UserLiveFeed_obj[pos].Lang = Settings_AppLang;
 
     if (UserLiveFeed_isPreviewShowing()) {
 
@@ -334,8 +335,9 @@ function UserLiveFeedobj_ShowFeedCheck(pos, forceRefressh) {
     if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
         UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize ||
-        (UserLiveFeed_obj[pos].CheckLang && !Main_A_equals_B(UserLiveFeed_obj[pos].lang, Main_ContentLang)) ||
-        (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue))) {
+        (UserLiveFeed_obj[pos].CheckLang && !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)) ||
+        (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue)) ||
+        !Main_A_equals_B(UserLiveFeed_obj[pos].Lang, Settings_AppLang)) {
 
         if (UserLiveFeed_loadingData[pos]) {
 

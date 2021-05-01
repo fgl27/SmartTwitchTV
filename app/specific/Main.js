@@ -92,7 +92,8 @@ var Main_values = {
     "Restore_Backup_Check": false,
     "UserSidePannel_LastPos": null,
     "UserLiveFeed_LastPos": [],
-    "IsUpDating": false
+    "IsUpDating": false,
+    "WasLangChanged": false,
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -155,14 +156,14 @@ Main_Start();
 function Main_Start() {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
-            Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+            Main_StartApp();
         });
     } else { // `DOMContentLoaded` already fired
-        Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+        Main_StartApp();
     }
 }
 
-function Main_loadTranslations(language) {
+function Main_StartApp() {
     Main_Checktylesheet();
 
     Main_ready(function() {
@@ -233,23 +234,9 @@ function Main_loadTranslations(language) {
         Main_initClick();
         Settings_SetDefautls();
         calculateFontSize();
-        en_USLang();
-        Languages_SetDefautls();
+        Main_RestoreValues();
+        Settings_SetAppLang();
 
-        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-        //var lang = language,
-        //    Savedlang = Main_getItemInt('user_language', 0);
-
-        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-        //else Settings_CheckLang(lang);
-
-        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-
-        Main_Log("language is " + language);
         DefaultLang();
 
         //When running locally from a browser overwrite AddCode_redirect_uri to be able to add authorization keys
@@ -263,8 +250,6 @@ function Main_loadTranslations(language) {
         Main_Scene2Doc = Main_getElementById('scene2');
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
-
-        Main_RestoreValues();
 
         Main_DoRestore = AddUser_RestoreUsers();
 
@@ -366,7 +351,8 @@ function Main_initWindows() {
     Users_RemoveCursorSet();
     Main_CheckDevice();
 
-    Main_SetStringsMain(true);
+    Main_Setworker();
+    Main_SetStringsMain();
 
     Main_GoBefore = Main_values.Main_Go;
 
@@ -519,8 +505,7 @@ function Main_CheckDevice() {
     }// else Settings_ForceEnableAnimations();
 }
 
-function Main_SetStringsMain(isStarting) {
-    Main_Setworker();
+function Main_SetStringsMain() {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -538,11 +523,7 @@ function Main_SetStringsMain(isStarting) {
 
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
-    if (isStarting) Settings_SetSettings();
-    else {
-        Settings_SetStrings();
-        Main_checkVersion();
-    }
+    Settings_SetSettings();
     Main_Changelog();
 }
 
@@ -621,6 +602,14 @@ function Main_SetStringsSecondary() {
 
     Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
     Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
+
+    Main_innerHTML('feed_end_1', STR_FEATURED);
+    Main_innerHTML('feed_end_3', STR_LIVE);
+    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
+    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
+    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
+    Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
+    Main_innerHTML('icon_feed_back', STR_SPACE);
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -2759,11 +2748,7 @@ function Main_CheckStop() { // Called only by JAVA
     if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
 
     //Hide setting if showing
-    if (Languages_isVisible()) {
-        Languages_exit();
-        Settings_exit();
-        Main_SwitchScreen();
-    } else if (Settings_isVisible()) {
+    if (Settings_isVisible()) {
         if (Settings_Codecs_isVisible()) {
             if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');

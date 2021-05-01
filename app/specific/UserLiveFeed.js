@@ -97,7 +97,8 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_obj[i].sorting = 0;
         UserLiveFeed_obj[i].CheckSort = 0;
-        UserLiveFeed_obj[i].lang = Main_ContentLang;
+        UserLiveFeed_obj[i].Lang = Settings_AppLang;
+        UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
         UserLiveFeed_obj[i].CheckLang = 0;
 
         UserLiveFeed_FeedSetPosLast[i] = 0;
@@ -230,14 +231,6 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
-
-    Main_innerHTML('feed_end_1', STR_FEATURED);
-    Main_innerHTML('feed_end_3', STR_LIVE);
-    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
-    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
-    Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
-    Main_innerHTML('icon_feed_back', STR_SPACE);
 
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = Main_getElementById('side_panel');

@@ -1165,6 +1165,27 @@ function OSInterface_CleanAndLoadUrl(url) {
     }
 }
 
+//public void FixViewPosition(int position)
+//lang =  lang to set in the us_US format
+//Android specific: false in the OS has multi player supports Samsung TV for example don't have
+//Sets mediaSources and start the player
+function OSInterface_SetLanguage(lang) {
+
+    if (Main_IsOn_OSInterface) {
+
+        try {
+
+            Android.SetLanguage(
+                lang
+            );
+
+        } catch (e) {
+        }
+
+    }
+
+}
+
 //public void getDuration()
 //String callback = the fun to receive the value
 //Android specific: true

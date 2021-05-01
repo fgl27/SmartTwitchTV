@@ -31,8 +31,42 @@ var Settings_Seek_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 80
 var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
 var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
 var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+//For clips the api accept a coma and extra languages
+var Languages_Extra = {
+    "en": "en,en-gb",
+    "es": "es,es-mx",
+    "pt": "pt,pt-br"
+};
 
 var Settings_value = {
+    "content_lang": {
+        "values": [
+            "All",
+            "Bulgarian [BG]", "Čeština [CS]", "Dansk [DA]", "Deutsch [DE]",
+            "Ελληνικά [EL]", "English [EN]", "Español [ES]", "Suomi [FI]",
+            "Français [FR]", "Italiano [IT]", "Magyar [HU]", "日本語 [JA]",
+            "한국어 [KO]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]",
+            "Português [PT]", "Română [RO]", "Русский [RU]", "Slovenčina [SK]",
+            "Svenska [SV]", "ภาษาไทย [TH]", "Türkçe [TR]", "Tiếng Việt [VI]",
+            "中文 [ZH]"
+        ],
+        "apply_values": [
+            "",
+            "bg", "cs", "da", "de",
+            "el", "en", "es", "fi",
+            "fr", "it", "hu", "ja",
+            "ko", "nl", "no", "pl",
+            "pt", "ro", "ru", "sk",
+            "sv", "th", "tr", "vi",
+            "zh"
+        ],
+        "defaultValue": 1
+    },
+    "app_lang": {
+        "values": ["English [EN]", "Português [PT-BR]", "Русский [RU]"],
+        "apply_values": ["en_US", "pt_BR", "ru_RU"],
+        "defaultValue": 1
+    },
     "restor_playback": {
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -253,11 +287,6 @@ var Settings_value = {
     },
     "thumb_background": {//Migrated to dialog
         "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "content_lang": {
-        "values": ["All"],
         "set_values": [""],
         "defaultValue": 1
     },
@@ -591,7 +620,6 @@ function Settings_init() {
     Main_HideElement('label_refresh');
     Settings_cursorY = 0;
     Settings_inputFocus(Settings_cursorY);
-    Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
     Main_EventScreen('Settings');
 }
 
@@ -614,20 +642,23 @@ function Settings_SetSettings() {
         key,
         array_no_yes = [STR_NO, STR_YES];
 
-    // General settings title
-    //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
+    //Individual settings
+    key = "content_lang";
+    div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
+
+    key = "app_lang";
+    div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
     //Dialog settings
-    div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
-    div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
-    div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
-    div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
-    div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
-    div += Settings_Content('update_settings', [STR_CONTENT_LANG_SUMMARY], STR_UPDATE_OPT, null);
-    div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
+    div += Settings_Content('chat_opt', [STR_ENTER_TO_OPEN], STR_CHAT_OPTIONS, null);
+    div += Settings_Content('ui_opt', [STR_ENTER_TO_OPEN], STR_UI_SETTINGS, null);
+    div += Settings_Content('custom_opt', [STR_ENTER_TO_OPEN], STR_GENERAL_CUSTOM, null);
+    div += Settings_Content('live_notification_opt', [STR_ENTER_TO_OPEN], STR_NOTIFICATION_OPT, null);
+    div += Settings_Content('update_settings', [STR_ENTER_TO_OPEN], STR_UPDATE_OPT, null);
+    div += Settings_Content('warnings_opt', [STR_ENTER_TO_OPEN], STR_WARNINGS, null);
 
     if (!Main_isTV || !Main_IsOn_OSInterface) {
-        div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
+        div += Settings_Content('dpad_opt', [STR_ENTER_TO_OPEN], STR_DPAD_OPT, null);
     }
 
     //Individual settings
@@ -652,13 +683,13 @@ function Settings_SetSettings() {
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
-    div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
-    div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
-    div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-    div += Settings_Content('preview_settings', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
-    div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
-    div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
-    div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+    div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+    div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+    div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+    div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
+    div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
+    div += Settings_Content('player_end_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
+    div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     Main_innerHTML("settings_main", div);
     Settings_positions_length = Settings_value_keys.length;
@@ -725,7 +756,6 @@ function Settings_SetSettings() {
         STR_LEFT + '-' + STR_TOP
     ];
 
-    Languages_SetSettings();
 }
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
@@ -769,16 +799,13 @@ function Settings_SetStrings() {
 
     // Content Language selection
     key = "content_lang";
-    Main_textContent(key + '_name', STR_CONTENT_LANG);
-    Main_textContent(key, Settings_Obj_values(key));
-    Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
+    Settings_DivOptionChangeLang(key, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
+
+    key = "app_lang";
+    Settings_DivOptionChangeLang(key, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
     //Player settings
     Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-    // Player buffer title/summary
-    Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
-    Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
     key = "vod_dialog";
     Settings_DivOptionChangeLang(key, STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
@@ -809,11 +836,15 @@ function Settings_SetStrings() {
     Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
     Settings_value[key].values = [STR_NO, STR_YES];
 
-    for (key in Settings_value)
-        if (Settings_value.hasOwnProperty(key))
-            Main_textContent(key, Settings_Obj_values(key));
+    for (key in Settings_value) {
+        if (Settings_value.hasOwnProperty(key)) {
 
-    Languages_SetLang();
+            var ele = Main_getElementById(key);
+            if (ele) Main_textContentWithEle(ele, Settings_Obj_values(key));
+
+        }
+
+    }
 }
 
 function Settings_SetDefautls() {
@@ -856,6 +887,7 @@ function Settings_SetDefautls() {
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
     Settings_set_all_notification();
+    Settings_SetLang();
 
     Settings_SetResBitRate(0);
 
@@ -872,6 +904,93 @@ function Settings_SetDefautls() {
         20 * 60 * 1000
     );
 
+}
+
+var Languages_Selected;
+
+function Settings_SetLang() {
+    Main_ContentLang = Settings_value.content_lang.apply_values[Settings_Obj_default('content_lang')];
+
+    if (Main_ContentLang === "") {
+        Languages_Selected = STR_LANG_ALL;
+        OSInterface_upDateLang(null);
+    } else {
+        Languages_Selected = Main_ContentLang.toUpperCase();
+        OSInterface_upDateLang(Main_ContentLang);
+    }
+}
+
+var Settings_AppLang = '';
+
+function Settings_SetAppLang() {
+    // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+    // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+    // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+    var app_lang = Settings_value.app_lang.apply_values[Settings_Obj_default('app_lang')];
+
+    if (!Main_values.WasLangChanged) {
+
+        app_lang = Settings_CheckPageLang(app_lang);
+
+    }
+
+    en_USLang();
+
+    if (Main_A_includes_B(app_lang, 'pt_')) pt_BRLang();
+    else if (Main_A_includes_B(app_lang, 'ru_')) ru_RULang();
+
+    Main_Log("language is " + app_lang);
+
+    OSInterface_SetLanguage(app_lang);
+
+    Settings_AppLang = app_lang;
+
+}
+
+function Settings_UpdateString() {
+    Main_values.WasLangChanged = true;
+    Settings_SetAppLang();
+    DefaultLang();
+
+    Main_SetStringsMain();
+    Main_SetStringsSecondary();
+    Play_MakeControls();
+    Play_MultiSetpannelInfo();
+    Settings_SetStrings();
+    Settings_inputFocus(Settings_cursorY);
+
+    Main_SaveValues();
+}
+
+function Settings_CheckPageLang(app_lang) {
+    var device_lang = app_lang;
+
+    device_lang = window.navigator.userLanguage || window.navigator.language;
+
+    if (device_lang) device_lang = device_lang.replace('-', '_');
+    else return device_lang;
+
+    if (Main_A_includes_B(Settings_value.app_lang.apply_values, device_lang)) {
+
+        var index = 0, len = Settings_value.app_lang.apply_values.length;
+
+        for (index; index < len; index++) {
+
+            if (Settings_value.app_lang.apply_values[index] === device_lang)
+                break;
+
+        }
+
+        Settings_value.app_lang.defaultValue = index;
+        Main_setItem('app_lang', Settings_Obj_default('app_lang') + 1);
+
+        device_lang = device_lang;
+
+    }
+
+
+    return device_lang;
 }
 
 function Settings_burn_in_protection() {
@@ -961,7 +1080,9 @@ function Settings_SetarrowsKey(key) {
 
 function Settings_SetDefault(position) {
 
-    if (position === "live_notification") Settings_notification();
+    if (position === "content_lang") Settings_SetLang();
+    else if (position === "app_lang") Settings_UpdateString();
+    else if (position === "live_notification") Settings_notification();
     else if (position === "title_notification") Settings_notification_title();
     else if (position === "game_notification") Settings_notification_game();
     else if (position === "live_notification_background") Settings_notification_background();
@@ -1327,21 +1448,6 @@ function Settings_SetBuffers(whocall) {
     }
 }
 
-//function Settings_CheckLang(lang) {
-//    if (Main_A_includes_B(lang, 'en_')) Settings_value.general_lang.defaultValue = 0;
-//    else if (Main_A_includes_B(lang, 'it_')) Settings_value.general_lang.defaultValue = 1;
-//    else if (Main_A_includes_B(lang, 'pt_')) Settings_value.general_lang.defaultValue = 2;
-//}
-
-//function Settings_SetLang(lang) {
-//    if (Main_A_includes_B(lang, 'en_')) en_USLang();
-//else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-//else if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-//    DefaultLang();
-//    Main_SetStringsMain(false);
-//    Main_SetStringsSecondary();
-//}
-
 function Settings_SetClock() {
     var time = Settings_Obj_default("clock_offset");
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
@@ -1516,8 +1622,7 @@ function Settings_handleKeyDown(event) {
             }
             break;
         case KEY_ENTER:
-            if (!Settings_cursorY) Languages_init();
-            else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
+            if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
             else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
@@ -2490,7 +2595,7 @@ function Settings_DialogShow(obj, title) {
     for (var property in obj) {
         Settings_DialogValue.push(property);
         if (obj[property].keyenter) {
-            dialogContent += Settings_Content(property, [STR_CONTENT_LANG_SUMMARY], obj[property].title, null);
+            dialogContent += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
         } else {
             dialogContent += obj[property].summary ?
                 Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :

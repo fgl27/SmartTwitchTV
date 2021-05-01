@@ -98,6 +98,7 @@ function ScreensObj_StartAllVars() {
         tempHtml: '',
         focusPos: '',
         IsOpen: 0,
+        Lang: '',
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -651,8 +652,8 @@ function ScreensObj_InitVod() {
         table: 'stream_table_vod',
         screen: Main_Vod,
         highlightSTR: 'Vod_highlight',
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         highlight: Main_getItemBool('Vod_highlight', false),
         periodPos: Main_getItemInt('vod_periodPos', 2),
         base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
@@ -792,8 +793,8 @@ function ScreensObj_InitAGameVod() {
         ScreenName: 'AGameVod',
         table: 'stream_table_a_game_vod',
         screen: Main_AGameVod,
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         highlightSTR: 'AGameVod_highlight',
         highlight: Main_getItemBool('AGameVod_highlight', false),
         periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -923,8 +924,8 @@ function ScreensObj_InitLive() {
         ScreenName: 'Live',
         key_pgDown: Main_Featured,
         key_pgUp: Main_Clip,
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.check_offset();
@@ -1106,8 +1107,8 @@ function ScreensObj_InitAGame() {
         table: 'stream_table_a_game',
         screen: Main_aGame,
         object: 'streams',
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         base_url: Main_kraken_api + 'streams?game=',
@@ -1204,8 +1205,8 @@ function ScreensObj_InitClip() {
         screen: Main_Clip,
         key_pgDown: Main_Live,
         key_pgUp: Main_Vod,
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         periodPos: Main_getItemInt('Clip_periodPos', 2),
         base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
         set_url: function() {
@@ -1282,8 +1283,8 @@ function ScreensObj_InitAGameClip() {
         screen: Main_AGameClip,
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
-        CheckLang: 1,
-        Lang: '',
+        CheckContentLang: 1,
+        ContentLang: '',
         periodPos: Main_getItemInt('AGameClip_periodPos', 2),
         base_url: Main_kraken_api + 'clips/top?game=',
         set_url: function() {

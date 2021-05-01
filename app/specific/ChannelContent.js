@@ -40,6 +40,7 @@ var ChannelContent_profile_banner = '';
 var ChannelContent_KeyEnterID;
 var ChannelContent_clear = false;
 var ChannelContent_DataObj;
+var ChannelContent_Lang = '';
 
 //Variable initialization end
 
@@ -62,7 +63,7 @@ function ChannelContent_init() {
     }
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (ChannelContent_status) {
+    else if (ChannelContent_status && Main_A_equals_B(ChannelContent_Lang, Settings_AppLang)) {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement('channel_content_scroll');
         ChannelContent_checkUser();
@@ -101,6 +102,7 @@ function ChannelContent_StartLoad() {
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
     Main_FirstLoad = true;
+    ChannelContent_Lang = Settings_AppLang;
     ChannelContent_loadDataRequest();
     Main_EventScreen('ChannelContent');
 }

@@ -291,9 +291,11 @@ function en_USLang() {
     STR_MINUTES = " minutes";
     STR_CLOCK_OFFSET = "Clock offset";
     STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
-    STR_APP_LANG = "Application language";
     STR_CONTENT_LANG = "Content language";
-    STR_CONTENT_LANG_SUMMARY = "Press enter to access";
+    STR_CONTENT_LANG_SUMMARY = "The language of the content on it screen, live, vods, clips";
+    STR_APP_LANG = "Application language";
+    STR_APP_LANG_SUMMARY = "The language of the app";
+    STR_ENTER_TO_OPEN = "Press enter to access";
     STR_LANG_ALL = "All";
     STR_NO_GAME = "No game from this";
     STR_EMPTY = "Empty";

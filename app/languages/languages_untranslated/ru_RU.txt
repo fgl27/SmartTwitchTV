@@ -4,3 +4,5 @@
     STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
     STR_PING = "Ping to Twitch (Ms): ";
     STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview, on the preview this only applyes to user live and featured (all none history are views base, history is last watched first, and vod is most recent)";
+    STR_CONTENT_LANG_SUMMARY = "The language of the content on it screen, live, vods, clips";
+    STR_APP_LANG_SUMMARY = "The language of the app";

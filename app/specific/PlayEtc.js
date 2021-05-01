@@ -2021,7 +2021,7 @@ function Play_handleKeyDown(e) {
 }
 
 var Play_controls = {};
-var Play_controlsSize = -1;
+var Play_controlsSize;
 
 var temp_controls_pos = 0;
 var Play_controlsBack = temp_controls_pos++;
@@ -3815,6 +3815,8 @@ function Play_MakeControls() {
     };
 
     var div, doc = Main_getElementById('controls_holder');
+    Main_emptyWithEle(doc);
+    Play_controlsSize = -1;
 
     for (var key in Play_controls) {
         div = document.createElement('div');
