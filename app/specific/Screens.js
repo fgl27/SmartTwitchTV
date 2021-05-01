@@ -429,9 +429,18 @@ function Screens_loadDatafail(key) {
         Screens_Some_Screen_Is_Refreshing = false;
 
         if (Screens_IsInUse(key)) {
+
             Main_showWarningDialog(STR_REFRESH_PROBLEM);
-            ScreenObj[key].key_exit();
             if (!Main_FirstRun) Main_HideLoadDialog();
+
+            if (ScreenObj[key].HasSwitches) {
+
+                ScreenObj[key].emptyContent = true;
+                ScreenObj[key].addSwitches();
+                Screens_loadDataSuccessFinish(key);
+
+            } else ScreenObj[key].key_exit();
+
         }//else the user has already exit the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
