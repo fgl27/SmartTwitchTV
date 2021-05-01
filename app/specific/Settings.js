@@ -894,6 +894,7 @@ function Settings_UpdateString() {
     Play_MakeControls();
     Play_MultiSetpannelInfo();
     Settings_inputFocus(Settings_cursorY);
+    ScreensObj_SetTopLable(STR_SETTINGS);
     Main_updateclock();
     Main_checkVersion(true);
     AddUser_UpdateSidepanel();
