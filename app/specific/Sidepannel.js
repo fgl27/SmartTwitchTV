@@ -68,8 +68,8 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
 
         var pos = (Sidepannel_PosFeed + 1);
 
-        if (pos < 10) pos = STR_SPACE + STR_SPACE + STR_SPACE + STR_SPACE + pos;
-        else if (pos < 100) pos = STR_SPACE + STR_SPACE + pos;
+        if (pos < 10) pos = STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + pos;
+        else if (pos < 100) pos = STR_SPACE_HTML + STR_SPACE_HTML + pos;
 
         Main_innerHTMLWithEle(
             Sidepannel_PosCounter,
@@ -140,7 +140,7 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
         Main_innerHTML(
             'feed_thum_views',
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE + info[4]
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + info[4]
         );
 
     }
@@ -261,7 +261,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             } else {
 
                 Sidepannel_CheckIfIsLiveWarn(
-                    StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    StreamInfo[1] + STR_SPACE_HTML + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
                     0
                 );
 
@@ -310,11 +310,11 @@ function Sidepannel_HideWarningDialog() {
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {
-    return '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+    return '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "") + '<div class="partnericon_text" style="background: #' +
-        (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE + STR_SPACE +
-        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+            IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
+        (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
+        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
 }
 
 function Sidepannel_PreloadImgs() {
@@ -532,7 +532,7 @@ function Sidepannel_SetLastRefreshUpDiv(date) {
 
     Main_innerHTMLWithEle(
         Sidepannel_LastRefreshDiv,
-        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+        STR_REFRESH + STR_SPACE_HTML + '(' + STR_LAST_REFRESH +
         Play_timeDay(date) + ')'
     );
 
@@ -650,7 +650,7 @@ function Sidepannel_UnSetTopOpacity() {
 function Sidepannel_SetUserLables() {
     Main_values.Sidepannel_IsUser = true;
 
-    Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
+    Main_innerHTML('side_panel_movel_user_text', STR_SPACE_HTML + STR_USER_MENU + STR_SPACE_HTML);
     Main_ShowElement('side_panel_movel_user_text_holder');
     Main_ShowElement('side_panel_movel_new_8');
     Main_ShowElement('side_panel_new_8');
@@ -688,11 +688,11 @@ function Sidepannel_SetDefaultLables() {
     Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
     Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
-    Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_SETTINGS);
-    Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
-    Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
-    Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
-    Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_UPDATE_CHANGELOG);
+    Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
+    Main_innerHTML('side_panel_movel_new_10', STR_SPACE_HTML + STR_ABOUT);
+    Main_innerHTML('side_panel_movel_new_11', STR_SPACE_HTML + STR_CONTROLS);
+    Main_innerHTML('side_panel_movel_new_12', STR_SPACE_HTML + STR_EXIT);
+    Main_innerHTML('side_panel_movel_new_13', STR_SPACE_HTML + STR_UPDATE_CHANGELOG);
 
     Sidepannel_SetIcons('side_panel_new_1', 'search');
     Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');

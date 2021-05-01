@@ -356,8 +356,8 @@ function ScreensObj_StartAllVars() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
-                    STR_SPACE + STR_SPACE + STR_PLAY_ALL
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAY_ALL
                 ],
                 this.screen
             );
@@ -462,8 +462,8 @@ function ScreensObj_StartAllVars() {
                         this.ids,
                         [game.box.template.replace("{width}x{height}", Main_GameSize),//0
                         game.name,//1
-                        hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',//2
+                        hasLive ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
+                            Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '',//2
                         game._id//3
                         ],
                         this.screen
@@ -676,8 +676,8 @@ function ScreensObj_InitVod() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP
                 ],
                 this.screen
             );
@@ -693,7 +693,7 @@ function ScreensObj_InitVod() {
         SetPeriod: function() {
             Main_setItem('vod_periodPos', this.periodPos);
             ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                STR_SPACE + Main_Periods[this.periodPos - 1]);
+                STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
         },
     }, Base_obj);
 
@@ -743,9 +743,9 @@ function ScreensObj_InitChannelVod() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                    STR_SPACE + STR_SPACE + STR_SWITCH_TYPE,
-                    STR_SPACE + STR_SPACE + STR_SWITCH_POS
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_POS
                 ],
                 this.screen
             );
@@ -819,8 +819,8 @@ function ScreensObj_InitAGameVod() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                    STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP
                 ],
                 this.screen
             );
@@ -838,7 +838,7 @@ function ScreensObj_InitAGameVod() {
         SetPeriod: function() {
             Main_setItem('AGameVod_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE + Main_Periods[this.periodPos - 1]);
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
         }
     }, Base_obj);
 
@@ -890,8 +890,8 @@ function ScreensObj_InitUserVod() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                    STR_SPACE + STR_SPACE + STR_SWITCH_TYPE
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE
                 ],
                 this.screen
             );
@@ -967,7 +967,7 @@ function ScreensObj_InitSearchLive() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_LIVE, "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_LIVE, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Search_isSearching = false;
@@ -1139,8 +1139,8 @@ function ScreensObj_InitAGame() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_VIDEOS,
-                    STR_SPACE + STR_SPACE + STR_CLIPS
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS
                 ],
                 this.screen
             );
@@ -1254,7 +1254,7 @@ function ScreensObj_InitChannelClip() {
         SetPeriod: function() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname, STR_CLIPS + STR_SPACE +
+            ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname, STR_CLIPS + STR_SPACE_HTML +
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
@@ -1296,7 +1296,7 @@ function ScreensObj_InitAGameClip() {
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
 
-            ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE +
+            ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML +
                 Main_Periods[this.periodPos - 1]);
         },
         label_init: function() {
@@ -1413,7 +1413,7 @@ function ScreensObj_InitSearchGames() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_GAMES, "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_GAMES, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             Main_values.Main_gameSelected = Main_values.gameSelectedOld;
@@ -1486,7 +1486,7 @@ function ScreensObj_InitSearchChannels() {
             this.lastData = Main_values.Search_data;
             Sidepannel_SetTopOpacity(this.screen);
 
-            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_CHANNELS, "'" + Main_values.Search_data + "'");
+            ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_CHANNELS, "'" + Main_values.Search_data + "'");
         },
         label_exit: function() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
@@ -1518,7 +1518,7 @@ function ScreensObj_HistoryLive() {
         histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
             Screens_SethistDialogId(this.screen);
-            Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
         setTODialog: function() {
@@ -1533,7 +1533,7 @@ function ScreensObj_HistoryLive() {
             ScreensObj_TopLableUserInit(this.screen);
             ScreensObj_SetTopLable(
                 STR_USER,
-                STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
+                STR_HISTORY + STR_SPACE_HTML + STR_LIVE + STR_SPACE_HTML +
                 '(' + this.sorting[this.histPosX[0]] + ')'
             );
         },
@@ -1567,9 +1567,9 @@ function ScreensObj_HistoryLive() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE + STR_SPACE_HTML + STR_SETTINGS
                 ],
                 this.screen
             );
@@ -1615,7 +1615,7 @@ function ScreensObj_HistoryVod() {
         histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
             Screens_SethistDialogId(this.screen);
-            Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
         setTODialog: function() {
@@ -1631,7 +1631,7 @@ function ScreensObj_HistoryVod() {
 
             ScreensObj_SetTopLable(
                 STR_USER,
-                STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE +
+                STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS + STR_SPACE_HTML +
                 '(' + this.sorting[this.histPosX[0]] + ')'
             );
         },
@@ -1673,9 +1673,9 @@ function ScreensObj_HistoryVod() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS + STR_SPACE_HTML + STR_SETTINGS
                 ],
                 this.screen
             );
@@ -1705,7 +1705,7 @@ function ScreensObj_HistoryClip() {
         histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
             Screens_SethistDialogId(this.screen);
-            Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+            Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
         setTODialog: function() {
@@ -1721,7 +1721,7 @@ function ScreensObj_HistoryClip() {
 
             ScreensObj_SetTopLable(
                 STR_USER,
-                STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE +
+                STR_HISTORY + STR_SPACE_HTML + STR_CLIPS + STR_SPACE_HTML +
                 '(' + this.sorting[this.histPosX[0]] + ')'
             );
 
@@ -1774,9 +1774,9 @@ function ScreensObj_HistoryClip() {
         addSwitches: function() {
             ScreensObj_addSwitches(
                 [
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
-                    STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS,
+                    STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS + STR_SPACE_HTML + STR_SETTINGS
                 ],
                 this.screen
             );
@@ -1870,7 +1870,7 @@ function ScreensObj_CheckUser(key) {
 }
 
 function ScreensObj_SetTopLable(text, small_text) {
-    Main_innerHTML('top_lable', text + STR_SPACE + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
+    Main_innerHTML('top_lable', text + STR_SPACE_HTML + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
 }
 
 function ScreensObj_LiveCellArray(cell) {
@@ -1879,14 +1879,14 @@ function ScreensObj_LiveCellArray(cell) {
         cell.channel.display_name,//1
         cell.channel.status,//2
         cell.game,//3
-        STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER,//4
+        STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER,//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
         cell._id,//7 broadcast id
         Main_is_rerun(cell.broadcast_platform),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
-        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE,//11
+        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE_HTML,//11
         cell.created_at,//12
         cell.viewers,//13
         cell.channel._id,//14

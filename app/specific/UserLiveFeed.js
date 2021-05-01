@@ -556,7 +556,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
                 Main_innerHTML(
                     UserLiveFeed_ids[4] + id,
-                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + data[4]
                 );
 
             }
@@ -868,7 +868,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 if (UserLiveFeed_PreviewOffset) {
                     Play_showWarningMidleDialog(
-                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
                         2000
                     );
                 }
@@ -885,7 +885,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
+                error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
 
             }
 
@@ -1125,7 +1125,7 @@ function UserLiveFeed_FeedRemoveFocus(pos) {
 function UserLiveFeed_SetFeedPicText() {
     Main_innerHTML(
         'icon_feed_refresh',
-        '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>'
+        '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE_HTML + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE_HTML + STR_SPACE_HTML + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE_HTML + STR_PICTURE_LIVE_FEED + '</div>'
     );
 }
 

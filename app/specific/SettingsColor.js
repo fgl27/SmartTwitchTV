@@ -335,10 +335,10 @@ function SettingsColor_DivColorText(key, title, result) {
 function SettingsColor_DivResultUpdate(div, text) {
     Main_innerHTML(
         div,
-        '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE +
-        '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE +
-        '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE +
-        '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE +
+        '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE_HTML +
+        '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE_HTML +
+        '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE_HTML +
+        '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE_HTML +
         text
     );
 }
@@ -452,7 +452,7 @@ function SettingsColor_SetColorsObj() {
         },
         focus: function() {
             SettingsColor_AddCavasFocus();
-            Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE + '(' + STR_ENTER_RGB + ')');
+            Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE_HTML + '(' + STR_ENTER_RGB + ')');
         },
         removefocus: function() {
             SettingsColor_RemoveCavasFocus();

@@ -153,7 +153,7 @@ function Play_Multi_UnSetPanel(shutdown) {
             PlayExtra_SetPanel();
 
             if (!Play_isFullScreen) {
-                Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+                Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
                 ChatLive_Init(1);
                 PlayExtra_ShowChat();
             }
@@ -514,7 +514,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
             Play_showWarningMidleDialog(
-                STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[0].data[1],
+                STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1],
                 2000
             );
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
@@ -550,7 +550,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
         Play_AudioReset(pos);
 
         Play_showWarningMidleDialog(
-            STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[pos].data[1],
+            STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1],
             2000
         );
     }
@@ -672,7 +672,7 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
 
     Main_innerHTML(
         'stream_info_multi_name' + extraText + pos,
-        displayname === '' ? STR_SPACE :
+        displayname === '' ? STR_SPACE_HTML :
             Play_partnerIcon(
                 displayname,
                 partner,
@@ -686,8 +686,8 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
 
 function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
     Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
-    Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE : STR_PLAYING + game);
-    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE + STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER) : STR_SPACE);
+    Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
+    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + STR_VIEWER) : STR_SPACE_HTML);
 }
 
 function Play_MultiSetpannelInfo() {
@@ -737,14 +737,14 @@ function Play_MultiSetUpdateDialog(obj) {
 
         Main_textContent('stream_dialog_multi_name' + extraText + i, Play_MultiArray[i].data[1]);
         Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-        Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
+        Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE_HTML : Play_MultiArray[i].data[3]);
         Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
 
     }
 
     Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
     Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
-    Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
+    Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE_HTML : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
 

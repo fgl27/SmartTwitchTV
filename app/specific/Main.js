@@ -561,9 +561,9 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
-    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
-    Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
-    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FOLLOW);
+    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS);
+    Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS);
+    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
     Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
@@ -605,15 +605,15 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML('feed_end_1', STR_FEATURED);
     Main_innerHTML('feed_end_3', STR_LIVE);
-    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
-    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
+    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE_HTML + STR_LIVE);
+    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE_HTML + STR_HISTORY);
+    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE_HTML + 'VOD');
     Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
-    Main_innerHTML('icon_feed_back', STR_SPACE);
+    Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE_HTML + string + '</div>');
 }
 
 function Main_HideElement(element) {
@@ -762,7 +762,7 @@ function Main_HideWarningDialog() {
 }
 
 function Main_AboutDialogUpdateTime() {
-    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
+    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE_HTML + Play_timeDay((new Date().getTime()) - Main_RunningTime));
 }
 
 function Main_showAboutDialog(removeEventListener, addEventListener) {
@@ -1054,7 +1054,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
         'label_update',
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
         (web ? 'globe' : 'play-1') +
-        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
+        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE_HTML +
         (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
     );
 
@@ -1225,8 +1225,8 @@ function Main_UpdateDialogTitle() {
 
     var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
         (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
-        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE) + '</div>' + STR_BR +
-        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE + '</div>' + STR_BR,
+        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE_HTML) + '</div>' + STR_BR +
+        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE_HTML + '</div>' + STR_BR,
         changelog = version.changelog;
 
     innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;

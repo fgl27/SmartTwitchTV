@@ -269,7 +269,7 @@ function Chat_loadChatSuccess(responseText, id) {
             {
                 chat_number: 0,
                 time: 0,
-                message: '<span class="message">' + STR_LOADING_CHAT + STR_SPACE + Main_values.Main_selectedChannelDisplayname + STR_SPACE + Chat_title + '</span>'
+                message: '<span class="message">' + STR_LOADING_CHAT + STR_SPACE_HTML + Main_values.Main_selectedChannelDisplayname + STR_SPACE_HTML + Chat_title + '</span>'
             }
         );
 

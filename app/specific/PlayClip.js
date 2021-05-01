@@ -72,7 +72,7 @@ function PlayClip_Start() {
     Main_innerHTML("stream_info_title", ChannelClip_title);
     Main_innerHTML("stream_info_game", ChannelClip_game);
 
-    Main_innerHTMLWithEle(Play_infoLiveTime, ChannelClip_createdAt + ',' + STR_SPACE + ChannelClip_views);
+    Main_innerHTMLWithEle(Play_infoLiveTime, ChannelClip_createdAt + ',' + STR_SPACE_HTML + ChannelClip_views);
     Main_textContent("stream_live_viewers", '');
     Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -1043,7 +1043,7 @@ function Play_ClipCheckIfIsLiveEnd(response) {
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
-            var error = PlayClip_SetOpenLiveData[6] + STR_SPACE;
+            var error = PlayClip_SetOpenLiveData[6] + STR_SPACE_HTML;
 
             Play_CheckIfIsLiveResultCheck(
                 response,

@@ -2267,7 +2267,7 @@ function Settings_DialogShowWarnings() {
             defaultValue: Settings_value.accessibility_warn.defaultValue,
             values: Settings_value.accessibility_warn.values,
             title: STR_SETTINGS_ACCESSIBILITY,
-            summary: STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG
+            summary: STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE_HTML + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE_HTML + STR_APP_LAG
         },
         ping_warn: {
             defaultValue: Settings_value.ping_warn.defaultValue,

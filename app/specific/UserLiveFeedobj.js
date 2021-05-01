@@ -662,7 +662,7 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
         UserLiveFeedobj_UserAGamesPos,
         !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter)
     );
-    Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
+    Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE_HTML + STR_GAMES);
     if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
     Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
 }
@@ -783,7 +783,7 @@ function UserLiveFeedobj_SetBottomText(pos) {
 
     Main_innerHTML('feed_end_0', (UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES)));
     Main_innerHTML('feed_end_2', (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME));
-    Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)));
+    Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE_HTML + STR_GAMES)));
 
     if (Settings_Obj_default("hide_etc_help_text") === 1) {
         Main_RemoveClass('feed_end', 'opacity_zero');
@@ -870,7 +870,7 @@ function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until)
         '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + data[2] +
         '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
-        data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
 
     return div;
@@ -1389,8 +1389,8 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
                         pos + '_' + itemsCount,
                         [
                             game.name,//0
-                            isntUser ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '',//1
+                            isntUser ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
+                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '',//1
                             game._id,//2
                             game.box.template//3
                         ]

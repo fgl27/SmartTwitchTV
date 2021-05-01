@@ -259,7 +259,7 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback, callbackError) {
 
             var StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                error = StreamInfo[6] + STR_SPACE;
+                error = StreamInfo[6] + STR_SPACE_HTML;
 
             Play_CheckIfIsLiveResultCheck(
                 response,
@@ -304,7 +304,7 @@ function Play_CheckIfIsLiveGetEror(response, isVod) {
 
     if (response.status === 1) {
 
-        error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+        error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
 
     } else if (response.status === 403) {
 
@@ -312,8 +312,8 @@ function Play_CheckIfIsLiveGetEror(response, isVod) {
 
     } else {
 
-        if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-        else error = STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+        if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+        else error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
 
     }
 
@@ -561,11 +561,11 @@ function Play_UpdateMainStreamDiv() {
         )
     );
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
-    Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
+    Main_innerHTML("stream_live_viewers", STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + STR_VIEWER);
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-    Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
+    Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
     if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
 }
@@ -1059,7 +1059,7 @@ function Play_SetExternalQualities(array, startPos, name) {
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLable();
 
-    Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+    Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE_HTML + '(' + name + ')' : ''));
 
     Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
 }
@@ -1555,8 +1555,8 @@ function Play_RefreshWatchingTime() {
 
             } else {
 
-                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE);
-                Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE);
+                Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE_HTML);
+                Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE_HTML);
 
             }
 
@@ -1600,9 +1600,9 @@ function Play_GetLiveTime(dateNow, Time, watching_time) {
 
 function Play_VideoStatusTest() {
     Main_innerHTMLWithEle(Play_StreamStatus,
-        STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
+        STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
         STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_BR +
-        STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
+        STR_DROOPED_FRAMES + STR_SPACE_HTML + STR_SPACE_HTML + '0 | 100 ' + STR_TODAY + STR_BR +
         STR_BUFFER_HEALT + '100.37' + STR_BR +
         STR_LATENCY + '100.27' + STR_BR +
         STR_PING + " 100.00 | 99.00" + STR_AVG);
@@ -1618,9 +1618,9 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
     if (Play_Status_Visible !== 2) {
 
         Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_BR +
+            STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + value[0] + STR_AVG + STR_BR +
             STR_NET_ACT + value[1] + STR_AVG + STR_BR +
-            STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+            STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3] + STR_TODAY + STR_BR +
             STR_BUFFER_HEALT + value[4] +
             (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
             STR_BR + STR_PING + value[6] + STR_AVG);
@@ -1648,7 +1648,7 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
 function Play_getMbps(value) {
     value = (parseInt(value) / 1000000).toFixed(2);
 
-    return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
+    return (parseInt(value) < 10 ? (STR_SPACE_HTML + STR_SPACE_HTML + value) : value);
 }
 
 function Play_ShowVideoQuality(who_called, value) {
