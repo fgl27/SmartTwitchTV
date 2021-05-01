@@ -87,7 +87,7 @@ function pt_BRLang() {
     STR_UPDATE = 'Clique para atualizar';
     STR_UPDATE_CHECK = 'Clique para verificar se há atualizações';
     STR_UPDATE_CHECKING = 'Verificando atualizações ...';
-    STR_UPDATE_CHECKING_FAIL = ' Falha na verificação da atualização';
+    STR_UPDATE_CHECKING_FAIL = 'Falha na verificação da atualização';
     STR_NO_UPDATES = 'O aplicativo está totalmente atualizado';
     STR_UPDATE_CHANGELOG = "Atualizar & Changelog";
     STR_UPDATE_LATEST = "Última alteração:";
@@ -190,7 +190,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_13 = "Todas as teclas de mídia são suportadas (reproduzir, pausar, parar, próxima faixa, avanço rápido, etc ...) algumas são usadas como atalhos para mudanças de modo de áudio e vídeo";
     STR_CONTROLS_PLAY_14 = "chat e vídeo (lado a lado): tecla 2 ou tecla de mídia avanço rápido, também alterna entre imagem em imagem e modo 50/50";
     STR_F_DISABLE_CHAT = "Chat forçado desabilitado";
-    STR_OAUTH_IN = 'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba subdotados para chat), seguir / parar de seguir canais / jogos e acessar algum conteúdo do usuário mais rápido <br> <br> Adicionar uma chave não é exigente e pode ser feito a qualquer momento mais tarde <br> <br> Em caso de dúvida, leia este link: <br> <br> https://github.com/fgl27/SmartTwitchTV#authorization<br > <br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br> <br> adicionar chave para ';
+    STR_OAUTH_IN = 'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba subdotados para chat), seguir / parar de seguir canais / jogos e acessar algum conteúdo do usuário mais rápido <br> <br> Adicionar uma chave não é exigente e pode ser feito a qualquer momento mais tarde <br> <br> Em caso de dúvida, leia este link: <br> <br> https://github.com/fgl27/SmartTwitchTV#authorization<br > <br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br> <br> adicionar chave para';
     STR_USER_CODE = "Adicionar chave de autorização";
     STR_USER_CODE_OK = "Chave adicionada OK";
     STR_KEY_BAD = "Teste de chave falhou, um novo precisa ser adicionado";
@@ -309,7 +309,7 @@ function pt_BRLang() {
     STR_HOLD_UP = "Segure pra cima";
     STR_LIVE_FEED = "Live Feed";
     STR_VOD_DIALOG = "Diálogo inicial de VOD";
-    STR_VOD_DIALOG_SUMMARY = 'Escolha o comportamento padrão, ao reproduzir um VOD se a informação estiver presente no histórico do usuário, ele pode ser reproduzido de onde você parou de assistir pela última vez, se definido como "sempre desde o início" este comportamento também será aplicado a Visualização de VOD ';
+    STR_VOD_DIALOG_SUMMARY = 'Escolha o comportamento padrão, ao reproduzir um VOD se a informação estiver presente no histórico do usuário, ele pode ser reproduzido de onde você parou de assistir pela última vez, se definido como "sempre desde o início" este comportamento também será aplicado a Visualização de VOD';
     STR_VOD_DIALOG_START = "Sempre desde o início";
     STR_VOD_DIALOG_LAST = "Sempre desde a última parada";
     STR_VOD_DIALOG_SHOW = "Sempre perguntar";
@@ -344,12 +344,12 @@ function pt_BRLang() {
     STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Superior", "Inferior esquerdo", "Inferior centro", "Inferior direito"];
     STR_PLAYER_BITRATE_UNLIMITED = "Ilimitado";
     STR_PLAYER_BITRATE = "Resolução / taxa de bits máxima de qualidade automática permitida";
-    STR_PLAYER_BITRATE_SUMMARY = 'Isso será usado para evitar lags em dispositivos low end ao reproduzir vários vídeos ao mesmo tempo (a maioria dos dispositivos vai atrasar pulando frames nessa situação, pois eles são feitos para reproduzir apenas um único vídeo), também ajuda a limitar Use a largura de banda da Internet no caso de você precisar limitar que também defina a "Qualidade do player padrão" para Auto, a resolução / taxa de bits recomendada para todos os jogadores pequenos é 720p / 3 Mbps e ilimitada para o player principal ou grande para a maioria dos dispositivos de baixo custo. ';
+    STR_PLAYER_BITRATE_SUMMARY = 'Isso será usado para evitar lags em dispositivos low end ao reproduzir vários vídeos ao mesmo tempo (a maioria dos dispositivos vai atrasar pulando frames nessa situação, pois eles são feitos para reproduzir apenas um único vídeo), também ajuda a limitar Use a largura de banda da Internet no caso de você precisar limitar que também defina a "Qualidade do player padrão" para Auto, a resolução / taxa de bits recomendada para todos os jogadores pequenos é 720p / 3 Mbps e ilimitada para o player principal ou grande para a maioria dos dispositivos de baixo custo.';
     STR_PLAYER_BITRATE_SUMMARY_ETC = "Valores diferentes aqui para a resolução do jogador principal e pequeno e / ou taxa de bits, pode causar um curto buffering / carregamento ao mudar com o jogador principal no modo Picture Picture (pressionando para baixo irá alterar os jogadores), para evitar que isto defina ambos os valores mesmo ao custo de um possível atraso, o melhor indicativo de uma taxa de bits muito alta é um acúmulo constante de quadros ignorados ou um buffer constante do fluxo.";
     STR_PLAYER_MAIN = "Jogador principal, para o jogador grande em Picture in picture ou o jogador principal 50/50";
     STR_PLAYER_RES_SMALL = "Jogadores pequenos, para o jogador pequeno do modo Picture in Picture e todos os jogadores Multistream";
-    STR_PLAYER_BITRATE_MAIN = '  Taxa de bits -' + STR_PLAYER_MAIN;
-    STR_PLAYER_BITRATE_SMALL = '  Taxa de bits -' + STR_PLAYER_RES_SMALL;
+    STR_PLAYER_BITRATE_MAIN = 'Taxa de bits -' + STR_PLAYER_MAIN;
+    STR_PLAYER_BITRATE_SMALL = 'Taxa de bits -' + STR_PLAYER_RES_SMALL;
     STR_PLAYER_RES_MAIN = 'Resolução -' + STR_PLAYER_MAIN;
     STR_PLAYER_RES_SMALL = 'Resolução -' + STR_PLAYER_RES_SMALL;
     STR_BLOCK_RES = "Resoluções bloqueadas";
@@ -445,7 +445,7 @@ function pt_BRLang() {
     STR_DPAD_OPT = "Opções do D-pad";
     STR_BLOCKED_CODEC = "Codecs bloqueados";
     STR_BLOCKED_CODEC_SUMMARY = "Lista as capacidades dos codecs usados ​​e permite bloquear o uso de um codec";
-    STR_CODEC_DIALOG_TITLE = 'Codecs de software (OMX.google) geralmente têm pior desempenho, mas em alguns dispositivos eles podem ter precedência sobre codecs de hardware, usando este pode bloqueá-los e ver se o desempenho da reprodução melhora, <span style = "color: # FF0000; "> por padrão, o decodificador OMX.google está desabilitado </span> (se outro codec estiver disponível) um acúmulo constante de quadros ignorados é um indicativo de um problema de codec. <br> O conteúdo do aplicativo usa apenas decodificadores avc / h264 nenhum outro está listado. ';
+    STR_CODEC_DIALOG_TITLE = 'Codecs de software (OMX.google) geralmente têm pior desempenho, mas em alguns dispositivos eles podem ter precedência sobre codecs de hardware, usando este pode bloqueá-los e ver se o desempenho da reprodução melhora, <span style = "color: # FF0000; "> por padrão, o decodificador OMX.google está desabilitado </span> (se outro codec estiver disponível) um acúmulo constante de quadros ignorados é um indicativo de um problema de codec. <br> O conteúdo do aplicativo usa apenas decodificadores avc / h264 nenhum outro está listado.';
     STR_SUPPORTED_CODEC = "Codecs suportados:";
     STR_MAX_RES = "Resolução máxima:";
     STR_MAX_BIT = "Taxa de bits máxima:";
@@ -558,13 +558,13 @@ function pt_BRLang() {
     STR_AUTO_REFRESH = "Tempo limite de atualização automática";
     STR_AUTO_REFRESH_SUMMARY = "Quando estiver habilitado, o aplicativo irá atualizar automaticamente uma tela ou uma tela de miniaturas de visualização, a atualização acontece apenas quando a tela é selecionada, se você quiser uma atualização no fundo, habilite o abaixo";
     STR_AUTO_REFRESH_BACKGROUND = "Atualização automática em segundo plano";
-    STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'Quando "Tempo limite de atualização automática" está definido e habilitado, a atualização automática acontecerá em segundo plano (mas com o aplicativo visível, o Android não permite a execução irrestrita em segundo plano para evitar atraso em outro aplicativo) quando a tela não está visível ou quando você volta para uma tela que a atualização não foi executada antes, esteja ciente porque o aplicativo tem muitas telas quando esta opção está habilitada, a atualização automática pode causar um atraso aleatório em alguns dispositivos low end ';
+    STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'Quando "Tempo limite de atualização automática" está definido e habilitado, a atualização automática acontecerá em segundo plano (mas com o aplicativo visível, o Android não permite a execução irrestrita em segundo plano para evitar atraso em outro aplicativo) quando a tela não está visível ou quando você volta para uma tela que a atualização não foi executada antes, esteja ciente porque o aplicativo tem muitas telas quando esta opção está habilitada, a atualização automática pode causar um atraso aleatório em alguns dispositivos low end';
     STR_ENABLED_MAIN_MULTI = "Habilitar jogador do canto esquerdo superior ou principal primeiro";
     STR_MAIN_WINDOW = "Vídeo principal";
     STR_MULTI_MAIN_WINDOW = "Vídeo principal MultiStream";
     STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + "maior e chat: pressione a tecla para baixo, depois use esquerda / direita para mudar com é o grande vídeo";
     STR_SOURCE_CHECK = "Alterar automaticamente a qualidade do player de Source para Auto quando o player atrasar";
-    STR_SOURCE_CHECK_SUMMARY = 'Quando esta opção está habilitada e você não está usando qualidade automática se o player estiver atrasado, ele mudará para qualidade automática e avisará sobre isso, um atraso do jogador é, por exemplo, quando o jogador não consegue jogar por mais de 15 segundos ( o algoritmo é mais complexo do que apenas o tempo, é claro), após essa mudança, o reprodutor voltará automaticamente à fonte quando você iniciar um novo fluxo de vod ';
+    STR_SOURCE_CHECK_SUMMARY = 'Quando esta opção está habilitada e você não está usando qualidade automática se o player estiver atrasado, ele mudará para qualidade automática e avisará sobre isso, um atraso do jogador é, por exemplo, quando o jogador não consegue jogar por mais de 15 segundos ( o algoritmo é mais complexo do que apenas o tempo, é claro), após essa mudança, o reprodutor voltará automaticamente à fonte quando você iniciar um novo fluxo de vod';
     STR_PLAYER_LAG = 'Jogador está atrasado, qualidade alterada para "Modo automático"';
     STR_PLAYER_SOURCE = 'Jogador está atrasado, qualidade diminuiu';
     STR_TOO_ERRORS = "ou muitos erros";
@@ -632,7 +632,7 @@ function pt_BRLang() {
     STR_CHAT_MESSAGE_DELETED = "Esta mensagem de usuário único foi solicitada para ser excluída";
     STR_CHAT_MESSAGE_DELETED_ALL = "Todas as mensagens deste usuário foram solicitadas para serem excluídas";
     STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", o tempo esgotou para";
-    STR_CHAT_CLEAR_MSG_SUMMARY = 'Excluir mensagens de chat de um usuário específico (normalmente após receberem um tempo limite ou banimento), as mensagens excluídas sempre terão um fundo azul, a mensagem será excluída se estiver definido como sim, se não apenas a cor de fundo irá mudar ';
+    STR_CHAT_CLEAR_MSG_SUMMARY = 'Excluir mensagens de chat de um usuário específico (normalmente após receberem um tempo limite ou banimento), as mensagens excluídas sempre terão um fundo azul, a mensagem será excluída se estiver definido como sim, se não apenas a cor de fundo irá mudar';
     STR_OPEN_HOST_SETTINGS = "Sempre abra o host no final do stream, se disponível";
     STR_ALWAYS_STAY = "Sempre fique com o jogador aberto após o fim do Live";
     STR_PING_WARNING = 'Mostrar "Aviso de falha de ping para Twitch"';
