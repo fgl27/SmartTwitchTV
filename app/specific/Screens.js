@@ -562,7 +562,7 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[11] + ' | ' + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
+        valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
         (valuesArray[16] ? STR_CREATED_AT + valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE_HTML + //Old sorting fix
@@ -585,7 +585,7 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] + id + '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
         valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + ' | ' + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        valuesArray[5] + STR_SPACE_HTML + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
