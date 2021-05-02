@@ -34,7 +34,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.media.tv.TvContract;
 import android.net.Uri;
-import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -129,14 +128,12 @@ public final class ChannelsUtils {
     public static class ChannelObj {
         private final int drawable;
         private final String name;
-        private final String number;
         private final int type;
         private final List<ChannelContentObj> Content;
 
-        ChannelObj(int drawable, String number, String name, int type, List<ChannelContentObj> content) {
+        ChannelObj(int drawable, String name, int type, List<ChannelContentObj> content) {
             this.drawable = drawable;
             this.name = name;
-            this.number = number;
             this.type = type;
             this.Content = content;
         }
@@ -167,7 +164,7 @@ public final class ChannelsUtils {
     private static void updateChannel(Context context, long channelId, ChannelObj channel) {
         writeChannelLogo(context, channelId, channel.drawable);
 
-        Channel.Builder builder = createChannelBuilder(channel.number, channel.name, channel.type, context);
+        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
 
         //int rowsUpdated =
         context.getContentResolver().update(
@@ -179,7 +176,7 @@ public final class ChannelsUtils {
     }
 
     private static long createChannel(Context context, ChannelObj channel) {
-        Channel.Builder builder = createChannelBuilder(channel.number, channel.name, channel.type, context);
+        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
 
         Uri channelUri = null;
 
@@ -272,12 +269,9 @@ public final class ChannelsUtils {
 //        }
     }
 
-    private static Channel.Builder createChannelBuilder(String number, String name, int channel_screen, Context context) {
-        Log.d(TAG, "number " + number);
-
+    private static Channel.Builder createChannelBuilder(String name, int channel_screen, Context context) {
         return new Channel.Builder()
                 .setDisplayName(name)
-                .setDisplayNumber(number)
                 .setAppLinkIntent(createAppIntent(context, new Gson().toJson(new PreviewObj(channel_screen, "SCREEN")), 0))
                 .setType(TvContractCompat.Channels.TYPE_PREVIEW);
 
@@ -570,7 +564,6 @@ public final class ChannelsUtils {
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
                         CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
                         Constants.CHANNEL_TYPE_LIVE,
                         content
@@ -641,7 +634,6 @@ public final class ChannelsUtils {
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                         CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                         Constants.CHANNEL_TYPE_USER_LIVE,
                         contentObj
@@ -679,7 +671,6 @@ public final class ChannelsUtils {
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
                         CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
                         Constants.CHANNEL_TYPE_FEATURED,
                         content
@@ -723,7 +714,6 @@ public final class ChannelsUtils {
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
-                        Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
                         CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
                         Constants.CHANNEL_TYPE_GAMES,
                         content
