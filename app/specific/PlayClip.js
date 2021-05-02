@@ -289,8 +289,6 @@ function PlayClip_QualityGenerate(mresponse) {
 
 function PlayClip_QualityStart(qualities) {
 
-    if (!PlayClip_getQualitiesCount()) return;
-
     PlayClip_qualities = qualities;
 
     Play_SetExternalQualities(PlayClip_qualities, 0);
@@ -305,9 +303,12 @@ function PlayClip_FrameRate(value) {
 }
 
 function PlayClip_SetQuality(array) {
+
     var len = array.length,
         i = 0,
         ret = 0;
+
+    if (!len) return;
 
     if (Settings_DisableQualitiesLen) {
 
@@ -350,8 +351,6 @@ function PlayClip_CheckBlockedRes(pos, array) {
 }
 
 function PlayClip_qualityChanged() {
-
-    if (!PlayClip_getQualitiesCount()) return;
 
     PlayClip_qualityIndex = PlayClip_SetQuality(PlayClip_qualities);
     PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
@@ -668,9 +667,11 @@ function PlayClip_CheckPreview() {
         !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
         if (PlayClip_CheckPreviewClip() && PlayClip_getQualitiesCount()) {
+
             Play_PreviewURL = PlayClip_qualities[0].url;
             Play_PreviewResponseText = PlayClip_qualities;
             Play_PreviewId = ChannelClip_playUrl;
+
         }
     }
 
