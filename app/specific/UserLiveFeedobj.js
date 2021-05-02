@@ -841,7 +841,7 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
         '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
-        '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + data[11] + data[4] + '</div>' +
+        '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + STR_SINCE + data[11] + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</div></div></div>';
@@ -867,10 +867,10 @@ function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until)
         '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + data[10] + '</div>' + '<div class="stream_info_live">' + (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
-        '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + data[2] +
+        '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + STR_STREAM_ON + data[2] +
         '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
         Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
-        data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
+        data[4] + STR_VIEWS + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
 
     return div;

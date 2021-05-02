@@ -565,8 +565,8 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[11] + ' | ' + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE_HTML + //Old sorting fix
-        valuesArray[14] + '</div></div>' +
+        (valuesArray[16] ? STR_CREATED_AT + valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE_HTML + //Old sorting fix
+        valuesArray[14] + STR_VIEWS + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
         '</div></div></div></div></div>';
@@ -589,7 +589,7 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + '</div></div>' +
+        STR_STREAM_ON + valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + STR_VIEWS + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
         '</div></div></div></div>';
@@ -618,7 +618,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[5] + '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
         '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
+        '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</div></div></div></div>';
@@ -1564,7 +1564,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
             Main_innerHTML(
                 ScreenObj[key].ids[4] + id,
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + data[4]
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
             );
 
         }

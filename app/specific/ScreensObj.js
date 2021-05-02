@@ -1879,14 +1879,14 @@ function ScreensObj_LiveCellArray(cell) {
         cell.channel.display_name,//1
         cell.channel.status,//2
         cell.game,//3
-        STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER,//4
+        Main_addCommas(cell.viewers),//4
         Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language),//5
         cell.channel.name,//6
         cell._id,//7 broadcast id
         Main_is_rerun(cell.broadcast_platform),//8
         cell.channel.logo,//9
         cell.channel.partner,//10
-        STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE_HTML,//11
+        Play_streamLiveAt(cell.created_at),//11
         cell.created_at,//12
         cell.viewers,//13
         cell.channel._id,//14
@@ -1900,9 +1900,9 @@ function ScreensObj_VodCellArray(cell) {
         Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
             '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
         cell.channel.display_name,//1
-        STR_STREAM_ON + Main_videoCreatedAt(cell.created_at),//2
+        Main_videoCreatedAt(cell.created_at),//2
         cell.game,//3
-        Main_addCommas(cell.views) + STR_VIEWS,//4
+        Main_addCommas(cell.views),//4
         cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',//5
         cell.channel.name,//6
         cell._id.substr(1),//7
@@ -1934,9 +1934,9 @@ function ScreensObj_ClipCellArray(cell) {
         '[' + cell.language.toUpperCase() + ']',//11
         cell.created_at,//12
         cell.views,//13
-        Main_addCommas(cell.views) + STR_VIEWS,//14
+        Main_addCommas(cell.views),//14
         cell.thumbnails.medium,//15
-        STR_CREATED_AT + Main_videoCreatedAt(cell.created_at),//16
+        Main_videoCreatedAt(cell.created_at),//16
         cell.language//17
     ];
 }

@@ -2595,12 +2595,19 @@ function Main_StartHistoryworker() {
 //Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
 
-    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryVod].histPosX[3] ||
+        Main_isStoped ||
+        !AddUser_IsUserSet() ||
+        Boolean(!BradcastCheckerWorker)) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[2] = array[i].data[2].replace("Streamed", '');
+        array[i].data[4] = array[i].data[4].replace("Views", '');
 
         BradcastCheckerWorker.postMessage(
             {
@@ -2611,6 +2618,7 @@ function Main_RunVODWorker() {
         );
 
     }
+
 
     Main_setTimeout(Main_RunLiveVODWorker, 60000);
 
@@ -2625,6 +2633,10 @@ function Main_RunLiveVODWorker() {
         i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[11] = array[i].data[11].replace("Since", '');
+        array[i].data[4] = array[i].data[4].replace("Viewers", '');
 
         if (array[i].forceVod && array[i].vodid) {
 
@@ -2651,6 +2663,10 @@ function Main_RunClipWorker() {
     var i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[16] = array[i].data[16].replace("Created", '');
+        array[i].data[14] = array[i].data[14].replace("Views", '');
 
         BradcastCheckerWorker.postMessage(
             {
