@@ -34,6 +34,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.media.tv.TvContract;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -83,17 +84,6 @@ public final class ChannelsUtils {
             TvContract.Channels.COLUMN_DISPLAY_NAME
     };
 
-    private static final ChannelContentObj emptyContent =
-            new ChannelContentObj(
-                    "Empty list",
-                    "This channel was disabled or on last refresh it failed to load content. Press enter to refresh this (refresh only happens when the app is visible, so click here will open the app)",
-                    "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
-                    TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
-                    1,
-                    null,
-                    false
-            );
-
     @SuppressWarnings({"unused", "FieldCanBeLocal", "RedundantSuppression"})
     public static class PreviewObj {
         private final JsonObject obj;
@@ -139,19 +129,21 @@ public final class ChannelsUtils {
     public static class ChannelObj {
         private final int drawable;
         private final String name;
+        private final String number;
         private final int type;
         private final List<ChannelContentObj> Content;
 
-        ChannelObj(int drawable, String name, int type, List<ChannelContentObj> content) {
+        ChannelObj(int drawable, String number, String name, int type, List<ChannelContentObj> content) {
             this.drawable = drawable;
             this.name = name;
+            this.number = number;
             this.type = type;
             this.Content = content;
         }
 
     }
 
-    private static void StartChannel(Context context, ChannelObj channel, long channelId) {
+    private static void StartChannel(Context context, ChannelObj channel, long channelId, String[] CHANNELS_NAMES) {
 
         if (channelId != -1L) {//Channel already created just update
             updateChannel(context, channelId, channel);
@@ -166,7 +158,7 @@ public final class ChannelsUtils {
             createChannelContent(context, channelId, channel);
 
             //Default channel
-            if (Objects.equals(channel.name, Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]))
+            if (Objects.equals(channel.name, CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE]))
                 TvContractCompat.requestChannelBrowsable(context, channelId);
 
         }
@@ -175,18 +167,19 @@ public final class ChannelsUtils {
     private static void updateChannel(Context context, long channelId, ChannelObj channel) {
         writeChannelLogo(context, channelId, channel.drawable);
 
-        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
+        Channel.Builder builder = createChannelBuilder(channel.number, channel.name, channel.type, context);
 
-        int rowsUpdated = context.getContentResolver().update(
+        //int rowsUpdated =
+        context.getContentResolver().update(
                 TvContractCompat.buildChannelUri(channelId), builder.build().toContentValues(), null, null);
 
-        if (rowsUpdated < 1) {
-            Tools.recordException(TAG, "Update channel failed " + channel.name, null);
-        }
+//        if (rowsUpdated < 1) {
+//            Tools.recordException(TAG, "Update channel failed " + channel.name, null);
+//        }
     }
 
     private static long createChannel(Context context, ChannelObj channel) {
-        Channel.Builder builder = createChannelBuilder(channel.name, channel.type, context);
+        Channel.Builder builder = createChannelBuilder(channel.number, channel.name, channel.type, context);
 
         Uri channelUri = null;
 
@@ -203,7 +196,7 @@ public final class ChannelsUtils {
         }
 
         if (channelUri == null || channelUri.equals(Uri.EMPTY)) {
-            Tools.recordException(TAG, "createChannel failed " + channel.name + " channelUri " + channelUri, null);
+            //Tools.recordException(TAG, "createChannel failed " + channel.name + " channelUri " + channelUri, null);
             return -1L;
         }
 
@@ -230,8 +223,22 @@ public final class ChannelsUtils {
             }
 
         } else {
-            PreviewProgramAdd(context, channelId, emptyContent, 0, channel_type, randomImg);
+            PreviewProgramAdd(context, channelId, emptyContent(context), 0, channel_type, randomImg);
         }
+
+    }
+
+    private static ChannelContentObj emptyContent(Context context) {
+
+        return new ChannelContentObj(
+                context.getString(R.string.channel_empty),
+                context.getString(R.string.channel_disable),
+                "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
+                TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
+                1,
+                null,
+                false
+        );
 
     }
 
@@ -248,10 +255,11 @@ public final class ChannelsUtils {
                         .setWeight(weight)
                         .setChannelId(channelId);
 
-        Uri programUri = null;
+        //Uri programUri = null;
 
         try {
-            programUri = context.getContentResolver().insert(
+            //programUri =
+            context.getContentResolver().insert(
                     TvContractCompat.PreviewPrograms.CONTENT_URI,
                     builder.build().toContentValues()
             );
@@ -259,15 +267,17 @@ public final class ChannelsUtils {
             Tools.recordException(TAG, "PreviewProgramAdd e ", e);
         }
 
-        if (programUri == null || programUri.equals(Uri.EMPTY)) {
-            Tools.recordException(TAG, "PreviewProgramAdd failed " + ContentObj.title + " programUri " + programUri, null);
-        }
+//        if (programUri == null || programUri.equals(Uri.EMPTY)) {
+//            Tools.recordException(TAG, "PreviewProgramAdd failed " + ContentObj.title + " programUri " + programUri, null);
+//        }
     }
 
-    private static Channel.Builder createChannelBuilder(String name, int channel_screen, Context context) {
+    private static Channel.Builder createChannelBuilder(String number, String name, int channel_screen, Context context) {
+        Log.d(TAG, "number " + number);
 
         return new Channel.Builder()
                 .setDisplayName(name)
+                .setDisplayNumber(number)
                 .setAppLinkIntent(createAppIntent(context, new Gson().toJson(new PreviewObj(channel_screen, "SCREEN")), 0))
                 .setType(TvContractCompat.Channels.TYPE_PREVIEW);
 
@@ -341,23 +351,23 @@ public final class ChannelsUtils {
         }
     }
 
-    private static void DeleteChannel(Context context, long channelId) {
-        if (channelId != -1L) {
-
-            try {
-
-                context.getContentResolver().delete(
-                        TvContractCompat.buildChannelUri(channelId),
-                        null,
-                        null
-                );
-
-            } catch (Exception e) {
-                Tools.recordException(TAG, "DeleteChannel ", e);
-            }
-
-        }
-    }
+//    private static void DeleteChannel(Context context, long channelId) {
+//        if (channelId != -1L) {
+//
+//            try {
+//
+//                context.getContentResolver().delete(
+//                        TvContractCompat.buildChannelUri(channelId),
+//                        null,
+//                        null
+//                );
+//
+//            } catch (Exception e) {
+//                Tools.recordException(TAG, "DeleteChannel ", e);
+//            }
+//
+//        }
+//    }
 
     private static long getChannelIdFromTvProvider(Context context, String channel_name) {
 
@@ -372,7 +382,9 @@ public final class ChannelsUtils {
             if (cursor != null && cursor.moveToFirst()) {
                 do {
                     Channel channel = Channel.fromCursor(cursor);
+
                     if (channel_name.equals(channel.getDisplayName())) {
+
                         return channel.getId();
                     }
                 } while (cursor.moveToNext());
@@ -388,6 +400,7 @@ public final class ChannelsUtils {
 
         return -1L;
     }
+
 
     private static boolean getChannelIsBrowsable(Context context, long channelId) {
 
@@ -446,20 +459,7 @@ public final class ChannelsUtils {
         return true;
     }
 
-    private static ChannelContentObj getNoUserContent() {
-        return
-                new ChannelContentObj(
-                        "Add User",
-                        "Is necessary to add a user first to load this content",
-                        "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
-                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
-                        1,
-                        new Gson().toJson(new PreviewObj(null, "USER", Constants.CHANNEL_TYPE_USER_LIVE)),
-                        false
-                );
-    }
-
-    private static ChannelContentObj getRefreshContent() {
+    private static ChannelContentObj getRefreshContent(Context context) {
         Calendar rightNow = Calendar.getInstance();
         String month = rightNow.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
         String day = String.valueOf(rightNow.get(Calendar.DAY_OF_MONTH));
@@ -482,13 +482,13 @@ public final class ChannelsUtils {
         return new ChannelContentObj(
                 String.format(
                         Locale.US,
-                        "Last refresh - %s %s %02d:%02d",
+                        context.getString(R.string.channel_last_refresh),
                         rightNow.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault()),
                         dayMonth,
                         rightNow.get(Calendar.HOUR_OF_DAY),
                         rightNow.get(Calendar.MINUTE)
                 ),
-                "Press enter to refresh this, a manual refresh can only happen when the app is visible, so clicking here will open the app, this channel auto refresh it 30 minutes",
+                context.getString(R.string.channel_refresh),
                 "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/refresh.png",
                 TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
                 1,
@@ -515,32 +515,32 @@ public final class ChannelsUtils {
         millis -= TimeUnit.MINUTES.toMillis(minutes);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        return String.format(Locale.US, "since %02d:%02d:%02d", hours, minutes, seconds);
+        return String.format(Locale.US, "%02d:%02d:%02d", hours, minutes, seconds);
     }
 
-    public static void UpdateAllChannels(Context context, AppPreferences appPreferences) {
+    public static void UpdateAllChannels(Context context, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
+
         String[][] DEFAULT_HEADERS = {
                 {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
                 {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
         };
 
-        StartLive(context, appPreferences, DEFAULT_HEADERS);
-        StartFeatured(context, DEFAULT_HEADERS);
-        StartGames(context, DEFAULT_HEADERS);
-        UpdateUserChannels(context, appPreferences);
+        StartLive(context, appPreferences, DEFAULT_HEADERS, CHANNELS_NAMES);
+        StartFeatured(context, DEFAULT_HEADERS, CHANNELS_NAMES);
+        StartGames(context, DEFAULT_HEADERS, CHANNELS_NAMES);
+        UpdateUserChannels(context, appPreferences, CHANNELS_NAMES);
     }
 
-    public static void UpdateUserChannels(Context context, AppPreferences appPreferences) {
+    public static void UpdateUserChannels(Context context, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
         SetUserLive(
                 context,
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
-                appPreferences
+                appPreferences,
+                CHANNELS_NAMES
         );
-        StartUserGames(context);
-        StartUserHost(context);
     }
 
-    public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS) {
+    public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
@@ -560,7 +560,8 @@ public final class ChannelsUtils {
                     null,
                     true,
                     Constants.CHANNEL_TYPE_LIVE,
-                    DEFAULT_HEADERS
+                    DEFAULT_HEADERS,
+                    context
             );
 
         }
@@ -570,14 +571,16 @@ public final class ChannelsUtils {
                 new ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
+                        CHANNELS_NAMES[Constants.CHANNEL_TYPE_LIVE],
                         Constants.CHANNEL_TYPE_LIVE,
                         content
                 ),
-                channelId
+                channelId,
+                CHANNELS_NAMES
         );
     }
 
-    public static void SetUserLive(Context context, String userId, AppPreferences appPreferences) {
+    public static void SetUserLive(Context context, String userId, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         long channelId = getChannelIdFromTvProvider(
@@ -598,9 +601,11 @@ public final class ChannelsUtils {
                                     Streams,//Get the follows array
                                     null,
                                     true,
-                                    Constants.CHANNEL_TYPE_USER_LIVE
+                                    Constants.CHANNEL_TYPE_USER_LIVE,
+                                    context
                             ),
-                            channelId
+                            channelId,
+                            CHANNELS_NAMES
                     );
 
                 }
@@ -608,41 +613,45 @@ public final class ChannelsUtils {
                 return;
             }
 
-            StartUserLive(context, null, channelId);
+            StartUserLive(context, null, channelId, CHANNELS_NAMES);
         } else {
 
             List<ChannelContentObj> content = new ArrayList<>();
-            content.add(getNoUserContent());
-            StartUserLive(context, content, channelId);
+            content.add(getNoUserContent(context));
+            StartUserLive(context, content, channelId, CHANNELS_NAMES);
 
         }
     }
 
-    private static void StartUserLive(Context context, List<ChannelContentObj> contentObj, long channelId) {
+    private static ChannelContentObj getNoUserContent(Context context) {
+        return
+                new ChannelContentObj(
+                        "Add User",
+                        context.getString(R.string.channel_no_user),
+                        "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/add_user.png",
+                        TvContractCompat.PreviewPrograms.ASPECT_RATIO_1_1,
+                        1,
+                        new Gson().toJson(new PreviewObj(null, "USER", Constants.CHANNEL_TYPE_USER_LIVE)),
+                        false
+                );
+    }
+
+    private static void StartUserLive(Context context, List<ChannelContentObj> contentObj, long channelId, String[] CHANNELS_NAMES) {
         StartChannel(
                 context,
                 new ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
+                        CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_LIVE],
                         Constants.CHANNEL_TYPE_USER_LIVE,
                         contentObj
                 ),
-                channelId
+                channelId,
+                CHANNELS_NAMES
         );
     }
 
-    public static void StartUserHost(Context context) {
-        if (!Tools.isConnected(context)) return;
-
-        long channelId = getChannelIdFromTvProvider(
-                context,
-                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_HOST]
-        );
-
-        if (channelId != -1L) DeleteChannel(context, channelId);
-    }
-
-    public static void StartFeatured(Context context, String[][] DEFAULT_HEADERS) {
+    public static void StartFeatured(Context context, String[][] DEFAULT_HEADERS, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         List<ChannelContentObj> content = null;
@@ -660,7 +669,8 @@ public final class ChannelsUtils {
                     "stream",
                     false,
                     Constants.CHANNEL_TYPE_FEATURED,
-                    DEFAULT_HEADERS
+                    DEFAULT_HEADERS,
+                    context
             );
 
         }
@@ -670,14 +680,16 @@ public final class ChannelsUtils {
                 new ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
+                        CHANNELS_NAMES[Constants.CHANNEL_TYPE_FEATURED],
                         Constants.CHANNEL_TYPE_FEATURED,
                         content
                 ),
-                channelId
+                channelId,
+                CHANNELS_NAMES
         );
     }
 
-    public static void StartGames(Context context, String[][] DEFAULT_HEADERS) {
+    public static void StartGames(Context context, String[][] DEFAULT_HEADERS, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         long channelId = getChannelIdFromTvProvider(
@@ -689,7 +701,8 @@ public final class ChannelsUtils {
         if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
 
             content = GetGamesContent(
-                    DEFAULT_HEADERS
+                    DEFAULT_HEADERS,
+                    context
             );
 
             if (content != null) {
@@ -711,26 +724,16 @@ public final class ChannelsUtils {
                 new ChannelObj(
                         R.mipmap.ic_launcher,
                         Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
+                        CHANNELS_NAMES[Constants.CHANNEL_TYPE_GAMES],
                         Constants.CHANNEL_TYPE_GAMES,
                         content
                 ),
-                channelId
+                channelId,
+                CHANNELS_NAMES
         );
     }
 
-    public static void StartUserGames(Context context) {
-        if (!Tools.isConnected(context)) return;
-
-        long channelId = getChannelIdFromTvProvider(
-                context,
-                Constants.CHANNELS_NAMES[Constants.CHANNEL_TYPE_USER_GAMES]
-        );
-
-        if (channelId != -1L) DeleteChannel(context, channelId);
-
-    }
-
-    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen, String[][] DEFAULT_HEADERS) {
+    private static List<ChannelContentObj> GetLiveContent(String url, String object, String object2, boolean sort, int screen, String[][] DEFAULT_HEADERS, Context context) {
 
         try {
             Tools.ResponseObj response;
@@ -758,7 +761,8 @@ public final class ChannelsUtils {
                                     obj.get(object).getAsJsonArray(),//Get the follows array
                                     object2,
                                     sort,
-                                    screen
+                                    screen,
+                                    context
                             );
                         }
 
@@ -776,12 +780,12 @@ public final class ChannelsUtils {
 
     }
 
-    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen) {
+    private static List<ChannelContentObj> ProcessLiveArray(JsonArray Streams, String object2, boolean sort, int screen, Context context) {
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Streams.size();
         if (objSize < 1) return null;
-        else content.add(getRefreshContent());
+        else content.add(getRefreshContent(context));
 
         Set<String> TempArray = new HashSet<>();
 
@@ -844,8 +848,8 @@ public final class ChannelsUtils {
                         emptyGame = Objects.equals(game, "");
 
                         description = String.format(Locale.US,
-                                "%s %s %s for %s viewers\n%s",
-                                emptyGame ? "Streaming" : "Playing",
+                                context.getString(R.string.channel_live_title),
+                                context.getString(emptyGame ? R.string.streaming : R.string.playing),
                                 game + (emptyGame ? "" : ","),
                                 StreamCreated_at != null ? StreamCreated_at : "",
                                 decimalFormat.format(viewers),
@@ -884,14 +888,14 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> GetGamesContent(String[][] HEADERS) {
+    private static List<ChannelContentObj> GetGamesContent(String[][] HEADERS, Context context) {
 
         JsonArray Games = GetLiveGames(HEADERS);//Get the Games array
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Games != null ? Games.size() : 0;
 
-        if (objSize > 0) content.add(getRefreshContent());
+        if (objSize > 0) content.add(getRefreshContent(context));
         else return null;
 
         JsonObject obj;
@@ -919,7 +923,11 @@ public final class ChannelsUtils {
                     content.add(
                             new ChannelContentObj(
                                     objGame.get("name").getAsString(),
-                                    decimalFormat.format(channels) + " Channels\nFor " + decimalFormat.format(viewers) + " viewers",
+                                    String.format(Locale.US,
+                                            context.getString(R.string.channel_game_title),
+                                            decimalFormat.format(channels),
+                                            decimalFormat.format(viewers)
+                                    ),
                                     objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.GAME_404,
                                     TvContractCompat.PreviewPrograms.ASPECT_RATIO_2_3,
                                     viewers,

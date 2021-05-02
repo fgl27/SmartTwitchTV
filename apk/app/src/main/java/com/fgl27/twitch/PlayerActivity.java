@@ -1512,29 +1512,38 @@ public class PlayerActivity extends Activity {
                     {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
             };
 
+
             try {
                 switch (Type) {
                     case Constants.CHANNEL_TYPE_LIVE:
-                        ChannelsUtils.StartLive(context, appPreferences, DEFAULT_HEADERS);
+                        ChannelsUtils.StartLive(
+                                context,
+                                appPreferences,
+                                DEFAULT_HEADERS,
+                                Constants.CHANNELS_NAMES
+                        );
                         break;
                     case Constants.CHANNEL_TYPE_USER_LIVE:
                         ChannelsUtils.SetUserLive(
                                 context,
                                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
-                                appPreferences
+                                appPreferences,
+                                Constants.CHANNELS_NAMES
                         );
                         break;
                     case Constants.CHANNEL_TYPE_FEATURED:
-                        ChannelsUtils.StartFeatured(context, DEFAULT_HEADERS);
+                        ChannelsUtils.StartFeatured(
+                                context,
+                                DEFAULT_HEADERS,
+                                Constants.CHANNELS_NAMES
+                        );
                         break;
                     case Constants.CHANNEL_TYPE_GAMES:
-                        ChannelsUtils.StartGames(context, DEFAULT_HEADERS);
-                        break;
-                    case Constants.CHANNEL_TYPE_USER_GAMES:
-                        ChannelsUtils.StartUserGames(context);
-                        break;
-                    case Constants.CHANNEL_TYPE_USER_HOST:
-                        ChannelsUtils.StartUserHost(context);
+                        ChannelsUtils.StartGames(
+                                context,
+                                DEFAULT_HEADERS,
+                                Constants.CHANNELS_NAMES
+                        );
                         break;
                     default:
                         break;
@@ -1552,7 +1561,14 @@ public class PlayerActivity extends Activity {
     public void RefreshChannelToast(int Type, Context context) {
         if (!canRunChannel || Type == 0) return;
 
-        Toast.makeText(context, Constants.CHANNELS_NAMES[Type] + " home screen channel refreshed", Toast.LENGTH_LONG).show();
+        Toast.makeText(
+                context,
+                String.format(
+                        Locale.US,
+                        context.getString(R.string.channel_refreshed),
+                        Constants.CHANNELS_NAMES[Type]
+                ),
+                Toast.LENGTH_LONG).show();
 
         LoadUrlWebview("javascript:smartTwitchTV.Main_EventChannelRefresh(" + Type + ")");
     }
@@ -1981,7 +1997,7 @@ public class PlayerActivity extends Activity {
                 } else {
 
                     try {
-                        ChannelsUtils.UpdateAllChannels(this, appPreferences);
+                        ChannelsUtils.UpdateAllChannels(this, appPreferences, Constants.CHANNELS_NAMES);
                     } catch (Exception e) {
                         Tools.recordException(TAG, "UpdateAllChannels Exception ", e);
                     }
@@ -2643,7 +2659,7 @@ public class PlayerActivity extends Activity {
             ChannelHandler.post(() -> {
 
                 try {
-                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences);
+                    ChannelsUtils.UpdateUserChannels(mWebViewContext, appPreferences, Constants.CHANNELS_NAMES);
                 } catch (Exception e) {
                     Tools.recordException(TAG, "mUpdateUserChannels Exception ", e);
                 }
