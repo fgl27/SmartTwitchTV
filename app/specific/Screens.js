@@ -560,8 +560,8 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[2] + id + '" class="stream_info_live_name" style="width: 50%; display: inline-block;">' +
-        valuesArray[4] + '</div><div class="stream_info_live" style="width:50%; float: right; text-align: right; display: inline-block;">' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
+        valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[11] + ' | ' + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
@@ -583,7 +583,7 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[2] + id + '" class="stream_info_live_name" style="width: 47%; display: inline-block;">' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
         valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
         valuesArray[5] + ' | ' + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
