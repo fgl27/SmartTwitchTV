@@ -424,7 +424,7 @@ function en_USLang() {
     STR_A_Z = "Alphabetical A - Z";
     STR_Z_A = "Alphabetical Z - A";
     STR_APP_ANIMATIONS = "Enable app animations";
-    STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
+    STR_APP_ANIMATIONS_SUMMARY = "Enables side panel, scroll and related animations";
     STR_UI_SETTINGS = "Interface customization's, color style, animations and related";
     STR_GENERAL_CUSTOM = "Content customization's, sorting, auto refresh, timeouts and related";
     STR_RUNNINGTIME = "App running for:";
@@ -564,7 +564,6 @@ function en_USLang() {
     STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
     STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
     STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
-    STR_ENABLED_MAIN_MULTI = "Enable main or top left corner player first";
     STR_MAIN_WINDOW = "Main video";
     STR_MULTI_MAIN_WINDOW = "MultiStream main video";
     STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big video";
@@ -596,10 +595,10 @@ function en_USLang() {
     STR_CHAT_RESULT = "In Chat expected result:";
     STR_CHAT_SEND = "Send";
     STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
-    STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of";
+    STR_CHAT_FOLLOWER_ONLY = "Chat is on Followers-only mode, and you are not a follower of";
     STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you are only fallowing for";
     STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
-    STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
+    STR_CHAT_CHOOSE = "Choose which chat to write to or press return to close this";
     STR_CHAT_OPTIONS_TITLE = "Write to chat options";
     STR_CHAT_OPTIONS_KEYBOARD = "Software Keyboard auto hide";
     STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Allows to control the behavior of the on screen software Keyboard, if you have a physical Keyboard connected use this, if not set to never";
@@ -631,7 +630,7 @@ function en_USLang() {
     STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
     STR_CHAT_TIMESTAMP = "Show message timestamp";
     STR_CHAT_NICK_COLOR = "Readable nick colors";
-    STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
+    STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to see color";
     STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
     STR_CHAT_MESSAGE_DELETED = "This single user message was requested to be deleted";
     STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user was requested to be deleted";
