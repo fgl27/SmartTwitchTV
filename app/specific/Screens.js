@@ -560,14 +560,13 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-        valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 50%; display: inline-block;">' +
+        valuesArray[4] + '</div><div class="stream_info_live" style="width:50%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[11] + ' | ' + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
         (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE_HTML + //Old sorting fix
-        valuesArray[14] + '</div><div class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[1]) + '</div></div>' +
+        valuesArray[14] + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
         '</div></div></div></div></div>';
@@ -584,14 +583,13 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-        valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 47%; display: inline-block;">' +
+        valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + ' | ' + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + '</div><div class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[11]) + '</div></div>' +
+        valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
         '</div></div></div></div>';
