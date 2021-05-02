@@ -288,6 +288,9 @@ function PlayClip_QualityGenerate(mresponse) {
 }
 
 function PlayClip_QualityStart(qualities) {
+
+    if (!PlayClip_getQualitiesCount()) return;
+
     PlayClip_qualities = qualities;
 
     Play_SetExternalQualities(PlayClip_qualities, 0);
@@ -347,6 +350,9 @@ function PlayClip_CheckBlockedRes(pos, array) {
 }
 
 function PlayClip_qualityChanged() {
+
+    if (!PlayClip_getQualitiesCount()) return;
+
     PlayClip_qualityIndex = PlayClip_SetQuality(PlayClip_qualities);
     PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
 
@@ -606,7 +612,7 @@ function PlayClip_getQualitiesCount() {
 }
 
 function PlayClip_SetHtmlQuality(element) {
-    if (!PlayClip_qualities.length || !PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
+    if (!PlayClip_getQualitiesCount() || !PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
 
     PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
@@ -661,7 +667,7 @@ function PlayClip_CheckPreview() {
         Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowingUserLive() &&
         !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
-        if (PlayClip_CheckPreviewClip()) {
+        if (PlayClip_CheckPreviewClip() && PlayClip_getQualitiesCount()) {
             Play_PreviewURL = PlayClip_qualities[0].url;
             Play_PreviewResponseText = PlayClip_qualities;
             Play_PreviewId = ChannelClip_playUrl;
