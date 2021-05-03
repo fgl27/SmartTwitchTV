@@ -565,8 +565,7 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        (valuesArray[16] ? STR_CREATED_AT + valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE_HTML + //Old sorting fix
-        valuesArray[14] + STR_VIEWS + '</div></div>' +
+        STR_CREATED_AT + valuesArray[16] + ',' + STR_SPACE_HTML + valuesArray[14] + STR_VIEWS + '</div></div>' +
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
         '</div></div></div></div></div>';

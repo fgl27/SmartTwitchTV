@@ -1620,9 +1620,9 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
 
     ChannelClip_title = Main_values_Play_data[10];
     ChannelClip_language = Main_values_Play_data[11];
-    ChannelClip_createdAt = (Main_values_Play_data[16] ? Main_values_Play_data[16] : Main_values_Play_data[12]);//Old sorting fix
-    ChannelClip_views = Main_values_Play_data[14];
-    ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
+    ChannelClip_createdAt = STR_CREATED_AT + Main_values_Play_data[16];
+    ChannelClip_views = Main_values_Play_data[14] + STR_VIEWS;
+    //ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     Main_hideScene1DocAndCallBack(
         function() {
