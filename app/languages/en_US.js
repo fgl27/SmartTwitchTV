@@ -52,7 +52,7 @@ function en_USLang() {
     STR_GAMES = "Games";
     STR_PLAYING = "Playing";
     STR_FOR = "for";
-    STR_WATCHING = "Watch time";
+    STR_WATCHING = "Watching time";
     STR_WAITING = "Waiting time";
     STR_SINCE = "Since";
     STR_AGAME = "A Game";
