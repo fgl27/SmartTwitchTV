@@ -138,12 +138,29 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTML('feed_thum_quality', info[5]);
         Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-        Main_innerHTML(
-            'feed_thum_views',
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
-        );
+        Sidepannel_UpdateSince();
 
     }
+}
+
+var Sidepannel_UpdateSinceId;
+function Sidepannel_UpdateSince() {
+
+    if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+
+    var info = Sidepannel_GetObj();
+
+    Main_innerHTML(
+        'feed_thum_views',
+        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+    );
+
+    Sidepannel_UpdateSinceId = Main_setTimeout(
+        Sidepannel_UpdateSince,
+        1000,
+        Sidepannel_UpdateSinceId
+    );
+
 }
 
 function Sidepannel_UpdateThumb() {
@@ -174,6 +191,7 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
     Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    Main_clearTimeout(Sidepannel_UpdateSinceId);
 
     if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
