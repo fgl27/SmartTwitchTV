@@ -49,7 +49,7 @@ function pt_BRLang() {
     STR_GAMES = "Jogos";
     STR_PLAYING = "Jogando";
     STR_FOR = "para";
-    STR_WATCHING = "Tempo de exibição";
+    STR_WATCHING = "Assistindo por ";
     STR_WAITING = "Tempo de espera";
     STR_SINCE = "Desde";
     STR_AGAME = "Um Jogo";
