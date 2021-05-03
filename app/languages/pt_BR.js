@@ -498,7 +498,7 @@ function pt_BRLang() {
     STR_CHECK_HISTORY = "Verificando status de seguidor...";
     STR_REFRESH_DELETE = "Atualize a tela após excluir para ver a alteração.";
     STR_THUMB_OPTIONS_TOP = "Segure para a esquerda para opções de miniaturas";
-    STR_REPLACE_MULTI = "Escolher com para substituir pelo acima?";
+    STR_REPLACE_MULTI = "Escolher qual substituir pelo de acima?";
     STR_REPLACE_MULTI_ENTER = "Pressione Enter para substituir ou retornar para sair.";
     STR_ALREDY_PLAYING = "Já está jogando";
     STR_STREAM_ERROR = "Não foi possível abrir a visualização";
@@ -512,7 +512,7 @@ function pt_BRLang() {
     STR_CONTROLS_MULTI_3 = "Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo";
     STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha pressionado para fonte de áudio todos os vídeos";
     STR_CONTROLS_MULTI_5 = "Sair do multistream: do controle inferior do player ou tecla de retorno duas vezes";
-    STR_CONTROLS_MULTI_6 = "Para fechar este abrir 4 transmissões ao vivo";
+    STR_CONTROLS_MULTI_6 = "Para fechar este abra as 4 transmissões ao vivo";
     STR_PICTURE_LIVE_FEED = 'Picture in picture: Segure enter, após use o D-Pad para mover, redimensionar ou mudar os vídeos';
     STR_MULTI_TITLE = ", Clique em uma miniatura para abrir ou substituir, use o direcional esquerdo/direito para mudar a fonte de áudio";
     STR_FEED_END_DIALOG = ', Pressione retorno para voltar ao menu superior';
