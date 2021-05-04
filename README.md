@@ -112,7 +112,7 @@ Follow the bellow instruction to translate, test and send the files back.
 
 - Translate all string to yours language
 - Delete from the file any string that when translated has no difference to the original EN_US String
-- Remove from the file any string that wasn't translated and add it to a separated file name it `untranslated_js.txt` for `app/languages/en_US.js` and `untranslated_xml.txt` for `apk/app/src/main/res/values/strings.xml` make sure you inform why you didn't translate it of those.
+- Remove from the file any string that wasn't translated and add it to a separated file name it `untranslated_js.txt` for `app/languages/en_US.js` and `untranslated_xml.txt` for `apk/app/src/main/res/values/strings.xml` make sure you inform why you didn't translate in case is a issue that needed to be resolved.
 - The files `untranslated_*.txt` are a way so in the future is easier to know with string need to be updates, as when changes are made to the original strings I may remove them from the translation so the translator know that they need a update, also new string created after the translation will be added to `untranslated_*.txt`
 
 ### Testing [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) 
@@ -132,7 +132,9 @@ This file is part of the apk and is technically not needed to test it, just make
 
 ### How to send the files
 
-Send all the files included the `untranslated_*.txt` files via a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com) inform the language they are for, make sure you tested/validate the file and inform the result and issues you find.<br>
+If is a update of a existent language you can send the update via github pull request that is prefered, but if you don't use github, just send the files via [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com), make sure to send the full file not just what you have changed.<br>
+
+If is a full new translation send all the files included the `untranslated_*.txt` files via a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com) inform the language they are for, make sure you tested/validate the file and inform the result and issues you found, once those files are added to the repository one can update them just using github pull request.<br>
 
 ## Download
 
