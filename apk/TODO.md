@@ -51,20 +51,11 @@ TODO list
 * Update top option that today are 3 to 4 and on that forth add a "is following who" option so one can see what channel that channel/user follows
 * For this probably need to add a extra channel holder screen, on title show "Name is following channels" or something like that
 
-### Move all new strings that are harcodede to the apk/app/src/main/res/values/strings.xml
+### Improve translations
 
 * General improve
-* Some string are "harcoded" on the apk
-* they are probably all on the `apk/app/src/main/java/com/fgl27/twitch/notification` and `apk/app/src/main/java/com/fgl27/twitch/channels`
-* Maybe some are on apk/app/src/main/java/com/fgl27/twitch/PlayerActivity.java
-* there is probably the needed to convert some of the final `ChannelContentObj` from `apk/app/src/main/java/com/fgl27/twitch/channels` to a function similar to `getRefreshContent()` fun as may be needed a context to get the string from the values/strings.xml as a static final obj can load strings
-
-### Add translations, improve strings
-
-* General improve
-* I (project main developer) don't nativity speak English, but PT-BR
-* So on the future I will add PT-BR translation
-* Because the above the main app English strings probably aren't 100% as I don't nativity speak English so they can always receive a check/improve
+* I (project main developer) don't nativity speak English, but do PT-BR
+* Because the above the main app English strings probably aren't 100%, so it can always be improved
 
 ### Improve restore backup dialog
 
