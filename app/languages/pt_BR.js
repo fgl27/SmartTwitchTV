@@ -82,7 +82,7 @@ function pt_BRLang() {
     STR_EXIT_MESSAGE = "Deseja sair do Cliente SmartTV para Twitch?";
     STR_EXIT = "Sair";
     STR_CHANGELOG = "Changelog";
-    STR_FULL_CHANGELOG = "Log de alterações completo";
+    STR_FULL_CHANGELOG = "Todas Alterações";
     STR_CHANGELOG_SUMMARY = "Estas são apenas as alterações mais recentes, para ver todas use o link abaixo:";
     STR_UPDATE = 'Clique para atualizar';
     STR_UPDATE_CHECK = 'Clique para verificar se há atualizações';

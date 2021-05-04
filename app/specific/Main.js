@@ -1103,7 +1103,7 @@ function Main_UpdateDialogSet() {
 
 function Main_UpdateDialogSetTitle() {
 
-    Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "27%" : "16%";
+    Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "30%" : "23%";
     Main_innerHTML("update_dialog_upbutton", Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
 
 }
@@ -1256,7 +1256,7 @@ function Main_UpdateDialogShowCheck() {
 function Main_UpdateDialogStartCheck() {
 
     Main_Ischecking = true;
-    Main_getElementById('update_dialog_upbutton').style.width = "27%";
+    Main_getElementById('update_dialog_upbutton').style.width = "30%";
     Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
     Main_CheckUpdate(true);
 
