@@ -85,7 +85,7 @@ function pt_BRLang() {
     STR_FULL_CHANGELOG = "Todas Alterações";
     STR_CHANGELOG_SUMMARY = "Estas são apenas as alterações mais recentes, para ver todas use o link abaixo:";
     STR_UPDATE = 'Clique para atualizar';
-    STR_UPDATE_CHECK = 'Clique para verificar se há atualizações';
+    STR_UPDATE_CHECK = 'Verificar se há atualizações';
     STR_UPDATE_CHECKING = 'Verificando atualizações ...';
     STR_UPDATE_CHECKING_FAIL = 'Falha na verificação da atualização';
     STR_NO_UPDATES = 'O aplicativo está atualizado';

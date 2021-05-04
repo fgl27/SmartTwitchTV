@@ -88,7 +88,7 @@ function en_USLang() {
     STR_FULL_CHANGELOG = "Full changelog";
     STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
     STR_UPDATE = 'Click to Update';
-    STR_UPDATE_CHECK = 'Click to Check for Updates';
+    STR_UPDATE_CHECK = 'Check for Updates';
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
     STR_UPDATE_CHECKING_FAIL = 'Update check fail';
     STR_NO_UPDATES = 'The app is up to date';
