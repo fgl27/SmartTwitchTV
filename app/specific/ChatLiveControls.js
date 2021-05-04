@@ -107,7 +107,7 @@ function ChatLiveControls_SetRoomState() {
     }
 
     var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
-    Main_innerHTML("chat_state", streamer + STR_SPACE + STR_CHAT_ROOMSTATE + STR_BR + (text === '' ? STR_CHAT_NO_RESTRICTIONS : text));
+    Main_innerHTML("chat_state", streamer + STR_SPACE_HTML + STR_CHAT_ROOMSTATE + STR_BR + (text === '' ? STR_CHAT_NO_RESTRICTIONS : text));
 }
 
 function ChatLiveControls_inputFocus() {

@@ -33,6 +33,7 @@ var Users_Userlastadded = '';
 var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll', 'user_row'];
 var Users_status = false;
 var Users_loadingData = true;
+var Users_Lang = '';
 //Variable initialization end
 
 function Users_init() {
@@ -63,7 +64,7 @@ function Users_init() {
     Main_addEventListener("keydown", Users_handleKeyDown);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (Users_status) {
+    else if (Users_status && Main_A_equals_B(Users_Lang, Settings_AppLang)) {
         Main_YRst(Users_cursorY);
         Main_ShowElement(Users_ids[5]);
         Users_addFocus();
@@ -90,6 +91,7 @@ function Users_StartLoad() {
     Main_HideWarningDialog();
     Users_status = false;
     Main_FirstLoad = true;
+    Users_Lang = Settings_AppLang;
     Users_cursorX = 0;
     Users_cursorY = 0;
     Users_loadingData = true;

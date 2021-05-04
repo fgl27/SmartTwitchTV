@@ -283,7 +283,8 @@ function Screens_init(key, preventRefresh) {
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
-        (ScreenObj[key].CheckLang && !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang))) {
+        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+        !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang)) {
 
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
         else Main_showLoadDialog();// the isRefreshing is running so just show the loading dialog prevent reload the screen
@@ -354,7 +355,8 @@ function Screens_StartLoad(key) {
     ScreenObj[key].data = null;
     ScreenObj[key].data_cursor = 0;
     ScreenObj[key].dataEnded = false;
-    ScreenObj[key].Lang = Main_ContentLang;
+    ScreenObj[key].ContentLang = Main_ContentLang;
+    ScreenObj[key].Lang = Settings_AppLang;
 
     Main_CounterDialogRst();
     Screens_loadDataRequestStart(key);
@@ -528,7 +530,7 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
         '<div class="stream_thumbnail_channel_text_holder">' +
         '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
-        (valuesArray[4] ? STR_SPACE + STR_SPACE +
+        (valuesArray[4] ? STR_SPACE_HTML + STR_SPACE_HTML +
             '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
             IMG_PARTNER + '">' : "") + '</div></div></div></div>';
 }
@@ -560,13 +562,11 @@ function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
         idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
         valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
+        valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
         valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
-        valuesArray[14] + '</div><div class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[1]) + '</div></div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        STR_CREATED_AT + valuesArray[16] + ',' + STR_SPACE_HTML + valuesArray[14] + STR_VIEWS + '</div></div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
         '</div></div></div></div></div>';
 }
@@ -582,15 +582,14 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
         '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-        idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-        valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-        valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+        idArray[2] + id + '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
+        valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
+        valuesArray[5] + STR_SPACE_HTML + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
         (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
         '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-        valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
-        Play_timeS(valuesArray[11]) + '</div></div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        STR_STREAM_ON + valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + STR_VIEWS + '</div></div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
         '</div></div></div></div>';
 }
@@ -618,8 +617,8 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
         valuesArray[5] + '</div></div><div class="' +
         (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
         '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-        '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
-        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+        '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
+        (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
         '</div></div></div></div>';
 }
@@ -1183,7 +1182,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
                 if (offset) {
                     Main_showWarningDialog(
-                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(offset * 1000),
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(offset * 1000),
                         2000,
                         !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
                     );
@@ -1209,7 +1208,7 @@ function Screens_LoadPreviewResult(StreamData, x, y) {//Called by Java
 
 function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x) {
 
-    var error = StreamInfo[6] + STR_SPACE;
+    var error = StreamInfo[6] + STR_SPACE_HTML;
 
     if (ScreenObj[x].screenType === 2) {
 
@@ -1223,7 +1222,7 @@ function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x)
 
             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
             }
 
@@ -1564,7 +1563,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
             Main_innerHTML(
                 ScreenObj[key].ids[4] + id,
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
             );
 
         }
@@ -2241,7 +2240,7 @@ function Screens_histDialogHide(Update, key) {
         if (ScreenObj[key].histPosY === 2) {
             Screens_DeleteDialogAll = true;
             Screens_showDeleteDialog(
-                STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + '?',
+                STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE_HTML + STR_HISTORY + '?',
                 key
             );
         } else if (ScreenObj[key].histPosX[0] !== ScreenObj[key].histPosXTemp[0]) {
@@ -2702,7 +2701,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 
             Screens_DeleteDialogAll = false;
             Screens_showDeleteDialog(
-                STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + STR_SPACE + STR_FOR + '?' +
+                STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_FOR + '?' +
                 STR_BR + STR_BR + streamer + STR_BR + title + STR_BR + STR_BR +
                 STR_REFRESH_DELETE,
                 key
@@ -2751,15 +2750,21 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 
 function Screens_SetLang(key) {
 
-    if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
+    var setting_lang_key = 'content_lang';
+    Settings_value[setting_lang_key].defaultValue = Screens_ThumbOptionPosXArrays[4];
+    Main_setItem(setting_lang_key, Settings_Obj_default(setting_lang_key) + 1);
+    Settings_SetLang();
 
-    var thumbkey = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
-    Languages_value[thumbkey].defaultValue = 1;
-    Main_setItem(thumbkey, Languages_Obj_default(thumbkey) + 1);
-    Languages_SetLang();
+    var ele = Main_getElementById(setting_lang_key);
+    if (ele) {
 
-    if (ScreenObj[key].CheckLang &&
-        !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang)) Main_ReloadScreen();
+        Main_textContent(setting_lang_key, Settings_Obj_values(setting_lang_key));
+        Settings_SetarrowsKey(setting_lang_key);
+
+    }
+
+    if (ScreenObj[key].CheckContentLang &&
+        !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
 
 }
 
@@ -2922,11 +2927,11 @@ function Screens_ThumbOptionSetArrowArray(key) {
     ];
 
     if (AddUser_UserIsSet()) {
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE);
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_GAMES);
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_VIDEOS);
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_CHANNELS);
-        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_HISTORY);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_GAMES);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_VIDEOS);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_CHANNELS);
+        Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_HISTORY);
     }
 
     Screens_YesNo = [
@@ -2934,17 +2939,8 @@ function Screens_ThumbOptionSetArrowArray(key) {
         STR_NO
     ];
 
-    var default_lang = 0;
-    var isAll = Main_ContentLang === "";
-
-    Screens_ThumbOptionLanguages = [];
-    Screens_ThumbOptionLanguagesTitles = [];
-
-    for (var property in Languages_value) {
-        Screens_ThumbOptionLanguages.push(property);
-        Screens_ThumbOptionLanguagesTitles.push(Languages_value[property].title);
-        if (!isAll && Languages_Obj_default(property)) default_lang = Screens_ThumbOptionLanguages.length - 1;
-    }
+    Screens_ThumbOptionLanguages = Settings_value.content_lang.apply_values;
+    Screens_ThumbOptionLanguagesTitles = Settings_value.content_lang.values;
 
     Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguagesTitles, Screens_ThumbOptionScreens];
 
@@ -2958,7 +2954,7 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     }
 
-    Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
+    Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, Settings_Obj_default('content_lang'), 0];
 
     Screens_ThumbOptionGOTO = [
         Main_Live,
@@ -2977,7 +2973,7 @@ function Screens_SetLastRefresh(key) {
     if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
         Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
 
-    Main_innerHTML("label_last_refresh", STR_SPACE + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
+    Main_innerHTML("label_last_refresh", STR_SPACE_HTML + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
 }
 
 function Screens_RefreshTimeout(key) {

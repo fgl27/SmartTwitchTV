@@ -40,6 +40,7 @@ var ChannelContent_profile_banner = '';
 var ChannelContent_KeyEnterID;
 var ChannelContent_clear = false;
 var ChannelContent_DataObj;
+var ChannelContent_Lang = '';
 
 //Variable initialization end
 
@@ -62,7 +63,7 @@ function ChannelContent_init() {
     }
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (ChannelContent_status) {
+    else if (ChannelContent_status && Main_A_equals_B(ChannelContent_Lang, Settings_AppLang)) {
         Main_YRst(ChannelContent_cursorY);
         Main_ShowElement('channel_content_scroll');
         ChannelContent_checkUser();
@@ -101,6 +102,7 @@ function ChannelContent_StartLoad() {
     ChannelContent_dataEnded = false;
     ChannelContent_TargetId = undefined;
     Main_FirstLoad = true;
+    ChannelContent_Lang = Settings_AppLang;
     ChannelContent_loadDataRequest();
     Main_EventScreen('ChannelContent');
 }
@@ -226,8 +228,8 @@ function ChannelContent_GetStreamerInfoError() {
 }
 
 function ChannelContent_setFollow() {
-    if (AddCode_IsFollowing) Main_innerHTML("channel_content_titley_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING);
-    else Main_innerHTML("channel_content_titley_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
+    if (AddCode_IsFollowing) Main_innerHTML("channel_content_titley_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOWING);
+    else Main_innerHTML("channel_content_titley_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
 }
 
 function ChannelContent_loadDataSuccess() {
@@ -243,7 +245,7 @@ function ChannelContent_loadDataSuccess() {
 
     var streamer_bio = Main_values.Main_selectedChannelDisplayname;
 
-    streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
+    streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE_HTML + STR_SPACE_HTML + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
 
     streamer_bio += ChannelContent_selectedChannelViews !== '' ?
         STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
@@ -394,7 +396,7 @@ function ChannelContent_keyEnter() {
             Play_data.data = [
                 null,//0
                 Main_values.Main_selectedChannelDisplayname,//1
-                STR_SPACE,//2
+                STR_SPACE_HTML,//2
                 '',//3
                 '',//4
                 '',//5

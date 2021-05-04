@@ -20,7 +20,8 @@
 
 // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
 var STR_BR = "<br>";
-var STR_SPACE = '&nbsp;';
+var STR_SPACE_HTML = '&nbsp;';
+var STR_SPACE = " ";
 var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
 var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
 var STR_DIV_TITLE = '<div class="about_text_title">';
@@ -45,6 +46,121 @@ var STR_APP_LAG = 'https://tinyurl.com/applag';
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
+
+    //Strings that are used between others strings
+    STR_FOR_THIS = STR_SPACE + STR_FOR_THIS + STR_SPACE;
+    STR_USER_HOSTING = STR_SPACE + STR_USER_HOSTING + STR_SPACE;
+    STR_JUMP_T0 = STR_SPACE + STR_JUMP_T0 + STR_SPACE;
+    STR_LATEST_VERSION = STR_SPACE + STR_LATEST_VERSION + STR_SPACE;
+    STR_OAUTH_WRONG2 = STR_SPACE + STR_OAUTH_WRONG2 + STR_SPACE;
+    STR_IS_SUB_IS_SUB = STR_SPACE + STR_IS_SUB_IS_SUB + STR_SPACE;
+    STR_BACK_USER_GAMES = STR_SPACE + STR_BACK_USER_GAMES + STR_SPACE;
+    STR_OFFSET = STR_SPACE + STR_OFFSET + STR_SPACE;
+
+    //Strings that are used before others strings
+    STR_CONTROLS_ETC += STR_SPACE;
+    STR_GO_TO += STR_SPACE;
+    STR_PLAYING += STR_SPACE;
+    STR_FOR += STR_SPACE;
+    STR_WATCHING += STR_SPACE;
+    STR_WAITING += STR_SPACE;
+    STR_SINCE += STR_SPACE;
+    STR_PLACEHOLDER_PRESS += STR_SPACE;
+    STR_STREAM_ON += STR_SPACE;
+    STR_DURATION += STR_SPACE;
+    STR_UPDATE_LAST_CHECK += STR_SPACE;
+    STR_CURRENT_VERSION += STR_SPACE;
+    STR_CONTROLS_MAIN_3 += STR_SPACE;
+    STR_OAUTH_WRONG += STR_SPACE;
+    STR_OAUTH_FAIL_USER += STR_SPACE;
+    STR_CANT_FOLLOW += STR_SPACE;
+    STR_REMOVE_USER += STR_SPACE;
+    STR_PLACEHOLDER_PRESS_UP += STR_SPACE;
+    STR_STARTED += STR_SPACE;
+    STR_STREAM_END += STR_SPACE;
+    STR_CREATED_AT += STR_SPACE;
+    STR_SIZE += STR_SPACE;
+    STR_BRIGHTNESS += STR_SPACE;
+    STR_JUMPING_STEP += STR_SPACE;
+    STR_PLAY_NEXT_IN += STR_SPACE;
+    STR_AUDIO_SOURCE += STR_SPACE;
+    STR_VOLUME += STR_SPACE;
+    STR_AUDIO += STR_SPACE;
+    STR_PRESS_ENTER_TO_CHANGE += STR_SPACE;
+    STR_DROOPED_FRAMES += STR_SPACE;
+    STR_BUFFER_HEALT += STR_SPACE;
+    STR_NET_ACT += STR_SPACE;
+    STR_LATENCY += STR_SPACE;
+    STR_PING += STR_SPACE;
+    STR_MAX_RES += STR_SPACE;
+    STR_MAX_BIT += STR_SPACE;
+    STR_MAX_LEVEL += STR_SPACE;
+    STR_MAX_INSTANCES += STR_SPACE;
+    STR_WATCHED += STR_SPACE;
+    STR_UNTIL += STR_SPACE;
+    STR_DELETE_SURE += STR_SPACE;
+    STR_4_WAY_MULTI_INSTANCES += STR_SPACE;
+    STR_PREVIEW_SIZE_SCREEN_SUMMARY += STR_SPACE;
+    STR_LAST_REFRESH += STR_SPACE;
+    STR_CHAT_BANNED += STR_SPACE;
+    STR_CHAT_FOLLOWER_ONLY += STR_SPACE;
+    STR_CHAT_FOLLOWER_ONLY_USER_TIME += STR_SPACE;
+    STR_CHAT_MESSAGE_DELETED_TIMEOUT += STR_SPACE;
+    STR_PLAYED += STR_SPACE;
+    STR_FROM_SIMPLE += STR_SPACE;
+    STR_REMAINING += STR_SPACE;
+
+    //Strings that are used after others strings
+    STR_KEY_UP_DOWN = STR_SPACE + STR_KEY_UP_DOWN;
+    STR_KEY_MEDIA_FF = STR_SPACE + STR_KEY_MEDIA_FF;
+    STR_GUIDE_EXTRA2 = STR_SPACE + STR_GUIDE_EXTRA2;
+    STR_IS_OFFLINE = STR_SPACE + STR_IS_OFFLINE;
+    STR_IS_SUB_ONLY_ERROR = STR_SPACE + STR_IS_SUB_ONLY_ERROR;
+    STR_PAST_BROA = STR_SPACE + STR_PAST_BROA;
+    STR_PAST_HIGHL = STR_SPACE + STR_PAST_HIGHL;
+    STR_CONTENT = STR_SPACE + STR_CONTENT;
+    STR_VIEWS = STR_SPACE + STR_VIEWS;
+    STR_LIVE_CHANNELS = STR_SPACE + STR_LIVE_CHANNELS;
+    STR_LIVE_GAMES = STR_SPACE + STR_LIVE_GAMES;
+    STR_USER_CHANNEL = STR_SPACE + STR_USER_CHANNEL;
+    STR_USER_REMOVE = STR_SPACE + STR_USER_REMOVE;
+    STR_USER_SET = STR_SPACE + STR_USER_SET;
+    STR_JUMP_TIME_BIG = STR_SPACE + STR_JUMP_TIME_BIG;
+    STR_SEC = STR_SPACE + STR_SEC;
+    STR_MIN = STR_SPACE + STR_MIN;
+    STR_MS = STR_SPACE + STR_MS;
+    STR_HR = STR_SPACE + STR_HR;
+    STR_CONTROLS_MAIN_6 = STR_SPACE + STR_CONTROLS_MAIN_6;
+    STR_FOLLOWING = STR_SPACE + STR_FOLLOWING;
+    STR_FOLLOW = STR_SPACE + STR_FOLLOW;
+    STR_IS_SUB_NOOAUTH = STR_SPACE + STR_IS_SUB_NOOAUTH;
+    STR_IS_SUB_NOT_SUB = STR_SPACE + STR_IS_SUB_NOT_SUB;
+    STR_CLIP = STR_SPACE + STR_CLIP;
+    STR_FOLLOWERS = STR_SPACE + STR_FOLLOWERS;
+    STR_GUIDE = STR_SPACE + STR_GUIDE;
+    STR_IS_NOW = STR_SPACE + STR_IS_NOW;
+    STR_SECOND = STR_SPACE + STR_SECOND;
+    STR_SECONDS = STR_SPACE + STR_SECONDS;
+    STR_MINUTE = STR_SPACE + STR_MINUTE;
+    STR_MINUTES = STR_SPACE + STR_MINUTES;
+    STR_UP = STR_SPACE + STR_UP;
+    STR_HOLD_UP = STR_SPACE + STR_HOLD_UP;
+    STR_PLAYER_PROBLEM_2 = STR_SPACE + STR_PLAYER_PROBLEM_2;
+    STR_TODAY = STR_SPACE + STR_TODAY;
+    STR_PREVIEW_ERROR_LINK = STR_SPACE + STR_PREVIEW_ERROR_LINK;
+    STR_PREVIEW_VOD_DELETED = STR_SPACE + STR_PREVIEW_VOD_DELETED;
+    STR_TOO_ERRORS = STR_SPACE + STR_TOO_ERRORS;
+    STR_GIFT_SUB = STR_SPACE + STR_GIFT_SUB;
+    STR_IN_CHAT = STR_SPACE + STR_IN_CHAT;
+    STR_MILLISECONDS = STR_SPACE + STR_MILLISECONDS;
+    STR_HOUR = STR_SPACE + STR_HOUR;
+    STR_HOURS = STR_SPACE + STR_HOURS;
+    STR_AVG = STR_SPACE + STR_AVG;
+    STR_AVG = STR_SPACE + STR_AVG;
+
+    //Making the finals strings of strings
+    STR_GUIDE_EXTRA = STR_SPACE_HTML + STR_GUIDE_EXTRA;
+    STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + STR_CONTROLS_PLAY_0;
     STR_CONTROL_KEY = STR_CONTROLS + " (C)";
     STR_SEARCH_KEY = STR_SEARCH + " (D)";
     STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
@@ -56,7 +172,7 @@ function DefaultLang() {
     STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
         STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">http://tiny.cc/donatetofgl27</div></div></div>';
     STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-        STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
+        STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
@@ -145,7 +261,7 @@ function DefaultLang() {
         STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT + STR_BR +
-        STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_14 + STR_BR +
+        STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_14 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_23 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_24 + STR_BR +
@@ -154,10 +270,11 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
-        STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_15 + STR_BR +
+        STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_15 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_21 + STR_BR +
         STR_DOT + STR_ABOUT_INFO_22 + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
+
 }

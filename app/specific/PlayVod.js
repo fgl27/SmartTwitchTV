@@ -105,7 +105,7 @@ function PlayVod_Start() {
         );
         Main_innerHTML("stream_info_title", ChannelVod_title);
         Main_textContent("stream_info_game", ChannelVod_game);
-        Main_innerHTMLWithEle(Play_infoLiveTime, ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
+        Main_innerHTMLWithEle(Play_infoLiveTime, ChannelVod_createdAt + ',' + STR_SPACE_HTML + ChannelVod_views);
         Main_textContent("stream_live_viewers", '');
         Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -294,7 +294,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
     );
 
-    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
+    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + STR_VIEWS);
     Main_textContent("stream_live_viewers", '');
     Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -835,7 +835,7 @@ function PlayVod_UpdateRemaining(current_time_seconds, duration_seconds) {
 
     } else {
 
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE_HTML);
 
     }
 

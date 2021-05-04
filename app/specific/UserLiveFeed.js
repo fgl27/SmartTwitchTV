@@ -97,8 +97,9 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].MaxOffset = 0;
         UserLiveFeed_obj[i].sorting = 0;
         UserLiveFeed_obj[i].CheckSort = 0;
-        UserLiveFeed_obj[i].lang = Main_ContentLang;
-        UserLiveFeed_obj[i].CheckLang = 0;
+        UserLiveFeed_obj[i].Lang = Settings_AppLang;
+        UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
+        UserLiveFeed_obj[i].CheckContentLang = 0;
 
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
@@ -164,7 +165,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -204,7 +205,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
-    UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckContentLang = 1;
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
@@ -216,7 +217,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
-    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -230,14 +231,6 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
-
-    Main_innerHTML('feed_end_1', STR_FEATURED);
-    Main_innerHTML('feed_end_3', STR_LIVE);
-    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
-    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
-    Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
-    Main_innerHTML('icon_feed_back', STR_SPACE);
 
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
@@ -563,7 +556,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
                 Main_innerHTML(
                     UserLiveFeed_ids[4] + id,
-                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
                 );
 
             }
@@ -875,7 +868,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
                 if (UserLiveFeed_PreviewOffset) {
                     Play_showWarningMidleDialog(
-                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
                         2000
                     );
                 }
@@ -892,7 +885,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
 
             } else {
 
-                error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
+                error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
 
             }
 
@@ -1132,7 +1125,7 @@ function UserLiveFeed_FeedRemoveFocus(pos) {
 function UserLiveFeed_SetFeedPicText() {
     Main_innerHTML(
         'icon_feed_refresh',
-        '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>'
+        '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE_HTML + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE_HTML + STR_SPACE_HTML + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE_HTML + STR_PICTURE_LIVE_FEED + '</div>'
     );
 }
 

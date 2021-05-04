@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 
+import com.fgl27.twitch.Constants;
 import com.fgl27.twitch.Tools;
 
 import net.grandcentrix.tray.AppPreferences;
@@ -62,7 +63,8 @@ public class SyncChannelJobService extends JobService {
 
                 ChannelsUtils.UpdateAllChannels(
                         context,
-                        new AppPreferences(context)
+                        new AppPreferences(context),
+                        Constants.CHANNELS_NAMES
                 );
 
             } catch (Exception e) {

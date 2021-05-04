@@ -250,6 +250,7 @@ function AddUser_UpdateSidepanelAfterShow() {
 function AddUser_UpdateSidepanelSize(logo, username) {
     //remove transition to change size
     Sidepannel_MovelDiv.style.transition = 'none';
+    var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
 
     Main_innerHTML("side_panel_new_0_img",
         '<img class="side_panel_new_img" alt="" src="' +
@@ -260,7 +261,7 @@ function AddUser_UpdateSidepanelSize(logo, username) {
 
     size = (size > 9 ? size - 9 : 0);
 
-    Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
+    Sidepannel_MovelDiv.style.width = 'calc(' + MoveldefaultWidth + '% + ' + size + 'ch)';
 
     var pos = Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth;
 
@@ -271,7 +272,7 @@ function AddUser_UpdateSidepanelSize(logo, username) {
     } else {
 
         var newsize = document.body.offsetWidth;
-        newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
+        newsize = (newsize / 100 * (MoveldefaultWidth + size)) - (newsize / 100 * 5);
         Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
 
     }

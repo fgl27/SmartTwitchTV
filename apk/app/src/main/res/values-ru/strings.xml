@@ -19,17 +19,19 @@
  *
  */
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" translatable="false">SmartTV Client for Twitch</string>
-    <string name="notification_service">Notification service running</string>
-    <string name="notification_live_game">Game is Live</string>
-    <string name="notification_live">Streamer is Live</string>
-    <string name="notification_title">Streamer changed title</string>
-    <string name="notification_game">Streamer changed game</string>
-    <string name="notification_title_game">Streamer changed game and title</string>
-    <string name="notification_text">Without this background notifications will not show</string>
-    <string name="no_network">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
-    <string name="no_internet">Ping to Twitch fail for the last 30 seconds!\n\nIf the app is not working properly revise yours local internet connection\n\nHold return key to close the app in case it freeze or stop working.\n\nThis will auto hide in 30 seconds or if the connection return\n\nThis warning can be disabled in settings</string>
-    <string name="external_player_fail">No external video player app available</string>
-    <string name="webview_exception">App fail to load because system Webview is either not present (unlikely) OR in the process of being updated, try again in a few seconds</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">SmartTV Client для Twitch</string>
+    <string name="notification_service">Служба уведомлений запущена</string>
+    <string name="notification_live_game">Игра в эфире</string>
+    <string name="notification_live">Стример в эфире</string>
+    <string name="notification_title">Стример сменил название</string>
+    <string name="notification_game">Стример сменил игру</string>
+    <string name="notification_title_game">Стример сменил игру и название</string>
+    <string name="notification_text">Без этого фоновые уведомления не будут отображаться</string>
+    <string name="no_network">Нет подключения к Интернету!\n\nПодключитесь к сети, чтобы приложение завершило загрузку\n\nили\n\nУдерживайте кнопку назад, чтобы закрыть приложение.</string>
+    <string name="no_internet">Пинг to Twitch не проходит последние 30 секунд!\n\nЕсли приложение не работает должным образом, проверьте подключение к Интернету.\n\nУдерживайте кнопку назад, чтобы закрыть приложение, если оно зависло или перестало работать.\n\nЭто автоматически скроется через 30 секунд или если соединение вернется\n\nЭто предупреждение можно отключить в настройках</string>
+    <string name="external_player_fail">Нет доступного внешнего видеоплеера</string>
+    <string name="webview_exception">Приложение не загружается, потому что Webview либо отсутствует (маловероятно), либо находится в процессе обновления, попробуйте еще раз через несколько секунд</string>
+
 </resources>

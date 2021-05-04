@@ -466,7 +466,7 @@
             text-overflow: ellipsis;
             overflow: hidden;
             font-family: 'Roboto';
-            font-size: 75%;
+            font-size: 74%;
         }
 
         .stream_info_live_title {
@@ -1024,7 +1024,7 @@
         }
 
         div.controls_text {
-            font-size: 1.8vh;
+            font-size: 1.65vh;
             margin-top: 0;
             margin-bottom: 0;
         }
@@ -1059,10 +1059,10 @@
             z-index: 2;
             position: absolute;
             right: 0;
-            width: 35ch;
+            width: 40ch;
             color: #FFFFFF;
-            font-size: 2.35vh;
-            padding: 1%;
+            font-size: 2.4vh;
+            padding: 0.75%;
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
 
@@ -1164,7 +1164,7 @@
             vertical-align: middle;
             display: inline-block;
             width: 98%;
-            font-size: 72%;
+            font-size: 70%;
             word-wrap: break-word;
             overflow: hidden;
             color: #FFFFFF;
@@ -2722,9 +2722,6 @@
                         <div id="settings_main" class="settings_main">
                             <!-- Settings_SetSettings()-->
                         </div>
-                        <div id="settings_lang" class="settings_main hide">
-                            <!-- Settings_SetLang()-->
-                        </div>
                     </div>
                 </div>
 
@@ -3827,8 +3824,7 @@
                         <div id="feed_end_8" class="feed_end_name"></div>
                     </div>
                     <div style="line-height: 0.75em;">
-                        <div id="icon_feed_refresh" class="icon_feed_refresh"
-                            style="width: 76%; display: inline-block;">
+                        <div id="icon_feed_refresh" class="icon_feed_refresh" style="width:76%; display: inline-block;">
                         </div>
                         <div id="feed_last_refresh" class="icon_feed_refresh"
                             style="width: 16%; display: inline-block; text-align: right; margin-left: 0;">
@@ -3868,9 +3864,9 @@
     </div>
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js" defer></script>
     <!-- The Firebase analytics librarie -->
-    <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-analytics.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-analytics.js" defer></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script src="https://www.googletagmanager.com/gtag/js" defer></script>
 
@@ -3878,6 +3874,8 @@
     <!--<script src="testing/testing.js" defer></script>-->
     <script src="languages/0_Strings.js" defer></script>
     <script src="languages/en_US.js" defer></script>
+    <script src="languages/ru_Ru.js" defer></script>
+    <script src="languages/pt_BR.js" defer></script>
     <script src="languages/default.js" defer></script>
     <script src="general/TVKeyValue.js" defer></script>
     <script src="general/img64.js" defer></script>
@@ -3901,7 +3899,6 @@
     <script src="thirdparty/kapchat.js" defer></script>
     <script src="specific/Settings.js" defer></script>
     <script src="specific/SettingsColor.js" defer></script>
-    <script src="specific/SettingsLanguages.js" defer></script>
     <script src="specific/ChannelContent.js" defer></script>
     <script src="specific/Search.js" defer></script>
     <script src="specific/Users.js" defer></script>

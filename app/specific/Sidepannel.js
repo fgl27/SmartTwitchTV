@@ -24,9 +24,9 @@ var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;
 var Sidepannel_IsMain = true;
 
-var Sidepannel_MoveldefaultMargin = 13.5;
 var Sidepannel_FixdefaultMargin = 5;
-var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
+//See en_USLang() for this values
+var Sidepannel_MoveldefaultMargin;
 
 var Sidepannel_FixDiv;
 var Sidepannel_MovelDiv;
@@ -68,8 +68,8 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
 
         var pos = (Sidepannel_PosFeed + 1);
 
-        if (pos < 10) pos = STR_SPACE + STR_SPACE + STR_SPACE + STR_SPACE + pos;
-        else if (pos < 100) pos = STR_SPACE + STR_SPACE + pos;
+        if (pos < 10) pos = STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + pos;
+        else if (pos < 100) pos = STR_SPACE_HTML + STR_SPACE_HTML + pos;
 
         Main_innerHTMLWithEle(
             Sidepannel_PosCounter,
@@ -138,12 +138,29 @@ function Sidepannel_UpdateThumbDiv() {
         Main_innerHTML('feed_thum_quality', info[5]);
         Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
         Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-        Main_innerHTML(
-            'feed_thum_views',
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE + info[4]
-        );
+        Sidepannel_UpdateSince();
 
     }
+}
+
+var Sidepannel_UpdateSinceId;
+function Sidepannel_UpdateSince() {
+
+    if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+
+    var info = Sidepannel_GetObj();
+
+    Main_innerHTML(
+        'feed_thum_views',
+        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+    );
+
+    Sidepannel_UpdateSinceId = Main_setTimeout(
+        Sidepannel_UpdateSince,
+        1000,
+        Sidepannel_UpdateSinceId
+    );
+
 }
 
 function Sidepannel_UpdateThumb() {
@@ -174,6 +191,7 @@ function Sidepannel_UpdateThumb() {
 
 function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
     Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+    Main_clearTimeout(Sidepannel_UpdateSinceId);
 
     if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
@@ -261,7 +279,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {//Called by Java
             } else {
 
                 Sidepannel_CheckIfIsLiveWarn(
-                    StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    StreamInfo[1] + STR_SPACE_HTML + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
                     0
                 );
 
@@ -310,11 +328,11 @@ function Sidepannel_HideWarningDialog() {
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {
-    return '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+    return '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
         (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "") + '<div class="partnericon_text" style="background: #' +
-        (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE + STR_SPACE +
-        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+            IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
+        (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
+        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
 }
 
 function Sidepannel_PreloadImgs() {
@@ -495,7 +513,8 @@ function Sidepannel_ShowFeed() {
 
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
-        !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue)) {
+        !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
+        !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)) {
 
         ForceRefresh = true;
 
@@ -531,7 +550,7 @@ function Sidepannel_SetLastRefreshUpDiv(date) {
 
     Main_innerHTMLWithEle(
         Sidepannel_LastRefreshDiv,
-        STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+        STR_REFRESH + STR_SPACE_HTML + '(' + STR_LAST_REFRESH +
         Play_timeDay(date) + ')'
     );
 
@@ -649,7 +668,7 @@ function Sidepannel_UnSetTopOpacity() {
 function Sidepannel_SetUserLables() {
     Main_values.Sidepannel_IsUser = true;
 
-    Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
+    Main_innerHTML('side_panel_movel_user_text', STR_SPACE_HTML + STR_USER_MENU + STR_SPACE_HTML);
     Main_ShowElement('side_panel_movel_user_text_holder');
     Main_ShowElement('side_panel_movel_new_8');
     Main_ShowElement('side_panel_new_8');
@@ -687,11 +706,11 @@ function Sidepannel_SetDefaultLables() {
     Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
     Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
-    Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_SETTINGS);
-    Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
-    Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
-    Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
-    Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_UPDATE_CHANGELOG);
+    Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
+    Main_innerHTML('side_panel_movel_new_10', STR_SPACE_HTML + STR_ABOUT);
+    Main_innerHTML('side_panel_movel_new_11', STR_SPACE_HTML + STR_CONTROLS);
+    Main_innerHTML('side_panel_movel_new_12', STR_SPACE_HTML + STR_EXIT);
+    Main_innerHTML('side_panel_movel_new_13', STR_SPACE_HTML + STR_UPDATE_CHANGELOG);
 
     Sidepannel_SetIcons('side_panel_new_1', 'search');
     Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');

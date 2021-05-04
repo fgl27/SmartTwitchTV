@@ -358,7 +358,7 @@ function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
 
                 Main_innerHTML(
                     "chat_loggedin" + chat_number,
-                    Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE + STR_VIEWER
+                    Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE_HTML + STR_VIEWER
                 );
             }
 
@@ -724,7 +724,7 @@ function ChatLive_loadChat(chat_number, id) {
     ChatLive_LineAdd(
         {
             chat_number: chat_number,
-            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE + STR_LIVE
+            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
         }
     );
 
@@ -806,7 +806,7 @@ function ChatLive_loadChatRequest(chat_number, id) {
                     ChatLive_LineAdd(
                         {
                             chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE + STR_AS + STR_SPACE +
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
                                 (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
                         }
                     );
@@ -997,7 +997,7 @@ function ChatLive_LineAddErro(message, chat_number, chatsend) {
     ChatLive_LineAdd(
         {
             chat_number: chat_number,
-            message: '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE + message + '</span>'
+            message: '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE_HTML + message + '</span>'
         }
     );
 }
@@ -1334,7 +1334,7 @@ function ChatLive_SendMessage(message, chat_number) {
             var time = Math.ceil((Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition) / 1000);
 
             ChatLiveControls_showWarningDialog(
-                STR_CHAT_SEND_DELAY + STR_SPACE + time + (time > 1 ? STR_SECONDS : STR_SECOND),
+                STR_CHAT_SEND_DELAY + STR_SPACE_HTML + time + (time > 1 ? STR_SECONDS : STR_SECOND),
                 5000
             );
         }

@@ -64,7 +64,7 @@ function PlayExtra_KeyEnter() {
 
         PlayExtra_PicturePicture = true;
 
-        Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
 
         if (Main_IsOn_OSInterface) {
             //Not on auto mode for change to auto before start picture in picture
@@ -246,8 +246,8 @@ function PlayExtra_SwitchPlayer() {
     Main_SaveValues();
 
     Play_UpdateMainStream(true, false);
-    Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
-    Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
+    Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
+    Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
     Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
 
     var temp_Volume_0 = Play_volumes[0];
@@ -427,8 +427,8 @@ function PlayExtra_UpdatePanel() {
     Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
 
     Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
-    Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
-    Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
+    Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
+    Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
 
     Main_innerHTML(
         'stream_info_pp_name1',
@@ -443,8 +443,8 @@ function PlayExtra_UpdatePanel() {
     Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
     Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
-    Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
-    Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
+    Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
+    Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
 }
 
 function PlayExtra_loadDataFail(Reason) {

@@ -78,16 +78,12 @@ public final class Constants {
             "User Live",
             "Featured",
             "Games",
-            "User Games",
-            "User Hosts",
     };
 
     public static final int CHANNEL_TYPE_LIVE = 1;
     public static final int CHANNEL_TYPE_USER_LIVE = 2;
     public static final int CHANNEL_TYPE_FEATURED = 3;
     public static final int CHANNEL_TYPE_GAMES = 4;
-    public static final int CHANNEL_TYPE_USER_GAMES = 5;
-    public static final int CHANNEL_TYPE_USER_HOST = 6;
 
     public static final int NOTIFICATION_CHECK_INTERVAL = 1000 * 60 * 5;//it 5 min
     public static final int DEFAULT_HTTP_TIMEOUT = 60000;

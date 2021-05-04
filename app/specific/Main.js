@@ -92,7 +92,8 @@ var Main_values = {
     "Restore_Backup_Check": false,
     "UserSidePannel_LastPos": null,
     "UserLiveFeed_LastPos": [],
-    "IsUpDating": false
+    "IsUpDating": false,
+    "WasLangChanged": false,
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -155,14 +156,14 @@ Main_Start();
 function Main_Start() {
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", function() {
-            Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+            Main_StartApp();
         });
     } else { // `DOMContentLoaded` already fired
-        Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+        Main_StartApp();
     }
 }
 
-function Main_loadTranslations(language) {
+function Main_StartApp() {
     Main_Checktylesheet();
 
     Main_ready(function() {
@@ -233,23 +234,9 @@ function Main_loadTranslations(language) {
         Main_initClick();
         Settings_SetDefautls();
         calculateFontSize();
-        en_USLang();
-        Languages_SetDefautls();
+        Main_RestoreValues();
+        Settings_SetAppLang();
 
-        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-        //var lang = language,
-        //    Savedlang = Main_getItemInt('user_language', 0);
-
-        //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-        //else Settings_CheckLang(lang);
-
-        //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-        //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-
-        Main_Log("language is " + language);
         DefaultLang();
 
         //When running locally from a browser overwrite AddCode_redirect_uri to be able to add authorization keys
@@ -263,8 +250,6 @@ function Main_loadTranslations(language) {
         Main_Scene2Doc = Main_getElementById('scene2');
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
-
-        Main_RestoreValues();
 
         Main_DoRestore = AddUser_RestoreUsers();
 
@@ -366,7 +351,8 @@ function Main_initWindows() {
     Users_RemoveCursorSet();
     Main_CheckDevice();
 
-    Main_SetStringsMain(true);
+    Main_Setworker();
+    Main_SetStringsMain();
 
     Main_GoBefore = Main_values.Main_Go;
 
@@ -519,8 +505,7 @@ function Main_CheckDevice() {
     }// else Settings_ForceEnableAnimations();
 }
 
-function Main_SetStringsMain(isStarting) {
-    Main_Setworker();
+function Main_SetStringsMain() {
 
     //set top bar labels
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -538,11 +523,7 @@ function Main_SetStringsMain(isStarting) {
 
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
-    if (isStarting) Settings_SetSettings();
-    else {
-        Settings_SetStrings();
-        Main_checkVersion();
-    }
+    Settings_SetSettings();
     Main_Changelog();
 }
 
@@ -580,9 +561,9 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
-    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
-    Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
-    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FOLLOW);
+    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS);
+    Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS);
+    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
     Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
@@ -621,10 +602,18 @@ function Main_SetStringsSecondary() {
 
     Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
     Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
+
+    Main_innerHTML('feed_end_1', STR_FEATURED);
+    Main_innerHTML('feed_end_3', STR_LIVE);
+    Main_innerHTML('feed_end_4', STR_USER + STR_SPACE_HTML + STR_LIVE);
+    Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE_HTML + STR_HISTORY);
+    Main_innerHTML('feed_end_7', STR_USER + STR_SPACE_HTML + 'VOD');
+    Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
+    Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
 }
 
 function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE + string + '</div>');
+    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE_HTML + string + '</div>');
 }
 
 function Main_HideElement(element) {
@@ -773,7 +762,7 @@ function Main_HideWarningDialog() {
 }
 
 function Main_AboutDialogUpdateTime() {
-    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
+    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE_HTML + Play_timeDay((new Date().getTime()) - Main_RunningTime));
 }
 
 function Main_showAboutDialog(removeEventListener, addEventListener) {
@@ -937,10 +926,11 @@ function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or m
     return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
 }
 
-function Main_checkVersion() {
+function Main_checkVersion(skipCheck) {
     var Main_versionTag;
 
     if (Main_IsOn_OSInterface) {
+
         var device = OSInterface_getDevice();
         var Webviewversion = OSInterface_getWebviewVersion();
         var Manufacturer = OSInterface_getManufacturer();
@@ -961,7 +951,7 @@ function Main_checkVersion() {
                 Main_HasUpdate = true;
                 Main_WarnUpdate(false);
 
-            } else Main_CheckUpdate();
+            } else if (!skipCheck) Main_CheckUpdate();
 
         }
 
@@ -973,7 +963,9 @@ function Main_checkVersion() {
             Main_AndroidSDK,
             Manufacturer
         );
+
     } else {
+
         Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
 
         Main_EventVersion(
@@ -1062,7 +1054,7 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
         'label_update',
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
         (web ? 'globe' : 'play-1') +
-        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
+        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE_HTML +
         (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
     );
 
@@ -1233,8 +1225,8 @@ function Main_UpdateDialogTitle() {
 
     var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
         (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
-        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE) + '</div>' + STR_BR +
-        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE + '</div>' + STR_BR,
+        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE_HTML) + '</div>' + STR_BR +
+        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE_HTML + '</div>' + STR_BR,
         changelog = version.changelog;
 
     innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;
@@ -1628,9 +1620,9 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
 
     ChannelClip_title = Main_values_Play_data[10];
     ChannelClip_language = Main_values_Play_data[11];
-    ChannelClip_createdAt = (Main_values_Play_data[16] ? Main_values_Play_data[16] : Main_values_Play_data[12]);//Old sorting fix
-    ChannelClip_views = Main_values_Play_data[14];
-    ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
+    ChannelClip_createdAt = STR_CREATED_AT + Main_values_Play_data[16];
+    ChannelClip_views = Main_values_Play_data[14] + STR_VIEWS;
+    //ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
     Main_hideScene1DocAndCallBack(
         function() {
@@ -2603,12 +2595,19 @@ function Main_StartHistoryworker() {
 //Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
 
-    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryVod].histPosX[3] ||
+        Main_isStoped ||
+        !AddUser_IsUserSet() ||
+        Boolean(!BradcastCheckerWorker)) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[2] = array[i].data[2].replace("Streamed", '');
+        array[i].data[4] = array[i].data[4].replace("Views", '');
 
         BradcastCheckerWorker.postMessage(
             {
@@ -2619,6 +2618,7 @@ function Main_RunVODWorker() {
         );
 
     }
+
 
     Main_setTimeout(Main_RunLiveVODWorker, 60000);
 
@@ -2633,6 +2633,10 @@ function Main_RunLiveVODWorker() {
         i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[11] = array[i].data[11].replace("Since", '');
+        array[i].data[4] = array[i].data[4].replace("Viewers", '');
 
         if (array[i].forceVod && array[i].vodid) {
 
@@ -2659,6 +2663,10 @@ function Main_RunClipWorker() {
     var i = 0, len = array.length;
 
     for (i; i < len; i++) {
+
+        //TODO remove this workaround after some updates
+        array[i].data[16] = array[i].data[16].replace("Created", '');
+        array[i].data[14] = array[i].data[14].replace("Views", '');
 
         BradcastCheckerWorker.postMessage(
             {
@@ -2759,11 +2767,7 @@ function Main_CheckStop() { // Called only by JAVA
     if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
 
     //Hide setting if showing
-    if (Languages_isVisible()) {
-        Languages_exit();
-        Settings_exit();
-        Main_SwitchScreen();
-    } else if (Settings_isVisible()) {
+    if (Settings_isVisible()) {
         if (Settings_Codecs_isVisible()) {
             if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
