@@ -519,13 +519,12 @@ function pt_BRLang() {
     STR_BACK_USER_GAMES = 'Pressione a tecla de retorno para voltar a';
     STR_NO_CONTENT = 'Nenhum conteúdo para este agora, tente novamente mais tarde';
     STR_SHOW_LIVE_PLAYER = 'Mostrar pré-visualização nas telas das transmissões ao vivo';
-    STR_SHOW_VOD_PLAYER_WARNING = 'Iniciando a reprodução de onde parou pela última vez:';
+    STR_SHOW_VOD_PLAYER_WARNING = 'Iniciando a reprodução de onde parou anteriormente:';
     STR_SHOW_VOD_PLAYER = 'Mostrar pré-visualização nas telas VOD';
     STR_SHOW_CLIP_PLAYER = 'Mostrar pré-visualização nas telas CLIP';
     STR_PREVIEW_CLIP_NEXT = 'Quando a visualização de um clipe termina, troca automática para o próximo clipe disponível';
     STR_SHOW_SIDE_PLAYER = 'Mostrar pré-visualização no painel lateral';
     STR_SHOW_FEED_PLAYER = 'Mostrar pré-visualização nas miniaturas de preview do player';
-
     STR_SHOW_FEED_PLAYER_SUMMARY = "Se você não quiser ou seu dispositivo ficar lento quando mais de um player estiver ativo, defina como NÃO";
     STR_DISABLED_FEED_PLAYER_MULTI = 'Desativar visualização quando multistream está ativado';
     STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = 'Por motivos de desempenho, alguns dispositivos podem ficar lentos com vários players, se estiver OK para multistream, mas quando o player de pré-visualização e multistream estão ativos ficar lento configuram este para NÃO';
