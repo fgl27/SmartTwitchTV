@@ -229,9 +229,11 @@
     var STR_MINUTES;
     var STR_RESTORE_PLAYBACK_WARN;
     var STR_CLOCK_OFFSET;
-    var STR_APP_LANG;
     var STR_CONTENT_LANG;
     var STR_CONTENT_LANG_SUMMARY;
+    var STR_APP_LANG;
+    var STR_APP_LANG_SUMMARY;
+    var STR_ENTER_TO_OPEN;
     var STR_LANG_ALL;
     var STR_NO_GAME;
     var STR_ABOUT_INFO_2_SOURCE;
@@ -424,7 +426,6 @@
     var STR_PICTURE_CONTROLS13;
     var STR_GUIDE_EXTRA2;
     var STR_KEY_MEDIA_FF;
-    var STR_ENABLED_MAIN_MULTI;
     var STR_MAIN_MULTI_BIG;
     var STR_MAIN_WINDOW;
     var STR_LOADING_FAIL;
@@ -728,7 +729,8 @@
 
     // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
     var STR_BR = "<br>";
-    var STR_SPACE = '&nbsp;';
+    var STR_SPACE_HTML = '&nbsp;';
+    var STR_SPACE = " ";
     var STR_ABOUT_EMAIL = "fglfgl27@gmail.com";
     var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertical-align: middle;"></i>' + "  ";
     var STR_DIV_TITLE = '<div class="about_text_title">';
@@ -753,6 +755,121 @@
 
     // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
     function DefaultLang() {
+
+        //Strings that are used between others strings
+        STR_FOR_THIS = STR_SPACE + STR_FOR_THIS + STR_SPACE;
+        STR_USER_HOSTING = STR_SPACE + STR_USER_HOSTING + STR_SPACE;
+        STR_JUMP_T0 = STR_SPACE + STR_JUMP_T0 + STR_SPACE;
+        STR_LATEST_VERSION = STR_SPACE + STR_LATEST_VERSION + STR_SPACE;
+        STR_OAUTH_WRONG2 = STR_SPACE + STR_OAUTH_WRONG2 + STR_SPACE;
+        STR_IS_SUB_IS_SUB = STR_SPACE + STR_IS_SUB_IS_SUB + STR_SPACE;
+        STR_BACK_USER_GAMES = STR_SPACE + STR_BACK_USER_GAMES + STR_SPACE;
+        STR_OFFSET = STR_SPACE + STR_OFFSET + STR_SPACE;
+
+        //Strings that are used before others strings
+        STR_CONTROLS_ETC += STR_SPACE;
+        STR_GO_TO += STR_SPACE;
+        STR_PLAYING += STR_SPACE;
+        STR_FOR += STR_SPACE;
+        STR_WATCHING += STR_SPACE;
+        STR_WAITING += STR_SPACE;
+        STR_SINCE += STR_SPACE;
+        STR_PLACEHOLDER_PRESS += STR_SPACE;
+        STR_STREAM_ON += STR_SPACE;
+        STR_DURATION += STR_SPACE;
+        STR_UPDATE_LAST_CHECK += STR_SPACE;
+        STR_CURRENT_VERSION += STR_SPACE;
+        STR_CONTROLS_MAIN_3 += STR_SPACE;
+        STR_OAUTH_WRONG += STR_SPACE;
+        STR_OAUTH_FAIL_USER += STR_SPACE;
+        STR_CANT_FOLLOW += STR_SPACE;
+        STR_REMOVE_USER += STR_SPACE;
+        STR_PLACEHOLDER_PRESS_UP += STR_SPACE;
+        STR_STARTED += STR_SPACE;
+        STR_STREAM_END += STR_SPACE;
+        STR_CREATED_AT += STR_SPACE;
+        STR_SIZE += STR_SPACE;
+        STR_BRIGHTNESS += STR_SPACE;
+        STR_JUMPING_STEP += STR_SPACE;
+        STR_PLAY_NEXT_IN += STR_SPACE;
+        STR_AUDIO_SOURCE += STR_SPACE;
+        STR_VOLUME += STR_SPACE;
+        STR_AUDIO += STR_SPACE;
+        STR_PRESS_ENTER_TO_CHANGE += STR_SPACE;
+        STR_DROOPED_FRAMES += STR_SPACE;
+        STR_BUFFER_HEALT += STR_SPACE;
+        STR_NET_ACT += STR_SPACE;
+        STR_LATENCY += STR_SPACE;
+        STR_PING += STR_SPACE;
+        STR_MAX_RES += STR_SPACE;
+        STR_MAX_BIT += STR_SPACE;
+        STR_MAX_LEVEL += STR_SPACE;
+        STR_MAX_INSTANCES += STR_SPACE;
+        STR_WATCHED += STR_SPACE;
+        STR_UNTIL += STR_SPACE;
+        STR_DELETE_SURE += STR_SPACE;
+        STR_4_WAY_MULTI_INSTANCES += STR_SPACE;
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY += STR_SPACE;
+        STR_LAST_REFRESH += STR_SPACE;
+        STR_CHAT_BANNED += STR_SPACE;
+        STR_CHAT_FOLLOWER_ONLY += STR_SPACE;
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME += STR_SPACE;
+        STR_CHAT_MESSAGE_DELETED_TIMEOUT += STR_SPACE;
+        STR_PLAYED += STR_SPACE;
+        STR_FROM_SIMPLE += STR_SPACE;
+        STR_REMAINING += STR_SPACE;
+
+        //Strings that are used after others strings
+        STR_KEY_UP_DOWN = STR_SPACE + STR_KEY_UP_DOWN;
+        STR_KEY_MEDIA_FF = STR_SPACE + STR_KEY_MEDIA_FF;
+        STR_GUIDE_EXTRA2 = STR_SPACE + STR_GUIDE_EXTRA2;
+        STR_IS_OFFLINE = STR_SPACE + STR_IS_OFFLINE;
+        STR_IS_SUB_ONLY_ERROR = STR_SPACE + STR_IS_SUB_ONLY_ERROR;
+        STR_PAST_BROA = STR_SPACE + STR_PAST_BROA;
+        STR_PAST_HIGHL = STR_SPACE + STR_PAST_HIGHL;
+        STR_CONTENT = STR_SPACE + STR_CONTENT;
+        STR_VIEWS = STR_SPACE + STR_VIEWS;
+        STR_LIVE_CHANNELS = STR_SPACE + STR_LIVE_CHANNELS;
+        STR_LIVE_GAMES = STR_SPACE + STR_LIVE_GAMES;
+        STR_USER_CHANNEL = STR_SPACE + STR_USER_CHANNEL;
+        STR_USER_REMOVE = STR_SPACE + STR_USER_REMOVE;
+        STR_USER_SET = STR_SPACE + STR_USER_SET;
+        STR_JUMP_TIME_BIG = STR_SPACE + STR_JUMP_TIME_BIG;
+        STR_SEC = STR_SPACE + STR_SEC;
+        STR_MIN = STR_SPACE + STR_MIN;
+        STR_MS = STR_SPACE + STR_MS;
+        STR_HR = STR_SPACE + STR_HR;
+        STR_CONTROLS_MAIN_6 = STR_SPACE + STR_CONTROLS_MAIN_6;
+        STR_FOLLOWING = STR_SPACE + STR_FOLLOWING;
+        STR_FOLLOW = STR_SPACE + STR_FOLLOW;
+        STR_IS_SUB_NOOAUTH = STR_SPACE + STR_IS_SUB_NOOAUTH;
+        STR_IS_SUB_NOT_SUB = STR_SPACE + STR_IS_SUB_NOT_SUB;
+        STR_CLIP = STR_SPACE + STR_CLIP;
+        STR_FOLLOWERS = STR_SPACE + STR_FOLLOWERS;
+        STR_GUIDE = STR_SPACE + STR_GUIDE;
+        STR_IS_NOW = STR_SPACE + STR_IS_NOW;
+        STR_SECOND = STR_SPACE + STR_SECOND;
+        STR_SECONDS = STR_SPACE + STR_SECONDS;
+        STR_MINUTE = STR_SPACE + STR_MINUTE;
+        STR_MINUTES = STR_SPACE + STR_MINUTES;
+        STR_UP = STR_SPACE + STR_UP;
+        STR_HOLD_UP = STR_SPACE + STR_HOLD_UP;
+        STR_PLAYER_PROBLEM_2 = STR_SPACE + STR_PLAYER_PROBLEM_2;
+        STR_TODAY = STR_SPACE + STR_TODAY;
+        STR_PREVIEW_ERROR_LINK = STR_SPACE + STR_PREVIEW_ERROR_LINK;
+        STR_PREVIEW_VOD_DELETED = STR_SPACE + STR_PREVIEW_VOD_DELETED;
+        STR_TOO_ERRORS = STR_SPACE + STR_TOO_ERRORS;
+        STR_GIFT_SUB = STR_SPACE + STR_GIFT_SUB;
+        STR_IN_CHAT = STR_SPACE + STR_IN_CHAT;
+        STR_MILLISECONDS = STR_SPACE + STR_MILLISECONDS;
+        STR_HOUR = STR_SPACE + STR_HOUR;
+        STR_HOURS = STR_SPACE + STR_HOURS;
+        STR_AVG = STR_SPACE + STR_AVG;
+        STR_AVG = STR_SPACE + STR_AVG;
+
+        //Making the finals strings of strings
+        STR_GUIDE_EXTRA = STR_SPACE_HTML + STR_GUIDE_EXTRA;
+        STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + STR_CONTROLS_PLAY_0;
         STR_CONTROL_KEY = STR_CONTROLS + " (C)";
         STR_SEARCH_KEY = STR_SEARCH + " (D)";
         STR_SETTINGS_KEY = STR_SETTINGS + " (A)";
@@ -764,7 +881,7 @@
         STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
             STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">http://tiny.cc/donatetofgl27</div></div></div>';
         STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-            STR_SPACE + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
+            STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
         STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
             STR_DIV_MIDLE_LEFT +
@@ -853,7 +970,7 @@
             STR_BR +
             STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
             STR_DIV_MIDLE_LEFT + STR_BR +
-            STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_14 + STR_BR +
+            STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_14 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_7 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_23 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_24 + STR_BR +
@@ -862,12 +979,13 @@
             STR_DOT + STR_ABOUT_INFO_13 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_9 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_8 + STR_BR +
-            STR_SPACE + STR_SPACE + STR_SPACE + STR_ABOUT_INFO_15 + STR_BR +
+            STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_15 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_16 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_17 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_21 + STR_BR +
             STR_DOT + STR_ABOUT_INFO_22 + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -892,61 +1010,63 @@
     //Spacing for release maker not trow errors from jshint
     function en_USLang() {
         // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
+        //Then copy this and set it to true, if doesn't don't copy it
         Main_IsDayFirst = false;
 
         // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
-        //document.getElementById("side_panel").style.width = "25%";
+        // If it need ajustment or yours language just copy the bellow line and change it value until it does
+        Sidepannel_MoveldefaultMargin = 13.5;
 
         //Below are variables to translate
-        STR_KEY_UP_DOWN = " PG Up/Down";
-        STR_KEY_MEDIA_FF = " or fast forward rewind media key";
-        STR_GUIDE_EXTRA = STR_SPACE + "or press key 2";
-        STR_GUIDE_EXTRA2 = " or media key next track";
+        STR_KEY_UP_DOWN = "PG Up/Down";
+        STR_KEY_MEDIA_FF = "or fast forward rewind media key";
+        STR_GUIDE_EXTRA = "or press key 2";
+        STR_GUIDE_EXTRA2 = "or media key next track";
         STR_REFRESH = "Refresh";
         STR_SEARCH = "Search";
         STR_SETTINGS = "Settings";
         STR_CONTROLS = "Controls";
-        STR_CONTROLS_ETC = "See play store video to better understand how the app works and how to use it's settings and controls ";
+        STR_CONTROLS_ETC = "See play store video to better understand how the app works and how to use it's settings and controls";
         STR_ABOUT = "About";
         STR_HIDE = "Hide";
         STR_SEARCH_EMPTY = "The text you entered is empty.";
         STR_SEARCH_RESULT_EMPTY = "The search result is empty.";
         STR_SWITCH = "Switch screen";
         STR_SWITCH_USER = "Switch user screen";
-        STR_SWITCH_VOD = "Switch: Past Broadcasts or Highlights";
+        STR_SWITCH_VOD = "Switch: Vods or Highlights";
         STR_SWITCH_CLIP = "Switch: Period (24h, 7d, 30d, all)";
-        STR_GO_TO = "Go to screen ";
+        STR_GO_TO = "Go to screen";
         STR_USER = "User";
         STR_LIVE = "Live";
         STR_GAMES = "Games";
-        STR_PLAYING = "Playing ";
-        STR_FOR = "for ";
-        STR_WATCHING = "Watch time ";
-        STR_WAITING = "Waiting time ";
-        STR_SINCE = "Since ";
+        STR_PLAYING = "Playing";
+        STR_FOR = "for";
+        STR_WATCHING = "Watching time";
+        STR_WAITING = "Waiting time";
+        STR_SINCE = "Since";
         STR_AGAME = "A Game";
         STR_PLACEHOLDER_SEARCH = "Type your search...";
         STR_PLACEHOLDER_OAUTH = "Type your authorization key...";
         STR_PLACEHOLDER_USER = "Type your username...";
-        STR_PLACEHOLDER_PRESS = "Press Enter or Select key to, ";
+        STR_PLACEHOLDER_PRESS = "Press Enter or Select key to,";
         STR_CHANNELS = "Channels";
         STR_CHANNEL = "Channel";
         STR_GOBACK_START = "Back to previous screen: return key";
-        STR_IS_OFFLINE = " has ended";
+        STR_IS_OFFLINE = "has ended";
         STR_CHECK_HOST = ", checking host";
         STR_IS_SUB_ONLY = "This video is only available to subscribers.";
-        STR_IS_SUB_ONLY_ERROR = " is subscribers only content.";
+        STR_IS_SUB_ONLY_ERROR = "is subscribers only content.";
         STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
         STR_NO = "No";
-        STR_FOR_THIS = " for this ";
+        STR_FOR_THIS = "for this";
         STR_PLAYER_PROBLEM = "Connection failed, unable to load video content exiting...";
-        STR_PAST_BROA = " Past Broadcasts";
-        STR_PAST_HIGHL = " Highlights";
+        STR_PAST_BROA = "Vods";
+        STR_PAST_HIGHL = "Highlights";
         STR_CLIPS = "Clips";
-        STR_CONTENT = " Content";
-        STR_STREAM_ON = "Streamed ";
-        STR_DURATION = "Duration ";
-        STR_VIEWS = " Views";
+        STR_CONTENT = "Content";
+        STR_STREAM_ON = "Streamed";
+        STR_DURATION = "Duration";
+        STR_VIEWS = "Views";
         STR_VIEWER = "Viewers";
         STR_EXIT_AGAIN = "Click again to exit!";
         STR_EXIT_AGAIN_PICTURE = "Click again to exit Picture in Picture!";
@@ -957,10 +1077,10 @@
         STR_FULL_CHANGELOG = "Full changelog";
         STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
         STR_UPDATE = 'Click to Update';
-        STR_UPDATE_CHECK = 'Click to Check for Updates';
+        STR_UPDATE_CHECK = 'Check for Updates';
         STR_UPDATE_CHECKING = 'Checking for Updates ...';
         STR_UPDATE_CHECKING_FAIL = 'Update check fail';
-        STR_NO_UPDATES = 'The app is fully updated';
+        STR_NO_UPDATES = 'The app is up to date';
         STR_UPDATE_CHANGELOG = "Update & Changelog";
         STR_UPDATE_LATEST = "Latest change:";
         STR_UPDATE_FAIL = "Update process fail, please try manually!";
@@ -968,7 +1088,7 @@
         STR_UPDATE_AVAILABLE = "Apk Update available";
         STR_WEB_UPDATE_AVAILABLE = "Web Update available";
         STR_UPDATE_CHECK_SIDE = ", check side panel update";
-        STR_UPDATE_LAST_CHECK = "Last checked: ";
+        STR_UPDATE_LAST_CHECK = "Last checked:";
         STR_UPDATE_OPT = "Updates options";
         STR_UPDATE_CHECK_FOR = "Check for updates in background";
         STR_UPDATE_SHOW = "Show updates dialog when updates are available";
@@ -981,16 +1101,16 @@
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
         STR_NOT_LIVE = "Rerun";
-        STR_LIVE_CHANNELS = " Channels Live";
+        STR_LIVE_CHANNELS = "Channels Live";
         STR_LIVE_HOSTS = "Hosts";
-        STR_LIVE_GAMES = " Games Live";
-        STR_USER_CHANNEL = " Followed Channels";
+        STR_LIVE_GAMES = "Games Live";
+        STR_USER_CHANNEL = "Followed Channels";
         STR_USER_MY_CHANNEL = "My Channel";
         STR_USER_ADD = "Add User";
-        STR_USER_REMOVE = " Remove User";
+        STR_USER_REMOVE = "Remove User";
         STR_USER_ERROR = "User doesn\'t exist";
-        STR_USER_HOSTING = " hosting ";
-        STR_USER_SET = " already set";
+        STR_USER_HOSTING = "hosting";
+        STR_USER_SET = "already set";
         STR_USER_MAKE_ONE = "Switch to";
         STR_USER_NUMBER_ONE = "First user can follow (when providing a key) and see live channels feed outside of the user screen<br>";
         STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
@@ -999,13 +1119,13 @@
         STR_CLIP_MONTH = "30d";
         STR_CLIP_ALL = "all";
         STR_JUMP_TIME = "Jumping";
-        STR_JUMP_T0 = " to ";
+        STR_JUMP_T0 = "to";
         STR_JUMP_CANCEL = "Jump Canceled";
-        STR_JUMP_TIME_BIG = " , jump time bigger then duration";
-        STR_SEC = " Sec";
-        STR_MIN = " Min";
-        STR_MS = " Ms";
-        STR_HR = " Hr";
+        STR_JUMP_TIME_BIG = ", jump time bigger then duration";
+        STR_SEC = "Sec";
+        STR_MIN = "Min";
+        STR_MS = "Ms";
+        STR_HR = "Hr";
         STR_SOURCE = "Source";
         STR_TWITCH_TV = "SmartTV Client for Twitch";
         STR_CLOSE_THIS = "Press return or enter to close this.";
@@ -1014,13 +1134,13 @@
         STR_PLAYER = "Player Related:";
         STR_CHAT = "Chat Related:";
         STR_CHAT_SHOW = "Chat show";
-        STR_CURRENT_VERSION = "Current installed version ";
-        STR_LATEST_VERSION = " latest available version ";
+        STR_CURRENT_VERSION = "Current installed version";
+        STR_LATEST_VERSION = "latest available version";
         STR_CONTROLS_MAIN_2 = "Play a video: Navigate using Directional pad (up/down/left/right), press enter or play play/pause or previews track media keys or key 1";
-        STR_CONTROLS_MAIN_3 = "Refresh screen content: ";
+        STR_CONTROLS_MAIN_3 = "Refresh screen content:";
         STR_CONTROLS_MAIN_4 = "Exit the application: from side panel click exit";
         STR_CONTROLS_MAIN_5 = "Force close the application: Hold the return key until it auto force close";
-        STR_CONTROLS_MAIN_6 = " Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
+        STR_CONTROLS_MAIN_6 = "Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
         STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
         STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
         STR_ABOUT_INFO_1 = "This is a Android TV Twitch Client, released for free to anyone who wants to use it";
@@ -1046,7 +1166,7 @@
         STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
         STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
         STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
-        STR_CONTROLS_PLAY_0 = STR_SPACE + "or in player bottom controls";
+        STR_CONTROLS_PLAY_0 = "or in player bottom controls";
         STR_CONTROLS_PLAY_1 = "Show information panel: Press enter key or D-pad keys if chat and live channel feed is not showing";
         STR_CONTROLS_PLAY_2 = "Close the video: press return key twice or media key Stop";
         STR_CONTROLS_PLAY_3 = "Play/Pause a video: open information panel and click on pause symbol";
@@ -1062,48 +1182,48 @@
         STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward, etc...) some are used as shortcuts for audio and video mode changes";
         STR_CONTROLS_PLAY_14 = "Chat and video (Side by side): key 2 or media key fast forward, also switches between Picture in Picture and 50/50 mode";
         STR_F_DISABLE_CHAT = "Chat force disable";
-        STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels/games and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
+        STR_OAUTH_IN = 'Adding a key allows the app to access chat using yours user to send messages and get yours emote list (enables you to get gifted sub give to chat), follow/unfollow channels and access some user content faster<br><br>Adding a key is not demanding and can be done at any point later<br><br>In doubt read this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices is necessary a mouse to complete the authorization action as you may need to manually click on a button to confirm.<br><br>add key for';
         STR_USER_CODE = "Add authorization key";
         STR_USER_CODE_OK = "Key added OK";
         STR_KEY_BAD = "Key test failed, new one needs to be added";
-        STR_OAUTH_WRONG = "You try to add a key for user ";
-        STR_OAUTH_WRONG2 = " but this key is for user ";
-        STR_FOLLOWING = " Following";
-        STR_FOLLOW = " Follow";
-        STR_IS_SUB_NOOAUTH = " And you haven't added a authorization key the app can\'t check yours sub status.";
-        STR_IS_SUB_NOT_SUB = " And you aren't a sub of this channel";
-        STR_IS_SUB_IS_SUB = " You are a sub of this channel but ";
+        STR_OAUTH_WRONG = "You try to add a key for user";
+        STR_OAUTH_WRONG2 = "but this key is for user";
+        STR_FOLLOWING = "Following";
+        STR_FOLLOW = "Follow";
+        STR_IS_SUB_NOOAUTH = "And you haven't added a authorization key the app can\'t check yours sub status.";
+        STR_IS_SUB_NOT_SUB = "And you aren't a sub of this channel";
+        STR_IS_SUB_IS_SUB = "You are a sub of this channel but";
         STR_OAUTH_FAIL = "Fail authorization check with the provider key, please check and try again";
-        STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user ";
+        STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user";
         STR_NOKEY = "No user";
         STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
         STR_NOKUSER_WARN = "Add a user first";
         STR_RESET = "Restart the";
-        STR_CLIP = " Clip";
+        STR_CLIP = "Clip";
         STR_CHANNEL_CONT = "Channel content";
         STR_NET_DOWN = "Network is disconnected, the application can\'t work without INTERNET";
         STR_NET_UP = "Network connection reestablished";
-        STR_FOLLOWERS = " Followers";
-        STR_CANT_FOLLOW = ", Can\'t follow or unfollow ";
+        STR_FOLLOWERS = "Followers";
+        STR_CANT_FOLLOW = ", Can\'t follow or unfollow";
         STR_GAME_CONT = "Game content";
         STR_YES = "Yes";
-        STR_REMOVE_USER = "Are you sure you want to remove the user ";
-        STR_PLACEHOLDER_PRESS_UP = "Press Up to ";
+        STR_REMOVE_USER = "Are you sure you want to remove the user";
+        STR_PLACEHOLDER_PRESS_UP = "Press Up to";
         STR_FOLLOW_GAMES = "Followed Games";
         STR_USER_GAMES_CHANGE = "Change between";
-        STR_GUIDE = " Hold enter";
+        STR_GUIDE = "Hold enter";
         STR_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
         STR_DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        STR_STARTED = "Started ";
+        STR_STARTED = "Started";
         STR_VIDEOS = "Videos";
         STR_REPLAY = "Replay";
-        STR_STREAM_END = "exiting in ";
+        STR_STREAM_END = "exiting in";
         STR_STREAM_END_EXIT = 'press "Return" to exit';
         STR_FEATURED = 'Featured';
-        STR_CREATED_AT = "Created ";
+        STR_CREATED_AT = "Created";
         STR_OPEN_BROADCAST = "Open the Broadcast";
         STR_IS_LIVE = "Is now Live";
-        STR_SHOW_ISLIVE_WARNING = 'Show "Streamer ' + STR_IS_LIVE + '" Warning';
+        STR_SHOW_ISLIVE_WARNING = 'Show "Streamer is live" Warning';
         STR_SHOW_ISLIVE_WARNING_SUMMARY = "When watching a Clip or a VOD the app can check when that streamer is live if this is set to YES a warning will show, to open the live just use the player bottom controls option";
         STR_OPEN_CHAT = "Click to open chat and/or wait to be back Live";
         STR_STAY_OPEN = "Stay on the stream";
@@ -1113,9 +1233,9 @@
         STR_STAY_CHECK_LAST = "Last result:";
         STR_STAY_IS_OFFLINE = "The stream was offline";
         STR_NO_BROADCAST = "No Broadcast";
-        STR_NO_BROADCAST_WARNING = "There are no Past Broadcasts for this clip";
+        STR_NO_BROADCAST_WARNING = "There are no Vod for this clip";
         STR_NO_CHAT = "And because of that no chat";
-        STR_IS_NOW = " is now";
+        STR_IS_NOW = "is now";
         STR_OPEN_HOST = "Open the Hosting";
         STR_SETTINGS_PLAYER = "Player related";
         STR_SETTINGS_BUFFER_SIZE = "Start Buffer size:";
@@ -1127,7 +1247,7 @@
         STR_LOADING_CHAT = "Chat: Connecting to";
         STR_LOADING_FAIL = "Connecting timeout, Fail to logging...";
         STR_CHAT_CONNECTED = "Chat: Connected";
-        STR_CHAT_SEND_DELAY = "Message send, chat delay enabled, message will show in chat after";
+        STR_CHAT_SEND_DELAY = "Message send, but chat delay is enabled, message will show in chat after";
         STR_CHAT_DELAY = "Chat: delay";
         STR_VOD_HISTORY_BASE = "Play from the start or from where you stopped watching the";
         STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " VOD?";
@@ -1147,24 +1267,26 @@
         STR_BRIGHT_MODE = "Bright mode";
         STR_RESTORE_PLAYBACK_WARN = "The app was closed while playing, restoring the playback";
         STR_RESTORE_PLAYBACK = "Restore playback";
-        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it or force closed by the user on those cases the app will restores what was previously playing on next start";
+        STR_RESTORE_PLAYBACK_SUMMARY = "The app saves what it was playing in case it gets close unintentionally, changing apps the system may run out of memory and close it, on this case the app will restores what was previously playing on next start";
         STR_CHAT_FONT = "Chat font size";
         STR_VIDEOS_ANIMATION = "Video\'s animated thumbnails";
         STR_VIDEOS_ANIMATION_SUMMARY = "When a VOD or Highlight is selected animate the thumbnail if a animated thumbnail is available for that video (not all videos have one)";
         STR_SIDE_PANEL = "Side panel: D-pad left or return key";
-        STR_SIZE = "Size ";
-        STR_BRIGHTNESS = "Brightness ";
+        STR_SIZE = "Size";
+        STR_BRIGHTNESS = "Brightness";
         STR_FORBIDDEN = "Forbidden content, this is restricted on yours region or restrained to official Twitch app";
-        STR_JUMPING_STEP = "Jump step ";
-        STR_SECOND = " second";
-        STR_SECONDS = " seconds";
-        STR_MINUTE = " minute";
-        STR_MINUTES = " minutes";
+        STR_JUMPING_STEP = "Jump step";
+        STR_SECOND = "second";
+        STR_SECONDS = "seconds";
+        STR_MINUTE = "minute";
+        STR_MINUTES = "minutes";
         STR_CLOCK_OFFSET = "Clock offset";
         STR_CLOCK_OFFSET_SUMMARY = "Adjust main app clock in relation to your choosing";
-        STR_APP_LANG = "Application language";
         STR_CONTENT_LANG = "Content language";
-        STR_CONTENT_LANG_SUMMARY = "Press enter to access";
+        STR_CONTENT_LANG_SUMMARY = "The language of the content on it screen, live, vods, clips";
+        STR_APP_LANG = "Application language";
+        STR_APP_LANG_SUMMARY = "The language of the app text";
+        STR_ENTER_TO_OPEN = "Press enter to access";
         STR_LANG_ALL = "All";
         STR_NO_GAME = "No game from this";
         STR_EMPTY = "Empty";
@@ -1173,12 +1295,12 @@
         STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
         STR_CHAT_BRIGHTNESS = "Chat background brightness";
         STR_PLAY_NEXT = "Play Next";
-        STR_PLAY_NEXT_IN = "Playing next in ";
+        STR_PLAY_NEXT_IN = "Playing next in";
         STR_PLAY_ALL = "Play All";
         STR_AUTO_PLAY_NEXT = "Auto Play next clip";
         STR_SIDE_PANEL_SETTINGS = "Back to Main menu";
-        STR_UP = " Press up";
-        STR_HOLD_UP = " Hold up or key 2";
+        STR_UP = "Press up";
+        STR_HOLD_UP = "Hold up or key 2";
         STR_LIVE_FEED = "Live Feed";
         STR_VOD_DIALOG = "VOD Start dialog";
         STR_VOD_DIALOG_SUMMARY = 'Choose the default behavior, when playing a VOD if it\'s info is present on user history it can be played from where you last stop watching, if set this to "always from start" this behavior will also be applied to VOD preview';
@@ -1187,7 +1309,7 @@
         STR_VOD_DIALOG_SHOW = "Always ask";
         STR_END_DIALOG_OPT = "Player end dialog options";
         STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
-        STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOC/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
+        STR_END_DIALOG_SETTINGS_SUMMARY = "When a Live/VOD/Clip end a dialog shows with option for what to do next, set the time (in seconds) that will take for the default option take action";
         STR_END_DIALOG_DISABLE = "Disable the timer";
         STR_CHAT_SIZE = "Chat size";
         STR_CHAT_POS = "Chat position";
@@ -1208,7 +1330,7 @@
         STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnails resolution for live, videos and games (can't be applied for clips) a lower value will help the app load faster but the thumbnail may look blurry";
         STR_PAYPAL_SUMMARY = "Paypal donations use bellow link:";
         STR_BITCOIN_SUMMARY = "Bitcoin donations use wallet address:";
-        STR_PLAYER_PROBLEM_2 = " Connection failed, unable to load stream info";
+        STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load stream info";
         STR_PLAYER_RESYNC = "Player Restart";
         STR_PLAYER_MULTI_ALL = "All";
         STR_QUALITY_PP = ["Small", "Big", STR_PLAYER_MULTI_ALL];
@@ -1229,14 +1351,14 @@
         STR_BLOCK_RES_SUMMARY_EXTRA = "The user can overwrite the selection manually during the playback<br><br>XX means, that all resolutions that start with that value before the XX will be prevented from be used, if the resolution is marked as blocked";
         STR_BLOCKED = "Blocked";
         STR_BLOCKED_NOT = "Not blocked";
-        STR_AUDIO_SOURCE = "Audio source ";
+        STR_AUDIO_SOURCE = "Audio source";
         STR_VOLUME_CONTROLS = "Audio & Volume controls";
         STR_AUDIO_ALL = "Audio enable all";
         STR_AUDIO_ALL_ENA = "All audio sources enabled";
         STR_AUDIO_ALL_100 = "Volume all to 100%";
         STR_AUDIO_ALL_100_SET = "All player volume set to 100%";
-        STR_VOLUME = "Volume - ";
-        STR_AUDIO = "Audio - ";
+        STR_VOLUME = "Volume -";
+        STR_AUDIO = "Audio -";
         STR_DEF_QUALITY = "Default player quality";
         STR_DEF_QUALITY_SUMMARY = 'This option will always be honored when playing a single video, on Picture Picture or Multistream mode the playback needs to use the Auto quality, for the reason why is that, check the settings option "' + STR_PLAYER_BITRATE + '"';
         STR_PICTURE_PICTURE = "Picture in Picture, 50/50 or Multistream (For Live streams only):";
@@ -1251,7 +1373,7 @@
         STR_PICTURE_CONTROLS9 = "Manually Sync players: Is a workaround use the player bottom control Speed to slowdown the stream that is in front or vice versa only works on PP mode";
         STR_PICTURE_CONTROLS10 = 'Picture in Picture video quality: Check in app settings "' + STR_PLAYER_BITRATE + '"';
         STR_PICTURE_CONTROLS11 = "Close small or bottom video (Picture in Picture only): return key twice will exit PP or 50/50 mode";
-        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter a tile from preview feed";
+        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (Two stream two chats): If picture in picture enable press key 2 or media key fast forward or use bottom controls 'Video Mode' or if already in 'side by side' mode hold key enter over a tile from preview feed";
         STR_PICTURE_CONTROLS13 = "Enable Multistream: use player bottom controls or rewind media key";
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
         STR_SINGLE_EXIT = "Single return key press";
@@ -1291,24 +1413,24 @@
         STR_A_Z = "Alphabetical A - Z";
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
-        STR_APP_ANIMATIONS_SUMMARY = "Controls side panel, scroll, notification and related animations";
+        STR_APP_ANIMATIONS_SUMMARY = "Enables side panel, scroll and related animations";
         STR_UI_SETTINGS = "Interface customization's, color style, animations and related";
         STR_GENERAL_CUSTOM = "Content customization's, sorting, auto refresh, timeouts and related";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get video link";
         STR_410_FEATURING = "Third party app are current without access for this featuring.";
-        STR_PRESS_ENTER_TO_CHANGE = "Press enter to change to - ";
+        STR_PRESS_ENTER_TO_CHANGE = "Press enter to change to -";
         STR_CLICK_UNFOLLOW = "(Press enter to unfollow)";
         STR_CLICK_FOLLOW = "(Press enter to follow)";
-        STR_TODAY = " Today";
-        STR_DROOPED_FRAMES = "Skipped Frames: ";
-        STR_BUFFER_HEALT = "Buffer Size (Sec): ";
-        STR_NET_ACT = "Net Activity (Mb): ";
+        STR_TODAY = "Today";
+        STR_DROOPED_FRAMES = "Skipped Frames:";
+        STR_BUFFER_HEALT = "Buffer Size (Sec):";
+        STR_NET_ACT = "Net Activity (Mb):";
         STR_NET_SPEED = "Net Speed (Mb):";
         STR_LATENCY_TO_BROADCASTER = "Latency To Broadcaster";
-        STR_LATENCY = STR_LATENCY_TO_BROADCASTER + " (Sec): ";
+        STR_LATENCY = "Latency To Broadcaster (Sec):";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
-        STR_PING = "Ping to Twitch (Ms): ";
+        STR_PING = "Ping to Twitch (Ms):";
         STR_WARNING = "Warning";
         STR_WARNINGS = 'Warnings';
         STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
@@ -1319,19 +1441,19 @@
         STR_BLOCKED_CODEC_SUMMARY = "List used codecs capabilities and allow to block a codec from be used";
         STR_CODEC_DIALOG_TITLE = 'Software codecs (OMX.google) usually have a worst performance but on some device they may have precedence over hardware codecs, using this one can block those and see if the performance of the playback improves, <span style="color: #FF0000;">by default OMX.google decoder is disabled</span> (if other codec is available) a constant accumulation of skipped frames is a indicative of a codec issue.<br>The app content only uses avc/h264 decoders no other is listed.';
         STR_SUPPORTED_CODEC = "Supported codecs:";
-        STR_MAX_RES = "Max resolution: ";
-        STR_MAX_BIT = "Max bitrate: ";
-        STR_MAX_LEVEL = "Max level: ";
+        STR_MAX_RES = "Max resolution:";
+        STR_MAX_BIT = "Max bitrate:";
+        STR_MAX_LEVEL = "Max level:";
         STR_MAX_FPS = "Max fps per resolution:";
-        STR_MAX_INSTANCES = "Max instances: ";
+        STR_MAX_INSTANCES = "Max instances:";
         STR_UNKNOWN = "Unknown";
         STR_ONE_CODEC_ENA = "At least one codec must be enable all the time";
         STR_USER_LIVE = "User Live side pannel: from side panel D-pad left or from anywhere key 3";
         STR_PP_WORKAROUND = "Multiplayer mode old OS workaround";
         STR_PP_WORKAROUND_SUMMARY = "For some devices running Android 7 (Nougat) or older is necessary to enable this to have Multiplayer mode properly working, don't enable this is you don't have a issue, as it will result in a lower image quality and possible lost of performance";
         STR_HISTORY = "History";
-        STR_WATCHED = "Watched on ";
-        STR_UNTIL = "until ";
+        STR_WATCHED = "Watched on";
+        STR_UNTIL = "until";
         STR_SORTING = "Sorting";
         STR_DELETE_HISTORY = "Delete this history";
         STR_DELETE_UNREACHABLE = "Automatic delete unreachable content";
@@ -1354,7 +1476,7 @@
             "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
             "If you don't give storage permission no backups will be ever made." + "<br><br>" +
             "The Backup folder is Main_Storage/data/com.fgl27.twitch/Backup";
-        STR_DELETE_SURE = "Are you sure you wanna to delete all ";
+        STR_DELETE_SURE = "Are you sure you wanna to delete all";
         STR_CREATED_NEWEST = "Created / Uptime newest";
         STR_CREATED_OLDEST = "Created / Uptime Oldest";
         STR_THUMB_OPTIONS = "Thumbnail Options";
@@ -1373,7 +1495,7 @@
         STR_ALREDY_PLAYING = "Already playing this";
         STR_STREAM_ERROR = "Unable to open preview";
         STR_PP_MODO = "Picture in Picture Mode";
-        STR_4_WAY_MULTI_INSTANCES = "Yours device only support %x codec instances (player playing) at the same time, can't use ";
+        STR_4_WAY_MULTI_INSTANCES = "Yours device only support %x codec instances (player playing) at the same time, can't use";
         STR_MULTI_EMPTY = "Ended and/or empty";
         STR_4_WAY_MULTI = "4 way multistream";
         STR_CONTROLS_MULTI_0 = "Multistream help:";
@@ -1386,7 +1508,7 @@
         STR_PICTURE_LIVE_FEED = 'Picture in Picture: Hold enter or press 1, after use D-Pad left to move, right to resize or down to change videos';
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ', Press return to go back to top menu';
-        STR_BACK_USER_GAMES = ' Press return key to go back to ';
+        STR_BACK_USER_GAMES = "Press return key to go back to";
         STR_NO_CONTENT = 'No content for this now, try again later';
         STR_SHOW_LIVE_PLAYER = 'Show preview on Live streams Screens';
         STR_SHOW_VOD_PLAYER_WARNING = 'Starting playback from where it last stop:';
@@ -1399,8 +1521,8 @@
         STR_DISABLED_FEED_PLAYER_MULTI = 'Disable preview when multistream is enabled';
         STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = 'For performance reason, some devices may lag with multiple players, if your is OK for multistream but when preview player and multistream are active the device lags set this to NO';
         STR_PREVIEW_ERROR_LOAD = "Preview fail to load:";
-        STR_PREVIEW_ERROR_LINK = " unreachable";
-        STR_PREVIEW_VOD_DELETED = " , this VOD may have been deleted";
+        STR_PREVIEW_ERROR_LINK = "unreachable";
+        STR_PREVIEW_VOD_DELETED = ", this VOD may have been deleted";
         STR_PREVIEW_END = "Preview video has ended";
         STR_PLAYER_LAG_ERRO = "Player unable to play do to a network connection issue";
         STR_PLAYER_ERROR = "Player unable to play do to player error";
@@ -1409,7 +1531,7 @@
         STR_PREVIEW_SIZE_SUMMARY = "Set the size of the player preview of the preview thumbnails";
         STR_PREVIEW_SIZE_ARRAY = ["Small", "Medium", "Large", "Extra large"];
         STR_PREVIEW_SIZE_SCREEN = "Screens preview size";
-        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview ";
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Set the size of the preview";
         STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Thumbnail size", "Larger"];
         STR_SIDE_PANEL_PLAYER_DELAY = "Preview delay";
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Set the delay time that the preview will take to start loading after a thumbnail is selected, this helps with slow devices that lag when scrolling";
@@ -1420,7 +1542,7 @@
         STR_SIDE_PANEL_PLAYER = "Preview thumbnail players settings";
         STR_START_AT_USER = "Always start the app in the user screen";
         STR_START_AT_USER_SUMMARY = "This will prevent Restore playback from work, but allows to choose the user at app start";
-        STR_LAST_REFRESH = "last refresh: ";
+        STR_LAST_REFRESH = "last refresh:";
         STR_PP_VOD_ERROR = "Exit PP or Multistream to open this VOD";
         STR_SETTINGS_ACCESSIBILITY = 'Show "a accessibility service is running warning"';
         STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has a accessibility service enabled the app will show a warning, is a know android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
@@ -1431,7 +1553,6 @@
         STR_AUTO_REFRESH_SUMMARY = "When this is enable the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected, if you wanna a refresh on background enable the bellow";
         STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in background";
         STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'When "Auto refresh timeout" is set and this is enable the auto refresh will happen on background (but with the app visible, android doesn\'t allow to run unrestrictedly on background to avoid lag to another app) when the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be aware because the app has too many screens when this option is enable the auto refresh may cause random lag on some low end devices';
-        STR_ENABLED_MAIN_MULTI = "Enable main or top left corner player first";
         STR_MAIN_WINDOW = "Main video";
         STR_MULTI_MAIN_WINDOW = "MultiStream main video";
         STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: press key down, after use left/right to change with is the big video";
@@ -1439,13 +1560,13 @@
         STR_SOURCE_CHECK_SUMMARY = 'When this option is enable and you are not using Auto quality if the player is lagging it will switch to Auto quality and warn about it, a player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex then just time of course), after this change the player will automatic go back to source when a you start a new stream of vod';
         STR_PLAYER_LAG = 'Player is lagging, quality changed to "Auto mode"';
         STR_PLAYER_SOURCE = 'Player is lagging, quality was lowered';
-        STR_TOO_ERRORS = " or too many errors";
+        STR_TOO_ERRORS = "or too many errors";
         STR_STREAM_ERROR_SMALL = "Preview, stream ended" + STR_TOO_ERRORS;
         STR_CONTROLS_MEDIA_FF = "Forward or rewind (only for VOD and Clips): use D-pad right/left or fast forward/rewind media keys";
         STR_VOD_MUTED = "A portion of this is muted as it contain copyrighted content, darker color on seek bar indicates the portions";
-        STR_GIFT_SUB = " has gift you a sub!";
+        STR_GIFT_SUB = "has gift you a sub!";
         STR_ANONYMOUS = "Anonymous";
-        STR_CHAT_BANNED = "You are permanently banned from talking in  ";
+        STR_CHAT_BANNED = "You are permanently banned from talking in";
         STR_CHAT_WRITE = "Write to chat";
         STR_CHAT_EXTRA = "Chat extra settings";
         STR_PLACEHOLDER_CHAT = "When this seleceted, press enter to show onscreen keyboard, If you have a physical keyboard connected press return or esc to hide the onscreen keyboard";
@@ -1463,11 +1584,10 @@
         STR_CHAT_RESULT = "In Chat expected result:";
         STR_CHAT_SEND = "Send";
         STR_CHAT_EMOTE_EMPTY = "This emote list is empty";
-        STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
-        STR_CHAT_FOLLOWER_ONLY = "Chat is Followers-only mode, and you are not a follower of ";
-        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you are only fallowing for ";
+        STR_CHAT_FOLLOWER_ONLY = "Chat is on Followers-only mode, and you are not a follower of";
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "and you are only fallowing for";
         STR_CHAT_EMOTE_ONLY = "Twitch Emote-only mode";
-        STR_CHAT_CHOOSE = "Choose with chat to write to or press return to close this";
+        STR_CHAT_CHOOSE = "Choose which chat to write to or press return to close this";
         STR_CHAT_OPTIONS_TITLE = "Write to chat options";
         STR_CHAT_OPTIONS_KEYBOARD = "Software Keyboard auto hide";
         STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Allows to control the behavior of the on screen software Keyboard, if you have a physical Keyboard connected use this, if not set to never";
@@ -1499,11 +1619,11 @@
         STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
         STR_CHAT_TIMESTAMP = "Show message timestamp";
         STR_CHAT_NICK_COLOR = "Readable nick colors";
-        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to read color";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to see color";
         STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
         STR_CHAT_MESSAGE_DELETED = "This single user message was requested to be deleted";
         STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user was requested to be deleted";
-        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've be timeout for ";
+        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've be timeout for";
         STR_CHAT_CLEAR_MSG_SUMMARY = 'Delete chat messages from a specific user (typically after they received a timeout or ban), deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not only the background color will change';
         STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
         STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
@@ -1544,14 +1664,14 @@
         STR_VOD_SEEK_TIME = "Increase timeout after holding for";
         STR_UP_LOCKED = "press up to lock the step value";
         STR_LOCKED = "locked press up to change";
-        STR_IN_CHAT = " In chat";
+        STR_IN_CHAT = "In chat";
         STR_SHOW_IN_CHAT = "Show total logged in user on top of the chat or viewers";
         STR_SHOW_IN_CHAT_SUMMARY = "This is very helpfully to know for example if the offline chat has any user to talk to, also let the user know the difference from total viewer VS total chat user";
         STR_SHOW_IN_CHAT_VIEWERS = 'Show viewers';
         STR_SHOW_IN_CHAT_CHATTERS = 'Show chatters';
-        STR_PLAYED = "Played ";
+        STR_PLAYED = "Played";
         STR_CHAPTERS = "Chapters";
-        STR_FROM_SIMPLE = " from ";
+        STR_FROM_SIMPLE = "from";
         STR_HIDE_MAIN_CLOCK = "Hide main screen clock";
         STR_HIDE_PLAYER_CLOCK = "Hide player clock";
         STR_HIDE_MAIN_SCREEN_TITLE = "Hide main screen title";
@@ -1561,7 +1681,7 @@
         STR_INACTIVE_SETTINGS = "Automatic minimize the app when inactive for";
         STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from be running when no one is using, a warning will show up giving the user 15 seconds to press any key to prevent the minimizing";
         STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
-        STR_REMAINING = "Remaining: ";
+        STR_REMAINING = "Remaining:";
         STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
         STR_PREVIEW_SET = "Preview settings";
         STR_PREVIEW_SHOW = "Show preview";
@@ -1569,15 +1689,1414 @@
         STR_OLED_BURN_IN = "OLED Burn in protection";
         STR_OLED_BURN_IN_SUMMARY = "When this is enabled the screen will turn full black for 50ms it 20 minutes, only need for devices with OLED displays that have issues of burn-ins";
         STR_AS = "as";
-        STR_MILLISECONDS = " milliseconds";
-        STR_HOUR = " hour";
-        STR_HOURS = " hours";
+        STR_MILLISECONDS = "milliseconds";
+        STR_HOUR = "hour";
+        STR_HOURS = "hours";
         STR_RIGHT = "Right";
         STR_LEFT = "Left";
         STR_BOTTOM = "Bottom";
         STR_TOP = "Top";
-        STR_AVG = " Avg";
-        STR_OFFSET = " Offset ";
+        STR_AVG = "Avg";
+        STR_OFFSET = "Offset";
+    }
+    /*
+     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    //Spacing for release maker not trow errors from jshint
+    function pt_BRLang() {
+        // This is a false/true var change if day comes first in your language eg (27/12/2010) day 27 month 12 year 2010
+        Main_IsDayFirst = true;
+
+        // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
+        Sidepannel_MoveldefaultMargin = 17;
+
+        STR_KEY_UP_DOWN = "PG para cima/para baixo";
+        STR_KEY_MEDIA_FF = "ou tecla de retrocesso de mídia ou de avanço rápido";
+        STR_GUIDE_EXTRA = "ou pressione a tecla 2";
+        STR_GUIDE_EXTRA2 = "ou tecla de mídia próxima faixa";
+        STR_REFRESH = "Atualizar";
+        STR_SEARCH = "Pesquisar";
+        STR_SETTINGS = "Configurações";
+        STR_CONTROLS = "Controles";
+        STR_CONTROLS_ETC = "Veja o vídeo da Play Store para entender melhor como o aplicativo funciona e como usar suas configurações e controles";
+        STR_ABOUT = "Sobre";
+        STR_HIDE = "Ocultar";
+        STR_SEARCH_EMPTY = "O texto que você digitou está vazio.";
+        STR_SEARCH_RESULT_EMPTY = "O resultado da pesquisa está vazio.";
+        STR_SWITCH = "Alterar de tela";
+        STR_SWITCH_USER = "Trocar tela de usuário";
+        STR_SWITCH_VOD = "Trocar: Vídeos ou Destaques";
+        STR_SWITCH_CLIP = "Trocar: Período (24h, 7d, 30d, todos)";
+        STR_GO_TO = "Vá para a tela";
+        STR_USER = "Usuário";
+        STR_LIVE = "Ao vivo";
+        STR_GAMES = "Jogos";
+        STR_PLAYING = "Jogando";
+        STR_FOR = "para";
+        STR_WATCHING = "Assistindo por ";
+        STR_WAITING = "Tempo de espera";
+        STR_SINCE = "Desde";
+        STR_AGAME = "Um Jogo";
+        STR_PLACEHOLDER_SEARCH = "Digite sua pesquisa ...";
+        STR_PLACEHOLDER_OAUTH = "Digite sua chave de autorização ...";
+        STR_PLACEHOLDER_USER = "Digite seu nome de usuário ...";
+        STR_PLACEHOLDER_PRESS = "Pressione Enter ou de seleção para,";
+        STR_CHANNELS = "Canais";
+        STR_CHANNEL = "Canal";
+        STR_GOBACK_START = "Voltar para a tela anterior: tecla de retorno";
+        STR_IS_OFFLINE = "terminou";
+        STR_CHECK_HOST = ", verificando host";
+        STR_IS_SUB_ONLY = "Este vídeo está disponível apenas para assinantes.";
+        STR_IS_SUB_ONLY_ERROR = "é apenas conteúdo para assinantes.";
+        STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Clique em atualizar para tentar novamente";
+        STR_NO = "Não";
+        STR_FOR_THIS = "para este";
+        STR_PLAYER_PROBLEM = "Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...";
+        STR_PAST_BROA = "Vídeos";
+        STR_PAST_HIGHL = "Destaques";
+        STR_CLIPS = "Clipes";
+        STR_CONTENT = "Conteúdo";
+        STR_STREAM_ON = "Em";
+        STR_DURATION = "Duração";
+        STR_VIEWS = "Visualizações";
+        STR_VIEWER = "Pessoas";
+        STR_EXIT_AGAIN = "Clique novamente para sair!";
+        STR_EXIT_AGAIN_PICTURE = "Clique novamente para sair do Picture in Picture!";
+        STR_EXIT_AGAIN_MULTI = "Clique novamente para sair do MultiStream!";
+        STR_EXIT_MESSAGE = "Deseja sair do Cliente SmartTV para Twitch?";
+        STR_EXIT = "Sair";
+        STR_CHANGELOG = "Changelog";
+        STR_FULL_CHANGELOG = "Todas Alterações";
+        STR_CHANGELOG_SUMMARY = "Estas são apenas as alterações mais recentes, para ver todas use o link abaixo:";
+        STR_UPDATE = 'Clique para atualizar';
+        STR_UPDATE_CHECK = 'Verificar se há atualizações';
+        STR_UPDATE_CHECKING = 'Verificando atualizações ...';
+        STR_UPDATE_CHECKING_FAIL = 'Falha na verificação da atualização';
+        STR_NO_UPDATES = 'O aplicativo está atualizado';
+        STR_UPDATE_CHANGELOG = "Atualizar & Changelog";
+        STR_UPDATE_LATEST = "Última alteração:";
+        STR_UPDATE_FAIL = "Falha no processo de atualização, tente manualmente!";
+        STR_UPDATE_FAIL_DOWNLOAD = "O processo de atualização falhou ao baixar o APK, tente manualmente!";
+        STR_UPDATE_AVAILABLE = "Atualização Apk disponível";
+        STR_WEB_UPDATE_AVAILABLE = "Atualização Web disponível";
+        STR_UPDATE_CHECK_SIDE = ", verifique no painel lateral";
+        STR_UPDATE_LAST_CHECK = "Última verificação:";
+        STR_UPDATE_OPT = "Opções de atualizações";
+        STR_UPDATE_CHECK_FOR = "Verificar atualizações em segundo plano";
+        STR_UPDATE_SHOW = "Mostrar diálogo de atualizações quando houver atualizações disponíveis";
+        STR_UPDATE_SHOW_ARRAY = ["Sim", "Apenas uma mensagem brinde", "Não"];
+        STR_UPDATE_START = "Processo de atualização iniciado, pode demorar alguns segundos, aguarde!";
+        STR_UPDATE_PLAY = "Se a Play Store não mostrar a atualização, tente novamente após alguns minutos!";
+        STR_UPDATE_ERROR = "Você precisa do APK versão 3.0.303 ou UP para poder usá-lo, atualize do jeito antigo";
+        STR_UPDATE_WARNING_OK = "Aplicativo atualizado OK";
+        STR_CLOSE = "Fechar";
+        STR_MINIMIZE = "Minimizar";
+        STR_CANCEL = "Cancelar";
+        STR_NOT_LIVE = "Executar novamente";
+        STR_LIVE_CHANNELS = "Canais ao vivo";
+        STR_LIVE_HOSTS = "Hosts";
+        STR_LIVE_GAMES = "Jogos ao Vivo";
+        STR_USER_CHANNEL = "Canais seguidos";
+        STR_USER_MY_CHANNEL = "Meu canal";
+        STR_USER_ADD = "Adicionar usuário";
+        STR_USER_REMOVE = "Remover usuário";
+        STR_USER_ERROR = "Usuário não existe";
+        STR_USER_HOSTING = "hospedagem";
+        STR_USER_SET = "já definido";
+        STR_USER_MAKE_ONE = "Mudar para";
+        STR_USER_NUMBER_ONE = "O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário<br>";
+        STR_ADD_USER_SH = "Adicionar um usuário Twitch para exibir os seus Canais Seguidos aqui";
+        STR_CLIP_DAY = "24h";
+        STR_CLIP_WEEK = "7d";
+        STR_CLIP_MONTH = "30d";
+        STR_CLIP_ALL = "todos";
+        STR_JUMP_TIME = "Salto";
+        STR_JUMP_T0 = "para";
+        STR_JUMP_CANCEL = "Salto cancelado";
+        STR_JUMP_TIME_BIG = ", tempo de salto maior que duração";
+        STR_SEC = "Sec";
+        STR_MIN = "Min";
+        STR_MS = "Ms";
+        STR_HR = "Hr";
+        STR_SOURCE = "Original";
+        STR_TWITCH_TV = "Cliente SmartTV para Twitch";
+        STR_CLOSE_THIS = "Pressione Retornar ou Enter para fechar isto.";
+        STR_CLOSE_THIS2 = "Pressione Retornar para fechar isso.";
+        STR_CLOSE_THIS3 = "Pressione Retornar para mostrar a caixa de diálogo de atualização ou Enter para fechá-la.";
+        STR_PLAYER = "Relacionado ao player:";
+        STR_CHAT = "Relacionado ao chat:";
+        STR_CHAT_SHOW = "Mostrar chat";
+        STR_CURRENT_VERSION = "Versão atual instalada";
+        STR_LATEST_VERSION = "última versão disponível";
+        STR_CONTROLS_MAIN_2 = "Reproduzir um vídeo: Navegue usando o teclado direcional (para cima/para baixo/esquerda/direita), pressione enter ou reproduzir/pausar ou visualizar as teclas de mídia da trilha ou tecla 1";
+        STR_CONTROLS_MAIN_3 = "Atualizar o conteúdo da tela:";
+        STR_CONTROLS_MAIN_4 = "Saia do aplicativo: no painel lateral, clique em sair";
+        STR_CONTROLS_MAIN_5 = "Forçar o fechamento do aplicativo: Segure a tecla Enter até forçar o fechamento automático";
+        STR_CONTROLS_MAIN_6 = "Alternar tela: tecla de retorno e depois D-Pad para cima/para baixo ou" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
+        STR_CONTROLS_MAIN_10 = "Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa";
+        STR_CONTROLS_MAIN_14 = "Sobre este aplicativo: no painel lateral, clique em";
+        STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo";
+        STR_ABOUT_INFO_2_SOURCE = "Esta versão do aplicativo é para teste apenas no navegador!";
+        STR_ABOUT_INFO_3 = "Informações de contato:";
+        STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";
+        STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
+        STR_ABOUT_INFO_6 = "Este aplicativo usa as seguintes dependências:";
+        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming de analisador de mensagem IRC (https://github.com/sigkell/irc-message)";
+        STR_ABOUT_INFO_8 = "Fontastic - Crie suas fontes de ícone personalizadas em segundos (http://app.fontastic.me)";
+        STR_ABOUT_INFO_9 = "Twemoji - Uma biblioteca simples que fornece suporte a emoji Unicode padrão em todas as plataformas (https://github.com/twitter/twemoji)";
+        STR_ABOUT_INFO_10 = "UglifyJS - é um analisador JavaScript, minificador, compressor e kit de ferramentas de embelezador (https://github.com/mishoo/UglifyJS2)";
+        STR_ABOUT_INFO_12 = "HTMLMinifier - Um minificador HTML altamente configurável, bem testado e baseado em JavaScript (https://github.com/kangax/html-minifier)";
+        STR_ABOUT_INFO_13 = "JSHint - Uma ferramenta de análise de código estático para JavaScript (https://github.com/jshint/jshint)";
+        STR_ABOUT_INFO_14 = "Web:";
+        STR_ABOUT_INFO_15 = "Android:";
+        STR_ABOUT_INFO_16 = "Leanback v17: Classes de suporte para construir experiências de usuário Leanback (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
+        STR_ABOUT_INFO_17 = "ExoPlayer: um reprodutor de mídia extensível para Android (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_18 = "Suporte para telefones e tablets:";
+        STR_ABOUT_INFO_19 = "Sim, é possível usar este aplicativo em telefones e tablets, mas este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado e por isso não é liberado na play store, use o link abaixo para fazer o download APK mais recente e instale manualmente em um telefone ou tablets";
+        STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
+        STR_ABOUT_INFO_21 = "Plug-in de versões do Gradle: plug-in do Gradle para descobrir atualizações de dependências (https://github.com/ben-manes/gradle-versions-plugin)";
+        STR_ABOUT_INFO_22 = "Tray: uma substituição de SharedPreferences para Android (https://github.com/grandcentrix/tray)";
+        STR_ABOUT_INFO_23 = "punycode - Um conversor de Punycode robusto que está totalmente em conformidade com RFC 3492 e RFC 5891 (https://github.com/bestiejs/punycode.js)";
+        STR_ABOUT_INFO_24 = "crass - Uma minificação CSS, impressão bonita e biblioteca de utilitários gerais escrita em JS (https://github.com/mattbasta/crass)";
+        STR_CONTROLS_PLAY_0 = "ou nos controles da parte inferior do player";
+        STR_CONTROLS_PLAY_1 = "Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos";
+        STR_CONTROLS_PLAY_2 = "Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar";
+        STR_CONTROLS_PLAY_3 = "Reproduzir/pausar um vídeo: abra o painel de informações e clique no símbolo de pausa";
+        STR_CONTROLS_PLAY_4 = "Mostrar feed de canais ao vivo do usuário: D-pad para cima";
+        STR_CONTROLS_PLAY_5 = "Alterar a qualidade do vídeo: use os controles de qualidade da parte inferior do player";
+        STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo (caso ele congele): Altere a qualidade do vídeo para a mesma";
+        STR_CONTROLS_PLAY_7 = "Mostrar ou ocultar o Chat: D-pad para baixo ou tecla número 3" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_8 = "Alterar posição de chat: D-pad para a esquerda, PG para cima ou retroceder (apenas VOD e clipes)" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_9 = "Alterar tamanho do chat: D-pad para a direita ou PG para baixo" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_10 = "Alterar brilho de fundo do chat: alterar os controles da parte inferior do player";
+        STR_CONTROLS_PLAY_11 = "Forçar atualização do chat nas transmissões ao vivo (caso ele congele ou não carregue): use os controles da parte inferior do player para desativar o chat (clique duas vezes)";
+        STR_CONTROLS_PLAY_12 = "Iniciar uma pesquisa: abra o painel de informações, navegue usando o teclado direcional (esquerda/direita) para \" Pesquisar \"e pressione Enter";
+        STR_CONTROLS_PLAY_13 = "Todas as teclas de mídia são suportadas (reproduzir, pausar, parar, próxima faixa, avanço rápido, etc ...) algumas são usadas como atalhos para mudanças de modo de áudio e vídeo";
+        STR_CONTROLS_PLAY_14 = "chat e vídeo (lado a lado): tecla 2 ou tecla de mídia avanço rápido, também alterna entre Picture in Picture e modo 50/50";
+        STR_F_DISABLE_CHAT = "Chat desabilitado forçado";
+        STR_OAUTH_IN = 'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba sub de presente pelo chat), seguir/parar de seguir canais e acessar algum conteúdo do usuário mais rápido <br><br>Adicionar uma chave não é obrigatorio e pode ser feito a qualquer momento mais tarde <br><br> Em caso de dúvida, leia este link: <br><br> https://github.com/fgl27/SmartTwitchTV#authorization <br><br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br><br> adicionar chave para';
+        STR_USER_CODE = "Adicionar chave de autorização";
+        STR_USER_CODE_OK = "Chave adicionada OK";
+        STR_KEY_BAD = "Teste de chave falhou, uma nova precisa ser adicionado";
+        STR_OAUTH_WRONG = "Você tentou adicionar uma chave para o usuário";
+        STR_OAUTH_WRONG2 = "mas esta chave é para o usuário";
+        STR_FOLLOWING = "Seguindo";
+        STR_FOLLOW = "Seguir";
+        STR_IS_SUB_NOOAUTH = "E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.";
+        STR_IS_SUB_NOT_SUB = "E você não é um seguidor deste canal";
+        STR_IS_SUB_IS_SUB = "Você é um seguidor deste canal, mas";
+        STR_OAUTH_FAIL = "Falha na verificação de autorização com a chave do provedor, verifique e tente novamente";
+        STR_OAUTH_FAIL_USER = "A chave adicionada não pertence a este usuário";
+        STR_NOKEY = "Nenhum usuário";
+        STR_NOKEY_WARN = "Definir usuário e uma chave de autorização para poder seguir/deixar de seguir";
+        STR_NOKUSER_WARN = "Adicionar um usuário primeiro";
+        STR_RESET = "Reinicie o";
+        STR_CLIP = "Clipe";
+        STR_CHANNEL_CONT = "Conteúdo do canal";
+        STR_NET_DOWN = "A rede está desconectada, o aplicativo não funciona sem INTERNET";
+        STR_NET_UP = "Conexão de rede restabelecida";
+        STR_FOLLOWERS = "Seguidores";
+        STR_CANT_FOLLOW = ", Não é possível seguir ou deixar de seguir";
+        STR_GAME_CONT = "Conteúdo do jogo";
+        STR_YES = "Sim";
+        STR_REMOVE_USER = "Tem certeza que deseja remover o usuário";
+        STR_PLACEHOLDER_PRESS_UP = "Pressione até";
+        STR_FOLLOW_GAMES = "Jogos Seguidos";
+        STR_USER_GAMES_CHANGE = "Mudar entre";
+        STR_GUIDE = "Segure enter";
+        STR_MONTHS = ["jan", "fev", "mar", "abr", "maio", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+        STR_DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+        STR_STARTED = "Iniciou";
+        STR_VIDEOS = "Vídeos";
+        STR_REPLAY = "Repetir";
+        STR_STREAM_END = "saindo em";
+        STR_STREAM_END_EXIT = 'pressione "Retornar" para sair';
+        STR_FEATURED = 'Apresentado';
+        STR_CREATED_AT = "Criado";
+        STR_OPEN_BROADCAST = "Abra o Vídeo";
+        STR_IS_LIVE = "Agora Ao vivo";
+        STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
+        STR_SHOW_ISLIVE_WARNING_SUMMARY = "Ao assistir a um clipe ou VOD o aplicativo pode verificar quando o streamer está ao vivo, se estiver definido como SIM, um aviso aparecerá, para abrir ao vivo basta usar a opção de controles inferiores do player";
+        STR_OPEN_CHAT = "Clique para abrir o chat e/ou aguarde para voltar ao vivo";
+        STR_STAY_OPEN = "Permanecer na Live";
+        STR_STAY_OPEN_SUMMARY = "Fique ligado e verifique novamente para ver se volta ao vivo";
+        STR_STAY_CHECK = "Verificando se está ao vivo em:";
+        STR_STAY_CHECKING = "Verificando se está ao vivo ...";
+        STR_STAY_CHECK_LAST = "Último resultado:";
+        STR_STAY_IS_OFFLINE = "O stream estava offline";
+        STR_NO_BROADCAST = "Sem Vídeos";
+        STR_NO_BROADCAST_WARNING = "Não há Vídeo para este clipe";
+        STR_NO_CHAT = "E por causa disso nenhum chat";
+        STR_IS_NOW = "agora é";
+        STR_OPEN_HOST = "Abra o Hosting";
+        STR_SETTINGS_PLAYER = "player relacionado";
+        STR_SETTINGS_BUFFER_SIZE = "Buffer inicial:";
+        STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Quanto é necessário armazenar em buffer antes de iniciar a reprodução, isso não está relacionado ao tamanho máximo que o buffer pode atingir (o tamanho máximo do buffer é baseado no tamanho da Memória do dispositivo), um valor menor aqui fará com que a reprodução comece mais rapido e isso é sempre recomendado. Alterar este valor para um valor maior na maioria dos casos não causará nenhuma melhora, mas sim retrocessos";
+        STR_SETTINGS_BUFFER_LIVE = "Buffer inicial de streams ao vivo";
+        STR_SETTINGS_BUFFER_VOD = "Buffer inicial de Vídeos (Vídeo e destaque)";
+        STR_SETTINGS_BUFFER_CLIP = "Buffer inicial de Clipes";
+        STR_SETTINGS_LANG = "Idioma";
+        STR_LOADING_CHAT = "Chat: Conectando à";
+        STR_LOADING_FAIL = "Tempo limite de conexão, falha ao registrar ...";
+        STR_CHAT_CONNECTED = "Chat: Conectado";
+        STR_CHAT_SEND_DELAY = "Mensagem enviada, mas o atraso de chat habilitado, a mensagem será exibida no chat após";
+        STR_CHAT_DELAY = "Chat: atraso";
+        STR_VOD_HISTORY_BASE = "Reproduzir desde o início ou de onde parou de assistir";
+        STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + "VOD?";
+        STR_VOD_HISTORY_FORM_LIVE = STR_VOD_HISTORY_BASE + "AO VIVO?";
+        STR_FROM = "De:" + STR_BR;
+        STR_FROM_START = STR_FROM + "Iniciar";
+        STR_CHAT_END = "chat: O chat terminou!";
+        STR_RECENT = ", Mais recente";
+        STR_VIWES = ", Mais visualizações";
+        STR_NOKEY_VIDEO_WARN = "Adicionar uma chave de autorização do usuário para poder ver os vídeos seguidos";
+        STR_SWITCH_TYPE = "Trocar: Recente ou visualização";
+        STR_ENABLE = "Ativar";
+        STR_ENABLED = "Ativado";
+        STR_DISABLE = "Desativar";
+        STR_DISABLED = "Desativado";
+        STR_DARK_MODE = "Modo escuro";
+        STR_BRIGHT_MODE = "Modo claro";
+        STR_RESTORE_PLAYBACK_WARN = "O aplicativo foi fechado durante uma reprodução, restaurando a reprodução";
+        STR_RESTORE_PLAYBACK = "Restaurar reprodução";
+        STR_RESTORE_PLAYBACK_SUMMARY = "O aplicativo salva o que estava reproduzindo no caso de fechamento acidentalmente, alterando os aplicativos por exemplo, o sistema pode ficar sem memória e forçar o fechamento, nesses casos o aplicativo irá restaurar o que estava reproduzindo na próxima inicialização";
+        STR_CHAT_FONT = "Tamanho da fonte do chat";
+        STR_VIDEOS_ANIMATION = "Miniaturas animadas de vídeos";
+        STR_VIDEOS_ANIMATION_SUMMARY = "Quando um Vídeo ou destaque é selecionado a miniatura é animada se estiver disponível para aquele vídeo (nem todos os vídeos têm animação)";
+        STR_SIDE_PANEL = "Painel lateral: D-pad para a esquerda ou tecla de retorno";
+        STR_SIZE = "Tamanho";
+        STR_BRIGHTNESS = "Brilho";
+        STR_FORBIDDEN = "Conteúdo proibido, restrito à sua região ou a aplicativos oficiais do Twitch";
+        STR_JUMPING_STEP = "Etapa de salto";
+        STR_SECOND = "segundo";
+        STR_SECONDS = "segundos";
+        STR_MINUTE = "minuto";
+        STR_MINUTES = "minutos";
+        STR_CLOCK_OFFSET = "Clock offset";
+        STR_CLOCK_OFFSET_SUMMARY = "Ajuste o relógio do aplicativo em relação à sua escolha";
+        STR_APP_LANG = "Idioma do aplicativo";
+        STR_APP_LANG_SUMMARY = "A linguagem dos textos do aplicativo";
+        STR_CONTENT_LANG = "Idioma do conteúdo";
+        STR_CONTENT_LANG_SUMMARY = "O idioma do conteúdo das telas, ao vivo, Vídeos, clipes";
+        STR_ENTER_TO_OPEN = "Pressione Enter para abrir";
+        STR_LANG_ALL = "Todos";
+        STR_NO_GAME = "Nenhum jogo para este";
+        STR_EMPTY = "vazio";
+        STR_JUMP_BUFFER_WARNING = "Não é possível saltar durante o buffer";
+        STR_CHAT_DISABLE = "chat foi desabilitado à força, habilite-o nos controles da parte inferior do player chat desabilitado forçado";
+        STR_CLIP_FAIL = "Este clipe/vídeo falhou ao carregar. Não é possível reproduzir";
+        STR_CHAT_BRIGHTNESS = "Brilho de fundo do chat";
+        STR_PLAY_NEXT = "Reproduzir o seguinte";
+        STR_PLAY_NEXT_IN = "Reproduzindo o seguinte em";
+        STR_PLAY_ALL = "Reproduzir tudo";
+        STR_AUTO_PLAY_NEXT = "Reproduzir automaticamente o próximo clipe";
+        STR_SIDE_PANEL_SETTINGS = "Voltar ao menu principal";
+        STR_UP = "Pressione para cima";
+        STR_HOLD_UP = "Segure pra cima";
+        STR_LIVE_FEED = "Live Feed";
+        STR_VOD_DIALOG = "Diálogo inicial de Vídeos";
+        STR_VOD_DIALOG_SUMMARY = 'Escolha o comportamento padrão, ao reproduzir um Vídeo se a sua informação estiver presente no histórico do usuário, ele pode ser reproduzido de onde você parou de assistir pela última vez, se definido como "sempre desde o início" este comportamento também será aplicado a Pré-Visualização de VOD';
+        STR_VOD_DIALOG_START = "Sempre desde o início";
+        STR_VOD_DIALOG_LAST = "Sempre desde onde parou";
+        STR_VOD_DIALOG_SHOW = "Sempre perguntar";
+        STR_END_DIALOG_OPT = "Opções diálogo de fim de reprodução";
+        STR_END_DIALOG_SETTINGS = "Tempo limite da do diálogo de fim de reprodução";
+        STR_END_DIALOG_SETTINGS_SUMMARY = "Quando um Live/Vídeo/Clipe termina uma caixa de diálogo mostra opçôes do que fazer a seguir, defina o tempo (em segundos) que levará para a opção padrão agir";
+        STR_END_DIALOG_DISABLE = "Desativar o cronômetro";
+        STR_CHAT_SIZE = "Tamanho do chat";
+        STR_CHAT_POS = "Posição de chat";
+        STR_CHAT_VIDEO_MODE = "Modo de vídeo";
+        STR_CHAT_SIDE_FULL = "Tela inteira";
+        STR_CHAT_PP_SIDE_FULL = "Tela grande e pequena";
+        STR_CHAT_SIDE = "Lado a lado, vídeo e chat";
+        STR_CHAT_5050 = "50/50 e chats";
+        STR_SPEED = "Velocidade";
+        STR_QUALITY = "Qualidade";
+        STR_NORMAL = "Normal";
+        STR_AUTO = "Auto";
+        STR_VERY_LOW = "Muito baixa";
+        STR_LOW = "Baixa";
+        STR_HIGH = "Alta";
+        STR_VERY_HIGH = "Muito alta";
+        STR_THUMB_RESOLUTION = "Qualidade das miniaturas";
+        STR_THUMB_RESOLUTION_SUMMARY = "Resolução padrão de miniaturas para vídeos, ao vivo e jogos (não pode ser aplicado para clipes) um valor menor ajudará o aplicativo a carregar mais rápido, mas a miniatura pode parecer desfocada";
+        STR_PAYPAL_SUMMARY = "Doações Paypal use o link abaixo:";
+        STR_BITCOIN_SUMMARY = "Doações de Bitcoin use o endereço de carteira:";
+        STR_PLAYER_PROBLEM_2 = "A conexão falhou, não foi possível carregar as informações do Vídeo";
+        STR_PLAYER_RESYNC = "Reiniciar player";
+        STR_PLAYER_MULTI_ALL = "Tudo";
+        STR_QUALITY_PP = ["Pequeno", "Grande", STR_PLAYER_MULTI_ALL];
+        STR_QUALITY_MULTI = [STR_PLAYER_MULTI_ALL, "Superior esquerdo", "Superior direito", "Inferior esquerdo", "Inferior direito"];
+        STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Superior", "Inferior esquerdo", "Inferior centro", "Inferior direito"];
+        STR_PLAYER_BITRATE_UNLIMITED = "Ilimitado";
+        STR_PLAYER_BITRATE = "Resolução/taxa de bits máxima de qualidade automática permitida";
+        STR_PLAYER_BITRATE_SUMMARY = 'Isso será usado para evitar lags em dispositivos lentos ao reproduzir vários vídeos ao mesmo tempo (a maioria dos dispositivos vai pular frames nessa situação, pois eles são feitos para reproduzir apenas um único vídeo), também ajuda a limitar o uso de banda da Internet, no caso de ser necessario limitar uso de banda habilite "Qualidade do player padrão" para Auto, a resolução/taxa de bits recomendada para todos os players pequenos é 720p/3 Mbps e ilimitada para o player principal ou grande para a maioria dos dispositivos de baixo custo.';
+        STR_PLAYER_BITRATE_SUMMARY_ETC = "Valores diferentes aqui para a resolução do player principal e pequeno e/ou taxa de bits, pode causar um curto buffering/carregamento ao mudar entre o player principal no modo Picture Picture (pressionando para baixo irá alterar os players), para evitar que isto defina ambos os valores mesmo ao custo de um possível atraso, o melhor indicativo de uma taxa de bits muito alta é um acúmulo constante de quadros ignorados ou um buffer constante do fluxo.";
+        STR_PLAYER_MAIN = "player principal, para o player grande em Picture in picture ou o player de cima 50/50";
+        STR_PLAYER_RES_SMALL = "players pequeno, para o player pequeno do modo Picture in Picture e todos os players Multistream";
+        STR_PLAYER_BITRATE_MAIN = 'Taxa de bits -' + STR_PLAYER_MAIN;
+        STR_PLAYER_BITRATE_SMALL = 'Taxa de bits -' + STR_PLAYER_RES_SMALL;
+        STR_PLAYER_RES_MAIN = 'Resolução -' + STR_PLAYER_MAIN;
+        STR_PLAYER_RES_SMALL = 'Resolução -' + STR_PLAYER_RES_SMALL;
+        STR_BLOCK_RES = "Resoluções bloqueadas";
+        STR_BLOCK_RES_SUMMARY = "Ao usar a qualidade automática é possível bloquear uma ou mais resoluções de serem usadas, isso é útil para dispositivos que atrasam a reprodução de uma resolução particular, como os clipes não podem ser reproduzidos no modo automático, isso também bloqueará a seção automática de esta resolução em um clipe.";
+        STR_BLOCK_RES_SUMMARY_EXTRA = "O usuário pode sobrescrever a seleção manualmente durante a reprodução <br><br> XX significa que todas as resoluções que começam com aquele valor antes de XX serão impedidas de serem usadas, se a resolução for marcada como bloqueada";
+        STR_BLOCKED = "Bloqueado";
+        STR_BLOCKED_NOT = "Não bloqueado";
+        STR_AUDIO_SOURCE = "Fonte de áudio";
+        STR_VOLUME_CONTROLS = "Controles de áudio e volume";
+        STR_AUDIO_ALL = "Áudio habilitar todos";
+        STR_AUDIO_ALL_ENA = "Todas as fontes de áudio habilitadas";
+        STR_AUDIO_ALL_100 = "Volume total até 100%";
+        STR_AUDIO_ALL_100_SET = "Todo o volume do player ajustado para 100%";
+        STR_VOLUME = "Volume -";
+        STR_AUDIO = "Áudio -";
+        STR_DEF_QUALITY = "Qualidade padrão do player";
+        STR_DEF_QUALITY_SUMMARY = 'Esta opção será sempre honrada ao reproduzir um único vídeo, no modo Picture in Picture ou Multistream a reprodução precisa usar a qualidade Auto, pelo motivo é que, marque a opção de configurações "' + STR_PLAYER_BITRATE + '"';
+        STR_PICTURE_PICTURE = "Imagem sobre imagem, 50/50 ou Multistream (apenas para transmissões ao vivo):";
+        STR_PICTURE_CONTROLS1 = "Habilitar modo Picture in Picture: Reproduzindo um vídeo, pressione para cima para mostrar o feed de preview, escolha um fluxo e segure a tecla Enter ou pressione a tecla 1 para iniciar";
+        STR_PICTURE_CONTROLS2 = "Alterar um conteúdo de vídeo: a partir da preview do player, se estiver no modo multiplayer, clique sempre uma vez, Se em PP ou 50/50 um único clique atualizar o vídeo grande ou superior, segure a tecla Enter ou pressione a tecla 1 para atualizar o vídeo pequeno ou inferior";
+        STR_PICTURE_CONTROLS4 = "Alterar conteúdo entre vídeos (somente imagem sobre imagem): D-pad grande torna-se pequeno e vice-versa";
+        STR_PICTURE_CONTROLS5 = "Alterar a posição do vídeo pequeno (somente Picture in picture): D-pad para a esquerda";
+        STR_PICTURE_CONTROLS6 = "Alterar tamanho pequeno do vídeo (somente Picture in picture): D-pad à direita";
+        STR_PICTURE_CONTROLS7 = "Alterar fonte de áudio: Use os controles inferiores do reprodutor Fonte de áudio, se em 50/50 ou multistream use a tecla esquerda/direita se em PP use as teclas de mídia da faixa seguinte/anterior";
+        STR_PICTURE_CONTROLS3 = "Mudar a fonte de áudio para todos os vídeos: em multistream ou PP mantenha a tecla pressionada, em 50/50 clique uma vez, pressione a tecla";
+        STR_PICTURE_CONTROLS8 = "Reiniciar player: use os controles inferiores do player Reiniciar player, isso só irá reiniciar todos os players, útil para sincronizar player e chat, isso não irá sincronizar o conteúdo de um player com outro";
+        STR_PICTURE_CONTROLS9 = "Sincronizar players manualmente: É uma solução alternativa usar o controle inferior do reprodutor Velocidade para desacelerar o fluxo que está na frente ou vice-versa só funciona no modo PP";
+        STR_PICTURE_CONTROLS10 = 'Qualidade de vídeo Imagem sobre Imagem: Verifique nas configurações do aplicativo "' + STR_PLAYER_BITRATE + '"';
+        STR_PICTURE_CONTROLS11 = "Fechar vídeo pequeno ou inferior (somente Picture in picture): a tecla voltar duas vezes para sair do modo PP ou 50/50";
+        STR_PICTURE_CONTROLS12 = "Habilitar modo 50/50 (dois stream dois chats): Se Picture in Picture habilitar, pressione a tecla 2 ou a tecla de mídia para avançar ou use os controles inferiores 'Modo de Vídeo' ou se já estiver no modo 'lado a lado', mantenha a tecla enter sobre do feed de preview";
+        STR_PICTURE_CONTROLS13 = "Ativar Multistream: use os controles da parte inferior do player ou a tecla de retrocesso de mídia";
+        STR_PLAYER_INFO_VISIBILITY_ARRAY = ["Quando as informações do player estão visíveis", "Sempre visível", "Nunca visível"];
+        STR_SINGLE_EXIT = "Pressione a tecla de retorno único";
+        STR_SINGLE_EXIT_SUMMARY = "Saia do player, Picture in Picture, modo 50/50 ou Multistream com um único clique de retorno da tecla";
+        STR_NOTIFICATION_OPT = "Opções de notificação";
+        STR_NOW_LIVE_SHOW = 'Mostrar notificação "Streamer está ao vivo" para canais seguidos';
+        STR_TITLE_CHANGE_SHOW = 'Mostrar notificação de "Título alterado do Streamer" para canais seguidos';
+        STR_GAME_CHANGE_SHOW = 'Mostrar notificação de "Streamer mudou jogo" para canais seguidos';
+        STR_NOW_LIVE_GAME_SHOW = 'Mostrar notificação de "Jogo ao vivo" para jogos seguidos';
+        STR_NOW_BACKGROUND = "Notificação sobre outros aplicativos, quando o aplicativo está em segundo plano";
+        STR_NOW_BACKGROUND_SUMMARY = "Se você impedir a notificação para este aplicativo nas configurações do sistema, este recurso não funcionará, se as notificações do aplicativo já estiverem em execução e você sair do aplicativo, a notificação será exibida sobre outros aplicativos, mesmo se estiver desativado";
+        STR_NOTIFICATION_REPEAT = "Quantas vezes para mostrar notificação individual";
+        STR_NOTIFICATION_REPEAT_SUMMARY = "O tempo limite de notificação individual é de cerca de 3 segundos, e não pode ser alterado porque esse tempo limite é controlado pelo sistema, mas você pode definir o número de vezes que a mesma notificação será exibida";
+        STR_NOTIFICATION_SINCE = 'Impedir a exibição da notificação "Streamer está ativo " para streams que estão ativos há mais de tempo';
+        STR_NOTIFICATION_SINCE_SUMMARY = "Isso é útil para evitar que o aplicativo mostre uma longa lista de notificações quando o aplicativo não for usado por algum tempo, por exemplo, quando você desliga o dispositivo ou a tela está desligada (o aplicativo não mostrará notificação quando o dispositivo estiver ligado mas a tela está desligada)";
+        STR_GLOBAL_FONT = "Deslocamento global do tamanho da fonte do aplicativo";
+        STR_GLOBAL_FONT_SUMMARY = "Isso mudará o tamanho de todo o texto e da maioria dos ícones no aplicativo (menos o tamanho da fonte do chat, porque tem seu próprio controle), um valor muito pequeno pode não ser visível um valor muito grande irá estourar o suporte da caixa de texto, ou seja forma este valor é limitado, altere isso irá atualizar todas as telas";
+        STR_MAIN_MENU = "Menu Principal";
+        STR_USER_MENU = "Menu do usuário";
+        STR_CH_IS_OFFLINE = "Está offline";
+        STR_ROUND_IMAGES = "Imagens dos canais arredondadas";
+        STR_ROUND_IMAGES_SUMMARY = "Como a maioria das imagens de canais são quadrados, algumas imagens podem não parecer OK quando redondas";
+        STR_SCREEN_COUNTER = "Ocultar posição/contador total";
+        STR_SCREEN_COUNTER_SUMMARY = "Existe um contador de posição que informa a posição atual e o conteúdo total carregado nas telas que possuem conteúdo reproduzível, conforme você carrega mais conteúdo o total será atualizado";
+        STR_SWITCH_POS = "Trocar: Deslocar posição inicial";
+        STR_SWITCH_POS_SUMMARY = "Em vez de começar no primeiro vídeo possível, comece uma posição inferior na lista, evita ter que descer e descer para encontrar um vídeo mais antigo";
+        STR_USER_OPTION = "Escolha uma opção para o usuário";
+        STR_MAIN_USER = "Usuário principal";
+        STR_USER_TOP_LABLE = "Clique em um usuário para ver as opções";
+        STR_USER_EXTRAS = "Usuário: Mudar, adicionar, chave";
+        STR_LOW_LATENCY = "Latência Baixa";
+        STR_LOW_LATENCY_SUMMARY = "Se começar a obter problemas de buffers, desative" + STR_LOW_LATENCY +
+            "<br> Use" + STR_SETTINGS_BUFFER_LIVE + "igual ou menor que 1 para que tenha efeito";
+        STR_GAME_SORT = "Classificação da prévia dos jogos";
+        STR_LIVE_FEED_SORT = "Ordenar o painel lateral ou preview do player";
+        STR_LIVE_FEED_SORT_SUMMARY = "Ordena o painel lateral e o preview do player, este se aplica apenas ao usuário ao vivo e em destaque (todos os históricos são ordenados por ultimo visto e os Vídeos é o mais recente)";
+        STR_A_Z = "Alfabético A - Z";
+        STR_Z_A = "Alfabético Z - A";
+        STR_APP_ANIMATIONS = "Ativar animações do aplicativos";
+        STR_APP_ANIMATIONS_SUMMARY = "Habilita animações no painel lateral e de rolagem";
+        STR_UI_SETTINGS = "Personalização da interface, estilo de cor, animações e afins";
+        STR_GENERAL_CUSTOM = "Personalização de conteúdo, classificação, atualização automática, tempos limite e relacionados";
+        STR_RUNNINGTIME = "Aplicativo em execução por:";
+        STR_410_ERROR = "Não foi possível obter o link do vídeo";
+        STR_410_FEATURING = "Aplicativos de terceiros estão atualizados sem acesso para este recurso .";
+        STR_PRESS_ENTER_TO_CHANGE = "Pressione enter para mudar para -";
+        STR_CLICK_UNFOLLOW = "(Pressione enter para deixar de seguir)";
+        STR_CLICK_FOLLOW = "(Pressione enter para seguir)";
+        STR_TODAY = "Hoje";
+        STR_DROOPED_FRAMES = "Quadros pulados :";
+        STR_BUFFER_HEALT = "Tamanho do buffer (Seg):";
+        STR_NET_ACT = "Rede atividade (Mb):";
+        STR_NET_SPEED = "Rede velocidade (Mb):";
+        STR_LATENCY_TO_BROADCASTER = "Latência para Broadcaster";
+        STR_LATENCY = "Latencia a transmissão (Sec):";
+        STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base em" + STR_LATENCY_TO_BROADCASTER;
+        STR_PING = "Ping Twitch (Ms):";
+        STR_WARNING = "Aviso";
+        STR_WARNINGS = 'Avisos';
+        STR_ABOUT_PHONE = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
+        STR_DPAD_POSTION = "Posição da tela do D-pad";
+        STR_DPAD_OPACITY = "Transparencia do D-pad";
+        STR_DPAD_OPT = "Opções do D-pad";
+        STR_BLOCKED_CODEC = "Codecs bloqueados";
+        STR_BLOCKED_CODEC_SUMMARY = "Lista as capacidades dos codecs usados ​​e permite bloquear o uso de um codec";
+        STR_CODEC_DIALOG_TITLE = 'Codecs de software (OMX.google) geralmente têm pior desempenho, mas em alguns dispositivos eles podem ter precedência sobre codecs de hardware, usando este pode bloqueá-los e ver se o desempenho da reprodução melhora, <span style = "color: # FF0000; "> por padrão, o decodificador OMX.google está desabilitado </span> (se outro codec estiver disponível) um acúmulo constante de quadros ignorados é um indicativo de um problema de codec. <br> O conteúdo do aplicativo usa apenas decodificadores avc/h264 nenhum outro está listado.';
+        STR_SUPPORTED_CODEC = "Codecs suportados:";
+        STR_MAX_RES = "Resolução máxima:";
+        STR_MAX_BIT = "Taxa de bits máxima:";
+        STR_MAX_LEVEL = "Nível máximo:";
+        STR_MAX_FPS = "Max fps por resolução:";
+        STR_MAX_INSTANCES = "Máximo de instâncias:";
+        STR_UNKNOWN = "Desconhecido";
+        STR_ONE_CODEC_ENA = "Pelo menos um codec deve estar habilitado o tempo todo";
+        STR_USER_LIVE = "Painel lateral ao vivo: do painel lateral direcional esquerdo ou de qualquer lugar, pressione 3";
+        STR_PP_WORKAROUND = "Solução alternativa modo multiplayer";
+        STR_PP_WORKAROUND_SUMMARY = "Para alguns dispositivos rodando Android 7 (Nougat) ou mais antigo é necessário habilitar isto para que o modo Multiplayer funcione corretamente, não habilite isto se você não tiver problemas, pois resultará em uma qualidade de imagem inferior e possível perda de desempenho";
+        STR_HISTORY = "Histórico";
+        STR_WATCHED = "Assistido em";
+        STR_UNTIL = "até";
+        STR_SORTING = "Classificação";
+        STR_DELETE_HISTORY = "Excluir este histórico";
+        STR_DELETE_UNREACHABLE = "Apagar automaticamente conteúdo inacessível";
+        STR_DELETE_UNREACHABLE_SUMMARY = "Se estiver definido como SIM, o aplicativo removerá automaticamente VODs e clipes que estão inacessíveis (foram excluídos pelo streamer/criador) do histórico";
+        STR_NAME_A_Z = "Nome A - Z";
+        STR_NAME_Z_A = "Nome Z - A";
+        STR_GAME_A_Z = "Jogo A - Z";
+        STR_GAME_Z_A = "Jogo Z - A";
+        STR_VIWES_MOST = "Mais Visualizaçõe";
+        STR_VIWES_LOWEST = "Menos Visualizações";
+        STR_CHANNELS_MOST = "Maior quantidade de canais";
+        STR_CHANNELS_LOWEST = "Quantidade de canais mais baixa";
+        STR_NEWEST = "Assistido mais recente";
+        STR_OLDEST = "Assistidos mais antigos";
+        STR_PRESS_ENTER_D = "Pressione enter para deletar";
+        STR_PRESS_ENTER_APPLY = "Pressione enter para aplicar as alterações, volte para sair sem aplicar";
+        STR_LIVE_VOD = "Esta transmissão ao vivo agora é um VOD <br> abrindo o VOD de onde você parou de assistir ao vivo: <br>";
+        STR_BACKUP = "Permitir que o aplicativo faça e restaure backups? <br> (Os usuários e seu histórico serão backups)" + "<br><br>" +
+            "Clique em Sim, o aplicativo salvará backups para uso futuro e restaurará um backup salvo se os dados do aplicativo estiverem vazios." +
+            "É necessário dar permissão de armazenamento ao app para isso, então dê antes clique sim." + "<br><br>" +
+            "Se você não der permissão de armazenamento, nenhum backup será feito." + "<br><br>" +
+            "A pasta Backup é Main_Storage/data/com.fgl27.twitch/Backup";
+        STR_DELETE_SURE = "Tem certeza que deseja deletar tudo";
+        STR_CREATED_NEWEST = "Criado/Desde mais recente";
+        STR_CREATED_OLDEST = "Criado/Desde mais antigo";
+        STR_THUMB_OPTIONS = "Opções de miniatura";
+        STR_HISTORY_LIVE_DIS = "Habilitar histórico ao vivo";
+        STR_HISTORY_VOD_DIS = "Habilitar histórico de Vídeos";
+        STR_HISTORY_CLIP_DIS = "Habilitar histórico de clipes";
+        STR_OPEN_GAME = "Abra o jogo";
+        STR_OPEN_CHANNEL = "Abra o canal";
+        STR_THUMB_OPTIONS_KEY = "Pressione enter acima de uma ação (para abri-la ou aplicá-la), retornar para sair sem aplicar";
+        STR_DELETE_FROM_HISTORY = "Excluir este do histórico";
+        STR_CHECK_HISTORY = "Verificando status de seguidor...";
+        STR_REFRESH_DELETE = "Atualize a tela após excluir para ver a alteração.";
+        STR_THUMB_OPTIONS_TOP = "Segure para a esquerda para opções de miniaturas";
+        STR_REPLACE_MULTI = "Escolher qual substituir pelo de acima?";
+        STR_REPLACE_MULTI_ENTER = "Pressione Enter para substituir ou retornar para sair.";
+        STR_ALREDY_PLAYING = "Já está jogando";
+        STR_STREAM_ERROR = "Não foi possível abrir a visualização";
+        STR_PP_MODO = "Modo Picture in Picture";
+        STR_4_WAY_MULTI_INSTANCES = "Seu dispositivo suporta apenas% x instâncias de codec (reprodutor tocando) ao mesmo tempo, não pode usar";
+        STR_MULTI_EMPTY = "Finalizado e/ou vazio";
+        STR_4_WAY_MULTI = "multistream 4 vias";
+        STR_CONTROLS_MULTI_0 = "Ajuda multistream :";
+        STR_CONTROLS_MULTI_1 = 'Se você está tendo problemas de lentidão após habilitar o multistream, tente diminuir o valor de "Taxa de bits do player pequeno" nas configurações, o acúmulo de quadros pulados ou buffer constante é uma indicação de taxa de bits muito alta ou Internet lenta';
+        STR_CONTROLS_MULTI_2 = "Adicionar streams: abra o feed de preview e clique em um stream ao vivo";
+        STR_CONTROLS_MULTI_3 = "Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo";
+        STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha pressionado para fonte de áudio todos os vídeos";
+        STR_CONTROLS_MULTI_5 = "Sair do multistream: do controle inferior do player ou tecla de retorno duas vezes";
+        STR_CONTROLS_MULTI_6 = "Para fechar este abra as 4 transmissões ao vivo";
+        STR_PICTURE_LIVE_FEED = 'Picture in picture: Segure enter, após use o D-Pad para mover, redimensionar ou mudar os vídeos';
+        STR_MULTI_TITLE = ", Clique em uma miniatura para abrir ou substituir, use o direcional esquerdo/direito para mudar a fonte de áudio";
+        STR_FEED_END_DIALOG = ', Pressione retorno para voltar ao menu superior';
+        STR_BACK_USER_GAMES = 'Pressione a tecla de retorno para voltar a';
+        STR_NO_CONTENT = 'Nenhum conteúdo para este agora, tente novamente mais tarde';
+        STR_SHOW_LIVE_PLAYER = 'Mostrar pré-visualização nas telas das transmissões ao vivo';
+        STR_SHOW_VOD_PLAYER_WARNING = 'Iniciando a reprodução de onde parou anteriormente:';
+        STR_SHOW_VOD_PLAYER = 'Mostrar pré-visualização nas telas VOD';
+        STR_SHOW_CLIP_PLAYER = 'Mostrar pré-visualização nas telas CLIP';
+        STR_PREVIEW_CLIP_NEXT = 'Quando a visualização de um clipe termina, troca automática para o próximo clipe disponível';
+        STR_SHOW_SIDE_PLAYER = 'Mostrar pré-visualização no painel lateral';
+        STR_SHOW_FEED_PLAYER = 'Mostrar pré-visualização nas miniaturas de preview do player';
+        STR_SHOW_FEED_PLAYER_SUMMARY = "Se você não quiser ou seu dispositivo ficar lento quando mais de um player estiver ativo, defina como NÃO";
+        STR_DISABLED_FEED_PLAYER_MULTI = 'Desativar visualização quando multistream está ativado';
+        STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = 'Por motivos de desempenho, alguns dispositivos podem ficar lentos com vários players, se estiver OK para multistream, mas quando o player de pré-visualização e multistream estão ativos ficar lento configuram este para NÃO';
+        STR_PREVIEW_ERROR_LOAD = "A pré-visualização falhou ao carregar:";
+        STR_PREVIEW_ERROR_LINK = "inacessível";
+        STR_PREVIEW_VOD_DELETED = ", este Vídeo pode ter sido excluído";
+        STR_PREVIEW_END = "A pré-visualização do vídeo terminou";
+        STR_PLAYER_LAG_ERRO = "player incapaz de reproduzir devido a um problema de conexão de rede";
+        STR_PLAYER_ERROR = "player incapaz de reproduzir, devido ao erro do player";
+        STR_PLAYER_ERROR_MULTI = ", tente diminuir o valor da taxa de bits do player nas configurações";
+        STR_PREVIEW_SIZE = "Tamanho da visualização do player";
+        STR_PREVIEW_SIZE_SUMMARY = "Definir o tamanho da visualização do player das miniaturas de visualização";
+        STR_PREVIEW_SIZE_ARRAY = ["Pequeno", "Médio", "Grande", "Extra grande"];
+        STR_PREVIEW_SIZE_SCREEN = "Tamanho da pré-visualização das telas";
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Definir o tamanho da pré-visualização";
+        STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Tamanho da miniatura", "Maior"];
+        STR_SIDE_PANEL_PLAYER_DELAY = "Atraso na pré-visualização";
+        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Defina o tempo de atraso que a pré-visualização levará para começar a carregar depois que uma miniatura for selecionada, isso ajuda com dispositivos lentos que atrasam ao rolar";
+        STR_PREVIEW_VOLUME = "Volume de pré-visualização";
+        STR_PREVIEW_VOLUME_SUMMARY = "Permitir definir qual será o volume de pré-visualização do feed";
+        STR_PREVIEW_OTHERS_VOLUME = "Volume dos players principais";
+        STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "O volume do player principal (todos os players picture in picture, players multistream) pode ser menor quando o player de pré-visualização é exibido";
+        STR_SIDE_PANEL_PLAYER = "Configurações de players em miniatura";
+        STR_START_AT_USER = "Sempre inicie o aplicativo na tela do usuário";
+        STR_START_AT_USER_SUMMARY = "Isso impedirá restaurar o ponto onde o app esava antes de ser fechado, mas permite escolher o usuário ao iniciar o aplicativo";
+        STR_LAST_REFRESH = "última atualização:";
+        STR_PP_VOD_ERROR = "Saia do PP ou Multistream para abrir este Vídeo";
+        STR_SETTINGS_ACCESSIBILITY = 'Mostrar "um serviço de acessibilidade está em execução aviso"';
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "Se o dispositivo tiver um serviço de acessibilidade habilitado, o aplicativo mostrará um aviso, é um problema conhecido do Android que o serviço de acessibilidade pode deixar lento alguns dispositivos e causar congelamentos ou lentidão neste aplicativo.";
+        STR_ACCESSIBILITY_WARN = "Serviço (s) de acessibilidade detectado (s)";
+        STR_ACCESSIBILITY_WARN_EXTRA = "Leia mais sobre neste link:";
+        STR_ACCESSIBILITY_WARN_EXTRA2 = "Se você tiver travamentos ou problemas relacionados a lentidão, feche este aplicativo e desabilite todos os serviços de acessibilidade depois para resolver.<br>Para não mostrar este aviso nunca mais desabilite-o nas configurações";
+        STR_AUTO_REFRESH = "Tempo limite de atualização automática";
+        STR_AUTO_REFRESH_SUMMARY = "Quando estiver habilitado, o aplicativo irá atualizar automaticamente as telas, a atualização acontece apenas quando a tela foi usada, se você quiser uma atualização automatica habilite este";
+        STR_AUTO_REFRESH_BACKGROUND = "Atualização automática em segundo plano";
+        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'Quando "Tempo limite de atualização automática" está definido e habilitado, a atualização automática acontecerá em segundo plano (mas com o aplicativo visível, o Android não permite a execução irrestrita em segundo plano para evitar lentdão em outro aplicativo), esteja ciente porque o aplicativo tem muitas telas quando esta opção está habilitada, a atualização automática pode causar um leve atraso aleatório em alguns dispositivos mais lentos';
+        STR_MAIN_WINDOW = "Vídeo principal";
+        STR_MULTI_MAIN_WINDOW = "Vídeo principal MultiStream";
+        STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + "maior e chat: pressione a tecla para baixo, depois use esquerda/direita para mudar com é o grande vídeo";
+        STR_SOURCE_CHECK = "Alterar automaticamente a qualidade do player de Source para Auto quando o player atrasar";
+        STR_SOURCE_CHECK_SUMMARY = 'Quando esta opção está habilitada e você não está usando qualidade automática se o player estiver lento, ele mudará para qualidade automática e avisará sobre isso, um atraso do player é, por exemplo, quando o player não conseguiu reproduzir por mais de 15 segundos ( o algoritmo é mais complexo do que apenas o tempo, é claro), após essa mudança, o reprodutor voltará automaticamente à fonte quando você iniciar um novo fluxo de vod';
+        STR_PLAYER_LAG = 'player está lento, qualidade alterada para "Modo automático"';
+        STR_PLAYER_SOURCE = 'player está lento, qualidade diminuiu';
+        STR_TOO_ERRORS = "ou muitos erros";
+        STR_STREAM_ERROR_SMALL = "Pré-visualização, stream encerrado" + STR_TOO_ERRORS;
+        STR_CONTROLS_MEDIA_FF = "Avançar ou retroceder (apenas para VOD e Clips): use as teclas direcional direita/esquerda ou avançar/retroceder mídia";
+        STR_VOD_MUTED = "Uma parte deste está silenciado porque contém conteúdo protegido por direitos autorais, a cor mais escura na barra de busca indica as partes";
+        STR_GIFT_SUB = "tem de presente um sub!";
+        STR_ANONYMOUS = "Anônimo";
+        STR_CHAT_BANNED = "Você está permanentemente proibido de escrever em";
+        STR_CHAT_WRITE = "Escreva no chat";
+        STR_CHAT_EXTRA = "Configurações extras de chat";
+        STR_PLACEHOLDER_CHAT = "Quando selecionado, pressione Enter para mostrar o teclado na tela. Se você tiver um teclado físico conectado, pressione Enter ou Esc para ocultar o teclado na tela";
+        STR_CHAT_ROOMSTATE = "chat ROOMSTATE:";
+        STR_CHAT_NO_RESTRICTIONS = "Sem restrições";
+        STR_OPTIONS = "Opções";
+        STR_CHAT_DELL_ALL = "Excluir tudo";
+        STR_CHAT_AT_STREAM = "@streamer";
+        STR_CHAT_RESULT = "Resultado esperado no chat:";
+        STR_CHAT_SEND = "Enviar";
+        STR_CHAT_EMOTE_EMPTY = "Esta lista de emote está vazia";
+        STR_CHAT_FOLLOWER_ONLY = "chat esta no modo apenas para seguidores e você não é um seguidor de";
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "e você só está seguindo desde";
+        STR_CHAT_EMOTE_ONLY = "Modo somente emote de Twitch";
+        STR_CHAT_CHOOSE = "Escolha qual chat escrever ou pressione retornar para fechar";
+        STR_CHAT_OPTIONS_TITLE = "Opções de escrita no chat";
+        STR_CHAT_OPTIONS_KEYBOARD = "Auto ocultar teclado virtual";
+        STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Permite controlar o comportamento do teclado virtual na tela, se você tiver um teclado físico conectado use-o, se não estiver configure para nunca";
+        STR_CHAT_OPTIONS_KEYBOARD_1 = "Nunca";
+        STR_CHAT_OPTIONS_KEYBOARD_2 = "Se teclado detectado";
+        STR_CHAT_OPTIONS_KEYBOARD_3 = "Sempre";
+        STR_CHAT_OPTIONS_EMOTE_SORT = "Ordem dos emoções";
+        STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "Se estiver desabilitado, as listas de emotes serão mostradas conforme decebida pelo servidor";
+        STR_CHAT_OPTIONS_FORCE_SHOW = "Forçar mostrar chat";
+        STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "Se você deseja ver o chat quando escrever para chat for usado, habilite este";
+        STR_NOKEY_CHAT_WARN = "Adicionar uma chave de autorização do usuário para poder acessar e escrever no chat";
+        STR_CHAT_NOT_READY = "chat não está pronto para enviar! Tente novamente em um ou dois segundos.";
+        STR_CHAT_REDEEMED_MESSAGE_HIGH = "Resgate, Destacar Minha Mensagem";
+        STR_CHAT_REDEEMED_MESSAGE_SUB = "Resgate, Enviar uma Mensagem no Modo Sub-Only";
+        STR_CHAT_OPTIONS = "Opções de chat";
+        STR_CHAT_HIGHLIGHT_REDEEMED = "Destacar mensagens de Resgate (somente mensagem de fundo roxo)";
+        STR_CHAT_HIGHLIGHT_STREAMER = "Destacar mensagens @streamer (fundo vermelho escuro, o @ é azul)";
+        STR_CHAT_HIGHLIGHT_USER = "Destaque suas mensagens de @username (fundo verde escuro, o @ é azul)";
+        STR_CHAT_HIGHLIGHT_USER_SEND = "Destacar suas mensagens enviadas (fundo verde escuro)";
+        STR_CHAT_SHOW_SUB = "Mostrar sub mensagens no chat (fundo laranja escuro)";
+        STR_CHAT_HIGHLIGHT_BIT = "Mensagem dos bits em destaque (fundo amarelo escuro)";
+        STR_CHAT_HIGHLIGHT_ACTIONS = "Mostrar mensagens de ações (geralmente são de Bots de fluxo)";
+        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = 'Estas mensagens são geralmente iguais às Sub mensagens, mas enviadas através de um stream bot, então se você tiver "Mostrar sub ..." habilite isto é redundante';
+        STR_CHAT_INDIVIDUAL_BACKGROUND = "Diferença de cor de fundo de mensagens individuais";
+        STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Os modos são desabilitar, habilitar (modo automático), claro ou mais escuro, no modo automático se o chat estiver acima do stream, a mensagem impares terão uma cor de destaque de fundo mais escura do que as pares, se o chat não estiver acima (lado a lado, por exemplo) a cor ficará clara";
+        STR_CHAT_INDIVIDUAL_LINE = "Insira uma linha para separar as mensagens de chat individuais";
+        STR_CHAT_LOGGING = "Fazendo login no chat com o usuário atual";
+        STR_CHAT_LOGGING_SUMMARY = "O aplicativo sempre fará login no chat usando o usuário atual quando uma chave de autorização for fornecida, a menos que o chat seja desabilitado nos controles da parte inferior do player, mas se esta opção for definida como NÃO, impedirá o login usando o nome de usuário atual e, em vez disso, será registrado como anônimo , mesmo que forneça uma chave de autorização. Isso não impede o envio de mensagem de chat para este usuário se uma chave for adicionada, mas impede o app de saber se você está banido do chat e impede o status do chat ROOMSTATE";
+        STR_CHAT_TIMESTAMP = "Mostrar data e hora da mensagem";
+        STR_CHAT_NICK_COLOR = "Cores de nick legíveis";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar";
+        STR_CHAT_CLEAR_MSG = "Limpar chat, apagar mensagens do usuário";
+        STR_CHAT_MESSAGE_DELETED = "Esta unica mensagem de usuário foi solicitada para ser excluída";
+        STR_CHAT_MESSAGE_DELETED_ALL = "Todas as mensagens deste usuário foram solicitadas para serem excluídas";
+        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", o tempo esgotou para";
+        STR_CHAT_CLEAR_MSG_SUMMARY = 'Excluir mensagens de chat de um usuário específico (normalmente após receberem um intervalo ou banimento), as mensagens excluídas sempre terão um fundo azul, a mensagem será excluída se este estiver definido como SIM, se NÃO apenas a cor de fundo irá mudar';
+        STR_OPEN_HOST_SETTINGS = "Sempre abra o host no final da stream, se disponível";
+        STR_ALWAYS_STAY = "Sempre fique com o player aberto após o fim do Live";
+        STR_PING_WARNING = 'Mostrar "Aviso de falha de ping para Twitch"';
+        STR_PING_WARNING_SUMMARY = "O aplicativo está constantemente verificando a conexão com o Twitch por meio de um ping, se isso falhar muitas vezes, um aviso será exibido, se esse aviso estiver encomodando, defina como NÃO";
+        STR_KEY_UP_TIMEOUT = "Tempo limite de segurar a tecla (em milissegundos)";
+        STR_KEY_UP_TIMEOUT_SUMMARY = "Quanto tempo você precisa para segurar uma tecla para que uma ação de segurar aconteça, as ações são atualizar a tela, mostra opções de miniaturas etc.";
+        STR_CURRENT_THUMB_STYLE = "Estilo de seleção atual";
+        STR_NEW_THUMB_STYLE = "Novo estilo de seleção";
+        STR_COLOR_STYLE_TEXT = 'Use cima/baixo para selecionar uma opção, pressione retornar para sair, pressione Enter em "Aplicar alterações" para confirmar.';
+        STR_SHADOWS = "Sombras";
+        STR_SHADOWS_NONE = "Nenhum";
+        STR_SHADOWS_WHITE = "Branco";
+        STR_SHADOWS_GRAY = "Cinza";
+        STR_SHADOWS_BLACK = "Preto";
+        STR_COLORS = "Cores";
+        STR_RESULT = "Resultado";
+        STR_APPLY = "Aplicar alterações";
+        STR_COLOR_TYPE = "Tipo de cor";
+        STR_STYLES = "Estilos";
+        STR_ENTER = "Pressione enter";
+        STR_COLOR_ARRAY = "Plano de fundo, texto, borda, barra de progresso assistido";
+        STR_STYLES_ARRAY = "Padrão, Personalizado, Branco, Cinza, Vermelho, Laranja, Amarelo, Verde, Azul, Roxo, Rosa";
+        STR_ENTER_RGB = STR_ENTER + "para aceitar a mudança RGB";
+        STR_THUMB_STYLE = "Estilo de miniatura selecionado";
+        STR_OPEN_EXTERNAL_PLAYER = "Abrir em um player externo";
+        STR_CHAT_SIDE_ARRAY = ['Esquerda', 'Direita'];
+        STR_CHAT_BASE_ARRAY = ['Inferior direito', 'Centro direito', 'Superior direito', 'Centro superior', 'Superior esquerdo', 'Centro esquerdo', 'Inferior esquerdo', 'Centro inferior'];
+        STR_CHAT_100_ARRAY = ['Direita', 'Centro', 'Esquerda'];
+        STR_NOTIFICATION_POS = "Posição de notificação na tela";
+        STR_NOTIFICATION_POS_ARRAY = [' Canto superior direito', 'Centro superior', 'Esquerda superior', 'Esquerda inferior', 'Centro inferior', 'Direita inferior'];
+        STR_LOWLATENCY_ARRAY = [STR_DISABLE, "Modo normal, pode causar re-buffers", "Modo mais baixo, pode causar ainda mais re-buffers"];
+        STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + '-' + STR_DISABLED, STR_LOW_LATENCY + "- modo normal", STR_LOW_LATENCY + "- Modo mais baixo"];
+        STR_VOD_SEEK = "Vídeos controles de retroceder/avançar rápido";
+        STR_VOD_SEEK_SUMMARY = "Controla os passos dos retrocesso/avanço, ao clicar e segurar para a esquerda/direita o tempo do aumen depois que do tempo limite, ele aumentará até o tempo máximo do passo, após soltar a tecla e não clicar em um segundo, o tempo de passo será redefinido para o tempo mínimo.<br><br>Pressionar pra cima irá sobrescrever o valor mim/max, permitindo que você escolha o passo<br><br> Fazer cliques únicos sem segurar a tecla não aumentará o tempo <br><br> Esta opção só funciona em vídeos para Clip o passo é sempre de 1 segundo";
+        STR_VOD_SEEK_MIN = "Tempo mínimo (inicial) de passo";
+        STR_VOD_SEEK_MAX = "Tempo máximo de passo";
+        STR_VOD_SEEK_TIME = "Aumentar o tempo limite após segurar por";
+        STR_UP_LOCKED = "pressione para cima para bloquear o valor do passo";
+        STR_LOCKED = "bloqueado pressione para cima para alterar";
+        STR_IN_CHAT = "No chat";
+        STR_SHOW_IN_CHAT = "Mostrar total de usuários no chat ou visualizações";
+        STR_SHOW_IN_CHAT_SUMMARY = "Isso é muito útil para saber, por exemplo, se o chat offline tem algum usuário com quem conversar, também deixe o usuário saber a diferença entre o visualizações e o usuário no chat";
+        STR_SHOW_IN_CHAT_VIEWERS = 'Mostrar visualizações';
+        STR_SHOW_IN_CHAT_CHATTERS = 'Mostrar chatters';
+        STR_PLAYED = "Jogou";
+        STR_CHAPTERS = "Capítulos";
+        STR_FROM_SIMPLE = "de";
+        STR_HIDE_MAIN_CLOCK = "Ocultar relógio da tela principal";
+        STR_HIDE_PLAYER_CLOCK = "Ocultar relógio do player";
+        STR_HIDE_MAIN_SCREEN_TITLE = "Ocultar título da tela principal";
+        STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "O título central, Ao vivo, Clip, Configurações etc ...";
+        STR_HIDE_ETC_HELP_INFO = "Ocultar dicas de navegação na tela";
+        STR_HIDE_ETC_HELP_INFO_SUMMARY = "Dicas de navegação como, segure uma tecla para uma ação e relacionados";
+        STR_INACTIVE_SETTINGS = "Minimizar automaticamente o aplicativo quando inativo por";
+        STR_INACTIVE_SETTINGS_SUMMARY = "Impedir que o aplicativo fique executado quando ninguém estiver vendo, um aviso aparecerá dando ao usuário 15 segundos para pressionar qualquer tecla para evitar a minimização";
+        STR_INACTIVE_WARNING = "O aplicativo irá minimizar automaticamente devido à inatividade em <br><br>% x <br><br> Pressione qualquer tecla para prevenir";
+        STR_REMAINING = "Restantes:";
+        STR_PLAYER_INFO_VISIBILITY = "Visibilidade do status do player";
+        STR_PREVIEW_SET = "Configurações de pré-visualização";
+        STR_PREVIEW_SHOW = "Mostrar pré-visualização";
+        STR_PREVIEW_SIZE_CONTROLS = "Tamanho da pré-visualização";
+        STR_OLED_BURN_IN = "Proteção OLED";
+        STR_OLED_BURN_IN_SUMMARY = "Quando ativado, a tela ficará totalmente preta por 50 ms a cada 20 minutos, apenas necessário para dispositivos com telas OLED que apresentam problemas de burn-ins";
+        STR_AS = "como";
+        STR_MILLISECONDS = "milissegundos";
+        STR_HOUR = "hora";
+        STR_HOURS = "horas";
+        STR_RIGHT = "Direito";
+        STR_LEFT = "Esquerda";
+        STR_BOTTOM = "Inferior";
+        STR_TOP = "Topo";
+        STR_AVG = "Méd";
+        STR_OFFSET = "Offset";
+    }
+    /*
+     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+     *
+     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+     *
+     * SmartTwitchTV is free software: you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation, either version 3 of the License, or
+     * (at your option) any later version.
+     *
+     * SmartTwitchTV is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License
+     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+     *
+     */
+
+    //Spacing for release maker not trow errors from jshint
+    function ru_RULang() {
+
+        STR_KEY_UP_DOWN = "Вверх/Вниз";
+        STR_KEY_MEDIA_FF = "или кнопку перемотки";
+        STR_GUIDE_EXTRA = "или 2";
+        STR_GUIDE_EXTRA2 = "или кнопку перемотки";
+        STR_REFRESH = "Обновить";
+        STR_SEARCH = "Поиск";
+        STR_SETTINGS = "Настройки";
+        STR_CONTROLS = "Управление";
+        STR_CONTROLS_ETC = "Посмотрите видео из Play Store, чтобы понять, как работает приложение, и как использовать его настройки и управление.";
+        STR_ABOUT = "Описание";
+        STR_HIDE = "Скрыть";
+        STR_SEARCH_EMPTY = "Введенный вами текст пуст.";
+        STR_SEARCH_RESULT_EMPTY = "Ничего не найдено.";
+        STR_SWITCH = "Сменить раздел";
+        STR_SWITCH_USER = "Сменить раздел";
+        STR_SWITCH_VOD = "Сменить: Прошлые стримы/хайлайты";
+        STR_SWITCH_CLIP = "Сменить: Период (24ч, 7д, 30д, все)";
+        STR_GO_TO = "Перейти в раздел";
+        STR_USER = "Аккаунт";
+        STR_LIVE = "В эфире";
+        STR_GAMES = "Категории";
+        STR_PLAYING = "Стрим по";
+        STR_FOR = "для";
+        STR_WATCHING = "Время просмотра";
+        STR_WAITING = "Врмемя ожидания";
+        STR_SINCE = "Уже";
+        STR_AGAME = "Игра";
+        STR_PLACEHOLDER_SEARCH = "Введите ваш запрос...";
+        STR_PLACEHOLDER_OAUTH = "Введите ключ авторизации...";
+        STR_PLACEHOLDER_USER = "Введите имя пользователя...";
+        STR_PLACEHOLDER_PRESS = "Нажмите кнопку ОК,";
+        STR_CHANNELS = "Каналы";
+        STR_CHANNEL = "Канал";
+        STR_GOBACK_START = "На пред. экран: кнопка назад";
+        STR_IS_OFFLINE = "закончился";
+        STR_CHECK_HOST = ", проверка хоста";
+        STR_IS_SUB_ONLY = "Видео доступно только для подписчиков.";
+        STR_IS_SUB_ONLY_ERROR = "только для подписчиков.";
+        STR_REFRESH_PROBLEM = "Ошибка подключения, невозможно загрузить контент. Нажмите Обновить, чтобы повторить попытку.";
+        STR_NO = "Нет";
+        STR_FOR_THIS = "для";
+        STR_PLAYER_PROBLEM = "Ошибка подключения, невозможно загрузить контент, выход...";
+        STR_PAST_BROA = "Прошлые стримы";
+        STR_PAST_HIGHL = "Хайлайты";
+        STR_CLIPS = "Клипы";
+        STR_CONTENT = "Контент";
+        STR_STREAM_ON = "Транслировал";
+        STR_DURATION = "Продолжительность";
+        STR_VIEWS = "Просмотров";
+        STR_VIEWER = "Зрителей";
+        STR_EXIT_AGAIN = "Нажмите еще раз для выхода!";
+        STR_EXIT_AGAIN_PICTURE = "Нажмите еще раз для выхода из Картинка в Картинке";
+        STR_EXIT_AGAIN_MULTI = "Нажмите еще раз для выхода из мультистрима!";
+        STR_EXIT_MESSAGE = "Вы хотите выйти из SmartTV Client для Twitch?";
+        STR_EXIT = "Выход";
+        STR_CHANGELOG = "Изменения";
+        STR_FULL_CHANGELOG = "Изменения";
+        STR_CHANGELOG_SUMMARY = "Это только последние изменения, чтобы прочитать полные, проверьте ссылку ниже:";
+        STR_UPDATE = 'Нажмите чтобы обновить';
+        STR_UPDATE_CHECK = 'Проверить обновления';
+        STR_UPDATE_CHECKING = 'Проверка обновлений...';
+        STR_UPDATE_CHECKING_FAIL = 'Ошибка проверки';
+        STR_NO_UPDATES = 'У вас последняя версия';
+        STR_UPDATE_CHANGELOG = "Обновление";
+        STR_UPDATE_LATEST = "Последнее обновление:";
+        STR_UPDATE_FAIL = "Ошибка обновления, попробуйте вручную!";
+        STR_UPDATE_FAIL_DOWNLOAD = "Не удалось загрузить APK-файл, попробуйте вручную!";
+        STR_UPDATE_AVAILABLE = "Доступно обновление APK";
+        STR_WEB_UPDATE_AVAILABLE = "Web обновление доступно";
+        STR_UPDATE_CHECK_SIDE = ", проверьте панель обновлений";
+        STR_UPDATE_LAST_CHECK = "Посл. проверка:";
+        STR_UPDATE_OPT = "Обновления";
+        STR_UPDATE_CHECK_FOR = "Проверять обовления в фоне";
+        STR_UPDATE_SHOW = "Показать диалог обновления, когда обновление доступно";
+        STR_UPDATE_SHOW_ARRAY = ["Да", "Only a toast message", "Нет"];
+        STR_UPDATE_START = "Начался процесс обновления, это может занять несколько секунд, подождите!";
+        STR_UPDATE_PLAY = "Если в Play Store не отображается обновление, попробуйте еще раз через несколько минут!";
+        STR_UPDATE_ERROR = "Вам нужна версия APK 3.0.303 или выше, чтобы использовать это, обновите";
+        STR_UPDATE_WARNING_OK = "Приложение обновлено успешно";
+        STR_CLOSE = "Закрыть";
+        STR_MINIMIZE = "Свернуть";
+        STR_CANCEL = "Отмена";
+        STR_NOT_LIVE = "Повтор";
+        STR_LIVE_CHANNELS = "Каналы в эфире";
+        STR_LIVE_HOSTS = "Ретрансляции";
+        STR_LIVE_GAMES = "Игры в эфире";
+        STR_USER_CHANNEL = "Отслеживаемое";
+        STR_USER_MY_CHANNEL = "Мой канал";
+        STR_USER_ADD = "Аккаунт";
+        STR_USER_REMOVE = "Удалить";
+        STR_USER_ERROR = "Пользователь не существует";
+        STR_USER_HOSTING = "ретранслирует";
+        STR_USER_SET = "уже установлено";
+        STR_USER_MAKE_ONE = "Сменить";
+        STR_USER_NUMBER_ONE = "Первый пользователь может отслеживать (при добавлении ключа) и видеть трансляции каналов в реальном времени за пределами экрана пользователя.<br>";
+        STR_ADD_USER_SH = "Добавьте пользователя Twitch, чтобы отображать контент отслеживаемых каналов";
+        STR_CLIP_DAY = "24ч";
+        STR_CLIP_WEEK = "7д";
+        STR_CLIP_MONTH = "30д";
+        STR_CLIP_ALL = "все";
+        STR_JUMP_TIME = "Перемотка";
+        STR_JUMP_T0 = "на";
+        STR_JUMP_CANCEL = "Перемотка отменена";
+        STR_JUMP_TIME_BIG = ", время перемотки больше, чем продолжительность";
+        STR_SEC = "Сек";
+        STR_MIN = "Мин";
+        STR_MS = "Мс";
+        STR_HR = "Ч";
+        STR_SOURCE = "Источник";
+        STR_TWITCH_TV = "SmartTV Client для Twitch";
+        STR_CLOSE_THIS = "Нажмите ОК или назад, чтобы закрыть это.";
+        STR_CLOSE_THIS2 = "Нажмите назад, чтобы закрыть это.";
+        STR_CLOSE_THIS3 = "Нажмите назад, чтобы открыть окно обновления, или ОК, чтобы закрыть это..";
+        STR_PLAYER = "Плеер:";
+        STR_CHAT = "Чат:";
+        STR_CHAT_SHOW = "Показать чат";
+        STR_CURRENT_VERSION = "Текущая установленная версия";
+        STR_LATEST_VERSION = "последняя доступная версия";
+        STR_CONTROLS_MAIN_2 = "Воспроизведение видео: перемещайтесь с помощью нав. панели (вверх/вниз/влево/вправо), нажмите ОК или плей/пауза/кнопка 1";
+        STR_CONTROLS_MAIN_3 = "Обновить содержимое экрана:";
+        STR_CONTROLS_MAIN_4 = "Выход из приложения: на боковой панели нажмите Выход.";
+        STR_CONTROLS_MAIN_5 = "Принудительное закрытие приложения: удерживайте кнопку назад, пока оно не закроется автоматически";
+        STR_CONTROLS_MAIN_6 = "Переключить экран: кнопка назад, затем D-Pad" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
+        STR_CONTROLS_MAIN_10 = "Начать поиск: на боковой панели нажмите поиск, введите текст, нажмите кнопку ОК на виртуальной клавиатуре и выберите вариант поиска.";
+        STR_CONTROLS_MAIN_14 = "Об этом приложении: на боковой панели нажмите Описание";
+        STR_ABOUT_INFO_1 = "Это клиент Twitch для Android TV, выпущенный бесплатно для всех, кто хочет им пользоваться.";
+        STR_ABOUT_INFO_2_SOURCE = "Эта версия приложения предназначена только для тестирования в браузере!";
+        STR_ABOUT_INFO_3 = "Контактная информация:";
+        STR_ABOUT_INFO_4 = "Это приложение с открытым исходным кодом под лицензией GNU General Public License v3.0, доступно на GitHub.";
+        STR_ABOUT_INFO_6 = "Это приложение использует следующие зависимости:";
+        STR_ABOUT_INFO_7 = "irc-message - Производительный потоковый парсер сообщений IRC (https://github.com/sigkell/irc-message)";
+        STR_ABOUT_INFO_8 = "Fontastic - Создавайте собственные шрифты для иконок за секунды (http://app.fontastic.me)";
+        STR_ABOUT_INFO_9 = "Twemoji - Простая библиотека, которая обеспечивает стандартную поддержку эмодзи Unicode на всех платформах. (https://github.com/twitter/twemoji)";
+        STR_ABOUT_INFO_10 = "UglifyJS - это набор инструментов для синтаксического анализа, минификсации, сжатия и украшения JavaScript. (https://github.com/mishoo/UglifyJS2)";
+        STR_ABOUT_INFO_12 = "HTMLMinifier - Настраиваемый, хорошо протестированный HTML-минификатор на основе JavaScript. (https://github.com/kangax/html-minifier)";
+        STR_ABOUT_INFO_13 = "JSHint - Инструмент статического анализа кода для JavaScript (https://github.com/jshint/jshint)";
+        STR_ABOUT_INFO_16 = "Leanback v17: Классы поддержки для создания пользоват. опыта Leanback (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
+        STR_ABOUT_INFO_17 = "ExoPlayer: Внешний медиаплеер для Android (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_18 = "Поддержка телефонов и планшетов:";
+        STR_ABOUT_INFO_19 = "Да, это приложение можно использовать на телефонах и планшетах, но оно предназначено в основном для телевизоров. Поддержка других устройств ограничена из-за их отсутсвия в Play Store. Используйте ссылку ниже для загрузки последней версии APK и установите вручную на телефон/планшет";
+        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle плагин для обнаружения обновлений зависимостей (https://github.com/ben-manes/gradle-versions-plugin)";
+        STR_ABOUT_INFO_22 = "Tray: замена SharedPreferences для Android (https://github.com/grandcentrix/tray)";
+        STR_ABOUT_INFO_23 = "punycode - Надежный конвертер Punycode, полностью соответствующий RFC 3492 и RFC 5891 (https://github.com/bestiejs/punycode.js)";
+        STR_ABOUT_INFO_24 = "crass - Минификация CSS, красивая печать и общая служебная библиотека, написанная на JS (https://github.com/mattbasta/crass)";
+        STR_CONTROLS_PLAY_0 = "или в нижних элементах управления плеером";
+        STR_CONTROLS_PLAY_1 = "Показать информационную панель: нажмите кнопку ОК или кнопки D-pad, если чат и прямой эфир канала не отображаются";
+        STR_CONTROLS_PLAY_2 = "Закрыть видео: дважды нажмите кнопку назад или кнопку Стоп.";
+        STR_CONTROLS_PLAY_3 = "Плей/пауза видео: откройте информационную панель и нажмите символ паузы";
+        STR_CONTROLS_PLAY_4 = "Показать активные каналы пользователя: D-Pad вверх";
+        STR_CONTROLS_PLAY_5 = "Изменить качество видео: используйте нижний элемент управления плеером (Качество)";
+        STR_CONTROLS_PLAY_6 = "Принудительно обновить видео (если оно зависает): измените качество видео на такое же.";
+        STR_CONTROLS_PLAY_7 = "Показать или скрыть чат: D-pad вниз или кнопка 3" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_8 = "Изменить положение чата: D-pad влево, или перемотка назад (только видео и клипы)" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_9 = "Изменить размер чата: D-pad вправо" + STR_CONTROLS_PLAY_0;
+        STR_CONTROLS_PLAY_10 = "Изменение яркости фона чата: изменените в нижних элементах управления плеером";
+        STR_CONTROLS_PLAY_11 = "Принудительно обновить чат в прямых трансляциях (в случае, если он зависает или не загружается): используйте нижние элементы управления плеера.";
+        STR_CONTROLS_PLAY_12 = "Начать поиск: откройте инф. панель, перейдите с помощью нав. панели (влево/вправо) в Поиск и нажмите ОК.";
+        STR_CONTROLS_PLAY_13 = "Поддерживаются все мультимедийные кнопки (плей,пауза,стоп,перемотка и т.д.).";
+        STR_CONTROLS_PLAY_14 = "Чат и видео: кнопка 2 или кнопка перемотки вперед, переключает между режимом «Картинка в картинке» и режимом 50/50";
+        STR_F_DISABLE_CHAT = "Принудительное отключение чата";
+        STR_OAUTH_IN = 'Добавление ключа позволяет приложению получать доступ к чату, используя ваш аккаунт. Для отправки сообщений и получения вашего списка эмоций (позволяет получать подарочные подписки в чате), подписываться/отменять подписку на каналы/игры и быстрее получать доступ к некоторому контенту.<br><br>Добавление ключа не требует усилий и может быть выполнено в любой момент позже.<br><br>Сомневаетесь, прочтите эту ссылку:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>Для некоторых устройств необходима мышь для завершения действия авторизации, так как вам может потребоваться вручную нажать кнопку подтверждения.<br><br>для добавления ключа';
+        STR_USER_CODE = "Добавить ключ";
+        STR_USER_CODE_OK = "Ключ добавлен успешно";
+        STR_KEY_BAD = "Ошибка ключа, нужно добавить новый";
+        STR_OAUTH_WRONG = "Вы пытаетесь добавить ключ для пользователя";
+        STR_OAUTH_WRONG2 = "но этот ключ для пользователя";
+        STR_FOLLOWING = "Отслеживается";
+        STR_FOLLOW = "Отслеживать";
+        STR_IS_SUB_NOOAUTH = "И вы не добавили ключ авторизации, приложение не может проверить ваш саб-статус.";
+        STR_IS_SUB_NOT_SUB = "И вы не являетесь подписчиком этого канала";
+        STR_IS_SUB_IS_SUB = "Вы являетесь подписчиком этого канала, но";
+        STR_OAUTH_FAIL = "Ошибка авторизации ключа, пожалуйста, проверьте и попробуйте еще раз";
+        STR_OAUTH_FAIL_USER = "Добавленный ключ не принадлежит пользователю";
+        STR_NOKEY = "Нет аккаунта";
+        STR_NOKEY_WARN = "Установите пользователя и ключ, чтобы иметь возможность подписаться/отписаться";
+        STR_NOKUSER_WARN = "Сначала добавьте пользователя";
+        STR_RESET = "Перезапустить";
+        STR_CLIP = "Клип";
+        STR_CHANNEL_CONT = "Канал";
+        STR_NET_DOWN = "Сеть отключена, приложение не может работать без интернета";
+        STR_NET_UP = "Сетевое подключение восстановлено";
+        STR_FOLLOWERS = "Фолловеров";
+        STR_CANT_FOLLOW = ", нельзя подписаться или отписаться";
+        STR_GAME_CONT = "Игра";
+        STR_YES = "Да";
+        STR_REMOVE_USER = "Вы действительно хотите удалить аккаунт";
+        STR_PLACEHOLDER_PRESS_UP = "Нажмите вверх для";
+        STR_FOLLOW_GAMES = "Отслеживаемые игры";
+        STR_USER_GAMES_CHANGE = "Смена между";
+        STR_GUIDE = "Удерж. ОК";
+        STR_MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"];
+        STR_DAYS = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
+        STR_STARTED = "Запустил";
+        STR_VIDEOS = "Видео";
+        STR_REPLAY = "Повтор";
+        STR_STREAM_END = "выход в";
+        STR_STREAM_END_EXIT = 'нажмите назад для выхода';
+        STR_FEATURED = 'Избранное';
+        STR_CREATED_AT = "Создано";
+        STR_OPEN_BROADCAST = "Открыть трансляцию";
+        STR_IS_LIVE = "Онлайн";
+        STR_SHOW_ISLIVE_WARNING = 'Показать "Стример Онлайн" Предупреждение';
+        STR_SHOW_ISLIVE_WARNING_SUMMARY = "При просмотре клипа или видео, приложение может проверить онлайн ли этот стример, если да, появится предупреждение. Чтобы открыть прямую трансляцию, просто используйте опцию нижнего элемента управления плеером.";
+        STR_OPEN_CHAT = "Нажмите, чтобы открыть чат или дождитесь возвращения в прямой эфир";
+        STR_STAY_OPEN = "Остаться на стриме";
+        STR_STAY_OPEN_SUMMARY = "Остаться и еще раз проверить, не онлайн ли он";
+        STR_STAY_CHECK = "Проверить, идет ли трансляция:";
+        STR_STAY_CHECKING = "Проверяем, в сети ли...";
+        STR_STAY_CHECK_LAST = "Последняя проверка:";
+        STR_STAY_IS_OFFLINE = "Трансляция офлайн";
+        STR_NO_BROADCAST = "Нет трансляции";
+        STR_NO_BROADCAST_WARNING = "У этого клипа нет прошлых трансляций";
+        STR_NO_CHAT = "И из-за этого нет чата";
+        STR_IS_NOW = "сейчас";
+        STR_OPEN_HOST = "Открыть рейд";
+        STR_SETTINGS_PLAYER = "Плеер";
+        STR_SETTINGS_BUFFER_SIZE = "Размер начального буфера:";
+        STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Сколько необходимо для буферизации перед началом воспроизведения. Это не связано с максимальным размером, которого может достичь буфер (максимальный размер буфера зависит от размера ОЗУ устройства). Более низкое значение приведет к более раннему началу воспроизведения и это рекомендуется. Изменение этого значения на большее значение в большинстве случаев не приведет к улучшению и могут возникнуть проблемы.";
+        STR_SETTINGS_BUFFER_LIVE = "Начальный буфер стрима";
+        STR_SETTINGS_BUFFER_VOD = "Начальный буфер видео (прошедшие трансляции и хайлайты)";
+        STR_SETTINGS_BUFFER_CLIP = "Начальный буфер клипов";
+        STR_SETTINGS_LANG = "Язык";
+        STR_LOADING_CHAT = "Чат: подключение к";
+        STR_LOADING_FAIL = "Тайм-аут подключения, ошибка регистрации...";
+        STR_CHAT_CONNECTED = "Чат: подключен";
+        STR_CHAT_SEND_DELAY = "Сообщение отправлено, включена задержка чата, сообщение будет отображаться в чате после";
+        STR_CHAT_DELAY = "Чат: задержка";
+        STR_VOD_HISTORY_BASE = "Воспроизвести с самого начала или с того места, где вы перестали смотреть";
+        STR_VOD_HISTORY = STR_VOD_HISTORY_BASE + " Видео?";
+        STR_VOD_HISTORY_FORM_LIVE = STR_VOD_HISTORY_BASE + " Прямой эфир?";
+        STR_FROM = "Из:" + STR_BR;
+        STR_FROM_START = STR_FROM + "Старт";
+        STR_CHAT_END = "Чат: Чат закончился!";
+        STR_RECENT = ", Недавние";
+        STR_VIWES = ", Самые просматриваемые";
+        STR_NOKEY_VIDEO_WARN = "Добавьте ключ пользователя, чтобы видеть отслеживаемые видео";
+        STR_SWITCH_TYPE = "Сменить: последние/популярные";
+        STR_ENABLE = "Включить";
+        STR_ENABLED = "Включено";
+        STR_DISABLE = "Отключить";
+        STR_DISABLED = "Отключено";
+        STR_DARK_MODE = "Темный режим";
+        STR_BRIGHT_MODE = "Светлый режим";
+        STR_RESTORE_PLAYBACK_WARN = "Приложение было закрыто во время просмотра, воспроизведение восстанавливается";
+        STR_RESTORE_PLAYBACK = "Восстановить воспроизведение";
+        STR_RESTORE_PLAYBACK_SUMMARY = "Приложение сохраняет то, что играло, на случай непреднамеренного закрытия. При нехватке памяти система может закрыть приложение или принудительно его может закрыть пользователь. В таком случае, приложение восстановит то, что ранее воспроизводилось, при следующем запуске.";
+        STR_CHAT_FONT = "Размер шрифта чата";
+        STR_VIDEOS_ANIMATION = "Анимированные превью видео";
+        STR_VIDEOS_ANIMATION_SUMMARY = "Анимировать превью, когда выбран хайлайт или видео, если для этого видео доступно анимированное превью (не во всех видео оно есть).";
+        STR_SIDE_PANEL = "Боковая панель: D-Pad влево или кнопка назад";
+        STR_SIZE = "Размер";
+        STR_BRIGHTNESS = "Яркость";
+        STR_FORBIDDEN = "Запрещенный контент, он ограничен вашим регионом или официальным приложением Twitch.";
+        STR_JUMPING_STEP = "Шаг перемотки";
+        STR_SECOND = "сек.";
+        STR_SECONDS = "сек.";
+        STR_MINUTE = "мин.";
+        STR_MINUTES = "мин.";
+        STR_CLOCK_OFFSET = "Часы";
+        STR_CLOCK_OFFSET_SUMMARY = "Настройте разницу часов приложения в соответствии с вашим часовым поясом";
+        STR_APP_LANG = "Язык приложения";
+        STR_CONTENT_LANG = "Язык контента";
+        STR_ENTER_TO_OPEN = "Нажмите ОК";
+        STR_LANG_ALL = "Все";
+        STR_NO_GAME = "Нет игры из этого";
+        STR_EMPTY = "Пусто";
+        STR_JUMP_BUFFER_WARNING = "Невозможно перейти во время буферизации";
+        STR_CHAT_DISABLE = "Чат принудительно отключен, включите его в нижних элементах управления плеера. Чат принудительно отключен.";
+        STR_CLIP_FAIL = "Не удалось загрузить этот клип/видео. Не могу воспроизвести";
+        STR_CHAT_BRIGHTNESS = "Яркость фона чата";
+        STR_PLAY_NEXT = "Следующий";
+        STR_PLAY_NEXT_IN = "Играет в следующий раз";
+        STR_PLAY_ALL = "Воспроизвести все";
+        STR_AUTO_PLAY_NEXT = "Автовоспроизведение следующего клипа";
+        STR_SIDE_PANEL_SETTINGS = "Назад в главное меню";
+        STR_UP = "Нажмите вверх";
+        STR_HOLD_UP = "Ужерживайте вверх";
+        STR_LIVE_FEED = "Акт. каналы";
+        STR_VOD_DIALOG = "Диалог запуска Видео";
+        STR_VOD_DIALOG_SUMMARY = 'Выберите поведение по умолчанию, при воспроизведении видео. Если информация о нем присутствует в истории пользователя, его можно воспроизводить с того места, где вы последний раз прекращали просмотр. Если для этого параметра установлено значение «всегда с начала», это поведение также будет применяться к предпросмотру видео';
+        STR_VOD_DIALOG_START = "Всегда с самого начала";
+        STR_VOD_DIALOG_LAST = "Всегда с последней остановки";
+        STR_VOD_DIALOG_SHOW = "Всегда спрашивать";
+        STR_END_DIALOG_OPT = "Параметры диалога завершения проигрывателя";
+        STR_END_DIALOG_SETTINGS = "Тайм-аут окончания диалога плеера";
+        STR_END_DIALOG_SETTINGS_SUMMARY = "Когда Live/Видео/Клип заканчиваются, появляется диалоговое окно с опцией, что делать дальше, установите время (в секундах), которое потребуется для действия по умолчанию.";
+        STR_END_DIALOG_DISABLE = "Отключить таймер";
+        STR_CHAT_SIZE = "Размер чата";
+        STR_CHAT_POS = "Позиция чата";
+        STR_CHAT_VIDEO_MODE = "Режим видео";
+        STR_CHAT_SIDE_FULL = "Полный экран";
+        STR_CHAT_PP_SIDE_FULL = "Большой+маленький экран";
+        STR_CHAT_SIDE = "Видео и чат";
+        STR_CHAT_5050 = "50/50 и чаты";
+        STR_SPEED = "Скорость";
+        STR_QUALITY = "Качество";
+        STR_NORMAL = "Нормально";
+        STR_AUTO = "Авто";
+        STR_VERY_LOW = "Очень низкое";
+        STR_LOW = "Низкое";
+        STR_HIGH = "Высокое";
+        STR_VERY_HIGH = "Очень высокое";
+        STR_THUMB_RESOLUTION = "Качество превью";
+        STR_THUMB_RESOLUTION_SUMMARY = "Разрешение превью по умолчанию для прямых трансляций, видео и игр (не применимо для клипов). Низкое значение поможет приложению загружаться быстрее, но превью может выглядеть размытым.";
+        STR_PAYPAL_SUMMARY = "Для пожертвований Paypal используйте ссылку ниже:";
+        STR_BITCOIN_SUMMARY = "Для пожертвований в биткойнах используется адрес кошелька:";
+        STR_PLAYER_PROBLEM_2 = "Ошибка подключения, невозможно загрузить информацию о потоке";
+        STR_PLAYER_RESYNC = "Рестарт плеера";
+        STR_PLAYER_MULTI_ALL = "Все";
+        STR_QUALITY_PP = ["Маленький", "Большой", STR_PLAYER_MULTI_ALL];
+        STR_QUALITY_MULTI = [STR_PLAYER_MULTI_ALL, "Сверху слева", "Сверху справа", "Снизу слева", "Снизу справа"];
+        STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Сверху", "Снизу слева", "Снизу центр", "Снизу справа"];
+        STR_PLAYER_BITRATE_UNLIMITED = "Не ограничен";
+        STR_PLAYER_BITRATE = "Максимально допустимое автоматическое качество (разрешение/битрейт)";
+        STR_PLAYER_BITRATE_SUMMARY = 'Это используется для предотвращения задержек на слабых устройствах при одновременном воспроизведении нескольких видео (большинство устройств будут отставать, пропуская кадры в этой ситуации, поскольку они созданы для воспроизведения только одного видео), а также помогает ограничить использование пропускной полосы Интернета. В случае, если вам нужно ограничение, которое также установит для параметра «Качество проигрывателя по умолчанию» значение «Авто». Рекомендуемое разрешение/битрейт для всех малых проигрывателей составляет 720p/3 Mbps и неограничено для основного или большого проигрывателя для большинства слабых устройств.';
+        STR_PLAYER_BITRATE_SUMMARY_ETC = "Различные значения разрешения или битрейта для основного и малого плеера могут вызвать короткую буферизацию/загрузку при переключении с основным проигрывателем в режиме Картинка в Картинке (нажатие вниз изменит плееры), чтобы предотвратить установите у них одинаковые значения. Показателем слишком высокого битрейта является постоянное накопление пропущенных кадров или постоянная буферизация потока.";
+        STR_PLAYER_MAIN = "Главный плеер, для большого плеера картинка в картинке или верхнего плеера 50/50";
+        STR_PLAYER_RES_SMALL = "Маленькие плееры, для малого в режиме «Картинка в картинке» и всех мультистрим плееров.";
+        STR_PLAYER_BITRATE_MAIN = 'Битрейт - ' + STR_PLAYER_MAIN;
+        STR_PLAYER_BITRATE_SMALL = 'Битрейт - ' + STR_PLAYER_RES_SMALL;
+        STR_PLAYER_RES_MAIN = 'Разрешение - ' + STR_PLAYER_MAIN;
+        STR_PLAYER_RES_SMALL = 'Разрешение - ' + STR_PLAYER_RES_SMALL;
+        STR_BLOCK_RES = "Заблокированные разрешения";
+        STR_BLOCK_RES_SUMMARY = "При использовании автоматического качества можно заблокировать одно или несколько разрешений, которые когда-либо будут использоваться, это можно использовать для устройств, которые отстают при воспроизведении определенного разрешения, поскольку клипы не могут воспроизводиться в автоматическом режиме, это также заблокирует автоматический режим этого разрешения в клипах.";
+        STR_BLOCK_RES_SUMMARY_EXTRA = "Пользователь может перезаписать выделенное вручную во время воспроизведения.<br><br>XX означает, что все разрешения, которые начинаются с этого значения до XX, будут запрещены к использованию, если разрешение помечено как заблокированное.";
+        STR_BLOCKED = "Заблокировано";
+        STR_BLOCKED_NOT = "Не заблокировано";
+        STR_AUDIO_SOURCE = "Источник звука";
+        STR_VOLUME_CONTROLS = "Аудио и громкость";
+        STR_AUDIO_ALL = "Аудио включить все";
+        STR_AUDIO_ALL_ENA = "Все источники звука включены";
+        STR_AUDIO_ALL_100 = "Громкость все до 100%";
+        STR_AUDIO_ALL_100_SET = "Вся громкость плеера установлена на 100%";
+        STR_VOLUME = "Громкость -";
+        STR_AUDIO = "Аудио -";
+        STR_DEF_QUALITY = "Качество плеера по умолчанию";
+        STR_DEF_QUALITY_SUMMARY = 'Этот параметр всегда будет учитываться при воспроизведении одного видео. Для воспроизведения режима Картинка в Картинке или Мультистрима необходимо использовать качество авто, поэтому проверьте параметр настроек "' + STR_PLAYER_BITRATE + '"';
+        STR_PICTURE_PICTURE = "Картинка в Картинке, 50/50 или Мультистрим (Только для прямых трансляций):";
+        STR_PICTURE_CONTROLS1 = "Включить режим «Картинка в картинке»: при воспр. видео нажмите вверх, чтобы отобразить предпросмотр. Выберите поток, затем удерживайте «ОК» чтобы начать.";
+        STR_PICTURE_CONTROLS2 = "Изменение видеоконтента: из предпросмотра плеера, если в режиме мультистрима всегда одно нажатие. Если на КвК или 50/50 одним нажатием обновляется большое или верхнее видео. Удерживайте кнопку ОК или нажмите 1, чтобы обновить маленькое или нижнее видео";
+        STR_PICTURE_CONTROLS4 = "Изменение содержимого между видео (только картинка в картинке): D-pad вниз (большой становится маленьким и наоборот)";
+        STR_PICTURE_CONTROLS5 = "Изменение положения малого видео (только картинка в картинке): D-pad влево";
+        STR_PICTURE_CONTROLS6 = "Изменение размера малого видео (только картинка в картинке): D-pad вправо";
+        STR_PICTURE_CONTROLS7 = "Изменить источник звука: используйте нижний элемент (Источник звука). Если в режиме 50/50 или мультистриме, используйте левую/правую кнопки. Если на КвК, используйте кнопки мультимедиа следующей/предыдущей дорожки.";
+        STR_PICTURE_CONTROLS3 = "Изменить источник звука на все видео: на мультистриме или КвК удерживайте кнопку вниз нажатой, на 50/50 одно нажатие вниз";
+        STR_PICTURE_CONTROLS8 = "Перезапуск плеера: используйте нижний элемент управления (Перезапуск проигрывателя), это перезапустит плееры. Это не синхронизирует содержимое плеера с другим";
+        STR_PICTURE_CONTROLS9 = "Ручная синхронизация плееров: Используйте элемент управления (Скорость) для замедления потока, который спешит, или наоборот. Работает только в режиме КвК";
+        STR_PICTURE_CONTROLS10 = 'Качество видео "Картинка в картинке": проверьте в настройках приложения "' + STR_PLAYER_BITRATE + '"';
+        STR_PICTURE_CONTROLS11 = "Закрыть маленькое или нижнее видео (только картинка в картинке): дважды нажмите кнопку назад, чтобы выйти из режима КвК или 50/50";
+        STR_PICTURE_CONTROLS12 = "Включить режим 50/50 (два потока, два чата): если картинка в картинке включена, нажмите 2 или кнопку для быстрой перемотки вперед или используйте нижние элементы управления «Режим видео»";
+        STR_PICTURE_CONTROLS13 = "Включить мультистрим: используйте нижние элементы управления или медиа-кнопку перемотки";
+        STR_PLAYER_INFO_VISIBILITY_ARRAY = ["Когда отображается информация о плеере", "Показывать всегда", "Не показывать"];
+        STR_SINGLE_EXIT = "Однократное нажатие кнопки назад";
+        STR_SINGLE_EXIT_SUMMARY = "Закрыть плеер, картинку в картинке, 50/50 или мультистрим, нажав один раз назад.";
+        STR_NOTIFICATION_OPT = "Уведомления";
+        STR_NOW_LIVE_SHOW = 'Показать "Стример в прямом эфире" для отслеживаемых каналов';
+        STR_TITLE_CHANGE_SHOW = 'Показать "Стример изменил заголовок" для отслеживаемых каналов';
+        STR_GAME_CHANGE_SHOW = 'Показать "Стример изменил игру" для отслеживаемых каналов';
+        STR_NOW_LIVE_GAME_SHOW = 'Показать "Игра запущена" для игр, за которые отслеживаются';
+        STR_NOW_BACKGROUND = "Уведомление над другими приложениями, когда приложение работает в фоновом режиме";
+        STR_NOW_BACKGROUND_SUMMARY = "Если вы запретите уведомления для этого приложения в настройках системы, эта функция не будет работать. Если уведомления приложения запущены, и вы выйдете из приложения, уведомление будет отображаться поверх других приложений, даже если это отключено.";
+        STR_NOTIFICATION_REPEAT = "Сколько раз показывать уведомление";
+        STR_NOTIFICATION_REPEAT_SUMMARY = "Тайм-аут отдельного уведомления составляет около 3 секунд и не может быть изменен, потому что этот тайм-аут контролируется системой, но вы можете установить, сколько раз будет отображаться одно и то же уведомление.";
+        STR_NOTIFICATION_SINCE = 'Запретить показывать "Стример в эфире" для потоков, которые транслируются';
+        STR_NOTIFICATION_SINCE_SUMMARY = "Это полезно, чтобы приложение не показывало длинный список уведомлений, когда приложение не используется в течение некоторого времени, например, когда вы выключаете устройство или экран выключен (приложение не будет отображать уведомление, когда устройство включено, но экран выключенный)";
+        STR_GLOBAL_FONT = "Размер шрифта приложения";
+        STR_GLOBAL_FONT_SUMMARY = "Это изменит размер всего текста и большинства значков в приложении (за вычетом размера шрифта чата, потому что у него есть собственная настройка). Слишком маленькое значение может не отображаться, слишком большое значение выводит текст за границы, то есть это значение ограничено.";
+        STR_MAIN_MENU = "Гл. меню";
+        STR_USER_MENU = "Мой канал";
+        STR_CH_IS_OFFLINE = "Не в сети";
+        STR_ROUND_IMAGES = "Использовать закругленные аватары каналов";
+        STR_ROUND_IMAGES_SUMMARY = "Поскольку большинство аватаров каналов имеют квадратную форму, некоторые аватары могут выглядеть некорректно.";
+        STR_SCREEN_COUNTER = "Скрыть счетчик позиции/общего количества";
+        STR_SCREEN_COUNTER_SUMMARY = "Есть счетчик позиции, который информирует о текущей позиции и общем загруженном контенте на экранах, на которых есть воспроизводимый контент.";
+        STR_SWITCH_POS = "Сменить: Смещение начальной позиции";
+        STR_SWITCH_POS_SUMMARY = "Вместо того, чтобы начинать с первого возможного видео, начните с более низкой позиции в списке, чтобы избежать необходимости спускаться вниз и вниз, чтобы найти более старое видео.";
+        STR_USER_OPTION = "Выберете действие для аккаунта";
+        STR_MAIN_USER = "Пользователь";
+        STR_USER_TOP_LABLE = "Нажмите на пользователя, чтобы просмотреть параметры";
+        STR_USER_EXTRAS = "Сменить, добавить, ключ";
+        STR_LOW_LATENCY = "Низкая задержка";
+        STR_LOW_LATENCY_SUMMARY = "Если есть получать проблемы с буферами, отключите " + STR_LOW_LATENCY +
+            "<br>Используйте " + STR_SETTINGS_BUFFER_LIVE + " равное или меньше 1, чтобы это имело эффект";
+        STR_GAME_SORT = "Сортировка превью игр";
+        STR_LIVE_FEED_SORT = "Боковая панель или сортировка превью плеера";
+        STR_A_Z = "Алфавит A - Z";
+        STR_Z_A = "Алфавит Z - A";
+        STR_APP_ANIMATIONS = "Включить анимации";
+        STR_APP_ANIMATIONS_SUMMARY = "Управляет боковой панелью, прокруткой, уведомлениями и связанными анимациями";
+        STR_UI_SETTINGS = "Настройка интерфейса,цветовой стиль,анимация и т.п.";
+        STR_GENERAL_CUSTOM = "Настройка контента,сортировка,автообновление,тайм-ауты и т.п.";
+        STR_RUNNINGTIME = "Приложение работает:";
+        STR_410_ERROR = "Невозможно получить ссылку на видео";
+        STR_410_FEATURING = "Сторонние приложения в настоящее время не имеют доступа к этой функции.";
+        STR_PRESS_ENTER_TO_CHANGE = "Нажмите ОК, чтобы сменить на -";
+        STR_CLICK_UNFOLLOW = "(Нажмите ОК для отписки)";
+        STR_CLICK_FOLLOW = "(Нажмите ОК для подписки)";
+        STR_TODAY = "Сегодня";
+        STR_DROOPED_FRAMES = "Проп. кадры:";
+        STR_BUFFER_HEALT = "Размер буфера:";
+        STR_NET_ACT = "Сет. акт.:";
+        STR_NET_SPEED = "Скорость:";
+        STR_LATENCY_TO_BROADCASTER = "Задержка до стримера";
+        STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Исходя из " + STR_LATENCY_TO_BROADCASTER;
+        STR_PING = "Пинг до Twitch:";
+        STR_WARNING = "Предупреждение";
+        STR_WARNINGS = "Предупреждения";
+        STR_ABOUT_PHONE = "Это приложение предназначено для использования в основном на телевизорах, поддержка других устройств не гарантирована. Если у вас нет клавиатуры или D-pad с кнопками ОК и назад (ESC работает для возврата на компьютере) используйте экранные виртуальные экранные кнопки для навигации (видимые только на телефонах/планшетах), в настройках вы можете изменить положение и непрозрачность виртуального D-Pad. Нажмите в любом месте экрана, чтобы отобразить виртуальный D-Pad, когда он скрыт.";
+        STR_DPAD_POSTION = "Позиция D-pad";
+        STR_DPAD_OPACITY = "Прозрачность D-pad";
+        STR_DPAD_OPT = "Настройки D-Pad";
+        STR_BLOCKED_CODEC = "Заблокированные кодеки";
+        STR_BLOCKED_CODEC_SUMMARY = "Перечислить возможности используемых кодеков и разрешить/запретить использование кодеков";
+        STR_CODEC_DIALOG_TITLE = 'Программные кодеки (OMX.google) обычно имеют худшую производительность, но на некоторых устройствах они могут иметь приоритет над аппаратными кодеками. Используя это, кодеки можно заблокировать и посмотреть, улучшится ли производительность воспроизведения, <span style="color: #FF0000;">по умолчанию декодер OMX.google отключен</span> (если доступен другой кодек). Постоянное накопление пропущенных кадров указывает на проблему с кодеком.<br>В контенте приложения используются только декодеры avc/h264, другие не предусмотрены.';
+        STR_SUPPORTED_CODEC = "Поддерживаемые кодеки:";
+        STR_MAX_RES = "Макс. разрешение:";
+        STR_MAX_BIT = "Макс. битрейт:";
+        STR_MAX_LEVEL = "Макс. уровень:";
+        STR_MAX_FPS = "Макс. FPS:";
+        STR_MAX_INSTANCES = "Макс. экземпляры:";
+        STR_UNKNOWN = "Неизвестно";
+        STR_ONE_CODEC_ENA = "Хотя бы один кодек должен быть включен постоянно";
+        STR_USER_LIVE = "Боковая панель Акт.каналы: на боковой панели D-pad влево или из любого места кнопка 3";
+        STR_PP_WORKAROUND = "Временное решение для старой ОС в мультистриме";
+        STR_PP_WORKAROUND_SUMMARY = "Для некоторых устройств под управлением Android 7 (Nougat) или старше необходимо включить это для правильной работы мультистрима. Не включайте это, если у вас нет проблем, так как это приведет к снижению качества изображения и возможной потере производительности.";
+        STR_HISTORY = "История";
+        STR_WATCHED = "Смотрел на";
+        STR_UNTIL = "до";
+        STR_SORTING = "Сортировка";
+        STR_DELETE_HISTORY = "Удалить эту историю";
+        STR_DELETE_UNREACHABLE = "Автоматическое удаление недоступного контента";
+        STR_DELETE_UNREACHABLE_SUMMARY = "Если для этого параметра установлено значение ДА, приложение автоматически удалит видео и клипы, которые недоступны (были удалены стримером/создателем) из истории.";
+        STR_NAME_A_Z = "Имя A - Z";
+        STR_NAME_Z_A = "Имя Z - A";
+        STR_GAME_A_Z = "Игра A - Z";
+        STR_GAME_Z_A = "Игра Z - A";
+        STR_VIWES_MOST = "Просмотры самые высокие";
+        STR_VIWES_LOWEST = "Просмотры самые низкие";
+        STR_CHANNELS_MOST = "Количество каналов наивысшее";
+        STR_CHANNELS_LOWEST = "Количество каналов наименьшее";
+        STR_NEWEST = "Просмотренные новейшие";
+        STR_OLDEST = "Просмотренные старейшие";
+        STR_PRESS_ENTER_D = "Нажмите ОК, чтобы удалить";
+        STR_PRESS_ENTER_APPLY = "Нажмите ОК, чтобы применить изменения. Назад, чтобы выйти без применения.";
+        STR_LIVE_VOD = "Эта прямая трансляция теперь видео<br>открыть видео с того места, где вы в последний раз прекратили смотреть прямую трансляцию:<br>";
+        STR_BACKUP = "Разрешить приложению создавать и восстанавливать резервные копии?<br>(Пользователи и их история будут зарезервированы)" + "<br><br>" +
+            "Нажмите Да, приложение сохранит резервные копии для использования в будущем и восстановит сохраненную резервную копию, если данные приложения пусты.." +
+            "Необходимо предоставить для этого разрешение хранилища приложения, поэтому дайте, прежде чем нажать Да." + "<br><br>" +
+            "Если вы не дадите разрешение на хранение, резервное копирование не будет выполнено.." + "<br><br>" +
+            "Папка резервного копирования Main_Storage/data/com.fgl27.twitch/Backup";
+        STR_DELETE_SURE = "Вы уверены, что хотите удалить все";
+        STR_CREATED_NEWEST = "Создано / Новейшее";
+        STR_CREATED_OLDEST = "Создано / Старое";
+        STR_THUMB_OPTIONS = "Дополнительные опции";
+        STR_HISTORY_LIVE_DIS = "Включить историю";
+        STR_HISTORY_VOD_DIS = "Включить историю видео";
+        STR_HISTORY_CLIP_DIS = "Включить историю клипов";
+        STR_OPEN_GAME = "Открыть категорию";
+        STR_OPEN_CHANNEL = "Открыть канал";
+        STR_THUMB_OPTIONS_KEY = "Нажмите ОК (чтобы открыть или применить). Назад, чтобы выйти без применения";
+        STR_DELETE_FROM_HISTORY = "Удалить это из истории";
+        STR_CHECK_HISTORY = "Проверка статуса подписки ...";
+        STR_REFRESH_DELETE = "Обновите экран после удаления, чтобы увидеть изменения.";
+        STR_THUMB_OPTIONS_TOP = "Удерж. влево для доп. опций";
+        STR_REPLACE_MULTI = "Выбрать для замены на указанное выше?";
+        STR_REPLACE_MULTI_ENTER = "Нажмите ОК, чтобы заменить. Назад, чтобы выйти без изменения.";
+        STR_ALREDY_PLAYING = "Уже воспроизводится";
+        STR_STREAM_ERROR = "Невозможно открыть предпросмотр";
+        STR_PP_MODO = "Картинка в Картинке";
+        STR_4_WAY_MULTI_INSTANCES = "Ваше устройство поддерживает только %x экземпляры кодека (плеер воспроизводит) одновременно, нельзя использовать";
+        STR_MULTI_EMPTY = "Завершено или пусто";
+        STR_4_WAY_MULTI = "Мультистрим";
+        STR_CONTROLS_MULTI_0 = "Мультистрим помощь";
+        STR_CONTROLS_MULTI_1 = 'Если у вас возникают проблемы с задержкой после включения мультистрима, попробуйте снизить значение «битрейт малого плеера» в настройках, накопление пропущенных кадров или постоянная буферизация указывают на слишком высокий битрейт или медленный интернет.';
+        STR_CONTROLS_MULTI_2 = "Добавить стримы: предпросмотр и нажмите на прямую трансляцию.";
+        STR_CONTROLS_MULTI_3 = "Заменить стримы: после того, как мультистрим заполнен, выберите один из каналов предпросмотра и выберите один для замены в диалоговом окне";
+        STR_CONTROLS_MULTI_4 = "Изменение источника звука: D-pad вправо или влево или перемотка, удерживайте для источника звука всех видео";
+        STR_CONTROLS_MULTI_5 = "Выход из мультистрима: с нижнего элемента управления плеера или дважды на кнопку назад";
+        STR_CONTROLS_MULTI_6 = "Чтобы скрыть это, откройте 4 прямых трансляций";
+        STR_PICTURE_LIVE_FEED = 'КвК: Удерживайте ОК. (Влево для перемещения, Вправо для изм. размера или Вниз для изм. видео)';
+        STR_MULTI_TITLE = ", Нажмите на превью, чтобы открыть или заменить поток, используйте D-pad влево/вправо, чтобы изменить источник звука.";
+        STR_FEED_END_DIALOG = ', Нажмите Назад, чтобы вернуться в главное меню';
+        STR_BACK_USER_GAMES = "Нажмите назад, чтобы вернуться к";
+        STR_NO_CONTENT = 'Сейчас нет контента, попробуйте еще раз позже';
+        STR_SHOW_LIVE_PLAYER = 'Показать превью на экранах прямых трансляций';
+        STR_SHOW_VOD_PLAYER_WARNING = 'Начало воспроизведения с места последней остановки:';
+        STR_SHOW_VOD_PLAYER = 'Предварительный просмотр на экранах Видео';
+        STR_SHOW_CLIP_PLAYER = 'Предварительный просмотр на экранах Клип';
+        STR_PREVIEW_CLIP_NEXT = 'Когда предварительный просмотр клипа заканчивается, автоматический переход к следующему доступному клипу';
+        STR_SHOW_SIDE_PLAYER = 'Предварительный просмотр на боковой панели';
+        STR_SHOW_FEED_PLAYER = 'Предварительный просмотр на эскизах превью проигрывателя';
+        STR_SHOW_FEED_PLAYER_SUMMARY = "Если вам не нужно или ваше устройство тормозит, когда активно более одного плеера, установите для этого параметра значение НЕТ.";
+        STR_DISABLED_FEED_PLAYER_MULTI = 'Отключить превью при включенном мультистриме';
+        STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = 'По соображениям производительности некоторые устройства могут отставать от некоторых плееров. Если у вас все в порядке на мультистриме, но когда активны плеер превью и мультистрим, устройство лагает, установите для этого параметра значение НЕТ';
+        STR_PREVIEW_ERROR_LOAD = "Превью не загружается:";
+        STR_PREVIEW_ERROR_LINK = "недоступно";
+        STR_PREVIEW_VOD_DELETED = ", это видео могло быть удалено";
+        STR_PREVIEW_END = "Предпросмотр видео закончился";
+        STR_PLAYER_LAG_ERRO = "Плеер не может воспроизвести из-за проблемы с подключением";
+        STR_PLAYER_ERROR = "Плеер не может воспроизвести из-за ошибки плеера";
+        STR_PLAYER_ERROR_MULTI = ", попробуйте снизить значение битрейта маленького плеера в настройках";
+        STR_PREVIEW_SIZE = "Размер превью плеера";
+        STR_PREVIEW_SIZE_SUMMARY = "Установить размер превью плеера для превью миниатюр";
+        STR_PREVIEW_SIZE_ARRAY = ["Маленький", "Средний", "Большой", "Огромный"];
+        STR_PREVIEW_SIZE_SCREEN = "Размер экрана превью";
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = "Установить размер превью";
+        STR_PREVIEW_SIZE_SCREEN_ARRAY = ["Маленький", "Большой"];
+        STR_SIDE_PANEL_PLAYER_DELAY = "Задержка превью";
+        STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY = "Установите время задержки, которое займет превью, чтобы начать загрузку после выбора миниатюры. Это помогает медленным устройствами, которые тормозят при прокрутке";
+        STR_PREVIEW_VOLUME = "Громкость превью";
+        STR_PREVIEW_VOLUME_SUMMARY = "Установки, какая будет громкость превью ленты";
+        STR_PREVIEW_OTHERS_VOLUME = "Главная громкость плееров";
+        STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "Громкость основного плеера (все плееры - картинка в картинке, мультистрим плееры) может быть меньше, когда отображается проигрыватель превью";
+        STR_SIDE_PANEL_PLAYER = "Настройки плеера превью";
+        STR_START_AT_USER = "Всегда запускать приложение на экране пользователя";
+        STR_START_AT_USER_SUMMARY = "Это предотвратит работу восстановления воспроизведения, но позволит выбрать пользователя при запуске приложения.";
+        STR_LAST_REFRESH = "посл. обновление:";
+        STR_PP_VOD_ERROR = "Выйдите из КвК или Мультистрима, чтобы открыть это видео";
+        STR_SETTINGS_ACCESSIBILITY = 'Показать "служба спец. возможностей работает с предупреждением"';
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "Если на устройстве включена служба спец. возможностей, приложение покажет предупреждение, это известная проблема Android, что служба спец. возможностей может тормозить некоторые устройства и вызывать зависания или задержки в этом приложении..";
+        STR_ACCESSIBILITY_WARN = "Cлужба(ы) спец. возможностей обнаружены";
+        STR_ACCESSIBILITY_WARN_EXTRA = "Подробнее читайте по этой ссылке:";
+        STR_ACCESSIBILITY_WARN_EXTRA2 = "Если у вас есть проблемы с зависанием или задержкой, закройте приложение и отключите все службы спец. возможностей, это должно помочь.<br>Чтобы больше никогда не отображать это предупреждение, отключите его в настройках";
+        STR_AUTO_REFRESH = "Тайм-аут автообновления";
+        STR_AUTO_REFRESH_SUMMARY = "Когда этот параметр включен, приложение будет автоматически обновлять раздел или эскизы превью, обновление происходит только тогда, когда выбран раздел, если вы хотите обновлять в фоновом режиме, включите";
+        STR_AUTO_REFRESH_BACKGROUND = "Автообновление в фоновом режиме";
+        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'Когда установлен и включен параметр «тайм-аут автообновления», автообновление будет происходить в фоновом режиме (но когда приложение отображается, Android не позволяет неограниченно запускать в фоновом режиме, чтобы избежать проблем с другими приложениями). Когда вы вернетесь к экрану, на котором раньше обновление не запускалось, имейте в виду, что в приложении слишком много экранов. Когда этот параметр включен, автообновление может вызвать случайные лаги на некоторых слабых устройствах.';
+        STR_MAIN_WINDOW = "Основное видео";
+        STR_MULTI_MAIN_WINDOW = "Основное видео мультистрима";
+        STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " большое и чат: нажмите вниз, после использования влево/вправо, чтобы изменить большое видео";
+        STR_SOURCE_CHECK = "Авто изменение качества плеера с источника на авто, когда проигрыватель отстает";
+        STR_SOURCE_CHECK_SUMMARY = 'Когда эта опция включена, и вы не используете авто качество плеера, если плеер не может воспроизвести более 15 секунд он переключится на авто качество и предупредит об этом. После этого изменения плеер автоматически вернется к источнику, когда вы включите новый стрим или видео';
+        STR_PLAYER_LAG = 'Плеер тормозит, качество изменено на"Авто режим"';
+        STR_PLAYER_SOURCE = 'Плеер тормозит, качество снижено';
+        STR_TOO_ERRORS = "или слишком много ошибок";
+        STR_STREAM_ERROR_SMALL = "Превью, трансляция завершена" + STR_TOO_ERRORS;
+        STR_CONTROLS_MEDIA_FF = "Перемотка (только для видео и клипов): используйте D-pad вправо/влево или кнопки для быстрой перемотки вперед/назад";
+        STR_VOD_MUTED = "Часть звука отключена, поскольку содержит контент, защищенный авторским правом, более темный цвет на панели поиска указывает эти на части";
+        STR_GIFT_SUB = "подарил вам подписку!";
+        STR_ANONYMOUS = "анонимный";
+        STR_CHAT_BANNED = "Вы забанены на этом канале";
+        STR_CHAT_WRITE = "Написать в чат";
+        STR_CHAT_EXTRA = "Доп. настройки чата";
+        STR_PLACEHOLDER_CHAT = "Когда этот параметр выбран, нажмите ОК, чтобы отобразить экранную клавиатуру. Если у вас подключена физическая клавиатура, нажмите назад или esc, чтобы скрыть экранную клавиатуру.";
+        STR_CHAT_ROOMSTATE = "Чат канала:";
+        STR_CHAT_NO_RESTRICTIONS = "Нет ограничений";
+        STR_OPTIONS = "Опции";
+        STR_CHAT_DELL_ALL = "Удалить все";
+        STR_CHAT_UNICODE_EMOJI = "Unicode Эмодзи";
+        STR_CHAT_TW_EMOTES = "Смайлы Twitch";
+        STR_CHAT_BTTV_GLOBAL = "BTTV глобальные";
+        STR_CHAT_BTTV_STREAM = "BTTV стримера";
+        STR_CHAT_FFZ_GLOBAL = "FFZ глобальные";
+        STR_CHAT_FFZ_STREAM = "FFZ стримера";
+        STR_CHAT_AT_STREAM = "@стример";
+        STR_CHAT_RESULT = "В чате ожидаемый результат:";
+        STR_CHAT_SEND = "Отправить";
+        STR_CHAT_EMOTE_EMPTY = "Этот список эмоций пуст";
+        STR_CHAT_FOLLOWER_ONLY = "Чат доступен только для подписчиков, и вы не являетесь подписчиком";
+        STR_CHAT_FOLLOWER_ONLY = "Чат доступен только для подписчиков, и вы не являетесь подписчиком";
+        STR_CHAT_FOLLOWER_ONLY_USER_TIME = "вы подписаны только";
+        STR_CHAT_EMOTE_ONLY = "Режим только смайлики";
+        STR_CHAT_CHOOSE = "Выберите чат, в который хотите написать, или нажмите кнопку назад, чтобы закрыть это";
+        STR_CHAT_OPTIONS_TITLE = "Написать для опций чата";
+        STR_CHAT_OPTIONS_KEYBOARD = "Авто скрытие клавиатуры";
+        STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = "Позволяет управлять поведением экранной клавиатуры, если у вас подключена физическая клавиатура, используйте ее, если не установлено Никогда";
+        STR_CHAT_OPTIONS_KEYBOARD_1 = "Никогда";
+        STR_CHAT_OPTIONS_KEYBOARD_2 = "Если клавиатура обнаружена";
+        STR_CHAT_OPTIONS_KEYBOARD_3 = "Всегда";
+        STR_CHAT_OPTIONS_EMOTE_SORT = "Сортировка смайлов";
+        STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "Если это отключено, списки смайлов будут отображаться по умолчанию.";
+        STR_CHAT_OPTIONS_FORCE_SHOW = "Принудительно показать чат";
+        STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "Если вы хотите видеть чат, когда пишите в чат, включите это";
+        //STR_WARNING_NEW = "Добавлена новая функция<br><br>Написать в чат<br><br>Потому как это нововведение, все ранее добавленные ключи авторизации, были отозваны, потому что разрешения чата не запрашивались раньше<br><br>Если у вас был добавлен ключ, добавьте новый, чтобы вы могли продолжать использовать приложение так же, как и раньше<br><br>Если у вас есть сомнения по поводу нового ключа авторизации, перейдите на:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>Это окно автоматически скроется через 1 минуту.";
+        STR_NOKEY_CHAT_WARN = "Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат";
+        STR_CHAT_NOT_READY = "Чат не готов! Попробуйте еще раз через несколько секунд.";
+        STR_CHAT_REDEEMED_MESSAGE_HIGH = "Активировано Выделите мое сообщение";
+        STR_CHAT_REDEEMED_MESSAGE_SUB = "Активировано Отправить сообщение в режиме для пописчиков";
+        STR_CHAT_OPTIONS = "Настройки чата";
+        STR_CHAT_HIGHLIGHT_REDEEMED = "Выделить сообщения о наградах (только сообщение с фиолетовым фоном)";
+        STR_CHAT_HIGHLIGHT_STREAMER = "Выделить сообщения @streamer (темно-красный фон, @синий)";
+        STR_CHAT_HIGHLIGHT_USER = "Выделить сообщения вам @username (темно-зеленый фон, @синий)";
+        STR_CHAT_HIGHLIGHT_USER_SEND = "Выделить свои отправленные сообщения (темно-зеленый фон)";
+        STR_CHAT_SHOW_SUB = "Выделить сообщения подписчиков в чате (темно-оранжевый фон)";
+        STR_CHAT_HIGHLIGHT_BIT = "Выделить сообщения Bits (темно-желтый фон)";
+        STR_CHAT_HIGHLIGHT_ACTIONS = "Сообщения действий (обычно это сообщения ботов стрима)";
+        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = 'Эти сообщения обычно аналогичны сообщениям подписчиков, но отправляются через стрим бота, поэтому, если у вас включен параметр «Выделить сообщения подписчиков...», это не нужно.';
+        STR_CHAT_INDIVIDUAL_BACKGROUND = "Разница в цвете фона отдельных сообщений";
+        STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Отключить, Включить (авто), Светлый или Темный, В автоматическом режиме, если чат находится над стримом, у нечетного сообщения будет более темный фоновый цвет по сравнению с четным, если чат не выше (например, рядом) цвет будет ярким";
+        STR_CHAT_INDIVIDUAL_LINE = "Вставить строку, чтобы разделить отдельные сообщения чата";
+        STR_CHAT_LOGGING = "Вход в чат с текущим пользователем";
+        STR_CHAT_LOGGING_SUMMARY = "Приложение всегда будет входить в чат с использованием текущего пользователя, если предоставлен ключ авторизации (если только чат не отключен на нижних элементах управления плеера). Но если для этого параметра установлено значение НЕТ, это предотвратит вход с использованием текущего имени пользователя и вместо этого будет входить как анонимный, даже если предоставлен ключ авторизации. Это не препятствует отправке сообщений в чат (если добавлен ключ), но не позволяет узнать Twitch, заблокированы ли вы в чате, и не позволяет узнать нахождение в чате";
+        STR_CHAT_TIMESTAMP = "Показать время сообщения";
+        STR_CHAT_NICK_COLOR = "Читаемые цвета ников";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Вместо использования цвета ников по умолчанию, который иногда не читается на темном фоне, использовать настраиваемый, удобный для чтения цвет.";
+        STR_CHAT_CLEAR_MSG = "Очистка чата, удаление сообщений пользователей";
+        STR_CHAT_MESSAGE_DELETED = "Это сообщение пользователя было запрошено на удаление";
+        STR_CHAT_MESSAGE_DELETED_ALL = "Все сообщения от этого пользователя были запрошены на удаление";
+        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", у них был тайм-аут для";
+        STR_CHAT_CLEAR_MSG_SUMMARY = 'Удалять сообщения чата от определенного пользователя (обычно после того, как они получили тайм-аут или бан). Удаленные сообщения всегда будут иметь синий фон (только если не измените цвет фона). Сообщение будет удалено, если для этого задано значение «Да»';
+        STR_OPEN_HOST_SETTINGS = "Всегда открывать рейд в конце стрима, если он доступен";
+        STR_ALWAYS_STAY = "Всегда оставлять плеер открытым после окончания стрима";
+        STR_PING_WARNING = 'Показать "Предупреждение об ошибке Ping to Twitch"';
+        STR_PING_WARNING_SUMMARY = "Приложение постоянно проверяет соединение с Twitch с помощью пинга. Если это не удается, будет отображаться предупреждение, если это предупреждение отображается непреднамеренно, установите для этого параметра значение НЕТ";
+        STR_KEY_UP_TIMEOUT = "Тайм-аут удержания кнопки (в миллисекундах)";
+        STR_KEY_UP_TIMEOUT_SUMMARY = "Как долго вам нужно удерживать кнопку для действия удержания, действия обновляют экран, показывают параметры эскизов и т.д.";
+        STR_CURRENT_THUMB_STYLE = "Текущий стиль";
+        STR_NEW_THUMB_STYLE = "Новый стиль";
+        STR_COLOR_STYLE_TEXT = 'Нажмите вверх/вниз, чтобы выбрать. Нажмите назад, чтобы выйти.';
+        STR_SHADOWS = "Оттенок";
+        STR_SHADOWS_NONE = "Без цвета";
+        STR_SHADOWS_WHITE = "Белый";
+        STR_SHADOWS_GRAY = "Серый";
+        STR_SHADOWS_BLACK = "Черный";
+        STR_COLORS = "Цвета";
+        STR_RESULT = "Результат";
+        STR_APPLY = "Применить изменения";
+        STR_COLOR_TYPE = "Тип цвета";
+        STR_STYLES = "Стили";
+        STR_ENTER = "Нажмите ОК";
+        STR_COLOR_ARRAY = "Фон,Текст,Граница,Индикатор просмотра";
+        STR_STYLES_ARRAY = "По умолчанию,Пользовательский,Белый,Серый,Красный,Оранжевый,Желтый,Зеленый,Синий,Фиолетовый,Розовый";
+        STR_ENTER_RGB = STR_ENTER + " принять изменение RGB";
+        STR_THUMB_STYLE = "Выбранный стиль превью";
+        STR_OPEN_EXTERNAL_PLAYER = "Открыть во внешнем плеере";
+        STR_CHAT_SIDE_ARRAY = ['Слева', 'Справа'];
+        STR_CHAT_BASE_ARRAY = ['Внизу справа', 'Центр справа', 'Сверху справа', 'Центр сверху', 'Сверху слева', 'Центр слева', 'Снизу слева', 'Центр снизу'];
+        STR_CHAT_100_ARRAY = ['Справа', 'Центр', 'Слева'];
+        STR_NOTIFICATION_POS = "Позиция уведомления";
+        STR_NOTIFICATION_POS_ARRAY = ['Правый верх', 'Центр верх', 'Левый верх', 'Левый низ', 'Центр снизу', 'Правый низ'];
+        STR_LOWLATENCY_ARRAY = [STR_DISABLE, "Нормальный режим, может вызвать повторную буферизацию", "Минимальный режим, может вызвать еще большее количество повторных буферизаций"];
+        STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + ' - ' + STR_DISABLED, STR_LOW_LATENCY + " - Нормальный режим", STR_LOW_LATENCY + " - Минимальный режим"];
+        STR_VOD_SEEK = "Видео быстрая перемотка назад/вперед";
+        STR_VOD_SEEK_SUMMARY = "Управляет тем, насколько быстро будет выполняться переход назад/вперед. При нажатии и удерживании влево/вправо время шага увеличится. После истечения тайм-аута увеличения, оно увеличится до максимального времени шага. После отпускания кнопки и отсутствия нажатия в течение одной секунды время шага будет сброшено обратно на минимальное время шага.<br><br>Нажатие вверх перезапишет минимальное/максимальное значение, позволяя вам пройти через все возможные шаги, и заблокирует значение, пока индикатор выполнения не исчезнет<br><br>Выполнение одиночных нажатий без удержания кнопки не увеличит время<br><br>Эти параметры работают только с видео. Для клипа, шаг всегда составляет 1 секунду";
+        STR_VOD_SEEK_MIN = "Минимальное (стартовое) время шага";
+        STR_VOD_SEEK_MAX = "Максимальное время шага";
+        STR_VOD_SEEK_TIME = "Увеличить тайм-аут после удержания в течение";
+        STR_UP_LOCKED = "нажмите вверх, чтобы зафиксировать значение шага";
+        STR_LOCKED = "заблокировано нажмите вверх, чтобы изменить";
+        STR_IN_CHAT = "В чате";
+        STR_SHOW_IN_CHAT = "Показывать общее количество пользователей или зрителей поверх чата";
+        STR_SHOW_IN_CHAT_SUMMARY = "Это очень полезно, например, узнать, есть ли в чате какой-либо пользователь, с которым можно поговорить, а также узнать разницу зрители/пользователи чата.";
+        STR_SHOW_IN_CHAT_VIEWERS = 'Показать зрителей';
+        STR_SHOW_IN_CHAT_CHATTERS = 'Показать болтающих';
+        STR_PLAYED = "Воиспроизведено";
+        STR_CHAPTERS = "Части";
+        STR_FROM_SIMPLE = "из";
+        STR_HIDE_MAIN_CLOCK = "Скрыть часы на главном экране";
+        STR_HIDE_PLAYER_CLOCK = "Скрыть часы в плеере";
+        STR_HIDE_MAIN_SCREEN_TITLE = "Скрыть заголовок текущего экрана";
+        STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "Центральный заголовок,Прямая трансляция,Клип,Настройки и т.д.";
+        STR_HIDE_ETC_HELP_INFO = "Скрыть подсказки по экранной навигации";
+        STR_HIDE_ETC_HELP_INFO_SUMMARY = "Советы по навигации: удержание кнопок для действий и другие";
+        STR_INACTIVE_SETTINGS = "Автоматически сворачивать приложение, когда оно неактивно";
+        STR_INACTIVE_SETTINGS_SUMMARY = "Закрывать приложение, когда его никто не использует. Появится предупреждение, дающее пользователю 15 секунд, чтобы нажать любую кнопку, чтобы предотвратить закрытие";
+        STR_INACTIVE_WARNING = "Приложение автоматически закроется<br><br>%x<br><br>Нажмите любую кнопку, чтобы отменить";
+        STR_REMAINING = "Осталось:";
+        STR_PLAYER_INFO_VISIBILITY = "Окно диагностики";
+        STR_PREVIEW_SET = "Настройки предпросмотра";
+        STR_PREVIEW_SHOW = "Показать предпросмотр";
+        STR_PREVIEW_SIZE_CONTROLS = "Размер превью";
+        STR_OLED_BURN_IN = "OLED Защита от выгорания";
+        STR_OLED_BURN_IN_SUMMARY = "Когда этот параметр включен, экран станет полностью черным на 50 мс каждые 20 минут, требуется только для устройств с OLED-дисплеями, у которых есть проблемы с выгоранием.";
+        STR_AS = "как";
+        STR_MILLISECONDS = "мc";
+        STR_HOUR = "ч.";
+        STR_HOURS = "ч.";
+        STR_RIGHT = "Справа";
+        STR_LEFT = "Слева";
+        STR_BOTTOM = "Снизу";
+        STR_TOP = "Сверху";
+        STR_AVG = "ср.";
+        STR_OFFSET = "Смещение";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -1791,11 +3310,19 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 312, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/312/SmartTV_twitch_3_0_312.apk',
-        WebVersion: 'April 09 2021',
-        WebTag: 584, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 313, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/313/SmartTV_twitch_3_0_313.apk',
+        WebVersion: 'May 03 2021',
+        WebTag: 585, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.313 and Web Version May 03 2021",
+                changes: [
+                    "Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help",
+                    "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.312 and Web Version April 09 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -1823,24 +3350,6 @@
                 title: "Web Version March 8 2021",
                 changes: [
                     "Add support to see chat messages that were sent before you joined the stream"
-                ]
-            },
-            {
-                title: "Web Version February 28 2021",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.310 and Web Version February 25 2021",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.309 and Web Version February 20 2021",
-                changes: [
-                    "General improves and bug fixes"
                 ]
             }
         ]
@@ -2679,6 +4188,7 @@
     function AddUser_UpdateSidepanelSize(logo, username) {
         //remove transition to change size
         Sidepannel_MovelDiv.style.transition = 'none';
+        var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
 
         Main_innerHTML("side_panel_new_0_img",
             '<img class="side_panel_new_img" alt="" src="' +
@@ -2689,7 +4199,7 @@
 
         size = (size > 9 ? size - 9 : 0);
 
-        Sidepannel_MovelDiv.style.width = 'calc(' + Sidepannel_MoveldefaultWidth + '% + ' + size + 'ch)';
+        Sidepannel_MovelDiv.style.width = 'calc(' + MoveldefaultWidth + '% + ' + size + 'ch)';
 
         var pos = Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth;
 
@@ -2700,7 +4210,7 @@
         } else {
 
             var newsize = document.body.offsetWidth;
-            newsize = (newsize / 100 * (Sidepannel_MoveldefaultWidth + size)) - (newsize / 100 * 5);
+            newsize = (newsize / 100 * (MoveldefaultWidth + size)) - (newsize / 100 * 5);
             Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((newsize / BodyfontSize) - 0.05) + 'em)';
 
         }
@@ -2936,6 +4446,7 @@
     var ChannelContent_KeyEnterID;
     var ChannelContent_clear = false;
     var ChannelContent_DataObj;
+    var ChannelContent_Lang = '';
 
     //Variable initialization end
 
@@ -2958,7 +4469,7 @@
         }
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (ChannelContent_status) {
+        else if (ChannelContent_status && Main_A_equals_B(ChannelContent_Lang, Settings_AppLang)) {
             Main_YRst(ChannelContent_cursorY);
             Main_ShowElement('channel_content_scroll');
             ChannelContent_checkUser();
@@ -2997,6 +4508,7 @@
         ChannelContent_dataEnded = false;
         ChannelContent_TargetId = undefined;
         Main_FirstLoad = true;
+        ChannelContent_Lang = Settings_AppLang;
         ChannelContent_loadDataRequest();
         Main_EventScreen('ChannelContent');
     }
@@ -3123,8 +4635,8 @@
     }
 
     function ChannelContent_setFollow() {
-        if (AddCode_IsFollowing) Main_innerHTML("channel_content_titley_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE + STR_SPACE + STR_FOLLOWING);
-        else Main_innerHTML("channel_content_titley_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
+        if (AddCode_IsFollowing) Main_innerHTML("channel_content_titley_2", '<i class="icon-heart" style="color: #6441a4; font-size: 100%;"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOWING);
+        else Main_innerHTML("channel_content_titley_2", '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + (AddUser_UserIsSet() ? STR_FOLLOW : STR_NOKEY));
     }
 
     function ChannelContent_loadDataSuccess() {
@@ -3140,7 +4652,7 @@
 
         var streamer_bio = Main_values.Main_selectedChannelDisplayname;
 
-        streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE + STR_SPACE + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
+        streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE_HTML + STR_SPACE_HTML + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
 
         streamer_bio += ChannelContent_selectedChannelViews !== '' ?
             STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
@@ -3291,7 +4803,7 @@
                 Play_data.data = [
                     null, //0
                     Main_values.Main_selectedChannelDisplayname, //1
-                    STR_SPACE, //2
+                    STR_SPACE_HTML, //2
                     '', //3
                     '', //4
                     '', //5
@@ -3759,7 +5271,7 @@
         }
 
         var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
-        Main_innerHTML("chat_state", streamer + STR_SPACE + STR_CHAT_ROOMSTATE + STR_BR + (text === '' ? STR_CHAT_NO_RESTRICTIONS : text));
+        Main_innerHTML("chat_state", streamer + STR_SPACE_HTML + STR_CHAT_ROOMSTATE + STR_BR + (text === '' ? STR_CHAT_NO_RESTRICTIONS : text));
     }
 
     function ChatLiveControls_inputFocus() {
@@ -5026,7 +6538,7 @@
 
                     Main_innerHTML(
                         "chat_loggedin" + chat_number,
-                        Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE + STR_VIEWER
+                        Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE_HTML + STR_VIEWER
                     );
                 }
 
@@ -5391,7 +6903,7 @@
 
         ChatLive_LineAdd({
             chat_number: chat_number,
-            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE + STR_LIVE
+            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
         });
 
         useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
@@ -5471,7 +6983,7 @@
 
                         ChatLive_LineAdd({
                             chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE + STR_AS + STR_SPACE +
+                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
                                 (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
                         });
 
@@ -5658,7 +7170,7 @@
     function ChatLive_LineAddErro(message, chat_number, chatsend) {
         ChatLive_LineAdd({
             chat_number: chat_number,
-            message: '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE + message + '</span>'
+            message: '<span class="message">' + (chatsend ? 'ChatSend:' : 'Chat:') + STR_SPACE_HTML + message + '</span>'
         });
     }
 
@@ -5995,7 +7507,7 @@
                 var time = Math.ceil((Play_ChatDelayPosition === 1 ? ChatLive_Latency[chat_number] : Play_ChatDelayPosition) / 1000);
 
                 ChatLiveControls_showWarningDialog(
-                    STR_CHAT_SEND_DELAY + STR_SPACE + time + (time > 1 ? STR_SECONDS : STR_SECOND),
+                    STR_CHAT_SEND_DELAY + STR_SPACE_HTML + time + (time > 1 ? STR_SECONDS : STR_SECOND),
                     5000
                 );
             }
@@ -6871,7 +8383,7 @@
             Chat_MessageVector({
                 chat_number: 0,
                 time: 0,
-                message: '<span class="message">' + STR_LOADING_CHAT + STR_SPACE + Main_values.Main_selectedChannelDisplayname + STR_SPACE + Chat_title + '</span>'
+                message: '<span class="message">' + STR_LOADING_CHAT + STR_SPACE_HTML + Main_values.Main_selectedChannelDisplayname + STR_SPACE_HTML + Chat_title + '</span>'
             });
 
 
@@ -7246,7 +8758,8 @@
         "Restore_Backup_Check": false,
         "UserSidePannel_LastPos": null,
         "UserLiveFeed_LastPos": [],
-        "IsUpDating": false
+        "IsUpDating": false,
+        "WasLangChanged": false,
     };
 
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -7309,14 +8822,14 @@
     function Main_Start() {
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", function() {
-                Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+                Main_StartApp();
             });
         } else { // `DOMContentLoaded` already fired
-            Main_loadTranslations(window.navigator.userLanguage || window.navigator.language);
+            Main_StartApp();
         }
     }
 
-    function Main_loadTranslations(language) {
+    function Main_StartApp() {
         Main_Checktylesheet();
 
         Main_ready(function() {
@@ -7387,23 +8900,9 @@
             Main_initClick();
             Settings_SetDefautls();
             calculateFontSize();
-            en_USLang();
-            Languages_SetDefautls();
+            Main_RestoreValues();
+            Settings_SetAppLang();
 
-            // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
-            // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-            // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
-
-            //var lang = language,
-            //    Savedlang = Main_getItemInt('user_language', 0);
-
-            //if (Savedlang) lang = Settings_Obj_set_values("general_lang");
-            //else Settings_CheckLang(lang);
-
-            //if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-            //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-
-            Main_Log("language is " + language);
             DefaultLang();
 
             //When running locally from a browser overwrite AddCode_redirect_uri to be able to add authorization keys
@@ -7417,8 +8916,6 @@
             Main_Scene2Doc = Main_getElementById('scene2');
             Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
             Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
-
-            Main_RestoreValues();
 
             Main_DoRestore = AddUser_RestoreUsers();
 
@@ -7520,7 +9017,8 @@
         Users_RemoveCursorSet();
         Main_CheckDevice();
 
-        Main_SetStringsMain(true);
+        Main_Setworker();
+        Main_SetStringsMain();
 
         Main_GoBefore = Main_values.Main_Go;
 
@@ -7674,8 +9172,7 @@
         } // else Settings_ForceEnableAnimations();
     }
 
-    function Main_SetStringsMain(isStarting) {
-        Main_Setworker();
+    function Main_SetStringsMain() {
 
         //set top bar labels
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
@@ -7693,11 +9190,7 @@
 
         Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
-        if (isStarting) Settings_SetSettings();
-        else {
-            Settings_SetStrings();
-            Main_checkVersion();
-        }
+        Settings_SetSettings();
         Main_Changelog();
     }
 
@@ -7735,9 +9228,9 @@
 
         Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
 
-        Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_VIDEOS);
-        Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE + STR_SPACE + STR_CLIPS);
-        Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE + STR_SPACE + STR_FOLLOW);
+        Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS);
+        Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS);
+        Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
         Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
         Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
@@ -7776,10 +9269,18 @@
 
         Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
         Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
+
+        Main_innerHTML('feed_end_1', STR_FEATURED);
+        Main_innerHTML('feed_end_3', STR_LIVE);
+        Main_innerHTML('feed_end_4', STR_USER + STR_SPACE_HTML + STR_LIVE);
+        Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE_HTML + STR_HISTORY);
+        Main_innerHTML('feed_end_7', STR_USER + STR_SPACE_HTML + 'VOD');
+        Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
+        Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
     }
 
     function Main_IconLoad(lable, icon, string) {
-        Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE + string + '</div>');
+        Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE_HTML + string + '</div>');
     }
 
     function Main_HideElement(element) {
@@ -7930,7 +9431,7 @@
     }
 
     function Main_AboutDialogUpdateTime() {
-        Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE + Play_timeDay((new Date().getTime()) - Main_RunningTime));
+        Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE_HTML + Play_timeDay((new Date().getTime()) - Main_RunningTime));
     }
 
     function Main_showAboutDialog(removeEventListener, addEventListener) {
@@ -8094,10 +9595,11 @@
         return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
     }
 
-    function Main_checkVersion() {
+    function Main_checkVersion(skipCheck) {
         var Main_versionTag;
 
         if (Main_IsOn_OSInterface) {
+
             var device = OSInterface_getDevice();
             var Webviewversion = OSInterface_getWebviewVersion();
             var Manufacturer = OSInterface_getManufacturer();
@@ -8118,7 +9620,7 @@
                     Main_HasUpdate = true;
                     Main_WarnUpdate(false);
 
-                } else Main_CheckUpdate();
+                } else if (!skipCheck) Main_CheckUpdate();
 
             }
 
@@ -8130,7 +9632,9 @@
                 Main_AndroidSDK,
                 Manufacturer
             );
+
         } else {
+
             Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
 
             Main_EventVersion(
@@ -8221,7 +9725,7 @@
             'label_update',
             '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
             (web ? 'globe' : 'play-1') +
-            '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE +
+            '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE_HTML +
             (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
         );
 
@@ -8270,7 +9774,7 @@
 
     function Main_UpdateDialogSetTitle() {
 
-        Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "27%" : "16%";
+        Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "30%" : "23%";
         Main_innerHTML("update_dialog_upbutton", Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
 
     }
@@ -8395,8 +9899,8 @@
 
         var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
             (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
-            (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE) + '</div>' + STR_BR +
-            STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE + '</div>' + STR_BR,
+            (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE_HTML) + '</div>' + STR_BR +
+            STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE_HTML + '</div>' + STR_BR,
             changelog = version.changelog;
 
         innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;
@@ -8426,7 +9930,7 @@
     function Main_UpdateDialogStartCheck() {
 
         Main_Ischecking = true;
-        Main_getElementById('update_dialog_upbutton').style.width = "27%";
+        Main_getElementById('update_dialog_upbutton').style.width = "30%";
         Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
         Main_CheckUpdate(true);
 
@@ -8793,9 +10297,9 @@
 
         ChannelClip_title = Main_values_Play_data[10];
         ChannelClip_language = Main_values_Play_data[11];
-        ChannelClip_createdAt = (Main_values_Play_data[16] ? Main_values_Play_data[16] : Main_values_Play_data[12]); //Old sorting fix
-        ChannelClip_views = Main_values_Play_data[14];
-        ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
+        ChannelClip_createdAt = STR_CREATED_AT + Main_values_Play_data[16];
+        ChannelClip_views = Main_values_Play_data[14] + STR_VIEWS;
+        //ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
         Main_hideScene1DocAndCallBack(
             function() {
@@ -9770,13 +11274,20 @@
     //Check if a VOD in history has ben deleted
     function Main_RunVODWorker() {
 
-        if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (ScreenObj[Main_HistoryVod].histPosX[3] ||
+            Main_isStoped ||
+            !AddUser_IsUserSet() ||
+            Boolean(!BradcastCheckerWorker)) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
             i = 0,
             len = array.length;
 
         for (i; i < len; i++) {
+
+            //TODO remove this workaround after some updates
+            array[i].data[2] = array[i].data[2].replace("Streamed", '');
+            array[i].data[4] = array[i].data[4].replace("Views", '');
 
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
@@ -9785,6 +11296,7 @@
             });
 
         }
+
 
         Main_setTimeout(Main_RunLiveVODWorker, 60000);
 
@@ -9800,6 +11312,10 @@
             len = array.length;
 
         for (i; i < len; i++) {
+
+            //TODO remove this workaround after some updates
+            array[i].data[11] = array[i].data[11].replace("Since", '');
+            array[i].data[4] = array[i].data[4].replace("Viewers", '');
 
             if (array[i].forceVod && array[i].vodid) {
 
@@ -9825,6 +11341,10 @@
             len = array.length;
 
         for (i; i < len; i++) {
+
+            //TODO remove this workaround after some updates
+            array[i].data[16] = array[i].data[16].replace("Created", '');
+            array[i].data[14] = array[i].data[14].replace("Views", '');
 
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
@@ -9923,11 +11443,7 @@
         if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
 
         //Hide setting if showing
-        if (Languages_isVisible()) {
-            Languages_exit();
-            Settings_exit();
-            Main_SwitchScreen();
-        } else if (Settings_isVisible()) {
+        if (Settings_isVisible()) {
             if (Settings_Codecs_isVisible()) {
                 if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
                 Main_HideElement('dialog_codecs');
@@ -11678,6 +13194,26 @@
         }
     }
 
+    //public void FixViewPosition(int position)
+    //lang =  lang to set in the us_US format
+    //Android specific: false in the OS has multi player supports Samsung TV for example don't have
+    //Sets mediaSources and start the player
+    function OSInterface_SetLanguage(lang) {
+
+        if (Main_IsOn_OSInterface) {
+
+            try {
+
+                Android.SetLanguage(
+                    lang
+                );
+
+            } catch (e) {}
+
+        }
+
+    }
+
     //public void getDuration()
     //String callback = the fun to receive the value
     //Android specific: true
@@ -11780,7 +13316,7 @@
         Main_innerHTML("stream_info_title", ChannelClip_title);
         Main_innerHTML("stream_info_game", ChannelClip_game);
 
-        Main_innerHTMLWithEle(Play_infoLiveTime, ChannelClip_createdAt + ',' + STR_SPACE + ChannelClip_views);
+        Main_innerHTMLWithEle(Play_infoLiveTime, ChannelClip_createdAt + ',' + STR_SPACE_HTML + ChannelClip_views);
         Main_textContent("stream_live_viewers", '');
         Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -11982,7 +13518,7 @@
 
                 if (!Array.length) {
                     Array.push({
-                        'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | source | mp4',
+                        'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | ' + STR_SOURCE + ' | mp4',
                         'url': response[i].sourceURL
                     });
                 } else {
@@ -11998,6 +13534,7 @@
     }
 
     function PlayClip_QualityStart(qualities) {
+
         PlayClip_qualities = qualities;
 
         Play_SetExternalQualities(PlayClip_qualities, 0);
@@ -12012,9 +13549,12 @@
     }
 
     function PlayClip_SetQuality(array) {
+
         var len = array.length,
             i = 0,
             ret = 0;
+
+        if (!len) return;
 
         if (Settings_DisableQualitiesLen) {
 
@@ -12057,6 +13597,7 @@
     }
 
     function PlayClip_qualityChanged() {
+
         PlayClip_qualityIndex = PlayClip_SetQuality(PlayClip_qualities);
         PlayClip_playingUrl = PlayClip_qualities[PlayClip_qualityIndex].url;
 
@@ -12317,7 +13858,7 @@
     }
 
     function PlayClip_SetHtmlQuality(element) {
-        if (!PlayClip_qualities.length || !PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
+        if (!PlayClip_getQualitiesCount() || !PlayClip_qualities[PlayClip_qualityIndex].hasOwnProperty('id')) return;
 
         PlayClip_quality = PlayClip_qualities[PlayClip_qualityIndex].id;
 
@@ -12373,10 +13914,12 @@
             Settings_Obj_default('show_clip_player') && ScreenObj[Main_values.Main_Go].screenType === 2 && !Sidepannel_isShowingUserLive() &&
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])) {
 
-            if (PlayClip_CheckPreviewClip()) {
+            if (PlayClip_CheckPreviewClip() && PlayClip_getQualitiesCount()) {
+
                 Play_PreviewURL = PlayClip_qualities[0].url;
                 Play_PreviewResponseText = PlayClip_qualities;
                 Play_PreviewId = ChannelClip_playUrl;
+
             }
         }
 
@@ -12755,7 +14298,7 @@
 
             if (responseObj.checkResult > 0 && responseObj.checkResult === Play_PreviewCheckId) {
 
-                var error = PlayClip_SetOpenLiveData[6] + STR_SPACE;
+                var error = PlayClip_SetOpenLiveData[6] + STR_SPACE_HTML;
 
                 Play_CheckIfIsLiveResultCheck(
                     response,
@@ -13263,7 +14806,7 @@
 
 
     function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
-        var div = '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+        var div = '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
             (partner ? ('<img class="partnericon_img" alt="" src="' + IMG_PARTNER + '">') : "");
 
         if (!live_vod_clip) {
@@ -13273,14 +14816,14 @@
             if (rerun) text = STR_NOT_LIVE;
             else if (isStay) text = STR_CH_IS_OFFLINE;
 
-            div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #' +
+            div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #' +
                 (rerun || isStay ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' +
-                STR_SPACE + STR_SPACE + text + STR_SPACE + STR_SPACE + '</div>';
+                STR_SPACE_HTML + STR_SPACE_HTML + text + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
         } else if (live_vod_clip === 1) {
-            div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
-        } else div += STR_SPACE + STR_SPACE + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
+            div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #00a94b">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>';
+        } else div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #F05700">&nbsp;&nbsp;CLIP&nbsp;&nbsp;</div>';
 
-        return div + '<div class="lang_text">' + STR_SPACE + STR_SPACE + lang + '</div>';
+        return div + '<div class="lang_text">' + STR_SPACE_HTML + STR_SPACE_HTML + lang + '</div>';
     }
 
     function Play_IconsResetFocus() {
@@ -13736,7 +15279,7 @@
         );
 
         //Reset play data and info panel
-        Play_data.data[2] = STR_SPACE;
+        Play_data.data[2] = STR_SPACE_HTML;
         Play_data.data[3] = '';
         Play_data.data[4] = '';
         Play_data.data[5] = '';
@@ -14264,7 +15807,7 @@
 
     function Play_GetAudioIcon(pos) {
 
-        return STR_SPACE + '<i class="icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + ' strokicon" ></i>' + STR_SPACE +
+        return STR_SPACE_HTML + '<i class="icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + ' strokicon" ></i>' + STR_SPACE_HTML +
             '<i class="icon-' + Play_GetVolLevel(pos) + ' strokicon" ></i>';
 
     }
@@ -14283,7 +15826,7 @@
 
                 Main_innerHTML(
                     "stream_info_multi_audio_" + extraText + i,
-                    STR_SPACE + icon
+                    STR_SPACE_HTML + icon
                 );
             }
 
@@ -14349,7 +15892,7 @@
             Play_audio_enable = [1, 1, 1, 1];
 
             Play_showWarningMidleDialog(
-                STR_AUDIO_SOURCE + STR_SPACE + STR_PLAYER_MULTI_ALL,
+                STR_AUDIO_SOURCE + STR_SPACE_HTML + STR_PLAYER_MULTI_ALL,
                 2000
             );
 
@@ -14397,7 +15940,7 @@
             }
 
             Play_showWarningMidleDialog(
-                STR_AUDIO_SOURCE + STR_SPACE + text,
+                STR_AUDIO_SOURCE + STR_SPACE_HTML + text,
                 2000
             );
         }
@@ -14427,7 +15970,7 @@
         OSInterface_ApplyAudio();
 
         Play_showWarningMidleDialog(
-            STR_AUDIO_SOURCE + STR_SPACE + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]),
+            STR_AUDIO_SOURCE + STR_SPACE_HTML + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]),
             2000
         );
 
@@ -14452,7 +15995,7 @@
             OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
 
             Play_showWarningMidleDialog(
-                STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[0].data[1],
+                STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1],
                 2000
             );
 
@@ -14834,7 +16377,7 @@
     }
 
     var Play_controls = {};
-    var Play_controlsSize = -1;
+    var Play_controlsSize;
 
     var temp_controls_pos = 0;
     var Play_controlsBack = temp_controls_pos++;
@@ -15030,7 +16573,7 @@
 
                 Main_innerHTMLWithEle(
                     Play_controls[this.position].doc_title,
-                    name + STR_SPACE + this.string
+                    name + STR_SPACE_HTML + this.string
                 );
             },
         };
@@ -16628,6 +18171,8 @@
         };
 
         var div, doc = Main_getElementById('controls_holder');
+        Main_emptyWithEle(doc);
+        Play_controlsSize = -1;
 
         for (var key in Play_controls) {
             div = document.createElement('div');
@@ -16643,7 +18188,7 @@
                 key + '" class="extra_button_title strokedeline" >' +
                 Play_controls[key].string + '</div><div id="extra_button_' + key +
                 '" class="extra_button_title strokedeline" >' +
-                (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE) + '</div></div></div>';
+                (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE_HTML) + '</div></div></div>';
 
             doc.appendChild(div);
             Play_controlsSize++;
@@ -17293,7 +18838,7 @@
 
             PlayExtra_PicturePicture = true;
 
-            Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+            Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
 
             if (Main_IsOn_OSInterface) {
                 //Not on auto mode for change to auto before start picture in picture
@@ -17476,8 +19021,8 @@
         Main_SaveValues();
 
         Play_UpdateMainStream(true, false);
-        Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
-        Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
+        Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
 
         var temp_Volume_0 = Play_volumes[0];
@@ -17658,8 +19203,8 @@
         Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
 
         Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
-        Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE : STR_PLAYING + Play_data.data[3]);
-        Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
+        Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
+        Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
 
         Main_innerHTML(
             'stream_info_pp_name1',
@@ -17674,8 +19219,8 @@
         Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
         Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
-        Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE : STR_PLAYING + PlayExtra_data.data[3]);
-        Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE + STR_VIEWER + ',');
+        Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
+        Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
     }
 
     function PlayExtra_loadDataFail(Reason) {
@@ -17963,7 +19508,7 @@
 
                 var StreamInfo = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                     isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
-                    error = StreamInfo[6] + STR_SPACE;
+                    error = StreamInfo[6] + STR_SPACE_HTML;
 
                 Play_CheckIfIsLiveResultCheck(
                     response,
@@ -18008,7 +19553,7 @@
 
         if (response.status === 1) {
 
-            error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
+            error = (isVod ? 'VOD' : STR_LIVE) + STR_SPACE_HTML + STR_IS_SUB_ONLY_ERROR + STR_BR + STR_410_FEATURING;
 
         } else if (response.status === 403) {
 
@@ -18016,8 +19561,8 @@
 
         } else {
 
-            if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-            else error = STR_LIVE + STR_SPACE + STR_IS_OFFLINE;
+            if (isVod) error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+            else error = STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
 
         }
 
@@ -18265,11 +19810,11 @@
             )
         );
         Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
-        Main_innerHTML("stream_live_viewers", STR_SPACE + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE + STR_VIEWER);
+        Main_innerHTML("stream_live_viewers", STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + STR_VIEWER);
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-        Main_innerHTML('chat_container_name_text0', STR_SPACE + Play_data.data[1] + STR_SPACE);
+        Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
         if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
     }
@@ -18768,7 +20313,7 @@
         Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
         Play_controls[Play_controlsExternal].setLable();
 
-        Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE + '(' + name + ')' : ''));
+        Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE_HTML + '(' + name + ')' : ''));
 
         Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
     }
@@ -19268,8 +20813,8 @@
 
                 } else {
 
-                    Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE);
-                    Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE);
+                    Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE_HTML);
+                    Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE_HTML);
 
                 }
 
@@ -19313,9 +20858,9 @@
 
     function Play_VideoStatusTest() {
         Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
+            STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
             STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_BR +
-            STR_DROOPED_FRAMES + STR_SPACE + STR_SPACE + '0 | 100 ' + STR_TODAY + STR_BR +
+            STR_DROOPED_FRAMES + STR_SPACE_HTML + STR_SPACE_HTML + '0 | 100 ' + STR_TODAY + STR_BR +
             STR_BUFFER_HEALT + '100.37' + STR_BR +
             STR_LATENCY + '100.27' + STR_BR +
             STR_PING + " 100.00 | 99.00" + STR_AVG);
@@ -19332,9 +20877,9 @@
         if (Play_Status_Visible !== 2) {
 
             Main_innerHTMLWithEle(Play_StreamStatus,
-                STR_NET_SPEED + STR_SPACE + STR_SPACE + STR_SPACE + value[0] + STR_AVG + STR_BR +
+                STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + value[0] + STR_AVG + STR_BR +
                 STR_NET_ACT + value[1] + STR_AVG + STR_BR +
-                STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE + STR_SPACE : "") + value[3] + STR_TODAY + STR_BR +
+                STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3] + STR_TODAY + STR_BR +
                 STR_BUFFER_HEALT + value[4] +
                 (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
                 STR_BR + STR_PING + value[6] + STR_AVG);
@@ -19362,7 +20907,7 @@
     function Play_getMbps(value) {
         value = (parseInt(value) / 1000000).toFixed(2);
 
-        return (parseInt(value) < 10 ? (STR_SPACE + STR_SPACE + value) : value);
+        return (parseInt(value) < 10 ? (STR_SPACE_HTML + STR_SPACE_HTML + value) : value);
     }
 
     function Play_ShowVideoQuality(who_called, value) {
@@ -20002,7 +21547,7 @@
                 PlayExtra_SetPanel();
 
                 if (!Play_isFullScreen) {
-                    Main_innerHTML('chat_container_name_text1', STR_SPACE + PlayExtra_data.data[1] + STR_SPACE);
+                    Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
                     ChatLive_Init(1);
                     PlayExtra_ShowChat();
                 }
@@ -20363,7 +21908,7 @@
                 OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
                 Play_showWarningMidleDialog(
-                    STR_MAIN_WINDOW + STR_SPACE + Play_MultiArray[0].data[1],
+                    STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1],
                     2000
                 );
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
@@ -20399,7 +21944,7 @@
             Play_AudioReset(pos);
 
             Play_showWarningMidleDialog(
-                STR_AUDIO_SOURCE + STR_SPACE + Play_MultiArray[pos].data[1],
+                STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1],
                 2000
             );
         }
@@ -20521,7 +22066,7 @@
 
         Main_innerHTML(
             'stream_info_multi_name' + extraText + pos,
-            displayname === '' ? STR_SPACE :
+            displayname === '' ? STR_SPACE_HTML :
             Play_partnerIcon(
                 displayname,
                 partner,
@@ -20535,8 +22080,8 @@
 
     function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
         Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
-        Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE : STR_PLAYING + game);
-        Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE + STR_FOR + Main_addCommas(views) + STR_SPACE + STR_VIEWER) : STR_SPACE);
+        Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
+        Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + STR_VIEWER) : STR_SPACE_HTML);
     }
 
     function Play_MultiSetpannelInfo() {
@@ -20587,14 +22132,14 @@
 
             Main_textContent('stream_dialog_multi_name' + extraText + i, Play_MultiArray[i].data[1]);
             Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-            Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE : Play_MultiArray[i].data[3]);
+            Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE_HTML : Play_MultiArray[i].data[3]);
             Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
 
         }
 
         Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
         Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
-        Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE : obj[3]);
+        Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE_HTML : obj[3]);
         Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
 
@@ -20767,7 +22312,7 @@
             );
             Main_innerHTML("stream_info_title", ChannelVod_title);
             Main_textContent("stream_info_game", ChannelVod_game);
-            Main_innerHTMLWithEle(Play_infoLiveTime, ChannelVod_createdAt + ',' + STR_SPACE + ChannelVod_views);
+            Main_innerHTMLWithEle(Play_infoLiveTime, ChannelVod_createdAt + ',' + STR_SPACE_HTML + ChannelVod_views);
             Main_textContent("stream_live_viewers", '');
             Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -20957,7 +22502,7 @@
             (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
         );
 
-        Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE + Main_addCommas(response.views) + STR_VIEWS);
+        Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + STR_VIEWS);
         Main_textContent("stream_live_viewers", '');
         Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -21500,7 +23045,7 @@
 
         } else {
 
-            Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE);
+            Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE_HTML);
 
         }
 
@@ -22698,7 +24243,8 @@
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
             ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
-            (ScreenObj[key].CheckLang && !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang))) {
+            (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+            !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang)) {
 
             if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
             else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
@@ -22769,7 +24315,8 @@
         ScreenObj[key].data = null;
         ScreenObj[key].data_cursor = 0;
         ScreenObj[key].dataEnded = false;
-        ScreenObj[key].Lang = Main_ContentLang;
+        ScreenObj[key].ContentLang = Main_ContentLang;
+        ScreenObj[key].Lang = Settings_AppLang;
 
         Main_CounterDialogRst();
         Screens_loadDataRequestStart(key);
@@ -22943,7 +24490,7 @@
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
             '<div class="stream_thumbnail_channel_text_holder">' +
             '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
-            (valuesArray[4] ? STR_SPACE + STR_SPACE +
+            (valuesArray[4] ? STR_SPACE_HTML + STR_SPACE_HTML +
                 '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
                 IMG_PARTNER + '">' : "") + '</div></div></div></div>';
     }
@@ -22975,13 +24522,11 @@
             '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-            valuesArray[11] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
+            valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
             valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
             '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-            (valuesArray[16] ? valuesArray[16] : valuesArray[12]) + ',' + STR_SPACE + //Old sorting fix
-            valuesArray[14] + '</div><div class="stream_info_live" style="width: 6ch; display: inline-block; float: right; text-align: right;">' +
-            Play_timeS(valuesArray[1]) + '</div></div>' +
-            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_CREATED_AT + valuesArray[16] + ',' + STR_SPACE_HTML + valuesArray[14] + STR_VIEWS + '</div></div>' +
+            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
             '</div></div></div></div></div>';
     }
@@ -22997,15 +24542,14 @@
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
             '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
-            idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
-            valuesArray[1] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
-            valuesArray[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
+            idArray[2] + id + '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
+            valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
+            valuesArray[5] + STR_SPACE_HTML + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
             (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
             '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-            valuesArray[2] + ',' + STR_SPACE + valuesArray[4] + '</div><div class="stream_info_live" style="width: 9ch; display: inline-block; float: right; text-align: right;">' +
-            Play_timeS(valuesArray[11]) + '</div></div>' +
-            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            STR_STREAM_ON + valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + STR_VIEWS + '</div></div>' +
+            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
             '</div></div></div></div>';
     }
@@ -23033,8 +24577,8 @@
             valuesArray[5] + '</div></div><div class="' +
             (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
             '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-            '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + valuesArray[11] + valuesArray[4] + '</div>' +
-            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
+            (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
             '</div></div></div></div>';
     }
@@ -23603,7 +25147,7 @@
 
                     if (offset) {
                         Main_showWarningDialog(
-                            STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(offset * 1000),
+                            STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(offset * 1000),
                             2000,
                             !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
                         );
@@ -23629,7 +25173,7 @@
 
     function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x) {
 
-        var error = StreamInfo[6] + STR_SPACE;
+        var error = StreamInfo[6] + STR_SPACE_HTML;
 
         if (ScreenObj[x].screenType === 2) {
 
@@ -23643,7 +25187,7 @@
 
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
-                    error = STR_PREVIEW_ERROR_LOAD + STR_SPACE + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
+                    error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
 
                 }
 
@@ -23982,7 +25526,7 @@
 
                 Main_innerHTML(
                     ScreenObj[key].ids[4] + id,
-                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
                 );
 
             }
@@ -24659,7 +26203,7 @@
             if (ScreenObj[key].histPosY === 2) {
                 Screens_DeleteDialogAll = true;
                 Screens_showDeleteDialog(
-                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + '?',
+                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE_HTML + STR_HISTORY + '?',
                     key
                 );
             } else if (ScreenObj[key].histPosX[0] !== ScreenObj[key].histPosXTemp[0]) {
@@ -25121,7 +26665,7 @@
 
                 Screens_DeleteDialogAll = false;
                 Screens_showDeleteDialog(
-                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE + STR_HISTORY + STR_SPACE + STR_FOR + '?' +
+                    STR_DELETE_SURE + ScreenObj[key].history_Type() + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_FOR + '?' +
                     STR_BR + STR_BR + streamer + STR_BR + title + STR_BR + STR_BR +
                     STR_REFRESH_DELETE,
                     key
@@ -25170,15 +26714,21 @@
 
     function Screens_SetLang(key) {
 
-        if (Screens_ThumbOptionPosXArrays[4]) Languages_ResetAll();
+        var setting_lang_key = 'content_lang';
+        Settings_value[setting_lang_key].defaultValue = Screens_ThumbOptionPosXArrays[4];
+        Main_setItem(setting_lang_key, Settings_Obj_default(setting_lang_key) + 1);
+        Settings_SetLang();
 
-        var thumbkey = Screens_ThumbOptionLanguages[Screens_ThumbOptionPosXArrays[4]];
-        Languages_value[thumbkey].defaultValue = 1;
-        Main_setItem(thumbkey, Languages_Obj_default(thumbkey) + 1);
-        Languages_SetLang();
+        var ele = Main_getElementById(setting_lang_key);
+        if (ele) {
 
-        if (ScreenObj[key].CheckLang &&
-            !Main_A_equals_B(ScreenObj[key].Lang, Main_ContentLang)) Main_ReloadScreen();
+            Main_textContent(setting_lang_key, Settings_Obj_values(setting_lang_key));
+            Settings_SetarrowsKey(setting_lang_key);
+
+        }
+
+        if (ScreenObj[key].CheckContentLang &&
+            !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
 
     }
 
@@ -25341,11 +26891,11 @@
         ];
 
         if (AddUser_UserIsSet()) {
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_LIVE);
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_GAMES);
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_VIDEOS);
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_CHANNELS);
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE + STR_HISTORY);
+            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
+            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_GAMES);
+            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_VIDEOS);
+            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_CHANNELS);
+            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_HISTORY);
         }
 
         Screens_YesNo = [
@@ -25353,17 +26903,8 @@
             STR_NO
         ];
 
-        var default_lang = 0;
-        var isAll = Main_ContentLang === "";
-
-        Screens_ThumbOptionLanguages = [];
-        Screens_ThumbOptionLanguagesTitles = [];
-
-        for (var property in Languages_value) {
-            Screens_ThumbOptionLanguages.push(property);
-            Screens_ThumbOptionLanguagesTitles.push(Languages_value[property].title);
-            if (!isAll && Languages_Obj_default(property)) default_lang = Screens_ThumbOptionLanguages.length - 1;
-        }
+        Screens_ThumbOptionLanguages = Settings_value.content_lang.apply_values;
+        Screens_ThumbOptionLanguagesTitles = Settings_value.content_lang.values;
 
         Screens_ThumbOptionArrays = ['', '', '', Screens_YesNo, Screens_ThumbOptionLanguagesTitles, Screens_ThumbOptionScreens];
 
@@ -25377,7 +26918,7 @@
 
         }
 
-        Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, default_lang, 0];
+        Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, Settings_Obj_default('content_lang'), 0];
 
         Screens_ThumbOptionGOTO = [
             Main_Live,
@@ -25397,7 +26938,7 @@
         if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search ||
             Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
 
-        Main_innerHTML("label_last_refresh", STR_SPACE + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
+        Main_innerHTML("label_last_refresh", STR_SPACE_HTML + "(" + STR_LAST_REFRESH + Play_timeDay((new Date().getTime()) - ScreenObj[key].lastRefresh) + ")");
     }
 
     function Screens_RefreshTimeout(key) {
@@ -25464,7 +27005,6 @@
     var ChannelClip_views = '';
     var ChannelClip_title = '';
     var ChannelClip_playUrl = '';
-    var ChannelClip_playUrl2 = '';
     var ChannelClip_createdAt = '';
     var ChannelClip_language = '';
     var ChannelClip_Id = 0;
@@ -25521,6 +27061,7 @@
             tempHtml: '',
             focusPos: '',
             IsOpen: 0,
+            Lang: '',
             SetPreviewEnable: function() {
                 this.PreviewEnable =
                     (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -25778,8 +27319,8 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_SWITCH_CLIP,
-                        STR_SPACE + STR_SPACE + STR_PLAY_ALL
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_PLAY_ALL
                     ],
                     this.screen
                 );
@@ -25884,8 +27425,8 @@
                             this.ids,
                             [game.box.template.replace("{width}x{height}", Main_GameSize), //0
                                 game.name, //1
-                                hasLive ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '', //2
+                                hasLive ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
+                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '', //2
                                 game._id //3
                             ],
                             this.screen
@@ -26074,8 +27615,8 @@
             table: 'stream_table_vod',
             screen: Main_Vod,
             highlightSTR: 'Vod_highlight',
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             highlight: Main_getItemBool('Vod_highlight', false),
             periodPos: Main_getItemInt('vod_periodPos', 2),
             base_url: Main_kraken_api + 'videos/top?limit=' + Main_ItemsLimitMax,
@@ -26098,8 +27639,8 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                        STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP
                     ],
                     this.screen
                 );
@@ -26115,7 +27656,7 @@
             SetPeriod: function() {
                 Main_setItem('vod_periodPos', this.periodPos);
                 ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) +
-                    STR_SPACE + Main_Periods[this.periodPos - 1]);
+                    STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
             },
         }, Base_obj);
 
@@ -26165,9 +27706,9 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                        STR_SPACE + STR_SPACE + STR_SWITCH_TYPE,
-                        STR_SPACE + STR_SPACE + STR_SWITCH_POS
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_POS
                     ],
                     this.screen
                 );
@@ -26215,8 +27756,8 @@
             ScreenName: 'AGameVod',
             table: 'stream_table_a_game_vod',
             screen: Main_AGameVod,
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -26241,8 +27782,8 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                        STR_SPACE + STR_SPACE + STR_SWITCH_CLIP
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_CLIP
                     ],
                     this.screen
                 );
@@ -26260,7 +27801,7 @@
             SetPeriod: function() {
                 Main_setItem('AGameVod_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE + Main_Periods[this.periodPos - 1]);
+                ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
             }
         }, Base_obj);
 
@@ -26312,8 +27853,8 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_SWITCH_VOD,
-                        STR_SPACE + STR_SPACE + STR_SWITCH_TYPE
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE
                     ],
                     this.screen
                 );
@@ -26346,8 +27887,8 @@
             ScreenName: 'Live',
             key_pgDown: Main_Featured,
             key_pgUp: Main_Clip,
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
             set_url: function() {
                 this.check_offset();
@@ -26389,7 +27930,7 @@
                 this.lastData = Main_values.Search_data;
                 Sidepannel_SetTopOpacity(this.screen);
 
-                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_LIVE, "'" + Main_values.Search_data + "'");
+                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_LIVE, "'" + Main_values.Search_data + "'");
             },
             label_exit: function() {
                 Main_values.Search_isSearching = false;
@@ -26529,8 +28070,8 @@
             table: 'stream_table_a_game',
             screen: Main_aGame,
             object: 'streams',
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             base_url: Main_kraken_api + 'streams?game=',
@@ -26561,8 +28102,8 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_VIDEOS,
-                        STR_SPACE + STR_SPACE + STR_CLIPS
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS
                     ],
                     this.screen
                 );
@@ -26627,8 +28168,8 @@
             screen: Main_Clip,
             key_pgDown: Main_Live,
             key_pgUp: Main_Vod,
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
             set_url: function() {
@@ -26676,7 +28217,7 @@
             SetPeriod: function() {
                 Main_setItem('ChannelClip_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname, STR_CLIPS + STR_SPACE +
+                ScreensObj_SetTopLable(Main_values.Main_selectedChannelDisplayname, STR_CLIPS + STR_SPACE_HTML +
                     Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
@@ -26705,8 +28246,8 @@
             screen: Main_AGameClip,
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
-            CheckLang: 1,
-            Lang: '',
+            CheckContentLang: 1,
+            ContentLang: '',
             periodPos: Main_getItemInt('AGameClip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?game=',
             set_url: function() {
@@ -26718,7 +28259,7 @@
             SetPeriod: function() {
                 Main_setItem('AGameClip_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE +
+                ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML +
                     Main_Periods[this.periodPos - 1]);
             },
             label_init: function() {
@@ -26835,7 +28376,7 @@
                 this.lastData = Main_values.Search_data;
                 Sidepannel_SetTopOpacity(this.screen);
 
-                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_GAMES, "'" + Main_values.Search_data + "'");
+                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_GAMES, "'" + Main_values.Search_data + "'");
             },
             label_exit: function() {
                 Main_values.Main_gameSelected = Main_values.gameSelectedOld;
@@ -26908,7 +28449,7 @@
                 this.lastData = Main_values.Search_data;
                 Sidepannel_SetTopOpacity(this.screen);
 
-                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE + STR_CHANNELS, "'" + Main_values.Search_data + "'");
+                ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_CHANNELS, "'" + Main_values.Search_data + "'");
             },
             label_exit: function() {
                 if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
@@ -26940,7 +28481,7 @@
             histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
                 Screens_SethistDialogId(this.screen);
-                Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+                Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
             setTODialog: function() {
@@ -26955,7 +28496,7 @@
                 ScreensObj_TopLableUserInit(this.screen);
                 ScreensObj_SetTopLable(
                     STR_USER,
-                    STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE +
+                    STR_HISTORY + STR_SPACE_HTML + STR_LIVE + STR_SPACE_HTML +
                     '(' + this.sorting[this.histPosX[0]] + ')'
                 );
             },
@@ -26989,9 +28530,9 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE + STR_SPACE + STR_SETTINGS
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE + STR_SPACE_HTML + STR_SETTINGS
                     ],
                     this.screen
                 );
@@ -27037,7 +28578,7 @@
             histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
                 Screens_SethistDialogId(this.screen);
-                Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+                Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
             setTODialog: function() {
@@ -27053,7 +28594,7 @@
 
                 ScreensObj_SetTopLable(
                     STR_USER,
-                    STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE +
+                    STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS + STR_SPACE_HTML +
                     '(' + this.sorting[this.histPosX[0]] + ')'
                 );
             },
@@ -27095,9 +28636,9 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS + STR_SPACE + STR_SETTINGS
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS + STR_SPACE_HTML + STR_SETTINGS
                     ],
                     this.screen
                 );
@@ -27127,7 +28668,7 @@
             histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
                 Screens_SethistDialogId(this.screen);
-                Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE + STR_HISTORY + STR_SPACE + STR_SETTINGS);
+                Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
             setTODialog: function() {
@@ -27143,7 +28684,7 @@
 
                 ScreensObj_SetTopLable(
                     STR_USER,
-                    STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE +
+                    STR_HISTORY + STR_SPACE_HTML + STR_CLIPS + STR_SPACE_HTML +
                     '(' + this.sorting[this.histPosX[0]] + ')'
                 );
 
@@ -27196,9 +28737,9 @@
             addSwitches: function() {
                 ScreensObj_addSwitches(
                     [
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_LIVE,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_VIDEOS,
-                        STR_SPACE + STR_SPACE + STR_HISTORY + STR_SPACE + STR_CLIPS + STR_SPACE + STR_SETTINGS
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_LIVE,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_VIDEOS,
+                        STR_SPACE_HTML + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_CLIPS + STR_SPACE_HTML + STR_SETTINGS
                     ],
                     this.screen
                 );
@@ -27293,7 +28834,7 @@
     }
 
     function ScreensObj_SetTopLable(text, small_text) {
-        Main_innerHTML('top_lable', text + STR_SPACE + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
+        Main_innerHTML('top_lable', text + STR_SPACE_HTML + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
     }
 
     function ScreensObj_LiveCellArray(cell) {
@@ -27302,14 +28843,14 @@
             cell.channel.display_name, //1
             cell.channel.status, //2
             cell.game, //3
-            STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER, //4
+            Main_addCommas(cell.viewers), //4
             Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language), //5
             cell.channel.name, //6
             cell._id, //7 broadcast id
             Main_is_rerun(cell.broadcast_platform), //8
             cell.channel.logo, //9
             cell.channel.partner, //10
-            STR_SINCE + Play_streamLiveAt(cell.created_at) + STR_SPACE, //11
+            Play_streamLiveAt(cell.created_at), //11
             cell.created_at, //12
             cell.viewers, //13
             cell.channel._id, //14
@@ -27323,9 +28864,9 @@
             Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
             '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize), //0
             cell.channel.display_name, //1
-            STR_STREAM_ON + Main_videoCreatedAt(cell.created_at), //2
+            Main_videoCreatedAt(cell.created_at), //2
             cell.game, //3
-            Main_addCommas(cell.views) + STR_VIEWS, //4
+            Main_addCommas(cell.views), //4
             cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '', //5
             cell.channel.name, //6
             cell._id.substr(1), //7
@@ -27357,9 +28898,9 @@
             '[' + cell.language.toUpperCase() + ']', //11
             cell.created_at, //12
             cell.views, //13
-            Main_addCommas(cell.views) + STR_VIEWS, //14
+            Main_addCommas(cell.views), //14
             cell.thumbnails.medium, //15
-            STR_CREATED_AT + Main_videoCreatedAt(cell.created_at), //16
+            Main_videoCreatedAt(cell.created_at), //16
             cell.language //17
         ];
     }
@@ -27940,10 +29481,10 @@
     function SettingsColor_DivResultUpdate(div, text) {
         Main_innerHTML(
             div,
-            '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE +
-            '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE +
-            '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE +
-            '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE +
+            '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE_HTML +
+            '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE_HTML +
+            '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE_HTML +
+            '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE_HTML +
             text
         );
     }
@@ -28060,7 +29601,7 @@
             },
             focus: function() {
                 SettingsColor_AddCavasFocus();
-                Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE + '(' + STR_ENTER_RGB + ')');
+                Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE_HTML + '(' + STR_ENTER_RGB + ')');
             },
             removefocus: function() {
                 SettingsColor_RemoveCavasFocus();
@@ -28415,8 +29956,42 @@
     var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
     var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p', '360p', '160p'];
     var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    //For clips the api accept a coma and extra languages
+    var Languages_Extra = {
+        "en": "en,en-gb",
+        "es": "es,es-mx",
+        "pt": "pt,pt-br"
+    };
 
     var Settings_value = {
+        "content_lang": {
+            "values": [
+                "All",
+                "Bulgarian [BG]", "Čeština [CS]", "Dansk [DA]", "Deutsch [DE]",
+                "Ελληνικά [EL]", "English [EN]", "Español [ES]", "Suomi [FI]",
+                "Français [FR]", "Italiano [IT]", "Magyar [HU]", "日本語 [JA]",
+                "한국어 [KO]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]",
+                "Português [PT]", "Română [RO]", "Русский [RU]", "Slovenčina [SK]",
+                "Svenska [SV]", "ภาษาไทย [TH]", "Türkçe [TR]", "Tiếng Việt [VI]",
+                "中文 [ZH]"
+            ],
+            "apply_values": [
+                "",
+                "bg", "cs", "da", "de",
+                "el", "en", "es", "fi",
+                "fr", "it", "hu", "ja",
+                "ko", "nl", "no", "pl",
+                "pt", "ro", "ru", "sk",
+                "sv", "th", "tr", "vi",
+                "zh"
+            ],
+            "defaultValue": 1
+        },
+        "app_lang": {
+            "values": ["English [EN]", "Português [PT-BR]", "Русский [RU]"],
+            "apply_values": ["en_US", "pt_BR", "ru_RU"],
+            "defaultValue": 1
+        },
         "restor_playback": {
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -28637,11 +30212,6 @@
         },
         "thumb_background": { //Migrated to dialog
             "values": ["None"],
-            "set_values": [""],
-            "defaultValue": 1
-        },
-        "content_lang": {
-            "values": ["All"],
             "set_values": [""],
             "defaultValue": 1
         },
@@ -28978,7 +30548,6 @@
         Main_HideElement('label_refresh');
         Settings_cursorY = 0;
         Settings_inputFocus(Settings_cursorY);
-        Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
         Main_EventScreen('Settings');
     }
 
@@ -29001,20 +30570,25 @@
             key,
             array_no_yes = [STR_NO, STR_YES];
 
-        // General settings title
-        //div += Settings_DivTitle('general', STR_SETTINGS_GENERAL);
+        Settings_value_keys = [];
+
+        //Individual settings
+        key = "content_lang";
+        div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
+
+        key = "app_lang";
+        div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
         //Dialog settings
-        div += Settings_Content('content_lang', [STR_CONTENT_LANG_SUMMARY], STR_CONTENT_LANG, '');
-        div += Settings_Content('chat_opt', [STR_CONTENT_LANG_SUMMARY], STR_CHAT_OPTIONS, null);
-        div += Settings_Content('ui_opt', [STR_CONTENT_LANG_SUMMARY], STR_UI_SETTINGS, null);
-        div += Settings_Content('custom_opt', [STR_CONTENT_LANG_SUMMARY], STR_GENERAL_CUSTOM, null);
-        div += Settings_Content('live_notification_opt', [STR_CONTENT_LANG_SUMMARY], STR_NOTIFICATION_OPT, null);
-        div += Settings_Content('update_settings', [STR_CONTENT_LANG_SUMMARY], STR_UPDATE_OPT, null);
-        div += Settings_Content('warnings_opt', [STR_CONTENT_LANG_SUMMARY], STR_WARNINGS, null);
+        div += Settings_Content('chat_opt', [STR_ENTER_TO_OPEN], STR_CHAT_OPTIONS, null);
+        div += Settings_Content('ui_opt', [STR_ENTER_TO_OPEN], STR_UI_SETTINGS, null);
+        div += Settings_Content('custom_opt', [STR_ENTER_TO_OPEN], STR_GENERAL_CUSTOM, null);
+        div += Settings_Content('live_notification_opt', [STR_ENTER_TO_OPEN], STR_NOTIFICATION_OPT, null);
+        div += Settings_Content('update_settings', [STR_ENTER_TO_OPEN], STR_UPDATE_OPT, null);
+        div += Settings_Content('warnings_opt', [STR_ENTER_TO_OPEN], STR_WARNINGS, null);
 
         if (!Main_isTV || !Main_IsOn_OSInterface) {
-            div += Settings_Content('dpad_opt', [STR_CONTENT_LANG_SUMMARY], STR_DPAD_OPT, null);
+            div += Settings_Content('dpad_opt', [STR_ENTER_TO_OPEN], STR_DPAD_OPT, null);
         }
 
         //Individual settings
@@ -29039,13 +30613,13 @@
         div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
         //Dialog settings
-        div += Settings_Content('player_bitrate', [STR_CONTENT_LANG_SUMMARY], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
-        div += Settings_Content('block_qualities', [STR_CONTENT_LANG_SUMMARY], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
-        div += Settings_Content('blocked_codecs', [STR_CONTENT_LANG_SUMMARY], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
-        div += Settings_Content('preview_settings', [STR_CONTENT_LANG_SUMMARY], STR_SIDE_PANEL_PLAYER, null);
-        div += Settings_Content('vod_seek', [STR_CONTENT_LANG_SUMMARY], STR_VOD_SEEK, null);
-        div += Settings_Content('player_end_opt', [STR_CONTENT_LANG_SUMMARY], STR_END_DIALOG_OPT, null);
-        div += Settings_Content('player_buffers', [STR_CONTENT_LANG_SUMMARY], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
+        div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
+        div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
+        div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
+        div += Settings_Content('preview_settings', [STR_ENTER_TO_OPEN], STR_SIDE_PANEL_PLAYER, null);
+        div += Settings_Content('vod_seek', [STR_ENTER_TO_OPEN], STR_VOD_SEEK, null);
+        div += Settings_Content('player_end_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
+        div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
         Main_innerHTML("settings_main", div);
         Settings_positions_length = Settings_value_keys.length;
@@ -29105,8 +30679,6 @@
         Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
         Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
-
-
         Settings_value.dpad_position.values = [
             STR_RIGHT + '-' + STR_BOTTOM,
             STR_RIGHT + '-' + STR_TOP,
@@ -29114,7 +30686,6 @@
             STR_LEFT + '-' + STR_TOP
         ];
 
-        Languages_SetSettings();
     }
 
     function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
@@ -29142,67 +30713,6 @@
             '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
             '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
             '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
-    }
-
-    function Settings_DivOptionChangeLang(key, string_title, string_summary) {
-        Main_innerHTML(key + '_name', string_title +
-            '<div id="' + key + '_summary" class="settings_summary" style="font-size: 65%;">' + string_summary + '</div>');
-    }
-
-    // The order in Settings_SetStrings doesnot matter
-    function Settings_SetStrings() {
-        var key = '';
-
-        //General settings
-        //Main_textContent('setting_title_general', STR_SETTINGS_GENERAL);
-
-        // Content Language selection
-        key = "content_lang";
-        Main_textContent(key + '_name', STR_CONTENT_LANG);
-        Main_textContent(key, Settings_Obj_values(key));
-        Settings_value[key].values = [STR_CONTENT_LANG_SUMMARY];
-
-        //Player settings
-        Main_textContent('setting_title_play', STR_SETTINGS_PLAYER);
-
-        // Player buffer title/summary
-        Main_textContent('setting_title_buffers', STR_SETTINGS_BUFFER_SIZE);
-        Main_textContent('setting_title_buffers_summary', STR_SETTINGS_BUFFER_SIZE_SUMMARY);
-
-        key = "vod_dialog";
-        Settings_DivOptionChangeLang(key, STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
-        Settings_value[key].values = [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START];
-
-        key = "start_user_screen";
-        Settings_DivOptionChangeLang(key, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
-        Settings_value[key].values = [STR_YES, STR_NO];
-
-        key = "restor_playback";
-        Settings_DivOptionChangeLang(key, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
-        Settings_value[key].values = [STR_YES, STR_NO];
-
-        key = "default_quality";
-        Settings_DivOptionChangeLang(key, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
-        Settings_value[key].values[0] = STR_AUTO;
-        Settings_value[key].values[1] = STR_SOURCE;
-
-        key = "check_source";
-        Settings_DivOptionChangeLang(key, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
-        Settings_value[key].values = [STR_YES, STR_NO];
-
-        key = "PP_workaround";
-        Settings_DivOptionChangeLang(key, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
-        Settings_value[key].values = [STR_DISABLED, STR_ENABLED];
-
-        key = "single_click_exit";
-        Settings_DivOptionChangeLang(key, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
-        Settings_value[key].values = [STR_NO, STR_YES];
-
-        for (key in Settings_value)
-            if (Settings_value.hasOwnProperty(key))
-                Main_textContent(key, Settings_Obj_values(key));
-
-        Languages_SetLang();
     }
 
     function Settings_SetDefautls() {
@@ -29245,6 +30755,7 @@
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
         Settings_set_all_notification();
+        Settings_SetLang();
 
         Settings_SetResBitRate(0);
 
@@ -29261,6 +30772,95 @@
             20 * 60 * 1000
         );
 
+    }
+
+    var Languages_Selected;
+
+    function Settings_SetLang() {
+        Main_ContentLang = Settings_value.content_lang.apply_values[Settings_Obj_default('content_lang')];
+
+        if (Main_ContentLang === "") {
+            Languages_Selected = STR_LANG_ALL;
+            OSInterface_upDateLang(null);
+        } else {
+            Languages_Selected = Main_ContentLang.toUpperCase();
+            OSInterface_upDateLang(Main_ContentLang);
+        }
+    }
+
+    var Settings_AppLang = '';
+
+    function Settings_SetAppLang() {
+        // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
+        // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+        // https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2
+
+        var app_lang = Settings_value.app_lang.apply_values[Settings_Obj_default('app_lang')];
+
+        if (!Main_values.WasLangChanged) {
+
+            app_lang = Settings_CheckPageLang(app_lang);
+
+        }
+
+        en_USLang();
+
+        if (Main_A_includes_B(app_lang, 'pt_')) pt_BRLang();
+        else if (Main_A_includes_B(app_lang, 'ru_')) ru_RULang();
+
+        OSInterface_SetLanguage(app_lang);
+
+        Settings_AppLang = app_lang;
+
+    }
+
+    function Settings_UpdateString() {
+        Main_values.WasLangChanged = true;
+        Settings_SetAppLang();
+        DefaultLang();
+
+        Main_SetStringsMain();
+        Main_SetStringsSecondary();
+        Play_MakeControls();
+        Play_MultiSetpannelInfo();
+        Settings_inputFocus(Settings_cursorY);
+        ScreensObj_SetTopLable(STR_SETTINGS);
+        Main_updateclock();
+        Main_checkVersion(true);
+        AddUser_UpdateSidepanel();
+
+        Main_SaveValues();
+    }
+
+    function Settings_CheckPageLang(app_lang) {
+        var device_lang = app_lang;
+
+        device_lang = window.navigator.userLanguage || window.navigator.language;
+
+        if (device_lang) device_lang = device_lang.replace('-', '_');
+        else return device_lang;
+
+        if (Main_A_includes_B(Settings_value.app_lang.apply_values, device_lang)) {
+
+            var index = 0,
+                len = Settings_value.app_lang.apply_values.length;
+
+            for (index; index < len; index++) {
+
+                if (Settings_value.app_lang.apply_values[index] === device_lang)
+                    break;
+
+            }
+
+            Settings_value.app_lang.defaultValue = index;
+            Main_setItem('app_lang', Settings_Obj_default('app_lang') + 1);
+
+            device_lang = device_lang;
+
+        }
+
+
+        return device_lang;
     }
 
     function Settings_burn_in_protection() {
@@ -29350,7 +30950,9 @@
 
     function Settings_SetDefault(position) {
 
-        if (position === "live_notification") Settings_notification();
+        if (position === "content_lang") Settings_SetLang();
+        else if (position === "app_lang") Settings_UpdateString();
+        else if (position === "live_notification") Settings_notification();
         else if (position === "title_notification") Settings_notification_title();
         else if (position === "game_notification") Settings_notification_game();
         else if (position === "live_notification_background") Settings_notification_background();
@@ -29717,21 +31319,6 @@
         }
     }
 
-    //function Settings_CheckLang(lang) {
-    //    if (Main_A_includes_B(lang, 'en_')) Settings_value.general_lang.defaultValue = 0;
-    //    else if (Main_A_includes_B(lang, 'it_')) Settings_value.general_lang.defaultValue = 1;
-    //    else if (Main_A_includes_B(lang, 'pt_')) Settings_value.general_lang.defaultValue = 2;
-    //}
-
-    //function Settings_SetLang(lang) {
-    //    if (Main_A_includes_B(lang, 'en_')) en_USLang();
-    //else if (Main_A_includes_B(lang, 'it_')) it_ITLang();
-    //else if (Main_A_includes_B(lang, 'pt_')) pt_BRLang();
-    //    DefaultLang();
-    //    Main_SetStringsMain(false);
-    //    Main_SetStringsSecondary();
-    //}
-
     function Settings_SetClock() {
         var time = Settings_Obj_default("clock_offset");
         Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
@@ -29808,7 +31395,7 @@
     var Settings_CurY = 0;
 
     function Settings_ScrollTable() {
-        var scroolPos = 11,
+        var scroolPos = 12,
             doc,
             offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
@@ -29907,8 +31494,7 @@
                 }
                 break;
             case KEY_ENTER:
-                if (!Settings_cursorY) Languages_init();
-                else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
+                if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_end_opt')) Settings_PlayerEnd();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer();
                 else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate();
@@ -30617,7 +32203,7 @@
                 defaultValue: Settings_value.accessibility_warn.defaultValue,
                 values: Settings_value.accessibility_warn.values,
                 title: STR_SETTINGS_ACCESSIBILITY,
-                summary: STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE + STR_APP_LAG
+                summary: STR_SETTINGS_ACCESSIBILITY_SUMMARY + STR_SPACE_HTML + STR_ACCESSIBILITY_WARN_EXTRA + STR_SPACE_HTML + STR_APP_LAG
             },
             ping_warn: {
                 defaultValue: Settings_value.ping_warn.defaultValue,
@@ -30883,7 +32469,7 @@
         for (var property in obj) {
             Settings_DialogValue.push(property);
             if (obj[property].keyenter) {
-                dialogContent += Settings_Content(property, [STR_CONTENT_LANG_SUMMARY], obj[property].title, null);
+                dialogContent += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
             } else {
                 dialogContent += obj[property].summary ?
                     Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
@@ -30977,439 +32563,15 @@
      *
      */
 
-    //Variable initialization
-    var Languages_cursorY = 0;
-    var Languages_Selected = '';
-    var Languages_value = {
-        "All": {
-            "values": ["off", "on"],
-            "defaultValue": 2,
-            "set_values": "",
-            "title": "All"
-        },
-        "bg": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "bg",
-            "title": "Bulgarian [BG]"
-        },
-        "cs": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "cs",
-            "title": "Čeština [CS]"
-        },
-        "da": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "da",
-            "title": "Dansk [DA]"
-        },
-        "de": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "de",
-            "title": "Deutsch [DE]"
-        },
-        "el": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "el",
-            "title": "Ελληνικά [EL]"
-        },
-        "en": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "en",
-            "title": "English [EN]"
-        },
-        "es": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "es",
-            "title": "Español [ES]"
-        },
-        "fi": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "fi",
-            "title": "Suomi [FI]"
-        },
-        "fr": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "fr",
-            "title": "Français [FR]"
-        },
-        "it": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "it",
-            "title": "Italiano [IT]"
-        },
-        "hu": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "hu",
-            "title": "Magyar [HU]"
-        },
-        "ja": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ja",
-            "title": "日本語 [JA]"
-        },
-        "ko": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ko",
-            "title": "한국어 [KO]"
-        },
-        "nl": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "nl",
-            "title": "Nederlands [NL]"
-        },
-        "no": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "no",
-            "title": "Norsk [NO]"
-        },
-        "pl": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "pl",
-            "title": "Polski [PL]"
-        },
-        "pt": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "pt",
-            "title": "Português [PT]"
-        },
-        "ro": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ro",
-            "title": "Română [RO]"
-        },
-        "ru": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "ru",
-            "title": "Русский [RU]"
-        },
-        "sk": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "sk",
-            "title": "Slovenčina [SK]"
-        },
-        "sv": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "sv",
-            "title": "Svenska [SV]"
-        },
-        "th": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "th",
-            "title": "ภาษาไทย [TH]"
-        },
-        "tr": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "tr",
-            "title": "Türkçe [TR]"
-        },
-        "vi": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "vi",
-            "title": "Tiếng Việt [VI]"
-        },
-        "zh": {
-            "values": ["off", "on"],
-            "defaultValue": 1,
-            "set_values": "zh",
-            "title": "中文 [ZH]"
-        }
-    };
-
-    //For clips the api accept a coma and extra languages
-    var Languages_Extra = {
-        "en": "en,en-gb",
-        "es": "es,es-mx",
-        "pt": "pt,pt-br"
-    };
-
-    var Languages_value_keys = [];
-    var Languages_positions_length = 0;
-    //Variable initialization end
-
-    function Languages_init() {
-        Main_removeEventListener("keydown", Settings_handleKeyDown);
-        Main_HideElement('settings_main');
-        Main_ShowElement('settings_lang');
-        Languages_HideShowAll();
-        ScreensObj_SetTopLable(STR_SETTINGS + STR_SPACE + STR_CONTENT_LANG);
-        Main_addEventListener("keydown", Languages_handleKeyDown);
-        Languages_cursorY = 0;
-        Languages_inputFocus(Languages_cursorY);
-        Languages_ResetLang();
-    }
-
-    function Languages_exit() {
-        Main_removeEventListener("keydown", Languages_handleKeyDown);
-        Main_addEventListener("keydown", Settings_handleKeyDown);
-        ScreensObj_SetTopLable(STR_SETTINGS);
-        Settings_ScrollTableReset();
-        Main_ShowElement('settings_main');
-        Main_HideElement('settings_lang');
-        Languages_RemoveinputFocus();
-        Languages_SetLang();
-        Languages_ResetLang();
-    }
-
-    function Languages_isVisible() {
-        return Main_isElementShowing('settings_lang');
-    }
-
-    function Languages_ResetLang() {
-        if (Main_ContentLang === "") {
-            Languages_Selected = STR_LANG_ALL;
-            Languages_value.All.defaultValue = 1;
-            Languages_ChangeSettigs(0);
-            Main_AddClass(Languages_value_keys[0], 'red_text');
-            Languages_HideShowAll();
-        } else {
-            Main_textContent(Main_ContentLang, Languages_Obj_values(Main_ContentLang));
-            Main_AddClass(Main_ContentLang, 'red_text');
-        }
-
-        Settings_DivOptionChangeLang('content_lang', STR_CONTENT_LANG, Languages_Selected);
-    }
-
-    function Languages_SetLang() {
-        Main_ContentLang = "";
-        if (!Languages_Obj_default('All')) {
-            for (var key in Languages_value) {
-                if (Languages_Obj_default(key)) Main_ContentLang += ',' + Languages_value[key].set_values;
-            }
-            Main_ContentLang = Main_ContentLang.slice(1);
-            //the app allowed more then one language but twitch api blocks it now for all api minus clips one
-            if (Main_A_includes_B(Main_ContentLang, ',')) {
-                Languages_ResetAll();
-                Main_ContentLang = "";
-            }
-        }
-
-        if (Main_ContentLang === "") {
-            Languages_Selected = STR_LANG_ALL;
-            OSInterface_upDateLang(null);
-        } else {
-            Languages_Selected = Main_ContentLang.toUpperCase();
-            OSInterface_upDateLang(Main_ContentLang);
-        }
-    }
-
-    // The order in Languages_SetSettings is the display order
-    function Languages_SetSettings() {
-        var div = '';
-
-        for (var key in Languages_value) {
-            Languages_value_keys.push(key);
-            Languages_value[key].values = [STR_NO, STR_YES];
-            div += Languages_DivOptionNoSummary(key, Languages_value[key].title);
-        }
-
-        Main_innerHTML("settings_lang", div);
-        Languages_positions_length = Languages_value_keys.length;
-    }
-
-    function Languages_DivOptionNoSummary(key, string) {
-        return '<div id="' + key + '_div" class="settings_div"><div id="' +
-            key + '_name" class="settings_name">' + string + '</div>' +
-            '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-            '<div id="' + key + '" class="' + (Languages_Obj_default(key) ? 'red_text ' : '') + 'strokedeline settings_value">' + Languages_Obj_values(key) + '</div>' +
-            '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
-    }
-
-    function Languages_SetDefautls() {
-        for (var key in Languages_value) {
-            Languages_value[key].defaultValue = Main_getItemInt(key, Languages_value[key].defaultValue);
-            Languages_value[key].defaultValue -= 1;
-        }
-        Languages_SetLang();
-    }
-
-    function Languages_Obj_values(key) {
-        return Languages_value[key].values[Languages_Obj_default(key)];
-    }
-
-    //function Languages_Obj_set_values(key) {
-    //    return Languages_value[key].set_values[Languages_Obj_default(key)];
-    //}
-
-    function Languages_Obj_default(key) {
-        return Languages_value[key].defaultValue;
-    }
-
-    function Languages_Obj_length(key) {
-        return Languages_value[key].values.length - 1;
-    }
-
-    function Languages_inputFocus(position) {
-        var key = Languages_value_keys[Languages_cursorY];
-        Main_AddClass(key, 'settings_value_focus');
-        Main_AddClass(key + '_div', 'settings_div_focus');
-        Languages_Setarrows(position);
-        Languages_ScrollTable(key);
-    }
-
-    function Languages_RemoveinputFocus() {
-        var key = Languages_value_keys[Languages_cursorY];
-        Main_getElementById(key + "arrow_left").style.opacity = "0";
-        Main_getElementById(key + "arrow_right").style.opacity = "0";
-        Main_RemoveClass(key, 'settings_value_focus');
-        Main_RemoveClass(key + '_div', 'settings_div_focus');
-    }
-
-    function Languages_ScrollTable() {
-
-        Main_getElementById('settings_scroll').scrollTop =
-            (Languages_cursorY > 7) ? Main_getElementById(Languages_value_keys[Languages_cursorY - 7]).offsetTop : 0;
-    }
-
-    function Languages_ChangeSettigs(position) {
-        Languages_ChangeSettigsEnd(position);
-    }
-
-    function Languages_ResetAll() {
-        for (var key in Languages_value) {
-            if (Languages_Obj_default(key)) {
-                Languages_value[key].defaultValue -= 1;
-                Main_setItem(key, Languages_Obj_default(key) + 1);
-                Main_textContent(key, Languages_Obj_values(key));
-                Main_RemoveClass(key, 'red_text');
-            }
-        }
-    }
-
-    function Languages_ChangeSettigsEnd(position) {
-        Languages_ChangeSettigsEndKey(Languages_value_keys[position]);
-    }
-
-    function Languages_ChangeSettigsEndKey(key) {
-        Main_setItem(key, Languages_Obj_default(key) + 1);
-        Main_textContent(key, Languages_Obj_values(key));
-        Languages_SetarrowsKey(key);
-    }
-
-    function Languages_Setarrows(position) {
-        Languages_SetarrowsKey(Languages_value_keys[position]);
-    }
-
-    function Languages_SetarrowsKey(key) {
-        var currentValue = Languages_Obj_default(key);
-        var maxValue = Languages_Obj_length(key);
-
-        if (currentValue > 0 && currentValue < maxValue) {
-            Main_getElementById(key + "arrow_left").style.opacity = "1";
-            Main_getElementById(key + "arrow_right").style.opacity = "1";
-        } else if (currentValue === maxValue) {
-            Main_getElementById(key + "arrow_left").style.opacity = "1";
-            Main_getElementById(key + "arrow_right").style.opacity = "0.2";
-        } else {
-            Main_getElementById(key + "arrow_left").style.opacity = "0.2";
-            Main_getElementById(key + "arrow_right").style.opacity = "1";
-        }
-    }
-
-    function Languages_HideShowAll() {
-        for (var key in Languages_value) {
-            if (!Main_A_includes_B(key, 'All')) {
-                Main_getElementById(key + '_div').style.display = Languages_Obj_default('All') ? 'none' : 'inline-block';
-            }
-        }
-    }
-
-    function Languages_handleKeyDown(event) {
-        var key;
-        switch (event.keyCode) {
-            case KEY_KEYBOARD_BACKSPACE:
-            case KEY_RETURN:
-                Languages_exit();
-                break;
-            case KEY_LEFT:
-                key = Languages_value_keys[Languages_cursorY];
-                if (Languages_Obj_default(key) > 0) {
-                    Languages_value[key].defaultValue -= 1;
-                    Languages_ChangeSettigs(Languages_cursorY);
-                    Main_RemoveClass(Languages_value_keys[Languages_cursorY], 'red_text');
-                    if (Main_A_includes_B(key, 'All')) Languages_HideShowAll();
-                }
-                break;
-            case KEY_RIGHT:
-                key = Languages_value_keys[Languages_cursorY];
-                if (Languages_Obj_default(key) < Languages_Obj_length(key)) {
-                    if (!Main_A_includes_B(key, 'All')) Languages_ResetAll();
-                    Languages_value[key].defaultValue += 1;
-                    Languages_ChangeSettigs(Languages_cursorY);
-                    Main_AddClass(Languages_value_keys[Languages_cursorY], 'red_text');
-                    if (Main_A_includes_B(key, 'All')) Languages_HideShowAll();
-                }
-                break;
-            case KEY_UP:
-                if (Languages_cursorY > 0) {
-                    Languages_RemoveinputFocus();
-                    Languages_cursorY--;
-                    Languages_inputFocus(Languages_cursorY);
-                }
-                break;
-            case KEY_DOWN:
-                if (!Languages_Obj_default('All') && Languages_cursorY < (Languages_positions_length - 1)) {
-                    Languages_RemoveinputFocus();
-                    Languages_cursorY++;
-                    Languages_inputFocus(Languages_cursorY);
-                }
-                break;
-            default:
-                break;
-        }
-    }
-    /*
-     * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
-     *
-     * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
-     *
-     * SmartTwitchTV is free software: you can redistribute it and/or modify
-     * it under the terms of the GNU General Public License as published by
-     * the Free Software Foundation, either version 3 of the License, or
-     * (at your option) any later version.
-     *
-     * SmartTwitchTV is distributed in the hope that it will be useful,
-     * but WITHOUT ANY WARRANTY; without even the implied warranty of
-     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-     * GNU General Public License for more details.
-     *
-     * You should have received a copy of the GNU General Public License
-     * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
-     *
-     */
-
     //Spacing for release maker not trow errors from jshint
     var Sidepannel_PosFeed = 0;
     var Sidepannel_Sidepannel_Pos = 2;
     var Sidepannel_Callback;
     var Sidepannel_IsMain = true;
 
-    var Sidepannel_MoveldefaultMargin = 13.5;
     var Sidepannel_FixdefaultMargin = 5;
-    var Sidepannel_MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
+    //See en_USLang() for this values
+    var Sidepannel_MoveldefaultMargin;
 
     var Sidepannel_FixDiv;
     var Sidepannel_MovelDiv;
@@ -31451,8 +32613,8 @@
 
             var pos = (Sidepannel_PosFeed + 1);
 
-            if (pos < 10) pos = STR_SPACE + STR_SPACE + STR_SPACE + STR_SPACE + pos;
-            else if (pos < 100) pos = STR_SPACE + STR_SPACE + pos;
+            if (pos < 10) pos = STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + pos;
+            else if (pos < 100) pos = STR_SPACE_HTML + STR_SPACE_HTML + pos;
 
             Main_innerHTMLWithEle(
                 Sidepannel_PosCounter,
@@ -31521,12 +32683,30 @@
             Main_innerHTML('feed_thum_quality', info[5]);
             Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
             Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
-            Main_innerHTML(
-                'feed_thum_views',
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE + info[4]
-            );
+            Sidepannel_UpdateSince();
 
         }
+    }
+
+    var Sidepannel_UpdateSinceId;
+
+    function Sidepannel_UpdateSince() {
+
+        if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+
+        var info = Sidepannel_GetObj();
+
+        Main_innerHTML(
+            'feed_thum_views',
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+        );
+
+        Sidepannel_UpdateSinceId = Main_setTimeout(
+            Sidepannel_UpdateSince,
+            1000,
+            Sidepannel_UpdateSinceId
+        );
+
     }
 
     function Sidepannel_UpdateThumb() {
@@ -31557,6 +32737,7 @@
 
     function Sidepannel_CheckIfIsLiveSTop(PreventCleanQualities) {
         Main_clearTimeout(Sidepannel_CheckIfIsLiveStartId);
+        Main_clearTimeout(Sidepannel_UpdateSinceId);
 
         if (Main_IsOn_OSInterface && !PreventCleanQualities) {
 
@@ -31646,7 +32827,7 @@
                 } else {
 
                     Sidepannel_CheckIfIsLiveWarn(
-                        StreamInfo[1] + STR_SPACE + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                        StreamInfo[1] + STR_SPACE_HTML + STR_LIVE + STR_BR + ((StreamData.status === 1 || StreamData.status === 403) ? STR_FORBIDDEN : STR_IS_OFFLINE),
                         0
                     );
 
@@ -31696,11 +32877,11 @@
     }
 
     function Sidepannel_partnerIcon(name, partner, isrerun) {
-        return '<div class="partnericon_div"> ' + name + STR_SPACE + STR_SPACE + '</div>' +
+        return '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
             (partner ? ('<img class="partnericon_img" alt="" src="' +
-                IMG_PARTNER + '">' + STR_SPACE + STR_SPACE) : "") + '<div class="partnericon_text" style="background: #' +
-            (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE + STR_SPACE +
-            (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE + STR_SPACE + '</div>';
+                IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
+            (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
+            (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
     }
 
     function Sidepannel_PreloadImgs() {
@@ -31882,7 +33063,8 @@
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
-            !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue)) {
+            !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
+            !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)) {
 
             ForceRefresh = true;
 
@@ -31918,7 +33100,7 @@
 
         Main_innerHTMLWithEle(
             Sidepannel_LastRefreshDiv,
-            STR_REFRESH + STR_SPACE + '(' + STR_LAST_REFRESH +
+            STR_REFRESH + STR_SPACE_HTML + '(' + STR_LAST_REFRESH +
             Play_timeDay(date) + ')'
         );
 
@@ -32036,7 +33218,7 @@
     function Sidepannel_SetUserLables() {
         Main_values.Sidepannel_IsUser = true;
 
-        Main_innerHTML('side_panel_movel_user_text', STR_SPACE + STR_USER_MENU + STR_SPACE);
+        Main_innerHTML('side_panel_movel_user_text', STR_SPACE_HTML + STR_USER_MENU + STR_SPACE_HTML);
         Main_ShowElement('side_panel_movel_user_text_holder');
         Main_ShowElement('side_panel_movel_new_8');
         Main_ShowElement('side_panel_new_8');
@@ -32074,11 +33256,11 @@
         Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
         Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
-        Main_innerHTML('side_panel_movel_new_9', STR_SPACE + STR_SETTINGS);
-        Main_innerHTML('side_panel_movel_new_10', STR_SPACE + STR_ABOUT);
-        Main_innerHTML('side_panel_movel_new_11', STR_SPACE + STR_CONTROLS);
-        Main_innerHTML('side_panel_movel_new_12', STR_SPACE + STR_EXIT);
-        Main_innerHTML('side_panel_movel_new_13', STR_SPACE + STR_UPDATE_CHANGELOG);
+        Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
+        Main_innerHTML('side_panel_movel_new_10', STR_SPACE_HTML + STR_ABOUT);
+        Main_innerHTML('side_panel_movel_new_11', STR_SPACE_HTML + STR_CONTROLS);
+        Main_innerHTML('side_panel_movel_new_12', STR_SPACE_HTML + STR_EXIT);
+        Main_innerHTML('side_panel_movel_new_13', STR_SPACE_HTML + STR_UPDATE_CHANGELOG);
 
         Sidepannel_SetIcons('side_panel_new_1', 'search');
         Sidepannel_SetIcons('side_panel_new_2', 'user', 'font-size: 115%; position: relative; top: 2%;');
@@ -32390,8 +33572,9 @@
             UserLiveFeed_obj[i].MaxOffset = 0;
             UserLiveFeed_obj[i].sorting = 0;
             UserLiveFeed_obj[i].CheckSort = 0;
-            UserLiveFeed_obj[i].lang = Main_ContentLang;
-            UserLiveFeed_obj[i].CheckLang = 0;
+            UserLiveFeed_obj[i].Lang = Settings_AppLang;
+            UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
+            UserLiveFeed_obj[i].CheckContentLang = 0;
 
             UserLiveFeed_FeedSetPosLast[i] = 0;
             UserLiveFeed_obj[i].offsettopFontsize = 0;
@@ -32457,7 +33640,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckLang = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -32497,7 +33680,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
-        UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckLang = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckContentLang = 1;
 
         //Current Game
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
@@ -32509,7 +33692,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckLang = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -32523,14 +33706,6 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
-
-        Main_innerHTML('feed_end_1', STR_FEATURED);
-        Main_innerHTML('feed_end_3', STR_LIVE);
-        Main_innerHTML('feed_end_4', STR_USER + STR_SPACE + STR_LIVE);
-        Main_innerHTML('feed_end_5', STR_LIVE + STR_SPACE + STR_HISTORY);
-        Main_innerHTML('feed_end_7', STR_USER + STR_SPACE + 'VOD');
-        Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
-        Main_innerHTML('icon_feed_back', STR_SPACE);
 
         Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
         Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
@@ -32861,7 +34036,7 @@
 
                     Main_innerHTML(
                         UserLiveFeed_ids[4] + id,
-                        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE + data[4]
+                        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
                     );
 
                 }
@@ -33175,7 +34350,7 @@
 
                     if (UserLiveFeed_PreviewOffset) {
                         Play_showWarningMidleDialog(
-                            STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
+                            STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000),
                             2000
                         );
                     }
@@ -33192,7 +34367,7 @@
 
                 } else {
 
-                    error = StreamInfo[6] + STR_SPACE + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
+                    error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
 
                 }
 
@@ -33430,7 +34605,7 @@
     function UserLiveFeed_SetFeedPicText() {
         Main_innerHTML(
             'icon_feed_refresh',
-            '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE + STR_SPACE + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE + STR_PICTURE_LIVE_FEED + '</div>'
+            '<div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-refresh" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block">' + STR_SPACE_HTML + STR_REFRESH + ':' + STR_HOLD_UP + STR_SPACE_HTML + STR_SPACE_HTML + '</div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;"><i class="icon-pp" style="color: #FFFFFF; font-size: 115%; "></i></div><div class="strokedelinebig" style="vertical-align: middle; display: inline-block;">' + STR_SPACE_HTML + STR_PICTURE_LIVE_FEED + '</div>'
         );
     }
 
@@ -33711,7 +34886,8 @@
         UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
         UserLiveFeed_obj[pos].sorting = Settings_value.live_feed_sort.defaultValue;
-        UserLiveFeed_obj[pos].lang = Main_ContentLang;
+        UserLiveFeed_obj[pos].ContentLang = Main_ContentLang;
+        UserLiveFeed_obj[pos].Lang = Settings_AppLang;
 
         if (UserLiveFeed_isPreviewShowing()) {
 
@@ -33948,8 +35124,9 @@
         if (forceRefressh || !UserLiveFeed_ObjNotNull(pos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[pos] + Settings_GetAutoRefreshTimeout()) ||
             UserLiveFeed_obj[pos].offsettopFontsize !== Settings_Obj_default('global_font_offset') || !UserLiveFeed_obj[pos].AddCellsize ||
-            (UserLiveFeed_obj[pos].CheckLang && !Main_A_equals_B(UserLiveFeed_obj[pos].lang, Main_ContentLang)) ||
-            (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue))) {
+            (UserLiveFeed_obj[pos].CheckContentLang && !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)) ||
+            (UserLiveFeed_obj[pos].CheckSort && !Main_A_equals_B(UserLiveFeed_obj[pos].sorting, Settings_value.live_feed_sort.defaultValue)) ||
+            !Main_A_equals_B(UserLiveFeed_obj[pos].Lang, Settings_AppLang)) {
 
             if (UserLiveFeed_loadingData[pos]) {
 
@@ -34278,7 +35455,7 @@
             UserLiveFeedobj_UserAGamesPos,
             !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter)
         );
-        Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE + STR_GAMES);
+        Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE_HTML + STR_GAMES);
         if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
     }
@@ -34403,7 +35580,7 @@
 
         Main_innerHTML('feed_end_0', (UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : (STR_GAMES)));
         Main_innerHTML('feed_end_2', (Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME));
-        Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE + STR_GAMES)));
+        Main_innerHTML('feed_end_6', (UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : (STR_USER + STR_SPACE_HTML + STR_GAMES)));
 
         if (Settings_Obj_default("hide_etc_help_text") === 1) {
             Main_RemoveClass('feed_end', 'opacity_zero');
@@ -34461,7 +35638,7 @@
             data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
             '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
-            '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + data[11] + data[4] + '</div>' +
+            '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + STR_SINCE + data[11] + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
             '</div></div></div>';
@@ -34487,10 +35664,10 @@
             '</div><div class="stream_info_live" style="width:36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
             data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' + data[10] + '</div>' + '<div class="stream_info_live">' + (data[3] !== "" && data[3] !== null ? STR_STARTED + STR_PLAYING + data[3] : "") + '</div>' +
-            '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + data[2] +
+            '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + STR_STREAM_ON + data[2] +
             '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
             Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
-            data[4] + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE +
+            data[4] + STR_VIEWS + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
 
         return div;
@@ -35010,8 +36187,8 @@
                             pos + '_' + itemsCount,
                             [
                                 game.name, //0
-                                isntUser ? Main_addCommas(cell.channels) + STR_SPACE + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE + STR_VIEWER : '', //1
+                                isntUser ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
+                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '', //1
                                 game._id, //2
                                 game.box.template //3
                             ]
@@ -35090,6 +36267,7 @@
     var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll', 'user_row'];
     var Users_status = false;
     var Users_loadingData = true;
+    var Users_Lang = '';
     //Variable initialization end
 
     function Users_init() {
@@ -35120,7 +36298,7 @@
         Main_addEventListener("keydown", Users_handleKeyDown);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (Users_status) {
+        else if (Users_status && Main_A_equals_B(Users_Lang, Settings_AppLang)) {
             Main_YRst(Users_cursorY);
             Main_ShowElement(Users_ids[5]);
             Users_addFocus();
@@ -35147,6 +36325,7 @@
         Main_HideWarningDialog();
         Users_status = false;
         Main_FirstLoad = true;
+        Users_Lang = Settings_AppLang;
         Users_cursorX = 0;
         Users_cursorY = 0;
         Users_loadingData = true;

@@ -21,11 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 312,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/312/SmartTV_twitch_3_0_312.apk',
-    WebVersion: 'April 09 2021',
-    WebTag: 584,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 313,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/313/SmartTV_twitch_3_0_313.apk',
+    WebVersion: 'May 03 2021',
+    WebTag: 585,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.313 and Web Version May 03 2021",
+            changes: [
+                "Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help",
+                "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.312 and Web Version April 09 2021",
             changes: [
@@ -54,24 +62,6 @@ var version = {
             title: "Web Version March 8 2021",
             changes: [
                 "Add support to see chat messages that were sent before you joined the stream"
-            ]
-        },
-        {
-            title: "Web Version February 28 2021",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.310 and Web Version February 25 2021",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.309 and Web Version February 20 2021",
-            changes: [
-                "General improves and bug fixes"
             ]
         }
     ]

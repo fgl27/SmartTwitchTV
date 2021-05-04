@@ -9,6 +9,13 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.313 and Web Version May 03 2021
+==============
+
+* Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help
+* Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help
+* General improves and bug fixes
+
 Apk Version 3.0.312 and Web Version April 09 2021
 ==============
 
