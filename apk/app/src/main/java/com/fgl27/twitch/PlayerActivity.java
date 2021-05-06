@@ -2217,11 +2217,11 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    public void PlayerEventListenerCheckCounter(int position, int fail_type) {
+    public void PlayerEventListenerCheckCounter(int position, int fail_type, int errorCode) {
         PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerObj[position].CheckCounter " + PlayerObj[position].CheckCounter + " fail_type " + fail_type);
+            Log.i(TAG, "PlayerEventListenerCheckCounter position " + position + " PlayerObj[position].CheckCounter " + PlayerObj[position].CheckCounter + " fail_type " + fail_type + " errorCode " + errorCode);
         }
 
         //Pause to things run smother and prevent odd behavior during the checks
@@ -2250,14 +2250,14 @@ public class PlayerActivity extends Activity {
 
                 } else {
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + ")");
+                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + "," + errorCode + ")");
 
                 }
 
 
             } else {// CheckCounter == 3 Give up internet is probably down or something related
 
-                PlayerEventListenerClear(position, fail_type);
+                PlayerEventListenerClear(position, fail_type, errorCode);
 
             }
 
@@ -2271,7 +2271,7 @@ public class PlayerActivity extends Activity {
             } else {
 
                 Clear_PreviewPlayer();
-                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + ")");
+                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + "," + errorCode + ")");
 
             }
 
@@ -2291,9 +2291,9 @@ public class PlayerActivity extends Activity {
         SetupPlayer(position);
     }
 
-    public void PlayerEventListenerClear(int position, int fail_type) {
+    public void PlayerEventListenerClear(int position, int fail_type, int errorCode) {
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type);
+            Log.i(TAG, "PlayerEventListenerClear position " + position + " fail_type " + fail_type + " errorCode " + errorCode);
         }
         String WebViewLoad;
 
@@ -2306,22 +2306,22 @@ public class PlayerActivity extends Activity {
             if (MultiStreamEnable) {
 
                 ClearPlayer(position);
-                WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + ")";
+                WebViewLoad = "Play_MultiEnd(" + position + "," + fail_type + "," + errorCode + ")";
 
             } else if (PicturePicture) {
 
                 ClearPlayer(position);
-                WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + ")";
+                WebViewLoad = "PlayExtra_End(" + (position == 0) + "," + fail_type + "," + errorCode + ")";
 
             } else if (PlayerObj[position].isScreenPreview) {
 
                 ClearPlayer(position);
-                WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+                WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + "," + errorCode + ")";
 
             } else {
 
                 //Don't call ClearPlayer so Play_Play_PannelEndStart works as intend
-                WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + ")";
+                WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + "," + errorCode + ")";
 
             }
 
@@ -2329,7 +2329,7 @@ public class PlayerActivity extends Activity {
             //Preview player
 
             Clear_PreviewPlayer();
-            WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + ")";
+            WebViewLoad = "Play_CheckIfIsLiveClean(" + fail_type + "," + errorCode + ")";
             ApplyAudioAll();
 
         }
@@ -3898,7 +3898,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
                 PlayerObj[position].player.setPlayWhenReady(false);
 
-                PlayerEventListenerClear(position, 0);//player_Ended
+                PlayerEventListenerClear(position, 0, 0);//player_Ended
 
             } else if (playbackState == Player.STATE_BUFFERING) {
 
@@ -3911,7 +3911,7 @@ public class PlayerActivity extends Activity {
                     if (PlayerObj[position].player == null || !PlayerObj[position].player.isPlaying())
                         return;
 
-                    PlayerEventListenerCheckCounter(position, 2);//Player_Lag
+                    PlayerEventListenerCheckCounter(position, 2, 0);//Player_Lag
                 }, Delay_ms);
 
             } else if (playbackState == Player.STATE_READY) {
@@ -3978,9 +3978,9 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
 
-            Tools.recordException(TAG, "onPlayerError pos " + position + " isBehindLiveWindow " + Tools.isBehindLiveWindow(e) + " e ", e);
+            Tools.recordException(TAG, "onPlayerError pos " + position + " e.type " + e.type + " e ", e);
 
-            PlayerEventListenerCheckCounter(position, 1);//player_Erro
+            PlayerEventListenerCheckCounter(position, 1, e.type);//player_Erro
 
         }
 

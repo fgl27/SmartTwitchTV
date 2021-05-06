@@ -285,7 +285,7 @@ function PlayExtra_End(doSwitch, fail_type) { // Called only by JAVA
 
 }
 
-function PlayExtra_End_success(doSwitch, fail_type) {
+function PlayExtra_End_success(doSwitch, fail_type, errorCode) {
 
     var reason = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + STR_IS_OFFLINE;
 
@@ -298,7 +298,10 @@ function PlayExtra_End_success(doSwitch, fail_type) {
         PlayExtra_SwitchPlayer();
     }
 
-    Play_showWarningMidleDialog(reason, 2500 + (fail_type ? 2500 : 0));
+    Play_showWarningMidleDialog(
+        reason + Play_GetErrorCode(errorCode),
+        2500 + (fail_type ? 2500 : 0)
+    );
 
     Play_CloseSmall();
 }

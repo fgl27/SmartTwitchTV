@@ -217,12 +217,15 @@ function Play_MultiFirstAvailable() {
     return null;
 }
 
-function Play_MultiEnd(position, fail_type) {
+function Play_MultiEnd(position, fail_type, errorCode) {
     var reason = Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
     if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
-    Play_showWarningMidleDialog(reason, 5000);
+    Play_showWarningMidleDialog(
+        reason + Play_GetErrorCode(errorCode),
+        5000
+    );
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);

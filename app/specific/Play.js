@@ -374,7 +374,7 @@ function Play_CheckIfIsLiveStartFail(text, time, callbackError) {
     if (callbackError) callbackError();
 }
 
-function Play_CheckIfIsLiveClean(fail_type) {//called from java
+function Play_CheckIfIsLiveClean(fail_type, errorCode) {//called from java
 
     var reason = STR_PREVIEW_END;
     if (fail_type === 1) reason = STR_PLAYER_ERROR;
@@ -383,7 +383,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
     if (Sidepannel_isShowingUserLive()) {
 
         Sidepannel_CheckIfIsLiveWarn(
-            reason,
+            reason + Play_GetErrorCode(errorCode),
             0
         );
 
@@ -428,7 +428,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
             OSInterface_ClearSidePanelPlayer();
 
             Screens_LoadPreviewWarn(
-                reason,
+                reason + Play_GetErrorCode(errorCode),
                 Main_values.Main_Go,
                 fail_type ? 5000 : 2000
             );
@@ -437,7 +437,7 @@ function Play_CheckIfIsLiveClean(fail_type) {//called from java
     } else {
 
         Play_CheckIfIsLiveStartFail(
-            reason,
+            reason + Play_GetErrorCode(errorCode),
             fail_type ? 5000 : 2000
         );
 
@@ -1153,7 +1153,7 @@ function Play_SetHtmlQuality(element) {
     Main_innerHTMLWithEle(element, quality_string);
 }
 
-function Play_PlayerCheck(mwhocall) { // Called only by JAVA
+function Play_PlayerCheck(mwhocall, errorCode) { // Called only by JAVA
     if (mwhocall === 1) {
 
         Play_SetPlayQuality("Auto");
@@ -1166,7 +1166,10 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
             Play_SetHtmlQuality,
             Play_controls[Play_controlsQuality]
         );
-        Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
+        Play_showWarningMidleDialog(
+            STR_PLAYER_LAG + Play_GetErrorCode(errorCode),
+            2000
+        );
 
     } else if (mwhocall === 2) {
 
@@ -1175,7 +1178,10 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
         Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-        Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
+        Play_showWarningMidleDialog(
+            STR_PLAYER_LAG + Play_GetErrorCode(errorCode),
+            2000
+        );
 
     } else if (mwhocall === 3) {
 
@@ -1185,11 +1191,20 @@ function Play_PlayerCheck(mwhocall) { // Called only by JAVA
             PlayClip_qualityIndex++;
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
             PlayClip_qualityChanged();
-            Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
+
+            Play_showWarningMidleDialog(
+                STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode),
+                2000
+            );
 
         } else Play_EndStart(false, 3);
 
     }
+}
+
+function Play_GetErrorCode(errorCode) {
+    return errorCode ? (STR_BR + 'Error:' + errorCode) : '';
+
 }
 
 function Play_EndStart(hosting, PlayVodClip) {
@@ -1816,14 +1831,14 @@ function Play_qualityTitleReset(title) {
 }
 
 //called by android PlayerActivity
-function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
+function Play_PannelEndStart(PlayVodClip, fail_type, errorCode) { // Called only by JAVA
 
     //Stop all players to make sure no more end call happen
     if (Main_IsOn_OSInterface && fail_type) {
 
         OSInterface_stopVideo();
         Play_showWarningDialog(
-            (fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO,
+            ((fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO) + Play_GetErrorCode(errorCode),
             2000
         );
 
