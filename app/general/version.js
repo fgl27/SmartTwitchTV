@@ -21,11 +21,18 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 313,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/313/SmartTV_twitch_3_0_313.apk',
-    WebVersion: 'May 03 2021',
+    publishVersionCode: 314,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/314/SmartTV_twitch_3_0_314.apk',
+    WebVersion: 'May 06 2021',
     WebTag: 585,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.314 and Web Version May 06 2021",
+            changes: [
+                "Improve translation",
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.313 and Web Version May 03 2021",
             changes: [
@@ -50,18 +57,6 @@ var version = {
             title: "Web Version March 13 2021",
             changes: [
                 "Fix host checks"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.311 and Web Version March 10 2021",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version March 8 2021",
-            changes: [
-                "Add support to see chat messages that were sent before you joined the stream"
             ]
         }
     ]

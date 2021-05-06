@@ -2439,7 +2439,7 @@
         STR_SEARCH_RESULT_EMPTY = "Ничего не найдено.";
         STR_SWITCH = "Сменить раздел";
         STR_SWITCH_USER = "Сменить раздел";
-        STR_SWITCH_VOD = "Сменить: Прошлые стримы/хайлайты";
+        STR_SWITCH_VOD = "Сменить: Видео/Хайлайты";
         STR_SWITCH_CLIP = "Сменить: Период (24ч, 7д, 30д, все)";
         STR_GO_TO = "Перейти в раздел";
         STR_USER = "Аккаунт";
@@ -2466,7 +2466,7 @@
         STR_NO = "Нет";
         STR_FOR_THIS = "для";
         STR_PLAYER_PROBLEM = "Ошибка подключения, невозможно загрузить контент, выход...";
-        STR_PAST_BROA = "Прошлые стримы";
+        STR_PAST_BROA = "Видео";
         STR_PAST_HIGHL = "Хайлайты";
         STR_CLIPS = "Клипы";
         STR_CONTENT = "Контент";
@@ -2643,7 +2643,7 @@
         STR_SETTINGS_BUFFER_SIZE = "Размер начального буфера:";
         STR_SETTINGS_BUFFER_SIZE_SUMMARY = "Сколько необходимо для буферизации перед началом воспроизведения. Это не связано с максимальным размером, которого может достичь буфер (максимальный размер буфера зависит от размера ОЗУ устройства). Более низкое значение приведет к более раннему началу воспроизведения и это рекомендуется. Изменение этого значения на большее значение в большинстве случаев не приведет к улучшению и могут возникнуть проблемы.";
         STR_SETTINGS_BUFFER_LIVE = "Начальный буфер стрима";
-        STR_SETTINGS_BUFFER_VOD = "Начальный буфер видео (прошедшие трансляции и хайлайты)";
+        STR_SETTINGS_BUFFER_VOD = "Начальный буфер видео (Видео и Хайлайты)";
         STR_SETTINGS_BUFFER_CLIP = "Начальный буфер клипов";
         STR_SETTINGS_LANG = "Язык";
         STR_LOADING_CHAT = "Чат: подключение к";
@@ -2684,8 +2684,10 @@
         STR_MINUTES = "мин.";
         STR_CLOCK_OFFSET = "Часы";
         STR_CLOCK_OFFSET_SUMMARY = "Настройте разницу часов приложения в соответствии с вашим часовым поясом";
-        STR_APP_LANG = "Язык приложения";
         STR_CONTENT_LANG = "Язык контента";
+        STR_CONTENT_LANG_SUMMARY = "Язык отображаемого контента, стримы, видео, клипы";
+        STR_APP_LANG = "Язык приложения";
+        STR_APP_LANG_SUMMARY = "Язык приложения";
         STR_ENTER_TO_OPEN = "Нажмите ОК";
         STR_LANG_ALL = "Все";
         STR_NO_GAME = "Нет игры из этого";
@@ -2809,6 +2811,7 @@
             "<br>Используйте " + STR_SETTINGS_BUFFER_LIVE + " равное или меньше 1, чтобы это имело эффект";
         STR_GAME_SORT = "Сортировка превью игр";
         STR_LIVE_FEED_SORT = "Боковая панель или сортировка превью плеера";
+        STR_LIVE_FEED_SORT_SUMMARY = "Сортировка прямых трансляций на боковой панели и превью плеера, при предпросмотре это применимо только к пользователям в эфире и избранным (вся история без базы просмотра, история просматривается в первую очередь, а видео - самые последние)";
         STR_A_Z = "Алфавит A - Z";
         STR_Z_A = "Алфавит Z - A";
         STR_APP_ANIMATIONS = "Включить анимации";
@@ -2823,12 +2826,13 @@
         STR_CLICK_FOLLOW = "(Нажмите ОК для подписки)";
         STR_TODAY = "Сегодня";
         STR_DROOPED_FRAMES = "Проп. кадры:";
-        STR_BUFFER_HEALT = "Размер буфера:";
-        STR_NET_ACT = "Сет. акт.:";
-        STR_NET_SPEED = "Скорость:";
+        STR_BUFFER_HEALT = "Размер буфера (сек): ";
+        STR_NET_ACT = "Сет. акт. (мб): ";
+        STR_NET_SPEED = "Ск. сети (мб):";
         STR_LATENCY_TO_BROADCASTER = "Задержка до стримера";
+        STR_LATENCY = "Задержка до стримера (сек): ";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Исходя из " + STR_LATENCY_TO_BROADCASTER;
-        STR_PING = "Пинг до Twitch:";
+        STR_PING = "Пинг до Twitch (мс): ";
         STR_WARNING = "Предупреждение";
         STR_WARNINGS = "Предупреждения";
         STR_ABOUT_PHONE = "Это приложение предназначено для использования в основном на телевизорах, поддержка других устройств не гарантирована. Если у вас нет клавиатуры или D-pad с кнопками ОК и назад (ESC работает для возврата на компьютере) используйте экранные виртуальные экранные кнопки для навигации (видимые только на телефонах/планшетах), в настройках вы можете изменить положение и непрозрачность виртуального D-Pad. Нажмите в любом месте экрана, чтобы отобразить виртуальный D-Pad, когда он скрыт.";
@@ -2896,12 +2900,12 @@
         STR_4_WAY_MULTI_INSTANCES = "Ваше устройство поддерживает только %x экземпляры кодека (плеер воспроизводит) одновременно, нельзя использовать";
         STR_MULTI_EMPTY = "Завершено или пусто";
         STR_4_WAY_MULTI = "Мультистрим";
-        STR_CONTROLS_MULTI_0 = "Мультистрим помощь";
-        STR_CONTROLS_MULTI_1 = 'Если у вас возникают проблемы с задержкой после включения мультистрима, попробуйте снизить значение «битрейт малого плеера» в настройках, накопление пропущенных кадров или постоянная буферизация указывают на слишком высокий битрейт или медленный интернет.';
+        STR_CONTROLS_MULTI_0 = "Мультистрим подсказки";
+        STR_CONTROLS_MULTI_1 = 'Если у вас проблемы с задержкой после включения мультистрима, снизьте «битрейт малого плеера» в настройках. Пропущенные кадры или постоянная буферизация указывают на слишком высокий битрейт или медленный интернет.';
         STR_CONTROLS_MULTI_2 = "Добавить стримы: предпросмотр и нажмите на прямую трансляцию.";
-        STR_CONTROLS_MULTI_3 = "Заменить стримы: после того, как мультистрим заполнен, выберите один из каналов предпросмотра и выберите один для замены в диалоговом окне";
+        STR_CONTROLS_MULTI_3 = "Заменить стримы: выберите один из каналов превью и выберите один для замены в диалоговом окне";
         STR_CONTROLS_MULTI_4 = "Изменение источника звука: D-pad вправо или влево или перемотка, удерживайте для источника звука всех видео";
-        STR_CONTROLS_MULTI_5 = "Выход из мультистрима: с нижнего элемента управления плеера или дважды на кнопку назад";
+        STR_CONTROLS_MULTI_5 = "Выход из мультистрима: дважды на кнопка назад";
         STR_CONTROLS_MULTI_6 = "Чтобы скрыть это, откройте 4 прямых трансляций";
         STR_PICTURE_LIVE_FEED = 'КвК: Удерживайте ОК. (Влево для перемещения, Вправо для изм. размера или Вниз для изм. видео)';
         STR_MULTI_TITLE = ", Нажмите на превью, чтобы открыть или заменить поток, используйте D-pad влево/вправо, чтобы изменить источник звука.";
@@ -2953,7 +2957,7 @@
         STR_AUTO_REFRESH_BACKGROUND_SUMMARY = 'Когда установлен и включен параметр «тайм-аут автообновления», автообновление будет происходить в фоновом режиме (но когда приложение отображается, Android не позволяет неограниченно запускать в фоновом режиме, чтобы избежать проблем с другими приложениями). Когда вы вернетесь к экрану, на котором раньше обновление не запускалось, имейте в виду, что в приложении слишком много экранов. Когда этот параметр включен, автообновление может вызвать случайные лаги на некоторых слабых устройствах.';
         STR_MAIN_WINDOW = "Основное видео";
         STR_MULTI_MAIN_WINDOW = "Основное видео мультистрима";
-        STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " большое и чат: нажмите вниз, после использования влево/вправо, чтобы изменить большое видео";
+        STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " большое и чат: нажмите вниз, после использования влево/вправо, чтобы изменить";
         STR_SOURCE_CHECK = "Авто изменение качества плеера с источника на авто, когда проигрыватель отстает";
         STR_SOURCE_CHECK_SUMMARY = 'Когда эта опция включена, и вы не используете авто качество плеера, если плеер не может воспроизвести более 15 секунд он переключится на авто качество и предупредит об этом. После этого изменения плеер автоматически вернется к источнику, когда вы включите новый стрим или видео';
         STR_PLAYER_LAG = 'Плеер тормозит, качество изменено на"Авто режим"';
@@ -3310,11 +3314,18 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 313, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/313/SmartTV_twitch_3_0_313.apk',
-        WebVersion: 'May 03 2021',
+        publishVersionCode: 314, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/314/SmartTV_twitch_3_0_314.apk',
+        WebVersion: 'May 06 2021',
         WebTag: 585, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.314 and Web Version May 06 2021",
+                changes: [
+                    "Improve translation",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.313 and Web Version May 03 2021",
                 changes: [
                     "Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help",
@@ -3338,18 +3349,6 @@
                 title: "Web Version March 13 2021",
                 changes: [
                     "Fix host checks"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.311 and Web Version March 10 2021",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version March 8 2021",
-                changes: [
-                    "Add support to see chat messages that were sent before you joined the stream"
                 ]
             }
         ]
@@ -19060,7 +19059,7 @@
 
     }
 
-    function PlayExtra_End_success(doSwitch, fail_type) {
+    function PlayExtra_End_success(doSwitch, fail_type, errorCode) {
 
         var reason = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + ' ' + STR_LIVE + STR_IS_OFFLINE;
 
@@ -19073,7 +19072,10 @@
             PlayExtra_SwitchPlayer();
         }
 
-        Play_showWarningMidleDialog(reason, 2500 + (fail_type ? 2500 : 0));
+        Play_showWarningMidleDialog(
+            reason + Play_GetErrorCode(errorCode),
+            2500 + (fail_type ? 2500 : 0)
+        );
 
         Play_CloseSmall();
     }
@@ -19623,7 +19625,7 @@
         if (callbackError) callbackError();
     }
 
-    function Play_CheckIfIsLiveClean(fail_type) { //called from java
+    function Play_CheckIfIsLiveClean(fail_type, errorCode) { //called from java
 
         var reason = STR_PREVIEW_END;
         if (fail_type === 1) reason = STR_PLAYER_ERROR;
@@ -19632,7 +19634,7 @@
         if (Sidepannel_isShowingUserLive()) {
 
             Sidepannel_CheckIfIsLiveWarn(
-                reason,
+                reason + Play_GetErrorCode(errorCode),
                 0
             );
 
@@ -19677,7 +19679,7 @@
                 OSInterface_ClearSidePanelPlayer();
 
                 Screens_LoadPreviewWarn(
-                    reason,
+                    reason + Play_GetErrorCode(errorCode),
                     Main_values.Main_Go,
                     fail_type ? 5000 : 2000
                 );
@@ -19686,7 +19688,7 @@
         } else {
 
             Play_CheckIfIsLiveStartFail(
-                reason,
+                reason + Play_GetErrorCode(errorCode),
                 fail_type ? 5000 : 2000
             );
 
@@ -20407,7 +20409,7 @@
         Main_innerHTMLWithEle(element, quality_string);
     }
 
-    function Play_PlayerCheck(mwhocall) { // Called only by JAVA
+    function Play_PlayerCheck(mwhocall, errorCode) { // Called only by JAVA
         if (mwhocall === 1) {
 
             Play_SetPlayQuality("Auto");
@@ -20420,7 +20422,10 @@
                 Play_SetHtmlQuality,
                 Play_controls[Play_controlsQuality]
             );
-            Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
+            Play_showWarningMidleDialog(
+                STR_PLAYER_LAG + Play_GetErrorCode(errorCode),
+                2000
+            );
 
         } else if (mwhocall === 2) {
 
@@ -20429,7 +20434,10 @@
             OSInterface_SetQuality(-1);
             OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
             Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-            Play_showWarningMidleDialog(STR_PLAYER_LAG, 2000);
+            Play_showWarningMidleDialog(
+                STR_PLAYER_LAG + Play_GetErrorCode(errorCode),
+                2000
+            );
 
         } else if (mwhocall === 3) {
 
@@ -20439,11 +20447,20 @@
                 PlayClip_qualityIndex++;
                 Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
                 PlayClip_qualityChanged();
-                Play_showWarningMidleDialog(STR_PLAYER_SOURCE, 2000);
+
+                Play_showWarningMidleDialog(
+                    STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode),
+                    2000
+                );
 
             } else Play_EndStart(false, 3);
 
         }
+    }
+
+    function Play_GetErrorCode(errorCode) {
+        return errorCode ? (STR_BR + 'Error:' + errorCode) : '';
+
     }
 
     function Play_EndStart(hosting, PlayVodClip) {
@@ -21076,14 +21093,14 @@
     }
 
     //called by android PlayerActivity
-    function Play_PannelEndStart(PlayVodClip, fail_type) { // Called only by JAVA
+    function Play_PannelEndStart(PlayVodClip, fail_type, errorCode) { // Called only by JAVA
 
         //Stop all players to make sure no more end call happen
         if (Main_IsOn_OSInterface && fail_type) {
 
             OSInterface_stopVideo();
             Play_showWarningDialog(
-                (fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO,
+                ((fail_type === 1) ? STR_PLAYER_ERROR : STR_PLAYER_LAG_ERRO) + Play_GetErrorCode(errorCode),
                 2000
             );
 
@@ -21611,12 +21628,15 @@
         return null;
     }
 
-    function Play_MultiEnd(position, fail_type) {
+    function Play_MultiEnd(position, fail_type, errorCode) {
         var reason = Play_MultiArray[position].data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE;
         if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
         if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
-        Play_showWarningMidleDialog(reason, 5000);
+        Play_showWarningMidleDialog(
+            reason + Play_GetErrorCode(errorCode),
+            5000
+        );
 
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);

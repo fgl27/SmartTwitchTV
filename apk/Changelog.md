@@ -9,6 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.314 and Web Version May 06 2021
+==============
+
+* Improve translation
+* General improves and bug fixes
+
 Apk Version 3.0.313 and Web Version May 03 2021
 ==============
 
