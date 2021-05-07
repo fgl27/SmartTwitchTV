@@ -22,6 +22,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="app_name">SmartTV Client для Twitch</string>
+
+    <!--Notification-->
     <string name="notification_service">Служба уведомлений запущена</string>
     <string name="notification_live_game">Игра в эфире</string>
     <string name="notification_live">Стример в эфире</string>
@@ -29,9 +31,23 @@
     <string name="notification_game">Стример сменил игру</string>
     <string name="notification_title_game">Стример сменил игру и название</string>
     <string name="notification_text">Без этого фоновые уведомления не будут отображаться</string>
+
+    <!--Warnings-->
     <string name="no_network">Нет подключения к Интернету!\n\nПодключитесь к сети, чтобы приложение завершило загрузку\n\nили\n\nУдерживайте кнопку назад, чтобы закрыть приложение.</string>
     <string name="no_internet">Пинг to Twitch не проходит последние 30 секунд!\n\nЕсли приложение не работает должным образом, проверьте подключение к Интернету.\n\nУдерживайте кнопку назад, чтобы закрыть приложение, если оно зависло или перестало работать.\n\nЭто автоматически скроется через 30 секунд или если соединение вернется\n\nЭто предупреждение можно отключить в настройках</string>
     <string name="external_player_fail">Нет доступного внешнего видеоплеера</string>
     <string name="webview_exception">Приложение не загружается, потому что Webview либо отсутствует (маловероятно), либо находится в процессе обновления, попробуйте еще раз через несколько секунд</string>
+
+    <!--Home screen channel-->
+    <string name="channel_disable">Этот канал был отключен или при последнем обновлении не удалось загрузить контент. Нажмите ОК, чтобы обновить (обновление происходит только когда приложение открыто, поэтому нажмите здесь, чтобы открыть приложение)</string>
+    <string name="channel_refresh">Нажмите ОК, чтобы обновить. Обновление вручную возможно, если приложение открыто, поэтому нажатие его откроет. Этот канал автоматически обновится через 30 минут.</string>
+    <string name="channel_no_user">Необходимо сначала добавить пользователя, чтобы загрузить этот контент</string>
+    <string name="channel_empty">Пустой список</string>
+    <string name="channel_last_refresh">Последнее обновление - %s %s %02d:%02d</string>
+    <string name="channel_refreshed">%s канал на главном экране обновлен</string>
+    <string name="channel_live_title">%s %s уже %s для %s зрителей\n%s</string>
+    <string name="channel_game_title">%s Канал\nДля %s зрителей</string>
+    <string name="playing">Играет</string>
+    <string name="streaming">Транслирует</string>
 
 </resources>
