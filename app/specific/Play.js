@@ -1203,8 +1203,7 @@ function Play_PlayerCheck(mwhocall, errorCode) { // Called only by JAVA
 }
 
 function Play_GetErrorCode(errorCode) {
-    //TODO when new playback error are ready remove the 0
-    return 0 && errorCode ? (STR_BR + 'Error:' + errorCode) : '';
+    return errorCode ? (STR_BR + 'Error Code:' + errorCode) : '';
 
 }
 

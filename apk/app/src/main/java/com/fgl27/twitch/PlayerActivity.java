@@ -3978,9 +3978,9 @@ public class PlayerActivity extends Activity {
         @Override
         public void onPlayerError(@NonNull ExoPlaybackException e) {
 
-            Tools.recordException(TAG, "onPlayerError pos " + position + " e.type " + e.type + " e ", e);
+            Tools.recordException(TAG, "onPlayerError pos " + position + " e.type " + e.type + " e.errorCode " + e.errorCode + " e ", e);
 
-            PlayerEventListenerCheckCounter(position, 1, e.type);//player_Erro
+            PlayerEventListenerCheckCounter(position, 1, e.errorCode);//player_Erro
 
         }
 
