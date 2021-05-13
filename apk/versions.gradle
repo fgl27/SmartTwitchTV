@@ -16,7 +16,7 @@ ext.versions = [
         webkit                     : '1.4.0',
 
         //Crashlytics
-        firebase_bom               : '27.1.0',
-        firebase_crashlytics_gradle: '2.5.2',
+        firebase_bom               : '28.0.0',
+        firebase_crashlytics_gradle: '2.6.0',
         google_services            : '4.3.5',
 ]
