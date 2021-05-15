@@ -32725,14 +32725,17 @@
 
     function Sidepannel_UpdateSince() {
 
-        if (!Sidepannel_ObjNotNull() || !Sidepannel_isShowingUserLive() || Main_isStoped) return;
+        if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
 
-        var info = Sidepannel_GetObj();
+        if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
 
-        Main_innerHTML(
-            'feed_thum_views',
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
-        );
+            var info = Sidepannel_GetObj();
+
+            Main_innerHTML(
+                'feed_thum_views',
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+            );
+        }
 
         Sidepannel_UpdateSinceId = Main_setTimeout(
             Sidepannel_UpdateSince,
