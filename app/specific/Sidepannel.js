@@ -146,7 +146,7 @@ function Sidepannel_UpdateThumbDiv() {
 var Sidepannel_UpdateSinceId;
 function Sidepannel_UpdateSince() {
 
-    if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+    if (!Sidepannel_ObjNotNull() || !Sidepannel_isShowingUserLive() || Main_isStoped) return;
 
     var info = Sidepannel_GetObj();
 
