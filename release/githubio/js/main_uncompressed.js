@@ -3317,8 +3317,14 @@
         publishVersionCode: 316, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/316/SmartTV_twitch_3_0_316.apk',
         WebVersion: 'May 13 2021',
-        WebTag: 588, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 589, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version May 16 2021",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.316 and Web Version May 13 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -8913,7 +8919,7 @@
             Settings_SetDefautls();
             calculateFontSize();
             Main_RestoreValues();
-            Settings_SetAppLang();
+            Settings_RestoreAppLang();
 
             DefaultLang();
 
@@ -10542,6 +10548,10 @@
         var value = parseInt(localStorage.getItem(item));
         if (value || value === 0) return value;
         return default_value;
+    }
+
+    function Main_getItemString(item, default_value) {
+        return localStorage.getItem(item) || default_value;
     }
 
     function Main_getItemJson(item, default_value) {
@@ -30821,6 +30831,27 @@
         }
     }
 
+    function Settings_RestoreAppLang() {
+        var lang = Main_getItemString('app_lang', 'en_US'),
+            i = 0,
+            array = Settings_value.app_lang.apply_values,
+            len = array.length;
+
+        for (i; i < len; i++) {
+
+            if (Main_A_equals_B(array[i], lang)) {
+
+                var key = 'app_lang';
+                Settings_value[key].defaultValue = i;
+                Main_setItem(key, Settings_Obj_default(key) + 1);
+
+                break;
+            }
+        }
+
+        Settings_SetAppLang();
+    }
+
     var Settings_AppLang = '';
 
     function Settings_SetAppLang() {
@@ -30845,6 +30876,7 @@
 
         Settings_AppLang = app_lang;
 
+        Main_setItem('app_lang', app_lang);
     }
 
     function Settings_UpdateString() {
