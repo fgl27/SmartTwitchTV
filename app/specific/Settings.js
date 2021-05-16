@@ -859,7 +859,7 @@ function Settings_SetLang() {
 }
 
 function Settings_RestoreAppLang() {
-    var lang = Main_getItemString('app_lang', 'en_US'),
+    var lang = Main_getItemString('app_lang_string', Settings_value.app_lang.apply_values[Settings_Obj_default('app_lang')]),
         i = 0,
         array = Settings_value.app_lang.apply_values,
         len = array.length;
@@ -902,7 +902,7 @@ function Settings_SetAppLang() {
 
     Settings_AppLang = app_lang;
 
-    Main_setItem('app_lang', app_lang);
+    Main_setItem('app_lang_string', app_lang);
 }
 
 function Settings_UpdateString() {
