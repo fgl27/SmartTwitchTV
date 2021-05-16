@@ -858,8 +858,28 @@ function Settings_SetLang() {
     }
 }
 
-var Settings_AppLang = '';
+function Settings_RestoreAppLang() {
+    var lang = Main_getItemString('app_lang', 'en_US'),
+        i = 0,
+        array = Settings_value.app_lang.apply_values,
+        len = array.length;
 
+    for (i; i < len; i++) {
+
+        if (Main_A_equals_B(array[i], lang)) {
+
+            var key = 'app_lang';
+            Settings_value[key].defaultValue = i;
+            Main_setItem(key, Settings_Obj_default(key) + 1);
+
+            break;
+        }
+    }
+
+    Settings_SetAppLang();
+}
+
+var Settings_AppLang = '';
 function Settings_SetAppLang() {
     // Language is set as (LANGUAGE)_(REGION) in (ISO 639-1)_(ISO 3166-1 alpha-2) eg.; pt_BR Brazil, en_US USA
     // https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
@@ -882,6 +902,7 @@ function Settings_SetAppLang() {
 
     Settings_AppLang = app_lang;
 
+    Main_setItem('app_lang', app_lang);
 }
 
 function Settings_UpdateString() {

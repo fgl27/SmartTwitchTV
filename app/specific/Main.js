@@ -235,7 +235,7 @@ function Main_StartApp() {
         Settings_SetDefautls();
         calculateFontSize();
         Main_RestoreValues();
-        Settings_SetAppLang();
+        Settings_RestoreAppLang();
 
         DefaultLang();
 
@@ -1851,6 +1851,10 @@ function Main_getItemInt(item, default_value) {
     var value = parseInt(localStorage.getItem(item));
     if (value || value === 0) return value;
     return default_value;
+}
+
+function Main_getItemString(item, default_value) {
+    return localStorage.getItem(item) || default_value;
 }
 
 function Main_getItemJson(item, default_value) {
