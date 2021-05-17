@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+ /*
+ * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
+ *
+ * This file is part of SmartTwitchTV <https://github.com/fgl27/SmartTwitchTV>
+ *
+ * SmartTwitchTV is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SmartTwitchTV is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
+ *
+ */
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="app_name">Cliente SmartTV para Twitch</string>
+
+    <!--Notification-->
+    <string name="notification_service">Servicio de notificación en funcionamiento</string>
+    <string name="notification_live_game">Juego en directo</string>
+    <string name="notification_live">Streamer esta en directo</string>
+    <string name="notification_title">Streamer cambió el título</string>
+    <string name="notification_game">Streamer cambió el juego</string>
+    <string name="notification_title_game">Streamer cambió el juego y el título</string>
+    <string name="notification_text">Sin este fondo las notificaciones no se mostrarán</string>
+
+    <!--Warnings-->
+    <string name="no_network">No hay conexión a Internet disponible. Conéctate a una red para que la aplicación termine de cargarse o mantén pulsada la tecla de retorno para cerrar la aplicación..</string>
+    <string name="no_internet">Si la aplicación no funciona correctamente, revise su conexión a Internet local. Mantenga la tecla de retorno para cerrar la aplicación en caso de que se congele o deje de funcionar.</string>
+    <string name="external_player_fail">No hay aplicación de reproducción de vídeo externa disponible</string>
+    <string name="webview_exception">La aplicación no se carga porque el sistema Webview no está presente (poco probable) o está en proceso de actualización, inténtelo de nuevo en unos segundos</string>
+
+    <!--Home screen channel-->
+    <string name="channel_disable">Este canal estaba desactivado o en la última actualización no pudo cargar el contenido. Pulsa enter para actualizarlo (la actualización sólo se produce cuando la aplicación es visible, por lo que al pulsar aquí se abrirá la aplicación)</string>
+    <string name="channel_refresh">Presione enter para actualizar esto, una actualización manual sólo puede ocurrir cuando la aplicación es visible, por lo que al hacer clic aquí se abrirá la aplicación, este canal de auto refrescarse 30 minutos</string>
+    <string name="channel_no_user">Es necesario añadir un usuario primero para cargar este contenido</string>
+    <string name="channel_empty">Lista vacía</string>
+    <string name="channel_last_refresh">Última actualización - %s %s %02d:%02d</string> <!--Last refresh - Sunday May 2 12:35-->
+    <string name="channel_refreshed">%s canal de la pantalla de inicio actualizado</string> <!--Live home screen channel refreshed-->
+    <string name="channel_live_title">%s %s desde %s para %s espectadores\n%s</string> <!--Playing a game, since 10:10:10 for 27.272 viewers-->
+    <string name="channel_game_title">%s Canales\nPara %s espectadores</string> <!--27,272 Channel \n (new line) For 272.272 viewers-->
+    <string name="playing">Reproduciendo</string>
+    <string name="streaming">Transmitiendo</string>
+
+</resources>

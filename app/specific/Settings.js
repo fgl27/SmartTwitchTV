@@ -63,8 +63,8 @@ var Settings_value = {
         "defaultValue": 1
     },
     "app_lang": {
-        "values": ["English [EN]", "Português [PT-BR]", "Русский [RU]"],
-        "apply_values": ["en_US", "pt_BR", "ru_RU"],
+        "values": ["English [EN]", "Español [ES]", "Português [PT-BR]", "Русский [RU]"],
+        "apply_values": ["en_US", "es_Us", "pt_BR", "ru_RU"],
         "defaultValue": 1
     },
     "restor_playback": {
@@ -897,6 +897,7 @@ function Settings_SetAppLang() {
 
     if (Main_A_includes_B(app_lang, 'pt_')) pt_BRLang();
     else if (Main_A_includes_B(app_lang, 'ru_')) ru_RULang();
+    else if (Main_A_includes_B(app_lang, 'es_')) es_ESLang();
 
     OSInterface_SetLanguage(app_lang);
 
