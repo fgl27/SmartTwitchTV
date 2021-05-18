@@ -2275,8 +2275,8 @@
         STR_GOBACK_START = "Voltar para a tela anterior: tecla de retorno";
         STR_IS_OFFLINE = "terminou";
         STR_CHECK_HOST = ", verificando host";
-        STR_IS_SUB_ONLY = "Este vídeo está disponível apenas para assinantes.";
-        STR_IS_SUB_ONLY_ERROR = "é apenas conteúdo para assinantes.";
+        STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
+        STR_IS_SUB_ONLY_ERROR = "é apenas conteúdo para sub.";
         STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Clique em atualizar para tentar novamente";
         STR_NO = "Não";
         STR_FOR_THIS = "para este";
@@ -2330,7 +2330,7 @@
         STR_USER_ADD = "Adicionar usuário";
         STR_USER_REMOVE = "Remover usuário";
         STR_USER_ERROR = "Usuário não existe";
-        STR_USER_HOSTING = "hospedagem";
+        STR_USER_HOSTING = "host";
         STR_USER_SET = "já definido";
         STR_USER_MAKE_ONE = "Mudar para";
         STR_USER_NUMBER_ONE = "O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário<br>";
@@ -2412,8 +2412,8 @@
         STR_FOLLOWING = "Seguindo";
         STR_FOLLOW = "Seguir";
         STR_IS_SUB_NOOAUTH = "E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.";
-        STR_IS_SUB_NOT_SUB = "E você não é um seguidor deste canal";
-        STR_IS_SUB_IS_SUB = "Você é um seguidor deste canal, mas";
+        STR_IS_SUB_NOT_SUB = "E você não é um sub deste canal";
+        STR_IS_SUB_IS_SUB = "Você é um sub deste canal, mas";
         STR_OAUTH_FAIL = "Falha na verificação de autorização com a chave do provedor, verifique e tente novamente";
         STR_OAUTH_FAIL_USER = "A chave adicionada não pertence a este usuário";
         STR_NOKEY = "Nenhum usuário";
@@ -2478,7 +2478,7 @@
         STR_CHAT_END = "chat: O chat terminou!";
         STR_RECENT = ", Mais recente";
         STR_VIWES = ", Mais visualizações";
-        STR_NOKEY_VIDEO_WARN = "Adicionar uma chave de autorização do usuário para poder ver os vídeos seguidos";
+        STR_NOKEY_VIDEO_WARN = "Adicionar uma chave de autorização para poder ver os vídeos de seguidos";
         STR_SWITCH_TYPE = "Trocar: Recente ou visualização";
         STR_ENABLE = "Ativar";
         STR_ENABLED = "Ativado";
@@ -2639,7 +2639,7 @@
         STR_GENERAL_CUSTOM = "Personalização de conteúdo, classificação, atualização automática, tempos limite e relacionados";
         STR_RUNNINGTIME = "Aplicativo em execução por:";
         STR_410_ERROR = "Não foi possível obter o link do vídeo";
-        STR_410_FEATURING = "Aplicativos de terceiros estão atualizados sem acesso para este recurso .";
+        STR_410_FEATURING = "Aplicativos de terceiros estão atualmente sem acesso para este conteúdo.";
         STR_PRESS_ENTER_TO_CHANGE = "Pressione enter para mudar para -";
         STR_CLICK_UNFOLLOW = "(Pressione enter para deixar de seguir)";
         STR_CLICK_FOLLOW = "(Pressione enter para seguir)";
@@ -15331,7 +15331,7 @@
 
     function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
         var div = '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
-            (partner ? ('<img class="partnericon_img" alt="" src="' + IMG_PARTNER + '">') : "");
+            '<img class="partnericon_img' + (partner ? '' : ' opacity_zero') + '" alt="" src="' + IMG_PARTNER + '">';
 
         if (!live_vod_clip) {
             var isStay = Play_StayDialogVisible();
