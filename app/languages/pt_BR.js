@@ -63,7 +63,7 @@ function pt_BRLang() {
     STR_IS_OFFLINE = "terminou";
     STR_CHECK_HOST = ", verificando host";
     STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
-    STR_IS_SUB_ONLY_ERROR = "é apenas conteúdo para sub.";
+    STR_IS_SUB_ONLY_ERROR = "é conteúdo apenas para sub.";
     STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Clique em atualizar para tentar novamente";
     STR_NO = "Não";
     STR_FOR_THIS = "para este";
