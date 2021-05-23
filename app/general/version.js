@@ -21,13 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 317,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/317/SmartTV_twitch_3_0_317.apk',
-    WebVersion: 'May 17 2021',
+    publishVersionCode: 318,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/318/SmartTV_twitch_3_0_318.apk',
+    WebVersion: 'May 23 2021',
     WebTag: 590,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: "Apk Version 3.0.37 and Web Version May 17 2021",
+            title: "Apk Version 3.0.318 and Web Version May 23 2021",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
+        {
+            title: "Apk Version 3.0.317 and Web Version May 17 2021",
             changes: [
                 "Add Spanish translation (not complete),Thanks to Lucas for the help",
                 "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",

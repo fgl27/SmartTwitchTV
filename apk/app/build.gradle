@@ -16,7 +16,6 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode versions.publishVersionCode
         versionName versions.publishVersion + versions.publishVersionCode
-        resConfigs "pt-rBR", "ru", "en", "xhdpi" //limit dependencies languages and resources use
     }
     buildTypes {
         release {
