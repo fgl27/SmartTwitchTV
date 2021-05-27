@@ -23,9 +23,15 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 318,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/318/SmartTV_twitch_3_0_318.apk',
-    WebVersion: 'May 23 2021',
-    WebTag: 590,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'May 27 2021',
+    WebTag: 591,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Web Version May 27 2021",
+            changes: [
+                "Fix clips playback"
+            ]
+        },
         {
             title: "Apk Version 3.0.318 and Web Version May 23 2021",
             changes: [
@@ -49,28 +55,6 @@ var version = {
         {
             title: "Apk Version 3.0.316 and Web Version May 13 2021",
             changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.315 and Web Version May 07 2021",
-            changes: [
-                "Improve translation",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.314 and Web Version May 06 2021",
-            changes: [
-                "Improve translation",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.313 and Web Version May 03 2021",
-            changes: [
-                "Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help",
-                "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",
                 "General improves and bug fixes"
             ]
         }

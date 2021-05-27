@@ -3828,9 +3828,15 @@
         VersionBase: '3.0',
         publishVersionCode: 318, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/318/SmartTV_twitch_3_0_318.apk',
-        WebVersion: 'May 23 2021',
-        WebTag: 590, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'May 27 2021',
+        WebTag: 591, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version May 27 2021",
+                changes: [
+                    "Fix clips playback"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.318 and Web Version May 23 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -3853,28 +3859,6 @@
             {
                 title: "Apk Version 3.0.316 and Web Version May 13 2021",
                 changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.315 and Web Version May 07 2021",
-                changes: [
-                    "Improve translation",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.314 and Web Version May 06 2021",
-                changes: [
-                    "Improve translation",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.313 and Web Version May 03 2021",
-                changes: [
-                    "Add Portuguese (PT-BR) and Russian translation,Thanks to Stay vibrant for the help",
-                    "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",
                     "General improves and bug fixes"
                 ]
             }
@@ -13814,7 +13798,7 @@
     //Variable initialization end
 
     var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
-    var PlayClip_postMessage = '{"query":"{clip(slug: \\"%x\\") {videoQualities {frameRate quality sourceURL}}}"}';
+    var PlayClip_postMessage = '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';
 
     function PlayClip_Start() {
         //Main_Log('PlayClip_Start');
@@ -14003,6 +13987,7 @@
     }
 
     function PlayClip_loadDataResult(responseObj, key, id) {
+
         if (PlayClip_isOn && PlayClip_loadDataRequestId === id) {
 
             if (responseObj.status === 200) {
@@ -14037,9 +14022,11 @@
 
     function PlayClip_QualityGenerate(mresponse) {
         var Array = [],
-            response = JSON.parse(mresponse);
+            response = JSON.parse(mresponse),
+            token;
 
         if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip') && response.data.clip) {
+            token = "?sig=" + encodeURIComponent(response.data.clip.playbackAccessToken.signature) + "&token=" + encodeURIComponent(response.data.clip.playbackAccessToken.value);
             response = response.data.clip.videoQualities;
 
             var i = 0,
@@ -14049,12 +14036,12 @@
                 if (!Array.length) {
                     Array.push({
                         'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | ' + STR_SOURCE + ' | mp4',
-                        'url': response[i].sourceURL
+                        'url': response[i].sourceURL + token
                     });
                 } else {
                     Array.push({
                         'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | mp4',
-                        'url': response[i].sourceURL
+                        'url': response[i].sourceURL + token
                     });
                 }
             }

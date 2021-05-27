@@ -40,7 +40,7 @@ var PlayClip_All = false;
 //Variable initialization end
 
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
-var PlayClip_postMessage = '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';;
+var PlayClip_postMessage = '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';
 
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
