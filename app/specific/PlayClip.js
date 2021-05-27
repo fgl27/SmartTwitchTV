@@ -40,7 +40,7 @@ var PlayClip_All = false;
 //Variable initialization end
 
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
-var PlayClip_postMessage = '{"query":"{clip(slug: \\"%x\\") {videoQualities {frameRate quality sourceURL}}}"}';
+var PlayClip_postMessage = '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';;
 
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
@@ -228,6 +228,7 @@ function PlayClip_loadDataRequest() {
 }
 
 function PlayClip_loadDataResult(responseObj, key, id) {
+
     if (PlayClip_isOn && PlayClip_loadDataRequestId === id) {
 
         if (responseObj.status === 200) {
@@ -262,9 +263,11 @@ function PlayClip_loadDataError() {
 
 function PlayClip_QualityGenerate(mresponse) {
     var Array = [],
-        response = JSON.parse(mresponse);
+        response = JSON.parse(mresponse),
+        token;
 
     if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip') && response.data.clip) {
+        token = "?sig=" + encodeURIComponent(response.data.clip.playbackAccessToken.signature) + "&token=" + encodeURIComponent(response.data.clip.playbackAccessToken.value);
         response = response.data.clip.videoQualities;
 
         var i = 0, len = response.length;
@@ -273,12 +276,12 @@ function PlayClip_QualityGenerate(mresponse) {
             if (!Array.length) {
                 Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | ' + STR_SOURCE + ' | mp4',
-                    'url': response[i].sourceURL
+                    'url': response[i].sourceURL + token
                 });
             } else {
                 Array.push({
                     'id': response[i].quality + 'p' + PlayClip_FrameRate(response[i].frameRate) + ' | mp4',
-                    'url': response[i].sourceURL
+                    'url': response[i].sourceURL + token
                 });
             }
         }
