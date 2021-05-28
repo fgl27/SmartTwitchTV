@@ -37,7 +37,7 @@ function en_USLang() {
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
-    STR_CONTROLS_ETC = "See play store video to better understand how the app works and how to use it's settings and controls";
+    STR_CONTROLS_ETC = "See Play Store video to better understand how the app works and how to use its settings and controls";
     STR_ABOUT = "About";
     STR_HIDE = "Hide";
     STR_SEARCH_EMPTY = "The text you entered is empty.";
@@ -86,7 +86,7 @@ function en_USLang() {
     STR_EXIT = "Exit";
     STR_CHANGELOG = "Changelog";
     STR_FULL_CHANGELOG = "Full changelog";
-    STR_CHANGELOG_SUMMARY = "This are just the latest changes, to read the full changes check below link:";
+    STR_CHANGELOG_SUMMARY = "These are just the latest changes, to read the full changes check the link below:";
     STR_UPDATE = 'Click to Update';
     STR_UPDATE_CHECK = 'Check for Updates';
     STR_UPDATE_CHECKING = 'Checking for Updates ...';
@@ -96,7 +96,7 @@ function en_USLang() {
     STR_UPDATE_LATEST = "Latest change:";
     STR_UPDATE_FAIL = "Update process fail, please try manually!";
     STR_UPDATE_FAIL_DOWNLOAD = "Update process fail to download the APK, please try manually!";
-    STR_UPDATE_AVAILABLE = "Apk Update available";
+    STR_UPDATE_AVAILABLE = "APK Update available";
     STR_WEB_UPDATE_AVAILABLE = "Web Update available";
     STR_UPDATE_CHECK_SIDE = ", check side panel update";
     STR_UPDATE_LAST_CHECK = "Last checked:";
@@ -124,7 +124,7 @@ function en_USLang() {
     STR_USER_SET = "already set";
     STR_USER_MAKE_ONE = "Switch to";
     STR_USER_NUMBER_ONE = "First user can follow (when providing a key) and see live channels feed outside of the user screen<br>";
-    STR_ADD_USER_SH = "Add a Twitch user to display it\'s Followed Channels content here";
+    STR_ADD_USER_SH = "Add a Twitch user to display its Followed Channels content here";
     STR_CLIP_DAY = "24h";
     STR_CLIP_WEEK = "7d";
     STR_CLIP_MONTH = "30d";
@@ -154,7 +154,7 @@ function en_USLang() {
     STR_CONTROLS_MAIN_6 = "Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
     STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
     STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
-    STR_ABOUT_INFO_1 = "This is a Android TV Twitch Client, released for free to anyone who wants to use it";
+    STR_ABOUT_INFO_1 = "This is an Android TV Twitch Client, released for free to anyone who wants to use it";
     STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
     STR_ABOUT_INFO_3 = "Contact information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
@@ -171,7 +171,7 @@ function en_USLang() {
     STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
     STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android (https://github.com/google/ExoPlayer)";
     STR_ABOUT_INFO_18 = "Phones and Tablets support:";
-    STR_ABOUT_INFO_19 = "Yes is possible to use this app on phones and tablets, but this app is design to be used mainly on TVs, the support for other device is limited and because of that not released on play store, use the bellow link to download latest APK and manually install on a phone or tablets";
+    STR_ABOUT_INFO_19 = "Yes it is possible to use this app on phones and tablets, but this app is designed to be used mainly on TVs. Support for other devices is limited and because of that it is not released on the Play Store. Use the link below to download latest APK and manually install on a phone or tablet";
     STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
     STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates (https://github.com/ben-manes/gradle-versions-plugin)";
     STR_ABOUT_INFO_22 = "Tray: a SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
@@ -631,10 +631,10 @@ function en_USLang() {
     STR_CHAT_TIMESTAMP = "Show message timestamp";
     STR_CHAT_NICK_COLOR = "Readable nick colors";
     STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that some times can't be readable on a dark background, use a custom easy to see color";
-    STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s message’s";
+    STR_CHAT_CLEAR_MSG = "Clear chat, delete user’s messages";
     STR_CHAT_MESSAGE_DELETED = "This single user message was requested to be deleted";
-    STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user was requested to be deleted";
-    STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've be timeout for";
+    STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user were requested to be deleted";
+    STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
     STR_CHAT_CLEAR_MSG_SUMMARY = 'Delete chat messages from a specific user (typically after they received a timeout or ban), deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not only the background color will change';
     STR_OPEN_HOST_SETTINGS = "Always open the host on a stream end if available";
     STR_ALWAYS_STAY = "Always stay with the player open after a Live end";
