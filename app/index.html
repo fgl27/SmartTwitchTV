@@ -383,12 +383,17 @@
             height: 12.5vh;
         }
 
+        .thumb_text_holder,
         .stream_text_holder {
             display: inline-block;
             width: 100%;
             top: 50%;
             position: relative;
             transform: translateY(-50%);
+        }
+
+        .thumb_text_holder {
+            width: 88%;
         }
 
         div.stream_thumbnail_game_feed_text_holder,
@@ -2237,6 +2242,10 @@
             width: 8.75%;
         }
 
+        img.thumb_info_icon {
+            width: 100%;
+        }
+
         img.stream_info_icon {
             margin-left: 1%;
             margin-top: 2%;
@@ -2943,13 +2952,20 @@
                     </div>
                     <div class="side_panel_feed_thumb_text_holder">
                         <div class="stream_text_holder">
-                            <div id="feed_thum_name" class="side_panel_feed_thumb_text multi_info_line class_bold"
-                                style="width: 75%; display: inline-block; font-size: 110%;"></div>
-                            <div id="feed_thum_quality" class="side_panel_feed_thumb_text"
-                                style="width: 24%; float: right; text-align: right;"></div>
-                            <div id="feed_thum_title" class="side_panel_feed_thumb_title_text"></div>
-                            <div id="feed_thum_game" class="side_panel_feed_thumb_text"></div>
-                            <div id="feed_thum_views" class="side_panel_feed_thumb_text"></div>
+                            <div
+                                style="width: 13.5%; display: inline-block; transform: translateY(-45%); top: 50%; position: absolute;">
+                                <img id="feed_thumb_icon" class="thumb_info_icon" alt=""
+                                    src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
+                            </div>
+                            <div style="width: 85.5%; display: inline-block; float: right;">
+                                <div id="feed_thumb_name" class="side_panel_feed_thumb_text multi_info_line class_bold"
+                                    style="width: 75%; display: inline-block; font-size: 110%;"></div>
+                                <div id="feed_thumb_quality" class="side_panel_feed_thumb_text"
+                                    style="width: 24%; float: right; text-align: right;"></div>
+                                <div id="feed_thumb_title" class="side_panel_feed_thumb_title_text"></div>
+                                <div id="feed_thumb_game" class="side_panel_feed_thumb_text"></div>
+                                <div id="feed_thumb_views" class="side_panel_feed_thumb_text"></div>
+                            </div>
                         </div>
                     </div>
                     <div id="sidepannel_counter" class="icon_top_label" style="position: absolute; top:-2%"></div>

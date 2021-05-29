@@ -1467,6 +1467,7 @@ function Settings_UpdateRoundImages() {
             'img.side_panel_channel_img {border-radius: 50%;}' +
             'img.stream_img_channels {border-radius: 50%;}' +
             'img.stream_info_icon {border-radius: 50%;}' +
+            'img.thumb_info_icon {border-radius: 50%;}' +
             'img.panel_pp_img {border-radius: 50%;}' +
             'img.multi_info_img {border-radius: 50%;}' +
             'img.multi_info_img_big {border-radius: 50%;}' +

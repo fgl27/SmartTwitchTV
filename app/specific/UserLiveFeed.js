@@ -243,6 +243,15 @@ function UserLiveFeed_Prepare() {
     Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
     Sidepannel_LastRefreshDiv = Main_getElementById("side_panel_feed_refresh");
     Sidepannel_PosCounter = Main_getElementById("sidepannel_counter");
+
+    Sidepannel_UpdateThumbDivName = Main_getElementById("feed_thumb_name");
+    Sidepannel_UpdateThumbDivQuality = Main_getElementById("feed_thumb_quality");
+    Sidepannel_UpdateThumbDivTitle = Main_getElementById("feed_thumb_title");
+    Sidepannel_UpdateThumbDivGame = Main_getElementById("feed_thumb_game");
+    Sidepannel_UpdateThumbDivViews = Main_getElementById("feed_thumb_views");
+    Sidepannel_UpdateThumbDivThumb = Main_getElementById("feed_thumb_icon");
+
+
     Sidepannel_SetLastRefreshUpDiv(0);
 }
 
