@@ -1917,6 +1917,15 @@ function ScreensObj_VodCellArray(cell) {
 
 function ScreensObj_VodGetPreview(preview, animated_preview_url) {
     //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+    if (!Main_IsOn_OSInterface) {
+
+        if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+
+            console.log('Revise vod links');
+
+        }
+
+    }
     return Main_A_includes_B(preview + '', '404_processing') ?
         ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
 }
