@@ -687,7 +687,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
             Main_history_UpdateLiveVod(
                 BroadcastID,
                 response[i]._id.substr(1),
-                ScreensObj_VodGetPreviewFromAnimated(response[i].animated_preview_url)
+                ScreensObj_VodGetPreview(response[i].preview.template, response[i].animated_preview_url)
             );
 
             break;
