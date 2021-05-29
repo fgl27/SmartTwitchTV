@@ -1918,10 +1918,10 @@ function ScreensObj_VodCellArray(cell) {
 function ScreensObj_VodGetPreview(preview, animated_preview_url) {
     //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
     return Main_A_includes_B(preview + '', '404_processing') ?
-        ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+        ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
 }
 
-function ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) {
+function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
     var animated_preview = animated_preview_url.split('/');
 
     return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
