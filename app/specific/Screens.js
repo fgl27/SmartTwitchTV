@@ -2521,7 +2521,7 @@ function Screens_ThumbOptionStringSet(key) {
 
     } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
-    Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
+    Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
     Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
 }
 

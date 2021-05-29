@@ -295,7 +295,7 @@ function pt_BRLang() {
     STR_CONTENT_LANG = "Idioma do conteúdo";
     STR_CONTENT_LANG_SUMMARY = "O idioma do conteúdo das telas, ao vivo, Vídeos, clipes";
     STR_ENTER_TO_OPEN = "Pressione Enter para abrir";
-    STR_LANG_ALL = "Todos";
+    STR_LANG_ALL = "Todas";
     STR_NO_GAME = "Nenhum jogo para este";
     STR_EMPTY = "vazio";
     STR_JUMP_BUFFER_WARNING = "Não é possível saltar durante o buffer";

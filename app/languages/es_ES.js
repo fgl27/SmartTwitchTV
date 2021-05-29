@@ -246,7 +246,7 @@ function es_ESLang() {
     STR_APP_LANG = "Idioma de la aplicación";
     STR_APP_LANG_SUMMARY = "El idioma del texto de la aplicación";
     STR_ENTER_TO_OPEN = "Presione enter para acceder";
-    STR_LANG_ALL = "Todo";
+    STR_LANG_ALL = "Todas";
 
 
     STR_CHAT_BRIGHTNESS = "Brillo del fondo del chat";

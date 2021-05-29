@@ -645,6 +645,7 @@ function Settings_SetSettings() {
     Settings_value_keys = [];
 
     //Individual settings
+    Settings_value.content_lang.values[0] = STR_LANG_ALL;
     key = "content_lang";
     div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
 
