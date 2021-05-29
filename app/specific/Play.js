@@ -684,13 +684,10 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     for (i; i < len; i++) {
         if (Main_A_includes_B(response[i].status, 'recording')) {
 
-            var animated_preview = response[i].animated_preview_url.split('/');
-
             Main_history_UpdateLiveVod(
                 BroadcastID,
                 response[i]._id.substr(1),
-                'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
-                '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+                ScreensObj_VodGetPreviewFromAnimate(response[i].animated_preview_url)
             );
 
             break;

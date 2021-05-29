@@ -1895,9 +1895,7 @@ function ScreensObj_LiveCellArray(cell) {
 
 function ScreensObj_VodCellArray(cell) {
     return [
-        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-        Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
-            '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize),//0
+        ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url),//0
         cell.channel.display_name,//1
         Main_videoCreatedAt(cell.created_at),//2
         cell.game,//3
@@ -1915,6 +1913,19 @@ function ScreensObj_VodCellArray(cell) {
         cell.channel.logo,//15
         cell.channel.partner//16
     ];
+}
+
+function ScreensObj_VodGetPreview(preview, animated_preview_url) {
+    //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+    return Main_A_includes_B(preview + '', '404_processing') ?
+        ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+}
+
+function ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) {
+    var animated_preview = animated_preview_url.split('/');
+
+    return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
+        '/thumb/thumb0-' + Main_VideoSize + '.jpg';
 }
 
 function ScreensObj_ClipCellArray(cell) {

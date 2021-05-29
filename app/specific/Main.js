@@ -2433,12 +2433,24 @@ function Main_SetHistoryworker() {
                                         this.postMessage(
                                             {
                                                 data: obj.mData.obj.data[7],
-                                                type: obj.mData.type
+                                                type: obj.mData.type,
+                                                delete: true
                                             }
                                         );
                                     }
 
                                 }
+
+                            } else {
+
+                                this.postMessage(
+                                    {
+                                        data: obj.mData.obj.data[7],
+                                        type: obj.mData.type,
+                                        updateobj: JSON.parse(obj.responseText),
+                                        delete: false
+                                    }
+                                );
 
                             }
 
@@ -2539,14 +2551,39 @@ function Main_SetHistoryworker() {
                             Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
 
                         }
+                    } else if (event.data.type === 'live') {
 
-                    } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
+                        if (event.data.delete) {
+
+                            index = Main_history_Exist(event.data.type, event.data.data);
+
+                            if (index > -1) {
+
+                                //delete the live that is now a vod entry as it no longer exist
+                                Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                            }
+
+                        } else {
+
+                            Main_history_UpdateLiveVod(
+                                event.data.data,
+                                event.data.updateobj._id.substr(1),
+                                ScreensObj_VodGetPreview(
+                                    event.data.updateobj.preview.template,
+                                    event.data.updateobj.animated_preview_url
+                                )
+                            );
+
+                        }
+
+                    } else if (event.data.type === 'vod' || event.data.type === 'clip') {
 
                         index = Main_history_Exist(event.data.type, event.data.data);
 
                         if (index > -1) {
 
-                            //delete the vod entry as it no longer exist
+                            //delete the entry as its content no longer exist
                             Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
 
                         }
