@@ -1947,7 +1947,7 @@
         STR_APP_LANG = "Idioma de la aplicación";
         STR_APP_LANG_SUMMARY = "El idioma del texto de la aplicación";
         STR_ENTER_TO_OPEN = "Presione enter para acceder";
-        STR_LANG_ALL = "Todo";
+        STR_LANG_ALL = "Todas";
 
 
         STR_CHAT_BRIGHTNESS = "Brillo del fondo del chat";
@@ -2508,7 +2508,7 @@
         STR_CONTENT_LANG = "Idioma do conteúdo";
         STR_CONTENT_LANG_SUMMARY = "O idioma do conteúdo das telas, ao vivo, Vídeos, clipes";
         STR_ENTER_TO_OPEN = "Pressione Enter para abrir";
-        STR_LANG_ALL = "Todos";
+        STR_LANG_ALL = "Todas";
         STR_NO_GAME = "Nenhum jogo para este";
         STR_EMPTY = "vazio";
         STR_JUMP_BUFFER_WARNING = "Não é possível saltar durante o buffer";
@@ -20493,7 +20493,7 @@
                 Main_history_UpdateLiveVod(
                     BroadcastID,
                     response[i]._id.substr(1),
-                    ScreensObj_VodGetPreviewFromAnimate(response[i].animated_preview_url)
+                    ScreensObj_VodGetPreview(response[i].preview.template, response[i].animated_preview_url)
                 );
 
                 break;
@@ -27056,7 +27056,7 @@
 
         } else Main_textContent('dialog_thumb_opt_val_3', Screens_YesNo[Screens_ThumbOptionStringGetHistory(key)]);
 
-        Main_textContent('dialog_thumb_opt_val_4', Main_ContentLang === "" ? STR_LANG_ALL : Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
+        Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
         Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
     }
 
@@ -29454,11 +29454,20 @@
 
     function ScreensObj_VodGetPreview(preview, animated_preview_url) {
         //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+        if (!Main_IsOn_OSInterface) {
+
+            if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+
+                console.log('Revise vod links');
+
+            }
+
+        }
         return Main_A_includes_B(preview + '', '404_processing') ?
-            ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+            ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
     }
 
-    function ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) {
+    function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
         var animated_preview = animated_preview_url.split('/');
 
         return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
@@ -31156,6 +31165,7 @@
         Settings_value_keys = [];
 
         //Individual settings
+        Settings_value.content_lang.values[0] = STR_LANG_ALL;
         key = "content_lang";
         div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
 
