@@ -34354,7 +34354,6 @@
         Sidepannel_UpdateThumbDivViews = Main_getElementById("feed_thumb_views");
         Sidepannel_UpdateThumbDivThumb = Main_getElementById("feed_thumb_icon");
 
-
         Sidepannel_SetLastRefreshUpDiv(0);
     }
 
