@@ -11624,11 +11624,21 @@
 
                                             this.postMessage({
                                                 data: obj.mData.obj.data[7],
-                                                type: obj.mData.type
+                                                type: obj.mData.type,
+                                                delete: true
                                             });
                                         }
 
                                     }
+
+                                } else {
+
+                                    this.postMessage({
+                                        data: obj.mData.obj.data[7],
+                                        type: obj.mData.type,
+                                        updateobj: JSON.parse(obj.responseText),
+                                        delete: false
+                                    });
 
                                 }
 
@@ -11729,14 +11739,39 @@
                                 Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
 
                             }
+                        } else if (event.data.type === 'live') {
 
-                        } else if (event.data.type === 'live' || event.data.type === 'vod' || event.data.type === 'clip') {
+                            if (event.data.delete) {
+
+                                index = Main_history_Exist(event.data.type, event.data.data);
+
+                                if (index > -1) {
+
+                                    //delete the live that is now a vod entry as it no longer exist
+                                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+
+                                }
+
+                            } else {
+
+                                Main_history_UpdateLiveVod(
+                                    event.data.data,
+                                    event.data.updateobj._id.substr(1),
+                                    ScreensObj_VodGetPreview(
+                                        event.data.updateobj.preview.template,
+                                        event.data.updateobj.animated_preview_url
+                                    )
+                                );
+
+                            }
+
+                        } else if (event.data.type === 'vod' || event.data.type === 'clip') {
 
                             index = Main_history_Exist(event.data.type, event.data.data);
 
                             if (index > -1) {
 
-                                //delete the vod entry as it no longer exist
+                                //delete the entry as its content no longer exist
                                 Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
 
                             }
@@ -20458,8 +20493,7 @@
                 Main_history_UpdateLiveVod(
                     BroadcastID,
                     response[i]._id.substr(1),
-                    'https://static-cdn.jtvnw.net/s3_vods/' + response[i].animated_preview_url.split('/')[3] +
-                    '/thumb/thumb0-' + Main_VideoSize + '.jpg'
+                    ScreensObj_VodGetPreviewFromAnimate(response[i].animated_preview_url)
                 );
 
                 break;
@@ -29398,9 +29432,7 @@
 
     function ScreensObj_VodCellArray(cell) {
         return [
-            //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-            Main_A_includes_B(cell.preview.template + '', '404_processing') ? 'https://static-cdn.jtvnw.net/s3_vods/' + cell.animated_preview_url.split('/')[3] +
-            '/thumb/thumb0-' + Main_VideoSize + '.jpg' : cell.preview.template.replace("{width}x{height}", Main_VideoSize), //0
+            ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url), //0
             cell.channel.display_name, //1
             Main_videoCreatedAt(cell.created_at), //2
             cell.game, //3
@@ -29418,6 +29450,19 @@
             cell.channel.logo, //15
             cell.channel.partner //16
         ];
+    }
+
+    function ScreensObj_VodGetPreview(preview, animated_preview_url) {
+        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+        return Main_A_includes_B(preview + '', '404_processing') ?
+            ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+    }
+
+    function ScreensObj_VodGetPreviewFromAnimate(animated_preview_url) {
+        var animated_preview = animated_preview_url.split('/');
+
+        return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
+            '/thumb/thumb0-' + Main_VideoSize + '.jpg';
     }
 
     function ScreensObj_ClipCellArray(cell) {
