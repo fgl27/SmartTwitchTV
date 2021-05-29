@@ -31993,6 +31993,7 @@
             'img.side_panel_channel_img {border-radius: 50%;}' +
             'img.stream_img_channels {border-radius: 50%;}' +
             'img.stream_info_icon {border-radius: 50%;}' +
+            'img.thumb_info_icon {border-radius: 50%;}' +
             'img.panel_pp_img {border-radius: 50%;}' +
             'img.multi_info_img {border-radius: 50%;}' +
             'img.multi_info_img_big {border-radius: 50%;}' +
@@ -33283,6 +33284,13 @@
         return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
     }
 
+    var Sidepannel_UpdateThumbDivName;
+    var Sidepannel_UpdateThumbDivQuality;
+    var Sidepannel_UpdateThumbDivTitle;
+    var Sidepannel_UpdateThumbDivGame;
+    var Sidepannel_UpdateThumbDivViews;
+    var Sidepannel_UpdateThumbDivThumb;
+
     function Sidepannel_UpdateThumbDiv() {
 
         if (Sidepannel_ObjNotNull()) {
@@ -33295,10 +33303,11 @@
             };
             Sidepannel_UpdateThumbDoc.src = info[0].replace("{width}x{height}", Main_SidePannelSize) + Main_randomimg;
 
-            Main_innerHTML('feed_thum_name', Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
-            Main_innerHTML('feed_thum_quality', info[5]);
-            Main_innerHTML('feed_thum_title', Main_ReplaceLargeFont(twemoji.parse(info[2])));
-            Main_innerHTML('feed_thum_game', (info[3] !== "" ? STR_PLAYING + info[3] : ""));
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivName, Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivQuality, info[5]);
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivTitle, Main_ReplaceLargeFont(twemoji.parse(info[2])));
+            Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivGame, (info[3] !== "" ? STR_PLAYING + info[3] : ""));
+            Play_LoadLogo(Sidepannel_UpdateThumbDivThumb, info[9]);
             Sidepannel_UpdateSince();
 
         }
@@ -33314,8 +33323,8 @@
 
             var info = Sidepannel_GetObj();
 
-            Main_innerHTML(
-                'feed_thum_views',
+            Main_innerHTMLWithEle(
+                Sidepannel_UpdateThumbDivViews,
                 STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
             );
         }
@@ -34337,6 +34346,15 @@
         Sidepannel_ThumbDoc = Main_getElementById("side_panel_feed_thumb");
         Sidepannel_LastRefreshDiv = Main_getElementById("side_panel_feed_refresh");
         Sidepannel_PosCounter = Main_getElementById("sidepannel_counter");
+
+        Sidepannel_UpdateThumbDivName = Main_getElementById("feed_thumb_name");
+        Sidepannel_UpdateThumbDivQuality = Main_getElementById("feed_thumb_quality");
+        Sidepannel_UpdateThumbDivTitle = Main_getElementById("feed_thumb_title");
+        Sidepannel_UpdateThumbDivGame = Main_getElementById("feed_thumb_game");
+        Sidepannel_UpdateThumbDivViews = Main_getElementById("feed_thumb_views");
+        Sidepannel_UpdateThumbDivThumb = Main_getElementById("feed_thumb_icon");
+
+
         Sidepannel_SetLastRefreshUpDiv(0);
     }
 
