@@ -2,7 +2,7 @@
     STR_GUIDE_EXTRA = "or press key 2";
     STR_GUIDE_EXTRA2 = "or media key next track";
 	STR_AGAME = "A Game";
-	STR_NOT_LIVE = "Rerun";
+	STR_RERUN = "Rerun";
 	STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser (https://github.com/sigkell/irc-message)";
     STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
     STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";

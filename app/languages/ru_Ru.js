@@ -103,7 +103,7 @@ function ru_RULang() {
     STR_CLOSE = "Закрыть";
     STR_MINIMIZE = "Свернуть";
     STR_CANCEL = "Отмена";
-    STR_NOT_LIVE = "Повтор";
+    STR_RERUN = "Повтор";
     STR_LIVE_CHANNELS = "Каналы в эфире";
     STR_LIVE_HOSTS = "Ретрансляции";
     STR_LIVE_GAMES = "Игры в эфире";

@@ -462,7 +462,7 @@ function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
         var isStay = Play_StayDialogVisible();
         var text = STR_LIVE;
 
-        if (rerun) text = STR_NOT_LIVE;
+        if (rerun) text = STR_RERUN;
         else if (isStay) text = STR_CH_IS_OFFLINE;
 
         div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #' +

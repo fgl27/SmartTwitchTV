@@ -343,7 +343,7 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
         (partner ? ('<img class="partnericon_img" alt="" src="' +
             IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
         (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
-        (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
+        (isrerun ? STR_RERUN : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
 }
 
 function Sidepannel_PreloadImgs() {
