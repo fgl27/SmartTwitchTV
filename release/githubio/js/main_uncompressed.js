@@ -9265,7 +9265,9 @@
         "Codec_is_Check": false,
         "OS_is_Check": false,
         "Restore_Backup_Check": false,
-        "UserSidePannel_LastPos": null,
+        "UserSidePannel_LastPosId": null,
+        "UserSidePannel_LastPos": 0,
+        "UserLiveFeed_LastPosId": [],
         "UserLiveFeed_LastPos": [],
         "IsUpDating": false,
         "WasLangChanged": false,
@@ -33225,7 +33227,7 @@
             Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
             Sidepannel_Scroll(skipAnimation);
             Sidepannel_UpdateThumb();
-            Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+            Main_values.UserSidePannel_LastPosId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
             var pos = (Sidepannel_PosFeed + 1);
 
@@ -33256,6 +33258,7 @@
             Main_textContentWithEle(Sidepannel_PosCounter, '');
         }
 
+        Main_setTimeout(Main_SaveValues);
     }
 
     function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
@@ -33265,6 +33268,30 @@
 
             Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         }
+    }
+
+    function Sidepannel_FindClosest() {
+
+        if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Main_values.UserSidePannel_LastPos]) {
+
+            Sidepannel_PosFeed = Main_values.UserSidePannel_LastPos;
+
+        } else if (Sidepannel_GetSize()) {
+
+            var i = Main_values.UserSidePannel_LastPos;
+
+            for (i; i >= 0; i--) {
+
+                if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][i]) {
+
+                    Sidepannel_PosFeed = i;
+                    break;
+                }
+
+            }
+
+        }
+
     }
 
     function Sidepannel_isShowingUserLive() {
@@ -33787,7 +33814,6 @@
 
         }
 
-        Main_SaveValues();
     }
 
     function Sidepannel_SetTopOpacity(Main_Go) {
@@ -34549,8 +34575,6 @@
         //return;//return;
         UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
         UserLiveFeed_HideAfter();
-
-        Main_SaveValues();
     }
 
     function UserLiveFeed_HideAfter() {
@@ -34760,6 +34784,7 @@
         }
 
         UserLiveFeed_ResetFeedId();
+        Main_setTimeout(Main_SaveValues);
     }
 
     function UserLiveFeed_CheckVod() {
@@ -35270,7 +35295,7 @@
 
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
 
-            Main_values.UserLiveFeed_LastPos[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
+            Main_values.UserLiveFeed_LastPosId[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
         }
     }
 
@@ -35497,9 +35522,14 @@
 
         if (UserLiveFeed_status[pos]) {
 
-            if (UserLiveFeed_ObjNotNull(pos))
-                Main_values.UserLiveFeed_LastPos[pos] =
-                UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
+            if (UserLiveFeed_ObjNotNull(pos)) {
+
+                Main_values.UserLiveFeed_LastPosId[pos] =
+                    UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
+
+                Main_values.UserLiveFeed_LastPos[pos] = UserLiveFeed_FeedPosY[pos];
+
+            }
 
         }
 
@@ -35536,7 +35566,8 @@
 
         if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-            Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+            Main_values.UserSidePannel_LastPosId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+            Main_values.UserSidePannel_LastPos = Sidepannel_PosFeed;
 
         }
 
@@ -35877,8 +35908,7 @@
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
-        if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
-            UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
+        UserLiveFeedobj_SetLastPosition(pos);
 
         UserLiveFeed_loadDataSuccessFinish(pos);
     }
@@ -36310,7 +36340,7 @@
 
     function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
         var div = document.createElement('div');
-        data[14] = data[2]; //To make Main_values.UserLiveFeed_LastPos work
+        data[14] = data[2]; //To make Main_values.UserLiveFeed_LastPosId work
 
         div.setAttribute('id', UserLiveFeed_ids[3] + id);
         UserLiveFeed_DataObj[pos][x] = data;
@@ -36433,12 +36463,20 @@
 
         Main_setTimeout(
             function() {
-                if (UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]))
-                    UserLiveFeed_FeedPosY[UserLiveFeedobj_UserLivePos] = UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][Main_values.UserLiveFeed_LastPos[UserLiveFeedobj_UserLivePos]];
+
+                UserLiveFeedobj_SetLastPosition(UserLiveFeedobj_UserLivePos);
 
                 Sidepannel_Positions = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-                if (Sidepannel_Positions.hasOwnProperty(Main_values.UserSidePannel_LastPos))
-                    Sidepannel_PosFeed = Sidepannel_Positions[Main_values.UserSidePannel_LastPos];
+                if (Sidepannel_Positions.hasOwnProperty(Main_values.UserSidePannel_LastPosId)) {
+
+                    Sidepannel_PosFeed = Sidepannel_Positions[Main_values.UserSidePannel_LastPosId];
+
+                } else {
+
+                    Sidepannel_FindClosest();
+
+                }
+
 
                 Sidepannel_PreloadImgs();
                 UserLiveFeed_loadDataSuccessFinish(UserLiveFeedobj_UserLivePos);
@@ -36447,6 +36485,30 @@
             },
             25
         );
+    }
+
+    function UserLiveFeedobj_SetLastPosition(pos) {
+
+        if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPosId[pos])) {
+
+            UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPosId[pos]];
+
+        } else if (UserLiveFeed_GetSize(pos)) {
+
+            var i = Main_values.UserLiveFeed_LastPos[pos];
+
+            for (i; i >= 0; i--) {
+
+                if (UserLiveFeed_cell[pos][i]) {
+
+                    UserLiveFeed_FeedPosY[pos] = i;
+                    break;
+                }
+
+            }
+
+        }
+
     }
 
     //User VOD Start
@@ -36572,8 +36634,7 @@
             Main_setTimeout(
                 function() {
 
-                    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
-                        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
+                    UserLiveFeedobj_SetLastPosition(pos);
 
                     UserLiveFeed_loadDataSuccessFinish(pos);
                 },
@@ -36645,8 +36706,7 @@
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
-        if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
-            UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
+        UserLiveFeedobj_SetLastPosition(pos);
 
         UserLiveFeed_loadDataSuccessFinish(pos);
     }
@@ -36744,8 +36804,7 @@
             Main_setTimeout(
                 function() {
 
-                    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
-                        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
+                    UserLiveFeedobj_SetLastPosition(pos);
 
                     UserLiveFeed_loadDataSuccessFinish(pos);
                 },
@@ -36849,8 +36908,7 @@
             Main_setTimeout(
                 function() {
 
-                    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPos[pos]))
-                        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPos[pos]];
+                    UserLiveFeedobj_SetLastPosition(pos);
 
                     UserLiveFeed_loadDataSuccessFinish(pos);
                 },
