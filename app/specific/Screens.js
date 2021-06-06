@@ -107,7 +107,7 @@ function Screens_InitScreens() {
     Screens_dialog_thumb_div = Main_getElementById('dialog_thumb_opt');
     Screens_dialog_thumb_delete_div = Main_getElementById('main_yes_no_dialog');
 
-    Main_Startfirebase();
+    Main_setTimeout(Main_Startfirebase);
     Screens_first_init();
 }
 
