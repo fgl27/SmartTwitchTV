@@ -35527,7 +35527,8 @@
                 Main_values.UserLiveFeed_LastPositionId[pos] =
                     UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
-                Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos];
+                Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos] < 100 ?
+                    UserLiveFeed_FeedPosY[pos] : 0;
 
             }
 
@@ -36489,11 +36490,13 @@
 
     function UserLiveFeedobj_SetLastPosition(pos) {
 
+        var total = UserLiveFeed_GetSize(pos);
+
         if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPositionId[pos])) {
 
             UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPositionId[pos]];
 
-        } else if (UserLiveFeed_GetSize(pos)) {
+        } else if (Main_values.UserLiveFeed_LastPosition[pos] && total) {
 
             var i = Main_values.UserLiveFeed_LastPosition[pos];
 
@@ -36506,6 +36509,14 @@
                 }
 
             }
+
+        }
+
+        //There is max total loaded positions, thescroll function only works well if there is at least 4 ahead
+        //Give 5 to make things work
+        if (UserLiveFeed_obj[pos].HasMore && (UserLiveFeed_FeedPosY[pos] > (total - 5))) {
+
+            UserLiveFeed_FeedPosY[pos] = total - 5;
 
         }
 
