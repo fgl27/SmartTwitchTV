@@ -81,7 +81,7 @@
     var STR_CLOSE;
     var STR_MINIMIZE;
     var STR_CANCEL;
-    var STR_NOT_LIVE;
+    var STR_RERUN;
     var STR_LIVE_CHANNELS;
     var STR_LIVE_HOSTS;
     var STR_LIVE_GAMES;
@@ -1100,7 +1100,7 @@
         STR_CLOSE = "Close";
         STR_MINIMIZE = "Minimize";
         STR_CANCEL = "Cancel";
-        STR_NOT_LIVE = "Rerun";
+        STR_RERUN = "Rerun";
         STR_LIVE_CHANNELS = "Channels Live";
         STR_LIVE_HOSTS = "Hosts";
         STR_LIVE_GAMES = "Games Live";
@@ -2321,7 +2321,6 @@
         STR_CLOSE = "Fechar";
         STR_MINIMIZE = "Minimizar";
         STR_CANCEL = "Cancelar";
-        STR_NOT_LIVE = "Executar novamente";
         STR_LIVE_CHANNELS = "Canais ao vivo";
         STR_LIVE_HOSTS = "Hosts";
         STR_LIVE_GAMES = "Jogos ao Vivo";
@@ -3018,7 +3017,7 @@
         STR_CLOSE = "Закрыть";
         STR_MINIMIZE = "Свернуть";
         STR_CANCEL = "Отмена";
-        STR_NOT_LIVE = "Повтор";
+        STR_RERUN = "Повтор";
         STR_LIVE_CHANNELS = "Каналы в эфире";
         STR_LIVE_HOSTS = "Ретрансляции";
         STR_LIVE_GAMES = "Игры в эфире";
@@ -15365,7 +15364,7 @@
             var isStay = Play_StayDialogVisible();
             var text = STR_LIVE;
 
-            if (rerun) text = STR_NOT_LIVE;
+            if (rerun) text = STR_RERUN;
             else if (isStay) text = STR_CH_IS_OFFLINE;
 
             div += STR_SPACE_HTML + STR_SPACE_HTML + '<div class="partnericon_text" style="background: #' +
@@ -33509,7 +33508,7 @@
             (partner ? ('<img class="partnericon_img" alt="" src="' +
                 IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
             (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
-            (isrerun ? STR_NOT_LIVE : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
+            (isrerun ? STR_RERUN : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
     }
 
     function Sidepannel_PreloadImgs() {

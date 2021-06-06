@@ -64,7 +64,7 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
-        Main_values.UserSidePannel_LastPos = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+        Main_values.UserSidePannel_LastPosId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
         var pos = (Sidepannel_PosFeed + 1);
 
@@ -95,6 +95,7 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
         Main_textContentWithEle(Sidepannel_PosCounter, '');
     }
 
+    Main_setTimeout(Main_SaveValues);
 }
 
 function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
@@ -104,6 +105,30 @@ function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
 
         Main_RemoveClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
     }
+}
+
+function Sidepannel_FindClosest() {
+
+    if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Main_values.UserSidePannel_LastPos]) {
+
+        Sidepannel_PosFeed = Main_values.UserSidePannel_LastPos;
+
+    } else if (Sidepannel_GetSize()) {
+
+        var i = Main_values.UserSidePannel_LastPos;
+
+        for (i; i >= 0; i--) {
+
+            if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][i]) {
+
+                Sidepannel_PosFeed = i;
+                break;
+            }
+
+        }
+
+    }
+
 }
 
 function Sidepannel_isShowingUserLive() {
@@ -621,7 +646,6 @@ function Sidepannel_HideEle(PreventCleanQualities, full) {
 
     }
 
-    Main_SaveValues();
 }
 
 function Sidepannel_SetTopOpacity(Main_Go) {

@@ -443,8 +443,6 @@ function UserLiveFeed_Hide(PreventCleanQualities) {
     //return;//return;
     UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     UserLiveFeed_HideAfter();
-
-    Main_SaveValues();
 }
 
 function UserLiveFeed_HideAfter() {
@@ -653,6 +651,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     UserLiveFeed_ResetFeedId();
+    Main_setTimeout(Main_SaveValues);
 }
 
 function UserLiveFeed_CheckVod() {
@@ -1163,7 +1162,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
 
-        Main_values.UserLiveFeed_LastPos[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
+        Main_values.UserLiveFeed_LastPosId[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
     }
 }
 
