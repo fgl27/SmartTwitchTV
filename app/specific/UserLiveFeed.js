@@ -1162,7 +1162,7 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
 
-        Main_values.UserLiveFeed_LastPosId[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
+        Main_values.UserLiveFeed_LastPositionId[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
     }
 }
 

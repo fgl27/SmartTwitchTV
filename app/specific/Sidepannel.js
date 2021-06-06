@@ -64,7 +64,7 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
         Main_AddClass(UserLiveFeed_side_ids[0] + Sidepannel_PosFeed, 'side_panel_div_focused');
         Sidepannel_Scroll(skipAnimation);
         Sidepannel_UpdateThumb();
-        Main_values.UserSidePannel_LastPosId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+        Main_values.UserSidePannel_LastPositionId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
         var pos = (Sidepannel_PosFeed + 1);
 
@@ -109,13 +109,13 @@ function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
 
 function Sidepannel_FindClosest() {
 
-    if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Main_values.UserSidePannel_LastPos]) {
+    if (UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Main_values.UserSidePannel_LastPosition]) {
 
-        Sidepannel_PosFeed = Main_values.UserSidePannel_LastPos;
+        Sidepannel_PosFeed = Main_values.UserSidePannel_LastPosition;
 
     } else if (Sidepannel_GetSize()) {
 
-        var i = Main_values.UserSidePannel_LastPos;
+        var i = Main_values.UserSidePannel_LastPosition;
 
         for (i; i >= 0; i--) {
 

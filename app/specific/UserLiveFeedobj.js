@@ -76,10 +76,10 @@ function UserLiveFeedobj_StartDefault(pos) {
 
         if (UserLiveFeed_ObjNotNull(pos)) {
 
-            Main_values.UserLiveFeed_LastPosId[pos] =
+            Main_values.UserLiveFeed_LastPositionId[pos] =
                 UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
-            Main_values.UserLiveFeed_LastPos[pos] = UserLiveFeed_FeedPosY[pos];
+            Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos];
 
         }
 
@@ -118,8 +118,8 @@ function UserLiveFeedobj_CheckToken() {
 
     if (UserLiveFeed_status[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull(UserLiveFeedobj_UserLivePos)) {
 
-        Main_values.UserSidePannel_LastPosId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
-        Main_values.UserSidePannel_LastPos = Sidepannel_PosFeed;
+        Main_values.UserSidePannel_LastPositionId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
+        Main_values.UserSidePannel_LastPosition = Sidepannel_PosFeed;
 
     }
 
@@ -883,7 +883,7 @@ function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until)
 
 function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
     var div = document.createElement('div');
-    data[14] = data[2];//To make Main_values.UserLiveFeed_LastPosId work
+    data[14] = data[2];//To make Main_values.UserLiveFeed_LastPositionId work
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
     UserLiveFeed_DataObj[pos][x] = data;
@@ -1010,9 +1010,9 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             UserLiveFeedobj_SetLastPosition(UserLiveFeedobj_UserLivePos);
 
             Sidepannel_Positions = JSON.parse(JSON.stringify(UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos]));
-            if (Sidepannel_Positions.hasOwnProperty(Main_values.UserSidePannel_LastPosId)) {
+            if (Sidepannel_Positions.hasOwnProperty(Main_values.UserSidePannel_LastPositionId)) {
 
-                Sidepannel_PosFeed = Sidepannel_Positions[Main_values.UserSidePannel_LastPosId];
+                Sidepannel_PosFeed = Sidepannel_Positions[Main_values.UserSidePannel_LastPositionId];
 
             } else {
 
@@ -1032,13 +1032,13 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
 function UserLiveFeedobj_SetLastPosition(pos) {
 
-    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPosId[pos])) {
+    if (UserLiveFeed_idObject[pos].hasOwnProperty(Main_values.UserLiveFeed_LastPositionId[pos])) {
 
-        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPosId[pos]];
+        UserLiveFeed_FeedPosY[pos] = UserLiveFeed_idObject[pos][Main_values.UserLiveFeed_LastPositionId[pos]];
 
     } else if (UserLiveFeed_GetSize(pos)) {
 
-        var i = Main_values.UserLiveFeed_LastPos[pos];
+        var i = Main_values.UserLiveFeed_LastPosition[pos];
 
         for (i; i >= 0; i--) {
 
