@@ -863,7 +863,6 @@ function Main_ReStartScreens(preventRefresh) {
         if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
         Sidepannel_AddFocusLiveFeed(true);
-        Main_SaveValues();
     } else Main_SwitchScreen(false, preventRefresh);
 }
 
@@ -889,6 +888,15 @@ function Main_OpenSearch() {
     Main_HideWarningDialog();
     Main_CounterDialogRst();
     Search_init();
+}
+
+var Main_SaveValuesWithTimeoutId;
+function Main_SaveValuesWithTimeout() {
+    Main_SaveValuesWithTimeoutId = Main_setTimeout(
+        Main_SaveValues,
+        500,
+        Main_SaveValuesWithTimeoutId
+    );
 }
 
 function Main_SaveValues() {
@@ -3209,7 +3217,7 @@ function Main_Startfirebase() {
             if (!Main_values.firebaseId) {
 
                 Main_values.firebaseId = generatePushID();
-                Main_SaveValues();
+                Main_SaveValuesWithTimeout();
 
             }
             firebase.analytics().setUserId(Main_values.firebaseId);

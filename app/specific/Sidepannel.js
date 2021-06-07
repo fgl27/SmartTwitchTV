@@ -95,7 +95,7 @@ function Sidepannel_AddFocusLiveFeed(skipAnimation) {
         Main_textContentWithEle(Sidepannel_PosCounter, '');
     }
 
-    Main_setTimeout(Main_SaveValues);
+    Main_SaveValuesWithTimeout();
 }
 
 function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {

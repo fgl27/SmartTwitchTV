@@ -69,7 +69,7 @@ function ChannelContent_init() {
         ChannelContent_checkUser();
         ChannelContent_removeAllFollowFocus();
         ChannelContent_addFocus();
-        Main_SaveValues();
+        Main_SaveValuesWithTimeout();
         Main_EventScreen('ChannelContent');
     } else ChannelContent_StartLoad();
 

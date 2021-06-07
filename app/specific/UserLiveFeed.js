@@ -651,7 +651,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     UserLiveFeed_ResetFeedId();
-    Main_setTimeout(Main_SaveValues);
+    Main_SaveValuesWithTimeout();
 }
 
 function UserLiveFeed_CheckVod() {

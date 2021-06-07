@@ -3070,7 +3070,7 @@ function Play_MakeControls() {
             } else Chat_Init();
 
             this.setLable();
-            Main_SaveValues();
+            Main_SaveValuesWithTimeout();
         },
         setLable: function() {
             Main_textContent('extra_button_' + this.position, '(' +
@@ -3280,7 +3280,7 @@ function Play_MakeControls() {
 
             this.setLable();
             this.bottomArrows();
-            Main_SaveValues();
+            Main_SaveValuesWithTimeout();
         },
         setLable: function() {
             Main_textContentWithEle(this.doc_name,
@@ -3320,7 +3320,7 @@ function Play_MakeControls() {
             Play_SetChatFont();
             this.bottomArrows();
             this.setLable();
-            Main_SaveValues();
+            Main_SaveValuesWithTimeout();
         },
         setLable: function() {
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');

@@ -295,7 +295,7 @@ function Screens_init(key, preventRefresh) {
         Screens_addFocus(true, key);
         Screens_SetLastRefresh(key);
         Main_HideLoadDialog();
-        Main_SaveValues();
+        Main_SaveValuesWithTimeout();
         ScreenObj[key].screen_view();
     }
 }
@@ -698,16 +698,16 @@ function Screens_loadDataSuccessFinish(key) {
             Main_values.Never_run_new = false;
             Main_values.Never_run_phone = false;
 
-            Main_SaveValues();
             Screens_loadDataSuccessFinishEnd();
 
         } else {
 
             Screens_addFocus(true, key);
-            Main_SaveValues();
             if (Screens_IsInUse(key)) Main_HideLoadDialog();
 
         }
+
+        Main_SaveValuesWithTimeout();
 
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
 
