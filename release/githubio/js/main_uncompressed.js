@@ -4984,7 +4984,7 @@
             ChannelContent_checkUser();
             ChannelContent_removeAllFollowFocus();
             ChannelContent_addFocus();
-            Main_SaveValues();
+            Main_SaveValuesWithTimeout();
             Main_EventScreen('ChannelContent');
         } else ChannelContent_StartLoad();
 
@@ -10041,7 +10041,6 @@
             if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
             if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
             Sidepannel_AddFocusLiveFeed(true);
-            Main_SaveValues();
         } else Main_SwitchScreen(false, preventRefresh);
     }
 
@@ -10067,6 +10066,16 @@
         Main_HideWarningDialog();
         Main_CounterDialogRst();
         Search_init();
+    }
+
+    var Main_SaveValuesWithTimeoutId;
+
+    function Main_SaveValuesWithTimeout() {
+        Main_SaveValuesWithTimeoutId = Main_setTimeout(
+            Main_SaveValues,
+            500,
+            Main_SaveValuesWithTimeoutId
+        );
     }
 
     function Main_SaveValues() {
@@ -12397,7 +12406,7 @@
                 if (!Main_values.firebaseId) {
 
                     Main_values.firebaseId = generatePushID();
-                    Main_SaveValues();
+                    Main_SaveValuesWithTimeout();
 
                 }
                 firebase.analytics().setUserId(Main_values.firebaseId);
@@ -18023,7 +18032,7 @@
                 } else Chat_Init();
 
                 this.setLable();
-                Main_SaveValues();
+                Main_SaveValuesWithTimeout();
             },
             setLable: function() {
                 Main_textContent('extra_button_' + this.position, '(' +
@@ -18233,7 +18242,7 @@
 
                 this.setLable();
                 this.bottomArrows();
-                Main_SaveValues();
+                Main_SaveValuesWithTimeout();
             },
             setLable: function() {
                 Main_textContentWithEle(this.doc_name,
@@ -18273,7 +18282,7 @@
                 Play_SetChatFont();
                 this.bottomArrows();
                 this.setLable();
-                Main_SaveValues();
+                Main_SaveValuesWithTimeout();
             },
             setLable: function() {
                 Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');
@@ -24872,7 +24881,7 @@
             Screens_addFocus(true, key);
             Screens_SetLastRefresh(key);
             Main_HideLoadDialog();
-            Main_SaveValues();
+            Main_SaveValuesWithTimeout();
             ScreenObj[key].screen_view();
         }
     }
@@ -25275,16 +25284,16 @@
                 Main_values.Never_run_new = false;
                 Main_values.Never_run_phone = false;
 
-                Main_SaveValues();
                 Screens_loadDataSuccessFinishEnd();
 
             } else {
 
                 Screens_addFocus(true, key);
-                Main_SaveValues();
                 if (Screens_IsInUse(key)) Main_HideLoadDialog();
 
             }
+
+            Main_SaveValuesWithTimeout();
 
         } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
 
@@ -33302,7 +33311,7 @@
             Main_textContentWithEle(Sidepannel_PosCounter, '');
         }
 
-        Main_setTimeout(Main_SaveValues);
+        Main_SaveValuesWithTimeout();
     }
 
     function Sidepannel_RemoveFocusFeed(PreventCleanQualities) {
@@ -34828,7 +34837,7 @@
         }
 
         UserLiveFeed_ResetFeedId();
-        Main_setTimeout(Main_SaveValues);
+        Main_SaveValuesWithTimeout();
     }
 
     function UserLiveFeed_CheckVod() {
