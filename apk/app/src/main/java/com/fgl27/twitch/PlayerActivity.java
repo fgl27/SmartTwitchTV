@@ -1137,7 +1137,6 @@ public class PlayerActivity extends Activity {
                 .setExceedAudioConstraintsIfNecessary(true)
                 .setExceedVideoConstraintsIfNecessary(true)
                 .setExceedRendererCapabilitiesIfNecessary(true)
-                .setForceHighestSupportedBitrate(true)
                 .build();
 
     }
