@@ -21,11 +21,18 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 318,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/318/SmartTV_twitch_3_0_318.apk',
-    WebVersion: 'May 27 2021',
-    WebTag: 591,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 319,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/319/SmartTV_twitch_3_0_319.apk',
+    WebVersion: 'June 10 2021',
+    WebTag: 593,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.319 and Web Version Jun 10 2021",
+            changes: [
+                "Improve Auto quality playback",
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Web Version May 27 2021",
             changes: [
@@ -43,18 +50,6 @@ var version = {
             changes: [
                 "Add Spanish translation (not complete),Thanks to Lucas for the help",
                 "Any one can help to improve the app, if you wanna to add yours language to the app translations or improve a existent one, just check the app github page for instructions on how to help",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version May 16 2021",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.316 and Web Version May 13 2021",
-            changes: [
                 "General improves and bug fixes"
             ]
         }
