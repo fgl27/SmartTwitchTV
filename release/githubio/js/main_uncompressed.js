@@ -9535,9 +9535,6 @@
 
         Screens_InitScreens();
 
-        //If add a setting to control SetReUsePlayer() remove this
-        OSInterface_CheckReUsePlayer();
-
         if (AddUser_UserIsSet()) {
             Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
         }
@@ -13682,9 +13679,9 @@
     //CodecListToCheck = coma separated codec list to check
     //Android specific: true
     //Check to see if DefectedCodecExist
-    function OSInterface_CheckReUsePlayer() {
-        if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
-    }
+    // function OSInterface_CheckReUsePlayer() {
+    //     if (Main_IsOn_OSInterface) Android.CheckReUsePlayer('amlogic');
+    // }
 
     //public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
     //posX =  player position
