@@ -365,9 +365,6 @@ function Main_initWindows() {
 
     Screens_InitScreens();
 
-    //If add a setting to control SetReUsePlayer() remove this
-    OSInterface_CheckReUsePlayer();
-
     if (AddUser_UserIsSet()) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
