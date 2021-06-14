@@ -174,9 +174,11 @@ function Play_SetPlayQuality(quality) {
 function Play_Start(offline_chat) {
     //Main_Log('Play_Start');
 
-    //reset channel logo to prevent another channel logo
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
-    Play_UpdateMainStreamDiv();
+    if (!Play_OlddataSet()) {
+        //reset channel logo to prevent another channel logo
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+        Play_UpdateMainStreamDiv();
+    }
 
     Play_StartStayShowBottom();
 
@@ -233,7 +235,11 @@ function Play_Start(offline_chat) {
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
     //Check the Play_UpdateMainStream fun when on a browser
-    if (!Main_IsOn_OSInterface && !offline_chat) Play_UpdateMainStream(true, true);
+    if (!Main_IsOn_OSInterface && !offline_chat && !Play_OlddataSet()) {
+
+        Play_UpdateMainStream(true, true);
+
+    }
     PlayClip_DontSkipStartAuto = false;
 }
 
@@ -864,6 +870,12 @@ function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory, Preventcl
 
     Play_HideEndDialog();
     ChatLive_Playing = true;
+
+    if (Play_OlddataSet()) {
+        //reset channel logo to prevent another channel logo
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+        Play_UpdateMainStreamDiv();
+    }
     Play_UpdateMainStream(startChat, true);
 
     Play_data.playlist = playlist;
@@ -1999,8 +2011,16 @@ function Play_OpenLiveFeed() {
     Play_SavePlayData();
     Main_values.Play_isHost = false;
 
-    if (!Main_IsOn_OSInterface || Play_PreviewId || (UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos)) Play_OpenFeed(Play_handleKeyDown);
-    else Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
+    if (!Main_IsOn_OSInterface || Play_PreviewId ||
+        (UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos)) {
+
+        Play_OpenFeed(Play_handleKeyDown);
+
+    } else {
+
+        Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
+
+    }
 }
 
 function Play_OpenFeed(keyfun) {
@@ -2095,6 +2115,7 @@ function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
     Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    Play_SetControlsVisibilityPlayer(1);
 }
 
 function Play_handleKeyUpClear() {
