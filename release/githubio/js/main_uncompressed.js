@@ -3827,9 +3827,15 @@
         VersionBase: '3.0',
         publishVersionCode: 319, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/319/SmartTV_twitch_3_0_319.apk',
-        WebVersion: 'June 10 2021',
-        WebTag: 593, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'June 13 2021',
+        WebTag: 594, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version June 13 2021",
+                changes: [
+                    "General improves"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.319 and Web Version Jun 10 2021",
                 changes: [
                     "Improve Auto quality playback",
@@ -16866,8 +16872,11 @@
 
                 } else if (UserLiveFeed_isPreviewShowing()) {
 
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (Play_MultiEnable) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+                        UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+                    } else if (Play_MultiEnable) {
 
                         if (Play_MultiIsFull()) {
 
@@ -16907,8 +16916,11 @@
                 break;
             case KEY_1:
                 if (UserLiveFeed_isPreviewShowing()) {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else if (Play_MultiEnable) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+                        UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+                    } else if (Play_MultiEnable) {
                         if (Play_MultiIsFull()) {
                             var obj2 = Play_CheckLiveThumb();
                             if (obj2) Play_MultiSetUpdateDialog(obj2);
@@ -20024,9 +20036,11 @@
     function Play_Start(offline_chat) {
         //Main_Log('Play_Start');
 
-        //reset channel logo to prevent another channel logo
-        Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
-        Play_UpdateMainStreamDiv();
+        if (!Play_OlddataSet()) {
+            //reset channel logo to prevent another channel logo
+            Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+            Play_UpdateMainStreamDiv();
+        }
 
         Play_StartStayShowBottom();
 
@@ -20083,7 +20097,11 @@
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
         //Check the Play_UpdateMainStream fun when on a browser
-        if (!Main_IsOn_OSInterface && !offline_chat) Play_UpdateMainStream(true, true);
+        if (!Main_IsOn_OSInterface && !offline_chat && !Play_OlddataSet()) {
+
+            Play_UpdateMainStream(true, true);
+
+        }
         PlayClip_DontSkipStartAuto = false;
     }
 
@@ -20718,6 +20736,12 @@
 
         Play_HideEndDialog();
         ChatLive_Playing = true;
+
+        if (Play_OlddataSet()) {
+            //reset channel logo to prevent another channel logo
+            Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
+            Play_UpdateMainStreamDiv();
+        }
         Play_UpdateMainStream(startChat, true);
 
         Play_data.playlist = playlist;
@@ -21861,8 +21885,16 @@
         Play_SavePlayData();
         Main_values.Play_isHost = false;
 
-        if (!Main_IsOn_OSInterface || Play_PreviewId || (UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos)) Play_OpenFeed(Play_handleKeyDown);
-        else Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
+        if (!Main_IsOn_OSInterface || Play_PreviewId ||
+            (UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos)) {
+
+            Play_OpenFeed(Play_handleKeyDown);
+
+        } else {
+
+            Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
+
+        }
     }
 
     function Play_OpenFeed(keyfun) {
@@ -21957,6 +21989,7 @@
         Play_data = JSON.parse(JSON.stringify(Play_data_old));
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+        Play_SetControlsVisibilityPlayer(1);
     }
 
     function Play_handleKeyUpClear() {
