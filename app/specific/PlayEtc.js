@@ -1912,8 +1912,11 @@ function Play_handleKeyDown(e) {
 
             } else if (UserLiveFeed_isPreviewShowing()) {
 
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                else if (Play_MultiEnable) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+                    UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+                } else if (Play_MultiEnable) {
 
                     if (Play_MultiIsFull()) {
 
@@ -1953,8 +1956,11 @@ function Play_handleKeyDown(e) {
             break;
         case KEY_1:
             if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                else if (Play_MultiEnable) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+                    UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+                } else if (Play_MultiEnable) {
                     if (Play_MultiIsFull()) {
                         var obj2 = Play_CheckLiveThumb();
                         if (obj2) Play_MultiSetUpdateDialog(obj2);
