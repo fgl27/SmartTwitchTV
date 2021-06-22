@@ -2,7 +2,7 @@
 // © NightDev 2016 https://www.nightdev.com/kapchat/
 
 function emoteURL(id) {
-    return 'https://static-cdn.jtvnw.net/emoticons/v1/' + id + '/3.0';//emotes 3.0 === 4.0
+    return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0';//emotes 3.0 === 4.0
 }
 
 function emoteTemplate(url) {
