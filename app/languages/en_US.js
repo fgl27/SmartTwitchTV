@@ -591,6 +591,8 @@ function en_USLang() {
     STR_CHAT_BTTV_STREAM = "BTTV streamer";
     STR_CHAT_FFZ_GLOBAL = "FFZ global";
     STR_CHAT_FFZ_STREAM = "FFZ streamer";
+    STR_CHAT_SEVENTV_GLOBAL = "7TV global";
+    STR_CHAT_SEVENTV_STREAM = "7TV streamer";
     STR_CHAT_AT_STREAM = "@streamer";
     STR_CHAT_RESULT = "In Chat expected result:";
     STR_CHAT_SEND = "Send";

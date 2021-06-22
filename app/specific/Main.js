@@ -592,11 +592,13 @@ function Main_SetStringsSecondary() {
     Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
     Main_textContent("chat_send_button3", STR_CHAT_BTTV_GLOBAL);
     Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
-    Main_textContent("chat_send_button5", STR_CHAT_SEND);
-    Main_textContent("chat_send_button6", STR_CHAT_AT_STREAM);
-    Main_textContent("chat_send_button7", STR_CHAT_TW_EMOTES);
-    Main_textContent("chat_send_button8", STR_CHAT_BTTV_STREAM);
-    Main_textContent("chat_send_button9", STR_CHAT_FFZ_STREAM);
+    Main_textContent("chat_send_button5", STR_CHAT_SEVENTV_GLOBAL);
+    Main_textContent("chat_send_button6", STR_CHAT_SEND);
+    Main_textContent("chat_send_button7", STR_CHAT_AT_STREAM);
+    Main_textContent("chat_send_button8", STR_CHAT_TW_EMOTES);
+    Main_textContent("chat_send_button9", STR_CHAT_BTTV_STREAM);
+    Main_textContent("chat_send_button10", STR_CHAT_FFZ_STREAM);
+    Main_textContent("chat_send_button11", STR_CHAT_SEVENTV_STREAM);
     Main_textContent("chat_result", STR_CHAT_RESULT);
     ChatLiveControls_OptionsUpdate_defautls();
 

@@ -20,7 +20,8 @@
 
 var ChatLiveControls_inputFocusId;
 var ChatLiveControls_keyBoardOn = false;
-var ChatLiveControls_cursor = 5;
+var ChatLiveControls_cursor_default = 6;
+var ChatLiveControls_cursor = ChatLiveControls_cursor_default;
 var ChatLiveControls_Channel = 0;
 var ChatLiveControls_LastChannel = '';
 
@@ -171,7 +172,7 @@ function ChatLiveControls_RemoveinputFocus(EnaKeydown) {
 function ChatLiveControls_KeyboardDismiss() {
     Main_clearTimeout(ChatLiveControls_inputFocusId);
     ChatLiveControls_RemoveinputFocus(true);
-    ChatLiveControls_cursor = 5;
+    ChatLiveControls_cursor = ChatLiveControls_cursor_default;
     ChatLiveControls_refreshInputFocusTools();
 }
 
@@ -181,7 +182,7 @@ function ChatLiveControls_refreshInputFocusTools() {
 }
 
 function ChatLiveControls_resetInputFocusTools() {
-    for (var i = 0; i < 10; i++)
+    for (var i = 0; i < 12; i++)
         Main_RemoveClass('chat_send_button' + i, 'button_chat_focused');
 }
 
@@ -230,6 +231,10 @@ function ChatLiveControls_HandleKeyEnter() {
 
     } else if (ChatLiveControls_cursor === 5) {
 
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tvGlobal, STR_CHAT_SEVENTV_GLOBAL);
+
+    } else if (ChatLiveControls_cursor === 6) {
+
         if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
 
             if (ChatLiveControls_CanSend()) {
@@ -245,21 +250,25 @@ function ChatLiveControls_HandleKeyEnter() {
 
         } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
 
-    } else if (ChatLiveControls_cursor === 6 && ChatLiveControls_CanSendAnyEmote() && ChatLiveControls_CanSend()) {
+    } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSendAnyEmote() && ChatLiveControls_CanSend()) {
 
         ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
 
-    } else if (ChatLiveControls_cursor === 7) {
+    } else if (ChatLiveControls_cursor === 8) {
 
         ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES);
 
-    } else if (ChatLiveControls_cursor === 8) {
+    } else if (ChatLiveControls_cursor === 9) {
 
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BTTV_STREAM);
 
-    } else if (ChatLiveControls_cursor === 9) {
+    } else if (ChatLiveControls_cursor === 10) {
 
         ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
+
+    } else if (ChatLiveControls_cursor === 11) {
+
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM);
 
     }
 }
@@ -271,25 +280,25 @@ function ChatLiveControls_handleKeyDown(event) {
             break;
         case KEY_LEFT:
             ChatLiveControls_cursor--;
-            if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 9;
+            if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 11;
             ChatLiveControls_refreshInputFocusTools();
             break;
         case KEY_RIGHT:
             ChatLiveControls_cursor++;
-            if (ChatLiveControls_cursor > 9) ChatLiveControls_cursor = 0;
+            if (ChatLiveControls_cursor > 11) ChatLiveControls_cursor = 0;
             ChatLiveControls_refreshInputFocusTools();
             break;
         case KEY_UP:
-            if (ChatLiveControls_cursor > 4) {
-                ChatLiveControls_cursor -= 5;
+            if (ChatLiveControls_cursor > 5) {
+                ChatLiveControls_cursor -= 6;
                 ChatLiveControls_refreshInputFocusTools();
             } else {
                 ChatLiveControls_inputFocus();
             }
             break;
         case KEY_DOWN:
-            if (ChatLiveControls_cursor < 5) {
-                ChatLiveControls_cursor += 5;
+            if (ChatLiveControls_cursor < 6) {
+                ChatLiveControls_cursor += 6;
                 ChatLiveControls_refreshInputFocusTools();
             } else {
                 ChatLiveControls_inputFocus();
@@ -525,7 +534,7 @@ function ChatLiveControls_ShowEmotes() {
         Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
 
         Main_addEventListener("keydown", ChatLiveControls_EmotesEvent);
-        ChatLiveControls_resetInputFocusTools();
+        //ChatLiveControls_resetInputFocusTools();
 
         Main_getElementById('chat_emotes').style.transform = '';
         ChatLiveControls_EmotesUpdateCounter(0);
