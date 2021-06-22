@@ -5713,6 +5713,7 @@
     var ChatLiveControls_keyBoardOn = false;
     var ChatLiveControls_cursor_default = 6;
     var ChatLiveControls_cursor_size = 11;
+    var ChatLiveControls_cursor_half_size = parseInt((ChatLiveControls_cursor_size + 1) / 2);
     var ChatLiveControls_cursor = ChatLiveControls_cursor_default;
     var ChatLiveControls_Channel = 0;
     var ChatLiveControls_LastChannel = '';
@@ -5982,16 +5983,16 @@
                 ChatLiveControls_refreshInputFocusTools();
                 break;
             case KEY_UP:
-                if (ChatLiveControls_cursor > (ChatLiveControls_cursor_default - 1)) {
-                    ChatLiveControls_cursor -= ChatLiveControls_cursor_default;
+                if (ChatLiveControls_cursor > (ChatLiveControls_cursor_half_size - 1)) {
+                    ChatLiveControls_cursor -= ChatLiveControls_cursor_half_size;
                     ChatLiveControls_refreshInputFocusTools();
                 } else {
                     ChatLiveControls_inputFocus();
                 }
                 break;
             case KEY_DOWN:
-                if (ChatLiveControls_cursor < ChatLiveControls_cursor_default) {
-                    ChatLiveControls_cursor += ChatLiveControls_cursor_default;
+                if (ChatLiveControls_cursor < ChatLiveControls_cursor_half_size) {
+                    ChatLiveControls_cursor += ChatLiveControls_cursor_half_size;
                     ChatLiveControls_refreshInputFocusTools();
                 } else {
                     ChatLiveControls_inputFocus();
