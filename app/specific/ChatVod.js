@@ -77,6 +77,8 @@ function Chat_loadBadgesGlobal() {
     if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest();
     if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
+    if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
+
     ChatLiveControls_SetEmojisObj();
 }
 
@@ -197,6 +199,18 @@ function Chat_loadEmotesbttvGlobal(data) {
         Main_Log('Chat_loadEmotesbttvGlobal ' + e);
     }
 
+}
+
+function Chat_loadSeven_tvGlobalEmotes() {
+    Chat_BaseLoadUrl(
+        'https://api.7tv.app/v2/emotes/global',
+        Chat_loadEmotesSuccessSeven_tv,
+        noop_fun
+    );
+}
+
+function Chat_loadEmotesSuccessSeven_tv(data) {
+    ChatLive_loadEmotesseven_tv(JSON.parse(data), 0, true);
 }
 
 function Chat_loadEmotesffz() {
