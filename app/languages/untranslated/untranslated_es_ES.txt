@@ -241,5 +241,7 @@
     STR_INACTIVE_WARNING = "The app will auto minimize do to inactivity in<br><br>%x<br><br>Press any key to prevent";
     STR_REMAINING = "Remaining:";
     STR_AS = "as";
-     STR_BOTTOM = "Bottom";
+    STR_BOTTOM = "Bottom";
     STR_OFFSET = "Offset";
+    STR_CHAT_SEVENTV_GLOBAL = "7TV global";
+    STR_CHAT_SEVENTV_STREAM = "7TV streamer";

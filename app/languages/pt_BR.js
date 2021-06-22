@@ -242,7 +242,7 @@ function pt_BRLang() {
     STR_NO_BROADCAST = "Sem Vídeos";
     STR_NO_BROADCAST_WARNING = "Não há Vídeo para este clipe";
     STR_NO_CHAT = "E por causa disso nenhum chat";
-    STR_IS_NOW = "agora é";
+    STR_IS_NOW = "Esta agora";
     STR_OPEN_HOST = "Abra o Hosting";
     STR_SETTINGS_PLAYER = "player relacionado";
     STR_SETTINGS_BUFFER_SIZE = "Buffer inicial:";
