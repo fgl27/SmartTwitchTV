@@ -301,8 +301,8 @@ function pt_BRLang() {
     STR_CHAT_DISABLE = "chat foi desabilitado à força, habilite-o nos controles da parte inferior do player chat desabilitado forçado";
     STR_CLIP_FAIL = "Este clipe/vídeo falhou ao carregar. Não é possível reproduzir";
     STR_CHAT_BRIGHTNESS = "Brilho de fundo do chat";
-    STR_PLAY_NEXT = "Reproduzir o seguinte";
-    STR_PLAY_NEXT_IN = "Reproduzindo o seguinte em";
+    STR_PLAY_NEXT = "Iniciar o proximo";
+    STR_PLAY_NEXT_IN = "Iniciar o proximo em";
     STR_PLAY_ALL = "Reproduzir tudo";
     STR_AUTO_PLAY_NEXT = "Reproduzir automaticamente o próximo clipe";
     STR_SIDE_PANEL_SETTINGS = "Voltar ao menu principal";
