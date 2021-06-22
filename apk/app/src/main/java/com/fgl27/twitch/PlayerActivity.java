@@ -69,8 +69,8 @@ import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -3975,9 +3975,9 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public void onPlayerError(@NonNull ExoPlaybackException e) {
+        public void onPlayerError(@NonNull PlaybackException e) {
 
-            Tools.recordException(TAG, "onPlayerError pos " + position + " e.type " + e.type + " e.errorCode " + e.errorCode + " e ", e);
+            Tools.recordException(TAG, "onPlayerError pos " + position + " e.errorCode " + e.errorCode + " e ", e);
 
             PlayerEventListenerCheckCounter(position, 1, e.errorCode);//player_Erro
 
