@@ -1559,12 +1559,7 @@ function Screens_addrowEnd(forceScroll, key) {
 
         } else if (!ScreenObj[key].screenType && Screens_ObjNotNull(key) && ScreenObj[key].screen !== Main_HistoryLive) {
 
-            data = Screens_GetObj(key);
-
-            Main_innerHTML(
-                ScreenObj[key].ids[4] + id,
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
-            );
+            Screens_UpdateSince(key);
 
         }
 
@@ -1575,6 +1570,35 @@ function Screens_addrowEnd(forceScroll, key) {
 
     });
 }
+
+var Screens_UpdateSinceId;
+function Screens_UpdateSince(key) {
+
+    if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key)) return;
+
+    if (Screens_ObjNotNull(key)) {
+
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
+            data = Screens_GetObj(key);
+
+        Main_innerHTML(
+            ScreenObj[key].ids[4] + id,
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
+        );
+    }
+
+    Screens_UpdateSinceId = Main_setTimeout(
+        function() {
+
+            Screens_UpdateSince(key);
+
+        },
+        1000,
+        Screens_UpdateSinceId
+    );
+
+}
+
 
 function Screens_setOffset(pos, y, key) {
     if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
