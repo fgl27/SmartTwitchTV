@@ -5712,6 +5712,7 @@
     var ChatLiveControls_inputFocusId;
     var ChatLiveControls_keyBoardOn = false;
     var ChatLiveControls_cursor_default = 6;
+    var ChatLiveControls_cursor_size = 11;
     var ChatLiveControls_cursor = ChatLiveControls_cursor_default;
     var ChatLiveControls_Channel = 0;
     var ChatLiveControls_LastChannel = '';
@@ -5873,7 +5874,7 @@
     }
 
     function ChatLiveControls_resetInputFocusTools() {
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < (ChatLiveControls_cursor_size + 1); i++)
             Main_RemoveClass('chat_send_button' + i, 'button_chat_focused');
     }
 
@@ -5972,25 +5973,25 @@
                 break;
             case KEY_LEFT:
                 ChatLiveControls_cursor--;
-                if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = 11;
+                if (ChatLiveControls_cursor < 0) ChatLiveControls_cursor = ChatLiveControls_cursor_size;
                 ChatLiveControls_refreshInputFocusTools();
                 break;
             case KEY_RIGHT:
                 ChatLiveControls_cursor++;
-                if (ChatLiveControls_cursor > 11) ChatLiveControls_cursor = 0;
+                if (ChatLiveControls_cursor > ChatLiveControls_cursor_size) ChatLiveControls_cursor = 0;
                 ChatLiveControls_refreshInputFocusTools();
                 break;
             case KEY_UP:
-                if (ChatLiveControls_cursor > 5) {
-                    ChatLiveControls_cursor -= 6;
+                if (ChatLiveControls_cursor > (ChatLiveControls_cursor_default - 1)) {
+                    ChatLiveControls_cursor -= ChatLiveControls_cursor_default;
                     ChatLiveControls_refreshInputFocusTools();
                 } else {
                     ChatLiveControls_inputFocus();
                 }
                 break;
             case KEY_DOWN:
-                if (ChatLiveControls_cursor < 6) {
-                    ChatLiveControls_cursor += 6;
+                if (ChatLiveControls_cursor < ChatLiveControls_cursor_default) {
+                    ChatLiveControls_cursor += ChatLiveControls_cursor_default;
                     ChatLiveControls_refreshInputFocusTools();
                 } else {
                     ChatLiveControls_inputFocus();
@@ -6229,7 +6230,6 @@
             Main_removeEventListener("keydown", ChatLiveControls_handleKeyDown);
 
             Main_addEventListener("keydown", ChatLiveControls_EmotesEvent);
-            //ChatLiveControls_resetInputFocusTools();
 
             Main_getElementById('chat_emotes').style.transform = '';
             ChatLiveControls_EmotesUpdateCounter(0);
