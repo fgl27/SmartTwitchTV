@@ -79,8 +79,12 @@ function UserLiveFeedobj_StartDefault(pos) {
             Main_values.UserLiveFeed_LastPositionId[pos] =
                 UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
-            Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos] < 100 ?
-                UserLiveFeed_FeedPosY[pos] : 0;
+            if (!UserLiveFeed_obj[pos].Game_changed) {
+
+                Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos] < 100 ?
+                    UserLiveFeed_FeedPosY[pos] : 0;
+
+            }
 
         }
 
@@ -664,9 +668,19 @@ var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserGamesPos - 1);
 
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed = !Main_A_equals_B_No_Case(
+        UserLiveFeedobj_CurrentUserAGameName,
+        UserLiveFeedobj_CurrentUserAGameNameEnter
+    );
+
+    if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed ||
+        !UserLiveFeedobj_CurrentUserAGameNameEnter) {
+        Main_values.UserLiveFeed_LastPosition[UserLiveFeedobj_UserAGamesPos] = 0;
+    }
+
     UserLiveFeedobj_ShowFeedCheck(
         UserLiveFeedobj_UserAGamesPos,
-        !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter)
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed
     );
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE_HTML + STR_GAMES);
     if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
@@ -746,7 +760,22 @@ var UserLiveFeedobj_CurrentAGameNameEnter = null;
 function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_AGamesPos);
 
-    UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_AGamesPos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentAGameName, UserLiveFeedobj_CurrentAGameNameEnter));
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed =
+        !Main_A_equals_B_No_Case(
+            UserLiveFeedobj_CurrentAGameName,
+            UserLiveFeedobj_CurrentAGameNameEnter
+        );
+
+    if (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed ||
+        !UserLiveFeedobj_CurrentAGameNameEnter) {
+        Main_values.UserLiveFeed_LastPosition[UserLiveFeedobj_AGamesPos] = 0;
+    }
+
+    UserLiveFeedobj_ShowFeedCheck(
+        UserLiveFeedobj_AGamesPos,
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed
+    );
+
     UserLiveFeedobj_CurrentAGameName = UserLiveFeedobj_CurrentAGameNameEnter;
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_GAMES);
     if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
@@ -1057,7 +1086,7 @@ function UserLiveFeedobj_SetLastPosition(pos) {
 
     //There is max total loaded positions, thescroll function only works well if there is at least 4 ahead
     //Give 5 to make things work
-    if (UserLiveFeed_obj[pos].HasMore && (UserLiveFeed_FeedPosY[pos] > (total - 5))) {
+    if (UserLiveFeed_obj[pos].HasMore && (UserLiveFeed_FeedPosY[pos] > (total - 5)) && (total - 5) >= 0) {
 
         UserLiveFeed_FeedPosY[pos] = total - 5;
 

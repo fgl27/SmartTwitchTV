@@ -321,6 +321,7 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
             //     Main_hideScene2Doc();
             //     Main_RemoveClassWithEle(Main_Scene2Doc, 'opacity_zero');
             // } else {
+
             UserLiveFeed_obj[pos].AddCellsize =
                 UserLiveFeed_cell[pos][UserLiveFeed_FeedPosY[pos]].offsetWidth / BodyfontSize;
             //}
