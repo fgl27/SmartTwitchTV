@@ -685,12 +685,11 @@ function Screens_loadDataSuccessFinish(key) {
         if (Main_FirstRun) {
             //Main_Log('Main_FirstRun ' + Main_FirstRun);
 
-            if (Main_values.Never_run_new)
-                Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-
-            if (Main_values.Never_run_phone && !Main_isTV) {
-                Main_showphoneDialog(Main_values.Never_run_new ?
-                    ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
+            if (Main_values.Never_run_new) {
+                Main_showWelcomeDialog(
+                    ScreenObj[key].key_fun,
+                    ScreenObj[key].key_controls
+                );
             }
 
             if (!Main_values.Never_run_new) Screens_addFocus(true, key);
@@ -791,11 +790,7 @@ function Screens_handleKeyControls(key, event) {
                 Main_HideElement('dialog_accessibility');
             } else CheckAccessibilityWasVisible = false;
 
-            if (Main_isphoneDialogVisible()) {
-                Main_HidephoneDialog();
-                break;
-            }
-
+            Main_HideWelcomeDialog();
             Main_HideControlsDialog();
             Main_HideAboutDialog();
             Main_removeEventListener("keydown", ScreenObj[key].key_controls);

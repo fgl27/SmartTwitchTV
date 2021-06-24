@@ -34,7 +34,6 @@ function pt_BRLang() {
     STR_SEARCH = "Pesquisar";
     STR_SETTINGS = "Configurações";
     STR_CONTROLS = "Controles";
-    STR_CONTROLS_ETC = "Veja o vídeo da Play Store para entender melhor como o aplicativo funciona e como usar suas configurações e controles";
     STR_ABOUT = "Sobre";
     STR_HIDE = "Ocultar";
     STR_SEARCH_EMPTY = "O texto que você digitou está vazio.";
@@ -438,9 +437,11 @@ function pt_BRLang() {
     STR_LATENCY = "Latencia a transmissão (Sec):";
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base em" + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping Twitch (Ms):";
-    STR_WARNING = "Aviso";
     STR_WARNINGS = 'Avisos';
-    STR_ABOUT_PHONE = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
+    STR_WELCOME = "Bem vindo ao";
+    STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida, verifique o sobre do aplicativo no painel lateral para obter informações de contato.';
+    STR_WARNING_PHONE = 'Aviso para celulares';
+    STR_WARNING_PHONE_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
     STR_DPAD_POSTION = "Posição da tela do D-pad";
     STR_DPAD_OPACITY = "Transparencia do D-pad";
     STR_DPAD_OPT = "Opções do D-pad";

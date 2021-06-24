@@ -35,7 +35,6 @@ function es_ESLang() {
     STR_SEARCH = "Buscar";
     STR_SETTINGS = "Configuración";
     STR_CONTROLS = "Controles";
-    STR_CONTROLS_ETC = "Vea el video de Play Store para comprender mejor cómo funciona la aplicación y cómo usar sus ajustes y controles";
     STR_ABOUT = "Acerca de";
     STR_HIDE = "Ocultar";
     STR_SEARCH_EMPTY = "El texto que ingresaste está vacío.";
@@ -352,7 +351,6 @@ function es_ESLang() {
     STR_LATENCY = "Latencia de transmisión (Seg):";
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base en la " + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping a Twitch (Ms):";
-    STR_WARNING = "Advertencia";
     STR_WARNINGS = 'Advertencias';
 
     STR_DPAD_POSTION = "Posición de la pantalla del D-pad";

@@ -37,7 +37,6 @@ function en_USLang() {
     STR_SEARCH = "Search";
     STR_SETTINGS = "Settings";
     STR_CONTROLS = "Controls";
-    STR_CONTROLS_ETC = "See Play Store video to better understand how the app works and how to use its settings and controls";
     STR_ABOUT = "About";
     STR_HIDE = "Hide";
     STR_SEARCH_EMPTY = "The text you entered is empty.";
@@ -442,9 +441,11 @@ function en_USLang() {
     STR_LATENCY = "Latency To Broadcaster (Sec):";
     STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
     STR_PING = "Ping to Twitch (Ms):";
-    STR_WARNING = "Warning";
     STR_WARNINGS = 'Warnings';
-    STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
+    STR_WELCOME = "Welcome to";
+    STR_WELCOME_SUMMARY = 'This application has a lot of features and was design to give the user full control of it, because of that it has many options, controls and customizations, check the app settings and controls to understasnd how to use it, in doubt check Play Store demonstration video, if any doubt remains check the about of the app on the side panel for contact info.';
+    STR_WARNING_PHONE = 'Cellphones warning';
+    STR_WARNING_PHONE_SUMMARY = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
     STR_DPAD_POSTION = "D-pad screen position";
     STR_DPAD_OPACITY = "D-pad opacity";
     STR_DPAD_OPT = "D-pad options";

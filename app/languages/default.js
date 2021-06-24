@@ -34,7 +34,6 @@ var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
 var STR_SETTINGS_KEY = '';
 var STR_CONTROLS_MAIN_0 = '';
-var STR_ABOUT_PHONE_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_ACCESSIBILITY_WARN_TEXT = '';
@@ -58,7 +57,6 @@ function DefaultLang() {
     STR_OFFSET = STR_SPACE + STR_OFFSET + STR_SPACE;
 
     //Strings that are used before others strings
-    STR_CONTROLS_ETC += STR_SPACE;
     STR_GO_TO += STR_SPACE;
     STR_PLAYING += STR_SPACE;
     STR_FOR += STR_SPACE;
@@ -222,7 +220,7 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MULTI_5 + STR_BR + '</div>' +
         STR_DIV_TITLE + STR_CONTROLS_MULTI_6 + '</div>';
 
-    STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + STR_BR + STR_RED_DIV + STR_CONTROLS_ETC + '</div></div>' +
+    STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
         STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_SIDE_PANEL + STR_BR +
         STR_DOT + STR_USER_LIVE + STR_BR +
@@ -234,10 +232,6 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' +
         STR_CONTROLS_PLAY_0 + STR_BR +
-        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
-
-    STR_ABOUT_PHONE_0 = STR_DIV_TITLE + STR_WARNING + '</div>' + STR_BR +
-        STR_ABOUT_PHONE + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +

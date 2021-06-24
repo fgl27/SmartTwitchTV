@@ -245,3 +245,5 @@
     STR_OFFSET = "Offset";
     STR_CHAT_SEVENTV_GLOBAL = "7TV global";
     STR_CHAT_SEVENTV_STREAM = "7TV streamer";
+    STR_WELCOME = "Welcome to";
+    STR_WARNING_PHONE = 'Phones warning';

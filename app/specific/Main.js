@@ -543,7 +543,6 @@ function Main_SetStringsSecondary() {
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
-    Main_innerHTML("dialog_phone_text", STR_ABOUT_PHONE_0);
     Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -796,19 +795,35 @@ function Main_showSettings() {
     Settings_init();
 }
 
-function Main_showphoneDialog(removeEventListener, addEventListener) {
+function Main_showWelcomeDialog(removeEventListener, addEventListener) {
     Main_removeEventListener("keydown", removeEventListener);
     Main_addEventListener("keydown", addEventListener);
-    Main_HideAboutDialog();
-    Main_ShowElement('dialog_phone');
+
+    var phone_warning = '';
+    if (!Main_isTV) {
+
+        phone_warning = STR_DIV_TITLE + STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
+
+    }
+
+    Main_innerHTML(
+        "welcome_dialog_text",
+        STR_DIV_TITLE + STR_WELCOME + STR_SPACE_HTML + STR_TWITCH_TV + '</div>' + STR_BR +
+        STR_WELCOME_SUMMARY + STR_BR + STR_BR +
+        phone_warning +
+        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
+    );
+
+    Main_ShowElement('welcome_dialog');
+
 }
 
-function Main_HidephoneDialog() {
-    Main_HideElement('dialog_phone');
+function Main_HideWelcomeDialog() {
+    Main_HideElement('welcome_dialog');
 }
 
-function Main_isphoneDialogVisible() {
-    return Main_isElementShowing('dialog_phone');
+function Main_isWelcomeDialogVisible() {
+    return Main_isElementShowing('welcome_dialog');
 }
 
 function Main_showControlsDialog(removeEventListener, addEventListener) {
@@ -2960,7 +2975,7 @@ function Main_CheckAccessibilityKey(event) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
         case KEY_ENTER:
-            if (!Main_isControlsDialogVisible() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
+            if (!Main_isControlsDialogVisible() && !Main_isWelcomeDialogVisible() && Main_isScene1DocVisible()) {
                 Main_CheckAccessibilityHide(true);
             }
             break;
