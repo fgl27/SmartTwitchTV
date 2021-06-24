@@ -149,7 +149,7 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_6 = "Alternar tela: tecla de retorno e depois D-Pad para cima/para baixo ou" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
     STR_CONTROLS_MAIN_10 = "Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa";
     STR_CONTROLS_MAIN_14 = "Sobre este aplicativo: no painel lateral, clique em";
-    STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo";
+    STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo.";
     STR_ABOUT_INFO_2_SOURCE = "Esta versão do aplicativo é para teste apenas no navegador!";
     STR_ABOUT_INFO_3 = "Informações de contato:";
     STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";
@@ -439,7 +439,7 @@ function pt_BRLang() {
     STR_PING = "Ping Twitch (Ms):";
     STR_WARNINGS = 'Avisos';
     STR_WELCOME = "Bem vindo ao";
-    STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida, verifique o sobre do aplicativo no painel lateral para obter informações de contato.';
+    STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida use as informações de contato.';
     STR_WARNING_PHONE = 'Aviso para celulares';
     STR_WARNING_PHONE_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
     STR_DPAD_POSTION = "Posição da tela do D-pad";

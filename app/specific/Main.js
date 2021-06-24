@@ -809,7 +809,9 @@ function Main_showWelcomeDialog(removeEventListener, addEventListener) {
     Main_innerHTML(
         "welcome_dialog_text",
         STR_DIV_TITLE + STR_WELCOME + STR_SPACE_HTML + STR_TWITCH_TV + '</div>' + STR_BR +
+        STR_ABOUT_INFO_1 + STR_BR + STR_BR +
         STR_WELCOME_SUMMARY + STR_BR + STR_BR +
+        STR_CONTACT +
         phone_warning +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
     );

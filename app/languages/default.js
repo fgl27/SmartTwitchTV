@@ -38,6 +38,7 @@ var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_ACCESSIBILITY_WARN_TEXT = '';
 var STR_CONTROLS_PLAY_0 = '';
+var STR_CONTACT;
 var STR_PAYPAL;
 var STR_BITCOIN;
 var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
@@ -239,17 +240,18 @@ function DefaultLang() {
         STR_RED_DIV + STR_APP_LAG + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
+    STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
+        STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
+        STR_PAYPAL +
+        STR_BITCOIN + STR_BR;
+
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 = STR_BR + STR_BR + STR_ABOUT_INFO_1 +
         (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
-
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +
         STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR +
-        STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-        STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
-        STR_PAYPAL +
-        STR_BITCOIN + STR_BR +
+        STR_CONTACT +
         STR_ABOUT_INFO_4 + STR_BR +
         STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
         STR_BR +
