@@ -1084,7 +1084,7 @@ function UserLiveFeedobj_SetLastPosition(pos) {
 
     }
 
-    //There is max total loaded positions, thescroll function only works well if there is at least 4 ahead
+    //There is max total loaded positions, the scroll function only works well if there is at least 4 ahead
     //Give 5 to make things work
     if (UserLiveFeed_obj[pos].HasMore && (UserLiveFeed_FeedPosY[pos] > (total - 5)) && (total - 5) >= 0) {
 
