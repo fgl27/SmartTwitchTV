@@ -750,6 +750,7 @@
     var STR_ABOUT_INFO_0 = '';
     var STR_ACCESSIBILITY_WARN_TEXT = '';
     var STR_CONTROLS_PLAY_0 = '';
+    var STR_CONTACT;
     var STR_PAYPAL;
     var STR_BITCOIN;
     var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
@@ -951,17 +952,18 @@
             STR_RED_DIV + STR_APP_LAG + '</div>' + STR_BR + STR_BR + STR_ACCESSIBILITY_WARN_EXTRA2 + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
+        STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
+            STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
+            STR_PAYPAL +
+            STR_BITCOIN + STR_BR;
+
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
         STR_ABOUT_INFO_0 = STR_BR + STR_BR + STR_ABOUT_INFO_1 +
             (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
-
             STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
             STR_ABOUT_INFO_19 + STR_BR +
             STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR +
-            STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-            STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
-            STR_PAYPAL +
-            STR_BITCOIN + STR_BR +
+            STR_CONTACT +
             STR_ABOUT_INFO_4 + STR_BR +
             STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
             STR_BR +
@@ -1139,7 +1141,7 @@
         STR_CONTROLS_MAIN_6 = "Switch screen: return key then D-Pad up/Down or" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
         STR_CONTROLS_MAIN_10 = "Start a search: from side panel click search, writing the search press the Enter key on the virtual keyboard and choose a search option";
         STR_CONTROLS_MAIN_14 = "About this application: from side panel click about";
-        STR_ABOUT_INFO_1 = "This is an Android TV Twitch Client, released for free to anyone who wants to use it";
+        STR_ABOUT_INFO_1 = "This is an Android TV Twitch Client, released for free to anyone who wants to use it.";
         STR_ABOUT_INFO_2_SOURCE = "This version of the app is for test in browser only!";
         STR_ABOUT_INFO_3 = "Contact information:";
         STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it on GitHub";
@@ -1429,7 +1431,7 @@
         STR_PING = "Ping to Twitch (Ms):";
         STR_WARNINGS = 'Warnings';
         STR_WELCOME = "Welcome to";
-        STR_WELCOME_SUMMARY = 'This application has a lot of features and was design to give the user full control of it, because of that it has many options, controls and customizations, check the app settings and controls to understasnd how to use it, in doubt check Play Store demonstration video, if any doubt remains check the about of the app on the side panel for contact info.';
+        STR_WELCOME_SUMMARY = 'This application has a lot of features and was design to give the user full control of it, because of that it has many options, controls and customizations, check the app settings and controls to understasnd how to use it, in doubt check Play Store demonstration video, if any doubt use the contact info.';
         STR_WARNING_PHONE = 'Cellphones warning';
         STR_WARNING_PHONE_SUMMARY = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
@@ -2360,7 +2362,7 @@
         STR_CONTROLS_MAIN_6 = "Alternar tela: tecla de retorno e depois D-Pad para cima/para baixo ou" + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
         STR_CONTROLS_MAIN_10 = "Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa";
         STR_CONTROLS_MAIN_14 = "Sobre este aplicativo: no painel lateral, clique em";
-        STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo";
+        STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo.";
         STR_ABOUT_INFO_2_SOURCE = "Esta versão do aplicativo é para teste apenas no navegador!";
         STR_ABOUT_INFO_3 = "Informações de contato:";
         STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";
@@ -2650,7 +2652,7 @@
         STR_PING = "Ping Twitch (Ms):";
         STR_WARNINGS = 'Avisos';
         STR_WELCOME = "Bem vindo ao";
-        STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida, verifique o sobre do aplicativo no painel lateral para obter informações de contato.';
+        STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida use as informações de contato.';
         STR_WARNING_PHONE = 'Aviso para celulares';
         STR_WARNING_PHONE_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
         STR_DPAD_POSTION = "Posição da tela do D-pad";
@@ -10091,7 +10093,9 @@
         Main_innerHTML(
             "welcome_dialog_text",
             STR_DIV_TITLE + STR_WELCOME + STR_SPACE_HTML + STR_TWITCH_TV + '</div>' + STR_BR +
+            STR_ABOUT_INFO_1 + STR_BR + STR_BR +
             STR_WELCOME_SUMMARY + STR_BR + STR_BR +
+            STR_CONTACT +
             phone_warning +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
         );
