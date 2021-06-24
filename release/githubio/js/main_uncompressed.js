@@ -9022,7 +9022,7 @@
         Chat_offset = 0;
         Chat_next = responseText._next;
 
-        comments = responseText.comments;
+        comments = responseText.comments || [];
 
         for (i = 0, len = comments.length; i < len; i++) {
 
@@ -9053,28 +9053,32 @@
 
             hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
-            for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
-                fragment = mmessage.fragments[j];
+            if (mmessage.fragments) {
 
-                if (fragment.hasOwnProperty('emoticon')) message_text += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
-                else {
+                for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
+                    fragment = mmessage.fragments[j];
 
-                    message_text +=
-                        ChatLive_extraMessageTokenize(
-                            [fragment.text],
-                            0,
-                            (hasbits ? mmessage.bits_spent : 0)
-                        );
+                    if (fragment.hasOwnProperty('emoticon')) message_text += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
+                    else {
 
-                    if (!atstreamer && ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[0].test(fragment.text)) {
+                        message_text +=
+                            ChatLive_extraMessageTokenize(
+                                [fragment.text],
+                                0,
+                                (hasbits ? mmessage.bits_spent : 0)
+                            );
 
-                        atstreamer = true;
+                        if (!atstreamer && ChatLive_Highlight_AtStreamer && ChatLive_Channel_Regex_Search[0].test(fragment.text)) {
 
-                    } else if (!atuser && ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(fragment.text)) {
+                            atstreamer = true;
 
-                        atuser = true;
+                        } else if (!atuser && ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(fragment.text)) {
 
+                            atuser = true;
+
+                        }
                     }
+
                 }
 
             }
@@ -36761,7 +36765,7 @@
 
         }
 
-        //There is max total loaded positions, thescroll function only works well if there is at least 4 ahead
+        //There is max total loaded positions, the scroll function only works well if there is at least 4 ahead
         //Give 5 to make things work
         if (UserLiveFeed_obj[pos].HasMore && (UserLiveFeed_FeedPosY[pos] > (total - 5)) && (total - 5) >= 0) {
 
