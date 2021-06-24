@@ -340,8 +340,10 @@
     var STR_NET_SPEED;
     var STR_NET_ACT;
     var STR_LATENCY;
-    var STR_WARNING;
-    var STR_ABOUT_PHONE;
+    var STR_WELCOME;
+    var STR_WELCOME_SUMMARY;
+    var STR_WARNING_PHONE;
+    var STR_WARNING_PHONE_SUMMARY;
     var STR_CHAT_SHOW;
     var STR_DPAD_POSTION;
     var STR_DPAD_OPACITY;
@@ -541,7 +543,6 @@
     var STR_CHAT_CLEAR_MSG_SUMMARY;
     var STR_ABOUT_INFO_23;
     var STR_ABOUT_INFO_24;
-    var STR_CONTROLS_ETC;
     var STR_SHOW_SIDE_PLAYER;
     var STR_PREVIEW_OTHERS_VOLUME;
     var STR_PREVIEW_OTHERS_VOLUME_SUMMARY;
@@ -745,7 +746,6 @@
     var STR_ABOUT_KEY = '';
     var STR_SETTINGS_KEY = '';
     var STR_CONTROLS_MAIN_0 = '';
-    var STR_ABOUT_PHONE_0 = '';
     var STR_ABOUT_INFO_HEADER = '';
     var STR_ABOUT_INFO_0 = '';
     var STR_ACCESSIBILITY_WARN_TEXT = '';
@@ -769,7 +769,6 @@
         STR_OFFSET = STR_SPACE + STR_OFFSET + STR_SPACE;
 
         //Strings that are used before others strings
-        STR_CONTROLS_ETC += STR_SPACE;
         STR_GO_TO += STR_SPACE;
         STR_PLAYING += STR_SPACE;
         STR_FOR += STR_SPACE;
@@ -933,7 +932,7 @@
             STR_DOT + STR_CONTROLS_MULTI_5 + STR_BR + '</div>' +
             STR_DIV_TITLE + STR_CONTROLS_MULTI_6 + '</div>';
 
-        STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + STR_BR + STR_RED_DIV + STR_CONTROLS_ETC + '</div></div>' +
+        STR_CONTROLS_MAIN_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
             STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_SIDE_PANEL + STR_BR +
             STR_DOT + STR_USER_LIVE + STR_BR +
@@ -945,10 +944,6 @@
             STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
             STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' +
             STR_CONTROLS_PLAY_0 + STR_BR +
-            STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
-
-        STR_ABOUT_PHONE_0 = STR_DIV_TITLE + STR_WARNING + '</div>' + STR_BR +
-            STR_ABOUT_PHONE + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_ACCESSIBILITY_WARN_TEXT = STR_DIV_TITLE + STR_ACCESSIBILITY_WARN + '</div>' + STR_BR +
@@ -1028,7 +1023,6 @@
         STR_SEARCH = "Search";
         STR_SETTINGS = "Settings";
         STR_CONTROLS = "Controls";
-        STR_CONTROLS_ETC = "See Play Store video to better understand how the app works and how to use its settings and controls";
         STR_ABOUT = "About";
         STR_HIDE = "Hide";
         STR_SEARCH_EMPTY = "The text you entered is empty.";
@@ -1433,9 +1427,11 @@
         STR_LATENCY = "Latency To Broadcaster (Sec):";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base on " + STR_LATENCY_TO_BROADCASTER;
         STR_PING = "Ping to Twitch (Ms):";
-        STR_WARNING = "Warning";
         STR_WARNINGS = 'Warnings';
-        STR_ABOUT_PHONE = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
+        STR_WELCOME = "Welcome to";
+        STR_WELCOME_SUMMARY = 'This application has a lot of features and was design to give the user full control of it, because of that it has many options, controls and customizations, check the app settings and controls to understasnd how to use it, in doubt check Play Store demonstration video, if any doubt remains check the about of the app on the side panel for contact info.';
+        STR_WARNING_PHONE = 'Cellphones warning';
+        STR_WARNING_PHONE_SUMMARY = "This app is design to be used mainly on TVs, the support for other device is limited and may never receive a better support, if you don't have a keyboard or a D-pad + enter and return key controller (ESC works for return key on a computer) use the on screen virtual on screen keys to navigate (only visible on phone/tablet devices), in settings you can change position and opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad when it is hidden it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
         STR_DPAD_OPT = "D-pad options";
@@ -1740,7 +1736,6 @@
         STR_SEARCH = "Buscar";
         STR_SETTINGS = "Configuración";
         STR_CONTROLS = "Controles";
-        STR_CONTROLS_ETC = "Vea el video de Play Store para comprender mejor cómo funciona la aplicación y cómo usar sus ajustes y controles";
         STR_ABOUT = "Acerca de";
         STR_HIDE = "Ocultar";
         STR_SEARCH_EMPTY = "El texto que ingresaste está vacío.";
@@ -2057,7 +2052,6 @@
         STR_LATENCY = "Latencia de transmisión (Seg):";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base en la " + STR_LATENCY_TO_BROADCASTER;
         STR_PING = "Ping a Twitch (Ms):";
-        STR_WARNING = "Advertencia";
         STR_WARNINGS = 'Advertencias';
 
         STR_DPAD_POSTION = "Posición de la pantalla del D-pad";
@@ -2251,7 +2245,6 @@
         STR_SEARCH = "Pesquisar";
         STR_SETTINGS = "Configurações";
         STR_CONTROLS = "Controles";
-        STR_CONTROLS_ETC = "Veja o vídeo da Play Store para entender melhor como o aplicativo funciona e como usar suas configurações e controles";
         STR_ABOUT = "Sobre";
         STR_HIDE = "Ocultar";
         STR_SEARCH_EMPTY = "O texto que você digitou está vazio.";
@@ -2655,9 +2648,11 @@
         STR_LATENCY = "Latencia a transmissão (Sec):";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Base em" + STR_LATENCY_TO_BROADCASTER;
         STR_PING = "Ping Twitch (Ms):";
-        STR_WARNING = "Aviso";
         STR_WARNINGS = 'Avisos';
-        STR_ABOUT_PHONE = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
+        STR_WELCOME = "Bem vindo ao";
+        STR_WELCOME_SUMMARY = 'Esta aplicação possui uma série de funcionalidades e foi desenvolvido para dar ao usuario total controle, por isso tem muitas opções, controles e personalizações, olhe as confiurações e os controles do aplicativo para compreender melhor como a utilizalo, em dúvida consulte o vídeo demonstrativo na Play Store, se restar qualquer dúvida, verifique o sobre do aplicativo no painel lateral para obter informações de contato.';
+        STR_WARNING_PHONE = 'Aviso para celulares';
+        STR_WARNING_PHONE_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outro dispositivo é limitado e pode nunca receber um suporte melhor, se você não tiver um teclado ou um D-pad + tecla enter e retorno do controlador (ESC funciona para tecla de retorno em um computador) use as teclas virtuais na tela para navegar (visíveis apenas em dispositivos de telefone/tablet), nas configurações você pode alterar a posição e a opacidade do D-pad virtual, clique em qualquer lugar da tela para mostrar o direcional virtual quando está oculto, não funciona.";
         STR_DPAD_POSTION = "Posição da tela do D-pad";
         STR_DPAD_OPACITY = "Transparencia do D-pad";
         STR_DPAD_OPT = "Opções do D-pad";
@@ -2947,7 +2942,6 @@
         STR_SEARCH = "Поиск";
         STR_SETTINGS = "Настройки";
         STR_CONTROLS = "Управление";
-        STR_CONTROLS_ETC = "Посмотрите видео из Play Store, чтобы понять, как работает приложение, и как использовать его настройки и управление.";
         STR_ABOUT = "Описание";
         STR_HIDE = "Скрыть";
         STR_SEARCH_EMPTY = "Введенный вами текст пуст.";
@@ -3348,9 +3342,8 @@
         STR_LATENCY = "Задержка до стримера (сек): ";
         STR_CHAT_DELAY_LATENCY_TO_BROADCASTER = "Исходя из " + STR_LATENCY_TO_BROADCASTER;
         STR_PING = "Пинг до Twitch (мс): ";
-        STR_WARNING = "Предупреждение";
         STR_WARNINGS = "Предупреждения";
-        STR_ABOUT_PHONE = "Это приложение предназначено для использования в основном на телевизорах, поддержка других устройств не гарантирована. Если у вас нет клавиатуры или D-pad с кнопками ОК и назад (ESC работает для возврата на компьютере) используйте экранные виртуальные экранные кнопки для навигации (видимые только на телефонах/планшетах), в настройках вы можете изменить положение и непрозрачность виртуального D-Pad. Нажмите в любом месте экрана, чтобы отобразить виртуальный D-Pad, когда он скрыт.";
+        STR_WARNING_PHONE_SUMMARY = "Это приложение предназначено для использования в основном на телевизорах, поддержка других устройств не гарантирована. Если у вас нет клавиатуры или D-pad с кнопками ОК и назад (ESC работает для возврата на компьютере) используйте экранные виртуальные экранные кнопки для навигации (видимые только на телефонах/планшетах), в настройках вы можете изменить положение и непрозрачность виртуального D-Pad. Нажмите в любом месте экрана, чтобы отобразить виртуальный D-Pad, когда он скрыт.";
         STR_DPAD_POSTION = "Позиция D-pad";
         STR_DPAD_OPACITY = "Прозрачность D-pad";
         STR_DPAD_OPT = "Настройки D-Pad";
@@ -3516,7 +3509,6 @@
         STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "Если это отключено, списки смайлов будут отображаться по умолчанию.";
         STR_CHAT_OPTIONS_FORCE_SHOW = "Принудительно показать чат";
         STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "Если вы хотите видеть чат, когда пишите в чат, включите это";
-        //STR_WARNING_NEW = "Добавлена новая функция<br><br>Написать в чат<br><br>Потому как это нововведение, все ранее добавленные ключи авторизации, были отозваны, потому что разрешения чата не запрашивались раньше<br><br>Если у вас был добавлен ключ, добавьте новый, чтобы вы могли продолжать использовать приложение так же, как и раньше<br><br>Если у вас есть сомнения по поводу нового ключа авторизации, перейдите на:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>Это окно автоматически скроется через 1 минуту.";
         STR_NOKEY_CHAT_WARN = "Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат";
         STR_CHAT_NOT_READY = "Чат не готов! Попробуйте еще раз через несколько секунд.";
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Активировано Выделите мое сообщение";
@@ -9831,7 +9823,6 @@
         Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
         Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
-        Main_innerHTML("dialog_phone_text", STR_ABOUT_PHONE_0);
         Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
         Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -10086,19 +10077,35 @@
         Settings_init();
     }
 
-    function Main_showphoneDialog(removeEventListener, addEventListener) {
+    function Main_showWelcomeDialog(removeEventListener, addEventListener) {
         Main_removeEventListener("keydown", removeEventListener);
         Main_addEventListener("keydown", addEventListener);
-        Main_HideAboutDialog();
-        Main_ShowElement('dialog_phone');
+
+        var phone_warning = '';
+        if (!Main_isTV) {
+
+            phone_warning = STR_DIV_TITLE + STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
+
+        }
+
+        Main_innerHTML(
+            "welcome_dialog_text",
+            STR_DIV_TITLE + STR_WELCOME + STR_SPACE_HTML + STR_TWITCH_TV + '</div>' + STR_BR +
+            STR_WELCOME_SUMMARY + STR_BR + STR_BR +
+            phone_warning +
+            STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
+        );
+
+        Main_ShowElement('welcome_dialog');
+
     }
 
-    function Main_HidephoneDialog() {
-        Main_HideElement('dialog_phone');
+    function Main_HideWelcomeDialog() {
+        Main_HideElement('welcome_dialog');
     }
 
-    function Main_isphoneDialogVisible() {
-        return Main_isElementShowing('dialog_phone');
+    function Main_isWelcomeDialogVisible() {
+        return Main_isElementShowing('welcome_dialog');
     }
 
     function Main_showControlsDialog(removeEventListener, addEventListener) {
@@ -12257,7 +12264,7 @@
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
             case KEY_ENTER:
-                if (!Main_isControlsDialogVisible() && !Main_isphoneDialogVisible() && Main_isScene1DocVisible()) {
+                if (!Main_isControlsDialogVisible() && !Main_isWelcomeDialogVisible() && Main_isScene1DocVisible()) {
                     Main_CheckAccessibilityHide(true);
                 }
                 break;
@@ -25409,12 +25416,11 @@
             if (Main_FirstRun) {
                 //Main_Log('Main_FirstRun ' + Main_FirstRun);
 
-                if (Main_values.Never_run_new)
-                    Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
-
-                if (Main_values.Never_run_phone && !Main_isTV) {
-                    Main_showphoneDialog(Main_values.Never_run_new ?
-                        ScreenObj[key].key_controls : ScreenObj[key].key_fun, ScreenObj[key].key_controls);
+                if (Main_values.Never_run_new) {
+                    Main_showWelcomeDialog(
+                        ScreenObj[key].key_fun,
+                        ScreenObj[key].key_controls
+                    );
                 }
 
                 if (!Main_values.Never_run_new) Screens_addFocus(true, key);
@@ -25520,11 +25526,7 @@
                     Main_HideElement('dialog_accessibility');
                 } else CheckAccessibilityWasVisible = false;
 
-                if (Main_isphoneDialogVisible()) {
-                    Main_HidephoneDialog();
-                    break;
-                }
-
+                Main_HideWelcomeDialog();
                 Main_HideControlsDialog();
                 Main_HideAboutDialog();
                 Main_removeEventListener("keydown", ScreenObj[key].key_controls);
