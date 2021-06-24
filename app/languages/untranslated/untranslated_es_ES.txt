@@ -247,3 +247,4 @@
     STR_CHAT_SEVENTV_STREAM = "7TV streamer";
     STR_WELCOME = "Welcome to";
     STR_WARNING_PHONE = 'Phones warning';
+    STR_ABOUT_INFO_2 = "This app has no affiliation with Twitch, this is a user made app, but is only possible because Twitch provide all the API that allows the app to show Twitch content.";

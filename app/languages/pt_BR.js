@@ -150,6 +150,7 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_10 = "Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa";
     STR_CONTROLS_MAIN_14 = "Sobre este aplicativo: no painel lateral, clique em";
     STR_ABOUT_INFO_1 = "Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo.";
+    STR_ABOUT_INFO_2 = "Este aplicativo não tem afiliação com o Twitch, é um aplicativo feito por um usuário, mas só é possível porque o Twitch fornece todas as API que permite que o aplicativo mostre o conteúdo do Twitch.";
     STR_ABOUT_INFO_2_SOURCE = "Esta versão do aplicativo é para teste apenas no navegador!";
     STR_ABOUT_INFO_3 = "Informações de contato:";
     STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";

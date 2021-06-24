@@ -242,19 +242,17 @@ function DefaultLang() {
 
     STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
         STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
-        STR_PAYPAL +
-        STR_BITCOIN + STR_BR;
+        STR_PAYPAL + STR_BITCOIN + STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
-    STR_ABOUT_INFO_0 = STR_BR + STR_BR + STR_ABOUT_INFO_1 +
+    STR_ABOUT_INFO_0 = STR_BR + STR_BR + STR_ABOUT_INFO_1 + STR_BR + STR_ABOUT_INFO_2 +
         (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
+        STR_CONTACT +
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +
-        STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR +
-        STR_CONTACT +
+        STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR + STR_BR +
         STR_ABOUT_INFO_4 + STR_BR +
-        STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR +
-        STR_BR +
+        STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR + STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT + STR_BR +
         STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_14 + STR_BR +
