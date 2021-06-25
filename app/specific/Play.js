@@ -1490,11 +1490,11 @@ function Play_UpdateStatus(who_called) {
 
 
 function Play_isPanelShowing() {
-    return parseInt(Play_PanneInfoDoclId.style.opacity);
+    return Main_A_equals_B(Play_PanneInfoDoclId.style.visibility, 'visible');
 }
 
 function Play_ForceShowPannel() {
-    Play_PanneInfoDoclId.style.opacity = 1;
+    Play_PanneInfoDoclId.style.visibility = 'visible';
 
     if (!Play_StayDialogVisible()) {
 
@@ -1506,7 +1506,7 @@ function Play_ForceShowPannel() {
 }
 
 function Play_ForceHidePannel() {
-    Play_PanneInfoDoclId.style.opacity = 0;
+    Play_PanneInfoDoclId.style.visibility = 'hidden';
 
     if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
     else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');

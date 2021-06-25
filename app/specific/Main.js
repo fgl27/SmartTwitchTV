@@ -1521,15 +1521,15 @@ function Main_getElementById(elemString) {
 }
 
 function Main_isScene1DocVisible() {
-    return parseInt(Main_Scene1Doc.style.opacity);
+    return Main_A_equals_B(Main_Scene1Doc.style.visibility, 'visible');
 }
 
 function Main_showScene1Doc() {
-    Main_Scene1Doc.style.opacity = 1;
+    Main_Scene1Doc.style.visibility = 'visible';
 }
 
 function Main_hideScene1Doc() {
-    Main_Scene1Doc.style.opacity = 0;
+    Main_Scene1Doc.style.visibility = 'hidden';
 }
 
 var Main_hideScene1DocAndCallBackId;
@@ -1545,16 +1545,16 @@ function Main_hideScene1DocAndCallBack(callback) {
 }
 
 function Main_showScene2Doc() {
-    Main_Scene2Doc.style.opacity = 1;
+    Main_Scene2Doc.style.visibility = 'visible';
 }
 
 function Main_hideScene2Doc() {
-    Main_Scene2Doc.style.opacity = 0;
+    Main_Scene2Doc.style.visibility = 'hidden';
 
 }
 
 function Main_isScene2DocVisible() {
-    return parseInt(Main_Scene2Doc.style.opacity);
+    return Main_A_equals_B(Main_Scene2Doc.style.visibility, 'visible');
 }
 
 function Main_OPenAsVod(index) {
