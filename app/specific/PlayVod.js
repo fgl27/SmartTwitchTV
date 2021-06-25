@@ -162,12 +162,12 @@ function PlayVod_Start() {
 
         } else {
 
-            PlayVod_PosStart();
-
             if (!Main_vodOffset) {
                 Chat_offset = 0;
                 Chat_Init();
             }
+
+            PlayVod_PosStart();
 
         }
 
@@ -531,21 +531,19 @@ function PlayVod_qualityChanged() {
 
 function PlayVod_onPlayer() {
     //Main_Log('PlayVod_onPlayer');
-    if (Main_IsOn_OSInterface) {
 
-        if (Main_vodOffset) {
+    if (Main_vodOffset) {
 
-            PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
+        PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
 
-            Chat_offset = Main_vodOffset;
-            Chat_Init();
-            Main_vodOffset = 0;
+        Chat_offset = Main_vodOffset;
+        Chat_Init();
+        Main_vodOffset = 0;
 
-        } else {
+    } else {
 
-            PlayVod_onPlayerStartPlay(OSInterface_gettime());
+        PlayVod_onPlayerStartPlay(OSInterface_gettime());
 
-        }
     }
 
     PlayVod_replay = false;
@@ -741,6 +739,14 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
             (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
         OSInterface_getVideoQuality(who_called);
+
+    } else if (!Main_IsOn_OSInterface) {
+
+        PlayVod_ProgresBarrUpdate(
+            (OSInterface_gettime() / 1000),
+            Play_DurationSeconds,
+            true
+        );
 
     }
 
@@ -1271,7 +1277,7 @@ function PlayVod_handleKeyDown(e) {
                 if (!PlayVod_PanelY) {
                     if (PlayVod_IsJumping) PlayVod_jump();
                 } else if (PlayVod_PanelY === 1) {
-                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                    if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
                 } else Play_BottomOptionsPressed(2);
                 PlayVod_setHidePanel();
             } else if (UserLiveFeed_isPreviewShowing()) {
@@ -1292,7 +1298,7 @@ function PlayVod_handleKeyDown(e) {
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
-            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+            if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
             break;
         case KEY_1:
             if (UserLiveFeed_isPreviewShowing()) {
@@ -1331,6 +1337,10 @@ function PlayVod_handleKeyDown(e) {
             break;
         case KEY_MEDIA_PREVIOUS:
             PlayVod_QuickJump(-30);
+            break;
+        case KEY_A:
+            Chat_StartFakeClockAdd += 10;
+            console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
             break;
         default:
             break;

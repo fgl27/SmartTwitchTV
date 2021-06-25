@@ -1301,11 +1301,16 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
     if (State) {
         Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
+        ChatLive_Playing = true;
 
         if (PlayVodClip === 1) {
 
-            ChatLive_Playing = true;
             ChatLive_MessagesRunAfterPause();
+
+            //fake chat clock
+            if (!Main_IsOn_OSInterface) {
+                Chat_StartFakeClockInterval();
+            }
 
         } else if (PlayClip_HasVOD) {
 
@@ -1322,8 +1327,10 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
     } else {
         Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
-        if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
-        else ChatLive_Playing = false;
+        if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) || !Main_IsOn_OSInterface) Chat_Pause();
+
+        ChatLive_Playing = false;
+
     }
 }
 
@@ -1898,7 +1905,7 @@ function Play_handleKeyDown(e) {
 
                 } else if (PlayVod_PanelY === 1) {
 
-                    if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                    if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(1);
 
                 } else Play_BottomOptionsPressed(1);
 
@@ -1952,7 +1959,7 @@ function Play_handleKeyDown(e) {
         case KEY_PLAY:
         case KEY_KEYBOARD_SPACE:
         case KEY_PLAYPAUSE:
-            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+            if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(1);
             break;
         case KEY_1:
             if (UserLiveFeed_isPreviewShowing()) {

@@ -26,6 +26,7 @@ var Chat_next = null;
 var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
+var Chat_fakeClock = 0;
 var Chat_title = '';
 var defaultColors = [
     "#FC4F4F", "#ff8736", "#ffd830", "#ffff35", "#81ff2c", "#2dff2d",
@@ -55,9 +56,15 @@ function Chat_Preinit() {
 function Chat_Init() {
     Chat_JustStarted = true;
     Chat_Clear();
-    if (!Main_IsOn_OSInterface || Main_values.Play_ChatForceDisable) {
+    if (Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
+    }
+
+    if (!Main_IsOn_OSInterface) {
+
+        Chat_StartFakeClock();
+
     }
 
     Chat_loadBadgesGlobal();
@@ -69,6 +76,32 @@ function Chat_Init() {
     );
 
     Chat_loadChat(Chat_Id[0]);
+}
+
+var Chat_StartFakeClockId;
+var Chat_StartFakeClockAdd = 1;
+function Chat_StartFakeClock() {
+    Chat_fakeClock = PlayClip_isOn ? 0 : Chat_offset;
+    Chat_StartFakeClockAdd = 1;
+    Chat_StartFakeClockInterval();
+    ChatLive_Playing = true;
+}
+
+function Chat_StartFakeClockInterval() {
+
+    Chat_StartFakeClockId = Main_setInterval(
+        function() {
+
+            Chat_fakeClock += Chat_StartFakeClockAdd;
+            Play_BufferSize = Chat_fakeClock / 2;
+
+            if (Play_isOn && Chat_fakeClock > 28) Chat_fakeClock = 15;
+
+
+        },
+        1000,
+        Chat_StartFakeClockId
+    );
 }
 
 var Chat_LoadGlobalBadges = false;
@@ -435,6 +468,13 @@ function Chat_Play(id) {
             1000,
             Chat_addlinesId
         );
+
+        if (!Main_IsOn_OSInterface) {
+
+            Chat_StartFakeClockInterval();
+
+        }
+
     }
 }
 
@@ -442,6 +482,7 @@ function Chat_Pause() {
     Main_clearTimeout(Chat_loadChatId);
     Main_clearTimeout(Chat_loadChatNextId);
     Main_clearInterval(Chat_addlinesId);
+    Main_clearInterval(Chat_StartFakeClockId);
 }
 
 function Chat_Clear() {

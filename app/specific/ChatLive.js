@@ -92,6 +92,12 @@ function ChatLive_Init(chat_number) {
         return;
     }
 
+    if (!Main_IsOn_OSInterface) {
+
+        Chat_StartFakeClock();
+
+    }
+
     Chat_loadBadgesGlobal();
 
     ChatLive_SetOptions(
@@ -1818,8 +1824,6 @@ function ChatLive_ElemntAdd(messageObj) {
     elem.className = classname;
     elem.innerHTML = messageObj.message;
 
-
-
     // <div class="chat_line chat_line_ind">
     // <span style="color: #D463FF;">USER Name</span>:&nbsp;
     // <span id="msg-id" class="user-id message">message <img class="emoticon" alt="" src="https://cdn.betterttv.net/emote/60007afdc96152314ad6629f/3x">
@@ -1837,6 +1841,7 @@ function ChatLive_ElemntAdd(messageObj) {
         ChatLive_ElemntAddCheckExtra(messageObj);
 
     }
+
 }
 
 function ChatLive_ElemntAddCheckExtra(messageObj) {

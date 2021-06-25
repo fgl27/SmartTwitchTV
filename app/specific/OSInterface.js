@@ -507,7 +507,7 @@ function OSInterface_getsavedtime() {
 //Android specific: false
 //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
 function OSInterface_gettime() {
-    return Main_IsOn_OSInterface ? Android.gettime() : 0;
+    return Main_IsOn_OSInterface ? Android.gettime() : (Chat_fakeClock * 1000);
 }
 
 //public long gettimepreview()
@@ -550,8 +550,9 @@ function OSInterface_mseekTo(position) {
 //public void PlayPauseChange()
 //Android specific: false
 //Allows to change the playback state, if playing pauses and vice versa
-function OSInterface_PlayPauseChange() {
-    Android.PlayPauseChange();
+function OSInterface_PlayPauseChange(PlayVodClip) {
+    if (Main_IsOn_OSInterface) Android.PlayPauseChange();
+    else Play_PlayPauseChange(!ChatLive_Playing, PlayVodClip);
 }
 
 //public void PlayPause(boolean state)

@@ -523,7 +523,7 @@ function PlayClip_HideShowNext(which, val) {
 
 function PlayClip_Enter() {
     if (!PlayClip_EnterPos) {
-        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+        if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
     } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
     else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
 }
@@ -862,7 +862,7 @@ function PlayClip_handleKeyDown(e) {
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
-            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+            if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
             break;
         case KEY_1:
             if (UserLiveFeed_isPreviewShowing()) {
@@ -900,6 +900,10 @@ function PlayClip_handleKeyDown(e) {
             break;
         case KEY_MEDIA_PREVIOUS:
             PlayClip_PlayPreviously();
+            break;
+        case KEY_A:
+            Chat_StartFakeClockAdd += 10;
+            console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
             break;
         default:
             break;
