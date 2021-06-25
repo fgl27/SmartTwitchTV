@@ -173,42 +173,9 @@ function Main_StartApp() {
 
         try {
             if (Main_A_includes_B(window.location.href, 'asset')) {
-                //Same as in smartTwitchTV/release/api.js
-                //The app is running from assets need to expose smartTwitchTV
-                smartTwitchTV = {
-                    'mainstart': Main_Start,
-                    'Play_PannelEndStart': Play_PannelEndStart,
-                    'Play_PlayerCheck': Play_PlayerCheck,
-                    'Play_UpdateDuration': Play_UpdateDuration,
-                    'PlayExtra_End': PlayExtra_End,
-                    'Play_MultiEnd': Play_MultiEnd,
-                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                    'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume,
-                    'Play_getQualities': Play_getQualities,
-                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                    'Play_PlayPauseChange': Play_PlayPauseChange,
-                    'PlayVod_loadDataResult': PlayVod_loadDataResult,
-                    'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
-                    'Play_loadDataResult': Play_loadDataResult,
-                    'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
-                    'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
-                    'Play_MultiResult': Play_MultiResult,
-                    'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
-                    'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-                    'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
-                    'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-                    'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
-                    'Main_onNewIntent': Main_onNewIntent,
-                    'Main_EventChannelRefresh': Main_EventChannelRefresh,
-                    'ChatLive_SetLatency': ChatLive_SetLatency,
-                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                    'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-                    'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
-                };
+
+                Main_smartTwitchTV();
+
             }
 
             Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -219,6 +186,7 @@ function Main_StartApp() {
             OSInterface_SetStreamDataHeaders(Play_Headers);
 
         } catch (e) {
+            Main_smartTwitchTV();
             Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
             Main_IsOn_OSInterface = 0;
             Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
@@ -275,6 +243,47 @@ function Main_StartApp() {
         } else Main_ready(Main_initWindows);
     });
 
+}
+
+function Main_smartTwitchTV() {
+
+    //Same as in smartTwitchTV/release/api.js
+    //The app is running from assets need to expose smartTwitchTV
+    smartTwitchTV = {
+        'mainstart': Main_Start,
+        'Play_PannelEndStart': Play_PannelEndStart,
+        'Play_PlayerCheck': Play_PlayerCheck,
+        'Play_UpdateDuration': Play_UpdateDuration,
+        'PlayExtra_End': PlayExtra_End,
+        'Play_MultiEnd': Play_MultiEnd,
+        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+        'Main_CheckStop': Main_CheckStop,
+        'Main_CheckResume': Main_CheckResume,
+        'Play_getQualities': Play_getQualities,
+        'Play_ShowVideoStatus': Play_ShowVideoStatus,
+        'Play_ShowVideoQuality': Play_ShowVideoQuality,
+        'Play_PlayPauseChange': Play_PlayPauseChange,
+        'PlayVod_loadDataResult': PlayVod_loadDataResult,
+        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+        'Play_loadDataResult': Play_loadDataResult,
+        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+        'Play_MultiResult': Play_MultiResult,
+        'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
+        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
+        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
+        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+        'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
+        'Main_onNewIntent': Main_onNewIntent,
+        'Main_EventChannelRefresh': Main_EventChannelRefresh,
+        'ChatLive_SetLatency': ChatLive_SetLatency,
+        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
+        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
+        'Screens_onclick': Screens_onclick
+    };
 }
 
 function Main_initClick() {
