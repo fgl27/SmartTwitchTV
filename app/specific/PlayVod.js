@@ -873,7 +873,25 @@ function PlayVod_SetHtmlQuality(element) {
     PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
     var quality_string = '';
-    if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+
+    //Java getQualities fun will generate the first quality of the array as 'Auto'
+    if (Main_A_includes_B(PlayVod_quality, 'Auto')) {
+
+        if (Main_IsOn_OSInterface) {
+
+            quality_string = PlayVod_quality.replace("Auto", STR_AUTO);
+
+        } else {
+
+            if (Play_info_quality !== element) quality_string = PlayVod_quality.replace("Auto", STR_AUTO);
+            else {
+                quality_string = PlayVod_qualities[1].id.replace("source", STR_AUTO) +
+                    PlayVod_qualities[1].band + PlayVod_qualities[1].codec;
+            }
+
+        }
+
+    } else if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
     else quality_string = PlayVod_quality;
 
     quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
