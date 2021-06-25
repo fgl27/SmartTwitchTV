@@ -12661,6 +12661,7 @@
                                 'device_model': device,
                                 'sdk': sdk,
                                 'manufacturer': manufacturer,
+                                'device_type': Main_isTV ? 'TV' : 'Other',
                             }
                         );
 
