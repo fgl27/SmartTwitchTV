@@ -14944,10 +14944,10 @@
             case KEY_MEDIA_PREVIOUS:
                 PlayClip_PlayPreviously();
                 break;
-            case KEY_A:
-                Chat_StartFakeClockAdd += 10;
-                console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-                break;
+                // case KEY_A:
+                //     Chat_StartFakeClockAdd += 10;
+                //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
+                //     break;
             default:
                 break;
         }
@@ -24414,10 +24414,10 @@
             case KEY_MEDIA_PREVIOUS:
                 PlayVod_QuickJump(-30);
                 break;
-            case KEY_A:
-                Chat_StartFakeClockAdd += 10;
-                console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-                break;
+                // case KEY_A:
+                //     Chat_StartFakeClockAdd += 10;
+                //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
+                //     break;
             default:
                 break;
         }
