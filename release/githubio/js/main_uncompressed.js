@@ -21742,8 +21742,7 @@
             Play_getMbps(115 * 1000000) + ' | 150.00 ',
             STR_SPACE_HTML + STR_SPACE_HTML + '0 | 27',
             '14.27',
-            true,
-            Play_LowLatency ? 2.05 : 13.13,
+            Play_isOn ? (Play_LowLatency ? 2.05 : 13.13) : null,
             " 15.05 | 16.50"
         );
     }
@@ -21755,7 +21754,7 @@
             STR_NET_ACT + STR_SPACE_HTML + net_act + STR_AVG + STR_BR +
             STR_DROOPED_FRAMES + dropped_frames + STR_TODAY + STR_BR +
             STR_BUFFER_HEALT + buffer_size + STR_BR +
-            (latency !== null ? (STR_LATENCY + latency) : ''),
+            (latency !== null ? (STR_LATENCY + latency + STR_BR) : '') +
             STR_PING + ping + STR_AVG
         );
     }
