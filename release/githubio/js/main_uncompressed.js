@@ -21742,6 +21742,7 @@
             Play_getMbps(115 * 1000000) + ' | 150.00 ',
             STR_SPACE_HTML + STR_SPACE_HTML + '0 | 27',
             '14.27',
+            true,
             Play_LowLatency ? 2.05 : 13.13,
             " 15.05 | 16.50"
         );
@@ -21751,10 +21752,10 @@
         Main_innerHTMLWithEle(
             Play_StreamStatus,
             STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + net_speed + STR_AVG + STR_BR +
-            STR_NET_ACT + net_act + STR_AVG + STR_BR +
+            STR_NET_ACT + STR_SPACE_HTML + net_act + STR_AVG + STR_BR +
             STR_DROOPED_FRAMES + dropped_frames + STR_TODAY + STR_BR +
             STR_BUFFER_HEALT + buffer_size + STR_BR +
-            STR_LATENCY + latency + STR_BR +
+            (latency !== null ? (STR_LATENCY + latency) : ''),
             STR_PING + ping + STR_AVG
         );
     }
@@ -21774,7 +21775,7 @@
                 value[1],
                 value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3],
                 value[4],
-                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : ''),
+                (showLatency ? value[5] : null),
                 value[6]
             );
 
