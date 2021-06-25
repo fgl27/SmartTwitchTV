@@ -377,6 +377,8 @@ function PlayClip_onPlayer() {
             PlayClip_replayOrNext ? -1 : OSInterface_gettime(),
             0
         );
+    } else {
+        Main_setTimeout(Play_HideBufferDialog, 1000);
     }
 
     PlayClip_replayOrNext = false;

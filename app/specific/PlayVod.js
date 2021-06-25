@@ -401,6 +401,8 @@ function PlayVod_loadDataSuccessFake() {
     Play_SetExternalQualities(PlayVod_qualities, 1);
     PlayVod_qualityReset();
     if (PlayVod_isOn) PlayVod_qualityChanged();
+
+    Main_setTimeout(Play_HideBufferDialog, 1000);
 }
 
 var PlayVod_autoUrl;
@@ -740,7 +742,7 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
         OSInterface_getVideoQuality(who_called);
 
-    } else if (!Main_IsOn_OSInterface) {
+    } else if (!Main_IsOn_OSInterface && !PlayVod_IsJumping) {
 
         PlayVod_ProgresBarrUpdate(
             (OSInterface_gettime() / 1000),
@@ -779,7 +781,7 @@ function PlayVod_ProgresBarrUpdateNoAnimation(current_time_seconds, duration_sec
                 Play_ProgresBarrElm.style.transition = '';
                 Play_ProgresBarrBufferElm.style.transition = '';
 
-                // //This will update PlayVod_ProgresBarrUpdate with animation to the correct value
+                //This will update PlayVod_ProgresBarrUpdate with animation to the correct value
                 if (callVideoQuality) {
 
                     Main_setTimeout(
@@ -820,9 +822,9 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
         current_time_seconds = 0;
     }
 
-    Play_ProgresBarrBufferElm.style.width = Math.ceil(((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0) + '%';
+    Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + '%, -7%)';
 
-    if (update_bar) Play_ProgresBarrElm.style.width = ((current_time_seconds / duration_seconds) * 100) + '%';
+    if (update_bar) Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((-98.9 + (current_time_seconds / duration_seconds) * 100), -0.45) + '%, -7%)';
 
     PlayVod_UpdateRemaining(current_time_seconds, duration_seconds);
 }
@@ -983,7 +985,8 @@ function PlayVod_jumpTime(position) {
     );
 
     Play_ProgresBarrElm.style.transition = 'none';
-    Play_ProgresBarrElm.style.width = (position * 100) + '%';
+    Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((-98.9 + (position * 100)), -0.45) + '%, -7%)';
+
     PlayVod_previews_move(position);
 }
 
