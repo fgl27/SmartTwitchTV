@@ -82,6 +82,14 @@ var Chat_StartFakeClockId;
 var Chat_StartFakeClockAdd = 1;
 function Chat_StartFakeClock() {
     Chat_fakeClock = PlayClip_isOn ? 0 : Chat_offset;
+
+    if (Play_isOn) {
+
+        if (Play_LowLatency) Chat_fakeClock = Play_LowLatency === 1 ? 24 : 26;
+        else Chat_fakeClock = 15;
+
+    }
+
     Chat_StartFakeClockAdd = 1;
     Chat_StartFakeClockInterval();
     ChatLive_Playing = true;
@@ -95,8 +103,12 @@ function Chat_StartFakeClockInterval() {
             Chat_fakeClock += Chat_StartFakeClockAdd;
             Play_BufferSize = Chat_fakeClock / 2;
 
-            if (Play_isOn && Chat_fakeClock > 28) Chat_fakeClock = 15;
+            if (Play_isOn && Chat_fakeClock > 28) {
 
+                if (Play_LowLatency) Chat_fakeClock = Play_LowLatency === 1 ? 24 : 26;
+                else Chat_fakeClock = 15;
+
+            }
 
         },
         1000,
