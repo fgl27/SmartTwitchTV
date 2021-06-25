@@ -8800,6 +8800,14 @@
 
     function Chat_StartFakeClock() {
         Chat_fakeClock = PlayClip_isOn ? 0 : Chat_offset;
+
+        if (Play_isOn) {
+
+            if (Play_LowLatency) Chat_fakeClock = Play_LowLatency === 1 ? 24 : 26;
+            else Chat_fakeClock = 15;
+
+        }
+
         Chat_StartFakeClockAdd = 1;
         Chat_StartFakeClockInterval();
         ChatLive_Playing = true;
@@ -8813,8 +8821,12 @@
                 Chat_fakeClock += Chat_StartFakeClockAdd;
                 Play_BufferSize = Chat_fakeClock / 2;
 
-                if (Play_isOn && Chat_fakeClock > 28) Chat_fakeClock = 15;
+                if (Play_isOn && Chat_fakeClock > 28) {
 
+                    if (Play_LowLatency) Chat_fakeClock = Play_LowLatency === 1 ? 24 : 26;
+                    else Chat_fakeClock = 15;
+
+                }
 
             },
             1000,
@@ -21228,8 +21240,24 @@
         var quality_string = '';
 
         //Java getQualities fun will generate the first quality of the array as 'Auto'
-        if (Main_A_includes_B(Play_data.quality, 'Auto')) quality_string = Play_data.quality.replace("Auto", STR_AUTO);
-        else if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace("source", STR_SOURCE);
+        if (Main_A_includes_B(Play_data.quality, 'Auto')) {
+
+            if (Main_IsOn_OSInterface) {
+
+                quality_string = Play_data.quality.replace("Auto", STR_AUTO);
+
+            } else {
+
+                if (Play_info_quality !== element) quality_string = Play_data.quality.replace("Auto", STR_AUTO);
+                else {
+
+                    quality_string = Play_data.qualities[1].id.replace("source", STR_AUTO) +
+                        Play_data.qualities[1].band + Play_data.qualities[1].codec;
+                }
+
+            }
+
+        } else if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace("source", STR_SOURCE);
         else quality_string = Play_data.quality;
 
         quality_string += !Main_A_includes_B(Play_data.quality, 'Auto') ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : "";
@@ -21709,13 +21737,26 @@
     }
 
     function Play_VideoStatusTest() {
-        Main_innerHTMLWithEle(Play_StreamStatus,
-            STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + Play_getMbps(101 * 1000000) + ' | 150.00' + STR_AVG + STR_BR +
-            STR_NET_ACT + Play_getMbps(115 * 1000000) + ' | 150.00 ' + STR_AVG + STR_BR +
-            STR_DROOPED_FRAMES + STR_SPACE_HTML + STR_SPACE_HTML + '0 | 100 ' + STR_TODAY + STR_BR +
-            STR_BUFFER_HEALT + '100.37' + STR_BR +
-            STR_LATENCY + '100.27' + STR_BR +
-            STR_PING + " 100.00 | 99.00" + STR_AVG);
+        Play_UpdateVideoStatus(
+            STR_SPACE_HTML + Play_getMbps(101 * 1000000) + ' | 150.00',
+            Play_getMbps(115 * 1000000) + ' | 150.00 ',
+            STR_SPACE_HTML + STR_SPACE_HTML + '0 | 27',
+            '14.27',
+            Play_LowLatency ? 2.05 : 13.13,
+            " 15.05 | 16.50"
+        );
+    }
+
+    function Play_UpdateVideoStatus(net_speed, net_act, dropped_frames, buffer_size, latency, ping) {
+        Main_innerHTMLWithEle(
+            Play_StreamStatus,
+            STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + net_speed + STR_AVG + STR_BR +
+            STR_NET_ACT + net_act + STR_AVG + STR_BR +
+            STR_DROOPED_FRAMES + dropped_frames + STR_TODAY + STR_BR +
+            STR_BUFFER_HEALT + buffer_size + STR_BR +
+            STR_LATENCY + latency + STR_BR +
+            STR_PING + ping + STR_AVG
+        );
     }
 
     var Play_BufferSize = 0;
@@ -21728,13 +21769,14 @@
 
         if (Play_Status_Visible !== 2) {
 
-            Main_innerHTMLWithEle(Play_StreamStatus,
-                STR_NET_SPEED + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + value[0] + STR_AVG + STR_BR +
-                STR_NET_ACT + value[1] + STR_AVG + STR_BR +
-                STR_DROOPED_FRAMES + value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3] + STR_TODAY + STR_BR +
-                STR_BUFFER_HEALT + value[4] +
-                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : '') +
-                STR_BR + STR_PING + value[6] + STR_AVG);
+            Play_UpdateVideoStatus(
+                value[0],
+                value[1],
+                value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3],
+                value[4],
+                (showLatency ? (STR_BR + STR_LATENCY + value[5]) : ''),
+                value[6]
+            );
 
         }
 
@@ -23948,7 +23990,25 @@
         PlayVod_quality = PlayVod_qualities[PlayVod_qualityIndex].id;
 
         var quality_string = '';
-        if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
+
+        //Java getQualities fun will generate the first quality of the array as 'Auto'
+        if (Main_A_includes_B(PlayVod_quality, 'Auto')) {
+
+            if (Main_IsOn_OSInterface) {
+
+                quality_string = PlayVod_quality.replace("Auto", STR_AUTO);
+
+            } else {
+
+                if (Play_info_quality !== element) quality_string = PlayVod_quality.replace("Auto", STR_AUTO);
+                else {
+                    quality_string = PlayVod_qualities[1].id.replace("source", STR_AUTO) +
+                        PlayVod_qualities[1].band + PlayVod_qualities[1].codec;
+                }
+
+            }
+
+        } else if (Main_A_includes_B(PlayVod_quality, 'source')) quality_string = PlayVod_quality.replace("source", STR_SOURCE);
         else quality_string = PlayVod_quality;
 
         quality_string += !Main_A_includes_B(PlayVod_quality, 'Auto') ? PlayVod_qualities[PlayVod_qualityIndex].band + PlayVod_qualities[PlayVod_qualityIndex].codec : "";
