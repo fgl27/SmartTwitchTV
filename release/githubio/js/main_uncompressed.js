@@ -9512,6 +9512,10 @@
                 //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
                 KEY_RETURN = 27;
                 Main_HideElement('scene_keys');
+
+                Main_getElementById('scene2').style.pointerEvents = 'none';
+                Main_getElementById('scene_channel_panel').style.pointerEvents = 'none';
+
             }
 
             Main_showLoadDialog();
@@ -10819,10 +10823,18 @@
 
     function Main_showScene1Doc() {
         Main_Scene1Doc.style.opacity = 1;
+
+        if (!Main_IsOn_OSInterface) {
+            Main_Scene1Doc.style.pointerEvents = '';
+        }
     }
 
     function Main_hideScene1Doc() {
         Main_Scene1Doc.style.opacity = 0;
+
+        if (!Main_IsOn_OSInterface) {
+            Main_Scene1Doc.style.pointerEvents = 'none';
+        }
     }
 
     var Main_hideScene1DocAndCallBackId;
@@ -10840,10 +10852,18 @@
 
     function Main_showScene2Doc() {
         Main_Scene2Doc.style.opacity = 1;
+
+        if (!Main_IsOn_OSInterface) {
+            Main_Scene2Doc.style.pointerEvents = '';
+        }
     }
 
     function Main_hideScene2Doc() {
         Main_Scene2Doc.style.opacity = 0;
+
+        if (!Main_IsOn_OSInterface) {
+            Main_Scene2Doc.style.pointerEvents = 'none';
+        }
 
     }
 
@@ -21499,6 +21519,9 @@
 
         }
 
+        if (!Main_IsOn_OSInterface) {
+            Play_PanneInfoDoclId.style.pointerEvents = '';
+        }
     }
 
     function Play_ForceHidePannel() {
@@ -21506,6 +21529,10 @@
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
         else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
+
+        if (!Main_IsOn_OSInterface) {
+            Play_PanneInfoDoclId.style.pointerEvents = 'none';
+        }
     }
 
     function Play_hidePanel() {
