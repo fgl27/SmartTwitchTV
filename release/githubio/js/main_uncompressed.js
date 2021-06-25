@@ -9455,9 +9455,42 @@
 
             try {
                 if (Main_A_includes_B(window.location.href, 'asset')) {
-
-                    Main_smartTwitchTV();
-
+                    //Same as in smartTwitchTV/release/api.js
+                    //The app is running from assets need to expose smartTwitchTV
+                    smartTwitchTV = {
+                        'mainstart': Main_Start,
+                        'Play_PannelEndStart': Play_PannelEndStart,
+                        'Play_PlayerCheck': Play_PlayerCheck,
+                        'Play_UpdateDuration': Play_UpdateDuration,
+                        'PlayExtra_End': PlayExtra_End,
+                        'Play_MultiEnd': Play_MultiEnd,
+                        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
+                        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
+                        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
+                        'Main_CheckStop': Main_CheckStop,
+                        'Main_CheckResume': Main_CheckResume,
+                        'Play_getQualities': Play_getQualities,
+                        'Play_ShowVideoStatus': Play_ShowVideoStatus,
+                        'Play_ShowVideoQuality': Play_ShowVideoQuality,
+                        'Play_PlayPauseChange': Play_PlayPauseChange,
+                        'PlayVod_loadDataResult': PlayVod_loadDataResult,
+                        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
+                        'Play_loadDataResult': Play_loadDataResult,
+                        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
+                        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
+                        'Play_MultiResult': Play_MultiResult,
+                        'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
+                        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
+                        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
+                        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
+                        'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
+                        'Main_onNewIntent': Main_onNewIntent,
+                        'Main_EventChannelRefresh': Main_EventChannelRefresh,
+                        'ChatLive_SetLatency': ChatLive_SetLatency,
+                        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
+                        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
+                        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
+                    };
                 }
 
                 Main_IsOn_OSInterfaceVersion = OSInterface_getversion();
@@ -9468,7 +9501,6 @@
                 OSInterface_SetStreamDataHeaders(Play_Headers);
 
             } catch (e) {
-                Main_smartTwitchTV();
                 Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
                 Main_IsOn_OSInterface = 0;
                 Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)"; //default rgba(0, 0, 0, 1)
@@ -9525,47 +9557,6 @@
             } else Main_ready(Main_initWindows);
         });
 
-    }
-
-    function Main_smartTwitchTV() {
-
-        //Same as in smartTwitchTV/release/api.js
-        //The app is running from assets need to expose smartTwitchTV
-        smartTwitchTV = {
-            'mainstart': Main_Start,
-            'Play_PannelEndStart': Play_PannelEndStart,
-            'Play_PlayerCheck': Play_PlayerCheck,
-            'Play_UpdateDuration': Play_UpdateDuration,
-            'PlayExtra_End': PlayExtra_End,
-            'Play_MultiEnd': Play_MultiEnd,
-            'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-            'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-            'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-            'Main_CheckStop': Main_CheckStop,
-            'Main_CheckResume': Main_CheckResume,
-            'Play_getQualities': Play_getQualities,
-            'Play_ShowVideoStatus': Play_ShowVideoStatus,
-            'Play_ShowVideoQuality': Play_ShowVideoQuality,
-            'Play_PlayPauseChange': Play_PlayPauseChange,
-            'PlayVod_loadDataResult': PlayVod_loadDataResult,
-            'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
-            'Play_loadDataResult': Play_loadDataResult,
-            'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
-            'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
-            'Play_MultiResult': Play_MultiResult,
-            'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
-            'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-            'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
-            'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-            'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
-            'Main_onNewIntent': Main_onNewIntent,
-            'Main_EventChannelRefresh': Main_EventChannelRefresh,
-            'ChatLive_SetLatency': ChatLive_SetLatency,
-            'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-            'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-            'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
-            'Screens_onclick': Screens_onclick
-        };
     }
 
     function Main_initClick() {
@@ -10823,15 +10814,15 @@
     }
 
     function Main_isScene1DocVisible() {
-        return Main_A_equals_B(Main_Scene1Doc.style.visibility, 'visible');
+        return parseInt(Main_Scene1Doc.style.opacity);
     }
 
     function Main_showScene1Doc() {
-        Main_Scene1Doc.style.visibility = 'visible';
+        Main_Scene1Doc.style.opacity = 1;
     }
 
     function Main_hideScene1Doc() {
-        Main_Scene1Doc.style.visibility = 'hidden';
+        Main_Scene1Doc.style.opacity = 0;
     }
 
     var Main_hideScene1DocAndCallBackId;
@@ -10848,16 +10839,16 @@
     }
 
     function Main_showScene2Doc() {
-        Main_Scene2Doc.style.visibility = 'visible';
+        Main_Scene2Doc.style.opacity = 1;
     }
 
     function Main_hideScene2Doc() {
-        Main_Scene2Doc.style.visibility = 'hidden';
+        Main_Scene2Doc.style.opacity = 0;
 
     }
 
     function Main_isScene2DocVisible() {
-        return Main_A_equals_B(Main_Scene2Doc.style.visibility, 'visible');
+        return parseInt(Main_Scene2Doc.style.opacity);
     }
 
     function Main_OPenAsVod(index) {
@@ -21495,11 +21486,11 @@
 
 
     function Play_isPanelShowing() {
-        return Main_A_equals_B(Play_PanneInfoDoclId.style.visibility, 'visible');
+        return parseInt(Play_PanneInfoDoclId.style.opacity);
     }
 
     function Play_ForceShowPannel() {
-        Play_PanneInfoDoclId.style.visibility = 'visible';
+        Play_PanneInfoDoclId.style.opacity = 1;
 
         if (!Play_StayDialogVisible()) {
 
@@ -21511,7 +21502,7 @@
     }
 
     function Play_ForceHidePannel() {
-        Play_PanneInfoDoclId.style.visibility = 'hidden';
+        Play_PanneInfoDoclId.style.opacity = 0;
 
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
         else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
@@ -25270,13 +25261,11 @@
     function Screens_createCellChannel(id, idArray, valuesArray, key) {
         ScreenObj[key].DataObj[id] = valuesArray;
 
-        var onclick = key + ',' + id;
-
         return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id +
-            '" class="stream_thumbnail_channel" ><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',1\')" class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
+            '" class="stream_thumbnail_channel" ><div class="stream_thumbnail_channel_img"><img id="' + idArray[1] +
             id + '" alt="" class="stream_img_channels" src="' + valuesArray[2] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 + '\';"></div>' +
-            '<div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',0\')"  class="stream_thumbnail_channel_text_holder">' +
+            '<div class="stream_thumbnail_channel_text_holder">' +
             '<div id="' + idArray[2] + id + '" class="stream_info_channel_name">' + valuesArray[3] +
             (valuesArray[4] ? STR_SPACE_HTML + STR_SPACE_HTML +
                 '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
@@ -25287,13 +25276,11 @@
 
         ScreenObj[key].DataObj[id] = valuesArray;
 
-        var onclick = key + ',' + id;
-
         return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
-            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',1\')" class="stream_thumbnail_live_game"><img id="' +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_game"><div class="stream_thumbnail_live_game"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-            '\';"></div><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',0\')" class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
+            '\';"></div><div class="stream_thumbnail_game_text_holder"><div class="stream_text_holder"><div id="' +
             idArray[2] + id + '" class="stream_info_game_name">' + valuesArray[1] + '</div>' +
             (valuesArray[2] !== '' ? '<div class="stream_info_live" style="width: 100%; display: inline-block;">' + valuesArray[2] +
                 '</div>' : '') + '</div></div></div></div>';
@@ -25301,17 +25288,15 @@
 
     function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
-        var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : ""),
-            onclick = key + ',' + id;
-
+        var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
         ScreenObj[key].DataObj[id] = valuesArray;
 
         return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
-            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',1\')" class="stream_thumbnail_live_img"><img id="' +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[15] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
-            '%;"></div></div><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',0\')" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width: 72%; display: inline-block;">' +
             valuesArray[4] + '</div><div class="stream_info_live" style="width:27%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
@@ -25327,15 +25312,13 @@
 
         ScreenObj[key].DataObj[id] = valuesArray;
 
-        var onclick = key + ',' + id;
-
         return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +
-            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',1\')" id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
+            '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div id="' + idArray[5] + id + '" class="stream_thumbnail_live_img" ' +
             (valuesArray[8] ? ' style="width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + valuesArray[8] + ');"' : '') +
             '><img id="' + idArray[1] + id + '" class="stream_img" alt="" src="' + valuesArray[0] +
             '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';"><div id="' + idArray[7] + id + '" class="vod_watched" style="width: ' + (Main_history_Watched_Obj[valuesArray[7]] ? Main_history_Watched_Obj[valuesArray[7]] : 0) +
-            '%;"></div></div><div onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',0\')" class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '%;"></div></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width: 46%; display: inline-block;">' +
             valuesArray[1] + '</div><div class="stream_info_live" style="width:53%; float: right; text-align: right; display: inline-block;">' +
             valuesArray[5] + STR_SPACE_HTML + Play_timeS(valuesArray[11]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
@@ -25354,14 +25337,13 @@
         if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
         var ishosting = valuesArray[16],
-            image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)),
-            onclick = key + ',' + id;
+            image = (force_VOD ? Extra_vodimg : (valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
         ScreenObj[key].DataObj[id] = valuesArray;
 
-        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img" onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',1\');"><img id="' +
+        return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass + '"><div id="' + idArray[0] + id + '" class="stream_thumbnail_live"><div class="stream_thumbnail_live_img"><img id="' +
             idArray[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
-            '\';" ></div><div class="stream_thumbnail_live_text_holder" onclick="smartTwitchTV.Screens_onclick(\'' + onclick + ',0\');"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
+            '\';" ></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div style="line-height: 1.6ch;"><div id="' +
             idArray[2] + id + '" class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
             '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
             (valuesArray[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
@@ -25376,34 +25358,6 @@
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
             '</div></div></div></div>';
-    }
-
-    function Screens_onclick(data) {
-
-        var obj = data.split(','),
-            y_x = obj[1].split('_'),
-            y = parseInt(y_x[0]),
-            x = parseInt(y_x[1]),
-            key = parseInt(obj[0]),
-            open = parseInt(obj[2]);
-
-        if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
-
-            Screens_ChangeFocus(
-                ScreenObj[key].posY !== y ? 1 : 0,
-                x,
-                key
-            );
-
-        }
-
-        if (open) {
-
-            ScreenObj[key].key_play();
-
-        }
-
-        Screens_handleKeyUpAnimationFast();
     }
 
     function Screens_loadDataSuccessFinish(key) {
@@ -38761,8 +38715,7 @@
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
         'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
-        'Screens_onclick': Screens_onclick
+        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
     };
 
     /** Expose `smartTwitchTV` */
