@@ -6796,6 +6796,12 @@
             return;
         }
 
+        if (!Main_IsOn_OSInterface) {
+
+            Chat_StartFakeClock();
+
+        }
+
         Chat_loadBadgesGlobal();
 
         ChatLive_SetOptions(
@@ -8514,8 +8520,6 @@
         elem.className = classname;
         elem.innerHTML = messageObj.message;
 
-
-
         // <div class="chat_line chat_line_ind">
         // <span style="color: #D463FF;">USER Name</span>:&nbsp;
         // <span id="msg-id" class="user-id message">message <img class="emoticon" alt="" src="https://cdn.betterttv.net/emote/60007afdc96152314ad6629f/3x">
@@ -8533,6 +8537,7 @@
             ChatLive_ElemntAddCheckExtra(messageObj);
 
         }
+
     }
 
     function ChatLive_ElemntAddCheckExtra(messageObj) {
@@ -8738,6 +8743,7 @@
     var Chat_loadChatId;
     var Chat_loadChatNextId;
     var Chat_offset = 0;
+    var Chat_fakeClock = 0;
     var Chat_title = '';
     var defaultColors = [
         "#FC4F4F", "#ff8736", "#ffd830", "#ffff35", "#81ff2c", "#2dff2d",
@@ -8767,9 +8773,15 @@
     function Chat_Init() {
         Chat_JustStarted = true;
         Chat_Clear();
-        if (!Main_IsOn_OSInterface || Main_values.Play_ChatForceDisable) {
+        if (Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
+        }
+
+        if (!Main_IsOn_OSInterface) {
+
+            Chat_StartFakeClock();
+
         }
 
         Chat_loadBadgesGlobal();
@@ -8781,6 +8793,33 @@
         );
 
         Chat_loadChat(Chat_Id[0]);
+    }
+
+    var Chat_StartFakeClockId;
+    var Chat_StartFakeClockAdd = 1;
+
+    function Chat_StartFakeClock() {
+        Chat_fakeClock = PlayClip_isOn ? 0 : Chat_offset;
+        Chat_StartFakeClockAdd = 1;
+        Chat_StartFakeClockInterval();
+        ChatLive_Playing = true;
+    }
+
+    function Chat_StartFakeClockInterval() {
+
+        Chat_StartFakeClockId = Main_setInterval(
+            function() {
+
+                Chat_fakeClock += Chat_StartFakeClockAdd;
+                Play_BufferSize = Chat_fakeClock / 2;
+
+                if (Play_isOn && Chat_fakeClock > 28) Chat_fakeClock = 15;
+
+
+            },
+            1000,
+            Chat_StartFakeClockId
+        );
     }
 
     var Chat_LoadGlobalBadges = false;
@@ -9144,6 +9183,13 @@
                 1000,
                 Chat_addlinesId
             );
+
+            if (!Main_IsOn_OSInterface) {
+
+                Chat_StartFakeClockInterval();
+
+            }
+
         }
     }
 
@@ -9151,6 +9197,7 @@
         Main_clearTimeout(Chat_loadChatId);
         Main_clearTimeout(Chat_loadChatNextId);
         Main_clearInterval(Chat_addlinesId);
+        Main_clearInterval(Chat_StartFakeClockId);
     }
 
     function Chat_Clear() {
@@ -13284,7 +13331,7 @@
     //Android specific: false
     //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
     function OSInterface_gettime() {
-        return Main_IsOn_OSInterface ? Android.gettime() : 0;
+        return Main_IsOn_OSInterface ? Android.gettime() : (Chat_fakeClock * 1000);
     }
 
     //public long gettimepreview()
@@ -13327,8 +13374,9 @@
     //public void PlayPauseChange()
     //Android specific: false
     //Allows to change the playback state, if playing pauses and vice versa
-    function OSInterface_PlayPauseChange() {
-        Android.PlayPauseChange();
+    function OSInterface_PlayPauseChange(PlayVodClip) {
+        if (Main_IsOn_OSInterface) Android.PlayPauseChange();
+        else Play_PlayPauseChange(!ChatLive_Playing, PlayVodClip);
     }
 
     //public void PlayPause(boolean state)
@@ -14517,7 +14565,7 @@
 
     function PlayClip_Enter() {
         if (!PlayClip_EnterPos) {
-            if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+            if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
         } else if (PlayClip_EnterPos === 1) PlayClip_PlayNext();
         else if (PlayClip_EnterPos === -1) PlayClip_PlayPreviously();
     }
@@ -14857,7 +14905,7 @@
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
                 break;
             case KEY_1:
                 if (UserLiveFeed_isPreviewShowing()) {
@@ -14895,6 +14943,10 @@
                 break;
             case KEY_MEDIA_PREVIOUS:
                 PlayClip_PlayPreviously();
+                break;
+            case KEY_A:
+                Chat_StartFakeClockAdd += 10;
+                console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
                 break;
             default:
                 break;
@@ -16404,11 +16456,16 @@
 
         if (State) {
             Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
+            ChatLive_Playing = true;
 
             if (PlayVodClip === 1) {
 
-                ChatLive_Playing = true;
                 ChatLive_MessagesRunAfterPause();
+
+                //fake chat clock
+                if (!Main_IsOn_OSInterface) {
+                    Chat_StartFakeClockInterval();
+                }
 
             } else if (PlayClip_HasVOD) {
 
@@ -16425,8 +16482,10 @@
         } else {
             Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
-            if (PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) Chat_Pause();
-            else ChatLive_Playing = false;
+            if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) || !Main_IsOn_OSInterface) Chat_Pause();
+
+            ChatLive_Playing = false;
+
         }
     }
 
@@ -17005,7 +17064,7 @@
 
                     } else if (PlayVod_PanelY === 1) {
 
-                        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                        if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(1);
 
                     } else Play_BottomOptionsPressed(1);
 
@@ -17059,7 +17118,7 @@
             case KEY_PLAY:
             case KEY_KEYBOARD_SPACE:
             case KEY_PLAYPAUSE:
-                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(1);
                 break;
             case KEY_1:
                 if (UserLiveFeed_isPreviewShowing()) {
@@ -23174,12 +23233,12 @@
 
             } else {
 
-                PlayVod_PosStart();
-
                 if (!Main_vodOffset) {
                     Chat_offset = 0;
                     Chat_Init();
                 }
+
+                PlayVod_PosStart();
 
             }
 
@@ -23545,21 +23604,19 @@
 
     function PlayVod_onPlayer() {
         //Main_Log('PlayVod_onPlayer');
-        if (Main_IsOn_OSInterface) {
 
-            if (Main_vodOffset) {
+        if (Main_vodOffset) {
 
-                PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
+            PlayVod_onPlayerStartPlay(Main_vodOffset * 1000);
 
-                Chat_offset = Main_vodOffset;
-                Chat_Init();
-                Main_vodOffset = 0;
+            Chat_offset = Main_vodOffset;
+            Chat_Init();
+            Main_vodOffset = 0;
 
-            } else {
+        } else {
 
-                PlayVod_onPlayerStartPlay(OSInterface_gettime());
+            PlayVod_onPlayerStartPlay(OSInterface_gettime());
 
-            }
         }
 
         PlayVod_replay = false;
@@ -23756,6 +23813,14 @@
                 (Main_A_includes_B(Play_data.qualityPlaying, 'Auto') && Play_isOn))) {
 
             OSInterface_getVideoQuality(who_called);
+
+        } else if (!Main_IsOn_OSInterface) {
+
+            PlayVod_ProgresBarrUpdate(
+                (OSInterface_gettime() / 1000),
+                Play_DurationSeconds,
+                true
+            );
 
         }
 
@@ -24289,7 +24354,7 @@
                     if (!PlayVod_PanelY) {
                         if (PlayVod_IsJumping) PlayVod_jump();
                     } else if (PlayVod_PanelY === 1) {
-                        if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                        if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
                     } else Play_BottomOptionsPressed(2);
                     PlayVod_setHidePanel();
                 } else if (UserLiveFeed_isPreviewShowing()) {
@@ -24309,7 +24374,7 @@
             case KEY_PLAY:
             case KEY_PLAYPAUSE:
             case KEY_KEYBOARD_SPACE:
-                if (Main_IsOn_OSInterface && !Play_isEndDialogVisible()) OSInterface_PlayPauseChange();
+                if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
                 break;
             case KEY_1:
                 if (UserLiveFeed_isPreviewShowing()) {
@@ -24348,6 +24413,10 @@
                 break;
             case KEY_MEDIA_PREVIOUS:
                 PlayVod_QuickJump(-30);
+                break;
+            case KEY_A:
+                Chat_StartFakeClockAdd += 10;
+                console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
                 break;
             default:
                 break;
