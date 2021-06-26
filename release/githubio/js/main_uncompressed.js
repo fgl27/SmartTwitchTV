@@ -23934,7 +23934,7 @@
 
     var PlayVod_ProgresMaxSize = -98.9;
     var PlayVod_ProgresMinSize = -0.5;
-    var PlayVod_ProgresYoffset = '%, -23%)';
+    var PlayVod_ProgresYoffset = '%, -27%)';
 
     function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
         Main_textContentWithEle(
@@ -23948,7 +23948,7 @@
             current_time_seconds = 0;
         }
 
-        Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + PlayVod_ProgresYoffset;
+        Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + '%, -32%)';
 
         var x_offset = Math.min(
             Math.max(
