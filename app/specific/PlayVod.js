@@ -828,7 +828,15 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 
     Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + PlayVod_ProgresYoffset;
 
-    if (update_bar) Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((PlayVod_ProgresMaxSize + (current_time_seconds / duration_seconds) * 100), PlayVod_ProgresMinSize) + PlayVod_ProgresYoffset;
+    var x_offset = Math.min(
+        Math.max(
+            (PlayVod_ProgresMaxSize + (current_time_seconds / duration_seconds) * 100),
+            PlayVod_ProgresMaxSize
+        ),
+        PlayVod_ProgresMinSize
+    );
+
+    if (update_bar) Play_ProgresBarrElm.style.transform = 'translate(' + x_offset + PlayVod_ProgresYoffset;
 
     PlayVod_UpdateRemaining(current_time_seconds, duration_seconds);
 }
