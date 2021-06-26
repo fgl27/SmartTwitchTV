@@ -3827,43 +3827,56 @@ function Play_MakeControls() {
         },
     };
 
-    var div, doc = Main_getElementById('controls_holder');
+    var div,
+        doc = Main_getElementById('controls_holder'),
+        fragment = document.createDocumentFragment(),
+        keys = Object.keys(Play_controls),
+        i = 0,
+        len = keys.length;
+
     Main_emptyWithEle(doc);
     Play_controlsSize = -1;
 
-    for (var key in Play_controls) {
+    for (i; i < len; i++) {
+
         div = document.createElement('div');
         div.className = 'controls_button_holder';
-        div.setAttribute('id', 'controls_' + key);
+        div.setAttribute('id', 'controls_' + i);
 
-        div.innerHTML = '<div id="controls_button_' + key +
-            '" class="controls_button"><div id="controls_icon_' + key +
-            (Play_controls[key].offsetY ? '" style="transform: translateY(' + Play_controls[key].offsetY + '%);"' : '"') +
-            '><i class="pause_button3d icon-' + Play_controls[key].icons +
-            '" ></i></div></div><div id="controls_button_text_' + key +
+        div.innerHTML = '<div id="controls_button_' + i +
+            '" class="controls_button"><div id="controls_icon_' + i +
+            (Play_controls[i].offsetY ? '" style="transform: translateY(' + Play_controls[i].offsetY + '%);"' : '"') +
+            '><i class="pause_button3d icon-' + Play_controls[i].icons +
+            '" ></i></div></div><div id="controls_button_text_' + i +
             '" class="extra_button_title_holder" style="opacity: 0;"><div id="extra_button_title' +
-            key + '" class="extra_button_title strokedeline" >' +
-            Play_controls[key].string + '</div><div id="extra_button_' + key +
+            i + '" class="extra_button_title strokedeline" >' +
+            Play_controls[i].string + '</div><div id="extra_button_' + i +
             '" class="extra_button_title strokedeline" >' +
-            (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE_HTML) + '</div></div></div>';
+            (Play_controls[i].values ? Play_SetControlsArrows(i) : STR_SPACE_HTML) + '</div></div></div>';
 
-        doc.appendChild(div);
+        fragment.appendChild(div);
         Play_controlsSize++;
-        Play_controls[key].position = key;
+        Play_controls[i].position = i;
+        Play_controls[i].visible = true;
+        Play_controls[i].doc = div;
 
-        Play_controls[key].visible = true;
-        Play_controls[key].doc = div;
-        Play_controls[key].doc_title = Main_getElementById('extra_button_title' + key);
-        Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
-        Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
-        Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
-        Play_controls[key].button = Main_getElementById('controls_button_' + key);
-        Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
-
-        if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
-        if (Play_controls[key].setLable) Play_controls[key].setLable();
     }
+    doc.appendChild(fragment);
 
+    i = 0;
+    for (i; i < len; i++) {
+
+        Play_controls[i].doc_title = Main_getElementById('extra_button_title' + i);
+        Play_controls[i].doc_name = Main_getElementById('controls_name_' + i);
+        Play_controls[i].doc_up = Main_getElementById('control_arrow_up_' + i);
+        Play_controls[i].doc_down = Main_getElementById('control_arrow_down' + i);
+        Play_controls[i].button = Main_getElementById('controls_button_' + i);
+        Play_controls[i].button_text = Main_getElementById('controls_button_text_' + i);
+
+        if (Play_controls[i].bottomArrows) Play_BottomArrows(i);
+        if (Play_controls[i].setLable) Play_controls[i].setLable();
+
+    }
 }
 
 function Play_SetControlsArrows(key) {
