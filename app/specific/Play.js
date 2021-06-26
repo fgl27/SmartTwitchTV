@@ -40,8 +40,6 @@ var Play_EndDialogEnter = 0;
 var Play_PanneInfoDoclId;
 var Play_Multi_MainBig = false;
 var Play_DurationSeconds = 0;
-var Play_seek_previews;
-var Play_seek_previews_img;
 var Play_EndDialogElem;
 var Play_MultiDialogElem;
 var Play_SkipStartAuto = false;
