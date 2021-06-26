@@ -23928,6 +23928,10 @@
 
     }
 
+    var PlayVod_ProgresMaxSize = -98.75;
+    var PlayVod_ProgresMinSize = -0.5;
+    var PlayVod_ProgresYoffset = '%, -23%)';
+
     function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, update_bar) {
         Main_textContentWithEle(
             Play_BottonIcons_Progress_CurrentTime,
@@ -23940,9 +23944,9 @@
             current_time_seconds = 0;
         }
 
-        Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + '%, -7%)';
+        Play_ProgresBarrBufferElm.style.transform = 'translate(' + Math.min(Math.ceil(-99 + ((current_time_seconds + Play_BufferSize) / duration_seconds) * 100.0), 0) + PlayVod_ProgresYoffset;
 
-        if (update_bar) Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((-98.9 + (current_time_seconds / duration_seconds) * 100), -0.45) + '%, -7%)';
+        if (update_bar) Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((PlayVod_ProgresMaxSize + (current_time_seconds / duration_seconds) * 100), PlayVod_ProgresMinSize) + PlayVod_ProgresYoffset;
 
         PlayVod_UpdateRemaining(current_time_seconds, duration_seconds);
     }
@@ -24105,7 +24109,7 @@
         );
 
         Play_ProgresBarrElm.style.transition = 'none';
-        Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((-98.9 + (position * 100)), -0.45) + '%, -7%)';
+        Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((PlayVod_ProgresMaxSize + (position * 100)), PlayVod_ProgresMinSize) + PlayVod_ProgresYoffset;
 
         PlayVod_previews_move(position);
     }
