@@ -101,11 +101,11 @@ function Users_StartLoad() {
 }
 
 function Users_loadData() {
-    var row = document.createElement('div');
-    var doc = Main_getElementById('stream_table_user');
-    var x = 1; // 1 as first is used by add user
-    var y = 0;
-    var div = document.createElement('div');
+    var row = document.createElement('div'),
+        doc = Main_getElementById('stream_table_user'),
+        x = 1, // 1 as first is used by add user
+        y = 0,
+        div = document.createElement('div');
 
     div.setAttribute('id', Users_ids[4] + '0_0');
     div.classList.add('stream_thumbnail_user_icon_holder');
