@@ -1975,12 +1975,26 @@
             box-sizing: border-box;
             border: 0.1em solid #000000;
             border-radius: 0.15em;
-            box-shadow: inset 0 0 0 0.03em #000000;
             background-color: #ebebeb;
         }
 
+        .inner_progress_animate_holder {
+            overflow: hidden;
+            transform: translate(-0.1%, -37%);
+            border-radius: 30%;
+            width: 100.2%;
+        }
+
+        .inner_progress_animate {
+            height: 0.29em !important;
+            transform: translate(0%, -23%);
+            display: inline-block;
+            border: 0.1em solid rgb(0, 0, 0);
+            border-radius: 0.15em;
+        }
+
         .inner_progress_circle {
-            transform: translate(25%, -23%);
+            transform: translate(25%, -29%);
             right: 0;
             position: absolute;
             display: inline-block;
@@ -1994,7 +2008,7 @@
         .inner_progress_bar_muted,
         .inner_progress_bar {
             width: 100%;
-            height: 0.37em;
+            height: 0.3em;
             line-height: 1.5em;
             will-change: transform;
             /* Keep this same as PlayVod_RefreshProgressBarrTimeout */
@@ -3414,13 +3428,14 @@
                                 <div id="progress_bar" class="progress_bar_holder">
                                     <div class="progress_bar">
                                         <div class="inner_progress_bar">
-                                            <div
-                                                style="overflow: hidden; transform: translateY(-37%); border-radius: 30%; width: 100.1%;">
-                                                <div id="inner_progress_bar_buffer" class="inner_progress_bar"
-                                                    style="background-color:rgba(148, 0, 0, 0.8); width: 100%; height: 0.36em; border-radius: 0.15em; bottom: 27%; position: absolute;transform: translate(0%,-7%);border: 0.1em solid #000000;">
+                                            <div class="inner_progress_animate_holder">
+                                                <div id="inner_progress_bar_buffer"
+                                                    class="inner_progress_animate inner_progress_bar"
+                                                    style="background-color:rgba(148, 0, 0, 0.8); position: absolute; bottom: 27%;">
                                                 </div>
-                                                <div id="inner_progress_bar" class="inner_progress_bar"
-                                                    style="max-width: 100%; background-color: rgb(77, 77, 77); height: 0.36em; width: 100%; transform: translate(0%,-7%); display: inline-block; border: 0.1em solid #000000; border-radius: 5%;">
+                                                <div id="inner_progress_bar"
+                                                    class="inner_progress_animate inner_progress_bar"
+                                                    style="background-color: rgb(77, 77, 77);border-radius: 5%;">
                                                     <div class="inner_progress_circle"></div>
                                                 </div>
                                             </div>
@@ -3457,7 +3472,7 @@
                         <div
                             style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch;">
                             <div id="pause_button" class="pause_button"
-                                style="width: 90%; padding-top: 0.375em; padding-bottom: 0.375em;">
+                                style="width: 80%; padding-top: 0.375em; padding-bottom: 0.375em;">
                                 <div>
                                     <i class="pause_button3d icon-pause"></i>
                                 </div>
