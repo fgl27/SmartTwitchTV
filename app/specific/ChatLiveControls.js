@@ -30,9 +30,9 @@ var ChatLiveControls_LastChannel = '';
 var ChatLiveControls_Cursor_Options;
 var ChatLiveControls_Cursor_Delete;
 var ChatLiveControls_Cursor_Emojis;
-var ChatLiveControls_Cursor_BTTV;
-var ChatLiveControls_Cursor_FFZ;
-var ChatLiveControls_Cursor_7TV;
+var ChatLiveControls_Cursor_BTTV_Global;
+var ChatLiveControls_Cursor_FFZ_Global;
+var ChatLiveControls_Cursor_7TV_Global;
 var ChatLiveControls_Cursor_SEND;
 var ChatLiveControls_Cursor_AT_STREAMER;
 var ChatLiveControls_Cursor_Twitch_Emotes;
@@ -48,9 +48,9 @@ function ChatLiveControls_Set() {
     ChatLiveControls_Cursor_Options = temp_controls_pos++;
     ChatLiveControls_Cursor_Delete = temp_controls_pos++;
     ChatLiveControls_Cursor_Emojis = temp_controls_pos++;
-    ChatLiveControls_Cursor_BTTV = temp_controls_pos++;
-    ChatLiveControls_Cursor_FFZ = temp_controls_pos++;
-    ChatLiveControls_Cursor_7TV = temp_controls_pos++;
+    ChatLiveControls_Cursor_BTTV_Global = temp_controls_pos++;
+    ChatLiveControls_Cursor_FFZ_Global = temp_controls_pos++;
+    ChatLiveControls_Cursor_7TV_Global = temp_controls_pos++;
     ChatLiveControls_Cursor_SEND = temp_controls_pos++;
     ChatLiveControls_Cursor_AT_STREAMER = temp_controls_pos++;
     ChatLiveControls_Cursor_Twitch_Emotes = temp_controls_pos++;
@@ -263,7 +263,7 @@ function ChatLiveControls_HandleKeyEnter() {
             );
 
             break;
-        case ChatLiveControls_Cursor_BTTV:
+        case ChatLiveControls_Cursor_BTTV_Global:
 
             ChatLiveControls_SetEmotesDiv(
                 extraEmotesDone.bttvGlobal,
@@ -272,7 +272,7 @@ function ChatLiveControls_HandleKeyEnter() {
             );
 
             break;
-        case ChatLiveControls_Cursor_FFZ:
+        case ChatLiveControls_Cursor_FFZ_Global:
 
             ChatLiveControls_SetEmotesDiv(
                 extraEmotesDone.ffzGlobal,
@@ -281,7 +281,7 @@ function ChatLiveControls_HandleKeyEnter() {
             );
 
             break;
-        case ChatLiveControls_Cursor_7TV:
+        case ChatLiveControls_Cursor_7TV_Global:
 
             ChatLiveControls_SetEmotesDiv(
                 extraEmotesDone.seven_tvGlobal,
