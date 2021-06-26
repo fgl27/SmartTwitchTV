@@ -363,7 +363,7 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
     }
 
     var div_holder = Main_getElementById('chat_emotes'),
-        i,
+        i = 1,
         create_elements = Boolean(!array[0].hasOwnProperty('div'));
 
     Main_emptyWithEle(div_holder);
@@ -384,23 +384,24 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
 
     ChatLiveControls_ShowEmotes();
 
-    Main_ready(function() {
+    Main_setTimeout(
+        function() {
 
-        i = 1;
+            for (i; i < ChatLiveControls_EmotesTotal; i++) {
 
-        for (i; i < ChatLiveControls_EmotesTotal; i++) {
+                ChatLiveControls_CreateEmoteDiv(
+                    array,
+                    i,
+                    create_elements,
+                    prop,
+                    div_holder
+                );
 
-            ChatLiveControls_CreateEmoteDiv(
-                array,
-                i,
-                create_elements,
-                prop,
-                div_holder
-            );
+            }
 
-        }
-
-    });
+        },
+        25
+    );
 
 }
 
