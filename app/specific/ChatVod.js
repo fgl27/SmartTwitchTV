@@ -124,7 +124,7 @@ function Chat_loadBadgesGlobal() {
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
     if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
 
-    ChatLiveControls_SetEmojisObj();
+    ChatLiveControls_Set();
 }
 
 function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
