@@ -23932,7 +23932,7 @@
 
     }
 
-    var PlayVod_ProgresMaxSize = -98.75;
+    var PlayVod_ProgresMaxSize = -98.9;
     var PlayVod_ProgresMinSize = -0.5;
     var PlayVod_ProgresYoffset = '%, -23%)';
 
