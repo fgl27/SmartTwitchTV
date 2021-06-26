@@ -742,7 +742,7 @@ function PlayVod_RefreshProgressBarr(showVideoQuality, who_called) {
 
         OSInterface_getVideoQuality(who_called);
 
-    } else if (!Main_IsOn_OSInterface && !PlayVod_IsJumping) {
+    } else if (!Main_IsOn_OSInterface && (PlayVod_PanelY || !PlayVod_IsJumping)) {
 
         PlayVod_ProgresBarrUpdate(
             (OSInterface_gettime() / 1000),
@@ -831,20 +831,20 @@ function PlayVod_ProgresBarrUpdate(current_time_seconds, duration_seconds, updat
 
 function PlayVod_UpdateRemaining(current_time_seconds, duration_seconds) {
 
-    if (!Play_isOn) {
+    if (PlayVod_PanelY || !PlayVod_IsJumping) {
 
-        if (PlayVod_PanelY || !PlayVod_IsJumping) {
+        if (!Play_isOn) {
 
             Main_textContentWithEle(
                 Play_BottonIcons_Progress_JumpTo,
                 STR_REMAINING + Play_timeS(duration_seconds - current_time_seconds)
             );
+
+        } else {
+
+            Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE_HTML);
+
         }
-
-    } else {
-
-        Main_innerHTMLWithEle(Play_BottonIcons_Progress_JumpTo, STR_SPACE_HTML);
-
     }
 
 }
