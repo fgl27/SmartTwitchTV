@@ -614,7 +614,7 @@ function Chat_SingleLine(Line) {
 
 function Chat_Clean(chat_number) {
     //delete old lines out of view
-    var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line"),
+    var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line_holder"),
         i = 0, len = (linesToDelete.length - Chat_CleanMax);
 
     if (len > 0) {

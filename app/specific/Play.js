@@ -233,7 +233,7 @@ function Play_Start(offline_chat) {
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
     //Check the Play_UpdateMainStream fun when on a browser
-    if (!Main_IsOn_OSInterface && !offline_chat && !Play_OlddataSet()) {
+    if (!Main_IsOn_OSInterface && !offline_chat) {
 
         Play_UpdateMainStream(true, true);
 

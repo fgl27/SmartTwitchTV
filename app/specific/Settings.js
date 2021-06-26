@@ -418,6 +418,10 @@ var Settings_value = {
         "values": ["no", "chatters", "viewers"],
         "defaultValue": 2
     },
+    "chat_line_animation": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "individual_lines": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -2383,6 +2387,7 @@ function Settings_DialogShowChat() {
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
     Settings_value.chat_nickcolor.values = yes_no;
+    Settings_value.chat_line_animation.values = yes_no;
     Settings_value.chat_timestamp.values = yes_no;
     Settings_value.clear_chat.values = yes_no;
     Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
@@ -2393,6 +2398,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.chat_logging.values,
             title: STR_CHAT_LOGGING,
             summary: STR_CHAT_LOGGING_SUMMARY
+        },
+        chat_line_animation: {
+            defaultValue: Settings_value.chat_line_animation.defaultValue,
+            values: Settings_value.chat_line_animation.values,
+            title: STR_CHAT_LINE_ANIMATION,
+            summary: null
         },
         individual_lines: {
             defaultValue: Settings_value.individual_lines.defaultValue,

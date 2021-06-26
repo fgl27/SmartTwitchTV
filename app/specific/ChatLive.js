@@ -52,6 +52,7 @@ var ChatLive_PingId = [];
 var ChatLive_SendPingId;
 var ChatLive_selectedChannel = [];
 var ChatLive_sub_replace = new RegExp('\\\\s', 'gi');
+var ChatLive_chat_line_class = '';
 
 var emoteReplace = {
     "B-?\\)": "B)",
@@ -165,6 +166,8 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
     ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
+
+    ChatLive_chat_line_class = (Settings_Obj_default("chat_line_animation") ? 'chat_line_animation ' : '') + 'chat_line_holder';
 
     if (ChatLive_User_Set) {
         ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
@@ -1772,8 +1775,8 @@ function ChatLive_LineAdd(messageObj) {
 
 function ChatLive_ElemntAdd(messageObj) {
 
-    var elem = document.createElement('div');
-    var classname = 'chat_line';
+    var style = '',
+        classname = 'chat_line';
 
     if (messageObj.atstreamer) {
 
@@ -1802,15 +1805,15 @@ function ChatLive_ElemntAdd(messageObj) {
             if (ChatLive_Individual_Background === 1) {
 
                 var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
-                elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+                style = 'background-color: rgba(' + color + ' ' + Play_ChatBackground + ');';
 
             } else if (ChatLive_Individual_Background === 2) {
 
-                elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+                style = 'background-color: rgba(100,100,100, ' + Play_ChatBackground + ')';
 
             } else if (ChatLive_Individual_Background === 3) {
 
-                elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+                style = 'background-color: rgba(0,0,0, ' + Play_ChatBackground + ')';
 
             }
         }
@@ -1821,8 +1824,7 @@ function ChatLive_ElemntAdd(messageObj) {
     if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
     else classname += ' chat_line_slim';
 
-    elem.className = classname;
-    elem.innerHTML = messageObj.message;
+    var chat_line = '<div style="' + style + '" class="' + classname + '">' + messageObj.message + '</div>';
 
     // <div class="chat_line chat_line_ind">
     // <span style="color: #D463FF;">USER Name</span>:&nbsp;
@@ -1830,14 +1832,19 @@ function ChatLive_ElemntAdd(messageObj) {
     // </span>
     // </div>
 
+    var chat_line_holder = document.createElement('div');
+    chat_line_holder.innerHTML = chat_line;
+
     if (!messageObj.addToStart) {
 
+        chat_line_holder.className = ChatLive_chat_line_class;
         ChatLive_ElemntAddCheckExtra(messageObj);
-        Chat_div[messageObj.chat_number].appendChild(elem);
+        Chat_div[messageObj.chat_number].appendChild(chat_line_holder);
 
     } else {
 
-        Chat_div[messageObj.chat_number].insertBefore(elem, Chat_div[messageObj.chat_number].childNodes[0]);
+        chat_line_holder.className = 'chat_line_holder';
+        Chat_div[messageObj.chat_number].insertBefore(chat_line_holder, Chat_div[messageObj.chat_number].childNodes[0]);
         ChatLive_ElemntAddCheckExtra(messageObj);
 
     }

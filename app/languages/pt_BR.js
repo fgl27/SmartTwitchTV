@@ -617,6 +617,7 @@ function pt_BRLang() {
     STR_CHAT_INDIVIDUAL_BACKGROUND = "Diferença de cor de fundo de mensagens individuais";
     STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Os modos são desabilitar, habilitar (modo automático), claro ou mais escuro, no modo automático se o chat estiver acima do stream, a mensagem impares terão uma cor de destaque de fundo mais escura do que as pares, se o chat não estiver acima (lado a lado, por exemplo) a cor ficará clara";
     STR_CHAT_INDIVIDUAL_LINE = "Insira uma linha para separar as mensagens de chat individuais";
+    STR_CHAT_LINE_ANIMATION = "Rolagem animada ao adicionar uma nova mensagem no chat";
     STR_CHAT_LOGGING = "Fazendo login no chat com o usuário atual";
     STR_CHAT_LOGGING_SUMMARY = "O aplicativo sempre fará login no chat usando o usuário atual quando uma chave de autorização for fornecida, a menos que o chat seja desabilitado nos controles da parte inferior do player, mas se esta opção for definida como NÃO, impedirá o login usando o nome de usuário atual e, em vez disso, será registrado como anônimo , mesmo que forneça uma chave de autorização. Isso não impede o envio de mensagem de chat para este usuário se uma chave for adicionada, mas impede o app de saber se você está banido do chat e impede o status do chat ROOMSTATE";
     STR_CHAT_TIMESTAMP = "Mostrar data e hora da mensagem";

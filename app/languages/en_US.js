@@ -630,6 +630,7 @@ function en_USLang() {
     STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color difference";
     STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
     STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
+    STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
     STR_CHAT_LOGGING = "Logging in chat with current user";
     STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
     STR_CHAT_TIMESTAMP = "Show message timestamp";

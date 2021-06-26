@@ -2044,6 +2044,25 @@
             text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
         }
 
+        .chat_line_holder {
+            overflow: hidden;
+        }
+
+        .chat_line_animation {
+            will-change: height, max-height;
+            animation: chat_lines 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+        }
+
+        @keyframes chat_lines {
+            from {
+                max-height: 0;
+            }
+
+            to {
+                max-height: 100vh;
+            }
+        }
+
         .chat_line,
         .message {
             word-wrap: break-word;
