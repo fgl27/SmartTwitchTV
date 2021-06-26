@@ -19499,7 +19499,13 @@
 
     var Play_Status_Visible = 0;
 
+    var Play_seek_previews_holder;
+    var Play_seek_previews;
+    var Play_seek_previews_img;
+
     function Play_PreStart() {
+
+        Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
         Play_seek_previews = Main_getElementById('seek_previews');
         Play_seek_previews_img = new Image();
         Play_chat_container = Main_getElementById('chat_container0');
@@ -20122,8 +20128,6 @@
     var Play_PanneInfoDoclId;
     var Play_Multi_MainBig = false;
     var Play_DurationSeconds = 0;
-    var Play_seek_previews;
-    var Play_seek_previews_img;
     var Play_EndDialogElem;
     var Play_MultiDialogElem;
     var Play_SkipStartAuto = false;
@@ -24108,8 +24112,10 @@
             STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump)
         );
 
+        var offset_X_position = Math.min((PlayVod_ProgresMaxSize + (position * 100)), PlayVod_ProgresMinSize);
+
         Play_ProgresBarrElm.style.transition = 'none';
-        Play_ProgresBarrElm.style.transform = 'translate(' + Math.min((PlayVod_ProgresMaxSize + (position * 100)), PlayVod_ProgresMinSize) + PlayVod_ProgresYoffset;
+        Play_ProgresBarrElm.style.transform = 'translate(' + offset_X_position + PlayVod_ProgresYoffset;
 
         PlayVod_previews_move(position);
     }
@@ -24534,8 +24540,7 @@
                 null
             );
 
-        }
-        //else PlayVod_previews_start_test();
+        } else PlayVod_previews_start_test();
     }
 
     function PlayVod_previews_clear() {
@@ -24625,7 +24630,7 @@
         position = parseInt(position * PlayVod_previews_obj.count);
         var imagePos = parseInt(position / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
 
-        // //Main_Log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' + parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
+        //Main_Log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' + parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
 
         if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
 
@@ -24653,30 +24658,31 @@
 
         }
 
+        Play_seek_previews_holder.style.transform = 'translate(' + (position / 2) + '%, -9.3vh)';
         Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (position % PlayVod_previews_obj.cols)) + "px " +
             (-PlayVod_previews_obj.height * (parseInt(position / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
     }
 
-    // function PlayVod_previews_start_test() {
-    //     PlayVod_previews_clear();
-    //     //Main_Log(PlayVod_previews_url);
+    function PlayVod_previews_start_test() {
+        PlayVod_previews_clear();
+        //Main_Log(PlayVod_previews_url);
 
-    //     PlayVod_previews_hide();
-    //     if (!PlayVod_previews_url) return;
+        PlayVod_previews_hide();
+        if (!PlayVod_previews_url) return;
 
-    //     PlayVod_previews_obj = {
-    //         "count": 200,
-    //         "width": 220,
-    //         "rows": 10,
-    //         "images": [Main_values.ChannelVod_vodId + "-high-0.jpg", Main_values.ChannelVod_vodId + "-high-1.jpg", Main_values.ChannelVod_vodId + "-high-2.jpg", Main_values.ChannelVod_vodId + "-high-3.jpg"],
-    //         "interval": 55,
-    //         "quality": "high",
-    //         "cols": 5,
-    //         "height": 124
-    //     };
+        PlayVod_previews_obj = {
+            "count": 200,
+            "width": 220,
+            "rows": 10,
+            "images": [Main_values.ChannelVod_vodId + "-high-0.jpg", Main_values.ChannelVod_vodId + "-high-1.jpg", Main_values.ChannelVod_vodId + "-high-2.jpg", Main_values.ChannelVod_vodId + "-high-3.jpg"],
+            "interval": 55,
+            "quality": "high",
+            "cols": 5,
+            "height": 124
+        };
 
-    //     PlayVod_previews_success_end();
-    // }
+        PlayVod_previews_success_end();
+    }
 
     var PlayVod_muted_segments_warn = false;
     var PlayVod_muted_segments_value = null;

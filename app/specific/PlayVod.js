@@ -1416,8 +1416,7 @@ function PlayVod_previews_pre_start(seek_previews_url) {
             null
         );
 
-    }
-    else PlayVod_previews_start_test();
+    } else PlayVod_previews_start_test();
 }
 
 function PlayVod_previews_clear() {
