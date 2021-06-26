@@ -2050,10 +2050,10 @@
 
         .chat_line_animation {
             will-change: height, max-height;
-            animation: chat_lines 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            animation: height_animation 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
-        @keyframes chat_lines {
+        @keyframes height_animation {
             from {
                 max-height: 0;
             }
