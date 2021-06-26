@@ -24627,10 +24627,10 @@
             return;
         }
 
-        position = parseInt(position * PlayVod_previews_obj.count);
-        var imagePos = parseInt(position / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
+        var offset = parseInt(position * PlayVod_previews_obj.count),
+            imagePos = parseInt(offset / (PlayVod_previews_obj.cols * PlayVod_previews_obj.rows)) % PlayVod_previews_obj.images.length;
 
-        //Main_Log('position ' + position + ' w ' + (position % PlayVod_previews_obj.cols) + ' h ' + parseInt(position / PlayVod_previews_obj.cols) + ' p ' + imagePos);
+        //Main_Log('offset ' + offset + ' w ' + (offset % PlayVod_previews_obj.cols) + ' h ' + parseInt(offset / PlayVod_previews_obj.cols) + ' p ' + imagePos);
 
         if (!PlayVod_previews_images_load || imagePos !== PlayVod_previews_images_pos) {
 
@@ -24658,9 +24658,9 @@
 
         }
 
-        Play_seek_previews_holder.style.transform = 'translate(' + (position / 2) + '%, -9.3vh)';
-        Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (position % PlayVod_previews_obj.cols)) + "px " +
-            (-PlayVod_previews_obj.height * (parseInt(position / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
+        Play_seek_previews_holder.style.transform = 'translate(' + (position * 100) + '%, -9.3vh)';
+        Play_seek_previews.style.backgroundoffset = (-PlayVod_previews_obj.width * (offset % PlayVod_previews_obj.cols)) + "px " +
+            (-PlayVod_previews_obj.height * (parseInt(offset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
     }
 
     function PlayVod_previews_start_test() {
