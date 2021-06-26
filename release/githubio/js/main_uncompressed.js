@@ -24659,7 +24659,7 @@
         }
 
         Play_seek_previews_holder.style.transform = 'translate(' + (position * 100) + '%, -9.3vh)';
-        Play_seek_previews.style.backgroundoffset = (-PlayVod_previews_obj.width * (offset % PlayVod_previews_obj.cols)) + "px " +
+        Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (offset % PlayVod_previews_obj.cols)) + "px " +
             (-PlayVod_previews_obj.height * (parseInt(offset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
     }
 
