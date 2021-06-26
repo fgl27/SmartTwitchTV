@@ -221,19 +221,19 @@ function ChatLiveControls_HandleKeyEnter() {
 
     } else if (ChatLiveControls_cursor === 2) {
 
-        ChatLiveControls_SetEmojisDiv();
+        ChatLiveControls_SetEmotesDiv(emojis, STR_CHAT_UNICODE_EMOJI, 'unicode');
 
     } else if (ChatLiveControls_cursor === 3) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttvGlobal, STR_CHAT_BTTV_GLOBAL);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttvGlobal, STR_CHAT_BTTV_GLOBAL, 'code');
 
     } else if (ChatLiveControls_cursor === 4) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL, 'code');
 
     } else if (ChatLiveControls_cursor === 5) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tvGlobal, STR_CHAT_SEVENTV_GLOBAL);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tvGlobal, STR_CHAT_SEVENTV_GLOBAL, 'code');
 
     } else if (ChatLiveControls_cursor === 6) {
 
@@ -258,19 +258,19 @@ function ChatLiveControls_HandleKeyEnter() {
 
     } else if (ChatLiveControls_cursor === 8) {
 
-        ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES);
+        ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES, 'code');
 
     } else if (ChatLiveControls_cursor === 9) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BTTV_STREAM);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BTTV_STREAM, 'code');
 
     } else if (ChatLiveControls_cursor === 10) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM, 'code');
 
     } else if (ChatLiveControls_cursor === 11) {
 
-        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM);
+        ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM, 'code');
 
     }
 }
@@ -332,7 +332,7 @@ var ChatLiveControls_EmotesTotal = 0;
 var ChatLiveControls_EmotesPos = 0;
 var ChatLiveControls_EmotesArray = [];
 
-function ChatLiveControls_SetEmotesDiv(obj, text) {
+function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
     var array = [];
 
     for (var property in obj) {
@@ -362,152 +362,66 @@ function ChatLiveControls_SetEmotesDiv(obj, text) {
         );
     }
 
-    var div_holder = Main_getElementById('chat_emotes'), i;
+    var div_holder = Main_getElementById('chat_emotes'),
+        i,
+        create_elements = Boolean(!array[0].hasOwnProperty('div'));
+
     Main_emptyWithEle(div_holder);
 
     ChatLiveControls_EmotesTotal = array.length;
     ChatLiveControls_EmotesPos = 0;
     ChatLiveControls_EmotesArray = [];
 
-    if (!array[0].hasOwnProperty('div')) {
-        ChatLiveControls_EmotesArray.push(array[0].id);
+    //Create the first elem and show the holder div, after add the rest
+    //To prevent not update the UI for the whole div is created
+    ChatLiveControls_CreateEmoteDiv(
+        array,
+        0,
+        create_elements,
+        prop,
+        div_holder
+    );
 
-        array[0].div = ChatLiveControls_SetEmoteDiv(
-            array[0]['4x'],
-            array[0].id,
-            array[0].code,
-            array[0].code
-        );
+    ChatLiveControls_ShowEmotes();
 
-        div_holder.appendChild(
-            array[0].div
-        );
+    Main_ready(function() {
 
-        ChatLiveControls_ShowEmotes();
+        i = 1;
 
-        Main_ready(function() {
+        for (i; i < ChatLiveControls_EmotesTotal; i++) {
 
-            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
-                ChatLiveControls_EmotesArray.push(array[i].id);
-                array[i].div = ChatLiveControls_SetEmoteDiv(
-                    array[i]['4x'],
-                    array[i].id,
-                    array[i].code,
-                    array[i].code
-                );
-                div_holder.appendChild(
-                    array[i].div
-                );
-            }
-
-        });
-
-    } else {
-
-        for (i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-
-            ChatLiveControls_EmotesArray.push(array[i].id);
-
-            div_holder.appendChild(
-                array[i].div
+            ChatLiveControls_CreateEmoteDiv(
+                array,
+                i,
+                create_elements,
+                prop,
+                div_holder
             );
 
         }
 
-        ChatLiveControls_ShowEmotes();
-    }
+    });
+
 }
 
-function ChatLiveControls_SetEmojisDiv() {
-    var array = emojis;
+function ChatLiveControls_CreateEmoteDiv(array, pos, create_elements, prop, div_holder) {
 
-    if (array[0].hasOwnProperty('id')) {
-        Main_textContent("chat_emotes_text", STR_CHAT_UNICODE_EMOJI);
-    } else {
-        ChatLiveControls_showWarningDialog(STR_CHAT_EMOTE_EMPTY, 1000);
-        return;
+    ChatLiveControls_EmotesArray.push(array[pos].id);
+
+    if (create_elements) {
+
+        array[pos].div = ChatLiveControls_SetEmoteDiv(
+            array[pos]['4x'],
+            array[pos].id,
+            array[pos][prop],
+            array[pos].code
+        );
+
     }
 
-    var direction = OptionsShowObj.emote_sorting.defaultValue;
-
-    if (!direction) {
-        array.sort(
-            function(a, b) {
-                return a.id - b.id;
-            }
-        );
-    } if (direction === 1) {//a-z
-        array.sort(
-            function(a, b) {
-                return (a.tags < b.tags ? -1 : (a.tags > b.tags ? 1 : 0));
-            }
-        );
-    } else if (direction === 2) {//z-a
-
-        array.sort(
-            function(a, b) {
-                return (a.tags > b.tags ? -1 : (a.tags < b.tags ? 1 : 0));
-            }
-        );
-    }
-
-    var div_holder = Main_getElementById('chat_emotes'), i;
-    Main_emptyWithEle(div_holder);
-
-    ChatLiveControls_EmotesTotal = array.length;
-    ChatLiveControls_EmotesPos = 0;
-    ChatLiveControls_EmotesArray = [];
-
-    if (!array[0].hasOwnProperty('div')) {
-        ChatLiveControls_EmotesArray.push(array[0].id + array[0].tags);
-
-        array[0].div = ChatLiveControls_SetEmoteDiv(
-            twemoji.parseIcon(array[0].unicode),
-            array[0].id + array[0].tags,
-            array[0].unicode,
-            array[0].tags
-        );
-
-        div_holder.appendChild(
-            array[0].div
-        );
-
-        ChatLiveControls_ShowEmotes();
-
-        Main_ready(function() {
-
-            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
-                ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
-
-                array[i].div = ChatLiveControls_SetEmoteDiv(
-                    twemoji.parseIcon(array[i].unicode),
-                    array[i].id + array[i].tags,
-                    array[i].unicode,
-                    array[i].tags
-                );
-
-                div_holder.appendChild(
-                    array[i].div
-                );
-
-            }
-
-        });
-    } else {
-
-        for (i = 0; i < ChatLiveControls_EmotesTotal; i++) {
-
-            ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
-
-            div_holder.appendChild(
-                array[i].div
-            );
-
-        }
-
-        ChatLiveControls_ShowEmotes();
-    }
-
+    div_holder.appendChild(
+        array[pos].div
+    );
 }
 
 function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
@@ -528,6 +442,16 @@ function ChatLiveControls_SetEmoteDiv(url, id, code, name) {
 
 function ChatLiveControls_SetEmojisObj() {
     emojis = JSON.parse(emojis_string);
+
+    //gen the array in canse is needed
+    // for (i = 0; i < emojis.length; i++) {
+
+    //     emojis[i]['4x'] = twemoji.parseIcon(emojis[i].unicode);
+    //     emojis[i].id = emojis[i].id + '_' + emojis[i].code;
+
+    // }
+
+    // console.log(JSON.stringify(emojis));
 }
 
 function ChatLiveControls_ShowEmotes() {
