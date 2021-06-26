@@ -218,6 +218,7 @@
     var STR_RESTORE_PLAYBACK;
     var STR_RESTORE_PLAYBACK_SUMMARY;
     var STR_CHAT_FONT;
+    var STR_CHAT_LINE_ANIMATION;
     var STR_OAUTH_FAIL_USER;
     var STR_VIDEOS_ANIMATION;
     var STR_SIDE_PANEL;
@@ -1617,6 +1618,7 @@
         STR_CHAT_INDIVIDUAL_BACKGROUND = "Individual messages background color difference";
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are disable, enable (auto mode), Bright or Darker, In auto mode if the chat is above the stream it odd message will have a darker background accent color from the even, if the chat is not above (side by side for example) the color will be brigh";
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate it individual chat messages";
+        STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
         STR_CHAT_LOGGING = "Logging in chat with current user";
         STR_CHAT_LOGGING_SUMMARY = "The app will always logging to chat using current user when a authorization key is provided, unless chat is disable on player bottom controls, but if this option if set to NO it will prevent logging using current username and instead will logging as anonymous, even if providing a authorization key. This doesn't prevent from send chat message for this user if a key ws added but prevents form know if you are banned on the chat and prevent knowing the chat ROOMSTATE";
         STR_CHAT_TIMESTAMP = "Show message timestamp";
@@ -2830,6 +2832,7 @@
         STR_CHAT_INDIVIDUAL_BACKGROUND = "Diferença de cor de fundo de mensagens individuais";
         STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Os modos são desabilitar, habilitar (modo automático), claro ou mais escuro, no modo automático se o chat estiver acima do stream, a mensagem impares terão uma cor de destaque de fundo mais escura do que as pares, se o chat não estiver acima (lado a lado, por exemplo) a cor ficará clara";
         STR_CHAT_INDIVIDUAL_LINE = "Insira uma linha para separar as mensagens de chat individuais";
+        STR_CHAT_LINE_ANIMATION = "Rolagem animada ao adicionar uma nova mensagem no chat";
         STR_CHAT_LOGGING = "Fazendo login no chat com o usuário atual";
         STR_CHAT_LOGGING_SUMMARY = "O aplicativo sempre fará login no chat usando o usuário atual quando uma chave de autorização for fornecida, a menos que o chat seja desabilitado nos controles da parte inferior do player, mas se esta opção for definida como NÃO, impedirá o login usando o nome de usuário atual e, em vez disso, será registrado como anônimo , mesmo que forneça uma chave de autorização. Isso não impede o envio de mensagem de chat para este usuário se uma chave for adicionada, mas impede o app de saber se você está banido do chat e impede o status do chat ROOMSTATE";
         STR_CHAT_TIMESTAMP = "Mostrar data e hora da mensagem";
@@ -6041,9 +6044,8 @@
             );
         }
 
-        var div_holder = Main_getElementById('chat_emotes'),
+        var div_holder = document.createDocumentFragment(),
             i;
-        Main_emptyWithEle(div_holder);
 
         ChatLiveControls_EmotesTotal = array.length;
         ChatLiveControls_EmotesPos = 0;
@@ -6065,22 +6067,18 @@
 
             ChatLiveControls_ShowEmotes();
 
-            Main_ready(function() {
-
-                for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
-                    ChatLiveControls_EmotesArray.push(array[i].id);
-                    array[i].div = ChatLiveControls_SetEmoteDiv(
-                        array[i]['4x'],
-                        array[i].id,
-                        array[i].code,
-                        array[i].code
-                    );
-                    div_holder.appendChild(
-                        array[i].div
-                    );
-                }
-
-            });
+            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
+                ChatLiveControls_EmotesArray.push(array[i].id);
+                array[i].div = ChatLiveControls_SetEmoteDiv(
+                    array[i]['4x'],
+                    array[i].id,
+                    array[i].code,
+                    array[i].code
+                );
+                div_holder.appendChild(
+                    array[i].div
+                );
+            }
 
         } else {
 
@@ -6096,6 +6094,10 @@
 
             ChatLiveControls_ShowEmotes();
         }
+
+        var chat_emotes = Main_getElementById('chat_emotes');
+        Main_emptyWithEle(chat_emotes);
+        chat_emotes.appendChild(div_holder);
     }
 
     function ChatLiveControls_SetEmojisDiv() {
@@ -6132,9 +6134,8 @@
             );
         }
 
-        var div_holder = Main_getElementById('chat_emotes'),
+        var div_holder = document.createDocumentFragment(),
             i;
-        Main_emptyWithEle(div_holder);
 
         ChatLiveControls_EmotesTotal = array.length;
         ChatLiveControls_EmotesPos = 0;
@@ -6156,25 +6157,22 @@
 
             ChatLiveControls_ShowEmotes();
 
-            Main_ready(function() {
+            for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
+                ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
 
-                for (i = 1; i < ChatLiveControls_EmotesTotal; i++) {
-                    ChatLiveControls_EmotesArray.push(array[i].id + array[i].tags);
+                array[i].div = ChatLiveControls_SetEmoteDiv(
+                    twemoji.parseIcon(array[i].unicode),
+                    array[i].id + array[i].tags,
+                    array[i].unicode,
+                    array[i].tags
+                );
 
-                    array[i].div = ChatLiveControls_SetEmoteDiv(
-                        twemoji.parseIcon(array[i].unicode),
-                        array[i].id + array[i].tags,
-                        array[i].unicode,
-                        array[i].tags
-                    );
+                div_holder.appendChild(
+                    array[i].div
+                );
 
-                    div_holder.appendChild(
-                        array[i].div
-                    );
+            }
 
-                }
-
-            });
         } else {
 
             for (i = 0; i < ChatLiveControls_EmotesTotal; i++) {
@@ -6189,6 +6187,10 @@
 
             ChatLiveControls_ShowEmotes();
         }
+
+        var chat_emotes = Main_getElementById('chat_emotes');
+        Main_emptyWithEle(chat_emotes);
+        chat_emotes.appendChild(div_holder);
 
     }
 
@@ -6756,6 +6758,7 @@
     var ChatLive_SendPingId;
     var ChatLive_selectedChannel = [];
     var ChatLive_sub_replace = new RegExp('\\\\s', 'gi');
+    var ChatLive_chat_line_class = '';
 
     var emoteReplace = {
         "B-?\\)": "B)",
@@ -6869,6 +6872,8 @@
 
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
         ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
+
+        ChatLive_chat_line_class = (Settings_Obj_default("chat_line_animation") ? 'chat_line_animation ' : '') + 'chat_line_holder';
 
         if (ChatLive_User_Set) {
             ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
@@ -8468,8 +8473,8 @@
 
     function ChatLive_ElemntAdd(messageObj) {
 
-        var elem = document.createElement('div');
-        var classname = 'chat_line';
+        var style = '',
+            classname = 'chat_line';
 
         if (messageObj.atstreamer) {
 
@@ -8498,15 +8503,15 @@
                 if (ChatLive_Individual_Background === 1) {
 
                     var color = (!Play_isFullScreen && !Play_MultiEnable) || Play_Multi_MainBig ? '100,100,100,' : '0, 0, 0,';
-                    elem.style.backgroundColor = 'rgba(' + color + ' ' + Play_ChatBackground + ')';
+                    style = 'background-color: rgba(' + color + ' ' + Play_ChatBackground + ');';
 
                 } else if (ChatLive_Individual_Background === 2) {
 
-                    elem.style.backgroundColor = 'rgba(100,100,100, ' + Play_ChatBackground + ')';
+                    style = 'background-color: rgba(100,100,100, ' + Play_ChatBackground + ')';
 
                 } else if (ChatLive_Individual_Background === 3) {
 
-                    elem.style.backgroundColor = 'rgba(0,0,0, ' + Play_ChatBackground + ')';
+                    style = 'background-color: rgba(0,0,0, ' + Play_ChatBackground + ')';
 
                 }
             }
@@ -8517,8 +8522,7 @@
         if (chat_lineChatLive_Individual_Lines && !messageObj.skip_addline) classname += ' chat_line_ind';
         else classname += ' chat_line_slim';
 
-        elem.className = classname;
-        elem.innerHTML = messageObj.message;
+        var chat_line = '<div style="' + style + '" class="' + classname + '">' + messageObj.message + '</div>';
 
         // <div class="chat_line chat_line_ind">
         // <span style="color: #D463FF;">USER Name</span>:&nbsp;
@@ -8526,14 +8530,19 @@
         // </span>
         // </div>
 
+        var chat_line_holder = document.createElement('div');
+        chat_line_holder.innerHTML = chat_line;
+
         if (!messageObj.addToStart) {
 
+            chat_line_holder.className = ChatLive_chat_line_class;
             ChatLive_ElemntAddCheckExtra(messageObj);
-            Chat_div[messageObj.chat_number].appendChild(elem);
+            Chat_div[messageObj.chat_number].appendChild(chat_line_holder);
 
         } else {
 
-            Chat_div[messageObj.chat_number].insertBefore(elem, Chat_div[messageObj.chat_number].childNodes[0]);
+            chat_line_holder.className = 'chat_line_holder';
+            Chat_div[messageObj.chat_number].insertBefore(chat_line_holder, Chat_div[messageObj.chat_number].childNodes[0]);
             ChatLive_ElemntAddCheckExtra(messageObj);
 
         }
@@ -9327,7 +9336,7 @@
 
     function Chat_Clean(chat_number) {
         //delete old lines out of view
-        var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line"),
+        var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line_holder"),
             i = 0,
             len = (linesToDelete.length - Chat_CleanMax);
 
@@ -10728,7 +10737,7 @@
     }
 
     function Main_emptyWithEle(el) {
-        while (el.firstChild) el.removeChild(el.firstChild);
+        el.textContent = '';
     }
 
     function Main_YRst(y) {
@@ -19000,43 +19009,56 @@
             },
         };
 
-        var div, doc = Main_getElementById('controls_holder');
+        var div,
+            doc = Main_getElementById('controls_holder'),
+            fragment = document.createDocumentFragment(),
+            keys = Object.keys(Play_controls),
+            i = 0,
+            len = keys.length;
+
         Main_emptyWithEle(doc);
         Play_controlsSize = -1;
 
-        for (var key in Play_controls) {
+        for (i; i < len; i++) {
+
             div = document.createElement('div');
             div.className = 'controls_button_holder';
-            div.setAttribute('id', 'controls_' + key);
+            div.setAttribute('id', 'controls_' + i);
 
-            div.innerHTML = '<div id="controls_button_' + key +
-                '" class="controls_button"><div id="controls_icon_' + key +
-                (Play_controls[key].offsetY ? '" style="transform: translateY(' + Play_controls[key].offsetY + '%);"' : '"') +
-                '><i class="pause_button3d icon-' + Play_controls[key].icons +
-                '" ></i></div></div><div id="controls_button_text_' + key +
+            div.innerHTML = '<div id="controls_button_' + i +
+                '" class="controls_button"><div id="controls_icon_' + i +
+                (Play_controls[i].offsetY ? '" style="transform: translateY(' + Play_controls[i].offsetY + '%);"' : '"') +
+                '><i class="pause_button3d icon-' + Play_controls[i].icons +
+                '" ></i></div></div><div id="controls_button_text_' + i +
                 '" class="extra_button_title_holder" style="opacity: 0;"><div id="extra_button_title' +
-                key + '" class="extra_button_title strokedeline" >' +
-                Play_controls[key].string + '</div><div id="extra_button_' + key +
+                i + '" class="extra_button_title strokedeline" >' +
+                Play_controls[i].string + '</div><div id="extra_button_' + i +
                 '" class="extra_button_title strokedeline" >' +
-                (Play_controls[key].values ? Play_SetControlsArrows(key) : STR_SPACE_HTML) + '</div></div></div>';
+                (Play_controls[i].values ? Play_SetControlsArrows(i) : STR_SPACE_HTML) + '</div></div></div>';
 
-            doc.appendChild(div);
+            fragment.appendChild(div);
             Play_controlsSize++;
-            Play_controls[key].position = key;
+            Play_controls[i].position = i;
+            Play_controls[i].visible = true;
+            Play_controls[i].doc = div;
 
-            Play_controls[key].visible = true;
-            Play_controls[key].doc = div;
-            Play_controls[key].doc_title = Main_getElementById('extra_button_title' + key);
-            Play_controls[key].doc_name = Main_getElementById('controls_name_' + key);
-            Play_controls[key].doc_up = Main_getElementById('control_arrow_up_' + key);
-            Play_controls[key].doc_down = Main_getElementById('control_arrow_down' + key);
-            Play_controls[key].button = Main_getElementById('controls_button_' + key);
-            Play_controls[key].button_text = Main_getElementById('controls_button_text_' + key);
-
-            if (Play_controls[key].bottomArrows) Play_BottomArrows(key);
-            if (Play_controls[key].setLable) Play_controls[key].setLable();
         }
+        doc.appendChild(fragment);
 
+        i = 0;
+        for (i; i < len; i++) {
+
+            Play_controls[i].doc_title = Main_getElementById('extra_button_title' + i);
+            Play_controls[i].doc_name = Main_getElementById('controls_name_' + i);
+            Play_controls[i].doc_up = Main_getElementById('control_arrow_up_' + i);
+            Play_controls[i].doc_down = Main_getElementById('control_arrow_down' + i);
+            Play_controls[i].button = Main_getElementById('controls_button_' + i);
+            Play_controls[i].button_text = Main_getElementById('controls_button_text_' + i);
+
+            if (Play_controls[i].bottomArrows) Play_BottomArrows(i);
+            if (Play_controls[i].setLable) Play_controls[i].setLable();
+
+        }
     }
 
     function Play_SetControlsArrows(key) {
@@ -20321,7 +20343,7 @@
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
         //Check the Play_UpdateMainStream fun when on a browser
-        if (!Main_IsOn_OSInterface && !offline_chat && !Play_OlddataSet()) {
+        if (!Main_IsOn_OSInterface && !offline_chat) {
 
             Play_UpdateMainStream(true, true);
 
@@ -31341,6 +31363,10 @@
             "values": ["no", "chatters", "viewers"],
             "defaultValue": 2
         },
+        "chat_line_animation": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "individual_lines": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -33316,6 +33342,7 @@
         Settings_value.chat_logging.values = yes_no;
         Settings_value.individual_lines.values = yes_no;
         Settings_value.chat_nickcolor.values = yes_no;
+        Settings_value.chat_line_animation.values = yes_no;
         Settings_value.chat_timestamp.values = yes_no;
         Settings_value.clear_chat.values = yes_no;
         Settings_value.show_chatters.values = [STR_DISABLED, STR_SHOW_IN_CHAT_CHATTERS, STR_SHOW_IN_CHAT_VIEWERS];
@@ -33326,6 +33353,12 @@
                 values: Settings_value.chat_logging.values,
                 title: STR_CHAT_LOGGING,
                 summary: STR_CHAT_LOGGING_SUMMARY
+            },
+            chat_line_animation: {
+                defaultValue: Settings_value.chat_line_animation.defaultValue,
+                values: Settings_value.chat_line_animation.values,
+                title: STR_CHAT_LINE_ANIMATION,
+                summary: null
             },
             individual_lines: {
                 defaultValue: Settings_value.individual_lines.defaultValue,
@@ -37472,11 +37505,11 @@
     }
 
     function Users_loadData() {
-        var row = document.createElement('div');
-        var doc = Main_getElementById('stream_table_user');
-        var x = 1; // 1 as first is used by add user
-        var y = 0;
-        var div = document.createElement('div');
+        var row = document.createElement('div'),
+            doc = Main_getElementById('stream_table_user'),
+            x = 1, // 1 as first is used by add user
+            y = 0,
+            div = document.createElement('div');
 
         div.setAttribute('id', Users_ids[4] + '0_0');
         div.classList.add('stream_thumbnail_user_icon_holder');
