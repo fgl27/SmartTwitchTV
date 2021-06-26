@@ -5708,6 +5708,38 @@
     var ChatLiveControls_Channel = 0;
     var ChatLiveControls_LastChannel = '';
 
+    var ChatLiveControls_Cursor_Options;
+    var ChatLiveControls_Cursor_Delete;
+    var ChatLiveControls_Cursor_Emojis;
+    var ChatLiveControls_Cursor_BTTV;
+    var ChatLiveControls_Cursor_FFZ;
+    var ChatLiveControls_Cursor_7TV;
+    var ChatLiveControls_Cursor_SEND;
+    var ChatLiveControls_Cursor_AT_STREAMER;
+    var ChatLiveControls_Cursor_Twitch_Emotes;
+    var ChatLiveControls_Cursor_BTTV_STREAMER;
+    var ChatLiveControls_Cursor_FFZ_STREAMER;
+    var ChatLiveControls_Cursor_7TV_STREAMER;
+
+    function ChatLiveControls_Set() {
+        ChatLiveControls_SetEmojisObj();
+
+        var temp_controls_pos = 0;
+
+        ChatLiveControls_Cursor_Options = temp_controls_pos++;
+        ChatLiveControls_Cursor_Delete = temp_controls_pos++;
+        ChatLiveControls_Cursor_Emojis = temp_controls_pos++;
+        ChatLiveControls_Cursor_BTTV = temp_controls_pos++;
+        ChatLiveControls_Cursor_FFZ = temp_controls_pos++;
+        ChatLiveControls_Cursor_7TV = temp_controls_pos++;
+        ChatLiveControls_Cursor_SEND = temp_controls_pos++;
+        ChatLiveControls_Cursor_AT_STREAMER = temp_controls_pos++;
+        ChatLiveControls_Cursor_Twitch_Emotes = temp_controls_pos++;
+        ChatLiveControls_Cursor_BTTV_STREAMER = temp_controls_pos++;
+        ChatLiveControls_Cursor_FFZ_STREAMER = temp_controls_pos++;
+        ChatLiveControls_Cursor_7TV_STREAMER = temp_controls_pos++;
+    }
+
     function ChatLiveControls_Show() {
         var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
 
@@ -5892,68 +5924,127 @@
 
     function ChatLiveControls_HandleKeyEnter() {
 
-        if (!ChatLiveControls_cursor) {
+        switch (ChatLiveControls_cursor) {
+            case ChatLiveControls_Cursor_Options:
 
-            ChatLiveControls_OptionsShow();
+                ChatLiveControls_OptionsShow();
 
-        } else if (ChatLiveControls_cursor === 1 && ChatLiveControls_CanSend()) {
+                break;
+            case ChatLiveControls_Cursor_Delete:
 
-            Main_ChatLiveInput.value = '';
-            ChatLiveControls_UpdateResultTextEmpty();
+                Main_ChatLiveInput.value = '';
+                ChatLiveControls_UpdateResultTextEmpty();
 
-        } else if (ChatLiveControls_cursor === 2) {
+                break;
+            case ChatLiveControls_Cursor_Emojis:
 
-            ChatLiveControls_SetEmotesDiv(emojis, STR_CHAT_UNICODE_EMOJI, 'unicode');
+                ChatLiveControls_SetEmotesDiv(
+                    emojis,
+                    STR_CHAT_UNICODE_EMOJI,
+                    'unicode'
+                );
 
-        } else if (ChatLiveControls_cursor === 3) {
+                break;
+            case ChatLiveControls_Cursor_BTTV:
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttvGlobal, STR_CHAT_BTTV_GLOBAL, 'code');
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.bttvGlobal,
+                    STR_CHAT_BTTV_GLOBAL,
+                    'code'
+                );
 
-        } else if (ChatLiveControls_cursor === 4) {
+                break;
+            case ChatLiveControls_Cursor_FFZ:
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffzGlobal, STR_CHAT_FFZ_GLOBAL, 'code');
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.ffzGlobal,
+                    STR_CHAT_FFZ_GLOBAL,
+                    'code'
+                );
 
-        } else if (ChatLiveControls_cursor === 5) {
+                break;
+            case ChatLiveControls_Cursor_7TV:
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tvGlobal, STR_CHAT_SEVENTV_GLOBAL, 'code');
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.seven_tvGlobal,
+                    STR_CHAT_SEVENTV_GLOBAL,
+                    'code'
+                );
 
-        } else if (ChatLiveControls_cursor === 6) {
+                break;
+            case ChatLiveControls_Cursor_SEND:
 
-            if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
+                if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null) {
 
-                if (ChatLiveControls_CanSend()) {
+                    if (ChatLiveControls_CanSend()) {
 
-                    if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
+                        if (ChatLive_SendMessage(Main_ChatLiveInput.value, ChatLiveControls_Channel)) {
 
-                        Main_ChatLiveInput.value = '';
-                        ChatLiveControls_UpdateResultTextEmpty();
+                            Main_ChatLiveInput.value = '';
+                            ChatLiveControls_UpdateResultTextEmpty();
 
-                    } else ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
+                        } else {
 
-                } else ChatLiveControls_CantSend();
+                            ChatLiveControls_showWarningDialog(STR_CHAT_NOT_READY, 1500);
 
-            } else ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
+                        }
 
-        } else if (ChatLiveControls_cursor === 7 && ChatLiveControls_CanSendAnyEmote() && ChatLiveControls_CanSend()) {
+                    } else {
 
-            ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
+                        ChatLiveControls_CantSend();
 
-        } else if (ChatLiveControls_cursor === 8) {
+                    }
 
-            ChatLiveControls_SetEmotesDiv(userEmote[AddUser_UsernameArray[0].id], STR_CHAT_TW_EMOTES, 'code');
+                } else {
 
-        } else if (ChatLiveControls_cursor === 9) {
+                    ChatLiveControls_showWarningDialog(STR_SEARCH_EMPTY, 1000);
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_BTTV_STREAM, 'code');
+                }
 
-        } else if (ChatLiveControls_cursor === 10) {
+                break;
+            case ChatLiveControls_Cursor_AT_STREAMER:
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_FFZ_STREAM, 'code');
+                ChatLiveControls_UpdateTextInput('@' + (!ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1]));
 
-        } else if (ChatLiveControls_cursor === 11) {
+                break;
+            case ChatLiveControls_Cursor_Twitch_Emotes:
 
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM, 'code');
+                ChatLiveControls_SetEmotesDiv(
+                    userEmote[AddUser_UsernameArray[0].id],
+                    STR_CHAT_TW_EMOTES,
+                    'code'
+                );
 
+                break;
+            case ChatLiveControls_Cursor_BTTV_STREAMER:
+
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.bttv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]],
+                    STR_CHAT_BTTV_STREAM,
+                    'code'
+                );
+
+                break;
+            case ChatLiveControls_Cursor_FFZ_STREAMER:
+
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.ffz[ChatLive_selectedChannel_id[ChatLiveControls_Channel]],
+                    STR_CHAT_FFZ_STREAM,
+                    'code'
+                );
+
+                break;
+            case ChatLiveControls_Cursor_7TV_STREAMER:
+
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]],
+                    STR_CHAT_SEVENTV_STREAM,
+                    'code'
+                );
+
+                break;
+            default:
+                break;
         }
     }
 
@@ -6179,7 +6270,7 @@
                 ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
                 break;
             case KEY_ENTER:
-                if ((ChatLiveControls_cursor === 8 || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
+                if ((ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
                     ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
                 break;
             default:
@@ -8775,7 +8866,7 @@
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
         if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
 
-        ChatLiveControls_SetEmojisObj();
+        ChatLiveControls_Set();
     }
 
     function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
