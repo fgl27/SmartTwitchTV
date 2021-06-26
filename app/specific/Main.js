@@ -1375,7 +1375,7 @@ function Main_empty(el) {
 }
 
 function Main_emptyWithEle(el) {
-    el.textContent = '';
+    while (el.firstChild) el.removeChild(el.firstChild);
 }
 
 function Main_YRst(y) {
