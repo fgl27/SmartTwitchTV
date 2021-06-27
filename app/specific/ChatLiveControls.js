@@ -463,8 +463,8 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
     ChatLiveControls_EmotesPos = 0;
     ChatLiveControls_EmotesArray = [];
 
-    //Create the first elem and show the holder div, after add the rest
-    //To prevent not update the UI for the whole div is created
+    //Create the first 40 elem's and show the holder div, after add the rest
+    //To prevent not update the UI for the whole div creation that can be +500 elem
     var len = Math.min(ChatLiveControls_EmotesTotal, 39);
 
     for (i; i < len; i++) {
