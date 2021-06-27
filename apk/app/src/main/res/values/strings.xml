@@ -36,7 +36,6 @@
     <string name="no_network">No internet connection available!\n\nConnect to a network so the app finishes load\n\nor\n\nHold return key to close the app.</string>
     <string name="no_internet">Ping to Twitch fail for the last 30 seconds!\n\nIf the app is not working properly revise yours local internet connection\n\nHold return key to close the app in case it freeze or stop working.\n\nThis will auto hide in 30 seconds or if the connection return\n\nThis warning can be disabled in settings</string>
     <string name="external_player_fail">No external video player app available</string>
-    <string name="no_browser">There is none web browser installed on the device, can\'t open the link.</string>
     <string name="webview_exception">App fail to load because system Webview is either not present (unlikely) OR in the process of being updated, try again in a few seconds</string>
 
     <!--Home screen channel-->
