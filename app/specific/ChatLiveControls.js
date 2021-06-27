@@ -454,7 +454,7 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
     }
 
     var div_holder = Main_getElementById('chat_emotes'),
-        i = 1,
+        i = 0,
         create_elements = Boolean(!array[0].hasOwnProperty('div'));
 
     Main_emptyWithEle(div_holder);
@@ -465,34 +465,44 @@ function ChatLiveControls_SetEmotesDiv(obj, text, prop) {
 
     //Create the first elem and show the holder div, after add the rest
     //To prevent not update the UI for the whole div is created
-    ChatLiveControls_CreateEmoteDiv(
-        array,
-        0,
-        create_elements,
-        prop,
-        div_holder
-    );
+    var len = Math.min(ChatLiveControls_EmotesTotal, 39);
+
+    for (i; i < len; i++) {
+
+        ChatLiveControls_CreateEmoteDiv(
+            array,
+            i,
+            create_elements,
+            prop,
+            div_holder
+        );
+
+    }
 
     ChatLiveControls_ShowEmotes();
 
-    Main_setTimeout(
-        function() {
+    if (i < ChatLiveControls_EmotesTotal) {
 
-            for (i; i < ChatLiveControls_EmotesTotal; i++) {
+        Main_setTimeout(
+            function() {
 
-                ChatLiveControls_CreateEmoteDiv(
-                    array,
-                    i,
-                    create_elements,
-                    prop,
-                    div_holder
-                );
+                for (i; i < ChatLiveControls_EmotesTotal; i++) {
 
-            }
+                    ChatLiveControls_CreateEmoteDiv(
+                        array,
+                        i,
+                        create_elements,
+                        prop,
+                        div_holder
+                    );
 
-        },
-        25
-    );
+                }
+
+            },
+            10
+        );
+
+    }
 
 }
 
