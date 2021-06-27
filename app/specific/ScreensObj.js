@@ -507,10 +507,35 @@ function ScreensObj_StartAllVars() {
             }
         },
         key_play: function() {
-            if (this.itemsCount) {
+
+            if (this.hasBanner && !this.posY) {
+
+                console.log(this.DataObj[this.posY + '_' + this.posX]);
+                if (Main_IsOn_OSInterface) Android.OpenURL(this.DataObj[this.posY + '_' + this.posX].url);
+
+                if (skipfirebase) return;
+
+                try {
+
+                    gtag(
+                        'event',
+                        'banner',
+                        {
+                            'screen': this.ScreenName
+                        }
+                    );
+
+                } catch (e) {
+                    console.log("hasBanner e " + e);
+                }
+
+            } else if (this.itemsCount) {
+
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                 this.OpenLiveStream(false);
+
             }
+
         }
     };
 
@@ -1128,6 +1153,16 @@ function ScreensObj_InitLive() {
             Sidepannel_SetTopOpacity(this.screen);
 
             ScreensObj_SetTopLable(STR_LIVE);
+        },
+        addBanner: function() {
+            ScreensObj_addBanner(
+                {
+                    image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
+                    url: 'https://github.com/fgl27/SmartTwitchTV',
+                    text: 'Banner Text shows here'
+                },
+                this.screen
+            );
         },
     }, Base_obj);
 
@@ -1998,6 +2033,34 @@ function ScreensObj_addSwitches(StringsArray, key) {
         ScreenObj[key].row.appendChild(div);
     }
     ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+}
+
+
+function ScreensObj_addBanner(obj, key) {
+    ScreenObj[key].BannerCreated = true;
+    ScreenObj[key].row = Screens_createRow(key);
+    ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+    ScreenObj[key].row_id++;
+
+    var id = '0_0',
+        idArray = ScreenObj[key].ids;
+
+    ScreenObj[key].DataObj[id] = obj;
+
+    var div = document.createElement('div');
+    div.setAttribute('id', ScreenObj[key].ids[3] + id);
+    div.className = 'banner_holder';
+
+    div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '" ><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
+        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
+
+    ScreenObj[key].row.appendChild(div);
+
+    ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+
+    this.itemsCount += 3;
+    this.coloumn_id += 3;
 }
 
 function ScreensObj_CheckIsOpen(key, preventRefresh) {

@@ -448,13 +448,24 @@ function Screens_loadDatafail(key) {
 
         if (Screens_IsInUse(key)) {
 
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
+            Main_showWarningDialog(STR_REFRESH_PROBLEM, null, ScreenObj[key].hasBanner);
             if (!Main_FirstRun) Main_HideLoadDialog();
 
-            if (ScreenObj[key].HasSwitches) {
+            if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner) {
 
                 ScreenObj[key].emptyContent = true;
-                ScreenObj[key].addSwitches();
+
+                if (ScreenObj[key].HasSwitches) {
+                    ScreenObj[key].addSwitches();
+                }
+
+                if (ScreenObj[key].hasBanner) {
+
+                    ScreenObj[key].emptyContent = false;
+
+                    ScreenObj[key].addBanner();
+                }
+
                 Screens_loadDataSuccessFinish(key);
 
             } else ScreenObj[key].key_exit();
@@ -487,6 +498,7 @@ function Screens_loadDataSuccess(key) {
     else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
     if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) ScreenObj[key].addSwitches();
+    if (ScreenObj[key].hasBanner && !ScreenObj[key].BannerCreated) ScreenObj[key].addBanner();
 
     if (response_items) {
 
@@ -610,7 +622,6 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '</div></div></div></div>';
 }
 
-//TODO uncomplicate this ifs
 function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra_vodimg, force_VOD) {
 
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
@@ -918,7 +929,8 @@ function Screens_LoadPreview(key) {
 
     if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
-        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0]) &&
+        (!ScreenObj[key].hasBanner || ScreenObj[key].posY)) {
 
         var id = 0,//Clip
             obj = Screens_GetObj(key);
@@ -1597,7 +1609,7 @@ function Screens_addrowEnd(forceScroll, key) {
 var Screens_UpdateSinceId;
 function Screens_UpdateSince(key) {
 
-    if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key)) return;
+    if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key) || (ScreenObj[key].hasBanner && !ScreenObj[key].posY)) return;
 
     if (Screens_ObjNotNull(key)) {
 
