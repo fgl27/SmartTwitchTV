@@ -3251,14 +3251,6 @@ function Main_Startfirebase() {
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
 
-            if (!Main_values.firebaseId) {
-
-                Main_values.firebaseId = generatePushID();
-                Main_SaveValuesWithTimeout();
-
-            }
-            firebase.analytics().setUserId(Main_values.firebaseId);
-
             gtag('js', new Date());
 
         } else skipfirebase = true;
@@ -3449,39 +3441,4 @@ function Main_Eventsimple(event) {
             console.log("Main_Eventsimple event " + event + " e " + e);
         }
     });
-}
-
-function generatePushID() {
-    //From https://gist.github.com/mikelehen/3596a30bd69384624c11
-
-    // Modeled after base64 web-safe chars, but ordered by ASCII.
-    var PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-
-    // We generate 72-bits of randomness which get turned into 12 characters and appended to the
-    // timestamp to prevent collisions with other clients.  We store the last characters we
-    // generated because in the event of a collision, we'll use those same characters except
-    // "incremented" by one.
-    var lastRandChars = [];
-
-    var now = new Date().getTime();
-
-    var timeStampChars = new Array(8);
-
-    for (var i = 7; i >= 0; i--) {
-        timeStampChars[i] = PUSH_CHARS.charAt(now % 64);
-        // NOTE: Can't use << here because javascript will convert to int and lose the upper bits.
-        now = Math.floor(now / 64);
-    }
-
-    var id = timeStampChars.join('');
-
-    for (i = 0; i < 12; i++) {
-        lastRandChars[i] = Math.floor(Math.random() * 64);
-    }
-
-    for (i = 0; i < 12; i++) {
-        id += PUSH_CHARS.charAt(lastRandChars[i]);
-    }
-
-    return id;
 }
