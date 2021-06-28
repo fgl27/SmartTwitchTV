@@ -2456,6 +2456,23 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void OpenURL(String url) {
+
+            runOnUiThread(() -> {
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(intent, 102);
+                } else {
+                    Toast.makeText(mWebViewContext, getString(R.string.no_browser), Toast.LENGTH_LONG).show();
+                }
+
+            });
+
+        }
+
+        @JavascriptInterface
         public boolean isConnected() {
             return Tools.isConnected(mWebViewContext);
         }
