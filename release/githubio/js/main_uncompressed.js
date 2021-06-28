@@ -3827,11 +3827,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 320, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/320/SmartTV_twitch_3_0_320.apk',
-        WebVersion: 'June 24 2021',
+        publishVersionCode: 321, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/321/SmartTV_twitch_3_0_321.apk',
+        WebVersion: 'June 27 2021',
         WebTag: 597, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.321",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version June 24 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -6145,8 +6151,8 @@
         ChatLiveControls_EmotesPos = 0;
         ChatLiveControls_EmotesArray = [];
 
-        //Create the first elem and show the holder div, after add the rest
-        //To prevent not update the UI for the whole div is created
+        //Create the first 40 elem's and show the holder div, after add the rest
+        //To prevent not update the UI for the whole div creation that can be +500 elem
         var len = Math.min(ChatLiveControls_EmotesTotal, 39);
 
         for (i; i < len; i++) {
@@ -12639,14 +12645,6 @@
                 firebase.initializeApp(firebaseConfig);
                 firebase.analytics();
 
-                if (!Main_values.firebaseId) {
-
-                    Main_values.firebaseId = generatePushID();
-                    Main_SaveValuesWithTimeout();
-
-                }
-                firebase.analytics().setUserId(Main_values.firebaseId);
-
                 gtag('js', new Date());
 
             } else skipfirebase = true;
@@ -12830,41 +12828,6 @@
                 console.log("Main_Eventsimple event " + event + " e " + e);
             }
         });
-    }
-
-    function generatePushID() {
-        //From https://gist.github.com/mikelehen/3596a30bd69384624c11
-
-        // Modeled after base64 web-safe chars, but ordered by ASCII.
-        var PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-
-        // We generate 72-bits of randomness which get turned into 12 characters and appended to the
-        // timestamp to prevent collisions with other clients.  We store the last characters we
-        // generated because in the event of a collision, we'll use those same characters except
-        // "incremented" by one.
-        var lastRandChars = [];
-
-        var now = new Date().getTime();
-
-        var timeStampChars = new Array(8);
-
-        for (var i = 7; i >= 0; i--) {
-            timeStampChars[i] = PUSH_CHARS.charAt(now % 64);
-            // NOTE: Can't use << here because javascript will convert to int and lose the upper bits.
-            now = Math.floor(now / 64);
-        }
-
-        var id = timeStampChars.join('');
-
-        for (i = 0; i < 12; i++) {
-            lastRandChars[i] = Math.floor(Math.random() * 64);
-        }
-
-        for (i = 0; i < 12; i++) {
-            id += PUSH_CHARS.charAt(lastRandChars[i]);
-        }
-
-        return id;
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
