@@ -34,8 +34,6 @@ var KEY_ENTER = 13;
 
 var KEY_PG_DOWN = 34;
 var KEY_PG_UP = 33;
-var KEY_REFRESH = 50; //key #2
-var KEY_CHAT = 51; //key #3
 
 var KEY_RETURN = 113; //key #F2
 
@@ -51,12 +49,25 @@ var KEY_MEDIA_REWIND = 227;
 
 var KEY_0 = 48;
 var KEY_1 = 49;
+var KEY_2 = 50;
+var KEY_3 = 51;
 var KEY_4 = 52;
-//var KEY_5 = 53;
+var KEY_5 = 53;
 var KEY_6 = 54;
 var KEY_7 = 55;
 var KEY_8 = 56;
 var KEY_9 = 57;
+
+var KEY_NUMPAD_0 = 96;
+var KEY_NUMPAD_1 = 97;
+var KEY_NUMPAD_2 = 98;
+var KEY_NUMPAD_3 = 99;
+var KEY_NUMPAD_4 = 100;
+var KEY_NUMPAD_5 = 101;
+var KEY_NUMPAD_6 = 102;
+var KEY_NUMPAD_7 = 103;
+var KEY_NUMPAD_8 = 104;
+var KEY_NUMPAD_9 = 105;
 
 var KEY_A = 65;
 var KEY_C = 67;

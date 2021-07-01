@@ -1335,20 +1335,6 @@ function PlayVod_handleKeyDown(e) {
         case KEY_KEYBOARD_SPACE:
             if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
             break;
-        case KEY_1:
-            if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                else PlayVod_CheckIfIsLiveStart();
-            }
-            break;
-        case KEY_REFRESH:
-            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-            else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(2);
-            break;
-        case KEY_CHAT:
-            Play_controls[Play_controlsChat].enterKey(2);
-            break;
         case KEY_MEDIA_REWIND:
         case KEY_PG_UP:
             if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
@@ -1373,12 +1359,88 @@ function PlayVod_handleKeyDown(e) {
         case KEY_MEDIA_PREVIOUS:
             PlayVod_QuickJump(-30);
             break;
-        // case KEY_A:
-        //     Chat_StartFakeClockAdd += 10;
-        //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-        //     break;
+        case KEY_1:
+            if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                else PlayVod_CheckIfIsLiveStart();
+            } else PlayVod_NumberKey_QuickJump(e.keyCode);
+            break;
+        case KEY_2:
+            if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+
+                UserLiveFeed_FeedRefresh();
+
+            } else {
+
+                PlayVod_NumberKey_QuickJump(e.keyCode);
+
+            }
+            break;
+        default:
+            PlayVod_NumberKey_QuickJump(e.keyCode);
+            break;
+    }
+}
+
+function PlayVod_NumberKey_QuickJump(key) {
+    if (Play_isEndDialogVisible() || Play_isVodDialogVisible())
+        return;
+
+    var position = null;
+
+    switch (key) {
+        case KEY_NUMPAD_0:
+        case KEY_0:
+            position = 0;
+            break;
+        case KEY_NUMPAD_1:
+        case KEY_1:
+            position = 1;
+            break;
+        case KEY_NUMPAD_2:
+        case KEY_2:
+            position = 2;
+            break;
+        case KEY_NUMPAD_3:
+        case KEY_3:
+            position = 3;
+            break;
+        case KEY_NUMPAD_4:
+        case KEY_4:
+            position = 4;
+            break;
+        case KEY_NUMPAD_5:
+        case KEY_5:
+            position = 5;
+            break;
+        case KEY_NUMPAD_6:
+        case KEY_6:
+            position = 6;
+            break;
+        case KEY_NUMPAD_7:
+        case KEY_7:
+            position = 7;
+            break;
+        case KEY_NUMPAD_8:
+        case KEY_8:
+            position = 8;
+            break;
+        case KEY_NUMPAD_9:
+        case KEY_9:
+            position = 9;
+            break;
         default:
             break;
+    }
+
+    if (position !== null) {
+
+        PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
+        Play_showWarningDialog(
+            STR_JUMP_TIME + STR_SPACE_HTML + STR_JUMP_T0 + STR_SPACE_HTML + (position * 10) + '%',
+            2000
+        );
+        PlayVod_jump();
     }
 }
 

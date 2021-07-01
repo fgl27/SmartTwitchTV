@@ -570,10 +570,10 @@ function ChannelContent_handleKeyDown(event) {
                 ChannelContent_KeyEnterID
             );
             break;
-        case KEY_REFRESH:
+        case KEY_2:
             ChannelContent_Refresh();
             break;
-        case KEY_CHAT:
+        case KEY_3:
             ChannelContent_removeFocus();
             Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {

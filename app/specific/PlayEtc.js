@@ -1977,7 +1977,7 @@ function Play_handleKeyDown(e) {
                 }
             }
             break;
-        case KEY_CHAT:
+        case KEY_3:
             Play_controls[Play_controlsChat].enterKey(1);
             break;
         case KEY_PG_UP:
@@ -1990,7 +1990,7 @@ function Play_handleKeyDown(e) {
             else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
             else UserLiveFeed_ShowFeed();
             break;
-        case KEY_REFRESH:
+        case KEY_2:
         case KEY_MEDIA_FAST_FORWARD:
             if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
 

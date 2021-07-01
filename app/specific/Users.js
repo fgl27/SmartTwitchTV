@@ -470,10 +470,10 @@ function Users_handleKeyDown(event) {
                 }
             } else Users_keyEnter();
             break;
-        case KEY_REFRESH:
+        case KEY_2:
             Main_ReloadScreen();
             break;
-        case KEY_CHAT:
+        case KEY_3:
             Users_removeFocus();
             Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {

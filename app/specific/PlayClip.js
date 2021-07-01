@@ -866,20 +866,6 @@ function PlayClip_handleKeyDown(e) {
         case KEY_KEYBOARD_SPACE:
             if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
             break;
-        case KEY_1:
-            if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                else PlayClip_CheckIfIsLiveStart();
-            }
-            break;
-        case KEY_REFRESH:
-            if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-            else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(3);
-            break;
-        case KEY_CHAT:
-            Play_controls[Play_controlsChat].enterKey(3);
-            break;
         case KEY_MEDIA_REWIND:
         case KEY_PG_UP:
             if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
@@ -903,11 +889,21 @@ function PlayClip_handleKeyDown(e) {
         case KEY_MEDIA_PREVIOUS:
             PlayClip_PlayPreviously();
             break;
-        // case KEY_A:
-        //     Chat_StartFakeClockAdd += 10;
-        //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-        //     break;
+        case KEY_1:
+            if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                else PlayClip_CheckIfIsLiveStart();
+            } else PlayVod_NumberKey_QuickJump(e.keyCode);
+            break;
+        case KEY_2:
+            if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+
+                UserLiveFeed_FeedRefresh();
+
+            } PlayVod_NumberKey_QuickJump(e.keyCode);
+            break;
         default:
+            PlayVod_NumberKey_QuickJump(e.keyCode);
             break;
     }
 }

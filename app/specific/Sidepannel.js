@@ -812,7 +812,7 @@ function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-        case KEY_CHAT:
+        case KEY_3:
             Sidepannel_Hide();
             Main_SwitchScreen();
             break;
@@ -823,7 +823,7 @@ function Sidepannel_handleKeyDown(event) {
             Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
             break;
-        case KEY_REFRESH:
+        case KEY_2:
         case KEY_LEFT:
             if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
             break;
@@ -899,7 +899,7 @@ function Sidepannel_handleKeyDownMain(event) {
             Sidepannel_Hide();
             Main_SwitchScreen();
             break;
-        case KEY_CHAT:
+        case KEY_3:
         case KEY_LEFT:
             if (AddUser_UserIsSet()) {
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);

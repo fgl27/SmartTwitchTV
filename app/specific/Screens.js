@@ -1983,7 +1983,7 @@ function Screens_handleKeyDown(key, event) {
             Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
             break;
         case KEY_MEDIA_NEXT:
-        case KEY_REFRESH:
+        case KEY_2:
             Main_ReloadScreen();
             break;
         case KEY_PAUSE://key s
@@ -2012,7 +2012,7 @@ function Screens_handleKeyDown(key, event) {
             Screens_RemoveFocus(key);
             Main_UpdateDialogShowCheck();
             break;
-        case KEY_CHAT:
+        case KEY_3:
             var UserIsSet = AddUser_UserIsSet();
             Screens_OpenSidePanel(UserIsSet, key);
             if (!UserIsSet) {
