@@ -3776,8 +3776,6 @@
 
     var KEY_PG_DOWN = 34;
     var KEY_PG_UP = 33;
-    var KEY_REFRESH = 50; //key #2
-    var KEY_CHAT = 51; //key #3
 
     var KEY_RETURN = 113; //key #F2
 
@@ -3793,12 +3791,25 @@
 
     var KEY_0 = 48;
     var KEY_1 = 49;
+    var KEY_2 = 50;
+    var KEY_3 = 51;
     var KEY_4 = 52;
-    //var KEY_5 = 53;
+    var KEY_5 = 53;
     var KEY_6 = 54;
     var KEY_7 = 55;
     var KEY_8 = 56;
     var KEY_9 = 57;
+
+    var KEY_NUMPAD_0 = 96;
+    var KEY_NUMPAD_1 = 97;
+    var KEY_NUMPAD_2 = 98;
+    var KEY_NUMPAD_3 = 99;
+    var KEY_NUMPAD_4 = 100;
+    var KEY_NUMPAD_5 = 101;
+    var KEY_NUMPAD_6 = 102;
+    var KEY_NUMPAD_7 = 103;
+    var KEY_NUMPAD_8 = 104;
+    var KEY_NUMPAD_9 = 105;
 
     var KEY_A = 65;
     var KEY_C = 67;
@@ -5500,10 +5511,10 @@
                     ChannelContent_KeyEnterID
                 );
                 break;
-            case KEY_REFRESH:
+            case KEY_2:
                 ChannelContent_Refresh();
                 break;
-            case KEY_CHAT:
+            case KEY_3:
                 ChannelContent_removeFocus();
                 Sidepannel_Start(ChannelContent_handleKeyDown, AddUser_UserIsSet());
                 if (!AddUser_UserIsSet()) {
@@ -14917,20 +14928,6 @@
             case KEY_KEYBOARD_SPACE:
                 if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(3);
                 break;
-            case KEY_1:
-                if (UserLiveFeed_isPreviewShowing()) {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else PlayClip_CheckIfIsLiveStart();
-                }
-                break;
-            case KEY_REFRESH:
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(3);
-                break;
-            case KEY_CHAT:
-                Play_controls[Play_controlsChat].enterKey(3);
-                break;
             case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
@@ -14954,11 +14951,22 @@
             case KEY_MEDIA_PREVIOUS:
                 PlayClip_PlayPreviously();
                 break;
-                // case KEY_A:
-                //     Chat_StartFakeClockAdd += 10;
-                //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-                //     break;
+            case KEY_1:
+                if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else PlayClip_CheckIfIsLiveStart();
+                } else PlayVod_NumberKey_QuickJump(e.keyCode);
+                break;
+            case KEY_2:
+                if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+
+                    UserLiveFeed_FeedRefresh();
+
+                }
+                PlayVod_NumberKey_QuickJump(e.keyCode);
+                break;
             default:
+                PlayVod_NumberKey_QuickJump(e.keyCode);
                 break;
         }
     }
@@ -17146,7 +17154,7 @@
                     }
                 }
                 break;
-            case KEY_CHAT:
+            case KEY_3:
                 Play_controls[Play_controlsChat].enterKey(1);
                 break;
             case KEY_PG_UP:
@@ -17159,7 +17167,7 @@
                 else if (Play_isFullScreen && Play_isChatShown()) Play_KeyChatSizeChage();
                 else UserLiveFeed_ShowFeed();
                 break;
-            case KEY_REFRESH:
+            case KEY_2:
             case KEY_MEDIA_FAST_FORWARD:
                 if (Play_isEndDialogVisible() || Play_MultiDialogVisible() || Play_MultiEnable) break;
 
@@ -19527,11 +19535,13 @@
     var Play_seek_previews_holder;
     var Play_seek_previews;
     var Play_seek_previews_img;
+    var Play_seek_previews_text;
 
     function Play_PreStart() {
 
         Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
         Play_seek_previews = Main_getElementById('seek_previews');
+        Play_seek_previews_text = Main_getElementById('seek_previews_text');
         Play_seek_previews_img = new Image();
         Play_chat_container = Main_getElementById('chat_container0');
         Play_ProgresBarrElm = Main_getElementById('inner_progress_bar');
@@ -24139,10 +24149,12 @@
     }
 
     function PlayVod_jumpTime(position) {
+        var time_to_jump_string = Play_timeS(PlayVod_TimeToJump);
+
         Main_textContentWithEle(
             Play_BottonIcons_Progress_JumpTo,
             STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' +
-            STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump)
+            STR_JUMP_T0 + time_to_jump_string
         );
 
         var offset_X_position = Math.min((PlayVod_ProgresMaxSize + (position * 100)), PlayVod_ProgresMinSize);
@@ -24150,7 +24162,7 @@
         Play_ProgresBarrElm.style.transition = 'none';
         Play_ProgresBarrElm.style.transform = 'translate(' + offset_X_position + PlayVod_ProgresYoffset;
 
-        PlayVod_previews_move(position);
+        PlayVod_previews_move(position, time_to_jump_string);
     }
 
     function PlayVod_SeekClear() {
@@ -24484,20 +24496,6 @@
             case KEY_KEYBOARD_SPACE:
                 if (!Play_isEndDialogVisible()) OSInterface_PlayPauseChange(2);
                 break;
-            case KEY_1:
-                if (UserLiveFeed_isPreviewShowing()) {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-                    else PlayVod_CheckIfIsLiveStart();
-                }
-                break;
-            case KEY_REFRESH:
-                if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_FeedRefresh();
-                else if (!Play_isEndDialogVisible() && !Play_isPanelShowing() &&
-                    !Play_MultiDialogVisible() && !Play_isVodDialogVisible()) Play_controls[Play_controlsChatSide].enterKey(2);
-                break;
-            case KEY_CHAT:
-                Play_controls[Play_controlsChat].enterKey(2);
-                break;
             case KEY_MEDIA_REWIND:
             case KEY_PG_UP:
                 if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(-1);
@@ -24522,12 +24520,88 @@
             case KEY_MEDIA_PREVIOUS:
                 PlayVod_QuickJump(-30);
                 break;
-                // case KEY_A:
-                //     Chat_StartFakeClockAdd += 10;
-                //     console.log('Chat_StartFakeClockAdd ' + Chat_StartFakeClockAdd);
-                //     break;
+            case KEY_1:
+                if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    else PlayVod_CheckIfIsLiveStart();
+                } else PlayVod_NumberKey_QuickJump(e.keyCode);
+                break;
+            case KEY_2:
+                if (UserLiveFeed_isPreviewShowing() && (!Play_EndFocus || !Play_isEndDialogVisible())) {
+
+                    UserLiveFeed_FeedRefresh();
+
+                } else {
+
+                    PlayVod_NumberKey_QuickJump(e.keyCode);
+
+                }
+                break;
+            default:
+                PlayVod_NumberKey_QuickJump(e.keyCode);
+                break;
+        }
+    }
+
+    function PlayVod_NumberKey_QuickJump(key) {
+        if (Play_isEndDialogVisible() || Play_isVodDialogVisible())
+            return;
+
+        var position = null;
+
+        switch (key) {
+            case KEY_NUMPAD_0:
+            case KEY_0:
+                position = 0;
+                break;
+            case KEY_NUMPAD_1:
+            case KEY_1:
+                position = 1;
+                break;
+            case KEY_NUMPAD_2:
+            case KEY_2:
+                position = 2;
+                break;
+            case KEY_NUMPAD_3:
+            case KEY_3:
+                position = 3;
+                break;
+            case KEY_NUMPAD_4:
+            case KEY_4:
+                position = 4;
+                break;
+            case KEY_NUMPAD_5:
+            case KEY_5:
+                position = 5;
+                break;
+            case KEY_NUMPAD_6:
+            case KEY_6:
+                position = 6;
+                break;
+            case KEY_NUMPAD_7:
+            case KEY_7:
+                position = 7;
+                break;
+            case KEY_NUMPAD_8:
+            case KEY_8:
+                position = 8;
+                break;
+            case KEY_NUMPAD_9:
+            case KEY_9:
+                position = 9;
+                break;
             default:
                 break;
+        }
+
+        if (position !== null) {
+
+            PlayVod_TimeToJump = (Play_DurationSeconds / 10) * position;
+            Play_showWarningDialog(
+                STR_JUMP_TIME + STR_SPACE_HTML + STR_JUMP_T0 + STR_SPACE_HTML + (position * 10) + '%',
+                2000
+            );
+            PlayVod_jump();
         }
     }
 
@@ -24654,7 +24728,7 @@
 
     }
 
-    function PlayVod_previews_move(position) {
+    function PlayVod_previews_move(position, time_to_jump_string) {
         if (!PlayVod_previews_obj.images.length) {
             PlayVod_previews_hide();
             return;
@@ -24691,9 +24765,14 @@
 
         }
 
-        Play_seek_previews_holder.style.transform = 'translate(' + Math.max((position * 100), 1.1) + '%, -1277%)';
+        Play_seek_previews_holder.style.transform = 'translate(' + Math.max((position * 100), 1.1) + '%, -1240%)';
         Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (offset % PlayVod_previews_obj.cols)) + "px " +
             (-PlayVod_previews_obj.height * (parseInt(offset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
+
+        Main_textContentWithEle(
+            Play_seek_previews_text,
+            time_to_jump_string
+        );
     }
 
     function PlayVod_previews_start_test() {
@@ -26929,7 +27008,7 @@
                 Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
                 break;
             case KEY_MEDIA_NEXT:
-            case KEY_REFRESH:
+            case KEY_2:
                 Main_ReloadScreen();
                 break;
             case KEY_PAUSE: //key s
@@ -26958,7 +27037,7 @@
                 Screens_RemoveFocus(key);
                 Main_UpdateDialogShowCheck();
                 break;
-            case KEY_CHAT:
+            case KEY_3:
                 var UserIsSet = AddUser_UserIsSet();
                 Screens_OpenSidePanel(UserIsSet, key);
                 if (!UserIsSet) {
@@ -34420,7 +34499,7 @@
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
             case KEY_RETURN:
-            case KEY_CHAT:
+            case KEY_3:
                 Sidepannel_Hide();
                 Main_SwitchScreen();
                 break;
@@ -34431,7 +34510,7 @@
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
                 Sidepannel_StartMain();
                 break;
-            case KEY_REFRESH:
+            case KEY_2:
             case KEY_LEFT:
                 if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
                 break;
@@ -34507,7 +34586,7 @@
                 Sidepannel_Hide();
                 Main_SwitchScreen();
                 break;
-            case KEY_CHAT:
+            case KEY_3:
             case KEY_LEFT:
                 if (AddUser_UserIsSet()) {
                     Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
@@ -37877,10 +37956,10 @@
                     }
                 } else Users_keyEnter();
                 break;
-            case KEY_REFRESH:
+            case KEY_2:
                 Main_ReloadScreen();
                 break;
-            case KEY_CHAT:
+            case KEY_3:
                 Users_removeFocus();
                 Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
                 if (!AddUser_UserIsSet()) {
