@@ -1956,6 +1956,13 @@
             text-align: center;
         }
 
+        .seek_previews_text {
+            transform: translateY(-77%);
+            position: absolute;
+            text-align: center;
+            width: 100%;
+        }
+
         .progress_bar_jump {
             width: 40%;
         }
@@ -3463,7 +3470,11 @@
                                             </div>
                                             <div id="inner_progress_bar_muted" class="inner_progress_bar_muted"></div>
                                             <div id="seek_previews_holder" class="seek_previews_holder">
-                                                <div id="seek_previews" class="hideimp seek_previews"></div>
+                                                <div id="seek_previews" class="hideimp seek_previews">
+                                                    <div id="seek_previews_text"
+                                                        class="seek_previews_text progress_bar_timer strokedeline">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

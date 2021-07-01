@@ -4358,11 +4358,13 @@ var Play_Status_Visible = 0;
 var Play_seek_previews_holder;
 var Play_seek_previews;
 var Play_seek_previews_img;
+var Play_seek_previews_text;
 
 function Play_PreStart() {
 
     Play_seek_previews_holder = Main_getElementById('seek_previews_holder');
     Play_seek_previews = Main_getElementById('seek_previews');
+    Play_seek_previews_text = Main_getElementById('seek_previews_text');
     Play_seek_previews_img = new Image();
     Play_chat_container = Main_getElementById('chat_container0');
     Play_ProgresBarrElm = Main_getElementById('inner_progress_bar');

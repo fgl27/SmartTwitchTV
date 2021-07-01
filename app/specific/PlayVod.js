@@ -990,10 +990,12 @@ function PlayVod_jumpStepsIncrease() {
 }
 
 function PlayVod_jumpTime(position) {
+    var time_to_jump_string = Play_timeS(PlayVod_TimeToJump);
+
     Main_textContentWithEle(
         Play_BottonIcons_Progress_JumpTo,
         STR_JUMP_TIME + ' (' + (PlayVod_addToJump < 0 ? '-' : '') + Play_timeS(Math.abs(PlayVod_addToJump)) + ')' +
-        STR_JUMP_T0 + Play_timeS(PlayVod_TimeToJump)
+        STR_JUMP_T0 + time_to_jump_string
     );
 
     var offset_X_position = Math.min((PlayVod_ProgresMaxSize + (position * 100)), PlayVod_ProgresMinSize);
@@ -1001,7 +1003,7 @@ function PlayVod_jumpTime(position) {
     Play_ProgresBarrElm.style.transition = 'none';
     Play_ProgresBarrElm.style.transform = 'translate(' + offset_X_position + PlayVod_ProgresYoffset;
 
-    PlayVod_previews_move(position);
+    PlayVod_previews_move(position, time_to_jump_string);
 }
 
 function PlayVod_SeekClear() {
@@ -1566,7 +1568,7 @@ function PlayVod_previews_success_end() {
 
 }
 
-function PlayVod_previews_move(position) {
+function PlayVod_previews_move(position, time_to_jump_string) {
     if (!PlayVod_previews_obj.images.length) {
         PlayVod_previews_hide();
         return;
@@ -1603,9 +1605,14 @@ function PlayVod_previews_move(position) {
 
     }
 
-    Play_seek_previews_holder.style.transform = 'translate(' + Math.max((position * 100), 1.1) + '%, -1277%)';
+    Play_seek_previews_holder.style.transform = 'translate(' + Math.max((position * 100), 1.1) + '%, -1240%)';
     Play_seek_previews.style.backgroundPosition = (-PlayVod_previews_obj.width * (offset % PlayVod_previews_obj.cols)) + "px " +
         (-PlayVod_previews_obj.height * (parseInt(offset / PlayVod_previews_obj.cols) % PlayVod_previews_obj.rows)) + "px";
+
+    Main_textContentWithEle(
+        Play_seek_previews_text,
+        time_to_jump_string
+    );
 }
 
 function PlayVod_previews_start_test() {
