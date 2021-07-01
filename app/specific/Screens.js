@@ -366,7 +366,7 @@ function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
 
     if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
-        ScreenObj[key].hasOldData && ScreenObj[key].CheckOldData()) {
+        ScreenObj[key].hasOldData && ScreenObj[key].CheckOldData(Main_values.Main_gameSelected)) {
 
         ScreenObj[key].restoreOldData();
 

@@ -153,6 +153,8 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
 
     //a game
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].success = UserLiveFeedobj_loadDataCurrentAGameSuccess;
@@ -165,6 +167,8 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -651,7 +655,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     }
 
     if (UserLiveFeed_obj[pos].HasMore &&
-        !UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
+        !UserLiveFeed_obj[pos].loadingMore &&
+        !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
 
         //Load more as the data is getting used
         UserLiveFeed_obj[pos].loadingMore = true;

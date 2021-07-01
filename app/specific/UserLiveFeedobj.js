@@ -557,33 +557,33 @@ function UserLiveFeedobj_CurrentGame() {
 
 function UserLiveFeedobj_loadCurrentGame() {
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+
     var key = Main_aGame,
+        game = UserLiveFeedobj_CurrentGameName,
         pos = UserLiveFeedobj_CurrentGamePos;
 
     if (ScreenObj[key].hasOldData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
-        ScreenObj[key].CheckOldData()) {
+        ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[UserLiveFeedobj_CurrentGameName];
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
 
-        if (UserLiveFeed_obj[pos].LastPositionGame[UserLiveFeedobj_CurrentGameName]) {
+        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
 
             Main_values.UserLiveFeed_LastPosition[pos] =
-                UserLiveFeed_obj[pos].LastPositionGame[UserLiveFeedobj_CurrentGameName];
+                UserLiveFeed_obj[pos].LastPositionGame[game];
 
         }
 
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-            ScreenObj[key].OldData.data[UserLiveFeedobj_CurrentGameName],
-            'undefined',
+            ScreenObj[key].OldData.data[game],
+            null,
             pos,
             UserLiveFeed_itemsCount[pos]
         );
 
     } else {
-
-        console.log('UserLiveFeedobj_loadCurrentGame else')
 
         UserLiveFeedobj_BaseLoad(
             Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
@@ -684,22 +684,55 @@ function UserLiveFeedobj_HideUserGames() {
 //Current user a game Start
 var UserLiveFeedobj_CurrentUserAGameEnable = false;
 function UserLiveFeedobj_CurrentUserAGame() {
-    if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore)
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+
     UserLiveFeedobj_loadCurrentUserAGame();
 }
 
 function UserLiveFeedobj_loadCurrentUserAGame() {
     UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
 
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
-        '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadDataCurrentUserGameSuccess,
-        true,
-        UserLiveFeedobj_UserAGamesPos
-    );
+    var key = Main_aGame,
+        game = UserLiveFeedobj_CurrentUserAGameName,
+        pos = UserLiveFeedobj_UserAGamesPos;
+
+    if (ScreenObj[key].hasOldData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckOldData(game)) {
+
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
+
+        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
+
+            Main_values.UserLiveFeed_LastPosition[pos] =
+                UserLiveFeed_obj[pos].LastPositionGame[game];
+
+        }
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            ScreenObj[key].OldData.data[game],
+            null,
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
+            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+            2,
+            UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+            true,
+            pos
+        );
+    }
+
+    UserLiveFeed_obj[pos].isReloadScreen = false;
+
 }
 
 function UserLiveFeedobj_CurrentUserGameCell(cell) {
@@ -707,7 +740,12 @@ function UserLiveFeedobj_CurrentUserGameCell(cell) {
 }
 
 function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_UserAGamesPos);
+    UserLiveFeedobj_loadDataBaseLiveSuccess(
+        responseText,
+        UserLiveFeedobj_UserAGamesPos,
+        true,
+        UserLiveFeedobj_CurrentUserAGameName
+    );
 }
 
 var UserLiveFeedobj_CurrentUserAGameName = '';
@@ -732,11 +770,22 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
     Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE_HTML + STR_GAMES);
     if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
     Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
+
+}
+
+function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] < 100 ?
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] : 0;
+
 }
 
 function UserLiveFeedobj_HideCurrentUserAGame() {
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
+
+    UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame();
+
 }
 //Current user a game end
 
@@ -799,7 +848,10 @@ function UserLiveFeedobj_CurrentAGameCell(cell) {
 }
 
 function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_AGamesPos);
+    UserLiveFeedobj_loadDataBaseLiveSuccess(
+        responseText,
+        UserLiveFeedobj_AGamesPos
+    );
 }
 
 var UserLiveFeedobj_CurrentAGameName = '';
@@ -1444,7 +1496,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         UserLiveFeed_obj[pos].MaxOffset = total;
 
         if (!response_items) UserLiveFeed_obj[pos].dataEnded = true;
-        else if (typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
+        else if (UserLiveFeed_obj[pos].MaxOffset === null || typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
             if (response_items < 90) UserLiveFeed_obj[pos].dataEnded = true;
         } else {
             if (UserLiveFeed_obj[pos].offset >= total) UserLiveFeed_obj[pos].dataEnded = true;

@@ -229,8 +229,7 @@ function ScreensObj_StartAllVars() {
 
             this.loadDataSuccess();
         },
-        CheckOldData: function() {
-            var game = Main_values.Main_gameSelected;
+        CheckOldData: function(game) {
 
             return this.OldData && (this.OldData.data && this.OldData.data[game]) &&
                 !Settings_Obj_default("auto_refresh_screen") ||
