@@ -69,7 +69,6 @@ function UserLiveFeed_StartLoad() {
 
 function UserLiveFeed_StartLoadPos(pos) {
     UserLiveFeed_clearHideFeed();
-
     UserLiveFeed_CounterDialogRst();
     UserLiveFeed_Showloading(true);
     UserLiveFeedobj_loadDataPrepare(pos);
@@ -218,6 +217,8 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame = {};
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -444,6 +445,10 @@ function UserLiveFeed_Hide(PreventCleanQualities) {
     //return;//return;
     UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
     UserLiveFeed_HideAfter();
+
+    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].LastPositionGame) {
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].UpdateLastPositionGame();
+    }
 }
 
 function UserLiveFeed_HideAfter() {
@@ -471,7 +476,10 @@ function UserLiveFeed_setHideFeed() {
 }
 
 function UserLiveFeed_FeedRefresh() {
-    if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] && !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+    if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] &&
+        !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+
+        UserLiveFeed_obj[UserLiveFeed_FeedPosX].isReloadScreen = true;
 
         Play_HideWarningMidleDialog();
         UserLiveFeed_clearHideFeed();

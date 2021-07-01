@@ -187,7 +187,55 @@ function ScreensObj_StartAllVars() {
 
                 this.loadDataSuccess();
             }
+
             this.loadingData = false;
+
+            if (this.hasOldData) {
+                this.setOldData(
+                    this.data,
+                    this.lastRefresh,
+                    new Date().getTime(),
+                    Main_values.Main_gameSelected
+                );
+            }
+        },
+        setOldData: function(data, lastScreenRefresh, lastDataRefresh, game) {
+
+            if (!this.OldData) {
+
+                this.OldData = {
+                    data: {},
+                    lastRefresh: {},
+                    lastDataRefresh: {}
+                };
+
+            }
+
+            if (!this.OldData.lastDataRefresh[game] ||
+                (lastDataRefresh > this.OldData.lastDataRefresh[game])) {
+
+                this.OldData.data[game] = data.length ? JSON.parse(JSON.stringify(data)) : null;
+                this.OldData.lastRefresh[game] = lastScreenRefresh;
+                this.OldData.lastDataRefresh[game] = lastDataRefresh;
+
+            }
+
+        },
+        restoreOldData: function() {
+            var game = Main_values.Main_gameSelected;
+
+            this.data = this.OldData.data[game];
+            this.lastRefresh = this.OldData.lastRefresh[game];
+
+            this.loadDataSuccess();
+        },
+        CheckOldData: function() {
+            var game = Main_values.Main_gameSelected;
+
+            return this.OldData && (this.OldData.data && this.OldData.data[game]) &&
+                !Settings_Obj_default("auto_refresh_screen") ||
+                (this.OldData && this.OldData.lastRefresh &&
+                    (new Date().getTime()) < (this.OldData.lastRefresh[game] + Settings_GetAutoRefreshTimeout()));
         },
         screen_view: function() {
             if (this.ScreenName)
@@ -1110,6 +1158,7 @@ function ScreensObj_InitAGame() {
         ContentLang: '',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
+        hasOldData: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();

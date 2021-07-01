@@ -549,22 +549,56 @@ function UserLiveFeedobj_HideFeatured() {
 
 //Current game Start
 function UserLiveFeedobj_CurrentGame() {
-    if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore)
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+
     UserLiveFeedobj_loadCurrentGame();
 }
 
 function UserLiveFeedobj_loadCurrentGame() {
     UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+    var key = Main_aGame,
+        pos = UserLiveFeedobj_CurrentGamePos;
 
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
-        '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadDataCurrentGameSuccess,
-        true,
-        UserLiveFeedobj_CurrentGamePos
-    );
+    if (ScreenObj[key].hasOldData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckOldData()) {
+
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[UserLiveFeedobj_CurrentGameName];
+
+        if (UserLiveFeed_obj[pos].LastPositionGame[UserLiveFeedobj_CurrentGameName]) {
+
+            Main_values.UserLiveFeed_LastPosition[pos] =
+                UserLiveFeed_obj[pos].LastPositionGame[UserLiveFeedobj_CurrentGameName];
+
+        }
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            ScreenObj[key].OldData.data[UserLiveFeedobj_CurrentGameName],
+            'undefined',
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        console.log('UserLiveFeedobj_loadCurrentGame else')
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
+            '&limit=100&offset=' + UserLiveFeed_obj[pos].offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+            2,
+            UserLiveFeedobj_loadDataCurrentGameSuccess,
+            true,
+            pos
+        );
+
+    }
+
+    UserLiveFeed_obj[pos].isReloadScreen = false;
+
 }
 
 function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -572,7 +606,12 @@ function UserLiveFeedobj_CurrentGameCell(cell) {
 }
 
 function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_CurrentGamePos);
+    UserLiveFeedobj_loadDataBaseLiveSuccess(
+        responseText,
+        UserLiveFeedobj_CurrentGamePos,
+        true,
+        UserLiveFeedobj_CurrentGameName
+    );
 }
 
 var UserLiveFeedobj_CurrentGameName = '';
@@ -588,6 +627,14 @@ function UserLiveFeedobj_ShowCurrentGame() {
 function UserLiveFeedobj_HideCurrentGame() {
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
+
+    UserLiveFeedobj_CurrentGameUpdateLastPositionGame();
+}
+
+function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[3]] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos] < 100 ?
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos] : 0;
 }
 //Current game end
 
@@ -1294,16 +1341,41 @@ function UserLiveFeedobj_UserVodHistory() {
 }
 //User VOD history end
 
-function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
+function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameData, game) {
     var response = JSON.parse(responseText),
         total = response._total,
-        response_items,
-        stream, id, mArray,
-        i = 0,
         itemsCount = UserLiveFeed_itemsCount[pos];
 
     response = response[UserLiveFeed_obj[pos].StreamType];
-    response_items = response.length;
+
+    UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+        response,
+        total,
+        pos,
+        itemsCount
+    );
+
+    if (updateGameData && !itemsCount) {
+
+        var key = Main_aGame;
+        ScreenObj[key].setOldData(
+            response,
+            UserLiveFeed_lastRefresh[pos],
+            new Date().getTime(),
+            game
+        );
+
+    }
+}
+
+function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount) {
+
+    var response_items = response.length,
+        stream,
+        id,
+        mArray,
+        i = 0;
+
 
     if (response_items) {
         if (pos === UserLiveFeedobj_FeaturedPos) {

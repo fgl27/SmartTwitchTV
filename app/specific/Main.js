@@ -1888,6 +1888,7 @@ function Main_ReloadScreen() {
 
     Main_CounterDialogRst();
 
+    ScreenObj[Main_values.Main_Go].isReloadScreen = true;
     ScreenObj[Main_values.Main_Go].start_fun();
 }
 

@@ -364,7 +364,19 @@ function Screens_StartLoad(key) {
 
 function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
-    Screens_loadDataRequest(key);
+
+    if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
+        ScreenObj[key].hasOldData && ScreenObj[key].CheckOldData()) {
+
+        ScreenObj[key].restoreOldData();
+
+    } else {
+
+        Screens_loadDataRequest(key);
+
+    }
+
+    ScreenObj[key].isReloadScreen = false;
 }
 
 function Screens_loadDataRequest(key) {
