@@ -167,8 +167,8 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;

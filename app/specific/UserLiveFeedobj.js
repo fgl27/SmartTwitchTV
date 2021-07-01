@@ -773,13 +773,6 @@ function UserLiveFeedobj_ShowCurrentUserAGame() {
 
 }
 
-function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
-        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] < 100 ?
-            UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] : 0;
-
-}
-
 function UserLiveFeedobj_HideCurrentUserAGame() {
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
@@ -787,6 +780,14 @@ function UserLiveFeedobj_HideCurrentUserAGame() {
     UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame();
 
 }
+
+function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] < 100 ?
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] : 0;
+
+}
+
 //Current user a game end
 
 //Games Start
@@ -827,20 +828,53 @@ function UserLiveFeedobj_HideGames() {
 //Current a game Start
 var UserLiveFeedobj_CurrentAGameEnable = false;
 function UserLiveFeedobj_CurrentAGame() {
-    if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+    if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore)
+        UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+
     UserLiveFeedobj_loadCurrentAGame();
 }
 
 function UserLiveFeedobj_loadCurrentAGame() {
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
-        '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadDataCurrentAGameSuccess,
-        true,
-        UserLiveFeedobj_AGamesPos
-    );
+    var key = Main_aGame,
+        game = UserLiveFeedobj_CurrentAGameNameEnter,
+        pos = UserLiveFeedobj_AGamesPos;
+
+    if (ScreenObj[key].hasOldData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckOldData(game)) {
+
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
+
+        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
+
+            Main_values.UserLiveFeed_LastPosition[pos] =
+                UserLiveFeed_obj[pos].LastPositionGame[game];
+
+        }
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            ScreenObj[key].OldData.data[game],
+            null,
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
+            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+            2,
+            UserLiveFeedobj_loadDataCurrentAGameSuccess,
+            true,
+            pos
+        );
+
+    }
+
+    UserLiveFeed_obj[pos].isReloadScreen = false;
 }
 
 function UserLiveFeedobj_CurrentAGameCell(cell) {
@@ -850,7 +884,9 @@ function UserLiveFeedobj_CurrentAGameCell(cell) {
 function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
-        UserLiveFeedobj_AGamesPos
+        UserLiveFeedobj_AGamesPos,
+        true,
+        UserLiveFeedobj_CurrentAGameNameEnter
     );
 }
 
@@ -884,6 +920,16 @@ function UserLiveFeedobj_ShowCurrentAGame() {
 function UserLiveFeedobj_HideCurrentAGame() {
     UserLiveFeed_CheckIfIsLiveSTop();
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
+
+    UserLiveFeedobj_CurrentAGameUpdateLastPositionGame();
+
+}
+
+function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameNameEnter] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos] < 100 ?
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos] : 0;
+
 }
 //Current a game end
 
