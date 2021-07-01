@@ -18490,19 +18490,35 @@
             values: Play_ChatFontObj,
             defaultValue: Main_values.Chat_font_size_new,
             isChat: true,
+            timeoutID: null,
             updown: function(adder) {
                 if (!Play_isChatShown()) return;
 
                 this.defaultValue += adder;
-                if (this.defaultValue < 0)
-                    this.defaultValue = 0;
-                else if (this.defaultValue > (this.values.length - 1)) this.defaultValue = (this.values.length - 1);
-                Main_values.Chat_font_size_new = this.defaultValue;
 
-                Play_SetChatFont();
+                if (this.defaultValue < 0) {
+
+                    this.defaultValue = 0;
+
+                } else if (this.defaultValue > (this.values.length - 1)) {
+
+                    this.defaultValue = (this.values.length - 1);
+
+                }
+                Main_values.Chat_font_size_new = this.defaultValue;
                 this.bottomArrows();
                 this.setLable();
-                Main_SaveValuesWithTimeout();
+
+                this.timeoutID = Main_setTimeout(
+                    function() {
+
+                        Play_SetChatFont();
+                        Main_SaveValuesWithTimeout();
+
+                    },
+                    150,
+                    this.timeoutID
+                );
             },
             setLable: function() {
                 Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + '%');
