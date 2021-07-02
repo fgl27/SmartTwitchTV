@@ -478,15 +478,32 @@ function UserLiveFeedobj_Live() {
 }
 
 function UserLiveFeedobj_loadLive() {
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
-        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-        Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadDataLiveSuccess,
-        true,
-        UserLiveFeedobj_LivePos
-    );
+    var key = Main_Live,
+        pos = UserLiveFeedobj_LivePos;
+
+    if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            ScreenObj[key].data,
+            null,
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+            Main_TwithcV5Flag,
+            2,
+            UserLiveFeedobj_loadDataLiveSuccess,
+            true,
+            pos
+        );
+
+    }
+    UserLiveFeed_obj[pos].neverLoaded = true;
 }
 
 function UserLiveFeedobj_LiveCell(cell) {

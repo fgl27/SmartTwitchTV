@@ -249,11 +249,15 @@ function ScreensObj_StartAllVars() {
             this.loadingData = false;
         },
         eraseOldData: function() {
-            var game = Main_values.Main_gameSelected;
+            if (this.OldData) {
 
-            this.OldData.data[game] = null;
-            this.OldData.lastRefresh[game] = 0;
-            this.OldData.lastDataRefresh[game] = 0;
+                var game = Main_values.Main_gameSelected;
+
+                this.OldData.data[game] = null;
+                this.OldData.lastRefresh[game] = 0;
+                this.OldData.lastDataRefresh[game] = 0;
+
+            }
 
         },
         CheckOldData: function(game) {
