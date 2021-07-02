@@ -603,23 +603,15 @@ function UserLiveFeedobj_loadCurrentGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
-
-        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
-
-            Main_values.UserLiveFeed_LastPosition[pos] =
-                UserLiveFeed_obj[pos].LastPositionGame[game];
-
-        }
-
-        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-            ScreenObj[key].OldData.data[game],
-            null,
-            pos,
-            UserLiveFeed_itemsCount[pos]
-        );
+        UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
     } else {
+
+        if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+            UserLiveFeed_obj[pos].data[game] = null;
+
+        }
 
         UserLiveFeedobj_BaseLoad(
             Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
@@ -634,6 +626,43 @@ function UserLiveFeedobj_loadCurrentGame() {
     }
 
     UserLiveFeed_obj[pos].isReloadScreen = false;
+
+}
+
+function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
+
+    UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
+
+    if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
+
+        Main_values.UserLiveFeed_LastPosition[pos] =
+            UserLiveFeed_obj[pos].LastPositionGame[game];
+
+    }
+
+    var tempData =
+        JSON.parse(
+            JSON.stringify(
+                ScreenObj[key].OldData.data[game]
+            )
+        );
+
+    if (!UserLiveFeed_obj[pos].data[game]) {
+
+        UserLiveFeed_obj[pos].data[game] = tempData;
+
+    } else {
+
+        UserLiveFeed_obj[pos].data[game] = tempData.length >= UserLiveFeed_obj[pos].data[game].length ? tempData : UserLiveFeed_obj[pos].data[game];
+
+    }
+
+    UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+        UserLiveFeed_obj[pos].data[game],
+        null,
+        pos,
+        UserLiveFeed_itemsCount[pos]
+    );
 
 }
 
@@ -737,23 +766,15 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
-
-        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
-
-            Main_values.UserLiveFeed_LastPosition[pos] =
-                UserLiveFeed_obj[pos].LastPositionGame[game];
-
-        }
-
-        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-            ScreenObj[key].OldData.data[game],
-            null,
-            pos,
-            UserLiveFeed_itemsCount[pos]
-        );
+        UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
     } else {
+
+        if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+            UserLiveFeed_obj[pos].data[game] = null;
+
+        }
 
         UserLiveFeedobj_BaseLoad(
             Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
@@ -895,23 +916,15 @@ function UserLiveFeedobj_loadCurrentAGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
-
-        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
-
-            Main_values.UserLiveFeed_LastPosition[pos] =
-                UserLiveFeed_obj[pos].LastPositionGame[game];
-
-        }
-
-        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-            ScreenObj[key].OldData.data[game],
-            null,
-            pos,
-            UserLiveFeed_itemsCount[pos]
-        );
+        UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
     } else {
+
+        if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+            UserLiveFeed_obj[pos].data[game] = null;
+
+        }
 
         UserLiveFeedobj_BaseLoad(
             Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
@@ -1495,6 +1508,28 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameDa
         itemsCount = UserLiveFeed_itemsCount[pos],
         response = responseObj[UserLiveFeed_obj[pos].StreamType];
 
+    if (updateGameData) {
+        var key = Main_aGame;
+
+        if (UserLiveFeed_obj[pos].data[game]) {
+
+            UserLiveFeed_obj[pos].data[game].push.apply(UserLiveFeed_obj[pos].data[game], response);
+
+        } else {
+
+            UserLiveFeed_obj[pos].data[game] = response;
+
+        }
+
+        ScreenObj[key].setOldData(
+            responseObj,
+            UserLiveFeed_obj[pos].data[game],
+            UserLiveFeed_lastRefresh[pos],
+            game
+        );
+
+    }
+
     UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
         response,
         total,
@@ -1502,18 +1537,6 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameDa
         itemsCount
     );
 
-    if (updateGameData) {
-
-        var key = Main_aGame;
-        ScreenObj[key].setOldData(
-            responseObj,
-            response,
-            UserLiveFeed_lastRefresh[pos],
-            new Date().getTime(),
-            game
-        );
-
-    }
 }
 
 function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount) {

@@ -195,19 +195,17 @@ function ScreensObj_StartAllVars() {
                     responseObj,
                     this.data,
                     this.lastRefresh,
-                    new Date().getTime(),
                     Main_values.Main_gameSelected
                 );
             }
         },
-        setOldData: function(responseObj, data, lastScreenRefresh, lastDataRefresh, game) {
+        setOldData: function(responseObj, data, lastScreenRefresh, game) {
 
             if (!this.OldData) {
 
                 this.OldData = {
                     data: {},
                     lastScreenRefresh: {},
-                    lastDataRefresh: {},
                     responseObj: {}
                 };
 
@@ -219,25 +217,16 @@ function ScreensObj_StartAllVars() {
 
             }
 
-            if (!this.OldData.lastDataRefresh[game] ||
-                (lastDataRefresh > this.OldData.lastDataRefresh[game])) {
+            if (!this.OldData.lastScreenRefresh[game] ||
+                lastScreenRefresh >= this.OldData.lastScreenRefresh[game]) {
 
-                if (data.length) {
-
-                    if (this.OldData.data[game]) {
-
-                        this.OldData.data[game].push.apply(this.OldData.data[game], data);
-
-                    } else {
-
-                        this.OldData.data[game] = data;
-
-                    }
+                if (this.OldData.data[game] && this.OldData.data[game].length >= data.length) {
+                    return;
                 }
 
+                this.OldData.data[game] = JSON.parse(JSON.stringify(data));
                 this.OldData.responseObj[game] = responseObj;
                 this.OldData.lastScreenRefresh[game] = lastScreenRefresh;
-                this.OldData.lastDataRefresh[game] = lastDataRefresh;
 
             }
 
@@ -254,11 +243,11 @@ function ScreensObj_StartAllVars() {
             this.loadingData = false;
         },
         eraseOldData: function(game) {
+
             if (this.OldData) {
 
                 this.OldData.data[game] = null;
                 this.OldData.lastScreenRefresh[game] = 0;
-                this.OldData.lastDataRefresh[game] = 0;
 
             }
 

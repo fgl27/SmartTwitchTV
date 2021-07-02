@@ -375,7 +375,7 @@ function Screens_loadDataRequestStart(key) {
         Screens_loadDataRequest(key);
 
         if (ScreenObj[key].hasOldData)
-            ScreenObj[key].eraseOldData();
+            ScreenObj[key].eraseOldData(Main_values.Main_gameSelected);
 
     }
 

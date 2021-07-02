@@ -111,6 +111,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_Headers[i] = Main_base_string_header;
 
         UserLiveFeed_obj[i].neverLoaded = true;
+        UserLiveFeed_obj[i].data = {};
     }
 
     //User vod
