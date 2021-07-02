@@ -204,13 +204,18 @@ function ScreensObj_StartAllVars() {
 
             if (!this.OldData) {
 
-                this.initOldDataObj();
+                this.OldData = {
+                    data: {},
+                    lastScreenRefresh: {},
+                    lastDataRefresh: {},
+                    responseObj: {}
+                };
 
             }
 
             if (lastScreenRefresh > this.OldData.lastScreenRefresh[game]) {
 
-                this.initOldDataObj();
+                this.eraseOldData(game);
 
             }
 
@@ -237,16 +242,6 @@ function ScreensObj_StartAllVars() {
             }
 
         },
-        initOldDataObj: function() {
-
-            this.OldData = {
-                data: {},
-                lastScreenRefresh: {},
-                lastDataRefresh: {},
-                responseObj: {}
-            };
-
-        },
         restoreOldData: function() {
             var game = Main_values.Main_gameSelected;
 
@@ -258,10 +253,8 @@ function ScreensObj_StartAllVars() {
             this.loadDataSuccess();
             this.loadingData = false;
         },
-        eraseOldData: function() {
+        eraseOldData: function(game) {
             if (this.OldData) {
-
-                var game = Main_values.Main_gameSelected;
 
                 this.OldData.data[game] = null;
                 this.OldData.lastScreenRefresh[game] = 0;
