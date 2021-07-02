@@ -204,12 +204,13 @@ function ScreensObj_StartAllVars() {
 
             if (!this.OldData) {
 
-                this.OldData = {
-                    data: {},
-                    lastRefresh: {},
-                    lastDataRefresh: {},
-                    responseObj: {}
-                };
+                this.initOldDataObj();
+
+            }
+
+            if (lastScreenRefresh > this.OldData.lastScreenRefresh[game]) {
+
+                this.initOldDataObj();
 
             }
 
@@ -229,12 +230,21 @@ function ScreensObj_StartAllVars() {
                     }
                 }
 
-
                 this.OldData.responseObj[game] = responseObj;
-                this.OldData.lastRefresh[game] = lastScreenRefresh;
+                this.OldData.lastScreenRefresh[game] = lastScreenRefresh;
                 this.OldData.lastDataRefresh[game] = lastDataRefresh;
 
             }
+
+        },
+        initOldDataObj: function() {
+
+            this.OldData = {
+                data: {},
+                lastScreenRefresh: {},
+                lastDataRefresh: {},
+                responseObj: {}
+            };
 
         },
         restoreOldData: function() {
@@ -243,7 +253,7 @@ function ScreensObj_StartAllVars() {
             this.data = JSON.parse(JSON.stringify(this.OldData.data[game]));
             this.offset = this.data.length;
             this.setMax(this.OldData.responseObj[game]);
-            this.lastRefresh = this.OldData.lastRefresh[game];
+            this.lastRefresh = this.OldData.lastScreenRefresh[game];
 
             this.loadDataSuccess();
             this.loadingData = false;
@@ -254,7 +264,7 @@ function ScreensObj_StartAllVars() {
                 var game = Main_values.Main_gameSelected;
 
                 this.OldData.data[game] = null;
-                this.OldData.lastRefresh[game] = 0;
+                this.OldData.lastScreenRefresh[game] = 0;
                 this.OldData.lastDataRefresh[game] = 0;
 
             }
@@ -264,8 +274,8 @@ function ScreensObj_StartAllVars() {
 
             return this.OldData && (this.OldData.data && this.OldData.data[game]) &&
                 !Settings_Obj_default("auto_refresh_screen") ||
-                (this.OldData && this.OldData.lastRefresh &&
-                    (new Date().getTime()) < (this.OldData.lastRefresh[game] + Settings_GetAutoRefreshTimeout()));
+                (this.OldData && this.OldData.lastScreenRefresh &&
+                    (new Date().getTime()) < (this.OldData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
         },
         screen_view: function() {
             if (this.ScreenName)

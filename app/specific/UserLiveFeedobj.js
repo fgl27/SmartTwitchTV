@@ -603,7 +603,7 @@ function UserLiveFeedobj_loadCurrentGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
 
         if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
 
@@ -737,7 +737,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
 
         if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
 
@@ -895,7 +895,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
         !UserLiveFeed_obj[pos].isReloadScreen &&
         ScreenObj[key].CheckOldData(game)) {
 
-        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastRefresh[game];
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
 
         if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
 
