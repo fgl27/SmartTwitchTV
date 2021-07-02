@@ -1590,12 +1590,26 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
         UserLiveFeed_obj[pos].MaxOffset = total;
 
-        if (!response_items) UserLiveFeed_obj[pos].dataEnded = true;
-        else if (UserLiveFeed_obj[pos].MaxOffset === null || typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
-            if (response_items < 90) UserLiveFeed_obj[pos].dataEnded = true;
+        if (!response_items) {
+
+            UserLiveFeed_obj[pos].dataEnded = true;
+
+        } else if (UserLiveFeed_obj[pos].MaxOffset === null ||
+            typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
+
+            if (response_items < 90) {
+
+                UserLiveFeed_obj[pos].dataEnded = true;
+
+            }
+
         } else {
+
+
             if (UserLiveFeed_obj[pos].offset >= total) UserLiveFeed_obj[pos].dataEnded = true;
+
         }
+
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
@@ -1733,8 +1747,12 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
 
 function UserLiveFeedobj_CheckOffset(pos) {
     if ((UserLiveFeed_obj[pos].offset >= 900) ||
-        ((typeof UserLiveFeed_obj[pos].MaxOffset !== 'undefined') &&
+        ((UserLiveFeed_obj[pos].MaxOffset !== null &&
+            (typeof UserLiveFeed_obj[pos].MaxOffset !== 'undefined')) &&
             UserLiveFeed_obj[pos].offset &&
-            (UserLiveFeed_obj[pos].offset + 100) > UserLiveFeed_obj[pos].MaxOffset))
+            (UserLiveFeed_obj[pos].offset + 100) > UserLiveFeed_obj[pos].MaxOffset)) {
+
         UserLiveFeed_obj[pos].dataEnded = true;
+
+    }
 }
