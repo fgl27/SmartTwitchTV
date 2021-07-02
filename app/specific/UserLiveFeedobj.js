@@ -503,7 +503,7 @@ function UserLiveFeedobj_loadLive() {
         );
 
     }
-    UserLiveFeed_obj[pos].neverLoaded = true;
+    UserLiveFeed_obj[pos].neverLoaded = false;
 }
 
 function UserLiveFeedobj_LiveCell(cell) {
@@ -534,14 +534,33 @@ function UserLiveFeedobj_Featured() {
 }
 
 function UserLiveFeedobj_loadFeatured() {
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-            AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag,
-        2,
-        UserLiveFeedobj_loadDataFeaturedSuccess,
-        false,
-        UserLiveFeedobj_FeaturedPos
-    );
+    var key = Main_Featured,
+        pos = UserLiveFeedobj_FeaturedPos;
+
+    if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            ScreenObj[key].data,
+            null,
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+                AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag,
+            2,
+            UserLiveFeedobj_loadDataFeaturedSuccess,
+            false,
+            pos
+        );
+
+    }
+
+    UserLiveFeed_obj[pos].neverLoaded = false;
+
 }
 
 function UserLiveFeedobj_FeaturedCell(cell) {
@@ -812,13 +831,30 @@ function UserLiveFeedobj_Games() {
 }
 
 function UserLiveFeedobj_loadGames() {
-    UserLiveFeedobj_BaseLoad(
-        Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
-        2,
-        UserLiveFeedobj_loadDataGamesSuccess,
-        false,
-        UserLiveFeedobj_GamesPos
-    );
+    var key = Main_games,
+        pos = UserLiveFeedobj_GamesPos;
+
+    if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+        UserLiveFeedobj_loadDataGamesSuccessEnd(
+            ScreenObj[key].data,
+            ScreenObj[key].MaxOffset,
+            pos,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_BaseLoad(
+            Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
+            2,
+            UserLiveFeedobj_loadDataGamesSuccess,
+            false,
+            pos
+        );
+
+    }
+    UserLiveFeed_obj[pos].neverLoaded = false;
 
     if (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset &&
         (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
@@ -1581,15 +1617,25 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
 
 //Base game fun
 function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
-    var response = JSON.parse(responseText),
-        total = response._total,
-        response_items,
-        cell, game,
-        i = 0,
-        itemsCount = UserLiveFeed_itemsCount[pos];
+    var responseObj = JSON.parse(responseText),
+        total = responseObj._total,
+        itemsCount = UserLiveFeed_itemsCount[pos],
+        response = responseObj[type];
 
-    response = response[type];
-    response_items = response.length;
+    UserLiveFeedobj_loadDataGamesSuccessEnd(
+        response,
+        total,
+        pos,
+        itemsCount
+    );
+
+}
+
+function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCount) {
+    var response_items = response.length,
+        cell,
+        game,
+        i = 0;
 
     if (response_items) {
 
@@ -1663,7 +1709,8 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     if (UserLiveFeed_obj[pos].HasMore) {
         UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
         UserLiveFeed_obj[pos].MaxOffset = total;
-        if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+        if (UserLiveFeed_obj[pos].offset >= total || !response_items)
+            UserLiveFeed_obj[pos].dataEnded = true;
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
@@ -1680,6 +1727,7 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
             25
         );
     }
+
 }
 //Base game fun end
 
