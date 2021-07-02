@@ -192,6 +192,7 @@ function ScreensObj_StartAllVars() {
 
             if (this.hasOldData) {
                 this.setOldData(
+                    responseObj,
                     this.data,
                     this.lastRefresh,
                     new Date().getTime(),
@@ -199,14 +200,15 @@ function ScreensObj_StartAllVars() {
                 );
             }
         },
-        setOldData: function(data, lastScreenRefresh, lastDataRefresh, game) {
+        setOldData: function(responseObj, data, lastScreenRefresh, lastDataRefresh, game) {
 
             if (!this.OldData) {
 
                 this.OldData = {
                     data: {},
                     lastRefresh: {},
-                    lastDataRefresh: {}
+                    lastDataRefresh: {},
+                    responseObj: {}
                 };
 
             }
@@ -214,7 +216,21 @@ function ScreensObj_StartAllVars() {
             if (!this.OldData.lastDataRefresh[game] ||
                 (lastDataRefresh > this.OldData.lastDataRefresh[game])) {
 
-                this.OldData.data[game] = data.length ? JSON.parse(JSON.stringify(data)) : null;
+                if (data.length) {
+
+                    if (this.OldData.data[game]) {
+
+                        this.OldData.data[game].push.apply(this.OldData.data[game], data);
+
+                    } else {
+
+                        this.OldData.data[game] = data;
+
+                    }
+                }
+
+
+                this.OldData.responseObj[game] = responseObj;
                 this.OldData.lastRefresh[game] = lastScreenRefresh;
                 this.OldData.lastDataRefresh[game] = lastDataRefresh;
 
@@ -224,10 +240,21 @@ function ScreensObj_StartAllVars() {
         restoreOldData: function() {
             var game = Main_values.Main_gameSelected;
 
-            this.data = this.OldData.data[game];
+            this.data = JSON.parse(JSON.stringify(this.OldData.data[game]));
+            this.offset = this.data.length;
+            this.setMax(this.OldData.responseObj[game]);
             this.lastRefresh = this.OldData.lastRefresh[game];
 
             this.loadDataSuccess();
+            this.loadingData = false;
+        },
+        eraseOldData: function() {
+            var game = Main_values.Main_gameSelected;
+
+            this.OldData.data[game] = null;
+            this.OldData.lastRefresh[game] = 0;
+            this.OldData.lastDataRefresh[game] = 0;
+
         },
         CheckOldData: function(game) {
 

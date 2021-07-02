@@ -633,8 +633,7 @@ function UserLiveFeedobj_HideCurrentGame() {
 
 function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[3]] =
-        UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos] < 100 ?
-            UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos] : 0;
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
 }
 //Current game end
 
@@ -783,8 +782,7 @@ function UserLiveFeedobj_HideCurrentUserAGame() {
 
 function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
-        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] < 100 ?
-            UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos] : 0;
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
 
 }
 
@@ -927,8 +925,7 @@ function UserLiveFeedobj_HideCurrentAGame() {
 
 function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameNameEnter] =
-        UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos] < 100 ?
-            UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos] : 0;
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
 
 }
 //Current a game end
@@ -1440,11 +1437,10 @@ function UserLiveFeedobj_UserVodHistory() {
 //User VOD history end
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameData, game) {
-    var response = JSON.parse(responseText),
-        total = response._total,
-        itemsCount = UserLiveFeed_itemsCount[pos];
-
-    response = response[UserLiveFeed_obj[pos].StreamType];
+    var responseObj = JSON.parse(responseText),
+        total = responseObj._total,
+        itemsCount = UserLiveFeed_itemsCount[pos],
+        response = responseObj[UserLiveFeed_obj[pos].StreamType];
 
     UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
         response,
@@ -1453,10 +1449,11 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameDa
         itemsCount
     );
 
-    if (updateGameData && !itemsCount) {
+    if (updateGameData) {
 
         var key = Main_aGame;
         ScreenObj[key].setOldData(
+            responseObj,
             response,
             UserLiveFeed_lastRefresh[pos],
             new Date().getTime(),
@@ -1473,7 +1470,6 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         id,
         mArray,
         i = 0;
-
 
     if (response_items) {
         if (pos === UserLiveFeedobj_FeaturedPos) {

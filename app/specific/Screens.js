@@ -373,6 +373,7 @@ function Screens_loadDataRequestStart(key) {
     } else {
 
         Screens_loadDataRequest(key);
+        ScreenObj[key].eraseOldData();
 
     }
 
