@@ -1543,7 +1543,9 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
             responseObj,
             UserLiveFeed_obj[pos].data[game],
             UserLiveFeed_lastRefresh[pos],
-            game
+            game,
+            UserLiveFeed_obj[pos].ContentLang,
+            UserLiveFeed_obj[pos].Lang
         );
 
     }

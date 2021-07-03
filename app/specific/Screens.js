@@ -281,10 +281,12 @@ function Screens_init(key, preventRefresh) {
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
-        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
-        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
-        !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang)) {
+    else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+        !ScreenObj[key].offsettop ||
+        (ScreenObj[key].CheckContentLang &&
+            !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+        !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
+        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
         if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
         else Main_showLoadDialog();// the isRefreshing is running so just show the loading dialog prevent reload the screen

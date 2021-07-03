@@ -195,7 +195,9 @@ function ScreensObj_StartAllVars() {
                     responseObj,
                     this.data,
                     this.lastRefresh,
-                    Main_values.Main_gameSelected
+                    Main_values.Main_gameSelected,
+                    this.ContentLang,
+                    this.Lang
                 );
             }
         },
@@ -1156,14 +1158,17 @@ function ScreensObj_InitAGame() {
             );
         },
 
-        setBackupData: function(responseObj, data, lastScreenRefresh, game) {
+        setBackupData: function(responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
 
             if (!this.BackupData) {
 
                 this.BackupData = {
                     data: {},
                     lastScreenRefresh: {},
-                    responseObj: {}
+                    responseObj: {},
+                    ContentLang: {},
+                    Lang: {},
+                    offsettopFontsize: {}
                 };
 
             }
@@ -1177,13 +1182,20 @@ function ScreensObj_InitAGame() {
             if (!this.BackupData.lastScreenRefresh[game] ||
                 lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
 
-                if (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) {
+                if ((this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) ||
+                    (this.BackupData.ContentLang[game] && !Main_A_equals_B(this.BackupData.ContentLang[game], ContentLang)) ||
+                    (this.BackupData.Lang[game] && !Main_A_equals_B(this.BackupData.Lang[game], Lang))) {
+
                     return;
                 }
 
                 this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
                 this.BackupData.responseObj[game] = responseObj;
                 this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+
+                this.BackupData.ContentLang[game] = Main_ContentLang;
+                this.BackupData.Lang[game] = Settings_AppLang;
+                this.BackupData.offsettopFontsize[game] = this.offsettopFontsize;
 
             }
 
@@ -1193,6 +1205,8 @@ function ScreensObj_InitAGame() {
             if (this.BackupData) {
 
                 this.BackupData.data[game] = null;
+                this.BackupData.ContentLang[game] = null;
+                this.BackupData.Lang[game] = null;
                 this.BackupData.lastScreenRefresh[game] = 0;
 
             }
@@ -1201,6 +1215,9 @@ function ScreensObj_InitAGame() {
         CheckBackupData: function(game) {
 
             return this.BackupData && (this.BackupData.data && this.BackupData.data[game] && this.BackupData.data[game].length) &&
+                (this.BackupData.ContentLang && Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang)) &&
+                (this.BackupData.Lang && Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang)) &&
+                (this.BackupData.offsettopFontsize && this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset')) &&
                 (!Settings_Obj_default("auto_refresh_screen") ||
                     this.BackupData && this.BackupData.lastScreenRefresh &&
                     (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
