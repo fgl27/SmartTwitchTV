@@ -1200,9 +1200,9 @@ function ScreensObj_InitAGame() {
         },
         CheckBackupData: function(game) {
 
-            return this.BackupData && (this.BackupData.data && this.BackupData.data[game]) &&
-                !Settings_Obj_default("auto_refresh_screen") ||
-                (this.BackupData && this.BackupData.lastScreenRefresh &&
+            return this.BackupData && (this.BackupData.data && this.BackupData.data[game] && this.BackupData.data[game].length) &&
+                (!Settings_Obj_default("auto_refresh_screen") ||
+                    this.BackupData && this.BackupData.lastScreenRefresh &&
                     (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
         },
         restoreBackup: function() {
@@ -1237,6 +1237,13 @@ function ScreensObj_InitAGame() {
 
             } else if (!this.ScreenBackup[game]) {
                 this.ScreenBackup[game] = {};
+            }
+
+            if (!this.data.length) {
+
+                this.ScreenBackup[game].style = null;
+                return;
+
             }
 
             this.ScreenBackup[game].style = this.ScrollDoc.style.transform;
