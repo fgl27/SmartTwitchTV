@@ -1629,7 +1629,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
 
     UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items);
 
-    if (game) {
+    if (response_items && game) {
 
         UserLiveFeedobj_loadDataBaseLiveBackup(pos, game);
 

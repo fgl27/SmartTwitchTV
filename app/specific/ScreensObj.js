@@ -1267,10 +1267,11 @@ function ScreensObj_InitAGame() {
             this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
             this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
 
+            //Backup of cells and the innerHTML disconects the div in the table and on the array
             var array = this.tableDoc.getElementsByClassName(this.rowClass),
                 i = 0,
                 len = array.length,
-                id = [];
+                id = '';
 
             for (i; i < len; i++) {
 
