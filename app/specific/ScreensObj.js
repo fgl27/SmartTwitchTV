@@ -199,66 +199,6 @@ function ScreensObj_StartAllVars() {
                 );
             }
         },
-        setBackupData: function(responseObj, data, lastScreenRefresh, game) {
-
-            if (!this.BackupData) {
-
-                this.BackupData = {
-                    data: {},
-                    lastScreenRefresh: {},
-                    responseObj: {}
-                };
-
-            }
-
-            if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
-
-                this.eraseBackupData(game);
-
-            }
-
-            if (!this.BackupData.lastScreenRefresh[game] ||
-                lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
-
-                if (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) {
-                    return;
-                }
-
-                this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
-                this.BackupData.responseObj[game] = responseObj;
-                this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
-
-            }
-
-        },
-        restoreBackupData: function() {
-            var game = Main_values.Main_gameSelected;
-
-            this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
-            this.offset = this.data.length;
-            this.setMax(this.BackupData.responseObj[game]);
-            this.lastRefresh = this.BackupData.lastScreenRefresh[game];
-
-            this.loadDataSuccess();
-            this.loadingData = false;
-        },
-        eraseBackupData: function(game) {
-
-            if (this.BackupData) {
-
-                this.BackupData.data[game] = null;
-                this.BackupData.lastScreenRefresh[game] = 0;
-
-            }
-
-        },
-        CheckBackupData: function(game) {
-
-            return this.BackupData && (this.BackupData.data && this.BackupData.data[game]) &&
-                !Settings_Obj_default("auto_refresh_screen") ||
-                (this.BackupData && this.BackupData.lastScreenRefresh &&
-                    (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
-        },
         screen_view: function() {
             if (this.ScreenName)
                 Main_EventScreen(this.ScreenName);
@@ -1215,6 +1155,157 @@ function ScreensObj_InitAGame() {
                 this.screen
             );
         },
+
+        setBackupData: function(responseObj, data, lastScreenRefresh, game) {
+
+            if (!this.BackupData) {
+
+                this.BackupData = {
+                    data: {},
+                    lastScreenRefresh: {},
+                    responseObj: {}
+                };
+
+            }
+
+            if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
+
+                this.eraseBackupData(game);
+
+            }
+
+            if (!this.BackupData.lastScreenRefresh[game] ||
+                lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
+
+                if (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) {
+                    return;
+                }
+
+                this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
+                this.BackupData.responseObj[game] = responseObj;
+                this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+
+            }
+
+        },
+        eraseBackupData: function(game) {
+
+            if (this.BackupData) {
+
+                this.BackupData.data[game] = null;
+                this.BackupData.lastScreenRefresh[game] = 0;
+
+            }
+
+        },
+        CheckBackupData: function(game) {
+
+            return this.BackupData && (this.BackupData.data && this.BackupData.data[game]) &&
+                !Settings_Obj_default("auto_refresh_screen") ||
+                (this.BackupData && this.BackupData.lastScreenRefresh &&
+                    (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
+        },
+        restoreBackup: function() {
+            var game = Main_values.Main_gameSelected;
+
+            this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
+            this.offset = this.data.length;
+            this.setMax(this.BackupData.responseObj[game]);
+            this.lastRefresh = this.BackupData.lastScreenRefresh[game];
+
+            var hasFullBackup = this.ScreenBackup[game] && this.ScreenBackup[game].style;
+
+            if (hasFullBackup) {
+
+                this.RestoreBackupScreen(game);
+                Screens_addFocus(true, this.screen);
+                if (Screens_IsInUse(this.screen)) Main_HideLoadDialog();
+
+            } else {
+
+                this.loadDataSuccess();
+
+            }
+
+            this.loadingData = false;
+        },
+        BackupScreen: function(game) {
+
+            if (!this.ScreenBackup) {
+                this.ScreenBackup = {};
+                this.ScreenBackup[game] = {};
+
+            } else if (!this.ScreenBackup[game]) {
+                this.ScreenBackup[game] = {};
+            }
+
+            this.ScreenBackup[game].style = this.ScrollDoc.style.transform;
+            this.ScreenBackup[game].innerHTML = '';
+            this.ScreenBackup[game].innerHTML = this.tableDoc.innerHTML;
+            this.ScreenBackup[game].DataObj = JSON.parse(JSON.stringify(this.DataObj));
+            this.ScreenBackup[game].idObject = JSON.parse(JSON.stringify(this.idObject));
+
+            this.ScreenBackup[game].Cells = Main_Slice(this.Cells);
+
+            this.ScreenBackup[game].cursor = this.cursor;
+            this.ScreenBackup[game].offset = this.offset;
+            this.ScreenBackup[game].offsettop = this.offsettop;
+            this.ScreenBackup[game].emptyContent = this.emptyContent;
+            this.ScreenBackup[game].itemsCount = this.itemsCount;
+            this.ScreenBackup[game].posX = this.posX;
+            this.ScreenBackup[game].posY = this.posY;
+            this.ScreenBackup[game].row_id = this.row_id;
+            this.ScreenBackup[game].currY = this.currY;
+            this.ScreenBackup[game].coloumn_id = this.coloumn_id;
+            this.ScreenBackup[game].data_cursor = this.data_cursor;
+            this.ScreenBackup[game].dataEnded = this.dataEnded;
+
+        },
+        RestoreBackupScreen: function(game) {
+
+            this.ScrollDoc.style.transform = this.ScreenBackup[game].style;
+            this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
+            this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
+
+            var array = this.tableDoc.getElementsByClassName(this.rowClass),
+                i = 0,
+                len = array.length,
+                id = [];
+
+            for (i; i < len; i++) {
+
+                id = array[0].id;
+                this.tableDoc.removeChild(array[0]);
+                this.tableDoc.appendChild(this.Cells[id.split(this.ids[6])[1]]);
+
+            }
+
+            this.DataObj = JSON.parse(JSON.stringify(this.ScreenBackup[game].DataObj));
+            this.idObject = JSON.parse(JSON.stringify(this.ScreenBackup[game].idObject));
+
+            this.cursor = this.ScreenBackup[game].cursor;
+            this.offset = this.ScreenBackup[game].offset;
+            this.offsettop = this.ScreenBackup[game].offsettop;
+            this.emptyContent = this.ScreenBackup[game].emptyContent;
+            this.itemsCount = this.ScreenBackup[game].itemsCount;
+            this.posX = this.ScreenBackup[game].posX;
+            this.posY = this.ScreenBackup[game].posY;
+            this.row_id = this.ScreenBackup[game].row_id;
+            this.currY = this.ScreenBackup[game].currY;
+            this.currY = this.ScreenBackup[game].currY;
+            this.coloumn_id = this.ScreenBackup[game].coloumn_id;
+            this.data_cursor = this.ScreenBackup[game].data_cursor;
+            this.dataEnded = this.ScreenBackup[game].dataEnded;
+
+            this.status = true;
+            this.FirstRunEnd = true;
+            this.TopRowCreated = true;
+            this.isRefreshing = false;
+            Screens_Some_Screen_Is_Refreshing = false;
+            Screens_SetAutoRefresh(this.screen);
+            Main_SaveValuesWithTimeout();
+
+        }
     }, Base_obj);
 
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
@@ -1905,14 +1996,29 @@ function ScreensObj_TopLableAgameInit(key) {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
     if (!Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected) ||
-        !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected))
+        !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected)) {
+
         ScreenObj[key].status = false;
+
+        if (ScreenObj[key].Cells && ScreenObj[key].Cells.length && ScreenObj[key].gameSelected) {
+            ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected);
+        }
+
+    }
 
     ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
     Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-    if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
-    else Sidepannel_SetDefaultLables();
+    if (Main_values.Sidepannel_IsUser ||
+        Main_values.Main_BeforeAgame === Main_usergames) {
+
+        Sidepannel_SetUserLables();
+
+    } else {
+
+        Sidepannel_SetDefaultLables();
+
+    }
 
     Sidepannel_Sidepannel_Pos = Main_values.Main_BeforeAgame === Main_usergames ? 4 : 5;
     Sidepannel_SetTopOpacity(Main_values.Main_Go);

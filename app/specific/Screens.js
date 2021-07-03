@@ -332,7 +332,6 @@ function Screens_StartLoad(key) {
     ScreenObj[key].DataObj = {};
     ScreenObj[key].SetPreviewEnable();
     ScreenObj[key].cursor = null;
-    ScreenObj[key].after = '';
     ScreenObj[key].status = false;
     ScreenObj[key].FirstRunEnd = false;
     ScreenObj[key].TopRowCreated = false;
@@ -368,7 +367,7 @@ function Screens_loadDataRequestStart(key) {
     if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
         ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected)) {
 
-        ScreenObj[key].restoreBackupData();
+        ScreenObj[key].restoreBackup();
 
     } else {
 
@@ -1267,8 +1266,17 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 
     ScreenObj[key].Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * ScreenObj[key].offsettop) + 'em)';
 
-    if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
-    else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
+    if (down) {
+
+        ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
+
+    } else {
+
+        ScreenObj[key].tableDoc.insertBefore(
+            ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]
+        );
+
+    }
 
     //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
     Main_ready(function() {
@@ -1309,6 +1317,7 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
             function() {
 
                 UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+
                 Screens_ChangeFocusAnimationFinished = true;
 
                 //Delay to make sure it happen after animation has ended
@@ -1521,6 +1530,7 @@ function Screens_addrowDown(y, key) {
         }
 
     } else if (ScreenObj[key].loadingData) {
+
         //Technically we will not get here because
         //Key down or right (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 3) will hold the screen
         //but this works, the issue is related to slow to load more content
@@ -1532,6 +1542,7 @@ function Screens_addrowDown(y, key) {
             10
         );
     } else {
+
         Main_setTimeout(
             function() {
                 Screens_LoadPreview(key);
@@ -1611,7 +1622,9 @@ function Screens_UpdateSince(key) {
 
 
 function Screens_setOffset(pos, y, key) {
-    if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+    if (!ScreenObj[key].offsettop ||
+        ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+
         pos = !y ? (y + pos) : y;
         if (ScreenObj[key].Cells[pos]) {
 
@@ -1621,6 +1634,7 @@ function Screens_setOffset(pos, y, key) {
         } else ScreenObj[key].offsettop = 1;
 
         ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
+
     }
 }
 
