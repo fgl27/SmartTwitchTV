@@ -1316,7 +1316,7 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
         Main_setTimeout(
             function() {
 
-                UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+                Main_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
 
                 Screens_ChangeFocusAnimationFinished = true;
 
@@ -1347,7 +1347,7 @@ function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRe
         }
     }
 
-    UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+    Main_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
 
     Screens_LoadPreview(key);
 }

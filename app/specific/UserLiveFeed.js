@@ -971,7 +971,7 @@ function UserLiveFeed_FeedAddCellAnimated(pos, x, x_plus, x_plus_offset, for_in,
 
         Main_setTimeout(
             function() {
-                UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+                Main_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
                 UserLiveFeed_ChangeFocusAnimationFinished[pos] = true;
             },
             Screens_ScrollAnimationTimeout
@@ -991,11 +991,7 @@ function UserLiveFeed_FeedAddCellNotAnimated(pos, x, x_plus, for_in, for_out, fo
         }
     }
 
-    UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
-}
-
-function UserLiveFeed_RemoveElement(ele) {
-    if (ele) ele.remove();
+    Main_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
 }
 
 function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {

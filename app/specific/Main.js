@@ -677,6 +677,10 @@ function Main_textContentWithEle(ele, value) {
     ele.textContent = value;
 }
 
+function Main_RemoveElement(ele) {
+    if (ele) ele.remove();
+}
+
 function Main_replaceClassEmoji(div) {
     var emojiel = Main_getElementById(div).getElementsByClassName("emoji");
     if (emojiel) {
