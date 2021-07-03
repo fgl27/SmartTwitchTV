@@ -610,6 +610,7 @@ function UserLiveFeedobj_loadCurrentGame() {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
 
             UserLiveFeed_obj[pos].data[game] = null;
+            UserLiveFeed_obj[pos].cellBackup[game] = null;
 
         }
 
@@ -657,13 +658,31 @@ function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
 
     }
 
-    UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-        UserLiveFeed_obj[pos].data[game],
-        null,
-        pos,
-        UserLiveFeed_itemsCount[pos]
-    );
+    if (UserLiveFeed_obj[pos].cellBackup[game]) {
 
+        UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].idObjectBackup[game]));
+        UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].DataObjBackup[game]));
+        UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].cellBackup[game]);
+
+        UserLiveFeed_itemsCount[pos] = UserLiveFeed_cell[pos].length;
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessFinish(
+            pos,
+            null,
+            UserLiveFeed_itemsCount[pos]
+        );
+
+    } else {
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            UserLiveFeed_obj[pos].data[game],
+            null,
+            pos,
+            UserLiveFeed_itemsCount[pos],
+            game
+        );
+
+    }
 }
 
 function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -674,7 +693,6 @@ function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
         UserLiveFeedobj_CurrentGamePos,
-        true,
         UserLiveFeedobj_CurrentGameName
     );
 }
@@ -773,6 +791,7 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
 
             UserLiveFeed_obj[pos].data[game] = null;
+            UserLiveFeed_obj[pos].cellBackup[game] = null;
 
         }
 
@@ -799,7 +818,6 @@ function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
         UserLiveFeedobj_UserAGamesPos,
-        true,
         UserLiveFeedobj_CurrentUserAGameName
     );
 }
@@ -923,6 +941,7 @@ function UserLiveFeedobj_loadCurrentAGame() {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
 
             UserLiveFeed_obj[pos].data[game] = null;
+            UserLiveFeed_obj[pos].cellBackup[game] = null;
 
         }
 
@@ -949,7 +968,6 @@ function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
         UserLiveFeedobj_AGamesPos,
-        true,
         UserLiveFeedobj_CurrentAGameNameEnter
     );
 }
@@ -1502,13 +1520,13 @@ function UserLiveFeedobj_UserVodHistory() {
 }
 //User VOD history end
 
-function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameData, game) {
+function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
     var responseObj = JSON.parse(responseText),
         total = responseObj._total,
         itemsCount = UserLiveFeed_itemsCount[pos],
         response = responseObj[UserLiveFeed_obj[pos].StreamType];
 
-    if (updateGameData) {
+    if (game) {
         var key = Main_aGame;
 
         if (UserLiveFeed_obj[pos].data[game]) {
@@ -1534,12 +1552,13 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, updateGameDa
         response,
         total,
         pos,
-        itemsCount
+        itemsCount,
+        game
     );
 
 }
 
-function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount) {
+function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount, game) {
 
     var response_items = response.length,
         stream,
@@ -1607,6 +1626,25 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
     } else UserLiveFeedobj_Empty(pos);
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
+
+    UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items);
+
+    if (game) {
+
+        UserLiveFeedobj_loadDataBaseLiveBackup(pos, game);
+
+    }
+}
+
+function UserLiveFeedobj_loadDataBaseLiveBackup(pos, game) {
+
+    UserLiveFeed_obj[pos].idObjectBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
+    UserLiveFeed_obj[pos].DataObjBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
+    UserLiveFeed_obj[pos].cellBackup[game] = Main_Slice(UserLiveFeed_cell[pos]);
+
+}
+
+function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items) {
 
     if (UserLiveFeed_obj[pos].HasMore) {
 

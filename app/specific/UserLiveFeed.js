@@ -112,6 +112,9 @@ function UserLiveFeed_Prepare() {
 
         UserLiveFeed_obj[i].neverLoaded = true;
         UserLiveFeed_obj[i].data = {};
+        UserLiveFeed_obj[i].idObjectBackup = {};
+        UserLiveFeed_obj[i].DataObjBackup = {};
+        UserLiveFeed_obj[i].cellBackup = {};
     }
 
     //User vod
