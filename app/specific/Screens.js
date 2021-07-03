@@ -366,16 +366,16 @@ function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
 
     if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
-        ScreenObj[key].hasOldData && ScreenObj[key].CheckOldData(Main_values.Main_gameSelected)) {
+        ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected)) {
 
-        ScreenObj[key].restoreOldData();
+        ScreenObj[key].restoreBackupData();
 
     } else {
 
         Screens_loadDataRequest(key);
 
-        if (ScreenObj[key].hasOldData)
-            ScreenObj[key].eraseOldData(Main_values.Main_gameSelected);
+        if (ScreenObj[key].hasBackupData)
+            ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected);
 
     }
 

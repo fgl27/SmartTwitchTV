@@ -598,10 +598,10 @@ function UserLiveFeedobj_loadCurrentGame() {
         game = UserLiveFeedobj_CurrentGameName,
         pos = UserLiveFeedobj_CurrentGamePos;
 
-    if (ScreenObj[key].hasOldData &&
+    if (ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
-        ScreenObj[key].CheckOldData(game)) {
+        ScreenObj[key].CheckBackupData(game)) {
 
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
@@ -632,7 +632,7 @@ function UserLiveFeedobj_loadCurrentGame() {
 
 function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
 
-    UserLiveFeed_lastRefresh[pos] = ScreenObj[key].OldData.lastScreenRefresh[game];
+    UserLiveFeed_lastRefresh[pos] = ScreenObj[key].BackupData.lastScreenRefresh[game];
 
     if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
 
@@ -644,7 +644,7 @@ function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
     var tempData =
         JSON.parse(
             JSON.stringify(
-                ScreenObj[key].OldData.data[game]
+                ScreenObj[key].BackupData.data[game]
             )
         );
 
@@ -779,10 +779,10 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         game = UserLiveFeedobj_CurrentUserAGameName,
         pos = UserLiveFeedobj_UserAGamesPos;
 
-    if (ScreenObj[key].hasOldData &&
+    if (ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
-        ScreenObj[key].CheckOldData(game)) {
+        ScreenObj[key].CheckBackupData(game)) {
 
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
@@ -929,10 +929,10 @@ function UserLiveFeedobj_loadCurrentAGame() {
         game = UserLiveFeedobj_CurrentAGameNameEnter,
         pos = UserLiveFeedobj_AGamesPos;
 
-    if (ScreenObj[key].hasOldData &&
+    if (ScreenObj[key].hasBackupData &&
         !UserLiveFeed_itemsCount[pos] &&
         !UserLiveFeed_obj[pos].isReloadScreen &&
-        ScreenObj[key].CheckOldData(game)) {
+        ScreenObj[key].CheckBackupData(game)) {
 
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
 
@@ -1539,7 +1539,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
 
         }
 
-        ScreenObj[key].setOldData(
+        ScreenObj[key].setBackupData(
             responseObj,
             UserLiveFeed_obj[pos].data[game],
             UserLiveFeed_lastRefresh[pos],

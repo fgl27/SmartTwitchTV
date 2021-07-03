@@ -190,8 +190,8 @@ function ScreensObj_StartAllVars() {
 
             this.loadingData = false;
 
-            if (this.hasOldData) {
-                this.setOldData(
+            if (this.hasBackupData) {
+                this.setBackupData(
                     responseObj,
                     this.data,
                     this.lastRefresh,
@@ -199,11 +199,11 @@ function ScreensObj_StartAllVars() {
                 );
             }
         },
-        setOldData: function(responseObj, data, lastScreenRefresh, game) {
+        setBackupData: function(responseObj, data, lastScreenRefresh, game) {
 
-            if (!this.OldData) {
+            if (!this.BackupData) {
 
-                this.OldData = {
+                this.BackupData = {
                     data: {},
                     lastScreenRefresh: {},
                     responseObj: {}
@@ -211,53 +211,53 @@ function ScreensObj_StartAllVars() {
 
             }
 
-            if (lastScreenRefresh > this.OldData.lastScreenRefresh[game]) {
+            if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
 
-                this.eraseOldData(game);
+                this.eraseBackupData(game);
 
             }
 
-            if (!this.OldData.lastScreenRefresh[game] ||
-                lastScreenRefresh >= this.OldData.lastScreenRefresh[game]) {
+            if (!this.BackupData.lastScreenRefresh[game] ||
+                lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
 
-                if (this.OldData.data[game] && this.OldData.data[game].length >= data.length) {
+                if (this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) {
                     return;
                 }
 
-                this.OldData.data[game] = JSON.parse(JSON.stringify(data));
-                this.OldData.responseObj[game] = responseObj;
-                this.OldData.lastScreenRefresh[game] = lastScreenRefresh;
+                this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
+                this.BackupData.responseObj[game] = responseObj;
+                this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
 
             }
 
         },
-        restoreOldData: function() {
+        restoreBackupData: function() {
             var game = Main_values.Main_gameSelected;
 
-            this.data = JSON.parse(JSON.stringify(this.OldData.data[game]));
+            this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
             this.offset = this.data.length;
-            this.setMax(this.OldData.responseObj[game]);
-            this.lastRefresh = this.OldData.lastScreenRefresh[game];
+            this.setMax(this.BackupData.responseObj[game]);
+            this.lastRefresh = this.BackupData.lastScreenRefresh[game];
 
             this.loadDataSuccess();
             this.loadingData = false;
         },
-        eraseOldData: function(game) {
+        eraseBackupData: function(game) {
 
-            if (this.OldData) {
+            if (this.BackupData) {
 
-                this.OldData.data[game] = null;
-                this.OldData.lastScreenRefresh[game] = 0;
+                this.BackupData.data[game] = null;
+                this.BackupData.lastScreenRefresh[game] = 0;
 
             }
 
         },
-        CheckOldData: function(game) {
+        CheckBackupData: function(game) {
 
-            return this.OldData && (this.OldData.data && this.OldData.data[game]) &&
+            return this.BackupData && (this.BackupData.data && this.BackupData.data[game]) &&
                 !Settings_Obj_default("auto_refresh_screen") ||
-                (this.OldData && this.OldData.lastScreenRefresh &&
-                    (new Date().getTime()) < (this.OldData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
+                (this.BackupData && this.BackupData.lastScreenRefresh &&
+                    (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
         },
         screen_view: function() {
             if (this.ScreenName)
@@ -1180,7 +1180,7 @@ function ScreensObj_InitAGame() {
         ContentLang: '',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
-        hasOldData: true,
+        hasBackupData: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();
