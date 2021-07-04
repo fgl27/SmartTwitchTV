@@ -2157,6 +2157,7 @@ function Screens_PeriodhandleKeyDown(key, event) {
             if (ScreenObj[key].periodPos !== Screens_PeriodDialogPos) {
                 ScreenObj[key].periodPos = Screens_PeriodDialogPos;
                 ScreenObj[key].SetPeriod();
+                ScreenObj[key].isReloadScreen = true;
                 Screens_StartLoad(key);
             }
             break;
