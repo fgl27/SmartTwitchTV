@@ -27,6 +27,13 @@ var version = {
     WebTag: 597,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
+            title: "Web Version July 5 2021",
+            changes: [
+                "Update Game section to allow changing games back and for without having to refresh and loose previously loaded content and position, now the app will always remember the content and position of a game that you have open before (For Live, Clips and VOD), until you refresh or the app auto refreshes (if 'Auto refresh in background' is enable in setting -> Content customization's ...)",
+                "General improves and bug fixes"
+            ]
+        },
+        {
             title: "Apk Version 3.0.321",
             changes: [
                 "General improves and bug fixes"
@@ -49,25 +56,6 @@ var version = {
             title: "Web Version June 21 2021",
             changes: [
                 "Add support for Twitch animated emotes"
-            ]
-        },
-        {
-            title: "Web Version June 13 2021",
-            changes: [
-                "General improves"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.319 and Web Version Jun 10 2021",
-            changes: [
-                "Improve Auto quality playback",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version May 27 2021",
-            changes: [
-                "Fix clips playback"
             ]
         }
     ]
