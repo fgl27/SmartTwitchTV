@@ -3840,9 +3840,16 @@
         VersionBase: '3.0',
         publishVersionCode: 321, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/321/SmartTV_twitch_3_0_321.apk',
-        WebVersion: 'June 27 2021',
-        WebTag: 597, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'July 04 2021',
+        WebTag: 598, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version July 4 2021",
+                changes: [
+                    "Update Game section to allow changing games back and for without having to refresh and loose previously loaded content and position, now the app will always remember the content and position of a game that you have open before (For Live, Clips and VOD), until you refresh or the app auto refreshes (if 'Auto refresh in background' is enable in setting -> Content customization's ...)",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.321",
                 changes: [
                     "General improves and bug fixes"
@@ -3865,25 +3872,6 @@
                 title: "Web Version June 21 2021",
                 changes: [
                     "Add support for Twitch animated emotes"
-                ]
-            },
-            {
-                title: "Web Version June 13 2021",
-                changes: [
-                    "General improves"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.319 and Web Version Jun 10 2021",
-                changes: [
-                    "Improve Auto quality playback",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version May 27 2021",
-                changes: [
-                    "Fix clips playback"
                 ]
             }
         ]
@@ -10069,6 +10057,10 @@
         ele.textContent = value;
     }
 
+    function Main_RemoveElement(ele) {
+        if (ele) ele.remove();
+    }
+
     function Main_replaceClassEmoji(div) {
         var emojiel = Main_getElementById(div).getElementsByClassName("emoji");
         if (emojiel) {
@@ -10778,7 +10770,7 @@
     }
 
     function Main_emptyWithEle(el) {
-        el.textContent = '';
+        while (el.firstChild) el.removeChild(el.firstChild);
     }
 
     function Main_YRst(y) {
@@ -11293,6 +11285,7 @@
 
         Main_CounterDialogRst();
 
+        ScreenObj[Main_values.Main_Go].isReloadScreen = true;
         ScreenObj[Main_values.Main_Go].start_fun();
     }
 
@@ -25302,10 +25295,12 @@
         Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) || !ScreenObj[key].offsettop ||
-            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset') ||
-            (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
-            !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang)) {
+        else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+            !ScreenObj[key].offsettop ||
+            (ScreenObj[key].CheckContentLang &&
+                !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+            !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
+            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
             if (!ScreenObj[key].isRefreshing) Screens_StartLoad(key);
             else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
@@ -25353,7 +25348,6 @@
         ScreenObj[key].DataObj = {};
         ScreenObj[key].SetPreviewEnable();
         ScreenObj[key].cursor = null;
-        ScreenObj[key].after = '';
         ScreenObj[key].status = false;
         ScreenObj[key].FirstRunEnd = false;
         ScreenObj[key].TopRowCreated = false;
@@ -25385,7 +25379,22 @@
 
     function Screens_loadDataRequestStart(key) {
         ScreenObj[key].loadingData = true;
-        Screens_loadDataRequest(key);
+
+        if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
+            ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected)) {
+
+            ScreenObj[key].restoreBackup();
+
+        } else {
+
+            Screens_loadDataRequest(key);
+
+            if (ScreenObj[key].hasBackupData)
+                ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected);
+
+        }
+
+        ScreenObj[key].isReloadScreen = false;
     }
 
     function Screens_loadDataRequest(key) {
@@ -26278,8 +26287,17 @@
 
         ScreenObj[key].Cells[y + y_plus].style.transform = 'translateY(' + (y_plus_offset * ScreenObj[key].offsettop) + 'em)';
 
-        if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
-        else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
+        if (down) {
+
+            ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
+
+        } else {
+
+            ScreenObj[key].tableDoc.insertBefore(
+                ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]
+            );
+
+        }
 
         //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
         Main_ready(function() {
@@ -26317,7 +26335,8 @@
             Main_setTimeout(
                 function() {
 
-                    UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+                    Main_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+
                     Screens_ChangeFocusAnimationFinished = true;
 
                     //Delay to make sure it happen after animation has ended
@@ -26347,7 +26366,7 @@
             }
         }
 
-        UserLiveFeed_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
+        Main_RemoveElement(ScreenObj[key].Cells[y + eleRemovePos]);
 
         Screens_LoadPreview(key);
     }
@@ -26530,6 +26549,7 @@
             }
 
         } else if (ScreenObj[key].loadingData) {
+
             //Technically we will not get here because
             //Key down or right (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 3) will hold the screen
             //but this works, the issue is related to slow to load more content
@@ -26541,6 +26561,7 @@
                 10
             );
         } else {
+
             Main_setTimeout(
                 function() {
                     Screens_LoadPreview(key);
@@ -26621,7 +26642,9 @@
 
 
     function Screens_setOffset(pos, y, key) {
-        if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+        if (!ScreenObj[key].offsettop ||
+            ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
+
             pos = !y ? (y + pos) : y;
             if (ScreenObj[key].Cells[pos]) {
 
@@ -26631,6 +26654,7 @@
             } else ScreenObj[key].offsettop = 1;
 
             ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
+
         }
     }
 
@@ -27151,6 +27175,7 @@
                 if (ScreenObj[key].periodPos !== Screens_PeriodDialogPos) {
                     ScreenObj[key].periodPos = Screens_PeriodDialogPos;
                     ScreenObj[key].SetPeriod();
+                    ScreenObj[key].isReloadScreen = true;
                     Screens_StartLoad(key);
                 }
                 break;
@@ -28232,7 +28257,192 @@
 
                     this.loadDataSuccess();
                 }
+
                 this.loadingData = false;
+
+                if (this.hasBackupData) {
+                    this.setBackupData(
+                        responseObj,
+                        this.data,
+                        this.lastRefresh,
+                        Main_values.Main_gameSelected,
+                        this.ContentLang,
+                        this.Lang
+                    );
+                }
+            },
+            setBackupData: function(responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
+
+                if (!this.BackupData) {
+
+                    this.BackupData = {
+                        data: {},
+                        lastScreenRefresh: {},
+                        responseObj: {},
+                        ContentLang: {},
+                        Lang: {},
+                        offsettopFontsize: {}
+                    };
+
+                }
+
+                if (lastScreenRefresh > this.BackupData.lastScreenRefresh[game]) {
+
+                    this.eraseBackupData(game);
+
+                }
+
+                if (!this.BackupData.lastScreenRefresh[game] ||
+                    lastScreenRefresh >= this.BackupData.lastScreenRefresh[game]) {
+
+                    if ((this.BackupData.data[game] && this.BackupData.data[game].length >= data.length) ||
+                        (this.BackupData.ContentLang[game] && !Main_A_equals_B(this.BackupData.ContentLang[game], ContentLang)) ||
+                        (this.BackupData.Lang[game] && !Main_A_equals_B(this.BackupData.Lang[game], Lang))) {
+
+                        return;
+                    }
+
+                    this.BackupData.data[game] = JSON.parse(JSON.stringify(data));
+                    this.BackupData.responseObj[game] = responseObj;
+                    this.BackupData.lastScreenRefresh[game] = lastScreenRefresh;
+
+                    this.BackupData.ContentLang[game] = Main_ContentLang;
+                    this.BackupData.Lang[game] = Settings_AppLang;
+                    this.BackupData.offsettopFontsize[game] = this.offsettopFontsize;
+
+                }
+
+            },
+            eraseBackupData: function(game) {
+
+                if (this.BackupData) {
+
+                    this.BackupData.data[game] = null;
+                    this.BackupData.ContentLang[game] = null;
+                    this.BackupData.Lang[game] = null;
+                    this.BackupData.lastScreenRefresh[game] = 0;
+
+                }
+
+            },
+            CheckBackupData: function(game) {
+
+                return this.BackupData && (this.BackupData.data && this.BackupData.data[game] && this.BackupData.data[game].length) &&
+                    (this.BackupData.ContentLang && Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang)) &&
+                    (this.BackupData.Lang && Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang)) &&
+                    (this.BackupData.offsettopFontsize && this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset')) &&
+                    (!Settings_Obj_default("auto_refresh_screen") ||
+                        this.BackupData && this.BackupData.lastScreenRefresh &&
+                        (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
+            },
+            restoreBackup: function() {
+                var game = Main_values.Main_gameSelected;
+
+                this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
+                this.offset = this.data.length;
+                this.setMax(this.BackupData.responseObj[game]);
+                this.lastRefresh = this.BackupData.lastScreenRefresh[game];
+
+                var hasFullBackup = this.ScreenBackup && this.ScreenBackup[game] && this.ScreenBackup[game].style;
+
+                if (hasFullBackup) {
+
+                    this.RestoreBackupScreen(game);
+                    Screens_addFocus(true, this.screen);
+                    if (Screens_IsInUse(this.screen)) Main_HideLoadDialog();
+
+                } else {
+
+                    this.loadDataSuccess();
+
+                }
+
+                this.loadingData = false;
+            },
+            BackupScreen: function(game) {
+
+                if (!this.ScreenBackup) {
+                    this.ScreenBackup = {};
+                    this.ScreenBackup[game] = {};
+
+                } else if (!this.ScreenBackup[game]) {
+                    this.ScreenBackup[game] = {};
+                }
+
+                if (!this.data.length) {
+
+                    this.ScreenBackup[game].style = null;
+                    return;
+
+                }
+
+                this.ScreenBackup[game].style = this.ScrollDoc.style.transform;
+                this.ScreenBackup[game].innerHTML = '';
+                this.ScreenBackup[game].innerHTML = this.tableDoc.innerHTML;
+                this.ScreenBackup[game].DataObj = JSON.parse(JSON.stringify(this.DataObj));
+                this.ScreenBackup[game].idObject = JSON.parse(JSON.stringify(this.idObject));
+
+                this.ScreenBackup[game].Cells = Main_Slice(this.Cells);
+
+                this.ScreenBackup[game].cursor = this.cursor;
+                this.ScreenBackup[game].offset = this.offset;
+                this.ScreenBackup[game].offsettop = this.offsettop;
+                this.ScreenBackup[game].emptyContent = this.emptyContent;
+                this.ScreenBackup[game].itemsCount = this.itemsCount;
+                this.ScreenBackup[game].posX = this.posX;
+                this.ScreenBackup[game].posY = this.posY;
+                this.ScreenBackup[game].row_id = this.row_id;
+                this.ScreenBackup[game].currY = this.currY;
+                this.ScreenBackup[game].coloumn_id = this.coloumn_id;
+                this.ScreenBackup[game].data_cursor = this.data_cursor;
+                this.ScreenBackup[game].dataEnded = this.dataEnded;
+
+            },
+            RestoreBackupScreen: function(game) {
+
+                this.ScrollDoc.style.transform = this.ScreenBackup[game].style;
+                this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
+                this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
+
+                //Backup of cells and the innerHTML disconects the div in the table and on the array
+                var array = this.tableDoc.getElementsByClassName(this.rowClass),
+                    i = 0,
+                    len = array.length,
+                    id = '';
+
+                for (i; i < len; i++) {
+
+                    id = array[0].id;
+                    this.tableDoc.removeChild(array[0]);
+                    this.tableDoc.appendChild(this.Cells[id.split(this.ids[6])[1]]);
+
+                }
+
+                this.DataObj = JSON.parse(JSON.stringify(this.ScreenBackup[game].DataObj));
+                this.idObject = JSON.parse(JSON.stringify(this.ScreenBackup[game].idObject));
+
+                this.cursor = this.ScreenBackup[game].cursor;
+                this.offset = this.ScreenBackup[game].offset;
+                this.offsettop = this.ScreenBackup[game].offsettop;
+                this.emptyContent = this.ScreenBackup[game].emptyContent;
+                this.itemsCount = this.ScreenBackup[game].itemsCount;
+                this.posX = this.ScreenBackup[game].posX;
+                this.posY = this.ScreenBackup[game].posY;
+                this.row_id = this.ScreenBackup[game].row_id;
+                this.currY = this.ScreenBackup[game].currY;
+                this.currY = this.ScreenBackup[game].currY;
+                this.coloumn_id = this.ScreenBackup[game].coloumn_id;
+                this.data_cursor = this.ScreenBackup[game].data_cursor;
+                this.dataEnded = this.ScreenBackup[game].dataEnded;
+
+                this.status = true;
+                this.FirstRunEnd = true;
+                this.TopRowCreated = true;
+                this.isRefreshing = false;
+                Screens_Some_Screen_Is_Refreshing = false;
+                Screens_SetAutoRefresh(this.screen);
+                Main_SaveValuesWithTimeout();
+
             },
             screen_view: function() {
                 if (this.ScreenName)
@@ -28839,6 +29049,7 @@
             screen: Main_AGameVod,
             CheckContentLang: 1,
             ContentLang: '',
+            hasBackupData: true,
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
@@ -28854,6 +29065,7 @@
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
                         this.SetPeriod();
+                        this.isReloadScreen = true;
                         Screens_StartLoad(this.screen);
                         Main_setItem(this.highlightSTR, this.highlight ? 'true' : 'false');
                     } else Screens_PeriodStart(this.screen);
@@ -28882,7 +29094,11 @@
             SetPeriod: function() {
                 Main_setItem('AGameVod_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(Main_values.Main_gameSelected, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
+                ScreensObj_SetTopLable(
+                    Main_values.Main_gameSelected,
+                    (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
+                );
+
             }
         }, Base_obj);
 
@@ -29155,6 +29371,7 @@
             ContentLang: '',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
+            hasBackupData: true,
             base_url: Main_kraken_api + 'streams?game=',
             set_url: function() {
                 this.check_offset();
@@ -29329,6 +29546,7 @@
             key_pgUp: Main_Featured,
             CheckContentLang: 1,
             ContentLang: '',
+            hasBackupData: true,
             periodPos: Main_getItemInt('AGameClip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?game=',
             set_url: function() {
@@ -29340,8 +29558,11 @@
             SetPeriod: function() {
                 Main_setItem('AGameClip_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML +
-                    Main_Periods[this.periodPos - 1]);
+                ScreensObj_SetTopLable(
+                    Main_values.Main_gameSelected,
+                    STR_CLIPS + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
+                );
+
             },
             label_init: function() {
                 ScreensObj_CheckUser(this.screen);
@@ -29874,20 +30095,38 @@
     }
 
     function ScreensObj_TopLableAgameInit(key) {
+
         if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
         if (!Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected) ||
-            !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected))
+            !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected)) {
+
             ScreenObj[key].status = false;
+
+            if (ScreenObj[key].Cells &&
+                ScreenObj[key].Cells.length && ScreenObj[key].gameSelected) {
+
+                ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected);
+            }
+
+        }
 
         ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
         Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
 
-        if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) Sidepannel_SetUserLables();
-        else Sidepannel_SetDefaultLables();
+        if (Main_values.Sidepannel_IsUser ||
+            Main_values.Main_BeforeAgame === Main_usergames) {
+
+            Sidepannel_SetUserLables();
+
+        } else {
+
+            Sidepannel_SetDefaultLables();
+
+        }
 
         Sidepannel_Sidepannel_Pos = Main_values.Main_BeforeAgame === Main_usergames ? 4 : 5;
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
@@ -34715,7 +34954,6 @@
 
     function UserLiveFeed_StartLoadPos(pos) {
         UserLiveFeed_clearHideFeed();
-
         UserLiveFeed_CounterDialogRst();
         UserLiveFeed_Showloading(true);
         UserLiveFeedobj_loadDataPrepare(pos);
@@ -34758,6 +34996,11 @@
             UserLiveFeed_DataObj[i] = {};
             UserLiveFeed_Headers[i] = Main_base_string_header;
 
+            UserLiveFeed_obj[i].neverLoaded = true;
+            UserLiveFeed_obj[i].data = {};
+            UserLiveFeed_obj[i].idObjectBackup = {};
+            UserLiveFeed_obj[i].DataObjBackup = {};
+            UserLiveFeed_obj[i].cellBackup = {};
         }
 
         //User vod
@@ -34801,6 +35044,8 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
 
         //a game
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].success = UserLiveFeedobj_loadDataCurrentAGameSuccess;
@@ -34813,6 +35058,8 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
 
         //User Games
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -34865,6 +35112,8 @@
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame = {};
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
 
         //Featured
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
@@ -35095,6 +35344,10 @@
         //return;//return;
         UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities);
         UserLiveFeed_HideAfter();
+
+        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].LastPositionGame) {
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].UpdateLastPositionGame();
+        }
     }
 
     function UserLiveFeed_HideAfter() {
@@ -35122,7 +35375,10 @@
     }
 
     function UserLiveFeed_FeedRefresh() {
-        if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] && !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+        if (!UserLiveFeed_loadingData[UserLiveFeed_FeedPosX] &&
+            !UserLiveFeed_obj[UserLiveFeed_FeedPosX].loadingMore) {
+
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].isReloadScreen = true;
 
             Play_HideWarningMidleDialog();
             UserLiveFeed_clearHideFeed();
@@ -35295,7 +35551,8 @@
         }
 
         if (UserLiveFeed_obj[pos].HasMore &&
-            !UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
+            !UserLiveFeed_obj[pos].loadingMore &&
+            !UserLiveFeed_obj[pos].dataEnded && ((total - UserLiveFeed_FeedPosY[pos]) < 80)) {
 
             //Load more as the data is getting used
             UserLiveFeed_obj[pos].loadingMore = true;
@@ -35605,7 +35862,7 @@
 
             Main_setTimeout(
                 function() {
-                    UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
+                    Main_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
                     UserLiveFeed_ChangeFocusAnimationFinished[pos] = true;
                 },
                 Screens_ScrollAnimationTimeout
@@ -35625,11 +35882,7 @@
             }
         }
 
-        UserLiveFeed_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
-    }
-
-    function UserLiveFeed_RemoveElement(ele) {
-        if (ele) ele.remove();
+        Main_RemoveElement(UserLiveFeed_cell[pos][x + eleRemovePos]);
     }
 
     function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
@@ -36447,15 +36700,32 @@
     }
 
     function UserLiveFeedobj_loadLive() {
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-            Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataLiveSuccess,
-            true,
-            UserLiveFeedobj_LivePos
-        );
+        var key = Main_Live,
+            pos = UserLiveFeedobj_LivePos;
+
+        if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+            UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+                ScreenObj[key].data,
+                null,
+                pos,
+                UserLiveFeed_itemsCount[pos]
+            );
+
+        } else {
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
+                Main_TwithcV5Flag,
+                2,
+                UserLiveFeedobj_loadDataLiveSuccess,
+                true,
+                pos
+            );
+
+        }
+        UserLiveFeed_obj[pos].neverLoaded = false;
     }
 
     function UserLiveFeedobj_LiveCell(cell) {
@@ -36486,14 +36756,33 @@
     }
 
     function UserLiveFeedobj_loadFeatured() {
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
-                AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataFeaturedSuccess,
-            false,
-            UserLiveFeedobj_FeaturedPos
-        );
+        var key = Main_Featured,
+            pos = UserLiveFeedobj_FeaturedPos;
+
+        if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+            UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+                ScreenObj[key].data,
+                null,
+                pos,
+                UserLiveFeed_itemsCount[pos]
+            );
+
+        } else {
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'streams/featured?limit=100' + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' +
+                    AddUser_UsernameArray[0].access_token : '') + Main_TwithcV5Flag,
+                2,
+                UserLiveFeedobj_loadDataFeaturedSuccess,
+                false,
+                pos
+            );
+
+        }
+
+        UserLiveFeed_obj[pos].neverLoaded = false;
+
     }
 
     function UserLiveFeedobj_FeaturedCell(cell) {
@@ -36518,22 +36807,104 @@
 
     //Current game Start
     function UserLiveFeedobj_CurrentGame() {
-        if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+        if (!UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].loadingMore)
+            UserLiveFeedobj_StartDefault(UserLiveFeedobj_CurrentGamePos);
+
         UserLiveFeedobj_loadCurrentGame();
     }
 
     function UserLiveFeedobj_loadCurrentGame() {
         UserLiveFeedobj_CurrentGameName = Play_data.data[3];
 
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
-            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataCurrentGameSuccess,
-            true,
-            UserLiveFeedobj_CurrentGamePos
-        );
+        var key = Main_aGame,
+            game = UserLiveFeedobj_CurrentGameName,
+            pos = UserLiveFeedobj_CurrentGamePos;
+
+        if (ScreenObj[key].hasBackupData &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            ScreenObj[key].CheckBackupData(game)) {
+
+            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+
+        } else {
+
+            if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+                UserLiveFeed_obj[pos].data[game] = null;
+                UserLiveFeed_obj[pos].cellBackup[game] = null;
+
+            }
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
+                '&limit=100&offset=' + UserLiveFeed_obj[pos].offset +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+                2,
+                UserLiveFeedobj_loadDataCurrentGameSuccess,
+                true,
+                pos
+            );
+
+        }
+
+        UserLiveFeed_obj[pos].isReloadScreen = false;
+
+    }
+
+    function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
+
+        UserLiveFeed_lastRefresh[pos] = ScreenObj[key].BackupData.lastScreenRefresh[game];
+
+        if (UserLiveFeed_obj[pos].LastPositionGame[game]) {
+
+            Main_values.UserLiveFeed_LastPosition[pos] =
+                UserLiveFeed_obj[pos].LastPositionGame[game];
+
+        }
+
+        var tempData =
+            JSON.parse(
+                JSON.stringify(
+                    ScreenObj[key].BackupData.data[game]
+                )
+            );
+
+        if (!UserLiveFeed_obj[pos].data[game]) {
+
+            UserLiveFeed_obj[pos].data[game] = tempData;
+
+        } else {
+
+            UserLiveFeed_obj[pos].data[game] = tempData.length >= UserLiveFeed_obj[pos].data[game].length ? tempData : UserLiveFeed_obj[pos].data[game];
+
+        }
+
+        if (UserLiveFeed_obj[pos].cellBackup[game]) {
+
+            UserLiveFeed_idObject[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].idObjectBackup[game]));
+            UserLiveFeed_DataObj[pos] = JSON.parse(JSON.stringify(UserLiveFeed_obj[pos].DataObjBackup[game]));
+            UserLiveFeed_cell[pos] = Main_Slice(UserLiveFeed_obj[pos].cellBackup[game]);
+
+            UserLiveFeed_itemsCount[pos] = UserLiveFeed_cell[pos].length;
+
+            UserLiveFeedobj_loadDataBaseLiveSuccessFinish(
+                pos,
+                null,
+                UserLiveFeed_itemsCount[pos]
+            );
+
+        } else {
+
+            UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+                UserLiveFeed_obj[pos].data[game],
+                null,
+                pos,
+                UserLiveFeed_itemsCount[pos],
+                game
+            );
+
+        }
     }
 
     function UserLiveFeedobj_CurrentGameCell(cell) {
@@ -36541,7 +36912,11 @@
     }
 
     function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
-        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_CurrentGamePos);
+        UserLiveFeedobj_loadDataBaseLiveSuccess(
+            responseText,
+            UserLiveFeedobj_CurrentGamePos,
+            UserLiveFeedobj_CurrentGameName
+        );
     }
 
     var UserLiveFeedobj_CurrentGameName = '';
@@ -36558,6 +36933,13 @@
     function UserLiveFeedobj_HideCurrentGame() {
         UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div.classList.add('hide');
+
+        UserLiveFeedobj_CurrentGameUpdateLastPositionGame();
+    }
+
+    function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[3]] =
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
     }
     //Current game end
 
@@ -36609,22 +36991,48 @@
     var UserLiveFeedobj_CurrentUserAGameEnable = false;
 
     function UserLiveFeedobj_CurrentUserAGame() {
-        if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+        if (!UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].loadingMore)
+            UserLiveFeedobj_StartDefault(UserLiveFeedobj_UserAGamesPos);
+
         UserLiveFeedobj_loadCurrentUserAGame();
     }
 
     function UserLiveFeedobj_loadCurrentUserAGame() {
         UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
 
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
-            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataCurrentUserGameSuccess,
-            true,
-            UserLiveFeedobj_UserAGamesPos
-        );
+        var key = Main_aGame,
+            game = UserLiveFeedobj_CurrentUserAGameName,
+            pos = UserLiveFeedobj_UserAGamesPos;
+
+        if (ScreenObj[key].hasBackupData &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            ScreenObj[key].CheckBackupData(game)) {
+
+            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+
+        } else {
+
+            if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+                UserLiveFeed_obj[pos].data[game] = null;
+                UserLiveFeed_obj[pos].cellBackup[game] = null;
+
+            }
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
+                '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+                2,
+                UserLiveFeedobj_loadDataCurrentUserGameSuccess,
+                true,
+                pos
+            );
+        }
+
+        UserLiveFeed_obj[pos].isReloadScreen = false;
+
     }
 
     function UserLiveFeedobj_CurrentUserGameCell(cell) {
@@ -36632,7 +37040,11 @@
     }
 
     function UserLiveFeedobj_loadDataCurrentUserGameSuccess(responseText) {
-        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_UserAGamesPos);
+        UserLiveFeedobj_loadDataBaseLiveSuccess(
+            responseText,
+            UserLiveFeedobj_UserAGamesPos,
+            UserLiveFeedobj_CurrentUserAGameName
+        );
     }
 
     var UserLiveFeedobj_CurrentUserAGameName = '';
@@ -36658,12 +37070,23 @@
         Main_IconLoad('icon_feed_back', 'icon-arrow-left', STR_BACK_USER_GAMES + STR_USER + STR_SPACE_HTML + STR_GAMES);
         if (!Settings_Obj_default("hide_etc_help_text")) Main_RemoveClass('icon_feed_back', 'opacity_zero');
         Main_EventAgame(UserLiveFeedobj_CurrentUserAGameName);
+
     }
 
     function UserLiveFeedobj_HideCurrentUserAGame() {
         UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div.classList.add('hide');
+
+        UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame();
+
     }
+
+    function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
+
+    }
+
     //Current user a game end
 
     //Games Start
@@ -36673,13 +37096,30 @@
     }
 
     function UserLiveFeedobj_loadGames() {
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
-            2,
-            UserLiveFeedobj_loadDataGamesSuccess,
-            false,
-            UserLiveFeedobj_GamesPos
-        );
+        var key = Main_games,
+            pos = UserLiveFeedobj_GamesPos;
+
+        if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+
+            UserLiveFeedobj_loadDataGamesSuccessEnd(
+                ScreenObj[key].data,
+                ScreenObj[key].MaxOffset,
+                pos,
+                UserLiveFeed_itemsCount[pos]
+            );
+
+        } else {
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
+                2,
+                UserLiveFeedobj_loadDataGamesSuccess,
+                false,
+                pos
+            );
+
+        }
+        UserLiveFeed_obj[pos].neverLoaded = false;
 
         if (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset &&
             (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100) > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
@@ -36705,20 +37145,46 @@
     var UserLiveFeedobj_CurrentAGameEnable = false;
 
     function UserLiveFeedobj_CurrentAGame() {
-        if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore) UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+        if (!UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].loadingMore)
+            UserLiveFeedobj_StartDefault(UserLiveFeedobj_AGamesPos);
+
         UserLiveFeedobj_loadCurrentAGame();
     }
 
     function UserLiveFeedobj_loadCurrentAGame() {
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
-            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataCurrentAGameSuccess,
-            true,
-            UserLiveFeedobj_AGamesPos
-        );
+        var key = Main_aGame,
+            game = UserLiveFeedobj_CurrentAGameNameEnter,
+            pos = UserLiveFeedobj_AGamesPos;
+
+        if (ScreenObj[key].hasBackupData &&
+            !UserLiveFeed_itemsCount[pos] &&
+            !UserLiveFeed_obj[pos].isReloadScreen &&
+            ScreenObj[key].CheckBackupData(game)) {
+
+            UserLiveFeedobj_oldGameDataLoad(pos, game, key);
+
+        } else {
+
+            if (UserLiveFeed_obj[pos].isReloadScreen) {
+
+                UserLiveFeed_obj[pos].data[game] = null;
+                UserLiveFeed_obj[pos].cellBackup[game] = null;
+
+            }
+
+            UserLiveFeedobj_BaseLoad(
+                Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
+                '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
+                2,
+                UserLiveFeedobj_loadDataCurrentAGameSuccess,
+                true,
+                pos
+            );
+
+        }
+
+        UserLiveFeed_obj[pos].isReloadScreen = false;
     }
 
     function UserLiveFeedobj_CurrentAGameCell(cell) {
@@ -36726,7 +37192,11 @@
     }
 
     function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
-        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_AGamesPos);
+        UserLiveFeedobj_loadDataBaseLiveSuccess(
+            responseText,
+            UserLiveFeedobj_AGamesPos,
+            UserLiveFeedobj_CurrentAGameNameEnter
+        );
     }
 
     var UserLiveFeedobj_CurrentAGameName = '';
@@ -36759,6 +37229,15 @@
     function UserLiveFeedobj_HideCurrentAGame() {
         UserLiveFeed_CheckIfIsLiveSTop();
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div.classList.add('hide');
+
+        UserLiveFeedobj_CurrentAGameUpdateLastPositionGame();
+
+    }
+
+    function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameNameEnter] =
+            UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
+
     }
     //Current a game end
 
@@ -37271,16 +37750,53 @@
     }
     //User VOD history end
 
-    function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos) {
-        var response = JSON.parse(responseText),
-            total = response._total,
-            response_items,
-            stream, id, mArray,
-            i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos];
+    function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
+        var responseObj = JSON.parse(responseText),
+            total = responseObj._total,
+            itemsCount = UserLiveFeed_itemsCount[pos],
+            response = responseObj[UserLiveFeed_obj[pos].StreamType];
 
-        response = response[UserLiveFeed_obj[pos].StreamType];
-        response_items = response.length;
+        if (game) {
+            var key = Main_aGame;
+
+            if (UserLiveFeed_obj[pos].data[game]) {
+
+                UserLiveFeed_obj[pos].data[game].push.apply(UserLiveFeed_obj[pos].data[game], response);
+
+            } else {
+
+                UserLiveFeed_obj[pos].data[game] = response;
+
+            }
+
+            ScreenObj[key].setBackupData(
+                responseObj,
+                UserLiveFeed_obj[pos].data[game],
+                UserLiveFeed_lastRefresh[pos],
+                game,
+                UserLiveFeed_obj[pos].ContentLang,
+                UserLiveFeed_obj[pos].Lang
+            );
+
+        }
+
+        UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
+            response,
+            total,
+            pos,
+            itemsCount,
+            game
+        );
+
+    }
+
+    function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount, game) {
+
+        var response_items = response.length,
+            stream,
+            id,
+            mArray,
+            i = 0;
 
         if (response_items) {
             if (pos === UserLiveFeedobj_FeaturedPos) {
@@ -37343,17 +37859,50 @@
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
+        UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items);
+
+        if (response_items && game) {
+
+            UserLiveFeedobj_loadDataBaseLiveBackup(pos, game);
+
+        }
+    }
+
+    function UserLiveFeedobj_loadDataBaseLiveBackup(pos, game) {
+
+        UserLiveFeed_obj[pos].idObjectBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_idObject[pos]));
+        UserLiveFeed_obj[pos].DataObjBackup[game] = JSON.parse(JSON.stringify(UserLiveFeed_DataObj[pos]));
+        UserLiveFeed_obj[pos].cellBackup[game] = Main_Slice(UserLiveFeed_cell[pos]);
+
+    }
+
+    function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_items) {
+
         if (UserLiveFeed_obj[pos].HasMore) {
 
             UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
             UserLiveFeed_obj[pos].MaxOffset = total;
 
-            if (!response_items) UserLiveFeed_obj[pos].dataEnded = true;
-            else if (typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
-                if (response_items < 90) UserLiveFeed_obj[pos].dataEnded = true;
+            if (!response_items) {
+
+                UserLiveFeed_obj[pos].dataEnded = true;
+
+            } else if (UserLiveFeed_obj[pos].MaxOffset === null ||
+                typeof UserLiveFeed_obj[pos].MaxOffset === 'undefined') {
+
+                if (response_items < 90) {
+
+                    UserLiveFeed_obj[pos].dataEnded = true;
+
+                }
+
             } else {
+
+
                 if (UserLiveFeed_obj[pos].offset >= total) UserLiveFeed_obj[pos].dataEnded = true;
+
             }
+
         }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
@@ -37375,15 +37924,25 @@
 
     //Base game fun
     function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
-        var response = JSON.parse(responseText),
-            total = response._total,
-            response_items,
-            cell, game,
-            i = 0,
-            itemsCount = UserLiveFeed_itemsCount[pos];
+        var responseObj = JSON.parse(responseText),
+            total = responseObj._total,
+            itemsCount = UserLiveFeed_itemsCount[pos],
+            response = responseObj[type];
 
-        response = response[type];
-        response_items = response.length;
+        UserLiveFeedobj_loadDataGamesSuccessEnd(
+            response,
+            total,
+            pos,
+            itemsCount
+        );
+
+    }
+
+    function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCount) {
+        var response_items = response.length,
+            cell,
+            game,
+            i = 0;
 
         if (response_items) {
 
@@ -37457,7 +38016,8 @@
         if (UserLiveFeed_obj[pos].HasMore) {
             UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
             UserLiveFeed_obj[pos].MaxOffset = total;
-            if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+            if (UserLiveFeed_obj[pos].offset >= total || !response_items)
+                UserLiveFeed_obj[pos].dataEnded = true;
         }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
@@ -37474,15 +38034,20 @@
                 25
             );
         }
+
     }
     //Base game fun end
 
     function UserLiveFeedobj_CheckOffset(pos) {
         if ((UserLiveFeed_obj[pos].offset >= 900) ||
-            ((typeof UserLiveFeed_obj[pos].MaxOffset !== 'undefined') &&
+            ((UserLiveFeed_obj[pos].MaxOffset !== null &&
+                    (typeof UserLiveFeed_obj[pos].MaxOffset !== 'undefined')) &&
                 UserLiveFeed_obj[pos].offset &&
-                (UserLiveFeed_obj[pos].offset + 100) > UserLiveFeed_obj[pos].MaxOffset))
+                (UserLiveFeed_obj[pos].offset + 100) > UserLiveFeed_obj[pos].MaxOffset)) {
+
             UserLiveFeed_obj[pos].dataEnded = true;
+
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
