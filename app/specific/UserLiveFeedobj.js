@@ -644,7 +644,7 @@ function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
     var tempData =
         JSON.parse(
             JSON.stringify(
-                ScreenObj[key].BackupData.data[game]
+                ScreenObj[key].BackupData.data[game].slice(0, 100)
             )
         );
 
