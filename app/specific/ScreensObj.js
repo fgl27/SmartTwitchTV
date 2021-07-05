@@ -238,7 +238,7 @@ function ScreensObj_StartAllVars() {
 
                 this.BackupData.ContentLang[game] = Main_ContentLang;
                 this.BackupData.Lang[game] = Settings_AppLang;
-                this.BackupData.offsettopFontsize[game] = this.offsettopFontsize;
+                this.BackupData.offsettopFontsize[game] = this.offsettopFontsize ? this.offsettopFontsize : Settings_Obj_default('global_font_offset');
 
             }
 
@@ -258,9 +258,9 @@ function ScreensObj_StartAllVars() {
         CheckBackupData: function(game) {
 
             return this.BackupData && (this.BackupData.data && this.BackupData.data[game] && this.BackupData.data[game].length) &&
-                (this.BackupData.ContentLang && Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang)) &&
-                (this.BackupData.Lang && Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang)) &&
-                (this.BackupData.offsettopFontsize && this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset')) &&
+                (!this.BackupData.ContentLang || Main_A_equals_B(this.BackupData.ContentLang[game], Main_ContentLang)) &&
+                (!this.BackupData.Lang || Main_A_equals_B(this.BackupData.Lang[game], Settings_AppLang)) &&
+                (!this.BackupData.offsettopFontsize || this.BackupData.offsettopFontsize[game] === Settings_Obj_default('global_font_offset')) &&
                 (!Settings_Obj_default("auto_refresh_screen") ||
                     this.BackupData && this.BackupData.lastScreenRefresh &&
                     (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
