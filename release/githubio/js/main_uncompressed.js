@@ -36705,7 +36705,7 @@
         if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
 
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-                ScreenObj[key].data,
+                ScreenObj[key].data.slice(0, 100),
                 null,
                 pos,
                 UserLiveFeed_itemsCount[pos]
@@ -36761,7 +36761,7 @@
         if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
 
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(
-                ScreenObj[key].data,
+                ScreenObj[key].data.slice(0, 100),
                 null,
                 pos,
                 UserLiveFeed_itemsCount[pos]
@@ -37101,7 +37101,7 @@
         if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
 
             UserLiveFeedobj_loadDataGamesSuccessEnd(
-                ScreenObj[key].data,
+                ScreenObj[key].data.slice(0, 100),
                 ScreenObj[key].MaxOffset,
                 pos,
                 UserLiveFeed_itemsCount[pos]
