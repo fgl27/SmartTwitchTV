@@ -1300,7 +1300,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
     if (Play_StayDialogVisible()) return;
 
     if (State) {
-        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i></div>');
+
         ChatLive_Playing = true;
 
         if (PlayVodClip === 1) {
@@ -1325,13 +1325,27 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
         }
 
     } else {
-        Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-play-1"></i></div>');
 
         if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) || !Main_IsOn_OSInterface) Chat_Pause();
 
         ChatLive_Playing = false;
 
     }
+
+    Main_innerHTMLWithEle(
+        Play_BottonIcons_Pause,
+        Play_GetPlayPauseIcon(State)
+    );
+    Play_showWarningMidleDialog(
+        Play_GetPlayPauseIcon(!State),
+        500
+    );
+}
+
+function Play_GetPlayPauseIcon(not_playing) {
+    return '<div ><i class="pause_button3d ' +
+        (not_playing ? 'icon-pause' : 'icon-play-1') +
+        '"></i></div>';
 }
 
 function Play_KeyReturn(is_vod) {
