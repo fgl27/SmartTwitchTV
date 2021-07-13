@@ -120,7 +120,7 @@ function es_ESLang() {
     STR_USER_HOSTING = "hosteando";
     STR_USER_SET = "ya está configurado";
     STR_USER_MAKE_ONE = "Cambiar a";
-    STR_USER_NUMBER_ONE = "El primer usuario puede seguir (al proporcionar una clave) y ver los canales en directo fuera de la pantalla del usuario<br>";
+    STR_USER_NUMBER_ONE = "El primer usuario puede seguir (al proporcionar una clave) y ver los canales en directo fuera de la pantalla del usuario";
     STR_ADD_USER_SH = "Añade un usuario de Twitch para mostrar el contenido de los canales seguidos aquí";
     STR_CLIP_DAY = "24h";
     STR_CLIP_WEEK = "7d";

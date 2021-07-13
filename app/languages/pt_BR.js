@@ -118,7 +118,7 @@ function pt_BRLang() {
     STR_USER_HOSTING = "host";
     STR_USER_SET = "já definido";
     STR_USER_MAKE_ONE = "Mudar para";
-    STR_USER_NUMBER_ONE = "O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário<br>";
+    STR_USER_NUMBER_ONE = "O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário";
     STR_ADD_USER_SH = "Adicionar um usuário Twitch para exibir os seus Canais Seguidos aqui";
     STR_CLIP_DAY = "24h";
     STR_CLIP_WEEK = "7d";

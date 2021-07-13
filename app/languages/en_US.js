@@ -122,7 +122,7 @@ function en_USLang() {
     STR_USER_HOSTING = "hosting";
     STR_USER_SET = "already set";
     STR_USER_MAKE_ONE = "Switch to";
-    STR_USER_NUMBER_ONE = "First user can (when providing a key) follow and see live channels feed outside of the user screen<br>";
+    STR_USER_NUMBER_ONE = "First user can (when providing a key) follow and see live channels feed outside of the user screen";
     STR_ADD_USER_SH = "Add a Twitch user to display its Followed Channels content here";
     STR_CLIP_DAY = "24h";
     STR_CLIP_WEEK = "7d";
@@ -141,8 +141,8 @@ function en_USLang() {
     STR_CLOSE_THIS = "Press return or enter to close this";
     STR_CLOSE_THIS2 = "Press return to close this";
     STR_CLOSE_THIS3 = "Press return to show the update dialog or enter to close this";
-    STR_PLAYER = "<br>  Player related:";
-    STR_CHAT = "<br>Chat related:";
+    STR_PLAYER = "Player related:";
+    STR_CHAT = "Chat related:";
     STR_CHAT_SHOW = "Show chat";
     STR_CURRENT_VERSION = "Currently installed version";
     STR_LATEST_VERSION = "latest available version";
@@ -161,7 +161,7 @@ function en_USLang() {
     STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
     STR_ABOUT_INFO_6 = "This application uses the following dependencies:";
     STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser (https://github.com/sigkell/irc-message)";
-    STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)<br>";
+    STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
     STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
     STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
     STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
@@ -372,7 +372,7 @@ function en_USLang() {
     STR_AUDIO = "Audio -";
     STR_DEF_QUALITY = "Default player quality";
     STR_DEF_QUALITY_SUMMARY = "This option will always override others when playing a single video. In picture in picture or multistream mode, the playback needs to use the auto quality. The reason for why that is can be found under the settings option \'" + STR_PLAYER_BITRATE + "\'.";
-    STR_PICTURE_PICTURE = "<br>Picture in picture, 50/50 or multistream (for lives only):";
+    STR_PICTURE_PICTURE = "Picture in picture, 50/50 or multistream (for lives only):";
     STR_PICTURE_CONTROLS1 = "Enable picture in picture mode: Press up when playing a video. To show the preview feed, choose a stream, then hold enter or press key 1 to start";
     STR_PICTURE_CONTROLS2 = "Change video content: If in multiplayer mode, always single-click from the player preview. If on picture in picture or 50/50, a single click updates the big or top video, and holding enter or pressing key 1 updates the small or bottom video";
     STR_PICTURE_CONTROLS4 = "Change content between videos (only picture in picture): Down D-pad. Big becomes small and vice versa";
@@ -613,7 +613,6 @@ function en_USLang() {
     STR_CHAT_OPTIONS_EMOTE_SORT_SUMMARY = "If this is disabled, the lists of emotes will be shown in the order, provided by the server.";
     STR_CHAT_OPTIONS_FORCE_SHOW = "Force show chat";
     STR_CHAT_OPTIONS_FORCE_SHOW_SUMMARY = "If you want to see the chat when write to chat is used, enable this";
-    //STR_WARNING_NEW = "A new featuring was added<br><br>Write to chat<br><br>Because this new featuring all previously added authorization keys have be revoked, because chat permissions weren\'t asked before<br><br>If you had a key added please add a new one so you can keep using the app the same way as before<br><br>If you have any doubt about the new authorization key go to:<br><br> https://github.com/fgl27/SmartTwitchTV#authorization<br><br>This dialog will auto hide in 1 minute";
     STR_NOKEY_CHAT_WARN = "Add a user authorization key to be able to log and write to chat";
     STR_CHAT_NOT_READY = "Chat not ready to send! Try again is a second or two.";
     STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed highlight My Message";
