@@ -251,3 +251,4 @@
     STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
     STR_VIEWER = "Viewer";
     STR_VIEW = "View";
+    STR_FOLLOWER = "Follower";
