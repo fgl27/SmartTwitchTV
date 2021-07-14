@@ -1017,7 +1017,7 @@
 
         // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
         // If it need ajustment or yours language just copy the below line and change it value until it does
-        Sidepannel_MoveldefaultMargin = 13.5;
+        Sidepannel_MoveldefaultMargin = 14;
 
         //Below are variables to translate
         STR_KEY_UP_DOWN = "PG up/down";
