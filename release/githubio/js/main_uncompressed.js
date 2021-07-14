@@ -73,8 +73,10 @@
     var STR_CONTENT;
     var STR_STREAM_ON;
     var STR_DURATION;
+    var STR_VIEW;
     var STR_VIEWS;
     var STR_VIEWER;
+    var STR_VIEWERS;
     var STR_EXIT_AGAIN;
     var STR_EXIT_MESSAGE;
     var STR_EXIT;
@@ -173,6 +175,7 @@
     var STR_NET_DOWN;
     var STR_NET_UP;
     var STR_FOLLOWERS;
+    var STR_FOLLOWER;
     var STR_CANT_FOLLOW;
     var STR_GAME_CONT;
     var STR_YES;
@@ -833,6 +836,7 @@
         STR_PAST_HIGHL = STR_SPACE + STR_PAST_HIGHL;
         STR_CONTENT = STR_SPACE + STR_CONTENT;
         STR_VIEWS = STR_SPACE + STR_VIEWS;
+        STR_VIEW = STR_SPACE + STR_VIEW;
         STR_LIVE_CHANNELS = STR_SPACE + STR_LIVE_CHANNELS;
         STR_LIVE_GAMES = STR_SPACE + STR_LIVE_GAMES;
         STR_USER_CHANNEL = STR_SPACE + STR_USER_CHANNEL;
@@ -1067,8 +1071,10 @@
         STR_CONTENT = "Content";
         STR_STREAM_ON = "Streamed";
         STR_DURATION = "Duration";
+        STR_VIEW = "View";
         STR_VIEWS = "Views";
-        STR_VIEWER = "Viewers";
+        STR_VIEWER = "Viewer";
+        STR_VIEWERS = "Viewers";
         STR_EXIT_AGAIN = "Click again to exit";
         STR_EXIT_AGAIN_PICTURE = "Click again to exit picture in picture";
         STR_EXIT_AGAIN_MULTI = "Click again to exit multistream";
@@ -1206,6 +1212,7 @@
         STR_NET_DOWN = "Network is disconnected. The application can\'t work without INTERNET.";
         STR_NET_UP = "Network connection reestablished";
         STR_FOLLOWERS = "Followers";
+        STR_FOLLOWER = "Follower";
         STR_CANT_FOLLOW = ", Can\'t follow or unfollow";
         STR_GAME_CONT = "Game content";
         STR_YES = "Yes";
@@ -2290,8 +2297,10 @@
         STR_CONTENT = "Conteúdo";
         STR_STREAM_ON = "Em";
         STR_DURATION = "Duração";
+        STR_VIEW = "Visualização";
         STR_VIEWS = "Visualizações";
-        STR_VIEWER = "Pessoas";
+        STR_VIEWER = "Pessoa";
+        STR_VIEWERS = "Pessoas";
         STR_EXIT_AGAIN = "Clique novamente para sair!";
         STR_EXIT_AGAIN_PICTURE = "Clique novamente para sair do Picture in Picture!";
         STR_EXIT_AGAIN_MULTI = "Clique novamente para sair do MultiStream!";
@@ -2428,6 +2437,7 @@
         STR_NET_DOWN = "A rede está desconectada, o aplicativo não funciona sem INTERNET";
         STR_NET_UP = "Conexão de rede restabelecida";
         STR_FOLLOWERS = "Seguidores";
+        STR_FOLLOWER = "Seguidor";
         STR_CANT_FOLLOW = ", Não é possível seguir ou deixar de seguir";
         STR_GAME_CONT = "Conteúdo do jogo";
         STR_YES = "Sim";
@@ -5185,10 +5195,10 @@
         streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE_HTML + STR_SPACE_HTML + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
 
         streamer_bio += ChannelContent_selectedChannelViews !== '' ?
-            STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
+            STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews) : '';
 
         streamer_bio += ChannelContent_selectedChannelFollower !== '' ?
-            STR_BR + Main_addCommas(ChannelContent_selectedChannelFollower) + STR_FOLLOWERS : '';
+            STR_BR + Main_addCommas(ChannelContent_selectedChannelFollower) + (ChannelContent_selectedChannelFollower === 1 ? STR_FOLLOWER : STR_FOLLOWERS) : '';
 
         streamer_bio += ChannelContent_description !== '' ?
             STR_BR + STR_BR + STR_ABOUT + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '';
@@ -7056,7 +7066,7 @@
 
             Main_innerHTML(
                 "chat_loggedin" + chat_number,
-                '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWER)
+                '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWERS)
             );
             Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
@@ -7110,9 +7120,11 @@
 
                 if (resultObj.streams && resultObj.streams.length) {
 
+                    var viewers = resultObj.streams[0].viewers;
+
                     Main_innerHTML(
                         "chat_loggedin" + chat_number,
-                        Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE_HTML + STR_VIEWER
+                        Main_addCommas(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers)
                     );
                 }
 
@@ -10246,6 +10258,14 @@
     function Main_addCommas(value) {
         if (!value) return value;
         return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function Main_GetViewerStrings(value) {
+        return value === 1 ? STR_VIEWER : STR_VIEWERS;
+    }
+
+    function Main_GetViewsStrings(value) {
+        return value === 1 ? STR_VIEW : STR_VIEWS;
     }
 
     function Main_videoqualitylang(video_height, average_fps, language) {
@@ -20093,7 +20113,10 @@
 
         Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
         Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
-        Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas((Play_data.data[13] > 0) ? Play_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
+        Main_innerHTML(
+            'stream_info_pp_viewers0',
+            STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+        );
 
         Main_innerHTML(
             'stream_info_pp_name1',
@@ -20109,7 +20132,10 @@
         Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
         Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
-        Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas((PlayExtra_data.data[13] > 0) ? PlayExtra_data.data[13] : 0) + STR_SPACE_HTML + STR_VIEWER + ',');
+        Main_innerHTML(
+            'stream_info_pp_viewers1',
+            STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+        );
     }
 
     function PlayExtra_loadDataFail(Reason) {
@@ -20703,7 +20729,7 @@
             )
         );
         Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
-        Main_innerHTML("stream_live_viewers", STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + STR_VIEWER);
+        Main_innerHTML("stream_live_viewers", STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]));
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
         Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -23043,7 +23069,7 @@
     function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
         Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
         Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
-        Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + STR_VIEWER) : STR_SPACE_HTML);
+        Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views)) : STR_SPACE_HTML);
     }
 
     function Play_MultiSetpannelInfo() {
@@ -23464,7 +23490,7 @@
             (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
         );
 
-        Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + STR_VIEWS);
+        Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + Main_GetViewsStrings(response.views));
         Main_textContent("stream_live_viewers", '');
         Main_textContentWithEle(Play_infoWatchingTime, '');
 
@@ -25617,7 +25643,7 @@
             valuesArray[11] + STR_SPACE_HTML + Play_timeS(valuesArray[1]) + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' +
             valuesArray[10] + '</div>' + '<div class="stream_info_live">' + playing + '</div>' +
             '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-            STR_CREATED_AT + valuesArray[16] + ',' + STR_SPACE_HTML + valuesArray[14] + STR_VIEWS + '</div></div>' +
+            STR_CREATED_AT + valuesArray[16] + ',' + STR_SPACE_HTML + valuesArray[14] + Main_GetViewsStrings(valuesArray[13]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until < valuesArray[1] ? Extra_until : valuesArray[1]) + '</div>') : '') +
             '</div></div></div></div></div>';
@@ -25640,7 +25666,7 @@
             '">' + valuesArray[10] + '</div>' + '<div class="stream_info_live">' +
             (valuesArray[3] !== "" && valuesArray[3] !== null ? STR_STARTED + STR_PLAYING + valuesArray[3] : "") + '</div>' +
             '<div style="line-height: 1.3ch;"><div class="stream_info_live" style="width: auto; display: inline-block;">' +
-            STR_STREAM_ON + valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + STR_VIEWS + '</div></div>' +
+            STR_STREAM_ON + valuesArray[2] + ',' + STR_SPACE_HTML + valuesArray[4] + Main_GetViewsStrings(valuesArray[13]) + '</div></div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until) + '</div>') : '') +
             '</div></div></div></div>';
@@ -25669,7 +25695,7 @@
             valuesArray[5] + '</div></div><div class="' +
             (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') + '">' + Main_ReplaceLargeFont(twemoji.parse(valuesArray[2])) + '</div>' +
             '<div class="stream_info_live">' + (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
-            '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
+            '</div><div id="' + idArray[4] + id + '" class="stream_info_live">' + STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + STR_SPACE_HTML + Main_GetViewerStrings(valuesArray[13]) + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(valuesArray[12]).getTime())) + '</div>') : '') +
             '</div></div></div></div>';
@@ -26646,7 +26672,7 @@
 
             Main_innerHTML(
                 ScreenObj[key].ids[4] + id,
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13])
             );
         }
 
@@ -28738,7 +28764,7 @@
                             [game.box.template.replace("{width}x{height}", Main_GameSize), //0
                                 game.name, //1
                                 hasLive ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '', //2
+                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers) : '', //2
                                 game._id //3
                             ],
                             this.screen
@@ -30221,28 +30247,6 @@
         ];
     }
 
-    function ScreensObj_VodGetPreview(preview, animated_preview_url) {
-        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-        if (!Main_IsOn_OSInterface) {
-
-            if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
-
-                console.log('Revise vod links');
-
-            }
-
-        }
-        return Main_A_includes_B(preview + '', '404_processing') ?
-            ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
-    }
-
-    function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
-        var animated_preview = animated_preview_url.split('/');
-
-        return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
-            '/thumb/thumb0-' + Main_VideoSize + '.jpg';
-    }
-
     function ScreensObj_ClipCellArray(cell) {
         return [
             cell.slug, //0
@@ -30264,6 +30268,29 @@
             Main_videoCreatedAt(cell.created_at), //16
             cell.language //17
         ];
+    }
+
+
+    function ScreensObj_VodGetPreview(preview, animated_preview_url) {
+        //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+        if (!Main_IsOn_OSInterface) {
+
+            if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+
+                console.log('Revise vod links');
+
+            }
+
+        }
+        return Main_A_includes_B(preview + '', '404_processing') ?
+            ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+    }
+
+    function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
+        var animated_preview = animated_preview_url.split('/');
+
+        return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
+            '/thumb/thumb0-' + Main_VideoSize + '.jpg';
     }
 
     function ScreensObj_AnimateThumbId(screen) {
@@ -34130,7 +34157,7 @@
 
             Main_innerHTMLWithEle(
                 Sidepannel_UpdateThumbDivViews,
-                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+                STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13])
             );
         }
 
@@ -35492,7 +35519,7 @@
 
                     Main_innerHTML(
                         UserLiveFeed_ids[4] + id,
-                        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
+                        STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13])
                     );
 
                 }
@@ -37352,7 +37379,7 @@
             data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
             '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
             '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
-            '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + STR_SINCE + data[11] + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER + '</div>' +
+            '</div><div id="' + UserLiveFeed_ids[4] + id + '" class="stream_info_live">' + STR_SINCE + data[11] + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13]) + '</div>' +
             (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
                 STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
             '</div></div></div>';
@@ -37381,7 +37408,7 @@
             '<div style="line-height: 2vh;"><div class="stream_info_live" style="width: 74%; display: inline-block;">' + STR_STREAM_ON + data[2] +
             '</div><div class="stream_info_live" style="width: 26%; display: inline-block; float: right; text-align: right;">' +
             Play_timeS(data[11]) + '</div></div><div class="stream_info_live_title" style="font-family: \'Roboto\';">' +
-            data[4] + STR_VIEWS + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
+            data[4] + Main_GetViewsStrings(data[13]) + (Extra_when ? (', ' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML +
                 STR_UNTIL + Play_timeS(Extra_until)) : '') + '</div></div></div>';
 
         return div;
@@ -38021,7 +38048,7 @@
                             [
                                 game.name, //0
                                 isntUser ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '', //1
+                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers) : '', //1
                                 game._id, //2
                                 game.box.template //3
                             ]
