@@ -788,7 +788,7 @@ public class PlayerActivity extends Activity {
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "releasePlayer notnull release position " + position);
             }
-
+            PlayerObj[position].player.setPlayWhenReady(false);
             PlayerObj[position].player.release();
         }
 
