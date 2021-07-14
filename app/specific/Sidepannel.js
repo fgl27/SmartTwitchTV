@@ -187,7 +187,7 @@ function Sidepannel_UpdateSince() {
 
         Main_innerHTMLWithEle(
             Sidepannel_UpdateThumbDivViews,
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + STR_VIEWER
+            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13])
         );
     }
 

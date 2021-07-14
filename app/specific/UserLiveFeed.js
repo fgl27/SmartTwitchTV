@@ -580,7 +580,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
                 Main_innerHTML(
                     UserLiveFeed_ids[4] + id,
-                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + STR_VIEWER
+                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13])
                 );
 
             }

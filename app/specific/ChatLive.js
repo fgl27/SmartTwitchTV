@@ -313,7 +313,7 @@ function ChatLive_loadChatters(chat_number, id) {
 
         Main_innerHTML(
             "chat_loggedin" + chat_number,
-            '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWER)
+            '...' + (Settings_value.show_chatters.defaultValue === 1 ? STR_IN_CHAT : STR_VIEWERS)
         );
         Main_RemoveClass('chat_loggedin' + chat_number, 'hide');
 
@@ -367,9 +367,11 @@ function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
 
             if (resultObj.streams && resultObj.streams.length) {
 
+                var viewers = resultObj.streams[0].viewers;
+
                 Main_innerHTML(
                     "chat_loggedin" + chat_number,
-                    Main_addCommas(resultObj.streams[0].viewers) + STR_SPACE_HTML + STR_VIEWER
+                    Main_addCommas(viewers) + STR_SPACE_HTML + Main_GetViewerStrings(viewers)
                 );
             }
 

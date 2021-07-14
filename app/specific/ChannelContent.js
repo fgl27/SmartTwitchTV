@@ -248,10 +248,10 @@ function ChannelContent_loadDataSuccess() {
     streamer_bio += (Main_values.Main_selectedChannelPartner ? STR_SPACE_HTML + STR_SPACE_HTML + '<img style="display: inline-block; width: 2ch; vertical-align: middle;" alt="" src="' + IMG_PARTNER + '">' : "");
 
     streamer_bio += ChannelContent_selectedChannelViews !== '' ?
-        STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + STR_VIEWS : '';
+        STR_BR + Main_addCommas(ChannelContent_selectedChannelViews) + Main_GetViewsStrings(ChannelContent_selectedChannelViews) : '';
 
     streamer_bio += ChannelContent_selectedChannelFollower !== '' ?
-        STR_BR + Main_addCommas(ChannelContent_selectedChannelFollower) + STR_FOLLOWERS : '';
+        STR_BR + Main_addCommas(ChannelContent_selectedChannelFollower) + (ChannelContent_selectedChannelFollower === 1 ? STR_FOLLOWER : STR_FOLLOWERS) : '';
 
     streamer_bio += ChannelContent_description !== '' ?
         STR_BR + STR_BR + STR_ABOUT + ':' + STR_BR + twemoji.parse(ChannelContent_description) : '';

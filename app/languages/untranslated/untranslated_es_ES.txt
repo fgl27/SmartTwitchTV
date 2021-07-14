@@ -249,3 +249,5 @@
     STR_WARNING_PHONE = 'Phones warning';
     STR_ABOUT_INFO_2 = "This app has no affiliation with Twitch, this is a user made app, but is only possible because Twitch provide all the API that allows the app to show Twitch content.";
     STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
+    STR_VIEWER = "Viewer";
+    STR_VIEW = "View";

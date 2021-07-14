@@ -294,7 +294,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         (response.game && response.game !== "" ? STR_STARTED + STR_PLAYING + response.game : "")
     );
 
-    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + STR_VIEWS);
+    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + Main_GetViewsStrings(response.views));
     Main_textContent("stream_live_viewers", '');
     Main_textContentWithEle(Play_infoWatchingTime, '');
 

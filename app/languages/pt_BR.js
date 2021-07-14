@@ -73,8 +73,10 @@ function pt_BRLang() {
     STR_CONTENT = "Conteúdo";
     STR_STREAM_ON = "Em";
     STR_DURATION = "Duração";
+    STR_VIEW = "Visualização";
     STR_VIEWS = "Visualizações";
-    STR_VIEWER = "Pessoas";
+    STR_VIEWER = "Pessoa";
+    STR_VIEWERS = "Pessoas";
     STR_EXIT_AGAIN = "Clique novamente para sair!";
     STR_EXIT_AGAIN_PICTURE = "Clique novamente para sair do Picture in Picture!";
     STR_EXIT_AGAIN_MULTI = "Clique novamente para sair do MultiStream!";
@@ -211,6 +213,7 @@ function pt_BRLang() {
     STR_NET_DOWN = "A rede está desconectada, o aplicativo não funciona sem INTERNET";
     STR_NET_UP = "Conexão de rede restabelecida";
     STR_FOLLOWERS = "Seguidores";
+    STR_FOLLOWER = "Seguidor";
     STR_CANT_FOLLOW = ", Não é possível seguir ou deixar de seguir";
     STR_GAME_CONT = "Conteúdo do jogo";
     STR_YES = "Sim";

@@ -76,8 +76,10 @@ function en_USLang() {
     STR_CONTENT = "Content";
     STR_STREAM_ON = "Streamed";
     STR_DURATION = "Duration";
+    STR_VIEW = "View";
     STR_VIEWS = "Views";
-    STR_VIEWER = "Viewers";
+    STR_VIEWER = "Viewer";
+    STR_VIEWERS = "Viewers";
     STR_EXIT_AGAIN = "Click again to exit";
     STR_EXIT_AGAIN_PICTURE = "Click again to exit picture in picture";
     STR_EXIT_AGAIN_MULTI = "Click again to exit multistream";
@@ -215,6 +217,7 @@ function en_USLang() {
     STR_NET_DOWN = "Network is disconnected. The application can\'t work without INTERNET.";
     STR_NET_UP = "Network connection reestablished";
     STR_FOLLOWERS = "Followers";
+    STR_FOLLOWER = "Follower";
     STR_CANT_FOLLOW = ", Can\'t follow or unfollow";
     STR_GAME_CONT = "Game content";
     STR_YES = "Yes";

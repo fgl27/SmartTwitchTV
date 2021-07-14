@@ -646,7 +646,7 @@ function ScreensObj_StartAllVars() {
                         [game.box.template.replace("{width}x{height}", Main_GameSize),//0
                         game.name,//1
                         hasLive ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
-                            Main_addCommas(cell.viewers) + STR_SPACE_HTML + STR_VIEWER : '',//2
+                            Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers) : '',//2
                         game._id//3
                         ],
                         this.screen
@@ -2128,28 +2128,6 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
-function ScreensObj_VodGetPreview(preview, animated_preview_url) {
-    //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-    if (!Main_IsOn_OSInterface) {
-
-        if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
-
-            console.log('Revise vod links');
-
-        }
-
-    }
-    return Main_A_includes_B(preview + '', '404_processing') ?
-        ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
-}
-
-function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
-    var animated_preview = animated_preview_url.split('/');
-
-    return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
-        '/thumb/thumb0-' + Main_VideoSize + '.jpg';
-}
-
 function ScreensObj_ClipCellArray(cell) {
     return [
         cell.slug,//0
@@ -2171,6 +2149,29 @@ function ScreensObj_ClipCellArray(cell) {
         Main_videoCreatedAt(cell.created_at),//16
         cell.language//17
     ];
+}
+
+
+function ScreensObj_VodGetPreview(preview, animated_preview_url) {
+    //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
+    if (!Main_IsOn_OSInterface) {
+
+        if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+
+            console.log('Revise vod links');
+
+        }
+
+    }
+    return Main_A_includes_B(preview + '', '404_processing') ?
+        ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace("{width}x{height}", Main_VideoSize);
+}
+
+function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
+    var animated_preview = animated_preview_url.split('/');
+
+    return 'https://static-cdn.jtvnw.net/cf_vods/' + animated_preview[2].split('.')[0] + '/' + animated_preview[3] +
+        '/thumb/thumb0-' + Main_VideoSize + '.jpg';
 }
 
 function ScreensObj_AnimateThumbId(screen) {

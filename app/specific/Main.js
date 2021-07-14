@@ -858,6 +858,14 @@ function Main_addCommas(value) {
     return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function Main_GetViewerStrings(value) {
+    return value === 1 ? STR_VIEWER : STR_VIEWERS;
+}
+
+function Main_GetViewsStrings(value) {
+    return value === 1 ? STR_VIEW : STR_VIEWS;
+}
+
 function Main_videoqualitylang(video_height, average_fps, language) {
     video_height = video_height + ''; //stringfy doesnot work 8|
     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
