@@ -3288,6 +3288,25 @@ function Main_EventAgame(game) {
     );
 }
 
+
+function Main_EventBanner(type, screen) {
+    if (skipfirebase) return;
+
+    try {
+
+        gtag(
+            'event',
+            type,
+            {
+                'screen': screen
+            }
+        );
+
+    } catch (e) {
+        console.log("Main_EventBanner e " + e);
+    }
+}
+
 function Main_EventShowScreen(type, name) {
     if (skipfirebase) return;
 

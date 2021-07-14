@@ -55,6 +55,7 @@ var ChannelVod_game = '';
 var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var DefaultHttpGetTimeout = 30000;
 var noop_fun = function() { };
+var ScreensObj_banner_added_section = false;
 
 var Base_obj;
 var Base_Vod_obj;
@@ -325,6 +326,7 @@ function ScreensObj_StartAllVars() {
             this.ScreenBackup[game].coloumn_id = this.coloumn_id;
             this.ScreenBackup[game].data_cursor = this.data_cursor;
             this.ScreenBackup[game].dataEnded = this.dataEnded;
+            this.ScreenBackup[game].BannerCreated = this.BannerCreated;
 
         },
         RestoreBackupScreen: function(game) {
@@ -363,6 +365,7 @@ function ScreensObj_StartAllVars() {
             this.coloumn_id = this.ScreenBackup[game].coloumn_id;
             this.data_cursor = this.ScreenBackup[game].data_cursor;
             this.dataEnded = this.ScreenBackup[game].dataEnded;
+            this.BannerCreated = this.ScreenBackup[game].BannerCreated;
 
             this.status = true;
             this.FirstRunEnd = true;
@@ -410,6 +413,17 @@ function ScreensObj_StartAllVars() {
                 this.ScreenName
             );
 
+        },
+        addBanner: function(forceAdd) {
+            ScreensObj_addBanner(
+                {
+                    image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
+                    url: 'https://github.com/fgl27/SmartTwitchTV',
+                    text: 'Banner Text shows here'
+                },
+                this.screen,
+                forceAdd
+            );
         },
     };
 
@@ -508,9 +522,10 @@ function ScreensObj_StartAllVars() {
         },
         key_play: function() {
 
-            if (this.hasBanner && !this.posY) {
+            var obj_id = this.posY + '_' + this.posX;
 
-                console.log(this.DataObj[this.posY + '_' + this.posX]);
+            if (this.hasBanner && this.DataObj[obj_id].image) {
+
                 if (Main_IsOn_OSInterface) Android.OpenURL(this.DataObj[this.posY + '_' + this.posX].url);
 
                 if (skipfirebase) return;
@@ -531,7 +546,7 @@ function ScreensObj_StartAllVars() {
 
             } else if (this.itemsCount) {
 
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_RemoveClass(this.ids[1] + obj_id, 'opacity_zero');
                 this.OpenLiveStream(false);
 
             }
@@ -1140,6 +1155,7 @@ function ScreensObj_InitLive() {
         key_pgUp: Main_Clip,
         CheckContentLang: 1,
         ContentLang: '',
+        hasBanner: true,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.check_offset();
@@ -1153,16 +1169,6 @@ function ScreensObj_InitLive() {
             Sidepannel_SetTopOpacity(this.screen);
 
             ScreensObj_SetTopLable(STR_LIVE);
-        },
-        addBanner: function() {
-            ScreensObj_addBanner(
-                {
-                    image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
-                    url: 'https://github.com/fgl27/SmartTwitchTV',
-                    text: 'Banner Text shows here'
-                },
-                this.screen
-            );
         },
     }, Base_obj);
 
@@ -1336,6 +1342,7 @@ function ScreensObj_InitAGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         hasBackupData: true,
+        hasBanner: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();
@@ -1375,10 +1382,23 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
     ScreenObj[Main_aGame].key_play = function() {
-        if (this.itemsCount && this.posY !== -1) {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+        if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
 
-            this.OpenLiveStream(false);
+            var obj_id = this.posY + '_' + this.posX;
+
+            if (this.hasBanner && this.DataObj[obj_id].image) {
+
+                if (Main_IsOn_OSInterface) Android.OpenURL(this.DataObj[this.posY + '_' + this.posX].url);
+
+                Main_EventBanner('banner_click', this.ScreenName);
+
+            } else if (this.itemsCount) {
+
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+
+                this.OpenLiveStream(false);
+
+            }
 
         } else AGame_headerOptions(this.screen);
 
@@ -2036,14 +2056,16 @@ function ScreensObj_addSwitches(StringsArray, key) {
 }
 
 
-function ScreensObj_addBanner(obj, key) {
+function ScreensObj_addBanner(obj, key, forceAdd) {
+
     ScreenObj[key].BannerCreated = true;
+
+    var id = ScreenObj[key].row_id + '_0',
+        idArray = ScreenObj[key].ids;
+
     ScreenObj[key].row = Screens_createRow(key);
     ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
     ScreenObj[key].row_id++;
-
-    var id = '0_0',
-        idArray = ScreenObj[key].ids;
 
     ScreenObj[key].DataObj[id] = obj;
 
@@ -2057,10 +2079,19 @@ function ScreensObj_addBanner(obj, key) {
 
     ScreenObj[key].row.appendChild(div);
 
-    ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+    if (!ScreensObj_banner_added_section || forceAdd) {
+
+        ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+    }
 
     this.itemsCount += 3;
     this.coloumn_id += 3;
+
+    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 0 * 1000);
+
+    ScreensObj_banner_added_section = true;
+    ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
+
 }
 
 function ScreensObj_CheckIsOpen(key, preventRefresh) {
