@@ -463,6 +463,7 @@ function Screens_loadDatafail(key) {
                 if (ScreenObj[key].hasBanner) {
 
                     ScreenObj[key].addBanner();
+                    ScreenObj[key].itemsCount = 1;
                     ScreenObj[key].emptyContent = false;
                 }
 
