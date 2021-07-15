@@ -37,7 +37,6 @@
     <string name="no_internet">Ping to Twitch unsuccessful for the last 30 seconds!\n\nIf the app is not working, properly revise your local internet connection\n\nHold return key to close the app in case it freezes or stops working.\n\nIf the connection returns, this will auto hide, otherwise it will hide in 30 seconds\n\nThis warning can be disabled in settings</string>
     <string name="external_player_fail">No external video player app available</string>
     <string name="webview_exception">App failed to load because system Webview is either not present (unlikely) OR in the process of being updated, try again in a few seconds</string>
-    <string name="no_browser">There is no web browser installed on the device, can\'t open the link.</string>
 
     <!--Home screen channel-->
     <string name="channel_disable">This channel was disabled or it failed to load content on last refresh. Press enter to refresh this (refresh only happens when the app is visible, so clicking here will open the app)</string>

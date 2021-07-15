@@ -141,6 +141,7 @@ public class PlayerActivity extends Activity {
     private String userAgent;
     private WebView mWebView;
     private WebView mWebViewKey;
+    private boolean PageUrlChanged = false;
     private boolean PicturePicture;
     private boolean deviceIsTV;
     private boolean MultiStreamEnable;
@@ -1829,12 +1830,27 @@ public class PlayerActivity extends Activity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking() && !event.isCanceled()) {
-            // if the call key is being released, AND we are tracking
-            // it from an initial key down, AND it is not canceled,
-            // then handle it.
-            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
-            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
+
+            if (!PageUrlChanged) {
+
+                // if the call key is being released, AND we are tracking
+                // it from an initial key down, AND it is not canceled,
+                // then handle it.
+                mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
+                mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
+
+            } else {
+
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
+                }
+
+                PageUrlChanged = false;
+
+            }
+
             return true;
         }
 
@@ -2393,6 +2409,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mloadUrl(String url) {
+            PageUrlChanged = !url.contains(AppUrl);
             LoadUrlWebview(url);
         }
 
@@ -2465,7 +2482,7 @@ public class PlayerActivity extends Activity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 102);
                 } else {
-                    Toast.makeText(mWebViewContext, getString(R.string.no_browser), Toast.LENGTH_LONG).show();
+                    mloadUrl(url);
                 }
 
             });
