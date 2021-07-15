@@ -2408,6 +2408,10 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mloadUrl(String url) {
+            loadUrlInternal(url);
+        }
+
+        void loadUrlInternal(String url) {
             isAppUrlPageUrl = url.contains(AppUrl);
             LoadUrlWebview(url);
         }
@@ -2481,7 +2485,7 @@ public class PlayerActivity extends Activity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 102);
                 } else {
-                    mloadUrl(url);
+                    loadUrlInternal(url);
                 }
 
             });
