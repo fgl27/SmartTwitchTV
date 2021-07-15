@@ -137,11 +137,11 @@ public class PlayerActivity extends Activity {
     };
 
     private String AppUrl;
-
     private String userAgent;
     private WebView mWebView;
     private WebView mWebViewKey;
-    private boolean PageUrlChanged = false;
+    private boolean isAppUrlPageUrl = true;
+
     private boolean PicturePicture;
     private boolean deviceIsTV;
     private boolean MultiStreamEnable;
@@ -1833,7 +1833,7 @@ public class PlayerActivity extends Activity {
 
         if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking() && !event.isCanceled()) {
 
-            if (!PageUrlChanged) {
+            if (isAppUrlPageUrl) {
 
                 // if the call key is being released, AND we are tracking
                 // it from an initial key down, AND it is not canceled,
@@ -1843,11 +1843,10 @@ public class PlayerActivity extends Activity {
 
             } else {
 
-                if (mWebView.canGoBack()) {
-                    mWebView.goBack();
-                }
-
-                PageUrlChanged = false;
+                //User is on the authentication page or some page that the app provides and press back
+                //return to AppUrl
+                LoadUrlWebview(AppUrl);
+                isAppUrlPageUrl = false;
 
             }
 
@@ -2409,7 +2408,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mloadUrl(String url) {
-            PageUrlChanged = !url.contains(AppUrl);
+            isAppUrlPageUrl = url.contains(AppUrl);
             LoadUrlWebview(url);
         }
 
