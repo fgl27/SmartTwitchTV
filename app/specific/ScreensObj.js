@@ -125,6 +125,24 @@ function ScreensObj_StartAllVars() {
             this.ScrollDoc = Main_getElementById(this.ids[4]);
             this.tableDoc = Main_getElementById(this.table);
         },
+        banner_click: function(obj_id) {
+            if (Main_IsOn_OSInterface) {
+
+                if (this.DataObj[obj_id].url) {
+
+                    Main_SaveValues();
+                    Android.OpenURL(this.DataObj[obj_id].url);
+
+                }
+
+            } else {
+
+                console.log(this.DataObj[obj_id]);
+
+            }
+
+            Main_EventBanner(this.DataObj[obj_id].name + '_click', this.ScreenName);
+        },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) {//TODO overwrite this on if object
             Screens_RemoveAllFocus(this.screen);
@@ -419,7 +437,8 @@ function ScreensObj_StartAllVars() {
                 {
                     image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
                     url: 'https://github.com/fgl27/SmartTwitchTV',
-                    text: 'Banner Text shows here'
+                    text: 'Banner Text shows here',
+                    name: 'base_banner'
                 },
                 this.screen,
                 forceAdd
@@ -526,23 +545,7 @@ function ScreensObj_StartAllVars() {
 
             if (this.hasBanner && this.DataObj[obj_id].image) {
 
-                if (Main_IsOn_OSInterface) Android.OpenURL(this.DataObj[this.posY + '_' + this.posX].url);
-
-                if (skipfirebase) return;
-
-                try {
-
-                    gtag(
-                        'event',
-                        'banner',
-                        {
-                            'screen': this.ScreenName
-                        }
-                    );
-
-                } catch (e) {
-                    console.log("hasBanner e " + e);
-                }
+                this.banner_click(obj_id);
 
             } else if (this.itemsCount) {
 
@@ -1388,13 +1391,11 @@ function ScreensObj_InitAGame() {
 
             if (this.hasBanner && this.DataObj[obj_id].image) {
 
-                if (Main_IsOn_OSInterface) Android.OpenURL(this.DataObj[this.posY + '_' + this.posX].url);
-
-                Main_EventBanner('banner_click', this.ScreenName);
+                this.banner_click(obj_id);
 
             } else if (this.itemsCount) {
 
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
+                Main_RemoveClass(this.ids[1] + obj_id, 'opacity_zero');
 
                 this.OpenLiveStream(false);
 
