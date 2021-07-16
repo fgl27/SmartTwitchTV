@@ -696,7 +696,6 @@ function ScreensObj_StartAllVars() {
         addFocus: Screens_addFocusVideo,
         img_404: IMG_404_GAME,
         screenType: 3,
-        setTODialog: Screens_ThumbOptionHideSpecial,
         key_play: function() {
 
             if (this.bannerCheck()) return;
@@ -766,7 +765,6 @@ function ScreensObj_StartAllVars() {
             this.MaxOffset = tempObj._total;
             if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
         },
-        setTODialog: Screens_ThumbOptionHideSpecial,
         addCellTemp: function(cell) {
             if (!this.idObject[cell._id]) {
 
