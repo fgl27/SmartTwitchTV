@@ -99,6 +99,7 @@ function ScreensObj_StartAllVars() {
         focusPos: '',
         IsOpen: 0,
         Lang: '',
+        BannerTime: 0,
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -2167,7 +2168,7 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     this.itemsCount += 3;
     this.coloumn_id += 3;
 
-    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 0 * 1000);
+    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
 
     ScreensObj_banner_added_section = true;
     ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
