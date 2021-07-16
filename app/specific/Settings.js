@@ -496,7 +496,7 @@ var Settings_value = {
     },
     "round_images": {//Migrated to dialog
         "values": ["no", "yes"],
-        "defaultValue": 1
+        "defaultValue": 2
     },
     "update_background": {
         "values": ["yes", "no"],
