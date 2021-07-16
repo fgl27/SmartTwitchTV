@@ -1845,8 +1845,8 @@ public class PlayerActivity extends Activity {
 
                 //User is on the authentication page or some page that the app provides and press back
                 //return to AppUrl
+                isAppUrlPageUrl = true;
                 LoadUrlWebview(AppUrl);
-                isAppUrlPageUrl = false;
 
             }
 
