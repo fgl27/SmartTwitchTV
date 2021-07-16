@@ -242,6 +242,7 @@ function UserLiveFeed_Prepare() {
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
+    Sidepannel_Opt_holder = Main_getElementById("side_panel_new_holder");
     Sidepannel_scenefeed = Main_getElementById('scenefeed');
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
@@ -263,6 +264,7 @@ function UserLiveFeed_Prepare() {
     Sidepannel_UpdateThumbDivThumb = Main_getElementById("feed_thumb_icon");
 
     Sidepannel_SetLastRefreshUpDiv(0);
+    Settings_check_sidePannelFade();
 }
 
 function UserLiveFeed_RefreshLive() {

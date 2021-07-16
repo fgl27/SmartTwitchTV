@@ -427,6 +427,7 @@ function pt_BRLang() {
     STR_APP_ANIMATIONS_SUMMARY = "Habilita animações no painel lateral e de rolagem";
     STR_UI_SETTINGS = "Personalização da interface, estilo de cor, animações e afins";
     STR_GENERAL_CUSTOM = "Personalização de conteúdo, classificação, atualização automática, tempos limite e relacionados";
+    STR_FADE_SIDEPANNEL = "Esconder o painel lateral após 5 segundos sem usá-lo";
     STR_RUNNINGTIME = "Aplicativo em execução por:";
     STR_410_ERROR = "Não foi possível obter o link do vídeo";
     STR_410_FEATURING = "Aplicativos de terceiros estão atualmente sem acesso para este conteúdo.";

@@ -431,6 +431,7 @@ function en_USLang() {
     STR_APP_ANIMATIONS_SUMMARY = "Enables side panel, scroll and related animations.";
     STR_UI_SETTINGS = "Customize interface, color style, animations and related";
     STR_GENERAL_CUSTOM = "Customize content, sorting, auto refresh, timeouts and related";
+    STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";
     STR_RUNNINGTIME = "App running for:";
     STR_410_ERROR = "Unable to get video link";
     STR_410_FEATURING = "Third party apps currently have no access to this feature.";

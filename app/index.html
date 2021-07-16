@@ -108,6 +108,8 @@
             height: 100%;
             position: absolute;
             z-index: 3;
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.scene_keys {
@@ -1187,6 +1189,11 @@
 
         div.audio_icon {
             font-size: 100%;
+        }
+
+        div.side_panel_new_holder {
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
@@ -2892,7 +2899,7 @@
                 <div id="top_lable" class="top_lable">
                 </div>
             </div>
-            <div id="side_panel_new_holder" class="hide">
+            <div id="side_panel_new_holder" class="hide side_panel_new_holder">
                 <div id="side_panel_movel" class="side_panel_movel side_panel_background_color" style="z-index: 3;">
                     <div class="side_panel_fix_top">
                         <div id="side_panel_top_text" class="side_panel_movel_top_text">

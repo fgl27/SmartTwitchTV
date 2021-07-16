@@ -281,6 +281,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "fade_sidepannel": {
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "clock_offset": {//Migrated to dialog
         "values": Settings_GenerateClock(),
         "defaultValue": 49
@@ -1080,6 +1084,7 @@ function Settings_SetDefault(position) {
     else if (position === "hide_player_clock") Settings_HidePlayerClock();
     else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
     else if (position === "hide_etc_help_text") Settings_HideEtcHelp();
+    else if (position === "fade_sidepannel") Settings_check_sidePannelFade();
     else if (position === "clock_offset") {
         Settings_SetClock();
         Main_updateclock();
@@ -1102,6 +1107,14 @@ function Settings_SetDefault(position) {
 
     }
 
+}
+
+function Settings_check_sidePannelFade() {
+    if (Settings_Obj_default('fade_sidepannel')) {
+        Sidepannel_FadeStart();
+    } else {
+        Sidepannel_UnFade();
+    }
 }
 
 function Settings_check_min_seek() {
@@ -2146,6 +2159,7 @@ function Settings_DialogShowUIOpt() {
     Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
     Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
     Settings_value.round_images.values = [STR_NO, STR_YES];
+    Settings_value.fade_sidepannel.values = [STR_NO, STR_YES];
 
     Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -2181,29 +2195,35 @@ function Settings_DialogShowUIOpt() {
             title: STR_GLOBAL_FONT,
             summary: STR_GLOBAL_FONT_SUMMARY
         },
-        clock_offset: {
-            defaultValue: Settings_value.clock_offset.defaultValue,
-            values: Settings_value.clock_offset.values,
-            title: STR_CLOCK_OFFSET,
-            summary: STR_CLOCK_OFFSET_SUMMARY
-        },
         round_images: {
             defaultValue: Settings_value.round_images.defaultValue,
             values: Settings_value.round_images.values,
             title: STR_ROUND_IMAGES,
             summary: STR_ROUND_IMAGES_SUMMARY
         },
-        hide_screen_counter: {
-            defaultValue: Settings_value.hide_screen_counter.defaultValue,
-            values: Settings_value.hide_screen_counter.values,
-            title: STR_SCREEN_COUNTER,
-            summary: STR_SCREEN_COUNTER_SUMMARY
+        fade_sidepannel: {
+            defaultValue: Settings_value.fade_sidepannel.defaultValue,
+            values: Settings_value.fade_sidepannel.values,
+            title: STR_FADE_SIDEPANNEL,
+            summary: null
+        },
+        clock_offset: {
+            defaultValue: Settings_value.clock_offset.defaultValue,
+            values: Settings_value.clock_offset.values,
+            title: STR_CLOCK_OFFSET,
+            summary: STR_CLOCK_OFFSET_SUMMARY
         },
         hide_main_clock: {
             defaultValue: Settings_value.hide_main_clock.defaultValue,
             values: Settings_value.hide_main_clock.values,
             title: STR_HIDE_MAIN_CLOCK,
             summary: null
+        },
+        hide_screen_counter: {
+            defaultValue: Settings_value.hide_screen_counter.defaultValue,
+            values: Settings_value.hide_screen_counter.values,
+            title: STR_SCREEN_COUNTER,
+            summary: STR_SCREEN_COUNTER_SUMMARY
         },
         hide_player_clock: {
             defaultValue: Settings_value.hide_player_clock.defaultValue,
@@ -2563,7 +2583,7 @@ var Settings_DialogPos = 0;
 function Settings_DialogShow(obj, title) {
     Main_removeEventListener("keydown", Settings_handleKeyDown);
 
-    var dialogContent = title + STR_BR + STR_BR;
+    var dialogContent = title + STR_BR;
     Settings_DialogValue = [];
 
     for (var property in obj) {
