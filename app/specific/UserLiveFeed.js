@@ -242,6 +242,7 @@ function UserLiveFeed_Prepare() {
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
+    Sidepannel_scenefeed = Main_getElementById('scenefeed');
     Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
     Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
     Sidepannel_SidepannelInnerDoc = Main_getElementById('side_panel_inner');

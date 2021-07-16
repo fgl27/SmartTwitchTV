@@ -33,6 +33,7 @@ var Sidepannel_MovelDiv;
 var Sidepannel_ScroolDoc;
 var Sidepannel_Html;
 
+var Sidepannel_scenefeed;
 var Sidepannel_SidepannelDoc;
 var Sidepannel_SidepannelInnerDoc;
 var Sidepannel_SidepannelRow_0;
@@ -545,7 +546,8 @@ function Sidepannel_StartFeed() {
 
 function Sidepannel_ShowFeed() {
     var ForceRefresh = false;
-    Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+
+    Sidepannel_Showscenefeed();
 
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
@@ -573,6 +575,27 @@ function Sidepannel_ShowFeed() {
     Main_EventScreen('Side_panel_user_live');
 }
 
+function Sidepannel_Showscenefeed() {
+    Main_AddClassWitEle(
+        Sidepannel_scenefeed,
+        Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani'
+    );
+    Main_RemoveClassWithEle(
+        Sidepannel_scenefeed,
+        'feed_screen_input'
+    );
+}
+
+function Sidepannel_Hidecenefeed() {
+    Main_RemoveClassWithEle(
+        Sidepannel_scenefeed,
+        Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani'
+    );
+    Main_AddClassWitEle(
+        Sidepannel_scenefeed,
+        'feed_screen_input'
+    );
+}
 
 function Sidepannel_SetLastRefresh() {
     if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
@@ -593,7 +616,7 @@ function Sidepannel_SetLastRefreshUpDiv(date) {
 }
 
 function Sidepannel_StartMain() {
-    Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+    Sidepannel_Hidecenefeed();
     Sidepannel_IsMain = true;
     Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
     Sidepannel_FixDiv.style.marginLeft = '';
@@ -625,7 +648,7 @@ function Sidepannel_Hide(PreventCleanQualities) {
         Sidepannel_RemoveFocusMain();
         Sidepannel_FixDiv.style.marginLeft = '';
         Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
-        Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+        Sidepannel_Hidecenefeed();
     }
     Sidepannel_HideEle(PreventCleanQualities);
 
@@ -818,7 +841,7 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_RIGHT:
             Sidepannel_HideEle(false, true);
-            Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+            Sidepannel_Hidecenefeed();
             Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
             Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
             Sidepannel_StartMain();
