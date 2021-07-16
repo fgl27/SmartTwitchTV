@@ -63,7 +63,8 @@ function pt_BRLang() {
     STR_CHECK_HOST = ", verificando host";
     STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
     STR_IS_SUB_ONLY_ERROR = "é conteúdo apenas para sub.";
-    STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Clique em atualizar para tentar novamente";
+    STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Atualize para tentar novamente";
+    STR_REFRESH_PROBLEM_ENTER = "A conexão falhou, não foi possível carregar o conteúdo. Pressione enter para atualizar";
     STR_NO = "Não";
     STR_FOR_THIS = "para este";
     STR_PLAYER_PROBLEM = "Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...";

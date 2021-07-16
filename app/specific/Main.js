@@ -2367,7 +2367,7 @@ function Main_Slice(arrayTocopy) {
             array.push(arrayTocopy[i]);
         }
 
-        Main_Log('Main_Slice ' + e);
+        console.trace('Main_Slice ' + e);
     }
     return array;
 }

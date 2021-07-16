@@ -252,3 +252,4 @@
     STR_VIEWER = "Viewer";
     STR_VIEW = "View";
     STR_FOLLOWER = "Follower";
+    STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";

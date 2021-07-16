@@ -66,7 +66,8 @@ function en_USLang() {
     STR_CHECK_HOST = ", checking host";
     STR_IS_SUB_ONLY = "This video is only available to subs";
     STR_IS_SUB_ONLY_ERROR = "is sub-only content.";
-    STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
+    STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Refresh to try again";
+    STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
     STR_NO = "No";
     STR_FOR_THIS = "for this";
     STR_PLAYER_PROBLEM = "Connection failed, unable to load video content, exiting ...";

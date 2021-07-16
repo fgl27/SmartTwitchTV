@@ -125,24 +125,6 @@ function ScreensObj_StartAllVars() {
             this.ScrollDoc = Main_getElementById(this.ids[4]);
             this.tableDoc = Main_getElementById(this.table);
         },
-        banner_click: function(obj_id) {
-            if (Main_IsOn_OSInterface) {
-
-                if (this.DataObj[obj_id].url) {
-
-                    Main_SaveValues();
-                    Android.OpenURL(this.DataObj[obj_id].url);
-
-                }
-
-            } else {
-
-                console.log(this.DataObj[obj_id]);
-
-            }
-
-            Main_EventBanner(this.DataObj[obj_id].name + '_click', this.ScreenName);
-        },
         addrow: Screens_addrow,
         key_exit: function(goSidepanel) {//TODO overwrite this on if object
             Screens_RemoveAllFocus(this.screen);
@@ -438,11 +420,81 @@ function ScreensObj_StartAllVars() {
                     image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
                     url: 'https://github.com/fgl27/SmartTwitchTV',
                     text: 'Banner Text shows here',
-                    name: 'base_banner'
+                    event_name: 'base_banner'
                 },
                 this.screen,
                 forceAdd
             );
+        },
+        emptyBanner: function(forceAdd) {
+            ScreensObj_addBanner(
+                {
+                    image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
+                    text: STR_REFRESH_PROBLEM_ENTER
+                },
+                this.screen,
+                forceAdd
+            );
+        },
+        addEmptyContentBanner: function() {
+
+            if (this.hasBanner) {
+
+                this.addBanner();
+
+            } else {
+
+                this.emptyBanner();
+
+            }
+
+            this.itemsCount = 1;
+            this.emptyContent = false;
+
+        },
+        bannerCheck: function() {
+
+            var obj_id = this.posY + '_' + this.posX;
+
+            if (this.posY > -1 && this.DataObj[obj_id].image) {
+
+                this.banner_click(obj_id);
+
+                return true;
+            }
+
+            return false;
+        },
+        banner_click: function(obj_id) {
+
+
+            if (this.DataObj[obj_id].url) {
+
+                if (Main_IsOn_OSInterface) {
+
+                    Main_SaveValues();
+                    Android.OpenURL(this.DataObj[obj_id].url);
+
+                } else {
+
+                    console.log(this.DataObj[obj_id]);
+
+                }
+
+            } else {
+
+                Main_ReloadScreen();
+
+            }
+
+            if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
+
+                Main_EventBanner(
+                    this.DataObj[obj_id].event_name + '_click',
+                    this.ScreenName
+                );
+
+            }
         },
     };
 
@@ -541,15 +593,11 @@ function ScreensObj_StartAllVars() {
         },
         key_play: function() {
 
-            var obj_id = this.posY + '_' + this.posX;
+            if (this.bannerCheck()) return;
 
-            if (this.hasBanner && this.DataObj[obj_id].image) {
+            if (this.itemsCount) {
 
-                this.banner_click(obj_id);
-
-            } else if (this.itemsCount) {
-
-                Main_RemoveClass(this.ids[1] + obj_id, 'opacity_zero');
+                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                 this.OpenLiveStream(false);
 
             }
@@ -593,6 +641,8 @@ function ScreensObj_StartAllVars() {
             if (this.cursor === '') this.dataEnded = true;
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
 
             if (this.posY === -1) {
 
@@ -648,6 +698,9 @@ function ScreensObj_StartAllVars() {
         screenType: 3,
         setTODialog: Screens_ThumbOptionHideSpecial,
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
             var data = Screens_GetObj(this.screen);
@@ -732,6 +785,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         base_key_play: function(go_screen, IsFollowing) {
+
+            if (this.bannerCheck()) return;
+
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
             var data = Screens_GetObj(this.screen);
@@ -889,6 +945,9 @@ function ScreensObj_InitVod() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -951,6 +1010,9 @@ function ScreensObj_InitChannelVod() {
                 this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -1033,6 +1095,9 @@ function ScreensObj_InitAGameVod() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -1104,6 +1169,9 @@ function ScreensObj_InitUserVod() {
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -1385,17 +1453,17 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
     ScreenObj[Main_aGame].key_play = function() {
+
         if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
 
-            var obj_id = this.posY + '_' + this.posX;
+            if (this.bannerCheck()) return;
 
-            if (this.hasBanner && this.DataObj[obj_id].image) {
+            if (this.itemsCount) {
 
-                this.banner_click(obj_id);
-
-            } else if (this.itemsCount) {
-
-                Main_RemoveClass(this.ids[1] + obj_id, 'opacity_zero');
+                Main_RemoveClass(
+                    this.ids[1] + this.posY + '_' + this.posX,
+                    'opacity_zero'
+                );
 
                 this.OpenLiveStream(false);
 
@@ -1701,7 +1769,11 @@ function ScreensObj_InitUserChannels() {
             ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             this.base_key_play(Main_UserChannels, true);
+
         },
         addCell: function(cell) {
             cell = cell.channel;
@@ -1742,6 +1814,8 @@ function ScreensObj_InitSearchChannels() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
         key_play: function() {
+            if (this.bannerCheck()) return;
+
             this.base_key_play(Main_SearchChannels, false);
         },
         addCell: function(cell) {
@@ -1830,6 +1904,9 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive].Upsorting();
     ScreenObj[Main_HistoryLive].Set_Scroll();
     ScreenObj[Main_HistoryLive].key_play = function() {
+
+        if (this.bannerCheck()) return;
+
         if (this.posY === -1) {
             if (this.posX === 0) {
                 Main_values.Main_Go = Main_HistoryVod;
@@ -1886,6 +1963,8 @@ function ScreensObj_HistoryVod() {
             );
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1977,6 +2056,8 @@ function ScreensObj_HistoryClip() {
 
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
 
             if (this.posY === -1) {
 

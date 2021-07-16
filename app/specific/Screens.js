@@ -449,7 +449,6 @@ function Screens_loadDatafail(key) {
 
         if (Screens_IsInUse(key)) {
 
-            Main_showWarningDialog(STR_REFRESH_PROBLEM, null, ScreenObj[key].hasBanner);
             if (!Main_FirstRun) Main_HideLoadDialog();
 
             if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner) {
@@ -460,18 +459,13 @@ function Screens_loadDatafail(key) {
                     ScreenObj[key].addSwitches();
                 }
 
-                if (ScreenObj[key].hasBanner) {
-
-                    ScreenObj[key].addBanner();
-                    ScreenObj[key].itemsCount = 1;
-                    ScreenObj[key].emptyContent = false;
-                }
+                ScreenObj[key].addEmptyContentBanner();
 
                 Screens_loadDataSuccessFinish(key);
 
             } else ScreenObj[key].key_exit();
 
-        }//else the user has already exit the screen
+        }//else the user has already exited the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
 
@@ -585,16 +579,14 @@ function Screens_loadDataSuccess(key) {
     }
     ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
 
-    if (ScreenObj[key].emptyContent &&
-        ScreenObj[key].hasBanner) {
+    if (ScreenObj[key].emptyContent) {
 
         if (!ScreenObj[key].BannerCreated) {
 
-            ScreenObj[key].addBanner(true);
+            ScreenObj[key].addEmptyContentBanner();
 
         }
-        ScreenObj[key].itemsCount = 1;
-        ScreenObj[key].emptyContent = false;
+
     }
 
 
@@ -988,7 +980,12 @@ function Screens_LoadPreviewSTop(PreventCleanQualities) {
 }
 
 function Screens_GetObj(key) {
-    return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+    var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    return Main_Slice(
+        ScreenObj[key].DataObj[obj_id].image ? [] :
+            ScreenObj[key].DataObj[obj_id]
+    );
 }
 
 function Screens_ObjNotNull(key) {
@@ -1661,7 +1658,8 @@ function Screens_addrowEnd(forceScroll, key) {
 
                 if (Main_history_Watched_Obj[data[7]]) {
 
-                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width =
+                        Main_history_Watched_Obj[data[7]] + '%';
 
                 }
 
@@ -1683,8 +1681,13 @@ function Screens_addrowEnd(forceScroll, key) {
                 ScreenObj[key].itemsCount
             );
 
-        if (ScreenObj[key].DataObj[id].image) {
-            Main_EventBanner('banner_viewed', ScreenObj[key].ScreenName);
+        if (ScreenObj[key].DataObj[id].event_name) {
+
+            Main_EventBanner(
+                ScreenObj[key].DataObj[id].event_name + '_viewed',
+                ScreenObj[key].ScreenName
+            );
+
         }
     });
 }
@@ -1873,7 +1876,8 @@ function Screens_KeyUpDown(y, key) {
 }
 
 function Screens_ClearAnimation(key) {
-    if (ScreenObj[key].HasAnimateThumb) {
+    if (ScreenObj[key].HasAnimateThumb && ScreenObj[key].posY > -1 && ScreenObj[key].itemsCount &&
+        !ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].image) {
 
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
 
