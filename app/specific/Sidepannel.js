@@ -51,11 +51,17 @@ var Sidepannel_Positions = {};
 var Sidepannel_AnimationTimeout = 200;//Same value as side_panel_holder_ani
 
 function Sidepannel_AddFocusMain() {
-    Main_AddClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+    Main_AddClass(
+        'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+        Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+    );
 }
 
 function Sidepannel_RemoveFocusMain() {
-    Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+    Main_RemoveClass(
+        'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+        Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+    );
 }
 
 function Sidepannel_AddFocusLiveFeed(skipAnimation) {
@@ -720,7 +726,7 @@ function Sidepannel_SetTopOpacity(Main_Go) {
 
         Main_AddClass(
             'side_panel_new_' + Sidepannel_Sidepannel_Pos,
-            'side_panel_new_icons_text'
+            'side_panel_new_icons_start'
         );
 
     }
@@ -755,7 +761,7 @@ var Sidepannel_Pos_Screens = [
 ];
 
 function Sidepannel_UnSetTopOpacity() {
-    for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_text');
+    for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_start');
 }
 
 function Sidepannel_SetUserLables() {
