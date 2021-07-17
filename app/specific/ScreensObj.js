@@ -450,7 +450,7 @@ function ScreensObj_StartAllVars() {
             this.emptyContent = false;
 
         },
-        bannerCheck: function() {
+        is_a_Banner: function() {
 
             var obj_id = this.posY + '_' + this.posX;
 
@@ -591,7 +591,7 @@ function ScreensObj_StartAllVars() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.itemsCount) {
 
@@ -640,7 +640,7 @@ function ScreensObj_StartAllVars() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
 
@@ -696,7 +696,7 @@ function ScreensObj_StartAllVars() {
         screenType: 3,
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
@@ -782,7 +782,7 @@ function ScreensObj_StartAllVars() {
         },
         base_key_play: function(go_screen, IsFollowing) {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
@@ -942,7 +942,7 @@ function ScreensObj_InitVod() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1007,7 +1007,7 @@ function ScreensObj_InitChannelVod() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1092,7 +1092,7 @@ function ScreensObj_InitAGameVod() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1166,7 +1166,7 @@ function ScreensObj_InitUserVod() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1450,7 +1450,7 @@ function ScreensObj_InitAGame() {
 
         if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.itemsCount) {
 
@@ -1764,7 +1764,7 @@ function ScreensObj_InitUserChannels() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             this.base_key_play(Main_UserChannels, true);
 
@@ -1808,7 +1808,7 @@ function ScreensObj_InitSearchChannels() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
         key_play: function() {
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             this.base_key_play(Main_SearchChannels, false);
         },
@@ -1899,7 +1899,7 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive].Set_Scroll();
     ScreenObj[Main_HistoryLive].key_play = function() {
 
-        if (this.bannerCheck()) return;
+        if (this.is_a_Banner()) return;
 
         if (this.posY === -1) {
             if (this.posX === 0) {
@@ -1958,7 +1958,7 @@ function ScreensObj_HistoryVod() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -2051,7 +2051,7 @@ function ScreensObj_HistoryClip() {
         },
         key_play: function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
 
