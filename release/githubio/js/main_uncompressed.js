@@ -33,6 +33,9 @@
      */
 
     // Keep this file named as (zero)*** so it loads first in release_maker
+    var STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
+    var STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
+
     var STR_REFRESH;
     var STR_SEARCH;
     var STR_SETTINGS;
@@ -64,6 +67,8 @@
     var STR_IS_OFFLINE;
     var STR_IS_SUB_ONLY;
     var STR_REFRESH_PROBLEM;
+    var STR_REFRESH_PROBLEM_ENTER;
+    var STR_FADE_SIDEPANNEL;
     var STR_NO;
     var STR_FOR_THIS;
     var STR_PLAYER_PROBLEM;
@@ -127,7 +132,6 @@
     var STR_ABOUT_INFO_2;
     var STR_ABOUT_INFO_3;
     var STR_ABOUT_INFO_4;
-    var STR_ABOUT_INFO_5;
     var STR_ABOUT_INFO_6;
     var STR_ABOUT_INFO_7;
     var STR_ABOUT_INFO_8;
@@ -141,7 +145,6 @@
     var STR_ABOUT_INFO_17;
     var STR_ABOUT_INFO_18;
     var STR_ABOUT_INFO_19;
-    var STR_ABOUT_INFO_20;
     var STR_CONTROLS_PLAY_1;
     var STR_CONTROLS_PLAY_2;
     var STR_CONTROLS_PLAY_3;
@@ -745,6 +748,7 @@
     var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
     var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
     var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
+    var STR_SPAN_LINK = '<span style="color: #0366d6;">';
     var STR_RED_DIV = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">';
     var STR_CONTROL_KEY = '';
     var STR_SEARCH_KEY = '';
@@ -878,6 +882,26 @@
         //Strings that are need a line breack after
         STR_USER_NUMBER_ONE += STR_BR;
 
+        //Strings that have a link
+        STR_OAUTH_IN = DefaultReplaceLink(
+            'https://github.com/fgl27/SmartTwitchTV#authorization',
+            STR_OAUTH_IN,
+            true
+        );
+
+        STR_ABOUT_INFO_7 += STR_SPACE + DefaultMakeLink('https://github.com/sigkell/irc-message');
+        STR_ABOUT_INFO_8 += STR_SPACE + DefaultMakeLink('https://app.fontastic.me');
+        STR_ABOUT_INFO_9 += STR_SPACE + DefaultMakeLink('https://github.com/twitter/twemoji');
+        STR_ABOUT_INFO_10 += STR_SPACE + DefaultMakeLink('https://github.com/mishoo/UglifyJS2');
+        STR_ABOUT_INFO_12 += STR_SPACE + DefaultMakeLink('https://github.com/kangax/html-minifier');
+        STR_ABOUT_INFO_13 += STR_SPACE + DefaultMakeLink('https://github.com/jshint/jshint');
+        STR_ABOUT_INFO_16 += STR_SPACE + DefaultMakeLink('https://developer.android.com/reference/android/support/v17/leanback/package-summary');
+        STR_ABOUT_INFO_17 += STR_SPACE + DefaultMakeLink('https://github.com/google/ExoPlayer');
+        STR_ABOUT_INFO_21 += STR_SPACE + DefaultMakeLink('https://github.com/ben-manes/gradle-versions-plugin');
+        STR_ABOUT_INFO_22 += STR_SPACE + DefaultMakeLink('https://github.com/grandcentrix/tray');
+        STR_ABOUT_INFO_23 += STR_SPACE + DefaultMakeLink('https://github.com/bestiejs/punycode.js');
+        STR_ABOUT_INFO_24 += STR_SPACE + DefaultMakeLink('https://github.com/mattbasta/crass');
+
         //Making the finals strings of strings
         STR_GUIDE_EXTRA = STR_SPACE_HTML + STR_GUIDE_EXTRA;
         STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + STR_CONTROLS_PLAY_0;
@@ -890,7 +914,7 @@
         STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
         STR_GOBACK = STR_GOBACK_START;
         STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-            STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">http://tiny.cc/donatetofgl27</div></div></div>';
+            STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">' + DefaultMakeLink('  http://tiny.cc/donatetofgl27') + '</div></div></div>';
         STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
             STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
@@ -962,7 +986,7 @@
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
         STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-            STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
+            STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_EMAIL, true) + '</div>' + STR_BR +
             STR_PAYPAL + STR_BITCOIN + STR_BR;
 
         STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -971,9 +995,9 @@
             STR_CONTACT +
             STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
             STR_ABOUT_INFO_19 + STR_BR +
-            STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR + STR_BR +
+            STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_20) + '</div>' + STR_BR + STR_BR +
             STR_ABOUT_INFO_4 + STR_BR +
-            STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR + STR_BR +
+            STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_5) + '</div>' + STR_BR + STR_BR +
             STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
             STR_DIV_MIDLE_LEFT + STR_BR +
             STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_14 + STR_BR +
@@ -992,6 +1016,16 @@
             STR_DOT + STR_ABOUT_INFO_22 + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
+    }
+
+    function DefaultReplaceLink(link, string, center) {
+        return center ?
+            string.replace('%x', STR_DIV_LINK + DefaultMakeLink(link) + '</div>') :
+            string.replace('%x', STR_SPAN_LINK + DefaultMakeLink(link) + '</span>');
+    }
+
+    function DefaultMakeLink(link, email) {
+        return '<a style="color: #0366d6;" href="' + (email ? 'mailto:' : '') + link + '" target="_blank">' + link + '</a>';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -1061,7 +1095,8 @@
         STR_CHECK_HOST = ", checking host";
         STR_IS_SUB_ONLY = "This video is only available to subs";
         STR_IS_SUB_ONLY_ERROR = "is sub-only content.";
-        STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Hit refresh to try again";
+        STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Refresh to try again";
+        STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
         STR_NO = "No";
         STR_FOR_THIS = "for this";
         STR_PLAYER_PROBLEM = "Connection failed, unable to load video content, exiting ...";
@@ -1101,7 +1136,7 @@
         STR_UPDATE_SHOW = "Show the updates dialog when updates are available";
         STR_UPDATE_SHOW_ARRAY = ["Yes", "Only a toast message", "No"];
         STR_UPDATE_START = "Update process started. This may take a few seconds, please wait!";
-        STR_UPDATE_PLAY = "If Play Store doesn\'t show the update, try again after a few minutes!";
+        STR_UPDATE_PLAY = "If Play Store doesn't show the update, try again after a few minutes!";
         STR_UPDATE_ERROR = "You need APK version 3.0.303 or newer to be able to use this, please update the old way!";
         STR_UPDATE_WARNING_OK = "App updated successfully";
         STR_CLOSE = "Close";
@@ -1115,7 +1150,7 @@
         STR_USER_MY_CHANNEL = "My Channel";
         STR_USER_ADD = "Add User";
         STR_USER_REMOVE = "Remove User";
-        STR_USER_ERROR = "User doesn\'t exist";
+        STR_USER_ERROR = "User doesn't exist";
         STR_USER_HOSTING = "hosting";
         STR_USER_SET = "already set";
         STR_USER_MAKE_ONE = "Switch to";
@@ -1155,42 +1190,41 @@
         STR_ABOUT_INFO_2_SOURCE = "This version of the app is only for testing in the browser!";
         STR_ABOUT_INFO_3 = "Contact information:";
         STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it out on GitHub:";
-        STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
+
         STR_ABOUT_INFO_6 = "This application uses the following dependencies:";
-        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser (https://github.com/sigkell/irc-message)";
-        STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds (http://app.fontastic.me)";
-        STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms (https://github.com/twitter/twemoji)";
-        STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit (https://github.com/mishoo/UglifyJS2)";
-        STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier (https://github.com/kangax/html-minifier)";
-        STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript (https://github.com/jshint/jshint)";
+        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser";
+        STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds";
+        STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms";
+        STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit";
+        STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier";
+        STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript";
         STR_ABOUT_INFO_14 = "Web:";
         STR_ABOUT_INFO_15 = "Android:";
-        STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-        STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences";
+        STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android";
         STR_ABOUT_INFO_18 = "Phone and tablet support:";
         STR_ABOUT_INFO_19 = "It is possible to use this app on phones and tablets, but this app is designed to be used mainly on TVs. Support for other devices is limited, and because of that, it is not released on the Play Store. Use the link below to download the latest APK and manually install the app on a phone or tablet:";
-        STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
-        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates (https://github.com/ben-manes/gradle-versions-plugin)";
-        STR_ABOUT_INFO_22 = "Tray: A SharedPreferences replacement for Android (https://github.com/grandcentrix/tray)";
-        STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891 (https://github.com/bestiejs/punycode.js)";
-        STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS (https://github.com/mattbasta/crass)";
+        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates";
+        STR_ABOUT_INFO_22 = "Tray: A SharedPreferences replacement for Android";
+        STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891";
+        STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS";
         STR_CONTROLS_PLAY_0 = "or in the controls at the bottom of the player";
-        STR_CONTROLS_PLAY_1 = "Show the information panel: Press enter or D-pad keys if the chat and the live channel feed aren\'t showing";
+        STR_CONTROLS_PLAY_1 = "Show the information panel: Press enter or D-pad keys if the chat and the live channel feed aren't showing";
         STR_CONTROLS_PLAY_2 = "Close the video: Press return twice or the stop media key";
         STR_CONTROLS_PLAY_3 = "Pause/play a video: Open the information panel and click on the pause icon";
         STR_CONTROLS_PLAY_4 = "Show user live channels feed: Up D-pad";
-        STR_CONTROLS_PLAY_5 = "Change video quality: Choose the \'Quality\' option at the bottom of the player";
+        STR_CONTROLS_PLAY_5 = "Change video quality: Choose the 'Quality' option at the bottom of the player";
         STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
         STR_CONTROLS_PLAY_7 = "Show or hide the chat: Down D-pad or key 3 " + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_8 = "Change chat position: Left D-pad, PG up or the rewind keys (VODs and clips only) " + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_9 = "Change chat size: Right D-pad, PG down " + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_10 = "Change chat background brightness: Change in the controls at the bottom of the player";
-        STR_CONTROLS_PLAY_11 = "Force refresh the chat in a live (in case it freezes or doesn\'t load): Choose the \'Chat force disable\' option at the bottom of the player (click twice)";
-        STR_CONTROLS_PLAY_12 = "Start a search: Open information panel, navigate using use Directional pad (left/right) to \'Search\' and press enter";
+        STR_CONTROLS_PLAY_11 = "Force refresh the chat in a live (in case it freezes or doesn't load): Choose the 'Chat force disable' option at the bottom of the player (click twice)";
+        STR_CONTROLS_PLAY_12 = "Start a search: Open information panel, navigate using use Directional pad (left/right) to 'Search' and press enter";
         STR_CONTROLS_PLAY_13 = "All media keys are supported (play, pause, stop, next track, fast forward etc ...), some are used as shortcuts for audio and video mode changes";
         STR_CONTROLS_PLAY_14 = "Chat and video (side by side): Key 2 or the fast forward media key. It also switches between the picture in picture and the 50/50 mode";
         STR_F_DISABLE_CHAT = "Force disable chat";
-        STR_OAUTH_IN = "Adding a key allows the app to access chat using your user to send messages and get your emote list (enables you to be gifted subs given in chat), follow/unfollow channels, and access some user content faster.<br><br>Adding a key is not demanding and can be done at any point later.<br><br>In doubt read the contents of this link:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>For some devices, a mouse is necessary to complete the authorization action as you may need to manually click on a button to confirm certain actions.<br><br>Add a key for";
+        STR_OAUTH_IN = "Adding a key allows the app to access chat using your user to send messages and get your emote list (enables you to be gifted subs given in chat), follow/unfollow channels, and access some user content faster.<br><br>Adding a key is not demanding and can be done at any point later.<br><br>In doubt read the contents of this link:<br><br>%x<br><br>For some devices, a mouse is necessary to complete the authorization action as you may need to manually click on a button to confirm certain actions.<br><br>Add a key for";
         STR_USER_CODE = "Add an authorization key";
         STR_USER_CODE_OK = "Key added successfully";
         STR_KEY_BAD = "Key test failed, new one needs to be added";
@@ -1198,22 +1232,22 @@
         STR_OAUTH_WRONG2 = "but this key is for user";
         STR_FOLLOWING = "Following";
         STR_FOLLOW = "Follow";
-        STR_IS_SUB_NOOAUTH = "and you haven\'t added an authorization key, so the app can\'t check your sub status.";
-        STR_IS_SUB_NOT_SUB = "and you aren\'t a sub of this channel";
+        STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
+        STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
         STR_IS_SUB_IS_SUB = "You are a sub of this channel, but";
         STR_OAUTH_FAIL = "Failed authorization check with the provided key, please check and try again";
-        STR_OAUTH_FAIL_USER = "The added key doesn\'t belong to the user";
+        STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
         STR_NOKEY = "No user";
         STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
         STR_NOKUSER_WARN = "Add a user first";
         STR_RESET = "Restart the";
         STR_CLIP = "Clip";
         STR_CHANNEL_CONT = "Channel content";
-        STR_NET_DOWN = "Network is disconnected. The application can\'t work without INTERNET.";
+        STR_NET_DOWN = "Network is disconnected. The application can't work without INTERNET.";
         STR_NET_UP = "Network connection reestablished";
         STR_FOLLOWERS = "Followers";
         STR_FOLLOWER = "Follower";
-        STR_CANT_FOLLOW = ", Can\'t follow or unfollow";
+        STR_CANT_FOLLOW = ", Can't follow or unfollow";
         STR_GAME_CONT = "Game content";
         STR_YES = "Yes";
         STR_REMOVE_USER = "Are you sure you want to remove the user";
@@ -1227,12 +1261,12 @@
         STR_VIDEOS = "Videos";
         STR_REPLAY = "Replay";
         STR_STREAM_END = "exiting in";
-        STR_STREAM_END_EXIT = "Press \'Return\' to exit";
+        STR_STREAM_END_EXIT = "Press 'Return' to exit";
         STR_FEATURED = "Featured";
         STR_CREATED_AT = "Created";
         STR_OPEN_BROADCAST = "Open the Broadcast";
         STR_IS_LIVE = "Is now live";
-        STR_SHOW_ISLIVE_WARNING = "Show \'Streamer is live\' warning";
+        STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
         STR_SHOW_ISLIVE_WARNING_SUMMARY = "When watching a clip or a VOD, the app can check when a streamer is live. If this is set to YES, a warning will show. To open the live, just use the controls at the bottom of the player.";
         STR_OPEN_CHAT = "Click to open chat and/or wait to be back live";
         STR_STAY_OPEN = "Stay on the stream";
@@ -1294,14 +1328,14 @@
         STR_CONTENT_LANG = "Content language";
         STR_CONTENT_LANG_SUMMARY = "The language of the content on the screen, lives, VODs, clips.";
         STR_APP_LANG = "Application language";
-        STR_APP_LANG_SUMMARY = "The language of the app\'s text.";
+        STR_APP_LANG_SUMMARY = "The language of the app's text.";
         STR_ENTER_TO_OPEN = "Press enter to access";
         STR_LANG_ALL = "All";
         STR_NO_GAME = "No game from this";
         STR_EMPTY = "Empty";
-        STR_JUMP_BUFFER_WARNING = "Isn\'t possible to jump during buffering";
-        STR_CHAT_DISABLE = "Chat is force disabled, enable it with the \'Chat force disable\' option at the bottom of the player";
-        STR_CLIP_FAIL = "This clip/video failed to load. Can\'t replay";
+        STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
+        STR_CHAT_DISABLE = "Chat is force disabled, enable it with the 'Chat force disable' option at the bottom of the player";
+        STR_CLIP_FAIL = "This clip/video failed to load. Can't replay";
         STR_CHAT_BRIGHTNESS = "Chat background brightness";
         STR_PLAY_NEXT = "Play Next";
         STR_PLAY_NEXT_IN = "Playing next in";
@@ -1312,13 +1346,13 @@
         STR_HOLD_UP = "Hold UP or key 2";
         STR_LIVE_FEED = "Live Feed";
         STR_VOD_DIALOG = "VOD start dialog";
-        STR_VOD_DIALOG_SUMMARY = "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to \'Always from start\', this behavior will also be applied to the VOD preview.";
+        STR_VOD_DIALOG_SUMMARY = "Choose the default behavior, if the VOD info is present in user history when playing one, it can be played from where you last stopped watching. If you set this option to 'Always from start', this behavior will also be applied to the VOD preview.";
         STR_VOD_DIALOG_START = "Always from start";
         STR_VOD_DIALOG_LAST = "Always from last stop";
         STR_VOD_DIALOG_SHOW = "Always ask";
         STR_END_DIALOG_OPT = "Player end dialog options";
         STR_END_DIALOG_SETTINGS = "Player end dialog timeout";
-        STR_END_DIALOG_SETTINGS_SUMMARY = "When a live/VOD/clip ends, a dialog shows with an option for what to do next. Set the time (in seconds) that it\'ll take for the default option to take action.";
+        STR_END_DIALOG_SETTINGS_SUMMARY = "When a live/VOD/clip ends, a dialog shows with an option for what to do next. Set the time (in seconds) that it'll take for the default option to take action.";
         STR_END_DIALOG_DISABLE = "Disable the timer";
         STR_CHAT_SIZE = "Chat size";
         STR_CHAT_POS = "Chat position";
@@ -1336,7 +1370,7 @@
         STR_HIGH = "High";
         STR_VERY_HIGH = "Very high";
         STR_THUMB_RESOLUTION = "Thumbnail quality";
-        STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnail resolution for lives, videos and games (can\'t be applied for clips). A lower value will help the app load faster, but the thumbnail may look blurry.";
+        STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnail resolution for lives, videos and games (can't be applied for clips). A lower value will help the app load faster, but the thumbnail may look blurry.";
         STR_PAYPAL_SUMMARY = "Paypal donations, use the link below:";
         STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address:";
         STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load stream info";
@@ -1347,7 +1381,7 @@
         STR_QUALITY_MULTI_BIG = [STR_PLAYER_MULTI_ALL, "Top", "Bottom left", "Bottom center", "Bottom right"];
         STR_PLAYER_BITRATE_UNLIMITED = "Unlimited";
         STR_PLAYER_BITRATE = "Auto quality maximum allowed Resolution/Bitrate";
-        STR_PLAYER_BITRATE_SUMMARY = "This is used to prevent lag on low-end devices when playing multiple videos at the same time (most devices will lag by skipping frames on that situation, as they are only made to play a single video). Also helps limit the internet bandwidth use in case you need a limit that also sets the \'Default player quality\' to auto quality. The recommended resolution/bitrate for all small players is 720p/3 Mbps, and unlimited for main or big players for most low-end devices.";
+        STR_PLAYER_BITRATE_SUMMARY = "This is used to prevent lag on low-end devices when playing multiple videos at the same time (most devices will lag by skipping frames on that situation, as they are only made to play a single video). Also helps limit the internet bandwidth use in case you need a limit that also sets the 'Default player quality' to auto quality. The recommended resolution/bitrate for all small players is 720p/3 Mbps, and unlimited for main or big players for most low-end devices.";
         STR_PLAYER_BITRATE_SUMMARY_ETC = "Different values here for main and small player resolution and or bitrate may cause a short buffering/loading when changing it with the main player in picture in picture mode (pressing down will change the players). To prevent this, set both values to the same at the cost of possible lag. The best indicative of too high of a bitrate is a constant accumulation of skipped frames or a constant buffering of the stream.";
         STR_PLAYER_MAIN = "Main player, for the big player of the picture in picture or the Top player 50/50";
         STR_PLAYER_RES_SMALL = "Small players, for the small player of the picture in picture mode and all multistream players";
@@ -1356,7 +1390,7 @@
         STR_PLAYER_RES_MAIN = "Resolution - " + STR_PLAYER_MAIN;
         STR_PLAYER_RES_SMALL = "Resolution - " + STR_PLAYER_RES_SMALL;
         STR_BLOCK_RES = "Blocked resolutions";
-        STR_BLOCK_RES_SUMMARY = "When using auto quality, it\'s possible to block one or more resolutions from ever being used. This is useful for devices that lag playing at a particular resolution. As clips can\'t be played in auto mode, this will also block the automatic part of this resolution in a clip.";
+        STR_BLOCK_RES_SUMMARY = "When using auto quality, it's possible to block one or more resolutions from ever being used. This is useful for devices that lag playing at a particular resolution. As clips can't be played in auto mode, this will also block the automatic part of this resolution in a clip.";
         STR_BLOCK_RES_SUMMARY_EXTRA = "The user can overwrite the selection manually during the playback.<br><br>XX means that all resolutions starting with some value before the XX will be denied from being used if that resolution is marked as blocked.";
         STR_BLOCKED = "Blocked";
         STR_BLOCKED_NOT = "Not blocked";
@@ -1369,34 +1403,34 @@
         STR_VOLUME = "Volume -";
         STR_AUDIO = "Audio -";
         STR_DEF_QUALITY = "Default player quality";
-        STR_DEF_QUALITY_SUMMARY = "This option will always override others when playing a single video. In picture in picture or multistream mode, the playback needs to use the auto quality. The reason for why that is can be found under the settings option \'" + STR_PLAYER_BITRATE + "\'.";
+        STR_DEF_QUALITY_SUMMARY = "This option will always override others when playing a single video. In picture in picture or multistream mode, the playback needs to use the auto quality. The reason for why that is can be found under the settings option '" + STR_PLAYER_BITRATE + "'.";
         STR_PICTURE_PICTURE = "Picture in picture, 50/50 or multistream (for lives only):";
         STR_PICTURE_CONTROLS1 = "Enable picture in picture mode: Press up when playing a video. To show the preview feed, choose a stream, then hold enter or press key 1 to start";
         STR_PICTURE_CONTROLS2 = "Change video content: If in multiplayer mode, always single-click from the player preview. If on picture in picture or 50/50, a single click updates the big or top video, and holding enter or pressing key 1 updates the small or bottom video";
         STR_PICTURE_CONTROLS4 = "Change content between videos (only picture in picture): Down D-pad. Big becomes small and vice versa";
         STR_PICTURE_CONTROLS5 = "Change small video position (only picture in picture): Left D-pad";
         STR_PICTURE_CONTROLS6 = "Change small video size (only picture in picture): Right D-pad";
-        STR_PICTURE_CONTROLS7 = "Change audio source: Choose the \'Audio source\' option at the bottom of the player. If in 50/50 or multistream, use left/right D-pad. If in picture in picture, use previous/next track media keys";
+        STR_PICTURE_CONTROLS7 = "Change audio source: Choose the 'Audio source' option at the bottom of the player. If in 50/50 or multistream, use left/right D-pad. If in picture in picture, use previous/next track media keys";
         STR_PICTURE_CONTROLS3 = "Change audio source for all videos: In multistream or picture in picture, hold down D-pad. In 50/50, single-click down D-pad";
-        STR_PICTURE_CONTROLS8 = "Player restart: Choose the \'Player restart\' option at the bottom of the player. This will only restart the players, which is useful fpr syncing the player and the chat. This will not sync one player\'s content with another\'s";
-        STR_PICTURE_CONTROLS9 = "Manually sync players: The workaround is to choose the \'Speed\' option at the bottom of the player to slow down the stream that is in front or vice versa. Only works for picture in picture mode";
-        STR_PICTURE_CONTROLS10 = "Picture in picture video quality: Check the in-app \'" + STR_PLAYER_BITRATE + "\' settings";
+        STR_PICTURE_CONTROLS8 = "Player restart: Choose the 'Player restart' option at the bottom of the player. This will only restart the players, which is useful fpr syncing the player and the chat. This will not sync one player's content with another's";
+        STR_PICTURE_CONTROLS9 = "Manually sync players: The workaround is to choose the 'Speed' option at the bottom of the player to slow down the stream that is in front or vice versa. Only works for picture in picture mode";
+        STR_PICTURE_CONTROLS10 = "Picture in picture video quality: Check the in-app '" + STR_PLAYER_BITRATE + "' settings";
         STR_PICTURE_CONTROLS11 = "Close small or bottom video (only picture in picture): Pressing return twice will exit picture in picture or 50/50 mode";
-        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (two streams and two chats): If picture in picture is enabled, press key 2, the fast forward media key or use the \'Video mode\' option at the bottom of the player, or if already in its \'Side by side\' mode, hold enter over a tile in the preview feed";
+        STR_PICTURE_CONTROLS12 = "Enable 50/50 mode (two streams and two chats): If picture in picture is enabled, press key 2, the fast forward media key or use the 'Video mode' option at the bottom of the player, or if already in its 'Side by side' mode, hold enter over a tile in the preview feed";
         STR_PICTURE_CONTROLS13 = "Enable multistream: Use the controls at the bottom of the player or the rewind media key";
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["When player info is visible", "Always visible", "Never visible"];
         STR_SINGLE_EXIT = "Single return press";
         STR_SINGLE_EXIT_SUMMARY = "Exit the player, picture in picture, 50/50 or multistream mode with a single key return click.";
         STR_NOTIFICATION_OPT = "Notification options";
-        STR_NOW_LIVE_SHOW = "Show \'Streamer is live\' notification for followed channels";
-        STR_TITLE_CHANGE_SHOW = "Show \'Streamer changed title\' notification for followed channels";
-        STR_GAME_CHANGE_SHOW = "Show \'Streamer changed game\' notification for followed channels";
-        STR_NOW_LIVE_GAME_SHOW = "Show \'Game is live\' notification for followed games";
+        STR_NOW_LIVE_SHOW = "Show 'Streamer is live' notification for followed channels";
+        STR_TITLE_CHANGE_SHOW = "Show 'Streamer changed title' notification for followed channels";
+        STR_GAME_CHANGE_SHOW = "Show 'Streamer changed game' notification for followed channels";
+        STR_NOW_LIVE_GAME_SHOW = "Show 'Game is live' notification for followed games";
         STR_NOW_BACKGROUND = "Notification over other apps when the app is running in the background";
-        STR_NOW_BACKGROUND_SUMMARY = "If you disabled notifications for this app in the system settings, this feature won\'t work. If the app notifications are already running and you exit the app, the notification will show over other apps, even if this is disabled.";
+        STR_NOW_BACKGROUND_SUMMARY = "If you disabled notifications for this app in the system settings, this feature won't work. If the app notifications are already running and you exit the app, the notification will show over other apps, even if this is disabled.";
         STR_NOTIFICATION_REPEAT = "Number of times an individual notification in shown";
-        STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can\'t be changed, because this timeout is controlled by the system, but you can set the number of times the same notification shows with this option.";
-        STR_NOTIFICATION_SINCE = "Prevent showing \'Streamer is live\' notification for streams that are live for over";
+        STR_NOTIFICATION_REPEAT_SUMMARY = "The individual notification timeout is around 3 seconds, and can't be changed, because this timeout is controlled by the system, but you can set the number of times the same notification shows with this option.";
+        STR_NOTIFICATION_SINCE = "Prevent showing 'Streamer is live' notification for streams that are live for over";
         STR_NOTIFICATION_SINCE_SUMMARY = "This is useful to prevent the app showing a long list of notifications when the app is not used for some time, for example when you turn off the device, or for when the screen is off (the app will not show notification in case the device is on but the screen is off).";
         STR_GLOBAL_FONT = "Global app font size offset";
         STR_GLOBAL_FONT_SUMMARY = "This will change the size of all text and most icons in the app (minus chat font size, because it has its own control), too small value may not be visible too big value will overflow the text box holder, that is way this value is limited, changing this will refresh all screens.";
@@ -1418,13 +1452,14 @@
             "<br>Use " + STR_SETTINGS_BUFFER_LIVE + " equal or below 1 for this to have effect";
         STR_GAME_SORT = "Games Preview sorting";
         STR_LIVE_FEED_SORT = "Side panel or player preview sorting";
-        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview. On the preview, this only applies to the user\'s live and featured (all non-history are view based, history is last watched first, and VOD is the most recent).";
+        STR_LIVE_FEED_SORT_SUMMARY = "Sorts side panel live feed and player preview. On the preview, this only applies to the user's live and featured (all non-history are view based, history is last watched first, and VOD is the most recent).";
         STR_A_Z = "Alphabetical A - Z";
         STR_Z_A = "Alphabetical Z - A";
         STR_APP_ANIMATIONS = "Enable app animations";
         STR_APP_ANIMATIONS_SUMMARY = "Enables side panel, scroll and related animations.";
         STR_UI_SETTINGS = "Customize interface, color style, animations and related";
         STR_GENERAL_CUSTOM = "Customize content, sorting, auto refresh, timeouts and related";
+        STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";
         STR_RUNNINGTIME = "App running for:";
         STR_410_ERROR = "Unable to get video link";
         STR_410_FEATURING = "Third party apps currently have no access to this feature.";
@@ -1444,13 +1479,13 @@
         STR_WELCOME = "Welcome to";
         STR_WELCOME_SUMMARY = "This application has a lot of features and was designed to give the user full control of it, because of that it has many options, controls and customizations. Check the app settings and controls to understasnd how to use it. In doubt, check the Play Store demonstration video, if still unsure, use the contact info.";
         STR_WARNING_PHONE = "Cellphones warning";
-        STR_WARNING_PHONE_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited and may never receive a better support. If you don\'t have a keyboard or a D-pad + enter and return controller (ESC works as a return on a computer), use the virtual on-screen keys to navigate (only visible on phone/tablet devices). In settings you can change the position and the opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad. When it\'s hidden, it doesn\'t work.";
+        STR_WARNING_PHONE_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited and may never receive a better support. If you don't have a keyboard or a D-pad + enter and return controller (ESC works as a return on a computer), use the virtual on-screen keys to navigate (only visible on phone/tablet devices). In settings you can change the position and the opacity of the virtual D-pad, click anywhere on the screen to show the virtual D-pad. When it's hidden, it doesn't work.";
         STR_DPAD_POSTION = "D-pad screen position";
         STR_DPAD_OPACITY = "D-pad opacity";
         STR_DPAD_OPT = "D-pad options";
         STR_BLOCKED_CODEC = "Blocked codecs";
         STR_BLOCKED_CODEC_SUMMARY = "List used codec capabilities and allow blocking a codec from being used.";
-        STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style=\'color: #FF0000;\'>by default, the OMX.google decoder is disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.<br>The app content only uses avc/h264 decoders, no others are listed.";
+        STR_CODEC_DIALOG_TITLE = "Software codecs (OMX.google) usually have the worst performance, but on some devices, they may have the advantage over hardware codecs. Using these ones can block those, so check if the performance of the playback improves, <span style='color: #FF0000;'>by default, the OMX.google decoder is disabled</span> (if another codec is available). A constant accumulation of skipped frames is an indicative of a codec issue.<br>The app content only uses avc/h264 decoders, no others are listed.";
         STR_SUPPORTED_CODEC = "Supported codecs:";
         STR_MAX_RES = "Max resolution:";
         STR_MAX_BIT = "Max bitrate:";
@@ -1461,7 +1496,7 @@
         STR_ONE_CODEC_ENA = "At least one codec must be enabled at all times.";
         STR_USER_LIVE = "User live side pannel: Left D-pad from the side panel or key 3 from anywhere";
         STR_PP_WORKAROUND = "Multiplayer mode workaround for older OS";
-        STR_PP_WORKAROUND_SUMMARY = "For some devices running Android 7 (Nougat) or older are necessary to enable this to have multiplayer mode working properly. Don\'t enable this if you don\'t have issues, as it will result in a lower image quality and possible loss of performance.";
+        STR_PP_WORKAROUND_SUMMARY = "For some devices running Android 7 (Nougat) or older are necessary to enable this to have multiplayer mode working properly. Don't enable this if you don't have issues, as it will result in a lower image quality and possible loss of performance.";
         STR_HISTORY = "History";
         STR_WATCHED = "Watched on";
         STR_UNTIL = "until";
@@ -1485,7 +1520,7 @@
         STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and their history will be backed up)" + "<br><br>" +
             "If you click Yes, the app will save backups for future use, and restore a saved backup if app data is empty." +
             "Is necessary to give the app storage permission for this, so give before click yes." + "<br><br>" +
-            "If you don\'t give storage permission, no backups will be ever made." + "<br><br>" +
+            "If you don't give storage permission, no backups will be ever made." + "<br><br>" +
             "The Backup folder path is Main_Storage/data/com.fgl27.twitch/Backup";
         STR_DELETE_SURE = "Are you sure you want to delete all";
         STR_CREATED_NEWEST = "Created / Uptime newest";
@@ -1506,11 +1541,11 @@
         STR_ALREDY_PLAYING = "Already playing this";
         STR_STREAM_ERROR = "Unable to open preview";
         STR_PP_MODO = "Picture in picture mode";
-        STR_4_WAY_MULTI_INSTANCES = "Your device only supports %x codec instances (player playing) at the same time, can\'t use";
+        STR_4_WAY_MULTI_INSTANCES = "Your device only supports %x codec instances (player playing) at the same time, can't use";
         STR_MULTI_EMPTY = "Ended and/or empty";
         STR_4_WAY_MULTI = "4-way multistream";
         STR_CONTROLS_MULTI_0 = "Multistream help:";
-        STR_CONTROLS_MULTI_1 = "If you are having lag issues after enabling multistream, try lowering the value of \'Small player bitrate\' in settings, accumulation of skipped frames or constant buffering is an indication of too high bitrate or too slow internet";
+        STR_CONTROLS_MULTI_1 = "If you are having lag issues after enabling multistream, try lowering the value of 'Small player bitrate' in settings, accumulation of skipped frames or constant buffering is an indication of too high bitrate or too slow internet";
         STR_CONTROLS_MULTI_2 = "Add streams: open preview feed key up and click on a live";
         STR_CONTROLS_MULTI_3 = "Replace streams: after multistream is full, choose one from preview feed and choose one to replace from the dialog";
         STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left or media keys next previews track, hold down to audio source all videos";
@@ -1528,7 +1563,7 @@
         STR_PREVIEW_CLIP_NEXT = "When a clip preview ends, automatically switch to the next available clip.";
         STR_SHOW_SIDE_PLAYER = "Show preview on the side panel";
         STR_SHOW_FEED_PLAYER = "Show preview on the player preview thumbnails";
-        STR_SHOW_FEED_PLAYER_SUMMARY = "If you don\'t want to, or your device lags when more than one player is active, set this to NO.";
+        STR_SHOW_FEED_PLAYER_SUMMARY = "If you don't want to, or your device lags when more than one player is active, set this to NO.";
         STR_DISABLED_FEED_PLAYER_MULTI = "Disable preview when multistream is enabled";
         STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY = "For performance reasons, some devices may lag with multiple players. If yours is fine for multistream, but lags when the preview player and a multistream are active, set this option to NO.";
         STR_PREVIEW_ERROR_LOAD = "Preview failed to load:";
@@ -1552,24 +1587,24 @@
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY = "The main player (all picture in picture players, multistream players) volume can be lowered when the preview player is showing.";
         STR_SIDE_PANEL_PLAYER = "Preview thumbnail player settings";
         STR_START_AT_USER = "Always start the app in the user screen";
-        STR_START_AT_USER_SUMMARY = "This option disables the \'Restore playback\' option, but allows you to choose the user upon opening the app.";
+        STR_START_AT_USER_SUMMARY = "This option disables the 'Restore playback' option, but allows you to choose the user upon opening the app.";
         STR_LAST_REFRESH = "Last refreshed:";
         STR_PP_VOD_ERROR = "Exit picture in picture or multistream to open this VOD";
-        STR_SETTINGS_ACCESSIBILITY = "Show \'an accessibility service is running\' warning";
-        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has an accessibility service enabled, the app will show a warning. It\'s a known android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
+        STR_SETTINGS_ACCESSIBILITY = "Show 'an accessibility service is running' warning";
+        STR_SETTINGS_ACCESSIBILITY_SUMMARY = "If the device has an accessibility service enabled, the app will show a warning. It's a known android issue that accessibility service can lag some devices and cause freezes or lags on this app.";
         STR_ACCESSIBILITY_WARN = "Accessibility service(s) detected";
         STR_ACCESSIBILITY_WARN_EXTRA = "Read more on this link:";
         STR_ACCESSIBILITY_WARN_EXTRA2 = "If you have freezes or lag related issues, close this app and disable all accessibility services, after that, all issues will be gone.<br>To not show this warning ever again, disable it in settings.";
         STR_AUTO_REFRESH = "Auto refresh timeout";
         STR_AUTO_REFRESH_SUMMARY = "When this is enabled, the app will auto refresh a screen or a preview thumbnails screen, the refresh happens only when the screen is selected. If you want a refresh in the background, enable the below option.";
         STR_AUTO_REFRESH_BACKGROUND = "Auto refresh in the background";
-        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = "When \'Auto refresh timeout\' is set and this is enabled, the auto refresh will happen in the background (but with the app visible, android doesn\'t allow to run unrestrictedly in the background in order to avoid lagging other apps). When the screen is not visible or when you go back to a screen that the refresh didn\'t run before, be careful, because if the app has too many screens when this option is enabled, the auto refresh may cause random lag on some low-end devices.";
+        STR_AUTO_REFRESH_BACKGROUND_SUMMARY = "When 'Auto refresh timeout' is set and this is enabled, the auto refresh will happen in the background (but with the app visible, android doesn't allow to run unrestrictedly in the background in order to avoid lagging other apps). When the screen is not visible or when you go back to a screen that the refresh didn't run before, be careful, because if the app has too many screens when this option is enabled, the auto refresh may cause random lag on some low-end devices.";
         STR_MAIN_WINDOW = "Main video";
         STR_MULTI_MAIN_WINDOW = "Multistream main video";
         STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + " bigger and chat: Press the down key and after that use the left/right keys to change the big video";
         STR_SOURCE_CHECK = "Automatically change player quality from Source to Auto when the player lags";
-        STR_SOURCE_CHECK_SUMMARY = "When this option is enabled, and you aren\'t using auto quality, if the player is lagging, it will switch to auto quality and warn about it. A player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex than just time of course), after this, changing the player will automatically go back to the source when you open a new VOD stream.";
-        STR_PLAYER_LAG = "Player is lagging, quality changed to \'Auto mode\'";
+        STR_SOURCE_CHECK_SUMMARY = "When this option is enabled, and you aren't using auto quality, if the player is lagging, it will switch to auto quality and warn about it. A player lag is for example when the player is unable to play for over 15 seconds (the algorithm is more complex than just time of course), after this, changing the player will automatically go back to the source when you open a new VOD stream.";
+        STR_PLAYER_LAG = "Player is lagging, quality changed to 'Auto mode'";
         STR_PLAYER_SOURCE = "Player is lagging, quality was lowered";
         STR_TOO_ERRORS = "or too many errors";
         STR_STREAM_ERROR_SMALL = "Preview, stream ended" + STR_TOO_ERRORS;
@@ -1617,36 +1652,36 @@
         STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed send a message in sub-only mode";
         STR_CHAT_OPTIONS = "Chat options";
         STR_CHAT_HIGHLIGHT_REDEEMED = "Highlight reward messages (Purple background message only)";
-        STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the \'@\' is blue)";
-        STR_CHAT_HIGHLIGHT_USER = "Highlight your @username messages (Dark Green background, the \'@\' is blue)";
+        STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the '@' is blue)";
+        STR_CHAT_HIGHLIGHT_USER = "Highlight your @username messages (Dark Green background, the '@' is blue)";
         STR_CHAT_HIGHLIGHT_USER_SEND = "Highlight your sent messages (Dark Green background)";
         STR_CHAT_SHOW_SUB = "Show sub messages in chat (Dark orange background)";
         STR_CHAT_HIGHLIGHT_BIT = "Highlight bits messages (Dark Yellow background)";
         STR_CHAT_HIGHLIGHT_ACTIONS = "Show Action messages (usually from stream bots)";
-        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "These messages are usually equal to sub messages, but sent via a stream bot, so if you have \'Show sub ...\' enabled, it\'s redundant.";
+        STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY = "These messages are usually equal to sub messages, but sent via a stream bot, so if you have 'Show sub ...' enabled, it's redundant.";
         STR_CHAT_INDIVIDUAL_BACKGROUND = "Background color difference between individual messages";
-        STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are \'disable\', \'enable\' (auto mode), Bright or Darker. In auto mode, if the chat is above the stream, the odd message will have a darker background accent color from the even. If the chat is not above (side by side for example), the color will be bright.";
+        STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY = "Modes are 'disable', 'enable' (auto mode), Bright or Darker. In auto mode, if the chat is above the stream, the odd message will have a darker background accent color from the even. If the chat is not above (side by side for example), the color will be bright.";
         STR_CHAT_INDIVIDUAL_LINE = "Insert a line to separate individual chat messages";
         STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
         STR_CHAT_LOGGING = "Logging in the chat with the current user";
-        STR_CHAT_LOGGING_SUMMARY = "The app will always log to chat using the current user when an authorization key is provided, unless chat is disabled within the controls at the bottom of the player, but if this option if set to NO, it will prevent logging using current username, and will instead log as anonymous, even with a provided authorization key. This doesn\'t prevent from sending chat messages for this user, if a key was added, but does prevent from knowing if you are banned in the chat and prevents from seeing the chat\'s ROOMSTATE.";
+        STR_CHAT_LOGGING_SUMMARY = "The app will always log to chat using the current user when an authorization key is provided, unless chat is disabled within the controls at the bottom of the player, but if this option if set to NO, it will prevent logging using current username, and will instead log as anonymous, even with a provided authorization key. This doesn't prevent from sending chat messages for this user, if a key was added, but does prevent from knowing if you are banned in the chat and prevents from seeing the chat's ROOMSTATE.";
         STR_CHAT_TIMESTAMP = "Show message timestamp";
         STR_CHAT_NICK_COLOR = "Readable nick colors";
-        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that sometimes can\'t be readable on a dark background, use a custom easily visible color.";
+        STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";
         STR_CHAT_CLEAR_MSG = "Clear chat, delete user messages";
         STR_CHAT_MESSAGE_DELETED = "This single user message was requested to be deleted";
         STR_CHAT_MESSAGE_DELETED_ALL = "All messages from this user were requested to be deleted";
-        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they\'ve been timed out for";
-        STR_CHAT_CLEAR_MSG_SUMMARY = "Delete chat messages from a specific user (typically after they\'ve received a timeout or ban). Deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not, only the background color will change.";
+        STR_CHAT_MESSAGE_DELETED_TIMEOUT = ", they've been timed out for";
+        STR_CHAT_CLEAR_MSG_SUMMARY = "Delete chat messages from a specific user (typically after they've received a timeout or ban). Deleted messages will always have a blue background, the message will be deleted if this is set to yes, if not, only the background color will change.";
         STR_OPEN_HOST_SETTINGS = "Always open the hosted live at the end of the stream if available";
         STR_ALWAYS_STAY = "Always stay with the player opened after a live ends";
-        STR_PING_WARNING = "Show \'Ping to Twitch fail\' warning";
+        STR_PING_WARNING = "Show 'Ping to Twitch fail' warning";
         STR_PING_WARNING_SUMMARY = "The app constantly checks the connection with Twitch via a ping. If it fails too many times, a warning will show. If you believe this warning is showing unintentionally, set this option to NO.";
         STR_KEY_UP_TIMEOUT = "Key hold timeout (in milliseconds)";
         STR_KEY_UP_TIMEOUT_SUMMARY = "How long you need to hold a key for until a hold action happens. Actions such as refresh the screen, show thumbnails options etc.";
         STR_CURRENT_THUMB_STYLE = "Current focus style";
         STR_NEW_THUMB_STYLE = "New focus style";
-        STR_COLOR_STYLE_TEXT = "Press up/down to select an option, press return to exit this, press enter on \'Apply changes\' to confirm before exiting.";
+        STR_COLOR_STYLE_TEXT = "Press up/down to select an option, press return to exit this, press enter on 'Apply changes' to confirm before exiting.";
         STR_SHADOWS = "Shadows";
         STR_SHADOWS_NONE = "None";
         STR_SHADOWS_WHITE = "White";
@@ -1690,7 +1725,7 @@
         STR_HIDE_MAIN_SCREEN_TITLE = "Hide main screen title";
         STR_HIDE_MAIN_SCREEN_TITLE_SUMMARY = "The center title, lives, clips, settings etc ...";
         STR_HIDE_ETC_HELP_INFO = "Hide on-screen navigation tips";
-        STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips, such as \'Hold a key for an action\' and related.";
+        STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips, such as 'Hold a key for an action' and related.";
         STR_INACTIVE_SETTINGS = "Automatically minimize the app when inactive for";
         STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from being run when no one is using it. A warning will show up, giving the user 15 seconds to press any key to prevent the minimizing.";
         STR_INACTIVE_WARNING = "The app will auto minimize due to inactivity in<br><br>%x<br><br>Press any key to cancel";
@@ -1869,7 +1904,6 @@
         STR_ABOUT_INFO_2_SOURCE = "Esta versión de la aplicación es sólo de prueba en el navegador!";
         STR_ABOUT_INFO_3 = "Información de contacto:";
         STR_ABOUT_INFO_4 = "Esta es una aplicación de código abierto licenciada bajo la Licencia Pública General GNU v3.0, consúltela en GitHub";
-        STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
         STR_ABOUT_INFO_6 = "Esta aplicación utiliza las siguientes dependencias:";
 
         STR_ABOUT_INFO_14 = "Web:";
@@ -1877,7 +1911,7 @@
 
         STR_CONTROLS_PLAY_14 = "Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50";
         STR_F_DISABLE_CHAT = "Forzar deshabilitar el chat";
-        STR_OAUTH_IN = 'Añadir una clave permite que la aplicación acceda al chat usando tu usuario para enviar mensajes y obtener tu lista de emote (te permite obtener sub dones para el chat), seguir/deshacer canales y acceder a algunos contenidos de los usuarios más rápidamente<br><br>Añadir una clave no es exigente y puede hacerse en cualquier momento posterior<br><br>En caso de duda lee este enlace:<br><br>https://github. com/fgl27/SmartTwitchTV#authorization<br><br>Para algunos dispositivos es necesario un ratón para completar la acción de autorización ya que puede ser necesario pulsar manualmente un botón para confirmar.<br><br>Añadir clave para';
+        STR_OAUTH_IN = 'Añadir una clave permite que la aplicación acceda al chat usando tu usuario para enviar mensajes y obtener tu lista de emote (te permite obtener sub dones para el chat), seguir/deshacer canales y acceder a algunos contenidos de los usuarios más rápidamente<br><br>Añadir una clave no es exigente y puede hacerse en cualquier momento posterior<br><br>En caso de duda lee este enlace:<br><br>%x<br><br>Para algunos dispositivos es necesario un ratón para completar la acción de autorización ya que puede ser necesario pulsar manualmente un botón para confirmar.<br><br>Añadir clave para';
         STR_USER_CODE = "Añadir clave de autorización";
         STR_USER_CODE_OK = "Clave añadida OK";
         STR_KEY_BAD = "La prueba de la llave ha fallado, hay que añadir una nueva";
@@ -2287,7 +2321,8 @@
         STR_CHECK_HOST = ", verificando host";
         STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
         STR_IS_SUB_ONLY_ERROR = "é conteúdo apenas para sub.";
-        STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Clique em atualizar para tentar novamente";
+        STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Atualize para tentar novamente";
+        STR_REFRESH_PROBLEM_ENTER = "A conexão falhou, não foi possível carregar o conteúdo. Pressione enter para atualizar";
         STR_NO = "Não";
         STR_FOR_THIS = "para este";
         STR_PLAYER_PROBLEM = "Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...";
@@ -2380,25 +2415,23 @@
         STR_ABOUT_INFO_2_SOURCE = "Esta versão do aplicativo é para teste apenas no navegador!";
         STR_ABOUT_INFO_3 = "Informações de contato:";
         STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";
-        STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
         STR_ABOUT_INFO_6 = "Este aplicativo usa as seguintes dependências:";
-        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming de analisador de mensagem IRC (https://github.com/sigkell/irc-message)";
-        STR_ABOUT_INFO_8 = "Fontastic - Crie suas fontes de ícone personalizadas em segundos (http://app.fontastic.me)";
-        STR_ABOUT_INFO_9 = "Twemoji - Uma biblioteca simples que fornece suporte a emoji Unicode padrão em todas as plataformas (https://github.com/twitter/twemoji)";
-        STR_ABOUT_INFO_10 = "UglifyJS - é um analisador JavaScript, minificador, compressor e kit de ferramentas de embelezador (https://github.com/mishoo/UglifyJS2)";
-        STR_ABOUT_INFO_12 = "HTMLMinifier - Um minificador HTML altamente configurável, bem testado e baseado em JavaScript (https://github.com/kangax/html-minifier)";
-        STR_ABOUT_INFO_13 = "JSHint - Uma ferramenta de análise de código estático para JavaScript (https://github.com/jshint/jshint)";
+        STR_ABOUT_INFO_7 = "irc-message - Performant, streaming de analisador de mensagem IRC";
+        STR_ABOUT_INFO_8 = "Fontastic - Crie suas fontes de ícone personalizadas em segundos";
+        STR_ABOUT_INFO_9 = "Twemoji - Uma biblioteca simples que fornece suporte a emoji Unicode padrão em todas as plataformas";
+        STR_ABOUT_INFO_10 = "UglifyJS - é um analisador JavaScript, minificador, compressor e kit de ferramentas de embelezador";
+        STR_ABOUT_INFO_12 = "HTMLMinifier - Um minificador HTML altamente configurável, bem testado e baseado em JavaScript";
+        STR_ABOUT_INFO_13 = "JSHint - Uma ferramenta de análise de código estático para JavaScript";
         STR_ABOUT_INFO_14 = "Web:";
         STR_ABOUT_INFO_15 = "Android:";
-        STR_ABOUT_INFO_16 = "Leanback v17: Classes de suporte para construir experiências de usuário Leanback (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-        STR_ABOUT_INFO_17 = "ExoPlayer: um reprodutor de mídia extensível para Android (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_16 = "Leanback v17: Classes de suporte para construir experiências de usuário Leanback";
+        STR_ABOUT_INFO_17 = "ExoPlayer: um reprodutor de mídia extensível para Android";
         STR_ABOUT_INFO_18 = "Suporte para telefones e tablets:";
         STR_ABOUT_INFO_19 = "Sim, é possível usar este aplicativo em telefones e tablets, mas este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado e por isso não é liberado na play store, use o link abaixo para fazer o download APK mais recente e instale manualmente em um telefone ou tablets";
-        STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
-        STR_ABOUT_INFO_21 = "Plug-in de versões do Gradle: plug-in do Gradle para descobrir atualizações de dependências (https://github.com/ben-manes/gradle-versions-plugin)";
-        STR_ABOUT_INFO_22 = "Tray: uma substituição de SharedPreferences para Android (https://github.com/grandcentrix/tray)";
-        STR_ABOUT_INFO_23 = "punycode - Um conversor de Punycode robusto que está totalmente em conformidade com RFC 3492 e RFC 5891 (https://github.com/bestiejs/punycode.js)";
-        STR_ABOUT_INFO_24 = "crass - Uma minificação CSS, impressão bonita e biblioteca de utilitários gerais escrita em JS (https://github.com/mattbasta/crass)";
+        STR_ABOUT_INFO_21 = "Plug-in de versões do Gradle: plug-in do Gradle para descobrir atualizações de dependências";
+        STR_ABOUT_INFO_22 = "Tray: uma substituição de SharedPreferences para Android";
+        STR_ABOUT_INFO_23 = "punycode - Um conversor de Punycode robusto que está totalmente em conformidade com RFC 3492 e RFC 5891";
+        STR_ABOUT_INFO_24 = "crass - Uma minificação CSS, impressão bonita e biblioteca de utilitários gerais escrita em JS";
         STR_CONTROLS_PLAY_0 = "ou nos controles da parte inferior do player";
         STR_CONTROLS_PLAY_1 = "Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos";
         STR_CONTROLS_PLAY_2 = "Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar";
@@ -2415,7 +2448,7 @@
         STR_CONTROLS_PLAY_13 = "Todas as teclas de mídia são suportadas (reproduzir, pausar, parar, próxima faixa, avanço rápido, etc ...) algumas são usadas como atalhos para mudanças de modo de áudio e vídeo";
         STR_CONTROLS_PLAY_14 = "chat e vídeo (lado a lado): tecla 2 ou tecla de mídia avanço rápido, também alterna entre Picture in Picture e modo 50/50";
         STR_F_DISABLE_CHAT = "Chat desabilitado forçado";
-        STR_OAUTH_IN = 'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba sub de presente pelo chat), seguir/parar de seguir canais e acessar algum conteúdo do usuário mais rápido <br><br>Adicionar uma chave não é obrigatorio e pode ser feito a qualquer momento mais tarde <br><br> Em caso de dúvida, leia este link: <br><br> https://github.com/fgl27/SmartTwitchTV#authorization <br><br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br><br> adicionar chave para';
+        STR_OAUTH_IN = 'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba sub de presente pelo chat), seguir/parar de seguir canais e acessar algum conteúdo do usuário mais rápido <br><br>Adicionar uma chave não é obrigatorio e pode ser feito a qualquer momento mais tarde <br><br> Em caso de dúvida, leia este link: <br><br>%x<br><br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br><br> adicionar chave para';
         STR_USER_CODE = "Adicionar chave de autorização";
         STR_USER_CODE_OK = "Chave adicionada OK";
         STR_KEY_BAD = "Teste de chave falhou, uma nova precisa ser adicionado";
@@ -2650,6 +2683,7 @@
         STR_APP_ANIMATIONS_SUMMARY = "Habilita animações no painel lateral e de rolagem";
         STR_UI_SETTINGS = "Personalização da interface, estilo de cor, animações e afins";
         STR_GENERAL_CUSTOM = "Personalização de conteúdo, classificação, atualização automática, tempos limite e relacionados";
+        STR_FADE_SIDEPANNEL = "Esconder o painel lateral após 5 segundos sem usá-lo";
         STR_RUNNINGTIME = "Aplicativo em execução por:";
         STR_410_ERROR = "Não foi possível obter o link do vídeo";
         STR_410_FEATURING = "Aplicativos de terceiros estão atualmente sem acesso para este conteúdo.";
@@ -3081,20 +3115,20 @@
         STR_ABOUT_INFO_3 = "Контактная информация:";
         STR_ABOUT_INFO_4 = "Это приложение с открытым исходным кодом под лицензией GNU General Public License v3.0, доступно на GitHub.";
         STR_ABOUT_INFO_6 = "Это приложение использует следующие зависимости:";
-        STR_ABOUT_INFO_7 = "irc-message - Производительный потоковый парсер сообщений IRC (https://github.com/sigkell/irc-message)";
-        STR_ABOUT_INFO_8 = "Fontastic - Создавайте собственные шрифты для иконок за секунды (http://app.fontastic.me)";
-        STR_ABOUT_INFO_9 = "Twemoji - Простая библиотека, которая обеспечивает стандартную поддержку эмодзи Unicode на всех платформах. (https://github.com/twitter/twemoji)";
-        STR_ABOUT_INFO_10 = "UglifyJS - это набор инструментов для синтаксического анализа, минификсации, сжатия и украшения JavaScript. (https://github.com/mishoo/UglifyJS2)";
-        STR_ABOUT_INFO_12 = "HTMLMinifier - Настраиваемый, хорошо протестированный HTML-минификатор на основе JavaScript. (https://github.com/kangax/html-minifier)";
-        STR_ABOUT_INFO_13 = "JSHint - Инструмент статического анализа кода для JavaScript (https://github.com/jshint/jshint)";
-        STR_ABOUT_INFO_16 = "Leanback v17: Классы поддержки для создания пользоват. опыта Leanback (https://developer.android.com/reference/android/support/v17/leanback/package-summary)";
-        STR_ABOUT_INFO_17 = "ExoPlayer: Внешний медиаплеер для Android (https://github.com/google/ExoPlayer)";
+        STR_ABOUT_INFO_7 = "irc-message - Производительный потоковый парсер сообщений IRC";
+        STR_ABOUT_INFO_8 = "Fontastic - Создавайте собственные шрифты для иконок за секунды";
+        STR_ABOUT_INFO_9 = "Twemoji - Простая библиотека, которая обеспечивает стандартную поддержку эмодзи Unicode на всех платформах";
+        STR_ABOUT_INFO_10 = "UglifyJS - это набор инструментов для синтаксического анализа, минификсации, сжатия и украшения JavaScript";
+        STR_ABOUT_INFO_12 = "HTMLMinifier - Настраиваемый, хорошо протестированный HTML-минификатор на основе JavaScript";
+        STR_ABOUT_INFO_13 = "JSHint - Инструмент статического анализа кода для JavaScript";
+        STR_ABOUT_INFO_16 = "Leanback v17: Классы поддержки для создания пользоват. опыта Leanback";
+        STR_ABOUT_INFO_17 = "ExoPlayer: Внешний медиаплеер для Android";
         STR_ABOUT_INFO_18 = "Поддержка телефонов и планшетов:";
         STR_ABOUT_INFO_19 = "Да, это приложение можно использовать на телефонах и планшетах, но оно предназначено в основном для телевизоров. Поддержка других устройств ограничена из-за их отсутсвия в Play Store. Используйте ссылку ниже для загрузки последней версии APK и установите вручную на телефон/планшет";
-        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle плагин для обнаружения обновлений зависимостей (https://github.com/ben-manes/gradle-versions-plugin)";
-        STR_ABOUT_INFO_22 = "Tray: замена SharedPreferences для Android (https://github.com/grandcentrix/tray)";
-        STR_ABOUT_INFO_23 = "punycode - Надежный конвертер Punycode, полностью соответствующий RFC 3492 и RFC 5891 (https://github.com/bestiejs/punycode.js)";
-        STR_ABOUT_INFO_24 = "crass - Минификация CSS, красивая печать и общая служебная библиотека, написанная на JS (https://github.com/mattbasta/crass)";
+        STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle плагин для обнаружения обновлений зависимостей";
+        STR_ABOUT_INFO_22 = "Tray: замена SharedPreferences для Android";
+        STR_ABOUT_INFO_23 = "punycode - Надежный конвертер Punycode, полностью соответствующий RFC 3492 и RFC 5891";
+        STR_ABOUT_INFO_24 = "crass - Минификация CSS, красивая печать и общая служебная библиотека, написанная на JS";
         STR_CONTROLS_PLAY_0 = "или в нижних элементах управления плеером";
         STR_CONTROLS_PLAY_1 = "Показать информационную панель: нажмите кнопку ОК или кнопки D-pad, если чат и прямой эфир канала не отображаются";
         STR_CONTROLS_PLAY_2 = "Закрыть видео: дважды нажмите кнопку назад или кнопку Стоп.";
@@ -3111,7 +3145,7 @@
         STR_CONTROLS_PLAY_13 = "Поддерживаются все мультимедийные кнопки (плей,пауза,стоп,перемотка и т.д.).";
         STR_CONTROLS_PLAY_14 = "Чат и видео: кнопка 2 или кнопка перемотки вперед, переключает между режимом «Картинка в картинке» и режимом 50/50";
         STR_F_DISABLE_CHAT = "Принудительное отключение чата";
-        STR_OAUTH_IN = 'Добавление ключа позволяет приложению получать доступ к чату, используя ваш аккаунт. Для отправки сообщений и получения вашего списка эмоций (позволяет получать подарочные подписки в чате), подписываться/отменять подписку на каналы/игры и быстрее получать доступ к некоторому контенту.<br><br>Добавление ключа не требует усилий и может быть выполнено в любой момент позже.<br><br>Сомневаетесь, прочтите эту ссылку:<br><br>https://github.com/fgl27/SmartTwitchTV#authorization<br><br>Для некоторых устройств необходима мышь для завершения действия авторизации, так как вам может потребоваться вручную нажать кнопку подтверждения.<br><br>для добавления ключа';
+        STR_OAUTH_IN = 'Добавление ключа позволяет приложению получать доступ к чату, используя ваш аккаунт. Для отправки сообщений и получения вашего списка эмоций (позволяет получать подарочные подписки в чате), подписываться/отменять подписку на каналы/игры и быстрее получать доступ к некоторому контенту.<br><br>Добавление ключа не требует усилий и может быть выполнено в любой момент позже.<br><br>Сомневаетесь, прочтите эту ссылку:<br><br>%x<br><br>Для некоторых устройств необходима мышь для завершения действия авторизации, так как вам может потребоваться вручную нажать кнопку подтверждения.<br><br>для добавления ключа';
         STR_USER_CODE = "Добавить ключ";
         STR_USER_CODE_OK = "Ключ добавлен успешно";
         STR_KEY_BAD = "Ошибка ключа, нужно добавить новый";
@@ -3850,11 +3884,21 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 323, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/323/SmartTV_twitch_3_0_323.apk',
-        WebVersion: 'July 07 2021',
-        WebTag: 598, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 324, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/324/SmartTV_twitch_3_0_324.apk',
+        WebVersion: 'July 17 2021',
+        WebTag: 599, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.324 and Web Version July 17 2021",
+                changes: [
+                    "Update side panel styles",
+                    "The settings option 'Rounded channel images' is now enable by default change it in 'Customize interface, color style, animations and related'",
+                    "Add a new settings option 'Hide the side panel after 5 seconds of not using it' to 'Customize interface, color style, animations and related'",
+                    "Allow to access the 'Thumbnail Options' even when the content of the screen is empty, this is useful when changing to a language that has no content",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.323",
                 changes: [
                     "General improves and bug fixes"
@@ -3877,25 +3921,6 @@
                 title: "Apk Version 3.0.321",
                 changes: [
                     "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version June 24 2021",
-                changes: [
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Apk Version 3.0.320 and Web Version June 22 2021",
-                changes: [
-                    "Add support to 7TV emotes",
-                    "General improves and bug fixes"
-                ]
-            },
-            {
-                title: "Web Version June 21 2021",
-                changes: [
-                    "Add support for Twitch animated emotes"
                 ]
             }
         ]
@@ -9635,10 +9660,6 @@
                 //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
                 KEY_RETURN = 27;
                 Main_HideElement('scene_keys');
-
-                Main_getElementById('scene2').style.pointerEvents = 'none';
-                Main_getElementById('scene_channel_panel').style.pointerEvents = 'none';
-
             }
 
             Main_showLoadDialog();
@@ -10959,17 +10980,13 @@
     function Main_showScene1Doc() {
         Main_Scene1Doc.style.opacity = 1;
 
-        if (!Main_IsOn_OSInterface) {
-            Main_Scene1Doc.style.pointerEvents = '';
-        }
+        Main_Scene1Doc.style.pointerEvents = '';
     }
 
     function Main_hideScene1Doc() {
         Main_Scene1Doc.style.opacity = 0;
 
-        if (!Main_IsOn_OSInterface) {
-            Main_Scene1Doc.style.pointerEvents = 'none';
-        }
+        Main_Scene1Doc.style.pointerEvents = 'none';
     }
 
     var Main_hideScene1DocAndCallBackId;
@@ -10988,18 +11005,13 @@
     function Main_showScene2Doc() {
         Main_Scene2Doc.style.opacity = 1;
 
-        if (!Main_IsOn_OSInterface) {
-            Main_Scene2Doc.style.pointerEvents = '';
-        }
+        Main_Scene2Doc.style.pointerEvents = '';
     }
 
     function Main_hideScene2Doc() {
         Main_Scene2Doc.style.opacity = 0;
 
-        if (!Main_IsOn_OSInterface) {
-            Main_Scene2Doc.style.pointerEvents = 'none';
-        }
-
+        Main_Scene2Doc.style.pointerEvents = 'none';
     }
 
     function Main_isScene2DocVisible() {
@@ -11791,7 +11803,7 @@
                 array.push(arrayTocopy[i]);
             }
 
-            Main_Log('Main_Slice ' + e);
+            console.trace('Main_Slice ' + e);
         }
         return array;
     }
@@ -12705,6 +12717,24 @@
             'game_view',
             game
         );
+    }
+
+
+    function Main_EventBanner(type, screen) {
+        if (skipfirebase) return;
+
+        try {
+
+            gtag(
+                'event',
+                type, {
+                    'screen': screen
+                }
+            );
+
+        } catch (e) {
+            console.log("Main_EventBanner e " + e);
+        }
     }
 
     function Main_EventShowScreen(type, name) {
@@ -21695,9 +21725,7 @@
 
         }
 
-        if (!Main_IsOn_OSInterface) {
-            Play_PanneInfoDoclId.style.pointerEvents = '';
-        }
+        Play_PanneInfoDoclId.style.pointerEvents = '';
     }
 
     function Play_ForceHidePannel() {
@@ -21706,9 +21734,7 @@
         if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
         else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 
-        if (!Main_IsOn_OSInterface) {
-            Play_PanneInfoDoclId.style.pointerEvents = 'none';
-        }
+        Play_PanneInfoDoclId.style.pointerEvents = 'none';
     }
 
     function Play_hidePanel() {
@@ -25426,6 +25452,7 @@
         ScreenObj[key].dataEnded = false;
         ScreenObj[key].ContentLang = Main_ContentLang;
         ScreenObj[key].Lang = Settings_AppLang;
+        ScreenObj[key].BannerCreated = false;
 
         Main_CounterDialogRst();
         Screens_loadDataRequestStart(key);
@@ -25516,18 +25543,23 @@
 
             if (Screens_IsInUse(key)) {
 
-                Main_showWarningDialog(STR_REFRESH_PROBLEM);
                 if (!Main_FirstRun) Main_HideLoadDialog();
 
-                if (ScreenObj[key].HasSwitches) {
+                if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner) {
 
                     ScreenObj[key].emptyContent = true;
-                    ScreenObj[key].addSwitches();
+
+                    if (ScreenObj[key].HasSwitches) {
+                        ScreenObj[key].addSwitches();
+                    }
+
+                    ScreenObj[key].addEmptyContentBanner();
+
                     Screens_loadDataSuccessFinish(key);
 
                 } else ScreenObj[key].key_exit();
 
-            } //else the user has already exit the screen
+            } //else the user has already exited the screen
 
             if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
 
@@ -25554,7 +25586,20 @@
         if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
         else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
-        if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) ScreenObj[key].addSwitches();
+        if (ScreenObj[key].HasSwitches &&
+            !ScreenObj[key].TopRowCreated) {
+
+            ScreenObj[key].addSwitches();
+
+        }
+
+        if (ScreenObj[key].hasBanner &&
+            !ScreenObj[key].BannerCreated &&
+            !ScreensObj_banner_added_section) {
+
+            ScreenObj[key].addBanner();
+
+        }
 
         if (response_items) {
 
@@ -25569,7 +25614,8 @@
 
                 }
 
-                for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
+                for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount &&
+                    ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
 
                     if (ScreenObj[key].data[ScreenObj[key].data_cursor])
                         ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
@@ -25582,15 +25628,62 @@
                     ScreenObj[key].row_id++;
                     ScreenObj[key].tempHtml = '';
 
-                } else if (ScreenObj[key].data_cursor >= data_length) {
+                    if (ScreenObj[key].hasBanner &&
+                        (ScreenObj[key].BannerTime < (new Date().getTime())) &&
+                        !ScreenObj[key].BannerCreated &&
+                        ScreenObj[key].row_id > 2) {
 
-                    if (ScreenObj[key].tempHtml !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
+                        ScreenObj[key].addBanner();
+
+                    }
+
+                    //Content ended and last row is full
+                    if (ScreenObj[key].data_cursor === data_length &&
+                        ScreenObj[key].hasBanner &&
+                        !ScreenObj[key].BannerCreated) {
+
+                        ScreenObj[key].row_id++;
+                        ScreenObj[key].tempHtml = '';
+                        ScreenObj[key].addBanner();
+
+                    }
+
+                } else if (ScreenObj[key].data_cursor >= data_length) {
+                    //Content ended and last row is not full
+
+                    if (ScreenObj[key].tempHtml !== '') {
+
+                        ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
+
+                    }
+
+                    if (ScreenObj[key].hasBanner &&
+                        !ScreenObj[key].BannerCreated) {
+
+                        ScreenObj[key].row_id++;
+                        ScreenObj[key].tempHtml = '';
+                        ScreenObj[key].addBanner();
+
+                    }
+
                     break;
 
                 }
             }
         }
         ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
+
+        if (ScreenObj[key].emptyContent) {
+
+            if (!ScreenObj[key].BannerCreated) {
+
+                ScreenObj[key].addEmptyContentBanner();
+
+            }
+
+        }
+
+
         Screens_loadDataSuccessFinish(key);
     }
 
@@ -25678,7 +25771,6 @@
             '</div></div></div></div>';
     }
 
-    //TODO uncomplicate this ifs
     function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra_vodimg, force_VOD) {
 
         if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
@@ -25794,7 +25886,12 @@
 
         } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
 
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(
+                ScreenObj[key].posX,
+                ScreenObj[key].posY,
+                ScreenObj[key].ColoumnsCount,
+                ScreenObj[key].itemsCount
+            );
 
         }
     }
@@ -25939,7 +26036,12 @@
 
             if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
 
-                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+                Main_CounterDialog(
+                    ScreenObj[key].posX,
+                    ScreenObj[key].posY + 1,
+                    ScreenObj[key].ColoumnsCount,
+                    ScreenObj[key].itemsCount
+                );
 
             }
 
@@ -25977,7 +26079,12 @@
     }
 
     function Screens_GetObj(key) {
-        return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+        var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+        return Main_Slice(
+            ScreenObj[key].DataObj[obj_id].image ? [] :
+            ScreenObj[key].DataObj[obj_id]
+        );
     }
 
     function Screens_ObjNotNull(key) {
@@ -25989,9 +26096,12 @@
     //Also help to prevent lag on animation
     function Screens_LoadPreview(key) {
 
+        var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
         if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
-            !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+            !Main_ThumbOpenIsNull(obj_id, ScreenObj[key].ids[0]) &&
+            !ScreenObj[key].DataObj[obj_id].image) {
 
             var id = 0, //Clip
                 obj = Screens_GetObj(key);
@@ -26645,7 +26755,8 @@
 
                     if (Main_history_Watched_Obj[data[7]]) {
 
-                        Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+                        Main_getElementById(ScreenObj[key].ids[7] + id).style.width =
+                            Main_history_Watched_Obj[data[7]] + '%';
 
                     }
 
@@ -26660,8 +26771,21 @@
             ScreenObj[key].addFocus(forceScroll, key);
 
             if (key === Main_values.Main_Go && !Settings_isVisible())
-                Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+                Main_CounterDialog(
+                    ScreenObj[key].posX,
+                    ScreenObj[key].posY,
+                    ScreenObj[key].ColoumnsCount,
+                    ScreenObj[key].itemsCount
+                );
 
+            if (ScreenObj[key].DataObj[id].event_name) {
+
+                Main_EventBanner(
+                    ScreenObj[key].DataObj[id].event_name + '_viewed',
+                    ScreenObj[key].ScreenName
+                );
+
+            }
         });
     }
 
@@ -26669,12 +26793,16 @@
 
     function Screens_UpdateSince(key) {
 
-        if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key)) return;
+        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+        if (Main_isStoped || !Screens_IsInUse(key) ||
+            !Screens_IsDivFocused(key) ||
+            !ScreenObj[key].Cells[ScreenObj[key].posY] ||
+            ScreenObj[key].DataObj[id].image) return;
 
         if (Screens_ObjNotNull(key)) {
 
-            var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
-                data = Screens_GetObj(key);
+            var data = Screens_GetObj(key);
 
             Main_innerHTML(
                 ScreenObj[key].ids[4] + id,
@@ -26783,10 +26911,21 @@
     }
 
     function Screens_removeFocusFollow(key) {
-        if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
-        else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
-        Main_RemoveClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
+        if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) {
+
+            ScreenObj[key].posX = 0;
+
+        } else if (ScreenObj[key].posX < 0) {
+
+            ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
+
+        }
+
+        Main_RemoveClass(
+            ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX,
+            'stream_switch_focused'
+        );
     }
 
     function Screens_BasicExit(before, key) {
@@ -26812,7 +26951,7 @@
             Screens_addFocusFollow(key);
 
         } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 &&
-            ScreenObj[key].DataObj['0_' + ScreenObj[key].posX]) {
+            (ScreenObj[key].DataObj['0_' + ScreenObj[key].posX])) {
 
             ScreenObj[key].posY = 0;
             Screens_addFocus(false, key);
@@ -26820,7 +26959,9 @@
 
         } else {
 
-            for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
+            var i = 0;
+
+            for (i; i < ScreenObj[key].ColoumnsCount; i++) {
                 if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + (ScreenObj[key].posX - i)]) {
 
                     Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
@@ -26833,7 +26974,8 @@
     }
 
     function Screens_ClearAnimation(key) {
-        if (ScreenObj[key].HasAnimateThumb) {
+        if (ScreenObj[key].HasAnimateThumb && ScreenObj[key].posY > -1 && ScreenObj[key].itemsCount &&
+            !ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].image) {
 
             Main_clearInterval(ScreenObj[key].AnimateThumbId);
 
@@ -26903,6 +27045,7 @@
             if (!Screens_clear) ScreenObj[key].key_play();
 
         } else if (e.keyCode === KEY_LEFT) {
+            Screens_ThumbOptionCanKeyLeft = true;
 
             Main_clearTimeout(Screens_KeyEnterID);
             Main_removeEventListener("keyup", ScreenObj[key].key_up);
@@ -27041,7 +27184,16 @@
                 ScreenObj[key].key_exit();
                 break;
             case KEY_LEFT:
+                Screens_ThumbOptionCanKeyLeft = false;
+                var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
                 Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
+
+                if (ScreenObj[key].posY === -1 || ScreenObj[key].DataObj[obj_id].image) {
+
+                    Screens_ThumbOptionSpecial = true;
+                }
+
                 Screens_handleKeyUpIsClear = false;
 
                 Main_removeEventListener("keydown", ScreenObj[key].key_fun);
@@ -27571,16 +27723,36 @@
 
     function Screens_ThumbOptionStart(key) {
         Screens_LoadPreviewSTop();
-        Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
+        if (ScreenObj[key].posY > -1) {
+
+            Main_RemoveClass(
+                ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX,
+                'opacity_zero'
+            );
+
+        }
 
         Screens_clear = true;
 
         Screens_ThumbOptionSetArrowArray(key);
 
         if (Screens_ThumbOptionSpecial) {
-            Screens_ThumbOptionPosY = 5;
-            Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
+
+            Screens_ThumbOptionPosY = ScreenObj[key].histPosXName ? 3 : 4;
+
+            Main_textContent(
+                'dialog_thumb_opt_val_4',
+                Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]
+            );
+            Main_textContent(
+                'dialog_thumb_opt_val_5',
+                Screens_ThumbOptionScreens[0]
+            );
+
             Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+            Screens_ThumbOptionShowSpecial();
+            Screens_ThumbOptionHideSpecial();
         } else {
             Screens_ThumbOptionShowSpecial();
 
@@ -27588,7 +27760,9 @@
             Screens_ThumbOptionPosY = 0;
         }
 
-        ScreenObj[key].setTODialog();
+        if (ScreenObj[key].setTODialog && !Screens_ThumbOptionSpecial) {
+            ScreenObj[key].setTODialog();
+        }
         Screens_SeTODialogId(key);
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_addEventListener("keydown", ScreenObj[key].key_thumb);
@@ -27602,7 +27776,7 @@
     }
 
     function Screens_ThumbOptionHideSpecial() {
-        for (var i = -1; i < 5; i++)
+        for (var i = -1; i < Screens_ThumbOptionPosY; i++)
             Main_AddClass('dialog_thumb_opt_setting_' + i, 'hideimp');
     }
 
@@ -27722,6 +27896,8 @@
         return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
     }
 
+    var Screens_ThumbOptionCanKeyLeft = true;
+
     function Screens_ThumbOptionhandleKeyDown(key, event) {
         //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
@@ -27731,6 +27907,8 @@
                 Screens_ThumbOptionDialogHide(false, key);
                 break;
             case KEY_LEFT:
+                if (!Screens_ThumbOptionCanKeyLeft) return;
+
                 Screens_SeTODialogId(key);
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
@@ -27753,8 +27931,15 @@
                 }
                 break;
             case KEY_UP:
-                if (Screens_ThumbOptionSpecial) break;
-                var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
+                var min_pos = 0;
+
+                if (Screens_ThumbOptionSpecial) {
+
+                    min_pos = ScreenObj[key].histPosXName ? 3 : 4;
+
+                }
+
+                var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
                 Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY--;
                 if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
@@ -27764,7 +27949,6 @@
                 }
                 break;
             case KEY_DOWN:
-                if (Screens_ThumbOptionSpecial) break;
                 Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY++;
                 if (Screens_ThumbOptionPosY > 5)
@@ -28179,6 +28363,7 @@
     var DefaultPreviewDelay = 200; //To avoid multiple simultaneous request
     var DefaultHttpGetTimeout = 30000;
     var noop_fun = function() {};
+    var ScreensObj_banner_added_section = false;
 
     var Base_obj;
     var Base_Vod_obj;
@@ -28222,6 +28407,7 @@
             focusPos: '',
             IsOpen: 0,
             Lang: '',
+            BannerTime: 0,
             SetPreviewEnable: function() {
                 this.PreviewEnable =
                     (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -28449,6 +28635,7 @@
                 this.ScreenBackup[game].coloumn_id = this.coloumn_id;
                 this.ScreenBackup[game].data_cursor = this.data_cursor;
                 this.ScreenBackup[game].dataEnded = this.dataEnded;
+                this.ScreenBackup[game].BannerCreated = this.BannerCreated;
 
             },
             RestoreBackupScreen: function(game) {
@@ -28457,17 +28644,14 @@
                 this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
                 this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
 
-                //Backup of cells and the innerHTML disconects the div in the table and on the array
+                //Backup of cells and the innerHTML disconnects the div in the table and on the Backup array
                 var array = this.tableDoc.getElementsByClassName(this.rowClass),
                     i = 0,
-                    len = array.length,
-                    id = '';
+                    len = array.length;
 
                 for (i; i < len; i++) {
 
-                    id = array[0].id;
-                    this.tableDoc.removeChild(array[0]);
-                    this.tableDoc.appendChild(this.Cells[id.split(this.ids[6])[1]]);
+                    this.Cells[(array[i].id).split(this.ids[6])[1]] = array[i];
 
                 }
 
@@ -28487,6 +28671,7 @@
                 this.coloumn_id = this.ScreenBackup[game].coloumn_id;
                 this.data_cursor = this.ScreenBackup[game].data_cursor;
                 this.dataEnded = this.ScreenBackup[game].dataEnded;
+                this.BannerCreated = this.ScreenBackup[game].BannerCreated;
 
                 this.status = true;
                 this.FirstRunEnd = true;
@@ -28534,6 +28719,86 @@
                     this.ScreenName
                 );
 
+            },
+            addBanner: function(forceAdd) {
+                ScreensObj_addBanner({
+                        image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
+                        url: 'https://github.com/fgl27/SmartTwitchTV',
+                        text: 'Banner Text shows here',
+                        event_name: 'base_banner'
+                    },
+                    this.screen,
+                    forceAdd
+                );
+            },
+            emptyBanner: function(forceAdd) {
+                ScreensObj_addBanner({
+                        image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
+                        text: STR_REFRESH_PROBLEM_ENTER
+                    },
+                    this.screen,
+                    forceAdd
+                );
+            },
+            addEmptyContentBanner: function() {
+
+                if (this.hasBanner) {
+
+                    this.addBanner();
+
+                } else {
+
+                    this.emptyBanner();
+
+                }
+
+                this.itemsCount = 1;
+                this.emptyContent = false;
+
+            },
+            bannerCheck: function() {
+
+                var obj_id = this.posY + '_' + this.posX;
+
+                if (this.posY > -1 && this.DataObj[obj_id].image) {
+
+                    this.banner_click(obj_id);
+
+                    return true;
+                }
+
+                return false;
+            },
+            banner_click: function(obj_id) {
+
+
+                if (this.DataObj[obj_id].url) {
+
+                    if (Main_IsOn_OSInterface) {
+
+                        Main_SaveValues();
+                        Android.OpenURL(this.DataObj[obj_id].url);
+
+                    } else {
+
+                        console.log(this.DataObj[obj_id]);
+
+                    }
+
+                } else {
+
+                    Main_ReloadScreen();
+
+                }
+
+                if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
+
+                    Main_EventBanner(
+                        this.DataObj[obj_id].event_name + '_click',
+                        this.ScreenName
+                    );
+
+                }
             },
         };
 
@@ -28631,10 +28896,16 @@
                 }
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 if (this.itemsCount) {
+
                     Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                     this.OpenLiveStream(false);
+
                 }
+
             }
         };
 
@@ -28674,6 +28945,8 @@
                 if (this.cursor === '') this.dataEnded = true;
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
 
                 if (this.posY === -1) {
 
@@ -28727,8 +29000,10 @@
             addFocus: Screens_addFocusVideo,
             img_404: IMG_404_GAME,
             screenType: 3,
-            setTODialog: Screens_ThumbOptionHideSpecial,
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
                 var data = Screens_GetObj(this.screen);
@@ -28794,7 +29069,6 @@
                 this.MaxOffset = tempObj._total;
                 if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
             },
-            setTODialog: Screens_ThumbOptionHideSpecial,
             addCellTemp: function(cell) {
                 if (!this.idObject[cell._id]) {
 
@@ -28813,6 +29087,9 @@
                 }
             },
             base_key_play: function(go_screen, IsFollowing) {
+
+                if (this.bannerCheck()) return;
+
                 if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
                 var data = Screens_GetObj(this.screen);
@@ -28970,6 +29247,9 @@
                     (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 if (this.posY === -1) {
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
@@ -29032,6 +29312,9 @@
                     this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 if (this.posY === -1) {
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
@@ -29114,6 +29397,9 @@
                     (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 if (this.posY === -1) {
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
@@ -29185,6 +29471,9 @@
                     '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 if (this.posY === -1) {
                     if (this.posX === 0) {
                         this.highlight = !this.highlight;
@@ -29464,10 +29753,21 @@
         ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
         ScreenObj[Main_aGame].Set_Scroll();
         ScreenObj[Main_aGame].key_play = function() {
-            if (this.itemsCount && this.posY !== -1) {
-                Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
-                this.OpenLiveStream(false);
+            if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
+
+                if (this.bannerCheck()) return;
+
+                if (this.itemsCount) {
+
+                    Main_RemoveClass(
+                        this.ids[1] + this.posY + '_' + this.posX,
+                        'opacity_zero'
+                    );
+
+                    this.OpenLiveStream(false);
+
+                }
 
             } else AGame_headerOptions(this.screen);
 
@@ -29769,7 +30069,11 @@
                 ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
+
                 this.base_key_play(Main_UserChannels, true);
+
             },
             addCell: function(cell) {
                 cell = cell.channel;
@@ -29810,6 +30114,8 @@
                 if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
             },
             key_play: function() {
+                if (this.bannerCheck()) return;
+
                 this.base_key_play(Main_SearchChannels, false);
             },
             addCell: function(cell) {
@@ -29898,6 +30204,9 @@
         ScreenObj[Main_HistoryLive].Upsorting();
         ScreenObj[Main_HistoryLive].Set_Scroll();
         ScreenObj[Main_HistoryLive].key_play = function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     Main_values.Main_Go = Main_HistoryVod;
@@ -29954,6 +30263,8 @@
                 );
             },
             key_play: function() {
+
+                if (this.bannerCheck()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -30046,6 +30357,8 @@
             },
             key_play: function() {
 
+                if (this.bannerCheck()) return;
+
                 if (this.posY === -1) {
 
                     if (this.posX === 0) {
@@ -30123,6 +30436,45 @@
             ScreenObj[key].row.appendChild(div);
         }
         ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+    }
+
+
+    function ScreensObj_addBanner(obj, key, forceAdd) {
+
+        ScreenObj[key].BannerCreated = true;
+
+        var id = ScreenObj[key].row_id + '_0',
+            idArray = ScreenObj[key].ids;
+
+        ScreenObj[key].row = Screens_createRow(key);
+        ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+        ScreenObj[key].row_id++;
+
+        ScreenObj[key].DataObj[id] = obj;
+
+        var div = document.createElement('div');
+        div.setAttribute('id', ScreenObj[key].ids[3] + id);
+        div.className = 'banner_holder';
+
+        div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '" ><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
+            idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+            '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
+
+        ScreenObj[key].row.appendChild(div);
+
+        if (!ScreensObj_banner_added_section || forceAdd) {
+
+            ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+        }
+
+        this.itemsCount += 3;
+        this.coloumn_id += 3;
+
+        ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+
+        ScreensObj_banner_added_section = true;
+        ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
+
     }
 
     function ScreensObj_CheckIsOpen(key, preventRefresh) {
@@ -31600,6 +31952,10 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "fade_sidepannel": {
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "clock_offset": { //Migrated to dialog
             "values": Settings_GenerateClock(),
             "defaultValue": 49
@@ -31816,7 +32172,7 @@
         },
         "round_images": { //Migrated to dialog
             "values": ["no", "yes"],
-            "defaultValue": 1
+            "defaultValue": 2
         },
         "update_background": {
             "values": ["yes", "no"],
@@ -32405,6 +32761,7 @@
         else if (position === "hide_player_clock") Settings_HidePlayerClock();
         else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
         else if (position === "hide_etc_help_text") Settings_HideEtcHelp();
+        else if (position === "fade_sidepannel") Settings_check_sidePannelFade();
         else if (position === "clock_offset") {
             Settings_SetClock();
             Main_updateclock();
@@ -32427,6 +32784,14 @@
 
         }
 
+    }
+
+    function Settings_check_sidePannelFade() {
+        if (Settings_Obj_default('fade_sidepannel')) {
+            Sidepannel_FadeStart();
+        } else {
+            Sidepannel_UnFade();
+        }
     }
 
     function Settings_check_min_seek() {
@@ -33476,6 +33841,7 @@
         Settings_value.hide_main_screen_title.values = [STR_NO, STR_YES];
         Settings_value.hide_etc_help_text.values = [STR_NO, STR_YES];
         Settings_value.round_images.values = [STR_NO, STR_YES];
+        Settings_value.fade_sidepannel.values = [STR_NO, STR_YES];
 
         Settings_value.thumb_quality.values = [STR_VERY_LOW, STR_LOW, STR_NORMAL, STR_HIGH, STR_VERY_HIGH];
 
@@ -33511,29 +33877,35 @@
                 title: STR_GLOBAL_FONT,
                 summary: STR_GLOBAL_FONT_SUMMARY
             },
-            clock_offset: {
-                defaultValue: Settings_value.clock_offset.defaultValue,
-                values: Settings_value.clock_offset.values,
-                title: STR_CLOCK_OFFSET,
-                summary: STR_CLOCK_OFFSET_SUMMARY
-            },
             round_images: {
                 defaultValue: Settings_value.round_images.defaultValue,
                 values: Settings_value.round_images.values,
                 title: STR_ROUND_IMAGES,
                 summary: STR_ROUND_IMAGES_SUMMARY
             },
-            hide_screen_counter: {
-                defaultValue: Settings_value.hide_screen_counter.defaultValue,
-                values: Settings_value.hide_screen_counter.values,
-                title: STR_SCREEN_COUNTER,
-                summary: STR_SCREEN_COUNTER_SUMMARY
+            fade_sidepannel: {
+                defaultValue: Settings_value.fade_sidepannel.defaultValue,
+                values: Settings_value.fade_sidepannel.values,
+                title: STR_FADE_SIDEPANNEL,
+                summary: null
+            },
+            clock_offset: {
+                defaultValue: Settings_value.clock_offset.defaultValue,
+                values: Settings_value.clock_offset.values,
+                title: STR_CLOCK_OFFSET,
+                summary: STR_CLOCK_OFFSET_SUMMARY
             },
             hide_main_clock: {
                 defaultValue: Settings_value.hide_main_clock.defaultValue,
                 values: Settings_value.hide_main_clock.values,
                 title: STR_HIDE_MAIN_CLOCK,
                 summary: null
+            },
+            hide_screen_counter: {
+                defaultValue: Settings_value.hide_screen_counter.defaultValue,
+                values: Settings_value.hide_screen_counter.values,
+                title: STR_SCREEN_COUNTER,
+                summary: STR_SCREEN_COUNTER_SUMMARY
             },
             hide_player_clock: {
                 defaultValue: Settings_value.hide_player_clock.defaultValue,
@@ -33893,7 +34265,7 @@
     function Settings_DialogShow(obj, title) {
         Main_removeEventListener("keydown", Settings_handleKeyDown);
 
-        var dialogContent = title + STR_BR + STR_BR;
+        var dialogContent = title + STR_BR;
         Settings_DialogValue = [];
 
         for (var property in obj) {
@@ -34008,6 +34380,8 @@
     var Sidepannel_ScroolDoc;
     var Sidepannel_Html;
 
+    var Sidepannel_Opt_holder;
+    var Sidepannel_scenefeed;
     var Sidepannel_SidepannelDoc;
     var Sidepannel_SidepannelInnerDoc;
     var Sidepannel_SidepannelRow_0;
@@ -34024,11 +34398,17 @@
     var Sidepannel_AnimationTimeout = 200; //Same value as side_panel_holder_ani
 
     function Sidepannel_AddFocusMain() {
-        Main_AddClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+        Main_AddClass(
+            'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+            Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+        );
     }
 
     function Sidepannel_RemoveFocusMain() {
-        Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, 'side_panel_new_icons_text');
+        Main_RemoveClass(
+            'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+            Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+        );
     }
 
     function Sidepannel_AddFocusLiveFeed(skipAnimation) {
@@ -34498,6 +34878,11 @@
     }
 
     function Sidepannel_Start(callback, forceFeed) {
+
+        if (Settings_Obj_default('fade_sidepannel')) {
+            Sidepannel_UnFade();
+        }
+
         Sidepannel_Callback = callback;
         Main_removeEventListener("keydown", Sidepannel_Callback);
         if (!Sidepannel_IsMain || forceFeed) {
@@ -34525,7 +34910,8 @@
 
     function Sidepannel_ShowFeed() {
         var ForceRefresh = false;
-        Main_AddClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+
+        Sidepannel_Showscenefeed();
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
@@ -34553,6 +34939,27 @@
         Main_EventScreen('Side_panel_user_live');
     }
 
+    function Sidepannel_Showscenefeed() {
+        Main_AddClassWitEle(
+            Sidepannel_scenefeed,
+            Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani'
+        );
+        Main_RemoveClassWithEle(
+            Sidepannel_scenefeed,
+            'feed_screen_input'
+        );
+    }
+
+    function Sidepannel_Hidecenefeed() {
+        Main_RemoveClassWithEle(
+            Sidepannel_scenefeed,
+            Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani'
+        );
+        Main_AddClassWitEle(
+            Sidepannel_scenefeed,
+            'feed_screen_input'
+        );
+    }
 
     function Sidepannel_SetLastRefresh() {
         if (!UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos]) return;
@@ -34573,7 +34980,7 @@
     }
 
     function Sidepannel_StartMain() {
-        Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+        Sidepannel_Hidecenefeed();
         Sidepannel_IsMain = true;
         Sidepannel_MovelDiv.style.transform = 'translateX(' + Sidepannel_FixdefaultMargin + '%)';
         Sidepannel_FixDiv.style.marginLeft = '';
@@ -34605,12 +35012,42 @@
             Sidepannel_RemoveFocusMain();
             Sidepannel_FixDiv.style.marginLeft = '';
             Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
-            Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+            Sidepannel_Hidecenefeed();
         }
         Sidepannel_HideEle(PreventCleanQualities);
 
         Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
         Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+
+        if (Settings_Obj_default('fade_sidepannel')) {
+            Sidepannel_FadeStart();
+        }
+    }
+
+    var Sidepannel_FadeStartID;
+
+    function Sidepannel_FadeStart() {
+        Main_setTimeout(Sidepannel_Fade, 5000);
+    }
+
+    function Sidepannel_Fade() {
+        Sidepannel_Opt_holder.style.transition = Sidepannel_IsMain ? '' : 'none';
+        Sidepannel_scenefeed.style.transition = '';
+
+        Sidepannel_Opt_holder.style.opacity = 0;
+        Sidepannel_scenefeed.style.opacity = 0;
+
+    }
+
+    function Sidepannel_UnFade() {
+        Main_clearTimeout(Sidepannel_FadeStartID);
+
+        Sidepannel_Opt_holder.style.transition = 'none';
+        Sidepannel_scenefeed.style.transition = 'none';
+
+        Sidepannel_Opt_holder.style.opacity = '';
+        Sidepannel_scenefeed.style.opacity = '';
+
     }
 
     function Sidepannel_HideEle(PreventCleanQualities, full) {
@@ -34642,7 +35079,7 @@
 
             Main_AddClass(
                 'side_panel_new_' + Sidepannel_Sidepannel_Pos,
-                'side_panel_new_icons_text'
+                'side_panel_new_icons_start'
             );
 
         }
@@ -34677,7 +35114,7 @@
     ];
 
     function Sidepannel_UnSetTopOpacity() {
-        for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_text');
+        for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_start');
     }
 
     function Sidepannel_SetUserLables() {
@@ -34798,7 +35235,7 @@
                 break;
             case KEY_RIGHT:
                 Sidepannel_HideEle(false, true);
-                Main_RemoveClass('scenefeed', Screens_SettingDoAnimations ? 'scenefeed_background' : 'scenefeed_background_no_ani');
+                Sidepannel_Hidecenefeed();
                 Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
                 Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
                 Sidepannel_StartMain();
@@ -35182,6 +35619,8 @@
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
+        Sidepannel_Opt_holder = Main_getElementById("side_panel_new_holder");
+        Sidepannel_scenefeed = Main_getElementById('scenefeed');
         Sidepannel_ScroolDoc = Main_getElementById('side_panel_holder');
         Sidepannel_SidepannelDoc = Main_getElementById('side_panel');
         Sidepannel_SidepannelInnerDoc = Main_getElementById('side_panel_inner');
@@ -35202,6 +35641,7 @@
         Sidepannel_UpdateThumbDivThumb = Main_getElementById("feed_thumb_icon");
 
         Sidepannel_SetLastRefreshUpDiv(0);
+        Settings_check_sidePannelFade();
     }
 
     function UserLiveFeed_RefreshLive() {

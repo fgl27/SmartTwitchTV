@@ -9,6 +9,14 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Apk Version 3.0.324 and Web Version July 17 2021
+==============
+
+* Update side panel styles
+* Add a new settings option 'Hide the side panel after 5 seconds of not using it' to 'Customize interface, color style, animations and related'
+* Allow to access the 'Thumbnail Options' even when the content of the screen is empty, this is useful when changing to a language that has no content
+* General improves and bug fixes
+
 Apk Version 3.0.323
 ==============
 
