@@ -336,17 +336,14 @@ function ScreensObj_StartAllVars() {
             this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
             this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
 
-            //Backup of cells and the innerHTML disconects the div in the table and on the array
+            //Backup of cells and the innerHTML disconnects the div in the table and on the Backup array
             var array = this.tableDoc.getElementsByClassName(this.rowClass),
                 i = 0,
-                len = array.length,
-                id = '';
+                len = array.length;
 
             for (i; i < len; i++) {
 
-                id = array[0].id;
-                this.tableDoc.removeChild(array[0]);
-                this.tableDoc.appendChild(this.Cells[id.split(this.ids[6])[1]]);
+                this.Cells[(array[i].id).split(this.ids[6])[1]] = array[i];
 
             }
 
