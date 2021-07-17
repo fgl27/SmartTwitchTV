@@ -1222,7 +1222,6 @@ function ScreensObj_InitLive() {
         key_pgUp: Main_Clip,
         CheckContentLang: 1,
         ContentLang: '',
-        hasBanner: true,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.check_offset();
@@ -1409,7 +1408,6 @@ function ScreensObj_InitAGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         hasBackupData: true,
-        hasBanner: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();
