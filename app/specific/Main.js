@@ -230,10 +230,6 @@ function Main_StartApp() {
             //When esc is clicked from android app a duple KEYCODE_BACK is send... prevent it
             KEY_RETURN = 27;
             Main_HideElement('scene_keys');
-
-            Main_getElementById('scene2').style.pointerEvents = 'none';
-            Main_getElementById('scene_channel_panel').style.pointerEvents = 'none';
-
         }
 
         Main_showLoadDialog();
@@ -1543,17 +1539,13 @@ function Main_isScene1DocVisible() {
 function Main_showScene1Doc() {
     Main_Scene1Doc.style.opacity = 1;
 
-    if (!Main_IsOn_OSInterface) {
-        Main_Scene1Doc.style.pointerEvents = '';
-    }
+    Main_Scene1Doc.style.pointerEvents = '';
 }
 
 function Main_hideScene1Doc() {
     Main_Scene1Doc.style.opacity = 0;
 
-    if (!Main_IsOn_OSInterface) {
-        Main_Scene1Doc.style.pointerEvents = 'none';
-    }
+    Main_Scene1Doc.style.pointerEvents = 'none';
 }
 
 var Main_hideScene1DocAndCallBackId;
@@ -1571,18 +1563,13 @@ function Main_hideScene1DocAndCallBack(callback) {
 function Main_showScene2Doc() {
     Main_Scene2Doc.style.opacity = 1;
 
-    if (!Main_IsOn_OSInterface) {
-        Main_Scene2Doc.style.pointerEvents = '';
-    }
+    Main_Scene2Doc.style.pointerEvents = '';
 }
 
 function Main_hideScene2Doc() {
     Main_Scene2Doc.style.opacity = 0;
 
-    if (!Main_IsOn_OSInterface) {
-        Main_Scene2Doc.style.pointerEvents = 'none';
-    }
-
+    Main_Scene2Doc.style.pointerEvents = 'none';
 }
 
 function Main_isScene2DocVisible() {
@@ -2367,7 +2354,7 @@ function Main_Slice(arrayTocopy) {
             array.push(arrayTocopy[i]);
         }
 
-        Main_Log('Main_Slice ' + e);
+        console.trace('Main_Slice ' + e);
     }
     return array;
 }
@@ -3286,6 +3273,25 @@ function Main_EventAgame(game) {
         'game_view',
         game
     );
+}
+
+
+function Main_EventBanner(type, screen) {
+    if (skipfirebase) return;
+
+    try {
+
+        gtag(
+            'event',
+            type,
+            {
+                'screen': screen
+            }
+        );
+
+    } catch (e) {
+        console.log("Main_EventBanner e " + e);
+    }
 }
 
 function Main_EventShowScreen(type, name) {

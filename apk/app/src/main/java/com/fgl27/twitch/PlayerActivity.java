@@ -137,10 +137,11 @@ public class PlayerActivity extends Activity {
     };
 
     private String AppUrl;
-
     private String userAgent;
     private WebView mWebView;
     private WebView mWebViewKey;
+    private boolean isAppUrlPageUrl = true;
+
     private boolean PicturePicture;
     private boolean deviceIsTV;
     private boolean MultiStreamEnable;
@@ -1829,12 +1830,26 @@ public class PlayerActivity extends Activity {
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking() && !event.isCanceled()) {
-            // if the call key is being released, AND we are tracking
-            // it from an initial key down, AND it is not canceled,
-            // then handle it.
-            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
-            mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
+
+            if (isAppUrlPageUrl) {
+
+                // if the call key is being released, AND we are tracking
+                // it from an initial key down, AND it is not canceled,
+                // then handle it.
+                mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F2));
+                mWebView.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F2));
+
+            } else {
+
+                //User is on the authentication page or some page that the app provides and press back
+                //return to AppUrl
+                isAppUrlPageUrl = true;
+                LoadUrlWebview(AppUrl);
+
+            }
+
             return true;
         }
 
@@ -2393,6 +2408,11 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void mloadUrl(String url) {
+            loadUrlInternal(url);
+        }
+
+        void loadUrlInternal(String url) {
+            isAppUrlPageUrl = url.contains(AppUrl);
             LoadUrlWebview(url);
         }
 
@@ -2465,7 +2485,7 @@ public class PlayerActivity extends Activity {
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(intent, 102);
                 } else {
-                    Toast.makeText(mWebViewContext, getString(R.string.no_browser), Toast.LENGTH_LONG).show();
+                    loadUrlInternal(url);
                 }
 
             });

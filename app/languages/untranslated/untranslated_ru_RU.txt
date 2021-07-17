@@ -8,3 +8,5 @@
     STR_VIEWER = "Viewer";
     STR_VIEW = "View";
     STR_FOLLOWER = "Follower";
+    STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
+    STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";

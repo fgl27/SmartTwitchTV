@@ -358,6 +358,7 @@ function Screens_StartLoad(key) {
     ScreenObj[key].dataEnded = false;
     ScreenObj[key].ContentLang = Main_ContentLang;
     ScreenObj[key].Lang = Settings_AppLang;
+    ScreenObj[key].BannerCreated = false;
 
     Main_CounterDialogRst();
     Screens_loadDataRequestStart(key);
@@ -448,18 +449,23 @@ function Screens_loadDatafail(key) {
 
         if (Screens_IsInUse(key)) {
 
-            Main_showWarningDialog(STR_REFRESH_PROBLEM);
             if (!Main_FirstRun) Main_HideLoadDialog();
 
-            if (ScreenObj[key].HasSwitches) {
+            if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner) {
 
                 ScreenObj[key].emptyContent = true;
-                ScreenObj[key].addSwitches();
+
+                if (ScreenObj[key].HasSwitches) {
+                    ScreenObj[key].addSwitches();
+                }
+
+                ScreenObj[key].addEmptyContentBanner();
+
                 Screens_loadDataSuccessFinish(key);
 
             } else ScreenObj[key].key_exit();
 
-        }//else the user has already exit the screen
+        }//else the user has already exited the screen
 
         if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
 
@@ -486,7 +492,20 @@ function Screens_loadDataSuccess(key) {
     if (response_items > ScreenObj[key].ItemsLimit) response_items = ScreenObj[key].ItemsLimit;
     else if (!ScreenObj[key].loadingData) ScreenObj[key].dataEnded = true;
 
-    if (ScreenObj[key].HasSwitches && !ScreenObj[key].TopRowCreated) ScreenObj[key].addSwitches();
+    if (ScreenObj[key].HasSwitches &&
+        !ScreenObj[key].TopRowCreated) {
+
+        ScreenObj[key].addSwitches();
+
+    }
+
+    if (ScreenObj[key].hasBanner &&
+        !ScreenObj[key].BannerCreated &&
+        !ScreensObj_banner_added_section) {
+
+        ScreenObj[key].addBanner();
+
+    }
 
     if (response_items) {
 
@@ -501,7 +520,8 @@ function Screens_loadDataSuccess(key) {
 
             }
 
-            for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
+            for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount &&
+                ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
 
                 if (ScreenObj[key].data[ScreenObj[key].data_cursor])
                     ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
@@ -514,15 +534,62 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].row_id++;
                 ScreenObj[key].tempHtml = '';
 
-            } else if (ScreenObj[key].data_cursor >= data_length) {
+                if (ScreenObj[key].hasBanner &&
+                    (ScreenObj[key].BannerTime < (new Date().getTime())) &&
+                    !ScreenObj[key].BannerCreated &&
+                    ScreenObj[key].row_id > 2) {
 
-                if (ScreenObj[key].tempHtml !== '') ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
+                    ScreenObj[key].addBanner();
+
+                }
+
+                //Content ended and last row is full
+                if (ScreenObj[key].data_cursor === data_length &&
+                    ScreenObj[key].hasBanner &&
+                    !ScreenObj[key].BannerCreated) {
+
+                    ScreenObj[key].row_id++;
+                    ScreenObj[key].tempHtml = '';
+                    ScreenObj[key].addBanner();
+
+                }
+
+            } else if (ScreenObj[key].data_cursor >= data_length) {
+                //Content ended and last row is not full
+
+                if (ScreenObj[key].tempHtml !== '') {
+
+                    ScreenObj[key].Cells[ScreenObj[key].row_id] = Screens_createRow(key);
+
+                }
+
+                if (ScreenObj[key].hasBanner &&
+                    !ScreenObj[key].BannerCreated) {
+
+                    ScreenObj[key].row_id++;
+                    ScreenObj[key].tempHtml = '';
+                    ScreenObj[key].addBanner();
+
+                }
+
                 break;
 
             }
         }
     }
     ScreenObj[key].emptyContent = !response_items && !ScreenObj[key].status;
+
+    if (ScreenObj[key].emptyContent) {
+
+        if (!ScreenObj[key].BannerCreated) {
+
+            ScreenObj[key].addEmptyContentBanner();
+
+        }
+
+    }
+
+
     Screens_loadDataSuccessFinish(key);
 }
 
@@ -610,7 +677,6 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         '</div></div></div></div>';
 }
 
-//TODO uncomplicate this ifs
 function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra_vodimg, force_VOD) {
 
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
@@ -726,7 +792,12 @@ function Screens_loadDataSuccessFinish(key) {
 
     } else if (Main_isElementShowingWithEle(ScreenObj[key].ScrollDoc)) {
 
-        Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+        Main_CounterDialog(
+            ScreenObj[key].posX,
+            ScreenObj[key].posY,
+            ScreenObj[key].ColoumnsCount,
+            ScreenObj[key].itemsCount
+        );
 
     }
 }
@@ -866,7 +937,12 @@ function Screens_addFocus(forceScroll, key) {
 
         if (!ScreenObj[key].emptyContent && key === Main_values.Main_Go && !Settings_isVisible()) {
 
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY + 1, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(
+                ScreenObj[key].posX,
+                ScreenObj[key].posY + 1,
+                ScreenObj[key].ColoumnsCount,
+                ScreenObj[key].itemsCount
+            );
 
         }
 
@@ -904,7 +980,12 @@ function Screens_LoadPreviewSTop(PreventCleanQualities) {
 }
 
 function Screens_GetObj(key) {
-    return Main_Slice(ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX]);
+    var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    return Main_Slice(
+        ScreenObj[key].DataObj[obj_id].image ? [] :
+            ScreenObj[key].DataObj[obj_id]
+    );
 }
 
 function Screens_ObjNotNull(key) {
@@ -916,9 +997,12 @@ var Screens_LoadPreviewId;
 //Also help to prevent lag on animation
 function Screens_LoadPreview(key) {
 
+    var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
     if (ScreenObj[key].PreviewEnable && !Main_isStoped && Screens_IsInUse(key) && Screens_ObjNotNull(key) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) && !Main_isElementShowingWithEle(Screens_dialog_thumb_delete_div) &&
-        !Main_ThumbOpenIsNull(ScreenObj[key].posY + '_' + ScreenObj[key].posX, ScreenObj[key].ids[0])) {
+        !Main_ThumbOpenIsNull(obj_id, ScreenObj[key].ids[0]) &&
+        !ScreenObj[key].DataObj[obj_id].image) {
 
         var id = 0,//Clip
             obj = Screens_GetObj(key);
@@ -1574,7 +1658,8 @@ function Screens_addrowEnd(forceScroll, key) {
 
                 if (Main_history_Watched_Obj[data[7]]) {
 
-                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
+                    Main_getElementById(ScreenObj[key].ids[7] + id).style.width =
+                        Main_history_Watched_Obj[data[7]] + '%';
 
                 }
 
@@ -1589,20 +1674,37 @@ function Screens_addrowEnd(forceScroll, key) {
         ScreenObj[key].addFocus(forceScroll, key);
 
         if (key === Main_values.Main_Go && !Settings_isVisible())
-            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+            Main_CounterDialog(
+                ScreenObj[key].posX,
+                ScreenObj[key].posY,
+                ScreenObj[key].ColoumnsCount,
+                ScreenObj[key].itemsCount
+            );
 
+        if (ScreenObj[key].DataObj[id].event_name) {
+
+            Main_EventBanner(
+                ScreenObj[key].DataObj[id].event_name + '_viewed',
+                ScreenObj[key].ScreenName
+            );
+
+        }
     });
 }
 
 var Screens_UpdateSinceId;
 function Screens_UpdateSince(key) {
 
-    if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key)) return;
+    var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    if (Main_isStoped || !Screens_IsInUse(key) ||
+        !Screens_IsDivFocused(key) ||
+        !ScreenObj[key].Cells[ScreenObj[key].posY] ||
+        ScreenObj[key].DataObj[id].image) return;
 
     if (Screens_ObjNotNull(key)) {
 
-        var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX,
-            data = Screens_GetObj(key);
+        var data = Screens_GetObj(key);
 
         Main_innerHTML(
             ScreenObj[key].ids[4] + id,
@@ -1711,10 +1813,21 @@ function Screens_addFocusFollow(key) {
 }
 
 function Screens_removeFocusFollow(key) {
-    if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) ScreenObj[key].posX = 0;
-    else if (ScreenObj[key].posX < 0) ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
 
-    Main_RemoveClass(ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX, 'stream_switch_focused');
+    if (ScreenObj[key].posX > ScreenObj[key].SwitchesIcons.length - 1) {
+
+        ScreenObj[key].posX = 0;
+
+    } else if (ScreenObj[key].posX < 0) {
+
+        ScreenObj[key].posX = ScreenObj[key].SwitchesIcons.length - 1;
+
+    }
+
+    Main_RemoveClass(
+        ScreenObj[key].ids[0] + 'y_' + ScreenObj[key].posX,
+        'stream_switch_focused'
+    );
 }
 
 function Screens_BasicExit(before, key) {
@@ -1740,7 +1853,7 @@ function Screens_KeyUpDown(y, key) {
         Screens_addFocusFollow(key);
 
     } else if (ScreenObj[key].HasSwitches && (ScreenObj[key].posY) === -1 &&
-        ScreenObj[key].DataObj['0_' + ScreenObj[key].posX]) {
+        (ScreenObj[key].DataObj['0_' + ScreenObj[key].posX])) {
 
         ScreenObj[key].posY = 0;
         Screens_addFocus(false, key);
@@ -1748,7 +1861,9 @@ function Screens_KeyUpDown(y, key) {
 
     } else {
 
-        for (var i = 0; i < ScreenObj[key].ColoumnsCount; i++) {
+        var i = 0;
+
+        for (i; i < ScreenObj[key].ColoumnsCount; i++) {
             if (ScreenObj[key].DataObj[(ScreenObj[key].posY + y) + '_' + (ScreenObj[key].posX - i)]) {
 
                 Screens_ChangeFocus(y, ScreenObj[key].posX - i, key);
@@ -1761,7 +1876,8 @@ function Screens_KeyUpDown(y, key) {
 }
 
 function Screens_ClearAnimation(key) {
-    if (ScreenObj[key].HasAnimateThumb) {
+    if (ScreenObj[key].HasAnimateThumb && ScreenObj[key].posY > -1 && ScreenObj[key].itemsCount &&
+        !ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].image) {
 
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
 
@@ -1831,6 +1947,7 @@ function Screens_handleKeyUp(key, e) {
         if (!Screens_clear) ScreenObj[key].key_play();
 
     } else if (e.keyCode === KEY_LEFT) {
+        Screens_ThumbOptionCanKeyLeft = true;
 
         Main_clearTimeout(Screens_KeyEnterID);
         Main_removeEventListener("keyup", ScreenObj[key].key_up);
@@ -1969,7 +2086,16 @@ function Screens_handleKeyDown(key, event) {
             ScreenObj[key].key_exit();
             break;
         case KEY_LEFT:
+            Screens_ThumbOptionCanKeyLeft = false;
+            var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
             Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
+
+            if (ScreenObj[key].posY === -1 || ScreenObj[key].DataObj[obj_id].image) {
+
+                Screens_ThumbOptionSpecial = true;
+            }
+
             Screens_handleKeyUpIsClear = false;
 
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
@@ -2499,16 +2625,36 @@ var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
     Screens_LoadPreviewSTop();
-    Main_RemoveClass(ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX, 'opacity_zero');
+
+    if (ScreenObj[key].posY > -1) {
+
+        Main_RemoveClass(
+            ScreenObj[key].ids[1] + ScreenObj[key].posY + '_' + ScreenObj[key].posX,
+            'opacity_zero'
+        );
+
+    }
 
     Screens_clear = true;
 
     Screens_ThumbOptionSetArrowArray(key);
 
     if (Screens_ThumbOptionSpecial) {
-        Screens_ThumbOptionPosY = 5;
-        Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
+
+        Screens_ThumbOptionPosY = ScreenObj[key].histPosXName ? 3 : 4;
+
+        Main_textContent(
+            'dialog_thumb_opt_val_4',
+            Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]
+        );
+        Main_textContent(
+            'dialog_thumb_opt_val_5',
+            Screens_ThumbOptionScreens[0]
+        );
+
         Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+        Screens_ThumbOptionShowSpecial();
+        Screens_ThumbOptionHideSpecial();
     } else {
         Screens_ThumbOptionShowSpecial();
 
@@ -2516,7 +2662,9 @@ function Screens_ThumbOptionStart(key) {
         Screens_ThumbOptionPosY = 0;
     }
 
-    ScreenObj[key].setTODialog();
+    if (ScreenObj[key].setTODialog && !Screens_ThumbOptionSpecial) {
+        ScreenObj[key].setTODialog();
+    }
     Screens_SeTODialogId(key);
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_thumb);
@@ -2530,7 +2678,7 @@ function Screens_ThumbOptionShowSpecial() {
 }
 
 function Screens_ThumbOptionHideSpecial() {
-    for (var i = -1; i < 5; i++)
+    for (var i = -1; i < Screens_ThumbOptionPosY; i++)
         Main_AddClass('dialog_thumb_opt_setting_' + i, 'hideimp');
 }
 
@@ -2650,6 +2798,7 @@ function Screens_ThumbOptionStringGetHistory(key) {
     return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
 }
 
+var Screens_ThumbOptionCanKeyLeft = true;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
 
@@ -2659,6 +2808,8 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             Screens_ThumbOptionDialogHide(false, key);
             break;
         case KEY_LEFT:
+            if (!Screens_ThumbOptionCanKeyLeft) return;
+
             Screens_SeTODialogId(key);
             if (Screens_ThumbOptionPosY > 2) {
                 Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
@@ -2681,8 +2832,15 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
             break;
         case KEY_UP:
-            if (Screens_ThumbOptionSpecial) break;
-            var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : 0;
+            var min_pos = 0;
+
+            if (Screens_ThumbOptionSpecial) {
+
+                min_pos = ScreenObj[key].histPosXName ? 3 : 4;
+
+            }
+
+            var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
             Screens_SeTODialogId(key);
             Screens_ThumbOptionPosY--;
             if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
@@ -2692,7 +2850,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
             break;
         case KEY_DOWN:
-            if (Screens_ThumbOptionSpecial) break;
             Screens_SeTODialogId(key);
             Screens_ThumbOptionPosY++;
             if (Screens_ThumbOptionPosY > 5)

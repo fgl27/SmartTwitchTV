@@ -1517,9 +1517,7 @@ function Play_ForceShowPannel() {
 
     }
 
-    if (!Main_IsOn_OSInterface) {
-        Play_PanneInfoDoclId.style.pointerEvents = '';
-    }
+    Play_PanneInfoDoclId.style.pointerEvents = '';
 }
 
 function Play_ForceHidePannel() {
@@ -1528,9 +1526,7 @@ function Play_ForceHidePannel() {
     if (!Play_Status_Visible) Main_HideElementWithEle(Play_side_info_div);
     else if (Play_Status_Visible === 1) Main_AddClassWitEle(Play_side_info_div, 'playsideinfofocus');
 
-    if (!Main_IsOn_OSInterface) {
-        Play_PanneInfoDoclId.style.pointerEvents = 'none';
-    }
+    Play_PanneInfoDoclId.style.pointerEvents = 'none';
 }
 
 function Play_hidePanel() {

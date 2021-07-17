@@ -55,6 +55,7 @@ var ChannelVod_game = '';
 var DefaultPreviewDelay = 200;//To avoid multiple simultaneous request
 var DefaultHttpGetTimeout = 30000;
 var noop_fun = function() { };
+var ScreensObj_banner_added_section = false;
 
 var Base_obj;
 var Base_Vod_obj;
@@ -98,6 +99,7 @@ function ScreensObj_StartAllVars() {
         focusPos: '',
         IsOpen: 0,
         Lang: '',
+        BannerTime: 0,
         SetPreviewEnable: function() {
             this.PreviewEnable =
                 (this.screenType === 0 && Settings_Obj_default('show_live_player')) ||
@@ -325,6 +327,7 @@ function ScreensObj_StartAllVars() {
             this.ScreenBackup[game].coloumn_id = this.coloumn_id;
             this.ScreenBackup[game].data_cursor = this.data_cursor;
             this.ScreenBackup[game].dataEnded = this.dataEnded;
+            this.ScreenBackup[game].BannerCreated = this.BannerCreated;
 
         },
         RestoreBackupScreen: function(game) {
@@ -333,17 +336,14 @@ function ScreensObj_StartAllVars() {
             this.tableDoc.innerHTML = this.ScreenBackup[game].innerHTML;
             this.Cells = Main_Slice(this.ScreenBackup[game].Cells);
 
-            //Backup of cells and the innerHTML disconects the div in the table and on the array
+            //Backup of cells and the innerHTML disconnects the div in the table and on the Backup array
             var array = this.tableDoc.getElementsByClassName(this.rowClass),
                 i = 0,
-                len = array.length,
-                id = '';
+                len = array.length;
 
             for (i; i < len; i++) {
 
-                id = array[0].id;
-                this.tableDoc.removeChild(array[0]);
-                this.tableDoc.appendChild(this.Cells[id.split(this.ids[6])[1]]);
+                this.Cells[(array[i].id).split(this.ids[6])[1]] = array[i];
 
             }
 
@@ -363,6 +363,7 @@ function ScreensObj_StartAllVars() {
             this.coloumn_id = this.ScreenBackup[game].coloumn_id;
             this.data_cursor = this.ScreenBackup[game].data_cursor;
             this.dataEnded = this.ScreenBackup[game].dataEnded;
+            this.BannerCreated = this.ScreenBackup[game].BannerCreated;
 
             this.status = true;
             this.FirstRunEnd = true;
@@ -410,6 +411,88 @@ function ScreensObj_StartAllVars() {
                 this.ScreenName
             );
 
+        },
+        addBanner: function(forceAdd) {
+            ScreensObj_addBanner(
+                {
+                    image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
+                    url: 'https://github.com/fgl27/SmartTwitchTV',
+                    text: 'Banner Text shows here',
+                    event_name: 'base_banner'
+                },
+                this.screen,
+                forceAdd
+            );
+        },
+        emptyBanner: function(forceAdd) {
+            ScreensObj_addBanner(
+                {
+                    image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
+                    text: STR_REFRESH_PROBLEM_ENTER
+                },
+                this.screen,
+                forceAdd
+            );
+        },
+        addEmptyContentBanner: function() {
+
+            if (this.hasBanner) {
+
+                this.addBanner();
+
+            } else {
+
+                this.emptyBanner();
+
+            }
+
+            this.itemsCount = 1;
+            this.emptyContent = false;
+
+        },
+        bannerCheck: function() {
+
+            var obj_id = this.posY + '_' + this.posX;
+
+            if (this.posY > -1 && this.DataObj[obj_id].image) {
+
+                this.banner_click(obj_id);
+
+                return true;
+            }
+
+            return false;
+        },
+        banner_click: function(obj_id) {
+
+
+            if (this.DataObj[obj_id].url) {
+
+                if (Main_IsOn_OSInterface) {
+
+                    Main_SaveValues();
+                    Android.OpenURL(this.DataObj[obj_id].url);
+
+                } else {
+
+                    console.log(this.DataObj[obj_id]);
+
+                }
+
+            } else {
+
+                Main_ReloadScreen();
+
+            }
+
+            if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
+
+                Main_EventBanner(
+                    this.DataObj[obj_id].event_name + '_click',
+                    this.ScreenName
+                );
+
+            }
         },
     };
 
@@ -507,10 +590,16 @@ function ScreensObj_StartAllVars() {
             }
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.itemsCount) {
+
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                 this.OpenLiveStream(false);
+
             }
+
         }
     };
 
@@ -550,6 +639,8 @@ function ScreensObj_StartAllVars() {
             if (this.cursor === '') this.dataEnded = true;
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
 
             if (this.posY === -1) {
 
@@ -603,8 +694,10 @@ function ScreensObj_StartAllVars() {
         addFocus: Screens_addFocusVideo,
         img_404: IMG_404_GAME,
         screenType: 3,
-        setTODialog: Screens_ThumbOptionHideSpecial,
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
             var data = Screens_GetObj(this.screen);
@@ -670,7 +763,6 @@ function ScreensObj_StartAllVars() {
             this.MaxOffset = tempObj._total;
             if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
         },
-        setTODialog: Screens_ThumbOptionHideSpecial,
         addCellTemp: function(cell) {
             if (!this.idObject[cell._id]) {
 
@@ -689,6 +781,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         base_key_play: function(go_screen, IsFollowing) {
+
+            if (this.bannerCheck()) return;
+
             if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
             var data = Screens_GetObj(this.screen);
@@ -846,6 +941,9 @@ function ScreensObj_InitVod() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -908,6 +1006,9 @@ function ScreensObj_InitChannelVod() {
                 this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -990,6 +1091,9 @@ function ScreensObj_InitAGameVod() {
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -1061,6 +1165,9 @@ function ScreensObj_InitUserVod() {
                 '&sort=' + this.time[this.periodPos - 1] + '&offset=' + this.offset;
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
                 if (this.posX === 0) {
                     this.highlight = !this.highlight;
@@ -1340,10 +1447,21 @@ function ScreensObj_InitAGame() {
     ScreenObj[Main_aGame] = Screens_assign(ScreenObj[Main_aGame], Base_Live_obj);
     ScreenObj[Main_aGame].Set_Scroll();
     ScreenObj[Main_aGame].key_play = function() {
-        if (this.itemsCount && this.posY !== -1) {
-            Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
 
-            this.OpenLiveStream(false);
+        if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
+
+            if (this.bannerCheck()) return;
+
+            if (this.itemsCount) {
+
+                Main_RemoveClass(
+                    this.ids[1] + this.posY + '_' + this.posX,
+                    'opacity_zero'
+                );
+
+                this.OpenLiveStream(false);
+
+            }
 
         } else AGame_headerOptions(this.screen);
 
@@ -1645,7 +1763,11 @@ function ScreensObj_InitUserChannels() {
             ScreensObj_SetTopLable(STR_USER, STR_USER_CHANNEL);
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
+
             this.base_key_play(Main_UserChannels, true);
+
         },
         addCell: function(cell) {
             cell = cell.channel;
@@ -1686,6 +1808,8 @@ function ScreensObj_InitSearchChannels() {
             if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
         },
         key_play: function() {
+            if (this.bannerCheck()) return;
+
             this.base_key_play(Main_SearchChannels, false);
         },
         addCell: function(cell) {
@@ -1774,6 +1898,9 @@ function ScreensObj_HistoryLive() {
     ScreenObj[Main_HistoryLive].Upsorting();
     ScreenObj[Main_HistoryLive].Set_Scroll();
     ScreenObj[Main_HistoryLive].key_play = function() {
+
+        if (this.bannerCheck()) return;
+
         if (this.posY === -1) {
             if (this.posX === 0) {
                 Main_values.Main_Go = Main_HistoryVod;
@@ -1830,6 +1957,8 @@ function ScreensObj_HistoryVod() {
             );
         },
         key_play: function() {
+
+            if (this.bannerCheck()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -1922,6 +2051,8 @@ function ScreensObj_HistoryClip() {
         },
         key_play: function() {
 
+            if (this.bannerCheck()) return;
+
             if (this.posY === -1) {
 
                 if (this.posX === 0) {
@@ -1998,6 +2129,45 @@ function ScreensObj_addSwitches(StringsArray, key) {
         ScreenObj[key].row.appendChild(div);
     }
     ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+}
+
+
+function ScreensObj_addBanner(obj, key, forceAdd) {
+
+    ScreenObj[key].BannerCreated = true;
+
+    var id = ScreenObj[key].row_id + '_0',
+        idArray = ScreenObj[key].ids;
+
+    ScreenObj[key].row = Screens_createRow(key);
+    ScreenObj[key].Cells[ScreenObj[key].row_id] = ScreenObj[key].row;
+    ScreenObj[key].row_id++;
+
+    ScreenObj[key].DataObj[id] = obj;
+
+    var div = document.createElement('div');
+    div.setAttribute('id', ScreenObj[key].ids[3] + id);
+    div.className = 'banner_holder';
+
+    div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '" ><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
+        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
+
+    ScreenObj[key].row.appendChild(div);
+
+    if (!ScreensObj_banner_added_section || forceAdd) {
+
+        ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
+    }
+
+    this.itemsCount += 3;
+    this.coloumn_id += 3;
+
+    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+
+    ScreensObj_banner_added_section = true;
+    ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
+
 }
 
 function ScreensObj_CheckIsOpen(key, preventRefresh) {

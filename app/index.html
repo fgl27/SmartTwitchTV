@@ -108,6 +108,8 @@
             height: 100%;
             position: absolute;
             z-index: 3;
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         div.scene_keys {
@@ -248,11 +250,46 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
+        div.banner_holder {
+            width: 98.75%;
+            display: inline-block;
+            padding: 0.5%;
+        }
+
+        div.inner_banner_holder {
+            width: 100%;
+            display: inline-block;
+            padding-bottom: 2.75%;
+            background-color: #000000;
+            color: #FFFFFF;
+            position: relative;
+            border: 0.06em solid rgba(0, 0, 0, 0);
+        }
+
+        div.banner_text_holder {
+            height: 2.5vh;
+            font-family: 'Roboto-Bold';
+        }
+
+        div.banner_img_holder {
+            padding-bottom: 24%;
+            background-color: #000000 !important;
+        }
+
+        img.banner_img {
+            height: 89.5%;
+            max-width: 96%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         div.stream_thumbnail_side {
             width: 99.75%;
             /*16 by 9 in relatetion to the width % size*/
             padding-bottom: 56.109375%;
             background-repeat: no-repeat;
+            background: #000000;
         }
 
         div.stream_thumbnail_player_feed {
@@ -365,6 +402,7 @@
         div.stream_thumbnail_game_text_holder,
         div.stream_thumbnail_game_feed_text_holder,
         div.stream_thumbnail_feed_text_holder,
+        div.banner_text_holder,
         div.stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
@@ -1153,6 +1191,11 @@
             font-size: 100%;
         }
 
+        div.side_panel_new_holder {
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+        }
+
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
 
         div.side_panel_feed {
@@ -1196,14 +1239,12 @@
         }
 
         div.side_panel_feed_thumb {
-            box-sizing: border-box;
             position: absolute;
             width: 75%;
             height: 97.5%;
             top: 2.1%;
-            left: 24.4%;
+            left: 24.3%;
             background-color: #000000;
-            border: 0.06em solid #ebebeb;
             will-change: opacity;
             transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
@@ -1242,7 +1283,7 @@
         }
 
         div.side_panel_background_color {
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: #000000;
         }
 
         div.side_panel_fix_top_2,
@@ -1303,7 +1344,16 @@
         }
 
         div.side_panel_new_icons_text {
-            background: rgba(255, 255, 255, 0.25);
+            background: linear-gradient(to right, #000000 18%, rgba(255, 255, 255, 0.225), #000000 80%);
+        }
+
+
+        div.side_panel_new_icons_text_botton {
+            background: linear-gradient(to right, #000000 0%, rgba(255, 255, 255, 0.225), #000000 70%);
+        }
+
+        div.side_panel_new_icons_start {
+            background: linear-gradient(to right, #000000 8%, rgba(255, 255, 255, 0.225), #000000 92%);
         }
 
         .side_panel_new_icons_pad {
@@ -1363,11 +1413,6 @@
             transform: translateX(77.02%);
             width: 100%;
             position: absolute;
-        }
-
-        div.side_panel_border {
-            border-right: 0.23vh solid;
-            border-image: linear-gradient(to bottom, #000000, #D0D3D4, #000000) 5;
         }
 
         .side_panel_icons {
@@ -2182,7 +2227,7 @@
         }
 
         div.side_panel_div_focused {
-            background-color: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(to right, #000000 20%, rgba(255, 255, 255, 0.175), #000000 80%);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
@@ -2863,9 +2908,8 @@
                 <div id="top_lable" class="top_lable">
                 </div>
             </div>
-            <div id="side_panel_new_holder" class="hide">
-                <div id="side_panel_movel" class="side_panel_movel side_panel_border side_panel_background_color"
-                    style="z-index: 3;">
+            <div id="side_panel_new_holder" class="hide side_panel_new_holder">
+                <div id="side_panel_movel" class="side_panel_movel side_panel_background_color" style="z-index: 3;">
                     <div class="side_panel_fix_top">
                         <div id="side_panel_top_text" class="side_panel_movel_top_text">
                             <div class="side_panel_icons">
@@ -3008,7 +3052,7 @@
                     </div>
                     <div id="sidepannel_counter" class="icon_top_label" style="position: absolute; top:-2%"></div>
                 </div>
-                <div id="side_panel" class="side_panel side_panel_border side_panel_hide_full">
+                <div id="side_panel" class="side_panel side_panel_hide_full">
                     <div id="side_panel_inner" class="side_panel_inner">
                         <div id="side_panel_feed_holder" style="width: 94%; margin-left: 6%;">
                             <div id="dialog_loading_side_feed" class="side_panel_dialog hide">
@@ -3062,7 +3106,7 @@
             <p>Test Text</p>
         </div>-->
         </div>
-        <div id="scene2" class="screen_size" style="opacity: 0; will-change: opacity;">
+        <div id="scene2" class="screen_size" style="opacity: 0; pointer-events: none; will-change: opacity;">
             <div id="chat_container0" class="chat_container hide">
                 <div id="chat_inner_container" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>

@@ -19,6 +19,9 @@
  */
 
 // Keep this file named as (zero)*** so it loads first in release_maker
+var STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
+var STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
+
 var STR_REFRESH;
 var STR_SEARCH;
 var STR_SETTINGS;
@@ -50,6 +53,8 @@ var STR_GOBACK;
 var STR_IS_OFFLINE;
 var STR_IS_SUB_ONLY;
 var STR_REFRESH_PROBLEM;
+var STR_REFRESH_PROBLEM_ENTER;
+var STR_FADE_SIDEPANNEL;
 var STR_NO;
 var STR_FOR_THIS;
 var STR_PLAYER_PROBLEM;
@@ -113,7 +118,6 @@ var STR_ABOUT_INFO_1;
 var STR_ABOUT_INFO_2;
 var STR_ABOUT_INFO_3;
 var STR_ABOUT_INFO_4;
-var STR_ABOUT_INFO_5;
 var STR_ABOUT_INFO_6;
 var STR_ABOUT_INFO_7;
 var STR_ABOUT_INFO_8;
@@ -127,7 +131,6 @@ var STR_ABOUT_INFO_16;
 var STR_ABOUT_INFO_17;
 var STR_ABOUT_INFO_18;
 var STR_ABOUT_INFO_19;
-var STR_ABOUT_INFO_20;
 var STR_CONTROLS_PLAY_1;
 var STR_CONTROLS_PLAY_2;
 var STR_CONTROLS_PLAY_3;
