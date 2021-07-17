@@ -28,6 +28,7 @@ var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
 var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
+var STR_SPAN_LINK = '<span style="color: #0366d6;">';
 var STR_RED_DIV = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
@@ -161,6 +162,26 @@ function DefaultLang() {
     //Strings that are need a line breack after
     STR_USER_NUMBER_ONE += STR_BR;
 
+    //Strings that have a link
+    STR_OAUTH_IN = DefaultReplaceLink(
+        'https://github.com/fgl27/SmartTwitchTV#authorization',
+        STR_OAUTH_IN,
+        true
+    );
+
+    STR_ABOUT_INFO_7 += STR_SPACE + DefaultMakeLink('https://github.com/sigkell/irc-message');
+    STR_ABOUT_INFO_8 += STR_SPACE + DefaultMakeLink('https://app.fontastic.me');
+    STR_ABOUT_INFO_9 += STR_SPACE + DefaultMakeLink('https://github.com/twitter/twemoji');
+    STR_ABOUT_INFO_10 += STR_SPACE + DefaultMakeLink('https://github.com/mishoo/UglifyJS2');
+    STR_ABOUT_INFO_12 += STR_SPACE + DefaultMakeLink('https://github.com/kangax/html-minifier');
+    STR_ABOUT_INFO_13 += STR_SPACE + DefaultMakeLink('https://github.com/jshint/jshint');
+    STR_ABOUT_INFO_16 += STR_SPACE + DefaultMakeLink('https://developer.android.com/reference/android/support/v17/leanback/package-summary');
+    STR_ABOUT_INFO_17 += STR_SPACE + DefaultMakeLink('https://github.com/google/ExoPlayer');
+    STR_ABOUT_INFO_21 += STR_SPACE + DefaultMakeLink('https://github.com/ben-manes/gradle-versions-plugin');
+    STR_ABOUT_INFO_22 += STR_SPACE + DefaultMakeLink('https://github.com/grandcentrix/tray');
+    STR_ABOUT_INFO_23 += STR_SPACE + DefaultMakeLink('https://github.com/bestiejs/punycode.js');
+    STR_ABOUT_INFO_24 += STR_SPACE + DefaultMakeLink('https://github.com/mattbasta/crass');
+
     //Making the finals strings of strings
     STR_GUIDE_EXTRA = STR_SPACE_HTML + STR_GUIDE_EXTRA;
     STR_CONTROLS_PLAY_0 = STR_SPACE_HTML + STR_CONTROLS_PLAY_0;
@@ -173,7 +194,7 @@ function DefaultLang() {
     STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
     STR_GOBACK = STR_GOBACK_START;
     STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-        STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">http://tiny.cc/donatetofgl27</div></div></div>';
+        STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">' + DefaultMakeLink('  http://tiny.cc/donatetofgl27') + '</div></div></div>';
     STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
         STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
@@ -245,7 +266,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-        STR_DIV_LINK + STR_ABOUT_EMAIL + '</div>' + STR_BR +
+        STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_EMAIL, true) + '</div>' + STR_BR +
         STR_PAYPAL + STR_BITCOIN + STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -254,9 +275,9 @@ function DefaultLang() {
         STR_CONTACT +
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +
-        STR_DIV_LINK + STR_ABOUT_INFO_20 + '</div>' + STR_BR + STR_BR +
+        STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_20) + '</div>' + STR_BR + STR_BR +
         STR_ABOUT_INFO_4 + STR_BR +
-        STR_DIV_LINK + STR_ABOUT_INFO_5 + '</div>' + STR_BR + STR_BR +
+        STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_5) + '</div>' + STR_BR + STR_BR +
         STR_DIV_TITLE_LEFT + STR_ABOUT_INFO_6 + '</div>' +
         STR_DIV_MIDLE_LEFT + STR_BR +
         STR_SPACE_HTML + STR_SPACE_HTML + STR_SPACE_HTML + STR_ABOUT_INFO_14 + STR_BR +
@@ -275,4 +296,14 @@ function DefaultLang() {
         STR_DOT + STR_ABOUT_INFO_22 + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
+}
+
+function DefaultReplaceLink(link, string, center) {
+    return center ?
+        string.replace('%x', STR_DIV_LINK + DefaultMakeLink(link) + '</div>') :
+        string.replace('%x', STR_SPAN_LINK + DefaultMakeLink(link) + '</span>');
+}
+
+function DefaultMakeLink(link, email) {
+    return '<a style="color: #0366d6;" href="' + (email ? 'mailto:' : '') + link + '" target="_blank">' + link + '</a>';
 }
