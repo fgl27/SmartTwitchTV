@@ -3154,7 +3154,8 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     var historyType = Screens_ThumbOptionStringGetHistory(key);
 
-    var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7]) : -1;
+    var index = (ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && ScreenObj[key].posY > -1) ?
+        Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7]) : -1;
 
     if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
