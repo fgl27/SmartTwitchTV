@@ -28254,7 +28254,8 @@
 
         var historyType = Screens_ThumbOptionStringGetHistory(key);
 
-        var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7]) : -1;
+        var index = (ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() && ScreenObj[key].posY > -1) ?
+            Main_history_Exist('live', ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][7]) : -1;
 
         if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
 
@@ -28756,7 +28757,7 @@
                 this.emptyContent = false;
 
             },
-            bannerCheck: function() {
+            is_a_Banner: function() {
 
                 var obj_id = this.posY + '_' + this.posX;
 
@@ -28897,7 +28898,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.itemsCount) {
 
@@ -28946,7 +28947,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
 
@@ -29002,7 +29003,7 @@
             screenType: 3,
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 Main_removeFocus(this.posY + '_' + this.posX, this.ids);
 
@@ -29088,7 +29089,7 @@
             },
             base_key_play: function(go_screen, IsFollowing) {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (Main_ThumbOpenIsNull(this.posY + '_' + this.posX, this.ids[0])) return;
 
@@ -29248,7 +29249,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -29313,7 +29314,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -29398,7 +29399,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -29472,7 +29473,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -29756,7 +29757,7 @@
 
             if ((this.itemsCount || this.BannerCreated) && this.posY !== -1) {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.itemsCount) {
 
@@ -30070,7 +30071,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 this.base_key_play(Main_UserChannels, true);
 
@@ -30114,7 +30115,7 @@
                 if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
             },
             key_play: function() {
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 this.base_key_play(Main_SearchChannels, false);
             },
@@ -30205,7 +30206,7 @@
         ScreenObj[Main_HistoryLive].Set_Scroll();
         ScreenObj[Main_HistoryLive].key_play = function() {
 
-            if (this.bannerCheck()) return;
+            if (this.is_a_Banner()) return;
 
             if (this.posY === -1) {
                 if (this.posX === 0) {
@@ -30264,7 +30265,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
                     if (this.posX === 0) {
@@ -30357,7 +30358,7 @@
             },
             key_play: function() {
 
-                if (this.bannerCheck()) return;
+                if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
 
