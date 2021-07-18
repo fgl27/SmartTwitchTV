@@ -13,7 +13,5 @@ mainfolder="$(dirname "$mainfolder")";
 
 cd "$mainfolder" || exit
 
-cd app/
-
 # -c-1 disable cache
 http-server -c-1

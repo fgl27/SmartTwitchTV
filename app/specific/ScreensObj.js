@@ -412,13 +412,25 @@ function ScreensObj_StartAllVars() {
             );
 
         },
+        hasBanner: true,
         addBanner: function(forceAdd) {
+
+            var lang = nordvpn[this.ContentLang] ? this.ContentLang : 'en',
+                img_pos = Main_values.banner_pos++,
+                len = nordvpn[lang].images.length;
+
+            if (img_pos >= len)
+                img_pos = 0;
+
+            if (Main_values.banner_pos >= len)
+                Main_values.banner_pos = 0;
+
             ScreensObj_addBanner(
                 {
-                    image: 'https://raw.githubusercontent.com/fgl27/SmartTwitchTV/master/release/githubio/images/free-banner-background.jpg',
-                    url: 'https://github.com/fgl27/SmartTwitchTV',
-                    text: 'Banner Text shows here',
-                    event_name: 'base_banner'
+                    image: nordvpn.image_base + lang + nordvpn[lang].images[img_pos],
+                    url: nordvpn.url,
+                    text: nordvpn[lang].long_text.replace('%x', DefaultMakeLink(nordvpn.display_url, 'http://')),
+                    event_name: nordvpn.event_name
                 },
                 this.screen,
                 forceAdd
@@ -2163,9 +2175,9 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     this.itemsCount += 3;
     this.coloumn_id += 3;
 
-    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+    //ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
 
-    ScreensObj_banner_added_section = true;
+    //ScreensObj_banner_added_section = true;
     ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
 
 }

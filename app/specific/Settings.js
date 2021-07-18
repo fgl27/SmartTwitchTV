@@ -865,6 +865,8 @@ function Settings_SetLang() {
         Languages_Selected = Main_ContentLang.toUpperCase();
         OSInterface_upDateLang(Main_ContentLang);
     }
+
+    Main_label_update();
 }
 
 function Settings_RestoreAppLang() {

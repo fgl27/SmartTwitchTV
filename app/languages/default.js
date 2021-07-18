@@ -266,7 +266,7 @@ function DefaultLang() {
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
     STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' +
-        STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_EMAIL, true) + '</div>' + STR_BR +
+        STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') + '</div>' + STR_BR +
         STR_PAYPAL + STR_BITCOIN + STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
@@ -304,6 +304,9 @@ function DefaultReplaceLink(link, string, center) {
         string.replace('%x', STR_SPAN_LINK + DefaultMakeLink(link) + '</span>');
 }
 
-function DefaultMakeLink(link, email) {
-    return '<a style="color: #0366d6;" href="' + (email ? 'mailto:' : '') + link + '" target="_blank">' + link + '</a>';
+function DefaultMakeLink(link, prefix) {
+
+    return '<a style="color: #0366d6; text-decoration:none;" href="' +
+        (prefix ? prefix : '') + link + '" target="_blank">' +
+        link + '</a>';
 }

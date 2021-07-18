@@ -97,6 +97,7 @@ var Main_values = {
     "IsUpDating": false,
     "WasLangChanged": false,
     "firebaseId": null,
+    "banner_pos": 0,
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -611,6 +612,17 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('feed_end_7', STR_USER + STR_SPACE_HTML + 'VOD');
     Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
     Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
+
+    Main_label_update();
+}
+
+function Main_label_update() {
+    var lang = nordvpn[Main_ContentLang] ? Main_ContentLang : 'en';
+
+    Main_innerHTML(
+        'label_update',
+        nordvpn[lang].short_text.replace('%x', DefaultMakeLink(nordvpn.display_url, 'http://'))
+    );
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -1016,8 +1028,6 @@ function Main_checkVersion(skipCheck) {
             'Browser',
             'Browser'
         );
-        //To test the position
-        Main_WarnUpdate(true, true);
     }
 
     Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
@@ -1097,8 +1107,6 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
         '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE_HTML +
         (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
     );
-
-    Main_ShowElement('label_update');
 
     if (Main_isUpdateDialogVisible()) {
 
