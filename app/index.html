@@ -1315,6 +1315,7 @@
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
         }
 
+
         div.side_panel_movel_bottom_text {
             height: 25%;
             width: auto;
@@ -1332,6 +1333,15 @@
             text-shadow: -0.02em -0.02em 0 #000, 0.02em -0.02em 0 #000, -0.02em 0.02em 0 #000, 0.02em 0.02em 0 #000;
         }
 
+        div.side_panel_new_text_options,
+        div.side_panel_new_icons_text_holder,
+        div.side_panel_new_icons {
+            border-top: 0.05em solid;
+            border-bottom: 0.05em solid;
+            border-image: linear-gradient(#000000, #000000) 1;
+            box-sizing: border-box;
+        }
+
         div.side_panel_new_icons {
             margin-left: 10%;
         }
@@ -1344,20 +1354,24 @@
         }
 
         div.side_panel_new_icons_text {
-            background: linear-gradient(to right, #000000 18%, rgba(255, 255, 255, 0.225), #000000 80%);
+            background: linear-gradient(to right, #000000 18%, rgba(255, 255, 255, 0.3), #000000 80%);
+            border-image: linear-gradient(to right, #000000 18%, #D0D3D4, #000000 80%) 1 !important;
         }
 
 
         div.side_panel_new_icons_text_botton {
-            background: linear-gradient(to right, #000000 0%, rgba(255, 255, 255, 0.225), #000000 70%);
-        }
+            background: linear-gradient(to right, #000000 0%, rgba(255, 255, 255, 0.3), #000000 70%);
+            border-image: linear-gradient(to right, #000000 0%, #D0D3D4, #000000 70%) 1 !important;
 
-        div.side_panel_new_icons_start {
-            background: linear-gradient(to right, #000000 8%, rgba(255, 255, 255, 0.225), #000000 92%);
         }
 
         .side_panel_new_icons_pad {
             vertical-align: sub;
+        }
+
+        div.side_panel_new_icons_start {
+            background: linear-gradient(to right, #000000 8%, rgba(255, 255, 255, 0.3), #000000 92%);
+            border-image: linear-gradient(to right, #000000 8%, #D0D3D4, #000000 92%) 1 !important;
         }
 
         div.side_panel_movel_user_text,
@@ -2227,7 +2241,7 @@
         }
 
         div.side_panel_div_focused {
-            background: linear-gradient(to right, #000000 20%, rgba(255, 255, 255, 0.175), #000000 80%);
+            background: linear-gradient(to right, #000000 20%, rgba(255, 255, 255, 0.25), #000000 80%);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
@@ -2956,23 +2970,23 @@
                     <div id="side_panel_movel_bottom" class="side_panel_fix_bottom">
                         <div class="side_panel_movel_bottom_holder">
                             <div class="side_panel_movel_bottom_text">
-                                <div id="side_panel_movel_new_9">
+                                <div id="side_panel_movel_new_9" class="side_panel_new_text_options">
                                 </div>
                             </div>
                             <div class="side_panel_movel_bottom_text">
-                                <div id="side_panel_movel_new_10">
+                                <div id="side_panel_movel_new_10" class="side_panel_new_text_options">
                                 </div>
                             </div>
                             <div class="side_panel_movel_bottom_text">
-                                <div id="side_panel_movel_new_11">
+                                <div id="side_panel_movel_new_11" class="side_panel_new_text_options">
                                 </div>
                             </div>
                             <div class="side_panel_movel_bottom_text">
-                                <div id="side_panel_movel_new_12">
+                                <div id="side_panel_movel_new_12" class="side_panel_new_text_options">
                                 </div>
                             </div>
                             <div class="side_panel_movel_bottom_text">
-                                <div id="side_panel_movel_new_13">
+                                <div id="side_panel_movel_new_13" class="side_panel_new_text_options">
                                 </div>
                             </div>
                         </div>
@@ -3016,6 +3030,7 @@
                         <div id="side_panel_new_8" class="side_panel_new_icons">
                             <i class="icon icon-history side_panel_new_icons_pad"></i>
                         </div>
+
                     </div>
                     <div id="side_panel_fix_botton" class="side_panel_fix_bottom"
                         style="width: 30%; background-color: #000000;">
