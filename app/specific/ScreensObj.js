@@ -2161,7 +2161,9 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     div.setAttribute('id', ScreenObj[key].ids[3] + id);
     div.className = 'banner_holder';
 
-    div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '" ><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
+    div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
+        (ScreenObj[key].screenType === 3 ? ' style="width: 97%;"' : '') +
+        '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
         idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
 
