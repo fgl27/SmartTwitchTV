@@ -7,6 +7,7 @@ cd "$mainfolder" || exit
 
 if [ "$1" == 1 ]; then
 	rm -rf apk/app/src/main/assets/app
+	rm -rf apk/app/src/main/assets/release
 	exit;
 fi;
 
