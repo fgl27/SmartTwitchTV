@@ -1129,7 +1129,9 @@ function PlayVod_CheckIfIsLiveResult(response) {
 
 function PlayVod_CheckIfIsLiveStart() {
 
-    if (!Main_IsOn_OSInterface || Play_PreviewId) PlayVod_OpenLiveStream();
+    if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+        UserLiveFeed_OpenBanner();
+    } else if (!Main_IsOn_OSInterface || Play_PreviewId) PlayVod_OpenLiveStream();
     else if (Play_CheckLiveThumb()) Play_CheckIfIsLiveStart('PlayVod_CheckIfIsLiveResult');
 
 }
@@ -1318,7 +1320,9 @@ function PlayVod_handleKeyDown(e) {
                 } else Play_BottomOptionsPressed(2);
                 PlayVod_setHidePanel();
             } else if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+                    UserLiveFeed_OpenBanner();
+                } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                 else PlayVod_CheckIfIsLiveStart();
             }
             else PlayVod_showPanel(true);

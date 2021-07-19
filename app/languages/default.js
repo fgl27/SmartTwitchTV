@@ -19,6 +19,7 @@
  */
 
 // Bellow here are the all untranslatable string,they are a combination of strings and html code use by pats of the code
+var LINK_COLOR = "#328df5";
 var STR_BR = "<br>";
 var STR_SPACE_HTML = '&nbsp;';
 var STR_SPACE = " ";
@@ -27,8 +28,8 @@ var STR_DOT = '<i  class="icon-circle class_bold" style="font-size: 50%; vertica
 var STR_DIV_TITLE = '<div class="about_text_title">';
 var STR_DIV_TITLE_LEFT = '<div class="about_text_title" style="text-align: left;">';
 var STR_DIV_MIDLE_LEFT = '<div style="text-align: left;">';
-var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: #0366d6;">';
-var STR_SPAN_LINK = '<span style="color: #0366d6;">';
+var STR_DIV_LINK = '<div style="text-align: center; width: 100%; display: inline-block; color: ' + LINK_COLOR + ';">';
+var STR_SPAN_LINK = '<span style="color: ' + LINK_COLOR + ';">';
 var STR_RED_DIV = '<div class="class_bold" style="text-align: center; width: 100%; display: inline-block; color: #FF0000; font-size: 110%;">';
 var STR_CONTROL_KEY = '';
 var STR_SEARCH_KEY = '';
@@ -44,6 +45,8 @@ var STR_PAYPAL;
 var STR_BITCOIN;
 var STR_BITCOIN_WALLET = "1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x";
 var STR_APP_LAG = 'https://tinyurl.com/applag';
+var STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
+var STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
 
 // This function is called after the main language is loaded, the above are initialized empty so it doesn't cause loading exceptions
 function DefaultLang() {
@@ -194,9 +197,9 @@ function DefaultLang() {
     STR_CONTROLS_MAIN_3 = STR_CONTROLS_MAIN_3 + STR_GUIDE + STR_GUIDE_EXTRA + STR_GUIDE_EXTRA2;
     STR_GOBACK = STR_GOBACK_START;
     STR_PAYPAL = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/paypal.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-        STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: #0366d6;font-size: 2vh;text-align: center; font-family: Roboto;">' + DefaultMakeLink('  http://tiny.cc/donatetofgl27') + '</div></div></div>';
+        STR_PAYPAL_SUMMARY + STR_BR + '<div style="display: inline-block; color: ' + LINK_COLOR + ';font-size: 2vh;text-align: center; font-family: Roboto;">' + DefaultMakeLink('  http://tiny.cc/donatetofgl27') + '</div></div></div>';
     STR_BITCOIN = '<div style="vertical-align: middle;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;">' +
-        STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: #0366d6;font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
+        STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: ' + LINK_COLOR + ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + '</div></div></div>';
 
     STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
         STR_DIV_MIDLE_LEFT +
@@ -306,7 +309,7 @@ function DefaultReplaceLink(link, string, center) {
 
 function DefaultMakeLink(link, prefix) {
 
-    return '<a style="color: #0366d6; text-decoration:none;" href="' +
+    return '<a style="color: ' + LINK_COLOR + '; text-decoration:none;" href="' +
         (prefix ? prefix : '') + link + '" target="_blank">' +
         link + '</a>';
 }

@@ -1235,6 +1235,10 @@ function Play_FollowUnfollow() {
 }
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
+    if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+        return null;
+    }
+
     var error = STR_STREAM_ERROR;
 
     if (UserLiveFeed_ObjNotNull(UserLiveFeed_FeedPosX)) {
@@ -1903,7 +1907,9 @@ function Play_handleKeyDown(e) {
             if (Play_isEndDialogVisible()) {
                 if (Play_EndFocus) Play_EndDialogPressed(1);
                 else {
-                    if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+                        UserLiveFeed_OpenBanner();
+                    } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else if (Play_PreviewId || Play_CheckLiveThumb(true)) {
                         Play_EndDialogEnter = 1;
                         Play_EndUpclearCalback = Play_handleKeyDown;
@@ -1933,7 +1939,9 @@ function Play_handleKeyDown(e) {
 
             } else if (UserLiveFeed_isPreviewShowing()) {
 
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+                if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+                    UserLiveFeed_OpenBanner();
+                } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
                     UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
 
@@ -1977,7 +1985,9 @@ function Play_handleKeyDown(e) {
             break;
         case KEY_1:
             if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+                if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+                    UserLiveFeed_OpenBanner();
+                } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
 
                     UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
 

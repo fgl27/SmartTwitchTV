@@ -540,9 +540,50 @@ function UserLiveFeed_ObjNotNull(pos) {
     return Boolean(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]);
 }
 
+function UserLiveFeed_OpenBannerUrl(obj) {
+
+
+
+    if (Main_IsOn_OSInterface) {
+
+        Main_SaveValues();
+        OSInterface_stopVideo();
+        Android.OpenURL(obj.url);
+
+
+    } else {
+
+        console.log(obj);
+
+    }
+
+}
+
+function UserLiveFeed_OpenBanner() {
+    console.log();
+
+    var obj = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]];
+
+    if (obj.url) {
+
+        UserLiveFeed_OpenBannerUrl(obj);
+
+    }
+
+    if (obj && obj.event_name) {
+
+        Main_EventBanner(
+            obj.event_name + '_click',
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+        );
+
+    }
+}
+
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos),
-        ObjNotNull = UserLiveFeed_ObjNotNull(pos);
+        ObjNotNull = UserLiveFeed_ObjNotNull(pos),
+        isBanner = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image;
 
     if (!total || !ObjNotNull || UserLiveFeed_loadingData[pos]) {
 
@@ -563,7 +604,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
-            if (ObjNotNull) {
+            if (ObjNotNull && !isBanner) {
 
                 data = UserLiveFeed_GetObj(pos);
 
@@ -575,7 +616,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
             }
 
-        } else if (!isGame) {
+        } else if (!isGame && !isBanner) {
 
             if (ObjNotNull) {
 
@@ -654,7 +695,7 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     }
 
-    if (!Play_EndFocus) UserLiveFeed_CheckIfIsLiveStart(pos);
+    if (!Play_EndFocus && !isBanner) UserLiveFeed_CheckIfIsLiveStart(pos);
 
     if (pos === UserLiveFeed_FeedPosX) {
 

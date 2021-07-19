@@ -24,54 +24,59 @@ var nordvpn = {
     display_url: "tiny.cc/nordvpn27",
     url: "https://go.nordvpn.net/SH3SM",
     //image_base: "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/",
-    image_base: "/release/githubio/images/nordvpn/",
+    banners_folder: "/release/githubio/images/nordvpn/",
     de: {
         short_text: "NordVPN nutzt den Link %x für die neuesten Angebote",
-        long_text: "NordVPN nutzt den Link %x für die neuesten Angebote und zur Unterstützung der App",
+        long_text: "Nutzt den Link %x für die neuesten Angebote und zur Unterstützung der App",
     },
     en: {
         short_text: "NordVPN use the link %x for the latest deals",
-        long_text: "NordVPN use the link %x for the latest deals and to support the app",
-        images: [
-            "/v4-970x250-3.png",
-            "/970x250-gaming.png",
-            "/970x250-streaming.png",
-            "/v4-970x250-4.png",
-            "/970x250-speed.png",
-            "/v4-970x250-1.png",
-            "/970x250-gaming-1.png",
-            "/970x250-streaming-1.png",
-            "/v4-970x250-5.png",
-            "/970x250-speed-1.png",
-            "/v4-970x250-2.png",
-            "/970x250-gaming-2.png"
+        long_text: "Use the link %x for the latest deals and to support the app",
+        banner: [
+            "/banner/v4-970x250-3.png",
+            "/banner/970x250-gaming.png",
+            "/banner/970x250-streaming.png",
+            "/banner/v4-970x250-4.png",
+            "/banner/970x250-speed.png",
+            "/banner/v4-970x250-1.png",
+            "/banner/970x250-gaming-1.png",
+            "/banner/970x250-streaming-1.png",
+            "/banner/v4-970x250-5.png",
+            "/banner/970x250-speed-1.png",
+            "/banner/v4-970x250-2.png",
+            "/banner/970x250-gaming-2.png"
+        ],
+        banner_16by9: [
+            "/banner_16by9/480x320-gaming.png",
+            "/banner_16by9/480x320-gaming-1.png",
+            "/banner_16by9/480x320-gaming-2.png"
         ]
     },
     fr: {
         short_text: "NordVPN utilise le lien %x pour les dernières offres",
-        long_text: "NordVPN utilise le lien% x pour les dernières offres et pour prendre en charge l'application",
+        long_text: "Utilise le lien %x pour les dernières offres et pour prendre en charge l'application",
     },
     ja: {
-        short_text: "NordVPNは、最新のお得な情報にリンク ％x を使用します",
-        long_text: "NordVPNは、リンク ％x を使用して最新のお得な情報を入手し、アプリをサポートします",
+        short_text: "NordVPNは、最新のお得な情報にリンク %x を使用します",
+        long_text: "は、リンク %x を使用して最新のお得な情報を入手し、アプリをサポートします",
     },
     ko: {
         short_text: "NordVPN 은 최신 거래를 위해 링크 %x 를 사용합니다",
-        long_text: "NordVPN 은 최신 거래 및 앱 지원을 위해 링크 %x 를 사용합니다.",
+        long_text: "은 최신 거래 및 앱 지원을 위해 링크 %x 를 사용합니다.",
     },
     pt: {
-        short_text: "NordVPN use o link% x para as últimas ofertas",
-        long_text: "NordVPN use o link %x para as últimas ofertas e para suportar o aplicativo",
+        short_text: "NordVPN use o link %x para as últimas ofertas",
+        long_text: "Use o link %x para as últimas ofertas e para suportar o aplicativo",
     },
     zh: {
         short_text: "NordVPN 使用鏈接 %x 獲取最新交易",
-        long_text: "NordVPN 使用鏈接 %x 獲取最新優惠並支持該應用程序",
-        images: [
-            "/v4-970x250-1.png",
-            "/v4-970x250-2.png",
-            "/v4-970x250-3.png",
-            "/v4-970x250-4.png",
-            "/v4-970x250-5.png"
+        long_text: "使用鏈接 %x 獲取最新優惠並支持該應用程序",
+        banner: [
+            "/banner/v4-970x250-1.png",
+            "/banner/v4-970x250-2.png",
+            "/banner/v4-970x250-3.png",
+            "/banner/v4-970x250-4.png",
+            "/banner/v4-970x250-5.png"
         ]
     },
 };
@@ -80,8 +85,8 @@ var array_extra_lang = ['fr', 'de', 'ja', 'pt'];
 
 var i = 0, len = array_extra_lang.length;
 for (i; i < len; i++) {
-    nordvpn[array_extra_lang[i]].images = nordvpn.en.images;
+    nordvpn[array_extra_lang[i]].banner = nordvpn.en.banner;
 }
 
-nordvpn.ko.images = nordvpn.zh.images;
+nordvpn.ko.banner = nordvpn.zh.banner;
 

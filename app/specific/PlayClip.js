@@ -817,7 +817,9 @@ function PlayClip_handleKeyDown(e) {
                 else Play_BottomOptionsPressed(3);
                 PlayClip_setHidePanel();
             } else if (UserLiveFeed_isPreviewShowing()) {
-                if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                if (UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]].image) {
+                    UserLiveFeed_OpenBanner();
+                } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                 else PlayClip_CheckIfIsLiveStart();
             }
             else PlayClip_showPanel();

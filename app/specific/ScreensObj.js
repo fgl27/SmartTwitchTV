@@ -417,7 +417,7 @@ function ScreensObj_StartAllVars() {
 
             var lang = nordvpn[this.ContentLang] ? this.ContentLang : 'en',
                 img_pos = Main_values.banner_pos++,
-                len = nordvpn[lang].images.length;
+                len = nordvpn[lang].banner.length;
 
             if (img_pos >= len)
                 img_pos = 0;
@@ -427,10 +427,12 @@ function ScreensObj_StartAllVars() {
 
             ScreensObj_addBanner(
                 {
-                    image: nordvpn.image_base + lang + nordvpn[lang].images[img_pos],
+                    image: nordvpn.banners_folder + lang + nordvpn[lang].banner[img_pos],
                     url: nordvpn.url,
-                    text: nordvpn[lang].long_text.replace('%x', DefaultMakeLink(nordvpn.display_url, 'http://')),
-                    event_name: nordvpn.event_name
+                    text: nordvpn[lang].long_text.replace(
+                        '%x', DefaultMakeLink(nordvpn.display_url, 'http://')
+                    ),
+                    event_name: 'banner_' + nordvpn.event_name
                 },
                 this.screen,
                 forceAdd
@@ -477,19 +479,9 @@ function ScreensObj_StartAllVars() {
         },
         banner_click: function(obj_id) {
 
-
             if (this.DataObj[obj_id].url) {
 
-                if (Main_IsOn_OSInterface) {
-
-                    Main_SaveValues();
-                    Android.OpenURL(this.DataObj[obj_id].url);
-
-                } else {
-
-                    console.log(this.DataObj[obj_id]);
-
-                }
+                UserLiveFeed_OpenBannerUrl(this.DataObj[obj_id]);
 
             } else {
 
@@ -2162,7 +2154,7 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     div.className = 'banner_holder';
 
     div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
-        (ScreenObj[key].screenType === 3 ? ' style="width: 97%;"' : '') +
+        (ScreenObj[key].screenType === 3 ? ' style="width: 95.75%;"' : '') +
         '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
         idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';

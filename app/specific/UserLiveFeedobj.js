@@ -1085,20 +1085,17 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
 
     div.className = 'user_feed_thumb';
 
-    var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg)),
-        ishosting = data[16];
+    var image = (force_VOD ? Extra_vodimg : (data[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg));
 
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
-        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VOD +
+        UserLiveFeed_ids[1] + id + '" class="stream_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' +
-        UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:' +
-        (ishosting ? '99%; max-height: 2.4em; white-space: normal;' : '63.5%; white-space: nowrap; text-overflow: ellipsis;') + ' display: inline-block; overflow: hidden;">' +
+        UserLiveFeed_ids[2] + id + '" class="stream_info_live_name" style="width:63.5%; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;">' +
         '<i class="icon-' + (data[8] ? 'refresh' : 'circle') + ' live_icon strokedeline' + (force_VOD ? ' hideimp' : '') + '" style="color: ' +
-        (data[8] ? '#FFFFFF' : ishosting ? '#FED000' : 'red') + ';"></i> ' +
+        (data[8] ? '#FFFFFF' : 'red') + ';"></i> ' +
         (Extra_vodimg || force_VOD ? ('<div class="vodicon_text ' + (force_VOD ? '' : 'hideimp') + '" style="background: #00a94b;">&nbsp;&nbsp;VOD&nbsp;&nbsp;</div>&nbsp;') :
             '<div style="display: none;"></div>') + //empty div to prevent error when childNodes[2].classList.remove
-        data[1] + '</div><div class="stream_info_live" style="width:' + (ishosting ? 0 : 36) +
-        '%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
+        data[1] + '</div><div class="stream_info_live" style="width: 36%; float: right; text-align: right; display: inline-block; font-size: 70%;">' +
         data[5] + '</div></div><div class="' + (Extra_when ? 'stream_info_live_title_single_line' : 'stream_info_live_title') +
         '">' + Main_ReplaceLargeFont(twemoji.parse(data[2])) +
         '</div><div class="stream_info_live">' + (data[3] !== "" ? STR_PLAYING + data[3] : "") +
@@ -1106,6 +1103,27 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         (Extra_when ? ('<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR +
             STR_UNTIL + Play_timeMs(Extra_when - (new Date(data[12]).getTime())) + '</div>') : '') +
         '</div></div></div>';
+
+    return div;
+}
+
+function UserLiveFeedobj_CreatBanner(pos, y, id, obj) {
+    //, Extra_when, Extra_vodimg, force_VOD
+
+    var div = document.createElement('div');
+
+    div.setAttribute('id', UserLiveFeed_ids[3] + id);
+    UserLiveFeed_DataObj[pos][y] = obj;
+
+    div.className = 'user_feed_thumb';
+
+    var image = obj.image;
+
+    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
+        UserLiveFeed_ids[1] + id + '" class="banner_16by9_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
+        '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' + UserLiveFeed_ids[2] + id +
+        '" class="stream_info_live_name" style="width:99%; text-align: center; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;"><br>NordVPN</div></div><div class="stream_info_live_title" style="max-height: 3.5em;">' + obj.text +
+        '</div></div></div></div></div>';
 
     return div;
 }
@@ -1262,6 +1280,8 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
     Main_setTimeout(
         function() {
+
+            UserLiveFeedobj_AddBanner(UserLiveFeedobj_UserLivePos);
 
             UserLiveFeedobj_SetLastPosition(UserLiveFeedobj_UserLivePos);
 
@@ -1673,6 +1693,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 
         }
 
+    } else {
+
+        UserLiveFeedobj_AddBanner(pos);
+
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
@@ -1690,7 +1714,39 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
         );
     }
 }
+function UserLiveFeedobj_AddBanner(pos) {
+
+    UserLiveFeed_idObject[pos][0] = UserLiveFeed_itemsCount[pos];
+
+    var lang = nordvpn[UserLiveFeed_obj[pos].ContentLang] ? UserLiveFeed_obj[pos].ContentLang : 'en',
+        img_pos = Main_values.banner_16by9_pos++,
+        len = nordvpn[lang].banner_16by9.length;
+
+    if (img_pos >= len)
+        img_pos = 0;
+
+    if (Main_values.banner_16by9_pos >= len)
+        Main_values.banner_16by9_pos = 0;
+
+    UserLiveFeed_cell[pos][UserLiveFeed_itemsCount[pos]] =
+        UserLiveFeedobj_CreatBanner(
+            pos,
+            UserLiveFeed_itemsCount[pos],
+            pos + '_' + UserLiveFeed_itemsCount[pos],
+            {
+                image: nordvpn.banners_folder + lang + nordvpn[lang].banner_16by9[img_pos],
+                url: nordvpn.url,
+                text: nordvpn[lang].long_text.replace(
+                    '%x', DefaultMakeLink(nordvpn.display_url, 'http://')
+                ),
+                event_name: 'banner_16by9_' + nordvpn.event_name
+            }
+        );
+
+    UserLiveFeed_itemsCount[pos]++;
+}
 //Base video fun end
+
 
 //Base game fun
 function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {

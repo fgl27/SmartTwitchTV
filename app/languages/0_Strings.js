@@ -19,9 +19,6 @@
  */
 
 // Keep this file named as (zero)*** so it loads first in release_maker
-var STR_ABOUT_INFO_5 = "https://github.com/fgl27/SmartTwitchTV";
-var STR_ABOUT_INFO_20 = "https://github.com/fgl27/SmartTwitchTV/releases";
-
 var STR_REFRESH;
 var STR_SEARCH;
 var STR_SETTINGS;
