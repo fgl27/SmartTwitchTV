@@ -509,7 +509,7 @@ function en_USLang() {
     STR_CONTROLS_MULTI_4 = "Change audio source: D-pad right or left or media keys next previews track, hold down to audio source all videos";
     STR_CONTROLS_MULTI_5 = "Exit multistream: Press return twice or exit through the option at the bottom of the player.";
     STR_CONTROLS_MULTI_6 = "To close this, open 4 lives";
-    STR_PICTURE_LIVE_FEED = "Picture in picture: Hold enter or press key 1, after that use D-Pad left to move, right to resize or down to change videos";
+    STR_PICTURE_LIVE_FEED = "Picture in picture: Hold enter or press key 1, after use D-Pad left to move, right to resize or down to change videos";
     STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
     STR_FEED_END_DIALOG = ", Press return to go back to top menu";
     STR_BACK_USER_GAMES = "Press return to go back to";
