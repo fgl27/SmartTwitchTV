@@ -2172,7 +2172,7 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
         (ScreenObj[key].screenType === 3 ? ' style="width: 95.75%;"' : '') +
         '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
-        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
+        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + IMG_AFFILIATED +
         '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
 
     ScreenObj[key].row.appendChild(div);
