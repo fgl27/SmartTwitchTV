@@ -492,7 +492,16 @@ function ScreensObj_StartAllVars() {
         },
         banner_click: function(obj_id) {
 
-            if (this.DataObj[obj_id].url) {
+            if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
+
+                Main_EventBanner(
+                    this.DataObj[obj_id].event_name + '_click',
+                    this.ScreenName
+                );
+
+            }
+
+            if (this.DataObj[obj_id] && this.DataObj[obj_id].url) {
 
                 UserLiveFeed_OpenBannerUrl(this.DataObj[obj_id]);
 
@@ -502,14 +511,6 @@ function ScreensObj_StartAllVars() {
 
             }
 
-            if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
-
-                Main_EventBanner(
-                    this.DataObj[obj_id].event_name + '_click',
-                    this.ScreenName
-                );
-
-            }
         },
     };
 

@@ -564,12 +564,6 @@ function UserLiveFeed_OpenBanner() {
 
     var obj = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]];
 
-    if (obj.url) {
-
-        UserLiveFeed_OpenBannerUrl(obj);
-
-    }
-
     if (obj && obj.event_name) {
 
         Main_EventBanner(
@@ -578,6 +572,14 @@ function UserLiveFeed_OpenBanner() {
         );
 
     }
+
+    if (obj && obj.url) {
+
+        UserLiveFeed_OpenBannerUrl(obj);
+
+    }
+
+
 }
 
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
