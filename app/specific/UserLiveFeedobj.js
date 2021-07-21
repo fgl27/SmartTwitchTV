@@ -1750,7 +1750,7 @@ function UserLiveFeedobj_AddBanner(pos) {
 
     UserLiveFeed_itemsCount[pos]++;
 
-    UserLiveFeed_obj[pos].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+    UserLiveFeed_obj[pos].BannerTime = new Date().getTime() + AffiliatedTIme;
 
 }
 //Base video fun end

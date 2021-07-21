@@ -57,6 +57,8 @@ var DefaultHttpGetTimeout = 30000;
 var noop_fun = function() { };
 var ScreensObj_banner_added_section = false;
 
+var AffiliatedTIme = 60 * 120 * 1000;
+
 var Base_obj;
 var Base_Vod_obj;
 var Base_Live_obj;
@@ -2183,7 +2185,7 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     this.itemsCount += 3;
     this.coloumn_id += 3;
 
-    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+    ScreenObj[key].BannerTime = new Date().getTime() + AffiliatedTIme;
 
     ScreensObj_banner_added_section = true;
     ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
