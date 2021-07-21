@@ -552,6 +552,7 @@ function UserLiveFeed_OpenBannerUrl(obj) {
 
     } else {
 
+        window.open(obj.url, '_blank').focus();
         console.log(obj);
 
     }

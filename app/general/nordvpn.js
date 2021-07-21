@@ -27,11 +27,11 @@ var nordvpn = {
     banners_folder: "/release/githubio/images/nordvpn/",
     de: {
         short_text: "NordVPN nutzt den Link %x für die neuesten Angebote",
-        long_text: "Nutzt den Link %x für die neuesten Angebote und zur Unterstützung der App",
+        long_text: "Klicken Sie hier oder verwenden Sie den Link %x für die neuesten Angebote und um die App zu unterstützen",
     },
     en: {
         short_text: "NordVPN use the link %x for the latest deals",
-        long_text: "Use the link %x for the latest deals and to support the app",
+        long_text: "Click here or use the link %x for the latest deals and to support the app",
         banner: [
             "/banner/v4-970x250-3.png",
             "/banner/970x250-gaming.png",
@@ -63,23 +63,23 @@ var nordvpn = {
     },
     fr: {
         short_text: "NordVPN utilise le lien %x pour les dernières offres",
-        long_text: "Utilise le lien %x pour les dernières offres et pour prendre en charge l'application",
+        long_text: "Cliquez ici ou utilisez le lien %x pour les dernières offres et pour soutenir l'application",
     },
     ja: {
         short_text: "NordVPNは、最新のお得な情報にリンク %x を使用します",
-        long_text: "は、リンク %x を使用して最新のお得な情報を入手し、アプリをサポートします",
+        long_text: "ここをクリックするか、リンク %x を使用して最新のお得な情報を入手し、アプリをサポートしてください",
     },
     ko: {
         short_text: "NordVPN 은 최신 거래를 위해 링크 %x 를 사용합니다",
-        long_text: "은 최신 거래 및 앱 지원을 위해 링크 %x 를 사용합니다.",
+        long_text: "여기를 클릭하거나 링크 %x 를 사용하여 최신 거래 및 앱 지원",
     },
     pt: {
         short_text: "NordVPN use o link %x para as últimas ofertas",
-        long_text: "Use o link %x para as últimas ofertas e para suportar o aplicativo",
+        long_text: "Clique aqui ou use o link %x para as últimas ofertas e para apoiar o aplicativo",
     },
     zh: {
         short_text: "NordVPN 使用鏈接 %x 獲取最新交易",
-        long_text: "使用鏈接 %x 獲取最新優惠並支持該應用程序",
+        long_text: "單擊此處或使用鏈接 %x 獲取最新優惠並支持該應用程序",
         banner: [
             "/banner/v4-970x250-1.png",
             "/banner/v4-970x250-2.png",
