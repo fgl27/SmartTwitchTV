@@ -107,10 +107,6 @@ function Screens_InitScreens() {
     Screens_dialog_thumb_div = Main_getElementById('dialog_thumb_opt');
     Screens_dialog_thumb_delete_div = Main_getElementById('main_yes_no_dialog');
 
-    if (Main_A_includes_B(window.location.href, 'asset')) {
-        nordvpn.banners_folder = 'file:///android_asset' + nordvpn.banners_folder;
-    }
-
     Main_setTimeout(Main_Startfirebase);
     Screens_first_init();
 }

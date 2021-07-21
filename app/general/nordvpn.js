@@ -23,8 +23,8 @@ var nordvpn = {
     event_name: "nord",
     display_url: "tiny.cc/nordvpn27",
     url: "https://go.nordvpn.net/SH3SM",
-    //image_base: "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/",
-    banners_folder: "/release/githubio/images/nordvpn/",
+    banners_folder: "https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/",
+    //banners_folder: ((window.location.href).indexOf('asset') !== -1 ? 'file:///android_asset' : '') + "/release/githubio/images/nordvpn/",//for testing images fro assets
     de: {
         short_text: "NordVPN nutzt den Link %x für die neuesten Angebote",
         long_text: "Klicken Sie hier oder verwenden Sie den Link %x für die neuesten Angebote und um die App zu unterstützen",
