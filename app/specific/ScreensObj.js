@@ -450,11 +450,20 @@ function ScreensObj_StartAllVars() {
                 forceAdd
             );
         },
-        addEmptyContentBanner: function() {
+        addEmptyContentBanner: function(showWarning) {
 
             if (this.hasBanner()) {
 
                 this.addBanner();
+
+                if (showWarning) {
+
+                    Main_showWarningDialog(
+                        STR_REFRESH_PROBLEM,
+                        0,
+                        true
+                    );
+                }
 
             } else {
 

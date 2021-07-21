@@ -455,15 +455,13 @@ function Screens_loadDatafail(key) {
 
             if (!Main_FirstRun) Main_HideLoadDialog();
 
-            if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner()) {
-
-                ScreenObj[key].emptyContent = true;
+            if (ScreenObj[key].HasSwitches) {
 
                 if (ScreenObj[key].HasSwitches) {
                     ScreenObj[key].addSwitches();
                 }
 
-                ScreenObj[key].addEmptyContentBanner();
+                ScreenObj[key].addEmptyContentBanner(true);
 
                 Screens_loadDataSuccessFinish(key);
 
@@ -587,7 +585,18 @@ function Screens_loadDataSuccess(key) {
 
         if (!ScreenObj[key].BannerCreated) {
 
-            ScreenObj[key].addEmptyContentBanner();
+            ScreenObj[key].addEmptyContentBanner(true);
+
+        } else {
+
+            ScreenObj[key].itemsCount = 1;
+            ScreenObj[key].emptyContent = false;
+
+            Main_showWarningDialog(
+                STR_REFRESH_PROBLEM,
+                0,
+                true
+            );
 
         }
 
