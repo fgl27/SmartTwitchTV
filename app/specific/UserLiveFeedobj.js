@@ -1714,7 +1714,8 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 }
 function UserLiveFeedobj_AddBanner(pos) {
 
-    if (UserLiveFeed_obj[pos].BannerTime > (new Date().getTime())) {
+    if (!Settings_Obj_default("show_affiliate") ||
+        UserLiveFeed_obj[pos].BannerTime > (new Date().getTime())) {
 
         return;
 

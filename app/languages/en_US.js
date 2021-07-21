@@ -717,4 +717,7 @@ function en_USLang() {
     STR_TOP = "Top";
     STR_AVG = "Avg";
     STR_OFFSET = "Offset";
+
+    STR_AFFILIATE = "Affiliate content";
+    STR_AFFILIATE_SUMMARY = "Affiliate content summary";
 }

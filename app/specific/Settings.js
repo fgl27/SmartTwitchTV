@@ -67,6 +67,10 @@ var Settings_value = {
         "apply_values": ["en_US", "es_Us", "pt_BR", "ru_RU"],
         "defaultValue": 1
     },
+    "show_affiliate": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "restor_playback": {
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -674,6 +678,7 @@ function Settings_SetSettings() {
 
     //Individual settings
     div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
+    div += Settings_Content('show_affiliate', array_no_yes, STR_AFFILIATE, STR_AFFILIATE_SUMMARY);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);

@@ -455,7 +455,7 @@ function Screens_loadDatafail(key) {
 
             if (!Main_FirstRun) Main_HideLoadDialog();
 
-            if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner) {
+            if (ScreenObj[key].HasSwitches || ScreenObj[key].hasBanner()) {
 
                 ScreenObj[key].emptyContent = true;
 
@@ -503,7 +503,7 @@ function Screens_loadDataSuccess(key) {
 
     }
 
-    if (ScreenObj[key].hasBanner &&
+    if (ScreenObj[key].hasBanner() &&
         !ScreenObj[key].BannerCreated &&
         !ScreensObj_banner_added_section) {
 
@@ -538,7 +538,7 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].row_id++;
                 ScreenObj[key].tempHtml = '';
 
-                if (ScreenObj[key].hasBanner &&
+                if (ScreenObj[key].hasBanner() &&
                     (ScreenObj[key].BannerTime < (new Date().getTime())) &&
                     !ScreenObj[key].BannerCreated &&
                     ScreenObj[key].row_id > 2) {
@@ -549,7 +549,7 @@ function Screens_loadDataSuccess(key) {
 
                 //Content ended and last row is full
                 if (ScreenObj[key].data_cursor === data_length &&
-                    ScreenObj[key].hasBanner &&
+                    ScreenObj[key].hasBanner() &&
                     !ScreenObj[key].BannerCreated) {
 
                     ScreenObj[key].row_id++;
@@ -567,7 +567,7 @@ function Screens_loadDataSuccess(key) {
 
                 }
 
-                if (ScreenObj[key].hasBanner &&
+                if (ScreenObj[key].hasBanner() &&
                     !ScreenObj[key].BannerCreated) {
 
                     ScreenObj[key].row_id++;

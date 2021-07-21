@@ -412,7 +412,9 @@ function ScreensObj_StartAllVars() {
             );
 
         },
-        hasBanner: true,
+        hasBanner: function() {
+            return this.showBanner && Settings_Obj_default("show_affiliate");
+        },
         addBanner: function(forceAdd) {
 
             var lang = nordvpn[this.ContentLang] ? this.ContentLang : 'en',
@@ -450,7 +452,7 @@ function ScreensObj_StartAllVars() {
         },
         addEmptyContentBanner: function() {
 
-            if (this.hasBanner) {
+            if (this.hasBanner()) {
 
                 this.addBanner();
 
@@ -1226,6 +1228,7 @@ function ScreensObj_InitLive() {
         key_pgUp: Main_Clip,
         CheckContentLang: 1,
         ContentLang: '',
+        showBanner: true,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.check_offset();
@@ -1300,6 +1303,7 @@ function ScreensObj_InitUserLive() {
         loadChannelOffsset: 0,
         followerChannels: [],
         followerChannelsDone: false,
+        showBanner: true,
         set_url: function() {
             this.check_offset();
 
@@ -1412,6 +1416,7 @@ function ScreensObj_InitAGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         hasBackupData: true,
+        showBanner: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();
