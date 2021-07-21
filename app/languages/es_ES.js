@@ -157,9 +157,6 @@ function es_ESLang() {
     STR_ABOUT_INFO_4 = "Esta es una aplicación de código abierto licenciada bajo la Licencia Pública General GNU v3.0, consúltela en GitHub";
     STR_ABOUT_INFO_6 = "Esta aplicación utiliza las siguientes dependencias:";
 
-    STR_ABOUT_INFO_14 = "Web:";
-    STR_ABOUT_INFO_15 = "Android:";
-
     STR_CONTROLS_PLAY_14 = "Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50";
     STR_F_DISABLE_CHAT = "Forzar deshabilitar el chat";
     STR_OAUTH_IN = 'Añadir una clave permite que la aplicación acceda al chat usando tu usuario para enviar mensajes y obtener tu lista de emote (te permite obtener sub dones para el chat), seguir/deshacer canales y acceder a algunos contenidos de los usuarios más rápidamente<br><br>Añadir una clave no es exigente y puede hacerse en cualquier momento posterior<br><br>En caso de duda lee este enlace:<br><br>%x<br><br>Para algunos dispositivos es necesario un ratón para completar la acción de autorización ya que puede ser necesario pulsar manualmente un botón para confirmar.<br><br>Añadir clave para';

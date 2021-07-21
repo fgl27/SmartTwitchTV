@@ -158,22 +158,9 @@ function pt_BRLang() {
     STR_ABOUT_INFO_3 = "Informações de contato:";
     STR_ABOUT_INFO_4 = "Este é um aplicativo de código aberto licenciado sob a GNU General Public License v3.0, verifique no GitHub";
     STR_ABOUT_INFO_6 = "Este aplicativo usa as seguintes dependências:";
-    STR_ABOUT_INFO_7 = "irc-message - Performant, streaming de analisador de mensagem IRC";
-    STR_ABOUT_INFO_8 = "Fontastic - Crie suas fontes de ícone personalizadas em segundos";
-    STR_ABOUT_INFO_9 = "Twemoji - Uma biblioteca simples que fornece suporte a emoji Unicode padrão em todas as plataformas";
-    STR_ABOUT_INFO_10 = "UglifyJS - é um analisador JavaScript, minificador, compressor e kit de ferramentas de embelezador";
-    STR_ABOUT_INFO_12 = "HTMLMinifier - Um minificador HTML altamente configurável, bem testado e baseado em JavaScript";
-    STR_ABOUT_INFO_13 = "JSHint - Uma ferramenta de análise de código estático para JavaScript";
-    STR_ABOUT_INFO_14 = "Web:";
-    STR_ABOUT_INFO_15 = "Android:";
-    STR_ABOUT_INFO_16 = "Leanback v17: Classes de suporte para construir experiências de usuário Leanback";
-    STR_ABOUT_INFO_17 = "ExoPlayer: um reprodutor de mídia extensível para Android";
     STR_ABOUT_INFO_18 = "Suporte para telefones e tablets:";
     STR_ABOUT_INFO_19 = "Sim, é possível usar este aplicativo em telefones e tablets, mas este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado e por isso não é liberado na play store, use o link abaixo para fazer o download APK mais recente e instale manualmente em um telefone ou tablets";
-    STR_ABOUT_INFO_21 = "Plug-in de versões do Gradle: plug-in do Gradle para descobrir atualizações de dependências";
-    STR_ABOUT_INFO_22 = "Tray: uma substituição de SharedPreferences para Android";
-    STR_ABOUT_INFO_23 = "punycode - Um conversor de Punycode robusto que está totalmente em conformidade com RFC 3492 e RFC 5891";
-    STR_ABOUT_INFO_24 = "crass - Uma minificação CSS, impressão bonita e biblioteca de utilitários gerais escrita em JS";
+
     STR_CONTROLS_PLAY_0 = "ou nos controles da parte inferior do player";
     STR_CONTROLS_PLAY_1 = "Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos";
     STR_CONTROLS_PLAY_2 = "Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar";
@@ -338,7 +325,7 @@ function pt_BRLang() {
     STR_THUMB_RESOLUTION = "Qualidade das miniaturas";
     STR_THUMB_RESOLUTION_SUMMARY = "Resolução padrão de miniaturas para vídeos, ao vivo e jogos (não pode ser aplicado para clipes) um valor menor ajudará o aplicativo a carregar mais rápido, mas a miniatura pode parecer desfocada";
     STR_PAYPAL_SUMMARY = "Doações Paypal use o link abaixo:";
-    STR_BITCOIN_SUMMARY = "Doações de Bitcoin use o endereço de carteira:";
+    STR_BITCOIN_SUMMARY = "Doações de Bitcoin use o endereço de carteira ou leia o qrcode:";
     STR_PLAYER_PROBLEM_2 = "A conexão falhou, não foi possível carregar as informações do Vídeo";
     STR_PLAYER_RESYNC = "Reiniciar player";
     STR_PLAYER_MULTI_ALL = "Tudo";
@@ -704,4 +691,8 @@ function pt_BRLang() {
     STR_TOP = "Topo";
     STR_AVG = "Méd";
     STR_OFFSET = "Offset";
+
+    STR_AFFILIATE = "Conteúdo afiliado";
+    STR_AFFILIATE_SUMMARY = "Se você não quiser ver o conteúdo de afiliado, desative esta opção.";
+    STR_AFFILIATE_ABOUT = "Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.";
 }

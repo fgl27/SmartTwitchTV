@@ -162,23 +162,10 @@ function en_USLang() {
     STR_ABOUT_INFO_3 = "Contact information:";
     STR_ABOUT_INFO_4 = "This is an open source application licensed under the GNU General Public License v3.0, check it out on GitHub:";
 
-    STR_ABOUT_INFO_6 = "This application uses the following dependencies:";
-    STR_ABOUT_INFO_7 = "irc-message - Performant, streaming IRC message parser";
-    STR_ABOUT_INFO_8 = "Fontastic - Create your customized icon fonts in seconds";
-    STR_ABOUT_INFO_9 = "Twemoji - A simple library that provides standard Unicode emoji support across all platforms";
-    STR_ABOUT_INFO_10 = "UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit";
-    STR_ABOUT_INFO_12 = "HTMLMinifier - A highly configurable, well-tested, JavaScript-based HTML minifier";
-    STR_ABOUT_INFO_13 = "JSHint - A Static Code Analysis Tool for JavaScript";
-    STR_ABOUT_INFO_14 = "Web:";
-    STR_ABOUT_INFO_15 = "Android:";
-    STR_ABOUT_INFO_16 = "Leanback v17: Support classes for building Leanback user experiences";
-    STR_ABOUT_INFO_17 = "ExoPlayer: An extensible media player for Android";
+    STR_ABOUT_INFO_6 = "To see the application dependencies use the link:";
     STR_ABOUT_INFO_18 = "Phone and tablet support:";
     STR_ABOUT_INFO_19 = "It is possible to use this app on phones and tablets, but this app is designed to be used mainly on TVs. Support for other devices is limited, and because of that, it is not released on the Play Store. Use the link below to download the latest APK and manually install the app on a phone or tablet:";
-    STR_ABOUT_INFO_21 = "Gradle Versions Plugin: Gradle plugin to discover dependency updates";
-    STR_ABOUT_INFO_22 = "Tray: A SharedPreferences replacement for Android";
-    STR_ABOUT_INFO_23 = "punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891";
-    STR_ABOUT_INFO_24 = "crass - A CSS minification, pretty printing, and general utility library written in JS";
+
     STR_CONTROLS_PLAY_0 = "or in the controls at the bottom of the player";
     STR_CONTROLS_PLAY_1 = "Show the information panel: Press enter or D-pad keys if the chat and the live channel feed aren't showing";
     STR_CONTROLS_PLAY_2 = "Close the video: Press return twice or the stop media key";
@@ -343,7 +330,7 @@ function en_USLang() {
     STR_THUMB_RESOLUTION = "Thumbnail quality";
     STR_THUMB_RESOLUTION_SUMMARY = "Default thumbnail resolution for lives, videos and games (can't be applied for clips). A lower value will help the app load faster, but the thumbnail may look blurry.";
     STR_PAYPAL_SUMMARY = "Paypal donations, use the link below:";
-    STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address:";
+    STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address or read the QR Code:";
     STR_PLAYER_PROBLEM_2 = "Connection failed, unable to load stream info";
     STR_PLAYER_RESYNC = "Player restart";
     STR_PLAYER_MULTI_ALL = "All";
@@ -719,5 +706,6 @@ function en_USLang() {
     STR_OFFSET = "Offset";
 
     STR_AFFILIATE = "Affiliate content";
-    STR_AFFILIATE_SUMMARY = "Affiliate content summary";
+    STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
+    STR_AFFILIATE_ABOUT = "This app has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to product are properly verified and or used before be displayed on the application.";
 }

@@ -830,6 +830,8 @@ function Main_showWelcomeDialog(removeEventListener, addEventListener) {
         STR_ABOUT_INFO_2 + STR_BR + STR_BR +
         STR_WELCOME_SUMMARY + STR_BR + STR_BR +
         STR_CONTACT +
+        STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
+        STR_AFFILIATE_ABOUT + STR_BR + STR_BR +
         phone_warning +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
     );

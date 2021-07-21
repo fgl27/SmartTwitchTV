@@ -652,7 +652,8 @@ function Settings_isVisible() {
 function Settings_SetSettings() {
     var div = '',
         key,
-        array_no_yes = [STR_NO, STR_YES];
+        array_no_yes = [STR_NO, STR_YES],
+        dis_ena = [STR_DISABLED, STR_ENABLED];
 
     Settings_value_keys = [];
 
@@ -678,7 +679,7 @@ function Settings_SetSettings() {
 
     //Individual settings
     div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
-    div += Settings_Content('show_affiliate', array_no_yes, STR_AFFILIATE, STR_AFFILIATE_SUMMARY);
+    div += Settings_Content('show_affiliate', dis_ena, STR_AFFILIATE, STR_AFFILIATE_SUMMARY + STR_SPACE + STR_AFFILIATE_ABOUT);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -687,7 +688,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
-    div += Settings_Content('PP_workaround', [STR_DISABLED, STR_ENABLED], STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
+    div += Settings_Content('PP_workaround', dis_ena, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
     div += Settings_Content('vod_dialog', [STR_VOD_DIALOG_LAST, STR_VOD_DIALOG_SHOW, STR_VOD_DIALOG_START], STR_VOD_DIALOG, STR_VOD_DIALOG_SUMMARY);
 
