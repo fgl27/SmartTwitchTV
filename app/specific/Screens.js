@@ -2135,6 +2135,7 @@ function Screens_handleKeyDown(key, event) {
                 Screens_addFocus(true, key);
             }
             break;
+        case KEY_NUMPAD_1:
         case KEY_1:
         case KEY_PLAY:
         case KEY_PLAYPAUSE:
@@ -2149,35 +2150,42 @@ function Screens_handleKeyDown(key, event) {
             Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
             break;
         case KEY_MEDIA_NEXT:
+        case KEY_NUMPAD_2:
         case KEY_2:
             Main_ReloadScreen();
             break;
         case KEY_PAUSE://key s
+        case KEY_NUMPAD_6:
         case KEY_6:
             Screens_RemoveFocus(key);
             Main_showSettings();
             break;
         case KEY_A:
+        case KEY_NUMPAD_7:
         case KEY_7:
             Screens_RemoveFocus(key);
             Main_showAboutDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_C:
+        case KEY_NUMPAD_8:
         case KEY_8:
             Screens_RemoveFocus(key);
             Main_showControlsDialog(ScreenObj[key].key_fun, ScreenObj[key].key_controls);
             break;
         case KEY_E:
+        case KEY_NUMPAD_9:
         case KEY_9:
             Screens_RemoveFocus(key);
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_showExitDialog();
             break;
+        case KEY_NUMPAD_0:
         case KEY_0:
         case KEY_U:
             Screens_RemoveFocus(key);
             Main_UpdateDialogShowCheck();
             break;
+        case KEY_NUMPAD_3:
         case KEY_3:
             var UserIsSet = AddUser_UserIsSet();
             Screens_OpenSidePanel(UserIsSet, key);
