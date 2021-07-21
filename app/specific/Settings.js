@@ -414,6 +414,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "chat_bot": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "show_actions": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 1
@@ -2411,6 +2415,7 @@ function Settings_DialogShowChat() {
     Settings_value.show_sub.values = yes_no;
     Settings_value.highlight_bits.values = yes_no;
     Settings_value.show_actions.values = yes_no;
+    Settings_value.chat_bot.values = yes_no;
     Settings_value.chat_individual_background.values = [STR_DISABLED, STR_ENABLED, STR_BRIGHT_MODE, STR_DARK_MODE];
     Settings_value.chat_logging.values = yes_no;
     Settings_value.individual_lines.values = yes_no;
@@ -2510,6 +2515,12 @@ function Settings_DialogShowChat() {
             values: Settings_value.show_actions.values,
             title: STR_CHAT_HIGHLIGHT_ACTIONS,
             summary: STR_CHAT_HIGHLIGHT_ACTIONS_SUMMARY
+        },
+        chat_bot: {
+            defaultValue: Settings_value.chat_bot.defaultValue,
+            values: Settings_value.chat_bot.values,
+            title: STR_CHAT_BOTS,
+            summary: null
         },
     };
 

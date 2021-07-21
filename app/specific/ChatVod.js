@@ -312,7 +312,8 @@ function Chat_loadChatSuccess(responseText, id) {
 
     responseText = JSON.parse(responseText);
     var div,
-        mmessage, null_next = (Chat_next === null),
+        mmessage,
+        null_next = (Chat_next === null),
         nickColor,
         atstreamer,
         atuser,
@@ -357,7 +358,14 @@ function Chat_loadChatSuccess(responseText, id) {
         div = '';
         mmessage = comments[i].message;
 
-        if (!ChatLive_Highlight_Actions && mmessage.is_action) continue;
+        if (!ChatLive_Highlight_Actions && mmessage.is_action ||
+            (ChatLive_HideBots &&
+                (KnowBots[comments[i].commenter.display_name] ||
+                    (mmessage.body && mmessage.body.startsWith("!") && mmessage.body.indexOf(' ') === -1)))) {
+
+            continue;
+
+        }
 
         if (ChatLive_Show_TimeStamp) {
             div += Play_timeS(comments[i].content_offset_seconds) + ' ';

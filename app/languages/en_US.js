@@ -623,6 +623,7 @@ function en_USLang() {
     STR_CHAT_LINE_ANIMATION = "Animated scrolling when adding a new chat message";
     STR_CHAT_LOGGING = "Logging in the chat with the current user";
     STR_CHAT_LOGGING_SUMMARY = "The app will always log to chat using the current user when an authorization key is provided, unless chat is disabled within the controls at the bottom of the player, but if this option if set to NO, it will prevent logging using current username, and will instead log as anonymous, even with a provided authorization key. This doesn't prevent from sending chat messages for this user, if a key was added, but does prevent from knowing if you are banned in the chat and prevents from seeing the chat's ROOMSTATE.";
+    STR_CHAT_BOTS = "Block bots and bot commands (!command) from show in chat";
     STR_CHAT_TIMESTAMP = "Show message timestamp";
     STR_CHAT_NICK_COLOR = "Readable nick colors";
     STR_CHAT_NICK_COLOR_SUMMARY = "Instead of using the default nick color that sometimes can't be readable on a dark background, use a custom easily visible color.";

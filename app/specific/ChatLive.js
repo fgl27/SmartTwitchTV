@@ -54,6 +54,18 @@ var ChatLive_selectedChannel = [];
 var ChatLive_sub_replace = new RegExp('\\\\s', 'gi');
 var ChatLive_chat_line_class = '';
 
+var KnowBots = {
+    Nightbot: 1,
+    StreamElements: 1,
+    Moobot: 1,
+    Deepbot: 1,
+    Wizebot: 1,
+    Ankhbot: 1,
+    Streamlabs: 1,
+    Phantombot: 1,
+    Xanbot: 1
+};
+
 var emoteReplace = {
     "B-?\\)": "B)",
     "\\:-?\\)": ":)",
@@ -139,6 +151,7 @@ var ChatLive_Channel_Regex_Replace = [];
 var ChatLive_Custom_Nick_Color;
 var ChatLive_Show_TimeStamp;
 var ChatLive_ClearChat;
+var ChatLive_HideBots;
 
 function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 
@@ -162,6 +175,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_Custom_Nick_Color = Settings_value.chat_nickcolor.defaultValue;
     ChatLive_Show_TimeStamp = Settings_value.chat_timestamp.defaultValue;
     ChatLive_ClearChat = Settings_value.clear_chat.defaultValue;
+    ChatLive_HideBots = Settings_value.chat_bot.defaultValue;
     ChatLive_Individual_Background_flip[chat_number] = 0;
 
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
@@ -512,6 +526,14 @@ function ChatLive_loadEmotesbttv(data, chat_number) {
     try {
         ChatLive_loadEmotesbttvChannel(data.channelEmotes, chat_number);
         ChatLive_loadEmotesbttvChannel(data.sharedEmotes, chat_number);
+
+        var len = data.bots.length,
+            i = 0;
+
+        for (i; i < len; i++) {
+            KnowBots[data.bots[i]] = 1;
+        }
+
     } catch (e) {
         Main_Log('ChatLive_loadEmotesbttv ' + e);
     }
@@ -1549,10 +1571,21 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         hasbits = false,
         action;
 
-    if (!tags || !tags.hasOwnProperty('display-name')) {
+    if (!tags || !tags.hasOwnProperty('display-name') ||
+        (ChatLive_HideBots && KnowBots[tags['display-name']])) {
         return; //bad formatted message
     }
 
+    var mmessage = message.params[1];
+    //For some bug on the chat implementation some message comes with the raw message of the next message
+    //Remove the next to fix current... next will be lost as is not correctly formated
+    if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
+
+    if (ChatLive_HideBots && mmessage && mmessage.startsWith("!") && mmessage.indexOf(' ') === -1) {
+        return;
+    }
+
+    //str.startsWith("Hello")
     if (ChatLive_Highlight_Rewards && tags.hasOwnProperty('msg-id')) {
 
         //Stringfy to prevent crashes
@@ -1580,10 +1613,6 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
     div += ChatLive_GetBadges(tags, chat_number);
 
     //Add message
-    var mmessage = message.params[1];
-    //For some bug on the chat implementation some message comes with the raw message of the next message
-    //Remove the next to fix current... next will be lost as is not correctly formated
-    if (Main_A_includes_B(mmessage, 'PRIVMSG')) mmessage = mmessage.split('@badge-info=')[0];
 
     if (/^\x01ACTION.*\x01$/.test(mmessage)) {
         if (!ChatLive_Highlight_Actions) return;
