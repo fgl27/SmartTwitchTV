@@ -47,8 +47,17 @@ var nordvpn = {
             "/banner/970x250-gaming-2.png"
         ],
         banner_16by9: [
+            "/banner_16by9/v4-480x320-3.png",
             "/banner_16by9/480x320-gaming.png",
+            "/banner_16by9/480x320-streaming.png",
+            "/banner_16by9/v4-480x320-4.png",
+            "/banner_16by9/480x320-speed.png",
+            "/banner_16by9/v4-480x320-1.png",
             "/banner_16by9/480x320-gaming-1.png",
+            "/banner_16by9/480x320-streaming-1.png",
+            "/banner_16by9/v4-480x320-5.png",
+            "/banner_16by9/480x320-speed-1.png",
+            "/banner_16by9/v4-480x320-2.png",
             "/banner_16by9/480x320-gaming-2.png"
         ]
     },
@@ -77,6 +86,13 @@ var nordvpn = {
             "/banner/v4-970x250-3.png",
             "/banner/v4-970x250-4.png",
             "/banner/v4-970x250-5.png"
+        ],
+        banner_16by9: [
+            "/banner_16by9/v4-480x320-1.png",
+            "/banner_16by9/v4-480x320-2.png",
+            "/banner_16by9/v4-480x320-3.png",
+            "/banner_16by9/v4-480x320-4.png",
+            "/banner_16by9/v4-480x320-5.png"
         ]
     },
 };
@@ -86,7 +102,9 @@ var array_extra_lang = ['fr', 'de', 'ja', 'pt'];
 var i = 0, len = array_extra_lang.length;
 for (i; i < len; i++) {
     nordvpn[array_extra_lang[i]].banner = nordvpn.en.banner;
+    nordvpn[array_extra_lang[i]].banner_16by9 = nordvpn.en.banner_16by9;
 }
 
 nordvpn.ko.banner = nordvpn.zh.banner;
+nordvpn.ko.banner_16by9 = nordvpn.zh.banner_16by9;
 

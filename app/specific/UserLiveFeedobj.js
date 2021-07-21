@@ -1120,7 +1120,7 @@ function UserLiveFeedobj_CreatBanner(pos, y, id, obj) {
     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
         UserLiveFeed_ids[1] + id + '" class="banner_16by9_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' + UserLiveFeed_ids[2] + id +
-        '" class="stream_info_live_name" style="width:99%; text-align: center; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;"><br>NordVPN</div></div><div class="stream_info_live_title" style="max-height: 3.5em;">' + obj.text +
+        '" class="stream_info_live_name" style="width:99%; text-align: center; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;"><br><br></div></div><div class="stream_info_live_title" style="max-height: 4em;">' + obj.text +
         '</div></div></div></div></div>';
 
     return div;
