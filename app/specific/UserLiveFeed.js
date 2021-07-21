@@ -543,8 +543,6 @@ function UserLiveFeed_ObjNotNull(pos) {
 
 function UserLiveFeed_OpenBannerUrl(obj) {
 
-
-
     if (Main_IsOn_OSInterface) {
 
         Main_SaveValues();
@@ -716,6 +714,15 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
     UserLiveFeed_ResetFeedId();
     Main_SaveValuesWithTimeout();
+
+    if (isBanner && UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name) {
+
+        Main_EventBanner(
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name + '_viewed',
+            UserLiveFeed_obj[pos].Screen
+        );
+
+    }
 }
 
 function UserLiveFeed_CheckVod() {
