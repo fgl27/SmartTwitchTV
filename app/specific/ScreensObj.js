@@ -2169,9 +2169,9 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     this.itemsCount += 3;
     this.coloumn_id += 3;
 
-    //ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
+    ScreenObj[key].BannerTime = new Date().getTime() + (60 * 60 * 1000);
 
-    //ScreensObj_banner_added_section = true;
+    ScreensObj_banner_added_section = true;
     ScreenObj[key].itemsCount += ScreenObj[key].ColoumnsCount;
 
 }

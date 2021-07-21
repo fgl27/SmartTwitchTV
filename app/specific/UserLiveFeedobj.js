@@ -1108,8 +1108,6 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
 }
 
 function UserLiveFeedobj_CreatBanner(pos, y, id, obj) {
-    //, Extra_when, Extra_vodimg, force_VOD
-
     var div = document.createElement('div');
 
     div.setAttribute('id', UserLiveFeed_ids[3] + id);
@@ -1716,6 +1714,12 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 }
 function UserLiveFeedobj_AddBanner(pos) {
 
+    if (UserLiveFeed_obj[pos].BannerTime > (new Date().getTime())) {
+
+        return;
+
+    }
+
     UserLiveFeed_idObject[pos][0] = UserLiveFeed_itemsCount[pos];
 
     var lang = nordvpn[UserLiveFeed_obj[pos].ContentLang] ? UserLiveFeed_obj[pos].ContentLang : 'en',
@@ -1744,6 +1748,9 @@ function UserLiveFeedobj_AddBanner(pos) {
         );
 
     UserLiveFeed_itemsCount[pos]++;
+
+    UserLiveFeed_obj[pos].BannerTime.BannerTime = new Date().getTime() + (60 * 60 * 1000);
+
 }
 //Base video fun end
 

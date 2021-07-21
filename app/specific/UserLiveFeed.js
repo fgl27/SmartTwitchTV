@@ -99,6 +99,7 @@ function UserLiveFeed_Prepare() {
         UserLiveFeed_obj[i].Lang = Settings_AppLang;
         UserLiveFeed_obj[i].ContentLang = Main_ContentLang;
         UserLiveFeed_obj[i].CheckContentLang = 0;
+        UserLiveFeed_obj[i].BannerTime = 0;
 
         UserLiveFeed_FeedSetPosLast[i] = 0;
         UserLiveFeed_obj[i].offsettopFontsize = 0;
