@@ -28962,7 +28962,16 @@
             },
             banner_click: function(obj_id) {
 
-                if (this.DataObj[obj_id].url) {
+                if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
+
+                    Main_EventBanner(
+                        this.DataObj[obj_id].event_name + '_click',
+                        this.ScreenName
+                    );
+
+                }
+
+                if (this.DataObj[obj_id] && this.DataObj[obj_id].url) {
 
                     UserLiveFeed_OpenBannerUrl(this.DataObj[obj_id]);
 
@@ -28972,14 +28981,6 @@
 
                 }
 
-                if (this.DataObj[obj_id] && this.DataObj[obj_id].event_name) {
-
-                    Main_EventBanner(
-                        this.DataObj[obj_id].event_name + '_click',
-                        this.ScreenName
-                    );
-
-                }
             },
         };
 
@@ -36152,12 +36153,6 @@
 
         var obj = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]];
 
-        if (obj.url) {
-
-            UserLiveFeed_OpenBannerUrl(obj);
-
-        }
-
         if (obj && obj.event_name) {
 
             Main_EventBanner(
@@ -36166,6 +36161,14 @@
             );
 
         }
+
+        if (obj && obj.url) {
+
+            UserLiveFeed_OpenBannerUrl(obj);
+
+        }
+
+
     }
 
     function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
