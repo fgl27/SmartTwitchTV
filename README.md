@@ -33,6 +33,7 @@
 - [Changelog](#changelog)
 - [TODO list](#todo-list)
 - [Donations](#donations)
+- [Affiliate content](#affiliate-content)
 - [In doubt open a issue](#in-doubt-open-a-issue)
 
 ## About the project
@@ -51,7 +52,7 @@ This app has be registered to access Twitch API, that registration process is de
 
 [Twitch Registration process](https://dev.twitch.tv/docs/authentication#registration)
 
-This project is the main project of two Twitch project I current maintain, originally I start working on the [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) repo, I'm using separated repos to make easier use of github pages and commit history.
+This project is the main project of two Twitch project I current maintain, originally I start working on the [smarttv-twitch](https://github.com/fgl27/smarttv-twitch) repo, I'm using separated repos to make easier use of GitHub pages and commit history.
 
 The original project runs on Samsung Tizen OS, with is very limited because of that the Android version has become the main project, not all features of the Android project can be ported to the Samsung one, but from time to time I will port the features from the Android version to the Samsung version.
 
@@ -60,7 +61,7 @@ The original project runs on Samsung Tizen OS, with is very limited because of t
 I initially fork this from https://github.com/CazuzaCzz/SmartTwitchTV/commits/tizen
 The original fork is https://github.com/nikitakatchik/SmartTwitchTV
 
-I have started this project because the above repo's of the app did not fully support my TV model (at the time this was a Samsung Tizen OS only project) and didn't had all possible Twitch featuring.
+I have started this project because the above repos of the app did not fully support my TV model (at the time this was a Samsung Tizen OS only project) and didn't had all possible Twitch featuring.
 
 I keep the original name and commit history but not as a fork simply because I made so may changes that makes no sense to call this a fork, I have made an new application from scratch focusing on performance and all available Twitch featuring, with the help of users and contributors reporting bugs and asking for features the app became what is today, a app that can be easily used to watch all available Twitch content and give the user a lot of extra options, but is know that the application can be improved new featuring and improves are always in the works, mostly to give a better experience and more options to the user, but that process is slow mostly because there is only one person working on the project and that work is done for free on spare time.
 
@@ -217,7 +218,7 @@ That key will be used to access Twitch specific content of that user, it permiss
 
 ### Code Languages used by the project
 
-- The web app code is compose of html/CSS (UI code) and a Javascript files (logic code), to edit those files use VS code (recommend) or any text editor of yours choice.
+- The web app code is compose of HTML/CSS (UI code) and a JavaScript files (logic code), to edit those files use VS code (recommend) or any text editor of yours choice.
 - The apk code is compose of JAVA (logic code), xml (UI and related code) and basic build files use android Studio to edit and build apk.
 
 ### How to Build
@@ -297,6 +298,14 @@ To make changes to the app apk, just use the **Android Studio** to make the chan
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/bitcoin.png)**Bitcoin wallet address (or use bellow QR code):** 1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png)
+
+## Affiliate content
+
+Click here or use the link [tiny.cc/nordvpn27](http://tiny.cc/nordvpn27) for the latest deals and to support the app
+
+[![How the application looks](https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/en/banner/970x250-gaming.png)](http://tiny.cc/nordvpn27)
+
+This app has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
 
