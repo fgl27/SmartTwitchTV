@@ -305,7 +305,7 @@ Click here or use the link [tiny.cc/nordvpn27](http://tiny.cc/nordvpn27) for the
 
 [![How the application looks](https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/en/banner/970x250-gaming.png)](http://tiny.cc/nordvpn27)
 
-This app has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.
+This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
 
