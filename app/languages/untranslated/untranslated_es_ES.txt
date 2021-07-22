@@ -253,3 +253,12 @@
     STR_FOLLOWER = "Follower";
     STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
     STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";
+
+    STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address or read the QR Code:";
+
+    STR_AFFILIATE = "Affiliate content";
+    STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
+    STR_AFFILIATE_ABOUT = "This app has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to product are properly verified and or used before be displayed on the application.";
+    STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
+
+    STR_CHAT_BOTS = "Block bots and bot commands (!command) from show in chat";

@@ -709,4 +709,5 @@ function en_USLang() {
     STR_AFFILIATE = "Affiliate content";
     STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
     STR_AFFILIATE_ABOUT = "This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.";
+    STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
 }

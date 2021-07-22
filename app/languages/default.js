@@ -263,7 +263,7 @@ function DefaultLang() {
         (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
         STR_CONTACT +
         STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-        STR_AFFILIATE_ABOUT + STR_BR + STR_BR +
+        STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
         STR_ABOUT_INFO_19 + STR_BR +
         STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_20) + '</div>' + STR_BR + STR_BR +
