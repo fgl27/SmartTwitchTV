@@ -10154,16 +10154,21 @@
     var Main_affiliate_updateId;
 
     function Main_affiliate_update() {
-        var lang = nordvpn[Main_ContentLang] ? Main_ContentLang : 'en';
+        var lang = nordvpn[Main_ContentLang] ? Main_ContentLang : 'en',
+            show_affiliate = Settings_Obj_default("show_affiliate");
 
         Main_innerHTML(
             'label_update',
-            Settings_Obj_default("show_affiliate") ?
+            show_affiliate ?
             nordvpn[lang].short_text.replace('%x', DefaultMakeLink(nordvpn.display_url, 'http://')) :
             ''
         );
 
-        Main_affiliate_updateId = Main_setTimeout(Main_affiliate_hide, AffiliatedTIme / 2, Main_affiliate_updateId);
+        if (show_affiliate) {
+            Main_affiliate_updateId = Main_setTimeout(Main_affiliate_hide, AffiliatedTIme / 2, Main_affiliate_updateId);
+        } else {
+            Main_clearTimeout(Main_affiliate_updateId);
+        }
     }
 
     function Main_affiliate_hide() {
