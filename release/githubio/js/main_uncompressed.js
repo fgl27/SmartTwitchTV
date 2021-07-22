@@ -705,6 +705,7 @@
     var STR_AFFILIATE_SUMMARY;
     var STR_AFFILIATE_ABOUT;
     var STR_CHAT_BOTS;
+    var STR_AFFILIATE_ABOUT_DIS;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -970,7 +971,7 @@
             (Main_IsOn_OSInterface ? '' : STR_BR + STR_RED_DIV + STR_ABOUT_INFO_2_SOURCE + '</div>') +
             STR_CONTACT +
             STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-            STR_AFFILIATE_ABOUT + STR_BR + STR_BR +
+            STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
             STR_DIV_TITLE + STR_ABOUT_INFO_18 + '</div>' +
             STR_ABOUT_INFO_19 + STR_BR +
             STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_INFO_20) + '</div>' + STR_BR + STR_BR +
@@ -1705,6 +1706,7 @@
         STR_AFFILIATE = "Affiliate content";
         STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
         STR_AFFILIATE_ABOUT = "This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.";
+        STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -2910,6 +2912,7 @@
         STR_AFFILIATE = "Conteúdo afiliado";
         STR_AFFILIATE_SUMMARY = "Se você não quiser ver o conteúdo de afiliado, desative esta opção.";
         STR_AFFILIATE_ABOUT = "Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.";
+        STR_AFFILIATE_ABOUT_DIS = "O conteúdo afiliado pode ser desabilitado nas configurações.";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -10388,7 +10391,7 @@
             STR_WELCOME_SUMMARY + STR_BR + STR_BR +
             STR_CONTACT +
             STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-            STR_AFFILIATE_ABOUT + STR_BR + STR_BR +
+            STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
             phone_warning +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
         );
