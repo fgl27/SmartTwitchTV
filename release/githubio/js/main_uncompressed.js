@@ -12850,15 +12850,19 @@
     }
 
 
-    function Main_EventBanner(type, screen) {
+    function Main_EventBanner(type, screen, image) {
         if (skipfirebase) return;
 
         try {
 
+            var image_array = image.split('/'),
+                len = image_array.length;
+
             gtag(
                 'event',
                 type, {
-                    'screen': screen
+                    'screen': screen,
+                    image: image_array[len - 1]
                 }
             );
 
@@ -26937,7 +26941,8 @@
 
                 Main_EventBanner(
                     ScreenObj[key].DataObj[id].event_name + '_viewed',
-                    ScreenObj[key].ScreenName
+                    ScreenObj[key].ScreenName,
+                    ScreenObj[key].DataObj[id].image
                 );
 
             }
@@ -28966,7 +28971,8 @@
 
                     Main_EventBanner(
                         this.DataObj[obj_id].event_name + '_click',
-                        this.ScreenName
+                        this.ScreenName,
+                        this.DataObj[obj_id].image
                     );
 
                 }
@@ -32964,7 +32970,7 @@
                 );
 
             } catch (e) {
-                console.log("Main_EventBanner e " + e);
+                console.log("show_affiliate e " + e);
             }
         } else if (position === "global_font_offset") {
             calculateFontSize();
@@ -36165,15 +36171,14 @@
     }
 
     function UserLiveFeed_OpenBanner() {
-        console.log();
-
         var obj = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]];
 
         if (obj && obj.event_name) {
 
             Main_EventBanner(
                 obj.event_name + '_click',
-                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
+                obj.image
             );
 
         }
@@ -36327,7 +36332,8 @@
 
             Main_EventBanner(
                 UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name + '_viewed',
-                UserLiveFeed_obj[pos].Screen
+                UserLiveFeed_obj[pos].Screen,
+                UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
             );
 
         }
