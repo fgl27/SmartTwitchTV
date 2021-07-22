@@ -152,7 +152,10 @@ function Sidepannel_GetObj() {
 }
 
 function Sidepannel_ObjNotNull() {
-    return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
+    return Boolean(
+        UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed] &&
+        !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image
+    );
 }
 
 var Sidepannel_UpdateThumbDivName;
@@ -562,6 +565,7 @@ function Sidepannel_ShowFeed() {
     Sidepannel_Showscenefeed();
 
     if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
+        UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image ||
         (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
         !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
         !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)) {
