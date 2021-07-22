@@ -1023,7 +1023,7 @@
 
         // This is the size of side pannel a adjustments may be needed here so it can fit all words in the horizontal axis
         // If it need ajustment or yours language just copy the below line and change it value until it does
-        Sidepannel_MoveldefaultMargin = 14;
+        Sidepannel_MoveldefaultMargin = 14.5;
 
         //Below are variables to translate
         STR_KEY_UP_DOWN = "PG up/down";
@@ -34736,7 +34736,10 @@
     }
 
     function Sidepannel_ObjNotNull() {
-        return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed]);
+        return Boolean(
+            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed] &&
+            !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image
+        );
     }
 
     var Sidepannel_UpdateThumbDivName;
@@ -35151,6 +35154,7 @@
         Sidepannel_Showscenefeed();
 
         if (UserLiveFeedobj_LiveFeedOldUserName !== AddUser_UsernameArray[0].name || !UserLiveFeed_ObjNotNull(UserLiveFeedobj_UserLivePos) ||
+            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image ||
             (new Date().getTime()) > (UserLiveFeed_lastRefresh[UserLiveFeedobj_UserLivePos] + Settings_GetAutoRefreshTimeout()) ||
             !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].sorting, Settings_value.live_feed_sort.defaultValue) ||
             !Main_A_equals_B(UserLiveFeed_obj[UserLiveFeedobj_UserLivePos].Lang, Settings_AppLang)) {
