@@ -3302,16 +3302,20 @@ function Main_EventAgame(game) {
 }
 
 
-function Main_EventBanner(type, screen) {
+function Main_EventBanner(type, screen, image) {
     if (skipfirebase) return;
 
     try {
+
+        var image_array = image.split('/'),
+            len = image_array.length;
 
         gtag(
             'event',
             type,
             {
-                'screen': screen
+                'screen': screen,
+                image: image_array[len - 1]
             }
         );
 

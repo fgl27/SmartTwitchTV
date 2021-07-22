@@ -560,15 +560,14 @@ function UserLiveFeed_OpenBannerUrl(obj) {
 }
 
 function UserLiveFeed_OpenBanner() {
-    console.log();
-
     var obj = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]];
 
     if (obj && obj.event_name) {
 
         Main_EventBanner(
             obj.event_name + '_click',
-            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+            UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen,
+            obj.image
         );
 
     }
@@ -722,7 +721,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
         Main_EventBanner(
             UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name + '_viewed',
-            UserLiveFeed_obj[pos].Screen
+            UserLiveFeed_obj[pos].Screen,
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
         );
 
     }

@@ -1694,7 +1694,8 @@ function Screens_addrowEnd(forceScroll, key) {
 
             Main_EventBanner(
                 ScreenObj[key].DataObj[id].event_name + '_viewed',
-                ScreenObj[key].ScreenName
+                ScreenObj[key].ScreenName,
+                ScreenObj[key].DataObj[id].image
             );
 
         }

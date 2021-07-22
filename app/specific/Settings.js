@@ -1100,7 +1100,7 @@ function Settings_SetDefault(position) {
             );
 
         } catch (e) {
-            console.log("Main_EventBanner e " + e);
+            console.log("show_affiliate e " + e);
         }
     } else if (position === "global_font_offset") {
         calculateFontSize();

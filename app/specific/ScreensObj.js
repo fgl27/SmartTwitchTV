@@ -496,7 +496,8 @@ function ScreensObj_StartAllVars() {
 
                 Main_EventBanner(
                     this.DataObj[obj_id].event_name + '_click',
-                    this.ScreenName
+                    this.ScreenName,
+                    this.DataObj[obj_id].image
                 );
 
             }
