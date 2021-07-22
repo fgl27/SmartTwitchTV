@@ -1249,7 +1249,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             }
         }
 
-    } else UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+    }
 
     Main_innerHTMLWithEle(Sidepannel_ScroolDoc, Sidepannel_Html);
 
@@ -1280,6 +1280,12 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         function() {
 
             UserLiveFeedobj_AddBanner(UserLiveFeedobj_UserLivePos);
+
+            if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
+
+                UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+
+            }
 
             UserLiveFeedobj_SetLastPosition(UserLiveFeedobj_UserLivePos);
 
@@ -1643,7 +1649,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
             }
         }
 
-    } else UserLiveFeedobj_Empty(pos);
+    }
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
@@ -1694,6 +1700,12 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
     } else {
 
         UserLiveFeedobj_AddBanner(pos);
+
+    }
+
+    if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
+
+        UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
 
     }
 

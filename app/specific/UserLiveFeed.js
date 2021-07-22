@@ -584,7 +584,11 @@ function UserLiveFeed_OpenBanner() {
 function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     var total = UserLiveFeed_GetSize(pos),
         ObjNotNull = UserLiveFeed_ObjNotNull(pos),
+        isBanner;
+
+    if (UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]]) {
         isBanner = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image;
+    }
 
     if (!total || !ObjNotNull || UserLiveFeed_loadingData[pos]) {
 
