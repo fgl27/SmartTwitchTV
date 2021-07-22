@@ -32949,8 +32949,24 @@
         else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
         else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
         else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
-        else if (position === "show_affiliate") Main_affiliate_update();
-        else if (position === "global_font_offset") {
+        else if (position === "show_affiliate") {
+            Main_affiliate_update();
+
+            if (skipfirebase) return;
+
+            try {
+
+                gtag(
+                    'event',
+                    'banner_state', {
+                        'enable': Boolean(Settings_Obj_default("show_affiliate"))
+                    }
+                );
+
+            } catch (e) {
+                console.log("Main_EventBanner e " + e);
+            }
+        } else if (position === "global_font_offset") {
             calculateFontSize();
             AddUser_UpdateSidepanelAfterShow();
             UserLiveFeed_ResetAddCellsize();
