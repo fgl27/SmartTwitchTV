@@ -9,6 +9,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version July 22 2021
+==============
+
+* General improves and bug fixes
+
 Apk Version 3.0.325
 ==============
 
@@ -17,8 +22,6 @@ Apk Version 3.0.325
 Web Version July 21 2021
 ==============
 
-* The application received the oportunity to show affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application
-* The affiliated content can be disabled in settings
 * Add a new setting Chat option 'Block bots and bot commands (!command) from show in chat'
 * General improves and bug fixes
 
