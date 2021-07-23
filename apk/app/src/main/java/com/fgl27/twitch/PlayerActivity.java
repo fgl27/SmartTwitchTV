@@ -2480,13 +2480,20 @@ public class PlayerActivity extends Activity {
 
             runOnUiThread(() -> {
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                try {//Some device have a browser but don't allow intent to call it
 
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(intent, 102);
-                } else {
-                    loadUrlInternal(url);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent, 102);
+                        return;
+                    }
+
+                } catch (Throwable e) {
+                    Tools.recordException(TAG, "OpenURL Exception ", e);
                 }
+
+                loadUrlInternal(url);
 
             });
 
