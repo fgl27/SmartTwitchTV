@@ -11,7 +11,7 @@ if [ "$1" == 1 ]; then
 
 	rm -rf apk/app/src/main/assets/app
 
-	rm -rf apk/app/src/main/assets/release
+	#rm -rf apk/app/src/main/assets/release
 
 	exit;
 fi;
@@ -20,5 +20,5 @@ sed -i 's/LoadFromAssets = false/LoadFromAssets = true/' apk/app/src/main/java/c
 
 cp -rf app/ apk/app/src/main/assets
 
-mkdir -p apk/app/src/main/assets/release/githubio/images/
-cp -rf release/githubio/images/nordvpn/ apk/app/src/main/assets/release/githubio/images/
+#mkdir -p apk/app/src/main/assets/release/githubio/images/
+#cp -rf release/githubio/images/nordvpn/ apk/app/src/main/assets/release/githubio/images/
