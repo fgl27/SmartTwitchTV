@@ -528,8 +528,8 @@ function en_USLang() {
     STR_PREVIEW_ERROR_LINK = "unreachable";
     STR_PREVIEW_VOD_DELETED = ", this VOD may have been deleted";
     STR_PREVIEW_END = "Preview video has ended";
-    STR_PLAYER_LAG_ERRO = "Player unable to play do to a network connection issue";
-    STR_PLAYER_ERROR = "Player unable to play do to player error";
+    STR_PLAYER_LAG_ERRO = "Player unable to play due to a network connection issue";
+    STR_PLAYER_ERROR = "Player unable to play due to player error";
     STR_PLAYER_ERROR_MULTI = ", try to lower small player bitrate value in settings";
     STR_PREVIEW_SIZE = "Player preview size";
     STR_PREVIEW_SIZE_SUMMARY = "Set the size of the player preview in the preview thumbnails.";
