@@ -23,9 +23,16 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 325,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/325/SmartTV_twitch_3_0_325.apk',
-    WebVersion: 'July 21 2021',
-    WebTag: 600,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'July 22 2021',
+    WebTag: 601,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Web Version July 22 2021",
+            changes: [
+                "General improves and bug fixes"
+
+            ]
+        },
         {
             title: "Apk Version 3.0.325",
             changes: [
@@ -35,8 +42,6 @@ var version = {
         {
             title: "Web Version July 21 2021",
             changes: [
-                "The application received the oportunity to show affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application",
-                "The affiliated content can be disabled in settings",
                 "Add a new setting Chat option 'Block bots and bot commands (!command) from show in chat'",
                 "General improves and bug fixes"
 

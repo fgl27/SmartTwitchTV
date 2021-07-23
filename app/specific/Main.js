@@ -614,36 +614,6 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
     Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
 
-    Main_affiliate_update();
-}
-
-var Main_affiliate_updateId;
-function Main_affiliate_update() {
-    var lang = nordvpn[Main_ContentLang] ? Main_ContentLang : 'en',
-        show_affiliate = Settings_Obj_default("show_affiliate");
-
-    Main_innerHTML(
-        'label_update',
-        show_affiliate ?
-            nordvpn[lang].short_text.replace('%x', DefaultMakeLink(nordvpn.display_url, 'http://')) :
-            ''
-    );
-
-    if (show_affiliate) {
-        Main_affiliate_updateId = Main_setTimeout(Main_affiliate_hide, AffiliatedTIme / 2, Main_affiliate_updateId);
-    } else {
-        Main_clearTimeout(Main_affiliate_updateId);
-    }
-}
-
-function Main_affiliate_hide() {
-    Main_textContent(
-        'label_update',
-        ''
-    );
-
-    Main_affiliate_updateId = Main_setTimeout(Main_affiliate_update, AffiliatedTIme, Main_affiliate_updateId);
-
 }
 
 function Main_IconLoad(lable, icon, string) {
@@ -850,8 +820,8 @@ function Main_showWelcomeDialog(removeEventListener, addEventListener) {
         STR_ABOUT_INFO_2 + STR_BR + STR_BR +
         STR_WELCOME_SUMMARY + STR_BR + STR_BR +
         STR_CONTACT +
-        STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-        STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
+        // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
+        // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
         phone_warning +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
     );

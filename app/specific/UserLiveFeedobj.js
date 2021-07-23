@@ -1107,24 +1107,24 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
     return div;
 }
 
-function UserLiveFeedobj_CreatBanner(pos, y, id, obj) {
-    var div = document.createElement('div');
+// function UserLiveFeedobj_CreatBanner(pos, y, id, obj) {
+//     var div = document.createElement('div');
 
-    div.setAttribute('id', UserLiveFeed_ids[3] + id);
-    UserLiveFeed_DataObj[pos][y] = obj;
+//     div.setAttribute('id', UserLiveFeed_ids[3] + id);
+//     UserLiveFeed_DataObj[pos][y] = obj;
 
-    div.className = 'user_feed_thumb';
+//     div.className = 'user_feed_thumb';
 
-    var image = obj.image;
+//     var image = obj.image;
 
-    div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
-        UserLiveFeed_ids[1] + id + '" class="banner_16by9_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_AFFILIATED_16by9 +
-        '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' + UserLiveFeed_ids[2] + id +
-        '" class="stream_info_live_name" style="width:99%; text-align: center; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;"><br><br></div></div><div class="stream_info_live_title" style="max-height: 4em;">' + obj.text +
-        '</div></div></div></div></div>';
+//     div.innerHTML = '<div id="' + UserLiveFeed_ids[0] + id + '" class="stream_thumbnail_player_feed"><div class="stream_thumbnail_live_img"><img id="' +
+//         UserLiveFeed_ids[1] + id + '" class="banner_16by9_img" alt="" src="' + image + '" onerror="this.onerror=null;this.src=\'' + IMG_AFFILIATED_16by9 +
+//         '\';" ></div><div class="stream_thumbnail_feed_text_holder"><div class="stream_text_holder"><div style="line-height: 2vh; transform: translateY(10%);"><div id="' + UserLiveFeed_ids[2] + id +
+//         '" class="stream_info_live_name" style="width:99%; text-align: center; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;"><br><br></div></div><div class="stream_info_live_title" style="max-height: 4em;">' + obj.text +
+//         '</div></div></div></div></div>';
 
-    return div;
-}
+//     return div;
+// }
 
 function UserLiveFeedobj_CreatVodFeed(pos, x, id, data, Extra_when, Extra_until) {
     var div = document.createElement('div');
@@ -1724,46 +1724,8 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
         );
     }
 }
-function UserLiveFeedobj_AddBanner(pos) {
-
-    if (!Settings_Obj_default("show_affiliate") ||
-        UserLiveFeed_obj[pos].BannerTime > (new Date().getTime())) {
-
-        return;
-
-    }
-
-    UserLiveFeed_idObject[pos][0] = UserLiveFeed_itemsCount[pos];
-
-    var lang = nordvpn[UserLiveFeed_obj[pos].ContentLang] ? UserLiveFeed_obj[pos].ContentLang : 'en',
-        img_pos = Main_values.banner_16by9_pos++,
-        len = nordvpn[lang].banner_16by9.length;
-
-    if (img_pos >= len)
-        img_pos = 0;
-
-    if (Main_values.banner_16by9_pos >= len)
-        Main_values.banner_16by9_pos = 0;
-
-    UserLiveFeed_cell[pos][UserLiveFeed_itemsCount[pos]] =
-        UserLiveFeedobj_CreatBanner(
-            pos,
-            UserLiveFeed_itemsCount[pos],
-            pos + '_' + UserLiveFeed_itemsCount[pos],
-            {
-                image: nordvpn.banners_folder + lang + nordvpn[lang].banner_16by9[img_pos],
-                url: nordvpn.url,
-                text: nordvpn[lang].long_text.replace(
-                    '%x', DefaultMakeLink(nordvpn.display_url, 'http://')
-                ),
-                event_name: 'banner_16by9_' + nordvpn.event_name
-            }
-        );
-
-    UserLiveFeed_itemsCount[pos]++;
-
-    UserLiveFeed_obj[pos].BannerTime = new Date().getTime() + AffiliatedTIme;
-
+function UserLiveFeedobj_AddBanner() {
+    return null;
 }
 //Base video fun end
 

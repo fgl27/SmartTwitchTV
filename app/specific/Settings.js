@@ -683,7 +683,6 @@ function Settings_SetSettings() {
 
     //Individual settings
     div += Settings_Content('start_user_screen', array_no_yes, STR_START_AT_USER, STR_START_AT_USER_SUMMARY);
-    div += Settings_Content('show_affiliate', dis_ena, STR_AFFILIATE, STR_AFFILIATE_SUMMARY + STR_SPACE + STR_AFFILIATE_ABOUT);
 
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
@@ -876,7 +875,6 @@ function Settings_SetLang() {
         OSInterface_upDateLang(Main_ContentLang);
     }
 
-    Main_affiliate_update();
 }
 
 function Settings_RestoreAppLang() {
@@ -1084,25 +1082,7 @@ function Settings_SetDefault(position) {
     else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
     else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
-    else if (position === "show_affiliate") {
-        Main_affiliate_update();
-
-        if (skipfirebase) return;
-
-        try {
-
-            gtag(
-                'event',
-                'banner_state',
-                {
-                    'enable': Boolean(Settings_Obj_default("show_affiliate"))
-                }
-            );
-
-        } catch (e) {
-            console.log("show_affiliate e " + e);
-        }
-    } else if (position === "global_font_offset") {
+    else if (position === "global_font_offset") {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
         UserLiveFeed_ResetAddCellsize();

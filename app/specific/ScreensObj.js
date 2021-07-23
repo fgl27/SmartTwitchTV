@@ -417,30 +417,8 @@ function ScreensObj_StartAllVars() {
         hasBanner: function() {
             return this.showBanner && Settings_Obj_default("show_affiliate");
         },
-        addBanner: function(forceAdd) {
-
-            var lang = nordvpn[this.ContentLang] ? this.ContentLang : 'en',
-                img_pos = Main_values.banner_pos++,
-                len = nordvpn[lang].banner.length;
-
-            if (img_pos >= len)
-                img_pos = 0;
-
-            if (Main_values.banner_pos >= len)
-                Main_values.banner_pos = 0;
-
-            ScreensObj_addBanner(
-                {
-                    image: nordvpn.banners_folder + lang + nordvpn[lang].banner[img_pos],
-                    url: nordvpn.url,
-                    text: nordvpn[lang].long_text.replace(
-                        '%x', DefaultMakeLink(nordvpn.display_url, 'http://')
-                    ),
-                    event_name: 'banner_' + nordvpn.event_name
-                },
-                this.screen,
-                forceAdd
-            );
+        addBanner: function() {
+            return null;
         },
         emptyBanner: function(forceAdd) {
             ScreensObj_addBanner(
@@ -1241,7 +1219,6 @@ function ScreensObj_InitLive() {
         key_pgUp: Main_Clip,
         CheckContentLang: 1,
         ContentLang: '',
-        showBanner: true,
         base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
         set_url: function() {
             this.check_offset();
@@ -1316,7 +1293,6 @@ function ScreensObj_InitUserLive() {
         loadChannelOffsset: 0,
         followerChannels: [],
         followerChannelsDone: false,
-        showBanner: true,
         set_url: function() {
             this.check_offset();
 
@@ -1429,7 +1405,6 @@ function ScreensObj_InitAGame() {
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         hasBackupData: true,
-        showBanner: true,
         base_url: Main_kraken_api + 'streams?game=',
         set_url: function() {
             this.check_offset();
@@ -2174,7 +2149,7 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
         (ScreenObj[key].screenType === 3 ? ' style="width: 95.75%;"' : '') +
         '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
-        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + IMG_AFFILIATED +
+        idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
 
     ScreenObj[key].row.appendChild(div);

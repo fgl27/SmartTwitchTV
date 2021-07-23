@@ -33,7 +33,6 @@
 - [Changelog](#changelog)
 - [TODO list](#todo-list)
 - [Donations](#donations)
-- [Affiliate content](#affiliate-content)
 - [In doubt open a issue](#in-doubt-open-a-issue)
 
 ## About the project
@@ -298,14 +297,6 @@ To make changes to the app apk, just use the **Android Studio** to make the chan
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/bitcoin.png)**Bitcoin wallet address (or use bellow QR code):** 1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png)
-
-## Affiliate content
-
-Click here or use the link [tiny.cc/nordvpn27](http://tiny.cc/nordvpn27) for the latest deals and to support the app
-
-[![How the application looks](https://fgl27.github.io/SmartTwitchTV/release/githubio/images/nordvpn/en/banner/970x250-gaming.png)](http://tiny.cc/nordvpn27)
-
-This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
 
