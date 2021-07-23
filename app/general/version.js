@@ -21,11 +21,17 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 324,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/324/SmartTV_twitch_3_0_324.apk',
+    publishVersionCode: 325,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/325/SmartTV_twitch_3_0_325.apk',
     WebVersion: 'July 21 2021',
     WebTag: 600,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.325",
+            changes: [
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Web Version July 21 2021",
             changes: [
@@ -55,13 +61,6 @@ var version = {
         {
             title: "Apk Version 3.0.322",
             changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version July 4 2021",
-            changes: [
-                "Update Game section to allow changing games back and for without having to refresh and loose previously loaded content and position, now the app will always remember the content and position of a game that you have open before (For Live, Clips and VOD), until you refresh or the app auto refreshes (if 'Auto refresh in background' is enable in setting -> Content customization's ...)",
                 "General improves and bug fixes"
             ]
         }
