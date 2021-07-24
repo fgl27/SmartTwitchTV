@@ -706,6 +706,7 @@
     var STR_AFFILIATE_ABOUT;
     var STR_CHAT_BOTS;
     var STR_AFFILIATE_ABOUT_DIS;
+    var STR_HISTORY_EMPTY_CONTENT;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1063,8 +1064,8 @@
         STR_CHECK_HOST = ", checking host";
         STR_IS_SUB_ONLY = "This video is only available to subs";
         STR_IS_SUB_ONLY_ERROR = "is sub-only content.";
-        STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Refresh to try again";
-        STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
+        STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
+        STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";
         STR_NO = "No";
         STR_FOR_THIS = "for this";
         STR_PLAYER_PROBLEM = "Connection failed, unable to load video content, exiting ...";
@@ -1707,6 +1708,8 @@
         STR_AFFILIATE_SUMMARY = "If you don't wanna to see the affiliate content set this to disabled.";
         STR_AFFILIATE_ABOUT = "This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.";
         STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
+
+        STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history is enabled";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -2279,8 +2282,8 @@
         STR_CHECK_HOST = ", verificando host";
         STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
         STR_IS_SUB_ONLY_ERROR = "é conteúdo apenas para sub.";
-        STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Atualize para tentar novamente";
-        STR_REFRESH_PROBLEM_ENTER = "A conexão falhou, não foi possível carregar o conteúdo. Pressione enter para atualizar";
+        STR_REFRESH_PROBLEM = "A conexão falhou ou não há conteúdo para esse. Atualize para tentar novamente";
+        STR_REFRESH_PROBLEM_ENTER = "A conexão falhou ou não há conteúdo para esse. Pressione Enter para Atualizar";
         STR_NO = "Não";
         STR_FOR_THIS = "para este";
         STR_PLAYER_PROBLEM = "Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...";
@@ -2913,6 +2916,7 @@
         STR_AFFILIATE_SUMMARY = "Se você não quiser ver o conteúdo de afiliado, desative esta opção.";
         STR_AFFILIATE_ABOUT = "Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.";
         STR_AFFILIATE_ABOUT_DIS = "O conteúdo afiliado pode ser desabilitado nas configurações.";
+        STR_HISTORY_EMPTY_CONTENT = "O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se o histórico estiver habilitada";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -2974,11 +2978,9 @@
         STR_CHECK_HOST = ", проверка хоста";
         STR_IS_SUB_ONLY = "Видео доступно только для подписчиков.";
         STR_IS_SUB_ONLY_ERROR = "только для подписчиков.";
-        STR_REFRESH_PROBLEM = "Ошибка подключения, невозможно загрузить контент. Нажмите Обновить, чтобы повторить попытку.";
         STR_NO = "Нет";
         STR_FOR_THIS = "для";
         STR_PLAYER_PROBLEM = "Ошибка подключения, невозможно загрузить контент, выход...";
-        STR_REFRESH_PROBLEM_ENTER = "Ошибка подключения, невозможно загрузить контент. Нажмите ОК, чтобы обновить";
         STR_PAST_BROA = "Стримы";
         STR_PAST_HIGHL = "Хайлайты";
         STR_CLIPS = "Клипы";
@@ -9999,7 +10001,6 @@
         Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
         Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
-        Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
         Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
         Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
         Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);
@@ -27522,8 +27523,6 @@
         }
     }
 
-    var Screens_histDialogID;
-
     function Screens_histStart(key) {
         ScreenObj[key].sethistDialog();
         Main_ShowElement('dialog_hist_setting');
@@ -27531,22 +27530,11 @@
         Main_addEventListener("keydown", ScreenObj[key].key_hist);
     }
 
-    function Screens_SethistDialogId(key) {
-        Screens_histDialogID = Main_setTimeout(
-            function() {
-                Screens_histDialogHide(false, key);
-            },
-            Screens_DialogHideTimout,
-            Screens_histDialogID
-        );
-    }
-
     var Screens_DeleteDialogAll = true;
 
     function Screens_histDialogHide(Update, key) {
         Screens_histRemoveFocus(ScreenObj[key].histPosY, 'hist');
 
-        Main_clearTimeout(Screens_histDialogID);
         Main_removeEventListener("keydown", ScreenObj[key].key_hist);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_hist_setting');
@@ -27720,20 +27708,17 @@
                 Screens_histDialogHide(false, key);
                 break;
             case KEY_LEFT:
-                Screens_SethistDialogId(key);
                 ScreenObj[key].histPosX[ScreenObj[key].histPosY]--;
                 if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] < 0) ScreenObj[key].histPosX[ScreenObj[key].histPosY] = 0;
                 else Screens_histSetArrow(key);
                 break;
             case KEY_RIGHT:
-                Screens_SethistDialogId(key);
                 ScreenObj[key].histPosX[ScreenObj[key].histPosY]++;
                 if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] > (ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1))
                     ScreenObj[key].histPosX[ScreenObj[key].histPosY] = ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1;
                 else Screens_histSetArrow(key);
                 break;
             case KEY_UP:
-                Screens_SethistDialogId(key);
                 ScreenObj[key].histPosY--;
                 if (ScreenObj[key].histPosY < 0) ScreenObj[key].histPosY = 0;
                 else {
@@ -27742,7 +27727,6 @@
                 }
                 break;
             case KEY_DOWN:
-                Screens_SethistDialogId(key);
                 ScreenObj[key].histPosY++;
                 if (ScreenObj[key].histPosY > (ScreenObj[key].histArrays.length - 1))
                     ScreenObj[key].histPosY = ScreenObj[key].histArrays.length - 1;
@@ -27803,7 +27787,7 @@
         if (ScreenObj[key].setTODialog && !Screens_ThumbOptionSpecial) {
             ScreenObj[key].setTODialog();
         }
-        Screens_SeTODialogId(key);
+
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_addEventListener("keydown", ScreenObj[key].key_thumb);
 
@@ -27949,7 +27933,6 @@
             case KEY_LEFT:
                 if (!Screens_ThumbOptionCanKeyLeft) return;
 
-                Screens_SeTODialogId(key);
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
                     if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
@@ -27959,7 +27942,6 @@
                 }
                 break;
             case KEY_RIGHT:
-                Screens_SeTODialogId(key);
                 if (!Screens_handleKeyUpIsClear) break;
                 if (Screens_ThumbOptionPosY > 2) {
                     Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
@@ -27980,7 +27962,6 @@
                 }
 
                 var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
-                Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY--;
                 if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
                 else {
@@ -27989,7 +27970,6 @@
                 }
                 break;
             case KEY_DOWN:
-                Screens_SeTODialogId(key);
                 Screens_ThumbOptionPosY++;
                 if (Screens_ThumbOptionPosY > 5)
                     Screens_ThumbOptionPosY = 5;
@@ -28000,7 +27980,6 @@
                 break;
             case KEY_ENTER:
                 if (Screens_ThumbOptionPosY === 2) {
-                    Screens_SeTODialogId(key);
                     Screens_FollowUnfollow(key);
                 } else Screens_ThumbOptionDialogHide(true, key);
                 break;
@@ -28009,25 +27988,11 @@
         }
     }
 
-    var Screens_ThumbOptionDialogID;
-
-    function Screens_SeTODialogId(key) {
-
-        Screens_ThumbOptionDialogID = Main_setTimeout(
-            function() {
-                Screens_ThumbOptionDialogHide(false, key);
-            },
-            Screens_DialogHideTimout,
-            Screens_ThumbOptionDialogID
-        );
-
-    }
 
     function Screens_ThumbOptionDialogHide(Update, key) {
 
         Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
-        Main_clearTimeout(Screens_ThumbOptionDialogID);
         Main_removeEventListener("keydown", ScreenObj[key].key_thumb);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElementWithEle(Screens_dialog_thumb_div);
@@ -28439,7 +28404,9 @@
             itemsCountCheck: false,
             isRefreshing: false,
             Headers: Main_Headers,
-            empty_str: STR_NO_CONTENT,
+            empty_str: function() {
+                return STR_NO_CONTENT;
+            },
             data: null,
             token: null,
             data_cursor: 0,
@@ -28772,7 +28739,7 @@
             emptyBanner: function(forceAdd) {
                 ScreensObj_addBanner({
                         image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                        text: STR_REFRESH_PROBLEM_ENTER
+                        text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER
                     },
                     this.screen,
                     forceAdd
@@ -29162,6 +29129,9 @@
             key_pgDown: Main_UserLive,
             key_pgUp: Main_UserChannels,
             histPosY: 0,
+            emptyContent_STR: function() {
+                return STR_HISTORY_EMPTY_CONTENT;
+            },
             histPosXTemp: [0, 0, 0, 0],
             sorting: [],
             sortingValues: [
@@ -30180,7 +30150,7 @@
             screenType: 0,
             histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId(this.screen);
+                Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_LIVE_DIS);
                 Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
@@ -30280,7 +30250,7 @@
             histPosXName: 'HistoryVod_histPosX',
             histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId(this.screen);
+                Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_VOD_DIS);
                 Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
@@ -30372,7 +30342,7 @@
             histPosXName: 'HistoryClip_histPosX',
             histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
             sethistDialog: function() {
-                Screens_SethistDialogId(this.screen);
+                Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_CLIP_DIS);
                 Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
                 this.sethistMainDialog();
             },
@@ -30496,7 +30466,8 @@
         div.className = 'banner_holder';
 
         div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
-            (ScreenObj[key].screenType === 3 ? ' style="width: 95.75%;"' : '') +
+            (ScreenObj[key].screenType === 3 || ScreenObj[key].screenType === 4 ?
+                ' style="width: 95.75%;"' : '') +
             '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
             idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
             '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
