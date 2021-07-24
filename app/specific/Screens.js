@@ -721,7 +721,7 @@ function Screens_loadDataSuccessFinish(key) {
     if (!ScreenObj[key].status) {
 
         if (ScreenObj[key].emptyContent) {
-            if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str);
+            if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
         } else {
 
             ScreenObj[key].status = true;
