@@ -63,8 +63,8 @@ function pt_BRLang() {
     STR_CHECK_HOST = ", verificando host";
     STR_IS_SUB_ONLY = "Este vídeo é disponível apenas para subs.";
     STR_IS_SUB_ONLY_ERROR = "é conteúdo apenas para sub.";
-    STR_REFRESH_PROBLEM = "A conexão falhou, não foi possível carregar o conteúdo. Atualize para tentar novamente";
-    STR_REFRESH_PROBLEM_ENTER = "A conexão falhou, não foi possível carregar o conteúdo. Pressione enter para atualizar";
+    STR_REFRESH_PROBLEM = "A conexão falhou ou não há conteúdo para esse. Atualize para tentar novamente";
+    STR_REFRESH_PROBLEM_ENTER = "A conexão falhou ou não há conteúdo para esse. Pressione Enter para Atualizar";
     STR_NO = "Não";
     STR_FOR_THIS = "para este";
     STR_PLAYER_PROBLEM = "Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...";
@@ -697,5 +697,5 @@ function pt_BRLang() {
     STR_AFFILIATE_SUMMARY = "Se você não quiser ver o conteúdo de afiliado, desative esta opção.";
     STR_AFFILIATE_ABOUT = "Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.";
     STR_AFFILIATE_ABOUT_DIS = "O conteúdo afiliado pode ser desabilitado nas configurações.";
-    STR_HISTORY_EMPTY_CONTENT = "O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se a gravação do histórico estiver habilitada";
+    STR_HISTORY_EMPTY_CONTENT = "O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se o histórico estiver habilitada";
 }

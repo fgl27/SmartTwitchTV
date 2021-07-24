@@ -251,7 +251,6 @@
     STR_VIEWER = "Viewer";
     STR_VIEW = "View";
     STR_FOLLOWER = "Follower";
-    STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
     STR_FADE_SIDEPANNEL = "Hide the side panel after 5 seconds of not using it";
 
     STR_BITCOIN_SUMMARY = "Bitcoin donations, use the wallet address or read the QR Code:";
@@ -263,3 +262,5 @@
 
     STR_CHAT_BOTS = "Block bots and bot commands (!command) from show in chat";
     STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history recording is enabled";
+    STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
+    STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";

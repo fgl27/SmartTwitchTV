@@ -567,7 +567,6 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
     Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
-    Main_textContent("dialog_hist_setting_name_1", STR_ENABLED);
     Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
     Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
     Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);

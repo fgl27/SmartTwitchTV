@@ -66,8 +66,8 @@ function en_USLang() {
     STR_CHECK_HOST = ", checking host";
     STR_IS_SUB_ONLY = "This video is only available to subs";
     STR_IS_SUB_ONLY_ERROR = "is sub-only content.";
-    STR_REFRESH_PROBLEM = "Connection failed, unable to load content. Refresh to try again";
-    STR_REFRESH_PROBLEM_ENTER = "Connection failed, unable to load content. Press enter to Refresh";
+    STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
+    STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";
     STR_NO = "No";
     STR_FOR_THIS = "for this";
     STR_PLAYER_PROBLEM = "Connection failed, unable to load video content, exiting ...";
@@ -711,5 +711,5 @@ function en_USLang() {
     STR_AFFILIATE_ABOUT = "This application has some affiliated links and images, from partners that have highly recommended products, the application owner may receive commissions for purchases made through those links, all links, images or anything related to a product are properly verified and or used before be displayed on the application.";
     STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
 
-    STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history recording is enabled";
+    STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history is enabled";
 }

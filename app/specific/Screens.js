@@ -2402,8 +2402,6 @@ function Screens_OffSethandleKeyDown(key, event) {
     }
 }
 
-var Screens_histDialogID;
-
 function Screens_histStart(key) {
     ScreenObj[key].sethistDialog();
     Main_ShowElement('dialog_hist_setting');
@@ -2411,22 +2409,11 @@ function Screens_histStart(key) {
     Main_addEventListener("keydown", ScreenObj[key].key_hist);
 }
 
-function Screens_SethistDialogId(key) {
-    Screens_histDialogID = Main_setTimeout(
-        function() {
-            Screens_histDialogHide(false, key);
-        },
-        Screens_DialogHideTimout,
-        Screens_histDialogID
-    );
-}
-
 var Screens_DeleteDialogAll = true;
 
 function Screens_histDialogHide(Update, key) {
     Screens_histRemoveFocus(ScreenObj[key].histPosY, 'hist');
 
-    Main_clearTimeout(Screens_histDialogID);
     Main_removeEventListener("keydown", ScreenObj[key].key_hist);
     Main_addEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElement('dialog_hist_setting');
@@ -2600,20 +2587,17 @@ function Screens_histhandleKeyDown(key, event) {
             Screens_histDialogHide(false, key);
             break;
         case KEY_LEFT:
-            Screens_SethistDialogId(key);
             ScreenObj[key].histPosX[ScreenObj[key].histPosY]--;
             if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] < 0) ScreenObj[key].histPosX[ScreenObj[key].histPosY] = 0;
             else Screens_histSetArrow(key);
             break;
         case KEY_RIGHT:
-            Screens_SethistDialogId(key);
             ScreenObj[key].histPosX[ScreenObj[key].histPosY]++;
             if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] > (ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1))
                 ScreenObj[key].histPosX[ScreenObj[key].histPosY] = ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1;
             else Screens_histSetArrow(key);
             break;
         case KEY_UP:
-            Screens_SethistDialogId(key);
             ScreenObj[key].histPosY--;
             if (ScreenObj[key].histPosY < 0) ScreenObj[key].histPosY = 0;
             else {
@@ -2622,7 +2606,6 @@ function Screens_histhandleKeyDown(key, event) {
             }
             break;
         case KEY_DOWN:
-            Screens_SethistDialogId(key);
             ScreenObj[key].histPosY++;
             if (ScreenObj[key].histPosY > (ScreenObj[key].histArrays.length - 1))
                 ScreenObj[key].histPosY = ScreenObj[key].histArrays.length - 1;
@@ -2683,7 +2666,7 @@ function Screens_ThumbOptionStart(key) {
     if (ScreenObj[key].setTODialog && !Screens_ThumbOptionSpecial) {
         ScreenObj[key].setTODialog();
     }
-    Screens_SeTODialogId(key);
+
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_thumb);
 
@@ -2828,7 +2811,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
         case KEY_LEFT:
             if (!Screens_ThumbOptionCanKeyLeft) return;
 
-            Screens_SeTODialogId(key);
             if (Screens_ThumbOptionPosY > 2) {
                 Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
                 if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
@@ -2838,7 +2820,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
             break;
         case KEY_RIGHT:
-            Screens_SeTODialogId(key);
             if (!Screens_handleKeyUpIsClear) break;
             if (Screens_ThumbOptionPosY > 2) {
                 Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
@@ -2859,7 +2840,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
 
             var lower = !Main_A_includes_B(Main_getElementById('dialog_thumb_opt_setting_-1').className, 'hideimp') ? -1 : min_pos;
-            Screens_SeTODialogId(key);
             Screens_ThumbOptionPosY--;
             if (Screens_ThumbOptionPosY < lower) Screens_ThumbOptionPosY = lower;
             else {
@@ -2868,7 +2848,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
             break;
         case KEY_DOWN:
-            Screens_SeTODialogId(key);
             Screens_ThumbOptionPosY++;
             if (Screens_ThumbOptionPosY > 5)
                 Screens_ThumbOptionPosY = 5;
@@ -2879,7 +2858,6 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             break;
         case KEY_ENTER:
             if (Screens_ThumbOptionPosY === 2) {
-                Screens_SeTODialogId(key);
                 Screens_FollowUnfollow(key);
             } else Screens_ThumbOptionDialogHide(true, key);
             break;
@@ -2888,24 +2866,11 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
     }
 }
 
-var Screens_ThumbOptionDialogID;
-function Screens_SeTODialogId(key) {
-
-    Screens_ThumbOptionDialogID = Main_setTimeout(
-        function() {
-            Screens_ThumbOptionDialogHide(false, key);
-        },
-        Screens_DialogHideTimout,
-        Screens_ThumbOptionDialogID
-    );
-
-}
 
 function Screens_ThumbOptionDialogHide(Update, key) {
 
     Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
 
-    Main_clearTimeout(Screens_ThumbOptionDialogID);
     Main_removeEventListener("keydown", ScreenObj[key].key_thumb);
     Main_addEventListener("keydown", ScreenObj[key].key_fun);
     Main_HideElementWithEle(Screens_dialog_thumb_div);

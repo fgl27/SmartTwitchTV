@@ -1837,7 +1837,7 @@ function ScreensObj_HistoryLive() {
         screenType: 0,
         histPosX: Main_getItemJson('HistoryLive_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId(this.screen);
+            Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_LIVE_DIS);
             Main_innerHTML("dialog_hist_text", STR_LIVE + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
@@ -1937,7 +1937,7 @@ function ScreensObj_HistoryVod() {
         histPosXName: 'HistoryVod_histPosX',
         histPosX: Main_getItemJson('HistoryVod_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId(this.screen);
+            Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_VOD_DIS);
             Main_innerHTML("dialog_hist_text", STR_VIDEOS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
@@ -2029,7 +2029,7 @@ function ScreensObj_HistoryClip() {
         histPosXName: 'HistoryClip_histPosX',
         histPosX: Main_getItemJson('HistoryClip_histPosX', [0, 0, 0, 0]),
         sethistDialog: function() {
-            Screens_SethistDialogId(this.screen);
+            Main_textContent("dialog_hist_setting_name_1", STR_HISTORY_CLIP_DIS);
             Main_innerHTML("dialog_hist_text", STR_CLIPS + STR_SPACE_HTML + STR_HISTORY + STR_SPACE_HTML + STR_SETTINGS);
             this.sethistMainDialog();
         },
@@ -2152,7 +2152,8 @@ function ScreensObj_addBanner(obj, key, forceAdd) {
     div.className = 'banner_holder';
 
     div.innerHTML = '<div class="inner_banner_holder" id="' + idArray[0] + id + '"' +
-        (ScreenObj[key].screenType === 3 ? ' style="width: 95.75%;"' : '') +
+        (ScreenObj[key].screenType === 3 || ScreenObj[key].screenType === 4 ?
+            ' style="width: 95.75%;"' : '') +
         '><div class="banner_img_holder" id="' + idArray[0] + id + '" ><img id="' +
         idArray[1] + id + '" class="banner_img" alt="" src="' + obj.image + '" onerror="this.onerror=null;this.src=\'' + ScreenObj[key].img_404 +
         '\';" ></div><div class="banner_text_holder"><div style="text-align: center;" class="stream_text_holder">' + obj.text + '</div></div></div>';
