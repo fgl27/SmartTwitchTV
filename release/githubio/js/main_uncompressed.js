@@ -11778,7 +11778,7 @@
     function Main_setHistoryItem() {
         Main_setHistoryItemId = Main_setTimeout(
             Main_SaveHistoryItem,
-            10000,
+            1000,
             Main_setHistoryItemId
         );
     }
@@ -25399,6 +25399,7 @@
 
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
         else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+            ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
             !ScreenObj[key].offsettop ||
             (ScreenObj[key].CheckContentLang &&
                 !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
@@ -28739,7 +28740,8 @@
             emptyBanner: function(forceAdd) {
                 ScreensObj_addBanner({
                         image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                        text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER
+                        text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER,
+                        empty: true
                     },
                     this.screen,
                     forceAdd
