@@ -282,6 +282,7 @@ function Screens_init(key, preventRefresh) {
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+        ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
         !ScreenObj[key].offsettop ||
         (ScreenObj[key].CheckContentLang &&
             !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||

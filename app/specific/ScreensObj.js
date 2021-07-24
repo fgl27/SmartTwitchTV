@@ -426,7 +426,8 @@ function ScreensObj_StartAllVars() {
             ScreensObj_addBanner(
                 {
                     image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                    text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER
+                    text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER,
+                    empty: true
                 },
                 this.screen,
                 forceAdd

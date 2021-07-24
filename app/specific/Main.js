@@ -2327,7 +2327,7 @@ var Main_setHistoryItemId;
 function Main_setHistoryItem() {
     Main_setHistoryItemId = Main_setTimeout(
         Main_SaveHistoryItem,
-        10000,
+        1000,
         Main_setHistoryItemId
     );
 }
