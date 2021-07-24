@@ -90,7 +90,9 @@ function ScreensObj_StartAllVars() {
         itemsCountCheck: false,
         isRefreshing: false,
         Headers: Main_Headers,
-        empty_str: STR_NO_CONTENT,
+        empty_str: function() {
+            return STR_NO_CONTENT;
+        },
         data: null,
         token: null,
         data_cursor: 0,
@@ -424,7 +426,7 @@ function ScreensObj_StartAllVars() {
             ScreensObj_addBanner(
                 {
                     image: 'https://fgl27.github.io/SmartTwitchTV/apk/app/src/main/res/mipmap-nodpi/ic_splash.png',
-                    text: STR_REFRESH_PROBLEM_ENTER
+                    text: this.emptyContent_STR ? this.emptyContent_STR() : STR_REFRESH_PROBLEM_ENTER
                 },
                 this.screen,
                 forceAdd
@@ -814,6 +816,9 @@ function ScreensObj_StartAllVars() {
         key_pgDown: Main_UserLive,
         key_pgUp: Main_UserChannels,
         histPosY: 0,
+        emptyContent_STR: function() {
+            return STR_HISTORY_EMPTY_CONTENT;
+        },
         histPosXTemp: [0, 0, 0, 0],
         sorting: [],
         sortingValues: [

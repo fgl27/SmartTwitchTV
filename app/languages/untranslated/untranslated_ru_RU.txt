@@ -1,0 +1,1 @@
+    STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history recording is enabled";

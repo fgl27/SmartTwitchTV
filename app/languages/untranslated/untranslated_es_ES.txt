@@ -262,3 +262,4 @@
     STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
 
     STR_CHAT_BOTS = "Block bots and bot commands (!command) from show in chat";
+    STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history recording is enabled";
