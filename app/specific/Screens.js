@@ -721,7 +721,16 @@ function Screens_loadDataSuccessFinish(key) {
     if (!ScreenObj[key].status) {
 
         if (ScreenObj[key].emptyContent) {
-            if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
+
+            if (Screens_IsInUse(key)) {
+
+                Main_showWarningDialog(
+                    ScreenObj[key].emptyContent_STR ?
+                        ScreenObj[key].emptyContent_STR() : STR_REFRESH_PROBLEM
+                );
+
+            }
+
         } else {
 
             ScreenObj[key].status = true;

@@ -203,7 +203,11 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_Empty(pos) {
-    UserLiveFeedobj_HolderDiv(pos, STR_NO_CONTENT);
+    UserLiveFeedobj_HolderDiv(
+        pos,
+        pos === UserLiveFeedobj_UserVodHistoryPos || pos === UserLiveFeedobj_UserHistoryPos ?
+            STR_HISTORY_EMPTY_CONTENT : STR_REFRESH_PROBLEM
+    );
 }
 
 function UserLiveFeedobj_HolderDiv(pos, text) {
@@ -1534,6 +1538,7 @@ function UserLiveFeedobj_UserVodHistory() {
         }
 
         if (!itemsCount) UserLiveFeedobj_Empty(pos);
+
     } else UserLiveFeedobj_Empty(pos);
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
@@ -1703,9 +1708,9 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessFinish(pos, total, response_item
 
     }
 
-    if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
+    if (!UserLiveFeed_itemsCount[pos]) {
 
-        UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+        UserLiveFeedobj_Empty(pos);
 
     }
 

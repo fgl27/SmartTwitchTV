@@ -379,7 +379,6 @@ function es_ESLang() {
 
     STR_PICTURE_LIVE_FEED = 'Picture in Picture: Mantén pulsado Enter y utiliza el D-Pad para mover o cambiar los vídeos';
 
-    STR_NO_CONTENT = 'No hay contenido para esto ahora, inténtelo más tarde';
     STR_SHOW_LIVE_PLAYER = 'Mostrar la vista previa en las pantallas de emisión en directo';
     STR_SHOW_VOD_PLAYER_WARNING = 'Iniciar la reproducción desde donde se detuvo por última vez:';
     STR_SHOW_VOD_PLAYER = 'Mostrar la vista previa en las pantallas de VOD';

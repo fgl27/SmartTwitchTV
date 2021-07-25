@@ -90,9 +90,6 @@ function ScreensObj_StartAllVars() {
         itemsCountCheck: false,
         isRefreshing: false,
         Headers: Main_Headers,
-        empty_str: function() {
-            return STR_NO_CONTENT;
-        },
         data: null,
         token: null,
         data_cursor: 0,

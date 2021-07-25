@@ -508,7 +508,6 @@ function pt_BRLang() {
     STR_MULTI_TITLE = ", Clique em uma miniatura para abrir ou substituir, use o direcional esquerdo/direito para mudar a fonte de áudio";
     STR_FEED_END_DIALOG = ', Pressione retorno para voltar ao menu superior';
     STR_BACK_USER_GAMES = 'Pressione a tecla de retorno para voltar a';
-    STR_NO_CONTENT = 'Nenhum conteúdo para este agora, tente novamente mais tarde';
     STR_SHOW_LIVE_PLAYER = 'Mostrar pré-visualização nas telas das transmissões ao vivo';
     STR_SHOW_VOD_PLAYER_WARNING = 'Iniciando a reprodução de onde parou anteriormente:';
     STR_SHOW_VOD_PLAYER = 'Mostrar pré-visualização nas telas VOD';
