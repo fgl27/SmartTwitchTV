@@ -13298,20 +13298,10 @@
 
         if (Main_IsOn_OSInterface) {
 
-            try {
-
-                Android.FixViewPosition(
-                    position,
-                    Type
-                );
-
-            } catch (e) {
-
-                Android.FixViewPosition(
-                    position
-                );
-
-            }
+            Android.FixViewPosition(
+                position,
+                Type
+            );
 
         }
 
@@ -14018,15 +14008,11 @@
     //Gets if the app was instaled from play store
     function OSInterface_getInstallFromPLay() {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
+            return Android.getInstallFromPLay();
 
-                return Android.getInstallFromPLay();
-
-            }
-
-        } catch (e) {}
+        }
 
         return true;
     }
@@ -14039,20 +14025,12 @@
     //Allow to update the app
     function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
 
-        try {
+        if (Main_IsOn_OSInterface) {
 
-            if (Main_IsOn_OSInterface) {
-
-                Android.UpdateAPK(apkURL, failAll, failDownload);
-
-            }
-
-        } catch (e) {
-
-            OSInterface_showToast(STR_UPDATE_ERROR);
-            OSInterface_mshowLoading(false);
+            Android.UpdateAPK(apkURL, failAll, failDownload);
 
         }
+
     }
 
     //public void CleanAndLoadUrl(String url)
@@ -14076,13 +14054,9 @@
 
         if (Main_IsOn_OSInterface) {
 
-            try {
-
-                Android.SetLanguage(
-                    lang
-                );
-
-            } catch (e) {}
+            Android.SetLanguage(
+                lang
+            );
 
         }
 
