@@ -406,7 +406,6 @@
     var STR_FEED_END_DIALOG;
     var STR_MULTI_TITLE;
     var STR_BACK_USER_GAMES;
-    var STR_NO_CONTENT;
     var STR_BITCOIN_SUMMARY;
     var STR_SHOW_FEED_PLAYER;
     var STR_DISABLED_FEED_PLAYER_MULTI;
@@ -1511,7 +1510,6 @@
         STR_MULTI_TITLE = ", Click on a thumbnail to open or replace a stream, use D-pad left/right to change audio source";
         STR_FEED_END_DIALOG = ", Press return to go back to top menu";
         STR_BACK_USER_GAMES = "Press return to go back to";
-        STR_NO_CONTENT = "No content for this now, try again later";
         STR_SHOW_LIVE_PLAYER = "Show preview on the live screens";
         STR_SHOW_VOD_PLAYER_WARNING = "Starting playback from where it last stopped:";
         STR_SHOW_VOD_PLAYER = "Show preview on the VOD screens";
@@ -2092,7 +2090,6 @@
 
         STR_PICTURE_LIVE_FEED = 'Picture in Picture: Mantén pulsado Enter y utiliza el D-Pad para mover o cambiar los vídeos';
 
-        STR_NO_CONTENT = 'No hay contenido para esto ahora, inténtelo más tarde';
         STR_SHOW_LIVE_PLAYER = 'Mostrar la vista previa en las pantallas de emisión en directo';
         STR_SHOW_VOD_PLAYER_WARNING = 'Iniciar la reproducción desde donde se detuvo por última vez:';
         STR_SHOW_VOD_PLAYER = 'Mostrar la vista previa en las pantallas de VOD';
@@ -2727,7 +2724,6 @@
         STR_MULTI_TITLE = ", Clique em uma miniatura para abrir ou substituir, use o direcional esquerdo/direito para mudar a fonte de áudio";
         STR_FEED_END_DIALOG = ', Pressione retorno para voltar ao menu superior';
         STR_BACK_USER_GAMES = 'Pressione a tecla de retorno para voltar a';
-        STR_NO_CONTENT = 'Nenhum conteúdo para este agora, tente novamente mais tarde';
         STR_SHOW_LIVE_PLAYER = 'Mostrar pré-visualização nas telas das transmissões ao vivo';
         STR_SHOW_VOD_PLAYER_WARNING = 'Iniciando a reprodução de onde parou anteriormente:';
         STR_SHOW_VOD_PLAYER = 'Mostrar pré-visualização nas telas VOD';
@@ -3421,7 +3417,6 @@
         STR_MULTI_TITLE = ", Нажмите на превью, чтобы открыть или заменить поток, используйте D-pad влево/вправо, чтобы изменить источник звука.";
         STR_FEED_END_DIALOG = ', Нажмите Назад, чтобы вернуться в главное меню';
         STR_BACK_USER_GAMES = "Нажмите назад, чтобы вернуться к";
-        STR_NO_CONTENT = 'Сейчас нет контента, попробуйте еще раз позже';
         STR_SHOW_LIVE_PLAYER = 'Показать превью на экранах прямых трансляций';
         STR_SHOW_VOD_PLAYER_WARNING = 'Начало воспроизведения с места последней остановки:';
         STR_SHOW_VOD_PLAYER = 'Предварительный просмотр на экранах Видео';
@@ -25838,7 +25833,16 @@
         if (!ScreenObj[key].status) {
 
             if (ScreenObj[key].emptyContent) {
-                if (Screens_IsInUse(key)) Main_showWarningDialog(ScreenObj[key].empty_str());
+
+                if (Screens_IsInUse(key)) {
+
+                    Main_showWarningDialog(
+                        ScreenObj[key].emptyContent_STR ?
+                        ScreenObj[key].emptyContent_STR() : STR_REFRESH_PROBLEM
+                    );
+
+                }
+
             } else {
 
                 ScreenObj[key].status = true;
@@ -28405,9 +28409,6 @@
             itemsCountCheck: false,
             isRefreshing: false,
             Headers: Main_Headers,
-            empty_str: function() {
-                return STR_NO_CONTENT;
-            },
             data: null,
             token: null,
             data_cursor: 0,
@@ -37009,7 +37010,11 @@
     }
 
     function UserLiveFeedobj_Empty(pos) {
-        UserLiveFeedobj_HolderDiv(pos, STR_NO_CONTENT);
+        UserLiveFeedobj_HolderDiv(
+            pos,
+            pos === UserLiveFeedobj_UserVodHistoryPos || pos === UserLiveFeedobj_UserHistoryPos ?
+            STR_HISTORY_EMPTY_CONTENT : STR_REFRESH_PROBLEM
+        );
     }
 
     function UserLiveFeedobj_HolderDiv(pos, text) {
@@ -38349,6 +38354,7 @@
             }
 
             if (!itemsCount) UserLiveFeedobj_Empty(pos);
+
         } else UserLiveFeedobj_Empty(pos);
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
@@ -38518,9 +38524,9 @@
 
         }
 
-        if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
+        if (!UserLiveFeed_itemsCount[pos]) {
 
-            UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+            UserLiveFeedobj_Empty(pos);
 
         }
 
