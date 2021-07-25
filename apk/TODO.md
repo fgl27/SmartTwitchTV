@@ -22,6 +22,12 @@ Issues list
 TODO list
 ==============
 
+### Migration legacy v5 to new Twitch API
+
+* Legacy will be shutdown on 02/2022 [Legacy Twitch API v5 Shutdown Details and Timeline](https://blog.twitch.tv/en/2021/07/15/legacy-twitch-api-v5-shutdown-details-and-timeline/) see for a start [v5 migration guide](https://dev.twitch.tv/docs/api/migration)
+* Gen a Bearer token `curl -X POST 'https://id.twitch.tv/oauth2/token?client_id=1234&client_secret=1234&grant_type=client_credentials'` where 1234 is your id/secrete
+* Check token `curl -H 'Authorization: OAuth 1234' -X GET https://id.twitch.tv/oauth2/validate` where 1234 is the token
+
 ### Update screens thumbnail options
 
 * General improve
