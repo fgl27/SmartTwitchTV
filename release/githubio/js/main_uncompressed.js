@@ -10307,8 +10307,8 @@
     }
 
     function Main_Calculatefps(fps) {
-        if (fps > 58) return 60;
-        else if (fps < 32) return 30;
+        if (fps > 58 && fps < 62) return 60;
+        else if (fps > 28 && fps < 32) return 30;
 
         return Math.ceil(fps);
     }
