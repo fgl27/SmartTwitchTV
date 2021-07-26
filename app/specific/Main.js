@@ -876,8 +876,9 @@ function Main_videoqualitylang(video_height, average_fps, language) {
 }
 
 function Main_Calculatefps(fps) {
-    if (fps > 58 && fps < 62) return 60;
-    else if (fps > 28 && fps < 32) return 30;
+    if (fps > 89 && fps < 91) return 90;
+    else if (fps > 59 && fps < 61) return 60;
+    else if (fps > 29 && fps < 31) return 30;
 
     return Math.ceil(fps);
 }
