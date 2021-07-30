@@ -9933,7 +9933,11 @@
 
             }
 
-        } // else Settings_ForceEnableAnimations();
+        } else if (Main_values.Never_run_new) {
+
+            Settings_ForceEnableAnimations();
+
+        }
     }
 
     function Main_SetStringsMain() {
@@ -10922,6 +10926,14 @@
             !isHosting ? Main_values_Play_data[15] : 'HOSTING',
             screen
         );
+
+        if (!Main_IsOn_OSInterface) {
+
+            Play_SetSceneBackground(
+                data[0].replace("{width}x{height}", "1280x720") + Main_randomimg
+            );
+
+        }
     }
 
     var Main_CheckBroadcastIDex;
@@ -11129,6 +11141,14 @@
             }
         );
 
+        if (!Main_IsOn_OSInterface) {
+
+            Play_SetSceneBackground(
+                data[15]
+            );
+
+        }
+
     }
 
     function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
@@ -11168,6 +11188,14 @@
             screen
         );
 
+        if (!Main_IsOn_OSInterface) {
+
+            Play_SetSceneBackground(
+                data[0].replace(Main_VideoSize, "1280x720")
+            );
+
+        }
+
     }
 
     function Main_openVod() {
@@ -11185,8 +11213,10 @@
     function Main_removeFocus(id, idArray) {
         Screens_LoadPreviewSTop();
         Main_HideWarningDialog();
+
         Main_RemoveClass(idArray[1] + id, 'opacity_zero');
         Main_RemoveClass(idArray[0] + id, Main_classThumb);
+
     }
 
     // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
@@ -19703,6 +19733,12 @@
 
         return true;
     }
+
+    function Play_SetSceneBackground(url) {
+
+        Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
+
+    }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -20810,6 +20846,13 @@
                 obj.streams[0].channel._id,
                 obj.streams[0]._id
             );
+
+            if (!Main_IsOn_OSInterface) {
+
+                Play_SetSceneBackground(
+                    obj.streams[0].preview.template.replace("{width}x{height}", "1280x720") + Main_randomimg
+                );
+            }
         }
     }
 
@@ -23536,6 +23579,15 @@
 
         Main_values_Play_data = ScreensObj_VodCellArray(response);
         Main_Set_history('vod', Main_values_Play_data);
+
+
+        if (!Main_IsOn_OSInterface) {
+
+            Play_SetSceneBackground(
+                Main_values_Play_data[0].replace(Main_VideoSize, "1280x720")
+            );
+
+        }
     }
 
     function PlayVod_Resume() {
@@ -26175,7 +26227,10 @@
         );
 
         Screens_ClearAnimation(key);
-        Main_AddClassWitEle(img, 'opacity_zero');
+
+        if (Main_IsOn_OSInterface) {
+            Main_AddClassWitEle(img, 'opacity_zero');
+        }
     }
 
     function Screens_LoadPreviewStart(key, obj) {
@@ -34579,7 +34634,7 @@
 
                     if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                         Sidepannel_CheckIfIsLiveStart();
-                    } else if (Play_PreviewId) {
+                    } else if (Play_PreviewId && Main_IsOn_OSInterface) {
                         Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                     }
 
