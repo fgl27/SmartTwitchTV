@@ -504,7 +504,11 @@ function Main_CheckDevice() {
 
         }
 
-    }// else Settings_ForceEnableAnimations();
+    } else if (Main_values.Never_run_new) {
+
+        Settings_ForceEnableAnimations();
+
+    }
 }
 
 function Main_SetStringsMain() {
