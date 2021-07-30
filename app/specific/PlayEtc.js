@@ -4489,3 +4489,9 @@ function Play_preventVodOnPP() {
 
     return true;
 }
+
+function Play_SetSceneBackground(url) {
+
+    Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
+
+}

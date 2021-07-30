@@ -1083,7 +1083,10 @@ function Screens_LoadPreviewRestore(key) {
     );
 
     Screens_ClearAnimation(key);
-    Main_AddClassWitEle(img, 'opacity_zero');
+
+    if (Main_IsOn_OSInterface) {
+        Main_AddClassWitEle(img, 'opacity_zero');
+    }
 }
 
 function Screens_LoadPreviewStart(key, obj) {

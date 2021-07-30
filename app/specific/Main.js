@@ -1486,6 +1486,14 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
         !isHosting ? Main_values_Play_data[15] : 'HOSTING',
         screen
     );
+
+    if (!Main_IsOn_OSInterface) {
+
+        Play_SetSceneBackground(
+            data[0].replace("{width}x{height}", "1280x720") + Main_randomimg
+        );
+
+    }
 }
 
 var Main_CheckBroadcastIDex;
@@ -1693,6 +1701,14 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
         }
     );
 
+    if (!Main_IsOn_OSInterface) {
+
+        Play_SetSceneBackground(
+            data[15]
+        );
+
+    }
+
 }
 
 function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
@@ -1732,6 +1748,14 @@ function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
         screen
     );
 
+    if (!Main_IsOn_OSInterface) {
+
+        Play_SetSceneBackground(
+            data[0].replace(Main_VideoSize, "1280x720")
+        );
+
+    }
+
 }
 
 function Main_openVod() {
@@ -1749,8 +1773,10 @@ function Main_openVod() {
 function Main_removeFocus(id, idArray) {
     Screens_LoadPreviewSTop();
     Main_HideWarningDialog();
+
     Main_RemoveClass(idArray[1] + id, 'opacity_zero');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
+
 }
 
 // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome

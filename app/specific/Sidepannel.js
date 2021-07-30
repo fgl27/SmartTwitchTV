@@ -224,7 +224,7 @@ function Sidepannel_UpdateThumb() {
 
                 if ((!Play_PreviewId || !Main_A_equals_B(ChannelId, Play_PreviewId)) && !Play_PreviewVideoEnded) {
                     Sidepannel_CheckIfIsLiveStart();
-                } else if (Play_PreviewId) {
+                } else if (Play_PreviewId && Main_IsOn_OSInterface) {
                     Sidepannel_UpdateThumbDoc.src = IMG_404_BANNER;
                 }
 

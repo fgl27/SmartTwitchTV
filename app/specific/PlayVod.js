@@ -319,6 +319,15 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
 
     Main_values_Play_data = ScreensObj_VodCellArray(response);
     Main_Set_history('vod', Main_values_Play_data);
+
+
+    if (!Main_IsOn_OSInterface) {
+
+        Play_SetSceneBackground(
+            Main_values_Play_data[0].replace(Main_VideoSize, "1280x720")
+        );
+
+    }
 }
 
 function PlayVod_Resume() {
