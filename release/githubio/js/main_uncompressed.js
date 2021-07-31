@@ -17924,7 +17924,8 @@
             setLable: function() {
 
                 Main_textContentWithEle(this.doc_name,
-                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+                    Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+                );
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -19160,6 +19161,9 @@
             if (Play_controls[i].setLable) Play_controls[i].setLable();
 
         }
+
+        Play_ResetLowlatency();
+        Play_ResetSpeed();
     }
 
     function Play_SetControlsArrows(key) {
@@ -19653,7 +19657,7 @@
         Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
         Play_Status_Visible = Main_getItemInt('Play_Status_Visible', 0);
 
-        Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
+        Play_LowLatency = Main_getItemInt('Play_LowLatency', 1);
 
         if (Main_IsOn_OSInterface) {
             //TODO remove this after some app updates
@@ -20257,7 +20261,7 @@
     var Play_PicturePicturePos = 4;
     var Play_PicturePictureSize = 2;
     var Play_MultiEnable = false;
-    var Play_LowLatency = 0;
+    var Play_LowLatency = 1;
     var Play_EndUpclear = false;
     var Play_EndUpclearID;
     var Play_EndUpclearCalback;
