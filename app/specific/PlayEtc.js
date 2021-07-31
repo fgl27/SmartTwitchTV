@@ -2681,7 +2681,8 @@ function Play_MakeControls() {
         setLable: function() {
 
             Main_textContentWithEle(this.doc_name,
-                Play_controls[this.position].values[Play_controls[this.position].defaultValue]);
+                Play_controls[this.position].values[Play_controls[this.position].defaultValue]
+            );
         },
         bottomArrows: function() {
             Play_BottomArrows(this.position);
@@ -3917,6 +3918,9 @@ function Play_MakeControls() {
         if (Play_controls[i].setLable) Play_controls[i].setLable();
 
     }
+
+    Play_ResetLowlatency();
+    Play_ResetSpeed();
 }
 
 function Play_SetControlsArrows(key) {
@@ -4410,7 +4414,7 @@ function Play_PreStart() {
     Play_FullScreenPosition = Main_getItemInt('Play_FullScreenPosition', 1);
     Play_Status_Visible = Main_getItemInt('Play_Status_Visible', 0);
 
-    Play_LowLatency = Main_getItemInt('Play_LowLatency', 0);
+    Play_LowLatency = Main_getItemInt('Play_LowLatency', 1);
 
     if (Main_IsOn_OSInterface) {
         //TODO remove this after some app updates

@@ -32,7 +32,7 @@ var Play_CurrentSpeed = 3;
 var Play_PicturePicturePos = 4;
 var Play_PicturePictureSize = 2;
 var Play_MultiEnable = false;
-var Play_LowLatency = 0;
+var Play_LowLatency = 1;
 var Play_EndUpclear = false;
 var Play_EndUpclearID;
 var Play_EndUpclearCalback;
