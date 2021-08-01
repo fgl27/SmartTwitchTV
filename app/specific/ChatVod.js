@@ -625,11 +625,8 @@ function Chat_Clean(chat_number) {
     var linesToDelete = Chat_div[chat_number].getElementsByClassName("chat_line_holder"),
         i = 0, len = (linesToDelete.length - Chat_CleanMax);
 
-    if (len > 0) {
-
-        for (i; i < len; i++) {
-            Chat_div[chat_number].removeChild(linesToDelete[0]);
-        }
-
+    for (i; i < len; i++) {
+        Chat_div[chat_number].removeChild(linesToDelete[0]);
     }
+
 }

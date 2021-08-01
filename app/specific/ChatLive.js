@@ -181,7 +181,9 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
     ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
 
-    ChatLive_chat_line_class = (Settings_Obj_default("chat_line_animation") ? 'chat_line_animation ' : '') + 'chat_line_holder';
+    ChatLive_chat_line_class =
+        (Settings_value.chat_line_animation.defaultValue ? 'chat_line_animation ' : '') +
+        'chat_line_holder';
 
     if (ChatLive_User_Set) {
         ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
@@ -1868,7 +1870,8 @@ function ChatLive_ElemntAdd(messageObj) {
 
     if (!messageObj.addToStart) {
 
-        chat_line_holder.className = ChatLive_chat_line_class;
+        //skip animation if chat not showing to prevent animations when it shows
+        chat_line_holder.className = Play_ChatEnable ? ChatLive_chat_line_class : 'chat_line_holder';
         ChatLive_ElemntAddCheckExtra(messageObj);
         Chat_div[messageObj.chat_number].appendChild(chat_line_holder);
 

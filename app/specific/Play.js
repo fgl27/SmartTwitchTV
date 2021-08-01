@@ -1746,6 +1746,20 @@ function Play_showChat() {
 function Play_hideChat() {
     Play_chat_container.classList.add('hide');
     Play_controls[Play_controlsChat].setLable();
+
+    //remove animation if chat not showing to prevent animations when it shows
+    if (Settings_Obj_default("chat_line_animation")) {
+
+        var linesToRemoveAnimation = Chat_div[0].getElementsByClassName("chat_line_animation"),
+            i = 0, len = linesToRemoveAnimation.length;
+
+        for (i; i < len; i++) {
+            linesToRemoveAnimation[0].classList.remove('chat_line_animation');
+        }
+
+    }
+
+
 }
 
 function Play_isChatShown() {
