@@ -20,4 +20,4 @@ mainfolder="$(dirname "$mainfolder")";
 cd "$mainfolder" || exit
 
 # -c-1 disable cache
-http-server -S -C release/scripts/cert.pem -K release/scripts/key.pem -c-1
+http-server -a 127.0.0.1 -p 5000 -S -C release/scripts/cert.pem -K release/scripts/key.pem -c-1
