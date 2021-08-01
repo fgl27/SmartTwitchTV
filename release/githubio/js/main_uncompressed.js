@@ -6930,7 +6930,9 @@
         ChatLive_Channel_Regex_Search[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number] + '(?=\\s|$)', "i");
         ChatLive_Channel_Regex_Replace[chat_number] = new RegExp('@' + ChatLive_selectedChannel[chat_number], "gi");
 
-        ChatLive_chat_line_class = (Settings_Obj_default("chat_line_animation") ? 'chat_line_animation ' : '') + 'chat_line_holder';
+        ChatLive_chat_line_class =
+            (Settings_value.chat_line_animation.defaultValue ? 'chat_line_animation ' : '') +
+            'chat_line_holder';
 
         if (ChatLive_User_Set) {
             ChatLive_User_Regex_Search = new RegExp('@' + AddUser_UsernameArray[0].name + '(?=\\s|$)', "i");
@@ -8609,7 +8611,8 @@
 
         if (!messageObj.addToStart) {
 
-            chat_line_holder.className = ChatLive_chat_line_class;
+            //skip animation if chat not showing to prevent animations when it shows
+            chat_line_holder.className = Play_ChatEnable ? ChatLive_chat_line_class : 'chat_line_holder';
             ChatLive_ElemntAddCheckExtra(messageObj);
             Chat_div[messageObj.chat_number].appendChild(chat_line_holder);
 
@@ -9422,13 +9425,10 @@
             i = 0,
             len = (linesToDelete.length - Chat_CleanMax);
 
-        if (len > 0) {
-
-            for (i; i < len; i++) {
-                Chat_div[chat_number].removeChild(linesToDelete[0]);
-            }
-
+        for (i; i < len; i++) {
+            Chat_div[chat_number].removeChild(linesToDelete[0]);
         }
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -21989,6 +21989,21 @@
     function Play_hideChat() {
         Play_chat_container.classList.add('hide');
         Play_controls[Play_controlsChat].setLable();
+
+        //remove animation if chat not showing to prevent animations when it shows
+        if (Settings_Obj_default("chat_line_animation")) {
+
+            var linesToRemoveAnimation = Chat_div[0].getElementsByClassName("chat_line_animation"),
+                i = 0,
+                len = linesToRemoveAnimation.length;
+
+            for (i; i < len; i++) {
+                linesToRemoveAnimation[0].classList.remove('chat_line_animation');
+            }
+
+        }
+
+
     }
 
     function Play_isChatShown() {
