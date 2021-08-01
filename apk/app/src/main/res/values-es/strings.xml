@@ -43,10 +43,10 @@
     <string name="channel_refresh">Presione enter para actualizar esto, una actualización manual sólo puede ocurrir cuando la aplicación es visible, por lo que al hacer clic aquí se abrirá la aplicación, este canal de auto refrescarse 30 minutos</string>
     <string name="channel_no_user">Es necesario añadir un usuario primero para cargar este contenido</string>
     <string name="channel_empty">Lista vacía</string>
-    <string name="channel_last_refresh">Última actualización - %s %s %02d:%02d</string> <!--Last refresh - Sunday May 2 12:35-->
-    <string name="channel_refreshed">%s canal de la pantalla de inicio actualizado</string> <!--Live home screen channel refreshed-->
-    <string name="channel_live_title">%s %s desde %s para %s espectadores\n%s</string> <!--Playing a game, since 10:10:10 for 27.272 viewers-->
-    <string name="channel_game_title">%s Canales\nPara %s espectadores</string> <!--27,272 Channel \n (new line) For 272.272 viewers-->
+    <string name="channel_last_refresh">Última actualización - %1$s %2$s %02d:%02d</string> <!--Last refresh - Sunday May 2 12:35-->
+    <string name="channel_refreshed">%1$s canal de la pantalla de inicio actualizado</string> <!--Live home screen channel refreshed-->
+    <string name="channel_live_title">%1$s %2$s desde %3$s para %4$s espectadores\n%5$s</string> <!--Playing a game, since 10:10:10 for 27.272 viewers-->
+    <string name="channel_game_title">%1$s Canales\nPara %2$s espectadores</string> <!--27,272 Channel \n (new line) For 272.272 viewers-->
     <string name="playing">Reproduciendo</string>
     <string name="streaming">Transmitiendo</string>
 

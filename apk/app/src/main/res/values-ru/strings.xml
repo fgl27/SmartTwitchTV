@@ -43,10 +43,10 @@
     <string name="channel_refresh">Нажмите ОК, чтобы обновить. Обновление вручную возможно, если приложение открыто, поэтому нажатие его откроет. Этот канал автоматически обновится через 30 минут.</string>
     <string name="channel_no_user">Необходимо сначала добавить пользователя, чтобы загрузить этот контент</string>
     <string name="channel_empty">Пустой список</string>
-    <string name="channel_last_refresh">Последнее обновление - %s %s %02d:%02d</string>
-    <string name="channel_refreshed">%s канал на главном экране обновлен</string>
-    <string name="channel_live_title">%s %s уже %s для %s зрителей\n%s</string>
-    <string name="channel_game_title">%s Канал\nДля %s зрителей</string>
+    <string name="channel_last_refresh">Последнее обновление - %1$s %2$s %02d:%02d</string>
+    <string name="channel_refreshed">%1$s канал на главном экране обновлен</string>
+    <string name="channel_live_title">%1$s %2$s уже %2$s для %3$s зрителей\n%4$s</string>
+    <string name="channel_game_title">%1$s Канал\nДля %2$s зрителей</string>
     <string name="playing">Играет</string>
     <string name="streaming">Транслирует</string>
 
