@@ -21922,7 +21922,7 @@
             Play_UpdateVideoStatus(
                 value[0],
                 value[1],
-                value[2] + " |" + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3],
+                value[2] + " | " + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : "") + value[3],
                 value[4],
                 (showLatency ? value[5] : null),
                 value[6]
