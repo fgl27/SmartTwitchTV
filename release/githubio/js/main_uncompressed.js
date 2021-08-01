@@ -706,6 +706,7 @@
     var STR_CHAT_BOTS;
     var STR_AFFILIATE_ABOUT_DIS;
     var STR_HISTORY_EMPTY_CONTENT;
+    var STR_PREVIEW;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1708,6 +1709,7 @@
         STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
 
         STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history is enabled";
+        STR_PREVIEW = "the preview";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -2913,6 +2915,8 @@
         STR_AFFILIATE_ABOUT = "Este aplicativo possui alguns links afiliados e imagens, de parceiros que possuem produtos altamente recomendados, o proprietário do aplicativo pode receber comissões por compras feitas através desses links, todos os links, imagens ou qualquer coisa relacionada ao produto são devidamente verificados e / ou usados antes de serem exibidos no aplicativo.";
         STR_AFFILIATE_ABOUT_DIS = "O conteúdo afiliado pode ser desabilitado nas configurações.";
         STR_HISTORY_EMPTY_CONTENT = "O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se o histórico estiver habilitada";
+        STR_PREVIEW = "a pré-visualização";
+
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -17990,10 +17994,10 @@
 
                 if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
-                if (Play_MaxMaxInstances < 4) {
+                if (Play_MaxInstances < 4) {
 
                     Play_showWarningMidleDialog(
-                        STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_4_WAY_MULTI,
+                        STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI,
                         3000
                     );
                     return;
@@ -19774,10 +19778,10 @@
         PlayExtra_clear = true;
         PlayExtra_loadDataCheckHostId = 0;
 
-        if (Play_MaxMaxInstances < 2) {
+        if (Play_MaxInstances < 2) {
 
             Play_showWarningMidleDialog(
-                STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_PP_MODO,
+                STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO,
                 3000
             );
 
@@ -20272,7 +20276,7 @@
     var Play_EndDialogElem;
     var Play_MultiDialogElem;
     var Play_SkipStartAuto = false;
-    var Play_MaxMaxInstances = 0;
+    var Play_MaxInstances = 0;
     var Play_HasLive;
 
     var Play_streamInfoTimerId = null;
@@ -33514,7 +33518,7 @@
 
     function Settings_SetMaxInstances() {
         if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
-        Play_MaxMaxInstances = 0;
+        Play_MaxInstances = 0;
 
         var i = 0,
             len = Settings_CodecsValue.length;
@@ -33524,7 +33528,7 @@
                 !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : "", 'google')) {
 
 
-                Play_MaxMaxInstances = (Settings_CodecsValue[i].instances > -1) ?
+                Play_MaxInstances = (Settings_CodecsValue[i].instances > -1) ?
                     Settings_CodecsValue[i].instances : 10;
 
                 break;
@@ -33532,13 +33536,12 @@
 
         }
 
-        if (!Play_MaxMaxInstances && len) {
+        if (!Play_MaxInstances && len) {
 
-            Play_MaxMaxInstances = (Settings_CodecsValue[0].instances > -1) ?
+            Play_MaxInstances = (Settings_CodecsValue[0].instances > -1) ?
                 Settings_CodecsValue[0].instances : 10;
 
         }
-
     }
 
     function Settings_SetCodecsValue() {
@@ -36223,6 +36226,30 @@
         Play_HideWarningMidleDialog();
     }
 
+    var UserLiveFeed_MaxInstancesWarn = false;
+
+    function UserLiveFeed_MaxInstances() {
+        var numberOfPlayers = 1;
+
+        if (Play_MultiEnable) numberOfPlayers = 4;
+        else if (PlayExtra_PicturePicture) numberOfPlayers = 2;
+
+        var result = Play_MaxInstances > numberOfPlayers;
+
+        if (!result && !UserLiveFeed_MaxInstancesWarn) {
+
+            Play_showWarningMidleDialog(
+                STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW,
+                7500
+            );
+
+            UserLiveFeed_MaxInstancesWarn = true;
+
+        }
+
+        return result;
+    }
+
     var UserLiveFeed_LoadPreviewId;
 
     function UserLiveFeed_CheckIfIsLiveStart(pos) {
@@ -36230,6 +36257,7 @@
         if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
             Settings_Obj_default('show_feed_player') && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
             (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
+            UserLiveFeed_MaxInstances() &&
             UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
 
             var obj = Play_CheckLiveThumb(false, true);
