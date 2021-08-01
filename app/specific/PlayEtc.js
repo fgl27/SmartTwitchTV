@@ -2747,10 +2747,10 @@ function Play_MakeControls() {
 
             if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
-            if (Play_MaxMaxInstances < 4) {
+            if (Play_MaxInstances < 4) {
 
                 Play_showWarningMidleDialog(
-                    STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_4_WAY_MULTI,
+                    STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI,
                     3000
                 );
                 return;

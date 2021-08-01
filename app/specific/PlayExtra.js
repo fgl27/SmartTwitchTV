@@ -29,10 +29,10 @@ function PlayExtra_KeyEnter() {
     PlayExtra_clear = true;
     PlayExtra_loadDataCheckHostId = 0;
 
-    if (Play_MaxMaxInstances < 2) {
+    if (Play_MaxInstances < 2) {
 
         Play_showWarningMidleDialog(
-            STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxMaxInstances) + STR_PP_MODO,
+            STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO,
             3000
         );
 

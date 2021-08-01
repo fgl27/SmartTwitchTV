@@ -1799,7 +1799,7 @@ function Settings_CodecsSet() {
 
 function Settings_SetMaxInstances() {
     if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
-    Play_MaxMaxInstances = 0;
+    Play_MaxInstances = 0;
 
     var i = 0, len = Settings_CodecsValue.length;
     for (i; i < len; i++) {
@@ -1808,7 +1808,7 @@ function Settings_SetMaxInstances() {
             !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : "", 'google')) {
 
 
-            Play_MaxMaxInstances = (Settings_CodecsValue[i].instances > -1) ?
+            Play_MaxInstances = (Settings_CodecsValue[i].instances > -1) ?
                 Settings_CodecsValue[i].instances : 10;
 
             break;
@@ -1816,13 +1816,12 @@ function Settings_SetMaxInstances() {
 
     }
 
-    if (!Play_MaxMaxInstances && len) {
+    if (!Play_MaxInstances && len) {
 
-        Play_MaxMaxInstances = (Settings_CodecsValue[0].instances > -1) ?
+        Play_MaxInstances = (Settings_CodecsValue[0].instances > -1) ?
             Settings_CodecsValue[0].instances : 10;
 
     }
-
 }
 
 function Settings_SetCodecsValue() {

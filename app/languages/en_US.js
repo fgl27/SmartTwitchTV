@@ -711,4 +711,5 @@ function en_USLang() {
     STR_AFFILIATE_ABOUT_DIS = "The affiliated content can be disabled in settings.";
 
     STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history is enabled";
+    STR_PREVIEW = "the preview";
 }

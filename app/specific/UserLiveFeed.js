@@ -786,12 +786,37 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
     Play_HideWarningMidleDialog();
 }
 
+var UserLiveFeed_MaxInstancesWarn = false;
+
+function UserLiveFeed_MaxInstances() {
+    var numberOfPlayers = 1;
+
+    if (Play_MultiEnable) numberOfPlayers = 4;
+    else if (PlayExtra_PicturePicture) numberOfPlayers = 2;
+
+    var result = Play_MaxInstances > numberOfPlayers;
+
+    if (!result && !UserLiveFeed_MaxInstancesWarn) {
+
+        Play_showWarningMidleDialog(
+            STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW,
+            7500
+        );
+
+        UserLiveFeed_MaxInstancesWarn = true;
+
+    }
+
+    return result;
+}
+
 var UserLiveFeed_LoadPreviewId;
 function UserLiveFeed_CheckIfIsLiveStart(pos) {
 
     if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
         Settings_Obj_default('show_feed_player') && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
+        UserLiveFeed_MaxInstances() &&
         UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
 
         var obj = Play_CheckLiveThumb(false, true);

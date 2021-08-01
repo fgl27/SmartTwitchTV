@@ -1,3 +1,5 @@
     STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history recording is enabled";
     STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
     STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";
+    STR_PREVIEW = "the preview";
+
