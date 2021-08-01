@@ -27470,7 +27470,6 @@
         }
     }
 
-    var Screens_OffSetDialogID;
     var Screens_ThumbOptionSpecial;
 
     function Screens_OffSetStart(key) {
@@ -27481,23 +27480,11 @@
         Main_addEventListener("keydown", ScreenObj[key].key_offset);
     }
 
-    function Screens_SetOffSetDialogId(key) {
-        Screens_OffSetDialogID = Main_setTimeout(
-            function() {
-                Screens_OffSetDialogHide(key);
-            },
-            Screens_DialogHideTimout,
-            Screens_OffSetDialogID
-        );
-    }
-
     function Screens_setOffSetDialog(key) {
         Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-        Screens_SetOffSetDialogId(key);
     }
 
     function Screens_OffSetDialogHide(key) {
-        Main_clearTimeout(Screens_OffSetDialogID);
         Main_removeEventListener("keydown", ScreenObj[key].key_offset);
         Main_addEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideElement('dialog_OffSet');
@@ -27534,13 +27521,11 @@
                 Screens_OffSetDialogHide(key);
                 break;
             case KEY_LEFT:
-                Screens_SetOffSetDialogId(key);
                 ScreenObj[key].OffSetPos--;
                 if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
                 Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
                 break;
             case KEY_RIGHT:
-                Screens_SetOffSetDialogId(key);
                 ScreenObj[key].OffSetPos++;
                 if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
                 Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
