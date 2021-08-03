@@ -130,9 +130,9 @@ function ChatLive_Init(chat_number, SkipClear) {
 
     if (!SkipClear) {
         ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     }
 
-    ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser();
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
