@@ -219,7 +219,8 @@ function Chat_tagCSS(content, doc) {
 
         var style = document.createElement('style');
         style.innerHTML = content;
-        doc.appendChild(style);
+        doc.insertBefore(style, doc.childNodes[0]);
+
 
     });
 }
@@ -399,7 +400,7 @@ function Chat_loadChatSuccess(responseText, id) {
             for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
                 badges = mmessage.user_badges[j];
 
-                div += '<span class="a' + badges._id + "0-" + badges.version + ' tag"></span>';
+                div += '<span class="a' + badges._id + ChatLive_selectedChannel_id[0] + "-" + badges.version + ' tag"></span>';
 
             }
         }
