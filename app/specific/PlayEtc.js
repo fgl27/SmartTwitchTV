@@ -449,8 +449,10 @@ function Play_SetChatFullScreenKeyRight() {
 }
 
 function Play_SetChatFont() {
-    Main_getElementById('chat_inner_container').style.fontSize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
-    Main_getElementById('chat_inner_container2').style.fontSize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
+    var fontsize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
+
+    Main_getElementById('chat_inner_container1').style.fontSize = fontsize;
+    Main_getElementById('chat_inner_container0').style.fontSize = fontsize;
 }
 
 
