@@ -207,6 +207,7 @@ function Play_Start(offline_chat) {
 
     Play_isOn = true;
     Play_Playing = false;
+    var skipTest = false;
 
     if (offline_chat) {
 
@@ -225,6 +226,7 @@ function Play_Start(offline_chat) {
 
         Play_CheckIfIsLiveCleanEnd();
         Play_getQualities(1, false);
+        skipTest = true;
     }
 
     Play_CurrentSpeed = 3;
@@ -233,7 +235,7 @@ function Play_Start(offline_chat) {
     Main_values.Play_WasPlaying = 1;
     Main_SaveValues();
     //Check the Play_UpdateMainStream fun when on a browser
-    if (!Main_IsOn_OSInterface && !offline_chat) {
+    if (!Main_IsOn_OSInterface && !offline_chat && !skipTest) {
 
         Play_UpdateMainStream(true, true);
 
@@ -2037,6 +2039,7 @@ function Play_CloseSmall() {
         OSInterface_mClearSmallPlayer();
         Play_SetFullScreen(Play_isFullScreen);
     }
+
     PlayExtra_UnSetPanel();
     Play_CleanHideExit();
     Play_getQualities(1, false);

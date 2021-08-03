@@ -1090,21 +1090,28 @@ public class PlayerActivity extends Activity {
             PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);//100% width x height
         else
             PlayerObj[0].playerView.setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
+
+        //reset track selector as SwitchPlayer may have skipped if isFullScreen == false
+        PlayerObjUpdateTrackSelector(0, 0);
     }
 
-    //Used in 50/50 mode two videos on the center plus two chat one on it side
     private void updateVideSizePP(boolean FullScreen) {
         isFullScreen = FullScreen;
         if (FullScreen) {
             PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
             UpdadeSizePosSmall(1, false);
+
+            //reset track selector as SwitchPlayer may have skipped if isFullScreen == false
+            for (int i = 0; i < 2; i++) {
+                PlayerObjUpdateTrackSelector(i, i);
+            }
         } else {
             PlayerObj[0].playerView.setLayoutParams(PlayerViewSmallSize[3][0]);//center top 50% width x height
             PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[7][0]);//center bottom 50% width x height
         }
+
     }
 
-    //SwitchPlayer with is the big and small player used by picture in picture mode
     private void SwitchPlayer() {
 
         PlayerObj tempPlayerObj = PlayerObj[0];
@@ -1116,12 +1123,17 @@ public class PlayerActivity extends Activity {
             if (PlayerObj[i].Listener != null) PlayerObj[i].Listener.UpdatePosition(i);
         }
 
-        PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
-        PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
-        ResetPPView();
+        if (isFullScreen) {
+            PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
+            PlayerObj[1].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
+            ResetPPView();
 
-        for (int i = 0; i < 2; i++) {
-            PlayerObjUpdateTrackSelector(i, i);
+            for (int i = 0; i < 2; i++) {
+                PlayerObjUpdateTrackSelector(i, i);
+            }
+        } else {
+            updateVideSizePP(isFullScreen);
+            ResetPPView();
         }
 
         ApplyAudioAll();

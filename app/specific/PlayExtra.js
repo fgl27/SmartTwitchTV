@@ -245,7 +245,12 @@ function PlayExtra_SwitchPlayer() {
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();
 
-    Play_UpdateMainStream(true, false);
+    Play_UpdateMainStream(Play_isFullScreen, false);
+
+    if (!Play_isFullScreen) {
+        ChatLive_Switch();
+    }
+
     Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
     Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
     Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);

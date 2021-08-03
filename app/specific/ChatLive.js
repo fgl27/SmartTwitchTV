@@ -98,8 +98,11 @@ var ChatLive_Base_BTTV_url = 'https://cdn.betterttv.net/emote/';
 var ChatLive_Base_chat_url = 'https://tmi.twitch.tv/';
 //Variable initialization end
 
-function ChatLive_Init(chat_number) {
-    ChatLive_Clear(chat_number);
+function ChatLive_Init(chat_number, SkipClear) {
+    if (!SkipClear) {
+        ChatLive_Clear(chat_number);
+    }
+
     if (Main_values.Play_ChatForceDisable) {
         Chat_Disable();
         return;
@@ -119,15 +122,43 @@ function ChatLive_Init(chat_number) {
         !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
     );
 
-    ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
+    if (!SkipClear) {
+        ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
+    }
 
-    ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
-    ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
+    ChatLive_loadChat(chat_number, Chat_Id[chat_number], SkipClear);
+
+    if (!SkipClear) {
+        ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
+    }
 
     ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesUser();
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
+}
+
+
+function ChatLive_Switch() {
+    var innerHTMLTemp = Chat_div[1].innerHTML;
+
+    Chat_div[1].innerHTML = Chat_div[0].innerHTML;
+    Chat_div[0].innerHTML = innerHTMLTemp;
+
+    var logged0 = Main_getElementById('chat_loggedin0'),
+        logged1 = Main_getElementById('chat_loggedin1');
+
+    innerHTMLTemp = logged1.innerHTML;
+    logged1.innerHTML = logged0.innerHTML;
+    logged0.innerHTML = innerHTMLTemp;
+
+    for (var i = 0; i < 2; i++) {
+
+        ChatLive_Close(i);
+        ChatLive_Init(i, true);
+
+    }
+
 }
 
 var ChatLive_Logging;
@@ -195,6 +226,7 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
     ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
+    Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
 
     ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
     ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
@@ -298,7 +330,7 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
     } else {
 
         Chat_tagCSS(
-            extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+            extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]],
             Chat_div[chat_number]
         );
 
@@ -308,10 +340,11 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
 function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
-    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
+    extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] =
+        Chat_loadBadgesTransform(JSON.parse(responseText), ChatLive_selectedChannel_id[chat_number]);
 
     Chat_tagCSS(
-        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]],
         Chat_div[chat_number]
     );
 }
@@ -825,24 +858,26 @@ function ChatLive_PreLoadChatSuccess(data, chat_number, id) {
 
 var useToken = [];
 
-function ChatLive_loadChat(chat_number, id) {
+function ChatLive_loadChat(chat_number, id, SkipStartLine) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_CheckClear(chat_number);
 
-    ChatLive_LineAdd(
-        {
-            chat_number: chat_number,
-            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
-        }
-    );
+    if (!SkipStartLine) {
+        ChatLive_LineAdd(
+            {
+                chat_number: chat_number,
+                message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
+            }
+        );
+    }
 
     useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
-    ChatLive_loadChatRequest(chat_number, id);
+    ChatLive_loadChatRequest(chat_number, id, SkipStartLine);
 }
 
-function ChatLive_loadChatRequest(chat_number, id) {
+function ChatLive_loadChatRequest(chat_number, id, SkipStartLine) {
     if (id !== Chat_Id[chat_number]) return;
     //Main_Log('ChatLive_loadChatRequest');
 
@@ -912,13 +947,15 @@ function ChatLive_loadChatRequest(chat_number, id) {
                 if (!ChatLive_loaded[chat_number]) {
                     ChatLive_loaded[chat_number] = true;
 
-                    ChatLive_LineAdd(
-                        {
-                            chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
-                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
-                        }
-                    );
+                    if (!SkipStartLine) {
+                        ChatLive_LineAdd(
+                            {
+                                chat_number: chat_number,
+                                message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
+                                    (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
+                            }
+                        );
+                    }
 
                     if (Play_ChatDelayPosition) {
                         var stringSec = '';
@@ -1713,7 +1750,7 @@ function ChatLive_GetBadges(tags, chat_number) {
             for (var i = 0, len = badges.length; i < len; i++) {
                 badge = badges[i].split('/');
 
-                ret += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
+                ret += '<span class="a' + badge[0] + ChatLive_selectedChannel_id[chat_number] + '-' + badge[1] + ' tag"></span>';
             }
 
             return ret;

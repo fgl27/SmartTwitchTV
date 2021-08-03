@@ -1406,12 +1406,12 @@ function Play_KeyReturn(is_vod) {
             Main_clearTimeout(Play_showWarningDialogId);
             Play_HideWarningDialog();
             Play_HideWarningMidleDialog();
-            Play_KeyReturSetExit();
-        } else Play_KeyReturSetExit();
+            Play_KeyReturnSetExit();
+        } else Play_KeyReturnSetExit();
     }
 }
 
-function Play_KeyReturSetExit() {
+function Play_KeyReturnSetExit() {
     var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
     text = Play_MultiEnable ? STR_EXIT_AGAIN_MULTI : text;
     Main_textContent("play_dialog_exit_text", text);
@@ -1865,8 +1865,6 @@ function Play_handleKeyDown(e) {
             }
             break;
         case KEY_DOWN:
-            // Android.TestFun();
-            // break;
             if (Play_isPanelShowing()) {
 
                 Play_clearHidePanel();
@@ -1891,15 +1889,11 @@ function Play_handleKeyDown(e) {
             else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
             else if (PlayExtra_PicturePicture || Play_MultiEnable) {
 
-                if (Play_isFullScreen || Play_MultiEnable) {
-                    Main_removeEventListener("keydown", Play_handleKeyDown);
-                    Main_addEventListener("keyup", Play_handleKeyUp);
-                    Play_EndUpclear = false;
-                    Play_EndUpclearCalback = Play_handleKeyDown;
-                    Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
-                } else {
-                    Play_PP_Multi_KeyDownHold();
-                }
+                Main_removeEventListener("keydown", Play_handleKeyDown);
+                Main_addEventListener("keyup", Play_handleKeyUp);
+                Play_EndUpclear = false;
+                Play_EndUpclearCalback = Play_handleKeyDown;
+                Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
 
             } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
             else Play_showPanel();

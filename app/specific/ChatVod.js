@@ -55,6 +55,7 @@ function Chat_Preinit() {
 
 function Chat_Init() {
     Chat_JustStarted = true;
+
     Chat_Clear();
     if (Main_values.Play_ChatForceDisable) {
         Chat_Disable();
@@ -116,10 +117,9 @@ function Chat_StartFakeClockInterval() {
     );
 }
 
-var Chat_LoadGlobalBadges = false;
+var Chat_GlobalBadges = null;
 function Chat_loadBadgesGlobal() {
     //return;
-    if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest();
     if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
     if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
     if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
@@ -139,43 +139,65 @@ function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
 
 }
 
-function Chat_loadBadgesGlobalRequest() {
-    Chat_BaseLoadUrl(
-        'https://badges.twitch.tv/v1/badges/global/display',
-        Chat_loadBadgesGlobalSuccess,
-        noop_fun
+function Chat_loadBadgesGlobalRequest(chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    if (!Chat_GlobalBadges) {
+
+        BaseXmlHttpGet(
+            'https://badges.twitch.tv/v1/badges/global/display',
+            0,
+            null,
+            Chat_loadBadgesGlobalSuccess,
+            noop_fun,
+            chat_number,
+            id
+        );
+
+    } else {
+
+        if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
+            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
+                Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+        }
+
+        Chat_tagCSS(
+            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]],
+            Chat_div[chat_number]
+        );
+
+    }
+}
+
+function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
+    if (id !== Chat_Id[chat_number]) return;
+
+    Chat_GlobalBadges = {};
+
+    Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x');
+    Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
+        Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+
+    Chat_tagCSS(
+        Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]],
+        Chat_div[chat_number]
     );
 }
 
-function Chat_loadBadgesGlobalSuccess(responseText) {
-    var versions, property, version, url, innerHTML = '';
-
-    var responseObjt = JSON.parse(responseText);
-
-    for (property in responseObjt.badge_sets) {
-        versions = responseObjt.badge_sets[property].versions;
-        for (version in versions) {
-            url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
-            innerHTML += Chat_BasetagCSS(property + 0, version, url);
-            innerHTML += Chat_BasetagCSS(property + 1, version, url);
-        }
-    }
-    Chat_tagCSS(innerHTML, document.head);
-    Chat_LoadGlobalBadges = true;
-}
-
-function Chat_loadBadgesTransform(responseText) {
-    var versions, property, version, url, innerHTML = [];
-
-    innerHTML[0] = '';
-    innerHTML[1] = '';
+function Chat_loadBadgesTransform(responseText, id) {
+    var versions,
+        property,
+        version,
+        url,
+        innerHTML = '';
 
     for (property in responseText.badge_sets) {
+
         versions = responseText.badge_sets[property].versions;
+
         for (version in versions) {
             url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
-            innerHTML[0] += Chat_BasetagCSS(property + 0, version, url);
-            innerHTML[1] += Chat_BasetagCSS(property + 1, version, url);
+            innerHTML += Chat_BasetagCSS(property + id, version, url);
         }
     }
 
