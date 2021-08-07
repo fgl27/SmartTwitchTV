@@ -3841,11 +3841,17 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 325, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/325/SmartTV_twitch_3_0_325.apk',
-        WebVersion: 'July 22 2021',
-        WebTag: 601, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 326, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/326/SmartTV_twitch_3_0_326.apk',
+        WebVersion: 'August 07 2021',
+        WebTag: 602, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Apk Version 3.0.326 and Web Version August 07 2021",
+                changes: [
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Web Version July 22 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -6847,8 +6853,11 @@
     var ChatLive_Base_chat_url = 'https://tmi.twitch.tv/';
     //Variable initialization end
 
-    function ChatLive_Init(chat_number) {
-        ChatLive_Clear(chat_number);
+    function ChatLive_Init(chat_number, SkipClear) {
+        if (!SkipClear) {
+            ChatLive_Clear(chat_number);
+        }
+
         if (Main_values.Play_ChatForceDisable) {
             Chat_Disable();
             return;
@@ -6868,15 +6877,43 @@
             !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
         );
 
-        ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
+        if (!SkipClear) {
+            ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
+        }
 
-        ChatLive_loadChat(chat_number, Chat_Id[chat_number]);
-        ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadChat(chat_number, Chat_Id[chat_number], SkipClear);
 
-        ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
+        if (!SkipClear) {
+            ChatLive_SendStart(chat_number, Chat_Id[chat_number]);
+            ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
+        }
+
         ChatLive_loadEmotesUser();
         ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
         ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
+    }
+
+
+    function ChatLive_Switch() {
+        var innerHTMLTemp = Chat_div[1].innerHTML;
+
+        Chat_div[1].innerHTML = Chat_div[0].innerHTML;
+        Chat_div[0].innerHTML = innerHTMLTemp;
+
+        var logged0 = Main_getElementById('chat_loggedin0'),
+            logged1 = Main_getElementById('chat_loggedin1');
+
+        innerHTMLTemp = logged1.innerHTML;
+        logged1.innerHTML = logged0.innerHTML;
+        logged0.innerHTML = innerHTMLTemp;
+
+        for (var i = 0; i < 2; i++) {
+
+            ChatLive_Close(i);
+            ChatLive_Init(i, true);
+
+        }
+
     }
 
     var ChatLive_Logging;
@@ -6944,6 +6981,7 @@
         ChatLive_loadEmotesChannelbttv(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesChannelffz(chat_number, Chat_Id[chat_number]);
         ChatLive_loadEmotesChannelseven_tv(chat_number, Chat_Id[chat_number]);
+        Chat_loadBadgesGlobalRequest(chat_number, Chat_Id[chat_number]);
 
         ChatLive_loadBadgesChannel(chat_number, Chat_Id[chat_number]);
         ChatLive_loadCheersChannel(chat_number, Chat_Id[chat_number]);
@@ -7047,7 +7085,7 @@
         } else {
 
             Chat_tagCSS(
-                extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+                extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]],
                 Chat_div[chat_number]
             );
 
@@ -7057,10 +7095,11 @@
     function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
-        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText));
+        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] =
+            Chat_loadBadgesTransform(JSON.parse(responseText), ChatLive_selectedChannel_id[chat_number]);
 
         Chat_tagCSS(
-            extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]][chat_number],
+            extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]],
             Chat_div[chat_number]
         );
     }
@@ -7574,22 +7613,24 @@
 
     var useToken = [];
 
-    function ChatLive_loadChat(chat_number, id) {
+    function ChatLive_loadChat(chat_number, id, SkipStartLine) {
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_CheckClear(chat_number);
 
-        ChatLive_LineAdd({
-            chat_number: chat_number,
-            message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
-        });
+        if (!SkipStartLine) {
+            ChatLive_LineAdd({
+                chat_number: chat_number,
+                message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
+            });
+        }
 
         useToken[chat_number] = ChatLive_Logging && !ChatLive_Banned[chat_number] && AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token;
 
-        ChatLive_loadChatRequest(chat_number, id);
+        ChatLive_loadChatRequest(chat_number, id, SkipStartLine);
     }
 
-    function ChatLive_loadChatRequest(chat_number, id) {
+    function ChatLive_loadChatRequest(chat_number, id, SkipStartLine) {
         if (id !== Chat_Id[chat_number]) return;
         //Main_Log('ChatLive_loadChatRequest');
 
@@ -7659,11 +7700,13 @@
                     if (!ChatLive_loaded[chat_number]) {
                         ChatLive_loaded[chat_number] = true;
 
-                        ChatLive_LineAdd({
-                            chat_number: chat_number,
-                            message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
-                                (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
-                        });
+                        if (!SkipStartLine) {
+                            ChatLive_LineAdd({
+                                chat_number: chat_number,
+                                message: ChatLive_LineAddSimple(STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML +
+                                    (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS))
+                            });
+                        }
 
                         if (Play_ChatDelayPosition) {
                             var stringSec = '';
@@ -8454,7 +8497,7 @@
                 for (var i = 0, len = badges.length; i < len; i++) {
                     badge = badges[i].split('/');
 
-                    ret += '<span class="a' + badge[0] + chat_number + '-' + badge[1] + ' tag"></span>';
+                    ret += '<span class="a' + badge[0] + ChatLive_selectedChannel_id[chat_number] + '-' + badge[1] + ' tag"></span>';
                 }
 
                 return ret;
@@ -8858,6 +8901,7 @@
 
     function Chat_Init() {
         Chat_JustStarted = true;
+
         Chat_Clear();
         if (Main_values.Play_ChatForceDisable) {
             Chat_Disable();
@@ -8920,11 +8964,10 @@
         );
     }
 
-    var Chat_LoadGlobalBadges = false;
+    var Chat_GlobalBadges = null;
 
     function Chat_loadBadgesGlobal() {
         //return;
-        if (!Chat_LoadGlobalBadges) Chat_loadBadgesGlobalRequest();
         if (!extraEmotesDone.bttvGlobal) Chat_loadBTTVGlobalEmotes();
         if (!extraEmotesDone.ffzGlobal) Chat_loadEmotesffz();
         if (!extraEmotesDone.Seven_tvGlobal) Chat_loadSeven_tvGlobalEmotes();
@@ -8944,43 +8987,65 @@
 
     }
 
-    function Chat_loadBadgesGlobalRequest() {
-        Chat_BaseLoadUrl(
-            'https://badges.twitch.tv/v1/badges/global/display',
-            Chat_loadBadgesGlobalSuccess,
-            noop_fun
+    function Chat_loadBadgesGlobalRequest(chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        if (!Chat_GlobalBadges) {
+
+            BaseXmlHttpGet(
+                'https://badges.twitch.tv/v1/badges/global/display',
+                0,
+                null,
+                Chat_loadBadgesGlobalSuccess,
+                noop_fun,
+                chat_number,
+                id
+            );
+
+        } else {
+
+            if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
+                Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
+                    Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+            }
+
+            Chat_tagCSS(
+                Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]],
+                Chat_div[chat_number]
+            );
+
+        }
+    }
+
+    function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
+        if (id !== Chat_Id[chat_number]) return;
+
+        Chat_GlobalBadges = {};
+
+        Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x');
+        Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
+            Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+
+        Chat_tagCSS(
+            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]],
+            Chat_div[chat_number]
         );
     }
 
-    function Chat_loadBadgesGlobalSuccess(responseText) {
-        var versions, property, version, url, innerHTML = '';
-
-        var responseObjt = JSON.parse(responseText);
-
-        for (property in responseObjt.badge_sets) {
-            versions = responseObjt.badge_sets[property].versions;
-            for (version in versions) {
-                url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
-                innerHTML += Chat_BasetagCSS(property + 0, version, url);
-                innerHTML += Chat_BasetagCSS(property + 1, version, url);
-            }
-        }
-        Chat_tagCSS(innerHTML, document.head);
-        Chat_LoadGlobalBadges = true;
-    }
-
-    function Chat_loadBadgesTransform(responseText) {
-        var versions, property, version, url, innerHTML = [];
-
-        innerHTML[0] = '';
-        innerHTML[1] = '';
+    function Chat_loadBadgesTransform(responseText, id) {
+        var versions,
+            property,
+            version,
+            url,
+            innerHTML = '';
 
         for (property in responseText.badge_sets) {
+
             versions = responseText.badge_sets[property].versions;
+
             for (version in versions) {
                 url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
-                innerHTML[0] += Chat_BasetagCSS(property + 0, version, url);
-                innerHTML[1] += Chat_BasetagCSS(property + 1, version, url);
+                innerHTML += Chat_BasetagCSS(property + id, version, url);
             }
         }
 
@@ -9002,7 +9067,8 @@
 
             var style = document.createElement('style');
             style.innerHTML = content;
-            doc.appendChild(style);
+            doc.insertBefore(style, doc.childNodes[0]);
+
 
         });
     }
@@ -9178,7 +9244,7 @@
                 for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
                     badges = mmessage.user_badges[j];
 
-                    div += '<span class="a' + badges._id + "0-" + badges.version + ' tag"></span>';
+                    div += '<span class="a' + badges._id + ChatLive_selectedChannel_id[0] + "-" + badges.version + ' tag"></span>';
 
                 }
             }
@@ -9531,6 +9597,7 @@
         "firebaseId": null,
         "banner_pos": 0,
         "banner_16by9_pos": 0,
+        "MaxInstancesWarn": false,
     };
 
     var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -15691,8 +15758,10 @@
     }
 
     function Play_SetChatFont() {
-        Main_getElementById('chat_inner_container').style.fontSize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
-        Main_getElementById('chat_inner_container2').style.fontSize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
+        var fontsize = (Play_ChatFontObj[Main_values.Chat_font_size_new] * 0.76) + '%';
+
+        Main_getElementById('chat_inner_container1').style.fontSize = fontsize;
+        Main_getElementById('chat_inner_container0').style.fontSize = fontsize;
     }
 
 
@@ -16647,12 +16716,12 @@
                 Main_clearTimeout(Play_showWarningDialogId);
                 Play_HideWarningDialog();
                 Play_HideWarningMidleDialog();
-                Play_KeyReturSetExit();
-            } else Play_KeyReturSetExit();
+                Play_KeyReturnSetExit();
+            } else Play_KeyReturnSetExit();
         }
     }
 
-    function Play_KeyReturSetExit() {
+    function Play_KeyReturnSetExit() {
         var text = PlayExtra_PicturePicture ? STR_EXIT_AGAIN_PICTURE : STR_EXIT_AGAIN;
         text = Play_MultiEnable ? STR_EXIT_AGAIN_MULTI : text;
         Main_textContent("play_dialog_exit_text", text);
@@ -17110,8 +17179,6 @@
                 }
                 break;
             case KEY_DOWN:
-                // Android.TestFun();
-                // break;
                 if (Play_isPanelShowing()) {
 
                     Play_clearHidePanel();
@@ -17136,15 +17203,11 @@
                 else if (UserLiveFeed_isPreviewShowing()) UserLiveFeed_KeyUpDown(1);
                 else if (PlayExtra_PicturePicture || Play_MultiEnable) {
 
-                    if (Play_isFullScreen || Play_MultiEnable) {
-                        Main_removeEventListener("keydown", Play_handleKeyDown);
-                        Main_addEventListener("keyup", Play_handleKeyUp);
-                        Play_EndUpclear = false;
-                        Play_EndUpclearCalback = Play_handleKeyDown;
-                        Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
-                    } else {
-                        Play_PP_Multi_KeyDownHold();
-                    }
+                    Main_removeEventListener("keydown", Play_handleKeyDown);
+                    Main_addEventListener("keyup", Play_handleKeyUp);
+                    Play_EndUpclear = false;
+                    Play_EndUpclearCalback = Play_handleKeyDown;
+                    Play_EndUpclearID = Main_setTimeout(Play_PP_Multi_KeyDownHold, Screens_KeyUptimeout, Play_EndUpclearID);
 
                 } else if (Play_isFullScreen) Play_controls[Play_controlsChat].enterKey(1);
                 else Play_showPanel();
@@ -19995,7 +20058,12 @@
         PlayExtra_SwitchPlayerResStoreOld();
         Main_SaveValues();
 
-        Play_UpdateMainStream(true, false);
+        Play_UpdateMainStream(Play_isFullScreen, false);
+
+        if (!Play_isFullScreen) {
+            ChatLive_Switch();
+        }
+
         Main_innerHTML('chat_container_name_text1', STR_SPACE_HTML + PlayExtra_data.data[1] + STR_SPACE_HTML);
         Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
@@ -20440,6 +20508,7 @@
 
         Play_isOn = true;
         Play_Playing = false;
+        var skipTest = false;
 
         if (offline_chat) {
 
@@ -20458,6 +20527,7 @@
 
             Play_CheckIfIsLiveCleanEnd();
             Play_getQualities(1, false);
+            skipTest = true;
         }
 
         Play_CurrentSpeed = 3;
@@ -20466,7 +20536,7 @@
         Main_values.Play_WasPlaying = 1;
         Main_SaveValues();
         //Check the Play_UpdateMainStream fun when on a browser
-        if (!Main_IsOn_OSInterface && !offline_chat) {
+        if (!Main_IsOn_OSInterface && !offline_chat && !skipTest) {
 
             Play_UpdateMainStream(true, true);
 
@@ -22283,6 +22353,7 @@
             OSInterface_mClearSmallPlayer();
             Play_SetFullScreen(Play_isFullScreen);
         }
+
         PlayExtra_UnSetPanel();
         Play_CleanHideExit();
         Play_getQualities(1, false);
@@ -33557,6 +33628,7 @@
                 Settings_CodecsValue[0].instances : 10;
 
         }
+
     }
 
     function Settings_SetCodecsValue() {
@@ -36241,8 +36313,6 @@
         Play_HideWarningMidleDialog();
     }
 
-    var UserLiveFeed_MaxInstancesWarn = false;
-
     function UserLiveFeed_MaxInstances() {
         var numberOfPlayers = 1;
 
@@ -36251,14 +36321,14 @@
 
         var result = Play_MaxInstances > numberOfPlayers;
 
-        if (!result && !UserLiveFeed_MaxInstancesWarn) {
+        if (!result && !Main_values.MaxInstancesWarn) {
 
             Play_showWarningMidleDialog(
                 STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW,
                 7500
             );
 
-            UserLiveFeed_MaxInstancesWarn = true;
+            Main_values.MaxInstancesWarn = true;
 
         }
 
@@ -36269,11 +36339,10 @@
 
     function UserLiveFeed_CheckIfIsLiveStart(pos) {
 
-        if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
+        if (!Main_isStoped && UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
             Settings_Obj_default('show_feed_player') && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
             (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
-            UserLiveFeed_MaxInstances() &&
-            UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
+            UserLiveFeed_MaxInstances() && UserLiveFeed_CheckVod()) {
 
             var obj = Play_CheckLiveThumb(false, true);
 
