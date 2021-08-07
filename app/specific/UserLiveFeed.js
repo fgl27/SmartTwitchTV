@@ -786,8 +786,6 @@ function UserLiveFeed_CheckIfIsLiveSTop(PreventCleanQualities) {
     Play_HideWarningMidleDialog();
 }
 
-var UserLiveFeed_MaxInstancesWarn = false;
-
 function UserLiveFeed_MaxInstances() {
     var numberOfPlayers = 1;
 
@@ -796,14 +794,14 @@ function UserLiveFeed_MaxInstances() {
 
     var result = Play_MaxInstances > numberOfPlayers;
 
-    if (!result && !UserLiveFeed_MaxInstancesWarn) {
+    if (!result && !Main_values.MaxInstancesWarn) {
 
         Play_showWarningMidleDialog(
             STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW,
             7500
         );
 
-        UserLiveFeed_MaxInstancesWarn = true;
+        Main_values.MaxInstancesWarn = true;
 
     }
 
@@ -813,11 +811,10 @@ function UserLiveFeed_MaxInstances() {
 var UserLiveFeed_LoadPreviewId;
 function UserLiveFeed_CheckIfIsLiveStart(pos) {
 
-    if (!Main_isStoped && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
+    if (!Main_isStoped && UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX && (!Play_isEndDialogVisible() || !Play_EndFocus) &&
         Settings_Obj_default('show_feed_player') && UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkPreview &&
         (!Play_MultiEnable || !Settings_Obj_default("disable_feed_player_multi")) &&
-        UserLiveFeed_MaxInstances() &&
-        UserLiveFeed_isPreviewShowing() && UserLiveFeed_CheckVod()) {
+        UserLiveFeed_MaxInstances() && UserLiveFeed_CheckVod()) {
 
         var obj = Play_CheckLiveThumb(false, true);
 

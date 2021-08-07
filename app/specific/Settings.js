@@ -1822,6 +1822,7 @@ function Settings_SetMaxInstances() {
             Settings_CodecsValue[0].instances : 10;
 
     }
+
 }
 
 function Settings_SetCodecsValue() {

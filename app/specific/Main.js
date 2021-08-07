@@ -99,6 +99,7 @@ var Main_values = {
     "firebaseId": null,
     "banner_pos": 0,
     "banner_16by9_pos": 0,
+    "MaxInstancesWarn": false,
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
