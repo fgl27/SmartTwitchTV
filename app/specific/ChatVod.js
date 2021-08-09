@@ -158,7 +158,7 @@ function Chat_loadBadgesGlobalRequest(chat_number, id) {
 
         if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
             Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
-                Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+                Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
         }
 
         Chat_tagCSS(
@@ -176,7 +176,7 @@ function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
 
     Chat_GlobalBadges[0] = Chat_loadBadgesTransform(JSON.parse(responseText), '%x');
     Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] =
-        Chat_GlobalBadges[0].replaceAll('%x', ChatLive_selectedChannel_id[chat_number]);
+        Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
 
     Chat_tagCSS(
         Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]],
