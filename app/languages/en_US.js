@@ -197,6 +197,7 @@ function en_USLang() {
     STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
     STR_NOKEY = "No user";
     STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
+    STR_FOLLOW_ISSUE = "Third party apps can no longer follow/unfollow channels";
     STR_NOKUSER_WARN = "Add a user first";
     STR_RESET = "Restart the";
     STR_CLIP = "Clip";

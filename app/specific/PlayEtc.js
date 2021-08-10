@@ -1231,13 +1231,14 @@ function Play_ClearPP() {
 }
 
 function Play_FollowUnfollow() {
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-        if (AddCode_IsFollowing) AddCode_UnFollow();
-        else AddCode_Follow();
-    } else {
-        Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
-        Play_IsWarning = true;
-    }
+    // if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+    //     if (AddCode_IsFollowing) AddCode_UnFollow();
+    //     else AddCode_Follow();
+    // } else {
+    //     Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
+    //     Play_IsWarning = true;
+    // }
+    Play_showWarningMidleDialog(STR_FOLLOW_ISSUE, 2000);
 }
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
