@@ -170,7 +170,7 @@ function en_USLang() {
     STR_CONTROLS_PLAY_1 = "Show the information panel: Press enter or D-pad keys if the chat and the live channel feed aren't showing";
     STR_CONTROLS_PLAY_2 = "Close the video: Press return twice or the stop media key";
     STR_CONTROLS_PLAY_3 = "Pause/play a video: Open the information panel and click on the pause icon";
-    STR_CONTROLS_PLAY_4 = "Show user live channels feed: Up D-pad";
+    STR_CONTROLS_PLAY_4 = "Show preview feed: Up D-pad";
     STR_CONTROLS_PLAY_5 = "Change video quality: Choose the 'Quality' option at the bottom of the player";
     STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
     STR_CONTROLS_PLAY_7 = "Show or hide the chat: Down D-pad or key 3 " + STR_CONTROLS_PLAY_0;

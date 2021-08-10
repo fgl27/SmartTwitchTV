@@ -165,7 +165,7 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_1 = "Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos";
     STR_CONTROLS_PLAY_2 = "Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar";
     STR_CONTROLS_PLAY_3 = "Reproduzir/pausar um vídeo: abra o painel de informações e clique no símbolo de pausa";
-    STR_CONTROLS_PLAY_4 = "Mostrar feed de canais ao vivo do usuário: D-pad para cima";
+    STR_CONTROLS_PLAY_4 = "Mostrar preview: D-pad para cima";
     STR_CONTROLS_PLAY_5 = "Alterar a qualidade do vídeo: use os controles de qualidade da parte inferior do player";
     STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo (caso ele congele): Altere a qualidade do vídeo para a mesma";
     STR_CONTROLS_PLAY_7 = "Mostrar ou ocultar o Chat: D-pad para baixo ou tecla número 3" + STR_CONTROLS_PLAY_0;
