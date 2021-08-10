@@ -608,6 +608,8 @@ function en_USLang() {
     STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed highlight My Message";
     STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed send a message in sub-only mode";
     STR_CHAT_OPTIONS = "Chat options";
+    STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Highlight messages from the streamer (Dark pink background)";
+    STR_CHAT_HIGHLIGHT_MOD_MSG = "Highlight messages from moderators (Dark cyan background)";
     STR_CHAT_HIGHLIGHT_REDEEMED = "Highlight reward messages (Purple background message only)";
     STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the '@' is blue)";
     STR_CHAT_HIGHLIGHT_USER = "Highlight your @username messages (Dark Green background, the '@' is blue)";

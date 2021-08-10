@@ -164,6 +164,8 @@ function ChatLive_Switch() {
 var ChatLive_Logging;
 var ChatLive_Highlight_Rewards;
 var ChatLive_Highlight_AtStreamer;
+var ChatLive_Highlight_FromStreamer;
+var ChatLive_Highlight_Mod;
 var ChatLive_Highlight_AtUser;
 var ChatLive_Highlight_User_send;
 var ChatLive_Individual_Background;//Play_ChatBackground
@@ -197,6 +199,8 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
     ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
     ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
     ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
+    ChatLive_Highlight_FromStreamer = Settings_value.highlight_streamer.defaultValue;
+    ChatLive_Highlight_Mod = Settings_value.highlight_mod.defaultValue;
     ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
     ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
     ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
@@ -1608,6 +1612,8 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         atstreamer = false,
         atuser = false,
         hasbits = false,
+        fromstreamer = false,
+        mod = false,
         action;
 
     if (!tags || !tags.hasOwnProperty('display-name') ||
@@ -1664,6 +1670,15 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
 
         atstreamer = true;
 
+    } else if (ChatLive_Highlight_FromStreamer &&
+        Main_A_includes_B(tags['display-name'].toLowerCase(), ChatLive_selectedChannel[chat_number])) {
+
+        fromstreamer = true;
+
+    } else if (ChatLive_Highlight_Mod && tags.mod && tags.mod !== "0") {
+
+        mod = true;
+
     } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
 
         atuser = true;
@@ -1713,6 +1728,8 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         message: div,
         atstreamer: atstreamer,
         atuser: atuser,
+        fromstreamer: fromstreamer,
+        mod: mod,
         hasbits: (hasbits && ChatLive_Highlight_Bits),
         extraMessage: extraMessage,
         addToStart: addToStart
@@ -1838,6 +1855,8 @@ function ChatLive_LineAdd(messageObj) {
 //     message: message,
 //     atstreamer: atstreamer,
 //     atuser: atuser,
+//     fromstreamer: atuser,
+//     mod: atuser,
 //     hasbits: hasbits,
 //     sub: sub,
 //     skip_addline: skip_addline,
@@ -1852,7 +1871,14 @@ function ChatLive_ElemntAdd(messageObj) {
 
         classname += ' chat_atstreamer';
 
-        messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+    } else if (messageObj.fromstreamer) {
+
+        classname += ' chat_fromstreamer';
+
+        messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+    } else if (messageObj.mod) {
+
+        classname += ' chat_mod';
 
     } else if (messageObj.atuser) {
 

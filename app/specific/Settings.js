@@ -394,6 +394,14 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 2
     },
+    "highlight_streamer": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
+    "highlight_mod": {//Migrated to dialog
+        "values": ["no", "yes"],
+        "defaultValue": 1
+    },
     "highlight_atstreamer": {//Migrated to dialog
         "values": ["no", "yes"],
         "defaultValue": 2
@@ -2408,6 +2416,8 @@ function Settings_DialogShowChat() {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.highlight_rewards.values = yes_no;
     Settings_value.highlight_atstreamer.values = yes_no;
+    Settings_value.highlight_streamer.values = yes_no;
+    Settings_value.highlight_mod.values = yes_no;
     Settings_value.highlight_atuser.values = yes_no;
     Settings_value.highlight_user_send.values = yes_no;
     Settings_value.show_sub.values = yes_no;
@@ -2470,6 +2480,18 @@ function Settings_DialogShowChat() {
             defaultValue: Settings_value.highlight_rewards.defaultValue,
             values: Settings_value.highlight_rewards.values,
             title: STR_CHAT_HIGHLIGHT_REDEEMED,
+            summary: null
+        },
+        highlight_mod: {
+            defaultValue: Settings_value.highlight_mod.defaultValue,
+            values: Settings_value.highlight_mod.values,
+            title: STR_CHAT_HIGHLIGHT_MOD_MSG,
+            summary: null
+        },
+        highlight_streamer: {
+            defaultValue: Settings_value.highlight_streamer.defaultValue,
+            values: Settings_value.highlight_streamer.values,
+            title: STR_CHAT_HIGHLIGHT_STREAMER_MSG,
             summary: null
         },
         highlight_atstreamer: {

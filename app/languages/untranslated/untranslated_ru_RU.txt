@@ -4,4 +4,5 @@
     STR_PREVIEW = "the preview";
     STR_PICTURE_CONTROLS3 = "Change audio source for all videos: Hold down D-pad.";
     STR_CONTROLS_PLAY_4 = "Show preview feed: Up D-pad";
-
+    STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Highlight messages from the streamer (Dark pink background)";
+    STR_CHAT_HIGHLIGHT_MOD_MSG = "Highlight messages from moderators (Dark cyan background)";
