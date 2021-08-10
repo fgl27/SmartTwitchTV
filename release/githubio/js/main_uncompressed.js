@@ -494,6 +494,8 @@
     var STR_CHAT_INDIVIDUAL_BACKGROUND_SUMMARY;
     var STR_CHAT_LOGGING;
     var STR_CHAT_LOGGING_SUMMARY;
+    var STR_CHAT_HIGHLIGHT_STREAMER_MSG;
+    var STR_CHAT_HIGHLIGHT_MOD_MSG;
     var STR_CHAT_HIGHLIGHT_REDEEMED;
     var STR_CHAT_INDIVIDUAL_LINE;
     var STR_BRIGHT_MODE;
@@ -744,6 +746,7 @@
     var STR_ABOUT_KEY = '';
     var STR_SETTINGS_KEY = '';
     var STR_CONTROLS_MAIN_0 = '';
+    var STR_CONTROLS_PLAYER_0 = '';
     var STR_ABOUT_INFO_HEADER = '';
     var STR_ABOUT_INFO_0 = '';
     var STR_ACCESSIBILITY_WARN_TEXT = '';
@@ -896,8 +899,7 @@
         STR_BITCOIN = '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png">' +
             STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: ' + LINK_COLOR + ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + STR_SPACE_HTML + '</div><img style="vertical-align: middle; display: inline-block; width: 17%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
 
-        STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
-            STR_DIV_MIDLE_LEFT +
+        STR_CONTROLS_PLAY_0 = STR_DIV_MIDLE_LEFT +
             STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
             STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
@@ -955,6 +957,11 @@
             STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
             STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
             STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' +
+            STR_DIV_TITLE + STR_PLAYER + '</div>' +
+            STR_CONTROLS_PLAY_0 + STR_BR +
+            STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
+        STR_CONTROLS_PLAYER_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
             STR_CONTROLS_PLAY_0 + STR_BR +
             STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 
@@ -1168,7 +1175,7 @@
         STR_CONTROLS_PLAY_1 = "Show the information panel: Press enter or D-pad keys if the chat and the live channel feed aren't showing";
         STR_CONTROLS_PLAY_2 = "Close the video: Press return twice or the stop media key";
         STR_CONTROLS_PLAY_3 = "Pause/play a video: Open the information panel and click on the pause icon";
-        STR_CONTROLS_PLAY_4 = "Show user live channels feed: Up D-pad";
+        STR_CONTROLS_PLAY_4 = "Show preview feed: Up D-pad";
         STR_CONTROLS_PLAY_5 = "Change video quality: Choose the 'Quality' option at the bottom of the player";
         STR_CONTROLS_PLAY_6 = "Force refresh a video (in case it freezes): Change video quality to the same";
         STR_CONTROLS_PLAY_7 = "Show or hide the chat: Down D-pad or key 3 " + STR_CONTROLS_PLAY_0;
@@ -1367,7 +1374,7 @@
         STR_PICTURE_CONTROLS5 = "Change small video position (only picture in picture): Left D-pad";
         STR_PICTURE_CONTROLS6 = "Change small video size (only picture in picture): Right D-pad";
         STR_PICTURE_CONTROLS7 = "Change audio source: Choose the 'Audio source' option at the bottom of the player. If in 50/50 or multistream, use left/right D-pad. If in picture in picture, use previous/next track media keys";
-        STR_PICTURE_CONTROLS3 = "Change audio source for all videos: In multistream or picture in picture, hold down D-pad. In 50/50, single-click down D-pad";
+        STR_PICTURE_CONTROLS3 = "Change audio source for all videos: Hold down D-pad.";
         STR_PICTURE_CONTROLS8 = "Player restart: Choose the 'Player restart' option at the bottom of the player. This will only restart the players, which is useful fpr syncing the player and the chat. This will not sync one player's content with another's";
         STR_PICTURE_CONTROLS9 = "Manually sync players: The workaround is to choose the 'Speed' option at the bottom of the player to slow down the stream that is in front or vice versa. Only works for picture in picture mode";
         STR_PICTURE_CONTROLS10 = "Picture in picture video quality: Check the in-app '" + STR_PLAYER_BITRATE + "' settings";
@@ -1606,6 +1613,8 @@
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Redeemed highlight My Message";
         STR_CHAT_REDEEMED_MESSAGE_SUB = "Redeemed send a message in sub-only mode";
         STR_CHAT_OPTIONS = "Chat options";
+        STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Highlight messages from the streamer (Dark pink background)";
+        STR_CHAT_HIGHLIGHT_MOD_MSG = "Highlight messages from moderators (Dark cyan background)";
         STR_CHAT_HIGHLIGHT_REDEEMED = "Highlight reward messages (Purple background message only)";
         STR_CHAT_HIGHLIGHT_STREAMER = "Highlight @streamer messages (Dark red background, the '@' is blue)";
         STR_CHAT_HIGHLIGHT_USER = "Highlight your @username messages (Dark Green background, the '@' is blue)";
@@ -2383,7 +2392,7 @@
         STR_CONTROLS_PLAY_1 = "Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos";
         STR_CONTROLS_PLAY_2 = "Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar";
         STR_CONTROLS_PLAY_3 = "Reproduzir/pausar um vídeo: abra o painel de informações e clique no símbolo de pausa";
-        STR_CONTROLS_PLAY_4 = "Mostrar feed de canais ao vivo do usuário: D-pad para cima";
+        STR_CONTROLS_PLAY_4 = "Mostrar preview: D-pad para cima";
         STR_CONTROLS_PLAY_5 = "Alterar a qualidade do vídeo: use os controles de qualidade da parte inferior do player";
         STR_CONTROLS_PLAY_6 = "Forçar a atualização de um vídeo (caso ele congele): Altere a qualidade do vídeo para a mesma";
         STR_CONTROLS_PLAY_7 = "Mostrar ou ocultar o Chat: D-pad para baixo ou tecla número 3" + STR_CONTROLS_PLAY_0;
@@ -2582,12 +2591,12 @@
         STR_PICTURE_CONTROLS5 = "Alterar a posição do vídeo pequeno (somente Picture in picture): D-pad para a esquerda";
         STR_PICTURE_CONTROLS6 = "Alterar tamanho pequeno do vídeo (somente Picture in picture): D-pad à direita";
         STR_PICTURE_CONTROLS7 = "Alterar fonte de áudio: Use os controles inferiores do reprodutor Fonte de áudio, se em 50/50 ou multistream use a tecla esquerda/direita se em PP use as teclas de mídia da faixa seguinte/anterior";
-        STR_PICTURE_CONTROLS3 = "Mudar a fonte de áudio para todos os vídeos: em multistream ou PP mantenha a tecla pressionada, em 50/50 clique uma vez, pressione a tecla";
+        STR_PICTURE_CONTROLS3 = "Mudar a fonte de áudio para todos os vídeos: Mantenha a tecla para baixp pressionada.";
         STR_PICTURE_CONTROLS8 = "Reiniciar player: use os controles inferiores do player Reiniciar player, isso só irá reiniciar todos os players, útil para sincronizar player e chat, isso não irá sincronizar o conteúdo de um player com outro";
         STR_PICTURE_CONTROLS9 = "Sincronizar players manualmente: É uma solução alternativa usar o controle inferior do reprodutor Velocidade para desacelerar o fluxo que está na frente ou vice-versa só funciona no modo PP";
         STR_PICTURE_CONTROLS10 = 'Qualidade de vídeo Imagem sobre Imagem: Verifique nas configurações do aplicativo "' + STR_PLAYER_BITRATE + '"';
         STR_PICTURE_CONTROLS11 = "Fechar vídeo pequeno ou inferior (somente Picture in picture): a tecla voltar duas vezes para sair do modo PP ou 50/50";
-        STR_PICTURE_CONTROLS12 = "Habilitar modo 50/50 (dois stream dois chats): Se Picture in Picture habilitar, pressione a tecla 2 ou a tecla de mídia para avançar ou use os controles inferiores 'Modo de Vídeo' ou se já estiver no modo 'lado a lado', mantenha a tecla enter sobre do feed de preview";
+        STR_PICTURE_CONTROLS12 = "Habilitar modo 50/50 (dois stream dois chats): Se Picture in Picture habilitar, pressione a tecla 2 ou a tecla de mídia para avançar ou use os controles inferiores 'Modo de Vídeo' ou se já estiver no modo 'lado a lado', mantenha a tecla enter pressionada sobre do feed de preview";
         STR_PICTURE_CONTROLS13 = "Ativar Multistream: use os controles da parte inferior do player ou a tecla de retrocesso de mídia";
         STR_PLAYER_INFO_VISIBILITY_ARRAY = ["Quando as informações do player estão visíveis", "Sempre visível", "Nunca visível"];
         STR_SINGLE_EXIT = "Pressione a tecla de retorno único";
@@ -2719,7 +2728,7 @@
         STR_CONTROLS_MULTI_1 = 'Se você está tendo problemas de lentidão após habilitar o multistream, tente diminuir o valor de "Taxa de bits do player pequeno" nas configurações, o acúmulo de quadros pulados ou buffer constante é uma indicação de taxa de bits muito alta ou Internet lenta';
         STR_CONTROLS_MULTI_2 = "Adicionar streams: abra o feed de preview e clique em um stream ao vivo";
         STR_CONTROLS_MULTI_3 = "Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo";
-        STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha pressionado para fonte de áudio todos os vídeos";
+        STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha enter pressionado para fonte de áudio todos os vídeos";
         STR_CONTROLS_MULTI_5 = "Sair do multistream: do controle inferior do player ou tecla de retorno duas vezes";
         STR_CONTROLS_MULTI_6 = "Para fechar este abra as 4 transmissões ao vivo";
         STR_PICTURE_LIVE_FEED = 'Picture in picture: Segure enter, após use o D-Pad para mover, redimensionar ou mudar os vídeos';
@@ -2813,6 +2822,8 @@
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Resgate, Destacar Minha Mensagem";
         STR_CHAT_REDEEMED_MESSAGE_SUB = "Resgate, Enviar uma Mensagem no Modo Sub-Only";
         STR_CHAT_OPTIONS = "Opções de chat";
+        STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Destacar mensagens do streamer (fundo rosa escuro)";
+        STR_CHAT_HIGHLIGHT_MOD_MSG = "Destacar mensagens de moderadores (fundo ciano escuro)";
         STR_CHAT_HIGHLIGHT_REDEEMED = "Destacar mensagens de Resgate (somente mensagem de fundo roxo)";
         STR_CHAT_HIGHLIGHT_STREAMER = "Destacar mensagens @streamer (fundo vermelho escuro, o @ é azul)";
         STR_CHAT_HIGHLIGHT_USER = "Destaque suas mensagens de @username (fundo verde escuro, o @ é azul)";
@@ -3079,7 +3090,6 @@
         STR_CONTROLS_PLAY_1 = "Показать информационную панель: нажмите кнопку ОК или кнопки D-pad, если чат и прямой эфир канала не отображаются";
         STR_CONTROLS_PLAY_2 = "Закрыть видео: дважды нажмите кнопку назад или кнопку Стоп.";
         STR_CONTROLS_PLAY_3 = "Плей/пауза видео: откройте информационную панель и нажмите символ паузы";
-        STR_CONTROLS_PLAY_4 = "Показать активные каналы пользователя: D-Pad вверх";
         STR_CONTROLS_PLAY_5 = "Изменить качество видео: используйте нижний элемент управления плеером (Качество)";
         STR_CONTROLS_PLAY_6 = "Принудительно обновить видео (если оно зависает): измените качество видео на такое же.";
         STR_CONTROLS_PLAY_7 = "Показать или скрыть чат: D-pad вниз или кнопка 3" + STR_CONTROLS_PLAY_0;
@@ -3278,7 +3288,6 @@
         STR_PICTURE_CONTROLS5 = "Изменение положения малого видео (только картинка в картинке): D-pad влево";
         STR_PICTURE_CONTROLS6 = "Изменение размера малого видео (только картинка в картинке): D-pad вправо";
         STR_PICTURE_CONTROLS7 = "Изменить источник звука: используйте нижний элемент (Источник звука). Если в режиме 50/50 или мультистриме, используйте левую/правую кнопки. Если на КвК, используйте кнопки мультимедиа следующей/предыдущей дорожки.";
-        STR_PICTURE_CONTROLS3 = "Изменить источник звука на все видео: на мультистриме или КвК удерживайте кнопку вниз нажатой, на 50/50 одно нажатие вниз";
         STR_PICTURE_CONTROLS8 = "Перезапуск плеера: используйте нижний элемент управления (Перезапуск проигрывателя), это перезапустит плееры. Это не синхронизирует содержимое плеера с другим";
         STR_PICTURE_CONTROLS9 = "Ручная синхронизация плееров: Используйте элемент управления (Скорость) для замедления потока, который спешит, или наоборот. Работает только в режиме КвК";
         STR_PICTURE_CONTROLS10 = 'Качество видео "Картинка в картинке": проверьте в настройках приложения "' + STR_PLAYER_BITRATE + '"';
@@ -3843,9 +3852,17 @@
         VersionBase: '3.0',
         publishVersionCode: 326, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/326/SmartTV_twitch_3_0_326.apk',
-        WebVersion: 'August 07 2021',
-        WebTag: 602, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'August 10 2021',
+        WebTag: 603, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version August 10 2021",
+                changes: [
+                    "Add settings Chat option to Highlight messages from the streamer and mods",
+                    "Add player bottom controls option to show all player controls",
+                    "General improves and bug fixes"
+                ]
+            },
+            {
                 title: "Apk Version 3.0.326 and Web Version August 07 2021",
                 changes: [
                     "General improves and bug fixes"
@@ -6919,6 +6936,8 @@
     var ChatLive_Logging;
     var ChatLive_Highlight_Rewards;
     var ChatLive_Highlight_AtStreamer;
+    var ChatLive_Highlight_FromStreamer;
+    var ChatLive_Highlight_Mod;
     var ChatLive_Highlight_AtUser;
     var ChatLive_Highlight_User_send;
     var ChatLive_Individual_Background; //Play_ChatBackground
@@ -6952,6 +6971,8 @@
         ChatLive_Individual_Background = Settings_value.chat_individual_background.defaultValue;
         ChatLive_Highlight_Rewards = Settings_value.highlight_rewards.defaultValue;
         ChatLive_Highlight_AtStreamer = Settings_value.highlight_atstreamer.defaultValue;
+        ChatLive_Highlight_FromStreamer = Settings_value.highlight_streamer.defaultValue;
+        ChatLive_Highlight_Mod = Settings_value.highlight_mod.defaultValue;
         ChatLive_Highlight_AtUser = ChatLive_User_Set && Settings_value.highlight_atuser.defaultValue;
         ChatLive_Highlight_User_send = ChatLive_User_Set && Settings_value.highlight_user_send.defaultValue;
         ChatLive_Highlight_Actions = Settings_value.show_actions.defaultValue;
@@ -8355,6 +8376,8 @@
             atstreamer = false,
             atuser = false,
             hasbits = false,
+            fromstreamer = false,
+            mod = false,
             action;
 
         if (!tags || !tags.hasOwnProperty('display-name') ||
@@ -8411,6 +8434,15 @@
 
             atstreamer = true;
 
+        } else if (ChatLive_Highlight_FromStreamer &&
+            Main_A_includes_B(tags['display-name'].toLowerCase(), ChatLive_selectedChannel[chat_number])) {
+
+            fromstreamer = true;
+
+        } else if (ChatLive_Highlight_Mod && tags.mod && tags.mod !== "0") {
+
+            mod = true;
+
         } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
 
             atuser = true;
@@ -8460,6 +8492,8 @@
             message: div,
             atstreamer: atstreamer,
             atuser: atuser,
+            fromstreamer: fromstreamer,
+            mod: mod,
             hasbits: (hasbits && ChatLive_Highlight_Bits),
             extraMessage: extraMessage,
             addToStart: addToStart
@@ -8585,6 +8619,8 @@
     //     message: message,
     //     atstreamer: atstreamer,
     //     atuser: atuser,
+    //     fromstreamer: atuser,
+    //     mod: atuser,
     //     hasbits: hasbits,
     //     sub: sub,
     //     skip_addline: skip_addline,
@@ -8599,7 +8635,14 @@
 
             classname += ' chat_atstreamer';
 
-            messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        } else if (messageObj.fromstreamer) {
+
+            classname += ' chat_fromstreamer';
+
+            messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+        } else if (messageObj.mod) {
+
+            classname += ' chat_mod';
 
         } else if (messageObj.atuser) {
 
@@ -10049,6 +10092,7 @@
         Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
         Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+        Main_innerHTML("dialog_controls_player_text", STR_CONTROLS_PLAYER_0);
         Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
         Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -12393,6 +12437,10 @@
         if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
         if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
+
+        if (Play_isControlsDialogVisible) {
+            Play_HideControlsDialog();
+        }
 
         //Hide setting if showing
         if (Settings_isVisible()) {
@@ -15102,6 +15150,11 @@
                 }
                 PlayVod_NumberKey_QuickJump(e.keyCode);
                 break;
+            case KEY_C:
+            case KEY_NUMPAD_5:
+            case KEY_5:
+                Play_showControlsDialog(PlayClip_handleKeyDown);
+                break;
             default:
                 PlayVod_NumberKey_QuickJump(e.keyCode);
                 break;
@@ -15832,6 +15885,10 @@
 
     function Play_PrepareshowEndDialog(PlayVodClip) {
         Play_hideChat();
+
+        if (Play_isControlsDialogVisible) {
+            Play_HideControlsDialog();
+        }
 
         if (PlayVodClip === 1) Play_hidePanel();
         else if (PlayVodClip === 2) PlayVod_hidePanel();
@@ -17360,6 +17417,11 @@
             case KEY_0:
             case KEY_U:
                 Main_UpdateDialogShowCheck();
+                break;
+            case KEY_C:
+            case KEY_NUMPAD_5:
+            case KEY_5:
+                Play_showControlsDialog(Play_handleKeyDown);
                 break;
             default:
                 break;
@@ -19178,6 +19240,38 @@
             },
         };
 
+        Play_controls[Play_controlsPreviewMainVolume] = { //show controls
+            ShowInLive: true,
+            ShowInVod: true,
+            ShowInClip: true,
+            ShowInPP: true,
+            ShowInMulti: true,
+            ShowInChat: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: true,
+            icons: 'feed',
+            offsetY: -4,
+            string: STR_CONTROLS,
+            values: null,
+            defaultValue: null,
+            enterKey: function(PlayVodClip) {
+                var keys = Play_handleKeyDown;
+
+                if (PlayVodClip === 2) {
+
+                    keys = PlayVod_handleKeyDown;
+
+                } else if (PlayVodClip === 3) {
+
+                    keys = PlayClip_handleKeyDown;
+                }
+
+                Play_showControlsDialog(keys);
+            },
+        };
+
         var div,
             doc = Main_getElementById('controls_holder'),
             fragment = document.createDocumentFragment(),
@@ -19809,6 +19903,40 @@
 
         Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
 
+    }
+
+    var Play_controlsEventListener;
+
+    function Play_showControlsDialog(removeEventListener) {
+        Play_controlsEventListener = removeEventListener;
+        Main_removeEventListener("keydown", removeEventListener);
+        Main_addEventListener("keydown", Play_handleKeyControls);
+        Main_ShowElement('dialog_controls_player');
+        Main_EventScreen('Controls_Player');
+    }
+
+    function Play_HideControlsDialog() {
+        Main_HideElement('dialog_controls_player');
+        Main_removeEventListener("keydown", Play_handleKeyControls);
+        Main_addEventListener("keydown", Play_controlsEventListener);
+    }
+
+    function Play_isControlsDialogVisible() {
+        return Main_isElementShowing('dialog_controls_player');
+    }
+
+    function Play_handleKeyControls(event) {
+        //Main_Log('Screens_handleKeyControls ' + event.keyCode);
+
+        switch (event.keyCode) {
+            case KEY_ENTER:
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                Play_HideControlsDialog();
+                break;
+            default:
+                break;
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -24748,6 +24876,11 @@
                     PlayVod_NumberKey_QuickJump(e.keyCode);
 
                 }
+                break;
+            case KEY_C:
+            case KEY_NUMPAD_5:
+            case KEY_5:
+                Play_showControlsDialog(PlayVod_handleKeyDown);
                 break;
             default:
                 PlayVod_NumberKey_QuickJump(e.keyCode);
@@ -32190,6 +32323,14 @@
             "values": ["no", "yes"],
             "defaultValue": 2
         },
+        "highlight_streamer": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
+        "highlight_mod": { //Migrated to dialog
+            "values": ["no", "yes"],
+            "defaultValue": 1
+        },
         "highlight_atstreamer": { //Migrated to dialog
             "values": ["no", "yes"],
             "defaultValue": 2
@@ -34214,6 +34355,8 @@
         var yes_no = [STR_NO, STR_YES];
         Settings_value.highlight_rewards.values = yes_no;
         Settings_value.highlight_atstreamer.values = yes_no;
+        Settings_value.highlight_streamer.values = yes_no;
+        Settings_value.highlight_mod.values = yes_no;
         Settings_value.highlight_atuser.values = yes_no;
         Settings_value.highlight_user_send.values = yes_no;
         Settings_value.show_sub.values = yes_no;
@@ -34276,6 +34419,18 @@
                 defaultValue: Settings_value.highlight_rewards.defaultValue,
                 values: Settings_value.highlight_rewards.values,
                 title: STR_CHAT_HIGHLIGHT_REDEEMED,
+                summary: null
+            },
+            highlight_mod: {
+                defaultValue: Settings_value.highlight_mod.defaultValue,
+                values: Settings_value.highlight_mod.values,
+                title: STR_CHAT_HIGHLIGHT_MOD_MSG,
+                summary: null
+            },
+            highlight_streamer: {
+                defaultValue: Settings_value.highlight_streamer.defaultValue,
+                values: Settings_value.highlight_streamer.values,
+                title: STR_CHAT_HIGHLIGHT_STREAMER_MSG,
                 summary: null
             },
             highlight_atstreamer: {

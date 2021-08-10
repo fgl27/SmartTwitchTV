@@ -23,9 +23,17 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 326,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/326/SmartTV_twitch_3_0_326.apk',
-    WebVersion: 'August 07 2021',
-    WebTag: 602,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'August 10 2021',
+    WebTag: 603,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Web Version August 10 2021",
+            changes: [
+                "Add settings Chat option to Highlight messages from the streamer and mods",
+                "Add player bottom controls option to show all player controls",
+                "General improves and bug fixes"
+            ]
+        },
         {
             title: "Apk Version 3.0.326 and Web Version August 07 2021",
             changes: [
