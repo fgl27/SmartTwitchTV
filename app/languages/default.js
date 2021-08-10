@@ -35,6 +35,7 @@ var STR_SEARCH_KEY = '';
 var STR_ABOUT_KEY = '';
 var STR_SETTINGS_KEY = '';
 var STR_CONTROLS_MAIN_0 = '';
+var STR_CONTROLS_PLAYER_0 = '';
 var STR_ABOUT_INFO_HEADER = '';
 var STR_ABOUT_INFO_0 = '';
 var STR_ACCESSIBILITY_WARN_TEXT = '';
@@ -187,8 +188,7 @@ function DefaultLang() {
     STR_BITCOIN = '<div style="vertical-align: middle;"><div class="class_bold" style="vertical-align: middle; display: inline-block; font-size: 120%;"><img style="vertical-align: middle; display: inline-block; width: 4%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/release/githubio/images/bitcoin.png">' +
         STR_SPACE_HTML + STR_BITCOIN_SUMMARY + STR_BR + STR_SPACE_HTML + '<div style="display: inline-block; color: ' + LINK_COLOR + ';font-size: 2.7vh;text-align: center; font-family: Roboto;">' + STR_BITCOIN_WALLET + STR_SPACE_HTML + '</div><img style="vertical-align: middle; display: inline-block; width: 17%;" alt="" src="https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png"></div></div>';
 
-    STR_CONTROLS_PLAY_0 = STR_DIV_TITLE + STR_PLAYER + '</div>' +
-        STR_DIV_MIDLE_LEFT +
+    STR_CONTROLS_PLAY_0 = STR_DIV_MIDLE_LEFT +
         STR_DOT + STR_CONTROLS_PLAY_4 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_1 + STR_BR +
         STR_DOT + STR_CONTROLS_PLAY_2 + STR_BR + '</div>' +
@@ -246,6 +246,11 @@ function DefaultLang() {
         STR_DOT + STR_CONTROLS_MAIN_6 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_10 + STR_BR +
         STR_DOT + STR_CONTROLS_MAIN_14 + STR_BR + '</div>' +
+        STR_DIV_TITLE + STR_PLAYER + '</div>' +
+        STR_CONTROLS_PLAY_0 + STR_BR +
+        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
+
+    STR_CONTROLS_PLAYER_0 = STR_DIV_TITLE + STR_CONTROLS + '</div>' +
         STR_CONTROLS_PLAY_0 + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div>';
 

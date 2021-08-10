@@ -524,6 +524,10 @@ function Play_updownqualityCheckTotal(index, total) {
 function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_hideChat();
 
+    if (Play_isControlsDialogVisible) {
+        Play_HideControlsDialog();
+    }
+
     if (PlayVodClip === 1) Play_hidePanel();
     else if (PlayVodClip === 2) PlayVod_hidePanel();
     else if (PlayVodClip === 3) PlayClip_hidePanel();
@@ -2046,6 +2050,11 @@ function Play_handleKeyDown(e) {
         case KEY_0:
         case KEY_U:
             Main_UpdateDialogShowCheck();
+            break;
+        case KEY_C:
+        case KEY_NUMPAD_5:
+        case KEY_5:
+            Play_showControlsDialog(Play_handleKeyDown);
             break;
         default:
             break;
@@ -3864,6 +3873,38 @@ function Play_MakeControls() {
         },
     };
 
+    Play_controls[Play_controlsPreviewMainVolume] = { //show controls
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: 'feed',
+        offsetY: -4,
+        string: STR_CONTROLS,
+        values: null,
+        defaultValue: null,
+        enterKey: function(PlayVodClip) {
+            var keys = Play_handleKeyDown;
+
+            if (PlayVodClip === 2) {
+
+                keys = PlayVod_handleKeyDown;
+
+            } else if (PlayVodClip === 3) {
+
+                keys = PlayClip_handleKeyDown;
+            }
+
+            Play_showControlsDialog(keys);
+        },
+    };
+
     var div,
         doc = Main_getElementById('controls_holder'),
         fragment = document.createDocumentFragment(),
@@ -4494,4 +4535,37 @@ function Play_SetSceneBackground(url) {
 
     Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
 
+}
+
+var Play_controlsEventListener;
+function Play_showControlsDialog(removeEventListener) {
+    Play_controlsEventListener = removeEventListener;
+    Main_removeEventListener("keydown", removeEventListener);
+    Main_addEventListener("keydown", Play_handleKeyControls);
+    Main_ShowElement('dialog_controls_player');
+    Main_EventScreen('Controls_Player');
+}
+
+function Play_HideControlsDialog() {
+    Main_HideElement('dialog_controls_player');
+    Main_removeEventListener("keydown", Play_handleKeyControls);
+    Main_addEventListener("keydown", Play_controlsEventListener);
+}
+
+function Play_isControlsDialogVisible() {
+    return Main_isElementShowing('dialog_controls_player');
+}
+
+function Play_handleKeyControls(event) {
+    //Main_Log('Screens_handleKeyControls ' + event.keyCode);
+
+    switch (event.keyCode) {
+        case KEY_ENTER:
+        case KEY_KEYBOARD_BACKSPACE:
+        case KEY_RETURN:
+            Play_HideControlsDialog();
+            break;
+        default:
+            break;
+    }
 }

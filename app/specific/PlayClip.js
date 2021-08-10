@@ -904,6 +904,11 @@ function PlayClip_handleKeyDown(e) {
 
             } PlayVod_NumberKey_QuickJump(e.keyCode);
             break;
+        case KEY_C:
+        case KEY_NUMPAD_5:
+        case KEY_5:
+            Play_showControlsDialog(PlayClip_handleKeyDown);
+            break;
         default:
             PlayVod_NumberKey_QuickJump(e.keyCode);
             break;

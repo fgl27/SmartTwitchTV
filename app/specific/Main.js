@@ -550,6 +550,7 @@ function Main_SetStringsSecondary() {
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 
     Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
+    Main_innerHTML("dialog_controls_player_text", STR_CONTROLS_PLAYER_0);
     Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
@@ -2886,6 +2887,10 @@ function Main_CheckStop() { // Called only by JAVA
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilityHide(true);
 
     if (Main_isElementShowing('chat_send')) ChatLiveControls_Hide();
+
+    if (Play_isControlsDialogVisible) {
+        Play_HideControlsDialog();
+    }
 
     //Hide setting if showing
     if (Settings_isVisible()) {
