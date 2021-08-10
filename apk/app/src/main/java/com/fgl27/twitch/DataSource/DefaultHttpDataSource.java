@@ -20,11 +20,6 @@
  */
 package com.fgl27.twitch.DataSource;
 
-import static com.google.android.exoplayer2.upstream.HttpUtil.buildRangeRequestHeader;
-import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
-import static com.google.android.exoplayer2.util.Util.castNonNull;
-import static java.lang.Math.min;
-
 import android.net.Uri;
 
 import androidx.annotation.Nullable;
@@ -58,6 +53,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
+
+import static com.google.android.exoplayer2.upstream.HttpUtil.buildRangeRequestHeader;
+import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
+import static com.google.android.exoplayer2.util.Util.castNonNull;
+import static java.lang.Math.min;
 
 /**
  * An {@link HttpDataSource} that uses Android's {@link HttpURLConnection}.
@@ -487,13 +487,14 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
                     errorResponseBody = Util.EMPTY_BYTE_ARRAY;
                 }
                 closeConnectionQuietly();
-                @Nullable
-                IOException cause =
-                        responseCode == 416
-                                ? new DataSourceException(PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE)
-                                : null;
-                throw new InvalidResponseCodeException(
-                        responseCode, responseMessage, cause, headers, dataSpec, errorResponseBody);
+                InvalidResponseCodeException exception =
+                        new InvalidResponseCodeException(
+                                responseCode, responseMessage, headers, dataSpec, errorResponseBody);
+                if (responseCode == 416) {
+                    exception.initCause(
+                            new DataSourceException(PlaybackException.ERROR_CODE_IO_READ_POSITION_OUT_OF_RANGE));
+                }
+                throw exception;
             }
 
             // Check for a valid content type.
@@ -552,11 +553,12 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
             } catch (IOException e) {
                 closeConnectionQuietly();
 
-                throw new HttpDataSourceException(
-                        e,
-                        dataSpec,
-                        PlaybackException.ERROR_CODE_IO_UNSPECIFIED,
-                        HttpDataSourceException.TYPE_OPEN);
+                @PlaybackException.ErrorCode int errorCode = PlaybackException.ERROR_CODE_IO_UNSPECIFIED;
+                if (e instanceof DataSourceException) {
+                    errorCode = ((DataSourceException) e).reason;
+                }
+
+                throw new HttpDataSourceException(e, dataSpec, errorCode, HttpDataSourceException.TYPE_OPEN);
             }
 
             return bytesToRead;
@@ -564,23 +566,23 @@ public class DefaultHttpDataSource extends BaseDataSource implements HttpDataSou
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int length) throws HttpDataSourceException {
+    public int read(byte[] buffer, int offset, int readLength) throws HttpDataSourceException {
         if (isPlaylist) {
-            if (length == 0) {
+            if (readLength == 0) {
                 return 0;
             } else if (bytesRemaining == 0) {
                 return C.RESULT_END_OF_INPUT;
             }
 
-            length = min(length, bytesRemaining);
-            System.arraycopy(mainPlaylist, readPosition, buffer, offset, length);
-            readPosition += length;
-            bytesRemaining -= length;
-            bytesTransferred(length);
-            return length;
+            readLength = min(readLength, bytesRemaining);
+            System.arraycopy(mainPlaylist, readPosition, buffer, offset, readLength);
+            readPosition += readLength;
+            bytesRemaining -= readLength;
+            bytesTransferred(readLength);
+            return readLength;
         } else {
             try {
-                return readInternal(buffer, offset, length);
+                return readInternal(buffer, offset, readLength);
             } catch (IOException e) {
                 throw new HttpDataSourceException(
                         e,
