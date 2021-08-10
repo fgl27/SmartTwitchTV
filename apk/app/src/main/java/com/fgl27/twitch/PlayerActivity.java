@@ -1092,7 +1092,7 @@ public class PlayerActivity extends Activity {
             PlayerObj[0].playerView.setLayoutParams(PlayerViewSideBySideSize[FullScreenPosition][FullScreenSize]);//CENTER_VERTICAL 75% width x height
 
         //reset track selector as SwitchPlayer may have skipped if isFullScreen == false
-        PlayerObjUpdateTrackSelector(0, 0);
+        mSetQuality(0);
     }
 
     private void updateVideSizePP(boolean FullScreen) {
