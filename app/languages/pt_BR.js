@@ -364,12 +364,12 @@ function pt_BRLang() {
     STR_PICTURE_CONTROLS5 = "Alterar a posição do vídeo pequeno (somente Picture in picture): D-pad para a esquerda";
     STR_PICTURE_CONTROLS6 = "Alterar tamanho pequeno do vídeo (somente Picture in picture): D-pad à direita";
     STR_PICTURE_CONTROLS7 = "Alterar fonte de áudio: Use os controles inferiores do reprodutor Fonte de áudio, se em 50/50 ou multistream use a tecla esquerda/direita se em PP use as teclas de mídia da faixa seguinte/anterior";
-    STR_PICTURE_CONTROLS3 = "Mudar a fonte de áudio para todos os vídeos: em multistream ou PP mantenha a tecla pressionada, em 50/50 clique uma vez, pressione a tecla";
+    STR_PICTURE_CONTROLS3 = "Mudar a fonte de áudio para todos os vídeos: Mantenha a tecla para baixp pressionada.";
     STR_PICTURE_CONTROLS8 = "Reiniciar player: use os controles inferiores do player Reiniciar player, isso só irá reiniciar todos os players, útil para sincronizar player e chat, isso não irá sincronizar o conteúdo de um player com outro";
     STR_PICTURE_CONTROLS9 = "Sincronizar players manualmente: É uma solução alternativa usar o controle inferior do reprodutor Velocidade para desacelerar o fluxo que está na frente ou vice-versa só funciona no modo PP";
     STR_PICTURE_CONTROLS10 = 'Qualidade de vídeo Imagem sobre Imagem: Verifique nas configurações do aplicativo "' + STR_PLAYER_BITRATE + '"';
     STR_PICTURE_CONTROLS11 = "Fechar vídeo pequeno ou inferior (somente Picture in picture): a tecla voltar duas vezes para sair do modo PP ou 50/50";
-    STR_PICTURE_CONTROLS12 = "Habilitar modo 50/50 (dois stream dois chats): Se Picture in Picture habilitar, pressione a tecla 2 ou a tecla de mídia para avançar ou use os controles inferiores 'Modo de Vídeo' ou se já estiver no modo 'lado a lado', mantenha a tecla enter sobre do feed de preview";
+    STR_PICTURE_CONTROLS12 = "Habilitar modo 50/50 (dois stream dois chats): Se Picture in Picture habilitar, pressione a tecla 2 ou a tecla de mídia para avançar ou use os controles inferiores 'Modo de Vídeo' ou se já estiver no modo 'lado a lado', mantenha a tecla enter pressionada sobre do feed de preview";
     STR_PICTURE_CONTROLS13 = "Ativar Multistream: use os controles da parte inferior do player ou a tecla de retrocesso de mídia";
     STR_PLAYER_INFO_VISIBILITY_ARRAY = ["Quando as informações do player estão visíveis", "Sempre visível", "Nunca visível"];
     STR_SINGLE_EXIT = "Pressione a tecla de retorno único";
@@ -501,7 +501,7 @@ function pt_BRLang() {
     STR_CONTROLS_MULTI_1 = 'Se você está tendo problemas de lentidão após habilitar o multistream, tente diminuir o valor de "Taxa de bits do player pequeno" nas configurações, o acúmulo de quadros pulados ou buffer constante é uma indicação de taxa de bits muito alta ou Internet lenta';
     STR_CONTROLS_MULTI_2 = "Adicionar streams: abra o feed de preview e clique em um stream ao vivo";
     STR_CONTROLS_MULTI_3 = "Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo";
-    STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha pressionado para fonte de áudio todos os vídeos";
+    STR_CONTROLS_MULTI_4 = "Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha enter pressionado para fonte de áudio todos os vídeos";
     STR_CONTROLS_MULTI_5 = "Sair do multistream: do controle inferior do player ou tecla de retorno duas vezes";
     STR_CONTROLS_MULTI_6 = "Para fechar este abra as 4 transmissões ao vivo";
     STR_PICTURE_LIVE_FEED = 'Picture in picture: Segure enter, após use o D-Pad para mover, redimensionar ou mudar os vídeos';

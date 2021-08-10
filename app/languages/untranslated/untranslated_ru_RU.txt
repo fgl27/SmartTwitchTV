@@ -2,4 +2,5 @@
     STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
     STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";
     STR_PREVIEW = "the preview";
+    STR_PICTURE_CONTROLS3 = "Change audio source for all videos: Hold down D-pad.";
 

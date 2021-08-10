@@ -369,7 +369,7 @@ function en_USLang() {
     STR_PICTURE_CONTROLS5 = "Change small video position (only picture in picture): Left D-pad";
     STR_PICTURE_CONTROLS6 = "Change small video size (only picture in picture): Right D-pad";
     STR_PICTURE_CONTROLS7 = "Change audio source: Choose the 'Audio source' option at the bottom of the player. If in 50/50 or multistream, use left/right D-pad. If in picture in picture, use previous/next track media keys";
-    STR_PICTURE_CONTROLS3 = "Change audio source for all videos: In multistream or picture in picture, hold down D-pad. In 50/50, single-click down D-pad";
+    STR_PICTURE_CONTROLS3 = "Change audio source for all videos: Hold down D-pad.";
     STR_PICTURE_CONTROLS8 = "Player restart: Choose the 'Player restart' option at the bottom of the player. This will only restart the players, which is useful fpr syncing the player and the chat. This will not sync one player's content with another's";
     STR_PICTURE_CONTROLS9 = "Manually sync players: The workaround is to choose the 'Speed' option at the bottom of the player to slow down the stream that is in front or vice versa. Only works for picture in picture mode";
     STR_PICTURE_CONTROLS10 = "Picture in picture video quality: Check the in-app '" + STR_PLAYER_BITRATE + "' settings";
