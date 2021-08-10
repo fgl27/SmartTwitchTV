@@ -340,6 +340,8 @@ function Chat_loadChatSuccess(responseText, id) {
         nickColor,
         atstreamer,
         atuser,
+        fromstreamer,
+        mod,
         hasbits,
         message_text,
         comments, badges, fragment,
@@ -375,6 +377,8 @@ function Chat_loadChatSuccess(responseText, id) {
 
         atstreamer = false;
         atuser = false;
+        fromstreamer = false;
+        mod = false;
         hasbits = false;
         message_text = '';
 
@@ -402,6 +406,11 @@ function Chat_loadChatSuccess(responseText, id) {
 
                 div += '<span class="a' + badges._id + ChatLive_selectedChannel_id[0] + "-" + badges.version + ' tag"></span>';
 
+                if (ChatLive_Highlight_Mod && Main_A_includes_B(badges._id, 'mod')) {
+
+                    mod = true;
+
+                }
             }
         }
 
@@ -437,7 +446,12 @@ function Chat_loadChatSuccess(responseText, id) {
 
         }
 
-        if (ChatLive_Highlight_User_send &&
+        if (ChatLive_Highlight_FromStreamer &&
+            Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), ChatLive_selectedChannel[0])) {
+
+            fromstreamer = true;
+
+        } else if (ChatLive_Highlight_User_send &&
             Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
 
             atuser = true;
@@ -478,6 +492,8 @@ function Chat_loadChatSuccess(responseText, id) {
             message: div,
             atstreamer: atstreamer,
             atuser: atuser,
+            mod: mod,
+            fromstreamer: fromstreamer,
             hasbits: (hasbits && ChatLive_Highlight_Bits)
         };
 
