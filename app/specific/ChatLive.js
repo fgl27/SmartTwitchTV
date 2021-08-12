@@ -1870,12 +1870,12 @@ function ChatLive_ElemntAdd(messageObj) {
     if (messageObj.atstreamer) {
 
         classname += ' chat_atstreamer';
+        messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
 
     } else if (messageObj.fromstreamer) {
 
         classname += ' chat_fromstreamer';
 
-        messageObj.message = messageObj.message.replace(ChatLive_User_Regex_Replace, "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
     } else if (messageObj.mod) {
 
         classname += ' chat_mod';
