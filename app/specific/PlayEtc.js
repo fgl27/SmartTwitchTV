@@ -28,7 +28,8 @@ function Play_SetControlsVisibilityPlayer(PlayVodClip) {
 
     if (PlayVodClip === 1) {
 
-        if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
+        if (Play_StayDialogVisible()) Play_SetControlsVisibility('ShowInStay');
+        else if (Play_MultiEnable) Play_SetControlsVisibility('ShowInMulti');
         else if (PlayExtra_PicturePicture) Play_SetControlsVisibility('ShowInPP');
         else Play_SetControlsVisibility('ShowInLive');
 
