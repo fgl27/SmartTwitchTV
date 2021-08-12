@@ -1694,7 +1694,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
 
     //Add nick
     nick = tags['display-name'];
-    if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+    if (atstreamer || (ChatLive_Highlight_Bits && hasbits) || mod || fromstreamer) {
 
         nickColor = chat_Line_highlight_green;
 

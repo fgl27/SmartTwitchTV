@@ -459,7 +459,7 @@ function Chat_loadChatSuccess(responseText, id) {
         }
 
         //Add nick
-        if (atstreamer || (ChatLive_Highlight_Bits && hasbits)) {
+        if (atstreamer || (ChatLive_Highlight_Bits && hasbits) || mod || fromstreamer) {
 
             nickColor = chat_Line_highlight_green;
 
