@@ -621,8 +621,14 @@ function Main_SetStringsSecondary() {
 
 }
 
-function Main_IconLoad(lable, icon, string) {
-    Main_innerHTML(lable, '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' + icon + '" style="color: #FFFFFF;"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' + STR_SPACE_HTML + string + '</div>');
+function Main_IconLoad(lable, icon, string, color) {
+    Main_innerHTML(
+        lable,
+        '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' +
+        icon + '" style="color: ' + (color ? color : '#FFFFFF') +
+        ';"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' +
+        STR_SPACE_HTML + string + '</div>'
+    );
 }
 
 function Main_HideElement(element) {

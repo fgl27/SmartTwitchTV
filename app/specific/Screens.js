@@ -2689,7 +2689,7 @@ function Screens_ThumbOptionStringSet(key) {
     Screens_canFollow = false;
     Screens_values_Play_data = Screens_GetObj(key);
     Screens_ThumbOption_CheckFollow_ID = 0;
-    Screens_ThumbOption_Follow_ID = 0;
+    //Screens_ThumbOption_Follow_ID = 0;
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOption_CheckFollow(Screens_values_Play_data, key);
@@ -2788,8 +2788,16 @@ function Screens_ThumbOption_RequestCheckFollowEnd(key, FollowState) {
 function Screens_ThumbOption_UpdateFollow(key, FollowState) {
 
     Screens_isFollowing = FollowState;
-    Main_textContent('dialog_thumb_opt_setting_name_2', (FollowState ? STR_FOLLOWING : STR_FOLLOW) + ' - ' + (ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]));
-    Main_textContent('dialog_thumb_opt_val_2', (FollowState ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW).replace('(', '').replace(')', ''));
+    Main_textContent(
+        'dialog_thumb_opt_setting_name_2',
+        ScreenObj[key].screenType === 2 ? Screens_values_Play_data[4] : Screens_values_Play_data[1]
+    );
+
+    if (FollowState) {
+        Main_IconLoad('dialog_thumb_opt_val_2', 'icon-heart', STR_FOLLOWING, '#6441a4');
+    } else {
+        Main_IconLoad('dialog_thumb_opt_val_2', 'icon-heart-o', STR_FOLLOW);
+    }
 
 }
 
@@ -2856,7 +2864,7 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             break;
         case KEY_ENTER:
             if (Screens_ThumbOptionPosY === 2) {
-                Screens_FollowUnfollow(key);
+                Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000, true);
             } else Screens_ThumbOptionDialogHide(true, key);
             break;
         default:
@@ -2933,7 +2941,7 @@ function Screens_ThumbOptionDialogHide(Update, key) {
     Screens_ThumbOptionPosY = 0;
     Screens_ThumbOptionAddFocus(0);
     Screens_ThumbOption_CheckFollow_ID = 0;
-    Screens_ThumbOption_Follow_ID = 0;
+    //Screens_ThumbOption_Follow_ID = 0;
 
 }
 
@@ -2957,62 +2965,62 @@ function Screens_SetLang(key) {
 
 }
 
-var Screens_ThumbOption_Follow_ID = 0;
+// var Screens_ThumbOption_Follow_ID = 0;
 
-function Screens_FollowUnfollow(key) {
+// function Screens_FollowUnfollow(key) {
 
-    if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+//     if (Screens_canFollow && AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
 
-        Screens_ThumbOption_Follow_ID = (new Date()).getTime();
+//         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 
-        var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
-            theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+//         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
+//             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
 
-        FullxmlHttpGet(
-            theUrl,
-            Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
-            Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
-            noop_fun,
-            key,
-            Screens_ThumbOption_Follow_ID,
-            Screens_isFollowing ? 'DELETE' : 'PUT',
-            null
-        );
+//         FullxmlHttpGet(
+//             theUrl,
+//             Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+//             Screens_isFollowing ? Screens_UnFollowRequestReady : Screens_FollowRequestReady,
+//             noop_fun,
+//             key,
+//             Screens_ThumbOption_Follow_ID,
+//             Screens_isFollowing ? 'DELETE' : 'PUT',
+//             null
+//         );
 
-    } else {
+//     } else {
 
-        Main_showWarningDialog(STR_NOKEY_WARN, 2000);
+//         Main_showWarningDialog(STR_NOKEY_WARN, 2000);
 
-    }
+//     }
 
-}
+// }
 
-function Screens_UnFollowRequestReady(xmlHttp, key, ID) {
+// function Screens_UnFollowRequestReady(xmlHttp, key, ID) {
 
-    if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 204) { //success user is now not following the channel
+//     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 204) { //success user is now not following the channel
 
-        Screens_FollowRequestEnd(key, false);
+//         Screens_FollowRequestEnd(key, false);
 
-    }
+//     }
 
-}
+// }
 
-function Screens_FollowRequestReady(xmlHttp, key, ID) {
+// function Screens_FollowRequestReady(xmlHttp, key, ID) {
 
-    if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 200) { //success user is now following the channel
+//     if (Screens_ThumbOption_Follow_ID === ID && xmlHttp.status === 200) { //success user is now following the channel
 
-        Screens_FollowRequestEnd(key, true);
+//         Screens_FollowRequestEnd(key, true);
 
-    }
+//     }
 
-}
+// }
 
-function Screens_FollowRequestEnd(key, FollowState) {
+// function Screens_FollowRequestEnd(key, FollowState) {
 
-    Screens_ThumbOption_UpdateFollow(key, FollowState);
-    Screens_ThumbOption_Follow_ID = 0;
+//     Screens_ThumbOption_UpdateFollow(key, FollowState);
+//     Screens_ThumbOption_Follow_ID = 0;
 
-}
+// }
 
 function Screens_OpenScreen() {
 
