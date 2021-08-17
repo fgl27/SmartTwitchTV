@@ -44,10 +44,10 @@
     <string name="channel_refresh">Pressione Enter para atualizar este, uma atualização manual só pode acontecer quando o aplicativo estiver visível, então clicar aqui irá abrir o aplicativo, este canal atualiza automaticamente a cada 30 minutos</string>
     <string name="channel_no_user">É necessário adicionar um usuário primeiro para carregar este conteúdo</string>
     <string name="channel_empty">Lista vazia</string>
-    <string name="channel_last_refresh">Atualizado em - %1$s %2$s %02d:%02d</string>
-    <string name="channel_refreshed">Canal %1$s da tela inicial atualizado</string>
-    <string name="channel_live_title">%1$s %2$s desde %3$s para %4$s pessoas\n%5$s</string>
-    <string name="channel_game_title">%1$s Canais\nPara %2$s pessoas</string>
+    <string name="channel_last_refresh">Atualizado em - %s %s %02d:%02d</string>
+    <string name="channel_refreshed">Canal %s da tela inicial atualizado</string>
+    <string name="channel_live_title">%s %s desde %s para %s pessoas\n%s</string>
+    <string name="channel_game_title">%s Canais\nPara %s pessoas</string>
     <string name="playing">Jogando</string>
     <string name="streaming">Transmitindo</string>
 
