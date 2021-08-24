@@ -624,9 +624,9 @@ function Main_SetStringsSecondary() {
 function Main_IconLoad(lable, icon, string, color) {
     Main_innerHTML(
         lable,
-        '<div style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i class="' +
+        '<div id="' + lable + '_icondiv" style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i id="' + lable + '_icon" class="' +
         icon + '" style="color: ' + (color ? color : '#FFFFFF') +
-        ';"></i></div><div style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' +
+        ';"></i></div><div  id="' + lable + '_icontext" style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' +
         STR_SPACE_HTML + string + '</div>'
     );
 }

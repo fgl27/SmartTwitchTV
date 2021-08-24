@@ -1514,6 +1514,7 @@
             width: 94.5%;
         }
 
+        .exit_player,
         .side_panel_div,
         .side_panel_feed_top,
         .side_panel_movel_bottom_text,
@@ -2470,6 +2471,14 @@
             }
         }
 
+        .exit_player {
+            color: #ffffff;
+            position: absolute;
+            left: 1%;
+            font-family: 'Roboto-Bold';
+            z-index: 100;
+        }
+
         /* Simple way to see center of screen
         .center {
             border: 2px solid blue;
@@ -3199,6 +3208,7 @@
                 style="opacity: 0; will-change: opacity; pointer-events: none; ">
                 <div id="playerinfo" class="playerinfo">
                     <div id="stream_clock" class="playclock"></div>
+                    <div id="exit_player" class="exit_player hide"></div>
                     <div id="stream_info" class="shadow_text">
                         <img id="stream_info_icon" class="stream_info_icon" alt=""
                             src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">

@@ -111,37 +111,43 @@ function Screens_InitScreens() {
     Screens_first_init();
 
     if (!Main_IsOn_OSInterface) {
+        //This if is just for testing on a browser the code here is not ideal but works for testing
+
         var key = 0,
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
-            sidepanel_elem_show = Main_getElementById('side_panel_new_holder');
+            sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
+            exit_player = Main_getElementById('exit_player');
+
+        Main_RemoveClassWithEle(exit_player, 'hide');
+        Main_IconLoad('exit_player', 'icon-return', STR_GOBACK);
 
         sidepanel_elem_show.onmouseover = function() {
             key = Main_values.Main_Go;
             if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
-                ScreenObj[key].IsOpen = 0;
-                ScreenObj[key].key_exit();
+
+                if (key === Main_ChannelContent) {
+                    ChannelContent_removeFocus();
+                    Sidepannel_Start(ChannelContent_handleKeyDown);
+                } else {
+                    Screens_OpenSidePanel(false, key);
+                }
+
             }
         };
 
         sidepanel_elem_hide.onmouseover = function() {
-            if (Sidepannel_isShowingMenus()) {
+            if (Sidepannel_isShowingMenus() || Sidepannel_isShowingUserLive()) {
                 Sidepannel_Hide();
                 Main_SwitchScreen();
             }
         };
+        Main_getElementById('side_panel_feed_thumb').onmouseover = sidepanel_elem_hide.onmouseover;
 
         window.onclick = function(event) {
             var id = event.target.id;
-            console.log(id)
-            if (!Main_A_includes_B(id, '_')) {
-                return;
-            }
+            //console.log(id);
 
             var idArray = id.split('_');
-
-            if (idArray.length < 3) {
-                return;
-            }
 
             var y = parseInt(idArray[2]),
                 x = parseInt(idArray[3]);
@@ -150,18 +156,70 @@ function Screens_InitScreens() {
 
             if (!isNaN(key)) {
                 if (Screens_IsInUse(key)) {
-                    if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
+
+                    var isChannelScreen = key === Main_ChannelContent;
+
+                    var div = y + '_' + x;
+
+                    if (!isChannelScreen &&
+                        (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x)) {
                         Screens_RemoveFocus(key);
                         ScreenObj[key].posY = y;
                         Screens_ChangeFocus(0, x, key);
                         Screens_handleKeyUpAnimationFast();
                     }
 
-                    ScreenObj[key].key_play();
+                    OnClickId = Main_setTimeout(
+                        function() {
+
+                            OnDuploClick = '';
+
+                        },
+                        500,
+                        OnClickId
+                    );
+
+                    if (Main_A_equals_B(OnDuploClick, div)) {
+                        if (isChannelScreen) {
+                            ChannelContent_keyEnter();
+                        } else {
+                            ScreenObj[key].key_play();
+                        }
+                    }
+
+                    OnDuploClick = div;
                 } else if (Sidepannel_isShowingMenus()) {
+
                     Sidepannel_Hide();
                     Main_SwitchScreen();
+
                 }
+            } else if (Main_isScene2DocVisible()) {
+
+                if (!Play_isPanelShowing()) {
+
+                    if (Play_isOn) Play_showPanel();
+                    else if (PlayVod_isOn) PlayVod_showPanel(true);
+                    else if (PlayClip_isOn) PlayClip_showPanel();
+
+                } else if (Main_A_includes_B(id, 'exit_player')) {
+
+                    if (Play_isOn) {
+                        Play_CheckPreview();
+                        Play_shutdownStream();
+                    }
+                    else if (PlayVod_isOn) {
+                        PlayVod_CheckPreview();
+                        PlayVod_shutdownStream();
+                    }
+                    else if (PlayClip_isOn) {
+                        PlayClip_CheckPreview();
+                        Play_CleanHideExit();
+                        PlayClip_shutdownStream();
+                    }
+
+                }
+
             } else if (Sidepannel_isShowingMenus()) {
 
                 if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
@@ -189,8 +247,22 @@ function Screens_InitScreens() {
                     Sidepannel_PosFeed = y;
                     Sidepannel_AddFocusLiveFeed();
                     Screens_handleKeyUpAnimationFast();
-                } else if (Main_A_includes_B(id, 'feed_thumb')) {
-                    Sidepannel_userLiveKeyEnter();
+
+                    OnClickId = Main_setTimeout(
+                        function() {
+
+                            OnDuploClick = '';
+
+                        },
+                        500,
+                        OnClickId
+                    );
+
+                    if (Main_A_equals_B(OnDuploClick, UserLiveFeedobj_UserLivePos)) {
+                        Sidepannel_userLiveKeyEnter();
+                    }
+
+                    OnDuploClick = UserLiveFeedobj_UserLivePos;
                 }
 
             }
@@ -227,11 +299,14 @@ function Screens_InitScreens() {
             yOnwheel++;
             if (yOnwheel > 3) yOnwheel = 0;
         };
+
     }
 }
 
 var yOnwheel = 0;
 var OnwheelId;
+var OnClickId;
+var OnDuploClick;
 
 //TODO cleanup not used when finished migrate all
 function Screens_ScreenIds(base, key) {

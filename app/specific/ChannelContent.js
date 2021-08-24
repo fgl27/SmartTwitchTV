@@ -281,7 +281,7 @@ function ChannelContent_createCell(valuesArray) {
 
     ChannelContent_DataObj = valuesArray;
 
-    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
+    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="' + Main_ChannelContent + '_cell_0_1_img" class="stream_img" alt="" src="' + valuesArray[0].replace("{width}x{height}", Main_VideoSize) + Main_randomimg +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' + (ishosting ? 99 : 66) + '%; display: inline-block;">' +
         '<i class="icon-' + (valuesArray[8] ? 'refresh' : 'circle') + ' live_icon strokedeline" style="color: ' +
@@ -298,7 +298,7 @@ function ChannelContent_createCell(valuesArray) {
 
 function ChannelContent_createCellOffline() {
     ChannelContent_isoffline = true;
-    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="channel_content_cell0_1_img" class="stream_img" alt="" src="' +
+    Main_innerHTML("channel_content_thumbdiv0_0", '<div class="stream_thumbnail_live_img"><img id="' + Main_ChannelContent + '_cell_0_1_img" class="stream_img" alt="" src="' +
         (ChannelContent_offline_image ? (ChannelContent_offline_image + Main_randomimg) : IMG_404_VIDEO) +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_VIDEO +
         '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 140%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
@@ -349,7 +349,7 @@ function ChannelContent_removeFocus() {
     if (ChannelContent_cursorY) {
         ChannelContent_CheckIfIsLiveSTop();
         Main_RemoveClass("channel_content_thumbdiv0_0", Main_classThumb);
-        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+        Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
     } else Main_RemoveClass('channel_content_thumbdivy_' + ChannelContent_cursorX, 'stream_switch_focused');
 }
 
@@ -621,7 +621,7 @@ function ChannelContent_LoadPreview() {
 
 function ChannelContent_LoadPreviewRestore() {
 
-    var img = Main_getElementById('channel_content_cell0_1_img');
+    var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
     var Rect = img.parentElement.getBoundingClientRect();
 
     OSInterface_ScreenPlayerRestore(
@@ -697,7 +697,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
                 Play_PreviewResponseText = StreamData.responseText;
                 Play_PreviewId = StreamInfo[14];
 
-                var img = Main_getElementById('channel_content_cell0_1_img');
+                var img = Main_getElementById(Main_ChannelContent + '_cell_0_1_img');
                 var Rect = img.parentElement.getBoundingClientRect();
 
                 OSInterface_StartScreensPlayer(
@@ -728,7 +728,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {//Called by Java
 
 function ChannelContent_LoadPreviewWarn(ErrorText, time) {
     Play_CheckIfIsLiveCleanEnd();
-    Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+    Main_RemoveClass(Main_ChannelContent + '_cell_0_1_img', 'opacity_zero');
     Main_showWarningDialog(
         ErrorText,
         time
@@ -750,7 +750,7 @@ function ChannelContent_RestoreThumb(play_data) {
 }
 
 function ChannelContent_Isfocused() {
-    return Main_getElementById('channel_content_cell0_1') &&
+    return Main_getElementById(Main_ChannelContent + '_cell_0_1') &&
         Main_values.Main_Go === Main_ChannelContent &&
         ChannelContent_cursorY &&
         Main_isScene1DocVisible();
