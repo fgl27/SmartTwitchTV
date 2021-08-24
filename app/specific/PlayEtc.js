@@ -2134,7 +2134,7 @@ function Play_MakeControls() {
         ShowInStay: false,
         icons: "key-left",
         offsetY: -5,
-        string: STR_SIDE_PANEL_SETTINGS,
+        string: STR_SIDE_PANEL_BACK_MAIN_MENU,
         values: null,
         defaultValue: null,
         enterKey: function(PlayVodClip, skipAddfocus) {

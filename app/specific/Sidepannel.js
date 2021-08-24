@@ -375,9 +375,9 @@ function Sidepannel_HideWarningDialog() {
 }
 
 function Sidepannel_partnerIcon(name, partner, isrerun) {
-    return '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
-        (partner ? ('<img class="partnericon_img" alt="" src="' +
-            IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div class="partnericon_text" style="background: #' +
+    return '<div id="feed_thumb_partnericon" class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' +
+        (partner ? ('<img id="feed_thumb_partnerimg" class="partnericon_img" alt="" src="' +
+            IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML) : "") + '<div id="feed_thumb_partnertext" class="partnericon_text" style="background: #' +
         (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') + '">' + STR_SPACE_HTML + STR_SPACE_HTML +
         (isrerun ? STR_RERUN : STR_LIVE) + STR_SPACE_HTML + STR_SPACE_HTML + '</div>';
 }
@@ -876,6 +876,30 @@ function Sidepannel_Scroll(skipAnimation) {
     Sidepannel_ScroolDoc.style.transform = 'translateY(-' + (value / BodyfontSize) + 'em)';
 }
 
+function Sidepannel_userLiveKeyRight() {
+    Sidepannel_HideEle(false, true);
+    Sidepannel_Hidecenefeed();
+    Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
+    Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
+    Sidepannel_StartMain();
+}
+
+function Sidepannel_userLiveKeyEnter() {
+    if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull()) {
+        Sidepannel_Hide(true);
+        Main_values.Play_isHost = false;
+
+        Main_OpenLiveStream(
+            Sidepannel_GetObj(),
+            Sidepannel_PosFeed,
+            UserLiveFeed_side_ids,
+            Sidepannel_handleKeyDown,
+            false,
+            'Side_Panel'
+        );
+    }
+}
+
 function Sidepannel_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -885,11 +909,7 @@ function Sidepannel_handleKeyDown(event) {
             Main_SwitchScreen();
             break;
         case KEY_RIGHT:
-            Sidepannel_HideEle(false, true);
-            Sidepannel_Hidecenefeed();
-            Main_AddClassWitEle(Sidepannel_ThumbDoc, 'opacity_zero');
-            Main_removeEventListener("keydown", Sidepannel_handleKeyDown);
-            Sidepannel_StartMain();
+            Sidepannel_userLiveKeyRight();
             break;
         case KEY_2:
         case KEY_LEFT:
@@ -916,19 +936,7 @@ function Sidepannel_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos] && Sidepannel_ObjNotNull()) {
-                Sidepannel_Hide(true);
-                Main_values.Play_isHost = false;
-
-                Main_OpenLiveStream(
-                    Sidepannel_GetObj(),
-                    Sidepannel_PosFeed,
-                    UserLiveFeed_side_ids,
-                    Sidepannel_handleKeyDown,
-                    false,
-                    'Side_Panel'
-                );
-            }
+            Sidepannel_userLiveKeyEnter();
             break;
         case KEY_PAUSE://key s
         case KEY_6:
@@ -959,6 +967,15 @@ function Sidepannel_handleKeyDown(event) {
     }
 }
 
+function Sidepannel_MainKeyLeft() {
+    if (AddUser_UserIsSet()) {
+        Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
+        Sidepannel_StartFeed();
+    } else {
+        Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+    }
+}
+
 function Sidepannel_handleKeyDownMain(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
@@ -969,12 +986,7 @@ function Sidepannel_handleKeyDownMain(event) {
             break;
         case KEY_3:
         case KEY_LEFT:
-            if (AddUser_UserIsSet()) {
-                Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
-                Sidepannel_StartFeed();
-            } else {
-                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
-            }
+            Sidepannel_MainKeyLeft();
             break;
         case KEY_PG_UP:
         case KEY_UP:

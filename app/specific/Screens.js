@@ -109,19 +109,141 @@ function Screens_InitScreens() {
 
     Main_setTimeout(Main_Startfirebase);
     Screens_first_init();
+
+    if (!Main_IsOn_OSInterface) {
+        var key = 0,
+            sidepanel_elem_hide = Main_getElementById('screens_holder'),
+            sidepanel_elem_show = Main_getElementById('side_panel_new_holder');
+
+        sidepanel_elem_show.onmouseover = function() {
+            key = Main_values.Main_Go;
+            if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
+                ScreenObj[key].IsOpen = 0;
+                ScreenObj[key].key_exit();
+            }
+        };
+
+        sidepanel_elem_hide.onmouseover = function() {
+            if (Sidepannel_isShowingMenus()) {
+                Sidepannel_Hide();
+                Main_SwitchScreen();
+            }
+        };
+
+        window.onclick = function(event) {
+            var id = event.target.id;
+            console.log(id)
+            if (!Main_A_includes_B(id, '_')) {
+                return;
+            }
+
+            var idArray = id.split('_');
+
+            if (idArray.length < 3) {
+                return;
+            }
+
+            var y = parseInt(idArray[2]),
+                x = parseInt(idArray[3]);
+
+            key = parseInt(idArray[0]);
+
+            if (!isNaN(key)) {
+                if (Screens_IsInUse(key)) {
+                    if (ScreenObj[key].posY !== y || ScreenObj[key].posX !== x) {
+                        Screens_RemoveFocus(key);
+                        ScreenObj[key].posY = y;
+                        Screens_ChangeFocus(0, x, key);
+                        Screens_handleKeyUpAnimationFast();
+                    }
+
+                    ScreenObj[key].key_play();
+                } else if (Sidepannel_isShowingMenus()) {
+                    Sidepannel_Hide();
+                    Main_SwitchScreen();
+                }
+            } else if (Sidepannel_isShowingMenus()) {
+
+                if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
+                    var sidepannel_pos = parseInt(idArray[4]);
+                    Sidepannel_RemoveFocusMain();
+                    Sidepannel_Sidepannel_Pos = parseInt(idArray[4]);
+                    if (sidepannel_pos === 2) Sidepannel_AddFocusMain();
+
+                    Sidepannel_KeyEnter();
+                } else if (Main_A_includes_B(id, 'side_panel_top_text_empty')) {
+                    Sidepannel_MainKeyLeft();
+                } else if (Main_A_includes_B(id, 'side_panel_back_main_menu')) {
+                    Sidepannel_userLiveKeyRight();
+                }
+
+            } else if (Sidepannel_isShowingUserLive()) {
+
+                if (Main_A_includes_B(id, 'side_panel_back_main_menu')) {
+                    Sidepannel_userLiveKeyRight();
+                } else if (Main_A_includes_B(id, 'side_panel_feed_refresh')) {
+                    if (!UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) UserLiveFeed_RefreshLive();
+                } else if (Main_A_includes_B(id, 'usf')) {
+
+                    Sidepannel_RemoveFocusFeed();
+                    Sidepannel_PosFeed = y;
+                    Sidepannel_AddFocusLiveFeed();
+                    Screens_handleKeyUpAnimationFast();
+                } else if (Main_A_includes_B(id, 'feed_thumb')) {
+                    Sidepannel_userLiveKeyEnter();
+                }
+
+            }
+        };
+
+        window.onwheel = function(event) {
+            var y = event.deltaY > 0 ? 1 : -1;
+
+            key = Main_values.Main_Go;
+            if (!yOnwheel && Screens_IsInUse(key) && !Sidepannel_isShowingMenus() &&
+                (y > 0 || ScreenObj[key].posY > 0)) {
+                Screens_ChangeFocus(y, ScreenObj[key].posX, key);
+
+            } else if (!yOnwheel && Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
+                (Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
+
+                Sidepannel_RemoveFocusFeed();
+                Sidepannel_PosFeed += y;
+                Sidepannel_AddFocusLiveFeed();
+
+            }
+
+            OnwheelId = Main_setTimeout(
+                function() {
+
+                    Screens_handleKeyUpAnimationFast();
+                    yOnwheel = 0;
+
+                },
+                Screens_ScrollAnimationTimeout * 1.5,
+                OnwheelId
+            );
+
+            yOnwheel++;
+            if (yOnwheel > 3) yOnwheel = 0;
+        };
+    }
 }
 
+var yOnwheel = 0;
+var OnwheelId;
+
 //TODO cleanup not used when finished migrate all
-function Screens_ScreenIds(base) {
+function Screens_ScreenIds(base, key) {
     return [
-        base + '_thumbdiv',//0
-        base + '_img',//1
-        base + '_title',//2
-        base + '_data',//3
+        key + '_thumbdiv_',//0
+        key + '_img_',//1
+        key + '_title_',//2
+        key + '_data_',//3
         base + '_scroll',//4
-        base + '_animated',//5
-        base + '_row',//6
-        base + '_watched'//7
+        key + '_animated_',//5
+        key + '_row_',//6
+        key + '_watched_'//7
     ];
 }
 

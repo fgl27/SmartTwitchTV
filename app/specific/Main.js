@@ -537,7 +537,7 @@ function Main_SetStringsMain() {
 function Main_SetStringsSecondary() {
     Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
 
-    Main_textContent('side_panel_feed_settings', STR_SIDE_PANEL_SETTINGS);
+    Main_textContent('side_panel_back_main_menu', STR_SIDE_PANEL_BACK_MAIN_MENU);
 
     Main_textContent('chanel_button', STR_CHANNELS);
     Main_textContent('game_button', STR_GAMES);

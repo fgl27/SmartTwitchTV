@@ -295,7 +295,7 @@ function pt_BRLang() {
     STR_PLAY_NEXT_IN = "Iniciar o proximo em";
     STR_PLAY_ALL = "Reproduzir tudo";
     STR_AUTO_PLAY_NEXT = "Reproduzir automaticamente o próximo clipe";
-    STR_SIDE_PANEL_SETTINGS = "Voltar ao menu principal";
+    STR_SIDE_PANEL_BACK_MAIN_MENU = "Voltar ao menu principal";
     STR_UP = "Pressione para cima";
     STR_HOLD_UP = "Segure pra cima";
     STR_LIVE_FEED = "Live Feed";

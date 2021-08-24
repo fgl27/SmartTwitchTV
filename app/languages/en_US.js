@@ -300,7 +300,7 @@ function en_USLang() {
     STR_PLAY_NEXT_IN = "Playing next in";
     STR_PLAY_ALL = "Play All";
     STR_AUTO_PLAY_NEXT = "Auto play next clip";
-    STR_SIDE_PANEL_SETTINGS = "Back to main menu";
+    STR_SIDE_PANEL_BACK_MAIN_MENU = "Back to main menu";
     STR_UP = "Press up";
     STR_HOLD_UP = "Hold UP or key 2";
     STR_LIVE_FEED = "Live Feed";

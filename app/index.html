@@ -88,10 +88,10 @@
             color: #FF0000 !important;
         }
 
-        div.screen_size,
-        div.scene_keys,
-        div.burn_in_protection,
-        div.screens {
+        .screen_size,
+        .scene_keys,
+        .burn_in_protection,
+        .screens {
             position: absolute;
             background-color: rgba(0, 0, 0, 0);
             width: 100%;
@@ -101,7 +101,7 @@
             font-kerning: none;
         }
 
-        div.feed_screen_new {
+        .feed_screen_new {
             background-color: rgba(0, 0, 0, 0);
             overflow: hidden;
             width: 100%;
@@ -112,11 +112,11 @@
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
-        div.scene_keys {
+        .scene_keys {
             z-index: 200;
         }
 
-        div.burn_in_protection {
+        .burn_in_protection {
             z-index: 400;
             background-color: rgba(0, 0, 0, 1);
         }
@@ -129,7 +129,7 @@
             pointer-events: none;
         }
 
-        div.screens {
+        .screens {
             position: absolute;
         }
 
@@ -158,11 +158,11 @@
             will-change: transform;
         }
 
-        div.screen_holder,
-        div.screen_holder_channel,
-        div.screen_holder_switch,
-        div.screen_holder_user,
-        div.screen_holder_games {
+        .screen_holder,
+        .screen_holder_channel,
+        .screen_holder_switch,
+        .screen_holder_user,
+        .screen_holder_games {
             width: 100%;
             position: absolute;
             top: 6.9%;
@@ -171,23 +171,23 @@
             will-change: transform;
         }
 
-        div.screen_holder_switch {
+        .screen_holder_switch {
             top: 2.6%;
         }
 
-        div.screen_holder_games {
+        .screen_holder_games {
             top: 4.5%;
         }
 
-        div.screen_holder_channel {
+        .screen_holder_channel {
             top: 4.25%;
         }
 
-        div.screen_holder_user {
+        .screen_holder_user {
             top: 7%;
         }
 
-        div.settings_holder {
+        .settings_holder {
             position: absolute;
             top: 4.5%;
             width: 100%;
@@ -195,7 +195,7 @@
             overflow: hidden;
         }
 
-        div.screen_holder_settings {
+        .screen_holder_settings {
             position: absolute;
             overflow: hidden;
             margin-left: 3%;
@@ -219,7 +219,7 @@
             vertical-align: middle;
         }
 
-        div.stream_cell_period {
+        .stream_cell_period {
             padding-left: 3ch;
             position: relative;
             width: 30%;
@@ -227,7 +227,7 @@
             transform: translateY(22%);
         }
 
-        div.icon_feed_refresh {
+        .icon_feed_refresh {
             width: 100%;
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
@@ -237,26 +237,26 @@
             filter: drop-shadow(0 0.05em 0.15em #000000) drop-shadow(0 0.05em 0.15em #000000);
         }
 
-        div.stream_thumbnail_game_feed,
-        div.stream_thumbnail_game,
-        div.stream_thumbnail_side,
-        div.stream_thumbnail_live,
-        div.stream_thumbnail_player_feed,
-        div.stream_thumbnail_user,
-        div.stream_thumbnail_channel {
+        .stream_thumbnail_game_feed,
+        .stream_thumbnail_game,
+        .stream_thumbnail_side,
+        .stream_thumbnail_live,
+        .stream_thumbnail_player_feed,
+        .stream_thumbnail_user,
+        .stream_thumbnail_channel {
             width: 100%;
             height: 0;
             position: relative;
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.banner_holder {
+        .banner_holder {
             width: 98.75%;
             display: inline-block;
             padding: 0.5%;
         }
 
-        div.inner_banner_holder {
+        .inner_banner_holder {
             width: 100%;
             display: inline-block;
             padding-bottom: 2.75%;
@@ -266,12 +266,12 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.banner_text_holder {
+        .banner_text_holder {
             height: 2.5vh;
             font-family: 'Roboto-Bold';
         }
 
-        div.banner_img_holder {
+        .banner_img_holder {
             padding-bottom: 24%;
             background-color: #000000 !important;
         }
@@ -294,7 +294,7 @@
             transform: translateX(-50%);
         }
 
-        div.stream_thumbnail_side {
+        .stream_thumbnail_side {
             width: 99.75%;
             /*16 by 9 in relatetion to the width % size*/
             padding-bottom: 56.109375%;
@@ -302,7 +302,7 @@
             background: #000000;
         }
 
-        div.stream_thumbnail_player_feed {
+        .stream_thumbnail_player_feed {
             padding-bottom: 93%;
             width: 97%;
             background-repeat: no-repeat;
@@ -311,12 +311,12 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.stream_switch_focused {
+        .stream_switch_focused {
             background-color: rgba(255, 255, 255, 0.15);
             border-color: #ebebeb !important;
         }
 
-        div.stream_thumbnail_channel_vod {
+        .stream_thumbnail_channel_vod {
             margin-left: 5%;
             width: 90%;
             height: 0;
@@ -324,35 +324,35 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.stream_thumbnail_live {
+        .stream_thumbnail_live {
             padding-bottom: 80.5%;
             background-color: #000000;
             color: #FFFFFF;
         }
 
-        div.stream_thumbnail_feed_game,
-        div.stream_thumbnail_live_game {
+        .stream_thumbnail_feed_game,
+        .stream_thumbnail_live_game {
             width: 100%;
             background-color: #000000;
             padding-bottom: 139.7%;
             position: relative;
         }
 
-        div.stream_thumbnail_live_img {
+        .stream_thumbnail_live_img {
             width: 100%;
             background-color: #000000;
             padding-bottom: 56.25%;
             position: relative;
         }
 
-        div.stream_thumbnail_channel_img {
+        .stream_thumbnail_channel_img {
             width: 100%;
             background-color: #000000;
             padding-bottom: 100%;
             position: relative;
         }
 
-        div.stream_thumbnail_game_holder {
+        .stream_thumbnail_game_holder {
             width: 17.1%;
             display: inline-block;
             padding: 1%;
@@ -360,8 +360,8 @@
             padding-bottom: 0.2%;
         }
 
-        div.stream_thumbnail_game_feed,
-        div.stream_thumbnail_game {
+        .stream_thumbnail_game_feed,
+        .stream_thumbnail_game {
             padding-bottom: 164%;
             font-size: 80%;
             background-color: #000000;
@@ -369,28 +369,28 @@
             border: 0.06em solid rgba(0, 0, 0, 0);
         }
 
-        div.stream_thumbnail_game_feed {
+        .stream_thumbnail_game_feed {
             padding-bottom: 162%;
             font-size: 80%;
             width: 93%;
         }
 
-        div.stream_thumbnail_live_holder {
+        .stream_thumbnail_live_holder {
             width: 32.25%;
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.5%;
         }
 
-        div.stream_thumbnail_user_icon_holder,
-        div.stream_thumbnail_channel_holder {
+        .stream_thumbnail_user_icon_holder,
+        .stream_thumbnail_channel_holder {
             width: 15%;
             display: inline-block;
             padding: 0.5%;
             padding-bottom: 1.25%;
         }
 
-        div.stream_thumbnail_user_icon_holder {
+        .stream_thumbnail_user_icon_holder {
             width: 14.5%;
             transform: translateY(-11%);
             padding: 1%;
@@ -398,7 +398,7 @@
             padding-bottom: 0;
         }
 
-        div.channel_about {
+        .channel_about {
             text-overflow: ellipsis;
             overflow: hidden;
             height: 98% !important;
@@ -407,13 +407,13 @@
             margin-left: 2%;
         }
 
-        div.stream_thumbnail_user_text_holder,
-        div.stream_thumbnail_channel_text_holder,
-        div.stream_thumbnail_game_text_holder,
-        div.stream_thumbnail_game_feed_text_holder,
-        div.stream_thumbnail_feed_text_holder,
-        div.banner_text_holder,
-        div.stream_thumbnail_live_text_holder {
+        .stream_thumbnail_user_text_holder,
+        .stream_thumbnail_channel_text_holder,
+        .stream_thumbnail_game_text_holder,
+        .stream_thumbnail_game_feed_text_holder,
+        .stream_thumbnail_feed_text_holder,
+        .banner_text_holder,
+        .stream_thumbnail_live_text_holder {
             position: absolute;
             right: 0;
             left: 0;
@@ -422,12 +422,12 @@
             margin-top: 0.1em;
         }
 
-        div.stream_thumbnail_feed_text_holder {
+        .stream_thumbnail_feed_text_holder {
             height: 13vh;
             font-size: 2.55vh;
         }
 
-        div.stream_thumbnail_live_text_holder {
+        .stream_thumbnail_live_text_holder {
             height: 12.5vh;
         }
 
@@ -439,21 +439,21 @@
             transform: translateY(-50%);
         }
 
-        div.stream_thumbnail_game_feed_text_holder,
-        div.stream_thumbnail_game_text_holder {
+        .stream_thumbnail_game_feed_text_holder,
+        .stream_thumbnail_game_text_holder {
             height: 7vh;
         }
 
-        div.stream_thumbnail_game_feed_text_holder {
+        .stream_thumbnail_game_feed_text_holder {
             font-size: 2.3vh;
         }
 
-        div.stream_thumbnail_channel_text_holder {
+        .stream_thumbnail_channel_text_holder {
             bottom: 0;
             height: 1em;
         }
 
-        div.stream_thumbnail_user_text_holder {
+        .stream_thumbnail_user_text_holder {
             bottom: 0;
             height: 2em;
         }
@@ -581,19 +581,19 @@
             padding-right: 2.5%;
         }
 
-        div.stream_thumbnail_channel {
+        .stream_thumbnail_channel {
             padding-bottom: 112%;
             background-color: #000000;
             color: #FFFFFF;
         }
 
-        div.stream_thumbnail_user {
+        .stream_thumbnail_user {
             padding-bottom: 122%;
             background-color: #000000;
             color: #FFFFFF;
         }
 
-        div.stream_user_icon {
+        .stream_user_icon {
             width: 100%;
             color: #FFFFFF;
             text-align: center;
@@ -669,7 +669,7 @@
             font-size: 6vh !important;
         }
 
-        div.stream_channel_follow_game {
+        .stream_channel_follow_game {
             text-align: center;
             font-size: 71%;
             line-height: 0.5em;
@@ -680,7 +680,7 @@
             transform: translateY(1vh);
         }
 
-        div.stream_channel_follow_game,
+        .stream_channel_follow_game,
         .pause_button3d {
             text-shadow: -0.1em 0 0 #000000,
                 0.05em -0.05em 0 #000000,
@@ -728,7 +728,7 @@
                 0 -0.04em 0 #000000;
         }
 
-        div.seek_previews_holder {
+        .seek_previews_holder {
             transform: translate(0%, 0%);
             position: absolute;
             display: inline-block;
@@ -736,7 +736,7 @@
             height: 100%;
         }
 
-        div.seek_previews {
+        .seek_previews {
             transform: translateX(-53%);
             left: 0;
             bottom: 0;
@@ -753,17 +753,17 @@
             font-size: 100%
         }
 
-        div.scenefeed_background_no_ani,
-        div.scenefeed_background {
+        .scenefeed_background_no_ani,
+        .scenefeed_background {
             background: rgba(0, 0, 0, 1);
         }
 
-        div.scenefeed_background {
+        .scenefeed_background {
             transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             background: rgba(0, 0, 0, 1);
         }
 
-        div.user_feed {
+        .user_feed {
             z-index: 100;
             position: absolute;
             bottom: -0.1%;
@@ -776,12 +776,12 @@
             will-change: transform;
         }
 
-        div.user_feed_hide {
+        .user_feed_hide {
             transform: translateY(101%);
         }
 
-        div.user_feed_scroll_game,
-        div.user_feed_scroll {
+        .user_feed_scroll_game,
+        .user_feed_scroll {
             position: absolute;
             width: 100%;
             left: 0.55vh;
@@ -794,15 +794,15 @@
             will-change: transform;
         }
 
-        div.user_feed_scroll_game {
+        .user_feed_scroll_game {
             left: 0.9vh;
             /* height calculated manual to be 100% of content*/
             height: 85%;
             bottom: 11.7%;
         }
 
-        div.user_feed_thumb_game,
-        div.user_feed_thumb {
+        .user_feed_thumb_game,
+        .user_feed_thumb {
             width: 19.95%;
             display: inline-block;
             transform: translate(0px, -103%);
@@ -812,19 +812,19 @@
 
         }
 
-        div.user_feed_thumb_game {
+        .user_feed_thumb_game {
             width: 12.465%;
         }
 
-        div.chat_input_text_box {
+        .chat_input_text_box {
             width: 95%;
             text-align: center;
             margin-left: 2.5%;
         }
 
-        div.chat_result,
-        div.chat_result_holder,
-        div.chat_result_text {
+        .chat_result,
+        .chat_result_holder,
+        .chat_result_text {
             width: 100%;
             text-align: center;
             font-size: 2.4vh;
@@ -833,18 +833,18 @@
             color: #FFFFFF;
         }
 
-        div.chat_result_holder_inner {
+        .chat_result_holder_inner {
             padding: 0.5%;
         }
 
-        div.chat_result_text {
+        .chat_result_text {
             width: 100%;
             height: 100%;
             transform: rotate(180deg);
             text-align: left;
         }
 
-        div.chat_result_holder {
+        .chat_result_holder {
             max-height: 24.5vh;
             margin-bottom: 1%;
             border: 0.4vh solid #FFFFFF;
@@ -852,7 +852,7 @@
             overflow: hidden;
         }
 
-        div.chat_result {
+        .chat_result {
             background-color: rgba(0, 0, 0, 0);
         }
 
@@ -891,11 +891,11 @@
             object-fit: contain;
         }
 
-        div.chat_emotes_div {
+        .chat_emotes_div {
             overflow: hidden;
         }
 
-        div.chat_emotes {
+        .chat_emotes {
             width: 93%;
             margin-left: 3.5%;
             margin-top: 0.5%;
@@ -905,11 +905,11 @@
             will-change: transform;
         }
 
-        div.chat_emotes_img_div {
+        .chat_emotes_img_div {
             padding: 20%;
         }
 
-        div.chat_emotes_img_holder {
+        .chat_emotes_img_holder {
             width: 5%;
             display: inline-block;
         }
@@ -919,11 +919,11 @@
             box-shadow: inset 0 0 0 0.4vh #EBEBEB;
         }
 
-        div.chat_emotes_name_holder {
+        .chat_emotes_name_holder {
             height: 2vh;
         }
 
-        div.chat_emotes_name {
+        .chat_emotes_name {
             color: #FFFFFF;
             font-size: 2vh;
             width: 100vw;
@@ -933,7 +933,7 @@
             transform: translateX(-50%);
         }
 
-        div.chat_emotes_counter {
+        .chat_emotes_counter {
             position: absolute;
             top: 0;
             right: 0;
@@ -942,7 +942,7 @@
             color: #FFFFFF;
         }
 
-        div.chat_emotes_holder {
+        .chat_emotes_holder {
             position: absolute;
             text-align: center;
             width: 100%;
@@ -953,13 +953,13 @@
             z-index: 2;
         }
 
-        div.chat_emotes_text {
+        .chat_emotes_text {
             color: #FFFFFF;
             font-family: 'Roboto-Bold';
             font-size: 3vh;
         }
 
-        div.button_chat {
+        .button_chat {
             width: 14%;
             overflow: hidden;
             white-space: nowrap;
@@ -977,21 +977,21 @@
             text-align: center;
         }
 
-        div.chat_send {
+        .chat_send {
             font-size: 0;
             top: 0;
             z-index: 8;
             background: rgba(0, 0, 0, 0.7)
         }
 
-        div.button_chat_focused {
+        .button_chat_focused {
             color: #000000;
             background-color: #ebebeb;
             border-color: #000000;
             box-shadow: inset 0 0 0 0.1em #FF0000;
         }
 
-        div.input_text_box {
+        .input_text_box {
             width: 70%;
             margin-top: 13%;
             margin-left: 15%;
@@ -1012,8 +1012,8 @@
             padding: 0.08em;
         }
 
-        div.button_dialog,
-        div.button_search {
+        .button_dialog,
+        .button_search {
             width: 20%;
             height: 2.2em;
             line-height: 2.2em;
@@ -1033,28 +1033,28 @@
             text-overflow: ellipsis;
         }
 
-        div.button_dialog_focused,
-        div.button_search_focused {
+        .button_dialog_focused,
+        .button_search_focused {
             background-color: #3e3e3e;
             text-shadow: -0.03em -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             border-image: linear-gradient(to right, #000000 6%, #D0D3D4, #000000 94%) 1;
             margin-bottom: 0 !important;
         }
 
-        div.button_dialog_focused {
+        .button_dialog_focused {
             border-image: linear-gradient(to right, #101010 9%, #D0D3D4, #101010 91%) 1;
         }
 
-        div.about_text_title {
+        .about_text_title {
             text-align: center;
             width: 100%;
             font-size: 125%;
             font-family: 'Roboto-Bold';
         }
 
-        div.about_text,
-        div.exit_text,
-        div.controls_text {
+        .about_text,
+        .exit_text,
+        .controls_text {
             width: 99%;
             display: inline-block;
             color: #FFFFFF;
@@ -1065,7 +1065,7 @@
             text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em;
         }
 
-        div.exit_text {
+        .exit_text {
             margin-top: 2%;
             margin-bottom: 2%;
             width: 96%;
@@ -1073,39 +1073,39 @@
             margin-left: 2%;
         }
 
-        div.controls_text {
+        .controls_text {
             font-size: 1.65vh;
             margin-top: 0;
             margin-bottom: 0;
         }
 
-        div.up,
-        div.down {
+        .up,
+        .down {
             border-left: 0.6em solid transparent;
             border-right: 0.6em solid transparent;
         }
 
-        div.up {
+        .up {
             border-bottom: 0.8em solid white;
             margin-bottom: 15%;
         }
 
-        div.down {
+        .down {
             border-top: 0.8em solid white;
         }
 
-        div.scene_channel_panel {
+        .scene_channel_panel {
             position: absolute;
             z-index: 2;
 
         }
 
-        div.playsideinfostatus {
+        .playsideinfostatus {
             word-wrap: break-word;
             line-height: 2.1ch
         }
 
-        div.playsideinfo {
+        .playsideinfo {
             z-index: 2;
             position: absolute;
             right: 0;
@@ -1116,12 +1116,12 @@
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
 
-        div.playsideinfofocus {
+        .playsideinfofocus {
             border-radius: 0.75em;
             background-color: rgba(0, 0, 0, 0.25);
         }
 
-        div.playclock {
+        .playclock {
             position: absolute;
             text-align: center;
             top: 0.75%;
@@ -1131,7 +1131,7 @@
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
 
-        div.playmaininfo {
+        .playmaininfo {
             vertical-align: top;
             padding-left: 1%;
             padding-top: 2%;
@@ -1144,12 +1144,12 @@
             text-shadow: -0.05em -0.05em 0 #000, 0.05em -0.05em 0 #000, -0.05em 0.05em 0 #000, 0.05em 0.05em 0 #000;
         }
 
-        div.playerinfo {
+        .playerinfo {
             width: 100%;
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
         }
 
-        div.partnericon_div {
+        .partnericon_div {
             display: inline-block;
             width: auto;
             max-width: 65%;
@@ -1166,24 +1166,24 @@
             vertical-align: middle;
         }
 
-        div.stream_info_pp_name {
+        .stream_info_pp_name {
             display: inline-block;
             width: auto;
             max-width: 80%;
         }
 
-        div.lang_text,
-        div.audio_icon,
-        div.vodicon_text,
-        div.partnericon_text {
+        .lang_text,
+        .audio_icon,
+        .vodicon_text,
+        .partnericon_text {
             display: inline-block;
             width: auto;
             font-size: 70%;
             font-family: 'Roboto';
         }
 
-        div.vodicon_text,
-        div.partnericon_text {
+        .vodicon_text,
+        .partnericon_text {
             border-radius: 0.1em;
             text-shadow: none;
             font-size: 60%;
@@ -1191,29 +1191,29 @@
             transform: translateY(-8%);
         }
 
-        div.vodicon_text {
+        .vodicon_text {
             transform: translateY(-8%);
             border-radius: 0.5em;
             font-size: 70%;
         }
 
-        div.audio_icon {
+        .audio_icon {
             font-size: 100%;
         }
 
-        div.side_panel_new_holder {
+        .side_panel_new_holder {
             will-change: opacity;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
 
-        div.side_panel_feed {
+        .side_panel_feed {
             width: 100%;
             padding: 1%;
         }
 
-        div.side_panel_feed_top {
+        .side_panel_feed_top {
             margin-top: 1%;
             margin-bottom: 1%;
             vertical-align: middle;
@@ -1225,7 +1225,7 @@
             color: #FFFFFF;
         }
 
-        div.side_panel_feed_thumb_text_holder {
+        .side_panel_feed_thumb_text_holder {
             width: 98%;
             height: 21%;
             bottom: 0;
@@ -1234,13 +1234,13 @@
             padding: 1%;
         }
 
-        div.side_panel_feed_thumb_text {
+        .side_panel_feed_thumb_text {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
         }
 
-        div.side_panel_feed_thumb_title_text {
+        .side_panel_feed_thumb_title_text {
             word-wrap: break-word;
             max-height: 2.5em;
             font-family: 'Roboto-Bold';
@@ -1248,7 +1248,7 @@
             overflow: hidden;
         }
 
-        div.side_panel_feed_thumb {
+        .side_panel_feed_thumb {
             position: absolute;
             width: 75%;
             height: 97.5%;
@@ -1259,7 +1259,7 @@
             transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
         }
 
-        div.side_panel_dialog {
+        .side_panel_dialog {
             text-align: center;
             margin-top: 45.9vh;
             margin-left: 24.5%;
@@ -1269,12 +1269,12 @@
             position: absolute;
         }
 
-        div.side_panel_dialog_hide {
+        .side_panel_dialog_hide {
             margin-left: -15.75%;
         }
 
-        div.side_panel_fix,
-        div.side_panel_movel {
+        .side_panel_fix,
+        .side_panel_movel {
             position: absolute;
             height: 100%;
             width: 5%;
@@ -1285,37 +1285,38 @@
             will-change: transform;
         }
 
-        div.side_panel_fix {
+        .side_panel_fix {
             transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             z-index: 3;
             font-size: 2.65vh;
+            height: 82vh;
         }
 
-        div.side_panel_background_color {
+        .side_panel_background_color {
             background-color: #000000;
         }
 
-        div.side_panel_fix_top_2,
-        div.side_panel_fix_top {
-            height: 42%;
+        .side_panel_fix_top_2,
+        .side_panel_fix_top {
+            height: 42vh;
         }
 
-        div.side_panel_fix_top_2 {
-            height: 42%;
+        .side_panel_fix_top_2 {
+            height: 42vh;
             transform: translateY(-65%);
         }
 
-        div.side_panel_fix_bottom {
+        .side_panel_fix_bottom {
             height: 32%;
             transform: translateY(-172%);
         }
 
-        div.side_panel_fix_center {
-            height: 42%;
+        .side_panel_fix_center {
+            height: 42vh;
             transform: translateY(-118%);
         }
 
-        div.side_panel_movel_bottom_holder {
+        .side_panel_movel_bottom_holder {
             height: 35%;
             padding-top: 9vh;
             padding-left: 0.5vw;
@@ -1325,13 +1326,13 @@
         }
 
 
-        div.side_panel_movel_bottom_text {
+        .side_panel_movel_bottom_text {
             height: 25%;
             width: auto;
         }
 
-        div.side_panel_new_icons_text_holder,
-        div.side_panel_new_icons {
+        .side_panel_new_icons_text_holder,
+        .side_panel_new_icons {
             width: 100%;
             height: 9.25%;
             margin-top: 0.7vh;
@@ -1342,33 +1343,33 @@
             text-shadow: -0.02em -0.02em 0 #000, 0.02em -0.02em 0 #000, -0.02em 0.02em 0 #000, 0.02em 0.02em 0 #000;
         }
 
-        div.side_panel_new_text_options,
-        div.side_panel_new_icons_text_holder,
-        div.side_panel_new_icons {
+        .side_panel_new_text_options,
+        .side_panel_new_icons_text_holder,
+        .side_panel_new_icons {
             border-top: 0.05em solid;
             border-bottom: 0.05em solid;
             border-image: linear-gradient(#000000, #000000) 1;
             box-sizing: border-box;
         }
 
-        div.side_panel_new_icons {
+        .side_panel_new_icons {
             margin-left: 10%;
         }
 
-        div.side_panel_new_icons_text_holder {
+        .side_panel_new_icons_text_holder {
             padding-left: 8vh;
             width: auto;
             text-align: left;
             font-size: 3.325vh;
         }
 
-        div.side_panel_new_icons_text {
+        .side_panel_new_icons_text {
             background: linear-gradient(to right, #000000 18%, rgba(255, 255, 255, 0.3), #000000 80%);
             border-image: linear-gradient(to right, #000000 18%, #D0D3D4, #000000 80%) 1 !important;
         }
 
 
-        div.side_panel_new_icons_text_botton {
+        .side_panel_new_icons_text_botton {
             background: linear-gradient(to right, #000000 0%, rgba(255, 255, 255, 0.3), #000000 70%);
             border-image: linear-gradient(to right, #000000 0%, #D0D3D4, #000000 70%) 1 !important;
 
@@ -1378,13 +1379,13 @@
             vertical-align: sub;
         }
 
-        div.side_panel_new_icons_start {
+        .side_panel_new_icons_start {
             background: linear-gradient(to right, #000000 8%, rgba(255, 255, 255, 0.3), #000000 92%);
             border-image: linear-gradient(to right, #000000 8%, #D0D3D4, #000000 92%) 1 !important;
         }
 
-        div.side_panel_movel_user_text,
-        div.side_panel_movel_top_text {
+        .side_panel_movel_user_text,
+        .side_panel_movel_top_text {
             color: #FFFFFF;
             font-size: 75%;
             position: absolute;
@@ -1393,7 +1394,7 @@
             width: 75%;
         }
 
-        div.side_panel_movel_user_text {
+        .side_panel_movel_user_text {
             transform: translateY(-115%);
             text-decoration: underline;
         }
@@ -1402,7 +1403,7 @@
             width: 70%;
         }
 
-        div.side_panel {
+        .side_panel {
             position: absolute;
             bottom: 0;
             left: -1.9%;
@@ -1415,15 +1416,15 @@
             background: #000000;
         }
 
-        div.side_panel_hide {
+        .side_panel_hide {
             transform: translateX(-76.52%);
         }
 
-        div.side_panel_hide_full {
+        .side_panel_hide_full {
             transform: translateX(-100%);
         }
 
-        div.side_panel_inner {
+        .side_panel_inner {
             transform: translateX(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
@@ -1431,7 +1432,7 @@
             position: absolute;
         }
 
-        div.side_panel_inner_hide {
+        .side_panel_inner_hide {
             /* 0.5% more then side_panel_hide */
             transform: translateX(77.02%);
             width: 100%;
@@ -1444,7 +1445,7 @@
             margin-left: 1.5%;
         }
 
-        div.dialog_end_stream_text {
+        .dialog_end_stream_text {
             margin-top: 12.25%;
             font-size: 4.25vh;
             padding-bottom: 0.75%;
@@ -1455,7 +1456,7 @@
             overflow: hidden;
         }
 
-        div.about_dialogs {
+        .about_dialogs {
             position: absolute;
             z-index: 99;
             background-color: #101010;
@@ -1465,7 +1466,7 @@
             border: 0.04em solid #FFFFFF;
         }
 
-        div.dialogs {
+        .dialogs {
             position: absolute;
             text-align: center;
             width: 100%;
@@ -1473,7 +1474,7 @@
             color: #FFFFFF;
         }
 
-        div.dialogs_feed {
+        .dialogs_feed {
             text-align: center;
             width: 100%;
             font-family: 'Roboto-Bold';
@@ -1503,17 +1504,27 @@
             color: #FF2121;
         }
 
-        div.streams_div {
+        .streams_div {
             margin-left: 4.6%;
             width: 94.5%;
         }
 
-        div.streams_game_div {
+        .streams_game_div {
             margin-left: 6.75%;
             width: 94.5%;
         }
 
-        div.counter_class {
+        .side_panel_div,
+        .side_panel_feed_top,
+        .side_panel_movel_bottom_text,
+        .side_panel_new_icons_text_holder,
+        .side_panel_new_icons,
+        .streams_game_div,
+        .streams_div {
+            cursor: pointer;
+        }
+
+        .counter_class {
             width: 100%;
             text-align: left;
             word-wrap: break-word;
@@ -1523,8 +1534,8 @@
             text-shadow: #000000 0 0 0.15em, #000000 0 0 0.15em, #000000 0 0 0.1em;
         }
 
-        div.dialog_period,
-        div.dialog_exit {
+        .dialog_period,
+        .dialog_exit {
             position: absolute;
             z-index: 99;
             width: 60%;
@@ -1536,14 +1547,14 @@
             border-image: linear-gradient(to right, #101010 20%, #D0D3D4, #101010 80%) 1;
         }
 
-        div.dialog_period {
+        .dialog_period {
             margin-top: 10%;
             width: 80%;
             margin-left: 12.1%;
         }
 
-        div.chat_container1,
-        div.chat_container {
+        .chat_container1,
+        .chat_container {
             z-index: 2;
             border-radius: 0.1em;
             left: 75.1%;
@@ -1554,15 +1565,15 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        div.chat_container1 {
+        .chat_container1 {
             left: 0.2%;
             top: 0.2%;
             height: 96.1%;
             background-color: rgba(0, 0, 0, 1);
         }
 
-        div.chat_container_name,
-        div.chat_container1_name {
+        .chat_container_name,
+        .chat_container1_name {
             z-index: 2;
             border-radius: 0.2em;
             left: 0.15%;
@@ -1580,12 +1591,12 @@
             overflow: hidden;
         }
 
-        div.chat_container_name {
+        .chat_container_name {
             top: 0.2%;
             left: 75.1%;
         }
 
-        div.chat_container_name_text {
+        .chat_container_name_text {
             display: inline-block;
             padding-top: 0.5%;
             white-space: nowrap;
@@ -1594,7 +1605,7 @@
             max-width: 77%;
         }
 
-        div.top_lable {
+        .top_lable {
             text-align: center;
             width: 100%;
             color: #FFFFFF;
@@ -1605,7 +1616,7 @@
             top: 1vh;
         }
 
-        div.topbar {
+        .topbar {
             position: absolute;
             margin-left: 4.75%;
             width: 95.24%;
@@ -1615,14 +1626,14 @@
             transform: translateY(-1vh);
         }
 
-        div.controls_div {
+        .controls_div {
             float: left;
             padding-left: 0.5%;
             /* 1vh offset to hide content that may show benhide it*/
             padding-top: calc(1vh + 0.2%);
         }
 
-        div.top_clock {
+        .top_clock {
             position: absolute;
             right: 2vh;
             /* 1vh offset to hide content that may show benhide it*/
@@ -1651,8 +1662,8 @@
             display: none !important;
         }
 
-        div.dialog_end_icons_start,
-        div.dialog_end_icons {
+        .dialog_end_icons_start,
+        .dialog_end_icons {
             font-size: 2.75vh;
             vertical-align: top;
             display: inline-block;
@@ -1664,11 +1675,11 @@
             border: 0.04em solid rgba(0, 0, 0, 0);
         }
 
-        div.dialog_end_icons_start {
+        .dialog_end_icons_start {
             height: 23%;
         }
 
-        div.dialog_end_icons_focus {
+        .dialog_end_icons_focus {
             border-color: #FFFFFF;
             background-color: rgba(150, 150, 150, 0.55);
         }
@@ -1688,7 +1699,7 @@
             border-right: 0.45em solid white;
         }
 
-        div.settings_main {
+        .settings_main {
             font-family: 'Roboto-Bold';
             color: #FFFFFF;
             width: 96%;
@@ -1696,19 +1707,19 @@
             margin-bottom: 1%;
         }
 
-        div.hist_div,
-        div.settings_div,
-        div.settings_title,
-        div.settings_summary,
-        div.settings_section {
+        .hist_div,
+        .settings_div,
+        .settings_title,
+        .settings_summary,
+        .settings_section {
             width: 100%;
             display: inline-block;
             vertical-align: middle;
             font-size: 135%;
         }
 
-        div.hist_div,
-        div.settings_div {
+        .hist_div,
+        .settings_div {
             line-height: 0.9em;
             box-sizing: border-box;
             border-top: 0.05em solid;
@@ -1716,17 +1727,17 @@
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
-        div.hist_div {
+        .hist_div {
             width: 92%;
         }
 
-        div.settings_div_focus {
+        .settings_div_focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
-        div.hist_value,
-        div.settings_value {
+        .hist_value,
+        .settings_value {
             line-height: 1em;
             width: 18%;
             display: inline-block;
@@ -1740,27 +1751,27 @@
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
-        div.hist_value {
+        .hist_value {
             width: 27%;
         }
 
-        div.settings_value_focus {
+        .settings_value_focus {
             background-color: rgba(255, 255, 255, 0.15);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
-        div.settings_section {
+        .settings_section {
             font-size: 130%;
             text-align: center;
         }
 
-        div.settings_title {
+        .settings_title {
             width: 80%;
             font-size: 95%;
             text-align: center;
         }
 
-        div.settings_summary {
+        .settings_summary {
             line-height: 1.4em;
             width: 100%;
             margin-left: 1%;
@@ -1769,8 +1780,8 @@
             font-family: 'Roboto';
         }
 
-        div.hist_name,
-        div.settings_name {
+        .hist_name,
+        .settings_name {
             margin-left: 1.5%;
             width: 74.5%;
             display: inline-block;
@@ -1780,11 +1791,11 @@
             word-wrap: break-word;
         }
 
-        div.hist_name {
+        .hist_name {
             width: 54%;
         }
 
-        div.settings_arraw_div {
+        .settings_arraw_div {
             width: 2%;
             display: inline-block;
             vertical-align: middle;
@@ -1961,7 +1972,7 @@
             margin-left: 2.5%;
         }
 
-        div.next_img_holder {
+        .next_img_holder {
             position: absolute;
             transform: translateY(-101%);
             width: 55vh;
@@ -1979,7 +1990,7 @@
                 0 0 0 0.6vh #000000;
         }
 
-        div.end_img_holder {
+        .end_img_holder {
             position: absolute;
             transform: translate(-24.5%, -104%);
             width: 53vh;
@@ -2233,9 +2244,9 @@
             height: 100%;
         }
 
-        div.multi_dialog_div,
-        div.div_panel_pp,
-        div.side_panel_div {
+        .multi_dialog_div,
+        .div_panel_pp,
+        .side_panel_div {
             width: 100%;
             height: 0;
             position: relative;
@@ -2248,42 +2259,42 @@
             border-image: linear-gradient(#000000, #000000) 1;
         }
 
-        div.div_panel_pp {
+        .div_panel_pp {
             border: 0;
             padding-bottom: 9%;
         }
 
-        div.multi_dialog_div {
+        .multi_dialog_div {
             border-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)) 1;
         }
 
-        div.side_panel_div_focused {
+        .side_panel_div_focused {
             background: linear-gradient(to right, #000000 20%, rgba(255, 255, 255, 0.25), #000000 80%);
             border-image: linear-gradient(to right, #000000 20%, #D0D3D4, #000000 80%) 1 !important;
         }
 
-        div.side_panel_iner_div1_pp,
-        div.side_panel_iner_div1,
-        div.side_panel_iner_div2_multi,
-        div.side_panel_iner_div2_multi_dialog,
-        div.side_panel_iner_div2_pp,
-        div.side_panel_iner_div2,
-        div.side_panel_iner_div3 {
+        .side_panel_iner_div1_pp,
+        .side_panel_iner_div1,
+        .side_panel_iner_div2_multi,
+        .side_panel_iner_div2_multi_dialog,
+        .side_panel_iner_div2_pp,
+        .side_panel_iner_div2,
+        .side_panel_iner_div3 {
             width: 15.4%;
             display: inline-block;
             overflow: hidden;
         }
 
-        div.side_panel_iner_div1 {
+        .side_panel_iner_div1 {
             padding-left: 1%;
         }
 
-        div.side_panel_iner_div1_pp {
+        .side_panel_iner_div1_pp {
             width: 8%;
         }
 
-        div.side_panel_iner_div2_multi_dialog,
-        div.side_panel_iner_div2 {
+        .side_panel_iner_div2_multi_dialog,
+        .side_panel_iner_div2 {
             width: 59.5%;
             padding-left: 0.4em;
             position: absolute;
@@ -2291,24 +2302,24 @@
             transform: translateY(-50%);
         }
 
-        div.side_panel_iner_div2_pp,
-        div.side_panel_iner_div2_multi {
+        .side_panel_iner_div2_pp,
+        .side_panel_iner_div2_multi {
             padding-left: 0.2em;
             padding-top: 0;
             width: 75%;
         }
 
-        div.side_panel_iner_div2_multi {
+        .side_panel_iner_div2_multi {
             padding-left: 6%;
         }
 
-        div.side_panel_iner_div2_pp {
+        .side_panel_iner_div2_pp {
             width: 90%;
             line-height: 80%;
             padding-top: 0.25%;
         }
 
-        div.side_panel_iner_div3 {
+        .side_panel_iner_div3 {
             width: 20%;
             position: absolute;
             right: 2%;
@@ -2368,16 +2379,16 @@
             width: 9.5%;
         }
 
-        div.stream_info_timers {
+        .stream_info_timers {
             display: inline-block;
             width: auto !important;
         }
 
-        div.multi_info_line {
+        .multi_info_line {
             line-height: 1.1em;
         }
 
-        div.notification_holder {
+        .notification_holder {
             display: inline-block;
             width: 78%;
             padding-left: 3%;
@@ -2391,8 +2402,8 @@
             font-size: 100%;
         }
 
-        div.side_panel_new_title,
-        div.side_panel_new_game {
+        .side_panel_new_title,
+        .side_panel_new_game {
             width: 100%;
             text-align: left;
             white-space: nowrap;
@@ -2403,7 +2414,7 @@
             padding-left: 1%;
         }
 
-        div.side_panel_new_game {
+        .side_panel_new_game {
             font-family: 'Roboto';
             font-size: 68%;
         }
@@ -2949,7 +2960,7 @@
                             <span id="side_panel_movel_top_text"></span>
                         </div>
                         <!-- Empty div are added to fill up the container and make the layout perfect align-->
-                        <div class="side_panel_new_icons_text_holder">
+                        <div id="side_panel_top_text_empty" class="side_panel_new_icons_text_holder">
                         </div>
                         <div id="side_panel_movel_new_0" class="side_panel_new_icons_text_holder"
                             style="height: 1.9em;">
@@ -3047,8 +3058,8 @@
                         </div>
 
                     </div>
-                    <div id="side_panel_fix_botton" class="side_panel_fix_bottom"
-                        style="width: 30%; background-color: #000000;">
+                    <div id="side_panel_fix_botton" class="side_panel_fix_bottom avoidclicks"
+                        style="width: 30%; background-color: #000000; pointer-events: none;">
                     </div>
                 </div>
             </div>
@@ -3107,7 +3118,7 @@
                                             <div class="side_panel_icons">
                                                 <i class="icon icon-arrow-right"></i>
                                             </div>&nbsp;
-                                            <span id="side_panel_feed_settings"></span>
+                                            <span id="side_panel_back_main_menu"></span>
                                         </div>
                                         <div id="side_panel_feed_2" class="side_panel_feed_top">
                                             <div class="side_panel_icons">

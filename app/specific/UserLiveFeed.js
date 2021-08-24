@@ -57,10 +57,19 @@ var UserLiveFeed_ids = [
 ];
 
 var UserLiveFeed_side_ids = [
-    'usf_thumbdiv',//0
-    'usf_img',//1
-    'usf_title',//2
-    'usf_data'//3
+    'usf_thumbdiv_',//0
+    'usf_img_',//1
+    'usf_title_',//2
+    'usf_data_',//3
+    'usf_hidename_',//4
+    'usf_img_holder_',//5
+    'usf_namegame_',//6
+    'usf_showname_',//6
+    'usf_game_',//7
+    'usf_views_',//9
+    'usf_viewsinner_',//10
+    'usf_viewsico_',//11
+    'usf_viewscount_'//12
 ];
 
 function UserLiveFeed_StartLoad() {

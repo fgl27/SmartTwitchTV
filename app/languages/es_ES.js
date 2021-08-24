@@ -248,7 +248,7 @@ function es_ESLang() {
 
     STR_PLAY_ALL = "Reproducir Todo";
     STR_AUTO_PLAY_NEXT = "Reproducción automática del siguiente clip";
-    STR_SIDE_PANEL_SETTINGS = "Volver al Menú principal";
+    STR_SIDE_PANEL_BACK_MAIN_MENU = "Volver al Menú principal";
 
     STR_HOLD_UP = "Mantenga pulsado arriba";
 

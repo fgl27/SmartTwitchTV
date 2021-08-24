@@ -290,7 +290,7 @@ function ru_RULang() {
     STR_PLAY_NEXT_IN = "Играет в следующий раз";
     STR_PLAY_ALL = "Воспроизвести все";
     STR_AUTO_PLAY_NEXT = "Автовоспроизведение следующего клипа";
-    STR_SIDE_PANEL_SETTINGS = "Назад в главное меню";
+    STR_SIDE_PANEL_BACK_MAIN_MENU = "Назад в главное меню";
     STR_UP = "Нажмите вверх";
     STR_HOLD_UP = "Ужерживайте вверх";
     STR_LIVE_FEED = "Акт. каналы";
