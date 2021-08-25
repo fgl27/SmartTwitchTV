@@ -83,7 +83,7 @@ function BrowserTestFun() {
         };
 
         progress_pause_holder_hover.onmouseover = function(event) {
-            if (Main_isScene2DocVisible()) {
+            if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
 
                 var id = event.target.id;
 
@@ -125,7 +125,7 @@ function BrowserTestFun() {
 
 
         controls_holder_hover.onmouseover = function(event) {
-            if (Main_isScene2DocVisible()) {
+            if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
 
                 var id = event.target.id;
 
