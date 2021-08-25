@@ -911,6 +911,25 @@ function Play_StartStayShowBottom() {
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 }
 
+function Play_StayGetStreamerInfo() {
+    var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        Play_StayGetStreamerInfoSucess,
+        noop_fun
+    );
+
+}
+
+function Play_StayGetStreamerInfoSucess(responseText) {
+    var channel = JSON.parse(responseText);
+    var img = channel.video_banner;
+    Play_SetSceneBackground(img ? img : IMG_404_BANNER);
+}
+
 function Play_StartStay() {
     if (!ChatLive_loaded[0]) ChatLive_Init(0);
     Play_CheckFollow(Play_data.data[14]);
@@ -946,6 +965,7 @@ function Play_StartStay() {
     Play_data.data[12] = 0;
     Play_data.data[13] = 0;
     Play_UpdateMainStreamDiv();
+    Play_StayGetStreamerInfo();
 }
 
 function Play_StartStayCheck(time) {
@@ -4553,10 +4573,13 @@ function Play_preventVodOnPP() {
     return true;
 }
 
+var Play_SetSceneBackgroundUrl = null;
 function Play_SetSceneBackground(url) {
 
-    Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
-
+    if (!Main_A_equals_B(Play_SetSceneBackgroundUrl, url)) {
+        Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
+    }
+    Play_SetSceneBackgroundUrl = url;
 }
 
 var Play_controlsEventListener;

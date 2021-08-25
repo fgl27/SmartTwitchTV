@@ -207,7 +207,6 @@ function ChannelContent_GetStreamerInfo() {
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
     var channel = JSON.parse(responseText);
     ChannelContent_offline_image = channel.video_banner;
-    ChannelContent_offline_image = ChannelContent_offline_image ? ChannelContent_offline_image.replace("1920x1080", Main_VideoSize) : ChannelContent_offline_image;
     ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
     ChannelContent_selectedChannelViews = channel.views;
     ChannelContent_selectedChannelFollower = channel.followers;
@@ -394,6 +393,7 @@ function ChannelContent_keyEnter() {
         Main_HideElement('channel_content_scroll');
 
         if (ChannelContent_isoffline) {
+            Play_SetSceneBackground(ChannelContent_offline_image ? ChannelContent_offline_image : IMG_404_BANNER);
 
             Play_data.data = [
                 null,//0
