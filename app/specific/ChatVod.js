@@ -102,11 +102,18 @@ function Chat_StartFakeClockInterval() {
         function() {
 
             if (PlayClip_isOn) {
-                Chat_fakeClock = clip_player.currentTime;
+                try {
+                    Chat_fakeClock = clip_player.currentTime;
+                    Play_BufferSize = Chat_fakeClock + clip_player.buffered.end(0);
+                } catch (e) {
+                    console.log('Chat_StartFakeClockInterval e ' + e);
+                }
+
             } else {
                 Chat_fakeClock += Chat_StartFakeClockAdd;
+                Play_BufferSize = Chat_fakeClock / 2;
             }
-            Play_BufferSize = Chat_fakeClock / 2;
+
 
             if (Play_isOn && Chat_fakeClock > 28) {
 

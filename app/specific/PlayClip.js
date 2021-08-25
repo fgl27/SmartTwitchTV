@@ -97,7 +97,7 @@ function PlayClip_Start() {
 
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
 
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
+    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i> </div>');
     Main_ShowElementWithEle(Play_Controls_Holder);
 
     UserLiveFeed_PreventHide = false;

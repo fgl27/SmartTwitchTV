@@ -3550,26 +3550,27 @@
                 <div id="controls_holder" class="controls_holder">
                 </div>
                 <div id="progress_pause_holder" class="progress_pause_holder shadow_text">
-                    <div id="progress_bar_div" class="progress_bar_div">
+                    <div id="progress_bar_div" class="progress_bar_div avoidclicks">
                         <div id="progress_bar_jump_to" class="progress_bar_jump strokedeline"></div>
-                        <div>
-                            <div style="width: 100%; position: relative;">
+                        <div style="pointer-events: all;">
+                            <div id="progress_bar_holder" style="width: 100%; position: relative;">
                                 <div id="progress_bar_current_time" class="progress_bar_timer strokedeline"></div>
                                 <div id="progress_bar" class="progress_bar_holder">
-                                    <div class="progress_bar">
-                                        <div class="inner_progress_bar">
-                                            <div class="inner_progress_animate_holder">
+                                    <div id="progress_bar_inner_container" class="progress_bar">
+                                        <div id="progress_bar_inner_holder" class="inner_progress_bar">
+                                            <div id="progress_bar_inner" class="inner_progress_animate_holder">
                                                 <div id="inner_progress_bar_buffer"
-                                                    class="inner_progress_animate inner_progress_bar"
+                                                    class="inner_progress_animate inner_progress_bar avoidclicks"
                                                     style="background-color:rgba(148, 0, 0, 0.8); position: absolute; bottom: 27%;">
                                                 </div>
                                                 <div id="inner_progress_bar"
-                                                    class="inner_progress_animate inner_progress_bar"
+                                                    class="inner_progress_animate inner_progress_bar avoidclicks"
                                                     style="background-color: rgb(77, 77, 77);border-radius: 5%;">
                                                     <div class="inner_progress_circle"></div>
                                                 </div>
                                             </div>
-                                            <div id="inner_progress_bar_muted" class="inner_progress_bar_muted"></div>
+                                            <div id="inner_progress_bar_muted"
+                                                class="inner_progress_bar_muted avoidclicks"></div>
                                             <div id="seek_previews_holder" class="seek_previews_holder">
                                                 <div id="seek_previews" class="hideimp seek_previews">
                                                     <div id="seek_previews_text"
@@ -3603,12 +3604,12 @@
                                 <i id="back_button_icon" class="pause_button3d icon-back"></i>
                             </div>
                         </div>
-                        <div
+                        <div id="pause_button_holder"
                             style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch;">
                             <div id="pause_button" class="pause_button"
                                 style="width: 80%; padding-top: 0.375em; padding-bottom: 0.375em;">
-                                <div>
-                                    <i class="pause_button3d icon-pause"></i>
+                                <div id="pause_button_icon_holder">
+                                    <i id="pause_button_icon" class="pause_button3d icon-pause"></i>
                                 </div>
                             </div>
                         </div>

@@ -71,7 +71,7 @@ function PlayVod_Start() {
 
 
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
+    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i> </div>');
     Main_HideElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 
     Play_BottonIconsResetFocus();
@@ -952,6 +952,7 @@ function PlayVod_jump() {
             OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
         } else if (PlayClip_isOn) {
             clip_player.currentTime = PlayVod_TimeToJump;
+            Chat_fakeClock = PlayVod_TimeToJump;
         }
 
         if (!Play_isOn && PlayClip_HasVOD) Chat_Init();
@@ -961,7 +962,7 @@ function PlayVod_jump() {
     PlayVod_previews_hide();
 
     Play_BottonIcons_Progress_Steps.style.display = 'none';
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div ><i class="pause_button3d icon-pause"></i> </div>');
+    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i> </div>');
     PlayVod_jumpCount = Settings_value.vod_seek_min.defaultValue;
 
     Play_BufferSize = Play_BufferSize - PlayVod_addToJump;

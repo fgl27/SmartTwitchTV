@@ -58,6 +58,7 @@ function calculateFontSize() {
     document.body.style.fontSize = BodyfontSize + 'px';
 
     if (!Main_IsOn_OSInterface) {
+        if (!clip_player) clip_player = Main_getElementById('clip_player');
         clip_player.width = scaledWidth;
         clip_player.height = currentHeight;
     }

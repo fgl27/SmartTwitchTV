@@ -107,7 +107,13 @@ function BrowserTestFun() {
                     PlayClip_EnterPos = -1;
                     Play_BottonIconsFocus(null, null, true);
 
-                } else if (Main_A_includes_B(id, 'progress_bar_div')) {
+                } else if (Main_A_includes_B(id, 'pause_button')) {
+
+                    PlayVod_PanelY = 1;
+                    PlayClip_EnterPos = 0;
+                    Play_BottonIconsFocus();
+
+                } else if (Main_A_includes_B(id, 'progress_bar')) {
 
                     PlayVod_PanelY = 1;
                     PlayClip_EnterPos = 0;
@@ -174,7 +180,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            // console.log(id);
+            //console.log(id);
 
             var idArray = id.split('_');
 
@@ -262,11 +268,17 @@ function BrowserTestFun() {
                         }
                     } else if (Main_A_includes_B(id, 'controls_button_')) {
                         Play_BottomOptionsPressed(PlayVodClip);
-                    } else if (Main_A_includes_B(id, 'progress_bar_div')) {
+                    } else if (Main_A_includes_B(id, 'pause_button')) {
                         OSInterface_PlayPauseChange(PlayVodClip);
                     } else if (Main_A_includes_B(id, 'next_button_') ||
                         Main_A_includes_B(id, 'back_button_')) {
                         PlayClip_Enter();
+                    } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
+                        Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
+                        clip_player.currentTime = Chat_fakeClock;
+
+                        Play_ProgresBarrElm.style.transition = '';
+                        PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
                     }
 
                 }

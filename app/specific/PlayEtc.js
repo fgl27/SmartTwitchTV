@@ -1366,7 +1366,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 }
 
 function Play_GetPlayPauseIcon(not_playing) {
-    return '<div ><i class="pause_button3d ' +
+    return '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d ' +
         (not_playing ? 'icon-pause' : 'icon-play-1') +
         '"></i></div>';
 }
@@ -2347,11 +2347,11 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsSpeed] = { //speed
-        ShowInLive: true,
-        ShowInVod: true,
-        ShowInClip: true,
-        ShowInPP: true,
-        ShowInMulti: true,
+        ShowInLive: Main_IsOn_OSInterface,
+        ShowInVod: Main_IsOn_OSInterface,
+        ShowInClip: Main_IsOn_OSInterface,
+        ShowInPP: Main_IsOn_OSInterface,
+        ShowInMulti: Main_IsOn_OSInterface,
         ShowInChat: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
@@ -2388,11 +2388,11 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsExternal] = { //External
-        ShowInLive: true,
-        ShowInVod: true,
-        ShowInClip: true,
-        ShowInPP: true,
-        ShowInMulti: true,
+        ShowInLive: Main_IsOn_OSInterface,
+        ShowInVod: Main_IsOn_OSInterface,
+        ShowInClip: Main_IsOn_OSInterface,
+        ShowInPP: Main_IsOn_OSInterface,
+        ShowInMulti: Main_IsOn_OSInterface,
         ShowInChat: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
