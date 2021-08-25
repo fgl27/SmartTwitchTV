@@ -2,7 +2,6 @@
 var yOnwheel = 0;
 var OnwheelId;
 var OnClickId;
-var onmousemoveId;
 var OnDuploClick;
 
 var player_embed;
