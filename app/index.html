@@ -1514,6 +1514,8 @@
             width: 94.5%;
         }
 
+        .progress_bar_div,
+        .next_button,
         .stream_cell_period,
         .exit_player,
         .side_panel_div,
@@ -1933,7 +1935,7 @@
             border-radius: 0.2em;
         }
 
-        .extra_button_title {
+        .controls_button_title {
             width: 100vw;
             height: 1.5ch;
             position: relative;
@@ -1942,7 +1944,7 @@
             transform: scale(0.8) translateX(-62.5%);
         }
 
-        .extra_button_title_holder {
+        .controls_text_title_holder {
             font-size: 100%;
             color: #FFFFFF;
             white-space: nowrap;
@@ -3597,7 +3599,7 @@
                                         style="text-align: right;">
                                     </div>
                                 </div>
-                                <i class="pause_button3d icon-back"></i>
+                                <i id="back_button_icon" class="pause_button3d icon-back"></i>
                             </div>
                         </div>
                         <div
@@ -3615,7 +3617,7 @@
                                     src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
                             </div>
                             <div id="next_button" class="next_button shadow_text" style="opacity: 0;">
-                                <i class="pause_button3d icon-next"></i>
+                                <i id="next_button_icon" class="pause_button3d icon-next"></i>
                                 <div id="next_button_text" class="next_text">
                                     <div id="next_button_text_name" class="next_channel strokedeline"></div>
                                     <div id="next_button_text_title" class="next_info strokedeline"></div>

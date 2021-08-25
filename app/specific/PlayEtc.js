@@ -153,8 +153,9 @@ function Play_controlsAudioEnasetLable(pos, data, obj) {
     );
 
     Main_innerHTML(
-        'controls_icon_' + obj.position,
-        '<i class="pause_button3d icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + '" ></i > '
+        'controls_button_icon_holder_' + obj.position,
+        '<i id="controls_button_icon_' + obj.position +
+        '" class="pause_button3d icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + '" ></i > '
     );
 
 }
@@ -200,8 +201,9 @@ function Play_controlsAudioVolupsetLable(pos, data, obj) {
     );
 
     Main_innerHTML(
-        'controls_icon_' + obj.position,
-        '<i class="pause_button3d icon-' + Play_GetVolLevel(pos) + '" ></i > '
+        'controls_button_icon_holder_' + obj.position,
+        '<i id="controls_button_icon_' + obj.position +
+        '" class="pause_button3d icon-' + Play_GetVolLevel(pos) + '" ></i > '
     );
 }
 
@@ -2195,7 +2197,7 @@ function Play_MakeControls() {
             Play_OpenChannel(PlayVodClip);
         },
         setLable: function(title) {
-            Main_innerHTML('extra_button_' + this.position,
+            Main_innerHTML('controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
                 title + '</div>');
         },
@@ -2222,7 +2224,7 @@ function Play_MakeControls() {
             Play_OpenGame(PlayVodClip);
         },
         setLable: function(title) {
-            Main_innerHTML('extra_button_' + this.position,
+            Main_innerHTML('controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
                 (title === "" ? STR_NO_GAME : title) + '</div>');
         },
@@ -2255,7 +2257,7 @@ function Play_MakeControls() {
 
         },
         setLable: function(title, name) {
-            Main_innerHTML('extra_button_' + this.position,
+            Main_innerHTML('controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>');
 
@@ -2287,7 +2289,7 @@ function Play_MakeControls() {
             PlayClip_OpenVod();
         },
         setLable: function(title, name) {
-            Main_innerHTML('extra_button_' + this.position,
+            Main_innerHTML('controls_text_summary_' + this.position,
                 '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
                 title + '</div>'
             );
@@ -2325,10 +2327,11 @@ function Play_MakeControls() {
         setLable: function(string, AddCode_IsFollowing) {
             Main_textContentWithEle(Play_controls[this.position].doc_title, string);
             this.setIcon(AddCode_IsFollowing);
-            Main_textContent('extra_button_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
+            Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
         },
         setIcon: function(AddCode_IsFollowing) {
-            Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
+            Main_innerHTML('controls_button_icon_holder_' + this.position, '<i id="controls_button_icon_' + this.position +
+                '" class="pause_button3d icon-' +
                 (AddCode_IsFollowing ? "heart" : "heart-o") +
                 '" style="color: #' + (AddCode_IsFollowing ? "6441a4" : "FFFFFF") + ';" ></i>');
         },
@@ -2905,7 +2908,7 @@ function Play_MakeControls() {
             title = !Play_isFullScreen ? STR_CHAT_SIDE_FULL : STR_CHAT_SIDE;
             if (PlayExtra_PicturePicture) title = !Play_isFullScreen ? STR_CHAT_PP_SIDE_FULL : STR_CHAT_5050;
 
-            Main_textContent('extra_button_' + this.position, STR_PRESS_ENTER_TO_CHANGE + title);
+            Main_textContent('controls_text_summary_' + this.position, STR_PRESS_ENTER_TO_CHANGE + title);
 
             if (Play_controls[Play_controlsChat].position) Play_controls[Play_controlsChat].setLable();
         },
@@ -2913,7 +2916,8 @@ function Play_MakeControls() {
             var icon = (Play_isFullScreen ? "resize-down" : "resize-up");
             if (PlayExtra_PicturePicture) icon = 'pp';
 
-            Main_innerHTML('controls_icon_' + this.position, '<i class="pause_button3d icon-' +
+            Main_innerHTML('controls_button_icon_holder_' + this.position, '<i id="controls_button_icon_' + this.position +
+                '" class="pause_button3d icon-' +
                 icon + '" ></i>');
         },
     };
@@ -2954,7 +2958,7 @@ function Play_MakeControls() {
                 string = PlayExtra_PicturePicture ? STR_CHAT_5050 : STR_CHAT_SIDE;
             } else if (Play_MultiEnable && Play_Multi_MainBig) string = STR_MULTI_MAIN_WINDOW;
 
-            Main_textContent('extra_button_' + this.position, '(' + string + ')');
+            Main_textContent('controls_text_summary_' + this.position, '(' + string + ')');
         },
     };
 
@@ -3118,7 +3122,7 @@ function Play_MakeControls() {
             Main_SaveValuesWithTimeout();
         },
         setLable: function() {
-            Main_textContent('extra_button_' + this.position, '(' +
+            Main_textContent('controls_text_summary_' + this.position, '(' +
                 (Main_values.Play_ChatForceDisable ? STR_YES : STR_NO) + ')');
         },
     };
@@ -3924,14 +3928,15 @@ function Play_MakeControls() {
         div.setAttribute('id', 'controls_' + i);
 
         div.innerHTML = '<div id="controls_button_' + i +
-            '" class="controls_button"><div id="controls_icon_' + i +
+            '" class="controls_button"><div id="controls_button_icon_holder_' + i +
             (Play_controls[i].offsetY ? '" style="transform: translateY(' + Play_controls[i].offsetY + '%);"' : '"') +
-            '><i class="pause_button3d icon-' + Play_controls[i].icons +
-            '" ></i></div></div><div id="controls_button_text_' + i +
-            '" class="extra_button_title_holder" style="opacity: 0;"><div id="extra_button_title' +
-            i + '" class="extra_button_title strokedeline" >' +
-            Play_controls[i].string + '</div><div id="extra_button_' + i +
-            '" class="extra_button_title strokedeline" >' +
+            '><i id="controls_button_icon_' + i +
+            '" class="pause_button3d icon-' + Play_controls[i].icons +
+            '" ></i></div></div><div id="controls_text_holder' + i +
+            '" class="controls_text_title_holder" style="opacity: 0;"><div id="controls_text_title_' +
+            i + '" class="controls_button_title strokedeline" >' +
+            Play_controls[i].string + '</div><div id="controls_text_summary_' + i +
+            '" class="controls_button_title strokedeline" >' +
             (Play_controls[i].values ? Play_SetControlsArrows(i) : STR_SPACE_HTML) + '</div></div></div>';
 
         fragment.appendChild(div);
@@ -3946,12 +3951,12 @@ function Play_MakeControls() {
     i = 0;
     for (i; i < len; i++) {
 
-        Play_controls[i].doc_title = Main_getElementById('extra_button_title' + i);
+        Play_controls[i].doc_title = Main_getElementById('controls_text_title_' + i);
         Play_controls[i].doc_name = Main_getElementById('controls_name_' + i);
         Play_controls[i].doc_up = Main_getElementById('control_arrow_up_' + i);
         Play_controls[i].doc_down = Main_getElementById('control_arrow_down' + i);
         Play_controls[i].button = Main_getElementById('controls_button_' + i);
-        Play_controls[i].button_text = Main_getElementById('controls_button_text_' + i);
+        Play_controls[i].button_text = Main_getElementById('controls_text_holder' + i);
 
         if (Play_controls[i].bottomArrows) Play_BottomArrows(i);
         if (Play_controls[i].setLable) Play_controls[i].setLable();
@@ -4265,12 +4270,8 @@ function Play_BottonIconsResetFocus(skipInfo) {
     Play_BottonIconsFocus(skipInfo);
 }
 
-function Play_BottonIconsFocus(skipInfo, checkjump) {
+function Play_BottonIconsFocusClear() {
 
-    if (PlayVod_PanelY < 0) {
-        PlayVod_PanelY = 0;
-        return;
-    }
 
     Main_RemoveClassWithEle(Play_BottonIcons_Pause, Play_BottonIcons_Focus_Class);
     Main_RemoveClassWithEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
@@ -4278,6 +4279,16 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
     Main_RemoveClassWithEle(Play_BottonIcons_Progress, Play_BottonIcons_Focus_Class);
     Main_HideElementWithEle(Play_BottonIcons_Next_Img_holder);
     Main_HideElementWithEle(Play_BottonIcons_Back_Img_holder);
+}
+
+function Play_BottonIconsFocus(skipInfo, checkjump, skipHide) {
+
+    if (PlayVod_PanelY < 0) {
+        PlayVod_PanelY = 0;
+        return;
+    }
+
+    Play_BottonIconsFocusClear();
 
     if (!PlayVod_PanelY) { //progress_bar
 
@@ -4305,14 +4316,14 @@ function Play_BottonIconsFocus(skipInfo, checkjump) {
         } else if (PlayClip_EnterPos === 1) { //next
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
-            Play_BottonIconsHide(2);
+            if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Next_Img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Next, Play_BottonIcons_Focus_Class);
 
         } else if (PlayClip_EnterPos === -1) { //back
 
             Main_RemoveClassWithEle(Play_pause_next_div, 'opacity_zero');
-            Play_BottonIconsHide(2);
+            if (!skipHide) Play_BottonIconsHide(2);
             Main_ShowElementWithEle(Play_BottonIcons_Back_Img_holder);
             Main_AddClassWitEle(Play_BottonIcons_Back, Play_BottonIcons_Focus_Class);
 

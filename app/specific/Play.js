@@ -1077,7 +1077,7 @@ function Play_SetExternalQualities(array, startPos, name) {
     Play_controls[Play_controlsExternal].defaultValue = Play_controls[Play_controlsExternal].values.length - 1;
     Play_controls[Play_controlsExternal].setLable();
 
-    Main_innerHTML('extra_button_title' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE_HTML + '(' + name + ')' : ''));
+    Main_innerHTML('controls_text_title_' + Play_controlsExternal, STR_OPEN_EXTERNAL_PLAYER + (name ? STR_SPACE_HTML + '(' + name + ')' : ''));
 
     Main_Log('Play_SetExternalQualities ' + JSON.stringify(array) + ' name ' + name);
 }
@@ -1890,7 +1890,7 @@ function Play_qualityIndexReset() {
 
 function Play_qualityTitleReset(title) {
     Main_textContent(
-        'extra_button_title' + Play_controlsQuality,
+        'controls_text_title_' + Play_controlsQuality,
         STR_QUALITY + ' - ' + title
     );
 }
