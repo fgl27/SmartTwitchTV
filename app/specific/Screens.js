@@ -110,8 +110,6 @@ function Screens_InitScreens() {
     Main_setTimeout(Main_Startfirebase);
     Screens_first_init();
 
-    BrowserTestFun();
-
 }
 
 //TODO cleanup not used when finished migrate all

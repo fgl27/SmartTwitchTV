@@ -384,6 +384,7 @@ function PlayClip_onPlayer() {
             Play_PlayEndStart(3);
         };
         clip_player.onerror = clip_player.onended;
+        Main_AddClassWitEle(exit_player_embed, 'hide');
     }
 
     PlayClip_replayOrNext = false;
@@ -411,8 +412,10 @@ function PlayClip_shutdownStream() {
     }
 
     if (!Main_IsOn_OSInterface) {
-        clip_player.src = null;
         clip_player.pause();
+        clip_player.onended = noop_fun;
+        clip_player.onerror = noop_fun;
+        clip_player.src = '';
     }
 }
 
@@ -443,7 +446,7 @@ function PlayClip_PreshutdownStream(closePlayer) {
 
 function PlayClip_UpdateHistory(screen) {
 
-    var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : 10;
+    var time = Main_IsOn_OSInterface ? (parseInt(OSInterface_gettime() / 1000)) : Chat_fakeClock;
 
     if (time > 0) {
 

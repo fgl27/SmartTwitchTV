@@ -7,6 +7,7 @@ var OnDuploClick;
 
 var player_embed;
 var clip_player;
+var exit_player_embed;
 
 function BrowserTestFun() {
     if (!Main_IsOn_OSInterface) {
@@ -22,9 +23,9 @@ function BrowserTestFun() {
             progress_pause_holder_hover = Main_getElementById('progress_pause_holder'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
             sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
-            exit_player_embed = Main_getElementById('twitch-embed_exit'),
             exit_player = Main_getElementById('exit_player');
 
+        exit_player_embed = Main_getElementById('twitch-embed_exit');
         player_embed = Main_getElementById('twitch-embed');
         clip_player = Main_getElementById('clip_player');
 
@@ -32,22 +33,6 @@ function BrowserTestFun() {
         Main_IconLoad('exit_player', 'icon-return', STR_GOBACK);
 
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_GOBACK);
-
-        Main_Scene2Doc.onmousemove = function() {
-            if (PlayClip_isOn) return;
-
-            Main_RemoveClassWithEle(exit_player_embed, 'hide');
-
-            onmousemoveId = Main_setTimeout(
-                function() {
-
-                    Main_AddClassWitEle(exit_player_embed, 'hide');
-
-                },
-                5000,
-                onmousemoveId
-            );
-        };
 
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');
@@ -244,9 +229,10 @@ function BrowserTestFun() {
 
                 if (!Play_isPanelShowing()) {
 
-                    if (PlayVodClip === 1) Play_showPanel();
-                    else if (PlayVodClip === 2) PlayVod_showPanel(true);
-                    else if (PlayVodClip === 3) PlayClip_showPanel();
+                    // if (PlayVodClip === 1) Play_showPanel();
+                    // else if (PlayVodClip === 2) PlayVod_showPanel(true);
+                    // else
+                    if (PlayVodClip === 3) PlayClip_showPanel();
 
                 } else {
 

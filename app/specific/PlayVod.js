@@ -335,7 +335,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
             video: Main_values.ChannelVod_vodId,
             muted: false
         });
-
+        Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
 }
 

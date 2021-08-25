@@ -254,6 +254,7 @@ function Main_StartApp() {
 
         Main_Scene1Doc = Main_getElementById('scene1');
         Main_Scene2Doc = Main_getElementById('scene2');
+        BrowserTestFun();
         Sidepannel_FixDiv = Main_getElementById('side_panel_fix');
         Sidepannel_MovelDiv = Main_getElementById('side_panel_movel');
 

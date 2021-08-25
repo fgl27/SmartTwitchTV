@@ -251,6 +251,7 @@ function Play_Start(offline_chat) {
             channel: Play_data.data[6],
             muted: false
         });
+        Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
 }
 
