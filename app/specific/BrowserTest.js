@@ -355,7 +355,8 @@ function BrowserTestFun() {
                 Search_cursorY = 1;
                 Search_cursorX = 2;
                 Search_KeyEnter();
-            }
+            } else Main_CheckDialogs();
+
         };
 
         Main_Scene1Doc.onwheel = function(event) {
@@ -545,6 +546,27 @@ function BrowserTestFun() {
 
             }
         };
+
+
+        Main_getElementById('dialog_about').onclick = function() {
+            Main_CheckDialogs();
+        }
+
+        Main_getElementById('update_dialog').onclick = function(event) {
+            var id = event.target.id;
+
+            if (Main_A_includes_B(id, 'update_dialog_upbutton')) {
+                Main_UpdateCursor = 0;
+                Main_UpdateDialogSet();
+                Main_UpdateDialogKeyEnter();
+            } else if (Main_A_includes_B(id, 'update_dialog_changebutton')) {
+                Main_UpdateCursor = 1;
+                Main_UpdateDialogSet();
+                Main_UpdateDialogKeyEnter();
+            } else {
+                Main_HideUpdateDialog();
+            }
+        }
 
     }
 }

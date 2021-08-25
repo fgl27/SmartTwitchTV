@@ -1061,6 +1061,16 @@ function Main_CheckUpdate(forceUpdate) {
             0
         );
 
+    } else {
+
+        Main_setTimeout(
+            function() {
+                Main_Ischecking = false;
+                Main_UpdateDialogTitle();
+                Main_UpdateDialogSetTitle();
+            },
+            1000
+        );
     }
 
 }
@@ -1204,71 +1214,74 @@ function Main_UpdateDialogKeyFun(event) {
             Main_UpdateDialogSet();
             break;
         case KEY_ENTER:
-
-            if (Main_isAboutDialogVisible()) {
-
-                Main_HideChangeDialog();
-                Main_HideUpdateDialog();
-
-            } else if (Main_UpdateCursor) {
-
-                Main_HideUpdateDialog(true);
-                Main_showChangelogDialog();
-
-            } else {
-
-                if (Main_HasUpdate) {
-
-                    Main_values.IsUpDating = true;
-                    Main_SaveValues();
-
-                    if (Main_IsWebupdate) {
-
-                        Main_HideElement('update_dialog');
-                        Main_showLoadDialog();
-                        Main_SaveHistoryItem();
-                        OSInterface_stopVideo();
-                        Main_hideScene1Doc();
-                        Main_hideScene2Doc();
-
-                        //delay to make sure all was saved OK
-                        Main_setTimeout(
-                            function() {
-
-                                OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
-
-                            },
-                            250
-                        );
-
-                    } else {
-
-                        Main_showLoadDialog();
-                        var fromPlay = OSInterface_getInstallFromPLay();
-
-                        OSInterface_showToast(fromPlay ? STR_UPDATE_PLAY : STR_UPDATE_START);
-
-                        OSInterface_UpdateAPK(
-                            fromPlay ? null : version.ApkUrl,
-                            STR_UPDATE_FAIL,
-                            STR_UPDATE_FAIL_DOWNLOAD
-                        );
-
-                    }
-
-
-                } else {
-
-                    if (Main_Ischecking) return;
-                    Main_UpdateDialogStartCheck();
-
-                }
-
-            }
-
+            Main_UpdateDialogKeyEnter();
             break;
         default:
             break;
+    }
+}
+
+function Main_UpdateDialogKeyEnter() {
+
+    if (Main_isAboutDialogVisible()) {
+
+        Main_HideChangeDialog();
+        Main_HideUpdateDialog();
+
+    } else if (Main_UpdateCursor) {
+
+        Main_HideUpdateDialog(true);
+        Main_showChangelogDialog();
+
+    } else {
+
+        if (Main_HasUpdate) {
+
+            Main_values.IsUpDating = true;
+            Main_SaveValues();
+
+            if (Main_IsWebupdate) {
+
+                Main_HideElement('update_dialog');
+                Main_showLoadDialog();
+                Main_SaveHistoryItem();
+                OSInterface_stopVideo();
+                Main_hideScene1Doc();
+                Main_hideScene2Doc();
+
+                //delay to make sure all was saved OK
+                Main_setTimeout(
+                    function() {
+
+                        OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+
+                    },
+                    250
+                );
+
+            } else {
+
+                Main_showLoadDialog();
+                var fromPlay = OSInterface_getInstallFromPLay();
+
+                OSInterface_showToast(fromPlay ? STR_UPDATE_PLAY : STR_UPDATE_START);
+
+                OSInterface_UpdateAPK(
+                    fromPlay ? null : version.ApkUrl,
+                    STR_UPDATE_FAIL,
+                    STR_UPDATE_FAIL_DOWNLOAD
+                );
+
+            }
+
+
+        } else {
+
+            if (Main_Ischecking) return;
+            Main_UpdateDialogStartCheck();
+
+        }
+
     }
 }
 
@@ -2911,9 +2924,21 @@ function Main_CheckStop() { // Called only by JAVA
         }
         Settings_exit();
         Main_SwitchScreen();
-    } else if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) {//Hide about or related if showing
+    } else Main_CheckDialogs();
+
+    //Reset Screen img if hiden
+    var doc = ScreenObj[Main_values.Main_Go].ids ? Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) : null;
+    if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
+    else if (ChannelContent_Isfocused()) {
+        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
+    }
+}
+
+function Main_CheckDialogs() {
+    if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) {//Hide about or related if showing
 
         Main_HideControlsDialog();
+        Main_HideChangeDialog();
         Main_HideAboutDialog();
         Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_controls);
 
@@ -2925,13 +2950,6 @@ function Main_CheckStop() { // Called only by JAVA
 
         Main_HideExitDialog();
 
-    }
-
-    //Reset Screen img if hiden
-    var doc = ScreenObj[Main_values.Main_Go].ids ? Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) : null;
-    if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
-    else if (ChannelContent_Isfocused()) {
-        Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
     }
 }
 
