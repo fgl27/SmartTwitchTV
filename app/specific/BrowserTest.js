@@ -1,7 +1,20 @@
 
+var yOnwheel = 0;
+var OnwheelId;
+var OnClickId;
+var onmousemoveId;
+var OnDuploClick;
+
+var player_embed;
+var clip_player;
+
 function BrowserTestFun() {
     if (!Main_IsOn_OSInterface) {
         //This if is just for testing on a browser the code here is not ideal but works for testing
+
+        var embed_script = document.createElement('script');
+        embed_script.setAttribute('src', 'https://embed.twitch.tv/embed/v1.js');
+        document.head.appendChild(embed_script);
 
         var key = 0,
             sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
@@ -9,10 +22,51 @@ function BrowserTestFun() {
             progress_pause_holder_hover = Main_getElementById('progress_pause_holder'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
             sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
+            exit_player_embed = Main_getElementById('twitch-embed_exit'),
             exit_player = Main_getElementById('exit_player');
+
+        player_embed = Main_getElementById('twitch-embed');
+        clip_player = Main_getElementById('clip_player');
 
         Main_RemoveClassWithEle(exit_player, 'hide');
         Main_IconLoad('exit_player', 'icon-return', STR_GOBACK);
+
+        Main_IconLoad('twitch-embed_exit', 'icon-return', STR_GOBACK);
+
+        Main_Scene2Doc.onmousemove = function() {
+            if (PlayClip_isOn) return;
+
+            Main_RemoveClassWithEle(exit_player_embed, 'hide');
+
+            onmousemoveId = Main_setTimeout(
+                function() {
+
+                    Main_AddClassWitEle(exit_player_embed, 'hide');
+
+                },
+                5000,
+                onmousemoveId
+            );
+        };
+
+        exit_player_embed.onclick = function() {
+            Main_AddClassWitEle(exit_player_embed, 'hide');
+            if (Play_isOn) {
+                Play_CheckPreview();
+                Play_shutdownStream();
+            }
+            else if (PlayVod_isOn) {
+                PlayVod_CheckPreview();
+                PlayVod_shutdownStream();
+            }
+            else if (PlayClip_isOn) {
+                PlayClip_CheckPreview();
+                Play_CleanHideExit();
+                PlayClip_shutdownStream();
+            }
+
+            Main_emptyWithEle(player_embed);
+        };
 
         sidepanel_elem_show.onmouseover = function() {
             key = Main_values.Main_Go;
@@ -41,13 +95,13 @@ function BrowserTestFun() {
 
                 Play_Resetpanel(PlayVodClip);
 
-                if (Main_A_includes_B(id, 'next_button_')) {
+                if (PlayClip_HasNext && Main_A_includes_B(id, 'next_button_')) {
 
                     PlayVod_PanelY = 1;
                     PlayClip_EnterPos = 1;
                     Play_BottonIconsFocus(null, null, true);
 
-                } else if (Main_A_includes_B(id, 'back_button_')) {
+                } else if (PlayClip_HasBack && Main_A_includes_B(id, 'back_button_')) {
 
                     PlayVod_PanelY = 1;
                     PlayClip_EnterPos = -1;

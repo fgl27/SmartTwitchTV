@@ -224,7 +224,7 @@ echo -e "#				   #\\n####################################\\n";
 
 if [ "$canjshint" == 1 ]; then
 	echo -e "${bldgrn}JSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer */\n/* exported Play_CheckResume */' > "$mainfolder"/release/main.js;
+	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer, Twitch */\n/* exported Play_CheckResume */' > "$mainfolder"/release/main.js;
 	echo "$main_start" >> "$mainfolder"/release/main.js;
 	js_jshint "${js_folders[@]}";
 fi;

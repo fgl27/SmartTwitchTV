@@ -241,6 +241,17 @@ function Play_Start(offline_chat) {
 
     }
     PlayClip_DontSkipStartAuto = false;
+
+    if (!Main_IsOn_OSInterface && !offline_chat) {
+        new Twitch.Embed("twitch-embed", {
+            width: scaledWidth,
+            height: currentHeight,
+            allowfullscreen: true,
+            autoplay: true,
+            channel: Play_data.data[6],
+            muted: false
+        });
+    }
 }
 
 // To Force a warn, not used regularly so keep commented out

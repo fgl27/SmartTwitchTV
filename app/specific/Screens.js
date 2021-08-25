@@ -114,11 +114,6 @@ function Screens_InitScreens() {
 
 }
 
-var yOnwheel = 0;
-var OnwheelId;
-var OnClickId;
-var OnDuploClick;
-
 //TODO cleanup not used when finished migrate all
 function Screens_ScreenIds(base, key) {
     return [

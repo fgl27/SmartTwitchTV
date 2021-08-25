@@ -24,6 +24,8 @@
 // BodyfontSize is used for px to em calculation used by scroll functions
 var BodyfontSize;
 var scaleFactor;
+var currentHeight;
+var scaledWidth;
 
 function calculateFontSize() {
 
@@ -38,10 +40,7 @@ function calculateFontSize() {
     // Initial sizes.
     var initialFontSize = 29 + offset,
         initialWidth = 1920,
-        initialHeight = 1080,
-
-        currentHeight,
-        scaledWidth;
+        initialHeight = 1080;
 
     // Get current client/screen height.
     currentHeight = window.innerHeight;
@@ -57,6 +56,11 @@ function calculateFontSize() {
     document.body.style.width = scaledWidth + 'px';
     document.body.style.height = currentHeight + 'px';
     document.body.style.fontSize = BodyfontSize + 'px';
+
+    if (!Main_IsOn_OSInterface) {
+        clip_player.width = scaledWidth;
+        clip_player.height = currentHeight;
+    }
 }
 
 //Do the calculation and changes on proper events call

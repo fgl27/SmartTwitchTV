@@ -101,7 +101,11 @@ function Chat_StartFakeClockInterval() {
     Chat_StartFakeClockId = Main_setInterval(
         function() {
 
-            Chat_fakeClock += Chat_StartFakeClockAdd;
+            if (PlayClip_isOn) {
+                Chat_fakeClock = clip_player.currentTime;
+            } else {
+                Chat_fakeClock += Chat_StartFakeClockAdd;
+            }
             Play_BufferSize = Chat_fakeClock / 2;
 
             if (Play_isOn && Chat_fakeClock > 28) {

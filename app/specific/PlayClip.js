@@ -378,7 +378,8 @@ function PlayClip_onPlayer() {
             0
         );
     } else {
-        Main_setTimeout(Play_HideBufferDialog, 1000);
+        Main_setTimeout(Play_HideBufferDialog, 100);
+        clip_player.src = PlayClip_playingUrl;
     }
 
     PlayClip_replayOrNext = false;
@@ -403,6 +404,11 @@ function PlayClip_shutdownStream() {
         Play_CleanHideExit();
         Play_exitMain();
         PlayClip_loadDataRequestId = 0;
+    }
+
+    if (!Main_IsOn_OSInterface) {
+        clip_player.src = null;
+        clip_player.pause();
     }
 }
 

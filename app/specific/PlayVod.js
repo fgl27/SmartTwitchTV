@@ -327,6 +327,15 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
             Main_values_Play_data[0].replace(Main_VideoSize, "1280x720")
         );
 
+        new Twitch.Embed("twitch-embed", {
+            width: scaledWidth,
+            height: currentHeight,
+            allowfullscreen: true,
+            autoplay: true,
+            video: Main_values.ChannelVod_vodId,
+            muted: false
+        });
+
     }
 }
 
@@ -941,6 +950,8 @@ function PlayVod_jump() {
 
         if (Main_IsOn_OSInterface) {
             OSInterface_mseekTo(PlayVod_TimeToJump > 0 ? (PlayVod_TimeToJump * 1000) : 0);
+        } else if (PlayClip_isOn) {
+            clip_player.currentTime = PlayVod_TimeToJump;
         }
 
         if (!Play_isOn && PlayClip_HasVOD) Chat_Init();

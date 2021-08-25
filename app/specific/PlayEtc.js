@@ -1330,6 +1330,10 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
             Chat_Play(Chat_Id[0]);
 
+            if (!Main_IsOn_OSInterface) {
+                clip_player.play();
+            }
+
         }
 
         if (Play_isPanelShowing()) {
@@ -1340,9 +1344,14 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
     } else {
 
-        if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) || !Main_IsOn_OSInterface) Chat_Pause();
+        if ((PlayVodClip > 1 && !Main_values.Play_ChatForceDisable) ||
+            !Main_IsOn_OSInterface) Chat_Pause();
 
         ChatLive_Playing = false;
+
+        if (PlayClip_HasVOD && !Main_IsOn_OSInterface) {
+            clip_player.pause();
+        }
 
     }
 
