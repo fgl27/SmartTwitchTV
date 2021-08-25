@@ -380,6 +380,10 @@ function PlayClip_onPlayer() {
     } else {
         Main_setTimeout(Play_HideBufferDialog, 100);
         clip_player.src = PlayClip_playingUrl;
+        clip_player.onended = function() {
+            Play_PlayEndStart(3);
+        };
+        clip_player.onerror = clip_player.onended;
     }
 
     PlayClip_replayOrNext = false;
