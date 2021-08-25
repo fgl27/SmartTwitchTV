@@ -63,7 +63,7 @@ function calculateFontSize() {
         clip_player.height = currentHeight;
 
         if (player_embed) {
-            iFrame = player_embed.getElementsByTagName("iframe")[0];
+            var iFrame = player_embed.getElementsByTagName("iframe")[0];
             if (iFrame) {
                 iFrame.width = scaledWidth;
                 iFrame.height = currentHeight;
