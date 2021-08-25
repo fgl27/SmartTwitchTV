@@ -208,7 +208,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            console.log(id);
+            // console.log(id);
 
             var idArray = id.split('_');
 
@@ -414,7 +414,6 @@ function BrowserTestFun() {
             var y = event.deltaY > 0 ? 1 : -1;
 
             if (Main_isScene2DocVisible()) {
-                var y = event.deltaY > 0 ? 1 : -1;
 
                 if (Main_A_includes_B(id, 'scene2_click') ||
                     Main_A_includes_B(id, 'clip_player') ||
@@ -459,9 +458,11 @@ function BrowserTestFun() {
         };
 
         Main_Scene2Doc.onclick = function(event) {
-            var id = event.target.id;
+            var id = event.target.id,
+                div,
+                idArray;
 
-            console.log(id)
+            //console.log(id);
 
             if (Main_isScene2DocVisible()) {
 
@@ -478,8 +479,8 @@ function BrowserTestFun() {
                         Play_EndDialogUpDown();
                     }
 
-                    var idArray = id.split('_'),
-                        x = parseInt(idArray[2]),
+                    idArray = id.split('_');
+                    var x = parseInt(idArray[2]),
                         y = parseInt(idArray[3]),
                         newY = y - UserLiveFeed_FeedPosY[x],
                         multiplier = newY / Math.abs(newY),
@@ -511,15 +512,50 @@ function BrowserTestFun() {
                     OnDuploClick = div;
 
                 } else if (Play_isEndDialogVisible()) {
-                    Play_EndFocus = true;
-                    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
-                    Play_EndIconsAddFocus();
+                    if (!Play_EndFocus) {
+                        Play_EndFocus = true;
+                        UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+                        Play_EndIconsAddFocus();
+                    } else {
+                        idArray = id.split('_');
+
+                        var pos = parseInt(idArray[idArray.length - 1]);
+
+                        Play_EndIconsRemoveFocus();
+                        Play_EndCounter = pos;
+                        Play_EndIconsAddFocus();
+
+                        div = pos;
+
+                        OnClickId = Main_setTimeout(
+                            function() {
+
+                                OnDuploClick = '';
+
+                            },
+                            500,
+                            OnClickId
+                        );
+
+                        if (Main_A_equals_B(OnDuploClick, div)) {
+
+                            Play_EndDialogPressed(3);
+
+                        }
+
+                        OnDuploClick = div;
+                    }
+
                 } else if (!Play_isPanelShowing()) {
 
                     // if (PlayVodClip === 1) Play_showPanel();
                     // else if (PlayVodClip === 2) PlayVod_showPanel(true);
                     // else
                     if (PlayVodClip === 3) PlayClip_showPanel();
+                    else {
+                        Main_RemoveClassWithEle(exit_player_embed, 'hide');
+
+                    }
 
                 } else {
 
@@ -566,7 +602,7 @@ function BrowserTestFun() {
 
         Main_getElementById('dialog_about').onclick = function() {
             Main_CheckDialogs();
-        }
+        };
 
         Main_getElementById('update_dialog').onclick = function(event) {
             var id = event.target.id;
@@ -582,7 +618,7 @@ function BrowserTestFun() {
             } else {
                 Main_HideUpdateDialog();
             }
-        }
+        };
 
     }
 }

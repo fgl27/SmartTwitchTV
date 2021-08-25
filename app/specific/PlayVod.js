@@ -335,9 +335,22 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
             autoplay: true,
             video: Main_values.ChannelVod_vodId,
             muted: false,
-            theme: "dark"
+            theme: "dark",
+            time: PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s'
         });
+
+        PlayClip_OpenAVodOffset = 0;
     }
+}
+
+function PlayVod_convertHMS(value) {
+    var sec = parseInt(value, 10); // convert value to number if it's string
+
+    var hours = Math.floor(sec / 3600); // get hours
+    var minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    var seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+
+    return hours + 'h' + minutes + 'm' + seconds + 's'; // Return is 0h0m0s
 }
 
 function PlayVod_Resume() {

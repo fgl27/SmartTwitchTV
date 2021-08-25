@@ -523,11 +523,11 @@ function Main_SetStringsMain() {
 
     Sidepannel_SetDefaultLables();
 
-    Main_textContent("dialog_end_next_text", STR_PLAY_NEXT);
-    Main_textContent("dialog_end_replay_text", STR_REPLAY);
-    Main_textContent("dialog_end_vod_text", STR_OPEN_BROADCAST);
-    Main_textContent("dialog_end_channel_text", STR_CHANNEL_CONT);
-    Main_textContent("dialog_end_game_text", STR_GAME_CONT);
+    Main_textContent("dialog_end_next_text_-1", STR_PLAY_NEXT);
+    Main_textContent("dialog_end_replay_text_0", STR_REPLAY);
+    Main_textContent("dialog_end_vod_text_2", STR_OPEN_BROADCAST);
+    Main_textContent("dialog_end_channel_text_3", STR_CHANNEL_CONT);
+    Main_textContent("dialog_end_game_text_4", STR_GAME_CONT);
 
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 

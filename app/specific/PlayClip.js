@@ -135,8 +135,8 @@ function PlayClip_Start() {
 
     } else {
 
-        Main_textContent("end_vod_name_text", '');
-        Main_innerHTML("end_vod_title_text", '');
+        Main_textContent("end_vod_name_text_2", '');
+        Main_innerHTML("end_vod_title_text_2", '');
 
         Play_controls[Play_controlsOpenVod].setLable('');
     }
@@ -176,7 +176,7 @@ function PlayClip_updateVodInfoSuccess(response) {
     var tempData = ScreensObj_VodCellArray(JSON.parse(response));
 
     ChannelVod_title = Main_ReplaceLargeFont(tempData[10]);
-    Main_innerHTML("end_vod_title_text", ChannelVod_title);
+    Main_innerHTML("end_vod_title_text_2", ChannelVod_title);
     Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
     PlayClip_NextImg(
         Play_BottonIcons_End_Vod_Img,
@@ -644,10 +644,12 @@ function PlayClip_setHidePanel() {
 }
 
 var PlayClip_OpenAVod = false;
+var PlayClip_OpenAVodOffset = 0;
 function PlayClip_OpenVod() {
     if (PlayClip_HasVOD) {
         Play_DurationSeconds = 0;
         Main_vodOffset = ChannelVod_vodOffset;
+        PlayClip_OpenAVodOffset = Main_vodOffset;
         PlayClip_PreshutdownStream(true);
         Main_addEventListener("keydown", PlayVod_handleKeyDown);
         PlayClip_OpenAVod = true;

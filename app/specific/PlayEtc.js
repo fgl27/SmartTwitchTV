@@ -624,27 +624,27 @@ function Play_EndIconsAddFocus() {
 
     if (Play_EndCounter === -1 && PlayClip_HasNext && PlayClip_isOn) {
 
-        Main_ShowElement('end_next_img_holder');
-        Main_HideElement('end_live_img_holder');
-        Main_HideElement('end_vod_img_holder');
+        Main_ShowElement('end_next_img_holder_-1');
+        Main_HideElement('end_live_img_holder_1');
+        Main_HideElement('end_vod_img_holder_2');
 
     } else if (Play_EndCounter === 1 && Play_HasLive && (PlayClip_isOn || PlayVod_isOn)) {
 
-        Main_ShowElement('end_live_img_holder');
-        Main_HideElement('end_next_img_holder');
-        Main_HideElement('end_vod_img_holder');
+        Main_ShowElement('end_live_img_holder_1');
+        Main_HideElement('end_next_img_holder_-1');
+        Main_HideElement('end_vod_img_holder_2');
 
     } else if (Play_EndCounter === 2 && PlayClip_HasVOD && PlayClip_isOn) {
 
-        Main_ShowElement('end_vod_img_holder');
-        Main_HideElement('end_live_img_holder');
-        Main_HideElement('end_next_img_holder');
+        Main_ShowElement('end_vod_img_holder_2');
+        Main_HideElement('end_live_img_holder_1');
+        Main_HideElement('end_next_img_holder_-1');
 
     } else {
 
-        Main_HideElement('end_vod_img_holder');
-        Main_HideElement('end_live_img_holder');
-        Main_HideElement('end_next_img_holder');
+        Main_HideElement('end_vod_img_holder_2');
+        Main_HideElement('end_live_img_holder_1');
+        Main_HideElement('end_next_img_holder_-1');
 
     }
 }
@@ -785,11 +785,11 @@ function Play_EndSet(PlayVodClip) {
         Main_getElementById('dialog_end_0').style.display = 'none';
         Main_getElementById('dialog_end_2').style.display = 'none';
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
-        Main_textContent("dialog_end_live_text", STR_OPEN_HOST);
+        Main_textContent("dialog_end_live_text_1", STR_OPEN_HOST);
 
         Play_EndTextsReset();
-        Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-        Main_innerHTML("end_live_title_text", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName));
+        Main_innerHTML("end_channel_name_text_3", Play_data.data[1]);
+        Main_innerHTML("end_live_title_text_1", Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName));
     } else if (PlayVodClip === 1) { // play
         Play_EndIconsRemoveFocus();
         Play_EndCounter = 1;
@@ -800,9 +800,9 @@ function Play_EndSet(PlayVodClip) {
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
 
         Play_EndTextsReset();
-        Main_innerHTML("end_channel_name_text", Play_data.data[1]);
-        Main_textContent("dialog_end_live_text", STR_STAY_OPEN);
-        Main_innerHTML("end_live_title_text", STR_STAY_OPEN_SUMMARY);
+        Main_innerHTML("end_channel_name_text_3", Play_data.data[1]);
+        Main_textContent("dialog_end_live_text_1", STR_STAY_OPEN);
+        Main_innerHTML("end_live_title_text_1", STR_STAY_OPEN_SUMMARY);
     } else if (PlayVodClip === 2) { // vod
         Play_EndIconsResetFocus();
         Main_getElementById('dialog_end_-1').style.display = 'none';
@@ -810,39 +810,39 @@ function Play_EndSet(PlayVodClip) {
         Main_getElementById('dialog_end_2').style.display = 'none';
         Play_EndTextsSetHasLive();
 
-        Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
-        Main_innerHTML("end_replay_title_text", ChannelVod_title);
+        Main_innerHTML("end_replay_name_text_0", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_replay_title_text_0", ChannelVod_title);
 
-        Main_textContent("end_vod_name_text", '');
-        Main_textContent("end_vod_title_text", '');
+        Main_textContent("end_vod_name_text_2", '');
+        Main_textContent("end_vod_title_text_2", '');
 
-        Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_channel_name_text_3", Main_values.Main_selectedChannelDisplayname);
     } else if (PlayVodClip === 3) { // clip
 
         Play_EndIconsResetFocus();
         Main_getElementById('dialog_end_-1').style.display = PlayClip_HasNext ? 'inline-block' : 'none';
         Main_getElementById('dialog_end_0').style.display = 'inline-block';
-        Main_textContent("dialog_end_vod_text", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
+        Main_textContent("dialog_end_vod_text_2", PlayClip_HasVOD ? STR_OPEN_BROADCAST : STR_NO_BROADCAST);
         Play_EndTextsSetHasLive();
         Main_getElementById('dialog_end_2').style.display = 'inline-block';
 
-        Main_innerHTML("end_replay_name_text", Main_values.Main_selectedChannelDisplayname);
-        Main_innerHTML("end_replay_title_text", ChannelClip_title);
+        Main_innerHTML("end_replay_name_text_0", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_replay_title_text_0", ChannelClip_title);
 
-        Main_innerHTML("end_vod_name_text", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_vod_name_text_2", Main_values.Main_selectedChannelDisplayname);
 
-        Main_innerHTML("end_channel_name_text", Main_values.Main_selectedChannelDisplayname);
+        Main_innerHTML("end_channel_name_text_3", Main_values.Main_selectedChannelDisplayname);
     }
-    Main_textContent("end_game_name_text", Play_data.data[3]);
+    Main_textContent("end_game_name_text_4", Play_data.data[3]);
 }
 
 function Play_EndTextsReset() {
-    Main_textContent("end_replay_name_text", '');
-    Main_textContent("end_replay_title_text", '');
-    Main_textContent("end_vod_name_text", '');
-    Main_textContent("end_vod_title_text", '');
-    Main_textContent("end_live_title_text", '');
-    Main_textContent("end_live_name_text", '');
+    Main_textContent("end_replay_name_text_0", '');
+    Main_textContent("end_replay_title_text_0", '');
+    Main_textContent("end_vod_name_text_2", '');
+    Main_textContent("end_vod_title_text_2", '');
+    Main_textContent("end_live_title_text_1", '');
+    Main_textContent("end_live_name_text_1", '');
 }
 
 function Play_EndTextsSetHasLive() {
@@ -850,27 +850,27 @@ function Play_EndTextsSetHasLive() {
     if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
 
         Main_innerHTML(
-            "dialog_end_live_text",
+            "dialog_end_live_text_1",
             PlayClip_SetOpenLiveData[1]
         );
 
         Main_innerHTML(
-            "end_live_title_text",
+            "end_live_title_text_1",
             (PlayClip_SetOpenLiveData[3] !== STR_IS_LIVE ? STR_PLAYING + PlayClip_SetOpenLiveData[3] + ', ' : "") + PlayClip_SetOpenLiveData[4]
         );
 
         Main_innerHTML(
-            "end_live_name_text",
+            "end_live_name_text_1",
             Play_controls[Play_controlsOpenLive].string
         );
 
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
-        Main_getElementById('end_next_img_holder').style.transform = 'translate(-5%, -104%)';
+        Main_getElementById('end_next_img_holder_-1').style.transform = 'translate(-5%, -104%)';
 
     } else {
 
         Main_getElementById('dialog_end_1').style.display = 'none';
-        Main_getElementById('end_next_img_holder').style.transform = 'translate(-24.5%, -104%)';
+        Main_getElementById('end_next_img_holder_-1').style.transform = 'translate(-24.5%, -104%)';
 
     }
 
@@ -4241,9 +4241,9 @@ function Play_BottonIconsSet() {
 
     Play_BottonIcons_Next_img = Main_getElementById('next_button_img');
     Play_BottonIcons_Back_img = Main_getElementById('back_button_img');
-    Play_BottonIcons_End_Next_Img = Main_getElementById('end_next_img');
-    Play_BottonIcons_End_Live_Img = Main_getElementById('end_live_img');
-    Play_BottonIcons_End_Vod_Img = Main_getElementById('end_vod_img');
+    Play_BottonIcons_End_Next_Img = Main_getElementById('end_next_img_-1');
+    Play_BottonIcons_End_Live_Img = Main_getElementById('end_live_img_1');
+    Play_BottonIcons_End_Vod_Img = Main_getElementById('end_vod_img_2');
 
     Play_BottonIcons_Next_name = Main_getElementById('next_button_text_name');
     Play_BottonIcons_Next_title = Main_getElementById('next_button_text_title');
@@ -4251,8 +4251,8 @@ function Play_BottonIconsSet() {
     Play_BottonIcons_Back_name = Main_getElementById('back_button_text_name');
     Play_BottonIcons_Back_title = Main_getElementById('back_button_text_title');
 
-    Play_BottonIcons_End_name = Main_getElementById('end_next_button_text_name');
-    Play_BottonIcons_End_title = Main_getElementById('end_next_button_text_title');
+    Play_BottonIcons_End_name = Main_getElementById('end_next_button_text_name_-1');
+    Play_BottonIcons_End_title = Main_getElementById('end_next_button_text_title_-1');
 
     Play_BottonIcons_Pause = Main_getElementById('pause_button');
     Play_BottonIcons_Next = Main_getElementById('next_button');
