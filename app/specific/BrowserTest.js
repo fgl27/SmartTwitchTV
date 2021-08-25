@@ -355,14 +355,14 @@ function BrowserTestFun() {
 
             var y = event.deltaY > 0 ? 1 : -1;
 
-            console.log(id);
-
             if (Main_isScene2DocVisible()) {
                 var y = event.deltaY > 0 ? 1 : -1;
 
                 if (Main_A_includes_B(id, 'scene2_click') ||
-                    Main_A_includes_B(id, 'clip_player')) {
+                    Main_A_includes_B(id, 'clip_player') ||
+                    Main_A_includes_B(id, 'scene_channel_panel')) {
                     if (!yOnwheel && y < 0 && !UserLiveFeed_isPreviewShowing()) {
+                        PlayClip_hidePanel();
                         UserLiveFeed_ShowFeed();
                     } else if (!yOnwheel && y > 0 && UserLiveFeed_isPreviewShowing()) {
                         UserLiveFeed_Hide();
@@ -390,15 +390,13 @@ function BrowserTestFun() {
         };
 
         Main_Scene2Doc.onmousemove = function() {
-            if (Main_isScene2DocVisible() && !Play_isPanelShowing()) {
+            if (Main_isScene2DocVisible() && !Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
                 if (PlayClip_isOn) PlayClip_showPanel();
             }
         };
 
         Main_Scene2Doc.onclick = function(event) {
             var id = event.target.id;
-
-            console.log(id);
 
             if (Main_isScene2DocVisible()) {
 
