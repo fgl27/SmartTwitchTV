@@ -86,8 +86,16 @@ function BrowserTestFun() {
                 if (key === Main_ChannelContent) {
                     ChannelContent_removeFocus();
                     Sidepannel_Start(ChannelContent_handleKeyDown);
+
+                } else if (key === Main_Users) {
+
+                    Users_removeFocus();
+                    Sidepannel_Start(Users_handleKeyDown);
+
                 } else {
+
                     Screens_OpenSidePanel(false, key);
+
                 }
 
             }
@@ -190,7 +198,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            //console.log(id);
+            console.log(id);
 
             var idArray = id.split('_');
 
@@ -202,7 +210,8 @@ function BrowserTestFun() {
             if (!isNaN(key)) {
                 if (Screens_IsInUse(key)) {
 
-                    var isChannelScreen = key === Main_ChannelContent;
+                    var isChannelScreen = key === Main_ChannelContent,
+                        isUserScrren = key === Main_Users;
 
                     div = y + '_' + x;
 
@@ -210,6 +219,14 @@ function BrowserTestFun() {
                         ChannelContent_removeFocus();
                         ChannelContent_cursorY = 0;
                         ChannelContent_keyUpDown();
+                    } else if (isUserScrren) {
+                        if (idArray.length < 4) return;
+
+                        Users_removeFocus();
+                        Users_cursorX = x;
+                        Users_cursorY = y;
+                        Users_addFocus();
+
                     } else if ((ScreenObj[key].posY !== y || ScreenObj[key].posX !== x)) {
                         Screens_RemoveFocus(key);
                         ScreenObj[key].posY = y;
@@ -231,6 +248,8 @@ function BrowserTestFun() {
 
                         if (isChannelScreen) {
                             ChannelContent_keyEnter();
+                        } else if (isUserScrren) {
+                            Users_keyEnter();
                         } else {
                             ScreenObj[key].key_play();
                         }
@@ -317,21 +336,39 @@ function BrowserTestFun() {
         };
 
         Main_Scene1Doc.onwheel = function(event) {
+            var id = event.target.id;
 
             var y = event.deltaY > 0 ? 1 : -1;
 
             key = Main_values.Main_Go;
-            if (!yOnwheel && Screens_IsInUse(key) && !Sidepannel_isShowingMenus() &&
-                (y > 0 || ScreenObj[key].posY > 0)) {
+            if (!yOnwheel) {
 
-                Screens_KeyUpDownClick(key, y);
 
-            } else if (!yOnwheel && Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
-                (y < 0 || Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
+                var isChannelScreen = key === Main_ChannelContent,
+                    isUserScrren = key === Main_Users;
 
-                Sidepannel_RemoveFocusFeed();
-                Sidepannel_PosFeed += y;
-                Sidepannel_AddFocusLiveFeed();
+                if (isChannelScreen || isUserScrren) {
+
+                    if (isUserScrren && Main_ThumbNull((Users_cursorY + y), (Users_cursorX), Users_ids[0])) {
+
+                        Users_removeFocus();
+                        Users_cursorY += y;
+                        Users_addFocus();
+
+                    }
+
+                } else if (Screens_IsInUse(key) && (y > 0 || ScreenObj[key].posY > 0)) {
+
+                    Screens_KeyUpDownClick(key, y);
+
+                } else if (Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
+                    (y < 0 || Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
+
+                    Sidepannel_RemoveFocusFeed();
+                    Sidepannel_PosFeed += y;
+                    Sidepannel_AddFocusLiveFeed();
+
+                }
 
             }
 

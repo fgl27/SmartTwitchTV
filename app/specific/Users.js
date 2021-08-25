@@ -30,13 +30,25 @@ var Users_Isautentication = true;
 var Users_ShowAutetication = false;
 var Users_Userlastadded = '';
 
-var Users_ids = ['u_thumbdiv', 'u_img', 'u_infodiv', 'u_displayname', 'u_cell', 'user_scroll', 'user_row'];
+var Users_ids;
 var Users_status = false;
 var Users_loadingData = true;
 var Users_Lang = '';
 //Variable initialization end
 
 function Users_init() {
+    if (!Users_ids) {
+        Users_ids = [
+            Main_Users + '_thumbdiv_',//0
+            Main_Users + '_img_',//1
+            Main_Users + '_infodiv_',//2
+            Main_Users + '_displayname_',//3
+            Main_Users + '_cell_',//4
+            'user_scroll',//5
+            Main_Users + '_row_'//6
+        ];
+    }
+
     if (Main_newUsercode) {
         Main_HideElement('topbar');
         Main_HideElement('clock_holder');
