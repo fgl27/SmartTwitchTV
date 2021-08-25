@@ -2037,7 +2037,7 @@ function Screens_KeyUpDownClick(key, y) {
 }
 
 function Screens_handleKeyDown(key, event) {
-    //Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
+    Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
     if (Main_CantClick()) return;
 
     Main_keyClickDelayStart();
@@ -2214,6 +2214,15 @@ function Screens_handleKeyDown(key, event) {
             if (!UserIsSet) {
                 Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
+            break;
+        case KEY_X:
+            enable_embed = !enable_embed;
+
+            Main_setItem('enable_embed', enable_embed);
+            Main_showWarningDialog(
+                STR_EMBED + (enable_embed ? STR_ENABLED : STR_DISABLED),
+                2000
+            );
             break;
         default:
             break;

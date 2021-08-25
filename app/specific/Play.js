@@ -242,7 +242,7 @@ function Play_Start(offline_chat) {
     }
     PlayClip_DontSkipStartAuto = false;
 
-    if (!Main_IsOn_OSInterface && !offline_chat) {
+    if (!Main_IsOn_OSInterface && !offline_chat && enable_embed) {
         new Twitch.Embed("twitch-embed", {
             width: scaledWidth,
             height: currentHeight,

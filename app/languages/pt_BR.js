@@ -702,4 +702,6 @@ function pt_BRLang() {
     STR_HISTORY_EMPTY_CONTENT = "O histórico do aplicativo mostra o que você assistiu no aplicativo apenas, se o histórico estiver habilitada";
     STR_PREVIEW = "a pré-visualização";
 
+    STR_CLICK_EXIT = "Clique aqui para sair do player";
+
 }

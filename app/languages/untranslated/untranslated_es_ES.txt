@@ -265,3 +265,6 @@
     STR_REFRESH_PROBLEM = "Connection failed or there is no content for this. Refresh to try again";
     STR_REFRESH_PROBLEM_ENTER = "Connection failed or there is no content for this. Press enter to Refresh";
     STR_PREVIEW = "the preview";
+
+    STR_EMBED = "Embed player ";
+    STR_CLICK_EXIT = "Click here to exit the player";

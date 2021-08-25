@@ -7,14 +7,19 @@ var OnDuploClick;
 var player_embed;
 var clip_player;
 var exit_player_embed;
+var enable_embed;
+
+function BrowserTestLoadScript(url) {
+    var embed_script = document.createElement('script');
+    embed_script.setAttribute('src', url);
+    document.head.appendChild(embed_script);
+}
 
 function BrowserTestFun() {
     if (!Main_IsOn_OSInterface) {
         //This if is just for testing on a browser the code here is not ideal but works for testing
 
-        var embed_script = document.createElement('script');
-        embed_script.setAttribute('src', 'https://embed.twitch.tv/embed/v1.js');
-        document.head.appendChild(embed_script);
+        BrowserTestLoadScript('https://embed.twitch.tv/embed/v1.js');
 
         var key = 0,
             sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
@@ -28,10 +33,12 @@ function BrowserTestFun() {
         player_embed = Main_getElementById('twitch-embed');
         clip_player = Main_getElementById('clip_player');
 
-        Main_RemoveClassWithEle(exit_player, 'hide');
-        Main_IconLoad('exit_player', 'icon-return', STR_GOBACK);
+        enable_embed = Main_getItemBool('enable_embed', true);
 
-        Main_IconLoad('twitch-embed_exit', 'icon-return', STR_GOBACK);
+        Main_RemoveClassWithEle(exit_player, 'hide');
+        Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
+
+        Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
 
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');

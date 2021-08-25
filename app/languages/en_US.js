@@ -715,4 +715,7 @@ function en_USLang() {
 
     STR_HISTORY_EMPTY_CONTENT = "The app history shows what you have watched in the app only if history is enabled";
     STR_PREVIEW = "the preview";
+
+    STR_EMBED = "Embed player ";
+    STR_CLICK_EXIT = "Click here to exit the player";
 }
