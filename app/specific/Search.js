@@ -122,25 +122,29 @@ function Search_handleKeyDown(event) {
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_ENTER:
-            if (!Search_cursorY) Search_inputFocus();
-            else {
-                if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
-                    Main_values.Search_data = Main_SearchInput.value;
-                    Main_SearchInput.value = '';
-                    Search_loadData();
-                } else {
-                    Main_showWarningDialog(STR_SEARCH_EMPTY);
-                    Main_setTimeout(
-                        function() {
-                            Main_HideWarningDialog();
-                        },
-                        1000
-                    );
-                }
-            }
+            Search_KeyEnter();
             break;
         default:
             break;
+    }
+}
+
+function Search_KeyEnter() {
+    if (!Search_cursorY) Search_inputFocus();
+    else {
+        if (Main_SearchInput.value !== '' && Main_SearchInput.value !== null) {
+            Main_values.Search_data = Main_SearchInput.value;
+            Main_SearchInput.value = '';
+            Search_loadData();
+        } else {
+            Main_showWarningDialog(STR_SEARCH_EMPTY);
+            Main_setTimeout(
+                function() {
+                    Main_HideWarningDialog();
+                },
+                1000
+            );
+        }
     }
 }
 

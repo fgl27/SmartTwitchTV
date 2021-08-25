@@ -98,6 +98,11 @@ function BrowserTestFun() {
                     Main_SwitchScreen();
                     Sidepannel_Start(Users_handleKeyDown);
 
+                } else if (Main_isElementShowing('search_scroll')) {
+
+                    Search_exit();
+                    Main_SwitchScreen();
+
                 } else {
 
                     Screens_OpenSidePanel(false, key);
@@ -338,6 +343,18 @@ function BrowserTestFun() {
                 }
 
                 OnDuploClick = div;
+            } else if (Main_A_includes_B(id, 'chanel_button')) {
+                Search_cursorY = 1;
+                Search_cursorX = 0;
+                Search_KeyEnter();
+            } else if (Main_A_includes_B(id, 'game_button')) {
+                Search_cursorY = 1;
+                Search_cursorX = 1;
+                Search_KeyEnter();
+            } else if (Main_A_includes_B(id, 'live_button')) {
+                Search_cursorY = 1;
+                Search_cursorX = 2;
+                Search_KeyEnter();
             }
         };
 
