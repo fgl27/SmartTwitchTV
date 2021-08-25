@@ -50,6 +50,7 @@ function ChannelContent_init() {
     if (ChannelContent_ChannelValueIsset && !Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
     if (ChannelContent_lastselectedChannel !== Main_values.Main_selectedChannel) ChannelContent_status = false;
     Main_cleanTopLabel();
+    Main_CounterDialogRst();
     Main_innerHTML("label_last_refresh", '');
     if (Main_isScene1DocVisible()) Main_addEventListener("keydown", ChannelContent_handleKeyDown);
     AddCode_PlayRequest = false;

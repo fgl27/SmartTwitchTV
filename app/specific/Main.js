@@ -919,8 +919,6 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     if (Main_values.Main_Go !== Main_ChannelContent) Main_values.Main_BeforeChannelisSet = false;
     if (Main_values.Main_Go !== Main_aGame) Main_values.Main_BeforeAgameisSet = false;
 
-    Main_CounterDialogRst();
-
     if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
     else ScreenObj[1].init_fun();
 

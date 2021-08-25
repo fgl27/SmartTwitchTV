@@ -195,10 +195,11 @@ function BrowserTestFun() {
             key = Main_values.Main_Go;
             if (!yOnwheel && Screens_IsInUse(key) && !Sidepannel_isShowingMenus() &&
                 (y > 0 || ScreenObj[key].posY > 0)) {
-                Screens_ChangeFocus(y, ScreenObj[key].posX, key);
+
+                Screens_KeyUpDownClick(key, y);
 
             } else if (!yOnwheel && Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
-                (Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
+                (y < 0 || Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
 
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed += y;
