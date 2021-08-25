@@ -360,8 +360,6 @@ function BrowserTestFun() {
         };
 
         Main_Scene1Doc.onwheel = function(event) {
-            var id = event.target.id;
-
             var y = event.deltaY > 0 ? 1 : -1;
 
             key = Main_values.Main_Go;

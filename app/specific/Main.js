@@ -2939,6 +2939,7 @@ function Main_CheckDialogs() {
 
         Main_HideControlsDialog();
         Main_HideChangeDialog();
+        Main_HideUpdateDialog();
         Main_HideAboutDialog();
         Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_controls);
 
