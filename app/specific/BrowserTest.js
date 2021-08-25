@@ -45,7 +45,6 @@ function BrowserTestFun() {
 
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
 
-
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');
             if (Play_isOn) {
@@ -449,13 +448,20 @@ function BrowserTestFun() {
         };
 
         Main_Scene2Doc.onmousemove = function() {
-            if (Main_isScene2DocVisible() && !Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
-                if (PlayClip_isOn) PlayClip_showPanel();
+            if (Main_isScene2DocVisible()) {
+                if (!Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
+                    if (PlayClip_isOn) PlayClip_showPanel();
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndTextClear();
+                    Main_RemoveClassWithEle(exit_player_embed, 'hide');
+                }
             }
         };
 
         Main_Scene2Doc.onclick = function(event) {
             var id = event.target.id;
+
+            console.log(id)
 
             if (Main_isScene2DocVisible()) {
 
@@ -466,7 +472,11 @@ function BrowserTestFun() {
                 else if (PlayClip_isOn) PlayVodClip = 3;
 
                 if (Main_A_includes_B(id, 'ulf_') && UserLiveFeed_isPreviewShowing()) {
-                    //UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+
+                    if (Play_isEndDialogVisible()) {
+                        Play_EndFocus = true;
+                        Play_EndDialogUpDown();
+                    }
 
                     var idArray = id.split('_'),
                         x = parseInt(idArray[2]),
@@ -500,6 +510,10 @@ function BrowserTestFun() {
 
                     OnDuploClick = div;
 
+                } else if (Play_isEndDialogVisible()) {
+                    Play_EndFocus = true;
+                    UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+                    Play_EndIconsAddFocus();
                 } else if (!Play_isPanelShowing()) {
 
                     // if (PlayVodClip === 1) Play_showPanel();
@@ -533,8 +547,12 @@ function BrowserTestFun() {
                         Main_A_includes_B(id, 'back_button_')) {
                         PlayClip_Enter();
                     } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
-                        Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
-                        clip_player.currentTime = Chat_fakeClock;
+                        try {
+                            Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
+                            clip_player.currentTime = Chat_fakeClock;
+                        } catch (e) {
+                            console.log('Main_Scene2Doc.onclick e ' + e);
+                        }
 
                         Play_ProgresBarrElm.style.transition = '';
                         PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);

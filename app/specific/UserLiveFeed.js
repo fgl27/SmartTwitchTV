@@ -1256,7 +1256,8 @@ function UserLiveFeed_SetHoldUp() {
 function UserLiveFeed_KeyRightLeft(Adder) {
     UserLiveFeed_ResetFeedId();
 
-    if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] && !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
+    if (UserLiveFeed_ChangeFocusAnimationFinished[UserLiveFeed_FeedPosX] &&
+        !UserLiveFeed_loadingData[UserLiveFeed_FeedPosX]) {
 
         var NextPos = UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] + Adder;
         if (NextPos > (UserLiveFeed_GetSize(UserLiveFeed_FeedPosX) - 1) || NextPos < 0) return;
