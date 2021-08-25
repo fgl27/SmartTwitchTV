@@ -489,6 +489,18 @@ function ChannelContent_handleKeyUpClear() {
     Main_addEventListener("keydown", ChannelContent_handleKeyDown);
 }
 
+function ChannelContent_keyUpDown() {
+    if (!ChannelContent_cursorY) {
+        ChannelContent_removeFocus();
+        ChannelContent_cursorY = 1;
+        ChannelContent_addFocus();
+    } else {
+        ChannelContent_removeFocus();
+        ChannelContent_cursorY = 0;
+        ChannelContent_addFocus();
+    }
+}
+
 function ChannelContent_handleKeyDown(event) {
     if (Main_FirstLoad || Main_CantClick()) return;
 
@@ -530,26 +542,8 @@ function ChannelContent_handleKeyDown(event) {
             }
             break;
         case KEY_UP:
-            if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 1;
-                ChannelContent_addFocus();
-            } else {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 0;
-                ChannelContent_addFocus();
-            }
-            break;
         case KEY_DOWN:
-            if (!ChannelContent_cursorY) {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 1;
-                ChannelContent_addFocus();
-            } else {
-                ChannelContent_removeFocus();
-                ChannelContent_cursorY = 0;
-                ChannelContent_addFocus();
-            }
+            ChannelContent_keyUpDown();
             break;
         case KEY_PAUSE://key s
         case KEY_6:

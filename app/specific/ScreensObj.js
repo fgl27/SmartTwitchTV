@@ -2157,8 +2157,8 @@ function ScreensObj_addSwitches(StringsArray, key) {
         div.setAttribute('id', ScreenObj[key].ids[3] + 'y_' + i);
         div.className = 'stream_cell_period';
         div.innerHTML = '<div id="' + ScreenObj[key].ids[0] +
-            'y_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[2] +
-            'y_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
+            '-1_' + i + '" class="stream_thumbnail_channel_vod" ><div id="' + ScreenObj[key].ids[2] +
+            '-1_' + i + '" class="stream_channel_follow_game">' + thumbfollow + '</div></div>';
         ScreenObj[key].row.appendChild(div);
     }
     ScreenObj[key].tableDoc.appendChild(ScreenObj[key].row);
