@@ -45,7 +45,9 @@ function Users_init() {
             Main_Users + '_displayname_',//3
             Main_Users + '_cell_',//4
             'user_scroll',//5
-            Main_Users + '_row_'//6
+            Main_Users + '_row_',//6
+            Main_Users + '_imgholder_',//7
+            Main_Users + '_title_'//8
         ];
     }
 
@@ -124,10 +126,16 @@ function Users_loadData() {
     row.setAttribute('id', Users_ids[6] + '0');
 
     div.innerHTML = '<div id="' + Users_ids[0] + '0_0' +
-        '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"></div>' +
-        '<div  class="stream_thumbnail_user_text_holder">' +
-        '<div class="stream_info_user_name">' + STR_USER_ADD +
-        '</div><div style="color:#FFFFFF;font-size: 17vh; text-align: center; transform: translateY(-24.5vh);"><i class="icon-user-plus" ></i></div></div></div>';
+        '" class="stream_thumbnail_user" ><div id="' + Users_ids[1] + '0_0' +
+        '" class="stream_thumbnail_channel_img"></div>' +
+        '<div id="' + Users_ids[2] + '0_0' +
+        '" class="stream_thumbnail_user_text_holder">' +
+        '<div id="' + Users_ids[3] + '0_0' +
+        '" class="stream_info_user_name">' + STR_USER_ADD +
+        '</div><div id="' + Users_ids[6] + '0_0' +
+        '"style="color:#FFFFFF;font-size: 17vh; text-align: center; transform: translateY(-24.5vh);"><i id="' +
+        Users_ids[7] + '0_0' +
+        '" class="icon-user-plus" ></i></div></div></div>';
 
     row.appendChild(div);
 
@@ -158,12 +166,16 @@ function Users_createCell(id, pos) {
     div.classList.add('stream_thumbnail_user_icon_holder');
 
     div.innerHTML = '<div id="' + Users_ids[0] + id +
-        '" class="stream_thumbnail_user" ><div class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
+        '" class="stream_thumbnail_user" ><div  id="' + Users_ids[2] + id +
+        '" class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
         id + '" alt="" class="stream_img_channels" src="' + AddUser_UsernameArray[pos].logo +
         '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></div>' +
-        '<div  class="stream_thumbnail_user_text_holder">' +
-        '<div class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
-        '</div><div class="stream_info_user_title">' +
+        '<div id="' + Users_ids[3] + id +
+        '" class="stream_thumbnail_user_text_holder">' +
+        '<div id="' + Users_ids[7] + id +
+        '" class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
+        '</div><div id="' + Users_ids[8] + id +
+        '" class="stream_info_user_title">' +
         (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
         '</div></div></div>';
 
