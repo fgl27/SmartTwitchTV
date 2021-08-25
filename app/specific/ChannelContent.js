@@ -626,7 +626,7 @@ function ChannelContent_LoadPreviewRestore() {
         4
     );
 
-    Main_AddClassWitEle(img, 'opacity_zero');
+    if (Main_IsOn_OSInterface) Main_AddClassWitEle(img, 'opacity_zero');
 }
 
 function ChannelContent_CheckIfIsLiveSTop(PreventcleanQuailities) {
