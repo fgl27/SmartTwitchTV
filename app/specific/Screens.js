@@ -2037,7 +2037,7 @@ function Screens_KeyUpDownClick(key, y) {
 }
 
 function Screens_handleKeyDown(key, event) {
-    Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
+    //Main_Log('Screens_handleKeyDown ' + event.keyCode + ' key ' + key);
     if (Main_CantClick()) return;
 
     Main_keyClickDelayStart();
