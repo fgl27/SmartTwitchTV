@@ -15,6 +15,7 @@ Featured request list
 * **[Ability to "follow" channels without any Twitch account whatsoever](https://github.com/fgl27/SmartTwitchTV/issues/30)** ... Too much work the app must be redesign to work as if there is a user when there is no user, with will take a complete redesign of almost all app, as a user or no user check is everywhere
 * **[Feature Request - Sort Twitch channel emotes to the top of the Twitch emotes category](https://github.com/fgl27/SmartTwitchTV/issues/72)** ... something not supported today re check on the future to see if supported
 * **[Feature Request - Highlight keywords in chat](https://github.com/fgl27/SmartTwitchTV/issues/69)** ... this needs a UI that allow to add, edit and remove strings, that UI can be used for others things as filter chat, filter content games channels etc.
+* **See if is possible to add support for closed captions** (requested via EMAIL), Channel Ezekiel_III uses an OBS plugin that sends the closed captions into Twitch's interface, verify if is possible to get that info and use in the app.
 
 Issues list
 ==============
