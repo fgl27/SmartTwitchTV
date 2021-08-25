@@ -27,6 +27,7 @@ function BrowserTestFun() {
             progress_pause_holder_hover = Main_getElementById('progress_pause_holder'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
             sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
+            scene2_click = Main_getElementById('scene2_click'),
             exit_player = Main_getElementById('exit_player');
 
         exit_player_embed = Main_getElementById('twitch-embed_exit');
@@ -39,6 +40,7 @@ function BrowserTestFun() {
         Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
 
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
+
 
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');
@@ -57,6 +59,20 @@ function BrowserTestFun() {
             }
 
             Main_emptyWithEle(player_embed);
+        };
+
+        scene2_click.onmouseover = function() {
+            Main_RemoveClassWithEle(exit_player_embed, 'hide');
+
+            OnClickId = Main_setTimeout(
+                function() {
+
+                    Main_AddClassWitEle(exit_player_embed, 'hide');
+
+                },
+                5000,
+                OnClickId
+            );
         };
 
         sidepanel_elem_show.onmouseover = function() {
@@ -114,7 +130,6 @@ function BrowserTestFun() {
             }
         };
 
-
         controls_holder_hover.onmouseover = function(event) {
             if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
 
@@ -167,7 +182,7 @@ function BrowserTestFun() {
         };
         Main_getElementById('side_panel_feed_thumb').onmouseover = sidepanel_elem_hide.onmouseover;
 
-        window.onclick = function(event) {
+        Main_Scene1Doc.onclick = function(event) {
             var id = event.target.id,
                 div;
 
@@ -225,56 +240,6 @@ function BrowserTestFun() {
                     Main_SwitchScreen();
 
                 }
-            } else if (Main_isScene2DocVisible()) {
-
-                var PlayVodClip = 0;
-
-                if (Play_isOn) PlayVodClip = 1;
-                else if (PlayVod_isOn) PlayVodClip = 2;
-                else if (PlayClip_isOn) PlayVodClip = 3;
-
-                if (!Play_isPanelShowing()) {
-
-                    // if (PlayVodClip === 1) Play_showPanel();
-                    // else if (PlayVodClip === 2) PlayVod_showPanel(true);
-                    // else
-                    if (PlayVodClip === 3) PlayClip_showPanel();
-
-                } else {
-
-                    Play_Resetpanel(PlayVodClip);
-
-                    if (Main_A_includes_B(id, 'exit_player')) {
-                        if (Play_isOn) {
-                            Play_CheckPreview();
-                            Play_shutdownStream();
-                        }
-                        else if (PlayVod_isOn) {
-                            PlayVod_CheckPreview();
-                            PlayVod_shutdownStream();
-                        }
-                        else if (PlayClip_isOn) {
-                            PlayClip_CheckPreview();
-                            Play_CleanHideExit();
-                            PlayClip_shutdownStream();
-                        }
-                    } else if (Main_A_includes_B(id, 'controls_button_')) {
-                        Play_BottomOptionsPressed(PlayVodClip);
-                    } else if (Main_A_includes_B(id, 'pause_button')) {
-                        OSInterface_PlayPauseChange(PlayVodClip);
-                    } else if (Main_A_includes_B(id, 'next_button_') ||
-                        Main_A_includes_B(id, 'back_button_')) {
-                        PlayClip_Enter();
-                    } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
-                        Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
-                        clip_player.currentTime = Chat_fakeClock;
-
-                        Play_ProgresBarrElm.style.transition = '';
-                        PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
-                    }
-
-                }
-
             } else if (Sidepannel_isShowingMenus()) {
 
                 if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
@@ -347,7 +312,8 @@ function BrowserTestFun() {
             }
         };
 
-        window.onwheel = function(event) {
+        Main_Scene1Doc.onwheel = function(event) {
+
             var y = event.deltaY > 0 ? 1 : -1;
 
             key = Main_values.Main_Go;
@@ -378,6 +344,144 @@ function BrowserTestFun() {
 
             yOnwheel++;
             if (yOnwheel > 3) yOnwheel = 0;
+        };
+
+        Main_Scene2Doc.onwheel = function(event) {
+            var id = event.target.id;
+
+            var y = event.deltaY > 0 ? 1 : -1;
+
+            console.log(id);
+
+            if (Main_isScene2DocVisible()) {
+                var y = event.deltaY > 0 ? 1 : -1;
+
+                if (Main_A_includes_B(id, 'scene2_click') ||
+                    Main_A_includes_B(id, 'clip_player')) {
+                    if (!yOnwheel && y < 0 && !UserLiveFeed_isPreviewShowing()) {
+                        UserLiveFeed_ShowFeed();
+                    } else if (!yOnwheel && y > 0 && UserLiveFeed_isPreviewShowing()) {
+                        UserLiveFeed_Hide();
+                    }
+                } else if (!yOnwheel && Main_A_includes_B(id, 'ulf_') &&
+                    UserLiveFeed_isPreviewShowing()) {
+                    UserLiveFeed_KeyRightLeft(y * -1);
+                }
+
+                OnwheelId = Main_setTimeout(
+                    function() {
+
+                        Screens_handleKeyUpAnimationFast();
+                        yOnwheel = 0;
+
+                    },
+                    Screens_ScrollAnimationTimeout * 1.5,
+                    OnwheelId
+                );
+
+                yOnwheel++;
+                if (yOnwheel > 1) yOnwheel = 0;
+
+            }
+        };
+
+        Main_Scene2Doc.onmousemove = function() {
+            if (Main_isScene2DocVisible() && !Play_isPanelShowing()) {
+                if (PlayClip_isOn) PlayClip_showPanel();
+            }
+        };
+
+        Main_Scene2Doc.onclick = function(event) {
+            var id = event.target.id;
+
+            console.log(id);
+
+            if (Main_isScene2DocVisible()) {
+
+                var PlayVodClip = 0;
+
+                if (Play_isOn) PlayVodClip = 1;
+                else if (PlayVod_isOn) PlayVodClip = 2;
+                else if (PlayClip_isOn) PlayVodClip = 3;
+
+                if (Main_A_includes_B(id, 'ulf_') && UserLiveFeed_isPreviewShowing()) {
+                    //UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+
+                    var idArray = id.split('_'),
+                        x = parseInt(idArray[2]),
+                        y = parseInt(idArray[3]),
+                        newY = y - UserLiveFeed_FeedPosY[x],
+                        multiplier = newY / Math.abs(newY),
+                        len = Math.abs(newY),
+                        i = 0;
+
+                    for (i; i < len; i++) {
+                        UserLiveFeed_KeyRightLeft(multiplier);
+                    }
+
+                    div = y + '_' + x;
+
+                    OnClickId = Main_setTimeout(
+                        function() {
+
+                            OnDuploClick = '';
+
+                        },
+                        500,
+                        OnClickId
+                    );
+
+                    if (Main_A_equals_B(OnDuploClick, div)) {
+
+                        Play_OpenLiveFeedCheck();
+
+                    }
+
+                    OnDuploClick = div;
+
+                } else if (!Play_isPanelShowing()) {
+
+                    // if (PlayVodClip === 1) Play_showPanel();
+                    // else if (PlayVodClip === 2) PlayVod_showPanel(true);
+                    // else
+                    if (PlayVodClip === 3) PlayClip_showPanel();
+
+                } else {
+
+                    Play_Resetpanel(PlayVodClip);
+
+                    if (Main_A_includes_B(id, 'exit_player')) {
+                        if (Play_isOn) {
+                            Play_CheckPreview();
+                            Play_shutdownStream();
+                        }
+                        else if (PlayVod_isOn) {
+                            PlayVod_CheckPreview();
+                            PlayVod_shutdownStream();
+                        }
+                        else if (PlayClip_isOn) {
+                            PlayClip_CheckPreview();
+                            Play_CleanHideExit();
+                            PlayClip_shutdownStream();
+                        }
+                    } else if (Main_A_includes_B(id, 'controls_button_')) {
+                        Play_BottomOptionsPressed(PlayVodClip);
+                    } else if (Main_A_includes_B(id, 'pause_button')) {
+                        OSInterface_PlayPauseChange(PlayVodClip);
+                    } else if (Main_A_includes_B(id, 'next_button_') ||
+                        Main_A_includes_B(id, 'back_button_')) {
+                        PlayClip_Enter();
+                    } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
+                        Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
+                        clip_player.currentTime = Chat_fakeClock;
+
+                        Play_ProgresBarrElm.style.transition = '';
+                        PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
+                    }
+
+                }
+
+            }
         };
 
     }

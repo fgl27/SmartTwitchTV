@@ -333,9 +333,9 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
             allowfullscreen: true,
             autoplay: true,
             video: Main_values.ChannelVod_vodId,
-            muted: false
+            muted: false,
+            theme: "dark"
         });
-        Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
 }
 
@@ -607,6 +607,11 @@ function PlayVod_PreshutdownStream(saveOffset) {
     PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
+
+    if (!Main_IsOn_OSInterface) {
+        Main_emptyWithEle(player_embed);
+    }
+
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
 

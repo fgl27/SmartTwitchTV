@@ -49,11 +49,11 @@ var UserLiveFeed_ChangeFocusAnimationFast = false;
 var UserLiveFeed_ChangeFocusAnimationFinished = [];
 
 var UserLiveFeed_ids = [
-    'ulf_thumbdiv',//0
-    'ulf_img',//1
-    'ulf_title',//2
-    'ulf_data',//3
-    'ulf_watched'//4
+    'ulf_thumbdiv_',//0
+    'ulf_img_',//1
+    'ulf_title_',//2
+    'ulf_data_',//3
+    'ulf_watched_'//4
 ];
 
 var UserLiveFeed_side_ids = [

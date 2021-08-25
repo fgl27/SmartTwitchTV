@@ -243,13 +243,16 @@ function Play_Start(offline_chat) {
     PlayClip_DontSkipStartAuto = false;
 
     if (!Main_IsOn_OSInterface && !offline_chat && enable_embed) {
+        Main_emptyWithEle(player_embed);
+
         new Twitch.Embed("twitch-embed", {
             width: scaledWidth,
             height: currentHeight,
             allowfullscreen: true,
             autoplay: true,
             channel: Play_data.data[6],
-            muted: false
+            muted: false,
+            theme: "dark"
         });
         Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
@@ -1329,6 +1332,8 @@ function Play_PreshutdownStream(closePlayer) {
             if (!Play_PreviewId) OSInterface_stopVideo();
             else OSInterface_mClearSmallPlayer();
         }
+    } else {
+        Main_emptyWithEle(player_embed);
     }
 
     if (closePlayer) {
