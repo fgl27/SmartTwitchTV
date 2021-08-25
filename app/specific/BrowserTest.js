@@ -4,6 +4,7 @@ function BrowserTestFun() {
         //This if is just for testing on a browser the code here is not ideal but works for testing
 
         var key = 0,
+            sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
             sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
             exit_player = Main_getElementById('exit_player');
@@ -22,6 +23,20 @@ function BrowserTestFun() {
                     Screens_OpenSidePanel(false, key);
                 }
 
+            }
+        };
+
+
+        sidepanel_Menus_hover.onmouseover = function(event) {
+            if (Sidepannel_isShowingMenus()) {
+
+                var id = event.target.id;
+
+                if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
+                    Sidepannel_RemoveFocusMain();
+                    Sidepannel_Sidepannel_Pos = parseInt(id.split('_')[4]);
+                    Sidepannel_AddFocusMain();
+                }
             }
         };
 
@@ -122,7 +137,7 @@ function BrowserTestFun() {
                 if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
                     var sidepannel_pos = parseInt(idArray[4]);
                     Sidepannel_RemoveFocusMain();
-                    Sidepannel_Sidepannel_Pos = parseInt(idArray[4]);
+                    Sidepannel_Sidepannel_Pos = sidepannel_pos;
                     if (sidepannel_pos === 2) Sidepannel_AddFocusMain();
 
                     Sidepannel_KeyEnter();
