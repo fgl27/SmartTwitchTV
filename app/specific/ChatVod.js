@@ -458,12 +458,12 @@ function Chat_loadChatSuccess(responseText, id) {
         }
 
         if (ChatLive_Highlight_FromStreamer &&
-            Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), ChatLive_selectedChannel[0])) {
+            Main_A_equals_B((comments[i].commenter.display_name).toLowerCase(), ChatLive_selectedChannel[0])) {
 
             fromstreamer = true;
 
         } else if (ChatLive_Highlight_User_send &&
-            Main_A_includes_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
+            Main_A_equals_B((comments[i].commenter.display_name).toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
 
             atuser = true;
 

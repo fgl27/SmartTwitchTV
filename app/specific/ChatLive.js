@@ -1671,7 +1671,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         atstreamer = true;
 
     } else if (ChatLive_Highlight_FromStreamer &&
-        Main_A_includes_B(tags['display-name'].toLowerCase(), ChatLive_selectedChannel[chat_number])) {
+        Main_A_equals_B(tags['display-name'].toLowerCase(), ChatLive_selectedChannel[chat_number])) {
 
         fromstreamer = true;
 
@@ -1684,7 +1684,7 @@ function ChatLive_loadChatSuccess(message, chat_number, addToStart) {
         atuser = true;
 
     } else if (ChatLive_Highlight_User_send &&
-        Main_A_includes_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
+        Main_A_equals_B(tags['display-name'].toLowerCase(), (AddUser_UsernameArray[0].display_name).toLowerCase())) {
 
         atuser = true;
 
