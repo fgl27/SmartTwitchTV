@@ -16,7 +16,11 @@ function BrowserTestLoadScript(url) {
 }
 
 function BrowserTestFun() {
-    if (!Main_IsOn_OSInterface) {
+
+    if (Main_IsOn_OSInterface) {
+        Main_RemoveElement(Main_getElementById('clip-embed'));
+        Main_RemoveElement(Main_getElementById('twitch-embed'));
+    } else {
         //This if is just for testing on a browser the code here is not ideal but works for testing
 
         BrowserTestLoadScript('https://embed.twitch.tv/embed/v1.js');

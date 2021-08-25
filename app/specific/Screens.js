@@ -2216,13 +2216,15 @@ function Screens_handleKeyDown(key, event) {
             }
             break;
         case KEY_X:
-            enable_embed = !enable_embed;
+            if (!Main_IsOn_OSInterface) {
+                enable_embed = !enable_embed;
 
-            Main_setItem('enable_embed', enable_embed);
-            Main_showWarningDialog(
-                STR_EMBED + (enable_embed ? STR_ENABLED : STR_DISABLED),
-                2000
-            );
+                Main_setItem('enable_embed', enable_embed);
+                Main_showWarningDialog(
+                    STR_EMBED + (enable_embed ? STR_ENABLED : STR_DISABLED),
+                    2000
+                );
+            }
             break;
         default:
             break;
