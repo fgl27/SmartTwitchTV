@@ -92,6 +92,12 @@ function BrowserTestFun() {
                     Users_removeFocus();
                     Sidepannel_Start(Users_handleKeyDown);
 
+                } else if (key === Main_addUser) {
+
+                    AddUser_exit();
+                    Main_SwitchScreen();
+                    Sidepannel_Start(Users_handleKeyDown);
+
                 } else {
 
                     Screens_OpenSidePanel(false, key);

@@ -57,7 +57,7 @@ function en_USLang() {
     STR_AGAME = "A Game";
     STR_PLACEHOLDER_SEARCH = "Type your search ...";
     STR_PLACEHOLDER_OAUTH = "Type your authorization key ...";
-    STR_PLACEHOLDER_USER = "Type your username ...";
+    STR_PLACEHOLDER_USER = "Type your username and press Enter...";
     STR_PLACEHOLDER_PRESS = "Press Enter or Select key to,";
     STR_CHANNELS = "Channels";
     STR_CHANNEL = "Channel";
