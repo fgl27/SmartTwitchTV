@@ -64,7 +64,7 @@ function BrowserTestFun() {
             Main_emptyWithEle(player_embed);
         };
 
-        scene2_click.onmouseover = function() {
+        scene2_click.onmousemove = function() {
             Main_RemoveClassWithEle(exit_player_embed, 'hide');
 
             OnClickId = Main_setTimeout(
@@ -78,7 +78,7 @@ function BrowserTestFun() {
             );
         };
 
-        sidepanel_elem_show.onmouseover = function() {
+        sidepanel_elem_show.onmousemove = function() {
             key = Main_values.Main_Go;
             if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
 
@@ -111,7 +111,7 @@ function BrowserTestFun() {
             }
         };
 
-        progress_pause_holder_hover.onmouseover = function(event) {
+        progress_pause_holder_hover.onmousemove = function(event) {
             if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
 
                 var id = event.target.id;
@@ -152,7 +152,7 @@ function BrowserTestFun() {
             }
         };
 
-        controls_holder_hover.onmouseover = function(event) {
+        controls_holder_hover.onmousemove = function(event) {
             if (Main_isScene2DocVisible() && Play_isPanelShowing()) {
 
                 var id = event.target.id;
@@ -183,7 +183,7 @@ function BrowserTestFun() {
             }
         };
 
-        sidepanel_Menus_hover.onmouseover = function(event) {
+        sidepanel_Menus_hover.onmousemove = function(event) {
             if (Sidepannel_isShowingMenus()) {
 
                 var id = event.target.id;
@@ -196,13 +196,13 @@ function BrowserTestFun() {
             }
         };
 
-        sidepanel_elem_hide.onmouseover = function() {
+        sidepanel_elem_hide.onmousemove = function() {
             if (Sidepannel_isShowingMenus() || Sidepannel_isShowingUserLive()) {
                 Sidepannel_Hide();
                 Main_SwitchScreen();
             }
         };
-        Main_getElementById('side_panel_feed_thumb').onmouseover = sidepanel_elem_hide.onmouseover;
+        Main_getElementById('side_panel_feed_thumb').onmousemove = sidepanel_elem_hide.onmousemove;
 
         Main_Scene1Doc.onclick = function(event) {
             var id = event.target.id,
