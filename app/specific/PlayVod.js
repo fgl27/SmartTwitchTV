@@ -600,6 +600,10 @@ function PlayVod_onPlayerStartPlay(time) {
 function PlayVod_shutdownStream(SkipSaveOffset) {
     // Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
 
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestPlayerEnded(true);
+    }
+
     if (PlayVod_isOn) {
         PlayVod_PreshutdownStream(!SkipSaveOffset);
         PlayVod_qualities = [];

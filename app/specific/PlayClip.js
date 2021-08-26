@@ -378,13 +378,7 @@ function PlayClip_onPlayer() {
             0
         );
     } else {
-        Main_setTimeout(Play_HideBufferDialog, 100);
-        clip_player.src = PlayClip_playingUrl;
-        clip_player.onended = function() {
-            Play_PlayEndStart(3);
-        };
-        clip_player.onerror = clip_player.onended;
-        Main_AddClassWitEle(exit_player_embed, 'hide');
+        BrowserTestStartClip(PlayClip_playingUrl);
     }
 
     PlayClip_replayOrNext = false;
@@ -412,10 +406,7 @@ function PlayClip_shutdownStream() {
     }
 
     if (!Main_IsOn_OSInterface) {
-        clip_player.pause();
-        clip_player.onended = noop_fun;
-        clip_player.onerror = noop_fun;
-        clip_player.src = '';
+        BrowserTestStopClip();
     }
 }
 

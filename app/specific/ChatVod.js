@@ -126,9 +126,6 @@ function Chat_StartFakeClockInterval() {
 
                     Chat_fakeClock = time;
 
-                    console.log('Chat_fakeClock ' + Chat_fakeClock);
-
-
                 } catch (e) {
                     console.log('Chat_StartFakeClockInterval e ' + e);
                 }

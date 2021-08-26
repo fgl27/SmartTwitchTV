@@ -1302,6 +1302,11 @@ function Play_timeDay(time) {
 
 function Play_shutdownStream() {
     //Main_Log('Play_shutdownStream ' + Play_isOn);
+
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestPlayerEnded(true);
+    }
+
     if (Play_isOn) {
         Play_PreshutdownStream(true);
         Main_values.Play_WasPlaying = 0;
@@ -2085,6 +2090,15 @@ function Play_OpenLiveFeed() {
 
 function Play_OpenFeed(keyfun) {
 
+    if (!Main_IsOn_OSInterface) {
+        if (PlayClip_isOn || PlayVod_isOn) {
+            PlayClip_isOn = false;
+            PlayVod_isOn = false;
+            BrowserTestStopClip();
+            Chat_Clear();
+        }
+    }
+
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
 
         if (Play_MultiEnable || PlayExtra_PicturePicture) {
@@ -2139,6 +2153,7 @@ function Play_OpenFeed(keyfun) {
     }
 
     Play_StopStay();
+
 }
 
 function Play_OpenLiveStream(keyfun) {

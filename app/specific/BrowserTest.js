@@ -6,6 +6,7 @@ var OnDuploClick;
 
 var player_embed;
 var clip_player;
+var clip_embed;
 var exit_player_embed;
 var enable_embed;
 
@@ -18,7 +19,7 @@ function BrowserTestLoadScript(url) {
 function BrowserTestFun() {
 
     if (Main_IsOn_OSInterface) {
-        Main_RemoveElement(Main_getElementById('clip-embed'));
+        Main_RemoveElement(Main_getElementById('clip_embed'));
         Main_RemoveElement(Main_getElementById('twitch-embed'));
     } else {
         //This if is just for testing on a browser the code here is not ideal but works for testing
@@ -37,6 +38,7 @@ function BrowserTestFun() {
         exit_player_embed = Main_getElementById('twitch-embed_exit');
         player_embed = Main_getElementById('twitch-embed');
         clip_player = Main_getElementById('clip_player');
+        clip_embed = Main_getElementById('clip_embed');
 
         enable_embed = Main_getItemBool('enable_embed', true);
 
@@ -48,12 +50,10 @@ function BrowserTestFun() {
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');
             if (Play_isOn) {
-                BrowserTestPlayerEnded(true);
                 Play_CheckPreview();
                 Play_shutdownStream();
             }
             else if (PlayVod_isOn) {
-                BrowserTestPlayerEnded(true);
                 PlayVod_CheckPreview();
                 PlayVod_shutdownStream();
             }
@@ -715,4 +715,22 @@ function BrowserTestPlayerEnded(skipEndStart) {
 
     Main_HideElementWithEle(player_embed);
     if (!skipEndStart) Play_PannelEndStart(PlayVodClip);
+}
+
+function BrowserTestStartClip(url) {
+    Main_ShowElementWithEle(clip_embed);
+    Main_setTimeout(Play_HideBufferDialog, 100);
+    clip_player.src = url;
+    clip_player.onended = function() {
+        Play_PlayEndStart(3);
+    };
+    clip_player.onerror = clip_player.onended;
+}
+
+function BrowserTestStopClip() {
+    clip_player.pause();
+    clip_player.onended = noop_fun;
+    clip_player.onerror = noop_fun;
+    clip_player.src = '';
+    Main_HideElementWithEle(clip_embed);
 }
