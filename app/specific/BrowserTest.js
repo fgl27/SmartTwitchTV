@@ -8,6 +8,7 @@ var player_embed;
 var clip_player;
 var clip_embed;
 var player_embed_clicks;
+var scene2_click;
 var enable_embed;
 
 function BrowserTestLoadScript(url) {
@@ -46,9 +47,9 @@ function BrowserTestFun() {
             progress_pause_holder_hover = Main_getElementById('progress_pause_holder'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
             sidepanel_elem_show = Main_getElementById('side_panel_new_holder'),
-            scene2_click = Main_getElementById('scene2_click'),
             exit_player = Main_getElementById('exit_player');
 
+        scene2_click = Main_getElementById('scene2_click');
         player_embed_clicks = Main_getElementById('player_embed_clicks');
         player_embed = Main_getElementById('twitch-embed');
         clip_player = Main_getElementById('clip_player');
@@ -61,25 +62,16 @@ function BrowserTestFun() {
         Main_Scene2Doc.style.backgroundColor = '#000000';
 
         Main_getElementById('twitch-embed_exit').onclick = function() {
-            Main_HideElementWithEle(player_embed_clicks);
-            if (Play_isOn) {
-                Play_CheckPreview();
-                Play_shutdownStream();
-            }
-            else if (PlayVod_isOn) {
-                PlayVod_CheckPreview();
-                PlayVod_shutdownStream();
-            }
-            else if (PlayClip_isOn) {
-                PlayClip_CheckPreview();
-                Play_CleanHideExit();
-                PlayClip_shutdownStream();
+            if (!enable_embed) {
+                return;
             }
 
+            Main_HideElementWithEle(scene2_click);
+            BrowserTestStartPlayerShutDown();
         };
 
         scene2_click.onmousemove = function() {
-            if (PlayClip_isOn) return;
+            if (PlayClip_isOn || !enable_embed) return;
 
             Main_ShowElementWithEle(player_embed_clicks);
 
@@ -132,10 +124,7 @@ function BrowserTestFun() {
 
                 var id = event.target.id;
 
-                var PlayVodClip = 1;
-
-                if (PlayVod_isOn) PlayVodClip = 2;
-                else if (PlayClip_isOn) PlayVodClip = 3;
+                var PlayVodClip = getPlayVodClip();
 
                 Play_Resetpanel(PlayVodClip);
 
@@ -174,11 +163,7 @@ function BrowserTestFun() {
 
                 if (Main_A_includes_B(id, 'controls_button_')) {
 
-                    var PlayVodClip = 0;
-
-                    if (Play_isOn) PlayVodClip = 1;
-                    else if (PlayVod_isOn) PlayVodClip = 2;
-                    else if (PlayClip_isOn); PlayVodClip = 3;
+                    var PlayVodClip = getPlayVodClip();
 
                     Play_Resetpanel(PlayVodClip);
 
@@ -432,18 +417,22 @@ function BrowserTestFun() {
 
             if (Main_isScene2DocVisible()) {
 
-                if (Main_A_includes_B(id, 'scene2_click') ||
+                if (Main_A_includes_B(id, 'scene2') ||
                     Main_A_includes_B(id, 'clip_player') ||
                     Main_A_includes_B(id, 'scene_channel_panel')) {
+
                     if (!yOnwheel && y < 0 && !UserLiveFeed_isPreviewShowing()) {
                         PlayClip_hidePanel();
                         UserLiveFeed_ShowFeed();
                     } else if (!yOnwheel && y > 0 && UserLiveFeed_isPreviewShowing()) {
                         UserLiveFeed_Hide();
                     }
+
                 } else if (!yOnwheel && Main_A_includes_B(id, 'ulf_') &&
                     UserLiveFeed_isPreviewShowing()) {
+
                     UserLiveFeed_KeyRightLeft(y * -1);
+
                 }
 
                 OnwheelId = Main_setTimeout(
@@ -465,11 +454,18 @@ function BrowserTestFun() {
 
         Main_Scene2Doc.onmousemove = function() {
             if (Main_isScene2DocVisible()) {
-                if (!Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
-                    if (PlayClip_isOn) PlayClip_showPanel();
+
+                if ((!Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing())) {
+
+                    if (!enable_embed && Play_isOn) Play_showPanel();
+                    else if (!enable_embed && PlayVod_isOn) PlayVod_showPanel(true);
+                    else if (PlayClip_isOn) PlayClip_showPanel();
+
                 } else if (Play_isEndDialogVisible()) {
+
                     Play_EndTextClear();
                     Main_ShowElementWithEle(player_embed_clicks);
+
                 }
             }
         };
@@ -483,10 +479,7 @@ function BrowserTestFun() {
 
             if (Main_isScene2DocVisible()) {
 
-                var PlayVodClip = 1;
-
-                if (PlayVod_isOn) PlayVodClip = 2;
-                else if (PlayClip_isOn) PlayVodClip = 3;
+                var PlayVodClip = getPlayVodClip();
 
                 if (Main_A_includes_B(id, 'ulf_') && UserLiveFeed_isPreviewShowing()) {
 
@@ -537,6 +530,11 @@ function BrowserTestFun() {
 
                         var pos = parseInt(idArray[idArray.length - 1]);
 
+                        if (!isNaN(pos)) {
+                            console.log('Main_Scene2Doc.onclick ' + pos);
+                            return;
+                        }
+
                         Play_EndIconsRemoveFocus();
                         Play_EndCounter = pos;
                         Play_EndIconsAddFocus();
@@ -562,12 +560,12 @@ function BrowserTestFun() {
                         OnDuploClick = div;
                     }
 
-                } else if (!Play_isPanelShowing()) {
+                } else if (!Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
 
                     // if (PlayVodClip === 1) Play_showPanel();
                     // else if (PlayVodClip === 2) PlayVod_showPanel(true);
                     // else
-                    if (PlayVodClip === 3) PlayClip_showPanel();
+                    if (!enable_embed || PlayVodClip === 3) PlayClip_showPanel();
                     else {
                         Main_ShowElementWithEle(player_embed_clicks);
 
@@ -600,21 +598,24 @@ function BrowserTestFun() {
                     Play_Resetpanel(PlayVodClip);
 
                     if (Main_A_includes_B(id, 'exit_player')) {
-                        if (Play_isOn || PlayVod_isOn) {
-                            BrowserTestPlayerEnded();
-                        } else if (PlayClip_isOn) {
-                            PlayClip_CheckPreview();
-                            Play_CleanHideExit();
-                            PlayClip_shutdownStream();
-                        }
+
+                        BrowserTestStartPlayerShutDown();
+
                     } else if (Main_A_includes_B(id, 'controls_button_')) {
+
                         Play_BottomOptionsPressed(PlayVodClip);
+
                     } else if (Main_A_includes_B(id, 'pause_button')) {
+
                         OSInterface_PlayPauseChange(PlayVodClip);
+
                     } else if (Main_A_includes_B(id, 'next_button_') ||
                         Main_A_includes_B(id, 'back_button_')) {
+
                         PlayClip_Enter();
+
                     } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
+
                         try {
                             Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
                             clip_player.currentTime = Chat_fakeClock;
@@ -654,6 +655,22 @@ function BrowserTestFun() {
     }
 }
 
+function BrowserTestStartPlayerShutDown() {
+    if (Play_isOn) {
+        Play_CheckPreview();
+        Play_shutdownStream();
+    }
+    else if (PlayVod_isOn) {
+        PlayVod_CheckPreview();
+        PlayVod_shutdownStream();
+    }
+    else if (PlayClip_isOn) {
+        PlayClip_CheckPreview();
+        Play_CleanHideExit();
+        PlayClip_shutdownStream();
+    }
+
+}
 var embedPlayer;
 
 function BrowserTestSetPlayer(prop, value, prop2, value2, force_restart) {
@@ -686,6 +703,7 @@ function BrowserTestSetPlayer(prop, value, prop2, value2, force_restart) {
 
 var BrowserTestStartPlayingId;
 function BrowserTestStartPlaying() {
+    Main_ShowElementWithEle(scene2_click);
     BrowserTestStartPlayingId = Main_setTimeout(
         function() {
 
@@ -712,6 +730,7 @@ function BrowserTestStartVod(vodId, time) {
     Main_ShowElement('scene2_click_1');
     Main_ShowElement('scene2_click_2');
     Main_ShowElement('scene2_click_3');
+    Main_ShowElement('scene2_click_4');
 }
 
 function BrowserTestStartLive(channel) {
@@ -722,6 +741,7 @@ function BrowserTestStartLive(channel) {
     Main_HideElement('scene2_click_1');
     Main_HideElement('scene2_click_2');
     Main_HideElement('scene2_click_3');
+    Main_HideElement('scene2_click_4');
 }
 
 function BrowserTestSetListners() {
@@ -743,23 +763,21 @@ function BrowserTestSetListners() {
 }
 
 function BrowserTestPlayerEnded(skipEndStart) {
-    var player = embedPlayer.getPlayer(),
-        PlayVodClip = 1;
+    if (embedPlayer) {
+        var player = embedPlayer.getPlayer();
 
-    //pause empty and restart the player with a not available vod
-    player.pause();
-    Main_empty('twitch-embed');
-    BrowserTestSetPlayer('video', '0', 'time', '0h0m0s', true);
-    if (PlayVod_isOn) {
-        PlayVodClip = 2;
+        //pause empty and restart the player with a not available vod
+        player.pause();
+        Main_empty('twitch-embed');
+        BrowserTestSetPlayer('video', '0', 'time', '0h0m0s', true);
     }
 
     Main_HideElementWithEle(player_embed);
-    if (!skipEndStart) Play_PannelEndStart(PlayVodClip);
+    Main_HideElementWithEle(scene2_click);
+    if (!skipEndStart) Play_PannelEndStart(PlayVod_isOn ? 2 : 1);
 }
 
 function BrowserTestStartClip(url) {
-    Main_HideElementWithEle(player_embed_clicks);
     Main_ShowElementWithEle(clip_embed);
     Main_setTimeout(Play_HideBufferDialog, 100);
     clip_player.src = url;
@@ -799,7 +817,7 @@ function BrowserTestSetVideoSize() {
         embedWidth = scaledWidth * size;
         embedheight = currentHeight * size;
 
-        if (!isFullSCreen) {
+        if (!isFullSCreen && (enable_embed || PlayClip_isOn)) {
             Play_SetSceneBackground(null);
         }
 
@@ -828,6 +846,17 @@ function BrowserTestSetVideoSize() {
 
         }
     }
+}
+
+
+
+function getPlayVodClip() {
+    var PlayVodClip = 1;
+
+    if (PlayVod_isOn) PlayVodClip = 2;
+    else if (PlayClip_isOn); PlayVodClip = 3;
+
+    return PlayVodClip;
 }
 
 function requestFullScreen() {
@@ -872,3 +901,4 @@ function requestFullScreen() {
         }
     }
 }
+

@@ -109,7 +109,7 @@ function Chat_StartFakeClockInterval() {
                     console.log('Chat_StartFakeClockInterval e ' + e);
                 }
 
-            } else if (PlayVod_isOn) {
+            } else if (embedPlayer && PlayVod_isOn) {
                 try {
                     var player = embedPlayer.getPlayer(),
                         time = player.getCurrentTime();
