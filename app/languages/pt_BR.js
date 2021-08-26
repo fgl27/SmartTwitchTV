@@ -704,5 +704,5 @@ function pt_BRLang() {
 
     STR_CLICK_EXIT = "Clique aqui para sair do player";
     STR_GO_FULL = "Tella cheia";
-
+    STR_NOT_SUPPORT_BROWSER = "Isto não é suportado em um navegador";
 }

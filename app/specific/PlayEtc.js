@@ -2434,6 +2434,19 @@ function Play_MakeControls() {
         enterKey: function(PlayVodClip) {
             if (Play_StayDialogVisible()) return;
 
+            if (Main_IsOn_OSInterface) {
+
+                OSInterface_OpenExternal(
+                    Play_ExternalUrls[Play_controls[this.position].defaultValue]
+                );
+
+            } else {
+
+                Play_showWarningMidleDialog(STR_NOT_SUPPORT_BROWSER, 2000);
+                return;
+
+            }
+
             if (PlayVodClip === 1) {
                 Play_hidePanel();
             } else if (PlayVodClip === 2) {
@@ -2442,7 +2455,6 @@ function Play_MakeControls() {
                 PlayClip_hidePanel();
             }
 
-            OSInterface_OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
         },
         updown: function(adder) {
             this.defaultValue += adder;

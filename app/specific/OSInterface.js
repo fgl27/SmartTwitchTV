@@ -778,7 +778,7 @@ function OSInterface_setPlaybackSpeed(speed) {
 //Android specific: true
 //Allows to open current video on a external player
 function OSInterface_OpenExternal(url) {
-    if (Main_IsOn_OSInterface) Android.OpenExternal(url);
+    Android.OpenExternal(url);
 }
 
 //public void SetPreviewSize(int mPreviewSize)
