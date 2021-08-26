@@ -58,6 +58,7 @@ function BrowserTestFun() {
 
         Main_ShowElementWithEle(exit_player);
         Main_ShowElement('button_full_screen');
+        Main_Scene2Doc.style.backgroundColor = '#000000';
 
         Main_getElementById('twitch-embed_exit').onclick = function() {
             Main_HideElementWithEle(player_embed_clicks);
@@ -804,8 +805,8 @@ function BrowserTestSetVideoSize() {
 
         if (PlayClip_isOn && clip_player) {
 
-            clip_player.style.width = embedWidth;
-            clip_player.style.height = embedheight;
+            clip_player.width = embedWidth;
+            clip_player.height = embedheight;
 
             clip_embed.style.marginTop = isFullSCreen ? 0 : (100 * ((1 - size) / 4)) + '%';
 

@@ -4588,10 +4588,6 @@ function Play_SetSceneBackground(url) {
 
     if (!Main_A_equals_B(Play_SetSceneBackgroundUrl, url)) {
         Main_Scene2Doc.style.backgroundImage = url ? "url('" + url + "')" : 'none';
-
-        if (!url) {
-            Main_Scene2Doc.style.backgroundColor = '#000000';
-        }
     }
 
     Play_SetSceneBackgroundUrl = url;
