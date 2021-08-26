@@ -707,10 +707,11 @@ function BrowserTestStartPlaying() {
     BrowserTestStartPlayingId = Main_setTimeout(
         function() {
 
-            var player;
-            player = embedPlayer.getPlayer();
+            var player = embedPlayer.getPlayer();
+
             player.play();
             player.setMuted(false);
+            BrowserTestStartSetQuality();
 
             Main_ShowElementWithEle(player_embed);
 
@@ -718,6 +719,33 @@ function BrowserTestStartPlaying() {
         500,
         BrowserTestStartPlayingId
     );
+
+}
+
+var BrowserTestStartSetQualityId
+function BrowserTestStartSetQuality() {
+    if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
+
+        BrowserTestStartSetQualityId = Main_setTimeout(
+            function() {
+
+                var player = embedPlayer.getPlayer(),
+                    Qualities = player.getQualities();
+
+                if (Qualities.length > 1) {
+
+                    if (Qualities[1].group)
+                        player.setQuality(Qualities[1].group);
+
+                } else {
+                    BrowserTestStartSetQuality();
+                }
+
+            },
+            50,
+            BrowserTestStartSetQualityId
+        );
+    }
 }
 
 function BrowserTestStartVod(vodId, time) {
