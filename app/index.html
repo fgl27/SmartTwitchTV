@@ -2498,6 +2498,21 @@
             opacity: 1 !important;
         }
 
+        #button_full_screen {
+            background: rgba(0, 0, 0, 0);
+            border: 0;
+            top: 1vh;
+            position: absolute;
+            right: 8vw;
+            z-index: 999;
+            transition: font-size 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            font-size: 55%;
+        }
+
+        #button_full_screen:hover>#button_full_screen_text {
+            opacity: 1 !important;
+        }
+
         /* Simple way to see center of screen
         .center {
             border: 2px solid blue;
@@ -2964,6 +2979,13 @@
                 <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
             </div>
             <div id="topbar" class="topbar hide">
+                <button id="button_full_screen" class="hide">
+                    <div id="button_full_screen_icon_contaner">
+                        <i id="button_full_screen_icon" class="pause_button3d icon-resize-up"></i>
+                    </div>
+                    <div id="button_full_screen_text" style="opacity: 0; color: #FFFFFF; transform: translateY(-40%);">
+                    </div>
+                </button>
                 <div class="top_clock" style="top:1.75ch;">
                     <div class="icon_top_label"></div>
                     <div id="label_update" class="icon_top_label"></div>

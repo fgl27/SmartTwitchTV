@@ -718,4 +718,5 @@ function en_USLang() {
 
     STR_EMBED = "Embed player ";
     STR_CLICK_EXIT = "Click here to exit the player";
+    STR_GO_FULL = "Full screen";
 }

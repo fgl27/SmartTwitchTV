@@ -22,6 +22,7 @@ function BrowserTestSetStrings() {
         Main_textContent("scene2_click_2_text_title", STR_CHAT_POS);
         Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
         Main_textContent("scene2_click_4_text_title", STR_CHAT_SIDE);
+        Main_textContent("button_full_screen_text", STR_GO_FULL);
 
         Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
@@ -55,10 +56,11 @@ function BrowserTestFun() {
 
         enable_embed = Main_getItemBool('enable_embed', true);
 
-        Main_RemoveClassWithEle(exit_player, 'hide');
+        Main_ShowElementWithEle(exit_player);
+        Main_ShowElement('button_full_screen');
 
         Main_getElementById('twitch-embed_exit').onclick = function() {
-            Main_AddClassWitEle(player_embed_clicks, 'hide');
+            Main_HideElementWithEle(player_embed_clicks);
             if (Play_isOn) {
                 Play_CheckPreview();
                 Play_shutdownStream();
@@ -78,12 +80,12 @@ function BrowserTestFun() {
         scene2_click.onmousemove = function() {
             if (PlayClip_isOn) return;
 
-            Main_RemoveClassWithEle(player_embed_clicks, 'hide');
+            Main_ShowElementWithEle(player_embed_clicks);
 
             OnClickId = Main_setTimeout(
                 function() {
 
-                    Main_AddClassWitEle(player_embed_clicks, 'hide');
+                    Main_HideElementWithEle(player_embed_clicks);
 
                 },
                 5000,
@@ -220,7 +222,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            // console.log(id);
+            //console.log(id);
 
             var idArray = id.split('_');
 
@@ -285,6 +287,8 @@ function BrowserTestFun() {
                     Main_SwitchScreen();
 
                 }
+            } else if (Main_A_includes_B(id, 'button_full_screen')) {
+                requestFullScreen();
             } else if (Sidepannel_isShowingMenus()) {
 
                 if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
@@ -464,7 +468,7 @@ function BrowserTestFun() {
                     if (PlayClip_isOn) PlayClip_showPanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
-                    Main_RemoveClassWithEle(player_embed_clicks, 'hide');
+                    Main_ShowElementWithEle(player_embed_clicks);
                 }
             }
         };
@@ -550,11 +554,6 @@ function BrowserTestFun() {
 
                         if (Main_A_equals_B(OnDuploClick, div)) {
 
-                            var PlayVodClip = 1;
-
-                            if (PlayVod_isOn) PlayVodClip = 2;
-                            else if (PlayClip_isOn) PlayVodClip = 3;
-
                             Play_EndDialogPressed(PlayVodClip);
 
                         }
@@ -569,7 +568,7 @@ function BrowserTestFun() {
                     // else
                     if (PlayVodClip === 3) PlayClip_showPanel();
                     else {
-                        Main_RemoveClassWithEle(player_embed_clicks, 'hide');
+                        Main_ShowElementWithEle(player_embed_clicks);
 
                         if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
 
@@ -826,6 +825,49 @@ function BrowserTestSetVideoSize() {
                 iFrame.height = embedheight;
             }
 
+        }
+    }
+}
+
+function requestFullScreen() {
+
+    if (typeof window.ActiveXObject !== "undefined") {
+
+        // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    } else {
+
+        var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
+            (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+            (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+            (document.msFullscreenElement && document.msFullscreenElement !== null);
+
+
+        var docElm = document.documentElement;
+        if (!isInFullScreen) {
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen();
+            } else if (docElm.mozRequestFullScreen) {
+                docElm.mozRequestFullScreen();
+            } else if (docElm.webkitRequestFullScreen) {
+                docElm.webkitRequestFullScreen();
+            } else if (docElm.msRequestFullscreen) {
+                docElm.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
         }
     }
 }

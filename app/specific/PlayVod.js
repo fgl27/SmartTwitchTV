@@ -149,7 +149,6 @@ function PlayVod_Start() {
             if (!ShowDialog && PlayVod_VodOffset) {
                 Main_vodOffset = PlayVod_VodOffset;
                 PlayClip_OpenAVodOffset = Main_vodOffset;
-                console.log('sdsad')
                 Play_showWarningDialog(
                     STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000),
                     2000
