@@ -787,6 +787,12 @@ function BrowserTestStartClip(url) {
     clip_player.onerror = clip_player.onended;
 }
 
+function BrowserTestClipSpeed(speed) {
+    if (PlayClip_isOn) {
+        clip_player.playbackRate = speed;
+    }
+}
+
 function BrowserTestStopClip() {
     clip_player.pause();
     clip_player.onended = noop_fun;
@@ -821,7 +827,7 @@ function BrowserTestSetVideoSize() {
             Play_SetSceneBackground(null);
         }
 
-        if (PlayClip_isOn && clip_player) {
+        if (clip_player) {
 
             clip_player.width = embedWidth;
             clip_player.height = embedheight;
@@ -830,7 +836,9 @@ function BrowserTestSetVideoSize() {
 
             clip_embed.style.marginLeft = Play_FullScreenPosition ? 0 : (100 - (size * 100)) + '%';
 
-        } else if (player_embed) {
+        }
+
+        if (player_embed) {
 
             player_embed.style.width = embedWidth + 'px';
             player_embed.style.height = embedheight + 'px';

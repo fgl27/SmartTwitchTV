@@ -768,6 +768,9 @@ function OSInterface_EnableMultiStream(MainBig, offset) {
 //Allows to change the playback speed
 function OSInterface_setPlaybackSpeed(speed) {
     if (Main_IsOn_OSInterface) Android.setPlaybackSpeed(speed);
+    else {
+        BrowserTestClipSpeed(speed);
+    }
 }
 
 //public void OpenExternal(String url)
@@ -775,7 +778,7 @@ function OSInterface_setPlaybackSpeed(speed) {
 //Android specific: true
 //Allows to open current video on a external player
 function OSInterface_OpenExternal(url) {
-    Android.OpenExternal(url);
+    if (Main_IsOn_OSInterface) Android.OpenExternal(url);
 }
 
 //public void SetPreviewSize(int mPreviewSize)

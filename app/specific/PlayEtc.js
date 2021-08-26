@@ -20,7 +20,7 @@
 
 //Etc player fun and controls
 var Play_MultiChatBeffore;
-var Play_isFullScreenold = true;
+var Play_isFullScreenold = null;
 var Play_FullScreenSize = 3;
 var Play_FullScreenPosition = 1;
 
@@ -2376,11 +2376,11 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsSpeed] = { //speed
-        ShowInLive: Main_IsOn_OSInterface,
-        ShowInVod: Main_IsOn_OSInterface,
-        ShowInClip: Main_IsOn_OSInterface,
-        ShowInPP: Main_IsOn_OSInterface,
-        ShowInMulti: Main_IsOn_OSInterface,
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
         ShowInChat: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
@@ -2417,11 +2417,11 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsExternal] = { //External
-        ShowInLive: Main_IsOn_OSInterface,
-        ShowInVod: Main_IsOn_OSInterface,
-        ShowInClip: Main_IsOn_OSInterface,
-        ShowInPP: Main_IsOn_OSInterface,
-        ShowInMulti: Main_IsOn_OSInterface,
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
         ShowInChat: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
