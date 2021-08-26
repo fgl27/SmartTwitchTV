@@ -947,6 +947,7 @@ function Settings_UpdateString() {
     Main_updateclock();
     Main_checkVersion(true);
     AddUser_UpdateSidepanel();
+    BrowserTestSetStrings();
 
     Main_SaveValues();
 }

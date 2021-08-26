@@ -245,7 +245,6 @@ function Play_Start(offline_chat) {
     if (!Main_IsOn_OSInterface && !offline_chat && enable_embed) {
         Play_hideChat();
         BrowserTestStartLive(Play_data.data[6]);
-        Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
 }
 

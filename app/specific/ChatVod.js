@@ -115,11 +115,12 @@ function Chat_StartFakeClockInterval() {
                         time = player.getCurrentTime();
 
                     if (time > (Chat_fakeClock + 10) || time < (Chat_fakeClock - 10)) {
+                        //console.log('chat restart time ' + time + ' Chat_fakeClock ' + Chat_fakeClock);
+
                         Chat_fakeClock = time;
                         Chat_offset = Chat_fakeClock;
 
                         Chat_Init();
-                        console.log('chat restart');
 
                         return;
                     }

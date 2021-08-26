@@ -148,6 +148,8 @@ function PlayVod_Start() {
 
             if (!ShowDialog && PlayVod_VodOffset) {
                 Main_vodOffset = PlayVod_VodOffset;
+                PlayClip_OpenAVodOffset = Main_vodOffset;
+                console.log('sdsad')
                 Play_showWarningDialog(
                     STR_SHOW_VOD_PLAYER_WARNING + STR_BR + Play_timeMs(Main_vodOffset * 1000),
                     2000
@@ -337,7 +339,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
 }
 
 function PlayVod_convertHMS(value) {
-    var sec = parseInt(value, 10); // convert value to number if it's string
+    var sec = parseInt(value); // convert value to number if it's string
 
     var hours = Math.floor(sec / 3600); // get hours
     var minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
@@ -641,7 +643,7 @@ function PlayVod_PreshutdownStream(saveOffset) {
 function PlayVod_UpdateHistory(screen, saveOffset) {
     if (saveOffset) {
 
-        var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : (Play_DurationSeconds / 2);
+        var time = Main_IsOn_OSInterface ? parseInt(OSInterface_gettime() / 1000) : Chat_fakeClock;
 
         if (time > 0 && (Play_DurationSeconds - 300) > time) {
 
@@ -1221,9 +1223,11 @@ function PlayVod_CheckPreviewVod() {
 }
 
 function PlayVod_SetPreview() {
-    Play_PreviewURL = PlayVod_autoUrl;
-    Play_PreviewResponseText = PlayVod_playlist;
-    Play_PreviewId = Main_values.ChannelVod_vodId;
+    if (Main_IsOn_OSInterface) {
+        Play_PreviewURL = PlayVod_autoUrl;
+        Play_PreviewResponseText = PlayVod_playlist;
+        Play_PreviewId = Main_values.ChannelVod_vodId;
+    }
 }
 
 function PlayVod_handleKeyDown(e) {

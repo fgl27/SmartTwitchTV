@@ -7,13 +7,24 @@ var OnDuploClick;
 var player_embed;
 var clip_player;
 var clip_embed;
-var exit_player_embed;
+var player_embed_clicks;
 var enable_embed;
 
 function BrowserTestLoadScript(url) {
     var embed_script = document.createElement('script');
     embed_script.setAttribute('src', url);
     document.head.appendChild(embed_script);
+}
+
+function BrowserTestSetStrings() {
+    if (!Main_IsOn_OSInterface) {
+        Main_textContent("scene2_click_1_text_title", STR_CHAT_SHOW);
+        Main_textContent("scene2_click_2_text_title", STR_CHAT_POS);
+        Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
+
+        Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
+        Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
+    }
 }
 
 function BrowserTestFun() {
@@ -25,6 +36,7 @@ function BrowserTestFun() {
         //This if is just for testing on a browser the code here is not ideal but works for testing
 
         BrowserTestLoadScript('https://embed.twitch.tv/embed/v1.js');
+        BrowserTestSetStrings();
 
         var key = 0,
             sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
@@ -35,7 +47,7 @@ function BrowserTestFun() {
             scene2_click = Main_getElementById('scene2_click'),
             exit_player = Main_getElementById('exit_player');
 
-        exit_player_embed = Main_getElementById('twitch-embed_exit');
+        player_embed_clicks = Main_getElementById('player_embed_clicks');
         player_embed = Main_getElementById('twitch-embed');
         clip_player = Main_getElementById('clip_player');
         clip_embed = Main_getElementById('clip_embed');
@@ -43,12 +55,9 @@ function BrowserTestFun() {
         enable_embed = Main_getItemBool('enable_embed', true);
 
         Main_RemoveClassWithEle(exit_player, 'hide');
-        Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
 
-        Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
-
-        exit_player_embed.onclick = function() {
-            Main_AddClassWitEle(exit_player_embed, 'hide');
+        Main_getElementById('twitch-embed_exit').onclick = function() {
+            Main_AddClassWitEle(player_embed_clicks, 'hide');
             if (Play_isOn) {
                 Play_CheckPreview();
                 Play_shutdownStream();
@@ -66,12 +75,14 @@ function BrowserTestFun() {
         };
 
         scene2_click.onmousemove = function() {
-            Main_RemoveClassWithEle(exit_player_embed, 'hide');
+            if (PlayClip_isOn) return;
+
+            Main_RemoveClassWithEle(player_embed_clicks, 'hide');
 
             OnClickId = Main_setTimeout(
                 function() {
 
-                    Main_AddClassWitEle(exit_player_embed, 'hide');
+                    Main_AddClassWitEle(player_embed_clicks, 'hide');
 
                 },
                 5000,
@@ -452,7 +463,7 @@ function BrowserTestFun() {
                     if (PlayClip_isOn) PlayClip_showPanel();
                 } else if (Play_isEndDialogVisible()) {
                     Play_EndTextClear();
-                    Main_RemoveClassWithEle(exit_player_embed, 'hide');
+                    Main_RemoveClassWithEle(player_embed_clicks, 'hide');
                 }
             }
         };
@@ -558,7 +569,21 @@ function BrowserTestFun() {
                     // else
                     if (PlayVodClip === 3) PlayClip_showPanel();
                     else {
-                        Main_RemoveClassWithEle(exit_player_embed, 'hide');
+                        Main_RemoveClassWithEle(player_embed_clicks, 'hide');
+
+                        if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
+                            Play_controls[Play_controlsChat].enterKey();
+                        } else if (Main_A_includes_B(id, 'scene2_click_2') && PlayVod_isOn) {
+                            Play_controls[Play_controlsChatPos].updown(1);
+                        } else if (Main_A_includes_B(id, 'scene2_click_3') && PlayVod_isOn) {
+
+                            if (Play_controls[Play_controlsChatSize].defaultValue === 0) {
+                                Play_controls[Play_controlsChatSize].defaultValue = 5;
+                            }
+
+                            Play_controls[Play_controlsChatSize].updown(-1);
+
+                        }
 
                     }
 
@@ -592,7 +617,6 @@ function BrowserTestFun() {
                         Play_ProgresBarrElm.style.transition = '';
                         PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
                     }
-
                 }
 
             }
@@ -671,22 +695,31 @@ function BrowserTestStartPlaying() {
 }
 
 function BrowserTestStartVod(vodId, time) {
-    BrowserTestSetPlayer('video', vodId, 'time', time);
-    embedPlayer.setVideo(vodId, time);
+    Main_empty('twitch-embed');
+    BrowserTestSetPlayer('video', vodId, 'time', time, true);
+    Main_ShowElementWithEle(player_embed);
+
     BrowserTestStartPlaying();
+
+    Main_ShowElement('scene2_click_1');
+    Main_ShowElement('scene2_click_2');
+    Main_ShowElement('scene2_click_3');
 }
 
 function BrowserTestStartLive(channel) {
     BrowserTestSetPlayer('channel', channel);
     embedPlayer.setChannel(channel);
     BrowserTestStartPlaying();
+
+    Main_HideElement('scene2_click_1');
+    Main_HideElement('scene2_click_2');
+    Main_HideElement('scene2_click_3');
 }
 
 function BrowserTestSetListners() {
     embedPlayer.addEventListener(
         Twitch.Embed.VIDEO_READY,
         function() {
-            console.log('ready');
             var player = embedPlayer.getPlayer();
             player.play();
             player.setMuted(false);
@@ -718,6 +751,7 @@ function BrowserTestPlayerEnded(skipEndStart) {
 }
 
 function BrowserTestStartClip(url) {
+    Main_HideElementWithEle(player_embed_clicks);
     Main_ShowElementWithEle(clip_embed);
     Main_setTimeout(Play_HideBufferDialog, 100);
     clip_player.src = url;

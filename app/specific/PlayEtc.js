@@ -1460,7 +1460,7 @@ function Play_CheckPreview() {
 
         if (!Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
 
-        if (Play_CheckPreviewLive()) {
+        if (Main_IsOn_OSInterface && Play_CheckPreviewLive()) {
 
             Play_PreviewURL = Play_data.AutoUrl;
             Play_PreviewResponseText = Play_data.playlist;

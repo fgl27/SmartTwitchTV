@@ -2494,6 +2494,10 @@
             font-size: 85%;
         }
 
+        .embedbutton:hover>.embedbuttoninner {
+            opacity: 1 !important;
+        }
+
         /* Simple way to see center of screen
         .center {
             border: 2px solid blue;
@@ -3174,9 +3178,47 @@
         </div>
         <div id="scene2" class="screen_size"
             style="opacity: 0; pointer-events: none; will-change: opacity; background-repeat: no-repeat; background-size: contain;">
-            <div id="scene2_click" class="screen_size" style="width: 71%;height: 50%;">
-                <div id="twitch-embed_exit" class="hide exit_player exit_player_embed"
-                    style="text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em;">
+            <div id="scene2_click" class="screen_size" style="width: 55%;height: 59%; left: 16%; z-index: 9999;">
+
+                <div id="player_embed_clicks" class="hide">
+                    <div id="twitch-embed_exit" class="exit_player exit_player_embed"
+                        style="text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em;">
+                    </div>
+
+                    <div id="scene2_click_1" class="scene2_click_button_holder embedbutton"
+                        style="margin-left: 50%; position: absolute;">
+                        <div id="scene2_click_1_button" class="controls_button progress_bar_div_focus">
+                            <div id="scene2_click_1_button_icon_holder_"><i id="scene2_click_1_button_icon"
+                                    class="pause_button3d icon-chat"></i></div>
+                        </div>
+                        <div id="scene2_click_1_text_holder" class="embedbuttoninner controls_text_title_holder"
+                            style="transform: translateX(-25%); text-align: center; opacity: 0;">
+                            <div id="scene2_click_1_text_title" class="strokedeline"></div>
+                        </div>
+                    </div>
+                    <div id="scene2_click_2" class="scene2_click_button_holder embedbutton"
+                        style="margin-left: 60%; position: absolute;">
+                        <div id="scene2_click_2_button" class="controls_button progress_bar_div_focus">
+                            <div id="scene2_click_2_button_icon_holder_"><i id="scene2_click_2_button_icon"
+                                    class="pause_button3d icon-chat-pos"></i></div>
+                        </div>
+                        <div id="scene2_click_2_text_holder" class="embedbuttoninner controls_text_title_holder"
+                            style="transform: translateX(-25%); text-align: center; opacity: 0;">
+                            <div id="scene2_click_2_text_title" class="strokedeline"></div>
+                        </div>
+                    </div>
+
+                    <div id="scene2_click_3" class="scene2_click_button_holder embedbutton"
+                        style="margin-left: 70%; position: absolute;">
+                        <div id="scene2_click_3_button" class="controls_button progress_bar_div_focus">
+                            <div id="scene2_click_3_button_icon_holder_"><i id="scene2_click_3_button_icon"
+                                    class="pause_button3d icon-chat-size"></i></div>
+                        </div>
+                        <div id="scene2_click_3_text_holder" class="embedbuttoninner controls_text_title_holder"
+                            style="transform: translateX(-25%); text-align: center; opacity: 0;">
+                            <div id="scene2_click_3_text_title" class="strokedeline"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="twitch-embed" class="hide"></div>
