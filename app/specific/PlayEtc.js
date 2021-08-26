@@ -911,6 +911,9 @@ function Play_StayDialogVisible() {
 function Play_StopStay() {
     Main_clearTimeout(Play_StartStayTryId);
     Main_HideElement('play_dialog_retry');
+    if (Main_IsOn_OSInterface) {
+        Play_SetSceneBackground(null, true);
+    }
 }
 
 function Play_StartStayHidebottom() {
@@ -4614,10 +4617,19 @@ function Play_preventVodOnPP() {
 }
 
 var Play_SetSceneBackgroundUrl = 0;
-function Play_SetSceneBackground(url) {
+function Play_SetSceneBackground(url, reset) {
+    if (reset) {
+        Main_Scene2Doc.style.background = 'none';
+        Play_SetSceneBackgroundUrl = null;
+        return;
+    }
+
     if (!Play_isFullScreen) url = null;
 
     if (!Main_A_equals_B(Play_SetSceneBackgroundUrl, url)) {
+        Main_Scene2Doc.style.backgroundRepeat = 'no-repeat';
+        Main_Scene2Doc.style.backgroundSize = '100%';
+        Main_Scene2Doc.style.backgroundColor = '#000000';
         Main_Scene2Doc.style.backgroundImage = url ? "url('" + url + "')" : 'none';
     }
 
