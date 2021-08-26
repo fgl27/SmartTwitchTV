@@ -266,15 +266,17 @@ function Play_SetFullScreen(isfull) {
     }
 
     if (Main_IsOn_OSInterface) {
+
         if (PlayExtra_PicturePicture) OSInterface_mupdatesizePP(Play_isFullScreen);
         else OSInterface_mupdatesize(Play_isFullScreen);
+
     }
 
     Main_setItem('Play_isFullScreen', Play_isFullScreen);
 }
 
 var Play_ChatFullScreenSizes = [
-    [//video on the left
+    [//video on the rigth
         {
             width: '9.7%',
             left: '0.2%'
@@ -304,7 +306,7 @@ var Play_ChatFullScreenSizes = [
             left: '0.2%'
         },
     ],
-    [//video on the right
+    [//video on the left
         {
             width: '9.7%',
             left: '90.1%'
@@ -369,10 +371,16 @@ function Play_SetChatSideBySide() {
         Play_controls[Play_controlsChatPos].bottomArrows();
         Play_controls[Play_controlsChatSize].setLable();
         Play_BottomArrows(Play_controlsChatSize);
+
     }
 
     Play_ChatEnable = true;
     Play_chat_container.classList.remove('hide');
+
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestSetVideoSize();
+    }
+
 
 }
 
@@ -421,6 +429,7 @@ function Play_ResStoreChatFullScreen() {
     Play_chat_container.style.left = Play_ChatFullScreenObj.left;
 
     Play_ResetQualityControls();
+    BrowserTestSetVideoSize();
 }
 
 function Play_ChatFullScreenKeyLeft() {
@@ -1350,10 +1359,10 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
             Chat_Play(Chat_Id[0]);
 
-            if (!Main_IsOn_OSInterface) {
-                clip_player.play();
-            }
+        }
 
+        if (PlayVodClip === 3 && !Main_IsOn_OSInterface) {
+            clip_player.play();
         }
 
         if (Play_isPanelShowing()) {
@@ -1369,7 +1378,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {//called by java
 
         ChatLive_Playing = false;
 
-        if (PlayClip_HasVOD && !Main_IsOn_OSInterface) {
+        if (PlayVodClip === 3 && !Main_IsOn_OSInterface) {
             clip_player.pause();
         }
 
@@ -4573,12 +4582,18 @@ function Play_preventVodOnPP() {
     return true;
 }
 
-var Play_SetSceneBackgroundUrl = null;
+var Play_SetSceneBackgroundUrl = 0;
 function Play_SetSceneBackground(url) {
+    if (!Play_isFullScreen) url = null;
 
     if (!Main_A_equals_B(Play_SetSceneBackgroundUrl, url)) {
-        Main_Scene2Doc.style.backgroundImage = "url('" + url + "')";
+        Main_Scene2Doc.style.backgroundImage = url ? "url('" + url + "')" : 'none';
+
+        if (!url) {
+            Main_Scene2Doc.style.backgroundColor = '#000000';
+        }
     }
+
     Play_SetSceneBackgroundUrl = url;
 }
 

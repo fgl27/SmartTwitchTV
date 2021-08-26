@@ -21,6 +21,7 @@ function BrowserTestSetStrings() {
         Main_textContent("scene2_click_1_text_title", STR_CHAT_SHOW);
         Main_textContent("scene2_click_2_text_title", STR_CHAT_POS);
         Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
+        Main_textContent("scene2_click_4_text_title", STR_CHAT_SIDE);
 
         Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
@@ -477,10 +478,9 @@ function BrowserTestFun() {
 
             if (Main_isScene2DocVisible()) {
 
-                var PlayVodClip = 0;
+                var PlayVodClip = 1;
 
-                if (Play_isOn) PlayVodClip = 1;
-                else if (PlayVod_isOn) PlayVodClip = 2;
+                if (PlayVod_isOn) PlayVodClip = 2;
                 else if (PlayClip_isOn) PlayVodClip = 3;
 
                 if (Main_A_includes_B(id, 'ulf_') && UserLiveFeed_isPreviewShowing()) {
@@ -572,9 +572,13 @@ function BrowserTestFun() {
                         Main_RemoveClassWithEle(player_embed_clicks, 'hide');
 
                         if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
-                            Play_controls[Play_controlsChat].enterKey();
+
+                            Play_controls[Play_controlsChat].enterKey(PlayVodClip);
+
                         } else if (Main_A_includes_B(id, 'scene2_click_2') && PlayVod_isOn) {
+
                             Play_controls[Play_controlsChatPos].updown(1);
+
                         } else if (Main_A_includes_B(id, 'scene2_click_3') && PlayVod_isOn) {
 
                             if (Play_controls[Play_controlsChatSize].defaultValue === 0) {
@@ -582,6 +586,10 @@ function BrowserTestFun() {
                             }
 
                             Play_controls[Play_controlsChatSize].updown(-1);
+
+                        } else if (Main_A_includes_B(id, 'scene2_click_4') && PlayVod_isOn) {
+
+                            Play_controls[Play_controlsChatSide].enterKey(PlayVodClip);
 
                         }
 
@@ -651,8 +659,8 @@ var embedPlayer;
 function BrowserTestSetPlayer(prop, value, prop2, value2, force_restart) {
     if (!embedPlayer || force_restart) {
         var obj = {
-            width: scaledWidth,
-            height: currentHeight,
+            width: embedWidth,
+            height: embedheight,
             allowfullscreen: true,
             autoplay: false,
             layout: "video-with-chat",
@@ -767,4 +775,57 @@ function BrowserTestStopClip() {
     clip_player.onerror = noop_fun;
     clip_player.src = '';
     Main_HideElementWithEle(clip_embed);
+}
+var BrowserTestVideoSizes = [
+    0.9,
+    0.85,
+    0.8,
+    0.75,
+    0.7,
+    0.65,
+    0.6
+];
+
+var embedWidth;
+var embedheight;
+
+function BrowserTestSetVideoSize() {
+
+    if (!Main_IsOn_OSInterface) {
+        var isFullSCreen = Play_isOn || Play_isFullScreen;
+
+        var size = isFullSCreen ? 1 : BrowserTestVideoSizes[Play_FullScreenSize];
+
+        embedWidth = scaledWidth * size;
+        embedheight = currentHeight * size;
+
+        if (!isFullSCreen) {
+            Play_SetSceneBackground(null);
+        }
+
+        if (PlayClip_isOn && clip_player) {
+
+            clip_player.style.width = embedWidth;
+            clip_player.style.height = embedheight;
+
+            clip_embed.style.marginTop = isFullSCreen ? 0 : (100 * ((1 - size) / 4)) + '%';
+
+            clip_embed.style.marginLeft = Play_FullScreenPosition ? 0 : (100 - (size * 100)) + '%';
+
+        } else if (player_embed) {
+
+            player_embed.style.width = embedWidth + 'px';
+            player_embed.style.height = embedheight + 'px';
+
+            player_embed.style.marginTop = isFullSCreen ? 0 : (100 * ((1 - size) / 4)) + '%';
+            player_embed.style.marginLeft = Play_FullScreenPosition ? 0 : (100 - (size * 100)) + '%';
+
+            var iFrame = player_embed.getElementsByTagName("iframe")[0];
+            if (iFrame) {
+                iFrame.width = embedWidth;
+                iFrame.height = embedheight;
+            }
+
+        }
+    }
 }

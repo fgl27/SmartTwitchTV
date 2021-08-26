@@ -393,7 +393,7 @@ function ChannelContent_keyEnter() {
         Main_HideElement('channel_content_scroll');
 
         if (ChannelContent_isoffline) {
-            Play_SetSceneBackground(ChannelContent_offline_image ? ChannelContent_offline_image : IMG_404_BANNER);
+            Play_SetSceneBackground(ChannelContent_offline_image ? ChannelContent_offline_image : null);
 
             Play_data.data = [
                 null,//0
