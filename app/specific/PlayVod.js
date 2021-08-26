@@ -327,17 +327,10 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
             Main_values_Play_data[0].replace(Main_VideoSize, "1280x720")
         );
 
-        Play_hideChat();
-        new Twitch.Embed("twitch-embed", {
-            width: scaledWidth,
-            height: currentHeight,
-            allowfullscreen: true,
-            autoplay: true,
-            video: Main_values.ChannelVod_vodId,
-            muted: false,
-            theme: "dark",
-            time: PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s'
-        });
+        BrowserTestStartVod(
+            Main_values.ChannelVod_vodId,
+            PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s'
+        );
 
         PlayClip_OpenAVodOffset = 0;
     }
@@ -605,7 +598,7 @@ function PlayVod_onPlayerStartPlay(time) {
 }
 
 function PlayVod_shutdownStream(SkipSaveOffset) {
-    //Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
+    // Main_Log('PlayVod_shutdownStream ' + PlayVod_isOn);
 
     if (PlayVod_isOn) {
         PlayVod_PreshutdownStream(!SkipSaveOffset);
@@ -621,10 +614,6 @@ function PlayVod_PreshutdownStream(saveOffset) {
     PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
-
-    if (!Main_IsOn_OSInterface) {
-        Main_emptyWithEle(player_embed);
-    }
 
     Main_ShowElementWithEle(Play_Controls_Holder);
     Main_ShowElementWithEle(Play_BottonIcons_Progress_PauseHolder);
@@ -1434,7 +1423,7 @@ function PlayVod_handleKeyDown(e) {
 }
 
 function PlayVod_NumberKey_QuickJump(key) {
-    if (Play_isEndDialogVisible() || Play_isVodDialogVisible())
+    if (!Main_IsOn_OSInterface || Play_isEndDialogVisible() || Play_isVodDialogVisible())
         return;
 
     var position = null;

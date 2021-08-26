@@ -48,10 +48,12 @@ function BrowserTestFun() {
         exit_player_embed.onclick = function() {
             Main_AddClassWitEle(exit_player_embed, 'hide');
             if (Play_isOn) {
+                BrowserTestPlayerEnded(true);
                 Play_CheckPreview();
                 Play_shutdownStream();
             }
             else if (PlayVod_isOn) {
+                BrowserTestPlayerEnded(true);
                 PlayVod_CheckPreview();
                 PlayVod_shutdownStream();
             }
@@ -61,7 +63,6 @@ function BrowserTestFun() {
                 PlayClip_shutdownStream();
             }
 
-            Main_emptyWithEle(player_embed);
         };
 
         scene2_click.onmousemove = function() {
@@ -116,11 +117,10 @@ function BrowserTestFun() {
 
                 var id = event.target.id;
 
-                var PlayVodClip = 0;
+                var PlayVodClip = 1;
 
-                if (Play_isOn) PlayVodClip = 1;
-                else if (PlayVod_isOn) PlayVodClip = 2;
-                else if (PlayClip_isOn); PlayVodClip = 3;
+                if (PlayVod_isOn) PlayVodClip = 2;
+                else if (PlayClip_isOn) PlayVodClip = 3;
 
                 Play_Resetpanel(PlayVodClip);
 
@@ -539,7 +539,12 @@ function BrowserTestFun() {
 
                         if (Main_A_equals_B(OnDuploClick, div)) {
 
-                            Play_EndDialogPressed(3);
+                            var PlayVodClip = 1;
+
+                            if (PlayVod_isOn) PlayVodClip = 2;
+                            else if (PlayClip_isOn) PlayVodClip = 3;
+
+                            Play_EndDialogPressed(PlayVodClip);
 
                         }
 
@@ -562,15 +567,9 @@ function BrowserTestFun() {
                     Play_Resetpanel(PlayVodClip);
 
                     if (Main_A_includes_B(id, 'exit_player')) {
-                        if (Play_isOn) {
-                            Play_CheckPreview();
-                            Play_shutdownStream();
-                        }
-                        else if (PlayVod_isOn) {
-                            PlayVod_CheckPreview();
-                            PlayVod_shutdownStream();
-                        }
-                        else if (PlayClip_isOn) {
+                        if (Play_isOn || PlayVod_isOn) {
+                            BrowserTestPlayerEnded();
+                        } else if (PlayClip_isOn) {
                             PlayClip_CheckPreview();
                             Play_CleanHideExit();
                             PlayClip_shutdownStream();
@@ -621,4 +620,99 @@ function BrowserTestFun() {
         };
 
     }
+}
+
+var embedPlayer;
+
+function BrowserTestSetPlayer(prop, value, prop2, value2, force_restart) {
+    if (!embedPlayer || force_restart) {
+        var obj = {
+            width: scaledWidth,
+            height: currentHeight,
+            allowfullscreen: true,
+            autoplay: false,
+            layout: "video-with-chat",
+            muted: false,
+            theme: "dark",
+        };
+
+        if (prop) {
+            obj[prop] = value;
+        }
+
+        if (prop2) {
+            obj[prop2] = value2;
+        }
+
+        embedPlayer = new Twitch.Embed(
+            "twitch-embed",
+            obj
+        );
+    }
+    BrowserTestSetListners();
+}
+
+var BrowserTestStartPlayingId;
+function BrowserTestStartPlaying() {
+    BrowserTestStartPlayingId = Main_setTimeout(
+        function() {
+
+            var player;
+            player = embedPlayer.getPlayer();
+            player.play();
+            player.setMuted(false);
+
+            Main_ShowElementWithEle(player_embed);
+
+        },
+        500,
+        BrowserTestStartPlayingId
+    );
+}
+
+function BrowserTestStartVod(vodId, time) {
+    BrowserTestSetPlayer('video', vodId, 'time', time);
+    embedPlayer.setVideo(vodId, time);
+    BrowserTestStartPlaying();
+}
+
+function BrowserTestStartLive(channel) {
+    BrowserTestSetPlayer('channel', channel);
+    embedPlayer.setChannel(channel);
+    BrowserTestStartPlaying();
+}
+
+function BrowserTestSetListners() {
+    embedPlayer.addEventListener(
+        Twitch.Embed.VIDEO_READY,
+        function() {
+            console.log('ready');
+            var player = embedPlayer.getPlayer();
+            player.play();
+            player.setMuted(false);
+        }
+    );
+
+    embedPlayer.addEventListener(
+        Twitch.Embed.ENDED,
+        function() {
+            BrowserTestPlayerEnded(false);
+        }
+    );
+}
+
+function BrowserTestPlayerEnded(skipEndStart) {
+    var player = embedPlayer.getPlayer(),
+        PlayVodClip = 1;
+
+    //pause empty and restart the player with a not available vod
+    player.pause();
+    Main_empty('twitch-embed');
+    BrowserTestSetPlayer('video', '0', 'time', '0h0m0s', true);
+    if (PlayVod_isOn) {
+        PlayVodClip = 2;
+    }
+
+    Main_HideElementWithEle(player_embed);
+    if (!skipEndStart) Play_PannelEndStart(PlayVodClip);
 }

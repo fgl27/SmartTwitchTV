@@ -244,17 +244,7 @@ function Play_Start(offline_chat) {
 
     if (!Main_IsOn_OSInterface && !offline_chat && enable_embed) {
         Play_hideChat();
-        Main_emptyWithEle(player_embed);
-
-        new Twitch.Embed("twitch-embed", {
-            width: scaledWidth,
-            height: currentHeight,
-            allowfullscreen: true,
-            autoplay: true,
-            channel: Play_data.data[6],
-            muted: false,
-            theme: "dark"
-        });
+        BrowserTestStartLive(Play_data.data[6]);
         Main_RemoveClassWithEle(exit_player_embed, 'hide');
     }
 }
@@ -1333,8 +1323,6 @@ function Play_PreshutdownStream(closePlayer) {
             if (!Play_PreviewId) OSInterface_stopVideo();
             else OSInterface_mClearSmallPlayer();
         }
-    } else {
-        Main_emptyWithEle(player_embed);
     }
 
     if (closePlayer) {
@@ -1915,7 +1903,6 @@ function Play_qualityTitleReset(title) {
 
 //called by android PlayerActivity
 function Play_PannelEndStart(PlayVodClip, fail_type, errorCode) { // Called only by JAVA
-
     //Stop all players to make sure no more end call happen
     if (Main_IsOn_OSInterface && fail_type) {
 

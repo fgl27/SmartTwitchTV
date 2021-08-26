@@ -1532,6 +1532,12 @@
             cursor: pointer;
         }
 
+        .exit_player_embed {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 0.5em;
+            padding: 0.3em;
+        }
+
         .counter_class {
             width: 100%;
             text-align: left;
@@ -3169,10 +3175,10 @@
         <div id="scene2" class="screen_size"
             style="opacity: 0; pointer-events: none; will-change: opacity; background-repeat: no-repeat; background-size: contain;">
             <div id="scene2_click" class="screen_size" style="width: 71%;height: 50%;">
-                <div id="twitch-embed_exit" class="hide exit_player"
+                <div id="twitch-embed_exit" class="hide exit_player exit_player_embed"
                     style="text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em;"></div>
             </div>
-            <div id="twitch-embed"></div>
+            <div id="twitch-embed" class="hide"></div>
             <div id="chat_container0" class="chat_container hide">
                 <div id="chat_inner_container0" class="chat_size">
                     <div id="chat_loggedin0" class="chat_loggedin hide"></div>

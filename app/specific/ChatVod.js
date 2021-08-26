@@ -109,6 +109,30 @@ function Chat_StartFakeClockInterval() {
                     console.log('Chat_StartFakeClockInterval e ' + e);
                 }
 
+            } else if (PlayVod_isOn) {
+                try {
+                    var player = embedPlayer.getPlayer(),
+                        time = player.getCurrentTime();
+
+                    if (time > (Chat_fakeClock + 10) || time < (Chat_fakeClock - 10)) {
+                        Chat_fakeClock = time;
+                        Chat_offset = Chat_fakeClock;
+
+                        Chat_Init();
+                        console.log('chat restart');
+
+                        return;
+                    }
+
+                    Chat_fakeClock = time;
+
+                    console.log('Chat_fakeClock ' + Chat_fakeClock);
+
+
+                } catch (e) {
+                    console.log('Chat_StartFakeClockInterval e ' + e);
+                }
+
             } else {
                 Chat_fakeClock += Chat_StartFakeClockAdd;
                 Play_BufferSize = Chat_fakeClock / 2;
