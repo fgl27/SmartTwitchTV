@@ -2746,7 +2746,6 @@ function Main_RunVODWorker() {
     for (i; i < len; i++) {
 
         //TODO remove this workaround after some updates
-        console.log(array[i]);
         if (array[i].data[2] && typeof array[i].data[2] === 'string') {
             array[i].data[2] = array[i].data[2].replace("Streamed", '');
         }

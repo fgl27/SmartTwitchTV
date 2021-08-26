@@ -73,17 +73,7 @@ function BrowserTestFun() {
         scene2_click.onmousemove = function() {
             if (PlayClip_isOn || !enable_embed) return;
 
-            Main_ShowElementWithEle(player_embed_clicks);
-
-            OnClickId = Main_setTimeout(
-                function() {
-
-                    Main_HideElementWithEle(player_embed_clicks);
-
-                },
-                5000,
-                OnClickId
-            );
+            BrowserTestShowEmbedClicks();
         };
 
         sidepanel_elem_show.onmousemove = function() {
@@ -464,7 +454,7 @@ function BrowserTestFun() {
                 } else if (Play_isEndDialogVisible()) {
 
                     Play_EndTextClear();
-                    Main_ShowElementWithEle(player_embed_clicks);
+                    BrowserTestShowEmbedClicks();
 
                 }
             }
@@ -473,7 +463,8 @@ function BrowserTestFun() {
         Main_Scene2Doc.onclick = function(event) {
             var id = event.target.id,
                 div,
-                idArray;
+                idArray,
+                pos;
 
             //console.log(id);
 
@@ -514,11 +505,50 @@ function BrowserTestFun() {
 
                     if (Main_A_equals_B(OnDuploClick, div)) {
 
-                        Play_OpenLiveFeedCheck();
+                        if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].IsGame) {
+
+                            UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+                        } else {
+
+                            Play_OpenLiveFeedCheck();
+
+                        }
 
                     }
 
                     OnDuploClick = div;
+
+                } else if (Main_A_includes_B(id, 'feed_end_') && UserLiveFeed_isPreviewShowing()) {
+
+                    pos = parseInt(id.split('_')[2]) + 1;
+
+                    if (isNaN(pos)) {
+                        console.log('feed_end_ ' + pos + ' dsd ' + id.split('_'));
+                        return;
+                    }
+
+                    if (pos > UserLiveFeedobj_UserGamesPos) {
+
+                        pos++;
+
+                    } else if (pos === UserLiveFeedobj_GamesPos) {
+
+                        pos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
+
+                    } else if (pos === UserLiveFeedobj_UserGamesPos) {
+
+                        pos = UserLiveFeedobj_CurrentUserAGameEnable ? 8 : 7;
+
+                    }
+
+                    UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
+                    UserLiveFeed_FeedPosX = pos;
+                    UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
+
+                } else if (Main_A_includes_B(id, 'icon_feed_back') && UserLiveFeed_isPreviewShowing()) {
+
+                    UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
 
                 } else if (Play_isEndDialogVisible()) {
                     if (!Play_EndFocus) {
@@ -528,9 +558,9 @@ function BrowserTestFun() {
                     } else {
                         idArray = id.split('_');
 
-                        var pos = parseInt(idArray[idArray.length - 1]);
+                        pos = parseInt(idArray[idArray.length - 1]);
 
-                        if (!isNaN(pos)) {
+                        if (isNaN(pos)) {
                             console.log('Main_Scene2Doc.onclick ' + pos);
                             return;
                         }
@@ -565,9 +595,13 @@ function BrowserTestFun() {
                     // if (PlayVodClip === 1) Play_showPanel();
                     // else if (PlayVodClip === 2) PlayVod_showPanel(true);
                     // else
-                    if (!enable_embed || PlayVodClip === 3) PlayClip_showPanel();
-                    else {
-                        Main_ShowElementWithEle(player_embed_clicks);
+                    if (!enable_embed || PlayVodClip === 3) {
+
+                        PlayClip_showPanel();
+
+                    } else {
+
+                        BrowserTestShowEmbedClicks();
 
                         if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
 
@@ -580,7 +614,8 @@ function BrowserTestFun() {
                         } else if (Main_A_includes_B(id, 'scene2_click_3') && PlayVod_isOn) {
 
                             if (Play_controls[Play_controlsChatSize].defaultValue === 0) {
-                                Play_controls[Play_controlsChatSize].defaultValue = 5;
+                                Play_controls[Play_controlsChatSize].defaultValue =
+                                    (Play_controls[Play_controlsChatSize].values.length);
                             }
 
                             Play_controls[Play_controlsChatSize].updown(-1);
@@ -722,7 +757,7 @@ function BrowserTestStartPlaying() {
 
 }
 
-var BrowserTestStartSetQualityId
+var BrowserTestStartSetQualityId;
 function BrowserTestStartSetQuality() {
     if (!Main_A_includes_B(Settings_Obj_values('default_quality'), STR_AUTO)) {
 
@@ -890,7 +925,7 @@ function getPlayVodClip() {
     var PlayVodClip = 1;
 
     if (PlayVod_isOn) PlayVodClip = 2;
-    else if (PlayClip_isOn); PlayVodClip = 3;
+    else if (PlayClip_isOn) PlayVodClip = 3;
 
     return PlayVodClip;
 }
@@ -938,3 +973,16 @@ function requestFullScreen() {
     }
 }
 
+function BrowserTestShowEmbedClicks() {
+    Main_ShowElementWithEle(player_embed_clicks);
+
+    OnClickId = Main_setTimeout(
+        function() {
+
+            Main_HideElementWithEle(player_embed_clicks);
+
+        },
+        5000,
+        OnClickId
+    );
+}

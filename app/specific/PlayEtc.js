@@ -410,25 +410,27 @@ function Play_StoreChatFullScreen() {
 }
 
 function Play_ResStoreChatFullScreen() {
-    Play_controls[Play_controlsChatSize].values = Play_ChatFullScreenObj.controlsPos;
-    Play_controls[Play_controlsChatSize].defaultValue = Play_ChatFullScreenObj.controlsPosDefault;
-    Play_SetChatPosString();
-    Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
-    Play_controls[Play_controlsChatPos].setLable();
-    Play_controls[Play_controlsChatPos].bottomArrows();
-    Play_controls[Play_controlsChatSize].setLable();
-    Play_BottomArrows(Play_controlsChatSize);
+    if (Play_ChatFullScreenObj.controlsPos.length) {
+        Play_controls[Play_controlsChatSize].values = Play_ChatFullScreenObj.controlsPos;
+        Play_controls[Play_controlsChatSize].defaultValue = Play_ChatFullScreenObj.controlsPosDefault;
+        Play_SetChatPosString();
+        Play_controls[Play_controlsChatPos].defaultValue = Play_ChatFullScreenObj.controlsSizeDefault;
+        Play_controls[Play_controlsChatPos].setLable();
+        Play_controls[Play_controlsChatPos].bottomArrows();
+        Play_controls[Play_controlsChatSize].setLable();
+        Play_BottomArrows(Play_controlsChatSize);
 
-    Play_ChatEnable = Play_ChatFullScreenObj.WasEnable;
-    Play_chat_container.style.width = '';
-    if (!Play_ChatEnable) Play_hideChat();
-    else Play_showChat();
-    Play_chat_container.style.height = Play_ChatFullScreenObj.height;
-    Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
-    Play_chat_container.style.top = Play_ChatFullScreenObj.top;
-    Play_chat_container.style.left = Play_ChatFullScreenObj.left;
+        Play_ChatEnable = Play_ChatFullScreenObj.WasEnable;
+        Play_chat_container.style.width = '';
+        if (!Play_ChatEnable) Play_hideChat();
+        else Play_showChat();
+        Play_chat_container.style.height = Play_ChatFullScreenObj.height;
+        Main_getElementById("play_chat_dialog").style.marginTop = Play_ChatFullScreenObj.marginTop;
+        Play_chat_container.style.top = Play_ChatFullScreenObj.top;
+        Play_chat_container.style.left = Play_ChatFullScreenObj.left;
 
-    Play_ResetQualityControls();
+        Play_ResetQualityControls();
+    }
     BrowserTestSetVideoSize();
 }
 
@@ -1406,8 +1408,11 @@ function Play_KeyReturn(is_vod) {
 
         if (!Play_EndFocus) {
             if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
-                UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-            else {
+                UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) {
+
+                UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+            } else {
                 Play_EndFocus = true;
                 UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
                 Play_EndIconsAddFocus();
@@ -1418,11 +1423,19 @@ function Play_KeyReturn(is_vod) {
             Play_showExitDialog();
         }
 
-    } else if (Play_MultiDialogVisible()) Play_HideMultiDialog();
-    else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
+    } else if (Play_MultiDialogVisible()) {
+
+        Play_HideMultiDialog();
+
+    } else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
+
         if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos ||
-            UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
-        else UserLiveFeed_Hide();
+            UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) {
+
+            UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+
+        } else UserLiveFeed_Hide();
+
     } else if (Play_isPanelShowing() && !Play_isVodDialogVisible()) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
@@ -3295,7 +3308,13 @@ function Play_MakeControls() {
         defaultValue: Play_ChatSizeValue,
         isChat: true,
         updown: function(adder) {
-            if (!Play_isChatShown() || Play_Multi_MainBig || (!Play_isFullScreen && PlayExtra_PicturePicture)) return;
+            if (!Play_isChatShown() ||
+                Play_Multi_MainBig ||
+                (!Play_isFullScreen && PlayExtra_PicturePicture)) {
+
+                return;
+
+            }
 
             this.defaultValue += adder;
 
