@@ -731,6 +731,14 @@ function BrowserTestFun() {
 
                     UserLiveFeed_KeyRightLeft(y * -1);
 
+
+                } else if (!yOnwheel && Main_A_includes_B(id, 'controls_button_') &&
+                    Play_isPanelShowing()) {
+
+                    var PlayVodClip = getPlayVodClip();
+                    Play_Resetpanel(PlayVodClip);
+                    Play_BottomUpDown(PlayVodClip, y * -1);
+
                 }
 
                 OnwheelId = Main_setTimeout(
