@@ -329,17 +329,24 @@ function BrowserTestFun() {
 
             } else if (Sidepannel_isShowingMenus()) {
 
-                if (Main_A_includes_B(id, 'side_panel_movel_new_')) {
+                if (Main_A_includes_B(id, 'side_panel_movel_new_') ||
+                    Main_A_includes_B(id, 'icon_side_panel')) {
+
                     var sidepannel_pos = parseInt(idArray[4]);
                     Sidepannel_RemoveFocusMain();
                     Sidepannel_Sidepannel_Pos = sidepannel_pos;
                     if (sidepannel_pos === 2) Sidepannel_AddFocusMain();
 
                     Sidepannel_KeyEnter();
+
                 } else if (Main_A_includes_B(id, 'side_panel_top_text_empty')) {
+
                     Sidepannel_MainKeyLeft();
+
                 } else if (Main_A_includes_B(id, 'side_panel_back_main_menu')) {
+
                     Sidepannel_userLiveKeyRight();
+
                 }
 
             } else if (Sidepannel_isShowingUserLive()) {

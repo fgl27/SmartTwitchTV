@@ -256,8 +256,8 @@ function AddUser_UpdateSidepanelSize(logo, username) {
     Sidepannel_MovelDiv.style.transition = 'none';
     var MoveldefaultWidth = Sidepannel_MoveldefaultMargin + Sidepannel_FixdefaultMargin - 1;
 
-    Main_innerHTML("side_panel_new_0_img",
-        '<img class="side_panel_new_img" alt="" src="' +
+    Main_innerHTML("icon_side_panel_imgholder_0",
+        '<img id="icon_side_panel_img_0" class="side_panel_new_img" alt="" src="' +
         logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">');
     Sidepannel_SetUserlable(username);
 

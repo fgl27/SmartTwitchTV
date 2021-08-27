@@ -829,7 +829,7 @@ function Sidepannel_SetUserlable(text) {
 }
 
 function Sidepannel_SetIcons(div, icon, extra_style) {
-    if (icon) Main_innerHTML(div, '<i class="icon icon-' + icon + ' side_panel_new_icons_pad" ' + (extra_style ? ' style="' + extra_style + '"' : '') + '></i>');
+    if (icon) Main_innerHTML(div, '<i id="icon_' + div + '" class="icon icon-' + icon + ' side_panel_new_icons_pad" ' + (extra_style ? ' style="' + extra_style + '"' : '') + '></i>');
     else Main_textContent(div, '');
 }
 
