@@ -980,6 +980,8 @@ function BrowserTestFun() {
 
                     OnDuploClick = div;
 
+                } else if (Play_isControlsDialogVisible()) {
+                    Play_HideControlsDialog();
                 } else if (Main_A_includes_B(id, 'feed_refresh_button') && previewShowing) {
                     UserLiveFeed_FeedRefresh();
                 } else if (Main_A_includes_B(id, 'scene2_click') && previewShowing) {
