@@ -41,6 +41,24 @@ function BrowserTestFun() {
         BrowserTestLoadScript('https://embed.twitch.tv/embed/v1.js');
         BrowserTestSetStrings();
 
+        //csss class from elem that need to show a mouse pointer
+        Main_innerHTML(
+            'pointer_css',
+            '.feed_end_name,' +
+            '.progress_bar_div,' +
+            '.next_button,' +
+            '.stream_cell_period,' +
+            '.exit_player,' +
+            '.side_panel_div,' +
+            '.side_panel_feed_top,' +
+            '.side_panel_movel_bottom_text,' +
+            '.side_panel_new_icons_text_holder,' +
+            '.side_panel_new_icons,' +
+            '.streams_game_div,' +
+            '.streams_div,' +
+            '.show_pointer { cursor: pointer;}'
+        );
+
         var key = 0,
             sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
             controls_holder_hover = Main_getElementById('controls_holder'),
