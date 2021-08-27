@@ -800,6 +800,10 @@ function BrowserTestFun() {
             Main_CheckDialogs();
         };
 
+        Main_getElementById('welcome_dialog').onclick = function() {
+            Screens_handleKeyControlsEnter(Main_values.Main_Go);
+        };
+
         Main_getElementById('update_dialog').onclick = function(event) {
             var id = event.target.id;
 

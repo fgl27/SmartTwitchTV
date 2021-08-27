@@ -823,8 +823,13 @@ function Main_showWelcomeDialog(removeEventListener, addEventListener) {
     var phone_warning = '';
     if (!Main_isTV) {
 
-        phone_warning = STR_DIV_TITLE + STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
-
+        if (Main_IsOn_OSInterface) {
+            phone_warning = STR_DIV_TITLE +
+                STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
+        } else {
+            phone_warning = STR_DIV_TITLE +
+                STR_WARNING_BROWSER + '</div>' + STR_BR + STR_WARNING_BROWSER_SUMMARY + STR_BR + STR_BR;
+        }
     }
 
     Main_innerHTML(

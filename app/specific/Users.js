@@ -343,6 +343,7 @@ function Users_handleKeyBack() {
 }
 
 function Users_handleKeyEnter() {
+    var i;
     // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
     var temp_RemoveCursor = Users_RemoveCursor;
     if (Users_isRemoveDialogShown()) {

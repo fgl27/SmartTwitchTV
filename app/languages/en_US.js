@@ -719,5 +719,9 @@ function en_USLang() {
     STR_EMBED = "Embed player ";
     STR_CLICK_EXIT = "Click here to exit the player";
     STR_GO_FULL = "Full screen";
+    STR_GO_FULL = "Full screen";
     STR_NOT_SUPPORT_BROWSER = "This is not supported on a browser";
+
+    STR_WARNING_BROWSER = "Browser warning";
+    STR_WARNING_BROWSER_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).";
 }

@@ -884,6 +884,28 @@ function Screens_CheckRefreshAfterResume() {
 
 var CheckAccessibilityWasVisible = false;
 
+function Screens_handleKeyControlsEnter(key) {
+    if (Main_CheckAccessibilityVisible()) {
+        CheckAccessibilityWasVisible = true;
+        Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
+        Main_HideElement('dialog_accessibility');
+    } else CheckAccessibilityWasVisible = false;
+
+    Main_HideWelcomeDialog();
+    Main_HideControlsDialog();
+    Main_HideAboutDialog();
+    Main_removeEventListener("keydown", ScreenObj[key].key_controls);
+
+    if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
+    else {
+
+        Main_addEventListener("keydown", ScreenObj[key].key_fun);
+        if (ScreenObj[key].addFocus) Screens_addFocus(true, key);
+        else ScreenObj[key].init_fun();
+
+    }
+}
+
 function Screens_handleKeyControls(key, event) {
     //Main_Log('Screens_handleKeyControls ' + event.keyCode);
 
@@ -891,26 +913,7 @@ function Screens_handleKeyControls(key, event) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Main_CheckAccessibilityVisible()) {
-                CheckAccessibilityWasVisible = true;
-                Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
-                Main_HideElement('dialog_accessibility');
-            } else CheckAccessibilityWasVisible = false;
-
-            Main_HideWelcomeDialog();
-            Main_HideControlsDialog();
-            Main_HideAboutDialog();
-            Main_removeEventListener("keydown", ScreenObj[key].key_controls);
-
-            if (CheckAccessibilityWasVisible) Main_CheckAccessibilitySet();
-            else {
-
-                Main_addEventListener("keydown", ScreenObj[key].key_fun);
-                if (ScreenObj[key].addFocus) Screens_addFocus(true, key);
-                else ScreenObj[key].init_fun();
-
-            }
-
+            Screens_handleKeyControlsEnter(key);
             break;
         default:
             break;
@@ -2193,9 +2196,13 @@ function Screens_handleKeyDown(key, event) {
         case KEY_E:
         case KEY_NUMPAD_9:
         case KEY_9:
-            Screens_RemoveFocus(key);
-            Main_removeEventListener("keydown", ScreenObj[key].key_fun);
-            Main_showExitDialog();
+            if (Main_IsOn_OSInterface) {
+                Screens_RemoveFocus(key);
+                Main_removeEventListener("keydown", ScreenObj[key].key_fun);
+                Main_showExitDialog();
+            } else {
+                requestFullScreen();
+            }
             break;
         case KEY_NUMPAD_0:
         case KEY_0:
