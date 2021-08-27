@@ -24,6 +24,7 @@ function BrowserTestSetStrings() {
         Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
         Main_textContent("scene2_click_4_text_title", STR_CHAT_SIDE);
         Main_textContent("button_full_screen_text", STR_GO_FULL);
+        Main_textContent("feed_refresh_button_text_title", STR_REFRESH);
 
         Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);
         Main_IconLoad('twitch-embed_exit', 'icon-return', STR_CLICK_EXIT);
@@ -75,6 +76,7 @@ function BrowserTestFun() {
 
         enable_embed = Main_getItemBool('enable_embed', true);
 
+        Main_RemoveClass('feed_refresh_button', 'hideimp');
         Main_ShowElementWithEle(exit_player);
         Main_ShowElement('button_full_screen');
         Main_Scene2Doc.style.backgroundColor = '#000000';
@@ -217,7 +219,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            console.log(id);
+            //console.log(id);
 
             var idArray = id.split('_'),
                 key = parseInt(idArray[0]),
@@ -542,15 +544,16 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div,
                 idArray,
-                pos;
+                pos,
+                previewShowing = UserLiveFeed_isPreviewShowing();
 
-            //console.log(id);
+            console.log(id);
 
             if (Main_isScene2DocVisible()) {
 
                 var PlayVodClip = getPlayVodClip();
 
-                if (Main_A_includes_B(id, 'ulf_') && UserLiveFeed_isPreviewShowing()) {
+                if (Main_A_includes_B(id, 'ulf_') && previewShowing) {
 
                     if (Play_isEndDialogVisible()) {
                         Play_EndFocus = true;
@@ -597,7 +600,11 @@ function BrowserTestFun() {
 
                     OnDuploClick = div;
 
-                } else if (Main_A_includes_B(id, 'feed_end_') && UserLiveFeed_isPreviewShowing()) {
+                } else if (Main_A_includes_B(id, 'feed_refresh_button') && previewShowing) {
+                    UserLiveFeed_FeedRefresh();
+                } else if (Main_A_includes_B(id, 'scene2_click') && previewShowing) {
+                    UserLiveFeed_Hide();
+                } else if (Main_A_includes_B(id, 'feed_end_') && previewShowing) {
 
                     pos = parseInt(id.split('_')[2]) + 1;
 
@@ -620,11 +627,15 @@ function BrowserTestFun() {
 
                     }
 
+                    if (pos !== UserLiveFeedobj_AGamesPos || pos !== UserLiveFeedobj_UserAGamesPos) {
+                        Main_AddClass('icon_feed_back', 'opacity_zero');
+                    }
+
                     UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
                     UserLiveFeed_FeedPosX = pos;
                     UserLiveFeed_obj[UserLiveFeed_FeedPosX].show();
 
-                } else if (Main_A_includes_B(id, 'icon_feed_back') && UserLiveFeed_isPreviewShowing()) {
+                } else if (Main_A_includes_B(id, 'icon_feed_back') && previewShowing) {
 
                     UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
 
@@ -668,7 +679,7 @@ function BrowserTestFun() {
                         OnDuploClick = div;
                     }
 
-                } else if (!Play_isPanelShowing() && !UserLiveFeed_isPreviewShowing()) {
+                } else if (!Play_isPanelShowing() && !previewShowing) {
 
                     // if (PlayVodClip === 1) Play_showPanel();
                     // else if (PlayVodClip === 2) PlayVod_showPanel(true);

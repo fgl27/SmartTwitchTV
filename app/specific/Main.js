@@ -519,7 +519,9 @@ function Main_SetStringsMain() {
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
-    UserLiveFeed_SetFeedPicText();
+
+    if (Main_IsOn_OSInterface) UserLiveFeed_SetFeedPicText();
+    else UserLiveFeed_Unset();
 
     Sidepannel_SetDefaultLables();
 
