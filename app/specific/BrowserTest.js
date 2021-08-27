@@ -60,8 +60,7 @@ function BrowserTestFun() {
             '.show_pointer { cursor: pointer;}'
         );
 
-        var key = 0,
-            sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
+        var sidepanel_Menus_hover = Main_getElementById('side_panel_movel'),
             controls_holder_hover = Main_getElementById('controls_holder'),
             progress_pause_holder_hover = Main_getElementById('progress_pause_holder'),
             sidepanel_elem_hide = Main_getElementById('screens_holder'),
@@ -96,7 +95,8 @@ function BrowserTestFun() {
         };
 
         sidepanel_elem_show.onmousemove = function() {
-            key = Main_values.Main_Go;
+            var key = Main_values.Main_Go;
+
             if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
 
                 if (key === Main_ChannelContent) {
@@ -219,12 +219,10 @@ function BrowserTestFun() {
 
             console.log(id);
 
-            var idArray = id.split('_');
-
-            var y = parseInt(idArray[2]),
+            var idArray = id.split('_'),
+                key = parseInt(idArray[0]),
+                y = parseInt(idArray[2]),
                 x = parseInt(idArray[3]);
-
-            key = parseInt(idArray[0]);
 
             if (!isNaN(key)) {
                 if (Screens_IsInUse(key)) {
@@ -282,6 +280,17 @@ function BrowserTestFun() {
                     Main_SwitchScreen();
 
                 }
+            } else if (Main_A_includes_B(id, 'dialog_period')) {
+
+                if (idArray.length === 3) {
+                    Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
+                    Screens_PeriodDialogPos = parseInt(idArray[2]);
+                    Screens_PeriodhandleKeyEnter(Main_values.Main_Go);
+                } else {
+                    Screens_PeriodRemoveFocus(Screens_PeriodDialogPos);
+                    Screens_PeriodDialogHide(Main_values.Main_Go);
+                }
+
             } else if (Main_A_includes_B(id, 'button_full_screen')) {
 
                 requestFullScreen();
@@ -422,7 +431,7 @@ function BrowserTestFun() {
         Main_Scene1Doc.onwheel = function(event) {
             var y = event.deltaY > 0 ? 1 : -1;
 
-            key = Main_values.Main_Go;
+            var key = Main_values.Main_Go;
             if (!yOnwheel) {
 
 

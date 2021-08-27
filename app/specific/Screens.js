@@ -2160,7 +2160,12 @@ function Screens_handleKeyDown(key, event) {
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_addEventListener("keyup", ScreenObj[key].key_up);
             Screens_clear = false;
-            Screens_KeyEnterID = Main_setTimeout(Main_ReloadScreen, Screens_KeyUptimeout, Screens_KeyEnterID);
+            Screens_KeyEnterID =
+                Main_setTimeout(
+                    Main_ReloadScreen,
+                    Screens_KeyUptimeout,
+                    Screens_KeyEnterID
+                );
             break;
         case KEY_MEDIA_NEXT:
         case KEY_NUMPAD_2:
@@ -2293,6 +2298,16 @@ function Screens_PeriodRemoveFocus(pos) {
     Main_RemoveClass('dialog_period_' + pos, 'button_dialog_focused');
 }
 
+function Screens_PeriodhandleKeyEnter(key) {
+    Screens_PeriodDialogHide(key);
+    if (ScreenObj[key].periodPos !== Screens_PeriodDialogPos) {
+        ScreenObj[key].periodPos = Screens_PeriodDialogPos;
+        ScreenObj[key].SetPeriod();
+        ScreenObj[key].isReloadScreen = true;
+        Screens_StartLoad(key);
+    }
+}
+
 function Screens_PeriodhandleKeyDown(key, event) {
     //Main_Log('ScreenObj[key].key_period ' + event.keyCode);
 
@@ -2320,13 +2335,7 @@ function Screens_PeriodhandleKeyDown(key, event) {
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            Screens_PeriodDialogHide(key);
-            if (ScreenObj[key].periodPos !== Screens_PeriodDialogPos) {
-                ScreenObj[key].periodPos = Screens_PeriodDialogPos;
-                ScreenObj[key].SetPeriod();
-                ScreenObj[key].isReloadScreen = true;
-                Screens_StartLoad(key);
-            }
+            Screens_PeriodhandleKeyEnter(key);
             break;
         default:
             break;
