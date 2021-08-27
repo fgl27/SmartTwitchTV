@@ -1434,13 +1434,13 @@ function Play_showWarningMidleDialog(text, timeout, IsLiveWarning) {
     Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
     Play_dialog_warning_play_middle.style.width = '';
 
-    if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.marginTop = '90vh';
+    if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.top = '90vh';
     else if (IsLiveWarning) {
 
-        Play_dialog_warning_play_middle.style.marginTop = '81.5vh';
+        Play_dialog_warning_play_middle.style.top = '81.5vh';
         Play_dialog_warning_play_middle.style.width = '62%';
 
-    } else Play_dialog_warning_play_middle.style.marginTop = '50vh';
+    } else Play_dialog_warning_play_middle.style.top = '50vh';
 
     Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
