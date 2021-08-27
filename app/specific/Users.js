@@ -247,7 +247,11 @@ function Users_clearUserDialog() {
 }
 
 function Users_setUserDialog() {
-    Users_UserDialogID = Main_setTimeout(Users_HideUserDialog, 20000, Users_UserDialogID);
+    Users_UserDialogID = Main_setTimeout(
+        Users_HideUserDialog,
+        20000,
+        Users_UserDialogID
+    );
 }
 
 var Users_showUserDialogPos = 0;
@@ -289,34 +293,38 @@ function Users_clearRemoveDialog() {
 }
 
 function Users_setRemoveDialog() {
-    Users_RemoveDialogID = Main_setTimeout(Users_HideRemoveDialog, 30000, Users_RemoveDialogID);
+    Users_RemoveDialogID = Main_setTimeout(
+        Users_HideRemoveDialog,
+        30000,
+        Users_RemoveDialogID
+    );
 }
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
     if (!Users_Isautentication) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     else Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
-    Main_ShowElement('main_yes_no_dialog');
+    Main_ShowElement('yes_no_dialog');
 }
 
 function Users_HideRemoveDialog() {
     Users_clearRemoveDialog();
-    Main_HideElement('main_yes_no_dialog');
+    Main_HideElement('yes_no_dialog');
     Users_RemoveCursor = 0;
     Users_RemoveCursorSet();
 }
 
 function Users_isRemoveDialogShown() {
-    return Main_isElementShowing('main_yes_no_dialog');
+    return Main_isElementShowing('yes_no_dialog');
 }
 
 function Users_RemoveCursorSet() {
     if (!Users_RemoveCursor) {
-        Main_AddClass('remove_cancel', 'button_dialog_focused');
-        Main_RemoveClass('remove_yes', 'button_dialog_focused');
+        Main_AddClass('yes_no_dialog_button_no', 'button_dialog_focused');
+        Main_RemoveClass('yes_no_dialog_button_yes', 'button_dialog_focused');
     } else {
-        Main_RemoveClass('remove_cancel', 'button_dialog_focused');
-        Main_AddClass('remove_yes', 'button_dialog_focused');
+        Main_RemoveClass('yes_no_dialog_button_no', 'button_dialog_focused');
+        Main_AddClass('yes_no_dialog_button_yes', 'button_dialog_focused');
     }
 }
 
@@ -333,6 +341,61 @@ function Users_handleKeyBack() {
         Main_SwitchScreen();
     }
 }
+
+function Users_handleKeyEnter() {
+    // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
+    var temp_RemoveCursor = Users_RemoveCursor;
+    if (Users_isRemoveDialogShown()) {
+        Users_HideRemoveDialog();
+        if (!Users_Isautentication) {
+            if (temp_RemoveCursor) {
+                Main_removeEventListener("keydown", Users_handleKeyDown);
+                Users_exit();
+                AddUser_removeUser(Users_showUserDialogPos);
+            }
+        } else {
+            if (temp_RemoveCursor) {
+                Main_values.Users_AddcodePosition = Users_showUserDialogPos;
+                Main_SaveValues();
+                var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
+                    type_code = 'code',
+                    client_id = AddCode_clientId,
+                    redirect_uri = AddCode_redirect_uri,
+                    scope = '',
+                    len = AddCode_Scopes.length;
+
+                i = 0;
+                for (i; i < len; i++) {
+                    scope += AddCode_Scopes[i] + '+';
+                }
+                scope = scope.slice(0, -1);
+
+                var force_verify = 'true';
+                var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
+                    encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
+                    '&force_verify=' + force_verify;
+                OSInterface_AvoidClicks(true);
+                Main_LoadUrl(url);
+            }
+        }
+    } else if (Users_isUserDialogShown()) {
+        Users_HideUserDialog();
+        if (!temp_RemoveCursor) {
+            AddUser_UserMakeOne(Users_showUserDialogPos);
+        } else if (temp_RemoveCursor === 1) {
+            if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
+                Main_showWarningDialog(STR_USER_CODE_OK, 2000);
+            } else {
+                Users_Isautentication = true;
+                Users_showRemoveDialog();
+            }
+        } else {
+            Users_Isautentication = false;
+            Users_showRemoveDialog();
+        }
+    } else Users_keyEnter();
+}
+
 
 function Users_handleKeyDown(event) {
     //Main_Log('Users_handleKeyDown ' + event.keyCode);
@@ -353,13 +416,11 @@ function Users_handleKeyDown(event) {
                 Users_RemoveCursor--;
                 if (Users_RemoveCursor < 0) Users_RemoveCursor = 1;
                 Users_RemoveCursorSet();
-                Users_clearRemoveDialog();
                 Users_setRemoveDialog();
             } else if (Users_isUserDialogShown()) {
                 Users_RemoveCursor--;
                 if (Users_RemoveCursor < 0) Users_RemoveCursor = 2;
                 Users_UserCursorSet();
-                Users_clearUserDialog();
                 Users_setUserDialog();
             } else if (!Users_cursorX) {
                 Users_removeFocus();
@@ -389,13 +450,11 @@ function Users_handleKeyDown(event) {
                 Users_RemoveCursor++;
                 if (Users_RemoveCursor > 1) Users_RemoveCursor = 0;
                 Users_RemoveCursorSet();
-                Users_clearRemoveDialog();
                 Users_setRemoveDialog();
             } else if (Users_isUserDialogShown()) {
                 Users_RemoveCursor++;
                 if (Users_RemoveCursor > 2) Users_RemoveCursor = 0;
                 Users_UserCursorSet();
-                Users_clearUserDialog();
                 Users_setUserDialog();
             } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX + 1), Users_ids[0])) {
                 Users_removeFocus();
@@ -446,57 +505,7 @@ function Users_handleKeyDown(event) {
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            // HideRemoveDialog set Users_RemoveCursor to 0, is better to hide befor remove, use temp var
-            var temp_RemoveCursor = Users_RemoveCursor;
-            if (Users_isRemoveDialogShown()) {
-                Users_HideRemoveDialog();
-                if (!Users_Isautentication) {
-                    if (temp_RemoveCursor) {
-                        Main_removeEventListener("keydown", Users_handleKeyDown);
-                        Users_exit();
-                        AddUser_removeUser(Users_showUserDialogPos);
-                    }
-                } else {
-                    if (temp_RemoveCursor) {
-                        Main_values.Users_AddcodePosition = Users_showUserDialogPos;
-                        Main_SaveValues();
-                        var baseUrlCode = 'https://id.twitch.tv/oauth2/authorize?',
-                            type_code = 'code',
-                            client_id = AddCode_clientId,
-                            redirect_uri = AddCode_redirect_uri,
-                            scope = '',
-                            len = AddCode_Scopes.length;
-
-                        i = 0;
-                        for (i; i < len; i++) {
-                            scope += AddCode_Scopes[i] + '+';
-                        }
-                        scope = scope.slice(0, -1);
-
-                        var force_verify = 'true';
-                        var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
-                            encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
-                            '&force_verify=' + force_verify;
-                        OSInterface_AvoidClicks(true);
-                        Main_LoadUrl(url);
-                    }
-                }
-            } else if (Users_isUserDialogShown()) {
-                Users_HideUserDialog();
-                if (!temp_RemoveCursor) {
-                    AddUser_UserMakeOne(Users_showUserDialogPos);
-                } else if (temp_RemoveCursor === 1) {
-                    if (AddUser_UsernameArray[Users_showUserDialogPos].access_token) {
-                        Main_showWarningDialog(STR_USER_CODE_OK, 2000);
-                    } else {
-                        Users_Isautentication = true;
-                        Users_showRemoveDialog();
-                    }
-                } else {
-                    Users_Isautentication = false;
-                    Users_showRemoveDialog();
-                }
-            } else Users_keyEnter();
+            Users_handleKeyEnter();
             break;
         case KEY_2:
             Main_ReloadScreen();

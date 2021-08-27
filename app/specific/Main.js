@@ -266,9 +266,9 @@ function Main_StartApp() {
                 OSInterface_requestWr();
                 Main_HideLoadDialog();
                 Main_innerHTML("main_dialog_remove", STR_BACKUP);
-                Main_textContent('remove_cancel', STR_NO);
-                Main_textContent('remove_yes', STR_YES);
-                Main_ShowElement('main_yes_no_dialog');
+                Main_textContent('yes_no_dialog_button_no', STR_NO);
+                Main_textContent('yes_no_dialog_button_yes', STR_YES);
+                Main_ShowElement('yes_no_dialog');
                 Main_values.Restore_Backup_Check = true;
                 Main_PreventCheckResume = true;
                 Main_addEventListener("keydown", Main_BackupDialodKeyDown);
@@ -309,7 +309,7 @@ function Main_BackupDialodKeyDown(event) {
         case KEY_ENTER:
             Main_PreventCheckResume = false;
             Main_showLoadDialog();
-            Main_HideElement('main_yes_no_dialog');
+            Main_HideElement('yes_no_dialog');
             Main_removeEventListener("keydown", Main_BackupDialodKeyDown);
             if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
@@ -547,8 +547,8 @@ function Main_SetStringsSecondary() {
     Main_textContent('live_button', STR_LIVE);
     Main_textContent('exit_app_cancel', STR_CANCEL);
     Main_textContent('exit_app_close', STR_CLOSE);
-    Main_textContent('remove_cancel', STR_CANCEL);
-    Main_textContent('remove_yes', STR_YES);
+    Main_textContent('yes_no_dialog_button_no', STR_CANCEL);
+    Main_textContent('yes_no_dialog_button_yes', STR_YES);
     Main_textContent('exit_app_minimize', STR_MINIMIZE);
     Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
 

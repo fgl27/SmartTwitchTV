@@ -105,7 +105,7 @@ function Screens_InitScreens() {
     ScreenObj[Main_ChannelContent].key_controls = Screens_handleKeyControls.bind(null, Main_ChannelContent);
 
     Screens_dialog_thumb_div = Main_getElementById('dialog_thumb_opt');
-    Screens_dialog_thumb_delete_div = Main_getElementById('main_yes_no_dialog');
+    Screens_dialog_thumb_delete_div = Main_getElementById('yes_no_dialog');
 
     Main_setTimeout(Main_Startfirebase);
     Screens_first_init();

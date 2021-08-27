@@ -215,6 +215,35 @@ function BrowserTestFun() {
         };
         Main_getElementById('side_panel_feed_thumb').onmousemove = sidepanel_elem_hide.onmousemove;
 
+        Main_getElementById('main_dialog_user').onmousemove = function(event) {
+            var id = event.target.id;
+
+            Users_setUserDialog();
+            if (Main_A_includes_B(id, 'main_dialog_user_first') && Users_RemoveCursor) {
+                Users_RemoveCursor = 0;
+                Users_UserCursorSet();
+            } else if (Main_A_includes_B(id, 'main_dialog_user_key') && Users_RemoveCursor !== 1) {
+                Users_RemoveCursor = 1;
+                Users_UserCursorSet();
+            } else if (Main_A_includes_B(id, 'main_dialog_user_remove') && Users_RemoveCursor !== 2) {
+                Users_RemoveCursor = 2;
+                Users_UserCursorSet();
+            }
+        };
+
+        Main_getElementById('yes_no_dialog').onmousemove = function(event) {
+            var id = event.target.id;
+
+            Users_setUserDialog();
+            if (Main_A_includes_B(id, 'yes_no_dialog_button_no') && Users_RemoveCursor) {
+                Users_RemoveCursor = 0;
+                Users_RemoveCursorSet();
+            } else if (Main_A_includes_B(id, 'yes_no_dialog_button_yes') && !Users_RemoveCursor) {
+                Users_RemoveCursor = 1;
+                Users_RemoveCursorSet();
+            }
+        };
+
         Main_Scene1Doc.onclick = function(event) {
             var id = event.target.id,
                 div;
@@ -282,6 +311,17 @@ function BrowserTestFun() {
                     Main_SwitchScreen();
 
                 }
+            } else if (Main_A_includes_B(id, 'main_dialog_user') ||
+                Main_A_includes_B(id, 'yes_no_dialog')) {
+
+                if (Main_A_equals_B(id, 'main_dialog_user') ||
+                    Main_A_equals_B(id, 'yes_no_dialog')) {
+                    Users_handleKeyBack();
+                } else if (Main_A_includes_B(id, 'main_dialog_user') ||
+                    Main_A_includes_B(id, 'yes_no_dialog_button')) {
+                    Users_handleKeyEnter();
+                }
+
             } else if (Main_A_includes_B(id, 'dialog_period')) {
 
                 if (idArray.length === 3) {
@@ -547,7 +587,7 @@ function BrowserTestFun() {
                 pos,
                 previewShowing = UserLiveFeed_isPreviewShowing();
 
-            console.log(id);
+            //console.log(id);
 
             if (Main_isScene2DocVisible()) {
 
