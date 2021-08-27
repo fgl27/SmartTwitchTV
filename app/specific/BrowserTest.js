@@ -1245,6 +1245,13 @@ function getPlayVodClip() {
     return PlayVodClip;
 }
 
+function isFullScreen() {
+    return (document.fullscreenElement && document.fullscreenElement !== null) ||
+        (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
+        (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
+        (document.msFullscreenElement && document.msFullscreenElement !== null);
+}
+
 function requestFullScreen() {
 
     if (typeof window.ActiveXObject !== "undefined") {
@@ -1257,11 +1264,7 @@ function requestFullScreen() {
         }
     } else {
 
-        var isInFullScreen = (document.fullscreenElement && document.fullscreenElement !== null) ||
-            (document.webkitFullscreenElement && document.webkitFullscreenElement !== null) ||
-            (document.mozFullScreenElement && document.mozFullScreenElement !== null) ||
-            (document.msFullscreenElement && document.msFullscreenElement !== null);
-
+        var isInFullScreen = isFullScreen();
 
         var docElm = document.documentElement;
         if (!isInFullScreen) {
@@ -1285,6 +1288,7 @@ function requestFullScreen() {
                 document.msExitFullscreen();
             }
         }
+
     }
 }
 
