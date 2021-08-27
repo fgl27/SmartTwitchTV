@@ -502,6 +502,21 @@ function ChannelContent_keyUpDown() {
     }
 }
 
+function ChannelContent_handleKeyBakc() {
+    if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+    else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+    else {
+        ChannelContent_removeFocus();
+        Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
+        Main_values.Main_Go = Main_values.Main_BeforeChannel;
+        Main_values.Main_BeforeChannel = Main_Live;
+        ChannelContent_exit();
+        Sidepannel_SetDefaultLables();
+        Main_values.Main_selectedChannel_id = '';
+        Main_SwitchScreen();
+    }
+}
+
 function ChannelContent_handleKeyDown(event) {
     if (Main_FirstLoad || Main_CantClick()) return;
 
@@ -510,18 +525,7 @@ function ChannelContent_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
-            else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
-            else {
-                ChannelContent_removeFocus();
-                Main_removeEventListener("keydown", ChannelContent_handleKeyDown);
-                Main_values.Main_Go = Main_values.Main_BeforeChannel;
-                Main_values.Main_BeforeChannel = Main_Live;
-                ChannelContent_exit();
-                Sidepannel_SetDefaultLables();
-                Main_values.Main_selectedChannel_id = '';
-                Main_SwitchScreen();
-            }
+            ChannelContent_handleKeyBakc();
             break;
         case KEY_LEFT:
             if (!ChannelContent_cursorY && ChannelContent_cursorX) {

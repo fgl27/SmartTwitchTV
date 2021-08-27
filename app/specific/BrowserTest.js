@@ -43,7 +43,8 @@ function BrowserTestFun() {
 
         //csss class from elem that need to show a mouse pointer
         Main_innerHTML(
-            'pointer_css',
+            'pointer_css',//style elem
+            //classes
             '.feed_end_name,' +
             '.progress_bar_div,' +
             '.next_button,' +
@@ -216,7 +217,7 @@ function BrowserTestFun() {
             var id = event.target.id,
                 div;
 
-            //console.log(id);
+            console.log(id);
 
             var idArray = id.split('_');
 
@@ -282,7 +283,50 @@ function BrowserTestFun() {
 
                 }
             } else if (Main_A_includes_B(id, 'button_full_screen')) {
+
                 requestFullScreen();
+
+            } else if (Main_A_includes_B(id, 'label_refresh') || Main_A_includes_B(id, 'label_last_refresh')) {
+
+                Main_ReloadScreen();
+
+            } else if (Main_A_includes_B(id, 'label_thumb')) {
+
+                if (ScreenObj[Main_values.Main_Go] && ScreenObj[Main_values.Main_Go].key_exit) {
+
+                    if (Main_values.Main_Go === Main_aGame ||
+                        Main_values.Main_Go === Main_AGameVod ||
+                        Main_values.Main_Go === Main_AGameClip ||
+                        Main_values.Main_Go === Main_ChannelVod ||
+                        Main_values.Main_Go === Main_ChannelClip) {
+
+                        ScreenObj[Main_values.Main_Go].IsOpen = 0;
+                        ScreenObj[Main_values.Main_Go].key_exit();
+
+                    } else if (Screens_IsInUse(Main_values.Main_Go)) {
+                        Screens_ThumbOptionStart(Main_values.Main_Go);
+
+                    }
+
+                } else if (Main_values.Main_Go === Main_ChannelContent) {
+
+                    ChannelContent_handleKeyBakc();
+
+                } else if (Main_values.Main_Go === Main_addUser) {
+
+                    AddUser_handleKeyBack();
+
+                } else if (Main_values.Main_Go === Main_Users) {
+
+                    Users_handleKeyBack();
+
+                } else if (Main_isElementShowing('search_scroll')) {
+
+                    Search_exit();
+                    Main_SwitchScreen();
+
+                }
+
             } else if (Sidepannel_isShowingMenus()) {
 
                 if (Main_A_includes_B(id, 'side_panel_movel_new_')) {

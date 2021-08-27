@@ -320,6 +320,20 @@ function Users_RemoveCursorSet() {
     }
 }
 
+function Users_handleKeyBack() {
+    if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
+    else if (Users_isUserDialogShown()) Users_HideUserDialog();
+    else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+    else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+    else {
+        Users_exit();
+        Sidepannel_RemoveFocusMain();
+        Main_values.Main_Go = Users_beforeUser;
+        Sidepannel_SetTopOpacity(Main_values.Main_Go);
+        Main_SwitchScreen();
+    }
+}
+
 function Users_handleKeyDown(event) {
     //Main_Log('Users_handleKeyDown ' + event.keyCode);
 
@@ -332,17 +346,7 @@ function Users_handleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Users_isRemoveDialogShown()) Users_HideRemoveDialog();
-            else if (Users_isUserDialogShown()) Users_HideUserDialog();
-            else if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
-            else {
-                Users_exit();
-                Sidepannel_RemoveFocusMain();
-                Main_values.Main_Go = Users_beforeUser;
-                Sidepannel_SetTopOpacity(Main_values.Main_Go);
-                Main_SwitchScreen();
-            }
+            Users_handleKeyBack();
             break;
         case KEY_LEFT:
             if (Users_isRemoveDialogShown()) {

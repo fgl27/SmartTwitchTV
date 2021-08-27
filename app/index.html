@@ -2488,12 +2488,11 @@
         #button_full_screen {
             background: rgba(0, 0, 0, 0);
             border: 0;
-            top: 1vh;
+            top: 3vh;
+            right: 1vh;
             position: absolute;
-            right: 8vw;
-            z-index: 999;
-            transition: font-size 350ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
-            font-size: 55%;
+            font-size: 68%;
+            cursor: pointer;
         }
 
         #button_full_screen:hover>#button_full_screen_text {
@@ -2965,26 +2964,26 @@
                 <div id="label_clock" class="icon_top_label" style="text-align: right;"></div>
             </div>
             <div id="topbar" class="topbar hide">
+                <div id="top_lable" class="top_lable">
+                </div>
                 <button id="button_full_screen" class="hide">
-                    <div id="button_full_screen_icon_contaner">
+                    <span id="button_full_screen_text" style="opacity: 0; color: #FFFFFF; transform: translateY(-40%);">
+                    </span>
+                    <span id="button_full_screen_icon_contaner">
                         <i id="button_full_screen_icon" class="pause_button3d icon-resize-up"></i>
-                    </div>
-                    <div id="button_full_screen_text" style="opacity: 0; color: #FFFFFF; transform: translateY(-40%);">
-                    </div>
+                    </span>
                 </button>
                 <div class="top_clock" style="top:1.75ch;">
                     <div class="icon_top_label"></div>
                     <div id="label_update" class="icon_top_label"></div>
                 </div>
                 <div id="controls_div" class="controls_div">
-                    <div id="top_lable_etc" style="line-height: 1vh;">
+                    <div id="top_lable_etc" class="show_pointer" style="line-height: 1vh;">
                         <div id="label_refresh" class="icon_top_label" style="display: inline-block;"></div>
                         <div id="label_last_refresh" class="icon_top_label"
                             style="display: inline-block; transform: translateY(10%);"></div>
                     </div>
-                    <div id="label_thumb" class="icon_top_label"></div>
-                </div>
-                <div id="top_lable" class="top_lable">
+                    <div id="label_thumb" class="icon_top_label show_pointer" style="margin-top: 1%;"></div>
                 </div>
             </div>
             <div id="side_panel_new_holder" class="hide side_panel_new_holder">

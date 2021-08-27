@@ -44,17 +44,21 @@ function AddUser_exit() {
     Main_HideElement('add_user_scroll');
 }
 
+function AddUser_handleKeyBack() {
+    if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
+    else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
+    else {
+        AddUser_exit();
+        Main_SwitchScreen();
+    }
+}
+
 function AddUser_handleKeyDown(event) {
     if (AddUser_loadingData || AddUser_keyBoardOn || Main_values.Main_Go !== Main_addUser) return;
     switch (event.keyCode) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
-            if (Main_isAboutDialogVisible()) Main_HideAboutDialog();
-            else if (Main_isControlsDialogVisible()) Main_HideControlsDialog();
-            else {
-                AddUser_exit();
-                Main_SwitchScreen();
-            }
+            AddUser_handleKeyBack();
             break;
         case KEY_PLAY:
         case KEY_PAUSE:

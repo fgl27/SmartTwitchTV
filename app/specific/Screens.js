@@ -2125,20 +2125,11 @@ function Screens_handleKeyDown(key, event) {
             break;
         case KEY_LEFT:
             Screens_ThumbOptionCanKeyLeft = false;
-            var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
-
-            Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
-
-            if (ScreenObj[key].posY === -1 || ScreenObj[key].DataObj[obj_id].image) {
-
-                Screens_ThumbOptionSpecial = true;
-            }
-
             Screens_handleKeyUpIsClear = false;
+            Screens_clear = false;
 
             Main_removeEventListener("keydown", ScreenObj[key].key_fun);
             Main_addEventListener("keyup", ScreenObj[key].key_up);
-            Screens_clear = false;
 
             Screens_KeyEnterID = Main_setTimeout(
                 function() {
@@ -2642,6 +2633,15 @@ function Screens_histhandleKeyDown(key, event) {
 var Screens_ThumbOptionPosY = 0;
 
 function Screens_ThumbOptionStart(key) {
+    var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
+
+    Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
+
+    if (ScreenObj[key].posY === -1 || ScreenObj[key].DataObj[obj_id].image) {
+
+        Screens_ThumbOptionSpecial = true;
+    }
+
     Screens_LoadPreviewSTop();
 
     if (ScreenObj[key].posY > -1) {
