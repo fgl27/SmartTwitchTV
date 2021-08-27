@@ -45,7 +45,9 @@ function BrowserTestFun() {
         //csss class from elem that need to show a mouse pointer
         Main_innerHTML(
             'pointer_css',//style elem
-            //classes
+            //classes 
+            '.hist_name,' +
+            '.settings_value_focus,' +
             '.right,' +
             '.left,' +
             '.feed_end_name,' +
@@ -131,6 +133,46 @@ function BrowserTestFun() {
 
             }
         };
+
+        Main_getElementById('dialog_OffSet').onclick = function(event) {
+            var id = event.target.id;
+
+            if (Main_A_includes_B(id, 'dialog_OffSet_left')) {
+
+                Screens_OffSethandleKeyLeft(Main_values.Main_Go);
+
+            } else if (Main_A_includes_B(id, 'dialog_OffSet_right')) {
+
+                Screens_OffSethandleKeyRight(Main_values.Main_Go);
+
+            } else if (Main_A_includes_B(id, 'dialog_OffSet_val') ||
+                Main_A_includes_B(id, 'dialog_OffSet_text') ||
+                Main_A_includes_B(id, 'dialog_OffSet_text_summary')) {
+
+                var div = id;
+
+                OnClickId = Main_setTimeout(
+                    function() {
+
+                        OnDuploClick = '';
+
+                    },
+                    500,
+                    OnClickId
+                );
+
+                if (Main_A_equals_B(OnDuploClick, div)) {
+
+                    Screens_OffSethandleKeyEnter(Main_values.Main_Go);
+
+                }
+
+                OnDuploClick = div;
+            } else if (Main_A_includes_B(id, 'dialog_OffSet')) {
+                Screens_OffSetDialogHide(Main_values.Main_Go);
+            }
+        };
+
 
         var dialogHistory = Main_getElementById('dialog_hist_setting');
         dialogHistory.onmousemove = function(event) {

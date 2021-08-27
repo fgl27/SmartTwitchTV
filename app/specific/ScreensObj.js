@@ -1009,7 +1009,7 @@ function ScreensObj_InitChannelVod() {
                 '&broadcast_type=' + (this.highlight ? 'highlight' : 'archive') + '&sort=' +
                 this.time[this.periodPos - 1] + '&offset=' + (this.offset + this.extraoffset);
         },
-        key_play: function() {
+        key_play: function(click) {
 
             if (this.is_a_Banner()) return;
 
@@ -1024,7 +1024,7 @@ function ScreensObj_InitChannelVod() {
                     if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                     this.SetPeriod();
                     Screens_StartLoad(this.screen);
-                } else Screens_OffSetStart(this.screen);
+                } else Screens_OffSetStart(this.screen, click);
             } else this.OpenVodStart();
         },
         SwitchesIcons: ['movie-play', 'history', 'offset'],

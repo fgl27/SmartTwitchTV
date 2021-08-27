@@ -2351,9 +2351,10 @@ function Screens_PeriodhandleKeyDown(key, event) {
 
 var Screens_ThumbOptionSpecial;
 
-function Screens_OffSetStart(key) {
+function Screens_OffSetStart(key, click) {
     ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
     Screens_setOffSetDialog(key);
+    Main_textContent('dialog_OffSet_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
     Main_ShowElement('dialog_OffSet');
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_offset);
@@ -2391,6 +2392,28 @@ function Screens_OffSetAddFocus(pos) {
     }
 }
 
+function Screens_OffSethandleKeyRight(key) {
+    ScreenObj[key].OffSetPos++;
+    if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
+    Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+}
+
+function Screens_OffSethandleKeyLeft(key) {
+
+    ScreenObj[key].OffSetPos--;
+    if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
+    Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+}
+
+function Screens_OffSethandleKeyEnter(key) {
+    Screens_OffSetDialogHide(key);
+    if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
+        ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
+        ScreenObj[key].SetPeriod();
+        Screens_StartLoad(key);
+    }
+}
+
 function Screens_OffSethandleKeyDown(key, event) {
     //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
@@ -2400,26 +2423,17 @@ function Screens_OffSethandleKeyDown(key, event) {
             Screens_OffSetDialogHide(key);
             break;
         case KEY_LEFT:
-            ScreenObj[key].OffSetPos--;
-            if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
-            Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+            Screens_OffSethandleKeyLeft(key);
             break;
         case KEY_RIGHT:
-            ScreenObj[key].OffSetPos++;
-            if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
-            Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+            Screens_OffSethandleKeyRight(key);
             break;
         case KEY_PLAY:
         case KEY_PAUSE:
         case KEY_PLAYPAUSE:
         case KEY_KEYBOARD_SPACE:
         case KEY_ENTER:
-            Screens_OffSetDialogHide(key);
-            if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
-                ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
-                ScreenObj[key].SetPeriod();
-                Screens_StartLoad(key);
-            }
+            Screens_OffSethandleKeyEnter(key);
             break;
         default:
             break;
