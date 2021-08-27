@@ -474,7 +474,6 @@ function en_USLang() {
     STR_NEWEST = "Most recently watched";
     STR_OLDEST = "Oldest watched";
     STR_PRESS_ENTER_D = "Press enter to delete";
-    STR_PRESS_ENTER_APPLY = "Press enter to apply the changes, return to exit without applying";
     STR_LIVE_VOD = "This live is now a VOD<br>opening the VOD from where you last stopped watching the live:<br>";
     STR_BACKUP = "Allow the app to make and restore backups?<br>(Users and their history will be backed up)" + "<br><br>" +
         "If you click Yes, the app will save backups for future use, and restore a saved backup if app data is empty." +
@@ -724,4 +723,5 @@ function en_USLang() {
 
     STR_WARNING_BROWSER = "Browser warning";
     STR_WARNING_BROWSER_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).";
+    STR_THUMB_OPTIONS_CLICK = "Click twice above an action (to open or apply it), click outside the dialog to exit without applying";
 }

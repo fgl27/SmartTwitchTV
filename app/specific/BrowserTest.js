@@ -46,6 +46,8 @@ function BrowserTestFun() {
         Main_innerHTML(
             'pointer_css',//style elem
             //classes
+            '.right,' +
+            '.left,' +
             '.feed_end_name,' +
             '.progress_bar_div,' +
             '.next_button,' +
@@ -127,6 +129,138 @@ function BrowserTestFun() {
 
                 }
 
+            }
+        };
+
+        var dialogHistory = Main_getElementById('dialog_hist_setting');
+        dialogHistory.onmousemove = function(event) {
+            var id = event.target.id;
+
+            if (Main_A_includes_B(id, 'dialog_hist')) {
+                var array = id.split('_'),
+                    pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    Screens_histRemoveFocus(ScreenObj[Main_values.Main_Go].histPosY, 'hist');
+                    ScreenObj[Main_values.Main_Go].histPosY = pos;
+                    Screens_histAddFocus(ScreenObj[Main_values.Main_Go].histPosY, Main_values.Main_Go);
+
+                }
+            }
+        };
+
+        dialogHistory.onclick = function(event) {
+            var id = event.target.id,
+                pos, array;
+
+            if (Main_A_includes_B(id, 'dialog_hist_right')) {
+                array = id.split('_');
+                pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    ScreenObj[Main_values.Main_Go].histPosY = pos;
+                    Screens_histhandleKeyRight(Main_values.Main_Go);
+                }
+            } else if (Main_A_includes_B(id, 'dialog_hist_left')) {
+                array = id.split('_');
+                pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    ScreenObj[Main_values.Main_Go].histPosY = pos;
+                    Screens_histhandleKeyLeft(Main_values.Main_Go);
+                }
+            } else if (Main_A_includes_B(id, 'dialog_hist_val_') ||
+                Main_A_includes_B(id, 'dialog_hist_setting_') ||
+                Main_A_includes_B(id, 'dialog_hist_setting_name_') ||
+                Main_A_includes_B(id, 'dialog_hist_setting_summary_3')) {
+
+                var div = id;
+
+                OnClickId = Main_setTimeout(
+                    function() {
+
+                        OnDuploClick = '';
+
+                    },
+                    500,
+                    OnClickId
+                );
+
+                if (Main_A_equals_B(OnDuploClick, div)) {
+
+                    Screens_histDialogHide(true, Main_values.Main_Go);
+
+                }
+
+                OnDuploClick = div;
+            } else if (Main_A_includes_B(id, 'dialog_hist_setting')) {
+                Screens_histDialogHide(false, Main_values.Main_Go);
+            }
+        };
+
+        var dialogThumb = Main_getElementById('dialog_thumb_opt');
+        dialogThumb.onmousemove = function(event) {
+            var id = event.target.id;
+
+            if (Main_A_includes_B(id, 'dialog_thumb')) {
+                var array = id.split('_'),
+                    pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    Screens_histRemoveFocus(Screens_ThumbOptionPosY, 'thumb_opt');
+                    Screens_ThumbOptionPosY = pos;
+                    Screens_ThumbOptionAddFocus(Screens_ThumbOptionPosY);
+
+                }
+            }
+        };
+
+
+        dialogThumb.onclick = function(event) {
+            var id = event.target.id,
+                pos, array;
+
+            if (Main_A_includes_B(id, 'dialog_thumb_opt_right')) {
+                array = id.split('_');
+                pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    Screens_ThumbOptionPosY = pos;
+                    Screens_ThumbOptionhandleKeyRight();
+                }
+            } else if (Main_A_includes_B(id, 'dialog_thumb_opt_left')) {
+                array = id.split('_');
+                pos = parseInt(array[array.length - 1]);
+
+                if (!isNaN(pos)) {
+                    Screens_ThumbOptionPosY = pos;
+                    Screens_ThumbOptionhandleKeyLeft();
+                }
+            } else if (Main_A_includes_B(id, 'dialog_thumb_opt_val_') ||
+                Main_A_includes_B(id, 'dialog_thumb_opt_setting_') ||
+                Main_A_includes_B(id, 'dialog_thumb_opt_setting_name_')) {
+
+                var div = id;
+
+                OnClickId = Main_setTimeout(
+                    function() {
+
+                        OnDuploClick = '';
+
+                    },
+                    500,
+                    OnClickId
+                );
+
+                if (Main_A_equals_B(OnDuploClick, div)) {
+
+                    Screens_ThumbOptionDialogKeyEnter(Main_values.Main_Go);
+
+                }
+
+                OnDuploClick = div;
+            } else if (Main_A_includes_B(id, 'dialog_thumb_opt')) {
+                Screens_ThumbOptionDialogHide(false, Main_values.Main_Go);
             }
         };
 
@@ -242,6 +376,7 @@ function BrowserTestFun() {
                 Users_RemoveCursor = 1;
                 Users_RemoveCursorSet();
             }
+
         };
 
         Main_Scene1Doc.onclick = function(event) {
@@ -299,7 +434,7 @@ function BrowserTestFun() {
                         } else if (isUserScrren) {
                             Users_keyEnter();
                         } else {
-                            ScreenObj[key].key_play();
+                            ScreenObj[key].key_play(true);
                         }
 
                     }
@@ -319,7 +454,12 @@ function BrowserTestFun() {
                     Users_handleKeyBack();
                 } else if (Main_A_includes_B(id, 'main_dialog_user') ||
                     Main_A_includes_B(id, 'yes_no_dialog_button')) {
-                    Users_handleKeyEnter();
+
+                    if (Main_values.Main_Go === Main_Users) {
+                        Users_handleKeyEnter();
+                    } else {
+                        Screens_histDeleteKeyEnter(Main_values.Main_Go);
+                    }
                 }
 
             } else if (Main_A_includes_B(id, 'dialog_period')) {
@@ -355,10 +495,10 @@ function BrowserTestFun() {
                         ScreenObj[Main_values.Main_Go].key_exit();
 
                     } else if (Screens_IsInUse(Main_values.Main_Go)) {
-                        Screens_ThumbOptionStart(Main_values.Main_Go);
+                        Screens_ThumbOptionStart(Main_values.Main_Go, true);
 
                     }
-
+                    Screens_handleKeyUpIsClear = true;
                 } else if (Main_values.Main_Go === Main_ChannelContent) {
 
                     ChannelContent_handleKeyBakc();

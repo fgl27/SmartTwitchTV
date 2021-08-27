@@ -1926,7 +1926,7 @@ function ScreensObj_HistoryLive() {
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_History_obj);
     ScreenObj[key].Upsorting();
     ScreenObj[key].Set_Scroll();
-    ScreenObj[key].key_play = function() {
+    ScreenObj[key].key_play = function(click) {
 
         if (this.is_a_Banner()) return;
 
@@ -1939,7 +1939,7 @@ function ScreensObj_HistoryLive() {
                 Main_values.Main_Go = Main_HistoryClip;
                 this.history_exit();
                 Main_SwitchScreen();
-            } else Screens_histStart(this.screen);
+            } else Screens_histStart(this.screen, click);
         } else {
             if (this.itemsCount) {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
@@ -1987,7 +1987,7 @@ function ScreensObj_HistoryVod() {
                 '(' + this.sorting[this.histPosX[0]] + ')'
             );
         },
-        key_play: function() {
+        key_play: function(click) {
 
             if (this.is_a_Banner()) return;
 
@@ -2000,7 +2000,7 @@ function ScreensObj_HistoryVod() {
                     Main_values.Main_Go = Main_HistoryClip;
                     this.history_exit();
                     Main_SwitchScreen();
-                } else Screens_histStart(this.screen);
+                } else Screens_histStart(this.screen, click);
             } else this.OpenVodStart();
 
         },
@@ -2082,7 +2082,7 @@ function ScreensObj_HistoryClip() {
             );
 
         },
-        key_play: function() {
+        key_play: function(click) {
 
             if (this.is_a_Banner()) return;
 
@@ -2100,7 +2100,7 @@ function ScreensObj_HistoryClip() {
                     this.history_exit();
                     Main_SwitchScreen();
 
-                } else Screens_histStart(this.screen);
+                } else Screens_histStart(this.screen, click);
 
             } else {
 

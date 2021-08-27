@@ -469,7 +469,6 @@ function pt_BRLang() {
     STR_NEWEST = "Assistido mais recente";
     STR_OLDEST = "Assistidos mais antigos";
     STR_PRESS_ENTER_D = "Pressione enter para deletar";
-    STR_PRESS_ENTER_APPLY = "Pressione enter para aplicar as alterações, volte para sair sem aplicar";
     STR_LIVE_VOD = "Esta transmissão ao vivo agora é um VOD <br> abrindo o VOD de onde você parou de assistir ao vivo: <br>";
     STR_BACKUP = "Permitir que o aplicativo faça e restaure backups? <br> (Os usuários e seu histórico serão backups)" + "<br><br>" +
         "Clique em Sim, o aplicativo salvará backups para uso futuro e restaurará um backup salvo se os dados do aplicativo estiverem vazios." +
@@ -708,4 +707,5 @@ function pt_BRLang() {
     STR_NOT_SUPPORT_BROWSER = "Isto não é suportado em um navegador";
     STR_WARNING_BROWSER = "Aviso navegadores";
     STR_WARNING_BROWSER_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado. Você pode controlar o aplicativo usando um mouse, mas funciona melhor usando as teclas do teclado para cima, para baixo, esquerda, direita, enter e retornar (ESC funciona como um retornar). ";
+    STR_THUMB_OPTIONS_CLICK = "Clique duas vezes sobre uma ação (para abri-la ou aplicá-la), clique fora da caixa para sair sem aplicar";
 }

@@ -580,10 +580,8 @@ function Main_SetStringsSecondary() {
     Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
     Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);
     Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
-    Main_textContent('dialog_hist_text_end', STR_PRESS_ENTER_APPLY);
 
     Main_textContent('dialog_opt_text', STR_THUMB_OPTIONS);
-    Main_textContent('dialog_opt_text_end', STR_THUMB_OPTIONS_KEY);
 
     Main_textContent('dialog_thumb_opt_setting_name_-1', STR_DELETE_FROM_HISTORY);
     Main_textContent('dialog_thumb_opt_val_-1', STR_PRESS_ENTER_D);

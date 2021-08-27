@@ -2426,8 +2426,9 @@ function Screens_OffSethandleKeyDown(key, event) {
     }
 }
 
-function Screens_histStart(key) {
+function Screens_histStart(key, click) {
     ScreenObj[key].sethistDialog();
+    Main_textContent('dialog_hist_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
     Main_ShowElement('dialog_hist_setting');
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_hist);
@@ -2490,6 +2491,12 @@ function Screens_HideRemoveDialog(key) {
     Screens_LoadPreview(key);
 }
 
+function Screens_histDeleteKeyEnter(key) {
+    var temp = Users_RemoveCursor;
+    Screens_HideRemoveDialog(key);
+    if (temp) Screens_histDelete(key);
+}
+
 function Screens_histDeleteKeyDown(key, event) {
     //Main_Log('ScreenObj[key].key_histdelet ' + event.keyCode);
 
@@ -2513,9 +2520,7 @@ function Screens_histDeleteKeyDown(key, event) {
             Users_RemoveCursor = 0;
         /* falls through */
         case KEY_ENTER:
-            var temp = Users_RemoveCursor;
-            Screens_HideRemoveDialog(key);
-            if (temp) Screens_histDelete(key);
+            Screens_histDeleteKeyEnter(key);
             break;
         default:
             break;
@@ -2602,6 +2607,20 @@ function Screens_histArrow(dialog, pos, maxValue, text, divPos) {
 
 }
 
+function Screens_histhandleKeyLeft(key) {
+    ScreenObj[key].histPosX[ScreenObj[key].histPosY]--;
+    if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] < 0) ScreenObj[key].histPosX[ScreenObj[key].histPosY] = 0;
+    else Screens_histSetArrow(key);
+}
+
+
+function Screens_histhandleKeyRight(key) {
+    ScreenObj[key].histPosX[ScreenObj[key].histPosY]++;
+    if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] > (ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1))
+        ScreenObj[key].histPosX[ScreenObj[key].histPosY] = ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1;
+    else Screens_histSetArrow(key);
+}
+
 function Screens_histhandleKeyDown(key, event) {
     //Main_Log('ScreenObj[key].key_hist ' + event.keyCode);
 
@@ -2611,15 +2630,10 @@ function Screens_histhandleKeyDown(key, event) {
             Screens_histDialogHide(false, key);
             break;
         case KEY_LEFT:
-            ScreenObj[key].histPosX[ScreenObj[key].histPosY]--;
-            if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] < 0) ScreenObj[key].histPosX[ScreenObj[key].histPosY] = 0;
-            else Screens_histSetArrow(key);
+            Screens_histhandleKeyLeft(key);
             break;
         case KEY_RIGHT:
-            ScreenObj[key].histPosX[ScreenObj[key].histPosY]++;
-            if (ScreenObj[key].histPosX[ScreenObj[key].histPosY] > (ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1))
-                ScreenObj[key].histPosX[ScreenObj[key].histPosY] = ScreenObj[key].histArrays[ScreenObj[key].histPosY].length - 1;
-            else Screens_histSetArrow(key);
+            Screens_histhandleKeyRight(key);
             break;
         case KEY_UP:
             ScreenObj[key].histPosY--;
@@ -2648,7 +2662,7 @@ function Screens_histhandleKeyDown(key, event) {
 
 var Screens_ThumbOptionPosY = 0;
 
-function Screens_ThumbOptionStart(key) {
+function Screens_ThumbOptionStart(key, click) {
     var obj_id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
     Screens_ThumbOptionSpecial = ScreenObj[key].histPosXName ? false : true;
@@ -2702,6 +2716,7 @@ function Screens_ThumbOptionStart(key) {
 
     Main_removeEventListener("keydown", ScreenObj[key].key_fun);
     Main_addEventListener("keydown", ScreenObj[key].key_thumb);
+    Main_textContent('dialog_opt_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
 
     Main_ShowElementWithEle(Screens_dialog_thumb_div);
 }
@@ -2840,6 +2855,31 @@ function Screens_ThumbOptionStringGetHistory(key) {
     return Main_getItemJson(ScreenObj[key].histPosXName, [0, 0, 0])[1];
 }
 
+function Screens_ThumbOptionhandleKeyLeft() {
+    if (!Screens_ThumbOptionCanKeyLeft) return;
+
+    if (Screens_ThumbOptionPosY > 2) {
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
+        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
+            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
+        else
+            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+    }
+}
+
+function Screens_ThumbOptionhandleKeyRight() {
+    if (!Screens_handleKeyUpIsClear) return;
+
+    if (Screens_ThumbOptionPosY > 2) {
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
+
+        if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > (Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1))
+            Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
+        else
+            Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
+    }
+}
+
 var Screens_ThumbOptionCanKeyLeft = true;
 function Screens_ThumbOptionhandleKeyDown(key, event) {
     //Main_Log('Screens_ThumbOptionhandleKeyDown ' + event.keyCode);
@@ -2850,26 +2890,10 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             Screens_ThumbOptionDialogHide(false, key);
             break;
         case KEY_LEFT:
-            if (!Screens_ThumbOptionCanKeyLeft) return;
-
-            if (Screens_ThumbOptionPosY > 2) {
-                Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]--;
-                if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] < 0)
-                    Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = 0;
-                else
-                    Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
-            }
+            Screens_ThumbOptionhandleKeyLeft();
             break;
         case KEY_RIGHT:
-            if (!Screens_handleKeyUpIsClear) break;
-            if (Screens_ThumbOptionPosY > 2) {
-                Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]++;
-
-                if (Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] > (Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1))
-                    Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY] = Screens_ThumbOptionArrays[Screens_ThumbOptionPosY].length - 1;
-                else
-                    Screens_ThumbOptionSetArrow(Screens_ThumbOptionArrays[Screens_ThumbOptionPosY]);
-            }
+            Screens_ThumbOptionhandleKeyRight();
             break;
         case KEY_UP:
             var min_pos = 0;
@@ -2898,15 +2922,18 @@ function Screens_ThumbOptionhandleKeyDown(key, event) {
             }
             break;
         case KEY_ENTER:
-            if (Screens_ThumbOptionPosY === 2) {
-                Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000, true);
-            } else Screens_ThumbOptionDialogHide(true, key);
+            Screens_ThumbOptionDialogKeyEnter(key);
             break;
         default:
             break;
     }
 }
 
+function Screens_ThumbOptionDialogKeyEnter(key) {
+    if (Screens_ThumbOptionPosY === 2) {
+        Main_showWarningDialog(STR_FOLLOW_ISSUE, 2000, true);
+    } else Screens_ThumbOptionDialogHide(true, key);
+}
 
 function Screens_ThumbOptionDialogHide(Update, key) {
 
