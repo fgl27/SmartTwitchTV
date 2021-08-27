@@ -240,6 +240,150 @@ function BrowserTestFun() {
             }
         };
 
+        var settings_holder = Main_getElementById('settings_holder');
+        settings_holder.onmousemove = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id,
+                array = id.split('_'),
+                pos = Settings_value_keys.indexOf(array[0] + '_' + array[1]);
+
+            if (pos > -1) {
+                Settings_RemoveinputFocus();
+                Settings_cursorY = pos;
+                Settings_inputFocus(Settings_cursorY);
+            }
+        };
+
+        settings_holder.onclick = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id,
+                array = id.split('_');
+
+            if (array.length > 1) {
+                var key = array[0] + '_' + array[1];
+
+                if (Main_A_includes_B(id, 'left')) {
+                    Settings_handleKeyLeft(key);
+                } else if (Main_A_includes_B(id, 'right')) {
+                    Settings_handleKeyRight(key);
+                } else {
+                    Settings_KeyEnter(true);
+                }
+
+            }
+        };
+
+        var dialog_codecs = Main_getElementById('dialog_codecs');
+        dialog_codecs.onmousemove = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id,
+                key = id.split('_')[0],
+                elemArray = dialog_codecs.getElementsByClassName('settings_div_focus');
+
+            if (elemArray.length) {
+                var elem = elemArray[0].id.split('_')[0];
+                Settings_RemoveinputFocusKey(elem);
+            }
+
+            if (Main_A_includes_B(id, '.'))
+                Settings_CodecsUpDownAfter(key);
+
+        };
+
+        dialog_codecs.onclick = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id,
+                i,
+                len,
+                key,
+                right = Main_A_includes_B(id, 'right'),
+                left = Main_A_includes_B(id, 'left');
+
+            if (right || left) {
+
+                i = 0;
+                len = Settings_CodecsValue.length;
+                key = id.split('_')[0];
+
+
+
+                for (i; i < len; i++) {
+                    if (Main_A_includes_B(Settings_CodecsValue[i].name, key)) {
+                        Settings_CodecsPos = i;
+                        break;
+                    }
+                }
+
+                if (right)
+                    Settings_handleKeyDownCodecsRight();
+                else
+                    Settings_handleKeyDownCodecsLeft();
+
+            } else if (Main_A_includes_B(id, 'dialog_codecs')) {
+                Settings_handleKeyDownReturn();
+            }
+        };
+
+        var dialog_settings = Main_getElementById('dialog_settings');
+        dialog_settings.onmousemove = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id,
+                array = id.split('_'),
+                len = array.length - 1,
+                i = 1,
+                pos,
+                key = array[0];
+
+            for (i; i < len; i++) {
+                key += '_' + array[i];
+            }
+
+            pos = Settings_DialogValue.indexOf(key);
+
+            if (pos > -1) {
+                Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
+                Settings_DialogPos = pos;
+                Settings_DialogUpDownAfter();
+            }
+        };
+
+        dialog_settings.onclick = function(event) {
+            if (!Settings_isVisible()) return;
+
+            var id = event.target.id;
+            //console.log(id);
+
+            if (Main_A_includes_B(id, 'left')) {
+                Settings_DialoghandleKeyLeft();
+            } else if (Main_A_includes_B(id, 'right')) {
+                Settings_DialoghandleKeyRight();
+            } else if (Main_A_includes_B(id, 'dialog_settings')) {
+                Settings_DialoghandleKeyReturn();
+            }
+        };
+
+        // settings_holder.onwheel = function(event) {
+        //     if (!Settings_isVisible()) return;
+        //     var y = event.deltaY > 0 ? 1 : -1;
+        //     var doc = Main_getElementById('settings_scroll');
+
+        //     if (y > 0 && !doc.scrollTop) {
+
+        //         Settings_ScrollDown();
+
+        //     } else if (y < 0 && doc.scrollTop) {
+
+        //         Settings_ScrollUp();
+
+        //     }
+
+        // };
+
         var dialogThumb = Main_getElementById('dialog_thumb_opt');
         dialogThumb.onmousemove = function(event) {
             var id = event.target.id;

@@ -724,4 +724,5 @@ function en_USLang() {
     STR_WARNING_BROWSER = "Browser warning";
     STR_WARNING_BROWSER_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).";
     STR_THUMB_OPTIONS_CLICK = "Click twice above an action (to open or apply it), click outside the dialog to exit without applying";
+    STR_CLOSE_THIS_BROWSER = "Press return, enter or click outside to close this";
 }

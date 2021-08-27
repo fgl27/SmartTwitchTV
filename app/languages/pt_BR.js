@@ -708,4 +708,5 @@ function pt_BRLang() {
     STR_WARNING_BROWSER = "Aviso navegadores";
     STR_WARNING_BROWSER_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado. Você pode controlar o aplicativo usando um mouse, mas funciona melhor usando as teclas do teclado para cima, para baixo, esquerda, direita, enter e retornar (ESC funciona como um retornar). ";
     STR_THUMB_OPTIONS_CLICK = "Clique duas vezes sobre uma ação (para abri-la ou aplicá-la), clique fora da caixa para sair sem aplicar";
+    STR_CLOSE_THIS_BROWSER = "Pressione voltar, entrar ou clique fora para fechar";
 }
