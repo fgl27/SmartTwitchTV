@@ -521,11 +521,17 @@ function BrowserTestFun() {
 
             } else if (Main_A_includes_B(id, 'label_refresh') || Main_A_includes_B(id, 'label_last_refresh')) {
 
-                Main_ReloadScreen();
+                if (!Settings_isVisible())
+                    Main_ReloadScreen();
 
             } else if (Main_A_includes_B(id, 'label_thumb')) {
 
-                if (ScreenObj[Main_values.Main_Go] && ScreenObj[Main_values.Main_Go].key_exit) {
+                if (Settings_isVisible()) {
+
+                    Settings_exit();
+                    Main_SwitchScreen();
+
+                } else if (ScreenObj[Main_values.Main_Go] && ScreenObj[Main_values.Main_Go].key_exit) {
 
                     if (Main_values.Main_Go === Main_aGame ||
                         Main_values.Main_Go === Main_AGameVod ||
