@@ -23,7 +23,7 @@ function BrowserTestSetStrings() {
         Main_textContent("scene2_click_2_text_title", STR_CHAT_POS);
         Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
         Main_textContent("scene2_click_4_text_title", STR_CHAT_SIDE);
-        Main_textContent("button_full_screen_text", STR_GO_FULL);
+        Main_innerHTML("button_full_screen_text", STR_GO_FULL + STR_BR + STR_GO_FULL_HELP);
         Main_textContent("feed_refresh_button_text_title", STR_REFRESH);
 
         Main_IconLoad('exit_player', 'icon-return', STR_CLICK_EXIT);

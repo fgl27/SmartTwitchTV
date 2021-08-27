@@ -719,7 +719,7 @@ function en_USLang() {
     STR_EMBED = "Embed player ";
     STR_CLICK_EXIT = "Click here to exit the player";
     STR_GO_FULL = "Full screen";
-    STR_GO_FULL = "Full screen";
+    STR_GO_FULL_HELP = "Click or press 9";
     STR_NOT_SUPPORT_BROWSER = "This is not supported on a browser";
 
     STR_WARNING_BROWSER = "Browser warning";

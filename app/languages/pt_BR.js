@@ -704,6 +704,7 @@ function pt_BRLang() {
 
     STR_CLICK_EXIT = "Clique aqui para sair do player";
     STR_GO_FULL = "Tella cheia";
+    STR_GO_FULL_HELP = "Clique ou pressione 9";
     STR_NOT_SUPPORT_BROWSER = "Isto não é suportado em um navegador";
     STR_WARNING_BROWSER = "Aviso navegadores";
     STR_WARNING_BROWSER_SUMMARY = "Este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado. Você pode controlar o aplicativo usando um mouse, mas funciona melhor usando as teclas do teclado para cima, para baixo, esquerda, direita, enter e retornar (ESC funciona como um retornar). ";
