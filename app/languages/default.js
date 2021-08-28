@@ -165,6 +165,10 @@ function DefaultLang() {
     //Strings that are need a line breack after
     STR_USER_NUMBER_ONE += STR_BR;
 
+    if (!Main_IsOn_OSInterface) {
+        STR_CLOSE_THIS = STR_CLOSE_THIS_BROWSER;
+    }
+
     //Strings that have a link
     STR_OAUTH_IN = DefaultReplaceLink(
         'https://github.com/fgl27/SmartTwitchTV#authorization',
