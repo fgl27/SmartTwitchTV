@@ -242,9 +242,15 @@ function Play_Start(offline_chat) {
     }
     PlayClip_DontSkipStartAuto = false;
 
-    if (!Main_IsOn_OSInterface && enable_embed) {
-        Play_hideChat();
-        BrowserTestStartLive(Play_data.data[6]);
+    if (!Main_IsOn_OSInterface) {
+
+        if (enable_embed) {//stop chat embed has its own
+            Play_hideChat();
+            ChatLive_Clear(0);
+            Chat_Disable();
+            BrowserTestStartLive(Play_data.data[6]);
+        }
+
     }
 }
 
