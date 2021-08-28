@@ -19,6 +19,7 @@ function BrowserTestLoadScript(url) {
 
 function BrowserTestSetStrings() {
     if (!Main_IsOn_OSInterface) {
+        Main_textContent("scene2_click_0_text_title", STR_GO_FULL);
         Main_textContent("scene2_click_1_text_title", STR_CHAT_SHOW);
         Main_textContent("scene2_click_2_text_title", STR_CHAT_POS);
         Main_textContent("scene2_click_3_text_title", STR_CHAT_SIZE);
@@ -35,7 +36,7 @@ function BrowserTestFun() {
 
     if (Main_IsOn_OSInterface) {
         Main_RemoveElement(Main_getElementById('clip_embed'));
-        Main_RemoveElement(Main_getElementById('twitch-embed'));
+        Main_RemoveElement(Main_getElementById('player_embed_clicks'));
     } else {
         //This if is just for testing on a browser the code here is not ideal but works for testing
 
@@ -1074,7 +1075,11 @@ function BrowserTestFun() {
 
                         BrowserTestShowEmbedClicks();
 
-                        if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
+                        if (Main_A_includes_B(id, 'scene2_click_0')) {
+
+                            requestFullScreen();
+
+                        } else if (Main_A_includes_B(id, 'scene2_click_1') && PlayVod_isOn) {
 
                             Play_controls[Play_controlsChat].enterKey(PlayVodClip);
 
