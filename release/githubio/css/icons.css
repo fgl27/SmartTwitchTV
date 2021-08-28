@@ -2,21 +2,24 @@
 
 @font-face {
   font-family: 'Roboto';
-  src: url('fonts/Roboto-Regular.woff2') format('woff2');
+  src: url('fonts/Roboto-Regular.woff2') format('woff2'),
+    url('fonts/Roboto-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Roboto-Bold';
-  src: url('fonts/Roboto-Bold.woff2') format('woff2');
+  src: url('fonts/Roboto-Bold.woff2') format('woff2'),
+    url('fonts/Roboto-Bold.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "icons";
-  src: url("fonts/icons.woff2") format("woff2");
+  src: url("fonts/icons.woff2") format("woff2"),
+    url("fonts/icons.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
@@ -268,15 +271,19 @@
 .icon-external:before {
   content: "\4d";
 }
+
 .icon-globe:before {
   content: "\4e";
 }
+
 .icon-chat-settings:before {
   content: "\74";
 }
+
 .icon-preview:before {
   content: "\30";
 }
+
 .icon-speaker:before {
   content: "\5a";
 }
@@ -307,4 +314,8 @@
 
 .icon-status:before {
   content: "\37";
+}
+
+.icon-side-by-side:before {
+  content: "\36";
 }
