@@ -1054,7 +1054,7 @@ function Main_CheckUpdate(forceUpdate) {
     if (Main_HasUpdate && Main_isUpdateDialogVisible() &&
         Settings_value.update_background.defaultValue && !forceUpdate) return;
 
-    if (Main_IsOn_OSInterface) {
+    if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
 
         BaseXmlHttpGet(
             'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
@@ -1097,7 +1097,7 @@ function Main_CheckUpdateResult(responseText) {
 
     var response = JSON.parse(responseText),
         webupdate = response.WebTag > version.WebTag,
-        apkupdate = response.publishVersionCode > version.publishVersionCode;
+        apkupdate = Main_IsOn_OSInterface && response.publishVersionCode > version.publishVersionCode;
 
     if (webupdate || apkupdate) {
         Main_HasUpdate = true;
