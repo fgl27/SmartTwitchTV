@@ -364,7 +364,7 @@ function BrowserTestFun() {
             if (!Settings_isVisible()) return;
 
             var id = event.target.id;
-            //console.log(id);
+            console.log(id);
 
             if (Main_A_includes_B(id, 'left')) {
                 Settings_DialoghandleKeyLeft();
@@ -372,7 +372,10 @@ function BrowserTestFun() {
                 Settings_DialoghandleKeyRight();
             } else if (Main_A_includes_B(id, 'dialog_settings')) {
                 Settings_DialoghandleKeyReturn();
+            } else if (Main_A_includes_B(id, 'thumb_background')) {
+                Main_showWarningDialog(STR_SPECIAL_FEATURE, 2000);
             }
+
         };
 
         // settings_holder.onwheel = function(event) {

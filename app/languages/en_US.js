@@ -728,4 +728,6 @@ function en_USLang() {
 
     STR_DISABLE_EMBED = "Enable Live and Vod Twitch player";
     STR_DISABLE_EMBED_SUMMARY = "This is only needed to disable if you wanna see the Android player to check it's strings and layout for testing proposes";
+
+    STR_SPECIAL_FEATURE = "Use the keyboard for this feature";
 }
