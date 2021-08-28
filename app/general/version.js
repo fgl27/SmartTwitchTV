@@ -23,9 +23,23 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 329,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/329/SmartTV_twitch_3_0_329.apk',
-    WebVersion: 'August 17 2021',
+    WebVersion: 'August 28 2021',
     WebTag: 603,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Web Version August 28 2021",
+            changes: [
+                "General improves and bug fixes",
+                "Add minimal support for Browsers, allowing the app to work on any device that has a working Web Browsers",
+                "Not all Browsers may support the app",
+                "The Browsers support is limited, the limitation is on the player and chat, there isn't support for Picture in Picture mode, Multistream or Previews",
+                "The chat that shows in the Live player will logging with the same user that you have looged in on the Twitch official site on that Browser",
+                "The Browsers support mouse input, clicks, mouse wheel and mouse hover",
+                "One click selects, two will open a Live, VOD or Clip",
+                "To show the in player preview, place the mouse on the top-center of the screen and use the mouse wheel, UP shows, Down hide",
+                "Place the mouse over the preview and use the wheel to scroll throw the content",
+            ]
+        },
         {
             title: "Apk Version 3.0.329",
             changes: [
@@ -55,20 +69,6 @@ var version = {
         {
             title: "Web Version July 22 2021",
             changes: [
-                "General improves and bug fixes"
-
-            ]
-        },
-        {
-            title: "Apk Version 3.0.325",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version July 21 2021",
-            changes: [
-                "Add a new setting Chat option 'Block bots and bot commands (!command) from show in chat'",
                 "General improves and bug fixes"
 
             ]
