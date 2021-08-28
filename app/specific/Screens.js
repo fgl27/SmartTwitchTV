@@ -2218,17 +2218,6 @@ function Screens_handleKeyDown(key, event) {
                 Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
             }
             break;
-        case KEY_X:
-            if (!Main_IsOn_OSInterface) {
-                enable_embed = !enable_embed;
-
-                Main_setItem('enable_embed', enable_embed);
-                Main_showWarningDialog(
-                    STR_EMBED + (enable_embed ? STR_ENABLED : STR_DISABLED),
-                    2000
-                );
-            }
-            break;
         default:
             break;
     }

@@ -274,3 +274,5 @@
     STR_GO_FULL_HELP = "Click or press 9";
     STR_THUMB_OPTIONS_CLICK = "Click twice above an action (to open or apply it), click outside the dialog to exit without applying";
     STR_CLOSE_THIS_BROWSER = "Press return, enter or click outside to close this";
+    STR_DISABLE_EMBED = "Enable Live and Vod Twitch player";
+    STR_DISABLE_EMBED_SUMMARY = "This is only needed to disable if you wanna see the TV player to check it's strings and layout for testing proposes";

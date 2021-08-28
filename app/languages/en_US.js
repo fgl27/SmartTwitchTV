@@ -725,4 +725,7 @@ function en_USLang() {
     STR_WARNING_BROWSER_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).";
     STR_THUMB_OPTIONS_CLICK = "Click twice above an action (to open or apply it), click outside the dialog to exit without applying";
     STR_CLOSE_THIS_BROWSER = "Press return, enter or click outside to close this";
+
+    STR_DISABLE_EMBED = "Enable Live and Vod Twitch player";
+    STR_DISABLE_EMBED_SUMMARY = "This is only needed to disable if you wanna see the Android player to check it's strings and layout for testing proposes";
 }

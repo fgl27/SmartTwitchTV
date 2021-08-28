@@ -289,6 +289,10 @@ var Settings_value = {
         "values": ["no", "yes"],
         "defaultValue": 1
     },
+    "enable_embed": {
+        "values": ["no", "yes"],
+        "defaultValue": 2
+    },
     "clock_offset": {//Migrated to dialog
         "values": Settings_GenerateClock(),
         "defaultValue": 49
@@ -687,6 +691,10 @@ function Settings_SetSettings() {
 
     if (!Main_isTV || !Main_IsOn_OSInterface) {
         div += Settings_Content('dpad_opt', [STR_ENTER_TO_OPEN], STR_DPAD_OPT, null);
+    }
+
+    if (!Main_IsOn_OSInterface) {
+        div += Settings_Content('enable_embed', array_no_yes, STR_DISABLE_EMBED, STR_DISABLE_EMBED_SUMMARY);
     }
 
     //Individual settings
@@ -1091,6 +1099,7 @@ function Settings_SetDefault(position) {
     else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
     else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
     else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
+    else if (position === "enable_embed") enable_embed = Settings_value.enable_embed.defaultValue;
     else if (position === "global_font_offset") {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();

@@ -79,7 +79,7 @@ function BrowserTestFun() {
         clip_player = Main_getElementById('clip_player');
         clip_embed = Main_getElementById('clip_embed');
 
-        enable_embed = Main_getItemBool('enable_embed', true);
+        enable_embed = Settings_value.enable_embed.defaultValue;
 
         Main_RemoveClass('feed_refresh_button', 'hideimp');
         Main_ShowElementWithEle(exit_player);
