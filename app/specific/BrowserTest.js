@@ -247,7 +247,16 @@ function BrowserTestFun() {
 
             var id = event.target.id,
                 array = id.split('_'),
-                pos = Settings_value_keys.indexOf(array[0] + '_' + array[1]);
+                pos = -1,
+                len = array.length - 1,
+                i = 1,
+                key = array[0];
+
+            for (i; i < len; i++) {
+                key += '_' + array[i];
+            }
+
+            pos = Settings_value_keys.indexOf(key);
 
             if (pos > -1) {
                 Settings_RemoveinputFocus();
@@ -310,8 +319,6 @@ function BrowserTestFun() {
                 len = Settings_CodecsValue.length;
                 key = id.split('_')[0];
 
-
-
                 for (i; i < len; i++) {
                     if (Main_A_includes_B(Settings_CodecsValue[i].name, key)) {
                         Settings_CodecsPos = i;
@@ -337,7 +344,7 @@ function BrowserTestFun() {
                 array = id.split('_'),
                 len = array.length - 1,
                 i = 1,
-                pos,
+                pos = -1,
                 key = array[0];
 
             for (i; i < len; i++) {
