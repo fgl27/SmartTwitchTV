@@ -1137,7 +1137,26 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
 
     } else if (!Main_update_show_toast && Settings_value.update_show.defaultValue === 1) {
 
-        OSInterface_showToast((web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE);
+        var updateString = (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE;
+
+        if (Main_IsOn_OSInterface) {
+
+            OSInterface_showToast(updateString);
+
+        } else {
+
+            if (Main_isScene1DocVisible()) {
+
+                Main_showWarningDialog(updateString, 3000);
+
+            } else {
+
+                Play_showWarningDialog(updateString, 3000);
+
+            }
+
+        }
+
         Main_update_show_toast = true;
 
     }
