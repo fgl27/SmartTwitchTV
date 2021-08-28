@@ -1092,9 +1092,13 @@ function BrowserTestFun() {
 
                         } else if (Main_A_includes_B(id, 'scene2_click_2') && PlayVod_isOn) {
 
-                            Play_controls[Play_controlsChatPos].updown(1);
+                            Play_controls[Play_controlsChatSide].enterKey(PlayVodClip);
 
                         } else if (Main_A_includes_B(id, 'scene2_click_3') && PlayVod_isOn) {
+
+                            Play_controls[Play_controlsChatPos].updown(1);
+
+                        } else if (Main_A_includes_B(id, 'scene2_click_4') && PlayVod_isOn) {
 
                             if (Play_controls[Play_controlsChatSize].defaultValue === 0) {
                                 Play_controls[Play_controlsChatSize].defaultValue =
@@ -1102,10 +1106,6 @@ function BrowserTestFun() {
                             }
 
                             Play_controls[Play_controlsChatSize].updown(-1);
-
-                        } else if (Main_A_includes_B(id, 'scene2_click_4') && PlayVod_isOn) {
-
-                            Play_controls[Play_controlsChatSide].enterKey(PlayVodClip);
 
                         }
 
