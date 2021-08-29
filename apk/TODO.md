@@ -1,9 +1,9 @@
 Project TODO, featured request, ideas and etc related list
 ==============
 
-The information on this file is a expectation of what will be done to the app, that means that some of the information here may change be removed or not become a real featuring, there is no priority on what will be done first or when will be done also the order of the list don't affect what will be done first or when.<br>
+The information on this file is a expectation of what will be done to the app, that means that some of the information here may change, be removed or not become a real featuring, there is no priority on what will be done first or when, also the order of the list doesn't affect what will be done first or when.<br>
 
-One observation is that if a feature was added by a user request that feature will only be removed if is something that isn't possible to do and the user will be informed about it, but doesn't guarantee that will be done.
+One observation: if a feature was added by a user request that feature will only be removed if is something that isn't possible to do and the user will be informed about it.
 
 Featured request list
 ==============
@@ -14,7 +14,7 @@ Featured request list
 * **Add a way to change the device screen refresh hate base on the app content** (requested via EMAIL), some user prefers to use a refresh other then 30 or 60 because of it they requested this, the app has too many player that work at the same time, one player may be using one refresh rate another other the refresh may change dynamically do to auto quality playback, all of that makes things very complicated, also I personalty don't like this feature as it can cause a device sync error after some changes mostly if you change too fast (something that may happens when playing in auto mode) the screen will just go black and never restore, forcing the user to do something as change/restart the video source or reboot the devices BOX and or TV, plus if the device is slow to change there may be a long 3+ seconds of noting bug black screen until the new refresh rate is accepted, as this is technically something unnecessary (as one can just keep the device at 60 as twitch content is most 30 or 60 no issue there will be) and can cause bugs I @fgl27 personalty will not add it, any one is welcome to do add it as long all described here is addressed is fine.
 * **[Ability to "follow" channels without any Twitch account whatsoever](https://github.com/fgl27/SmartTwitchTV/issues/30)** ... Too much work the app must be redesign to work as if there is a user when there is no user, with will take a complete redesign of almost all app, as a user or no user check is everywhere
 * **[Feature Request - Sort Twitch channel emotes to the top of the Twitch emotes category](https://github.com/fgl27/SmartTwitchTV/issues/72)** ... something not supported today re check on the future to see if supported
-* **[Feature Request - Highlight keywords in chat](https://github.com/fgl27/SmartTwitchTV/issues/69)** ... this needs a UI that allow to add, edit and remove strings, that UI can be used for others things as filter chat, filter content games channels etc.
+* **[Feature Request - Highlight keywords in chat](https://github.com/fgl27/SmartTwitchTV/issues/69)** & **[Feature Request - Blacklist user or message](https://github.com/fgl27/SmartTwitchTV/issues/83)** ... this needs a UI that allow to add, edit and remove strings to filter, that UI can be used for different things filter chat, filter content games or channels etc related.
 * **See if is possible to add support for closed captions** (requested via EMAIL), Channel Ezekiel_III uses an OBS plugin that sends the closed captions into Twitch's interface, verify if is possible to get that info and use in the app.
 
 Issues list
