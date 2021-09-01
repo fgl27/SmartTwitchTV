@@ -24,6 +24,7 @@ var Sidepannel_Sidepannel_Pos = 2;
 var Sidepannel_Callback;
 var Sidepannel_IsMain = true;
 
+var Sidepannel_OffsetMovelTransform = 1;
 var Sidepannel_FixdefaultMargin = 5;
 //See en_USLang() for this values
 var Sidepannel_MoveldefaultMargin;
@@ -654,7 +655,7 @@ function Sidepannel_HideMain(hideAll) {
     var pos = hideAll ? Sidepannel_MovelDiv.offsetWidth :
         (Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth);
 
-    Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + "em)";
+    Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) + Sidepannel_OffsetMovelTransform) + "em)";
 }
 
 function Sidepannel_Hide(PreventCleanQualities) {

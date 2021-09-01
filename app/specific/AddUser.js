@@ -271,7 +271,7 @@ function AddUser_UpdateSidepanelSize(logo, username) {
 
     if (pos) {
 
-        if (!Sidepannel_isShowingMenus()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) - 0.1) + 'em)';
+        if (!Sidepannel_isShowingMenus()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + ((pos / BodyfontSize) + Sidepannel_OffsetMovelTransform) + 'em)';
 
     } else {
 

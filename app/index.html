@@ -1288,6 +1288,9 @@
             transform: translateX(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
+            /* on chrome do to the focus class side_panel_new_icons_text that uses background: linear-gradient 
+            is needed to add a border here to prevent visual glitches right on the border of the element*/
+            border-right: 2px solid #000000;
         }
 
         .side_panel_fix {
@@ -1338,7 +1341,7 @@
 
         .side_panel_new_icons_text_holder,
         .side_panel_new_icons {
-            width: 100%;
+            width: 80%;
             height: 9.25%;
             margin-top: 0.7vh;
             position: relative;
@@ -1358,7 +1361,7 @@
         }
 
         .side_panel_new_icons {
-            margin-left: 10%;
+            margin-left: 20%;
         }
 
         .side_panel_new_icons_text_holder {
@@ -2995,7 +2998,7 @@
                 </div>
             </div>
             <div id="side_panel_new_holder" class="hide side_panel_new_holder">
-                <div id="side_panel_movel" class="side_panel_movel side_panel_background_color" style="z-index: 3;">
+                <div id="side_panel_movel" class="side_panel_movel side_panel_background_color" style="z-index: 3">
                     <div class="side_panel_fix_top">
                         <div id="side_panel_top_text" class="side_panel_movel_top_text">
                             <div class="side_panel_icons">
