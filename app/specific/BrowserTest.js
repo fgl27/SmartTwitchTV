@@ -828,8 +828,11 @@ function BrowserTestFun() {
         };
 
         Main_Scene1Doc.ontouchmove = function(event) {
-            var yUp = event.touches[0].clientY;
-            var xUp = event.touches[0].clientX;
+            event.stopPropagation();
+            var firstTouch = event.touches[0];
+
+            var yUp = firstTouch.clientY;
+            var xUp = firstTouch.clientX;
 
             BrowserTest_Scene1DocOnwheel(
                 (yDown - yUp || xDown - xUp) > 0 ? 1 : -1
@@ -844,8 +847,11 @@ function BrowserTestFun() {
         };
 
         Main_Scene2Doc.ontouchmove = function(event) {
-            var yUp = event.touches[0].clientY;
-            var xUp = event.touches[0].clientX;
+            event.stopPropagation();
+            var firstTouch = event.touches[0];
+
+            var yUp = firstTouch.clientY;
+            var xUp = firstTouch.clientX;
 
             BrowserTest_Scene2DocOnwheel(
                 (yDown - yUp || xDown - xUp) > 0 ? 1 : -1,
