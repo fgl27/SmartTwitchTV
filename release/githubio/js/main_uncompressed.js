@@ -5127,37 +5127,7 @@
             };
 
             sidepanel_elem_show.onmousemove = function() {
-                var key = Main_values.Main_Go;
-
-                if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
-
-                    if (key === Main_ChannelContent) {
-                        ChannelContent_removeFocus();
-                        Sidepannel_Start(ChannelContent_handleKeyDown);
-
-                    } else if (key === Main_Users) {
-
-                        Users_removeFocus();
-                        Sidepannel_Start(Users_handleKeyDown);
-
-                    } else if (key === Main_addUser) {
-
-                        AddUser_exit();
-                        Main_SwitchScreen();
-                        Sidepannel_Start(Users_handleKeyDown);
-
-                    } else if (Main_isElementShowing('search_scroll')) {
-
-                        Search_exit();
-                        Main_SwitchScreen();
-
-                    } else {
-
-                        Screens_OpenSidePanel(false, key);
-
-                    }
-
-                }
+                BrowserTest_Sidepanel_elem_show();
             };
 
             Main_getElementById('dialog_OffSet').onclick = function(event) {
@@ -5856,9 +5826,18 @@
                 var yUp = firstTouch.clientY;
                 var xUp = firstTouch.clientX;
 
-                BrowserTest_Scene1DocOnwheel(
-                    (yDown - yUp || xDown - xUp) > 0 ? 1 : -1
-                );
+                var xDiff = xDown - xUp;
+                var yDiff = yDown - yUp;
+
+                if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                    if (xDiff > 0) {
+                        BrowserTest_Sidepanel_elem_show();
+                    }
+                } else {
+                    BrowserTest_Scene1DocOnwheel(
+                        yDiff > 0 ? 1 : -1
+                    );
+                }
             };
 
             Main_Scene2Doc.onwheel = function(event) {
@@ -5870,15 +5849,25 @@
 
             Main_Scene2Doc.ontouchmove = function(event) {
                 event.stopPropagation();
-                var firstTouch = event.touches[0];
 
+                var firstTouch = event.touches[0];
                 var yUp = firstTouch.clientY;
                 var xUp = firstTouch.clientX;
 
-                BrowserTest_Scene2DocOnwheel(
-                    (yDown - yUp || xDown - xUp) > 0 ? 1 : -1,
-                    event.target.id
-                );
+                var xDiff = xDown - xUp;
+                var yDiff = yDown - yUp;
+
+                if (Math.abs(xDiff) > Math.abs(yDiff)) {
+
+                    UserLiveFeed_KeyRightLeft((xDiff > 0 ? -1 : 1));
+
+                } else {
+                    BrowserTest_Scene2DocOnwheel(
+                        yDiff > 0 ? 1 : -1,
+                        event.target.id
+                    );
+                }
+
             };
 
 
@@ -6550,6 +6539,40 @@
         /* reset values */
         xDown = null;
         yDown = null;
+    }
+
+    function BrowserTest_Sidepanel_elem_show() {
+        var key = Main_values.Main_Go;
+
+        if (Screens_IsInUse(key) && !Sidepannel_isShowingMenus()) {
+
+            if (key === Main_ChannelContent) {
+                ChannelContent_removeFocus();
+                Sidepannel_Start(ChannelContent_handleKeyDown);
+
+            } else if (key === Main_Users) {
+
+                Users_removeFocus();
+                Sidepannel_Start(Users_handleKeyDown);
+
+            } else if (key === Main_addUser) {
+
+                AddUser_exit();
+                Main_SwitchScreen();
+                Sidepannel_Start(Users_handleKeyDown);
+
+            } else if (Main_isElementShowing('search_scroll')) {
+
+                Search_exit();
+                Main_SwitchScreen();
+
+            } else {
+
+                Screens_OpenSidePanel(false, key);
+
+            }
+
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
