@@ -11,6 +11,9 @@ var player_embed_clicks;
 var scene2_click;
 var enable_embed;
 
+var xDown;
+var yDown;
+
 function BrowserTestLoadScript(url) {
     var embed_script = document.createElement('script');
     embed_script.setAttribute('src', url);
@@ -813,105 +816,38 @@ function BrowserTestFun() {
 
         };
 
+        Main_Scene1Doc.ontouchstart = function(event) {
+            var firstTouch = event.touches[0];
+            xDown = firstTouch.clientX;
+            yDown = firstTouch.clientY;
+        };
+
         Main_Scene1Doc.onwheel = function(event) {
-            var y = event.deltaY > 0 ? 1 : -1;
+            BrowserTest_Scene1DocOnwheel(event.deltaY > 0 ? 1 : -1);
+        };
 
-            var key = Main_values.Main_Go;
-            if (!yOnwheel) {
+        Main_Scene1Doc.ontouchmove = function(event) {
+            var yUp = event.touches[0].clientY;
 
-
-                var isChannelScreen = key === Main_ChannelContent,
-                    isUserScrren = key === Main_Users;
-
-                if (isChannelScreen || isUserScrren) {
-
-                    if (isUserScrren && Main_ThumbNull((Users_cursorY + y), (Users_cursorX), Users_ids[0])) {
-
-                        Users_removeFocus();
-                        Users_cursorY += y;
-                        Users_addFocus();
-
-                    }
-
-                } else if (Screens_IsInUse(key) && (y > 0 || ScreenObj[key].posY > 0)) {
-
-                    Screens_KeyUpDownClick(key, y);
-
-                } else if (Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
-                    (y < 0 || Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
-
-                    Sidepannel_RemoveFocusFeed();
-                    Sidepannel_PosFeed += y;
-                    Sidepannel_AddFocusLiveFeed();
-
-                }
-
-            }
-
-            OnwheelId = Main_setTimeout(
-                function() {
-
-                    Screens_handleKeyUpAnimationFast();
-                    yOnwheel = 0;
-
-                },
-                Screens_ScrollAnimationTimeout * 1.5,
-                OnwheelId
-            );
-
-            yOnwheel++;
-            if (yOnwheel > 3) yOnwheel = 0;
+            BrowserTest_Scene1DocOnwheel(yDown - yUp > 0 ? 1 : -1);
         };
 
         Main_Scene2Doc.onwheel = function(event) {
-            var id = event.target.id;
-
-            var y = event.deltaY > 0 ? 1 : -1;
-
-            if (Main_isScene2DocVisible()) {
-
-                if (Main_A_includes_B(id, 'scene2') ||
-                    Main_A_includes_B(id, 'clip_player') ||
-                    Main_A_includes_B(id, 'scene_channel_panel')) {
-
-                    if (!yOnwheel && y < 0 && !UserLiveFeed_isPreviewShowing()) {
-                        PlayClip_hidePanel();
-                        UserLiveFeed_ShowFeed();
-                    } else if (!yOnwheel && y > 0 && UserLiveFeed_isPreviewShowing()) {
-                        UserLiveFeed_Hide();
-                    }
-
-                } else if (!yOnwheel && Main_A_includes_B(id, 'ulf_') &&
-                    UserLiveFeed_isPreviewShowing()) {
-
-                    UserLiveFeed_KeyRightLeft(y * -1);
-
-
-                } else if (!yOnwheel && Main_A_includes_B(id, 'controls_button_') &&
-                    Play_isPanelShowing()) {
-
-                    var PlayVodClip = getPlayVodClip();
-                    Play_Resetpanel(PlayVodClip);
-                    Play_BottomUpDown(PlayVodClip, y * -1);
-
-                }
-
-                OnwheelId = Main_setTimeout(
-                    function() {
-
-                        Screens_handleKeyUpAnimationFast();
-                        yOnwheel = 0;
-
-                    },
-                    Screens_ScrollAnimationTimeout * 1.5,
-                    OnwheelId
-                );
-
-                yOnwheel++;
-                if (yOnwheel > 1) yOnwheel = 0;
-
-            }
+            BrowserTest_Scene2DocOnwheel(
+                event.deltaY > 0 ? 1 : -1,
+                event.target.id
+            );
         };
+
+        Main_Scene2Doc.ontouchmove = function(event) {
+            var yUp = event.touches[0].clientY;
+
+            BrowserTest_Scene1DocOnwheel(
+                yDown - yUp > 0 ? 1 : -1,
+                event.target.id
+            );
+        };
+
 
         Main_Scene2Doc.onmousemove = function() {
             if (Main_isScene2DocVisible()) {
@@ -1479,4 +1415,98 @@ function BrowserTestShowEmbedClicks() {
         5000,
         OnClickId
     );
+}
+
+function BrowserTest_Scene2DocOnwheel(y, id) {
+    if (Main_isScene2DocVisible()) {
+
+        if (Main_A_includes_B(id, 'scene2') ||
+            Main_A_includes_B(id, 'clip_player') ||
+            Main_A_includes_B(id, 'scene_channel_panel')) {
+
+            if (!yOnwheel && y < 0 && !UserLiveFeed_isPreviewShowing()) {
+                PlayClip_hidePanel();
+                UserLiveFeed_ShowFeed();
+            } else if (!yOnwheel && y > 0 && UserLiveFeed_isPreviewShowing()) {
+                UserLiveFeed_Hide();
+            }
+
+        } else if (!yOnwheel && Main_A_includes_B(id, 'ulf_') &&
+            UserLiveFeed_isPreviewShowing()) {
+
+            UserLiveFeed_KeyRightLeft(y * -1);
+
+
+        } else if (!yOnwheel && Main_A_includes_B(id, 'controls_button_') &&
+            Play_isPanelShowing()) {
+
+            var PlayVodClip = getPlayVodClip();
+            Play_Resetpanel(PlayVodClip);
+            Play_BottomUpDown(PlayVodClip, y * -1);
+
+        }
+
+        OnwheelId = Main_setTimeout(
+            function() {
+
+                Screens_handleKeyUpAnimationFast();
+                yOnwheel = 0;
+
+            },
+            Screens_ScrollAnimationTimeout * 1.5,
+            OnwheelId
+        );
+
+        yOnwheel++;
+        if (yOnwheel > 1) yOnwheel = 0;
+
+    }
+}
+
+function BrowserTest_Scene1DocOnwheel(y) {
+    var key = Main_values.Main_Go;
+
+    if (!yOnwheel) {
+
+        var isChannelScreen = key === Main_ChannelContent,
+            isUserScrren = key === Main_Users;
+
+        if (isChannelScreen || isUserScrren) {
+
+            if (isUserScrren && Main_ThumbNull((Users_cursorY + y), (Users_cursorX), Users_ids[0])) {
+
+                Users_removeFocus();
+                Users_cursorY += y;
+                Users_addFocus();
+
+            }
+
+        } else if (Screens_IsInUse(key) && (y > 0 || ScreenObj[key].posY > 0)) {
+
+            Screens_KeyUpDownClick(key, y);
+
+        } else if (Sidepannel_isShowingUserLive() && (Sidepannel_PosFeed + y) > 0 &&
+            (y < 0 || Sidepannel_PosFeed + y < (Sidepannel_GetSize()))) {
+
+            Sidepannel_RemoveFocusFeed();
+            Sidepannel_PosFeed += y;
+            Sidepannel_AddFocusLiveFeed();
+
+        }
+
+    }
+
+    OnwheelId = Main_setTimeout(
+        function() {
+
+            Screens_handleKeyUpAnimationFast();
+            yOnwheel = 0;
+
+        },
+        Screens_ScrollAnimationTimeout * 1.5,
+        OnwheelId
+    );
+
+    yOnwheel++;
+    if (yOnwheel > 3) yOnwheel = 0;
 }
