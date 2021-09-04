@@ -847,7 +847,7 @@ function BrowserTestFun() {
             var yUp = event.touches[0].clientY;
             var xUp = event.touches[0].clientX;
 
-            BrowserTest_Scene1DocOnwheel(
+            BrowserTest_Scene2DocOnwheel(
                 (yDown - yUp || xDown - xUp) > 0 ? 1 : -1,
                 event.target.id
             );
