@@ -5843,7 +5843,6 @@
                 xDown = firstTouch.clientX;
                 yDown = firstTouch.clientY;
             };
-
             Main_Scene2Doc.ontouchstart = Main_Scene1Doc.ontouchstart;
 
             Main_Scene1Doc.onwheel = function(event) {
@@ -5870,7 +5869,7 @@
                 var yUp = event.touches[0].clientY;
                 var xUp = event.touches[0].clientX;
 
-                BrowserTest_Scene1DocOnwheel(
+                BrowserTest_Scene2DocOnwheel(
                     (yDown - yUp || xDown - xUp) > 0 ? 1 : -1,
                     event.target.id
                 );
