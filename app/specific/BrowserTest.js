@@ -822,14 +822,19 @@ function BrowserTestFun() {
             yDown = firstTouch.clientY;
         };
 
+        Main_Scene2Doc.ontouchstart = Main_Scene1Doc.ontouchstart;
+
         Main_Scene1Doc.onwheel = function(event) {
             BrowserTest_Scene1DocOnwheel(event.deltaY > 0 ? 1 : -1);
         };
 
         Main_Scene1Doc.ontouchmove = function(event) {
             var yUp = event.touches[0].clientY;
+            var xUp = event.touches[0].clientX;
 
-            BrowserTest_Scene1DocOnwheel(yDown - yUp > 0 ? 1 : -1);
+            BrowserTest_Scene1DocOnwheel(
+                (yDown - yUp || xDown - xUp) > 0 ? 1 : -1
+            );
         };
 
         Main_Scene2Doc.onwheel = function(event) {
@@ -841,9 +846,10 @@ function BrowserTestFun() {
 
         Main_Scene2Doc.ontouchmove = function(event) {
             var yUp = event.touches[0].clientY;
+            var xUp = event.touches[0].clientX;
 
             BrowserTest_Scene1DocOnwheel(
-                yDown - yUp > 0 ? 1 : -1,
+                (yDown - yUp || xDown - xUp) > 0 ? 1 : -1,
                 event.target.id
             );
         };
@@ -1461,6 +1467,10 @@ function BrowserTest_Scene2DocOnwheel(y, id) {
         if (yOnwheel > 1) yOnwheel = 0;
 
     }
+
+    /* reset values */
+    xDown = null;
+    yDown = null;
 }
 
 function BrowserTest_Scene1DocOnwheel(y) {
@@ -1509,4 +1519,8 @@ function BrowserTest_Scene1DocOnwheel(y) {
 
     yOnwheel++;
     if (yOnwheel > 3) yOnwheel = 0;
+
+    /* reset values */
+    xDown = null;
+    yDown = null;
 }
