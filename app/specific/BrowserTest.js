@@ -841,7 +841,7 @@ function BrowserTestFun() {
 
             } else {
                 BrowserTest_Scene2DocOnwheel(
-                    yDiff > 0 ? 1 : -1,
+                    yDiff > 0 ? -1 : 1,
                     event.target.id
                 );
             }
