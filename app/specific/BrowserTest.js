@@ -821,7 +821,6 @@ function BrowserTestFun() {
             xDown = firstTouch.clientX;
             yDown = firstTouch.clientY;
         };
-
         Main_Scene2Doc.ontouchstart = Main_Scene1Doc.ontouchstart;
 
         Main_Scene1Doc.onwheel = function(event) {
