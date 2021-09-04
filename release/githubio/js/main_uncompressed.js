@@ -5533,13 +5533,8 @@
                 }
             };
 
-            sidepanel_elem_hide.onmousemove = function() {
-                if (Sidepannel_isShowingMenus() || Sidepannel_isShowingUserLive()) {
-                    Sidepannel_Hide();
-                    Main_SwitchScreen();
-                }
-            };
-            Main_getElementById('side_panel_feed_thumb').onmousemove = sidepanel_elem_hide.onmousemove;
+            sidepanel_elem_hide.onmousemove = BrowserTest_Sidepanel_elem_hide;
+            Main_getElementById('side_panel_feed_thumb').onmousemove = BrowserTest_Sidepanel_elem_hide;
 
             Main_getElementById('main_dialog_user').onmousemove = function(event) {
                 var id = event.target.id;
@@ -5830,8 +5825,10 @@
                 var yDiff = yDown - yUp;
 
                 if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                    if (xDiff > 0) {
+                    if (xDiff < 0) {
                         BrowserTest_Sidepanel_elem_show();
+                    } else {
+                        BrowserTest_Sidepanel_elem_hide();
                     }
                 } else {
                     BrowserTest_Scene1DocOnwheel(
@@ -5863,7 +5860,7 @@
 
                 } else {
                     BrowserTest_Scene2DocOnwheel(
-                        yDiff > 0 ? 1 : -1,
+                        yDiff > 0 ? -1 : 1,
                         event.target.id
                     );
                 }
@@ -6539,6 +6536,13 @@
         /* reset values */
         xDown = null;
         yDown = null;
+    }
+
+    function BrowserTest_Sidepanel_elem_hide() {
+        if (Sidepannel_isShowingMenus() || Sidepannel_isShowingUserLive()) {
+            Sidepannel_Hide();
+            Main_SwitchScreen();
+        }
     }
 
     function BrowserTest_Sidepanel_elem_show() {
