@@ -2988,7 +2988,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsChat] = { //chat enable disable
+    Play_controls[Play_controlsChat] = {
         ShowInLive: true,
         ShowInVod: true,
         ShowInClip: true,
@@ -3467,7 +3467,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioAll] = { //chat enable disable
+    Play_controls[Play_controlsAudioAll] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3503,7 +3503,7 @@ function Play_MakeControls() {
         }
     };
 
-    Play_controls[Play_controlsAudio_Volume_100] = { //chat enable disable
+    Play_controls[Play_controlsAudio_Volume_100] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3532,7 +3532,7 @@ function Play_MakeControls() {
         }
     };
 
-    Play_controls[Play_controlsAudioEna0] = { //chat enable disable
+    Play_controls[Play_controlsAudioEna0] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3571,7 +3571,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioVol0] = { //chat enable disable
+    Play_controls[Play_controlsAudioVol0] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3610,7 +3610,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioEna1] = { //chat enable disable
+    Play_controls[Play_controlsAudioEna1] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3649,7 +3649,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioVol1] = { //chat enable disable
+    Play_controls[Play_controlsAudioVol1] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3689,7 +3689,7 @@ function Play_MakeControls() {
     };
 
 
-    Play_controls[Play_controlsAudioEna2] = { //chat enable disable
+    Play_controls[Play_controlsAudioEna2] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3728,7 +3728,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioVol2] = { //chat enable disable
+    Play_controls[Play_controlsAudioVol2] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3767,7 +3767,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioEna3] = { //chat enable disable
+    Play_controls[Play_controlsAudioEna3] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3806,7 +3806,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsAudioVol3] = { //chat enable disable
+    Play_controls[Play_controlsAudioVol3] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3845,7 +3845,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsPreviewEnable] = { //chat enable disable
+    Play_controls[Play_controlsPreviewEnable] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3871,7 +3871,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsPreviewSize] = { //chat enable disable
+    Play_controls[Play_controlsPreviewSize] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3897,7 +3897,7 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         },
     };
-    Play_controls[Play_controlsPreviewVolume] = { //chat enable disable
+    Play_controls[Play_controlsPreviewVolume] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
@@ -3924,7 +3924,7 @@ function Play_MakeControls() {
         },
     };
 
-    Play_controls[Play_controlsPreviewMainVolume] = { //chat enable disable
+    Play_controls[Play_controlsPreviewMainVolume] = {
         ShowInLive: false,
         ShowInVod: false,
         ShowInClip: false,
