@@ -3917,6 +3917,12 @@
         WebVersion: 'August 28 2021',
         WebTag: 603, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version September 12 2021",
+                changes: [
+                    "Allow to control audio and volumes for all types of players"
+                ]
+            },
+            {
                 title: "Web Version August 28 2021",
                 changes: [
                     "General improves and bug fixes",
@@ -15879,6 +15885,13 @@
                 Boolean(Play_audio_enable[3])
             );
 
+        } else if (PlayClip_isOn) {
+
+            try {
+                clip_player.volume = Boolean(Play_audio_enable[0]) ? 1.0 : 0.0;
+            } catch (e) {
+                console.log('OSInterface_SetAudioEnabled e ' + e);
+            }
         }
 
     }
@@ -15898,6 +15911,13 @@
                 parseFloat(Play_volumes[3] / 100)
             );
 
+        } else if (PlayClip_isOn) {
+
+            try {
+                clip_player.volume = Play_volumes[0] / 100;
+            } catch (e) {
+                console.log('OSInterface_SetVolumes e ' + e);
+            }
         }
 
 
@@ -16106,6 +16126,8 @@
 
         UserLiveFeed_PreventHide = false;
         PlayClip_UpdateNext();
+
+        Play_SetAudioIcon();
 
         Play_EndSet(3);
         UserLiveFeed_Unset();
@@ -17246,6 +17268,14 @@
             }
 
             Play_SetControlsVisibility('ShowInAudioPP');
+
+        } else {
+
+            Play_controls[Play_controlsAudioEna0].bottomArrows();
+            Play_controls[Play_controlsAudioEna0].setLable();
+            Play_controls[Play_controlsAudioVol0].bottomArrows();
+            Play_controls[Play_controlsAudioVol0].setLable();
+            Play_SetControlsVisibility('ShowInAudio');
 
         }
 
@@ -18698,7 +18728,7 @@
                 );
             }
 
-        } else {
+        } else if (PlayExtra_PicturePicture) {
 
             for (i; i < 2; i++) {
 
@@ -18715,6 +18745,13 @@
                 );
 
             }
+
+        } else {
+
+            Main_innerHTML(
+                "stream_info_audio",
+                Play_GetAudioIcon(0)
+            );
 
         }
 
@@ -19319,6 +19356,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: true,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: true,
@@ -19350,6 +19388,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19372,6 +19411,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19399,6 +19439,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19426,6 +19467,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19464,6 +19506,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19497,6 +19540,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19533,6 +19577,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19574,6 +19619,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19633,6 +19679,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19701,6 +19748,7 @@
             ShowInPP: true,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19752,6 +19800,7 @@
             ShowInPP: false,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19837,6 +19886,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19907,6 +19957,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -19947,6 +19998,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20036,12 +20088,13 @@
         };
 
         Play_controls[Play_controlsAudio] = { //Audio
-            ShowInLive: false,
-            ShowInVod: false,
-            ShowInClip: false,
+            ShowInLive: true,
+            ShowInVod: true,
+            ShowInClip: true,
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20071,6 +20124,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20123,13 +20177,14 @@
             },
         };
 
-        Play_controls[Play_controlsChat] = { //chat enable disable
+        Play_controls[Play_controlsChat] = {
             ShowInLive: true,
             ShowInVod: true,
             ShowInClip: true,
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20170,6 +20225,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20201,6 +20257,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20228,6 +20285,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20262,6 +20320,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20302,6 +20361,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20335,6 +20395,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20380,6 +20441,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20435,6 +20497,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20508,6 +20571,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20554,6 +20618,7 @@
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: true,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -20602,13 +20667,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioAll] = { //chat enable disable
+        Play_controls[Play_controlsAudioAll] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20638,13 +20704,14 @@
             }
         };
 
-        Play_controls[Play_controlsAudio_Volume_100] = { //chat enable disable
+        Play_controls[Play_controlsAudio_Volume_100] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: true,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20667,13 +20734,14 @@
             }
         };
 
-        Play_controls[Play_controlsAudioEna0] = { //chat enable disable
+        Play_controls[Play_controlsAudioEna0] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: true,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20694,9 +20762,14 @@
             },
             setLable: function() {
 
+                var name = Play_data.data[1];
+
+                if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
+                else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
+
                 Play_controlsAudioEnasetLable(
                     0,
-                    PlayExtra_PicturePicture ? Play_data.data[1] : Play_MultiArray[0].data[1],
+                    name,
                     this
                 );
 
@@ -20706,13 +20779,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioVol0] = { //chat enable disable
+        Play_controls[Play_controlsAudioVol0] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: true,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20733,9 +20807,15 @@
             },
             setLable: function() {
 
+                var name = Play_data.data[1];
+
+                if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
+                else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
+
+
                 Play_controlsAudioVolupsetLable(
                     0,
-                    PlayExtra_PicturePicture ? Play_data.data[1] : Play_MultiArray[0].data[1],
+                    name,
                     this
                 );
 
@@ -20745,13 +20825,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioEna1] = { //chat enable disable
+        Play_controls[Play_controlsAudioEna1] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20784,13 +20865,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioVol1] = { //chat enable disable
+        Play_controls[Play_controlsAudioVol1] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: true,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20824,13 +20906,14 @@
         };
 
 
-        Play_controls[Play_controlsAudioEna2] = { //chat enable disable
+        Play_controls[Play_controlsAudioEna2] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20863,13 +20946,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioVol2] = { //chat enable disable
+        Play_controls[Play_controlsAudioVol2] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20902,13 +20986,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioEna3] = { //chat enable disable
+        Play_controls[Play_controlsAudioEna3] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20941,13 +21026,14 @@
             },
         };
 
-        Play_controls[Play_controlsAudioVol3] = { //chat enable disable
+        Play_controls[Play_controlsAudioVol3] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: true,
             ShowInPreview: false,
@@ -20980,13 +21066,14 @@
             },
         };
 
-        Play_controls[Play_controlsPreviewEnable] = { //chat enable disable
+        Play_controls[Play_controlsPreviewEnable] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: true,
@@ -21006,13 +21093,14 @@
             },
         };
 
-        Play_controls[Play_controlsPreviewSize] = { //chat enable disable
+        Play_controls[Play_controlsPreviewSize] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: true,
@@ -21032,13 +21120,14 @@
                 Play_BottomArrows(this.position);
             },
         };
-        Play_controls[Play_controlsPreviewVolume] = { //chat enable disable
+        Play_controls[Play_controlsPreviewVolume] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: true,
@@ -21059,13 +21148,14 @@
             },
         };
 
-        Play_controls[Play_controlsPreviewMainVolume] = { //chat enable disable
+        Play_controls[Play_controlsPreviewMainVolume] = {
             ShowInLive: false,
             ShowInVod: false,
             ShowInClip: false,
             ShowInPP: false,
             ShowInMulti: false,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: true,
@@ -21093,6 +21183,7 @@
             ShowInPP: true,
             ShowInMulti: true,
             ShowInChat: false,
+            ShowInAudio: false,
             ShowInAudioPP: false,
             ShowInAudioMulti: false,
             ShowInPreview: false,
@@ -22882,6 +22973,8 @@
         Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
         if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
+
+        Play_SetAudioIcon();
     }
 
     function Play_UpdateMainStream(startChat, refreshInfo) {
@@ -23656,6 +23749,7 @@
         //Main_Log('Play_exitMain');
 
         UserLiveFeed_PreventHide = false;
+        Play_AudioReset(0);
         Play_HideBufferDialog();
         Main_showScene1Doc();
         Main_hideScene2Doc();
@@ -25465,6 +25559,8 @@
         Main_values.Play_isHost = false;
         PlayClip_HideShowNext(0, 0);
         PlayClip_HideShowNext(1, 0);
+
+        Play_SetAudioIcon();
 
         if (!Main_vodOffset) { //we have some vod info
             Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);

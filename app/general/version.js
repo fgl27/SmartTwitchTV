@@ -27,6 +27,12 @@ var version = {
     WebTag: 603,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
+            title: "Web Version September 12 2021",
+            changes: [
+                "Allow to control audio and volumes for all types of players"
+            ]
+        },
+        {
             title: "Web Version August 28 2021",
             changes: [
                 "General improves and bug fixes",
