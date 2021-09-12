@@ -345,7 +345,11 @@ function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] =
-        Chat_loadBadgesTransform(JSON.parse(responseText), ChatLive_selectedChannel_id[chat_number]);
+        Chat_loadBadgesTransform(
+            JSON.parse(responseText),
+            ChatLive_selectedChannel_id[chat_number],
+            true
+        );
 
     Chat_tagCSS(
         extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]],

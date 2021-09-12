@@ -217,20 +217,43 @@ function Chat_loadBadgesGlobalSuccess(responseText, chat_number, id) {
     );
 }
 
-function Chat_loadBadgesTransform(responseText, id) {
+function Chat_loadBadgesTransform(responseText, id, checkSubMissing) {
     var versions,
         property,
         version,
-        url,
-        innerHTML = '';
+        innerHTML = '',
+        versionInt;
 
     for (property in responseText.badge_sets) {
 
         versions = responseText.badge_sets[property].versions;
 
         for (version in versions) {
-            url = Chat_BasetagCSSUrl(versions[version].image_url_4x);
-            innerHTML += Chat_BasetagCSS(property + id, version, url);
+
+            innerHTML +=
+                Chat_BasetagCSS(
+                    property + id,
+                    version,
+                    Chat_BasetagCSSUrl(versions[version].image_url_4x)
+                );
+
+            //some channel may be missing 0 3 6 12 etc badges but they have 2000 2003 etc
+            if (checkSubMissing) {
+
+                versionInt = parseInt(version) -
+                    parseInt(version.toString()[0]) * Math.pow(10, version.length - 1);
+
+                if (versionInt > -1 && !versions.hasOwnProperty(versionInt)) {
+
+                    innerHTML +=
+                        Chat_BasetagCSS(
+                            property + id,
+                            versionInt,
+                            Chat_BasetagCSSUrl(versions[version].image_url_4x)
+                        );
+                }
+
+            }
         }
     }
 
@@ -253,7 +276,6 @@ function Chat_tagCSS(content, doc) {
         var style = document.createElement('style');
         style.innerHTML = content;
         doc.insertBefore(style, doc.childNodes[0]);
-
 
     });
 }
