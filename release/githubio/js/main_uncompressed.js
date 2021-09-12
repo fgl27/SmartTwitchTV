@@ -6090,17 +6090,19 @@
 
                             PlayClip_Enter();
 
-                        } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
+                        } else if (Main_A_includes_B(id, 'progress_bar_inner') && (PlayClip_isOn || PlayVod_isOn)) {
+
+                            var duration = PlayClip_isOn ? clip_player.duration : Play_DurationSeconds;
 
                             try {
-                                Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
-                                clip_player.currentTime = Chat_fakeClock;
+                                Chat_fakeClock = parseInt(duration * (event.offsetX / event.target.offsetWidth));
+                                if (PlayClip_isOn) clip_player.currentTime = Chat_fakeClock;
                             } catch (e) {
                                 console.log('Main_Scene2Doc.onclick e ' + e);
                             }
 
                             Play_ProgresBarrElm.style.transition = '';
-                            PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
+                            PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, duration, true);
                         }
                     }
 
@@ -10535,6 +10537,7 @@
     var Chat_loadChatNextId;
     var Chat_offset = 0;
     var Chat_fakeClock = 0;
+    var Chat_fakeClockOld = 0;
     var Chat_title = '';
     var defaultColors = [
         "#FC4F4F", "#ff8736", "#ffd830", "#ffff35", "#81ff2c", "#2dff2d",
@@ -10641,7 +10644,20 @@
                     }
 
                 } else {
+
+                    if (Chat_fakeClockOld > (Chat_fakeClock + 10) || Chat_fakeClockOld < (Chat_fakeClock - 10)) {
+                        //console.log('chat restart time ' + Chat_fakeClockOld + ' Chat_fakeClock ' + Chat_fakeClock);
+
+                        Chat_fakeClockOld = Chat_fakeClock;
+                        Chat_offset = Chat_fakeClock;
+
+                        Chat_Init();
+
+                        return;
+                    }
+
                     Chat_fakeClock += Chat_StartFakeClockAdd;
+                    Chat_fakeClockOld = Chat_fakeClock;
                     Play_BufferSize = Chat_fakeClock / 2;
                 }
 
