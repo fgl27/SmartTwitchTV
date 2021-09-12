@@ -27,6 +27,7 @@ var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
 var Chat_fakeClock = 0;
+var Chat_fakeClockOld = 0;
 var Chat_title = '';
 var defaultColors = [
     "#FC4F4F", "#ff8736", "#ffd830", "#ffff35", "#81ff2c", "#2dff2d",
@@ -132,7 +133,20 @@ function Chat_StartFakeClockInterval() {
                 }
 
             } else {
+
+                if (Chat_fakeClockOld > (Chat_fakeClock + 10) || Chat_fakeClockOld < (Chat_fakeClock - 10)) {
+                    //console.log('chat restart time ' + Chat_fakeClockOld + ' Chat_fakeClock ' + Chat_fakeClock);
+
+                    Chat_fakeClockOld = Chat_fakeClock;
+                    Chat_offset = Chat_fakeClock;
+
+                    Chat_Init();
+
+                    return;
+                }
+
                 Chat_fakeClock += Chat_StartFakeClockAdd;
+                Chat_fakeClockOld = Chat_fakeClock;
                 Play_BufferSize = Chat_fakeClock / 2;
             }
 

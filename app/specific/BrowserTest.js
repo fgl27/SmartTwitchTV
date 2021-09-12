@@ -1068,17 +1068,19 @@ function BrowserTestFun() {
 
                         PlayClip_Enter();
 
-                    } else if (Main_A_includes_B(id, 'progress_bar_inner') && PlayClip_isOn) {
+                    } else if (Main_A_includes_B(id, 'progress_bar_inner') && (PlayClip_isOn || PlayVod_isOn)) {
+
+                        var duration = PlayClip_isOn ? clip_player.duration : Play_DurationSeconds;
 
                         try {
-                            Chat_fakeClock = parseInt(clip_player.duration * (event.offsetX / event.target.offsetWidth));
-                            clip_player.currentTime = Chat_fakeClock;
+                            Chat_fakeClock = parseInt(duration * (event.offsetX / event.target.offsetWidth));
+                            if (PlayClip_isOn) clip_player.currentTime = Chat_fakeClock;
                         } catch (e) {
                             console.log('Main_Scene2Doc.onclick e ' + e);
                         }
 
                         Play_ProgresBarrElm.style.transition = '';
-                        PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, clip_player.duration, true);
+                        PlayVod_ProgresBarrUpdateNoAnimation(Chat_fakeClock, duration, true);
                     }
                 }
 
