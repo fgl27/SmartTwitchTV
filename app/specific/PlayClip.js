@@ -103,6 +103,8 @@ function PlayClip_Start() {
     UserLiveFeed_PreventHide = false;
     PlayClip_UpdateNext();
 
+    Play_SetAudioIcon();
+
     Play_EndSet(3);
     UserLiveFeed_Unset();
     Play_IsWarning = false;

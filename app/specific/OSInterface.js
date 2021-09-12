@@ -1068,6 +1068,13 @@ function OSInterface_SetAudioEnabled() {
             Boolean(Play_audio_enable[3])
         );
 
+    } else if (PlayClip_isOn) {
+
+        try {
+            clip_player.volume = Boolean(Play_audio_enable[0]) ? 1.0 : 0.0;
+        } catch (e) {
+            console.log('Main_Scene2Doc.onclick e ' + e);
+        }
     }
 
 }
@@ -1087,6 +1094,13 @@ function OSInterface_SetVolumes() {
             parseFloat(Play_volumes[3] / 100)
         );
 
+    } else if (PlayClip_isOn) {
+
+        try {
+            clip_player.volume = Play_volumes[0] / 100;
+        } catch (e) {
+            console.log('Main_Scene2Doc.onclick e ' + e);
+        }
     }
 
 

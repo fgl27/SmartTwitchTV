@@ -117,6 +117,14 @@ function Play_controlsAudioUpdateicons() {
 
         Play_SetControlsVisibility('ShowInAudioPP');
 
+    } else {
+
+        Play_controls[Play_controlsAudioEna0].bottomArrows();
+        Play_controls[Play_controlsAudioEna0].setLable();
+        Play_controls[Play_controlsAudioVol0].bottomArrows();
+        Play_controls[Play_controlsAudioVol0].setLable();
+        Play_SetControlsVisibility('ShowInAudio');
+
     }
 
 }
@@ -1567,7 +1575,7 @@ function Play_SetAudioIcon() {
             );
         }
 
-    } else {
+    } else if (PlayExtra_PicturePicture) {
 
         for (i; i < 2; i++) {
 
@@ -1584,6 +1592,13 @@ function Play_SetAudioIcon() {
             );
 
         }
+
+    } else {
+
+        Main_innerHTML(
+            "stream_info_audio",
+            Play_GetAudioIcon(0)
+        );
 
     }
 
@@ -2184,6 +2199,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: true,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: true,
@@ -2215,6 +2231,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2237,6 +2254,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2264,6 +2282,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2291,6 +2310,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2329,6 +2349,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2362,6 +2383,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2398,6 +2420,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2439,6 +2462,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2498,6 +2522,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2566,6 +2591,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2617,6 +2643,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2702,6 +2729,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2772,6 +2800,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2812,6 +2841,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2901,12 +2931,13 @@ function Play_MakeControls() {
     };
 
     Play_controls[Play_controlsAudio] = {//Audio
-        ShowInLive: false,
-        ShowInVod: false,
-        ShowInClip: false,
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2936,6 +2967,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -2995,6 +3027,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3035,6 +3068,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3066,6 +3100,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3093,6 +3128,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3127,6 +3163,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3167,6 +3204,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3200,6 +3238,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3245,6 +3284,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3300,6 +3340,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3373,6 +3414,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3419,6 +3461,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: true,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,
@@ -3474,6 +3517,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3510,6 +3554,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: true,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3539,6 +3584,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: true,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3559,9 +3605,14 @@ function Play_MakeControls() {
         },
         setLable: function() {
 
+            var name = Play_data.data[1];
+
+            if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
+            else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
+
             Play_controlsAudioEnasetLable(
                 0,
-                PlayExtra_PicturePicture ? Play_data.data[1] : Play_MultiArray[0].data[1],
+                name,
                 this
             );
 
@@ -3578,6 +3629,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: true,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3598,9 +3650,15 @@ function Play_MakeControls() {
         },
         setLable: function() {
 
+            var name = Play_data.data[1];
+
+            if (PlayVod_isOn || PlayClip_isOn) name = Main_values.Main_selectedChannelDisplayname;
+            else if (Play_MultiEnable) name = Play_MultiArray[0].data[1];
+
+
             Play_controlsAudioVolupsetLable(
                 0,
-                PlayExtra_PicturePicture ? Play_data.data[1] : Play_MultiArray[0].data[1],
+                name,
                 this
             );
 
@@ -3617,6 +3675,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3656,6 +3715,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: true,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3696,6 +3756,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3735,6 +3796,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3774,6 +3836,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3813,6 +3876,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: true,
         ShowInPreview: false,
@@ -3852,6 +3916,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: true,
@@ -3878,6 +3943,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: true,
@@ -3904,6 +3970,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: true,
@@ -3931,6 +3998,7 @@ function Play_MakeControls() {
         ShowInPP: false,
         ShowInMulti: false,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: true,
@@ -3958,6 +4026,7 @@ function Play_MakeControls() {
         ShowInPP: true,
         ShowInMulti: true,
         ShowInChat: false,
+        ShowInAudio: false,
         ShowInAudioPP: false,
         ShowInAudioMulti: false,
         ShowInPreview: false,

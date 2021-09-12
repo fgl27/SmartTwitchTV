@@ -92,6 +92,8 @@ function PlayVod_Start() {
     PlayClip_HideShowNext(0, 0);
     PlayClip_HideShowNext(1, 0);
 
+    Play_SetAudioIcon();
+
     if (!Main_vodOffset) {//we have some vod info
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
         Main_innerHTML(

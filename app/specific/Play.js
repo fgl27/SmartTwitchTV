@@ -585,6 +585,8 @@ function Play_UpdateMainStreamDiv() {
     Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
 
     if (PlayExtra_PicturePicture) PlayExtra_UpdatePanel();
+
+    Play_SetAudioIcon();
 }
 
 function Play_UpdateMainStream(startChat, refreshInfo) {
@@ -1354,6 +1356,7 @@ function Play_exitMain() {
     //Main_Log('Play_exitMain');
 
     UserLiveFeed_PreventHide = false;
+    Play_AudioReset(0);
     Play_HideBufferDialog();
     Main_showScene1Doc();
     Main_hideScene2Doc();
