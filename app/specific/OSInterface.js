@@ -1073,7 +1073,7 @@ function OSInterface_SetAudioEnabled() {
         try {
             clip_player.volume = Boolean(Play_audio_enable[0]) ? 1.0 : 0.0;
         } catch (e) {
-            console.log('Main_Scene2Doc.onclick e ' + e);
+            console.log('OSInterface_SetAudioEnabled e ' + e);
         }
     }
 
@@ -1099,7 +1099,7 @@ function OSInterface_SetVolumes() {
         try {
             clip_player.volume = Play_volumes[0] / 100;
         } catch (e) {
-            console.log('Main_Scene2Doc.onclick e ' + e);
+            console.log('OSInterface_SetVolumes e ' + e);
         }
     }
 
