@@ -1168,7 +1168,7 @@
         img.partnericon_img {
             display: inline-block;
             width: 1.5ch;
-            vertical-align: middle;
+            transform: translateY(8%);
         }
 
         .stream_info_pp_name {
@@ -1193,13 +1193,18 @@
             text-shadow: none;
             font-size: 60%;
             font-family: 'Roboto-Bold';
-            transform: translateY(-8%);
         }
 
         .vodicon_text {
             transform: translateY(-8%);
             border-radius: 0.5em;
             font-size: 70%;
+        }
+
+        .lang_text,
+        .vodicon_text,
+        .partnericon_text {
+            transform: translateY(-20%);
         }
 
         .audio_icon {
