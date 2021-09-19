@@ -934,7 +934,7 @@ function Play_StartStayShowBottom() {
 }
 
 function Play_StayGetStreamerInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'channels/' + Play_data.data[7] + Main_TwithcV5Flag_I;
 
     BaseXmlHttpGet(
         theUrl,
@@ -982,7 +982,6 @@ function Play_StartStay() {
     Play_data.data[3] = '';
     Play_data.data[4] = '';
     Play_data.data[5] = '';
-    Play_data.data[7] = '';
     Play_data.data[11] = '';
     Play_data.data[12] = 0;
     Play_data.data[13] = 0;
