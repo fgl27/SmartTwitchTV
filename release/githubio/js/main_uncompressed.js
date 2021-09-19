@@ -10571,6 +10571,7 @@
     }
 
     function Chat_Init() {
+
         Chat_JustStarted = true;
 
         Chat_Clear();
@@ -10649,7 +10650,7 @@
                         console.log('Chat_StartFakeClockInterval e ' + e);
                     }
 
-                } else {
+                } else if (PlayVod_isOn) {
 
                     if (Chat_fakeClockOld > (Chat_fakeClock + 10) || Chat_fakeClockOld < (Chat_fakeClock - 10)) {
                         //console.log('chat restart time ' + Chat_fakeClockOld + ' Chat_fakeClock ' + Chat_fakeClock);
@@ -23030,6 +23031,10 @@
                     obj.streams[0].preview.template.replace("{width}x{height}", "1280x720") + Main_randomimg
                 );
             }
+        } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
+
+            Play_StartStay();
+
         }
     }
 
