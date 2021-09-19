@@ -934,7 +934,7 @@ function Play_StartStayShowBottom() {
 }
 
 function Play_StayGetStreamerInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + Play_data.data[7] + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'channels/' + Play_data.data[14] + Main_TwithcV5Flag_I;
 
     BaseXmlHttpGet(
         theUrl,

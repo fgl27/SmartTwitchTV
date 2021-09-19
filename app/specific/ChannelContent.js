@@ -403,7 +403,7 @@ function ChannelContent_keyEnter() {
                 '',//4
                 '',//5
                 Main_values.Main_selectedChannel,//6
-                Main_values.Main_selectedChannel_id,//7 broadcast id
+                '',//7 broadcast id
                 false,//8
                 Main_values.Main_selectedChannelLogo,//9
                 Main_values.Main_selectedChannelPartner,//10
