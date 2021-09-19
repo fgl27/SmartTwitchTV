@@ -642,6 +642,10 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
                 obj.streams[0].preview.template.replace("{width}x{height}", "1280x720") + Main_randomimg
             );
         }
+    } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
+
+        Play_StartStay();
+
     }
 }
 
