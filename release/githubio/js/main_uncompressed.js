@@ -6992,7 +6992,7 @@
                     '', //4
                     '', //5
                     Main_values.Main_selectedChannel, //6
-                    Main_values.Main_selectedChannel_id, //7 broadcast id
+                    '', //7 broadcast id
                     false, //8
                     Main_values.Main_selectedChannelLogo, //9
                     Main_values.Main_selectedChannelPartner, //10
@@ -18087,7 +18087,7 @@
     }
 
     function Play_StayGetStreamerInfo() {
-        var theUrl = Main_kraken_api + 'channels/' + Play_data.data[7] + Main_TwithcV5Flag_I;
+        var theUrl = Main_kraken_api + 'channels/' + Play_data.data[14] + Main_TwithcV5Flag_I;
 
         BaseXmlHttpGet(
             theUrl,
