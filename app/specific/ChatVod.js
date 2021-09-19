@@ -55,6 +55,7 @@ function Chat_Preinit() {
 }
 
 function Chat_Init() {
+
     Chat_JustStarted = true;
 
     Chat_Clear();
@@ -132,7 +133,7 @@ function Chat_StartFakeClockInterval() {
                     console.log('Chat_StartFakeClockInterval e ' + e);
                 }
 
-            } else {
+            } else if (PlayVod_isOn) {
 
                 if (Chat_fakeClockOld > (Chat_fakeClock + 10) || Chat_fakeClockOld < (Chat_fakeClock - 10)) {
                     //console.log('chat restart time ' + Chat_fakeClockOld + ' Chat_fakeClock ' + Chat_fakeClock);
