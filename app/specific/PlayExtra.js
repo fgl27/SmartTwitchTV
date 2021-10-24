@@ -338,10 +338,12 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
 
         if (responseObj.status === 200) {
 
-            var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
+            var data = JSON.parse(responseObj.responseText).data,
                 warning_text;
 
-            if (TargetHost) {
+            if (data.user && data.user.hosting) {
+
+                var TargetHost = data.user.hosting;
 
                 TargetHost.id = parseInt(TargetHost.id);
 

@@ -1401,9 +1401,9 @@ function ChatLive_CheckHostResult(responseObj, chat_number, id) {
 
     if (responseObj.status === 200) {
 
-        var response = JSON.parse(responseObj.responseText).data.user.hosting;
+        var data = JSON.parse(responseObj.responseText).data;
 
-        if (response) {
+        if (data.user && data.user.hosting) {
 
             if (PlayExtra_PicturePicture) {
 

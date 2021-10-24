@@ -175,9 +175,11 @@ function ChannelContent_CheckHost(responseObj, key, id) {
 
         if (responseObj.status === 200) {
 
-            var response = JSON.parse(responseObj.responseText).data.user.hosting;
+            var data = JSON.parse(responseObj.responseText).data;
 
-            if (response) {
+            if (data.user && data.user.hosting) {
+
+                var response = data.user.hosting;
 
                 ChannelContent_TargetId = parseInt(response.id);
                 ChannelContent_loadDataRequest();
@@ -205,6 +207,7 @@ function ChannelContent_GetStreamerInfo() {
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {
+
     var channel = JSON.parse(responseText);
     ChannelContent_offline_image = channel.video_banner;
     ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
