@@ -6764,9 +6764,11 @@
 
             if (responseObj.status === 200) {
 
-                var response = JSON.parse(responseObj.responseText).data.user.hosting;
+                var data = JSON.parse(responseObj.responseText).data;
 
-                if (response) {
+                if (data.user && data.user.hosting) {
+
+                    var response = data.user.hosting;
 
                     ChannelContent_TargetId = parseInt(response.id);
                     ChannelContent_loadDataRequest();
@@ -6794,6 +6796,7 @@
     }
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
+
         var channel = JSON.parse(responseText);
         ChannelContent_offline_image = channel.video_banner;
         ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
@@ -9789,9 +9792,9 @@
 
         if (responseObj.status === 200) {
 
-            var response = JSON.parse(responseObj.responseText).data.user.hosting;
+            var data = JSON.parse(responseObj.responseText).data;
 
-            if (response) {
+            if (data.user && data.user.hosting) {
 
                 if (PlayExtra_PicturePicture) {
 
@@ -13377,7 +13380,7 @@
 
         }
 
-        calbackError(key, checkResult); // jshint ignore:line
+        calbackError(key, checkResult, obj); // jshint ignore:line
 
     }
 
@@ -18201,27 +18204,33 @@
 
         if (responseObj.status === 200) {
 
-            var response = JSON.parse(responseObj.responseText).data.user.hosting;
+            var data = JSON.parse(responseObj.responseText).data;
 
-            if (response && parseInt(response.id) !== Play_data.data[14]) {
+            if (data.user && data.user.hosting) {
+                var response = data.user.hosting;
 
-                Play_TargetHost = response;
+                if (response && parseInt(response.id) !== Play_data.data[14]) {
 
-                Play_IsWarning = true;
-                var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + response.displayName;
+                    Play_TargetHost = response;
 
-                Main_values.Play_isHost = true;
+                    Play_IsWarning = true;
+                    var warning_text = Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + response.displayName;
 
-                if (Settings_value.open_host.defaultValue) {
+                    Main_values.Play_isHost = true;
 
-                    Play_OpenHost();
+                    if (Settings_value.open_host.defaultValue) {
 
-                } else Play_EndSet(0);
+                        Play_OpenHost();
 
-                Play_showWarningDialog(warning_text, 4000);
+                    } else Play_EndSet(0);
 
-                return true;
+                    Play_showWarningDialog(warning_text, 4000);
+
+                    return true;
+                }
+
             }
+
         }
 
         Main_values.Play_isHost = false;
@@ -22239,10 +22248,12 @@
 
             if (responseObj.status === 200) {
 
-                var TargetHost = JSON.parse(responseObj.responseText).data.user.hosting,
+                var data = JSON.parse(responseObj.responseText).data,
                     warning_text;
 
-                if (TargetHost) {
+                if (data.user && data.user.hosting) {
+
+                    var TargetHost = data.user.hosting;
 
                     TargetHost.id = parseInt(TargetHost.id);
 
