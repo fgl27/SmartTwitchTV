@@ -3,7 +3,7 @@ ext.versions = [
         targetSdk                  : 29,
         compileSdk                 : 30,
         buildTools                 : '31.0.0',
-        gradlePlugin               : '7.0.0',
+        gradlePlugin               : '7.0.3',
 
         publishVersion             : '3.0.',
         publishVersionCode         : 329,
@@ -12,11 +12,11 @@ ext.versions = [
         leanback                   : '1.0.0',
         tvprovider                 : '1.0.0',
         benmanes                   : '0.39.0',
-        googlegson                 : '2.8.7',
+        googlegson                 : '2.8.9',
         webkit                     : '1.4.0',
 
         //Crashlytics
-        firebase_bom               : '28.3.0',
-        firebase_crashlytics_gradle: '2.7.1',
-        google_services            : '4.3.8',
+        firebase_bom               : '29.0.0',
+        firebase_crashlytics_gradle: '2.8.0',
+        google_services            : '4.3.10',
 ]
