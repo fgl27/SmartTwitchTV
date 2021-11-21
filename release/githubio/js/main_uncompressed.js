@@ -13836,16 +13836,19 @@
 
                                     }
 
-                                } else {
-
-                                    this.postMessage({
-                                        data: obj.mData.obj.data[7],
-                                        type: obj.mData.type,
-                                        updateobj: JSON.parse(obj.responseText),
-                                        delete: false
-                                    });
-
                                 }
+                                //  else {
+
+                                //     this.postMessage(
+                                //         {
+                                //             data: obj.mData.obj.data[7],
+                                //             type: obj.mData.type,
+                                //             updateobj: JSON.parse(obj.responseText),
+                                //             delete: false
+                                //         }
+                                //     );
+
+                                // }
 
                             };
                         } else if (event.data.type === 'clip') { //Clip
@@ -13863,7 +13866,8 @@
 
                                         this.postMessage({
                                             data: obj.mData.obj.data[7],
-                                            type: obj.mData.type
+                                            type: obj.mData.type,
+                                            delete: true
                                         });
 
                                     }
@@ -13970,7 +13974,7 @@
 
                             }
 
-                        } else if (event.data.type === 'vod' || event.data.type === 'clip') {
+                        } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
 
                             index = Main_history_Exist(event.data.type, event.data.data);
 
