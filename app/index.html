@@ -107,6 +107,7 @@
             overflow: hidden;
             width: 100%;
             height: 100%;
+            transform: translateY(-100%);
             position: absolute;
             z-index: 3;
             will-change: opacity;
@@ -137,7 +138,7 @@
         .animate_height_transition_channel,
         .animate_height_transition_games,
         .animate_height_transition {
-            height: 46.5vh;
+            height: 50%;
             width: 95%;
             transform: translateY(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
@@ -146,11 +147,11 @@
         }
 
         .animate_height_transition_games {
-            height: 48.3vh;
+            height: 50.1%;
         }
 
         .animate_height_transition_channel {
-            height: 32.075vh;
+            height: 32.075%;
         }
 
         .side_panel_holder_ani {
@@ -167,6 +168,7 @@
             width: 100%;
             position: absolute;
             top: 6.9%;
+            height: 93.1%;
             transform: translateY(0);
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
@@ -174,18 +176,22 @@
 
         .screen_holder_switch {
             top: 2.6%;
+            height: 97.4%;
         }
 
         .screen_holder_games {
             top: 4.5%;
+            height: 95.5%;
         }
 
         .screen_holder_channel {
             top: 4.25%;
+            height: 95.75%;
         }
 
         .screen_holder_user {
             top: 7%;
+            height: 93%;
         }
 
         .settings_holder {
@@ -1214,6 +1220,7 @@
         .side_panel_new_holder {
             will-change: opacity;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+            height: 100%;
         }
 
         /* don't use this class for anything else other then side panel div because of Sidepannel_GetSize()*/
@@ -1271,7 +1278,7 @@
 
         .side_panel_dialog {
             text-align: center;
-            margin-top: 45.9vh;
+            margin-top: 45.9%;
             margin-left: 24.5%;
             width: 50%;
             font-family: 'Roboto-Bold';
@@ -1294,15 +1301,15 @@
             transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             will-change: transform;
             /* on chrome do to the focus class side_panel_new_icons_text that uses background: linear-gradient 
-            is needed to add a border here to prevent visual glitches right on the border of the element*/
-            border-right: 2px solid #000000;
+            is needed to add a border here to prevent visual glitches right on the border of the element
+            border-right: 2px solid #000000;*/
         }
 
         .side_panel_fix {
             transition: margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
             z-index: 3;
             font-size: 2.65vh;
-            height: 82vh;
+            height: 100%;
         }
 
         .side_panel_background_color {
@@ -1311,11 +1318,11 @@
 
         .side_panel_fix_top_2,
         .side_panel_fix_top {
-            height: 42vh;
+            height: 42%;
         }
 
         .side_panel_fix_top_2 {
-            height: 42vh;
+            height: 42%;
             transform: translateY(-65%);
         }
 
@@ -1325,7 +1332,7 @@
         }
 
         .side_panel_fix_center {
-            height: 42vh;
+            height: 42%;
             transform: translateY(-118%);
         }
 
@@ -1370,10 +1377,10 @@
         }
 
         .side_panel_new_icons_text_holder {
-            padding-left: 8vh;
+            padding-left: 20%;
             width: auto;
             text-align: left;
-            font-size: 3.325vh;
+            font-size: 1.1em;
         }
 
         .side_panel_new_icons_text {
@@ -1520,11 +1527,13 @@
         .streams_div {
             margin-left: 4.6%;
             width: 94.5%;
+            height: 100%;
         }
 
         .streams_game_div {
             margin-left: 6.75%;
             width: 94.5%;
+            height: 100%;
         }
 
         .exit_player_embed {
