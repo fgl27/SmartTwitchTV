@@ -3915,7 +3915,7 @@
         publishVersionCode: 329, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/329/SmartTV_twitch_3_0_329.apk',
         WebVersion: 'December 04 2021',
-        WebTag: 604, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 605, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: "Web Version December 04 2021",
                 changes: [
