@@ -3914,9 +3914,15 @@
         VersionBase: '3.0',
         publishVersionCode: 329, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/329/SmartTV_twitch_3_0_329.apk',
-        WebVersion: 'September 12 2021',
-        WebTag: 603, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'December 04 2021',
+        WebTag: 604, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: "Web Version December 04 2021",
+                changes: [
+                    "Minor improve to screen aspect ratio, only improves on some devices that have issues, if you didn't had an screen size/aspect ratio  issue before and now you have please inform, contact inf in the about of the app"
+                ]
+            },
+            {
                 title: "Web Version September 12 2021",
                 changes: [
                     "Allow to control audio and volumes for all types of players"
