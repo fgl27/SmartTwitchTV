@@ -9,6 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version December 04 2021
+==============
+
+* Minor improve to screen aspect ratio, only improves on some devices that have issues, if you didn't had an screen size/aspect ratio  issue before and now you have please inform, contact inf in the about of the app
+
+
 Web Version September 12 2021
 ==============
 
