@@ -1749,10 +1749,12 @@ function Settings_handleKeyDownCodecsRight() {
 
 
 function Settings_handleKeyDownCodecs(event) {
+    //console.log('event.keyCode ' + event.keyCode);
     switch (event.keyCode) {
         case KEY_ENTER:
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
+            Settings_handleKeyDownReturn();
             break;
         case KEY_LEFT:
             Settings_handleKeyDownCodecsLeft();
