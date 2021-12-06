@@ -16,6 +16,7 @@ Featured request list
 * **[Feature Request - Sort Twitch channel emotes to the top of the Twitch emotes category](https://github.com/fgl27/SmartTwitchTV/issues/72)** ... something not supported today re check on the future to see if supported
 * **[Feature Request - Highlight keywords in chat](https://github.com/fgl27/SmartTwitchTV/issues/69)** & **[Feature Request - Blacklist user or message](https://github.com/fgl27/SmartTwitchTV/issues/83)** ... this needs a UI that allow to add, edit and remove strings to filter, that UI can be used for different things filter chat, filter content games or channels etc related.
 * **See if is possible to add support for closed captions** (requested via EMAIL), Channel Ezekiel_III uses an OBS plugin that sends the closed captions into Twitch's interface, verify if is possible to get that info and use in the app.
+* **Workaround for devices without PP or Multistream capability (low number of codec instances)** (requested via EMAIL), Multiplayer settings workaround section, contain a option that allows to use HW codec for the main player and SW codec for the others, probably will only work OK if the player resolutions are low.
 
 Issues list
 ==============
