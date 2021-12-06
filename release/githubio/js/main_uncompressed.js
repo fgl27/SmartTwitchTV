@@ -11901,7 +11901,7 @@
     }
 
     function Main_HideElementWithEle(element) {
-        element.classList.add('hide');
+        if (element) element.classList.add('hide');
     }
 
     function Main_ShowElement(element) {
@@ -11909,7 +11909,7 @@
     }
 
     function Main_ShowElementWithEle(element) {
-        element.classList.remove('hide');
+        if (element) element.classList.remove('hide');
     }
 
     function Main_isElementShowing(element) {
@@ -11917,7 +11917,7 @@
     }
 
     function Main_isElementShowingWithEle(element) {
-        return !Main_A_includes_B(element.className, 'hide');
+        return !Main_A_includes_B(element ? element.className : '', 'hide');
     }
 
     function Main_AddClass(element, mclass) {
@@ -11933,23 +11933,23 @@
     }
 
     function Main_RemoveClassWithEle(element, mclass) {
-        element.classList.remove(mclass);
+        if (element) element.classList.remove(mclass);
     }
 
     function Main_innerHTML(div, value) {
         Main_innerHTMLWithEle(Main_getElementById(div), value);
     }
 
-    function Main_innerHTMLWithEle(ele, value) {
-        ele.innerHTML = value;
+    function Main_innerHTMLWithEle(elem, value) {
+        if (elem) elem.innerHTML = value;
     }
 
     function Main_textContent(div, value) {
         Main_textContentWithEle(Main_getElementById(div), value);
     }
 
-    function Main_textContentWithEle(ele, value) {
-        ele.textContent = value;
+    function Main_textContentWithEle(elem, value) {
+        if (elem) elem.textContent = value;
     }
 
     function Main_RemoveElement(ele) {
@@ -12707,7 +12707,9 @@
     }
 
     function Main_emptyWithEle(el) {
-        while (el.firstChild) el.removeChild(el.firstChild);
+        if (el) {
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
     }
 
     function Main_YRst(y) {
@@ -16712,6 +16714,11 @@
 
     function PlayClip_OpenLiveStream() {
         PlayClip_PreshutdownStream(true);
+        //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+        if (!Main_IsOn_OSInterface) {
+            BrowserTestStopClip();
+        }
+
         Play_OpenFeed(PlayClip_handleKeyDown);
     }
 
@@ -17758,8 +17765,8 @@
         UserLiveFeed_clearHideFeed();
         //Skip transitions when showing end dialog
         UserLiveFeed_FeedHolderDocId.style.transition = 'none';
-        UserLiveFeed_ShowFeed();
         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+        UserLiveFeed_ShowFeed();
 
         if (Settings_Obj_default("app_animations")) {
             Main_setTimeout(
