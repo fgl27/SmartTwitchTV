@@ -592,8 +592,8 @@ function Play_showEndDialog(PlayVodClip) {
     UserLiveFeed_clearHideFeed();
     //Skip transitions when showing end dialog
     UserLiveFeed_FeedHolderDocId.style.transition = 'none';
-    UserLiveFeed_ShowFeed();
     UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
+    UserLiveFeed_ShowFeed();
 
     if (Settings_Obj_default("app_animations")) {
         Main_setTimeout(

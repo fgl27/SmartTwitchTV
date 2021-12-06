@@ -670,6 +670,11 @@ function PlayClip_CheckIfIsLiveStart() {
 
 function PlayClip_OpenLiveStream() {
     PlayClip_PreshutdownStream(true);
+    //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestStopClip();
+    }
+
     Play_OpenFeed(PlayClip_handleKeyDown);
 }
 
