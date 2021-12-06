@@ -1,3 +1,5 @@
+# Priority resolve [Migration legacy v5 to new Twitch API](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/TODO.md#migration-legacy-v5-to-new-twitch-api)
+
 Project TODO, featured request, ideas and etc related list
 ==============
 
