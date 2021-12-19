@@ -29444,15 +29444,21 @@
     }
 
     function Screens_KeyUpDownClick(key, y) {
+
         if (y > 0) {
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(y, key);
         } else {
             //Prevent scroll too fast out of ScreenObj[key].Cells.length
             //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
             if (ScreenObj[key].dataEnded ||
-                (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1)) {
+                (ScreenObj[key].Cells.length - 1) >= (ScreenObj[key].posY + 1) || //banner
+                (ScreenObj[key].BannerCreated &&
+                    ScreenObj[key].itemsCount === 1 &&
+                    ScreenObj[key].HasSwitches && ScreenObj[key].posY > -1)) {
+
                 if (Screens_ChangeFocusAnimationFinished) Screens_KeyUpDown(y, key);
             } else {
+
                 Screens_addFocus(true, key);
             }
         }
