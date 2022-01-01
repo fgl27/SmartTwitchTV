@@ -3806,6 +3806,18 @@
         document.body.style.height = currentHeight + 'px';
         document.body.style.fontSize = BodyfontSize + 'px';
         BrowserTestSetVideoSize();
+
+        var ele = document.getElementById('settings_scroll');
+        if (ele) {
+            ele.style.fontSize = (currentHeight * 0.0267) + 'px';
+        }
+
+        var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}';
+
+        Main_innerHTML(
+            'vh_class',
+            cssClass
+        );
     }
 
     //Do the calculation and changes on proper events call
@@ -35651,7 +35663,7 @@
 
     function Settings_ScrollTable() {
         var scroolPos = 13,
-            offset = 0;
+            offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
         if (Settings_CurY < Settings_cursorY && Settings_cursorY === (scroolPos + offset)) {
 

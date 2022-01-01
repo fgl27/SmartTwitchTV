@@ -58,6 +58,7 @@ function calculateFontSize() {
     document.body.style.fontSize = BodyfontSize + 'px';
     BrowserTestSetVideoSize();
 
+    //Some sizes are based on VH but some devices have a wrong value for CSS vh
     var ele = document.getElementById('settings_scroll');
     if (ele) {
         ele.style.fontSize = (currentHeight * 0.0267) + 'px';
