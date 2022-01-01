@@ -1548,7 +1548,7 @@ function Settings_ScrollUp() {
 }
 
 function Settings_ScrollTable() {
-    var scroolPos = 12,
+    var scroolPos = 13,
         offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
 
     if (Settings_CurY < Settings_cursorY && Settings_cursorY === (scroolPos + offset)) {
