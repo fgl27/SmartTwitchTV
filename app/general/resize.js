@@ -57,6 +57,18 @@ function calculateFontSize() {
     document.body.style.height = currentHeight + 'px';
     document.body.style.fontSize = BodyfontSize + 'px';
     BrowserTestSetVideoSize();
+
+    var ele = document.getElementById('settings_scroll');
+    if (ele) {
+        ele.style.fontSize = (currentHeight * 0.0267) + 'px';
+    }
+
+    var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}';
+
+    Main_innerHTML(
+        'vh_class',
+        cssClass
+    );
 }
 
 //Do the calculation and changes on proper events call
