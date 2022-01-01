@@ -1708,7 +1708,7 @@
         STR_HIDE_ETC_HELP_INFO = "Hide on-screen navigation tips";
         STR_HIDE_ETC_HELP_INFO_SUMMARY = "Navigation tips, such as 'Hold a key for an action' and related.";
         STR_INACTIVE_SETTINGS = "Automatically minimize the app when inactive for";
-        STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from being run when no one is using it. A warning will show up, giving the user 15 seconds to press any key to prevent the minimizing.";
+        STR_INACTIVE_SETTINGS_SUMMARY = "Prevent the app from keep running when no one is watching it. A warning will show up, giving the user 15 seconds to press any key to prevent the minimizing.";
         STR_INACTIVE_WARNING = "The app will auto minimize due to inactivity in<br><br>%x<br><br>Press any key to cancel";
         STR_REMAINING = "Remaining:";
         STR_PLAYER_INFO_VISIBILITY = "Player status visibility";
@@ -35651,7 +35651,7 @@
 
     function Settings_ScrollTable() {
         var scroolPos = 13,
-            offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
+            offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 2 : 0;
 
         if (Settings_CurY < Settings_cursorY && Settings_cursorY === (scroolPos + offset)) {
 
