@@ -708,6 +708,13 @@ function Chat_loadChatNextError(id) {
 function Chat_NoVod() {
     Chat_Clear();
     Chat_SingleLine(STR_NO_BROADCAST_WARNING + STR_BR + STR_NO_CHAT);
+
+
+    if (!Main_IsOn_OSInterface) {
+
+        Chat_StartFakeClock();
+
+    }
 }
 
 function Chat_Disable() {

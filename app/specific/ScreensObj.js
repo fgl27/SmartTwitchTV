@@ -1586,7 +1586,7 @@ function ScreensObj_InitChannelClip() {
             this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel_id) + '&first=' + Main_ItemsLimitMax +
                 ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
 
-            console.log(this.url);
+            //console.log(this.url);
         },
         SetPeriod: function() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -2391,7 +2391,7 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
             null,//5
             cell.broadcaster_name,//6
             cell.id,//7
-            (cell.video_id !== null ? cell.video_id : null),//8
+            (cell.video_id && cell.video_id !== "" ? cell.video_id : null),//8
             (cell.vod !== null ? -1 : null),//9
             twemoji.parse(cell.title),//10
             '[' + cell.language.toUpperCase() + ']',//11

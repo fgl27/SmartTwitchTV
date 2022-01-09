@@ -41,7 +41,7 @@ var PlayClip_All = false;
 
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
 var PlayClip_postMessage = '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';
-var PlayClip_videoOffsetSeconds = '{"query":"{clip(slug:\\"%x\\"){game{displayName},videoOffsetSeconds,broadcaster{roles{isPartner},displayName,profileImageURL(width: 300)}}}"}';
+var PlayClip_ExtraClipInfo = '{"query":"{clip(slug:\\"%x\\"){game{displayName},videoOffsetSeconds,broadcaster{roles{isPartner},displayName,profileImageURL(width: 300)}}}"}';
 
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
@@ -235,7 +235,7 @@ function PlayClip_loadVodOffsetStartVod() {
         0,
         PlayClip_loadVodOffsetStartVodId,
         'POST',//Method, null for get
-        PlayClip_videoOffsetSeconds.replace('%x', ChannelClip_playUrl)
+        PlayClip_ExtraClipInfo.replace('%x', ChannelClip_playUrl)
     );
 }
 
@@ -272,7 +272,7 @@ function PlayClip_loadVodOffsett() {
         0,
         PlayClip_loadVodOffsettId,
         'POST',//Method, null for get
-        PlayClip_videoOffsetSeconds.replace('%x', ChannelClip_playUrl)
+        PlayClip_ExtraClipInfo.replace('%x', ChannelClip_playUrl)
     );
 }
 
@@ -291,6 +291,8 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                     ChannelVod_vodOffset = clip.videoOffsetSeconds;
                     Chat_offset = ChannelVod_vodOffset;
                     Chat_Init();
+                } else {
+                    Chat_NoVod();
                 }
 
                 if (clip.game && clip.game.displayName) {
@@ -319,10 +321,8 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
             }
 
 
-            return;
-        }
 
-        Chat_NoVod();
+        }
 
     }
 
