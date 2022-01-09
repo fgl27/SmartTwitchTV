@@ -20,6 +20,8 @@
 
 package com.fgl27.twitch;
 
+import static com.google.gson.JsonParser.parseString;
+
 import android.Manifest;
 import android.app.ActivityManager;
 import android.app.UiModeManager;
@@ -102,8 +104,6 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static com.google.gson.JsonParser.parseString;
 
 public final class Tools {
 
@@ -746,7 +746,9 @@ public final class Tools {
     }
 
     static boolean WR_storage(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return false;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_GRANTED;
         } else return true;

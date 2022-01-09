@@ -20,6 +20,9 @@
 
 package com.fgl27.twitch.notification;
 
+import static com.fgl27.twitch.Tools.getBoolean;
+import static com.google.gson.JsonParser.parseString;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.NotificationChannel;
@@ -28,6 +31,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -66,9 +70,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
-
-import static com.fgl27.twitch.Tools.getBoolean;
-import static com.google.gson.JsonParser.parseString;
 
 public final class NotificationUtils {
 
@@ -899,7 +900,9 @@ public final class NotificationUtils {
     }
 
     public static boolean StartNotificationService(AppPreferences appPreferences) {
-        return getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
+        //https://developer.android.com/about/versions/11/behavior-changes-11#toasts
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.R &&
+                getBoolean(Constants.PREF_NOTIFICATION_BACKGROUND, false, appPreferences) &&
                 Tools.getString(Constants.PREF_USER_ID, null, appPreferences) != null;
     }
 
