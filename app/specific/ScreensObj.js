@@ -603,7 +603,7 @@ function ScreensObj_StartAllVars() {
     };
 
     Base_Clip_obj = {
-        HeadersArray: Main_base_array_header,
+        HeadersArray: Main_Bearer_Headers,
         ItemsLimit: Main_ItemsLimitVideo,
         TopRowCreated: false,
         ItemsReloadLimit: Main_ItemsReloadLimitVideo,
@@ -615,7 +615,7 @@ function ScreensObj_StartAllVars() {
         screenType: 2,
         cursor: null,
         OldUserName: '',
-        object: 'clips',
+        object: 'data',
         period: ['day', 'week', 'month', 'all'],
         img_404: IMG_404_VOD,
         setTODialog: function() {
@@ -634,8 +634,13 @@ function ScreensObj_StartAllVars() {
             );
         },
         setMax: function(tempObj) {
-            this.cursor = tempObj._cursor;
-            if (this.cursor === '') this.dataEnded = true;
+            if (this.useHelix) {
+                this.cursor = tempObj.pagination.cursor;
+                if (!this.cursor) this.dataEnded = true;
+            } else {
+                this.cursor = tempObj._cursor;
+                if (this.cursor === '') this.dataEnded = true;
+            }
         },
         key_play: function() {
 
@@ -1560,6 +1565,8 @@ function ScreensObj_InitClip() {
     }, Base_obj);
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Clip_obj);
+    ScreenObj[key].HeadersArray = Main_base_array_header;
+    ScreenObj[key].object = 'clips';
     ScreenObj[key].Set_Scroll();
 }
 
@@ -1567,17 +1574,19 @@ function ScreensObj_InitChannelClip() {
     var key = Main_ChannelClip;
 
     ScreenObj[key] = Screens_assign({
+        useHelix: true,
         ids: Screens_ScreenIds('ChannelClip', key),
         ScreenName: 'ChannelClip',
         table: 'stream_table_channel_clip',
         screen: key,
         key_pgUp: Main_ChannelVod,
         periodPos: Main_getItemInt('ChannelClip_periodPos', 2),
-        base_url: Main_kraken_api + 'clips/top?channel=',
+        base_url: Main_helix_api + 'clips?broadcaster_id=',
         set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel) +
-                '&limit=' + Main_ItemsLimitMax + '&period=' +
-                this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '');
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_selectedChannel_id) + '&first=' + Main_ItemsLimitMax +
+                ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
+
+            console.log(this.url);
         },
         SetPeriod: function() {
             Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -1647,8 +1656,6 @@ function ScreensObj_InitAGameClip() {
     }, Base_obj);
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Clip_obj);
-    ScreenObj[key].HeadersArray = Main_Bearer_Headers;
-    ScreenObj[key].object = 'data';
     ScreenObj[key].Set_Scroll();
 }
 
@@ -2385,7 +2392,7 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
             cell.broadcaster_name,//6
             cell.id,//7
             (cell.video_id !== null ? cell.video_id : null),//8
-            '',//9
+            null,//9
             twemoji.parse(cell.title),//10
             '[' + cell.language.toUpperCase() + ']',//11
             cell.created_at,//12

@@ -4646,6 +4646,8 @@ function Play_PreStart() {
     Play_SetChatFont();
     //set base strings that don't change
 
+    //Check expires_in
+    //curl -H 'Authorization: Bearer 7mbu7j6salqzlwgtp69r48numrc8ey' -X GET https://id.twitch.tv/oauth2/validate
     var Bearer = 'Bearer 7mbu7j6salqzlwgtp69r48numrc8ey';
     var Bearer_Header = 'Authorization';
     var clientIdHeader = 'Client-ID';
