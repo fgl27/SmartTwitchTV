@@ -4646,6 +4646,8 @@ function Play_PreStart() {
     Play_SetChatFont();
     //set base strings that don't change
 
+    var Bearer = 'Bearer 7mbu7j6salqzlwgtp69r48numrc8ey';
+    var Bearer_Header = 'Authorization';
     var clientIdHeader = 'Client-ID';
     var AcceptHeader = 'Accept';
     var TwitchV5Json = 'application/vnd.twitchtv.v5+json';
@@ -4660,6 +4662,11 @@ function Play_PreStart() {
         [clientIdHeader, AddCode_backup_client_id],
         [AcceptHeader, TwitchV5Json],
         [Main_Authorization, null]
+    ];
+
+    Main_Bearer_Headers = [
+        [clientIdHeader, AddCode_clientId],
+        [Bearer_Header, Bearer]
     ];
 
     Play_base_backup_headers_Array = [

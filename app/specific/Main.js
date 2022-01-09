@@ -130,9 +130,11 @@ var Main_PreventCheckResume = false;
 
 var Main_base_string_header;
 var Main_base_array_header;
+var Main_Bearer_Headers = [];
 var Main_Headers = [];
 var Main_Headers_Backup = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
+var Main_helix_api = 'https://api.twitch.tv/helix/';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
 var Main_TwithcV5Flag = '&api_version=5';
@@ -141,6 +143,7 @@ var Main_TwithcV5Flag_I = '?api_version=5';
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
 
+var Main_Periods_Helix = [0, 1, 7, 30, 0];
 var Main_update_show_toast = false;
 var Main_IsOn_OSInterfaceVersion = '';
 var Main_ClockOffset = 0;

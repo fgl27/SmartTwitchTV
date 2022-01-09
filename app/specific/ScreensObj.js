@@ -203,6 +203,8 @@ function ScreensObj_StartAllVars() {
                     this.Lang
                 );
             }
+
+            //console.log(this.data)
         },
         setBackupData: function(responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
 
@@ -664,15 +666,17 @@ function ScreensObj_StartAllVars() {
         },
         Cells: [],
         addCell: function(cell) {
-            if (!this.idObject[cell.tracking_id]) {
+            var idValue = this.useHelix ? cell.id : cell.tracking_id;
+
+            if (!this.idObject[idValue]) {
                 this.itemsCount++;
-                this.idObject[cell.tracking_id] = 1;
+                this.idObject[idValue] = 1;
 
                 this.tempHtml +=
                     Screens_createCellClip(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
-                        ScreensObj_ClipCellArray(cell),
+                        ScreensObj_ClipCellArray(cell, this.useHelix),
                         this.screen
                     );
 
@@ -1603,6 +1607,7 @@ function ScreensObj_InitAGameClip() {
     var key = Main_AGameClip;
 
     ScreenObj[key] = Screens_assign({
+        useHelix: true,
         ids: Screens_ScreenIds('AGameClip', key),
         ScreenName: 'AGameClip',
         table: 'stream_table_a_game_clip',
@@ -1613,12 +1618,13 @@ function ScreensObj_InitAGameClip() {
         ContentLang: '',
         hasBackupData: true,
         periodPos: Main_getItemInt('AGameClip_periodPos', 2),
-        base_url: Main_kraken_api + 'clips/top?game=',
+        base_url: Main_helix_api + 'clips?game_id=',
         set_url: function() {
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) + '&limit=' + Main_ItemsLimitMax +
-                '&period=' + this.period[this.periodPos - 1] + (this.cursor ? '&cursor=' + this.cursor : '') +
-                (Main_ContentLang !== "" ?
-                    ('&language=' + (Languages_Extra[Main_ContentLang] ? Languages_Extra[Main_ContentLang] : Main_ContentLang)) : '');
+
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected_id) + '&first=' + Main_ItemsLimitMax +
+                ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
+
+            //console.log(this.url);
         },
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
@@ -1641,6 +1647,8 @@ function ScreensObj_InitAGameClip() {
     }, Base_obj);
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Clip_obj);
+    ScreenObj[key].HeadersArray = Main_Bearer_Headers;
+    ScreenObj[key].object = 'data';
     ScreenObj[key].Set_Scroll();
 }
 
@@ -2334,7 +2342,62 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
-function ScreensObj_ClipCellArray(cell) {
+function ScreensObj_ClipGetPeriod(periodPos) {
+    if (periodPos === 4) return '';
+
+    var date = '',
+        today = new Date(),
+        newDate = today,
+        day = today.getDate(),
+        month = today.getMonth() + 1,
+        year = today.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+    dayEnd = '&ended_at=' + year + '-' + month + '-' + day + 'T23:59:59Z';
+
+    newDate.setDate(newDate.getDate() - Main_Periods_Helix[periodPos]);
+    day = newDate.getDate();
+    month = newDate.getMonth() + 1;
+    year = newDate.getFullYear();
+
+    if (day < 10) day = '0' + day;
+    if (month < 10) month = '0' + month;
+
+    date = '&started_at=' + year + '-' + month + '-' + day + 'T00:00:00Z';
+
+    date += dayEnd;
+
+    return date;
+}
+
+function ScreensObj_ClipCellArray(cell, useHelix) {
+
+    if (useHelix) {
+
+        return [
+            cell.id,//0
+            cell.duration,//1
+            cell.broadcaster_id,//2
+            '',//3
+            cell.broadcaster_name,//6
+            '',//5
+            cell.broadcaster_name,//6
+            cell.id,//7
+            (cell.video_id !== null ? cell.video_id : null),//8
+            '',//9
+            twemoji.parse(cell.title),//10
+            '[' + cell.language.toUpperCase() + ']',//11
+            cell.created_at,//12
+            cell.view_count,//13
+            Main_addCommas(cell.view_count),//14
+            cell.thumbnail_url,//15
+            Main_videoCreatedAt(cell.created_at),//16
+            cell.language//17
+        ];
+
+    }
+
     return [
         cell.slug,//0
         cell.duration,//1

@@ -412,7 +412,6 @@ function Screens_loadDataRequest(key) {
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
-
     if (resultObj.status === 200) {
 
         //console.log(resultObj.responseText);
