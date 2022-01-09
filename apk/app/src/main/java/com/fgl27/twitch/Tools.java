@@ -740,7 +740,7 @@ public final class Tools {
 
             return result;
         } catch (FileNotFoundException e) {
-            recordException(TAG, "RestoreBakupFile FileNotFoundException ", e);
+            recordException(TAG, "RestoreBackupFile FileNotFoundException ", e);
         }
         return null;
     }
