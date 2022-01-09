@@ -644,7 +644,7 @@ function Screens_createCellGame(id, idArray, valuesArray, key) {
 
 function Screens_createCellClip(id, idArray, valuesArray, key, Extra_when, Extra_until) {
 
-    var playing = (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
+    var playing = (valuesArray[3] && valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "");
     ScreenObj[key].DataObj[id] = valuesArray;
 
     return '<div id="' + idArray[3] + id + '" class="' + ScreenObj[key].thumbclass +

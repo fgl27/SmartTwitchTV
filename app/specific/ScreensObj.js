@@ -2361,7 +2361,7 @@ function ScreensObj_ClipGetPeriod(periodPos) {
 
     if (day < 10) day = '0' + day;
     if (month < 10) month = '0' + month;
-    dayEnd = '&ended_at=' + year + '-' + month + '-' + day + 'T23:59:59Z';
+    var dayEnd = '&ended_at=' + year + '-' + month + '-' + day + 'T23:59:59Z';
 
     newDate.setDate(newDate.getDate() - Main_Periods_Helix[periodPos]);
     day = newDate.getDate();
@@ -2386,13 +2386,13 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
             cell.id,//0
             cell.duration,//1
             cell.broadcaster_id,//2
-            '',//3
+            null,//3
             cell.broadcaster_name,//6
-            '',//5
+            null,//5
             cell.broadcaster_name,//6
             cell.id,//7
             (cell.video_id !== null ? cell.video_id : null),//8
-            null,//9
+            (cell.vod !== null ? -1 : null),//9
             twemoji.parse(cell.title),//10
             '[' + cell.language.toUpperCase() + ']',//11
             cell.created_at,//12

@@ -712,4 +712,5 @@ function pt_BRLang() {
     STR_DISABLE_EMBED = "Habilitar Live e Vod Twitch player";
     STR_DISABLE_EMBED_SUMMARY = "Isso só é necessário desativar se você quiser ver o player usado em TVs para verificar suas strings e layout por motivos de teste";
     STR_SPECIAL_FEATURE = "Use o teclado para este recurso";
+    STR_FAIL_VOD_INFO = "Falha ao carregar a informação do Video";
 }
