@@ -18305,6 +18305,7 @@
             Main_HideElement('play_dialog_retry');
 
             Play_StartStayShowBottom();
+            Play_StopStay();
             Play_SetControlsVisibility('ShowInLive');
             Play_data.AutoUrl = responseObj.url;
             Play_loadDataSuccessEnd(responseObj.responseText, false, true);
