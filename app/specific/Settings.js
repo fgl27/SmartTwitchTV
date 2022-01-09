@@ -2166,12 +2166,6 @@ function Settings_DialogShowNotification(click) {
             title: STR_GAME_CHANGE_SHOW,
             summary: null
         },
-        live_notification_background: {
-            defaultValue: Settings_value.live_notification_background.defaultValue,
-            values: Settings_value.live_notification_background.values,
-            title: STR_NOW_BACKGROUND,
-            summary: STR_NOW_BACKGROUND_SUMMARY
-        },
         live_notification_position: {
             defaultValue: Settings_value.live_notification_position.defaultValue,
             values: Settings_value.live_notification_position.values,
@@ -2192,6 +2186,14 @@ function Settings_DialogShowNotification(click) {
         }
     };
 
+    if (!Main_IsOn_OSInterface || OSInterface_getSDK() < 30) {
+        obj.live_notification_background = {
+            defaultValue: Settings_value.live_notification_background.defaultValue,
+            values: Settings_value.live_notification_background.values,
+            title: STR_NOW_BACKGROUND,
+            summary: STR_NOW_BACKGROUND_SUMMARY
+        };
+    }
 
     Settings_DialogShow(obj, STR_NOTIFICATION_OPT, click);
 }
