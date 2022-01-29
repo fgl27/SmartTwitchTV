@@ -296,7 +296,7 @@ function ChannelContent_createCell(valuesArray) {
         '<div id="channel_content_cell0_5" class="stream_info_live">' +
         (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
         '</div>' + '<div class="stream_info_live">' +
-        valuesArray[11] + valuesArray[4] + '</div></div></div>');
+        STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + '</div></div></div>');
 }
 
 function ChannelContent_createCellOffline() {
