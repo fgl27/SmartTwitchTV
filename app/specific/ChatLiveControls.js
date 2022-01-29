@@ -979,7 +979,6 @@ function ChatLiveControls_SetarrowsKey(key) {
 }
 
 function ChatLiveControls_Optionshide() {
-    Settings_RemoveinputFocusKey(OptionsShowArray[ChatLiveControls_OptionsY]);
     Main_HideElement('chat_options');
     Main_removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
     Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
