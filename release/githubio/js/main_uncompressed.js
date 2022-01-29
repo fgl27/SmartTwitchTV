@@ -1218,7 +1218,7 @@
         STR_OAUTH_FAIL_USER = "The added key doesn't belong to the user";
         STR_NOKEY = "No user";
         STR_NOKEY_WARN = "Set user and an authorization key to be able to follow/unfollow";
-        STR_FOLLOW_ISSUE = "Third party apps can no longer follow/unfollow channels";
+        STR_FOLLOW_ISSUE = "Third party apps can no longer follow/unfollow channels (The button can only show if you follow)";
         STR_NOKUSER_WARN = "Add a user first";
         STR_RESET = "Restart the";
         STR_CLIP = "Clip";
@@ -2451,7 +2451,7 @@
         STR_OAUTH_FAIL_USER = "A chave adicionada não pertence a este usuário";
         STR_NOKEY = "Nenhum usuário";
         STR_NOKEY_WARN = "Definir usuário e uma chave de autorização para poder seguir/deixar de seguir";
-        STR_FOLLOW_ISSUE = "Aplicativos de terceiros não podem mais seguir ou parar de seguir canais";
+        STR_FOLLOW_ISSUE = "Aplicativos de terceiros não podem mais seguir ou parar de seguir canais (o botão pode apenas mostrar se é seguidor)";
         STR_NOKUSER_WARN = "Adicionar um usuário primeiro";
         STR_RESET = "Reinicie o";
         STR_CLIP = "Clipe";
@@ -6904,7 +6904,7 @@
             '<div id="channel_content_cell0_5" class="stream_info_live">' +
             (valuesArray[3] !== "" ? STR_PLAYING + valuesArray[3] : "") +
             '</div>' + '<div class="stream_info_live">' +
-            valuesArray[11] + valuesArray[4] + '</div></div></div>');
+            STR_SINCE + valuesArray[11] + STR_SPACE_HTML + STR_FOR + valuesArray[4] + '</div></div></div>');
     }
 
     function ChannelContent_createCellOffline() {
@@ -8352,7 +8352,6 @@
     }
 
     function ChatLiveControls_Optionshide() {
-        Settings_RemoveinputFocusKey(OptionsShowArray[ChatLiveControls_OptionsY]);
         Main_HideElement('chat_options');
         Main_removeEventListener("keydown", ChatLiveControls_OptionsKeyDown);
         Main_addEventListener("keydown", ChatLiveControls_handleKeyDown);
@@ -36284,12 +36283,6 @@
                 title: STR_GAME_CHANGE_SHOW,
                 summary: null
             },
-            live_notification_background: {
-                defaultValue: Settings_value.live_notification_background.defaultValue,
-                values: Settings_value.live_notification_background.values,
-                title: STR_NOW_BACKGROUND,
-                summary: STR_NOW_BACKGROUND_SUMMARY
-            },
             live_notification_position: {
                 defaultValue: Settings_value.live_notification_position.defaultValue,
                 values: Settings_value.live_notification_position.values,
@@ -36310,6 +36303,14 @@
             }
         };
 
+        if (!Main_IsOn_OSInterface || OSInterface_getSDK() < 30) {
+            obj.live_notification_background = {
+                defaultValue: Settings_value.live_notification_background.defaultValue,
+                values: Settings_value.live_notification_background.values,
+                title: STR_NOW_BACKGROUND,
+                summary: STR_NOW_BACKGROUND_SUMMARY
+            };
+        }
 
         Settings_DialogShow(obj, STR_NOTIFICATION_OPT, click);
     }
