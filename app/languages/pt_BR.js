@@ -192,7 +192,7 @@ function pt_BRLang() {
     STR_OAUTH_FAIL_USER = "A chave adicionada não pertence a este usuário";
     STR_NOKEY = "Nenhum usuário";
     STR_NOKEY_WARN = "Definir usuário e uma chave de autorização para poder seguir/deixar de seguir";
-    STR_FOLLOW_ISSUE = "Aplicativos de terceiros não podem mais seguir ou parar de seguir canais";
+    STR_FOLLOW_ISSUE = "Aplicativos de terceiros não podem mais seguir ou parar de seguir canais (o botão pode apenas mostrar se é seguidor)";
     STR_NOKUSER_WARN = "Adicionar um usuário primeiro";
     STR_RESET = "Reinicie o";
     STR_CLIP = "Clipe";
