@@ -315,7 +315,7 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                     Play_LoadLogo(Main_getElementById('stream_info_icon'), clip.broadcaster.profileImageURL);
 
                     Main_values.Main_selectedChannelDisplayname = clip.broadcaster.displayName;
-                    Main_values.Main_selectedChannelDisplayname = clip.broadcaster.roles.isPartner;
+                    Main_values.Main_selectedChannelPartner = clip.broadcaster.roles.isPartner;
                 }
 
             }
