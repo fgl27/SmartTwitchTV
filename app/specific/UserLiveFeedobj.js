@@ -33,14 +33,14 @@ var UserLiveFeedobj_UserVodPos = 9;
 var UserLiveFeedobj_UserVodHistoryPos = 10;
 
 var UserLiveFeedobj_FeedSort = [
-    [null, 'viewers', 0],//0
-    [null, 'viewers', 1],//1
-    ['channel', 'name', 1],//2
-    ['channel', 'name', 0],//3
-    [null, 'game', 1],//4
-    [null, 'game', 0],//5
-    [null, 'created_at', 0],//6
-    [null, 'created_at', 1]//7
+    [null, 'viewer_count', 0],//0
+    [null, 'viewer_count', 1],//1
+    [null, 'user_login', 1],//2
+    [null, 'user_login', 0],//3
+    [null, 'game_name', 1],//4
+    [null, 'game_name', 0],//5
+    [null, 'started_at', 0],//6
+    [null, 'started_at', 1]//7
 ];
 
 // var UserLiveFeedobj_FeedSortGames = [
@@ -145,7 +145,7 @@ function UserLiveFeedobj_CheckToken() {
 
     if (UserLiveFeed_token) {
 
-        UserLiveFeed_token = Main_OAuth + UserLiveFeed_token;
+        UserLiveFeed_token = Bearer + UserLiveFeed_token;
         UserLiveFeedobj_loadChannelUserLive();
 
     } else {
@@ -277,14 +277,8 @@ function UserLiveFeedobj_loadChannelLiveEnd() {
 
 function UserLiveFeedobj_loadChannelUserLive() {
     //Main_Log('UserLiveFeedobj_loadChannelUserLive');
-    var theUrl = Main_kraken_api + 'streams/';
-
-    if (UserLiveFeed_token) {
-        theUrl += 'followed?';
-    } else {
-        theUrl += '?channel=' + UserLiveFeed_followerChannels.join() + '&';
-    }
-    theUrl += 'limit=100&offset=0&stream_type=all' + Main_TwithcV5Flag;
+    var theUrl = Main_helix_api + 'streams/followed?user_id=' +
+        AddUser_UsernameArray[0].id + '&first=100';
 
     UserLiveFeedobj_loadChannelUserLiveGet(theUrl);
 }
@@ -1197,7 +1191,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
         i = 0,
         itemsCount = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
-    response = response.streams;
+    response = response.data;
     response_items = response.length;
 
     if (response_items) {
@@ -1236,12 +1230,12 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 
         for (i; i < response_items; i++) {
             stream = response[i];
-            id = stream.channel._id;
+            id = stream.user_id;
 
             if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
 
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream);
+                mArray = ScreensObj_LiveCellArray(stream, true);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
