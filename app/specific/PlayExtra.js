@@ -434,7 +434,11 @@ function PlayExtra_UpdatePanel() {
             Play_data.data[8]
         )
     );
-    Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
+    if (Play_data.data[9]) {
+        Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
+    } else {
+        PlayExtra_updateStreamLogo(Play_data.data[14], 0);
+    }
 
     Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
@@ -453,7 +457,13 @@ function PlayExtra_UpdatePanel() {
             PlayExtra_data.data[8]
         )
     );
-    Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+
+    if (PlayExtra_data.data[9]) {
+        Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+    } else {
+        PlayExtra_updateStreamLogo(PlayExtra_data.data[14], 1);
+    }
+
     Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
     Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
@@ -461,6 +471,68 @@ function PlayExtra_UpdatePanel() {
         'stream_info_pp_viewers1',
         STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
     );
+}
+
+var PlayExtra_updateStreamLogoValuesId;
+function PlayExtra_updateStreamLogo(channeiId, main) {
+    PlayExtra_updateStreamLogoValuesId = new Date().getTime();
+    var theUrl = Main_helix_api + 'users?id=' + channeiId;
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayExtra_updateStreamLogoValues,
+        noop_fun,
+        main,
+        PlayExtra_updateStreamLogoValuesId,
+        true
+    );
+}
+
+function PlayExtra_updateStreamLogoValues(responseText, key, id) {
+    var response = JSON.parse(responseText);
+    if (response.data && response.data.length && PlayExtra_updateStreamLogoValuesId === id) {
+        //TODO update this with a API that provides logo and is partner
+        var objData = response.data[0];
+
+        if (!key) {
+            Play_data.data[10] = objData.broadcaster_type === 'partner';
+            Play_data.data[9] = objData.profile_image_url;
+            Main_innerHTML(
+                'stream_info_pp_name0',
+                Play_partnerIcon(
+                    Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+                    Play_data.data[10],
+                    0,
+                    Play_data.data[5] ? ('[' + Play_data.data[5].split('[')[1]) : '',
+                    Play_data.data[8]
+                )
+            );
+
+
+            Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
+        } else {
+            PlayExtra_data.data[10] = objData.broadcaster_type === 'partner';
+            PlayExtra_data.data[9] = objData.profile_image_url;
+
+            Main_innerHTML(
+                'stream_info_pp_name1',
+                Play_partnerIcon(
+                    PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+                    PlayExtra_data.data[10],
+                    0,
+                    PlayExtra_data.data[5] ? ('[' + PlayExtra_data.data[5].split('[')[1]) : '',
+                    PlayExtra_data.data[8]
+                )
+            );
+            Main_getElementById('stream_info_ppimg1').src = PlayExtra_data.data[9];
+
+        }
+
+
+
+    }
 }
 
 function PlayExtra_loadDataFail(Reason) {

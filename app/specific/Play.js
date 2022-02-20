@@ -764,14 +764,14 @@ function Play_updateStreamLogo() {
         Play_updateStreamLogoValues,
         noop_fun,
         null,
-        Play_updateStreamInfoGetId,
+        Play_updateStreamLogoValuesId,
         true
     );
 }
 
-function Play_updateStreamLogoValues(responseText) {
+function Play_updateStreamLogoValues(responseText, key, id) {
     var response = JSON.parse(responseText);
-    if (response.data && response.data.length) {
+    if (response.data && response.data.length && Play_updateStreamLogoValuesId === id) {
         //TODO update this with a API that provides logo and is partner
         var objData = response.data[0];
 
