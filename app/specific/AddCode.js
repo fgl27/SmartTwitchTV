@@ -27,9 +27,8 @@ var AddCode_Channel_id = '';
 var AddCode_Expires_in_offset = 100;
 
 var AddCode_Scopes = [
-    'user_read',
-    'user_follows_edit',
-    'user_subscriptions',
+    'user:read:follows',
+    'user:read:subscriptions',
     'chat:edit',
     'chat:read'
 ];

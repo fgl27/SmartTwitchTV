@@ -2147,12 +2147,11 @@ function HttpGetSetMainHeader() {
         [Bearer_Header, Bearer + AddCode_main_token]
     ];
 
-    console.log(Main_Bearer_Headers)
 }
 
 function HttpGetSetUserHeader() {
 
-    var Main_Bearer_User_Headers = [
+    Main_Bearer_User_Headers = [
         [clientIdHeader, AddCode_clientId],
         [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
     ];

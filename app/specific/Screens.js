@@ -395,10 +395,12 @@ function Screens_loadDataRequest(key) {
         ScreenObj[key].history_concatenate();
 
     } else {
+        var HeadersArray = (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) ?
+            Main_Bearer_User_Headers : Main_Bearer_Headers;
 
         FullxmlHttpGet(
-            (ScreenObj[key].url + Main_TwithcV5Flag),
-            ScreenObj[key].HeadersArray,
+            (ScreenObj[key].url + (ScreenObj[key].useHelix ? '' : Main_TwithcV5Flag)),
+            ScreenObj[key].useHelix ? HeadersArray : ScreenObj[key].HeadersArray,
             Screens_HttpResultStatus,
             noop_fun,
             key,
