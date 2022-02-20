@@ -1449,23 +1449,22 @@ function ScreensObj_InitAGame() {
     var key = Main_aGame;
 
     ScreenObj[key] = Screens_assign({
+        useHelix: true,
         HeadersArray: Main_base_array_header,
         ids: Screens_ScreenIds('AGame', key),
         ScreenName: 'AGame',
         table: 'stream_table_a_game',
         screen: key,
-        object: 'streams',
+        object: 'data',
         CheckContentLang: 1,
         ContentLang: '',
         key_pgDown: Main_Vod,
         key_pgUp: Main_Featured,
         hasBackupData: true,
-        base_url: Main_kraken_api + 'streams?game=',
+        base_url: Main_helix_api + 'streams?game_id=',
         set_url: function() {
-            this.check_offset();
-
-            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected) +
-                '&limit=' + Main_ItemsLimitMax + '&offset=' + this.offset +
+            this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected_id) +
+                '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         label_init: function() {
