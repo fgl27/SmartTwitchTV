@@ -551,21 +551,53 @@ function UserLiveFeedobj_loadCurrentGame() {
         }
 
         if (Play_data.data[17]) {
-            UserLiveFeedobj_BaseLoad(
-                Main_helix_api + 'streams?game_id=' + Play_data.data[17] + '&first=' + Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
-                2,
-                UserLiveFeedobj_loadDataCurrentGameSuccess,
-                true,
-                pos
-            );
+            UserLiveFeedobj_loadCurrentGameGetGames();
+        } else {
+            UserLiveFeedobj_loadCurrentGameGetGameId();
         }
 
     }
 
     UserLiveFeed_obj[pos].isReloadScreen = false;
 
+}
+
+function UserLiveFeedobj_loadCurrentGameGetGames() {
+    UserLiveFeedobj_BaseLoad(
+        Main_helix_api + 'streams?game_id=' + Play_data.data[17] + '&first=' + Main_ItemsLimitMax +
+        (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
+        2,
+        UserLiveFeedobj_loadDataCurrentGameSuccess,
+        true,
+        UserLiveFeedobj_CurrentGamePos
+    );
+}
+
+function UserLiveFeedobj_loadCurrentGameGetGameId() {
+    var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
+
+    UserLiveFeedobj_BaseLoad(
+        theUrl,
+        2,
+        UserLiveFeedobj_loadCurrentGameGetGamesSucess,
+        true,
+        UserLiveFeedobj_CurrentGamePos
+    );
+}
+
+function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
+    var response = JSON.parse(responseText);
+
+    if (response.data && response.data.length) {
+        Play_data.data[17] = response.data[0].id;
+        UserLiveFeedobj_loadCurrentGameGetGames();
+
+    } else {
+
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
+
+    }
 }
 
 function UserLiveFeedobj_oldGameDataLoad(pos, game, key) {
@@ -886,20 +918,56 @@ function UserLiveFeedobj_loadCurrentAGame() {
         }
 
         if (UserLiveFeedobj_CurrentAGameIdEnter) {
-            UserLiveFeedobj_BaseLoad(
-                Main_helix_api + 'streams?game_id=' + UserLiveFeedobj_CurrentAGameIdEnter + '&first=' + Main_ItemsLimitMax +
-                (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
-                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
-                2,
-                UserLiveFeedobj_loadDataCurrentAGameSuccess,
-                true,
-                pos
-            );
+
+            UserLiveFeedobj_loadCurrentAGameGetGames();
+
+        } else {
+
+            UserLiveFeedobj_loadCurrentAGameGetGameId();
+
         }
 
     }
 
     UserLiveFeed_obj[pos].isReloadScreen = false;
+}
+
+function UserLiveFeedobj_loadCurrentAGameGetGames() {
+    UserLiveFeedobj_BaseLoad(
+        Main_helix_api + 'streams?game_id=' + UserLiveFeedobj_CurrentAGameIdEnter + '&first=' + Main_ItemsLimitMax +
+        (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
+        (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
+        2,
+        UserLiveFeedobj_loadDataCurrentAGameSuccess,
+        true,
+        UserLiveFeedobj_AGamesPos
+    );
+}
+
+function UserLiveFeedobj_loadCurrentAGameGetGameId() {
+    var theUrl = Main_helix_api + 'games?name=' + UserLiveFeedobj_CurrentAGameNameEnter;
+
+    UserLiveFeedobj_BaseLoad(
+        theUrl,
+        2,
+        UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess,
+        true,
+        UserLiveFeedobj_AGamesPos
+    );
+}
+
+function UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess(responseText) {
+    var response = JSON.parse(responseText);
+
+    if (response.data && response.data.length) {
+        UserLiveFeedobj_CurrentAGameIdEnter = response.data[0].id;
+        UserLiveFeedobj_loadCurrentAGameGetGames();
+
+    } else {
+
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_AGamesPos);
+
+    }
 }
 
 function UserLiveFeedobj_CurrentAGameCell(cell) {
