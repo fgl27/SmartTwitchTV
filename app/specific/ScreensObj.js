@@ -1333,49 +1333,23 @@ function ScreensObj_InitUserLive() {
     var key = Main_UserLive;
 
     ScreenObj[key] = Screens_assign({
+        useHelix: true,
         UseToken: true,
         ids: Screens_ScreenIds('UserLive', key),
         ScreenName: 'UserLive',
         table: 'stream_table_user_live',
         screen: key,
-        object: 'streams',
+        object: 'data',
         IsUser: true,
         key_pgDown: Main_usergames,
         key_pgUp: Main_HistoryLive,
-        base_url: Main_kraken_api + 'streams/',
+        base_url: Main_helix_api + 'streams/',
         loadChannelOffsset: 0,
         followerChannels: [],
         followerChannelsDone: false,
         set_url: function() {
-            this.check_offset();
-
-            if (AddUser_UsernameArray[0].access_token) {
-                //User has added a key
-                this.UseToken = true;
-                this.token = Main_OAuth + AddUser_UsernameArray[0].access_token;
-                Main_Headers[2][1] = this.token;
-                this.HeadersArray = Main_Headers;
-
-                this.url = this.base_url + 'followed?' + 'limit=' + Main_ItemsLimitMax + '&offset=' +
-                    this.offset + '&stream_type=all';
-            } else {
-                //User didn't added a key
-                this.UseToken = false;
-                this.token = null;
-                this.HeadersArray = Main_base_array_header;
-
-                if (this.followerChannelsDone) {
-                    //User followed channels list is done, load live channels
-                    this.url = this.base_url + '?channel=' + this.followerChannels.join() + '&' +
-                        'limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&stream_type=all';
-                } else {
-                    //User followed channels list is not done, load followed channels
-                    this.url = Main_kraken_api + 'users/' +
-                        encodeURIComponent(AddUser_UsernameArray[0].id) +
-                        '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.loadChannelOffsset +
-                        '&sortby=last_broadcast';
-                }
-            }
+            this.url = this.base_url + 'followed?user_id=' + AddUser_UsernameArray[0].id + '&first=' + Main_ItemsLimitMax +
+                (this.cursor ? '&after=' + this.cursor : '');
         },
         label_init: function() {
             ScreensObj_TopLableUserInit(this.screen);
@@ -1385,63 +1359,6 @@ function ScreensObj_InitUserLive() {
 
     ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Live_obj);
 
-    ScreenObj[key].concatenate = function(responseObj) {
-
-        if (this.token || this.followerChannelsDone) {
-            //User has added a key or followed channels list is done, concatenate live channels
-            if (this.data) {
-
-                if (responseObj[this.object]) {
-                    this.data.push.apply(this.data, responseObj[this.object]);
-                    this.offset = this.data.length;
-                }
-
-                this.setMax(responseObj);
-            } else {
-
-                this.data = responseObj[this.object];
-                if (this.data) this.offset = this.data.length;
-                else this.data = [];
-
-                this.setMax(responseObj);
-
-                //Live user sort by views was removed bt twitch without any warning.
-                if (this.dataEnded && this.token) {
-                    this.data.sort(function(a, b) {
-                        return (b.viewers - a.viewers);
-                    });
-                }
-
-                this.loadDataSuccess();
-            }
-            this.loadingData = false;
-        } else {
-            var response = responseObj.follows,
-                response_items = response.length;
-
-            if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-                //User followed channels list is not done, load followed channels
-                var x = 0,
-                    max = this.followerChannels.length + response_items;
-
-                if (max > UserLiveFeed_maxChannels) {
-                    this.followerChannelsDone = true;
-                    response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
-                }
-
-                for (x; x < response_items; x++) {
-                    this.followerChannels.push(response[x].channel._id);
-                }
-
-                this.loadChannelOffsset += response_items;
-
-            } else { // end
-                //User followed channels list is done, load live channels
-                this.followerChannelsDone = true;
-            }
-            Screens_loadDataRequest(this.screen);
-        }
-    };
     ScreenObj[key].Set_Scroll();
 }
 
