@@ -166,19 +166,22 @@ function AddUser_KeyboardDismiss() {
 }
 
 function AddUser_loadDataRequest() {
-    var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_Username) + Main_TwithcV5Flag;
+    var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
 
     BaseXmlHttpGet(
         theUrl,
         2,
         null,
         AddUser_loadDataRequestSuccess,
-        AddUser_loadDataNoUser
+        AddUser_loadDataNoUser,
+        0,
+        null,
+        true
     );
 }
 
 function AddUser_loadDataRequestSuccess(response) {
-    if (JSON.parse(response)._total) {
+    if (JSON.parse(response).data.length) {
         Main_AddUserInput.value = '';
         Main_removeEventListener("keydown", AddUser_handleKeyDown);
         AddUser_SaveNewUser(response);
@@ -307,7 +310,8 @@ function AddUser_UpdateUserAllUsers() {
 }
 
 function AddUser_UpdateUser(position) {
-    var theUrl = Main_kraken_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name) + Main_TwithcV5Flag;
+    var theUrl = Main_helix_api +
+        'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
     BaseXmlHttpGet(
         theUrl,
@@ -315,21 +319,23 @@ function AddUser_UpdateUser(position) {
         null,
         AddUser_UpdateUsertSuccess,
         noop_fun,
-        position
+        position,
+        null,
+        true
     );
 }
 
 function AddUser_UpdateUsertSuccess(response, position) {
     var user = JSON.parse(response);
 
-    if (user._total) {
+    if (user.data.length) {
 
-        user = user.users[0];
+        user = user.data[0];
 
-        if (Main_A_equals_B(AddUser_UsernameArray[position].name, user.name)) {
+        if (Main_A_equals_B(AddUser_UsernameArray[position].name, user.login)) {
 
             AddUser_UsernameArray[position].display_name = user.display_name;
-            AddUser_UsernameArray[position].logo = user.logo;
+            AddUser_UsernameArray[position].logo = user.profile_image_url;
 
             if (!position) AddUser_UpdateSidepanel();
 
@@ -342,20 +348,22 @@ function AddUser_UpdateUsertSuccess(response, position) {
 }
 
 function AddUser_SaveNewUser(responseText) {
-    AddUser_Username = JSON.parse(responseText).users[0];
-    AddUser_UsernameArray.push({
-        name: AddUser_Username.name,
-        id: AddUser_Username._id,
-        display_name: AddUser_Username.display_name,
-        logo: AddUser_Username.logo,
-        access_token: 0,
-        refresh_token: 0,
-        expires_in: 0,
-        expires_when: 0,
-        timeout_id: null,
-    });
+    AddUser_Username = JSON.parse(responseText).data[0];
+    AddUser_UsernameArray.push(
+        {
+            name: AddUser_Username.login,
+            id: AddUser_Username.id,
+            display_name: AddUser_Username.display_name,
+            logo: AddUser_Username.profile_image_url,
+            access_token: 0,
+            refresh_token: 0,
+            expires_in: 0,
+            expires_when: 0,
+            timeout_id: null,
+        }
+    );
 
-    Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.name)].id] = {
+    Main_values_History_data[AddUser_UsernameArray[AddUser_UserFindpos(AddUser_Username.login)].id] = {
         live: [],
         vod: [],
         clip: []
@@ -363,7 +371,7 @@ function AddUser_SaveNewUser(responseText) {
 
     AddUser_SaveUserArray();
     Users_status = false;
-    Users_Userlastadded = AddUser_Username.name;
+    Users_Userlastadded = AddUser_Username.login;
     Users_ShowAutetication = true;
     AddUser_exit();
     Main_values.Main_Go = Main_Users;
