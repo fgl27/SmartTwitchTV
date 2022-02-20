@@ -257,7 +257,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
-    if (!AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
+    if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
     Sidepannel_Opt_holder = Main_getElementById("side_panel_new_holder");
     Sidepannel_scenefeed = Main_getElementById('scenefeed');

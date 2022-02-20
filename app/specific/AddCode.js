@@ -164,6 +164,11 @@ function AddCode_refreshTokensSucess(responseText, position, callbackFunc, key) 
         AddUser_UsernameArray[position].expires_when = (new Date().getTime()) + AddUser_UsernameArray[position].expires_in;
         //Main_Log(JSON.stringify(AddUser_UsernameArray[position]));
 
+
+        if (!position) {
+            HttpGetSetUserHeader();
+        }
+
         AddUser_SaveUserArray();
 
         AddCode_Refreshtimeout(position);

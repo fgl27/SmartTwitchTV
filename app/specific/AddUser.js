@@ -460,6 +460,10 @@ function AddUser_UserMakeOne(position) {
 
     //Reset user emotes on change
     userEmote = {};
+
+    if (AddUser_UsernameArray[0].access_token) {
+        HttpGetSetUserHeader();
+    }
 }
 
 function AddUser_UserCodeExist(user) {

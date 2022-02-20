@@ -396,10 +396,6 @@ function Screens_loadDataRequest(key) {
 
     } else {
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-            Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
-        }
-
         var HeadersArray = (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) ?
             Main_Bearer_User_Headers : Main_Bearer_Headers;
 
