@@ -1180,18 +1180,78 @@ function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
     return div;
 }
 
-//Base video fun
+var UserLiveFeed_loadDataSuccessResponse = [];
+var UserLiveFeed_loadDataSuccessUrl;
+var UserLiveFeedobj_loadDataSuccessId;
+
 function UserLiveFeedobj_loadDataSuccess(responseText) {
+    UserLiveFeedobj_loadDataSuccessId = new Date().getTime();
+
+    UserLiveFeed_loadDataSuccessResponse = JSON.parse(responseText).data;
+    var userids;
+
+    for (var i = 0; i < UserLiveFeed_loadDataSuccessResponse.length; i++) {
+        if (userids) {
+            userids += '&id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
+        } else {
+            userids = '?id=' + UserLiveFeed_loadDataSuccessResponse[i].user_id;
+        }
+    }
+
+    UserLiveFeed_loadDataSuccessUrl = Main_helix_api + 'users' + userids;
+    UserLiveFeed_loadDataSuccessHttpRequest();
+}
+
+
+function UserLiveFeed_loadDataSuccessHttpRequest() {
+
+    BaseXmlHttpGet(
+        UserLiveFeed_loadDataSuccessUrl,
+        2,
+        null,
+        UserLiveFeed_loadDataSuccessUpdateMap,
+        UserLiveFeed_loadDataSuccessError,
+        0,
+        UserLiveFeedobj_loadDataSuccessId,
+        true
+    );
+}
+
+function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
+    response = JSON.parse(response);
+    if (response.data && response.data.length && UserLiveFeedobj_loadDataSuccessId === ID) {
+
+        var data = response.data;
+
+        var mapLogoPartner = {};
+
+        for (var i = 0; i < data.length; i++) {
+            mapLogoPartner[data[i].id] = {
+                partner: data[i].broadcaster_type === 'partner',
+                logo: data[i].profile_image_url,
+            };
+        }
+
+        UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, mapLogoPartner);
+
+    }
+}
+
+function UserLiveFeed_loadDataSuccessError(key, ID) {
+    if (UserLiveFeedobj_loadDataSuccessId === ID) {
+        UserLiveFeed_loadDataSuccessEnd(UserLiveFeed_loadDataSuccessResponse, {});
+    }
+}
+
+function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
     //Main_Log('UserLiveFeedobj_loadDataSuccess');
 
-    var response = JSON.parse(responseText),
-        response_items,
+    var response_items,
         sorting = Settings_Obj_default('live_feed_sort'),
         stream, id, mArray,
         i = 0,
         itemsCount = UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos];
 
-    response = response.data;
     response_items = response.length;
 
     if (response_items) {
@@ -1235,7 +1295,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
             if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
 
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream, true);
+                mArray = ScreensObj_LiveCellArray(stream, true, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
@@ -1636,14 +1696,16 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 }
             }
         }
-
+        var useHelix;
         for (i; i < response_items; i++) {
             stream = UserLiveFeed_obj[pos].cell(response[i]);
-            id = stream.channel._id;
+            useHelix = !stream.channel;
+
+            id = useHelix ? stream.user_id : stream.channel._id;
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
 
                 UserLiveFeed_idObject[pos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream);
+                mArray = ScreensObj_LiveCellArray(stream, useHelix);
 
                 UserLiveFeed_cell[pos][itemsCount] =
                     UserLiveFeedobj_CreatFeed(
@@ -1799,29 +1861,47 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
         // }
 
         var isntUser = pos !== UserLiveFeedobj_UserGamesPos;
+        var useHelix;
 
         for (i; i < response_items; i++) {
             cell = response[i];
-            game = cell.game;
+            useHelix = !cell.game;
+            game = useHelix ? cell : cell.game;
 
-            if (!UserLiveFeed_idObject[pos].hasOwnProperty(game._id)) {
+            var id_cell = useHelix ? game.id : game._id;
 
-                UserLiveFeed_idObject[pos][game._id] = itemsCount;
+            if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell)) {
 
-                UserLiveFeed_cell[pos][itemsCount] =
-                    UserLiveFeedobj_CreatGameFeed(
-                        pos,
-                        itemsCount,
-                        pos + '_' + itemsCount,
-                        [
-                            game.name,//0
-                            isntUser ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
-                                Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers) : '',//1
-                            game._id,//2
-                            game.box.template//3
-                        ]
-                    );
+                UserLiveFeed_idObject[pos][id_cell] = itemsCount;
 
+                if (useHelix) {
+                    UserLiveFeed_cell[pos][itemsCount] =
+                        UserLiveFeedobj_CreatGameFeed(
+                            pos,
+                            itemsCount,
+                            pos + '_' + itemsCount,
+                            [
+                                game.name,//0
+                                '',//1
+                                id_cell,//2
+                                game.box_art_url//3
+                            ]
+                        );
+                } else {
+                    UserLiveFeed_cell[pos][itemsCount] =
+                        UserLiveFeedobj_CreatGameFeed(
+                            pos,
+                            itemsCount,
+                            pos + '_' + itemsCount,
+                            [
+                                game.name,//0
+                                isntUser ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR +
+                                    Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers) : '',//1
+                                id_cell,//2
+                                game.box.template//3
+                            ]
+                        );
+                }
                 itemsCount++;
             }
         }

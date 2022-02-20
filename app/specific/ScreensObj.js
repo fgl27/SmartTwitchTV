@@ -2255,7 +2255,7 @@ function ScreensObj_SetTopLable(text, small_text) {
     Main_innerHTML('top_lable', text + STR_SPACE_HTML + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
 }
 
-function ScreensObj_LiveCellArray(cell, useHelix) {
+function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
     if (useHelix) {
 
         return [
@@ -2268,8 +2268,8 @@ function ScreensObj_LiveCellArray(cell, useHelix) {
             cell.user_login,//6
             cell.id,//7 broadcast id
             Main_is_rerun(cell.type),//8
-            null,//9
-            null,//10
+            logo ? logo : null,//9
+            partner ? partner : null,//10
             Play_streamLiveAt(cell.started_at),//11
             cell.started_at,//12
             cell.viewer_count,//13
