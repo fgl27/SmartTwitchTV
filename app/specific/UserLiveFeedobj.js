@@ -494,9 +494,9 @@ function UserLiveFeedobj_loadLive() {
     } else {
 
         UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') +
-            Main_TwithcV5Flag,
+            Main_helix_api + 'streams?first=' + Main_ItemsLimitMax +
+            (UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor : '') +
+            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
             2,
             UserLiveFeedobj_loadDataLiveSuccess,
             true,
@@ -886,7 +886,8 @@ function UserLiveFeedobj_loadGames() {
     } else {
 
         UserLiveFeedobj_BaseLoad(
-            Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax + (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
+            Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax +
+            (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
             2,
             UserLiveFeedobj_loadDataGamesSuccess,
             false,
@@ -1617,9 +1618,19 @@ function UserLiveFeedobj_UserVodHistory() {
 
 function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
     var responseObj = JSON.parse(responseText),
-        total = responseObj._total,
         itemsCount = UserLiveFeed_itemsCount[pos],
-        response = responseObj[UserLiveFeed_obj[pos].StreamType];
+        response = responseObj[UserLiveFeed_obj[pos].StreamType],
+        total;
+
+    if (UserLiveFeed_obj[pos].useHelix) {
+        UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
+
+        if (!UserLiveFeed_obj[pos].cursor || UserLiveFeed_obj[pos].cursor === '') {
+            UserLiveFeed_obj[pos].dataEnded = true;
+        }
+    } else {
+        total = responseObj._total;
+    }
 
     if (game) {
         var key = Main_aGame;
@@ -1699,10 +1710,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 }
             }
         }
-        var useHelix;
+        var useHelix = UserLiveFeed_obj[pos].useHelix;
+
         for (i; i < response_items; i++) {
             stream = UserLiveFeed_obj[pos].cell(response[i]);
-            useHelix = !stream.channel;
 
             id = useHelix ? stream.user_id : stream.channel._id;
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {

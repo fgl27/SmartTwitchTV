@@ -221,11 +221,13 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].show = UserLiveFeedobj_ShowLive;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].hide = UserLiveFeedobj_HideLive;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].div = Main_getElementById('live_feed_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].StreamType = 'data';
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].cell = UserLiveFeedobj_LiveCell;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].Screen = 'preview_live';
     UserLiveFeed_obj[UserLiveFeedobj_LivePos].CheckContentLang = 1;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].useHelix = true;
+    UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor = null;
 
     //Current Game
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].success = UserLiveFeedobj_loadDataCurrentGameSuccess;
