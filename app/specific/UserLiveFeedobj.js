@@ -950,15 +950,17 @@ function UserLiveFeedobj_loadCurrentAGame() {
 
         }
 
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?game=' + encodeURIComponent(UserLiveFeedobj_CurrentAGameNameEnter) +
-            '&limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataCurrentAGameSuccess,
-            true,
-            pos
-        );
+        if (UserLiveFeedobj_CurrentAGameIdEnter) {
+            UserLiveFeedobj_BaseLoad(
+                Main_helix_api + 'streams?game_id=' + UserLiveFeedobj_CurrentAGameIdEnter + '&first=' + Main_ItemsLimitMax +
+                (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
+                2,
+                UserLiveFeedobj_loadDataCurrentAGameSuccess,
+                true,
+                pos
+            );
+        }
 
     }
 
@@ -979,6 +981,7 @@ function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
 
 var UserLiveFeedobj_CurrentAGameName = '';
 var UserLiveFeedobj_CurrentAGameNameEnter = null;
+var UserLiveFeedobj_CurrentAGameIdEnter = null;
 function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_AGamesPos);
 

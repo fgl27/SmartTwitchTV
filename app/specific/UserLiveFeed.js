@@ -177,13 +177,15 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].show = UserLiveFeedobj_ShowCurrentAGame;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].hide = UserLiveFeedobj_HideCurrentAGame;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].div = Main_getElementById('agame_feed_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].StreamType = 'data';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cell = UserLiveFeedobj_CurrentUserGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Screen = 'preview_agame';
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].useHelix = true;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor = null;
 
     //User Games
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].success = UserLiveFeedobj_loadDataUserGamesSuccess;
@@ -1392,8 +1394,10 @@ function UserLiveFeed_KeyEnter(pos) {
 
     } else if (pos === UserLiveFeedobj_GamesPos) {
 
-        if (UserLiveFeed_ObjNotNull(pos))
+        if (UserLiveFeed_ObjNotNull(pos)) {
             UserLiveFeedobj_CurrentAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
+            UserLiveFeedobj_CurrentAGameIdEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][2];
+        }
 
         if (!UserLiveFeed_ObjNotNull(pos)) {
             Play_showWarningMidleDialog(STR_NO_GAME, 1000);
