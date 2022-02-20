@@ -100,7 +100,8 @@ var Main_values = {
     "banner_pos": 0,
     "banner_16by9_pos": 0,
     "MaxInstancesWarn": false,
-    "AddCode_main_token": null
+    "AddCode_main_token": null,
+    "API_Change": true
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];

@@ -213,6 +213,12 @@ function Screens_first_init() {
 
     }
 
+    //prevent user stuck in user screen without proper token
+    if (Main_values.API_Change) {
+        Main_GoBefore = Main_Live;
+    }
+    Main_values.API_Change = false;
+
     if (StartUser) {
 
         Users_beforeUser = Main_GoBefore;
