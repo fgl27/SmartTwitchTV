@@ -2646,6 +2646,16 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public String getAppToken(String token) {
+            return Tools.getString(Constants.PREF_CLIENT_TOKEN, null, appPreferences);
+        }
+
+        @JavascriptInterface
+        public void setAppToken(String token) {
+            appPreferences.put(Constants.PREF_CLIENT_TOKEN, token);
+        }
+
+        @JavascriptInterface
         public void UpdateUserId(String id, String name, String refresh_token) {
 
             String tempUserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);

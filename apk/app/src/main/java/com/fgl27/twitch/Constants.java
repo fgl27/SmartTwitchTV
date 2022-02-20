@@ -50,6 +50,7 @@ public final class Constants {
     public static final String PREF_CLIENT_ID = "client_id";
     static final String PREF_CLIENT_SECRET = "client_secret";
     static final String PREF_REDIRECT_URI = "redirect_uri";
+    public static final String PREF_CLIENT_TOKEN = "client_token";
 
     public static final String PREF_USER_ID = "user_id";
     //public static final String PREF_USER_NAME = "user_name";
