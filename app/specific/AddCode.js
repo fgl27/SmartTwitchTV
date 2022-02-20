@@ -52,7 +52,7 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
     }
 
     var url = AddCode_UrlToken + 'grant_type=refresh_token&client_id=' + AddCode_clientId +
-        '&client_secret=' + AddCode_client_secret + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
+        '&client_secret=' + AddCode_client_token + '&refresh_token=' + AddUser_UsernameArray[position].refresh_token +
         '&redirect_uri=' + AddCode_redirect_uri;
 
     //Run in synchronous mode to prevent anything happening until user token is restored
@@ -188,7 +188,7 @@ function AddCode_TokensCheckScope(scope) {
 
 function AddCode_requestTokens() {
     var theUrl = AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId +
-        '&client_secret=' + AddCode_client_secret + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
+        '&client_secret=' + AddCode_client_token + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
 
     FullxmlHttpGet(
         theUrl,
@@ -561,12 +561,16 @@ function AddCode_CheckSubSucessFail() {
 }
 
 var AddCode_redirect_uri = 'https://fgl27.github.io/SmartTwitchTV/release/index.html';
-//Get yours client id and secret from https://dev.twitch.tv/docs/authentication#registration
+//Get yours app register to get tokens at https://dev.twitch.tv/console
 var AddCode_clientId = "5seja5ptej058mxqy7gh5tcudjqtm9";//public but get yours link above is free
-var AddCode_client_secret;//none public get yours link above is free
+//none public get yours link above is free
+var AddCode_main_token;
+var AddCode_client_token;
 var AddCode_backup_client_id;
+
 var AddCode_UrlToken = 'https://id.twitch.tv/oauth2/token?';
 var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
+
 
 //To pass to Java
 var Play_Headers;

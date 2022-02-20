@@ -4648,8 +4648,7 @@ function Play_PreStart() {
 
     //Check expires_in
     //curl -H 'Authorization: Bearer 7mbu7j6salqzlwgtp69r48numrc8ey' -X GET https://id.twitch.tv/oauth2/validate
-    var Bearer = 'Bearer 7mbu7j6salqzlwgtp69r48numrc8ey';
-    var Bearer_Header = 'Authorization';
+
     var clientIdHeader = 'Client-ID';
     var AcceptHeader = 'Accept';
     var TwitchV5Json = 'application/vnd.twitchtv.v5+json';
@@ -4666,10 +4665,10 @@ function Play_PreStart() {
         [Main_Authorization, null]
     ];
 
-    Main_Bearer_Headers = [
-        [clientIdHeader, AddCode_clientId],
-        [Bearer_Header, Bearer]
-    ];
+    HttpGetSetMainHeader();
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        HttpGetSetUserHeader();
+    }
 
     Play_base_backup_headers_Array = [
         [clientIdHeader, Main_Headers_Backup[0][1]]

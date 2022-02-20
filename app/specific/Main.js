@@ -131,6 +131,7 @@ var Main_PreventCheckResume = false;
 var Main_base_string_header;
 var Main_base_array_header;
 var Main_Bearer_Headers = [];
+var Main_Bearer_User_Headers = [];
 var Main_Headers = [];
 var Main_Headers_Backup = [];
 var Main_kraken_api = 'https://api.twitch.tv/kraken/';
@@ -221,7 +222,7 @@ function Main_StartApp() {
             Main_isDebug = OSInterface_getdebug();
             Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
-            OSInterface_setAppIds(AddCode_clientId, AddCode_client_secret, AddCode_redirect_uri);
+            OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
             OSInterface_SetStreamDataHeaders(Play_Headers);
 
         } catch (e) {
@@ -2131,6 +2132,30 @@ function Main_GetHeader(HeaderQuatity, access_token) {
         return array;
 
     } else return [];
+
+}
+
+
+var Bearer = 'Bearer ';
+var Bearer_Header = 'Authorization';
+var clientIdHeader = 'Client-ID';
+
+function HttpGetSetMainHeader() {
+
+    Main_Bearer_Headers = [
+        [clientIdHeader, AddCode_clientId],
+        [Bearer_Header, Bearer + AddCode_main_token]
+    ];
+
+    console.log(Main_Bearer_Headers)
+}
+
+function HttpGetSetUserHeader() {
+
+    var Main_Bearer_User_Headers = [
+        [clientIdHeader, AddCode_clientId],
+        [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
+    ];
 
 }
 
