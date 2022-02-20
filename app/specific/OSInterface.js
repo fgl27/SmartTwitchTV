@@ -412,6 +412,27 @@ function OSInterface_mhideSystemUI() {
     Android.mhideSystemUI();
 }
 
+//public void setAppToken(String token)
+//token =  token to save
+//Sets the app token when value is updated from JS
+function OSInterface_setAppToken() {
+    if (Main_IsOn_OSInterface) {
+        Android.setAppToken(
+            AddCode_main_token ? AddCode_main_token : null
+        );
+    }
+
+}
+
+//public String getAppToken()
+//Get the app token when is saved on APK
+function OSInterface_getAppToken() {
+    if (Main_IsOn_OSInterface) {
+        AddCode_main_token = Android.getAppToken();
+    }
+}
+
+
 //public void UpdateUserId(String id, String name, String refresh_token)
 //id =  the user id
 //name =  the user name

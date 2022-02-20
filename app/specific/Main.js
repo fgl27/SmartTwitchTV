@@ -357,6 +357,9 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
+    if (!AddCode_main_token) {
+        OSInterface_getAppToken();
+    }
     AddCode_AppTokenCheck();
 }
 

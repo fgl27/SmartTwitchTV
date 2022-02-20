@@ -476,6 +476,7 @@ function AddCode_AppTokenSucess(responseText, position, callbackFunc, key) {
         AddCode_main_token = response.access_token;
     }
 
+    OSInterface_setAppToken();
     Main_values.AddCode_main_token = AddCode_main_token;
     HttpGetSetMainHeader();
 
