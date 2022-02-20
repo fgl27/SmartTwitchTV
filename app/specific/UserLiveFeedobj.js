@@ -104,6 +104,7 @@ function UserLiveFeedobj_StartDefault(pos) {
     UserLiveFeed_FeedSetPosLast[pos] = 0;
     UserLiveFeed_obj[pos].offset = 0;
     UserLiveFeed_obj[pos].loadingMore = false;
+    UserLiveFeed_obj[pos].cursor = null;
     UserLiveFeed_obj[pos].dataEnded = false;
     UserLiveFeed_obj[pos].div.style.transform = 'translateX(0px)';
 
@@ -173,7 +174,9 @@ function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
         null,
         callback,
         UserLiveFeedobj_loadDataError,
-        pos
+        pos,
+        null,
+        UserLiveFeed_obj[pos].useHelix
     );
 }
 
@@ -883,7 +886,7 @@ function UserLiveFeedobj_loadGames() {
     } else {
 
         UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'games/top?limit=100&offset=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset,
+            Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax + (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
             2,
             UserLiveFeedobj_loadDataGamesSuccess,
             false,
@@ -899,7 +902,7 @@ function UserLiveFeedobj_loadGames() {
 }
 
 function UserLiveFeedobj_loadDataGamesSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, UserLiveFeedobj_GamesPos, 'top');
+    UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, UserLiveFeedobj_GamesPos, 'data');
 }
 
 function UserLiveFeedobj_ShowGames() {
@@ -1803,9 +1806,19 @@ function UserLiveFeedobj_AddBanner() {
 //Base game fun
 function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     var responseObj = JSON.parse(responseText),
-        total = responseObj._total,
         itemsCount = UserLiveFeed_itemsCount[pos],
-        response = responseObj[type];
+        response = responseObj[type],
+        total;
+
+    if (UserLiveFeed_obj[pos].useHelix) {
+        UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
+
+        if (!UserLiveFeed_obj[pos].cursor || UserLiveFeed_obj[pos].cursor === '') {
+            UserLiveFeed_obj[pos].dataEnded = true;
+        }
+    } else {
+        total = responseObj._total;
+    }
 
     UserLiveFeedobj_loadDataGamesSuccessEnd(
         response,
@@ -1820,7 +1833,8 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
     var response_items = response.length,
         cell,
         game,
-        i = 0;
+        i = 0,
+        useHelix;
 
     if (response_items) {
 
@@ -1861,11 +1875,10 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
         // }
 
         var isntUser = pos !== UserLiveFeedobj_UserGamesPos;
-        var useHelix;
+        useHelix = UserLiveFeed_obj[pos].useHelix;
 
         for (i; i < response_items; i++) {
             cell = response[i];
-            useHelix = !cell.game;
             game = useHelix ? cell : cell.game;
 
             var id_cell = useHelix ? game.id : game._id;
@@ -1910,10 +1923,12 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
     if (UserLiveFeed_obj[pos].HasMore) {
-        UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
-        UserLiveFeed_obj[pos].MaxOffset = total;
-        if (UserLiveFeed_obj[pos].offset >= total || !response_items)
-            UserLiveFeed_obj[pos].dataEnded = true;
+        if (!useHelix) {
+            UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+            UserLiveFeed_obj[pos].MaxOffset = total;
+            if (UserLiveFeed_obj[pos].offset >= total || !response_items)
+                UserLiveFeed_obj[pos].dataEnded = true;
+        }
     }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
