@@ -551,13 +551,22 @@ function ScreensObj_StartAllVars() {
         screenType: 0,
         img_404: IMG_404_VIDEO,
         setMax: function(tempObj) {
-            this.MaxOffset = tempObj._total;
 
-            if (!tempObj[this.object]) this.dataEnded = true;
-            else if (typeof this.MaxOffset === 'undefined') {
-                if (tempObj[this.object].length < 90) this.dataEnded = true;
+
+            if (this.useHelix) {
+
+                this.cursor = tempObj.pagination.cursor;
+                if (!this.cursor || this.cursor === '') this.dataEnded = true;
+
             } else {
-                if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+                this.MaxOffset = tempObj._total;
+
+                if (!tempObj[this.object]) this.dataEnded = true;
+                else if (typeof this.MaxOffset === 'undefined') {
+                    if (tempObj[this.object].length < 90) this.dataEnded = true;
+                } else {
+                    if (this.data.length >= this.MaxOffset) this.dataEnded = true;
+                }
             }
         },
         setTODialog: function() {
@@ -573,15 +582,18 @@ function ScreensObj_StartAllVars() {
                     this.offset && (this.offset + Main_ItemsLimitMax) > this.MaxOffset)) this.dataEnded = true;
         },
         addCellTemp: function(cell) {
-            if (!this.idObject[cell.channel._id]) {
+            var id_cell = this.useHelix ? cell.user_id : cell.channel._id;
+
+
+            if (!this.idObject[id_cell]) {
 
                 this.itemsCount++;
-                this.idObject[cell.channel._id] = 1;
+                this.idObject[id_cell] = 1;
 
                 this.tempHtml += Screens_createCellLive(
                     this.row_id + '_' + this.coloumn_id,
                     this.ids,
-                    ScreensObj_LiveCellArray(cell),
+                    ScreensObj_LiveCellArray(cell, this.useHelix),
                     this.screen
                 );
 
@@ -1231,21 +1243,20 @@ function ScreensObj_InitLive() {
     var key = Main_Live;
 
     ScreenObj[key] = Screens_assign({
-        HeadersArray: Main_base_array_header,
+        useHelix: true,
+        HeadersArray: Main_Bearer_Headers,
         ids: Screens_ScreenIds('Live', key),
         table: 'stream_table_live',
         screen: key,
-        object: 'streams',
+        object: 'data',
         ScreenName: 'Live',
         key_pgDown: Main_Featured,
         key_pgUp: Main_Clip,
         CheckContentLang: 1,
         ContentLang: '',
-        base_url: Main_kraken_api + 'streams?limit=' + Main_ItemsLimitMax,
+        base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
         set_url: function() {
-            this.check_offset();
-
-            this.url = this.base_url + '&offset=' + this.offset +
+            this.url = this.base_url + (this.cursor ? '&after=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
         label_init: function() {
@@ -2306,7 +2317,31 @@ function ScreensObj_SetTopLable(text, small_text) {
     Main_innerHTML('top_lable', text + STR_SPACE_HTML + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ""));
 }
 
-function ScreensObj_LiveCellArray(cell) {
+function ScreensObj_LiveCellArray(cell, useHelix) {
+    if (useHelix) {
+
+        return [
+            cell.thumbnail_url,//0
+            cell.user_name,//1
+            cell.title,//2
+            cell.game_name,//3
+            Main_addCommas(cell.viewer_count),//4
+            '[' + cell.language.toUpperCase() + ']',//5
+            cell.user_login,//6
+            cell.id,//7 broadcast id
+            Main_is_rerun(cell.type),//8
+            null,//9
+            null,//10
+            Play_streamLiveAt(cell.started_at),//11
+            cell.started_at,//12
+            cell.viewer_count,//13
+            cell.user_id,//14
+            cell.language//15
+        ];
+
+    }
+
+
     return [
         cell.preview.template,//0
         cell.channel.display_name,//1
