@@ -615,15 +615,17 @@ function UserLiveFeedobj_loadCurrentGame() {
 
         }
 
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api + 'streams?game=' + encodeURIComponent(Play_data.data[3]) +
-            '&limit=100&offset=' + UserLiveFeed_obj[pos].offset +
-            (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '') + Main_TwithcV5Flag,
-            2,
-            UserLiveFeedobj_loadDataCurrentGameSuccess,
-            true,
-            pos
-        );
+        if (Play_data.data[17]) {
+            UserLiveFeedobj_BaseLoad(
+                Main_helix_api + 'streams?game_id=' + Play_data.data[17] + '&first=' + Main_ItemsLimitMax +
+                (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
+                (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : ''),
+                2,
+                UserLiveFeedobj_loadDataCurrentGameSuccess,
+                true,
+                pos
+            );
+        }
 
     }
 
@@ -691,6 +693,7 @@ function UserLiveFeedobj_CurrentGameCell(cell) {
 }
 
 function UserLiveFeedobj_loadDataCurrentGameSuccess(responseText) {
+
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
         UserLiveFeedobj_CurrentGamePos,

@@ -2274,7 +2274,9 @@ function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
             cell.started_at,//12
             cell.viewer_count,//13
             cell.user_id,//14
-            cell.language//15
+            cell.language,//15
+            null,
+            cell.game_id//16
         ];
 
     }

@@ -235,13 +235,15 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].show = UserLiveFeedobj_ShowCurrentGame;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].hide = UserLiveFeedobj_HideCurrentGame;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].div = Main_getElementById('current_game_feed_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].StreamType = 'data';
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cell = UserLiveFeedobj_CurrentGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].Screen = 'preview_current_game';
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].CheckContentLang = 1;
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame = {};
     UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].UpdateLastPositionGame = UserLiveFeedobj_CurrentGameUpdateLastPositionGame;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].useHelix = true;
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor = null;
 
     //Featured
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].success = UserLiveFeedobj_loadDataFeaturedSuccess;
