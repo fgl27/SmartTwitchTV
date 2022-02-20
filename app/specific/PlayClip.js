@@ -156,7 +156,6 @@ function PlayClip_Start() {
     Play_CheckFollow(Main_values.Main_selectedChannel_id);
     Play_ShowPanelStatus(3);
     Play_controls[Play_controlsChanelCont].setLable(Main_values.Main_selectedChannelDisplayname);
-    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
 
     PlayClip_CheckIsLive(Main_values.Main_selectedChannel_id);
 }
@@ -298,6 +297,8 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                 if (clip.game && clip.game.displayName) {
                     Main_innerHTML("stream_info_game", clip.game.displayName);
                     ChannelClip_game = clip.game.displayName;
+                    Play_data.data[3] = ChannelClip_game;
+                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
                 }
 
                 if (clip.broadcaster) {
@@ -316,6 +317,8 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
 
                     Main_values.Main_selectedChannelDisplayname = clip.broadcaster.displayName;
                     Main_values.Main_selectedChannelPartner = clip.broadcaster.roles.isPartner;
+
+                    Play_data.data[5] = clip.broadcaster.profileImageURL;
                 }
 
             }

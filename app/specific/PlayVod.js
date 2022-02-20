@@ -46,6 +46,7 @@ var PlayVod_replay = false;
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
 var PlayVod_VodOffset;
+var PlayVod_VodGameID;
 var PlayVod_ChaptersArray = [];
 var PlayVod_postChapters = '{"query":"{ video(id:\\"%x\\"){moments(momentRequestType:VIDEO_CHAPTER_MARKERS types:[GAME_CHANGE]) {edges{...VideoPlayerVideoMomentEdge}}}}fragment VideoPlayerVideoMomentEdge on VideoMomentEdge{node {...VideoPlayerVideoMoment}}fragment VideoPlayerVideoMoment on VideoMoment{durationMilliseconds positionMilliseconds type description details{...VideoPlayerGameChangeDetails}}fragment VideoPlayerGameChangeDetails on GameChangeMomentDetails{game{id displayName}}"}';
 //Variable initialization end
@@ -66,6 +67,7 @@ function PlayVod_Start() {
     Chat_title = " VOD";
 
     Play_BufferSize = 0;
+    PlayVod_VodGameID = null;
 
     Play_StartStayShowBottom();
 
@@ -179,6 +181,8 @@ function PlayVod_Start() {
         PlayVod_PosStart();
 
     }
+
+    PlayVod_UpdateGameInfo();
 }
 
 function PlayVod_SetStart() {
@@ -250,6 +254,28 @@ function PlayVod_PosStart() {
 
     Main_values.Play_WasPlaying = 2;
     Main_SaveValues();
+}
+
+function PlayVod_UpdateGameInfo() {
+    var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        PlayVod_UpdateGameInfoSuccess,
+        noop_fun,
+        null,
+        null,
+        true
+    );
+}
+
+function PlayVod_UpdateGameInfoSuccess(response) {
+    response = JSON.parse(response);
+    if (response.data && response.data.length) {
+        PlayVod_VodGameID = response.data[0].id;
+    }
 }
 
 var PlayVod_updateVodInfoId;

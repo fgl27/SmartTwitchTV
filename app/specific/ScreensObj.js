@@ -44,6 +44,7 @@ var ChannelClip_playUrl = '';
 var ChannelClip_createdAt = '';
 var ChannelClip_language = '';
 var ChannelClip_Id = 0;
+var ChannelClip_game_Id = null;
 
 var ChannelVod_vodOffset = 0;
 var ChannelVod_language = '';
@@ -2275,8 +2276,8 @@ function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
             cell.viewer_count,//13
             cell.user_id,//14
             cell.language,//15
-            null,
-            cell.game_id//16
+            null,//16
+            cell.game_id//17
         ];
 
     }
@@ -2375,7 +2376,8 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
             Main_addCommas(cell.view_count),//14
             cell.thumbnail_url,//15
             Main_videoCreatedAt(cell.created_at),//16
-            cell.language//17
+            cell.language,//17
+            cell.game_id//18
         ];
 
     }

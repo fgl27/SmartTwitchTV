@@ -1720,6 +1720,7 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     Play_data.data[3] = Main_values_Play_data[3];
     if (Play_data.data[3] === null) Play_data.data[3] = "";
     ChannelClip_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : "");
+    ChannelClip_game_Id = Main_values_Play_data[18];
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
     Main_values.Main_selectedChannelLogo = Main_values_Play_data[5];

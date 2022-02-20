@@ -1254,9 +1254,59 @@ function Play_OpenGame(PlayVodClip) {
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[Play_MultiFirstAvailable()]));
     }
     Main_values.Main_gameSelected = Play_data.data[3];
-    Main_values.Main_gameSelected_id = null;
+
+    if (PlayVodClip === 1) {
+
+        Main_values.Main_gameSelected_id = Play_data.data[17];
+
+    } else if (PlayVodClip === 2) {
+
+        Main_values.Main_gameSelected_id = PlayVod_VodGameID;
+
+    } else if (PlayVodClip === 3) {
+
+        Main_values.Main_gameSelected_id = ChannelClip_game_Id;
+
+    }
 
     Play_hideChat();
+
+    if (Main_values.Main_gameSelected_id) {
+        Play_OpenGameEnd(PlayVodClip);
+    } else {
+        Play_UpdateGameInfo(PlayVodClip);
+    }
+}
+
+function Play_UpdateGameInfo(PlayVodClip) {
+    var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        Play_UpdateGameInfoSuccess,
+        Play_UpdateGameInfoSuccessError,
+        PlayVodClip,
+        null,
+        true
+    );
+}
+
+function Play_UpdateGameInfoSuccess(response, PlayVodClip) {
+    response = JSON.parse(response);
+    if (response.data && response.data.length) {
+        Main_values.Main_gameSelected_id = response.data[0].id;
+    }
+
+    Play_OpenGameEnd(PlayVodClip);
+}
+
+function Play_UpdateGameInfoSuccessError(PlayVodClip) {
+    Play_OpenGameEnd(PlayVodClip);
+}
+
+function Play_OpenGameEnd(PlayVodClip) {
     if (PlayVodClip === 1) {
 
         Play_ClearPP();
