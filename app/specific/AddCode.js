@@ -300,6 +300,186 @@ function AddCode_CheckOauthTokenSucess(response) {
     return;
 }
 
+
+function AddCode_AppTokenCheck() {
+    var header = [
+        [Main_Authorization, Bearer + AddCode_main_token]
+    ];
+    if (Main_IsOn_OSInterface) {
+
+        var obj = OSInterface_mMethodUrlHeaders(
+            AddCode_ValidateUrl,
+            DefaultHttpGetTimeout,
+            null,
+            null,
+            0,
+            JSON.stringify(header)
+        );
+
+        if (obj) {
+
+            obj = JSON.parse(obj);
+
+            if (obj) {
+
+                AddCode_AppTokenCheckReady(obj);
+                return;
+
+            }
+
+        }
+
+        //AddCode_refreshTokens(position, null, null, null, !position); //token expired
+
+    } else {
+
+        FullxmlHttpGet(
+            AddCode_ValidateUrl,
+            header,
+            AddCode_AppTokenCheckReady,
+            noop_fun,
+            0,
+            0,
+            null,
+            null
+        );
+
+    }
+}
+
+function AddCode_AppTokenCheckReady(obj) {
+    if (obj.status === 200) {
+
+        Main_initWindowsEnd();
+
+        var data = JSON.parse(obj.responseText);
+
+        window.setTimeout(function() {
+
+            AddCode_AppToken();
+
+        }, (parseInt(data.expires_in) - 60) * 1000);
+
+    } else {
+
+        AddCode_AppToken(0, Main_initWindowsEnd, Main_initWindowsEnd, 0, true);
+
+    }
+
+}
+
+function AddCode_AppToken(position, callbackFunc, callbackFuncNOK, key, sync) {
+
+    var url = 'https://id.twitch.tv/oauth2/token?client_id=' + AddCode_clientId +
+        '&client_secret=' + AddCode_client_token +
+        '&grant_type=client_credentials';
+
+    //Run in synchronous mode to prevent anything happening until user token is restored
+    if (Main_IsOn_OSInterface && sync) {
+
+        AddCode_AppTokenReady(
+            position,
+            callbackFunc,
+            callbackFuncNOK,
+            key,
+            JSON.parse(
+                OSInterface_mMethodUrlHeaders(
+                    url,
+                    DefaultHttpGetTimeout,
+                    'POST',
+                    null,
+                    0,
+                    null
+                )
+            )
+        );
+
+    } else {
+
+        if (!Main_IsOn_OSInterface) {
+
+            var xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.open("POST", url, true);
+            xmlHttp.timeout = DefaultHttpGetTimeout;
+
+            xmlHttp.onreadystatechange = function() {
+
+                if (this.readyState === 4) {
+                    //Main_Log('AddCode_AppToken ' + xmlHttp.status);
+                    AddCode_AppTokenReady(position, callbackFunc, callbackFuncNOK, key, this);
+                }
+
+            };
+
+            xmlHttp.send(null);
+
+        } else {
+
+            OSInterface_BaseXmlHttpGet(
+                url,
+                DefaultHttpGetTimeout,
+                null,
+                'POST',
+                null,
+                'AddCode_AppTokenResult',
+                position,
+                key,
+                callbackFunc ? callbackFunc.name : null,
+                callbackFuncNOK ? callbackFuncNOK.name : null
+            );
+
+        }
+
+    }
+}
+
+function AddCode_AppTokenResult(result, key, callbackSucess, calbackError, position) {
+
+    AddCode_AppTokenReady(
+        position,
+        eval(callbackSucess),// jshint ignore:line
+        eval(calbackError),// jshint ignore:line
+        key,
+        JSON.parse(result)
+    );// jshint ignore:line
+
+}
+
+function AddCode_AppTokenReady(position, callbackFunc, callbackFuncNOK, key, xmlHttp) {
+
+    if (xmlHttp.status === 200) {
+
+        AddCode_AppTokenSucess(xmlHttp.responseText, position, callbackFunc, key);
+        return;
+
+    }
+
+    AddCode_AppTokenError(callbackFuncNOK, key);
+}
+
+function AddCode_AppTokenError(callbackFuncNOK, key) {
+
+    if (callbackFuncNOK) callbackFuncNOK(key);
+}
+
+function AddCode_AppTokenSucess(responseText, position, callbackFunc, key) {
+
+    var response = JSON.parse(responseText);
+
+    if (response) {
+        AddCode_main_token = response.access_token;
+    }
+
+    Main_values.AddCode_main_token = AddCode_main_token;
+    HttpGetSetMainHeader();
+
+    if (callbackFunc) callbackFunc(key);
+
+    Main_SaveValues();
+}
+
+
 function AddCode_CheckTokenStart(position) {
 
     if (Main_IsOn_OSInterface && !position) {

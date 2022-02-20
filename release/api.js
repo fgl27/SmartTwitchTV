@@ -71,7 +71,8 @@
         'ChatLive_SetLatency': ChatLive_SetLatency,
         'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
         'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
+        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
+        'AddCode_AppTokenResult': AddCode_AppTokenResult
     };
 
     /** Expose `smartTwitchTV` */

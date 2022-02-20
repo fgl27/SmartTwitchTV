@@ -100,6 +100,7 @@ var Main_values = {
     "banner_pos": 0,
     "banner_16by9_pos": 0,
     "MaxInstancesWarn": false,
+    "AddCode_main_token": null
 };
 
 var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
@@ -214,7 +215,8 @@ function Main_StartApp() {
                     'ChatLive_SetLatency': ChatLive_SetLatency,
                     'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
                     'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-                    'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet
+                    'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
+                    'AddCode_AppTokenResult': AddCode_AppTokenResult
                 };
             }
 
@@ -355,6 +357,10 @@ function Main_initRestoreBackups() {
 }
 
 function Main_initWindows() {
+    AddCode_AppTokenCheck();
+}
+
+function Main_initWindowsEnd() {
     //Main_Log('Main_initWindows');
     Main_CheckBackup();
 
@@ -2141,6 +2147,8 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
             AddCode_refreshTokens(0, null, null);
+        } else {
+            AddCode_AppToken();
         }
 
     }
