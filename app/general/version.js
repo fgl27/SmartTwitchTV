@@ -21,11 +21,19 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 329,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    publishVersionCode: 330,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/329/SmartTV_twitch_3_0_329.apk',
     WebVersion: 'December 04 2021',
     WebTag: 605,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: "Apk Version 3.0.330",
+            changes: [
+                "Prepare the app for API changes",
+                "Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem",
+                "Update app dependencies to latest version included the player"
+            ]
+        },
         {
             title: "Web Version December 04 2021",
             changes: [
