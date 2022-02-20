@@ -463,7 +463,8 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
         Play_MultiArray[pos].data[1],
         Play_MultiArray[pos].data[8],
         Play_MultiArray[pos].data[9],
-        twemoji.parse(Play_MultiArray[pos].data[2])
+        twemoji.parse(Play_MultiArray[pos].data[2]),
+        Play_MultiArray[pos].data[14]
     );
 
     Play_MultiArray[pos].watching_time = new Date().getTime();
@@ -631,8 +632,6 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                 )
             );
 
-            Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-
             Play_MultiUpdateinfo(
                 i,
                 Play_MultiArray[i].data[3],
@@ -641,7 +640,59 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                 extraText
             );
 
-        } else Play_MultiInfoReset(i);
+            if (Play_MultiArray[i].data[9]) {
+
+                Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+
+            } else {
+
+                Play_MultiupdateStreamLogo(Play_MultiArray[i].data[14], i);
+            }
+
+        } else {
+            Play_MultiInfoReset(i);
+        }
+    }
+}
+
+function Play_MultiupdateStreamLogo(channeiId, pos) {
+    var theUrl = Main_helix_api + 'users?id=' + channeiId;
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        Play_MultiupdateStreamLogoValues,
+        noop_fun,
+        pos,
+        0,
+        true
+    );
+}
+
+function Play_MultiupdateStreamLogoValues(responseText, i) {
+    var response = JSON.parse(responseText);
+    if (response.data && response.data.length) {
+        //TODO update this with a API that provides logo and is partner
+        var objData = response.data[0];
+        var extraText = Play_Multi_MainBig ? '_big' : '';
+
+        Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
+        Play_MultiArray[i].data[9] = objData.profile_image_url;
+
+        Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+
+        Main_innerHTML(
+            'stream_info_multi_name' + extraText + i,
+            Play_partnerIcon(
+                Play_MultiArray[i].data[1],
+                Play_MultiArray[i].data[10],
+                0,
+                Play_MultiArray[i].data[5] ? ('[' + Play_MultiArray[i].data[5].split('[')[1]) : '',
+                Play_MultiArray[i].data[8]
+            )
+        );
+
     }
 }
 
@@ -657,7 +708,7 @@ function Play_MultiInfoReset(pos) {
     );
 }
 
-function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title) {
+function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title, id) {
 
     Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTING);
 
@@ -671,7 +722,16 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
     var lang = Play_MultiArray[pos].data[5] ? ('[' + Play_MultiArray[pos].data[5].split('[')[1]) : '';
 
     var extraText = Play_Multi_MainBig ? '_big' : '';
-    Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
+
+    if (logo) {
+
+        Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
+
+    } else if (id) {
+
+        Play_MultiupdateStreamLogo(id, pos);
+    }
+
 
     Main_innerHTML(
         'stream_info_multi_name' + extraText + pos,
@@ -739,14 +799,35 @@ function Play_MultiSetUpdateDialog(obj) {
     for (var i = 0; i < 4; i++) {
 
         Main_textContent('stream_dialog_multi_name' + extraText + i, Play_MultiArray[i].data[1]);
-        Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+
+        if (Play_MultiArray[i].data[9]) {
+
+            Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+
+        } else {
+
+            Play_MultiSetUpdateDialogLogo(Play_MultiArray[i].data[14], i);
+
+        }
+
         Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE_HTML : Play_MultiArray[i].data[3]);
         Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
 
     }
 
     Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
-    Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
+
+
+    if (obj[9]) {
+
+        Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
+
+    } else {
+
+        Play_MultiSetUpdateDialogLogo(obj[14], -1);
+
+    }
+
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE_HTML : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
@@ -762,6 +843,42 @@ function Play_MultiSetUpdateDialog(obj) {
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
 
+}
+
+
+function Play_MultiSetUpdateDialogLogo(channeiId, pos) {
+    var theUrl = Main_helix_api + 'users?id=' + channeiId;
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        Play_MultiSetUpdateDialogLogoValues,
+        noop_fun,
+        pos,
+        0,
+        true
+    );
+}
+
+function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
+    var response = JSON.parse(responseText);
+    if (response.data && response.data.length) {
+        //TODO update this with a API that provides logo and is partner
+        var objData = response.data[0];
+        var extraText = Play_Multi_MainBig ? '_big' : '';
+
+        if (i > 0) {
+
+            Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
+            Play_MultiArray[i].data[9] = objData.profile_image_url;
+
+            Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
+        } else {
+            Main_getElementById('stream_dialog_multiimg-1').src = objData.profile_image_url;
+        }
+
+    }
 }
 
 function Play_MultiAddFocus() {

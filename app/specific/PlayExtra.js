@@ -530,8 +530,6 @@ function PlayExtra_updateStreamLogoValues(responseText, key, id) {
 
         }
 
-
-
     }
 }
 
