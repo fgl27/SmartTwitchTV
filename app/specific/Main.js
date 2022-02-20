@@ -2034,13 +2034,25 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult) {
+function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, useHelix) {
 
     if (Main_IsOn_OSInterface) {
 
         var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
 
-        if (HeaderQuatity && HeaderQuatity !== 2) {
+        if (useHelix) {
+
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+                Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+
+                JsonHeadersArray = JSON.stringify(Main_Bearer_User_Headers);
+
+            } else {
+                JsonHeadersArray = JSON.stringify(Main_Bearer_Headers);
+            }
+
+        } else if (HeaderQuatity && HeaderQuatity !== 2) {
 
             JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
 
@@ -2067,10 +2079,26 @@ function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, cal
         xmlHttp.open("GET", theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout;
 
-        if (access_token) Main_Headers[2][1] = access_token;
+        if (useHelix) {
 
-        for (i; i < HeaderQuatity; i++)
-            xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+                Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+
+                for (i; i < Main_Bearer_User_Headers.length; i++)
+                    xmlHttp.setRequestHeader(Main_Bearer_User_Headers[i][0], Main_Bearer_User_Headers[i][1]);
+
+            } else {
+                for (i; i < Main_Bearer_Headers.length; i++)
+                    xmlHttp.setRequestHeader(Main_Bearer_Headers[i][0], Main_Bearer_Headers[i][1]);
+            }
+        } else {
+            if (access_token) Main_Headers[2][1] = access_token;
+
+            for (i; i < HeaderQuatity; i++)
+                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+        }
+
 
         xmlHttp.onreadystatechange = function() {
 
@@ -2108,10 +2136,11 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
 
         return;
 
-    } else if (obj.status === 401 || obj.status === 403 &&
-        (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)) { //token expired
+    } else if (obj.status === 401 || obj.status === 403) { //token expired
 
-        AddCode_refreshTokens(0, null, null);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            AddCode_refreshTokens(0, null, null);
+        }
 
     }
 
