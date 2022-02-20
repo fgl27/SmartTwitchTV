@@ -579,7 +579,13 @@ function Play_UpdateMainStreamDiv() {
     );
     Main_textContent("stream_info_game", (Play_data.data[3] !== "" ? STR_PLAYING + Play_data.data[3] : ""));
     Main_innerHTML("stream_live_viewers", STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]));
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+
+    if (Play_data.data[9]) {
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    } else {
+        Play_updateStreamLogo();
+    }
+
     Play_controls[Play_controlsChanelCont].setLable(Play_data.data[1]);
     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
     Main_innerHTML('chat_container_name_text0', STR_SPACE_HTML + Play_data.data[1] + STR_SPACE_HTML);
@@ -743,6 +749,46 @@ function Play_updateStreamInfo() {
             Main_helix_api + 'streams/?user_id=' + Play_data.data[14],
             1
         );
+    }
+}
+
+var Play_updateStreamLogoValuesId;
+function Play_updateStreamLogo() {
+    Play_updateStreamLogoValuesId = new Date().getTime();
+    var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
+
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        Play_updateStreamLogoValues,
+        noop_fun,
+        null,
+        Play_updateStreamInfoGetId,
+        true
+    );
+}
+
+function Play_updateStreamLogoValues(responseText) {
+    var response = JSON.parse(responseText);
+    if (response.data && response.data.length) {
+        //TODO update this with a API that provides logo and is partner
+        var objData = response.data[0];
+
+        Play_data.data[10] = objData.broadcaster_type === 'partner';
+        Main_innerHTML(
+            "stream_info_name",
+            Play_partnerIcon(
+                Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+                Play_data.data[10],
+                0,
+                Play_data.data[5] ? ('[' + Play_data.data[5].split('[')[1]) : '',
+                Play_data.data[8]
+            )
+        );
+
+        Play_data.data[9] = objData.profile_image_url;
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
     }
 }
 
@@ -2203,7 +2249,11 @@ function Play_SavePlayData() {
 function Play_RestorePlayDataValues() {
     Play_data = JSON.parse(JSON.stringify(Play_data_old));
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    if (Play_data.data[9]) {
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
+    } else {
+        Play_updateStreamLogo();
+    }
     Play_SetControlsVisibilityPlayer(1);
 }
 
