@@ -344,7 +344,7 @@ function Main_initRestoreBackups() {
                     if (tempBackup !== null && tempBackupObj instanceof Object) Main_setItem('Main_values_History_data', tempBackup);
 
                     AddUser_RestoreUsers();
-                    if (AddUser_UserIsSet()) OSInterface_mCheckRefresh();
+                    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) OSInterface_mCheckRefresh();
                 }
             }
 
@@ -379,7 +379,7 @@ function Main_initWindowsEnd() {
 
     Screens_InitScreens();
 
-    if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 10000, Main_CheckResumeFeedId);
     }
 
@@ -1926,7 +1926,7 @@ function Main_getclock() {
 function Main_updateUserFeed() {
     //Main_Log('Main_updateUserFeed');
 
-    if (AddUser_UserIsSet() && !UserLiveFeed_isPreviewShowing() &&
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !UserLiveFeed_isPreviewShowing() &&
         !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
@@ -2146,7 +2146,7 @@ function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkRes
     } else if (obj.status === 401 || obj.status === 403) { //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-            AddCode_refreshTokens(0, null, null);
+            AddCode_refreshTokens();
         } else {
             AddCode_AppToken();
         }
@@ -3069,7 +3069,7 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
 
     }
 
-    var UserIsSet = AddUser_UserIsSet();
+    var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
 
     Main_CheckResumeUpdateToken(UserIsSet);
 
@@ -3359,7 +3359,7 @@ function Main_onNewIntent(mobj) {
 
 function Main_onNewIntentGetScreen(obj) {
     var goTo = Main_values.Main_Go;
-    var UserIsSet = AddUser_UserIsSet();
+    var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
 
     switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
         case 1:
