@@ -430,7 +430,7 @@ function PlayExtra_UpdatePanel() {
             Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
             Play_data.data[10],
             0,
-            Play_data.data[5] ? Play_data.data[5].split(' ')[1] : '',
+            Play_data.data[5] ? ('[' + Play_data.data[5].split('[')[1]) : '',
             Play_data.data[8]
         )
     );
@@ -449,7 +449,7 @@ function PlayExtra_UpdatePanel() {
             PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
             PlayExtra_data.data[10],
             0,
-            PlayExtra_data.data[5] ? PlayExtra_data.data[5].split(' ')[1] : '',
+            PlayExtra_data.data[5] ? ('[' + PlayExtra_data.data[5].split('[')[1]) : '',
             PlayExtra_data.data[8]
         )
     );

@@ -626,7 +626,7 @@ function Play_MultiUpdateinfoMainBig(extraText) {
                     Play_MultiArray[i].data[1],
                     Play_MultiArray[i].data[10],
                     0,
-                    Play_MultiArray[i].data[5] ? Play_MultiArray[i].data[5].split(' ')[1] : '',
+                    Play_MultiArray[i].data[5] ? ('[' + Play_MultiArray[i].data[5].split('[')[1]) : '',
                     Play_MultiArray[i].data[8]
                 )
             );
@@ -668,7 +668,7 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title)
     }
 
     var partner = Play_MultiArray[pos].data[10];
-    var lang = Play_MultiArray[pos].data[5] ? Play_MultiArray[pos].data[5].split(' ')[1] : '';
+    var lang = Play_MultiArray[pos].data[5] ? ('[' + Play_MultiArray[pos].data[5].split('[')[1]) : '';
 
     var extraText = Play_Multi_MainBig ? '_big' : '';
     Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
