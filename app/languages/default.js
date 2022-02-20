@@ -282,6 +282,8 @@ function DefaultLang() {
         STR_DIV_LINK + DefaultMakeLink('https://tinyurl.com/sttvdependency') + '</div>' + STR_BR + STR_BR +
         STR_DIV_TITLE + STR_CLOSE_THIS + '</div></div>';
 
+    STR_NOKUSER_WARNING = STR_NOKUSER_WARN + STR_NOKEY_GENERAL_WARN;
+
 }
 
 function DefaultReplaceLink(link, string, center) {

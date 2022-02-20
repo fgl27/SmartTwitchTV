@@ -257,7 +257,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
-    if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
+    if (!AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
 
     Sidepannel_Opt_holder = Main_getElementById("side_panel_new_holder");
     Sidepannel_scenefeed = Main_getElementById('scenefeed');
@@ -286,7 +286,7 @@ function UserLiveFeed_Prepare() {
 
 function UserLiveFeed_RefreshLive() {
     //Main_Log('UserLiveFeed_RefreshLive');
-    if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
         UserLiveFeedobj_CheckToken();
     }
@@ -436,7 +436,7 @@ function UserLiveFeed_CheckRefreshAfterResume() {
 
     if (Settings_Obj_default("auto_refresh_screen") && Settings_Obj_default("auto_refresh_background")) {
 
-        var i = 0, run = 1, len = (AddUser_UserIsSet() ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1, date = new Date().getTime();
+        var i = 0, run = 1, len = (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user) + 1, date = new Date().getTime();
 
         for (i; i < len; i++) {
 
@@ -1288,11 +1288,15 @@ function UserLiveFeed_KeyUpDown(Adder) {
             userSet = AddUser_UserIsSet();
 
         if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
+
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
-            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
+            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+
         } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
+
             NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
-            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARN, 1000);
+            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+
         }
 
         //If current game is empty, skip current game screen

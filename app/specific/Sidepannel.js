@@ -406,8 +406,10 @@ function Sidepannel_GetSize() {
 }
 
 function Sidepannel_KeyEnterUser() {
-    if (Sidepannel_Sidepannel_Pos === 5 && !AddUser_UsernameArray[0].access_token) {
-        Main_showWarningDialog(STR_NOKEY_VIDEO_WARN, 2000);
+    if (Sidepannel_Sidepannel_Pos >= 3 &&
+        Sidepannel_Sidepannel_Pos <= 6 &&
+        !AddUser_UsernameArray[0].access_token) {
+        Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
         return;
     }
 
@@ -507,7 +509,7 @@ function Sidepannel_KeyEnter() {
             Sidepannel_UnSetTopOpacity();
 
         } else {
-            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
         }
     } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
     else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
@@ -538,9 +540,9 @@ function Sidepannel_Start(callback, forceFeed) {
     Sidepannel_Callback = callback;
     Main_removeEventListener("keydown", Sidepannel_Callback);
     if (!Sidepannel_IsMain || forceFeed) {
-        if (AddUser_UserIsSet()) Sidepannel_StartFeed();
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) Sidepannel_StartFeed();
         else {
-            Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+            Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
             Sidepannel_StartMain();
         }
     } else Sidepannel_StartMain();
@@ -969,11 +971,11 @@ function Sidepannel_handleKeyDown(event) {
 }
 
 function Sidepannel_MainKeyLeft() {
-    if (AddUser_UserIsSet()) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         Main_removeEventListener("keydown", Sidepannel_handleKeyDownMain);
         Sidepannel_StartFeed();
     } else {
-        Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+        Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
     }
 }
 

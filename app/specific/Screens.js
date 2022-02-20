@@ -436,6 +436,11 @@ function Screens_HttpResultStatus(resultObj, key) {
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
             AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
+        } else if (key === Main_UserLive ||
+            key === Main_usergames ||
+            key === Main_UserVod ||
+            key === Main_UserChannels) {
+            Screens_loadDatafail(key);
         } else {
             AddCode_AppToken(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
         }
@@ -472,7 +477,11 @@ function Screens_loadDatafail(key) {
 
                 Screens_loadDataSuccessFinish(key);
 
-            } else ScreenObj[key].key_exit();
+            } else {
+                ScreenObj[key].addEmptyContentBanner(true);
+
+                Screens_loadDataSuccessFinish(key);
+            }
 
         }//else the user has already exited the screen
 
@@ -2230,7 +2239,7 @@ function Screens_handleKeyDown(key, event) {
             var UserIsSet = AddUser_UserIsSet();
             Screens_OpenSidePanel(UserIsSet, key);
             if (!UserIsSet) {
-                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
             }
             break;
         default:

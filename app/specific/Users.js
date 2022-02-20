@@ -515,7 +515,7 @@ function Users_handleKeyDown(event) {
             Users_removeFocus();
             Sidepannel_Start(Users_handleKeyDown, AddUser_UserIsSet());
             if (!AddUser_UserIsSet()) {
-                Main_showWarningDialog(STR_NOKUSER_WARN, 2000);
+                Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
             }
             break;
         default:

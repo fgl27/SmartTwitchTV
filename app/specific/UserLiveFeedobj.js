@@ -181,10 +181,23 @@ function UserLiveFeedobj_loadDataError(pos) {
         Main_HideElementWithEle(Sidepannel_SidepannelLoadingDialog);
 
         if (UserLiveFeed_isPreviewShowing() && pos === UserLiveFeed_FeedPosX) {
-            UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
+            if (pos === UserLiveFeedobj_UserLivePos &&
+                (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token)) {
+
+                UserLiveFeedobj_HolderDiv(
+                    pos,
+                    STR_NOKUSER_WARNING
+                );
+
+            } else {
+
+                UserLiveFeedobj_HolderDiv(pos, STR_REFRESH_PROBLEM);
+
+            }
         }
 
         if (pos === UserLiveFeedobj_UserLivePos && Sidepannel_isShowingUserLive()) {
+
             Main_HideWarningDialog();
             Sidepannel_showWarningDialog(STR_REFRESH_PROBLEM, 5000);
         }
@@ -197,6 +210,7 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_Empty(pos) {
+
     UserLiveFeedobj_HolderDiv(
         pos,
         pos === UserLiveFeedobj_UserVodHistoryPos || pos === UserLiveFeedobj_UserHistoryPos ?
@@ -206,7 +220,7 @@ function UserLiveFeedobj_Empty(pos) {
 
 function UserLiveFeedobj_HolderDiv(pos, text) {
     Main_innerHTMLWithEle(UserLiveFeed_obj[pos].div,
-        '<div class="strokicon" style="color: #FFFFFF;text-align: center;vertical-align: middle;transform: translateY(20vh);font-size: 150%;"> ' + text + '</div>');
+        '<div class="strokicon" style="max-width: 100%;word-wrap: break-word;white-space: normal;color: #FFFFFF;text-align: center;vertical-align: middle;transform: translateY(20vh);font-size: 150%;"> ' + text + '</div>');
 }
 
 function UserLiveFeedobj_loadChannelUserLive() {
@@ -1333,27 +1347,6 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
 
     Main_innerHTMLWithEle(Sidepannel_ScroolDoc, Sidepannel_Html);
 
-    // UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] =
-    //     UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos + '_' + itemsCount,
-    //         [
-    //             IMG_404_VIDEO,
-    //             "offlineteste",
-    //             "title",
-    //             "game",
-    //             "for 1000 Viewers",
-    //             "1440p90 [EN]",
-    //             "offlineteste",
-    //             10000000000,
-    //             true,
-    //             IMG_404_LOGO,
-    //             true,
-    //             "Since 11:04:36&nbsp;",
-    //             "2020-01-25T09:49:05Z",
-    //             1000,
-    //             35618666]
-    //     );
-    // itemsCount++;
-
     UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos] = itemsCount;
 
     Main_setTimeout(
@@ -1363,7 +1356,14 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
 
             if (!UserLiveFeed_itemsCount[UserLiveFeedobj_UserLivePos]) {
 
-                UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+                    UserLiveFeedobj_Empty(UserLiveFeedobj_UserLivePos);
+                } else {
+                    UserLiveFeedobj_HolderDiv(
+                        UserLiveFeedobj_UserLivePos,
+                        STR_NOKUSER_WARNING
+                    );
+                }
 
             }
 
