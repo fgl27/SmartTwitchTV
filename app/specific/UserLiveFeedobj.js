@@ -144,17 +144,8 @@ function UserLiveFeedobj_CheckToken() {
 
     UserLiveFeed_token = AddUser_UsernameArray[0].access_token;
 
-    if (UserLiveFeed_token) {
-
-        UserLiveFeed_token = Bearer + UserLiveFeed_token;
-        UserLiveFeedobj_loadChannelUserLive();
-
-    } else {
-
-        UserLiveFeed_token = null;
-        UserLiveFeedobj_loadChannels();
-
-    }
+    UserLiveFeed_token = Bearer + UserLiveFeed_token;
+    UserLiveFeedobj_loadChannelUserLive();
 
     //Main_Log('UserLiveFeedobj_CheckToken end');
 }
@@ -218,66 +209,6 @@ function UserLiveFeedobj_HolderDiv(pos, text) {
         '<div class="strokicon" style="color: #FFFFFF;text-align: center;vertical-align: middle;transform: translateY(20vh);font-size: 150%;"> ' + text + '</div>');
 }
 
-function UserLiveFeedobj_loadChannels() {
-
-    var theUrl = Main_kraken_api + 'users/' + encodeURIComponent(AddUser_UsernameArray[0].id) +
-        '/follows/channels?limit=100&offset=' + UserLiveFeed_loadChannelOffsset + '&sortby=last_broadcast' + Main_TwithcV5Flag;
-
-    BaseXmlHttpGet(
-        theUrl,
-        2,
-        null,
-        UserLiveFeedobj_loadChannelLive,
-        UserLiveFeedobj_loadChannelsError,
-        UserLiveFeedobj_UserLivePos
-    );
-
-}
-
-function UserLiveFeedobj_loadChannelsError(pos) {
-
-    if (!UserLiveFeed_followerChannels.length) UserLiveFeedobj_loadDataError(pos);
-    else UserLiveFeedobj_loadChannelLiveEnd();
-
-}
-
-function UserLiveFeedobj_loadChannelLive(responseText) {
-    //Main_Log('UserLiveFeedobj_loadChannelLive');
-
-    var response = JSON.parse(responseText).follows,
-        response_items = response.length;
-
-    if (response_items) { // response_items here is not always 99 because banned channels, so check until it is 0
-        var x = 0,
-            max = UserLiveFeed_followerChannels.length + response_items,
-            end = false;
-
-        if (max > UserLiveFeed_maxChannels) {
-            end = true;
-            response_items = Math.min(response_items, response_items - (max - UserLiveFeed_maxChannels));
-        }
-
-        for (x; x < response_items; x++) {
-            UserLiveFeed_followerChannels.push(response[x].channel._id);
-        }
-
-        if (end) {
-            UserLiveFeedobj_loadChannelLiveEnd();
-        } else {
-            UserLiveFeed_loadChannelOffsset += response_items;
-            UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-            UserLiveFeedobj_loadChannels();
-        }
-    } else { // end
-        UserLiveFeedobj_loadChannelLiveEnd();
-    }
-}
-
-function UserLiveFeedobj_loadChannelLiveEnd() {
-    UserLiveFeedobj_loadDataPrepare(UserLiveFeedobj_UserLivePos);
-    UserLiveFeedobj_loadChannelUserLive();
-}
-
 function UserLiveFeedobj_loadChannelUserLive() {
     //Main_Log('UserLiveFeedobj_loadChannelUserLive');
     var theUrl = Main_helix_api + 'streams/followed?user_id=' +
@@ -288,9 +219,13 @@ function UserLiveFeedobj_loadChannelUserLive() {
 
 function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
 
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+    }
+
     FullxmlHttpGet(
         theUrl,
-        Main_GetHeader(UserLiveFeed_token ? 3 : 2, UserLiveFeed_token),
+        Main_Bearer_User_Headers,
         UserLiveFeedobj_loadChannelUserLiveGetEnd,
         noop_fun,
         UserLiveFeedobj_UserLivePos,

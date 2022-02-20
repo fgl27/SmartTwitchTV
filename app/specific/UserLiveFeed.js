@@ -22,7 +22,6 @@
 var UserLiveFeed_loadingData = [];
 var UserLiveFeed_loadChannelOffsset = 0;
 var UserLiveFeed_followerChannels = [];
-var UserLiveFeed_maxChannels = 825;
 var UserLiveFeed_idObject = [];
 var UserLiveFeed_status = [];
 var UserLiveFeed_token = null;
