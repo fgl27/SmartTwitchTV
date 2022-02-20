@@ -432,7 +432,6 @@ function OSInterface_getAppToken() {
     }
 }
 
-
 //public void UpdateUserId(String id, String name, String refresh_token)
 //id =  the user id
 //name =  the user name

@@ -23,7 +23,7 @@ package com.fgl27.twitch;
 public final class Constants {
 
     //Load the page from assets for testing
-    private final static boolean LoadFromAssets = true;
+    private final static boolean LoadFromAssets = false;
 
     final static String PageUrl = LoadFromAssets ?
             "file:///android_asset/app/index.html" :

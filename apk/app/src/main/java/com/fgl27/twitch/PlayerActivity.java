@@ -2646,7 +2646,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public String getAppToken(String token) {
+        public String getAppToken() {
             return Tools.getString(Constants.PREF_CLIENT_TOKEN, null, appPreferences);
         }
 
