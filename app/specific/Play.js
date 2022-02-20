@@ -608,7 +608,7 @@ var Play_updateStreamInfoStartId;
 function Play_updateStreamInfoStart() {
     if (!Play_data.data[14]) return;
 
-    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag;
+    var theUrl = Main_helix_api + 'streams/?user_id=' + Play_data.data[14];
 
     Play_updateStreamInfoStartId = new Date().getTime();
 
@@ -619,7 +619,8 @@ function Play_updateStreamInfoStart() {
         Play_updateStreamInfoStartValues,
         Play_updateStreamInfoStartError,
         0,
-        Play_updateStreamInfoStartId
+        Play_updateStreamInfoStartId,
+        true
     );
 }
 
@@ -627,19 +628,19 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
 
     var obj = JSON.parse(response);
 
-    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoStartId === ID) {
+    if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoStartId === ID) {
 
-        Play_updateStreamInfoEnd(obj.streams[0]);
+        Play_updateStreamInfoEnd(obj.data[0]);
 
         Play_updateVodInfo(
-            obj.streams[0].channel._id,
-            obj.streams[0]._id
+            obj.data[0].user_id,
+            obj.data[0].id
         );
 
         if (!Main_IsOn_OSInterface) {
 
             Play_SetSceneBackground(
-                obj.streams[0].preview.template.replace("{width}x{height}", "1280x720") + Main_randomimg
+                obj.data[0].thumbnail_url.replace("{width}x{height}", "1280x720") + Main_randomimg
             );
         }
     } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
@@ -650,7 +651,7 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
 }
 
 function Play_updateStreamInfoEnd(response) {
-    var tempData = ScreensObj_LiveCellArray(response);
+    var tempData = ScreensObj_LiveCellArray(response, true);
 
     //Prevent save the wrong stream data this can happen when switching right after enable PP mode
     if (Play_data.data.length > 0 && Main_A_equals_B(tempData[14], Play_data.data[14])) {
@@ -739,7 +740,7 @@ function Play_updateStreamInfo() {
     } else {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(
-            Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_data.data[14] + Main_TwithcV5Flag,
+            Main_helix_api + 'streams/?user_id=' + Play_data.data[14],
             1
         );
     }
@@ -757,7 +758,8 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
         Play_updateStreamInfoValues,
         Play_updateStreamInfoGetError,
         Is_play,
-        Play_updateStreamInfoGetId
+        Play_updateStreamInfoGetId,
+        true
     );
 
 }
@@ -765,17 +767,17 @@ function Play_updateStreamInfoGet(theUrl, Is_play) {
 function Play_updateStreamInfoValues(response, Is_play, ID) {
     var obj = JSON.parse(response);
 
-    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoGetId === ID) {
+    if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoGetId === ID) {
 
         if (Is_play) {
-            Play_updateStreamInfoEnd(obj.streams[0]);
+            Play_updateStreamInfoEnd(obj.data[0]);
 
             if (PlayExtra_PicturePicture) {
                 PlayExtra_updateStreamInfo();
             }
 
         } else {
-            var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
+            var tempData = ScreensObj_LiveCellArray(obj.data[0]);
             if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
