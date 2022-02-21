@@ -553,7 +553,7 @@ function PlayExtra_loadDataFail(Reason) {
 
 function PlayExtra_updateStreamInfo() {
     Play_updateStreamInfoGet(
-        Main_kraken_api + 'streams/?stream_type=all&channel=' + PlayExtra_data.data[14] + Main_TwithcV5Flag,
+        Main_helix_api + 'streams?user_id=' + PlayExtra_data.data[14],
         0
     );
 }

@@ -614,7 +614,7 @@ var Play_updateStreamInfoStartId;
 function Play_updateStreamInfoStart() {
     if (!Play_data.data[14]) return;
 
-    var theUrl = Main_helix_api + 'streams/?user_id=' + Play_data.data[14];
+    var theUrl = Main_helix_api + 'streams?user_id=' + Play_data.data[14];
 
     Play_updateStreamInfoStartId = new Date().getTime();
 

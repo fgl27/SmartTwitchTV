@@ -26,15 +26,15 @@ function Play_updateStreamInfoMulti(pos) {
 
     Play_updateStreamInfoMultiId[pos] = new Date().getTime();
 
-
     BaseXmlHttpGet(
-        Main_kraken_api + 'streams/?stream_type=all&channel=' + Play_MultiArray[pos].data[14] + Main_TwithcV5Flag,
+        Main_helix_api + 'streams?user_id=' + Play_MultiArray[pos].data[14],
         2,
         null,
         Play_updateStreamInfoMultiValues,
         Play_updateStreamInfoMultiError,
         pos,
-        Play_updateStreamInfoMultiId[pos]
+        Play_updateStreamInfoMultiId[pos],
+        true
     );
 
 }
@@ -42,9 +42,9 @@ function Play_updateStreamInfoMulti(pos) {
 function Play_updateStreamInfoMultiValues(response, pos, ID) {
     var obj = JSON.parse(response);
 
-    if (Play_isOn && obj.streams && obj.streams.length && Play_updateStreamInfoMultiId[pos] === ID) {
+    if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoMultiId[pos] === ID) {
 
-        var tempData = ScreensObj_LiveCellArray(obj.streams[0]);
+        var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
 
         //Prevent save the wrong stream data
         if (Play_MultiArray[pos].data.length > 0 && Main_A_equals_B(tempData[14], Play_MultiArray[pos].data[14])) {
@@ -57,9 +57,9 @@ function Play_updateStreamInfoMultiValues(response, pos, ID) {
 
             Play_MultiUpdateinfo(
                 pos,
-                obj.streams[0].game,
-                obj.streams[0].viewers,
-                twemoji.parse(obj.streams[0].channel.status, false, true),
+                obj.data[0].game_name,
+                obj.data[0].viewer_count,
+                twemoji.parse(obj.data[0].title, false, true),
                 (Play_Multi_MainBig ? '_big' : '')
             );
 
