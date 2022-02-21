@@ -23,15 +23,19 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 330,//Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/330/SmartTV_twitch_3_0_330.apk',
-    WebVersion: 'February 20 2022',
-    WebTag: 606,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'February 21 2022',
+    WebTag: 607,//Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: "Web Version February 20 2022 and Apk Version 3.0.330",
+            title: "Web Version February 21 2022 and Apk Version 3.0.330",
             changes: [
                 "Prepare the app for API changes",
                 "Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem",
-                "Update app dependencies to latest version included the player"
+                "When Twitch Shutdown they API some parts of the app will not work, the most used part will work as they are already using the new API",
+                "After this update the user must add a new authorization key even if one was added before",
+                "This new API demands the user to have a authorization key to access most of content, make sure you have added a user and a authorization key to prevent issues",
+                "Update app dependencies to latest version included the player",
+                "If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues"
             ]
         },
         {
@@ -59,39 +63,6 @@ var version = {
                 "One click selects, two will open a Live, VOD or Clip",
                 "To show the in player preview, place the mouse on the top-center of the screen and use the mouse wheel, UP shows, Down hide",
                 "Place the mouse over the preview and use the wheel to scroll throw the content",
-            ]
-        },
-        {
-            title: "Apk Version 3.0.329",
-            changes: [
-                "Fix channels on the home screen not showing content"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.328",
-            changes: [
-                "Fix minor player regression"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.327 and Web Version August 10 2021",
-            changes: [
-                "Add settings Chat option to Highlight messages from the streamer and mods",
-                "Add player bottom controls option to show all player controls",
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Apk Version 3.0.326 and Web Version August 07 2021",
-            changes: [
-                "General improves and bug fixes"
-            ]
-        },
-        {
-            title: "Web Version July 22 2021",
-            changes: [
-                "General improves and bug fixes"
-
             ]
         }
     ]
