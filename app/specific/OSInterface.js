@@ -417,9 +417,12 @@ function OSInterface_mhideSystemUI() {
 //Sets the app token when value is updated from JS
 function OSInterface_setAppToken() {
     if (Main_IsOn_OSInterface) {
-        Android.setAppToken(
-            AddCode_main_token ? AddCode_main_token : null
-        );
+        try {
+            Android.setAppToken(
+                AddCode_main_token ? AddCode_main_token : null
+            );
+        } catch (e) {
+        }
     }
 
 }
@@ -428,7 +431,11 @@ function OSInterface_setAppToken() {
 //Get the app token when is saved on APK
 function OSInterface_getAppToken() {
     if (Main_IsOn_OSInterface) {
-        AddCode_main_token = Android.getAppToken();
+        try {
+            AddCode_main_token = Android.getAppToken();
+        } catch (e) {
+        }
+
     }
 }
 
