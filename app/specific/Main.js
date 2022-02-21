@@ -2570,7 +2570,7 @@ function Main_SetHistoryworker() {
 
                                 if (response.streams && response.streams.length) {
 
-                                    if (obj.mData.obj.data[7] !== response.streams[0]._id) {
+                                    if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.streams[0]._id)) {
 
                                         this.postMessage(
                                             {
