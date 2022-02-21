@@ -1113,11 +1113,12 @@ function Main_CheckUpdateResult(responseText) {
         webupdate = response.WebTag > version.WebTag,
         apkupdate = Main_IsOn_OSInterface && response.publishVersionCode > version.publishVersionCode;
 
+    version.changelog = JSON.parse(JSON.stringify(response.changelog));
+    version.ApkUrl = response.ApkUrl;
+
     if (webupdate || apkupdate) {
         Main_HasUpdate = true;
 
-        version.changelog = JSON.parse(JSON.stringify(response.changelog));
-        version.ApkUrl = response.ApkUrl;
         Main_IsWebupdate = !apkupdate && webupdate;
 
         Main_WarnUpdate(Main_IsWebupdate);
