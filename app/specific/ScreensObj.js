@@ -2267,7 +2267,7 @@ function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
             Main_addCommas(cell.viewer_count),//4
             '[' + cell.language.toUpperCase() + ']',//5
             cell.user_login,//6
-            cell.id,//7 broadcast id
+            parseInt(cell.id),//7 broadcast id
             Main_is_rerun(cell.type),//8
             logo ? logo : null,//9
             partner ? partner : null,//10

@@ -2293,6 +2293,7 @@ function Main_ReplaceLargeFont(text) {
 
 function Main_Set_history(type, Data, skipUpdateDate) {
 
+
     if (!AddUser_IsUserSet() || !Data || !Data[0] ||//Check is user is set, and data is valid
         (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) || //Check if the history for this type is enable
         (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
@@ -2312,6 +2313,7 @@ function Main_Set_history(type, Data, skipUpdateDate) {
         ArrayPos.date = !skipUpdateDate ? new Date().getTime() : ArrayPos.date;
         ArrayPos.game = Data[3];
         ArrayPos.views = Data[13];
+
 
     } else {
         //Limit size to 2000
@@ -2560,7 +2562,7 @@ function Main_SetHistoryworker() {
 
                     if (event.data.type === 1) {//Live check if is a vod
 
-                        theUrl = 'https://api.twitch.tv/kraken/streams/?stream_type=all&channel=' + event.data.obj.data[14] + '&api_version=5';
+                        theUrl = 'https://api.twitch.tv/helix/streams?user_id=' + event.data.obj.data[14];
 
                         onload = function(obj) {
 
@@ -2568,9 +2570,10 @@ function Main_SetHistoryworker() {
 
                                 var response = JSON.parse(obj.responseText);
 
-                                if (response.streams && response.streams.length) {
+                                if (response.data && response.data.length) {
 
-                                    if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.streams[0]._id)) {
+
+                                    if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.data[0].id)) {
 
                                         this.postMessage(
                                             {
@@ -2584,7 +2587,7 @@ function Main_SetHistoryworker() {
 
                                         this.postMessage(
                                             {
-                                                data: response.streams[0],
+                                                data: response.data[0],
                                                 ended: false,
                                                 type: event.data.type
                                             }
@@ -2688,8 +2691,14 @@ function Main_SetHistoryworker() {
                             xmlHttp.open("GET", theUrl, true);
                             xmlHttp.timeout = 30000;
 
-                            xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
-                            xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+                            if (event.data.header) {
+                                for (var i = 0; i < event.data.header.length; i++)
+                                    xmlHttp.setRequestHeader(event.data.header[i][0], event.data.header[i][1]);
+                            } else {
+                                xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
+                                xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
+                            }
+
 
                             xmlHttp.onreadystatechange = function() {
 
@@ -2743,9 +2752,7 @@ function Main_SetHistoryworker() {
                             }
 
                         } else {
-
-                            Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
-
+                            Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
                         }
                     } else if (event.data.type === 'live') {
 
@@ -2803,9 +2810,18 @@ function Main_StartHistoryworker() {
 
     if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
-    var array = Main_values_History_data[AddUser_UsernameArray[0].id].live;
+    var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
+        i = 0, len = array.length,
+        header;
 
-    var i = 0, len = array.length;
+
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+        header = Main_Bearer_User_Headers;
+
+    } else {
+        header = Main_Bearer_Headers;
+    }
 
     for (i; i < len; i++) {
 
@@ -2813,10 +2829,12 @@ function Main_StartHistoryworker() {
 
             if (array[i].data[14] && array[i].data[14] !== '') {
 
+
                 BradcastCheckerWorker.postMessage(
                     {
                         obj: array[i],
-                        type: 1
+                        type: 1,
+                        header: header
                     }
                 );
 

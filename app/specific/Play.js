@@ -746,7 +746,7 @@ function Play_updateStreamInfo() {
     } else {
         //When update this also update PlayExtra_updateStreamInfo
         Play_updateStreamInfoGet(
-            Main_helix_api + 'streams/?user_id=' + Play_data.data[14],
+            Main_helix_api + 'streams?user_id=' + Play_data.data[14],
             1
         );
     }
