@@ -58,6 +58,7 @@ function ru_RULang() {
     STR_CHECK_HOST = ", проверка хоста";
     STR_IS_SUB_ONLY = "Видео доступно только для подписчиков.";
     STR_IS_SUB_ONLY_ERROR = "только для подписчиков.";
+    STR_NOKEY_GENERAL_WARN = ", перейдите на боковую панель (верхняя опция) Аккаунт: сменить, добавить, ключ и нажмите ОК";
     STR_REFRESH_PROBLEM = "Ошибка подключения или тут нет контента. Обновите, чтобы попробовать еще раз";
     STR_REFRESH_PROBLEM_ENTER = "Ошибка подключения или нет контента. Нажмите ОК, чтобы обновить";
     STR_NO = "Нет";
@@ -95,7 +96,7 @@ function ru_RULang() {
     STR_UPDATE_CHECK_SIDE = ", проверьте панель обновлений";
     STR_UPDATE_LAST_CHECK = "Посл. проверка:";
     STR_UPDATE_OPT = "Обновления";
-    STR_UPDATE_CHECK_FOR = "Проверять обовления в фоне";
+    STR_UPDATE_CHECK_FOR = "Проверять обновления в фоне";
     STR_UPDATE_SHOW = "Показать диалог обновления, когда обновление доступно";
     STR_UPDATE_SHOW_ARRAY = ["Да", "Only a toast message", "Нет"];
     STR_UPDATE_START = "Начался процесс обновления, это может занять несколько секунд, подождите!";
