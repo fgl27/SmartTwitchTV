@@ -1,13 +1,1 @@
-    STR_EMBED = "Embed player ";
-    STR_CLICK_EXIT = "Click here to exit the player";
-    STR_GO_FULL = "Full screen";
-    STR_NOT_SUPPORT_BROWSER = "This is not supported on a browser";
-    STR_WARNING_BROWSER = "Browser warning";
-    STR_WARNING_BROWSER_SUMMARY = "This app is designed to be used mainly on TVs, the support for other devices is limited. You can control the app using a mouse but it works better using the keyboard keys up, down, left, right, enter and return controller (ESC works as a return).";
-    STR_GO_FULL_HELP = "Click, press 9 or F11";
-    STR_THUMB_OPTIONS_CLICK = "Click twice above an action (to open or apply it), click outside the dialog to exit without applying";
-    STR_CLOSE_THIS_BROWSER = "Press return, enter or click outside to close this";
-    STR_DISABLE_EMBED = "Enable Live and Vod Twitch player";
-    STR_DISABLE_EMBED_SUMMARY = "This is only needed to disable if you wanna see the TV player to check it's strings and layout for testing proposes";
-    STR_SPECIAL_FEATURE = "Use the keyboard for this feature";
-    STR_FAIL_VOD_INFO = "Fail to load VOD info";
+
