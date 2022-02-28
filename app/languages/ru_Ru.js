@@ -58,6 +58,7 @@ function ru_RULang() {
     STR_CHECK_HOST = ", проверка хоста";
     STR_IS_SUB_ONLY = "Видео доступно только для подписчиков.";
     STR_IS_SUB_ONLY_ERROR = "только для подписчиков.";
+    STR_NOKEY_GENERAL_WARN = ", перейдите на боковую панель (верхняя опция) Аккаунт: сменить, добавить, ключ и нажмите ОК";
     STR_REFRESH_PROBLEM = "Ошибка подключения или тут нет контента. Обновите, чтобы попробовать еще раз";
     STR_REFRESH_PROBLEM_ENTER = "Ошибка подключения или нет контента. Нажмите ОК, чтобы обновить";
     STR_NO = "Нет";
@@ -95,7 +96,7 @@ function ru_RULang() {
     STR_UPDATE_CHECK_SIDE = ", проверьте панель обновлений";
     STR_UPDATE_LAST_CHECK = "Посл. проверка:";
     STR_UPDATE_OPT = "Обновления";
-    STR_UPDATE_CHECK_FOR = "Проверять обовления в фоне";
+    STR_UPDATE_CHECK_FOR = "Проверять обновления в фоне";
     STR_UPDATE_SHOW = "Показать диалог обновления, когда обновление доступно";
     STR_UPDATE_SHOW_ARRAY = ["Да", "Only a toast message", "Нет"];
     STR_UPDATE_START = "Начался процесс обновления, это может занять несколько секунд, подождите!";
@@ -596,7 +597,7 @@ function ru_RULang() {
     STR_NOKEY_CHAT_WARN = "Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат";
     STR_CHAT_NOT_READY = "Чат не готов! Попробуйте еще раз через несколько секунд.";
     STR_CHAT_REDEEMED_MESSAGE_HIGH = "Активировано Выделите мое сообщение";
-    STR_CHAT_REDEEMED_MESSAGE_SUB = "Активировано Отправить сообщение в режиме для пописчиков";
+    STR_CHAT_REDEEMED_MESSAGE_SUB = "Активировано Отправить сообщение в режиме для подписчиков";
     STR_CHAT_OPTIONS = "Настройки чата";
     STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Выделить сообщения от стримера (темно-розовый фон)";
     STR_CHAT_HIGHLIGHT_MOD_MSG = "Выделить сообщения от модератора (темно-голубой фон)";
@@ -714,4 +715,5 @@ function ru_RULang() {
     STR_DISABLE_EMBED = "Включить Live и Vod Twitch плеер";
     STR_DISABLE_EMBED_SUMMARY = "Это нужно отключить только, если вы хотите увидеть ТВ-плеер, чтобы проверить его строки и протестировать.";
     STR_SPECIAL_FEATURE = "Используйте клавиатуру для этой функции";
+    STR_FAIL_VOD_INFO = "Ошибка загрузки информации о VOD";
 }
