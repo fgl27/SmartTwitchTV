@@ -133,7 +133,7 @@ function ChatLive_Init(chat_number, SkipClear) {
         ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     }
 
-    ChatLive_loadEmotesUser();
+    ChatLive_loadGloabalEmotes();
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
 }
@@ -483,66 +483,64 @@ function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
     }
 }
 
-function ChatLive_loadEmotesUser() {
-    if (AddUser_IsUserSet() && AddUser_UsernameArray[0].access_token) {
+function ChatLive_loadGloabalEmotes(chat_number, id) {
 
-        BaseXmlHttpGet(
-            Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/emotes',
-            3,
-            Main_OAuth + AddUser_UsernameArray[0].access_token,
-            ChatLive_loadEmotesUserSuccess,
-            noop_fun,
-            0,
-            0
-        );
+    var theUrl = Main_helix_api + 'chat/emotes/global';
 
-    }
+    BaseXmlHttpGet(
+        theUrl,
+        2,
+        null,
+        ChatLive_loadGloabalEmotesSucess,
+        noop_fun,
+        chat_number,
+        id,
+        true
+    );
+
 }
 
+function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
+    if (chat_id !== Chat_Id[chat_number]) return;
 
-function ChatLive_loadEmotesUserSuccess(result) {
-    try {
+    var response = JSON.parse(responseText);
 
-        var data = JSON.parse(result);
-        if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) userEmote[AddUser_UsernameArray[0].id] = {};
+    if (response && response.data.length) {
+
+        var data = response.data;
+
+        if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
+            userEmote[AddUser_UsernameArray[0].id] = {};
+        }
 
         var url, id;
 
-        Object.keys(data.emoticon_sets).forEach(function(set) {
-            set = data.emoticon_sets[set];
-            if (Array.isArray(set)) {
+        data.forEach(function(emoticon) {
 
-                set.forEach(function(emoticon) {
+            if (!emoticon.name || !emoticon.id || typeof emoticon.name !== 'string') return;
 
-                    if (!emoticon.code || !emoticon.id) return;
-                    if (typeof emoticon.code !== 'string' || typeof emoticon.id !== 'number') return;
+            emoticon.code = emoteReplace[emoticon.name] || emoticon.name;
 
-                    emoticon.code = emoteReplace[emoticon.code] || emoticon.code;
+            if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
 
-                    if (userEmote[AddUser_UsernameArray[0].id].hasOwnProperty(emoticon.code)) return;
+            url = emoteURL(emoticon.id);
+            id = emoticon.code + emoticon.id;//combine code and id to make t uniq
 
-                    url = emoteURL(emoticon.id);
-                    id = emoticon.code + emoticon.id;//combine code and id to make t uniq
+            extraEmotes[emoticon.code] = {
+                code: emoticon.code,
+                id: id,
+                chat_div: emoteTemplate(url),
+                '4x': url
+            };
 
-                    extraEmotes[emoticon.code] = {
-                        code: emoticon.code,
-                        id: id,
-                        chat_div: emoteTemplate(url),
-                        '4x': url
-                    };
+            userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
+                code: emoticon.code,
+                id: id,
+                '4x': url
+            };
 
-                    userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
-                        code: emoticon.code,
-                        id: id,
-                        '4x': url
-                    };
-
-                });
-            }
         });
 
-    } catch (e) {
-        Main_Log('ChatLive_loadEmotesUserSuccess ' + e);
     }
 }
 
