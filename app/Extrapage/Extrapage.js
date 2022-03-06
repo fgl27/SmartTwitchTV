@@ -262,6 +262,9 @@
             scaleFactor = window_innerHeight / initialHeight;
             //scale the Width
             calculated_Width = initialWidth * scaleFactor;
+            //reset center vertical align
+            document.body.style.marginTop = 0;
+            document.body.style.marginLeft = ((window_innerWidth - calculated_Width) / 2) + 'px';
         } else {
             // Vertical Wide mode scale app on a fix Width dynamic Height
             calculated_Width = window_innerWidth;
@@ -271,6 +274,7 @@
             calculated_Height = initialHeight * scaleFactor;
             //center vertical align
             document.body.style.marginTop = ((window_innerHeight - calculated_Height) / 2) + 'px';
+            document.body.style.marginLeft = 0;
         }
 
         // Set app global height.
