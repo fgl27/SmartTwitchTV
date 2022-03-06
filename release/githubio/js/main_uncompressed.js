@@ -1216,7 +1216,7 @@
         STR_OAUTH_WRONG = "You try to add a key for user";
         STR_OAUTH_WRONG2 = "but this key is for user";
         STR_FOLLOWING = "Following";
-        STR_FOLLOW = "Follow";
+        STR_FOLLOW = "Not Following";
         STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
         STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
         STR_IS_SUB_IS_SUB = "You are a sub of this channel, but";
@@ -2450,7 +2450,7 @@
         STR_OAUTH_WRONG = "Você tentou adicionar uma chave para o usuário";
         STR_OAUTH_WRONG2 = "mas esta chave é para o usuário";
         STR_FOLLOWING = "Seguindo";
-        STR_FOLLOW = "Seguir";
+        STR_FOLLOW = "Não Seguindo";
         STR_IS_SUB_NOOAUTH = "E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.";
         STR_IS_SUB_NOT_SUB = "E você não é um sub deste canal";
         STR_IS_SUB_IS_SUB = "Você é um sub deste canal, mas";
@@ -20144,7 +20144,7 @@
             setLable: function(string, AddCode_IsFollowing) {
                 Main_textContentWithEle(Play_controls[this.position].doc_title, string);
                 this.setIcon(AddCode_IsFollowing);
-                Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
+                //Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
             },
             setIcon: function(AddCode_IsFollowing) {
                 Main_innerHTML('controls_button_icon_holder_' + this.position, '<i id="controls_button_icon_' + this.position +
