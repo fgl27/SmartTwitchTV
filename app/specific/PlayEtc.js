@@ -934,21 +934,24 @@ function Play_StartStayShowBottom() {
 }
 
 function Play_StayGetStreamerInfo() {
-    var theUrl = Main_kraken_api + 'channels/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
     BaseXmlHttpGet(
         theUrl,
         2,
         null,
         Play_StayGetStreamerInfoSucess,
-        noop_fun
+        noop_fun,
+        null,
+        0,
+        true
     );
 
 }
 
 function Play_StayGetStreamerInfoSucess(responseText) {
-    var channel = JSON.parse(responseText);
-    var img = channel.video_banner;
+    var channel = JSON.parse(responseText).data[0];
+    var img = channel.offline_image_url;
     Play_SetSceneBackground(img ? img : IMG_404_BANNER);
 }
 
