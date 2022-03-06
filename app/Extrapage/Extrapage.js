@@ -269,6 +269,8 @@
             scaleFactor = window_innerWidth / initialWidth;
             //scale the Height
             calculated_Height = initialHeight * scaleFactor;
+            //center vertical align
+            document.body.style.marginTop = ((window_innerHeight - calculated_Height) / 2) + 'px';
         }
 
         // Set app global height.
