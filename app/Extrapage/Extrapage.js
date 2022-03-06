@@ -256,24 +256,26 @@
             scaledWidth;
 
         if (Horizontal_Wide_Mode) {
+
             // Horizontal Wide mode scale app on a fix Height dynamic Width
             calculated_Height = window_innerHeight;
             // Calculate scale factor
             scaleFactor = window_innerHeight / initialHeight;
             //scale the Width
-            calculated_Width = initialWidth * scaleFactor;
+            calculated_Width = Math.ceil(initialWidth * scaleFactor);
             //reset center vertical align
             document.body.style.marginTop = 0;
-            document.body.style.marginLeft = ((window_innerWidth - calculated_Width) / 2) + 'px';
+            document.body.style.marginLeft = Math.ceil((window_innerWidth - calculated_Width) / 2) + 'px';
         } else {
+
             // Vertical Wide mode scale app on a fix Width dynamic Height
             calculated_Width = window_innerWidth;
             // Calculate scale factor
             scaleFactor = window_innerWidth / initialWidth;
             //scale the Height
-            calculated_Height = initialHeight * scaleFactor;
+            calculated_Height = Math.ceil(initialHeight * scaleFactor);
             //center vertical align
-            document.body.style.marginTop = ((window_innerHeight - calculated_Height) / 2) + 'px';
+            document.body.style.marginTop = Math.ceil((window_innerHeight - calculated_Height) / 2) + 'px';
             document.body.style.marginLeft = 0;
         }
 
