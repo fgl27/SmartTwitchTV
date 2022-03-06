@@ -668,13 +668,15 @@ function ScreensObj_StartAllVars() {
                         Screens_PeriodStart(this.screen);
                         return;
 
-                    } else {
+                    } else if (!this.DataObj['0_0'].image) {
 
                         PlayClip_All = true;
                         Screens_removeFocusFollow(this.screen);
                         this.posX = 0;
                         this.posY = 0;
 
+                    } else {
+                        return;
                     }
 
                 } else return;

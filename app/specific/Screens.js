@@ -471,19 +471,13 @@ function Screens_loadDatafail(key) {
 
             if (ScreenObj[key].HasSwitches) {
 
-                if (ScreenObj[key].HasSwitches) {
-                    ScreenObj[key].addSwitches();
-                }
+                ScreenObj[key].addSwitches();
 
-                ScreenObj[key].addEmptyContentBanner(true);
-
-                Screens_loadDataSuccessFinish(key);
-
-            } else {
-                ScreenObj[key].addEmptyContentBanner(true);
-
-                Screens_loadDataSuccessFinish(key);
             }
+
+            ScreenObj[key].addEmptyContentBanner(true);
+
+            Screens_loadDataSuccessFinish(key);
 
         }//else the user has already exited the screen
 
