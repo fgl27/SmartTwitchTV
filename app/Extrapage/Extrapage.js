@@ -245,21 +245,39 @@
         var initialFontSize = 29,
             initialWidth = 1920,
             initialHeight = 1080,
-
+            window_innerHeight = window.innerHeight,
+            window_innerWidth = window.innerWidth,
+            currentRatio = window_innerWidth / window_innerHeight,
+            initialRatio = initialWidth / initialHeight,
+            Horizontal_Wide_Mode = currentRatio >= initialRatio,
+            calculated_Height,
+            calculated_Width,
             currentHeight,
             scaledWidth;
 
-        // Get current client/screen height.
-        currentHeight = window.innerHeight;
+        if (Horizontal_Wide_Mode) {
+            // Horizontal Wide mode scale app on a fix Height dynamic Width
+            calculated_Height = window_innerHeight;
+            // Calculate scale factor
+            scaleFactor = window_innerHeight / initialHeight;
+            //scale the Width
+            calculated_Width = initialWidth * scaleFactor;
+        } else {
+            // Vertical Wide mode scale app on a fix Width dynamic Height
+            calculated_Width = window_innerWidth;
+            // Calculate scale factor
+            scaleFactor = window_innerWidth / initialWidth;
+            //scale the Height
+            calculated_Height = initialHeight * scaleFactor;
+        }
 
-        // Calculate scale factor and scaled font size.
-        scaleFactor = currentHeight / initialHeight;
-        BodyfontSize = initialFontSize * scaleFactor;
-
-        // Calculate scaled body/divs size.
-        scaledWidth = initialWidth * scaleFactor;
+        // Set app global height.
+        currentHeight = calculated_Height;
+        // Set app global width.
+        scaledWidth = calculated_Width;
 
         //Set new body width/height recalculated to 16 by 9 and scaled fontSize 
+        BodyfontSize = initialFontSize * scaleFactor;
         Main_body.style.width = scaledWidth + 'px';
         Main_body.style.height = currentHeight + 'px';
         Main_body.style.fontSize = BodyfontSize + 'px';
