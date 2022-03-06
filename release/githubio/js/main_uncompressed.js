@@ -3798,19 +3798,38 @@
         // Initial sizes.
         var initialFontSize = 29 + offset,
             initialWidth = 1920,
-            initialHeight = 1080;
+            initialHeight = 1080,
+            window_innerHeight = window.innerHeight,
+            window_innerWidth = window.innerWidth,
+            currentRatio = window_innerWidth / window_innerHeight,
+            initialRatio = initialWidth / initialHeight,
+            Horizontal_Wide_Mode = currentRatio >= initialRatio,
+            calculated_Height,
+            calculated_Width;
 
-        // Get current client/screen height.
-        currentHeight = window.innerHeight;
+        if (Horizontal_Wide_Mode) {
+            // Horizontal Wide mode scale app on a fix Height dynamic Width
+            calculated_Height = window_innerHeight;
+            // Calculate scale factor
+            scaleFactor = window_innerHeight / initialHeight;
+            //scale the Width
+            calculated_Width = initialWidth * scaleFactor;
+        } else {
+            // Vertical Wide mode scale app on a fix Width dynamic Height
+            calculated_Width = window_innerWidth;
+            // Calculate scale factor
+            scaleFactor = window_innerWidth / initialWidth;
+            //scale the Height
+            calculated_Height = initialHeight * scaleFactor;
+        }
 
-        // Calculate scale factor and scaled font size.
-        scaleFactor = currentHeight / initialHeight;
-        BodyfontSize = initialFontSize * scaleFactor;
-
-        // Calculate scaled body/divs size.
-        scaledWidth = initialWidth * scaleFactor;
+        // Set app global height.
+        currentHeight = calculated_Height;
+        // Set app global width.
+        scaledWidth = calculated_Width;
 
         //Set new body width/height recalculated to 16 by 9 and scaled fontSize 
+        BodyfontSize = initialFontSize * scaleFactor;
         document.body.style.width = scaledWidth + 'px';
         document.body.style.height = currentHeight + 'px';
         document.body.style.fontSize = BodyfontSize + 'px';
@@ -3822,7 +3841,11 @@
             ele.style.fontSize = (currentHeight * 0.0267) + 'px';
         }
 
-        var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}';
+        var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}' +
+            '.stream_thumbnail_feed_text_holder{font-size: ' + (currentHeight * 0.0255) + 'px;}' +
+            '.stream_thumbnail_game_feed_text_holder{font-size: ' + (currentHeight * 0.023) + 'px;}' +
+            '.icon_feed_refresh{font-size: ' + (currentHeight * 0.018) + 'px;}' +
+            '.side_panel_dialog{margin-top: ' + (currentHeight * 0.5) + 'px;}';
 
         Main_innerHTML(
             'vh_class',
@@ -4567,11 +4590,21 @@
 
     function AddCode_CheckFollow() {
         AddCode_IsFollowing = false;
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'users/follows?from_id=' +
+            AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
+            header;
+
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+            header = Main_Bearer_User_Headers;
+
+        } else {
+            header = Main_Bearer_Headers;
+        }
 
         FullxmlHttpGet(
             theUrl,
-            Main_GetHeader(2, null),
+            header,
             AddCode_RequestCheckFollowSucess,
             noop_fun,
             0,
@@ -4584,8 +4617,14 @@
     function AddCode_RequestCheckFollowSucess(obj) {
 
         if (obj.status === 200) { //yes
+            var response = JSON.parse(obj.responseText);
 
-            AddCode_RequestCheckFollowOK();
+            if (response && response.data.length) {
+                AddCode_RequestCheckFollowOK();
+            } else {
+                AddCode_RequestCheckFollowError();
+            }
+
 
         } else { // no
 
@@ -8843,8 +8882,10 @@
     function ChatLive_checkFallow(chat_number, id) {
         if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
+
         ChatLive_FollowState[chat_number] = {};
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'users/follows?from_id=' +
+            AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
 
         BaseXmlHttpGet(
             theUrl,
@@ -8853,7 +8894,8 @@
             ChatLive_checkFallowSuccess,
             ChatLive_RequestCheckFollowNOK,
             chat_number,
-            id
+            id,
+            true
         );
 
     }
@@ -8865,12 +8907,19 @@
     }
 
     function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
-        var obj = JSON.parse(responseText);
+        var response = JSON.parse(responseText);
 
-        ChatLive_FollowState[chat_number] = {
-            created_at: obj.created_at,
-            follows: true
-        };
+        if (response && response.data.length) {
+
+            ChatLive_FollowState[chat_number] = {
+                created_at: response.data[0].followed_at,
+                follows: true
+            };
+
+        } else {
+            ChatLive_FollowState[chat_number].follows = false;
+        }
+
     }
 
     function ChatLive_RequestCheckFollowNOK(chat_number, id) {
@@ -11097,7 +11146,7 @@
     function Chat_loadChatRequest(id) {
 
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
+            '/comments?client_id=' + AddCode_backup_client_id + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
         BaseXmlHttpGet(
             theUrl,
@@ -11400,7 +11449,7 @@
 
     function Chat_loadChatNextRequest(id) {
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-            '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
+            '/comments?client_id=' + AddCode_backup_client_id + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
         BaseXmlHttpGet(
             theUrl,
@@ -16651,6 +16700,7 @@
                     if (clip.videoOffsetSeconds) {
                         ChannelVod_vodOffset = clip.videoOffsetSeconds;
                         Chat_offset = ChannelVod_vodOffset;
+
                         Chat_Init();
                     } else {
                         Chat_NoVod();
@@ -18563,21 +18613,24 @@
     }
 
     function Play_StayGetStreamerInfo() {
-        var theUrl = Main_kraken_api + 'channels/' + Play_data.data[14] + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
         BaseXmlHttpGet(
             theUrl,
             2,
             null,
             Play_StayGetStreamerInfoSucess,
-            noop_fun
+            noop_fun,
+            null,
+            0,
+            true
         );
 
     }
 
     function Play_StayGetStreamerInfoSucess(responseText) {
-        var channel = JSON.parse(responseText);
-        var img = channel.video_banner;
+        var channel = JSON.parse(responseText).data[0];
+        var img = channel.offline_image_url;
         Play_SetSceneBackground(img ? img : IMG_404_BANNER);
     }
 
@@ -28668,19 +28721,13 @@
 
                 if (ScreenObj[key].HasSwitches) {
 
-                    if (ScreenObj[key].HasSwitches) {
-                        ScreenObj[key].addSwitches();
-                    }
+                    ScreenObj[key].addSwitches();
 
-                    ScreenObj[key].addEmptyContentBanner(true);
-
-                    Screens_loadDataSuccessFinish(key);
-
-                } else {
-                    ScreenObj[key].addEmptyContentBanner(true);
-
-                    Screens_loadDataSuccessFinish(key);
                 }
+
+                ScreenObj[key].addEmptyContentBanner(true);
+
+                Screens_loadDataSuccessFinish(key);
 
             } //else the user has already exited the screen
 
@@ -31030,7 +31077,8 @@
 
     function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'users/follows?from_id=' +
+            AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
 
         BaseXmlHttpGet(
             theUrl,
@@ -31039,14 +31087,22 @@
             Screens_ThumbOption_RequestCheckFollowSuccess,
             Screens_ThumbOption_RequestCheckFollowFail,
             key,
-            ID
+            ID,
+            true
         );
     }
 
     function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
-        if (Screens_ThumbOption_CheckFollow_ID === ID)
-            Screens_ThumbOption_RequestCheckFollowEnd(key, true);
+        if (Screens_ThumbOption_CheckFollow_ID === ID) {
+            var response = JSON.parse(obj);
+
+            if (response && response.data.length) {
+                Screens_ThumbOption_RequestCheckFollowEnd(key, true);
+            } else {
+                Screens_ThumbOption_RequestCheckFollowEnd(key, false);
+            }
+        }
 
     }
 
@@ -32158,13 +32214,15 @@
                             Screens_PeriodStart(this.screen);
                             return;
 
-                        } else {
+                        } else if (!this.DataObj['0_0'].image) {
 
                             PlayClip_All = true;
                             Screens_removeFocusFollow(this.screen);
                             this.posX = 0;
                             this.posY = 0;
 
+                        } else {
+                            return;
                         }
 
                     } else return;
