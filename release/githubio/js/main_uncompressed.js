@@ -9274,8 +9274,8 @@
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
 
             BaseXmlHttpGet(
-                'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                1,
+                'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '&client_id=' + AddCode_backup_client_id,
+                0,
                 null,
                 ChatLive_loadCheersChannelSuccess,
                 noop_fun,
