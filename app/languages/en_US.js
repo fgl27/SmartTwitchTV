@@ -190,7 +190,7 @@ function en_USLang() {
     STR_OAUTH_WRONG = "You try to add a key for user";
     STR_OAUTH_WRONG2 = "but this key is for user";
     STR_FOLLOWING = "Following";
-    STR_FOLLOW = "Follow";
+    STR_FOLLOW = "Not Following";
     STR_IS_SUB_NOOAUTH = "and you haven't added an authorization key, so the app can't check your sub status.";
     STR_IS_SUB_NOT_SUB = "and you aren't a sub of this channel";
     STR_IS_SUB_IS_SUB = "You are a sub of this channel, but";

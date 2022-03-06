@@ -2462,7 +2462,7 @@ function Play_MakeControls() {
         setLable: function(string, AddCode_IsFollowing) {
             Main_textContentWithEle(Play_controls[this.position].doc_title, string);
             this.setIcon(AddCode_IsFollowing);
-            Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
+            //Main_textContent('controls_text_summary_' + this.position, AddCode_IsFollowing ? STR_CLICK_UNFOLLOW : STR_CLICK_FOLLOW);
         },
         setIcon: function(AddCode_IsFollowing) {
             Main_innerHTML('controls_button_icon_holder_' + this.position, '<i id="controls_button_icon_' + this.position +

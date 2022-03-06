@@ -184,7 +184,7 @@ function pt_BRLang() {
     STR_OAUTH_WRONG = "Você tentou adicionar uma chave para o usuário";
     STR_OAUTH_WRONG2 = "mas esta chave é para o usuário";
     STR_FOLLOWING = "Seguindo";
-    STR_FOLLOW = "Seguir";
+    STR_FOLLOW = "Não Seguindo";
     STR_IS_SUB_NOOAUTH = "E você não adicionou uma chave de autorização, o aplicativo não pode verificar o seu status de seguidor.";
     STR_IS_SUB_NOT_SUB = "E você não é um sub deste canal";
     STR_IS_SUB_IS_SUB = "Você é um sub deste canal, mas";
