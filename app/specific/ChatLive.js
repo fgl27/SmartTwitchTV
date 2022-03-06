@@ -133,7 +133,7 @@ function ChatLive_Init(chat_number, SkipClear) {
         ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
     }
 
-    ChatLive_loadGloabalEmotes();
+    ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
 }
