@@ -240,8 +240,10 @@ function ChatLive_SetOptions(chat_number, Channel_id, selectedChannel) {
 function ChatLive_checkFallow(chat_number, id) {
     if (!AddUser_IsUserSet() || !AddUser_UsernameArray[0].access_token) return;
 
+
     ChatLive_FollowState[chat_number] = {};
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'users/follows?from_id=' +
+        AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
 
     BaseXmlHttpGet(
         theUrl,
@@ -250,7 +252,8 @@ function ChatLive_checkFallow(chat_number, id) {
         ChatLive_checkFallowSuccess,
         ChatLive_RequestCheckFollowNOK,
         chat_number,
-        id
+        id,
+        true
     );
 
 }
@@ -262,12 +265,19 @@ function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
 }
 
 function ChatLive_checkFallowSuccessUpdate(responseText, chat_number) {
-    var obj = JSON.parse(responseText);
+    var response = JSON.parse(responseText);
 
-    ChatLive_FollowState[chat_number] = {
-        created_at: obj.created_at,
-        follows: true
-    };
+    if (response && response.data.length) {
+
+        ChatLive_FollowState[chat_number] = {
+            created_at: response.data[0].followed_at,
+            follows: true
+        };
+
+    } else {
+        ChatLive_FollowState[chat_number].follows = false;
+    }
+
 }
 
 function ChatLive_RequestCheckFollowNOK(chat_number, id) {

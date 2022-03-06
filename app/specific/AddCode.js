@@ -585,11 +585,21 @@ function AddCode_Refreshtimeout(position) {
 
 function AddCode_CheckFollow() {
     AddCode_IsFollowing = false;
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'users/follows?from_id=' +
+        AddUser_UsernameArray[0].id + '&to_id=' + AddCode_Channel_id,
+        header;
+
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+
+        header = Main_Bearer_User_Headers;
+
+    } else {
+        header = Main_Bearer_Headers;
+    }
 
     FullxmlHttpGet(
         theUrl,
-        Main_GetHeader(2, null),
+        header,
         AddCode_RequestCheckFollowSucess,
         noop_fun,
         0,
@@ -602,8 +612,14 @@ function AddCode_CheckFollow() {
 function AddCode_RequestCheckFollowSucess(obj) {
 
     if (obj.status === 200) { //yes
+        var response = JSON.parse(obj.responseText);
 
-        AddCode_RequestCheckFollowOK();
+        if (response && response.data.length) {
+            AddCode_RequestCheckFollowOK();
+        } else {
+            AddCode_RequestCheckFollowError();
+        }
+
 
     } else { // no
 

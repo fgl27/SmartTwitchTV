@@ -2823,7 +2823,8 @@ function Screens_ThumbOption_CheckFollow(data, key) {
 
 function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
 
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'users/follows?from_id=' +
+        AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
 
     BaseXmlHttpGet(
         theUrl,
@@ -2832,14 +2833,22 @@ function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
         Screens_ThumbOption_RequestCheckFollowSuccess,
         Screens_ThumbOption_RequestCheckFollowFail,
         key,
-        ID
+        ID,
+        true
     );
 }
 
 function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
 
-    if (Screens_ThumbOption_CheckFollow_ID === ID)
-        Screens_ThumbOption_RequestCheckFollowEnd(key, true);
+    if (Screens_ThumbOption_CheckFollow_ID === ID) {
+        var response = JSON.parse(obj);
+
+        if (response && response.data.length) {
+            Screens_ThumbOption_RequestCheckFollowEnd(key, true);
+        } else {
+            Screens_ThumbOption_RequestCheckFollowEnd(key, false);
+        }
+    }
 
 }
 
