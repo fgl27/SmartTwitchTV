@@ -86,7 +86,8 @@ function calculateFontSize() {
     var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}' +
         '.stream_thumbnail_feed_text_holder{font-size: ' + (currentHeight * 0.0255) + 'px;}' +
         '.stream_thumbnail_game_feed_text_holder{font-size: ' + (currentHeight * 0.023) + 'px;}' +
-        '.icon_feed_refresh{font-size: ' + (currentHeight * 0.018) + 'px;}';
+        '.icon_feed_refresh{font-size: ' + (currentHeight * 0.018) + 'px;}' +
+        '.side_panel_dialog{margin-top: ' + (currentHeight * 0.5) + 'px;}';
 
     Main_innerHTML(
         'vh_class',
