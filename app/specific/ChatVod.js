@@ -370,7 +370,7 @@ function Chat_loadChat(id) {
 function Chat_loadChatRequest(id) {
 
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-        '/comments?client_id=' + AddCode_clientId + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
+        '/comments?client_id=' + AddCode_backup_client_id + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
     BaseXmlHttpGet(
         theUrl,
@@ -679,7 +679,7 @@ function Chat_loadChatNext(id) {
 
 function Chat_loadChatNextRequest(id) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId +
-        '/comments?client_id=' + AddCode_clientId + (Chat_next !== null ? '&cursor=' + Chat_next : '');
+        '/comments?client_id=' + AddCode_backup_client_id + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
     BaseXmlHttpGet(
         theUrl,

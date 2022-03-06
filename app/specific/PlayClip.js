@@ -289,6 +289,7 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                 if (clip.videoOffsetSeconds) {
                     ChannelVod_vodOffset = clip.videoOffsetSeconds;
                     Chat_offset = ChannelVod_vodOffset;
+
                     Chat_Init();
                 } else {
                     Chat_NoVod();
