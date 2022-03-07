@@ -267,7 +267,7 @@ function Main_StartApp() {
 
         Main_DoRestore = AddUser_RestoreUsers();
 
-        if (!Main_values.Restore_Backup_Check) {
+        if (!Main_values.Restore_Backup_Check && OSInterface_getSDK() < 30) {
 
             try {
                 OSInterface_requestWr();
