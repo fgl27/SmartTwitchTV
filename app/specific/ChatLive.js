@@ -38,7 +38,8 @@ var extraEmotesDone = {
     ffz: {},
     seven_tv: {},
     cheers: {},
-    BadgesChannel: {}
+    BadgesChannel: {},
+    GlobalTwitch: null
 };
 
 var emojis = [];
@@ -484,19 +485,27 @@ function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
 }
 
 function ChatLive_loadGloabalEmotes(chat_number, id) {
+    if (!extraEmotesDone.GlobalTwitch) {
 
-    var theUrl = Main_helix_api + 'chat/emotes/global';
+        extraEmotesDone.GlobalTwitch = {};
+        var theUrl = Main_helix_api + 'chat/emotes/global';
 
-    BaseXmlHttpGet(
-        theUrl,
-        2,
-        null,
-        ChatLive_loadGloabalEmotesSucess,
-        noop_fun,
-        chat_number,
-        id,
-        true
-    );
+        BaseXmlHttpGet(
+            theUrl,
+            2,
+            null,
+            ChatLive_loadGloabalEmotesSucess,
+            noop_fun,
+            chat_number,
+            id,
+            true
+        );
+    } else {
+
+        ChatLive_SetGloabalEmotesSucess();
+
+    }
+
 
 }
 
@@ -533,6 +542,12 @@ function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
                 '4x': url
             };
 
+            extraEmotesDone.GlobalTwitch[emoticon.code] = {
+                code: emoticon.code,
+                id: id,
+                '4x': url
+            };
+
             userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                 code: emoticon.code,
                 id: id,
@@ -540,6 +555,22 @@ function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
             };
 
         });
+
+    }
+}
+
+function ChatLive_SetGloabalEmotesSucess() {
+    if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
+        userEmote[AddUser_UsernameArray[0].id] = {};
+    }
+
+    for (var emote in extraEmotesDone.GlobalTwitch) {
+
+        userEmote[AddUser_UsernameArray[0].id][emote] = {
+            code: emote,
+            id: extraEmotesDone.GlobalTwitch[emote].id,
+            '4x': extraEmotesDone.GlobalTwitch[emote]['4x']
+        };
 
     }
 }
