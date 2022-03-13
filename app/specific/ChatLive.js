@@ -347,7 +347,7 @@ function ChatLive_loadChannelEmotes(chat_number, id) {
         );
     } else {
 
-        ChatLive_SetGloabalEmotesSucess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+        ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
 
     }
 
@@ -546,7 +546,7 @@ function ChatLive_loadGloabalEmotes(chat_number, id) {
         );
     } else {
 
-        ChatLive_SetGloabalEmotesSucess(extraEmotesDone.GlobalTwitch);
+        ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
 
     }
 
@@ -563,7 +563,7 @@ function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
 }
 
 
-function ChatLive_SetGloabalEmotesSucess(obj) {
+function ChatLive_SetTwitchEmotesSuccess(obj) {
     if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
         userEmote[AddUser_UsernameArray[0].id] = {};
     }

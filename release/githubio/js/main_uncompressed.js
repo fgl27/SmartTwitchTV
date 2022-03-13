@@ -3041,6 +3041,7 @@
         STR_CHECK_HOST = ", проверка хоста";
         STR_IS_SUB_ONLY = "Видео доступно только для подписчиков.";
         STR_IS_SUB_ONLY_ERROR = "только для подписчиков.";
+        STR_NOKEY_GENERAL_WARN = ", перейдите на боковую панель (верхняя опция) Аккаунт: сменить, добавить, ключ и нажмите ОК";
         STR_REFRESH_PROBLEM = "Ошибка подключения или тут нет контента. Обновите, чтобы попробовать еще раз";
         STR_REFRESH_PROBLEM_ENTER = "Ошибка подключения или нет контента. Нажмите ОК, чтобы обновить";
         STR_NO = "Нет";
@@ -3078,7 +3079,7 @@
         STR_UPDATE_CHECK_SIDE = ", проверьте панель обновлений";
         STR_UPDATE_LAST_CHECK = "Посл. проверка:";
         STR_UPDATE_OPT = "Обновления";
-        STR_UPDATE_CHECK_FOR = "Проверять обовления в фоне";
+        STR_UPDATE_CHECK_FOR = "Проверять обновления в фоне";
         STR_UPDATE_SHOW = "Показать диалог обновления, когда обновление доступно";
         STR_UPDATE_SHOW_ARRAY = ["Да", "Only a toast message", "Нет"];
         STR_UPDATE_START = "Начался процесс обновления, это может занять несколько секунд, подождите!";
@@ -3579,7 +3580,7 @@
         STR_NOKEY_CHAT_WARN = "Добавьте ключ пользователя, чтобы иметь возможность входить и писать в чат";
         STR_CHAT_NOT_READY = "Чат не готов! Попробуйте еще раз через несколько секунд.";
         STR_CHAT_REDEEMED_MESSAGE_HIGH = "Активировано Выделите мое сообщение";
-        STR_CHAT_REDEEMED_MESSAGE_SUB = "Активировано Отправить сообщение в режиме для пописчиков";
+        STR_CHAT_REDEEMED_MESSAGE_SUB = "Активировано Отправить сообщение в режиме для подписчиков";
         STR_CHAT_OPTIONS = "Настройки чата";
         STR_CHAT_HIGHLIGHT_STREAMER_MSG = "Выделить сообщения от стримера (темно-розовый фон)";
         STR_CHAT_HIGHLIGHT_MOD_MSG = "Выделить сообщения от модератора (темно-голубой фон)";
@@ -3697,6 +3698,7 @@
         STR_DISABLE_EMBED = "Включить Live и Vod Twitch плеер";
         STR_DISABLE_EMBED_SUMMARY = "Это нужно отключить только, если вы хотите увидеть ТВ-плеер, чтобы проверить его строки и протестировать.";
         STR_SPECIAL_FEATURE = "Используйте клавиатуру для этой функции";
+        STR_FAIL_VOD_INFO = "Ошибка загрузки информации о VOD";
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -8113,7 +8115,7 @@
 
         ChatLiveControls_EmotesArray.push(array[pos].id);
 
-        if (create_elements) {
+        if (create_elements || !array[pos].div) {
 
             array[pos].div = ChatLiveControls_SetEmoteDiv(
                 array[pos]['4x'],
@@ -8688,7 +8690,9 @@
         ffz: {},
         seven_tv: {},
         cheers: {},
-        BadgesChannel: {}
+        BadgesChannel: {},
+        GlobalTwitch: null,
+        ChannelEmotes: {},
     };
 
     var emojis = [];
@@ -8784,6 +8788,7 @@
         }
 
         ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
+
         ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
         ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
     }
@@ -8949,7 +8954,8 @@
             return;
         }
 
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] +
+            '&user_id=' + AddUser_UsernameArray[0].id;
 
         BaseXmlHttpGet(
             theUrl,
@@ -8958,7 +8964,8 @@
             ChatLive_checkSubSucess,
             ChatLive_checkSubFail,
             chat_number,
-            id
+            id,
+            true
         );
 
     }
@@ -8967,6 +8974,46 @@
         if (id !== Chat_Id[chat_number]) return;
 
         ChatLive_SubState[chat_number].state = true;
+        ChatLive_loadChannelEmotes(chat_number, id);
+
+    }
+
+
+
+    function ChatLive_loadChannelEmotes(chat_number, id) {
+        if (!extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]) {
+
+            extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]] = {};
+
+            var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
+
+            BaseXmlHttpGet(
+                theUrl,
+                2,
+                null,
+                ChatLive_loadChannelEmotesSucess,
+                noop_fun,
+                chat_number,
+                id,
+                true
+            );
+        } else {
+
+            ChatLive_SetGloabalEmotesSucess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+
+        }
+
+
+    }
+
+    function ChatLive_loadChannelEmotesSucess(responseText, chat_number, chat_id) {
+
+        ChatLive_loadTwitchEmotesSucess(
+            responseText,
+            chat_number,
+            chat_id,
+            extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]
+        );
 
     }
 
@@ -9134,23 +9181,57 @@
     }
 
     function ChatLive_loadGloabalEmotes(chat_number, id) {
+        if (!extraEmotesDone.GlobalTwitch) {
 
-        var theUrl = Main_helix_api + 'chat/emotes/global';
+            extraEmotesDone.GlobalTwitch = {};
+            var theUrl = Main_helix_api + 'chat/emotes/global';
 
-        BaseXmlHttpGet(
-            theUrl,
-            2,
-            null,
-            ChatLive_loadGloabalEmotesSucess,
-            noop_fun,
-            chat_number,
-            id,
-            true
-        );
+            BaseXmlHttpGet(
+                theUrl,
+                2,
+                null,
+                ChatLive_loadGloabalEmotesSucess,
+                noop_fun,
+                chat_number,
+                id,
+                true
+            );
+        } else {
+
+            ChatLive_SetGloabalEmotesSucess(extraEmotesDone.GlobalTwitch);
+
+        }
+
 
     }
 
     function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
+        ChatLive_loadTwitchEmotesSucess(
+            responseText,
+            chat_number,
+            chat_id,
+            extraEmotesDone.GlobalTwitch
+        );
+    }
+
+
+    function ChatLive_SetGloabalEmotesSucess(obj) {
+        if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
+            userEmote[AddUser_UsernameArray[0].id] = {};
+        }
+
+        for (var emote in obj) {
+
+            userEmote[AddUser_UsernameArray[0].id][emote] = {
+                code: emote,
+                id: obj[emote].id,
+                '4x': obj[emote]['4x']
+            };
+
+        }
+    }
+
+    function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
         if (chat_id !== Chat_Id[chat_number]) return;
 
         var response = JSON.parse(responseText);
@@ -9183,6 +9264,12 @@
                     '4x': url
                 };
 
+                extraEmotesDone_obj[emoticon.code] = {
+                    code: emoticon.code,
+                    id: id,
+                    '4x': url
+                };
+
                 userEmote[AddUser_UsernameArray[0].id][emoticon.code] = {
                     code: emoticon.code,
                     id: id,
@@ -9193,6 +9280,7 @@
 
         }
     }
+
 
     function ChatLive_loadEmotesChannelbttv(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
