@@ -2772,7 +2772,7 @@ function Main_SetHistoryworker() {
 
                             Main_history_UpdateLiveVod(
                                 event.data.data,
-                                event.data.updateobj._id.substr(1),
+                                event.data.updateobj._id.slice(1),
                                 ScreensObj_VodGetPreview(
                                     event.data.updateobj.preview.template,
                                     event.data.updateobj.animated_preview_url

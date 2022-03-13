@@ -2314,7 +2314,7 @@ function ScreensObj_VodCellArray(cell) {
         Main_addCommas(cell.views),//4
         cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), (parseInt(cell.fps.chunked) || 0), cell.channel.broadcaster_language) : '',//5
         cell.channel.name,//6
-        cell._id.substr(1),//7
+        cell._id.slice(1),//7
         cell.animated_preview_url,//8
         cell.channel.broadcaster_language,//9
         twemoji.parse(cell.title),//10

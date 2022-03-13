@@ -50,14 +50,14 @@ function findCheerInToken(message, chat_number) {
     for (i; i < len; i++) {
         //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
         if (Main_startsWith(message, cheerPrefixes[i]))
-            return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
+            return getCheer(cheerPrefixes[i], parseInt(message.slice(cheerPrefixes[i].length), 10), chat_number);
 
         //Try  case insensitive after
         if (Main_startsWith(tokenLower, cheerPrefixes[i].toLowerCase())) index = i;
     }
 
     return ((index > -1) ?
-        getCheer(cheerPrefixes[index], parseInt(tokenLower.substr(cheerPrefixes[index].toLowerCase().length), 10), chat_number)
+        getCheer(cheerPrefixes[index], parseInt(tokenLower.slice(cheerPrefixes[index].toLowerCase().length), 10), chat_number)
         : null);
 }
 
@@ -138,10 +138,10 @@ function emoticonize(message, emotes) {
 //     }
 
 //     for (i = 0; i < 3; i++) {
-//         c = parseInt(color.substr(i * 2, 2), 16);
+//         c = parseInt(color.slice(i * 2, i * 2 + 2), 16);
 //         if (c < 10) c = 10;
 //         c = Math.round(Math.min(Math.max(0, c + (c * brightness)), 255)).toString(16);
-//         rgb += ("00" + c).substr(c.length);
+//         rgb += ("00" + c).slice(c.length);
 //     }
 
 //     return rgb;
