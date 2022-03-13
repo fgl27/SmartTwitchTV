@@ -300,7 +300,8 @@ function ChatLive_checkSub(chat_number, id) {
         return;
     }
 
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + ChatLive_selectedChannel_id[chat_number] + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] +
+        '&user_id=' + AddUser_UsernameArray[0].id;
 
     BaseXmlHttpGet(
         theUrl,
@@ -309,7 +310,8 @@ function ChatLive_checkSub(chat_number, id) {
         ChatLive_checkSubSucess,
         ChatLive_checkSubFail,
         chat_number,
-        id
+        id,
+        true
     );
 
 }
