@@ -510,7 +510,7 @@ function ChatLiveControls_CreateEmoteDiv(array, pos, create_elements, prop, div_
 
     ChatLiveControls_EmotesArray.push(array[pos].id);
 
-    if (create_elements) {
+    if (create_elements || !array[pos].div) {
 
         array[pos].div = ChatLiveControls_SetEmoteDiv(
             array[pos]['4x'],

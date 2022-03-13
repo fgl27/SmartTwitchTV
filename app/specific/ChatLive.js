@@ -39,7 +39,8 @@ var extraEmotesDone = {
     seven_tv: {},
     cheers: {},
     BadgesChannel: {},
-    GlobalTwitch: null
+    GlobalTwitch: null,
+    ChannelEmotes: {},
 };
 
 var emojis = [];
@@ -135,6 +136,7 @@ function ChatLive_Init(chat_number, SkipClear) {
     }
 
     ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
+
     ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
     ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
 }
@@ -320,6 +322,46 @@ function ChatLive_checkSubSucess(responseText, chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     ChatLive_SubState[chat_number].state = true;
+    ChatLive_loadChannelEmotes(chat_number, id);
+
+}
+
+
+
+function ChatLive_loadChannelEmotes(chat_number, id) {
+    if (!extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]) {
+
+        extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]] = {};
+
+        var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
+
+        BaseXmlHttpGet(
+            theUrl,
+            2,
+            null,
+            ChatLive_loadChannelEmotesSucess,
+            noop_fun,
+            chat_number,
+            id,
+            true
+        );
+    } else {
+
+        ChatLive_SetGloabalEmotesSucess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+
+    }
+
+
+}
+
+function ChatLive_loadChannelEmotesSucess(responseText, chat_number, chat_id) {
+
+    ChatLive_loadTwitchEmotesSucess(
+        responseText,
+        chat_number,
+        chat_id,
+        extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]
+    );
 
 }
 
@@ -504,7 +546,7 @@ function ChatLive_loadGloabalEmotes(chat_number, id) {
         );
     } else {
 
-        ChatLive_SetGloabalEmotesSucess();
+        ChatLive_SetGloabalEmotesSucess(extraEmotesDone.GlobalTwitch);
 
     }
 
@@ -512,6 +554,32 @@ function ChatLive_loadGloabalEmotes(chat_number, id) {
 }
 
 function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
+    ChatLive_loadTwitchEmotesSucess(
+        responseText,
+        chat_number,
+        chat_id,
+        extraEmotesDone.GlobalTwitch
+    );
+}
+
+
+function ChatLive_SetGloabalEmotesSucess(obj) {
+    if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
+        userEmote[AddUser_UsernameArray[0].id] = {};
+    }
+
+    for (var emote in obj) {
+
+        userEmote[AddUser_UsernameArray[0].id][emote] = {
+            code: emote,
+            id: obj[emote].id,
+            '4x': obj[emote]['4x']
+        };
+
+    }
+}
+
+function ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone_obj) {
     if (chat_id !== Chat_Id[chat_number]) return;
 
     var response = JSON.parse(responseText);
@@ -544,7 +612,7 @@ function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
                 '4x': url
             };
 
-            extraEmotesDone.GlobalTwitch[emoticon.code] = {
+            extraEmotesDone_obj[emoticon.code] = {
                 code: emoticon.code,
                 id: id,
                 '4x': url
@@ -561,21 +629,6 @@ function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
     }
 }
 
-function ChatLive_SetGloabalEmotesSucess() {
-    if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
-        userEmote[AddUser_UsernameArray[0].id] = {};
-    }
-
-    for (var emote in extraEmotesDone.GlobalTwitch) {
-
-        userEmote[AddUser_UsernameArray[0].id][emote] = {
-            code: emote,
-            id: extraEmotesDone.GlobalTwitch[emote].id,
-            '4x': extraEmotesDone.GlobalTwitch[emote]['4x']
-        };
-
-    }
-}
 
 function ChatLive_loadEmotesChannelbttv(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
