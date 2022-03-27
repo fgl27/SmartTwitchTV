@@ -2087,7 +2087,7 @@ function Screens_handleKeyDown(key, event) {
                 } else if (ScreenObj[key].screen === Main_aGame ||
                     ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                    ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+                    ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) {
 
@@ -2124,7 +2124,7 @@ function Screens_handleKeyDown(key, event) {
                 } else if (ScreenObj[key].screen === Main_aGame ||
                     ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                    ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+                    ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) {
 
