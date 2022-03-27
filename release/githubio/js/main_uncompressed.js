@@ -8999,7 +8999,7 @@
             );
         } else {
 
-            ChatLive_SetGloabalEmotesSucess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
+            ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
 
         }
 
@@ -9198,7 +9198,7 @@
             );
         } else {
 
-            ChatLive_SetGloabalEmotesSucess(extraEmotesDone.GlobalTwitch);
+            ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
 
         }
 
@@ -9215,7 +9215,7 @@
     }
 
 
-    function ChatLive_SetGloabalEmotesSucess(obj) {
+    function ChatLive_SetTwitchEmotesSuccess(obj) {
         if (!userEmote.hasOwnProperty(AddUser_UsernameArray[0].id)) {
             userEmote[AddUser_UsernameArray[0].id] = {};
         }
@@ -30435,7 +30435,7 @@
                     } else if (ScreenObj[key].screen === Main_aGame ||
                         ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                        ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+                        ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                         if (Main_values.Main_BeforeAgame === Main_usergames) {
 
@@ -30472,7 +30472,7 @@
                     } else if (ScreenObj[key].screen === Main_aGame ||
                         ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
 
-                        ScreenObj[key].gameSelectedBefore = ScreenObj[key].gameSelected;
+                        ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                         if (Main_values.Main_BeforeAgame === Main_usergames) {
 
@@ -31778,8 +31778,8 @@
                     if (Main_values.Games_return) {
 
                         Main_values.Main_Go = Main_SearchGames;
-                        Main_values.Main_gameSelected = Main_values.gameSelectedOld;
-                        Main_values.gameSelectedOld = null;
+                        Main_values.Main_gameSelected = Main_values.gameSelected_IdOld;
+                        Main_values.gameSelected_IdOld = null;
 
                     } else {
 
@@ -33023,7 +33023,7 @@
             hasBackupData: true,
             base_url: Main_helix_api + 'streams?game_id=',
             set_url: function() {
-                this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected_id) +
+                this.url = this.base_url + ScreenObj[key].gameSelected_Id +
                     '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') +
                     (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
             },
@@ -33032,7 +33032,7 @@
 
                 if (Main_values.Search_isSearching) { //Reset label as the app may be restoring from background
                     Main_cleanTopLabel();
-                } else Main_values.gameSelectedOld = null;
+                } else Main_values.gameSelected_IdOld = null;
 
                 ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_LIVE);
 
@@ -33222,7 +33222,7 @@
             base_url: Main_helix_api + 'clips?game_id=',
             set_url: function() {
 
-                this.url = this.base_url + encodeURIComponent(Main_values.Main_gameSelected_id) + '&first=' + Main_ItemsLimitMax +
+                this.url = this.base_url + ScreenObj[key].gameSelected_Id + '&first=' + Main_ItemsLimitMax +
                     ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
 
                 //console.log(this.url);
@@ -33348,7 +33348,7 @@
                 this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
             },
             label_init: function() {
-                if (!Main_values.gameSelectedOld) Main_values.gameSelectedOld = Main_values.Main_gameSelected;
+                if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected;
                 Main_values.Search_isSearching = true;
                 Main_cleanTopLabel();
                 if (this.lastData !== Main_values.Search_data) this.status = false;
@@ -33358,7 +33358,7 @@
                 ScreensObj_SetTopLable(STR_SEARCH + STR_SPACE_HTML + STR_GAMES, "'" + Main_values.Search_data + "'");
             },
             label_exit: function() {
-                Main_values.Main_gameSelected = Main_values.gameSelectedOld;
+                Main_values.Main_gameSelected = Main_values.gameSelected_IdOld;
                 if (!Main_values.Search_isSearching) Main_RestoreTopLabel();
                 Main_values.Games_return = false;
             },
@@ -33838,26 +33838,28 @@
 
     function ScreensObj_TopLableAgameInit(key) {
 
-        if (Main_values.Main_OldgameSelected === null) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        if (Main_values.Main_OldgameSelected === null) {
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        }
 
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
 
-        if (!Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected) ||
-            !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected, Main_values.Main_gameSelected)) {
+        if (!Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected_id) ||
+            !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected_Id, Main_values.Main_gameSelected_id)) {
 
             ScreenObj[key].status = false;
 
             if (ScreenObj[key].Cells &&
-                ScreenObj[key].Cells.length && ScreenObj[key].gameSelected) {
+                ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
 
-                ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected);
+                ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
             }
 
         }
 
-        ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
 
         if (Main_values.Sidepannel_IsUser ||
             Main_values.Main_BeforeAgame === Main_usergames) {
@@ -33877,7 +33879,7 @@
     }
 
     function ScreensObj_TopLableAgameExit(key) {
-        ScreenObj[key].gameSelected = Main_values.Main_gameSelected;
+        ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
         Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     }
 
