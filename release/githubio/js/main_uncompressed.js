@@ -13161,7 +13161,9 @@
             Play_data.data[1] = Play_data.data[15];
         }
 
-        if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        if (Main_values.Main_Go === Main_aGame) {
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        }
 
         Main_openStream();
 
@@ -22828,7 +22830,9 @@
         PlayExtra_SwitchPlayerStoreOld();
         Play_data = JSON.parse(JSON.stringify(PlayExtra_data));
 
-        if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        if (Main_values.Main_Go === Main_aGame) {
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        }
 
         PlayExtra_SwitchPlayerResStoreOld();
         Main_SaveValues();
@@ -30304,7 +30308,9 @@
 
     function Screens_OpenSidePanel(forceFeed, key) {
         Screens_RemoveAllFocus(key);
-        if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+        if (Main_values.Main_Go === Main_aGame) {
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        }
         Screens_ClearAnimation(key);
         Main_removeEventListener("keydown", ScreenObj[key].key_fun);
         Main_HideLoadDialog();
@@ -30594,12 +30600,12 @@
     function AGame_headerOptions(key) {
         if (!ScreenObj[key].posX) {
             Main_values.Main_Go = Main_AGameVod;
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
         } else {
             Main_values.Main_Go = Main_AGameClip;
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
         }
