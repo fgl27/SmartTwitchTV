@@ -240,7 +240,9 @@ function PlayExtra_SwitchPlayer() {
     PlayExtra_SwitchPlayerStoreOld();
     Play_data = JSON.parse(JSON.stringify(PlayExtra_data));
 
-    if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    if (Main_values.Main_Go === Main_aGame) {
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+    }
 
     PlayExtra_SwitchPlayerResStoreOld();
     Main_SaveValues();

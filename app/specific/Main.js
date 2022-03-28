@@ -1536,7 +1536,9 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
         Play_data.data[1] = Play_data.data[15];
     }
 
-    if (Main_values.Main_Go === Main_aGame) Main_values.Main_OldgameSelected = Main_values.Main_gameSelected;
+    if (Main_values.Main_Go === Main_aGame) {
+        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+    }
 
     Main_openStream();
 
