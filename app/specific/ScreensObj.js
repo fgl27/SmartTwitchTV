@@ -1383,7 +1383,8 @@ function ScreensObj_InitAGame() {
         hasBackupData: true,
         base_url: Main_helix_api + 'streams?game_id=',
         set_url: function() {
-            this.url = this.base_url + ScreenObj[key].gameSelected_Id +
+
+            this.url = this.base_url + this.gameSelected_Id +
                 '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') +
                 (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
         },
@@ -1582,7 +1583,7 @@ function ScreensObj_InitAGameClip() {
         base_url: Main_helix_api + 'clips?game_id=',
         set_url: function() {
 
-            this.url = this.base_url + ScreenObj[key].gameSelected_Id + '&first=' + Main_ItemsLimitMax +
+            this.url = this.base_url + this.gameSelected_Id + '&first=' + Main_ItemsLimitMax +
                 ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
 
             //console.log(this.url);
