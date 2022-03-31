@@ -542,7 +542,7 @@ function UserLiveFeedobj_CurrentGame() {
 }
 
 function UserLiveFeedobj_loadCurrentGame() {
-    UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+    UserLiveFeedobj_CurrentGameName = Play_data.data[17];
 
     var key = Main_aGame,
         game = UserLiveFeedobj_CurrentGameName,
@@ -688,7 +688,7 @@ function UserLiveFeedobj_ShowCurrentGame() {
 
     UserLiveFeedobj_ShowFeedCheck(
         UserLiveFeedobj_CurrentGamePos,
-        !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[3])
+        !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[17])
     );
 }
 
@@ -700,7 +700,7 @@ function UserLiveFeedobj_HideCurrentGame() {
 }
 
 function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[3]] =
+    UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[17]] =
         UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
 }
 //Current game end
@@ -841,7 +841,7 @@ function UserLiveFeedobj_HideCurrentUserAGame() {
 }
 
 function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] =
         UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
 
 }
@@ -912,7 +912,7 @@ function UserLiveFeedobj_CurrentAGame() {
 
 function UserLiveFeedobj_loadCurrentAGame() {
     var key = Main_aGame,
-        game = UserLiveFeedobj_CurrentAGameNameEnter,
+        game = UserLiveFeedobj_CurrentAGameIdEnter,
         pos = UserLiveFeedobj_AGamesPos;
 
     if (ScreenObj[key].hasBackupData &&
@@ -992,7 +992,7 @@ function UserLiveFeedobj_loadDataCurrentAGameSuccess(responseText) {
     UserLiveFeedobj_loadDataBaseLiveSuccess(
         responseText,
         UserLiveFeedobj_AGamesPos,
-        UserLiveFeedobj_CurrentAGameNameEnter
+        UserLiveFeedobj_CurrentAGameIdEnter
     );
 }
 
@@ -1033,7 +1033,7 @@ function UserLiveFeedobj_HideCurrentAGame() {
 }
 
 function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameNameEnter] =
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] =
         UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
 
 }

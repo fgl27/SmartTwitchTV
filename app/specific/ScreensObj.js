@@ -137,7 +137,7 @@ function ScreensObj_StartAllVars() {
                 if (Main_values.Games_return) {
 
                     Main_values.Main_Go = Main_SearchGames;
-                    Main_values.Main_gameSelected = Main_values.gameSelected_IdOld;
+                    Main_values.Main_gameSelected_id = Main_values.gameSelected_IdOld;
                     Main_values.gameSelected_IdOld = null;
 
                 } else {
@@ -199,7 +199,7 @@ function ScreensObj_StartAllVars() {
                     responseObj,
                     this.data,
                     this.lastRefresh,
-                    Main_values.Main_gameSelected,
+                    this.gameSelected_Id,
                     this.ContentLang,
                     this.Lang
                 );
@@ -271,7 +271,7 @@ function ScreensObj_StartAllVars() {
                     (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
         },
         restoreBackup: function() {
-            var game = Main_values.Main_gameSelected;
+            var game = Main_values.Main_gameSelected_id;
 
             this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
             this.offset = this.data.length;
@@ -1586,7 +1586,6 @@ function ScreensObj_InitAGameClip() {
             this.url = this.base_url + this.gameSelected_Id + '&first=' + Main_ItemsLimitMax +
                 ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
 
-            //console.log(this.url);
         },
         SetPeriod: function() {
             Main_setItem('AGameClip_periodPos', this.periodPos);
@@ -1709,7 +1708,7 @@ function ScreensObj_InitSearchGames() {
             this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
         },
         label_init: function() {
-            if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected;
+            if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected_id;
             Main_values.Search_isSearching = true;
             Main_cleanTopLabel();
             if (this.lastData !== Main_values.Search_data) this.status = false;
@@ -2211,7 +2210,8 @@ function ScreensObj_TopLableAgameInit(key) {
         ScreenObj[key].status = false;
 
         if (ScreenObj[key].Cells &&
-            ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
+            ScreenObj[key].Cells.length &&
+            ScreenObj[key].gameSelected_Id) {
 
             ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
         }

@@ -287,12 +287,14 @@ function Screens_init(key, preventRefresh) {
 
     Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
-    if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-    else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+    if (Main_CheckAccessibilityVisible()) {
+
+        Main_CheckAccessibilitySet();
+
+    } else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
         ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
         !ScreenObj[key].offsettop ||
-        (ScreenObj[key].CheckContentLang &&
-            !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+        (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
         !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
         ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
@@ -300,6 +302,7 @@ function Screens_init(key, preventRefresh) {
         else Main_showLoadDialog();// the isRefreshing is running so just show the loading dialog prevent reload the screen
 
     } else {
+
         ScreenObj[key].SetPreviewEnable();
         Main_YRst(ScreenObj[key].posY);
         Screens_addFocus(true, key);
@@ -307,6 +310,7 @@ function Screens_init(key, preventRefresh) {
         Main_HideLoadDialog();
         Main_SaveValuesWithTimeout();
         ScreenObj[key].screen_view();
+
     }
 }
 
@@ -373,10 +377,11 @@ function Screens_StartLoad(key) {
 }
 
 function Screens_loadDataRequestStart(key) {
+
     ScreenObj[key].loadingData = true;
 
     if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
-        ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected)) {
+        ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)) {
 
         ScreenObj[key].restoreBackup();
 
@@ -385,7 +390,7 @@ function Screens_loadDataRequestStart(key) {
         Screens_loadDataRequest(key);
 
         if (ScreenObj[key].hasBackupData)
-            ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected);
+            ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
 
     }
 
@@ -858,6 +863,7 @@ function Screens_CheckAutoRefresh(key, timeout) {
                         (key !== Main_values.Main_Go))) {//the screen is not selected
 
                     if (!Screens_Some_Screen_Is_Refreshing) {
+
                         Screens_StartLoad(key);
                     } else Screens_CheckAutoRefresh(key, 5000);
 
