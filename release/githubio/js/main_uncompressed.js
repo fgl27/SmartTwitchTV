@@ -28635,12 +28635,14 @@
 
         Main_ShowElementWithEle(ScreenObj[key].ScrollDoc);
 
-        if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
-        else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
+        if (Main_CheckAccessibilityVisible()) {
+
+            Main_CheckAccessibilitySet();
+
+        } else if (!ScreenObj[key].status || (!preventRefresh && Screens_RefreshTimeout(key)) ||
             ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].empty ||
             !ScreenObj[key].offsettop ||
-            (ScreenObj[key].CheckContentLang &&
-                !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
+            (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) ||
             !Main_A_equals_B(ScreenObj[key].Lang, Settings_AppLang) ||
             ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
 
@@ -28648,6 +28650,7 @@
             else Main_showLoadDialog(); // the isRefreshing is running so just show the loading dialog prevent reload the screen
 
         } else {
+
             ScreenObj[key].SetPreviewEnable();
             Main_YRst(ScreenObj[key].posY);
             Screens_addFocus(true, key);
@@ -28655,6 +28658,7 @@
             Main_HideLoadDialog();
             Main_SaveValuesWithTimeout();
             ScreenObj[key].screen_view();
+
         }
     }
 
@@ -28721,10 +28725,11 @@
     }
 
     function Screens_loadDataRequestStart(key) {
+
         ScreenObj[key].loadingData = true;
 
         if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen &&
-            ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected)) {
+            ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)) {
 
             ScreenObj[key].restoreBackup();
 
@@ -28733,7 +28738,7 @@
             Screens_loadDataRequest(key);
 
             if (ScreenObj[key].hasBackupData)
-                ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected);
+                ScreenObj[key].eraseBackupData(Main_values.Main_gameSelected_id);
 
         }
 
@@ -29206,6 +29211,7 @@
                             (key !== Main_values.Main_Go))) { //the screen is not selected
 
                         if (!Screens_Some_Screen_Is_Refreshing) {
+
                             Screens_StartLoad(key);
                         } else Screens_CheckAutoRefresh(key, 5000);
 
@@ -31784,7 +31790,7 @@
                     if (Main_values.Games_return) {
 
                         Main_values.Main_Go = Main_SearchGames;
-                        Main_values.Main_gameSelected = Main_values.gameSelected_IdOld;
+                        Main_values.Main_gameSelected_id = Main_values.gameSelected_IdOld;
                         Main_values.gameSelected_IdOld = null;
 
                     } else {
@@ -31846,7 +31852,7 @@
                         responseObj,
                         this.data,
                         this.lastRefresh,
-                        Main_values.Main_gameSelected,
+                        this.gameSelected_Id,
                         this.ContentLang,
                         this.Lang
                     );
@@ -31918,7 +31924,7 @@
                         (new Date().getTime()) < (this.BackupData.lastScreenRefresh[game] + Settings_GetAutoRefreshTimeout()));
             },
             restoreBackup: function() {
-                var game = Main_values.Main_gameSelected;
+                var game = Main_values.Main_gameSelected_id;
 
                 this.data = JSON.parse(JSON.stringify(this.BackupData.data[game]));
                 this.offset = this.data.length;
@@ -33029,7 +33035,8 @@
             hasBackupData: true,
             base_url: Main_helix_api + 'streams?game_id=',
             set_url: function() {
-                this.url = this.base_url + ScreenObj[key].gameSelected_Id +
+
+                this.url = this.base_url + this.gameSelected_Id +
                     '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '') +
                     (Main_ContentLang !== "" ? ('&language=' + Main_ContentLang) : '');
             },
@@ -33228,10 +33235,9 @@
             base_url: Main_helix_api + 'clips?game_id=',
             set_url: function() {
 
-                this.url = this.base_url + ScreenObj[key].gameSelected_Id + '&first=' + Main_ItemsLimitMax +
+                this.url = this.base_url + this.gameSelected_Id + '&first=' + Main_ItemsLimitMax +
                     ScreensObj_ClipGetPeriod(this.periodPos) + (this.cursor ? '&after=' + this.cursor : '');
 
-                //console.log(this.url);
             },
             SetPeriod: function() {
                 Main_setItem('AGameClip_periodPos', this.periodPos);
@@ -33354,7 +33360,7 @@
                 this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
             },
             label_init: function() {
-                if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected;
+                if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected_id;
                 Main_values.Search_isSearching = true;
                 Main_cleanTopLabel();
                 if (this.lastData !== Main_values.Search_data) this.status = false;
@@ -33857,7 +33863,8 @@
             ScreenObj[key].status = false;
 
             if (ScreenObj[key].Cells &&
-                ScreenObj[key].Cells.length && ScreenObj[key].gameSelected_Id) {
+                ScreenObj[key].Cells.length &&
+                ScreenObj[key].gameSelected_Id) {
 
                 ScreenObj[key].BackupScreen(ScreenObj[key].gameSelected_Id);
             }
@@ -40914,7 +40921,7 @@
     }
 
     function UserLiveFeedobj_loadCurrentGame() {
-        UserLiveFeedobj_CurrentGameName = Play_data.data[3];
+        UserLiveFeedobj_CurrentGameName = Play_data.data[17];
 
         var key = Main_aGame,
             game = UserLiveFeedobj_CurrentGameName,
@@ -41061,7 +41068,7 @@
 
         UserLiveFeedobj_ShowFeedCheck(
             UserLiveFeedobj_CurrentGamePos,
-            !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[3])
+            !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[17])
         );
     }
 
@@ -41073,7 +41080,7 @@
     }
 
     function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[3]] =
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[17]] =
             UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
     }
     //Current game end
@@ -41217,7 +41224,7 @@
     }
 
     function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameName] =
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] =
             UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
 
     }
@@ -41289,7 +41296,7 @@
 
     function UserLiveFeedobj_loadCurrentAGame() {
         var key = Main_aGame,
-            game = UserLiveFeedobj_CurrentAGameNameEnter,
+            game = UserLiveFeedobj_CurrentAGameIdEnter,
             pos = UserLiveFeedobj_AGamesPos;
 
         if (ScreenObj[key].hasBackupData &&
@@ -41369,7 +41376,7 @@
         UserLiveFeedobj_loadDataBaseLiveSuccess(
             responseText,
             UserLiveFeedobj_AGamesPos,
-            UserLiveFeedobj_CurrentAGameNameEnter
+            UserLiveFeedobj_CurrentAGameIdEnter
         );
     }
 
@@ -41410,7 +41417,7 @@
     }
 
     function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameNameEnter] =
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] =
             UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
 
     }
