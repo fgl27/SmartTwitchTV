@@ -347,7 +347,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
 
                 var TargetHost = data.user.hosting;
 
-                TargetHost.id = parseInt(TargetHost.id);
+                TargetHost.id = TargetHost.id;
 
                 if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
@@ -361,7 +361,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
                         Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
                         Play_data.data[6] = TargetHost.login;
                         Play_data.data[1] = TargetHost.displayName;
-                        Play_data.data[14] = parseInt(TargetHost.id);
+                        Play_data.data[14] = TargetHost.id;
 
                         Play_Start();
 
@@ -372,7 +372,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
                         PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
                         PlayExtra_data.data[6] = TargetHost.login;
                         PlayExtra_data.data[1] = TargetHost.displayName;
-                        PlayExtra_data.data[14] = parseInt(TargetHost.id);
+                        PlayExtra_data.data[14] = TargetHost.id;
                         PlayExtra_data.isHost = true;
 
                         PlayExtra_Resume();

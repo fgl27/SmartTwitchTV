@@ -182,7 +182,7 @@ function ChannelContent_CheckHost(responseObj, key, id) {
 
                 var response = data.user.hosting;
 
-                ChannelContent_TargetId = parseInt(response.id);
+                ChannelContent_TargetId = response.id;
                 ChannelContent_loadDataRequest();
 
                 return;
