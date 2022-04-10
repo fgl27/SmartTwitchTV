@@ -6953,16 +6953,17 @@
 
     function ChannelContent_loadDataRequest() {
 
-        var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' +
-            encodeURIComponent(ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id) +
-            Main_TwithcV5Flag;
+        var theUrl = Main_helix_api + 'streams?user_id=' + (ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id);
 
         BaseXmlHttpGet(
             theUrl,
             2,
             null,
             ChannelContent_loadDataRequestSuccess,
-            ChannelContent_loadDataError
+            ChannelContent_loadDataError,
+            null,
+            0,
+            true
         );
 
     }
@@ -6971,9 +6972,9 @@
 
         var obj = JSON.parse(response);
 
-        if (obj.streams && obj.streams.length) {
+        if (obj.data && obj.data.length) {
 
-            ChannelContent_responseText = obj.streams;
+            ChannelContent_responseText = obj.data;
             ChannelContent_GetStreamerInfo();
 
         } else if (!ChannelContent_TargetId) {
@@ -7025,7 +7026,7 @@
 
                     var response = data.user.hosting;
 
-                    ChannelContent_TargetId = parseInt(response.id);
+                    ChannelContent_TargetId = response.id;
                     ChannelContent_loadDataRequest();
 
                     return;
@@ -7038,28 +7039,31 @@
     }
 
     function ChannelContent_GetStreamerInfo() {
-        var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
 
         BaseXmlHttpGet(
             theUrl,
             2,
             null,
             ChannelContent_GetStreamerInfoSuccess,
-            ChannelContent_GetStreamerInfoError
+            ChannelContent_GetStreamerInfoError,
+            null,
+            0,
+            true
         );
 
     }
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
 
-        var channel = JSON.parse(responseText);
-        ChannelContent_offline_image = channel.video_banner;
-        ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
-        ChannelContent_selectedChannelViews = channel.views;
-        ChannelContent_selectedChannelFollower = channel.followers;
+        var channel = JSON.parse(responseText).data[0];
+        ChannelContent_offline_image = channel.offline_image_url;
+        //ChannelContent_profile_banner = channel.profile_banner ? channel.profile_banner : IMG_404_BANNER;
+        ChannelContent_selectedChannelViews = channel.view_count;
+        //ChannelContent_selectedChannelFollower = channel.followers;
         ChannelContent_description = channel.description;
-        Main_values.Main_selectedChannelLogo = channel.logo;
-        Main_values.Main_selectedChannelPartner = channel.partner;
+        Main_values.Main_selectedChannelLogo = channel.profile_image_url;
+        Main_values.Main_selectedChannelPartner = channel.broadcaster_type;
 
         ChannelContent_loadDataSuccess();
     }
@@ -7110,11 +7114,11 @@
             var stream = ChannelContent_responseText[0];
 
             if (ChannelContent_TargetId !== undefined) {
-                stream.channel.display_name = Main_values.Main_selectedChannelDisplayname +
-                    STR_USER_HOSTING + stream.channel.display_name;
+                stream.user_name = Main_values.Main_selectedChannelDisplayname +
+                    STR_USER_HOSTING + stream.user_name;
             }
 
-            ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
+            ChannelContent_createCell(ScreensObj_LiveCellArray(stream, true));
 
             ChannelContent_cursorX = 1;
         } else ChannelContent_createCellOffline();
@@ -18679,7 +18683,7 @@
 
         Main_addEventListener("keydown", Play_handleKeyDown);
 
-        Play_data.data[14] = parseInt(Play_TargetHost.id);
+        Play_data.data[14] = Play_TargetHost.id;
 
         Play_Start();
     }
@@ -22938,7 +22942,7 @@
 
                     var TargetHost = data.user.hosting;
 
-                    TargetHost.id = parseInt(TargetHost.id);
+                    TargetHost.id = TargetHost.id;
 
                     if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
 
@@ -22952,7 +22956,7 @@
                             Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
                             Play_data.data[6] = TargetHost.login;
                             Play_data.data[1] = TargetHost.displayName;
-                            Play_data.data[14] = parseInt(TargetHost.id);
+                            Play_data.data[14] = TargetHost.id;
 
                             Play_Start();
 
@@ -22963,7 +22967,7 @@
                             PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
                             PlayExtra_data.data[6] = TargetHost.login;
                             PlayExtra_data.data[1] = TargetHost.displayName;
-                            PlayExtra_data.data[14] = parseInt(TargetHost.id);
+                            PlayExtra_data.data[14] = TargetHost.id;
                             PlayExtra_data.isHost = true;
 
                             PlayExtra_Resume();
@@ -23811,6 +23815,7 @@
     }
 
     function Play_updateStreamInfoEnd(response) {
+
         var tempData = ScreensObj_LiveCellArray(response, true);
 
         //Prevent save the wrong stream data this can happen when switching right after enable PP mode
