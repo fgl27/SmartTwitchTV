@@ -657,6 +657,7 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
 }
 
 function Play_updateStreamInfoEnd(response) {
+
     var tempData = ScreensObj_LiveCellArray(response, true);
 
     //Prevent save the wrong stream data this can happen when switching right after enable PP mode

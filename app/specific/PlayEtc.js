@@ -904,7 +904,7 @@ function Play_OpenHost() {
 
     Main_addEventListener("keydown", Play_handleKeyDown);
 
-    Play_data.data[14] = parseInt(Play_TargetHost.id);
+    Play_data.data[14] = Play_TargetHost.id;
 
     Play_Start();
 }
