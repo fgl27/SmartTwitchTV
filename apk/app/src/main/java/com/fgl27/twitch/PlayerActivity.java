@@ -624,10 +624,7 @@ public class PlayerActivity extends Activity {
                 PlayerObj[PlayerObjPosition].mediaSources,
                 PlayerObj[PlayerObjPosition].ResumePosition
         );
-        //Workaround to fix latency to broadcast when LowLatency is disabled
-        if (mLowLatency == 0 && PlayerObj[PlayerObjPosition].Type == 1) {
-            PlayerObj[0].player.seekTo(14000);
-        }
+
         PlayerObj[PlayerObjPosition].player.prepare();
 
         KeepScreenOn(true);
