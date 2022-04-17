@@ -9,6 +9,17 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version February 21 2022 and Apk Version 3.0.330 and up
+==============
+
+* Prepare the app for API changes
+* Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem
+* When Twitch Shutdown they API some parts of the app will not work, the most used part will work as they are already using the new API
+* After this update the user must add a new authorization key even if one was added before
+* This new API demands the user to have a authorization key to access most of content, make sure you have added a user and a authorization key to prevent issues
+* Update app dependencies to latest version included the player
+* If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues
+
 Web Version December 04 2021
 ==============
 

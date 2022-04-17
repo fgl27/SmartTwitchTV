@@ -3968,11 +3968,11 @@
     var version = {
         VersionBase: '3.0',
         publishVersionCode: 330, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/330/SmartTV_twitch_3_0_330.apk',
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/331/SmartTV_twitch_3_0_331.apk',
         WebVersion: 'February 21 2022',
         WebTag: 607, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: "Web Version February 21 2022 and Apk Version 3.0.330",
+                title: "Web Version February 21 2022 and Apk Version 3.0.330 and up",
                 changes: [
                     "Prepare the app for API changes",
                     "Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem",
