@@ -68,6 +68,7 @@ import androidx.annotation.NonNull;
 import com.fgl27.twitch.channels.ChannelsUtils;
 import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultLivePlaybackSpeedControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackException;
@@ -607,7 +608,10 @@ public class PlayerActivity extends Activity {
                                     BUFFER_SIZE[PlayerObj[PlayerObjPosition].Type - 1],
                                     DeviceRam / PlayerObj[PlayerObjPosition].loadControlRamDivider
                             )
-                    )
+                    ).setLivePlaybackSpeedControl(
+                            new DefaultLivePlaybackSpeedControl.Builder()
+                                    .setFallbackMaxPlaybackSpeed(1.0f)
+                                    .build())
                     .build();
 
             PlayerObj[PlayerObjPosition].Listener = new PlayerEventListener(PlayerObjPosition);
