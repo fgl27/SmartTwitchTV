@@ -40,3 +40,4 @@ icon.png
 apk/app/src/main/assets/*
 release/scripts/testing.sh
 .firebase/*
+firebase-debug.log
