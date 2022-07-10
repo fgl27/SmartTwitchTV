@@ -2501,7 +2501,7 @@ function Screens_ThumbUpdateGameInfo(id) {
     BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
 }
 
-function Screens_ThumbUpdateGameInfoSuccess(response, PlayVodClip, key) {
+function Screens_ThumbUpdateGameInfoSuccess(response) {
     response = JSON.parse(response);
     if (response.data && response.data.length) {
         Main_innerHTML('dialog_thumb_opt_val_1', response.data[0].name);
