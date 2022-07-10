@@ -63,13 +63,7 @@ function PlayClip_Start() {
     Play_LoadLogo(Main_getElementById('stream_info_icon'), IMG_404_BANNER);
     Main_innerHTML('stream_info_name', Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, false, 2, ChannelClip_language));
 
-    if (ChannelClip_game === '') {
-        PlayClip_loadVodOffsett();
-    } else {
-        PlayClip_GetStreamerInfo();
-        Main_innerHTML('stream_info_game', ChannelClip_game);
-        Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
-    }
+    PlayClip_loadVodOffsett();
 
     Main_innerHTML('stream_info_title', ChannelClip_title);
 
@@ -169,18 +163,6 @@ function PlayClip_updateVodInfoSuccess(response) {
         Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
         PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomimg);
     }
-}
-
-function PlayClip_GetStreamerInfo() {
-    //Main_Log('PlayClip_GetStreamerInfo');
-    var theUrl = Main_kraken_api + 'channels/' + Main_values.Main_selectedChannel_id + Main_TwithcV5Flag_I;
-
-    BaseXmlHttpGet(theUrl, 2, null, PlayClip_GetStreamerInfoSuccess, noop_fun);
-}
-
-function PlayClip_GetStreamerInfoSuccess(response) {
-    Main_values.Main_selectedChannelPartner = JSON.parse(response).partner;
-    Main_innerHTML('stream_info_name', Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, 2, ChannelClip_language));
 }
 
 var PlayClip_loadVodOffsetStartVodId;
@@ -960,9 +942,9 @@ function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
 
     PlayClip_CheckIsLiveId = new Date().getTime();
 
-    var theUrl = Main_kraken_api + 'streams/?stream_type=all&channel=' + id + Main_TwithcV5Flag;
+    var theUrl = Main_helix_api + 'streams?user_id=' + id;
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId);
+    BaseXmlHttpGet(theUrl, 2, null, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId, true);
 }
 
 var PlayClip_SetOpenLiveData;
@@ -971,8 +953,8 @@ function PlayClip_SetOpenLive(response, key, ID) {
 
     var obj = JSON.parse(response);
 
-    if (obj.streams && obj.streams.length) {
-        var tempData = ScreensObj_LiveCellArray(obj.streams[0]),
+    if (obj.data && obj.data.length) {
+        var tempData = ScreensObj_LiveCellArray(obj.data[0], true),
             playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') + tempData[4];
 
         Play_controls[Play_controlsOpenLive].setLable(playing, tempData[1]);
