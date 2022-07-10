@@ -303,7 +303,8 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
 
         Play_CheckFollow(Main_values.Main_selectedChannel_id);
 
-        //PlayVod_previews_pre_start(response.seek_previews_url);
+        //TODO update this
+        PlayVod_previews_pre_start(null);
         PlayVod_muted_segments_value = response.muted_segments;
         PlayVod_muted_segments(PlayVod_muted_segments_value);
 
