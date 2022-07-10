@@ -1111,6 +1111,18 @@ function Play_OpenGame(PlayVodClip) {
     }
 }
 
+function Play_timeHMS(time) {
+    var hourIndex = time.indexOf('h');
+    var minuteIndex = time.indexOf('m');
+    var secondIndex = time.indexOf('s');
+
+    var hour = time.substring(0, hourIndex);
+    var minute = time.substring(hourIndex + 1, minuteIndex);
+    var second = time.substring(minuteIndex + 1, secondIndex);
+
+    return parseInt(parseInt(hour || 0) * 3600) + parseInt(parseInt(minute) * 60) + parseInt(second);
+}
+
 function Play_UpdateGameInfo(PlayVodClip) {
     var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
 

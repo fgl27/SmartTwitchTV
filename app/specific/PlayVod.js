@@ -164,11 +164,34 @@ function PlayVod_Start() {
 function PlayVod_SetStart() {
     PlayVod_muted_segments_value = null;
     PlayVod_previews_clear();
-    PlayVod_updateVodInfo();
+
+    PlayVod_updateStreamLogo();
     PlayVod_updateChapters();
     Play_HasLive = false;
     Play_BottonIcons_End_Live_Img.src = IMG_404_VIDEO;
     Play_EndSet(2);
+}
+
+var PlayVod_updateStreamLogoValuesId;
+function PlayVod_updateStreamLogo() {
+    PlayVod_updateStreamLogoValuesId = new Date().getTime();
+    var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
+
+    BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
+}
+
+function PlayVod_updateStreamLogoValues(responseText, key, id) {
+    var response = JSON.parse(responseText);
+
+    if (response.data && response.data.length && PlayVod_updateStreamLogoValuesId === id) {
+        //TODO update this with a API that provides logo and is partner
+        var objData = response.data[0];
+
+        Main_values.Main_selectedChannelPartner = objData.broadcaster_type === 'partner';
+        Play_LoadLogo(Main_getElementById('stream_info_icon'), objData.profile_image_url);
+    }
+
+    PlayVod_updateVodInfo();
 }
 
 function PlayVod_PosStart() {
@@ -237,11 +260,11 @@ function PlayVod_UpdateGameInfoSuccess(response) {
 
 var PlayVod_updateVodInfoId;
 function PlayVod_updateVodInfo() {
-    var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
+    var theUrl = Main_helix_api + 'videos?id=' + Main_values.ChannelVod_vodId;
 
     PlayVod_updateVodInfoId = new Date().getTime();
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId);
+    BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
 }
 
 function PlayVod_updateVodInfoPannel(response, key, ID) {
@@ -249,54 +272,53 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
 
     response = JSON.parse(response);
 
-    //Update the value only if the Play_UpdateDuration() has not yet
-    if (!Play_DurationSeconds) Play_DurationSeconds = parseInt(response.length);
+    if (response.data && response.data.length) {
+        response = response.data[0];
+        //Update the value only if the Play_UpdateDuration() has not yet
+        if (!Play_DurationSeconds) Play_DurationSeconds = Play_timeHMS(response.duration);
 
-    ChannelVod_title = twemoji.parse(response.title, false, true);
+        ChannelVod_title = twemoji.parse(response.title, false, true);
 
-    Main_values.Main_selectedChannelPartner = response.channel.partner;
-    Main_innerHTML(
-        'stream_info_name',
-        Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, 1, '[' + response.channel.broadcaster_language.toUpperCase() + ']')
-    );
+        Main_innerHTML('stream_info_name', Play_partnerIcon(Main_values.Main_selectedChannelDisplayname, Main_values.Main_selectedChannelPartner, 1, '[' + response.language.toUpperCase() + ']'));
 
-    Main_innerHTML('stream_info_title', ChannelVod_title);
-    Main_innerHTML('stream_info_game', response.game && response.game !== '' ? STR_STARTED + STR_PLAYING + response.game : '');
+        Main_innerHTML('stream_info_title', ChannelVod_title);
+        //Main_innerHTML('stream_info_game', response.game && response.game !== '' ? STR_STARTED + STR_PLAYING + response.game : '');
 
-    Main_innerHTMLWithEle(Play_infoLiveTime, STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.views) + Main_GetViewsStrings(response.views));
-    Main_textContent('stream_live_viewers', '');
-    Main_textContentWithEle(Play_infoWatchingTime, '');
+        Main_innerHTMLWithEle(
+            Play_infoLiveTime,
+            STR_STREAM_ON + Main_videoCreatedAt(response.created_at) + ',' + STR_SPACE_HTML + Main_addCommas(response.view_count) + Main_GetViewsStrings(response.view_count)
+        );
+        Main_textContent('stream_live_viewers', '');
+        Main_textContentWithEle(Play_infoWatchingTime, '');
 
-    Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
+        Main_textContentWithEle(Play_BottonIcons_Progress_Duration, Play_timeS(Play_DurationSeconds));
 
-    PlayVod_currentTime = Main_vodOffset * 1000;
-    PlayVod_ProgresBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
+        PlayVod_currentTime = Main_vodOffset * 1000;
+        PlayVod_ProgresBarrUpdate(Main_vodOffset, Play_DurationSeconds, true);
 
-    Main_values.Main_selectedChannelDisplayname = response.channel.display_name;
+        Main_values.Main_selectedChannelDisplayname = response.user_name;
 
-    Main_values.Main_selectedChannelLogo = response.channel.logo;
-    Play_LoadLogo(Main_getElementById('stream_info_icon'), Main_values.Main_selectedChannelLogo);
+        Main_values.Main_selectedChannel_id = response.user_id;
+        Main_values.Main_selectedChannel = response.user_login;
 
-    Main_values.Main_selectedChannel_id = response.channel._id;
-    Main_values.Main_selectedChannel = response.channel.name;
+        Play_CheckFollow(Main_values.Main_selectedChannel_id);
 
-    Play_CheckFollow(Main_values.Main_selectedChannel_id);
+        //PlayVod_previews_pre_start(response.seek_previews_url);
+        PlayVod_muted_segments_value = response.muted_segments;
+        PlayVod_muted_segments(PlayVod_muted_segments_value);
 
-    PlayVod_previews_pre_start(response.seek_previews_url);
-    PlayVod_muted_segments_value = response.muted_segments;
-    PlayVod_muted_segments(PlayVod_muted_segments_value);
+        //Main_values_Play_data = ScreensObj_VodCellArray(response);
+        Main_Set_history('vod', Main_values_Play_data);
 
-    Main_values_Play_data = ScreensObj_VodCellArray(response);
-    Main_Set_history('vod', Main_values_Play_data);
+        if (!Main_IsOn_OSInterface && enable_embed) {
+            Play_SetFullScreen(Play_isFullScreen);
 
-    if (!Main_IsOn_OSInterface && enable_embed) {
-        Play_SetFullScreen(Play_isFullScreen);
+            Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
 
-        Play_SetSceneBackground(Main_values_Play_data[0].replace(Main_VideoSize, '1280x720'));
+            BrowserTestStartVod(Main_values.ChannelVod_vodId, PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s');
 
-        BrowserTestStartVod(Main_values.ChannelVod_vodId, PlayClip_OpenAVodOffset ? PlayVod_convertHMS(PlayClip_OpenAVodOffset) : '0h0m0s');
-
-        PlayClip_OpenAVodOffset = 0;
+            PlayClip_OpenAVodOffset = 0;
+        }
     }
 }
 

@@ -154,17 +154,21 @@ function PlayClip_SetProgressBarJumpers() {
 function PlayClip_updateVodInfo() {
     if (!Main_values.ChannelVod_vodId) return;
 
-    var theUrl = Main_kraken_api + 'videos/' + Main_values.ChannelVod_vodId + Main_TwithcV5Flag_I;
-    BaseXmlHttpGet(theUrl, 2, null, PlayClip_updateVodInfoSuccess, noop_fun);
+    var theUrl = Main_helix_api + 'videos?id=' + Main_values.ChannelVod_vodId;
+    BaseXmlHttpGet(theUrl, 2, null, PlayClip_updateVodInfoSuccess, noop_fun, null, null, true);
 }
 
 function PlayClip_updateVodInfoSuccess(response) {
-    var tempData = ScreensObj_VodCellArray(JSON.parse(response));
+    response = JSON.parse(response);
 
-    ChannelVod_title = Main_ReplaceLargeFont(tempData[10]);
-    Main_innerHTML('end_vod_title_text_2', ChannelVod_title);
-    Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
-    PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, tempData[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg);
+    if (response.data && response.data.length) {
+        response = response.data[0];
+
+        ChannelVod_title = Main_ReplaceLargeFont(response.title);
+        Main_innerHTML('end_vod_title_text_2', ChannelVod_title);
+        Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
+        PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomimg);
+    }
 }
 
 function PlayClip_GetStreamerInfo() {
