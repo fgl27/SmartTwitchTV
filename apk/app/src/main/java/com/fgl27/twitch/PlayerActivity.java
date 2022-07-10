@@ -611,6 +611,7 @@ public class PlayerActivity extends Activity {
                     ).setLivePlaybackSpeedControl(
                             new DefaultLivePlaybackSpeedControl.Builder()
                                     .setFallbackMaxPlaybackSpeed(1.0f)
+                                    .setFallbackMinPlaybackSpeed(1.0f)
                                     .build())
                     .build();
 
