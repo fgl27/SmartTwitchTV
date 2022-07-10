@@ -45,7 +45,6 @@
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
