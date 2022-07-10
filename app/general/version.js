@@ -51,21 +51,6 @@ var version = {
         {
             title: 'Web Version September 12 2021',
             changes: ['Allow to control audio and volumes for all types of players']
-        },
-        {
-            title: 'Web Version August 28 2021',
-            changes: [
-                'General improves and bug fixes',
-                'Add minimal support for Browsers, allowing the app to work on any device that has a working Web Browsers',
-                'Acess using the link https://fgl27.github.io/SmartTwitchTV/release/index.html',
-                'Not all Browsers may support the app',
-                "The Browsers support is limited, the limitation is on the player and chat, there isn't support for Picture in Picture mode, Multistream or Previews",
-                'The chat that shows in the Live player will logging with the same user that you have looged in on the Twitch official site on that Browser',
-                'The Browsers support mouse input, clicks, mouse wheel and mouse hover',
-                'One click selects, two will open a Live, VOD or Clip',
-                'To show the in player preview, place the mouse on the top-center of the screen and use the mouse wheel, UP shows, Down hide',
-                'Place the mouse over the preview and use the wheel to scroll throw the content'
-            ]
         }
     ]
 };
