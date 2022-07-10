@@ -773,7 +773,7 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
 
         BaseXmlHttpGet(
-            'https://api.frankerfacez.com/v1/room/' + encodeURIComponent(ChatLive_selectedChannel[chat_number]),
+            'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
             0,
             null,
             ChatLive_loadEmotesChannelffzSuccess,
