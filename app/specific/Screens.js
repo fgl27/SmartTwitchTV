@@ -2477,7 +2477,13 @@ function Screens_ThumbOptionStringSet(key) {
         Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
     }
 
-    Main_innerHTML('dialog_thumb_opt_val_1', Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : STR_EMPTY);
+    if (Screens_values_Play_data[3]) {
+        Main_innerHTML('dialog_thumb_opt_val_1', Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : STR_EMPTY);
+    } else {
+        Main_innerHTML('dialog_thumb_opt_val_1', '...');
+
+        Screens_ThumbUpdateGameInfo(Screens_values_Play_data[18]);
+    }
 
     var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
 
@@ -2487,6 +2493,19 @@ function Screens_ThumbOptionStringSet(key) {
 
     Main_textContent('dialog_thumb_opt_val_4', Screens_ThumbOptionLanguagesTitles[Screens_ThumbOptionPosXArrays[4]]);
     Main_textContent('dialog_thumb_opt_val_5', Screens_ThumbOptionScreens[0]);
+}
+
+function Screens_ThumbUpdateGameInfo(id) {
+    var theUrl = Main_helix_api + 'games?id=' + id;
+
+    BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
+}
+
+function Screens_ThumbUpdateGameInfoSuccess(response, PlayVodClip, key) {
+    response = JSON.parse(response);
+    if (response.data && response.data.length) {
+        Main_innerHTML('dialog_thumb_opt_val_1', response.data[0].name);
+    }
 }
 
 var Screens_ThumbOption_CheckFollow_ID;
@@ -2804,6 +2823,7 @@ function Screens_OpenGame() {
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
 
+    Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
     Main_values.Main_gameSelected = Play_data.data[3];
     Main_ReStartScreens();
 }
