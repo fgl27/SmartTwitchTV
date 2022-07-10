@@ -2008,8 +2008,8 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
 }
 
 function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
-    eval(callbackSucess)(
-        // jshint ignore:line
+    // prettier-ignore
+    eval(callbackSucess)(// jshint ignore:line
         JSON.parse(result),
         key,
         checkResult
