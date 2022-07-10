@@ -28,7 +28,7 @@ var version = {
     changelog: [
         {
             title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
-            changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues']
+            changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
         },
         {
             title: 'Web Version February 21 2022 and Apk Version 3.0.330 and up',
