@@ -55,64 +55,64 @@ var Main_HistoryPos = 0;
 
 var Main_GoBefore = '';
 var Main_values = {
-    "Main_Go": 1,
-    "Main_Before": 1,
-    "Main_BeforeSearch": 1,
-    "Main_BeforeChannel": 1,
-    "Main_BeforeAgame": Main_games,
-    "Main_BeforeChannelisSet": false,
-    "Main_BeforeAgameisSet": false,
-    "Main_selectedChannel": '',
-    "Main_selectedChannelDisplayname": '',
-    "Main_selectedChannelLogo": '',
-    "Main_selectedChannel_id": '',
-    "Main_gameSelected": '',
-    "Main_gameSelected_id": '',
-    "Main_OldgameSelected": null,
-    "Play_isHost": false,
-    "Users_AddcodePosition": 0,
-    "Play_WasPlaying": 0,
-    "ChannelVod_vodId": '',
-    "Search_data": '',
-    "gameSelectedOld": null,
-    "Games_return": false,
-    "Search_isSearching": false,
-    "Play_ChatForceDisable": false,
-    "Never_run_new": true,
-    "Chat_font_size_new": 75,
-    "ChatBackground": 12,
-    "Main_selectedChannelPartner": false,
-    "Sidepannel_IsUser": false,
-    "My_channel": false,
-    "DeviceCheck2": false,
-    "MiboxRevertCheck": false,
-    "Never_run_phone": true,
-    "Codec_is_Check": false,
-    "OS_is_Check": false,
-    "Restore_Backup_Check": false,
-    "UserSidePannel_LastPositionId": null,
-    "UserSidePannel_LastPosition": 0,
-    "UserLiveFeed_LastPositionId": [],
-    "UserLiveFeed_LastPosition": [],
-    "IsUpDating": false,
-    "WasLangChanged": false,
-    "firebaseId": null,
-    "banner_pos": 0,
-    "banner_16by9_pos": 0,
-    "MaxInstancesWarn": false,
-    "AddCode_main_token": null,
-    "API_Change": true
+    Main_Go: 1,
+    Main_Before: 1,
+    Main_BeforeSearch: 1,
+    Main_BeforeChannel: 1,
+    Main_BeforeAgame: Main_games,
+    Main_BeforeChannelisSet: false,
+    Main_BeforeAgameisSet: false,
+    Main_selectedChannel: '',
+    Main_selectedChannelDisplayname: '',
+    Main_selectedChannelLogo: '',
+    Main_selectedChannel_id: '',
+    Main_gameSelected: '',
+    Main_gameSelected_id: '',
+    Main_OldgameSelected: null,
+    Play_isHost: false,
+    Users_AddcodePosition: 0,
+    Play_WasPlaying: 0,
+    ChannelVod_vodId: '',
+    Search_data: '',
+    gameSelectedOld: null,
+    Games_return: false,
+    Search_isSearching: false,
+    Play_ChatForceDisable: false,
+    Never_run_new: true,
+    Chat_font_size_new: 75,
+    ChatBackground: 12,
+    Main_selectedChannelPartner: false,
+    Sidepannel_IsUser: false,
+    My_channel: false,
+    DeviceCheck2: false,
+    MiboxRevertCheck: false,
+    Never_run_phone: true,
+    Codec_is_Check: false,
+    OS_is_Check: false,
+    Restore_Backup_Check: false,
+    UserSidePannel_LastPositionId: null,
+    UserSidePannel_LastPosition: 0,
+    UserLiveFeed_LastPositionId: [],
+    UserLiveFeed_LastPosition: [],
+    IsUpDating: false,
+    WasLangChanged: false,
+    firebaseId: null,
+    banner_pos: 0,
+    banner_16by9_pos: 0,
+    MaxInstancesWarn: false,
+    AddCode_main_token: null,
+    API_Change: true
 };
 
-var Main_VideoSizeAll = ["384x216", "512x288", "640x360", "896x504", "1280x720"];
-var Main_GameSizeAll = ["179x250", "272x380", "340x475", "476x665", "773x1080"];
-var Main_SidePannelSizeAll = ["640x360", "896x504", "1280x720", "1536x864", "1920x1080"];
-var Main_SidePannelSize = "1280x720";
-var Main_VideoSize = "640x360";
-var Main_GameSize = "340x475";
+var Main_VideoSizeAll = ['384x216', '512x288', '640x360', '896x504', '1280x720'];
+var Main_GameSizeAll = ['179x250', '272x380', '340x475', '476x665', '773x1080'];
+var Main_SidePannelSizeAll = ['640x360', '896x504', '1280x720', '1536x864', '1920x1080'];
+var Main_SidePannelSize = '1280x720';
+var Main_VideoSize = '640x360';
+var Main_GameSize = '340x475';
 
 var Main_values_Play_data;
-var Main_values_History_data = {};//The obj is defined in AddUser_RestoreUsers()
+var Main_values_History_data = {}; //The obj is defined in AddUser_RestoreUsers()
 var Main_LastClickFinish = true;
 var Main_newUsercode = 0;
 var Main_ExitCursor = 0;
@@ -122,7 +122,7 @@ var Main_SearchInput;
 var Main_AddUserInput;
 var Main_ChatLiveInput;
 var Main_updateclockId;
-var Main_ContentLang = "";
+var Main_ContentLang = '';
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
 var Main_FirstRun = true;
@@ -166,11 +166,12 @@ var Main_body = document.body;
 Main_Start();
 
 function Main_Start() {
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", function() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
             Main_StartApp();
         });
-    } else { // `DOMContentLoaded` already fired
+    } else {
+        // `DOMContentLoaded` already fired
         Main_StartApp();
     }
 }
@@ -178,46 +179,45 @@ function Main_Start() {
 function Main_StartApp() {
     Main_Checktylesheet();
 
-    Main_ready(function() {
-
+    Main_ready(function () {
         try {
             if (Main_A_includes_B(window.location.href, 'asset')) {
                 //Same as in smartTwitchTV/release/api.js
                 //The app is running from assets need to expose smartTwitchTV
                 smartTwitchTV = {
-                    'mainstart': Main_Start,
-                    'Play_PannelEndStart': Play_PannelEndStart,
-                    'Play_PlayerCheck': Play_PlayerCheck,
-                    'Play_UpdateDuration': Play_UpdateDuration,
-                    'PlayExtra_End': PlayExtra_End,
-                    'Play_MultiEnd': Play_MultiEnd,
-                    'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-                    'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-                    'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-                    'Main_CheckStop': Main_CheckStop,
-                    'Main_CheckResume': Main_CheckResume,
-                    'Play_getQualities': Play_getQualities,
-                    'Play_ShowVideoStatus': Play_ShowVideoStatus,
-                    'Play_ShowVideoQuality': Play_ShowVideoQuality,
-                    'Play_PlayPauseChange': Play_PlayPauseChange,
-                    'PlayVod_loadDataResult': PlayVod_loadDataResult,
-                    'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
-                    'Play_loadDataResult': Play_loadDataResult,
-                    'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
-                    'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
-                    'Play_MultiResult': Play_MultiResult,
-                    'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
-                    'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-                    'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
-                    'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-                    'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
-                    'Main_onNewIntent': Main_onNewIntent,
-                    'Main_EventChannelRefresh': Main_EventChannelRefresh,
-                    'ChatLive_SetLatency': ChatLive_SetLatency,
-                    'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-                    'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-                    'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
-                    'AddCode_AppTokenResult': AddCode_AppTokenResult
+                    mainstart: Main_Start,
+                    Play_PannelEndStart: Play_PannelEndStart,
+                    Play_PlayerCheck: Play_PlayerCheck,
+                    Play_UpdateDuration: Play_UpdateDuration,
+                    PlayExtra_End: PlayExtra_End,
+                    Play_MultiEnd: Play_MultiEnd,
+                    Play_CheckIfIsLiveClean: Play_CheckIfIsLiveClean,
+                    UserLiveFeed_CheckIfIsLiveResult: UserLiveFeed_CheckIfIsLiveResult,
+                    Sidepannel_CheckIfIsLiveResult: Sidepannel_CheckIfIsLiveResult,
+                    Main_CheckStop: Main_CheckStop,
+                    Main_CheckResume: Main_CheckResume,
+                    Play_getQualities: Play_getQualities,
+                    Play_ShowVideoStatus: Play_ShowVideoStatus,
+                    Play_ShowVideoQuality: Play_ShowVideoQuality,
+                    Play_PlayPauseChange: Play_PlayPauseChange,
+                    PlayVod_loadDataResult: PlayVod_loadDataResult,
+                    PlayExtra_ResumeResult: PlayExtra_ResumeResult,
+                    Play_loadDataResult: Play_loadDataResult,
+                    PlayClip_CheckIfIsLiveResult: PlayClip_CheckIfIsLiveResult,
+                    PlayVod_CheckIfIsLiveResult: PlayVod_CheckIfIsLiveResult,
+                    Play_MultiResult: Play_MultiResult,
+                    Screens_LoadPreviewResult: Screens_LoadPreviewResult,
+                    ChannelContent_LoadPreviewResult: ChannelContent_LoadPreviewResult,
+                    Play_StayCheckLiveResult: Play_StayCheckLiveResult,
+                    Play_CheckIfIsLiveResult: Play_CheckIfIsLiveResult,
+                    Play_ClipCheckIfIsLiveEnd: Play_ClipCheckIfIsLiveEnd,
+                    Main_onNewIntent: Main_onNewIntent,
+                    Main_EventChannelRefresh: Main_EventChannelRefresh,
+                    ChatLive_SetLatency: ChatLive_SetLatency,
+                    Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
+                    AddCode_refreshTokensResult: AddCode_refreshTokensResult,
+                    Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
+                    AddCode_AppTokenResult: AddCode_AppTokenResult
                 };
             }
 
@@ -227,11 +227,10 @@ function Main_StartApp() {
 
             OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
             OSInterface_SetStreamDataHeaders(Play_Headers);
-
         } catch (e) {
             Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
             Main_IsOn_OSInterface = 0;
-            Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+            Main_body.style.backgroundColor = 'rgba(155, 155, 155, 1)'; //default rgba(0, 0, 0, 1)
             Main_isDebug = true;
             //Main_Log('Main_isDebug: ' + Main_isDebug);
             //Main_Log('Main_isBrowser: ' + !Main_IsOn_OSInterface);
@@ -268,24 +267,22 @@ function Main_StartApp() {
         Main_DoRestore = AddUser_RestoreUsers();
 
         if (!Main_values.Restore_Backup_Check && Main_IsOn_OSInterface && OSInterface_getSDK() < 30) {
-
             try {
                 OSInterface_requestWr();
                 Main_HideLoadDialog();
-                Main_innerHTML("main_dialog_remove", STR_BACKUP);
+                Main_innerHTML('main_dialog_remove', STR_BACKUP);
                 Main_textContent('yes_no_dialog_button_no', STR_NO);
                 Main_textContent('yes_no_dialog_button_yes', STR_YES);
                 Main_ShowElement('yes_no_dialog');
                 Main_values.Restore_Backup_Check = true;
                 Main_PreventCheckResume = true;
-                Main_addEventListener("keydown", Main_BackupDialodKeyDown);
+                Main_addEventListener('keydown', Main_BackupDialodKeyDown);
             } catch (e) {
                 Main_ready(Main_initWindows);
                 return;
             }
         } else Main_ready(Main_initWindows);
     });
-
 }
 
 function Main_initClick() {
@@ -295,7 +292,7 @@ function Main_initClick() {
         if (Main_isTV) return;
     } else return;
 
-    Main_body.onpointerup = function() {
+    Main_body.onpointerup = function () {
         OSInterface_initbodyClickSet();
     };
     OSInterface_initbodyClickSet();
@@ -317,7 +314,7 @@ function Main_BackupDialodKeyDown(event) {
             Main_PreventCheckResume = false;
             Main_showLoadDialog();
             Main_HideElement('yes_no_dialog');
-            Main_removeEventListener("keydown", Main_BackupDialodKeyDown);
+            Main_removeEventListener('keydown', Main_BackupDialodKeyDown);
             if (Users_RemoveCursor && !Main_DoRestore) Main_initRestoreBackups();
             else Main_initWindows();
             break;
@@ -328,9 +325,7 @@ function Main_BackupDialodKeyDown(event) {
 
 function Main_initRestoreBackups() {
     try {
-
         if (OSInterface_HasBackupFile(Main_UserBackupFile)) {
-
             var tempBackup = OSInterface_RestoreBackupFile(Main_UserBackupFile);
 
             if (tempBackup !== null) {
@@ -348,7 +343,6 @@ function Main_initRestoreBackups() {
                     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) OSInterface_mCheckRefresh();
                 }
             }
-
         }
 
         Main_initWindows();
@@ -388,67 +382,55 @@ function Main_initWindowsEnd() {
     }
 
     Main_SetUpdateclock();
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, 1000 * 60 * 3, Main_StartHistoryworkerId); //Check it 3 min
     Main_SetHistoryworker();
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 20000, Main_CheckResumeVodsId);
-    Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
+    Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, 1000 * 60 * 30, Main_checkWebVersionId); //Check it 60 min
 
     Main_setTimeout(Main_RunVODWorker, 50000);
-    Main_setInterval(Main_RunVODWorker, (1000 * 60 * 360));//Check it 6 hours
+    Main_setInterval(Main_RunVODWorker, 1000 * 60 * 360); //Check it 6 hours
 
     Main_setTimeout(Main_RunClipWorker, 80000);
-    Main_setInterval(Main_RunClipWorker, (1000 * 60 * 370));//Check it 6 hours
+    Main_setInterval(Main_RunClipWorker, 1000 * 60 * 370); //Check it 6 hours
 
     Main_setTimeout(AddUser_UpdateUserAllUsers, 30000);
 
     Main_SetStringsSecondary();
     Main_checkVersion();
 
-    Main_SearchInput = Main_getElementById("search_input");
-    Main_AddUserInput = Main_getElementById("user_input");
-    Main_ChatLiveInput = Main_getElementById("chat_send_input");
-
+    Main_SearchInput = Main_getElementById('search_input');
+    Main_AddUserInput = Main_getElementById('user_input');
+    Main_ChatLiveInput = Main_getElementById('chat_send_input');
 }
 
 function Main_CheckBackup() {
-
     if (Main_IsOn_OSInterface) {
         Main_CanBackup = OSInterface_canBackupFile();
 
         //Backup at start as a backup may never be done yet
         if (Main_CanBackup && AddUser_IsUserSet()) {
-
-            Main_setTimeout(
-                function() {
-                    OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
-                },
-                10000
-            );
-
+            Main_setTimeout(function () {
+                OSInterface_BackupFile(Main_UserBackupFile, JSON.stringify(AddUser_UsernameArray));
+            }, 10000);
         }
     } else Main_CanBackup = false;
-
 }
 
 function Main_CheckDevice() {
-
     if (Main_IsOn_OSInterface) {
-
         var device;
 
         if (!Main_values.DeviceCheck2) {
-
             Main_values.DeviceCheck2 = true;
             Main_values.MiboxRevertCheck = true;
 
             device = OSInterface_getDevice();
             var Manufacturer = OSInterface_getManufacturer();
 
-            device = device ? device.toLowerCase() : "";
-            Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : "";
+            device = device ? device.toLowerCase() : '';
+            Manufacturer = Manufacturer ? Manufacturer.toLowerCase() : '';
 
-            if (Main_A_includes_B(device, 'shield android tv') ||
-                Main_A_includes_B(Manufacturer, 'nvidia')) {
+            if (Main_A_includes_B(device, 'shield android tv') || Main_A_includes_B(Manufacturer, 'nvidia')) {
                 //Some devices are very slow and are affected by some app default setting Nvidia shield is not
 
                 //bitrate to max possible
@@ -466,21 +448,19 @@ function Main_CheckDevice() {
                 //Enable app animations
                 Settings_ForceEnableAnimations();
             }
-
         } else if (!Main_values.MiboxRevertCheck) {
-
             Main_values.MiboxRevertCheck = true;
             device = OSInterface_getDevice();
-            device = device ? device.toLowerCase() : "";
+            device = device ? device.toLowerCase() : '';
 
-            if (Main_A_includes_B(device, 'mibox4')) {//revert enable workaround by default
+            if (Main_A_includes_B(device, 'mibox4')) {
+                //revert enable workaround by default
 
                 Settings_value.block_qualities_9.defaultValue = 0;
                 Main_setItem('block_qualities_9', 1);
 
                 Settings_QualitiesCheck();
             }
-
         }
 
         //Disable googles OMX.google.h264.decoder if another codec is available
@@ -489,48 +469,37 @@ function Main_CheckDevice() {
             var getcodec = null;
             try {
                 if (Main_IsOn_OSInterface) getcodec = JSON.parse(OSInterface_getcodecCapabilities('avc'));
-            } catch (e) { }
+            } catch (e) {}
 
             if (getcodec) {
-
                 Main_values.Codec_is_Check = true;
 
                 if (getcodec.length > 1) {
                     var codecsnames = [];
 
-                    var i = 0, len = getcodec.length;
+                    var i = 0,
+                        len = getcodec.length;
                     for (i; i < len; i++) {
-
-                        if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : "", 'google'))
-                            codecsnames.push(getcodec[i].name);
-
+                        if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : '', 'google')) codecsnames.push(getcodec[i].name);
                     }
 
                     if (codecsnames.length === 1) {
-
                         Main_setItem(codecsnames[0], 1);
                         Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
 
                         OSInterface_setBlackListMediaCodec(codecsnames.join());
-
                     }
                 }
-
             }
-
         }
-
     } else if (Main_values.Never_run_new) {
-
         Settings_ForceEnableAnimations();
-
     }
 }
 
 function Main_SetStringsMain() {
-
     //set top bar labels
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
 
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 
@@ -539,11 +508,11 @@ function Main_SetStringsMain() {
 
     Sidepannel_SetDefaultLables();
 
-    Main_textContent("dialog_end_next_text_-1", STR_PLAY_NEXT);
-    Main_textContent("dialog_end_replay_text_0", STR_REPLAY);
-    Main_textContent("dialog_end_vod_text_2", STR_OPEN_BROADCAST);
-    Main_textContent("dialog_end_channel_text_3", STR_CHANNEL_CONT);
-    Main_textContent("dialog_end_game_text_4", STR_GAME_CONT);
+    Main_textContent('dialog_end_next_text_-1', STR_PLAY_NEXT);
+    Main_textContent('dialog_end_replay_text_0', STR_REPLAY);
+    Main_textContent('dialog_end_vod_text_2', STR_OPEN_BROADCAST);
+    Main_textContent('dialog_end_channel_text_3', STR_CHANNEL_CONT);
+    Main_textContent('dialog_end_game_text_4', STR_GAME_CONT);
 
     Main_Periods = [STR_CLIP_DAY, STR_CLIP_WEEK, STR_CLIP_MONTH, STR_CLIP_ALL];
 
@@ -552,7 +521,7 @@ function Main_SetStringsMain() {
 }
 
 function Main_SetStringsSecondary() {
-    Main_textContent("play_dialog_exit_text", STR_EXIT_AGAIN);
+    Main_textContent('play_dialog_exit_text', STR_EXIT_AGAIN);
 
     Main_textContent('side_panel_back_main_menu', STR_SIDE_PANEL_BACK_MAIN_MENU);
 
@@ -564,35 +533,35 @@ function Main_SetStringsSecondary() {
     Main_textContent('yes_no_dialog_button_no', STR_CANCEL);
     Main_textContent('yes_no_dialog_button_yes', STR_YES);
     Main_textContent('exit_app_minimize', STR_MINIMIZE);
-    Main_textContent("main_dialog_exit_text", STR_EXIT_MESSAGE);
+    Main_textContent('main_dialog_exit_text', STR_EXIT_MESSAGE);
 
-    Main_innerHTML("dialog_controls_text", STR_CONTROLS_MAIN_0);
-    Main_innerHTML("dialog_controls_player_text", STR_CONTROLS_PLAYER_0);
+    Main_innerHTML('dialog_controls_text', STR_CONTROLS_MAIN_0);
+    Main_innerHTML('dialog_controls_player_text', STR_CONTROLS_PLAYER_0);
     Main_textContent('side_panel_warn_text', STR_NO + STR_LIVE_CHANNELS);
     Main_textContent('side_panel_movel_top_text', STR_LIVE_FEED);
 
-    Main_textContent("dialog_period_text", STR_SWITCH_CLIP);
-    Main_innerHTML("dialog_period_1", Main_Periods[0]);
-    Main_innerHTML("dialog_period_2", Main_Periods[1]);
-    Main_innerHTML("dialog_period_3", Main_Periods[2]);
-    Main_innerHTML("dialog_period_4", Main_Periods[3]);
+    Main_textContent('dialog_period_text', STR_SWITCH_CLIP);
+    Main_innerHTML('dialog_period_1', Main_Periods[0]);
+    Main_innerHTML('dialog_period_2', Main_Periods[1]);
+    Main_innerHTML('dialog_period_3', Main_Periods[2]);
+    Main_innerHTML('dialog_period_4', Main_Periods[3]);
 
-    Main_innerHTML("main_dialog_user_first", STR_USER_MAKE_ONE);
-    Main_innerHTML("main_dialog_user_remove", STR_USER_REMOVE);
+    Main_innerHTML('main_dialog_user_first', STR_USER_MAKE_ONE);
+    Main_innerHTML('main_dialog_user_remove', STR_USER_REMOVE);
 
-    Main_innerHTML("dialog_OffSet_text", STR_SWITCH_POS + STR_BR);
-    Main_textContent("dialog_OffSet_text_summary", STR_SWITCH_POS_SUMMARY);
+    Main_innerHTML('dialog_OffSet_text', STR_SWITCH_POS + STR_BR);
+    Main_textContent('dialog_OffSet_text_summary', STR_SWITCH_POS_SUMMARY);
 
-    Main_innerHTML("dialog_vod_start_text", STR_FROM_START);
+    Main_innerHTML('dialog_vod_start_text', STR_FROM_START);
 
     Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS);
     Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS);
     Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
 
-    Main_textContent("dialog_hist_setting_name_0", STR_SORTING);
-    Main_textContent("dialog_hist_setting_name_2", STR_DELETE_HISTORY);
-    Main_textContent("dialog_hist_setting_name_3", STR_DELETE_UNREACHABLE);
-    Main_textContent("dialog_hist_setting_summary_3", STR_DELETE_UNREACHABLE_SUMMARY);
+    Main_textContent('dialog_hist_setting_name_0', STR_SORTING);
+    Main_textContent('dialog_hist_setting_name_2', STR_DELETE_HISTORY);
+    Main_textContent('dialog_hist_setting_name_3', STR_DELETE_UNREACHABLE);
+    Main_textContent('dialog_hist_setting_summary_3', STR_DELETE_UNREACHABLE_SUMMARY);
     Main_textContent('dialog_hist_val_2', STR_PRESS_ENTER_D);
 
     Main_textContent('dialog_opt_text', STR_THUMB_OPTIONS);
@@ -606,25 +575,25 @@ function Main_SetStringsSecondary() {
     Main_textContent('dialog_thumb_opt_setting_name_4', STR_CONTENT_LANG);
     Main_textContent('dialog_thumb_opt_setting_name_5', STR_GO_TO);
 
-    Main_innerHTML("dialog_multi_help_text", STR_CONTROLS_MULTI);
+    Main_innerHTML('dialog_multi_help_text', STR_CONTROLS_MULTI);
 
-    Main_textContent("chat_send_button0", STR_OPTIONS);
-    Main_textContent("chat_send_button1", STR_CHAT_DELL_ALL);
-    Main_textContent("chat_send_button2", STR_CHAT_UNICODE_EMOJI);
-    Main_textContent("chat_send_button3", STR_CHAT_BTTV_GLOBAL);
-    Main_textContent("chat_send_button4", STR_CHAT_FFZ_GLOBAL);
-    Main_textContent("chat_send_button5", STR_CHAT_SEVENTV_GLOBAL);
-    Main_textContent("chat_send_button6", STR_CHAT_SEND);
-    Main_textContent("chat_send_button7", STR_CHAT_AT_STREAM);
-    Main_textContent("chat_send_button8", STR_CHAT_TW_EMOTES);
-    Main_textContent("chat_send_button9", STR_CHAT_BTTV_STREAM);
-    Main_textContent("chat_send_button10", STR_CHAT_FFZ_STREAM);
-    Main_textContent("chat_send_button11", STR_CHAT_SEVENTV_STREAM);
-    Main_textContent("chat_result", STR_CHAT_RESULT);
+    Main_textContent('chat_send_button0', STR_OPTIONS);
+    Main_textContent('chat_send_button1', STR_CHAT_DELL_ALL);
+    Main_textContent('chat_send_button2', STR_CHAT_UNICODE_EMOJI);
+    Main_textContent('chat_send_button3', STR_CHAT_BTTV_GLOBAL);
+    Main_textContent('chat_send_button4', STR_CHAT_FFZ_GLOBAL);
+    Main_textContent('chat_send_button5', STR_CHAT_SEVENTV_GLOBAL);
+    Main_textContent('chat_send_button6', STR_CHAT_SEND);
+    Main_textContent('chat_send_button7', STR_CHAT_AT_STREAM);
+    Main_textContent('chat_send_button8', STR_CHAT_TW_EMOTES);
+    Main_textContent('chat_send_button9', STR_CHAT_BTTV_STREAM);
+    Main_textContent('chat_send_button10', STR_CHAT_FFZ_STREAM);
+    Main_textContent('chat_send_button11', STR_CHAT_SEVENTV_STREAM);
+    Main_textContent('chat_result', STR_CHAT_RESULT);
     ChatLiveControls_OptionsUpdate_defautls();
 
-    Main_textContent("update_dialog_changebutton", STR_FULL_CHANGELOG);
-    Main_textContent("update_dialog_exit", STR_CLOSE_THIS2);
+    Main_textContent('update_dialog_changebutton', STR_FULL_CHANGELOG);
+    Main_textContent('update_dialog_exit', STR_CLOSE_THIS2);
 
     Main_innerHTML('feed_end_1', STR_FEATURED);
     Main_innerHTML('feed_end_3', STR_LIVE);
@@ -633,16 +602,25 @@ function Main_SetStringsSecondary() {
     Main_innerHTML('feed_end_7', STR_USER + STR_SPACE_HTML + 'VOD');
     Main_innerHTML('feed_end_8', 'VOD ' + STR_HISTORY);
     Main_innerHTML('icon_feed_back', STR_SPACE_HTML);
-
 }
 
 function Main_IconLoad(lable, icon, string, color) {
     Main_innerHTML(
         lable,
-        '<div id="' + lable + '_icondiv" style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i id="' + lable + '_icon" class="' +
-        icon + '" style="color: ' + (color ? color : '#FFFFFF') +
-        ';"></i></div><div  id="' + lable + '_icontext" style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' +
-        STR_SPACE_HTML + string + '</div>'
+        '<div id="' +
+            lable +
+            '_icondiv" style="vertical-align: middle; display: inline-block; transform: translateY(15%);"><i id="' +
+            lable +
+            '_icon" class="' +
+            icon +
+            '" style="color: ' +
+            (color ? color : '#FFFFFF') +
+            ';"></i></div><div  id="' +
+            lable +
+            '_icontext" style="vertical-align: middle; display: inline-block; transform: translateY(10%);">' +
+            STR_SPACE_HTML +
+            string +
+            '</div>'
     );
 }
 
@@ -707,18 +685,16 @@ function Main_RemoveElement(ele) {
 }
 
 function Main_replaceClassEmoji(div) {
-    var emojiel = Main_getElementById(div).getElementsByClassName("emoji");
+    var emojiel = Main_getElementById(div).getElementsByClassName('emoji');
     if (emojiel) {
+        var i = 0,
+            len = emojiel.length;
+        for (i; i < len; i++) emojiel[i].classList.add('emoticon');
 
-        var i = 0, len = emojiel.length;
-        for (i; i < len; i++)
-            emojiel[i].classList.add('emoticon');
-
-        emojiel = Main_getElementById(div).getElementsByClassName("emoticon");
+        emojiel = Main_getElementById(div).getElementsByClassName('emoticon');
         i = 0;
         len = emojiel.length;
-        for (i; i < len; i++)
-            emojiel[i].classList.remove('emoji');
+        for (i; i < len; i++) emojiel[i].classList.remove('emoji');
     }
 }
 
@@ -744,11 +720,11 @@ function Main_setExitDialog() {
 function Main_showExitDialog() {
     Main_setExitDialog();
     Main_ShowElement('main_dialog_exit');
-    Main_addEventListener("keydown", Main_ExitDialog);
+    Main_addEventListener('keydown', Main_ExitDialog);
 }
 
 function Main_HideExitDialog() {
-    Main_removeEventListener("keydown", Main_ExitDialog);
+    Main_removeEventListener('keydown', Main_ExitDialog);
     Main_SwitchScreen();
     Main_clearExitDialog();
     Main_HideElement('main_dialog_exit');
@@ -774,7 +750,7 @@ function Main_CounterDialogRst() {
 }
 
 function Main_CounterDialog(x, y, coloumns, total) {
-    if (total > 0) Main_textContent('dialog_counter_text', (y * coloumns) + (x + 1) + '/' + (total));
+    if (total > 0) Main_textContent('dialog_counter_text', y * coloumns + (x + 1) + '/' + total);
     else Main_CounterDialogRst();
 }
 
@@ -796,12 +772,12 @@ function Main_HideWarningDialog() {
 }
 
 function Main_AboutDialogUpdateTime() {
-    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE_HTML + Play_timeDay((new Date().getTime()) - Main_RunningTime));
+    Main_innerHTML('about_runningtime', STR_RUNNINGTIME + STR_SPACE_HTML + Play_timeDay(new Date().getTime() - Main_RunningTime));
 }
 
 function Main_showAboutDialog(removeEventListener, addEventListener) {
-    Main_removeEventListener("keydown", removeEventListener);
-    Main_addEventListener("keydown", addEventListener);
+    Main_removeEventListener('keydown', removeEventListener);
+    Main_addEventListener('keydown', addEventListener);
 
     Main_AddClass('dialog_changelod_text', 'hideimp');
     Main_RemoveClass('dialog_about_text', 'hideimp');
@@ -829,36 +805,45 @@ function Main_showSettings() {
 }
 
 function Main_showWelcomeDialog(removeEventListener, addEventListener) {
-    Main_removeEventListener("keydown", removeEventListener);
-    Main_addEventListener("keydown", addEventListener);
+    Main_removeEventListener('keydown', removeEventListener);
+    Main_addEventListener('keydown', addEventListener);
 
     var phone_warning = '';
     if (!Main_isTV) {
-
         if (Main_IsOn_OSInterface) {
-            phone_warning = STR_DIV_TITLE +
-                STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
+            phone_warning = STR_DIV_TITLE + STR_WARNING_PHONE + '</div>' + STR_BR + STR_WARNING_PHONE_SUMMARY + STR_BR + STR_BR;
         } else {
-            phone_warning = STR_DIV_TITLE +
-                STR_WARNING_BROWSER + '</div>' + STR_BR + STR_WARNING_BROWSER_SUMMARY + STR_BR + STR_BR;
+            phone_warning = STR_DIV_TITLE + STR_WARNING_BROWSER + '</div>' + STR_BR + STR_WARNING_BROWSER_SUMMARY + STR_BR + STR_BR;
         }
     }
 
     Main_innerHTML(
-        "welcome_dialog_text",
-        STR_DIV_TITLE + STR_WELCOME + STR_SPACE_HTML + STR_TWITCH_TV + '</div>' + STR_BR +
-        STR_ABOUT_INFO_1 + STR_BR + STR_BR +
-        STR_ABOUT_INFO_2 + STR_BR + STR_BR +
-        STR_WELCOME_SUMMARY + STR_BR + STR_BR +
-        STR_CONTACT +
-        // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
-        // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
-        phone_warning +
-        STR_DIV_TITLE + STR_CLOSE_THIS + '</div>'
+        'welcome_dialog_text',
+        STR_DIV_TITLE +
+            STR_WELCOME +
+            STR_SPACE_HTML +
+            STR_TWITCH_TV +
+            '</div>' +
+            STR_BR +
+            STR_ABOUT_INFO_1 +
+            STR_BR +
+            STR_BR +
+            STR_ABOUT_INFO_2 +
+            STR_BR +
+            STR_BR +
+            STR_WELCOME_SUMMARY +
+            STR_BR +
+            STR_BR +
+            STR_CONTACT +
+            // STR_DIV_TITLE + STR_AFFILIATE + ':</div>' +
+            // STR_AFFILIATE_ABOUT + STR_SPACE + STR_AFFILIATE_ABOUT_DIS + STR_BR + STR_BR +
+            phone_warning +
+            STR_DIV_TITLE +
+            STR_CLOSE_THIS +
+            '</div>'
     );
 
     Main_ShowElement('welcome_dialog');
-
 }
 
 function Main_HideWelcomeDialog() {
@@ -870,8 +855,8 @@ function Main_isWelcomeDialogVisible() {
 }
 
 function Main_showControlsDialog(removeEventListener, addEventListener) {
-    Main_removeEventListener("keydown", removeEventListener);
-    Main_addEventListener("keydown", addEventListener);
+    Main_removeEventListener('keydown', removeEventListener);
+    Main_addEventListener('keydown', addEventListener);
     Main_HideAboutDialog();
     Main_ShowElement('dialog_controls');
     Main_EventScreen('Controls');
@@ -887,7 +872,7 @@ function Main_isControlsDialogVisible() {
 
 function Main_addCommas(value) {
     if (!value) return value;
-    return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return (value + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 function Main_GetViewerStrings(value) {
@@ -904,7 +889,7 @@ function Main_videoqualitylang(video_height, average_fps, language) {
 
     average_fps = Main_Calculatefps(average_fps);
 
-    return video_height + 'p' + average_fps + ((language !== "") ? ' [' + language.toUpperCase() + ']' : '');
+    return video_height + 'p' + average_fps + (language !== '' ? ' [' + language.toUpperCase() + ']' : '');
 }
 
 function Main_Calculatefps(fps) {
@@ -925,7 +910,7 @@ function Main_ThumbNull(y, x, thumbnail) {
 
 function Main_ReStartScreens(preventRefresh) {
     if (Sidepannel_isShowingUserLive()) {
-        Main_addEventListener("keydown", Sidepannel_handleKeyDown);
+        Main_addEventListener('keydown', Sidepannel_handleKeyDown);
         if (!Sidepannel_PlayerViewSidePanelSet) Sidepannel_SetPlayerViewSidePanel();
         if (Play_PreviewId) OSInterface_SidePanelPlayerRestore();
         Sidepannel_AddFocusLiveFeed(true);
@@ -942,7 +927,7 @@ function Main_SwitchScreen(removekey, preventRefresh) {
     if (ScreenObj[Main_values.Main_Go]) ScreenObj[Main_values.Main_Go].init_fun(preventRefresh);
     else ScreenObj[1].init_fun();
 
-    if (removekey) Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+    if (removekey) Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
 }
 
 function Main_OpenSearch() {
@@ -956,11 +941,7 @@ function Main_OpenSearch() {
 
 var Main_SaveValuesWithTimeoutId;
 function Main_SaveValuesWithTimeout() {
-    Main_SaveValuesWithTimeoutId = Main_setTimeout(
-        Main_SaveValues,
-        500,
-        Main_SaveValuesWithTimeoutId
-    );
+    Main_SaveValuesWithTimeoutId = Main_setTimeout(Main_SaveValues, 500, Main_SaveValuesWithTimeoutId);
 }
 
 function Main_SaveValues() {
@@ -980,7 +961,7 @@ function Main_ExitCurrent(ExitCurrent) {
 }
 
 function Main_RestoreTopLabel() {
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
 }
 
@@ -988,24 +969,25 @@ function Main_cleanTopLabel() {
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
 }
 
-function Main_videoCreatedAt(time) { //time in '2017-10-27T13:27:27Z' or ms
+function Main_videoCreatedAt(time) {
+    //time in '2017-10-27T13:27:27Z' or ms
     time = new Date(time);
     if (Main_IsDayFirst) return time.getDate() + ' ' + STR_MONTHS[time.getMonth()] + ' ' + time.getFullYear();
     else return STR_MONTHS[time.getMonth()] + ' ' + time.getDate() + ' ' + time.getFullYear();
 }
 
 //WithHM = with hour minutes
-function Main_videoCreatedAtWithHM(time) { //time in '2017-10-27T13:27:27Z' or ms
+function Main_videoCreatedAtWithHM(time) {
+    //time in '2017-10-27T13:27:27Z' or ms
     var result = Main_videoCreatedAt(time);
     time = new Date(time);
-    return result + ' ' + time.getHours() + ":" + Play_lessthanten(time.getMinutes());
+    return result + ' ' + time.getHours() + ':' + Play_lessthanten(time.getMinutes());
 }
 
 function Main_checkVersion(skipCheck) {
     var Main_versionTag;
 
     if (Main_IsOn_OSInterface) {
-
         var device = OSInterface_getDevice();
         var Webviewversion = OSInterface_getWebviewVersion();
         var Manufacturer = OSInterface_getManufacturer();
@@ -1013,48 +995,36 @@ function Main_checkVersion(skipCheck) {
 
         Main_Log('Webviewversion ' + Webviewversion);
 
-        Main_versionTag = "Apk: " + Main_IsOn_OSInterfaceVersion + ' Web: ' + version.WebVersion +
-            (Webviewversion ? (' Webview: ' + Webviewversion) : '') + ' Device: ' + Manufacturer + ' - ' + device +
-            ' Sdk: ' + Main_AndroidSDK;
+        Main_versionTag =
+            'Apk: ' +
+            Main_IsOn_OSInterfaceVersion +
+            ' Web: ' +
+            version.WebVersion +
+            (Webviewversion ? ' Webview: ' + Webviewversion : '') +
+            ' Device: ' +
+            Manufacturer +
+            ' - ' +
+            device +
+            ' Sdk: ' +
+            Main_AndroidSDK;
 
         var needUpdate = Main_needUpdate(Main_IsOn_OSInterfaceVersion);
 
         if (!Settings_value.update_background.defaultValue) {
-
             if (needUpdate) {
-
                 Main_HasUpdate = true;
                 Main_WarnUpdate(false);
-
             } else if (!skipCheck) Main_CheckUpdate();
-
         }
 
-        Main_EventVersion(
-            Main_IsOn_OSInterfaceVersion,
-            version.WebVersion,
-            Webviewversion,
-            device,
-            Main_AndroidSDK,
-            Manufacturer
-        );
-
+        Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, Webviewversion, device, Main_AndroidSDK, Manufacturer);
     } else {
-
         Main_versionTag = version.VersionBase + '.' + version.publishVersionCode + ' - ' + version.WebVersion;
 
-        Main_EventVersion(
-            Main_IsOn_OSInterfaceVersion,
-            version.WebVersion,
-            navigator.appVersion,
-            navigator.platform,
-            'Browser',
-            'Browser'
-        );
+        Main_EventVersion(Main_IsOn_OSInterfaceVersion, version.WebVersion, navigator.appVersion, navigator.platform, 'Browser', 'Browser');
     }
 
-    Main_innerHTML("dialog_about_text", STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR +
-        '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
+    Main_innerHTML('dialog_about_text', STR_ABOUT_INFO_HEADER + Main_versionTag + STR_BR + '<span id="about_runningtime"></span>' + STR_ABOUT_INFO_0);
 
     Main_RunningTime = new Date().getTime();
 }
@@ -1064,44 +1034,23 @@ var Main_checkWebVersionResumeId;
 var Main_HasUpdate;
 var Main_Ischecking;
 function Main_CheckUpdate(forceUpdate) {
-
-    if (Main_HasUpdate && Main_isUpdateDialogVisible() &&
-        Settings_value.update_background.defaultValue && !forceUpdate) return;
+    if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
     if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
-
-        BaseXmlHttpGet(
-            'https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json',
-            0,
-            null,
-            Main_CheckUpdateResult,
-            Main_CheckUpdateFail,
-            0,
-            0
-        );
-
+        BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', 0, null, Main_CheckUpdateResult, Main_CheckUpdateFail, 0, 0);
     } else {
-
-        Main_setTimeout(
-            function() {
-                Main_Ischecking = false;
-                Main_UpdateDialogTitle();
-                Main_UpdateDialogSetTitle();
-            },
-            1000
-        );
+        Main_setTimeout(function () {
+            Main_Ischecking = false;
+            Main_UpdateDialogTitle();
+            Main_UpdateDialogSetTitle();
+        }, 1000);
     }
-
 }
 
 function Main_CheckUpdateFail() {
-
     if (Main_isUpdateDialogVisible()) {
-
         OSInterface_showToast(STR_UPDATE_CHECKING_FAIL);
-
     }
-
 }
 
 var Main_IsWebupdate;
@@ -1122,12 +1071,9 @@ function Main_CheckUpdateResult(responseText) {
         Main_IsWebupdate = !apkupdate && webupdate;
 
         Main_WarnUpdate(Main_IsWebupdate);
-
     } else if (Main_isUpdateDialogVisible()) {
-
         Main_UpdateDialogTitle();
         OSInterface_showToast(STR_NO_UPDATES);
-
     }
 
     Main_UpdateDialogSetTitle();
@@ -1137,54 +1083,40 @@ function Main_WarnUpdate(web, skipShowUpdateDialog) {
     Main_innerHTML(
         'label_update',
         '<div style="vertical-align: middle; display: inline-block;"><i class="icon-' +
-        (web ? 'globe' : 'play-1') +
-        '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' + STR_SPACE_HTML +
-        (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE + '</div>'
+            (web ? 'globe' : 'play-1') +
+            '" style="color: #FF2828;"></i></div><div style="vertical-align: middle; display: inline-block; color: #FF2828">' +
+            STR_SPACE_HTML +
+            (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) +
+            STR_UPDATE_CHECK_SIDE +
+            '</div>'
     );
 
     if (Main_isUpdateDialogVisible()) {
-
         Main_UpdateDialogTitle();
-
     } else if (!Settings_value.update_show.defaultValue && !skipShowUpdateDialog) {
-
         Main_showUpdateDialog();
-
     } else if (!Main_update_show_toast && Settings_value.update_show.defaultValue === 1) {
-
         var updateString = (web ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) + STR_UPDATE_CHECK_SIDE;
 
         if (Main_IsOn_OSInterface) {
-
             OSInterface_showToast(updateString);
-
         } else {
-
             if (Main_isScene1DocVisible()) {
-
                 Main_showWarningDialog(updateString, 3000);
-
             } else {
-
                 Play_showWarningDialog(updateString, 3000);
-
             }
-
         }
 
         Main_update_show_toast = true;
-
     }
-
 }
 
 function Main_needUpdate(check_version) {
-
-    var versionArray = check_version.split("."),
+    var versionArray = check_version.split('.'),
         MajorVersion = versionArray[0] + '.' + versionArray[1],
         MinVersion = parseInt(versionArray[2]),
-        needUpdate = (parseFloat(MajorVersion) < parseFloat(version.VersionBase)) ||
-            (MinVersion < version.publishVersionCode);
+        needUpdate = parseFloat(MajorVersion) < parseFloat(version.VersionBase) || MinVersion < version.publishVersionCode;
 
     //Update so futures updates checks work
     version.VersionBase = MajorVersion;
@@ -1194,19 +1126,15 @@ function Main_needUpdate(check_version) {
 }
 
 function Main_UpdateDialogSet() {
-
     if (!Main_Ischecking) Main_UpdateDialogSetTitle();
     Main_RemoveClass('update_dialog_upbutton', 'button_dialog_focused');
     Main_RemoveClass('update_dialog_changebutton', 'button_dialog_focused');
     Main_AddClass(!Main_UpdateCursor ? 'update_dialog_upbutton' : 'update_dialog_changebutton', 'button_dialog_focused');
-
 }
 
 function Main_UpdateDialogSetTitle() {
-
-    Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? "30%" : "23%";
-    Main_innerHTML("update_dialog_upbutton", Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
-
+    Main_getElementById('update_dialog_upbutton').style.width = !Main_HasUpdate ? '30%' : '23%';
+    Main_innerHTML('update_dialog_upbutton', Main_HasUpdate ? STR_UPDATE : STR_UPDATE_CHECK);
 }
 
 var Main_ChangeDialogVisible;
@@ -1236,14 +1164,10 @@ function Main_UpdateDialogKeyFun(event) {
         case KEY_KEYBOARD_BACKSPACE:
         case KEY_RETURN:
             if (Main_isAboutDialogVisible()) {
-
                 Main_HideChangeDialog();
                 Main_showUpdateDialog();
-
             } else {
-
                 Main_HideUpdateDialog();
-
             }
 
             break;
@@ -1261,26 +1185,18 @@ function Main_UpdateDialogKeyFun(event) {
 }
 
 function Main_UpdateDialogKeyEnter() {
-
     if (Main_isAboutDialogVisible()) {
-
         Main_HideChangeDialog();
         Main_HideUpdateDialog();
-
     } else if (Main_UpdateCursor) {
-
         Main_HideUpdateDialog(true);
         Main_showChangelogDialog();
-
     } else {
-
         if (Main_HasUpdate) {
-
             Main_values.IsUpDating = true;
             Main_SaveValues();
 
             if (Main_IsWebupdate) {
-
                 Main_HideElement('update_dialog');
                 Main_showLoadDialog();
                 Main_SaveHistoryItem();
@@ -1289,48 +1205,40 @@ function Main_UpdateDialogKeyEnter() {
                 Main_hideScene2Doc();
 
                 //delay to make sure all was saved OK
-                Main_setTimeout(
-                    function() {
-
-                        OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
-
-                    },
-                    250
-                );
-
+                Main_setTimeout(function () {
+                    OSInterface_CleanAndLoadUrl(OSInterface_mPageUrl());
+                }, 250);
             } else {
-
                 Main_showLoadDialog();
                 var fromPlay = OSInterface_getInstallFromPLay();
 
                 OSInterface_showToast(fromPlay ? STR_UPDATE_PLAY : STR_UPDATE_START);
 
-                OSInterface_UpdateAPK(
-                    fromPlay ? null : version.ApkUrl,
-                    STR_UPDATE_FAIL,
-                    STR_UPDATE_FAIL_DOWNLOAD
-                );
-
+                OSInterface_UpdateAPK(fromPlay ? null : version.ApkUrl, STR_UPDATE_FAIL, STR_UPDATE_FAIL_DOWNLOAD);
             }
-
-
         } else {
-
             if (Main_Ischecking) return;
             Main_UpdateDialogStartCheck();
-
         }
-
     }
 }
 
 var Main_UpdateDialogLastCheck;
 function Main_UpdateDialogTitle() {
-
-    var innerHtml = '<div class="about_text_title" ' + (Main_HasUpdate ? ' style="color: #FF0000;"' : '') + '>' +
-        (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) + STR_BR +
-        (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE_HTML) + '</div>' + STR_BR +
-        STR_DIV_TITLE + STR_UPDATE_LATEST + STR_SPACE_HTML + '</div>' + STR_BR,
+    var innerHtml =
+            '<div class="about_text_title" ' +
+            (Main_HasUpdate ? ' style="color: #FF0000;"' : '') +
+            '>' +
+            (Main_HasUpdate ? (Main_IsWebupdate ? STR_WEB_UPDATE_AVAILABLE : STR_UPDATE_AVAILABLE) : STR_UPDATE_CHANGELOG) +
+            STR_BR +
+            (!Main_HasUpdate && Main_UpdateDialogLastCheck ? STR_UPDATE_LAST_CHECK + Main_UpdateDialogLastCheck : STR_SPACE_HTML) +
+            '</div>' +
+            STR_BR +
+            STR_DIV_TITLE +
+            STR_UPDATE_LATEST +
+            STR_SPACE_HTML +
+            '</div>' +
+            STR_BR,
         changelog = version.changelog;
 
     innerHtml += STR_DIV_TITLE + changelog[0].title + '</div>' + STR_BR + STR_DIV_MIDLE_LEFT;
@@ -1343,27 +1251,19 @@ function Main_UpdateDialogTitle() {
     }
     innerHtml += '</div>';
 
-    Main_innerHTML(
-        'update_dialog_text',
-        innerHtml
-    );
-
+    Main_innerHTML('update_dialog_text', innerHtml);
 }
 
 function Main_UpdateDialogShowCheck() {
-
     Main_UpdateDialogStartCheck();
     Main_showUpdateDialog();
-
 }
 
 function Main_UpdateDialogStartCheck() {
-
     Main_Ischecking = true;
-    Main_getElementById('update_dialog_upbutton').style.width = "30%";
-    Main_innerHTML("update_dialog_upbutton", STR_UPDATE_CHECKING);
+    Main_getElementById('update_dialog_upbutton').style.width = '30%';
+    Main_innerHTML('update_dialog_upbutton', STR_UPDATE_CHECKING);
     Main_CheckUpdate(true);
-
 }
 
 function Main_showUpdateDialog() {
@@ -1373,10 +1273,8 @@ function Main_showUpdateDialog() {
 
     //Clear preveiw as it is on top of the view
     if (Sidepannel_isShowingUserLive()) {
-
         Sidepannel_RemoveFocusFeed();
         Sidepannel_UpdateThumbDiv();
-
     } else if (UserLiveFeed_isPreviewShowing() && Main_isScene2DocVisible()) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
     else if (Screens_Isfocused()) Screens_RemoveFocus(Main_values.Main_Go);
 
@@ -1387,7 +1285,6 @@ function Main_showUpdateDialog() {
 }
 
 function Main_HideUpdateDialog(preventFocus) {
-
     Main_UpdateCursor = 0;
     Main_HideElement('update_dialog');
     Main_UpdateDialogVisible = false;
@@ -1397,20 +1294,13 @@ function Main_HideUpdateDialog(preventFocus) {
     Main_PreventClick(false, Main_UpdateDialogKeyFun);
 
     if (Sidepannel_isShowingUserLive()) {
-
         Sidepannel_AddFocusLiveFeed(true);
-
     } else if (UserLiveFeed_isPreviewShowing()) {
-
         UserLiveFeed_FeedAddFocus(true, UserLiveFeed_FeedPosX);
-
     } else if (Main_isScene1DocVisible() && !Sidepannel_isShowingMenus()) {
-
         if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
         else ScreenObj[Main_values.Main_Go].init_fun();
-
     }
-
 }
 
 var Main_UpdateDialogVisible;
@@ -1419,16 +1309,16 @@ function Main_isUpdateDialogVisible() {
 }
 
 function Main_Changelog() {
-
-    var STR_CHANGELOG_LINK = "https://tinyurl.com/sttvchanges",
-        innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY +
-            STR_DIV_LINK + STR_CHANGELOG_LINK + '</div><br><br>',
+    var STR_CHANGELOG_LINK = 'https://tinyurl.com/sttvchanges',
+        innerHtml = STR_DIV_TITLE + STR_CHANGELOG + '</div>' + STR_CHANGELOG_SUMMARY + STR_DIV_LINK + STR_CHANGELOG_LINK + '</div><br><br>',
         changelog = version.changelog;
 
-    var i = 0; var len = changelog.length, j, lenj;
+    var i = 0;
+    var len = changelog.length,
+        j,
+        lenj;
 
     for (i; i < len; i++) {
-
         innerHtml += STR_DIV_TITLE + changelog[i].title + '</div>' + STR_DIV_MIDLE_LEFT;
 
         lenj = changelog[i].changes.length;
@@ -1439,7 +1329,7 @@ function Main_Changelog() {
         innerHtml += '</div><br>';
     }
 
-    Main_innerHTML("dialog_changelod_text", innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS3 + '</div></div>');
+    Main_innerHTML('dialog_changelod_text', innerHtml + STR_DIV_TITLE + STR_CLOSE_THIS3 + '</div></div>');
 }
 
 function Main_empty(el) {
@@ -1490,41 +1380,29 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
     var isHosting = false;
 
-    Main_removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_values_Play_data = data;
     Play_data.data = Main_values_Play_data;
 
     if (checkHistory) {
-
         var index = Main_history_Exist('live', Main_values_Play_data[7]);
 
         if (index > -1) {
-
             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
-
                 Main_OPenAsVod(index);
                 return;
-
-            } else {//is live check if is the same BroadcastID
+            } else {
+                //is live check if is the same BroadcastID
 
                 if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
                 else {
-
-                    Main_EventPlay(
-                        'live',
-                        Main_values_Play_data[6],
-                        Main_values_Play_data[3],
-                        Main_values_Play_data[15],
-                        screen
-                    );
+                    Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[15], screen);
 
                     Main_openStream();
                 }
 
-
                 return;
             }
-
         }
     }
 
@@ -1542,20 +1420,10 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
 
     Main_openStream();
 
-    Main_EventPlay(
-        'live',
-        Main_values_Play_data[6],
-        Main_values_Play_data[3],
-        !isHosting ? Main_values_Play_data[15] : 'HOSTING',
-        screen
-    );
+    Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], !isHosting ? Main_values_Play_data[15] : 'HOSTING', screen);
 
     if (!Main_IsOn_OSInterface) {
-
-        Play_SetSceneBackground(
-            data[0].replace("{width}x{height}", "1280x720") + Main_randomimg
-        );
-
+        Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomimg);
     }
 }
 
@@ -1570,14 +1438,7 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BaseXmlHttpGet(
-        theUrl,
-        2,
-        null,
-        Main_CheckBroadcastIDStartSucess,
-        Main_openStream,
-        false
-    );
+    BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, false);
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
@@ -1590,12 +1451,9 @@ function Main_CheckBroadcastIDStartSucess(response) {
     }
 
     //force set as vod and set the div
-    Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex] = Screens_assign(
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex],
-        {
-            forceVod: true
-        }
-    );
+    Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex], {
+        forceVod: true
+    });
 
     var doc = Main_getElementById(Main_CheckBroadcastIDoc);
     doc.childNodes[0].classList.add('hideimp');
@@ -1626,14 +1484,12 @@ function Main_hideScene1Doc() {
 
 var Main_hideScene1DocAndCallBackId;
 function Main_hideScene1DocAndCallBack(callback) {
-
     Main_hideScene1Doc();
 
     //Delay the the call back as it depedes from the Main_Scene1Doc not be visible anymore
-    Main_hideScene1DocAndCallBackId = Main_ready(function() {
+    Main_hideScene1DocAndCallBackId = Main_ready(function () {
         Main_setTimeout(callback, 100, Main_hideScene1DocAndCallBackId);
     });
-
 }
 
 function Main_showScene2Doc() {
@@ -1666,8 +1522,7 @@ function Main_OPenAsVod(index) {
     Play_DurationSeconds = 0;
 
     Main_values.ChannelVod_vodId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
-    Main_vodOffset =
-        ((Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - (new Date(Main_values_Play_data[12]).getTime())) / 1000);
+    Main_vodOffset = (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - new Date(Main_values_Play_data[12]).getTime()) / 1000;
 
     if (Main_vodOffset < 0) Main_vodOffset = 1;
 
@@ -1678,12 +1533,9 @@ function Main_OPenAsVod(index) {
     if (!Play_PreviewId) Play_showWarningDialog(STR_LIVE_VOD + Play_timeMs(Main_vodOffset * 1000));
     Main_openVod();
 
-    Main_setTimeout(
-        function() {
-            if (!Play_IsWarning) Play_HideWarningDialog();
-        },
-        3000
-    );
+    Main_setTimeout(function () {
+        if (!Play_IsWarning) Play_HideWarningDialog();
+    }, 3000);
 }
 
 function Main_OPenAsVod_shutdownStream() {
@@ -1708,20 +1560,18 @@ function Main_OPenAsVod_PreshutdownStream() {
 }
 
 function Main_openStream() {
-    Main_hideScene1DocAndCallBack(
-        function() {
-            Main_showScene2Doc();
-            Main_addEventListener("keydown", Play_handleKeyDown);
-            if (!Play_EndDialogEnter) Play_HideEndDialog();
-            Play_Start();
-        }
-    );
+    Main_hideScene1DocAndCallBack(function () {
+        Main_showScene2Doc();
+        Main_addEventListener('keydown', Play_handleKeyDown);
+        if (!Play_EndDialogEnter) Play_HideEndDialog();
+        Play_Start();
+    });
 }
 
 function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
 
-    Main_removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
     Main_values_Play_data = data;
@@ -1731,8 +1581,8 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     Main_values.Main_selectedChannel_id = Main_values_Play_data[2];
 
     Play_data.data[3] = Main_values_Play_data[3];
-    if (Play_data.data[3] === null) Play_data.data[3] = "";
-    ChannelClip_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : "");
+    if (Play_data.data[3] === null) Play_data.data[3] = '';
+    ChannelClip_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_PLAYING + Play_data.data[3] : '';
     ChannelClip_game_Id = Main_values_Play_data[18];
 
     Main_values.Main_selectedChannelDisplayname = Main_values_Play_data[4];
@@ -1748,36 +1598,23 @@ function Main_OpenClip(data, id, idsArray, handleKeyDownFunction, screen) {
     ChannelClip_views = Main_values_Play_data[14] + STR_VIEWS;
     //ChannelClip_playUrl2 = Main_values_Play_data[15].split("-preview")[0] + ".mp4";
 
-    Main_hideScene1DocAndCallBack(
-        function() {
-            Main_showScene2Doc();
+    Main_hideScene1DocAndCallBack(function () {
+        Main_showScene2Doc();
 
-            Main_addEventListener("keydown", PlayClip_handleKeyDown);
-            PlayClip_Start();
+        Main_addEventListener('keydown', PlayClip_handleKeyDown);
+        PlayClip_Start();
 
-            Main_EventPlay(
-                'clip',
-                Main_values_Play_data[6],
-                Main_values_Play_data[3],
-                Main_values_Play_data[17],
-                screen
-            );
-        }
-    );
+        Main_EventPlay('clip', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[17], screen);
+    });
 
     if (!Main_IsOn_OSInterface) {
-
-        Play_SetSceneBackground(
-            data[15]
-        );
-
+        Play_SetSceneBackground(data[15]);
     }
-
 }
 
 function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
     if (Main_ThumbOpenIsNull(id, idsArray[0])) return;
-    Main_removeEventListener("keydown", handleKeyDownFunction);
+    Main_removeEventListener('keydown', handleKeyDownFunction);
     Main_RemoveClass(idsArray[1] + id, 'opacity_zero');
 
     Main_values_Play_data = data;
@@ -1786,8 +1623,8 @@ function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
     ChannelVod_createdAt = Main_values_Play_data[2];
 
     Play_data.data[3] = Main_values_Play_data[3];
-    if (Play_data.data[3] === null) Play_data.data[3] = "";
-    ChannelVod_game = (Play_data.data[3] !== "" && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : "");
+    if (Play_data.data[3] === null) Play_data.data[3] = '';
+    ChannelVod_game = Play_data.data[3] !== '' && Play_data.data[3] !== null ? STR_STARTED + STR_PLAYING + Play_data.data[3] : '';
 
     ChannelVod_views = Main_values_Play_data[4];
 
@@ -1804,34 +1641,21 @@ function Main_OpenVodStart(data, id, idsArray, handleKeyDownFunction, screen) {
 
     Main_openVod();
 
-    Main_EventPlay(
-        'vod',
-        Main_values_Play_data[6],
-        Main_values_Play_data[3],
-        Main_values_Play_data[9],
-        screen
-    );
+    Main_EventPlay('vod', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[9], screen);
 
     if (!Main_IsOn_OSInterface) {
-
-        Play_SetSceneBackground(
-            data[0].replace(Main_VideoSize, "1280x720")
-        );
-
+        Play_SetSceneBackground(data[0].replace(Main_VideoSize, '1280x720'));
     }
-
 }
 
 function Main_openVod() {
-    Main_hideScene1DocAndCallBack(
-        function() {
-            Main_showScene2Doc();
+    Main_hideScene1DocAndCallBack(function () {
+        Main_showScene2Doc();
 
-            Main_addEventListener("keydown", PlayVod_handleKeyDown);
-            Play_hideChat();
-            PlayVod_Start();
-        }
-    );
+        Main_addEventListener('keydown', PlayVod_handleKeyDown);
+        Play_hideChat();
+        PlayVod_Start();
+    });
 }
 
 function Main_removeFocus(id, idArray) {
@@ -1840,7 +1664,6 @@ function Main_removeFocus(id, idArray) {
 
     Main_RemoveClass(idArray[1] + id, 'opacity_zero');
     Main_RemoveClass(idArray[0] + id, Main_classThumb);
-
 }
 
 // stylesheet[i].cssRules or stylesheet[i].rules is blocked in chrome
@@ -1853,7 +1676,7 @@ function Main_Checktylesheet() {
     span.style.display = 'none';
     Main_body.insertBefore(span, Main_body.firstChild);
 
-    Main_ready(function() {
+    Main_ready(function () {
         if (window.getComputedStyle(span, null).getPropertyValue('font-family') !== 'icons') {
             Main_Log('Main_Checktylesheet reloading');
             Main_LoadStylesheet('https://fgl27.github.io/SmartTwitchTV/release/githubio/css/icons.min.css');
@@ -1864,22 +1687,19 @@ function Main_Checktylesheet() {
 }
 
 function Main_LoadStylesheet(path) {
-    var link = document.createElement("link");
-    link.rel = "stylesheet";
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
     link.href = path;
 
-    document.getElementsByTagName("head")[0].appendChild(link);
+    document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 //adapted from https://code.jquery.com/jquery-3.3.1.js
 function Main_ready(func) {
-    if (document.readyState === "complete" ||
-        (document.readyState !== "loading" && !document.documentElement.doScroll)) {
-
+    if (document.readyState === 'complete' || (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
         // Handle it asynchronously to allow scripts the opportunity to delay ready
         Main_setTimeout(func);
-
-    } else document.addEventListener("DOMContentLoaded", func);
+    } else document.addEventListener('DOMContentLoaded', func);
 }
 
 var Main_SetUpdateclockId;
@@ -1888,13 +1708,11 @@ function Main_SetUpdateclock() {
     Main_clearInterval(Main_updateclockId);
 
     //sync with device clock
-    var seconds = 61 - (new Date().getSeconds());
+    var seconds = 61 - new Date().getSeconds();
     Main_SetUpdateclockId = Main_setTimeout(
-        function() {
-
+        function () {
             Main_updateclock();
             Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
-
         },
         seconds * 1000,
         Main_SetUpdateclockId
@@ -1903,7 +1721,7 @@ function Main_SetUpdateclock() {
 
 function Main_updateclock() {
     var clock = Main_getclock();
-    Main_textContent("stream_clock", clock);
+    Main_textContent('stream_clock', clock);
     Main_textContent('label_clock', clock);
 
     Main_randomimg = '?' + parseInt(Math.random() * 100000);
@@ -1933,8 +1751,7 @@ function Main_getclock() {
 function Main_updateUserFeed() {
     //Main_Log('Main_updateUserFeed');
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !UserLiveFeed_isPreviewShowing() &&
-        !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !UserLiveFeed_isPreviewShowing() && !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         UserLiveFeed_RefreshLive();
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
     }
@@ -2015,7 +1832,7 @@ function Main_getItemBool(item, default_value) {
 // function Main_PrintUnicode(string) { // jshint ignore:line
 //     Main_Log(string);
 //var i = 0, len = string.length;
-//     for (i; i < len; i++) 
+//     for (i; i < len; i++)
 //         Main_Log('Character is: ' + string.charAt(i) + " it's Unicode is: \\u" + string.charCodeAt(i).toString(16).toUpperCase());
 // }
 
@@ -2025,7 +1842,7 @@ function processCode(pageUrl) {
     code = pageUrl.match(/code=(\w+)/);
     if (code) {
         code = code[1];
-        CheckPage("?code=" + code);
+        CheckPage('?code=' + code);
         //Main_Log('if code ' + code);
         Main_newUsercode = code;
     } else {
@@ -2049,164 +1866,112 @@ function CheckPage(pageUrlCode) {
 }
 
 function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, useHelix) {
-
     if (Main_IsOn_OSInterface) {
-
         var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
 
         if (useHelix) {
-
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-
                 Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
                 JsonHeadersArray = JSON.stringify(Main_Bearer_User_Headers);
-
             } else {
                 JsonHeadersArray = JSON.stringify(Main_Bearer_Headers);
             }
-
         } else if (HeaderQuatity && HeaderQuatity !== 2) {
-
             JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
-
         }
 
-        OSInterface_BaseXmlHttpGet(
-            theUrl,
-            DefaultHttpGetTimeout,
-            null,
-            null,
-            JsonHeadersArray,
-            'Main_CheckBasexmlHttpGet',
-            checkResult,
-            key,
-            callbackSucess.name,
-            calbackError.name
-        );
-
+        OSInterface_BaseXmlHttpGet(theUrl, DefaultHttpGetTimeout, null, null, JsonHeadersArray, 'Main_CheckBasexmlHttpGet', checkResult, key, callbackSucess.name, calbackError.name);
     } else {
-
         var xmlHttp = new XMLHttpRequest(),
             i = 0;
 
-        xmlHttp.open("GET", theUrl, true);
+        xmlHttp.open('GET', theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout;
 
         if (useHelix) {
-
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-
                 Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
-                for (i; i < Main_Bearer_User_Headers.length; i++)
-                    xmlHttp.setRequestHeader(Main_Bearer_User_Headers[i][0], Main_Bearer_User_Headers[i][1]);
-
+                for (i; i < Main_Bearer_User_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_User_Headers[i][0], Main_Bearer_User_Headers[i][1]);
             } else {
-                for (i; i < Main_Bearer_Headers.length; i++)
-                    xmlHttp.setRequestHeader(Main_Bearer_Headers[i][0], Main_Bearer_Headers[i][1]);
+                for (i; i < Main_Bearer_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_Headers[i][0], Main_Bearer_Headers[i][1]);
             }
         } else {
             if (access_token) Main_Headers[2][1] = access_token;
 
-            for (i; i < HeaderQuatity; i++)
-                xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
+            for (i; i < HeaderQuatity; i++) xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
         }
 
-
-        xmlHttp.onreadystatechange = function() {
-
+        xmlHttp.onreadystatechange = function () {
             if (this.readyState === 4) {
-
                 Main_BasexmlHttpStatus(this, key, callbackSucess, calbackError, checkResult);
-
             }
-
         };
 
         xmlHttp.send(null);
-
     }
-
 }
 
 function Main_CheckBasexmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
-
     Main_BasexmlHttpStatus(
         JSON.parse(result),
         key,
-        eval(callbackSucess),// jshint ignore:line
-        eval(calbackError),// jshint ignore:line
+        eval(callbackSucess), // jshint ignore:line
+        eval(calbackError), // jshint ignore:line
         checkResult
     );
-
 }
 
 function Main_BasexmlHttpStatus(obj, key, callbackSucess, calbackError, checkResult) {
-
     if (obj.status === 200) {
-
         callbackSucess(obj.responseText, key, checkResult); // jshint ignore:line
 
         return;
-
-    } else if (obj.status === 401 || obj.status === 403) { //token expired
+    } else if (obj.status === 401 || obj.status === 403) {
+        //token expired
 
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
             AddCode_refreshTokens();
         } else {
             AddCode_AppToken();
         }
-
     }
 
     calbackError(key, checkResult, obj); // jshint ignore:line
-
 }
 
 function Main_GetHeader(HeaderQuatity, access_token) {
-
     if (HeaderQuatity) {
-
         var array = [];
         if (access_token) Main_Headers[2][1] = access_token;
 
-        for (var i = 0; i < HeaderQuatity; i++)
-            array.push([Main_Headers[i][0], Main_Headers[i][1]]);
+        for (var i = 0; i < HeaderQuatity; i++) array.push([Main_Headers[i][0], Main_Headers[i][1]]);
 
         return array;
-
     } else return [];
-
 }
-
 
 var Bearer = 'Bearer ';
 var Bearer_Header = 'Authorization';
 var clientIdHeader = 'Client-ID';
 
 function HttpGetSetMainHeader() {
-
     Main_Bearer_Headers = [
         [clientIdHeader, AddCode_clientId],
         [Bearer_Header, Bearer + AddCode_main_token]
     ];
-
 }
 
 function HttpGetSetUserHeader() {
-
     Main_Bearer_User_Headers = [
         [clientIdHeader, AddCode_clientId],
         [Bearer_Header, Bearer + AddUser_UsernameArray[0].access_token]
     ];
-
 }
 
 function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, checkResult, Method, postMessage) {
-
     if (Main_IsOn_OSInterface) {
-
         OSInterface_BaseXmlHttpGet(
             theUrl,
             DefaultHttpGetTimeout,
@@ -2219,54 +1984,42 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
             callbackSucess.name,
             calbackError.name
         );
-
-
     } else {
-
         var xmlHttp = new XMLHttpRequest();
 
-        xmlHttp.open(Method ? Method : "GET", theUrl, true);
+        xmlHttp.open(Method ? Method : 'GET', theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout;
 
         if (Headers) {
+            var i = 0,
+                len = Headers.length;
 
-            var i = 0, len = Headers.length;
-
-            for (i; i < len; i++)
-                xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
-
+            for (i; i < len; i++) xmlHttp.setRequestHeader(Headers[i][0], Headers[i][1]);
         }
 
-        xmlHttp.onreadystatechange = function() {
-
+        xmlHttp.onreadystatechange = function () {
             if (this.readyState === 4) {
-
                 callbackSucess(this, key, checkResult);
-
             }
-
         };
 
         xmlHttp.send(postMessage ? postMessage : null);
-
     }
-
 }
 
 function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
-
-    eval(callbackSucess)(// jshint ignore:line
+    eval(callbackSucess)(
+        // jshint ignore:line
         JSON.parse(result),
         key,
         checkResult
         //eval(calbackError)// jshint ignore:line
     );
-
 }
 
-var Main_GetHostBaseUrl = '{"operationName":"UseHosting","variables":{"channelLogin":\"%x\"},"extensions":{"persistedQuery":{"version": 1,"sha256Hash":"427f55a3daca510f726c02695a898ef3a0de4355b39af328848876052ea6b337"}}}';
+var Main_GetHostBaseUrl =
+    '{"operationName":"UseHosting","variables":{"channelLogin":"%x"},"extensions":{"persistedQuery":{"version": 1,"sha256Hash":"427f55a3daca510f726c02695a898ef3a0de4355b39af328848876052ea6b337"}}}';
 function Main_GetHost(callbackSucess, key, checkResult, channel) {
-
     FullxmlHttpGet(
         PlayClip_BaseUrl,
         Play_base_backup_headers_Array,
@@ -2274,10 +2027,9 @@ function Main_GetHost(callbackSucess, key, checkResult, channel) {
         noop_fun,
         key,
         checkResult,
-        'POST',//Method, null for get
-        Main_GetHostBaseUrl.replace('%x', channel)//postMessage, null for get
+        'POST', //Method, null for get
+        Main_GetHostBaseUrl.replace('%x', channel) //postMessage, null for get
     );
-
 }
 
 function Main_SetThumb() {
@@ -2289,83 +2041,68 @@ function Main_SetThumb() {
 function Main_ReplaceLargeFont(text) {
     if (!text) return '';
 
-    return text.replace(/[^\x00-\x7F]/g, function(match) {
+    return text.replace(/[^\x00-\x7F]/g, function (match) {
         return '<span style="font-size: 0.8em;">' + match + '</span>';
     });
 }
 
 function Main_Set_history(type, Data, skipUpdateDate) {
-
-
-    if (!AddUser_IsUserSet() || !Data || !Data[0] ||//Check is user is set, and data is valid
+    if (
+        !AddUser_IsUserSet() ||
+        !Data ||
+        !Data[0] || //Check is user is set, and data is valid
         (type === 'live' && ScreenObj[Main_HistoryLive].histPosX[1]) || //Check if the history for this type is enable
         (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
-        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) {
-
+        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])
+    ) {
         return;
-
     }
 
     var index = Main_history_Exist(type, Data[7]);
 
     if (index > -1) {
-
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
 
         ArrayPos.data = Main_Slice(Data);
         ArrayPos.date = !skipUpdateDate ? new Date().getTime() : ArrayPos.date;
         ArrayPos.game = Data[3];
         ArrayPos.views = Data[13];
-
-
     } else {
         //Limit size to 2000
         if (Main_values_History_data[AddUser_UsernameArray[0].id][type].length > 1999) {
-
             //Sort by oldest first to delete the oldest
-            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
-                function(a, b) {
-                    return (a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
-                }
-            );
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(function (a, b) {
+                return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+            });
 
             if (type === 'vod' || type === 'clip') {
-
                 Main_history_Watched_Obj[Main_values_History_data[AddUser_UsernameArray[0].id][type][0].data[7]] = 0;
-
             }
 
             Main_values_History_data[AddUser_UsernameArray[0].id][type].shift();
-
         }
 
-        Main_values_History_data[AddUser_UsernameArray[0].id][type].push(
-            {
-                data: Main_Slice(Data),
-                date: new Date().getTime(),
-                name: Data[6] ? Data[6].toLowerCase() : "",
-                game: Data[3],
-                id: Data[7],
-                views: Data[13],
-                created_at: new Date(Data[12]).getTime(),
-                watched: 0
-            }
-        );
+        Main_values_History_data[AddUser_UsernameArray[0].id][type].push({
+            data: Main_Slice(Data),
+            date: new Date().getTime(),
+            name: Data[6] ? Data[6].toLowerCase() : '',
+            game: Data[3],
+            id: Data[7],
+            views: Data[13],
+            created_at: new Date(Data[12]).getTime(),
+            watched: 0
+        });
 
         if (type === 'live') {
             //Sort live by id this allows to always show the newst first even by sorting by othrs tipe
             //this allows to get with are alredy VOD easier when there is more then one broadcast for the same streamer
-            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(
-                function(a, b) {
-                    return (a.id > b.id ? -1 : (a.id < b.id ? 1 : 0));
-                }
-            );
+            Main_values_History_data[AddUser_UsernameArray[0].id][type].sort(function (a, b) {
+                return a.id > b.id ? -1 : a.id < b.id ? 1 : 0;
+            });
         }
-
     }
 
     Main_setHistoryItem();
-
 }
 
 var Main_history_Watched_Obj = {};
@@ -2374,12 +2111,11 @@ function Main_history_SetVod_Watched() {
     Main_history_Watched_Obj = {};
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
-        i = 0, len = array.length;
+        i = 0,
+        len = array.length;
 
     for (i; i < len; i++) {
-
         Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[11]) * 100;
-
     }
 
     array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
@@ -2387,28 +2123,25 @@ function Main_history_SetVod_Watched() {
     len = array.length;
 
     for (i; i < len; i++) {
-
         Main_history_Watched_Obj[array[i].data[7]] = (array[i].watched / array[i].data[1]) * 100;
-
     }
 }
 
 function Main_history_Exist(type, id) {
+    var index = 0,
+        len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length;
 
-    var index = 0, len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length;
-
-    for (index; index < len; index++)
-        if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+    for (index; index < len; index++) if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
 
     return -1;
 }
 
 function Main_history_Find_Vod_In_Live(id) {
-    var index = 0, len = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
+    var index = 0,
+        len = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
 
     for (index; index < len; index++) {
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod &&
-            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid === id) {
+        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid === id) {
             return index;
         }
     }
@@ -2422,7 +2155,6 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
     var index = Main_history_Exist('live', id);
 
     if (index > -1) {
-
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
 
         ArrayPos.vodid = vod;
@@ -2433,13 +2165,11 @@ function Main_history_UpdateLiveVod(id, vod, vod_img) {
 }
 
 function Main_history_UpdateVodClip(id, time, type) {
-    if (!AddUser_IsUserSet() || (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
-        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
+    if (!AddUser_IsUserSet() || (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
 
     var index = Main_history_Exist(type, id);
 
     if (index > -1) {
-
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
 
         ArrayPos.date = new Date().getTime();
@@ -2448,7 +2178,6 @@ function Main_history_UpdateVodClip(id, time, type) {
         Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
 
         Main_setHistoryItem();
-
     }
 }
 
@@ -2458,29 +2187,22 @@ function Main_Restore_history() {
 }
 
 function Main_History_Sort(array, msort, direction) {
-
-    if (direction) {//a-z
-        array.sort(
-            function(a, b) {
-                return (a[msort] < b[msort] ? -1 : (a[msort] > b[msort] ? 1 : 0));
-            }
-        );
-    } else {//z-a
-        array.sort(
-            function(a, b) {
-                return (a[msort] > b[msort] ? -1 : (a[msort] < b[msort] ? 1 : 0));
-            }
-        );
+    if (direction) {
+        //a-z
+        array.sort(function (a, b) {
+            return a[msort] < b[msort] ? -1 : a[msort] > b[msort] ? 1 : 0;
+        });
+    } else {
+        //z-a
+        array.sort(function (a, b) {
+            return a[msort] > b[msort] ? -1 : a[msort] < b[msort] ? 1 : 0;
+        });
     }
 }
 
 var Main_setHistoryItemId;
 function Main_setHistoryItem() {
-    Main_setHistoryItemId = Main_setTimeout(
-        Main_SaveHistoryItem,
-        1000,
-        Main_setHistoryItemId
-    );
+    Main_setHistoryItemId = Main_setTimeout(Main_SaveHistoryItem, 1000, Main_setHistoryItemId);
 }
 
 function Main_SaveHistoryItem() {
@@ -2500,7 +2222,8 @@ function Main_Slice(arrayTocopy) {
     } catch (e) {
         array = [];
 
-        var i = 0, len = arrayTocopy.length;
+        var i = 0,
+            len = arrayTocopy.length;
         for (i; i < len; i++) {
             array.push(arrayTocopy[i]);
         }
@@ -2512,22 +2235,26 @@ function Main_Slice(arrayTocopy) {
 
 var Main_ImageLoaderWorker;
 function Main_Setworker() {
-    var blobURL = URL.createObjectURL(new Blob(['(',
+    var blobURL = URL.createObjectURL(
+        new Blob(
+            [
+                '(',
 
-        function() {
-            this.addEventListener('message',
-                function(event) {
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.responseType = 'blob';
-                    xmlHttp.open('GET', event.data, true);
-                    xmlHttp.timeout = 30000;
-                    xmlHttp.send();
-                }
-            );
+                function () {
+                    this.addEventListener('message', function (event) {
+                        var xmlHttp = new XMLHttpRequest();
+                        xmlHttp.responseType = 'blob';
+                        xmlHttp.open('GET', event.data, true);
+                        xmlHttp.timeout = 30000;
+                        xmlHttp.send();
+                    });
+                }.toString(),
 
-        }.toString(),
-
-        ')()'], {type: 'application/javascript'}));
+                ')()'
+            ],
+            {type: 'application/javascript'}
+        )
+    );
 
     Main_ImageLoaderWorker = new Worker(blobURL);
 }
@@ -2536,11 +2263,13 @@ function Main_A_includes_B(A, B) {
     return A ? A.indexOf(B) !== -1 : false;
 }
 
-function Main_A_equals_B(A, B) {// jshint ignore:line
+function Main_A_equals_B(A, B) {
+    // jshint ignore:line
     return A === B;
 }
 
-function Main_A_equals_B_No_Case(A, B) {// jshint ignore:line
+function Main_A_equals_B_No_Case(A, B) {
+    // jshint ignore:line
     return (A ? A.toLowerCase() : null) === (B ? B.toLowerCase() : null);
 }
 
@@ -2555,296 +2284,213 @@ function Main_startsWith(str, suffix) {
 var BradcastCheckerWorker;
 
 function Main_SetHistoryworker() {
+    var blobURL = URL.createObjectURL(
+        new Blob(
+            [
+                '(',
 
-    var blobURL = URL.createObjectURL(new Blob(['(',
+                function () {
+                    this.addEventListener('message', function (event) {
+                        var theUrl, onload;
 
-        function() {
-            this.addEventListener('message',
-                function(event) {
-                    var theUrl, onload;
+                        if (event.data.type === 1) {
+                            //Live check if is a vod
 
-                    if (event.data.type === 1) {//Live check if is a vod
+                            theUrl = 'https://api.twitch.tv/helix/streams?user_id=' + event.data.obj.data[14];
 
-                        theUrl = 'https://api.twitch.tv/helix/streams?user_id=' + event.data.obj.data[14];
+                            onload = function (obj) {
+                                if (obj.status === 200) {
+                                    var response = JSON.parse(obj.responseText);
 
-                        onload = function(obj) {
-
-                            if (obj.status === 200) {
-
-                                var response = JSON.parse(obj.responseText);
-
-                                if (response.data && response.data.length) {
-
-
-                                    if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.data[0].id)) {
-
-                                        this.postMessage(
-                                            {
+                                    if (response.data && response.data.length) {
+                                        if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.data[0].id)) {
+                                            this.postMessage({
                                                 data: obj.mData.obj.data[7],
                                                 ended: true,
                                                 type: event.data.type
-                                            }
-                                        );
-
-                                    } else {
-
-                                        this.postMessage(
-                                            {
+                                            });
+                                        } else {
+                                            this.postMessage({
                                                 data: response.data[0],
                                                 ended: false,
                                                 type: event.data.type
-                                            }
-                                        );
-
-                                    }
-
-                                } else {
-
-                                    this.postMessage(
-                                        {
+                                            });
+                                        }
+                                    } else {
+                                        this.postMessage({
                                             data: obj.mData.obj.data[7],
                                             ended: true,
                                             type: event.data.type
-                                        }
-                                    );
-
+                                        });
+                                    }
                                 }
+                            };
+                        } else if (event.data.type === 'live' || event.data.type === 'vod') {
+                            //Live that is not a VOD or VOD
 
-                            }
+                            theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
 
-                        };
+                            onload = function (obj) {
+                                if (obj.status !== 200) {
+                                    var message = JSON.parse(obj.responseText).message;
 
-                    } else if (event.data.type === 'live' || event.data.type === 'vod') {//Live that is not a VOD or VOD
+                                    //VOD was deleted
+                                    if (message && typeof message === 'string') {
+                                        message = message.toLowerCase();
 
-                        theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
-
-                        onload = function(obj) {
-
-                            if (obj.status !== 200) {
-
-                                var message = JSON.parse(obj.responseText).message;
-
-                                //VOD was deleted
-                                if (message && (typeof message === "string")) {
-                                    message = message.toLowerCase();
-
-                                    if ((message.indexOf('not found') > -1) && (message.indexOf(obj.mData.obj.data[7] > -1))) {
-
-                                        this.postMessage(
-                                            {
+                                        if (message.indexOf('not found') > -1 && message.indexOf(obj.mData.obj.data[7] > -1)) {
+                                            this.postMessage({
                                                 data: obj.mData.obj.data[7],
                                                 type: obj.mData.type,
                                                 delete: true
-                                            }
-                                        );
+                                            });
+                                        }
                                     }
-
                                 }
+                                //  else {
 
-                            }
-                            //  else {
+                                //     this.postMessage(
+                                //         {
+                                //             data: obj.mData.obj.data[7],
+                                //             type: obj.mData.type,
+                                //             updateobj: JSON.parse(obj.responseText),
+                                //             delete: false
+                                //         }
+                                //     );
 
-                            //     this.postMessage(
-                            //         {
-                            //             data: obj.mData.obj.data[7],
-                            //             type: obj.mData.type,
-                            //             updateobj: JSON.parse(obj.responseText),
-                            //             delete: false
-                            //         }
-                            //     );
+                                // }
+                            };
+                        } else if (event.data.type === 'clip') {
+                            //Clip
 
-                            // }
+                            theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
 
-                        };
-                    } else if (event.data.type === 'clip') {//Clip
+                            onload = function (obj) {
+                                if (obj.status !== 200) {
+                                    var message = JSON.parse(obj.responseText).message;
 
-                        theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
-
-                        onload = function(obj) {
-
-                            if (obj.status !== 200) {
-
-                                var message = JSON.parse(obj.responseText).message;
-
-                                //Clip was deleted
-                                if (message && (typeof message === "string") && (message.toLowerCase().indexOf('clip does not exist') > -1)) {
-
-                                    this.postMessage(
-                                        {
+                                    //Clip was deleted
+                                    if (message && typeof message === 'string' && message.toLowerCase().indexOf('clip does not exist') > -1) {
+                                        this.postMessage({
                                             data: obj.mData.obj.data[7],
                                             type: obj.mData.type,
                                             delete: true
-                                        }
-                                    );
+                                        });
+                                    }
+                                }
+                            };
+                        }
 
+                        setTimeout(
+                            function () {
+                                var xmlHttp = new XMLHttpRequest();
+
+                                xmlHttp.mData = event.data;
+
+                                xmlHttp.open('GET', theUrl, true);
+                                xmlHttp.timeout = 30000;
+
+                                if (event.data.header) {
+                                    for (var i = 0; i < event.data.header.length; i++) xmlHttp.setRequestHeader(event.data.header[i][0], event.data.header[i][1]);
+                                } else {
+                                    xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
+                                    xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
                                 }
 
-                            }
+                                xmlHttp.onreadystatechange = function () {
+                                    if (this.readyState === 4) onload(this);
+                                };
 
-                        };
-                    }
+                                xmlHttp.send(null);
+                            },
+                            event.data.delay ? event.data.delay * 50 : 0
+                        );
+                    });
+                }.toString(),
 
-                    setTimeout(
-                        function() {
-
-                            var xmlHttp = new XMLHttpRequest();
-
-                            xmlHttp.mData = event.data;
-
-                            xmlHttp.open("GET", theUrl, true);
-                            xmlHttp.timeout = 30000;
-
-                            if (event.data.header) {
-                                for (var i = 0; i < event.data.header.length; i++)
-                                    xmlHttp.setRequestHeader(event.data.header[i][0], event.data.header[i][1]);
-                            } else {
-                                xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
-                                xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
-                            }
-
-
-                            xmlHttp.onreadystatechange = function() {
-
-                                if (this.readyState === 4) onload(this);
-
-                            };
-
-                            xmlHttp.send(null);
-
-                        },
-                        event.data.delay ? event.data.delay * 50 : 0
-                    );
-
-                }
-
-            );
-
-        }.toString(),
-
-        ')()'], {type: 'application/javascript'}));
+                ')()'
+            ],
+            {type: 'application/javascript'}
+        )
+    );
 
     BradcastCheckerWorker = new Worker(blobURL);
 
-    BradcastCheckerWorker.addEventListener('message',
-        function(event) {
-            //Minor delay to not block Main tread when the workers return values
-            Main_setTimeout(
-                function() {
+    BradcastCheckerWorker.addEventListener('message', function (event) {
+        //Minor delay to not block Main tread when the workers return values
+        Main_setTimeout(function () {
+            var index;
 
-                    var index;
+            if (event.data.type === 1) {
+                //live that is now a valid vod
 
-                    if (event.data.type === 1) {//live that is now a valid vod
+                if (event.data.ended) {
+                    index = Main_history_Exist('live', event.data.data);
 
-                        if (event.data.ended) {
-
-                            index = Main_history_Exist('live', event.data.data);
-
-                            if (index > -1) {
-
-                                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-
-                                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(
-                                        Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
-                                        {
-                                            forceVod: true
-                                        }
-                                    );
-
-                                } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1);//delete the live entry as it doesn't have a VOD
-
-                            }
-
-                        } else {
-                            Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
-                        }
-                    } else if (event.data.type === 'live') {
-
-                        if (event.data.delete) {
-
-                            index = Main_history_Exist(event.data.type, event.data.data);
-
-                            if (index > -1) {
-
-                                //delete the live that is now a vod entry as it no longer exist
-                                Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
-
-                            }
-
-                        } else {
-
-                            Main_history_UpdateLiveVod(
-                                event.data.data,
-                                event.data.updateobj._id.substr(1),
-                                ScreensObj_VodGetPreview(
-                                    event.data.updateobj.preview.template,
-                                    event.data.updateobj.animated_preview_url
-                                )
-                            );
-
-                        }
-
-                    } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
-
-                        index = Main_history_Exist(event.data.type, event.data.data);
-
-                        if (index > -1) {
-
-                            //delete the entry as its content no longer exist
-                            Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
-
-                        }
-
+                    if (index > -1) {
+                        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
+                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
+                                forceVod: true
+                            });
+                        } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
                     }
+                } else {
+                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
+                }
+            } else if (event.data.type === 'live') {
+                if (event.data.delete) {
+                    index = Main_history_Exist(event.data.type, event.data.data);
 
-                },
-                10
-            );
+                    if (index > -1) {
+                        //delete the live that is now a vod entry as it no longer exist
+                        Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+                    }
+                } else {
+                    Main_history_UpdateLiveVod(
+                        event.data.data,
+                        event.data.updateobj._id.substr(1),
+                        ScreensObj_VodGetPreview(event.data.updateobj.preview.template, event.data.updateobj.animated_preview_url)
+                    );
+                }
+            } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
+                index = Main_history_Exist(event.data.type, event.data.data);
 
-
-        }
-
-    );
+                if (index > -1) {
+                    //delete the entry as its content no longer exist
+                    Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
+                }
+            }
+        }, 10);
+    });
 }
 
 var Main_StartHistoryworkerId;
 
 //Check if a live in history has become a VOD
 function Main_StartHistoryworker() {
-
     if (!AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-        i = 0, len = array.length,
+        i = 0,
+        len = array.length,
         header;
 
-
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-
         header = Main_Bearer_User_Headers;
-
     } else {
         header = Main_Bearer_Headers;
     }
 
     for (i; i < len; i++) {
-
         if (!array[i].forceVod) {
-
             if (array[i].data[14] && array[i].data[14] !== '') {
-
-
-                BradcastCheckerWorker.postMessage(
-                    {
-                        obj: array[i],
-                        type: 1,
-                        header: header
-                    }
-                );
-
+                BradcastCheckerWorker.postMessage({
+                    obj: array[i],
+                    type: 1,
+                    header: header
+                });
             } else {
-
                 array.splice(i, 1);
-
             }
         }
     }
@@ -2852,116 +2498,90 @@ function Main_StartHistoryworker() {
 
 //Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
-
-    if (ScreenObj[Main_HistoryVod].histPosX[3] ||
-        Main_isStoped ||
-        !AddUser_IsUserSet() ||
-        Boolean(!BradcastCheckerWorker)) return;
+    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
-        i = 0, len = array.length;
+        i = 0,
+        len = array.length;
 
     for (i; i < len; i++) {
-
         //TODO remove this workaround after some updates
         if (array[i].data[2] && typeof array[i].data[2] === 'string') {
-            array[i].data[2] = array[i].data[2].replace("Streamed", '');
+            array[i].data[2] = array[i].data[2].replace('Streamed', '');
         }
 
         if (array[i].data[4] && typeof array[i].data[4] === 'string') {
-            array[i].data[4] = array[i].data[4].replace("Views", '');
+            array[i].data[4] = array[i].data[4].replace('Views', '');
         }
 
-        BradcastCheckerWorker.postMessage(
-            {
-                obj: array[i],
-                type: 'vod',
-                delay: i
-            }
-        );
-
+        BradcastCheckerWorker.postMessage({
+            obj: array[i],
+            type: 'vod',
+            delay: i
+        });
     }
 
-
     Main_setTimeout(Main_RunLiveVODWorker, 60000);
-
 }
 
 //Check if a Live that is now VOD in Live history has ben deleted
 function Main_RunLiveVODWorker() {
-
     if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
-        i = 0, len = array.length;
+        i = 0,
+        len = array.length;
 
     for (i; i < len; i++) {
-
         //TODO remove this workaround after some updates
-        array[i].data[11] = array[i].data[11].replace("Since", '');
-        array[i].data[4] = array[i].data[4].replace("Viewers", '');
+        array[i].data[11] = array[i].data[11].replace('Since', '');
+        array[i].data[4] = array[i].data[4].replace('Viewers', '');
 
         if (array[i].forceVod && array[i].vodid) {
-
-            BradcastCheckerWorker.postMessage(
-                {
-                    obj: array[i],
-                    type: 'live',
-                    delay: i
-                }
-            );
-
+            BradcastCheckerWorker.postMessage({
+                obj: array[i],
+                type: 'live',
+                delay: i
+            });
         }
-
     }
 }
 
 //Check if a CLIP in history has ben deleted
 function Main_RunClipWorker() {
-
     if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
-    var i = 0, len = array.length;
+    var i = 0,
+        len = array.length;
 
     for (i; i < len; i++) {
-
         //TODO remove this workaround after some updates
-        array[i].data[16] = array[i].data[16].replace("Created", '');
-        array[i].data[14] = array[i].data[14].replace("Views", '');
+        array[i].data[16] = array[i].data[16].replace('Created', '');
+        array[i].data[14] = array[i].data[14].replace('Views', '');
 
-        BradcastCheckerWorker.postMessage(
-            {
-                obj: array[i],
-                type: 'clip',
-                delay: i
-            }
-        );
-
+        BradcastCheckerWorker.postMessage({
+            obj: array[i],
+            type: 'clip',
+            delay: i
+        });
     }
 }
 
 //the internet connection may be down do to standby after resume
 //java will not call Main_CheckResume() until the internet connection is recognized
 function Main_PreventClick(prevent, fun, skipUpPress) {
-
     if (prevent) {
-
-        window.addEventListener("keydown", fun, true);
+        window.addEventListener('keydown', fun, true);
         if (!skipUpPress) {
-
-            window.addEventListener("keyup", fun, true);
-            window.addEventListener("keypress", fun, true);
-
+            window.addEventListener('keyup', fun, true);
+            window.addEventListener('keypress', fun, true);
         }
-
     } else {
-
-        window.removeEventListener("keydown", fun, true);
-        window.removeEventListener("keyup", fun, true);
-        window.removeEventListener("keypress", fun, true);
-
+        window.removeEventListener('keydown', fun, true);
+        window.removeEventListener('keyup', fun, true);
+        window.removeEventListener('keypress', fun, true);
     }
 }
 
@@ -2971,7 +2591,8 @@ function Main_PreventClickfun(e) {
 
 var Main_isStoped = false;
 
-function Main_CheckStop() { // Called only by JAVA
+function Main_CheckStop() {
+    // Called only by JAVA
     Main_isStoped = true;
     Main_PreventClick(true, Main_PreventClickfun);
 
@@ -2994,20 +2615,13 @@ function Main_CheckStop() { // Called only by JAVA
             var i = 0;
 
             for (i; i < Play_MultiArray_length; i++) {
-
                 if (Play_MultiArray[i].data.length > 0) {
-
                     Main_Set_history('live', Play_MultiArray[i].data);
-
                 }
-
             }
-
         } else if (PlayExtra_PicturePicture) {
-
             if (PlayExtra_data.data.length > 0) Main_Set_history('live', PlayExtra_data.data);
             if (Play_data.data.length > 0) Main_Set_history('live', Play_data.data);
-
         } else if (Play_data.data.length > 0 && !Play_StayDialogVisible()) Main_Set_history('live', Play_data.data);
     }
 
@@ -3038,12 +2652,12 @@ function Main_CheckStop() { // Called only by JAVA
         if (Settings_Codecs_isVisible()) {
             if (Settings_CodecsDialogSet) Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
             Main_HideElement('dialog_codecs');
-            Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
+            Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
         } else if (Settings_Dialog_isVisible()) {
             if (SettingsColor_DialogisVisible()) SettingsColor_DialogColorsHide();
             if (Settings_DialogValue.length) Settings_DialoghandleKeyDown(Settings_DialogValue[Settings_DialogPos]);
             Main_HideElement('dialog_settings');
-            Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
+            Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
         }
         Settings_exit();
         Main_SwitchScreen();
@@ -3058,28 +2672,29 @@ function Main_CheckStop() { // Called only by JAVA
 }
 
 function Main_CheckDialogs() {
-    if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) {//Hide about or related if showing
+    if (Main_isAboutDialogVisible() || Main_isControlsDialogVisible()) {
+        //Hide about or related if showing
 
         Main_HideControlsDialog();
         Main_HideChangeDialog();
         Main_HideUpdateDialog();
         Main_HideAboutDialog();
-        Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_controls);
+        Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_controls);
 
-        Main_addEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+        Main_addEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
         if (ScreenObj[Main_values.Main_Go].addFocus) Screens_addFocus(true, Main_values.Main_Go);
         else ScreenObj[Main_values.Main_Go].init_fun();
-
-    } else if (Main_isExitDialogVisible()) {//Hide exit if showing
+    } else if (Main_isExitDialogVisible()) {
+        //Hide exit if showing
 
         Main_HideExitDialog();
-
     }
 }
 
 var Main_CheckResumeFeedId;
 var Main_CheckResumeVodsId;
-function Main_CheckResume(skipPlay) { // Called only by JAVA
+function Main_CheckResume(skipPlay) {
+    // Called only by JAVA
     Main_PreventClick(false, Main_PreventClickfun);
     Main_isStoped = false;
 
@@ -3088,10 +2703,8 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     if (Main_PreventCheckResume) return;
 
     if (Main_isUpdateDialogVisible()) {
-
         Main_HideLoadDialog();
         Main_values.IsUpDating = false;
-
     }
 
     var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
@@ -3101,17 +2714,17 @@ function Main_CheckResume(skipPlay) { // Called only by JAVA
     Main_SetUpdateclock();
 
     if (!skipPlay && (Main_isScene2DocVisible() || Sidepannel_isShowingUserLive())) Play_CheckResume();
-    else Play_CheckIfIsLiveCleanEnd();//Reset to Screens_addFocus check for live can work
+    else Play_CheckIfIsLiveCleanEnd(); //Reset to Screens_addFocus check for live can work
 
     if (UserIsSet) {
         Main_CheckResumeFeedId = Main_setTimeout(Main_updateUserFeed, 2000, Main_CheckResumeFeedId);
     }
 
-    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, (1000 * 60 * 3), Main_StartHistoryworkerId);//Check it 3 min
+    Main_StartHistoryworkerId = Main_setInterval(Main_StartHistoryworker, 1000 * 60 * 3, Main_StartHistoryworkerId); //Check it 3 min
 
     Main_CheckResumeVodsId = Main_setTimeout(Main_StartHistoryworker, 10000, Main_CheckResumeVodsId);
 
-    Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, (1000 * 60 * 30), Main_checkWebVersionId);//Check it 60 min
+    Main_checkWebVersionId = Main_setInterval(Main_CheckUpdate, 1000 * 60 * 30, Main_checkWebVersionId); //Check it 60 min
     Main_checkWebVersionResumeId = Main_setTimeout(Main_CheckUpdate, 3000, Main_checkWebVersionResumeId);
 
     //Tecnicly this are only neede if the app fail to refresh when is on background
@@ -3129,8 +2742,7 @@ function Main_CheckResumeUpdateToken(UserIsSet) {
     //the internet connection may be down (do to standby), on that case the update token fun will run and not work
     //On that case the expires_when will be less the time now and we need to update on resume
     //If the app closes next reopen the same check will happen but somewhere else
-    if (UserIsSet && AddUser_UsernameArray[0].access_token &&
-        (((new Date().getTime()) - AddUser_UsernameArray[0].expires_when) > 0)) {
+    if (UserIsSet && AddUser_UsernameArray[0].access_token && new Date().getTime() - AddUser_UsernameArray[0].expires_when > 0) {
         AddCode_refreshTokens(0, null, null, null, true);
     }
 }
@@ -3138,32 +2750,29 @@ function Main_CheckResumeUpdateToken(UserIsSet) {
 function Main_CheckAccessibility(skipRefresCheck) {
     //Main_Log('Main_CheckAccessibility');
 
-    if (Main_IsOn_OSInterface && Settings_Obj_default("accessibility_warn")) {
+    if (Main_IsOn_OSInterface && Settings_Obj_default('accessibility_warn')) {
         if (OSInterface_isAccessibilitySettingsOn()) Main_CheckAccessibilitySet();
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
-            if ((Screens_Isfocused() || ChannelContent_Isfocused()) &&
-                (!Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus()) &&
-                !skipRefresCheck) {
-                Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
+            if ((Screens_Isfocused() || ChannelContent_Isfocused()) && !Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus() && !skipRefresCheck) {
+                Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
         }
-
     }
 }
 
 function Main_CheckAccessibilitySet() {
     //Main_Log('Main_CheckAccessibilitySet');
 
-    Main_innerHTML("dialog_accessibility_text", STR_ACCESSIBILITY_WARN_TEXT);
+    Main_innerHTML('dialog_accessibility_text', STR_ACCESSIBILITY_WARN_TEXT);
     Main_ShowElement('dialog_accessibility');
-    Main_removeEventListener("keydown", ScreenObj[Main_values.Main_Go].key_fun);
-    Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
+    Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
+    Main_removeEventListener('keydown', Main_CheckAccessibilityKey);
     if (!Sidepannel_isShowingUserLive() && Main_isScene1DocVisible()) {
         Sidepannel_Hide();
-        Main_addEventListener("keydown", Main_CheckAccessibilityKey);
+        Main_addEventListener('keydown', Main_CheckAccessibilityKey);
     }
 }
 
@@ -3172,7 +2781,7 @@ function Main_CheckAccessibilityVisible() {
 }
 
 function Main_CheckAccessibilityHide(switchScreen) {
-    Main_removeEventListener("keydown", Main_CheckAccessibilityKey);
+    Main_removeEventListener('keydown', Main_CheckAccessibilityKey);
     Main_HideElement('dialog_accessibility');
     if (switchScreen) Main_SwitchScreen();
 }
@@ -3237,48 +2846,39 @@ function Main_clearInterval(id) {
 }
 
 function Main_onNewIntentClearPlay() {
-
     Play_ClearPlayer();
-    Main_removeEventListener("keydown", Play_handleKeyDown);
-    Main_removeEventListener("keydown", PlayVod_handleKeyDown);
-    Main_removeEventListener("keyup", PlayVod_SeekClear);
-    Main_removeEventListener("keydown", PlayClip_handleKeyDown);
+    Main_removeEventListener('keydown', Play_handleKeyDown);
+    Main_removeEventListener('keydown', PlayVod_handleKeyDown);
+    Main_removeEventListener('keyup', PlayVod_SeekClear);
+    Main_removeEventListener('keydown', PlayClip_handleKeyDown);
     Play_isOn = false;
     PlayVod_isOn = false;
     PlayClip_isOn = false;
 
     if (Play_MultiEnable) {
-
         //Make sure PP is disabled first, then disable Multistream at last close all players
         PlayExtra_PicturePicture = false;
 
         Play_controls[Play_MultiStream].enterKey();
 
         OSInterface_stopVideo();
-
     } else if (PlayExtra_PicturePicture) {
-
         PlayExtra_UnSetPanel();
         PlayExtra_PicturePicture = false;
-
     }
-
 }
 
 function Main_onNewIntent(mobj) {
     var obj = JSON.parse(mobj),
-        isLive = Main_A_equals_B(obj.type, "LIVE");
+        isLive = Main_A_equals_B(obj.type, 'LIVE');
 
     //TODO check more cases for problems
     if (isLive) {
-
         Play_showBufferDialog();
         Main_CheckResume(true);
 
         if (Main_isScene2DocVisible()) {
-
             Main_onNewIntentClearPlay();
-
         } else if (Sidepannel_isShowingMenus()) {
             Sidepannel_Hide(false);
         } else if (Sidepannel_isShowingUserLiveSide()) {
@@ -3290,16 +2890,8 @@ function Main_onNewIntent(mobj) {
 
         Main_openStream();
 
-        Main_EventPlay(
-            'live',
-            Play_data.data[6],
-            Play_data.data[3],
-            isLive ? Play_data.data[15] : 'HOSTING',
-            Main_EventGetChannelScreen(obj)
-        );
-
-    } else if (Main_A_equals_B(obj.type, "USER")) {
-
+        Main_EventPlay('live', Play_data.data[6], Play_data.data[3], isLive ? Play_data.data[15] : 'HOSTING', Main_EventGetChannelScreen(obj));
+    } else if (Main_A_equals_B(obj.type, 'USER')) {
         Main_CheckResume(true);
 
         //TODO check when side panel is open
@@ -3316,8 +2908,7 @@ function Main_onNewIntent(mobj) {
         Main_values.Main_Before = Main_values.Main_Go;
 
         AddUser_init();
-    } else if (Main_A_equals_B(obj.type, "GAME")) {
-
+    } else if (Main_A_equals_B(obj.type, 'GAME')) {
         Main_CheckResume(true);
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -3335,13 +2926,15 @@ function Main_onNewIntent(mobj) {
 
             Play_OpenGame(PlayVodClip);
         } else {
-
             if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
                 Sidepannel_Hide(false);
             }
 
             if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
-                Main_values.Main_BeforeAgame = (Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) ? Main_values.Main_BeforeChannel : Main_values.Main_Go;
+                Main_values.Main_BeforeAgame =
+                    Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip
+                        ? Main_values.Main_BeforeChannel
+                        : Main_values.Main_Go;
                 Main_values.Main_BeforeAgameisSet = true;
             }
 
@@ -3350,20 +2943,15 @@ function Main_onNewIntent(mobj) {
 
             Main_values.Main_gameSelected = Play_data.data[3];
             Main_ReStartScreens();
-
         }
-
-    } else if (Main_A_equals_B(obj.type, "SCREEN")) {
-
+    } else if (Main_A_equals_B(obj.type, 'SCREEN')) {
         Main_CheckResume(true);
 
         if (Main_isScene2DocVisible()) {
-
             Main_onNewIntentClearPlay();
 
             Main_hideScene2Doc();
             Main_showScene1Doc();
-
         } else if (Sidepannel_isShowingUserLiveSide() || Sidepannel_isShowingMenus()) {
             Sidepannel_Hide(false);
         }
@@ -3386,7 +2974,9 @@ function Main_onNewIntentGetScreen(obj) {
     var goTo = Main_values.Main_Go;
     var UserIsSet = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token;
 
-    switch (obj.screen) {//In relateton to java CHANNEL_TYPE_*
+    switch (
+        obj.screen //In relateton to java CHANNEL_TYPE_*
+    ) {
         case 1:
             goTo = Main_Live;
             break;
@@ -3416,69 +3006,51 @@ function gtag() {
 
 var skipfirebase = false;
 function Main_Startfirebase() {
-
     var firebaseConfig = {
-        apiKey: "AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI",
-        authDomain: "smarttv-twitch-web-android.firebaseapp.com",
-        databaseURL: "https://smarttv-twitch-web-android.firebaseio.com",
-        projectId: "smarttv-twitch-web-android",
-        storageBucket: "smarttv-twitch-web-android.appspot.com",
-        messagingSenderId: "871032203366",
-        appId: "1:871032203366:web:922c0cf93432bbe1e7a5a7",
-        measurementId: "G-8YQ2JGNYDP"
+        apiKey: 'AIzaSyAr2tuLGB5lvredaqU2KWW4p8Yg7sudbzI',
+        authDomain: 'smarttv-twitch-web-android.firebaseapp.com',
+        databaseURL: 'https://smarttv-twitch-web-android.firebaseio.com',
+        projectId: 'smarttv-twitch-web-android',
+        storageBucket: 'smarttv-twitch-web-android.appspot.com',
+        messagingSenderId: '871032203366',
+        appId: '1:871032203366:web:922c0cf93432bbe1e7a5a7',
+        measurementId: 'G-8YQ2JGNYDP'
     };
 
     try {
-
         if (!Main_A_includes_B(window.location.href, 'code')) {
-
             firebase.initializeApp(firebaseConfig);
             firebase.analytics();
 
             gtag('js', new Date());
-
         } else skipfirebase = true;
-
     } catch (e) {
-        console.log("Main_Startfirebase e " + e);
+        console.log('Main_Startfirebase e ' + e);
         skipfirebase = true;
     }
 }
 
 function Main_EventScreen(screen) {
-    Main_EventShowScreen(
-        'screen_view',
-        screen
-    );
+    Main_EventShowScreen('screen_view', screen);
 }
 
 function Main_EventAgame(game) {
-    Main_EventShowScreen(
-        'game_view',
-        game
-    );
+    Main_EventShowScreen('game_view', game);
 }
-
 
 function Main_EventBanner(type, screen, image) {
     if (skipfirebase) return;
 
     try {
-
         var image_array = image.split('/'),
             len = image_array.length;
 
-        gtag(
-            'event',
-            type,
-            {
-                'screen': screen,
-                image: image_array[len - 1]
-            }
-        );
-
+        gtag('event', type, {
+            screen: screen,
+            image: image_array[len - 1]
+        });
     } catch (e) {
-        console.log("Main_EventBanner e " + e);
+        console.log('Main_EventBanner e ' + e);
     }
 }
 
@@ -3486,166 +3058,118 @@ function Main_EventShowScreen(type, name) {
     if (skipfirebase) return;
 
     try {
-
-        gtag(
-            'event',
-            type,
-            {
-                'name': name,
-                'lang': Languages_Selected
-            }
-        );
-
+        gtag('event', type, {
+            name: name,
+            lang: Languages_Selected
+        });
     } catch (e) {
-        console.log("Main_EventShowScreen e " + e);
+        console.log('Main_EventShowScreen e ' + e);
     }
 }
 
 function Main_EventPlay(type, name, game, lang, screen, mode) {
-    Main_ready(function() {
+    Main_ready(function () {
         if (skipfirebase) return;
 
         try {
-
-            gtag(
-                'event',
-                type,
-                {
-                    'name': name,
-                    'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                    'game': game ? game : UNKNOWN,
-                    'screen': screen ? screen : UNKNOWN,
-                    'mode': mode ? mode : 'NORMAL'
-                }
-            );
-
+            gtag('event', type, {
+                name: name,
+                lang: lang ? lang.toUpperCase() : UNKNOWN,
+                game: game ? game : UNKNOWN,
+                screen: screen ? screen : UNKNOWN,
+                mode: mode ? mode : 'NORMAL'
+            });
         } catch (e) {
-            console.log("Main_EventPlay e " + e);
+            console.log('Main_EventPlay e ' + e);
         }
     });
 }
 
 function Main_EventPreview(type, name, game, lang, screen) {
-    Main_ready(function() {
+    Main_ready(function () {
         if (skipfirebase) return;
 
         try {
-
-            gtag(
-                'event',
-                type,
-                {
-                    'name': name,
-                    'lang': lang ? lang.toUpperCase() : UNKNOWN,
-                    'game': game ? game : UNKNOWN,
-                    'screen': screen ? screen : UNKNOWN
-                }
-            );
-
+            gtag('event', type, {
+                name: name,
+                lang: lang ? lang.toUpperCase() : UNKNOWN,
+                game: game ? game : UNKNOWN,
+                screen: screen ? screen : UNKNOWN
+            });
         } catch (e) {
-            console.log("Main_EventPreview e " + e);
+            console.log('Main_EventPreview e ' + e);
         }
     });
 }
 
 function Main_EventVersion(apk, web, webview, device, sdk, manufacturer) {
-    Main_ready(function() {
+    Main_ready(function () {
         if (skipfirebase) return;
 
         try {
-
             //Delay the event if it is call too sone will not work
-            Main_setTimeout(
-                function() {
-
-                    gtag(
-                        'event',
-                        'app_version',
-                        {
-                            'apk_version': apk,
-                            'web_version': web,
-                            'webview_version': webview,
-                            'device_model': device,
-                            'sdk': sdk,
-                            'manufacturer': manufacturer,
-                            'device_type': Main_isTV ? 'TV' : 'Other',
-                        }
-                    );
-
-                },
-                15000
-            );
+            Main_setTimeout(function () {
+                gtag('event', 'app_version', {
+                    apk_version: apk,
+                    web_version: web,
+                    webview_version: webview,
+                    device_model: device,
+                    sdk: sdk,
+                    manufacturer: manufacturer,
+                    device_type: Main_isTV ? 'TV' : 'Other'
+                });
+            }, 15000);
 
             //Te app willsend this from when the token is added just save a refrecen and use later
             if (Main_getItemInt('New_User_Token_Added', 0)) {
                 Main_setItem('New_User_Token_Added', 0);
                 Main_Eventsimple('New_User_Token_Added');
             }
-
         } catch (e) {
-            console.log("Main_EventVersion e " + e);
+            console.log('Main_EventVersion e ' + e);
         }
     });
 }
 
 function Main_EventChannelRefresh(screen) {
-    Main_EventChannel(
-        {
-            screen: screen,
-            type: 'REFRESH'
-
-        }
-    );
+    Main_EventChannel({
+        screen: screen,
+        type: 'REFRESH'
+    });
 }
 
 function Main_EventChannel(obj) {
-    Main_ready(function() {
+    Main_ready(function () {
         if (skipfirebase) return;
 
         try {
             if (!obj || !obj.type || !obj.screen) return;
 
-            gtag(
-                'event',
-                'channel',
-                {
-                    'type': obj.type,
-                    'screen': Main_EventGetChannelScreen(obj)
-                }
-            );
-
+            gtag('event', 'channel', {
+                type: obj.type,
+                screen: Main_EventGetChannelScreen(obj)
+            });
         } catch (e) {
-            console.log("Main_EventChannel e " + e);
+            console.log('Main_EventChannel e ' + e);
         }
     });
 }
 
 var UNKNOWN = 'UNKNOWN';
-var Main_EventChannelScreens = [
-    'CHANNEL_' + UNKNOWN,
-    'CHANNEL_LIVE',
-    'CHANNEL_USER_LIVE',
-    'CHANNEL_FEATURED',
-    'CHANNEL_GAMES',
-    'CHANNEL_USER_GAMES',
-    'CHANNEL_USER_HOSTS'
-];
+var Main_EventChannelScreens = ['CHANNEL_' + UNKNOWN, 'CHANNEL_LIVE', 'CHANNEL_USER_LIVE', 'CHANNEL_FEATURED', 'CHANNEL_GAMES', 'CHANNEL_USER_GAMES', 'CHANNEL_USER_HOSTS'];
 
 function Main_EventGetChannelScreen(obj) {
-    return obj.screen && Main_EventChannelScreens[obj.screen] ?
-        Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];
+    return obj.screen && Main_EventChannelScreens[obj.screen] ? Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];
 }
 
 function Main_Eventsimple(event) {
-    Main_ready(function() {
+    Main_ready(function () {
         if (skipfirebase) return;
 
         try {
-
             firebase.analytics().logEvent(event);
-
         } catch (e) {
-            console.log("Main_Eventsimple event " + event + " e " + e);
+            console.log('Main_Eventsimple event ' + event + ' e ' + e);
         }
     });
 }

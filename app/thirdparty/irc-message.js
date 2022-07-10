@@ -22,7 +22,7 @@
 //https://github.com/sigkell/irc-message/blob/master/index.js
 //Updated version:
 //https://github.com/tmijs/tmi.js/blob/master/lib/parser.js
-window.parseIRC = function(data) {
+window.parseIRC = function (data) {
     var message = {
         raw: data,
         tags: {},

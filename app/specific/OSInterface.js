@@ -121,41 +121,19 @@ function OSInterface_SetQuality(position) {
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
-
-    Android.getStreamDataAsync(
-        token_url,
-        hls_url,
-        callback,
-        checkResult,
-        position,
-        Timeout,
-        isVod ? Play_vod_token_prop : Play_live_token_prop,
-        POST
-    );
-
+    Android.getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
 }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
 //token_url = the base token url
 //hls_url = the base hls playlist url
 //callback = the call back function
-//x & y the position of the array that hold the result also used to check the received info can be used by callback 
+//x & y the position of the array that hold the result also used to check the received info can be used by callback
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
-
-    Android.CheckIfIsLiveFeed(
-        token_url,
-        hls_url,
-        callback,
-        x,
-        y,
-        Timeout,
-        isVod ? Play_vod_token_prop : Play_live_token_prop,
-        POST
-    );
-
+    Android.CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
 }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -166,14 +144,7 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
 function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
-
-    return Android.getStreamData(
-        token_url,
-        hls_url,
-        Timeout,
-        isVod ? Play_vod_token_prop : Play_live_token_prop,
-        POST
-    );
+    return Android.getStreamData(token_url, hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
 }
 
 //public String getQualities()
@@ -187,20 +158,7 @@ function OSInterface_getQualities() {
 //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
 //Android specific: true
 function OSInterface_BaseXmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
-
-    Android.BasexmlHttpGet(
-        urlString,
-        timeout,
-        postMessage,
-        Method,
-        JsonHeadersArray,
-        callback,
-        !checkResult ? 0 : checkResult,
-        !key ? 0 : key,
-        callbackSucess,
-        calbackError
-    );
-
+    Android.BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, !checkResult ? 0 : checkResult, !key ? 0 : key, callbackSucess, calbackError);
 }
 
 //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
@@ -214,14 +172,7 @@ function OSInterface_BaseXmlHttpGet(urlString, timeout, postMessage, Method, Jso
 //Android specific: false
 //Allows to make a http request in a sync function on a url that if called from JS will fail do to CORS error
 function OSInterface_mMethodUrlHeaders(urlString, timeout, postMessage, Method, checkResult, JsonHeadersArray) {
-    return Android.mMethodUrlHeaders(
-        urlString,
-        timeout,
-        postMessage,
-        Method,
-        checkResult,
-        JsonHeadersArray
-    );
+    return Android.mMethodUrlHeaders(urlString, timeout, postMessage, Method, checkResult, JsonHeadersArray);
 }
 
 //public void mupdatesizePP(boolean FullScreen)
@@ -300,7 +251,7 @@ function OSInterface_mSetlatency(LowLatency) {
 }
 
 //public void mSwitchPlayerSize(int mPicturePictureSize)
-//mPicturePictureSize = PicturePictureSize sizes are 0 , 1 , 2, of the 
+//mPicturePictureSize = PicturePictureSize sizes are 0 , 1 , 2, of the
 //Array PlayerViewSmallSize[][PicturePictureSize] PicturePictureSize is the width size... 0 50% or 1/2, 1 33% or 1/3, 2 25% or 1/4
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Allows to change small player size
@@ -343,13 +294,7 @@ function OSInterface_RestartPlayer(who_called, ResumePosition, player) {
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player) {
-    Android.StartAuto(
-        uri,
-        mainPlaylistString,
-        who_called,
-        ResumePosition,
-        player
-    );
+    Android.StartAuto(uri, mainPlaylistString, who_called, ResumePosition, player);
 }
 
 //public void ReuseFeedPlayer(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
@@ -361,15 +306,7 @@ function OSInterface_StartAuto(uri, mainPlaylistString, who_called, ResumePositi
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player) {
-
-    Android.ReuseFeedPlayer(
-        uri,
-        mainPlaylistString,
-        who_called,
-        ResumePosition,
-        player
-    );
-
+    Android.ReuseFeedPlayer(uri, mainPlaylistString, who_called, ResumePosition, player);
 }
 
 //public void ReuseFeedPlayerPrepare(String uri, String mainPlaylistString, int who_called, long ResumePosition, int player)
@@ -377,15 +314,9 @@ function OSInterface_ReuseFeedPlayer(uri, mainPlaylistString, who_called, Resume
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
-
     if (Main_IsOn_OSInterface) {
-
-        Android.ReuseFeedPlayerPrepare(
-            trackSelectorPos
-        );
-
+        Android.ReuseFeedPlayerPrepare(trackSelectorPos);
     }
-
 }
 
 //public void FixViewPosition(int position)
@@ -393,16 +324,9 @@ function OSInterface_ReuseFeedPlayerPrepare(trackSelectorPos) {
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_FixViewPosition(position, Type) {
-
     if (Main_IsOn_OSInterface) {
-
-        Android.FixViewPosition(
-            position,
-            Type
-        );
-
+        Android.FixViewPosition(position, Type);
     }
-
 }
 
 //public void mhideSystemUI()
@@ -418,13 +342,9 @@ function OSInterface_mhideSystemUI() {
 function OSInterface_setAppToken() {
     if (Main_IsOn_OSInterface) {
         try {
-            Android.setAppToken(
-                AddCode_main_token ? AddCode_main_token : null
-            );
-        } catch (e) {
-        }
+            Android.setAppToken(AddCode_main_token ? AddCode_main_token : null);
+        } catch (e) {}
     }
-
 }
 
 //public String getAppToken()
@@ -433,9 +353,7 @@ function OSInterface_getAppToken() {
     if (Main_IsOn_OSInterface) {
         try {
             AddCode_main_token = Android.getAppToken();
-        } catch (e) {
-        }
-
+        } catch (e) {}
     }
 }
 
@@ -447,17 +365,9 @@ function OSInterface_getAppToken() {
 function OSInterface_UpdateUserId(user) {
     if (Main_IsOn_OSInterface)
         if (user) {
-            Android.UpdateUserId(
-                user.id,
-                user.name ? encodeURIComponent(user.name) : user.name,
-                user.refresh_token ? user.refresh_token : null
-            );
+            Android.UpdateUserId(user.id, user.name ? encodeURIComponent(user.name) : user.name, user.refresh_token ? user.refresh_token : null);
         } else {
-            Android.UpdateUserId(
-                null,
-                null,
-                null
-            );
+            Android.UpdateUserId(null, null, null);
         }
 }
 
@@ -467,13 +377,7 @@ function OSInterface_UpdateUserId(user) {
 //Set app id and etc related
 function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
     if (Main_IsOn_OSInterface) {
-
-        Android.setAppIds(
-            client_id,
-            client_secret ? client_secret : null,
-            redirect_uri
-        );
-
+        Android.setAppIds(client_id, client_secret ? client_secret : null, redirect_uri);
     }
 }
 
@@ -482,11 +386,7 @@ function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
 //Set app play header if necessary
 function OSInterface_SetStreamDataHeaders(header) {
     if (Main_IsOn_OSInterface) {
-
-        Android.SetStreamDataHeaders(
-            header ? header : null
-        );
-
+        Android.SetStreamDataHeaders(header ? header : null);
     }
 }
 
@@ -524,7 +424,7 @@ function OSInterface_getsavedtime() {
 //Android specific: false
 //returns PlayerCurrentPosition valued used to show vod/clip position and sync vod/clip chat and video
 function OSInterface_gettime() {
-    return Main_IsOn_OSInterface ? Android.gettime() : (Chat_fakeClock * 1000);
+    return Main_IsOn_OSInterface ? Android.gettime() : Chat_fakeClock * 1000;
 }
 
 //public long gettimepreview()
@@ -849,10 +749,7 @@ function OSInterface_StartFeedPlayer(uri, mainPlaylistString, position, resumePo
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartSidePanelPlayer(uri, mainPlaylistString) {
-    Android.StartSidePanelPlayer(
-        uri,
-        mainPlaylistString
-    );
+    Android.StartSidePanelPlayer(uri, mainPlaylistString);
 }
 
 //public void SetPlayerViewSidePanel(int bottom, int web_height)
@@ -861,10 +758,7 @@ function OSInterface_StartSidePanelPlayer(uri, mainPlaylistString) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
-    Android.SetPlayerViewFeedBottom(
-        bottom,
-        parseInt(web_height)
-    );
+    Android.SetPlayerViewFeedBottom(bottom, parseInt(web_height));
 }
 
 //public void SetPlayerViewSidePanel(int top, int right, int left, int web_height)
@@ -874,14 +768,7 @@ function OSInterface_SetPlayerViewFeedBottom(bottom, web_height) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
-
-    if (Main_IsOn_OSInterface) Android.SetPlayerViewSidePanel(
-        bottom,
-        right,
-        left,
-        parseInt(web_height)
-    );
-
+    if (Main_IsOn_OSInterface) Android.SetPlayerViewSidePanel(bottom, right, left, parseInt(web_height));
 }
 
 //public void StartScreensPlayer(String uri, String mainPlaylistString, ResumePosition, float bottom, float right, float left, int web_height, int who_called)
@@ -893,19 +780,7 @@ function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
-
-    Android.StartScreensPlayer(
-        uri,
-        mainPlaylistString,
-        ResumePosition,
-        bottom,
-        right,
-        left,
-        parseInt(web_height),
-        who_called,
-        Settings_Obj_default('preview_screen_sizes') === 1
-    );
-
+    Android.StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, parseInt(web_height), who_called, Settings_Obj_default('preview_screen_sizes') === 1);
 }
 
 //public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
@@ -916,16 +791,7 @@ function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition,
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_called) {
-
-    if (Main_IsOn_OSInterface) Android.ScreenPlayerRestore(
-        bottom,
-        right,
-        left,
-        parseInt(web_height),
-        who_called,
-        Settings_Obj_default('preview_screen_sizes') === 1
-    );
-
+    if (Main_IsOn_OSInterface) Android.ScreenPlayerRestore(bottom, right, left, parseInt(web_height), who_called, Settings_Obj_default('preview_screen_sizes') === 1);
 }
 
 //public void ClearFeedPlayer()
@@ -1017,7 +883,8 @@ function OSInterface_SetCheckSource(mCheckSource) {
 //volume the player volume
 //Android specific: true
 //Allows to control individual player volume
-function OSInterface_showToast(toast) {//Not be used
+function OSInterface_showToast(toast) {
+    //Not be used
     if (Main_IsOn_OSInterface) Android.showToast(toast);
 }
 
@@ -1026,7 +893,8 @@ function OSInterface_showToast(toast) {//Not be used
 //volume the player volume
 //Android specific: true
 //Allows to control individual player volume
-function OSInterface_mCheckRefreshToast(type) {//Not be used
+function OSInterface_mCheckRefreshToast(type) {
+    //Not be used
     if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
 }
 
@@ -1062,13 +930,13 @@ function OSInterface_upDateLang(lang) {
 //Get live stream latency to the streamer
 function OSInterface_getLatency(chat_number) {
     if (Main_IsOn_OSInterface) Android.getLatency(chat_number);
-
 }
 
 //public void mKeepScreenOn(boolean keepOn)
 //Android specific: true
 //Allows to control if the screen will be on or not from js side
-function OSInterface_mKeepScreenOn(keepOn) {//Not be used
+function OSInterface_mKeepScreenOn(keepOn) {
+    //Not be used
     if (Main_IsOn_OSInterface) Android.mKeepScreenOn(Boolean(keepOn));
 }
 
@@ -1085,25 +953,15 @@ function OSInterface_mKeepScreenOn(keepOn) {//Not be used
 //Android specific: true
 //Sets a audio enable or not
 function OSInterface_SetAudioEnabled() {
-
     if (Main_IsOn_OSInterface) {
-
-        Android.SetAudioEnabled(
-            Boolean(Play_audio_enable[0]),
-            Boolean(Play_audio_enable[1]),
-            Boolean(Play_audio_enable[2]),
-            Boolean(Play_audio_enable[3])
-        );
-
+        Android.SetAudioEnabled(Boolean(Play_audio_enable[0]), Boolean(Play_audio_enable[1]), Boolean(Play_audio_enable[2]), Boolean(Play_audio_enable[3]));
     } else if (PlayClip_isOn) {
-
         try {
             clip_player.volume = Boolean(Play_audio_enable[0]) ? 1.0 : 0.0;
         } catch (e) {
             console.log('OSInterface_SetAudioEnabled e ' + e);
         }
     }
-
 }
 
 //public void SetAudioEnabled(boolean pos1, boolean pos2, boolean pos3, boolean pos4)
@@ -1111,37 +969,23 @@ function OSInterface_SetAudioEnabled() {
 //Android specific: true
 //Sets a audio enable or not
 function OSInterface_SetVolumes() {
-
     if (Main_IsOn_OSInterface) {
-
-        Android.SetVolumes(
-            parseFloat(Play_volumes[0] / 100),
-            parseFloat(Play_volumes[1] / 100),
-            parseFloat(Play_volumes[2] / 100),
-            parseFloat(Play_volumes[3] / 100)
-        );
-
+        Android.SetVolumes(parseFloat(Play_volumes[0] / 100), parseFloat(Play_volumes[1] / 100), parseFloat(Play_volumes[2] / 100), parseFloat(Play_volumes[3] / 100));
     } else if (PlayClip_isOn) {
-
         try {
             clip_player.volume = Play_volumes[0] / 100;
         } catch (e) {
             console.log('OSInterface_SetVolumes e ' + e);
         }
     }
-
-
 }
 
 //public void ApplyAudio()
 //Android specific: true
 //Sets a audio enable or not
 function OSInterface_ApplyAudio() {
-
     if (Main_IsOn_OSInterface) {
-
         Android.ApplyAudio();
-
     }
 }
 
@@ -1149,11 +993,8 @@ function OSInterface_ApplyAudio() {
 //Android specific: true
 //Gets if the app was instaled from play store
 function OSInterface_getInstallFromPLay() {
-
     if (Main_IsOn_OSInterface) {
-
         return Android.getInstallFromPLay();
-
     }
 
     return true;
@@ -1166,13 +1007,9 @@ function OSInterface_getInstallFromPLay() {
 //Android specific: true
 //Allow to update the app
 function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
-
     if (Main_IsOn_OSInterface) {
-
         Android.UpdateAPK(apkURL, failAll, failDownload);
-
     }
-
 }
 
 //public void CleanAndLoadUrl(String url)
@@ -1180,11 +1017,8 @@ function OSInterface_UpdateAPK(apkURL, failAll, failDownload) {
 //Android specific: true
 //Allow to update the app
 function OSInterface_CleanAndLoadUrl(url) {
-
     if (Main_IsOn_OSInterface) {
-
         Android.CleanAndLoadUrl(url);
-
     }
 }
 
@@ -1193,15 +1027,9 @@ function OSInterface_CleanAndLoadUrl(url) {
 //Android specific: false in the OS has multi player supports Samsung TV for example don't have
 //Sets mediaSources and start the player
 function OSInterface_SetLanguage(lang) {
-
     if (Main_IsOn_OSInterface) {
-
-        Android.SetLanguage(
-            lang
-        );
-
+        Android.SetLanguage(lang);
     }
-
 }
 
 //public void getDuration()

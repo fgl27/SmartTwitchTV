@@ -23,7 +23,6 @@ var Play_MultiArray_length = 4;
 
 var Play_updateStreamInfoMultiId = [];
 function Play_updateStreamInfoMulti(pos) {
-
     Play_updateStreamInfoMultiId[pos] = new Date().getTime();
 
     BaseXmlHttpGet(
@@ -36,14 +35,12 @@ function Play_updateStreamInfoMulti(pos) {
         Play_updateStreamInfoMultiId[pos],
         true
     );
-
 }
 
 function Play_updateStreamInfoMultiValues(response, pos, ID) {
     var obj = JSON.parse(response);
 
     if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoMultiId[pos] === ID) {
-
         var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
 
         //Prevent save the wrong stream data
@@ -55,27 +52,17 @@ function Play_updateStreamInfoMultiValues(response, pos, ID) {
                 Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
             }
 
-            Play_MultiUpdateinfo(
-                pos,
-                obj.data[0].game_name,
-                obj.data[0].viewer_count,
-                twemoji.parse(obj.data[0].title, false, true),
-                (Play_Multi_MainBig ? '_big' : '')
-            );
+            Play_MultiUpdateinfo(pos, obj.data[0].game_name, obj.data[0].viewer_count, twemoji.parse(obj.data[0].title, false, true), Play_Multi_MainBig ? '_big' : '');
 
             Main_Set_history('live', Play_MultiArray[pos].data);
         }
-
     }
 }
 
 function Play_updateStreamInfoMultiError(pos) {
-
     if (Play_isOn && Play_MultiEnable && Play_MultiArray[pos].data.length > 0) {
-
         //we fail but we still watching so update the time
         Main_Set_history('live', Play_MultiArray[pos].data);
-
     }
 }
 
@@ -108,13 +95,10 @@ function Play_Multi_UnSetPanelDiv(checkChat) {
     Play_IconsRemoveFocus();
     Play_Panelcounter = Play_MultiStream;
 
-
     if (Play_isPanelShowing() && PlayVod_PanelY === 2) Play_IconsAddFocus();
     if (Play_Multi_MainBig) {
-
         Play_ResStoreChatPos();
         Play_Multi_MainBig = false;
-
     }
 
     Play_controls[Play_controlsQualityMulti].values = STR_QUALITY_MULTI;
@@ -131,24 +115,18 @@ function Play_Multi_UnSetPanelDivCheckChat() {
 }
 
 function Play_Multi_UnSetPanel(shutdown) {
-
     Play_Multi_UnSetPanelDiv();
 
     for (var i = 0; i < 4; i++) {
-
         if (Play_MultiArray[i].data.length > 0) {
-
             Main_Set_history('live', Play_MultiArray[i].data);
-
         }
 
         Play_MultiInfoReset(i);
     }
 
     if (Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0) {
-
         if (PlayExtra_PicturePicture) {
-
             PlayExtra_data = JSON.parse(JSON.stringify(Play_MultiArray[1]));
             PlayExtra_SetPanel();
 
@@ -159,11 +137,8 @@ function Play_Multi_UnSetPanel(shutdown) {
             }
 
             Play_AudioCheckCloseMulti();
-
         } else Play_AudioReset(0);
-
     } else {
-
         Play_Multi_UnSetPanelDivCheckChat();
 
         if (PlayExtra_PicturePicture) PlayExtra_UnSetPanel();
@@ -172,7 +147,6 @@ function Play_Multi_UnSetPanel(shutdown) {
         PlayExtra_PicturePicture = false;
 
         Play_AudioReset(0);
-
     }
 
     Play_Multi_UnSetPanelDivCheckChat();
@@ -181,36 +155,26 @@ function Play_Multi_UnSetPanel(shutdown) {
     var First = Play_MultiFirstAvailable();
 
     if (First !== null) {
-
         var name = Play_data.data[14];
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[First]));
         var nameChanged = name !== Play_data.data[14];
 
         if (nameChanged && First) {
-
             OSInterface_StartAuto(Play_data.AutoUrl, Play_data.playlist, 1, 0, 0);
             Play_UpdateMainStream(true, true);
             Play_MultiUpdateMain();
-
         } else {
-
             Play_UpdateMainStream(nameChanged, nameChanged);
-
         }
-
     } else if (shutdown) {
-
         Play_shutdownStream();
-
     }
-
 }
 
 function Play_MultiFirstAvailable() {
     var i = 0;
 
     for (i; i < Play_MultiArray_length; i++) {
-
         if (Play_MultiArray[i].data.length > 0) return i;
     }
 
@@ -222,46 +186,33 @@ function Play_MultiEnd(position, fail_type, errorCode) {
     if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
-    Play_showWarningMidleDialog(
-        reason + Play_GetErrorCode(errorCode),
-        5000
-    );
+    Play_showWarningMidleDialog(reason + Play_GetErrorCode(errorCode), 5000);
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
 
     if (!Play_MultiHasOne()) {
-
         Play_MultiEnable = false;
         OSInterface_DisableMultiStream();
         Play_Multi_UnSetPanelDiv(true);
         PlayExtra_ClearExtra();
         Play_CheckHostStart();
-
     } else {
-
-        if (Play_Multi_MainBig && !position) {//If main ended find a new main
+        if (Play_Multi_MainBig && !position) {
+            //If main ended find a new main
 
             Play_MultiEnableKeyRightLeft(1);
-
-
         } else {
-
             for (var i = 0; i < 4; i++) {
-
                 if (Play_MultiArray[i].data.length > 0 && Play_audio_enable[i]) {
-
                     return;
-
                 }
 
                 Play_MultiInfoReset(i);
             }
 
-            Play_MultiEnableKeyRightLeft(1);//find one to enable the audio
-
+            Play_MultiEnableKeyRightLeft(1); //find one to enable the audio
         }
-
     }
 }
 
@@ -269,9 +220,7 @@ function Play_MultiFirstClear() {
     var i = 0;
 
     for (i; i < Play_MultiArray_length; i++) {
-
         if (Play_MultiArray[i].data.length < 1) return i;
-
     }
     return 0;
 }
@@ -280,52 +229,36 @@ function Play_MultiIsAlredyOPen(Id) {
     var i = 0;
 
     for (i; i < Play_MultiArray_length; i++) {
-
         if (Play_MultiArray[i].data.length > 0 && Play_MultiArray[i].data[14] === Id) {
-
             UserLiveFeed_ResetFeedId();
             return true;
-
         }
-
     }
 
     return false;
 }
 
 function Play_MultiIsFull() {
-    return (Play_MultiArray[0].data.length > 0) &&
-        (Play_MultiArray[1].data.length > 0) &&
-        (Play_MultiArray[2].data.length > 0) &&
-        (Play_MultiArray[3].data.length > 0);
+    return Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0 && Play_MultiArray[2].data.length > 0 && Play_MultiArray[3].data.length > 0;
 }
 
 function Play_MultiHasOne() {
-    return (Play_MultiArray[0].data.length > 0) ||
-        (Play_MultiArray[1].data.length > 0) ||
-        (Play_MultiArray[2].data.length > 0) ||
-        (Play_MultiArray[3].data.length > 0);
+    return Play_MultiArray[0].data.length > 0 || Play_MultiArray[1].data.length > 0 || Play_MultiArray[2].data.length > 0 || Play_MultiArray[3].data.length > 0;
 }
 
 function Play_MultiStartPrestart(position) {
-
     if (!Play_preventVodOnPP()) return;
 
     var obj = Play_CheckLiveThumb();
 
     if (obj) {
-
-        position = ((position || position === 0) ? position : Play_MultiFirstClear());
+        position = position || position === 0 ? position : Play_MultiFirstClear();
 
         if (!Play_MultiIsFull()) {
-
             if (position > 2) Main_HideElement('dialog_multi_help');
-
         } else {
-
             Main_HideElement('dialog_multi_help');
             Play_data_old = JSON.parse(JSON.stringify(Play_MultiArray[position]));
-
         }
 
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
@@ -344,21 +277,13 @@ function Play_MultiStartPrestart(position) {
 }
 
 function Play_MultiStart(pos) {
-
     if (Play_PreviewId) {
-
-        Play_MultiStartQualitySuccess(
-            pos,
-            Play_PreviewURL,
-            Play_PreviewResponseText,
-            true
-        );
+        Play_MultiStartQualitySuccess(pos, Play_PreviewURL, Play_PreviewResponseText, true);
 
         return;
-
     }
 
-    Play_MultiArray[pos].resultId = (new Date().getTime());
+    Play_MultiArray[pos].resultId = new Date().getTime();
 
     OSInterface_getStreamDataAsync(
         PlayClip_BaseUrl,
@@ -370,49 +295,36 @@ function Play_MultiStart(pos) {
         false,
         Play_live_token.replace('%x', Play_MultiArray[pos].data[6])
     );
-
 }
 
 function Play_MultiResult(response, pos) {
-
     if (Play_MultiEnable && Play_isOn && response) {
-
         var responseObj = JSON.parse(response);
 
         if (responseObj.checkResult > 0 && responseObj.checkResult === Play_MultiArray[pos].resultId) {
-
             if (responseObj.status === 200) {
-
                 Play_MultiStartQualitySuccess(pos, responseObj.url, responseObj.responseText);
                 return;
-
             } else if (responseObj.status === 1 || responseObj.status === 403) {
-
                 Play_MultiStartFail(pos, Play_MultiArray[pos].data[1], STR_FORBIDDEN);
                 return;
-
             } else if (responseObj.status === 404) {
-
                 Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
                 return;
-
             }
 
             Play_MultiStartFail(pos, Play_MultiArray[pos].data[1]);
         }
-
     }
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-
-    Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : (display_name + ' ' + STR_LIVE + STR_IS_OFFLINE), 2000);
+    Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : display_name + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
     Play_HideBufferDialog();
 
     if (Play_OlddataSet()) {
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_old));
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
-
     } else {
         Play_MultiArray[pos] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(pos);
@@ -427,29 +339,18 @@ function Play_MultiStartFail(pos, display_name, string_fail_reason) {
 }
 
 function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualities) {
-
     Play_MultiArray[pos].AutoUrl = theUrl;
     var isFull = Play_MultiIsFull();
 
     if (PreventCleanQualities && Main_IsOn_OSInterface) {
-
         OSInterface_ReuseFeedPlayer(theUrl, playlist, 1, 0, pos);
-
     } else {
-
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
-        Main_setTimeout(
-            function() {
-                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped &&
-                    Play_isOn && Play_MultiEnable) {
-
-                    OSInterface_StartMultiStream(pos, theUrl, playlist);
-
-                }
-            },
-            25
-        );
-
+        Main_setTimeout(function () {
+            if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) {
+                OSInterface_StartMultiStream(pos, theUrl, playlist);
+            }
+        }, 25);
     }
 
     if (isFull) UserLiveFeed_Hide(PreventCleanQualities);
@@ -472,11 +373,9 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
 
     //reset chat and follow icon if pos 0 changed
     if (!pos && Play_data.data[14] !== Play_MultiArray[pos].data[14]) {
-
         Play_data = JSON.parse(JSON.stringify(Play_MultiArray[pos]));
         Play_MultiUpdateMain();
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
-
     }
 
     Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
@@ -496,14 +395,11 @@ function Play_MultiUpdateMain() {
 var Play_MultiEnableKeyRightLeft_Offset = 0;
 
 function Play_MultiEnableKeyRightLeft(adder) {
-
     if (Play_Multi_MainBig) {
-
         Play_SetMultiStreamMainBig(adder);
         Play_MultiEnableKeyRightLeft_Offset += adder;
 
         if (Play_MultiArray[0].data.length) {
-
             // === 4 noting changed
             if (Math.abs(Play_MultiEnableKeyRightLeft_Offset) === 4) {
                 Play_MultiEnableKeyRightLeft_Offset = 0;
@@ -517,26 +413,19 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
-            Play_showWarningMidleDialog(
-                STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1],
-                2000
-            );
+            Play_showWarningMidleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
             Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
             Play_MultiUpdateinfoMainBig('_big');
             Play_MultiUpdateMain();
-
         } else {
-
             Play_MultiEnableKeyRightLeft(adder);
 
             return;
         }
 
         Play_MultiEnableKeyRightLeft_Offset = 0;
-
     } else {
-
         var pos = Play_AudioGetFirst() + adder;
 
         if (pos > 3) pos = 0;
@@ -546,38 +435,34 @@ function Play_MultiEnableKeyRightLeft(adder) {
         Play_audio_enable[pos] = 1;
 
         if (!Play_MultiArray[pos].data.length) {
-
             Play_MultiEnableKeyRightLeft(adder);
             return;
         }
 
         Play_AudioReset(pos);
 
-        Play_showWarningMidleDialog(
-            STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1],
-            2000
-        );
+        Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1], 2000);
     }
 
     Play_SetAudioIcon();
-
 }
 
 //mirror function to Java SetMultiStreamMainBig
 function Play_SetMultiStreamMainBig(offset) {
-
     if (!offset) return;
 
     var tempPosition,
         temp_Volume,
         len = Math.abs(offset),
-        i, j, j_len = Play_MultiArray_length - 1,
+        i,
+        j,
+        j_len = Play_MultiArray_length - 1,
         left = offset > 0;
 
     for (i = 0; i < len; i++) {
-
         //https://www.javatpoint.com/java-program-to-left-rotate-the-elements-of-an-array
-        if (left) {//if offset = 1 result 1 2 3 0
+        if (left) {
+            //if offset = 1 result 1 2 3 0
 
             //Stores the first element of the array
             tempPosition = Play_MultiArray[0];
@@ -593,7 +478,8 @@ function Play_SetMultiStreamMainBig(offset) {
             Play_volumes[j] = temp_Volume;
 
             //https://www.javatpoint.com/java-program-to-right-rotate-the-elements-of-an-array
-        } else {// else if offset -1 result 3 0 1 2
+        } else {
+            // else if offset -1 result 3 0 1 2
 
             //Stores the last element of array
             tempPosition = Play_MultiArray[3];
@@ -607,48 +493,33 @@ function Play_SetMultiStreamMainBig(offset) {
             //Last element of array will be added to the start of array.
             Play_MultiArray[0] = tempPosition;
             Play_volumes[0] = temp_Volume;
-
         }
-
     }
-
 }
 
 function Play_MultiUpdateinfoMainBig(extraText) {
     var i = 0;
 
     for (i; i < Play_MultiArray_length; i++) {
-
         if (Play_MultiArray[i].data.length > 0) {
-
             Main_innerHTML(
                 'stream_info_multi_name' + extraText + i,
                 Play_partnerIcon(
                     Play_MultiArray[i].data[1],
                     Play_MultiArray[i].data[10],
                     0,
-                    Play_MultiArray[i].data[5] ? ('[' + Play_MultiArray[i].data[5].split('[')[1]) : '',
+                    Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '',
                     Play_MultiArray[i].data[8]
                 )
             );
 
-            Play_MultiUpdateinfo(
-                i,
-                Play_MultiArray[i].data[3],
-                Play_MultiArray[i].data[13],
-                twemoji.parse(Play_MultiArray[i].data[2]),
-                extraText
-            );
+            Play_MultiUpdateinfo(i, Play_MultiArray[i].data[3], Play_MultiArray[i].data[13], twemoji.parse(Play_MultiArray[i].data[2]), extraText);
 
             if (Play_MultiArray[i].data[9]) {
-
                 Main_getElementById('stream_info_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-
             } else {
-
                 Play_MultiupdateStreamLogo(Play_MultiArray[i].data[14], i);
             }
-
         } else {
             Play_MultiInfoReset(i);
         }
@@ -658,16 +529,7 @@ function Play_MultiUpdateinfoMainBig(extraText) {
 function Play_MultiupdateStreamLogo(channeiId, pos) {
     var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-    BaseXmlHttpGet(
-        theUrl,
-        2,
-        null,
-        Play_MultiupdateStreamLogoValues,
-        noop_fun,
-        pos,
-        0,
-        true
-    );
+    BaseXmlHttpGet(theUrl, 2, null, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
 }
 
 function Play_MultiupdateStreamLogoValues(responseText, i) {
@@ -684,32 +546,16 @@ function Play_MultiupdateStreamLogoValues(responseText, i) {
 
         Main_innerHTML(
             'stream_info_multi_name' + extraText + i,
-            Play_partnerIcon(
-                Play_MultiArray[i].data[1],
-                Play_MultiArray[i].data[10],
-                0,
-                Play_MultiArray[i].data[5] ? ('[' + Play_MultiArray[i].data[5].split('[')[1]) : '',
-                Play_MultiArray[i].data[8]
-            )
+            Play_partnerIcon(Play_MultiArray[i].data[1], Play_MultiArray[i].data[10], 0, Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '', Play_MultiArray[i].data[8])
         );
-
     }
 }
 
 function Play_MultiInfoReset(pos) {
-    Play_MultiSetinfo(
-        pos,
-        '',
-        -1,
-        '',
-        false,
-        IMG_404_LOGO,
-        STR_MULTI_EMPTY
-    );
+    Play_MultiSetinfo(pos, '', -1, '', false, IMG_404_LOGO, STR_MULTI_EMPTY);
 }
 
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title, id) {
-
     Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTING);
 
     if (Play_MultiArray[pos].isHost) {
@@ -719,146 +565,113 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title,
     }
 
     var partner = Play_MultiArray[pos].data[10];
-    var lang = Play_MultiArray[pos].data[5] ? ('[' + Play_MultiArray[pos].data[5].split('[')[1]) : '';
+    var lang = Play_MultiArray[pos].data[5] ? '[' + Play_MultiArray[pos].data[5].split('[')[1] : '';
 
     var extraText = Play_Multi_MainBig ? '_big' : '';
 
     if (logo) {
-
         Main_getElementById('stream_info_multiimg' + extraText + pos).src = logo;
-
     } else if (id) {
-
         Play_MultiupdateStreamLogo(id, pos);
     }
 
-
-    Main_innerHTML(
-        'stream_info_multi_name' + extraText + pos,
-        displayname === '' ? STR_SPACE_HTML :
-            Play_partnerIcon(
-                displayname,
-                partner,
-                0,
-                lang,
-                is_rerun
-            )
-    );
+    Main_innerHTML('stream_info_multi_name' + extraText + pos, displayname === '' ? STR_SPACE_HTML : Play_partnerIcon(displayname, partner, 0, lang, is_rerun));
     Play_MultiUpdateinfo(pos, game, views, title, extraText);
 }
 
 function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
     Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
     Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
-    Main_innerHTML('stream_info_multi_views' + extraText + pos, (views > 0) ? (STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views)) : STR_SPACE_HTML);
+    Main_innerHTML('stream_info_multi_views' + extraText + pos, views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML);
 }
 
 function Play_MultiSetpannelInfo() {
     Main_textContent('stream_dialog_multi_title', STR_REPLACE_MULTI);
     Main_textContent('stream_dialog_multi_end', STR_REPLACE_MULTI_ENTER);
     for (var i = 0; i < 4; i++) {
-        Main_innerHTML("stream_info_multiimgholder" + i,
-            '<img id="stream_info_multiimg' + i + '" alt="" class="multi_info_img" src="' + IMG_404_BANNER + '"' +
-            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+        Main_innerHTML(
+            'stream_info_multiimgholder' + i,
+            '<img id="stream_info_multiimg' + i + '" alt="" class="multi_info_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        );
 
-        Main_innerHTML("stream_info_multiimgholder_big" + i,
-            '<img id="stream_info_multiimg_big' + i + '" alt="" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' +
-            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+        Main_innerHTML(
+            'stream_info_multiimgholder_big' + i,
+            '<img id="stream_info_multiimg_big' + i + '" alt="" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        );
 
-        Main_innerHTML("stream_dialog_multiimgholder_big" + i,
-            '<img id="stream_dialog_multiimg_big' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
-            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+        Main_innerHTML(
+            'stream_dialog_multiimgholder_big' + i,
+            '<img id="stream_dialog_multiimg_big' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        );
 
-        Main_innerHTML("stream_dialog_multiimgholder" + i,
-            '<img id="stream_dialog_multiimg' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
-            'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+        Main_innerHTML(
+            'stream_dialog_multiimgholder' + i,
+            '<img id="stream_dialog_multiimg' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        );
     }
 
     var doc = Main_getElementById('stream_info_multiimg_big0');
     doc.style.width = '16.5%';
     doc.style.marginTop = '-0.5%';
 
-    Main_innerHTML("stream_dialog_multiimgholder-1",
-        '<img id="stream_dialog_multiimg-1" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' +
-        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+    Main_innerHTML(
+        'stream_dialog_multiimgholder-1',
+        '<img id="stream_dialog_multiimg-1" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+    );
 
-    Main_innerHTML("stream_info_ppimgholder0",
-        '<img id="stream_info_ppimg0" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
-        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+    Main_innerHTML(
+        'stream_info_ppimgholder0',
+        '<img id="stream_info_ppimg0" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+    );
 
-    Main_innerHTML("stream_info_ppimgholder1",
-        '<img id="stream_info_ppimg1" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' +
-        'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>');
+    Main_innerHTML(
+        'stream_info_ppimgholder1',
+        '<img id="stream_info_ppimg1" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+    );
 }
 
 var Play_MultiDialogPos = 0;
 function Play_MultiSetUpdateDialog(obj) {
-
     var extraText = Play_Multi_MainBig ? '_big' : '';
 
     for (var i = 0; i < 4; i++) {
-
         Main_textContent('stream_dialog_multi_name' + extraText + i, Play_MultiArray[i].data[1]);
 
         if (Play_MultiArray[i].data[9]) {
-
             Main_getElementById('stream_dialog_multiimg' + extraText + i).src = Play_MultiArray[i].data[9];
-
         } else {
-
             Play_MultiSetUpdateDialogLogo(Play_MultiArray[i].data[14], i);
-
         }
 
         Main_innerHTML('stream_dialog_multi_game' + extraText + i, Play_MultiArray[i].data[3] === '' ? STR_SPACE_HTML : Play_MultiArray[i].data[3]);
         Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
-
     }
 
-    Main_textContent('stream_dialog_multi_name-1', (Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]));
-
+    Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]);
 
     if (obj[9]) {
-
         Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
-
     } else {
-
         Play_MultiSetUpdateDialogLogo(obj[14], -1);
-
     }
 
     Main_innerHTML('stream_dialog_multi_game-1', obj[3] === '' ? STR_SPACE_HTML : obj[3]);
     Main_innerHTML('stream_dialog_multi_title-1', twemoji.parse(obj[2]));
 
-
     if (Play_PreviewId) {
-
         OSInterface_ReuseFeedPlayerPrepare(1);
         UserLiveFeed_HideAfter();
-
     } else UserLiveFeed_Hide();
 
     Play_MultiDialogPos = 0;
     Play_MultiAddFocus();
     Play_ShowMultiDialog();
-
 }
-
 
 function Play_MultiSetUpdateDialogLogo(channeiId, pos) {
     var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-    BaseXmlHttpGet(
-        theUrl,
-        2,
-        null,
-        Play_MultiSetUpdateDialogLogoValues,
-        noop_fun,
-        pos,
-        0,
-        true
-    );
+    BaseXmlHttpGet(theUrl, 2, null, Play_MultiSetUpdateDialogLogoValues, noop_fun, pos, 0, true);
 }
 
 function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
@@ -869,7 +682,6 @@ function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
         var extraText = Play_Multi_MainBig ? '_big' : '';
 
         if (i > 0) {
-
             Play_MultiArray[i].data[10] = objData.broadcaster_type === 'partner';
             Play_MultiArray[i].data[9] = objData.profile_image_url;
 
@@ -877,7 +689,6 @@ function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
         } else {
             Main_getElementById('stream_dialog_multiimg-1').src = objData.profile_image_url;
         }
-
     }
 }
 
@@ -891,7 +702,6 @@ function Play_MultiRemoveFocus() {
 }
 
 function Play_ShowMultiDialog() {
-
     if (Play_Multi_MainBig) {
         Main_HideElement('stream_dialog_multi_4');
         Main_ShowElement('stream_dialog_multi_big');

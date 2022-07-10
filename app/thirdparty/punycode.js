@@ -3,15 +3,10 @@
 // https://cdnjs.cloudflare.com/ajax/libs/punycode/1.4.1/punycode.js
 // https://cdnjs.com/libraries/punycode
 
-(function(root) {
-
+(function (root) {
     /** Detect free variables */
     var freeGlobal = typeof global === 'object' && global;
-    if (
-        freeGlobal.global === freeGlobal ||
-        freeGlobal.window === freeGlobal ||
-        freeGlobal.self === freeGlobal
-    ) {
+    if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal || freeGlobal.self === freeGlobal) {
         root = freeGlobal;
     }
 
@@ -21,10 +16,8 @@
      * @type Object
      */
     var punycode,
-
         /** Highest positive signed 32-bit float value */
         maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
-
         /** Bootstring parameters */
         base = 36,
         tMin = 1,
@@ -34,19 +27,16 @@
         initialBias = 72,
         initialN = 128, // 0x80
         delimiter = '-', // '\x2D'
-
         /** Regular expressions */
         regexPunycode = /^xn--/,
         regexNonASCII = /[^\x20-\x7E]/, // unprintable ASCII chars + non-ASCII chars
         regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g, // RFC 3490 separators
-
         /** Error messages */
         errors = {
-            'overflow': 'Overflow: input needs wider integers to process',
+            overflow: 'Overflow: input needs wider integers to process',
             'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
             'invalid-input': 'Invalid input'
         },
-
         /** Convenience shortcuts */
         baseMinusTMin = base - tMin,
         floor = Math.floor,
@@ -128,11 +118,12 @@
             extra;
         while (counter < length) {
             value = string.charCodeAt(counter++);
-            if (value >= 0xD800 && value <= 0xDBFF && counter < length) {
+            if (value >= 0xd800 && value <= 0xdbff && counter < length) {
                 // high surrogate, and there is a next character
                 extra = string.charCodeAt(counter++);
-                if ((extra & 0xFC00) === 0xDC00) { // low surrogate
-                    output.push(((value & 0x3FF) << 10) + (extra & 0x3FF) + 0x10000);
+                if ((extra & 0xfc00) === 0xdc00) {
+                    // low surrogate
+                    output.push(((value & 0x3ff) << 10) + (extra & 0x3ff) + 0x10000);
                 } else {
                     // unmatched surrogate; only append this code unit, in case the next
                     // code unit is the high surrogate of a surrogate pair
@@ -155,12 +146,12 @@
      * @returns {String} The new Unicode string (UCS-2).
      */
     function ucs2encode(array) {
-        return map(array, function(value) {
+        return map(array, function (value) {
             var output = '';
-            if (value > 0xFFFF) {
+            if (value > 0xffff) {
                 value -= 0x10000;
-                output += stringFromCharCode(value >>> 10 & 0x3FF | 0xD800);
-                value = 0xDC00 | value & 0x3FF;
+                output += stringFromCharCode(((value >>> 10) & 0x3ff) | 0xd800);
+                value = 0xdc00 | (value & 0x3ff);
             }
             output += stringFromCharCode(value);
             return output;
@@ -215,10 +206,10 @@
         var k = 0;
         delta = firstTime ? floor(delta / damp) : delta >> 1;
         delta += floor(delta / numPoints);
-        for ( /* no initialization */; delta > baseMinusTMin * tMax >> 1; k += base) {
+        for (; /* no initialization */ delta > (baseMinusTMin * tMax) >> 1; k += base) {
             delta = floor(delta / baseMinusTMin);
         }
-        return floor(k + (baseMinusTMin + 1) * delta / (delta + skew));
+        return floor(k + ((baseMinusTMin + 1) * delta) / (delta + skew));
     }
 
     /**
@@ -267,15 +258,13 @@
         // Main decoding loop: start just after the last delimiter if any basic code
         // points were copied; start at the beginning otherwise.
 
-        for (index = basic > 0 ? basic + 1 : 0; index < inputLength; /* no final expression */) {
-
+        for (index = basic > 0 ? basic + 1 : 0; index < inputLength /* no final expression */; ) {
             // `index` is the index of the next character to be consumed.
             // Decode a generalized variable-length integer into `delta`,
             // which gets added to `i`. The overflow checking is easier
             // if we increase `i` as we go, then subtract off its starting
             // value at the end to obtain `delta`.
-            for (oldi = i, w = 1, k = base; /* no condition */; k += base) {
-
+            for (oldi = i, w = 1, k = base /* no condition */; ; k += base) {
                 if (index >= inputLength) {
                     error('invalid-input');
                 }
@@ -287,7 +276,7 @@
                 }
 
                 i += digit * w;
-                t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+                t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
 
                 if (digit < t) {
                     break;
@@ -299,7 +288,6 @@
                 }
 
                 w *= baseMinusT;
-
             }
 
             out = output.length + 1;
@@ -316,7 +304,6 @@
 
             // Insert `n` at position `i` of the output
             output.splice(i++, 0, n);
-
         }
 
         return ucs2encode(output);
@@ -380,7 +367,6 @@
 
         // Main encoding loop:
         while (handledCPCount < inputLength) {
-
             // All non-basic code points < n have been handled already. Find the next
             // larger one:
             for (m = maxInt, j = 0; j < inputLength; ++j) {
@@ -409,16 +395,14 @@
 
                 if (currentValue === n) {
                     // Represent delta as a generalized variable-length integer
-                    for (q = delta, k = base; /* no condition */; k += base) {
-                        t = k <= bias ? tMin : (k >= bias + tMax ? tMax : k - bias);
+                    for (q = delta, k = base /* no condition */; ; k += base) {
+                        t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
                         if (q < t) {
                             break;
                         }
                         qMinusT = q - t;
                         baseMinusT = base - t;
-                        output.push(
-                            stringFromCharCode(digitToBasic(t + qMinusT % baseMinusT, 0))
-                        );
+                        output.push(stringFromCharCode(digitToBasic(t + (qMinusT % baseMinusT), 0)));
                         q = floor(qMinusT / baseMinusT);
                     }
 
@@ -431,7 +415,6 @@
 
             ++delta;
             ++n;
-
         }
         return output.join('');
     }
@@ -448,7 +431,7 @@
      * string.
      */
     function toUnicode(input) {
-        return mapDomain(input, function(string) {
+        return mapDomain(input, function (string) {
             return regexPunycode.test(string) ? decode(string.slice(4).toLowerCase()) : string;
         });
     }
@@ -465,7 +448,7 @@
      * email address.
      */
     function toASCII(input) {
-        return mapDomain(input, function(string) {
+        return mapDomain(input, function (string) {
             return regexNonASCII.test(string) ? 'xn--' + encode(string) : string;
         });
     }
@@ -479,7 +462,7 @@
          * @memberOf punycode
          * @type String
          */
-        'version': '1.4.1',
+        version: '1.4.1',
         /**
          * An object of methods to convert from JavaScript's internal character
          * representation (UCS-2) to Unicode code points, and back.
@@ -487,17 +470,16 @@
          * @memberOf punycode
          * @type Object
          */
-        'ucs2': {
-            'decode': ucs2decode,
-            'encode': ucs2encode
+        ucs2: {
+            decode: ucs2decode,
+            encode: ucs2encode
         },
-        'decode': decode,
-        'encode': encode,
-        'toASCII': toASCII,
-        'toUnicode': toUnicode
+        decode: decode,
+        encode: encode,
+        toASCII: toASCII,
+        toUnicode: toUnicode
     };
 
     /** Expose `punycode` */
     root.punycode = punycode;
-
-}(this));
+})(this);

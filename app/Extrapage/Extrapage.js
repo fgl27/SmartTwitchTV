@@ -23,14 +23,10 @@
 //To test run
 //*jshint Extrapage/Extrapage.js
 //Same method used by punycode to start as a API
-(function(root) {
-
+(function (root) {
     /** Detect free variables */
     var ExtrapageGlobal = typeof global === 'object' && global;
-    if (ExtrapageGlobal.global === ExtrapageGlobal ||
-        ExtrapageGlobal.window === ExtrapageGlobal ||
-        ExtrapageGlobal.self === ExtrapageGlobal) {
-
+    if (ExtrapageGlobal.global === ExtrapageGlobal || ExtrapageGlobal.window === ExtrapageGlobal || ExtrapageGlobal.self === ExtrapageGlobal) {
         root = ExtrapageGlobal;
     }
 
@@ -38,11 +34,12 @@
     var Main_IsOn_OSInterface = 0;
 
     function Main_Start() {
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", function() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
                 Main_load();
             });
-        } else { // `DOMContentLoaded` already fired
+        } else {
+            // `DOMContentLoaded` already fired
             Main_load();
         }
     }
@@ -65,11 +62,11 @@
     }
 
     function Main_LoadStylesheet(path) {
-        var link = document.createElement("link");
-        link.rel = "stylesheet";
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
         link.href = path;
 
-        document.getElementsByTagName("head")[0].appendChild(link);
+        document.getElementsByTagName('head')[0].appendChild(link);
     }
 
     function Main_load() {
@@ -78,15 +75,13 @@
         try {
             Main_IsOn_OSInterface = OSInterface_getversion() !== '';
         } catch (e) {
-            Main_body.style.backgroundColor = "rgba(155, 155, 155, 1)";//default rgba(0, 0, 0, 1)
+            Main_body.style.backgroundColor = 'rgba(155, 155, 155, 1)'; //default rgba(0, 0, 0, 1)
         }
         calculateFontSize();
         Main_initClick();
     }
 
-    var Main_initClickDoc = [
-        "clickup", "clickdown", "clickleft", "clickright", "clickenter", "clickback",
-        "clickpgup", "clickpgdown", "clickfeed"];
+    var Main_initClickDoc = ['clickup', 'clickdown', 'clickleft', 'clickright', 'clickenter', 'clickback', 'clickpgup', 'clickpgdown', 'clickfeed'];
     var Main_setHideButtonsId;
     var Main_scenekeysDoc;
     var Main_scenekeysPositionDoc;
@@ -102,12 +97,13 @@
         Main_scenekeysDoc = document.getElementById('scenekeys');
         Main_scenekeysPositionDoc = document.getElementById('scenekeys_position');
 
-        var i = 0, len = Main_initClickDoc.length;
+        var i = 0,
+            len = Main_initClickDoc.length;
         for (i; i < len; i++) {
             Main_initClickSet(document.getElementById(Main_initClickDoc[i]), i);
         }
 
-        Main_body.onpointerup = function() {
+        Main_body.onpointerup = function () {
             initbodyClickSet();
         };
         Set_DpadPOsition();
@@ -151,14 +147,14 @@
     }
 
     function Main_HideButtons() {
-        Main_scenekeysDoc.style.opacity = "0";
+        Main_scenekeysDoc.style.opacity = '0';
     }
 
     var Main_initClickSetId;
     var Main_initClickTimeoutId;
 
     function Main_initClickSet(doc, pos) {
-        doc.onpointerdown = function() {
+        doc.onpointerdown = function () {
             Main_ClickonpointerdownClear();
 
             if (!Main_buttonsVisible()) return;
@@ -166,10 +162,10 @@
             Main_Clickonpointerdown(pos);
 
             Main_initClickTimeoutId = Main_setTimeout(
-                function() {
+                function () {
                     Main_ClickonpointerdownClear();
                     Main_initClickSetId = Main_setInterval(
-                        function() {
+                        function () {
                             Main_Clickonpointerdown(pos);
                         },
                         50,
@@ -181,7 +177,7 @@
             );
         };
 
-        doc.onpointerup = function() {
+        doc.onpointerup = function () {
             Main_ClickonpointerdownClear();
             if (!Main_buttonsVisible()) return;
 
@@ -217,7 +213,7 @@
     }
 
     var dpad_opacity = 12 * 0.05;
-    var dpad_position = 0;//bottom right
+    var dpad_position = 0; //bottom right
     var Set_DpadPOsitions = [
         [6, 0],
         [6, 44],
@@ -228,8 +224,8 @@
     function Set_DpadPOsition() {
         if (!Main_IsOn_OSInterface) return;
         initbodyClickSet();
-        Main_scenekeysPositionDoc.style.right = Set_DpadPOsitions[dpad_position][0] + "%";
-        Main_scenekeysPositionDoc.style.bottom = Set_DpadPOsitions[dpad_position][1] + "%";
+        Main_scenekeysPositionDoc.style.right = Set_DpadPOsitions[dpad_position][0] + '%';
+        Main_scenekeysPositionDoc.style.bottom = Set_DpadPOsitions[dpad_position][1] + '%';
     }
 
     // Adapted from:
@@ -240,7 +236,6 @@
     var scaleFactor;
 
     function calculateFontSize() {
-
         // Initial sizes.
         var initialFontSize = 29,
             initialWidth = 1920,
@@ -256,7 +251,6 @@
             scaledWidth;
 
         if (Horizontal_Wide_Mode) {
-
             // Horizontal Wide mode scale app on a fix Height dynamic Width
             calculated_Height = window_innerHeight;
             // Calculate scale factor
@@ -267,7 +261,6 @@
             document.body.style.marginTop = 0;
             document.body.style.marginLeft = Math.ceil((window_innerWidth - calculated_Width) / 2) + 'px';
         } else {
-
             // Vertical Wide mode scale app on a fix Width dynamic Height
             calculated_Width = window_innerWidth;
             // Calculate scale factor
@@ -284,7 +277,7 @@
         // Set app global width.
         scaledWidth = calculated_Width;
 
-        //Set new body width/height recalculated to 16 by 9 and scaled fontSize 
+        //Set new body width/height recalculated to 16 by 9 and scaled fontSize
         BodyfontSize = initialFontSize * scaleFactor;
         Main_body.style.width = scaledWidth + 'px';
         Main_body.style.height = currentHeight + 'px';
@@ -315,16 +308,17 @@
      * and all function need to be called outiside the API
      * Extrapage + all functions called by java
      */
-    var Extrapage = {// Extrapage var is defined in app/specific/Main.js
-        'mainstart': Main_Start,
-        'initbodyClickSet': initbodyClickSet,
-        'Set_dpad_opacity': Set_dpad_opacity,
-        'Set_dpad_position': Set_dpad_position,
+    var Extrapage = {
+        // Extrapage var is defined in app/specific/Main.js
+        mainstart: Main_Start,
+        initbodyClickSet: initbodyClickSet,
+        Set_dpad_opacity: Set_dpad_opacity,
+        Set_dpad_position: Set_dpad_position
     };
 
     /** Expose `Extrapage` */
     root.Extrapage = Extrapage;
-}(this));
+})(this);
 
 Extrapage.mainstart();
 //If running from fs and not from internet add a timeout to prevet crash as the parsing of the file will not be defer

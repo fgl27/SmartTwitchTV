@@ -5,8 +5,8 @@
 //PLus change   PlayExtra_data.data[6] = 'channel hosting name'; PlayExtra_data.data[14] = 'channel hosting id';
 function PlayExtra_End_Test() {
     //Enable PP before call this
-    Play_data.data[14] = 70661496;//The id of a channel that is hosting
-    PlayExtra_End(true);//If testing main player Play_data and true, else PlayExtra_data and false for small player
+    Play_data.data[14] = 70661496; //The id of a channel that is hosting
+    PlayExtra_End(true); //If testing main player Play_data and true, else PlayExtra_data and false for small player
 }
 
 //Call this from Play_Start() end
@@ -57,14 +57,6 @@ function Play_FakeMulti() {
         //     twemoji.parse(Play_MultiArray[i].data[2])
         // );
 
-        Play_MultiSetinfo(
-            i,
-            Play_data.data[3],
-            Play_data.data[13],
-            Play_data.data[1],
-            Play_data.data[8],
-            Play_data.data[9],
-            twemoji.parse(Play_data.data[2])
-        );
+        Play_MultiSetinfo(i, Play_data.data[3], Play_data.data[13], Play_data.data[1], Play_data.data[8], Play_data.data[9], twemoji.parse(Play_data.data[2]));
     }
 }

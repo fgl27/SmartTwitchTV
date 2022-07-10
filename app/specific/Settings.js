@@ -20,12 +20,7 @@
 
 //Variable initialization
 var Settings_cursorY = 0;
-var Settings_PreviewDelay = [
-    0, 100, 200, 300, 400, 500, 600,
-    700, 800, 900, 1000, 1100, 1200,
-    1300, 1400, 1500, 1600, 1700, 1800,
-    1900, 2000
-];
+var Settings_PreviewDelay = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000];
 var Settings_jumpTimers = [5, 10, 30, 60, 120, 300, 600, 900, 1200, 1800, 3600];
 var Settings_Seek_Time = [250, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
 var bitrate_values = ['disable', 11, 10.5, 10, 9.5, 9, 8.5, 8, 7.5, 7, 6.5, 6, 5.5, 5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1];
@@ -33,505 +28,580 @@ var res_values = ['disable', '2160p', '1600p', '1440p', '1080p', '720p', '480p',
 var buffer_values = [0.1, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 //For clips the api accept a coma and extra languages
 var Languages_Extra = {
-    "en": "en,en-gb",
-    "es": "es,es-mx",
-    "pt": "pt,pt-br"
+    en: 'en,en-gb',
+    es: 'es,es-mx',
+    pt: 'pt,pt-br'
 };
 
 var Settings_value = {
-    "content_lang": {
-        "values": [
-            "All",
-            "Bulgarian [BG]", "Čeština [CS]", "Dansk [DA]", "Deutsch [DE]",
-            "Ελληνικά [EL]", "English [EN]", "Español [ES]", "Suomi [FI]",
-            "Français [FR]", "Italiano [IT]", "Magyar [HU]", "日本語 [JA]",
-            "한국어 [KO]", "Nederlands [NL]", "Norsk [NO]", "Polski [PL]",
-            "Português [PT]", "Română [RO]", "Русский [RU]", "Slovenčina [SK]",
-            "Svenska [SV]", "ภาษาไทย [TH]", "Türkçe [TR]", "Tiếng Việt [VI]",
-            "中文 [ZH]"
+    content_lang: {
+        values: [
+            'All',
+            'Bulgarian [BG]',
+            'Čeština [CS]',
+            'Dansk [DA]',
+            'Deutsch [DE]',
+            'Ελληνικά [EL]',
+            'English [EN]',
+            'Español [ES]',
+            'Suomi [FI]',
+            'Français [FR]',
+            'Italiano [IT]',
+            'Magyar [HU]',
+            '日本語 [JA]',
+            '한국어 [KO]',
+            'Nederlands [NL]',
+            'Norsk [NO]',
+            'Polski [PL]',
+            'Português [PT]',
+            'Română [RO]',
+            'Русский [RU]',
+            'Slovenčina [SK]',
+            'Svenska [SV]',
+            'ภาษาไทย [TH]',
+            'Türkçe [TR]',
+            'Tiếng Việt [VI]',
+            '中文 [ZH]'
         ],
-        "apply_values": [
-            "",
-            "bg", "cs", "da", "de",
-            "el", "en", "es", "fi",
-            "fr", "it", "hu", "ja",
-            "ko", "nl", "no", "pl",
-            "pt", "ro", "ru", "sk",
-            "sv", "th", "tr", "vi",
-            "zh"
-        ],
-        "defaultValue": 1
-    },
-    "app_lang": {
-        "values": ["English [EN]", "Español [ES]", "Português [PT-BR]", "Русский [RU]"],
-        "apply_values": ["en_US", "es_Us", "pt_BR", "ru_RU"],
-        "defaultValue": 1
-    },
-    "show_affiliate": {
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "restor_playback": {
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "clip_auto_play_next": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "PP_workaround": {
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "single_click_exit": {
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "accessibility_warn": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "ping_warn": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "live_warn": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "app_animations": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "show_feed_player": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "preview_others_volume": {//Migrated to dialog
-        "values": Settings_GetVolumes(),
-        "defaultValue": 26
-    },
-    "preview_volume": {//Migrated to dialog
-        "values": Settings_GetVolumes(),
-        "defaultValue": 101
-    },
-    "preview_sizes": {//Migrated to dialog
-        "values": ['s', 'm', 'l', 'xl'],
-        "defaultValue": 2
-    },
-    "preview_screen_sizes": {//Migrated to dialog
-        "values": ['n', 'l'],
-        "defaultValue": 1
-    },
-    "show_live_player": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "show_vod_player": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "show_clip_player": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "auto_clip_preview": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "show_side_player": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "disable_feed_player_multi": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "start_user_screen": {
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "vod_dialog": {
-        "values": ["last", "ask", "start"],
-        "defaultValue": 1
-    },
-    "auto_refresh_screen": {//Migrated to dialog
-        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
-        "defaultValue": 6
-    },
-    "auto_minimize_inactive": {//Migrated to dialog
-        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
-        "defaultValue": 1
-    },
-    "auto_refresh_background": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "show_feed_player_delay": {//Migrated to dialog
-        "values": Settings_GetPreviewDelay('ms', 'sec'),
-        "defaultValue": 1
-    },
-    "key_up_timeout": {//Migrated to dialog
-        "values": [
-            100, 150, 200, 250, 300, 350, 400,
-            450, 500, 550, 600, 650, 700, 750,
-            800, 900, 1000, 1100, 1200, 1300,
-            1400, 1500, 1600, 1700, 1800, 1900, 2000
-        ],
-        "defaultValue": 6
-    },
-    "live_feed_sort": {//Migrated to dialog
-        "values": [
-            "views_more",
-            "views_less",
-            "name_a-z",
-            "name_z-a",
-            "game_a-z",
-            "game_z-a",
-            "uptime_new",
-            "uptime_old",
-        ],
-        "defaultValue": 1
-    },
-    "burn_in_protection": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "open_host": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "play_stay": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "live_notification": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "title_notification": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "game_notification": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "live_notification_background": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "live_notification_position": {//Migrated to dialog
-        "values": [0, 1, 2, 3, 4, 5],
-        "defaultValue": 2
-    },
-    "repeat_notification": {//Migrated to dialog
-        "values": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        "defaultValue": 1
-    },
-    "since_notification": {//Migrated to dialog
-        "values": Settings_GetnotificationTime('m', 'h', 'hs'),
-        "defaultValue": 7
-    },
-    "global_font_offset": {//Migrated to dialog
-        "values": [-3, -2, -1, 0, 1, 2, 3],
-        "defaultValue": 4
-    },
-    "buffer_live": {//Migrated to dialog
-        "values": buffer_values,
-        "defaultValue": 2
-    },
-    "buffer_vod": {//Migrated to dialog
-        "values": buffer_values,
-        "defaultValue": 2
-    },
-    "buffer_clip": {//Migrated to dialog
-        "values": buffer_values,
-        "defaultValue": 2
-    },
-    "end_dialog_counter": {//Migrated to dialog
-        "values": ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-        "defaultValue": 7
-    },
-    "res_max": {//Migrated to dialog
-        "values": res_values,
-        "defaultValue": 1
-    },
-    "res_min": {//Migrated to dialog
-        "values": res_values,
-        "defaultValue": 6 // 720p
-    },
-    "bitrate_main": {//Migrated to dialog
-        "values": Settings_GetBitrates(bitrate_values),
-        "defaultValue": 1
-    },
-    "bitrate_min": {//Migrated to dialog
-        "values": Settings_GetBitrates(bitrate_values),
-        "defaultValue": 18//3 Mbps
-    },
-    "videos_animation": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "thumb_quality": {//Migrated to dialog
-        "values": ["very-low", "low", "normal", "high", "very-high"],
-        "defaultValue": 3
-    },
-    "default_quality": {
-        "values": ["Auto", "source", "1080p60", "1080p30", "720p60", "720p30", "480p30", "360p30", "160p30",],
-        "defaultValue": 1
-    },
-    "check_source": {
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "fade_sidepannel": {
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "enable_embed": {
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "clock_offset": {//Migrated to dialog
-        "values": Settings_GenerateClock(),
-        "defaultValue": 49
-    },
-    "thumb_background": {//Migrated to dialog
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "ui_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "custom_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "livenotification_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "blocked_codecs": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "player_buffers": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "playerend_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "preview_settings": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "update_settings": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "player_bitrate": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "dpad_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "chat_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "warnings_opt": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "vod_seek": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "block_qualities": {
-        "values": ["None"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "vod_seek_min": {//Migrated to dialog
-        "values": JSON.parse(JSON.stringify(Settings_jumpTimers)),
-        "defaultValue": 1
-    },
-    "vod_seek_max": {//Migrated to dialog
-        "values": JSON.parse(JSON.stringify(Settings_jumpTimers)),
-        "defaultValue": 11
-    },
-    "vod_seek_time": {//Migrated to dialog
-        "values": JSON.parse(JSON.stringify(Settings_Seek_Time)),
-        "defaultValue": 3
-    },
-    "dpad_position": {//Migrated to dialog
-        "values": ["Right-Bottom", "Right-Top", "Left-Top", "Left-Bottom"],
-        "defaultValue": 1
-    },
-    "dpad_opacity": {//Migrated to dialog
-        "values": [
-            "0%", "5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%",
-            "55%", "60%", "65%", "70%", "75%", "80%", "85%", "90%", "95%", "100%"],
-        "defaultValue": 12
-    },
-    "highlight_rewards": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "highlight_streamer": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "highlight_mod": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "highlight_atstreamer": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "highlight_atuser": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "highlight_user_send": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "show_sub": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "highlight_bits": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "chat_bot": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "show_actions": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "clear_chat": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "show_chatters": {//Migrated to dialog
-        "values": ["no", "chatters", "viewers"],
-        "defaultValue": 2
-    },
-    "chat_line_animation": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "individual_lines": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "chat_individual_background": {//Migrated to dialog
-        "values": ["disabled", "enabled", "bright", "dark"],
-        "defaultValue": 1
-    },
-    "chat_logging": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "chat_nickcolor": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "chat_timestamp": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "block_qualities_21": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_16": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_14": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_10": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_9": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_7": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_4": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "block_qualities_3": {//Migrated to dialog
-        "values": ["enabled", "disabled"],
-        "defaultValue": 1
-    },
-    "hide_main_clock": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "hide_player_clock": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "hide_main_screen_title": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "hide_etc_help_text": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "hide_screen_counter": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 1
-    },
-    "round_images": {//Migrated to dialog
-        "values": ["no", "yes"],
-        "defaultValue": 2
-    },
-    "update_background": {
-        "values": ["yes", "no"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
-    "update_show": {
-        "values": ["yes", "toast", "no"],
-        "set_values": [""],
-        "defaultValue": 1
-    },
+        apply_values: ['', 'bg', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'it', 'hu', 'ja', 'ko', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sv', 'th', 'tr', 'vi', 'zh'],
+        defaultValue: 1
+    },
+    app_lang: {
+        values: ['English [EN]', 'Español [ES]', 'Português [PT-BR]', 'Русский [RU]'],
+        apply_values: ['en_US', 'es_Us', 'pt_BR', 'ru_RU'],
+        defaultValue: 1
+    },
+    show_affiliate: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    restor_playback: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    clip_auto_play_next: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    PP_workaround: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    single_click_exit: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    accessibility_warn: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    ping_warn: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    live_warn: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    app_animations: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    show_feed_player: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    preview_others_volume: {
+        //Migrated to dialog
+        values: Settings_GetVolumes(),
+        defaultValue: 26
+    },
+    preview_volume: {
+        //Migrated to dialog
+        values: Settings_GetVolumes(),
+        defaultValue: 101
+    },
+    preview_sizes: {
+        //Migrated to dialog
+        values: ['s', 'm', 'l', 'xl'],
+        defaultValue: 2
+    },
+    preview_screen_sizes: {
+        //Migrated to dialog
+        values: ['n', 'l'],
+        defaultValue: 1
+    },
+    show_live_player: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    show_vod_player: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    show_clip_player: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    auto_clip_preview: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    show_side_player: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    disable_feed_player_multi: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    start_user_screen: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    vod_dialog: {
+        values: ['last', 'ask', 'start'],
+        defaultValue: 1
+    },
+    auto_refresh_screen: {
+        //Migrated to dialog
+        values: Settings_GetnotificationTime('m', 'h', 'hs'),
+        defaultValue: 6
+    },
+    auto_minimize_inactive: {
+        //Migrated to dialog
+        values: Settings_GetnotificationTime('m', 'h', 'hs'),
+        defaultValue: 1
+    },
+    auto_refresh_background: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    show_feed_player_delay: {
+        //Migrated to dialog
+        values: Settings_GetPreviewDelay('ms', 'sec'),
+        defaultValue: 1
+    },
+    key_up_timeout: {
+        //Migrated to dialog
+        values: [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
+        defaultValue: 6
+    },
+    live_feed_sort: {
+        //Migrated to dialog
+        values: ['views_more', 'views_less', 'name_a-z', 'name_z-a', 'game_a-z', 'game_z-a', 'uptime_new', 'uptime_old'],
+        defaultValue: 1
+    },
+    burn_in_protection: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    open_host: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    play_stay: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    live_notification: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    title_notification: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    game_notification: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    live_notification_background: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    live_notification_position: {
+        //Migrated to dialog
+        values: [0, 1, 2, 3, 4, 5],
+        defaultValue: 2
+    },
+    repeat_notification: {
+        //Migrated to dialog
+        values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        defaultValue: 1
+    },
+    since_notification: {
+        //Migrated to dialog
+        values: Settings_GetnotificationTime('m', 'h', 'hs'),
+        defaultValue: 7
+    },
+    global_font_offset: {
+        //Migrated to dialog
+        values: [-3, -2, -1, 0, 1, 2, 3],
+        defaultValue: 4
+    },
+    buffer_live: {
+        //Migrated to dialog
+        values: buffer_values,
+        defaultValue: 2
+    },
+    buffer_vod: {
+        //Migrated to dialog
+        values: buffer_values,
+        defaultValue: 2
+    },
+    buffer_clip: {
+        //Migrated to dialog
+        values: buffer_values,
+        defaultValue: 2
+    },
+    end_dialog_counter: {
+        //Migrated to dialog
+        values: ['disable', 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+        defaultValue: 7
+    },
+    res_max: {
+        //Migrated to dialog
+        values: res_values,
+        defaultValue: 1
+    },
+    res_min: {
+        //Migrated to dialog
+        values: res_values,
+        defaultValue: 6 // 720p
+    },
+    bitrate_main: {
+        //Migrated to dialog
+        values: Settings_GetBitrates(bitrate_values),
+        defaultValue: 1
+    },
+    bitrate_min: {
+        //Migrated to dialog
+        values: Settings_GetBitrates(bitrate_values),
+        defaultValue: 18 //3 Mbps
+    },
+    videos_animation: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    thumb_quality: {
+        //Migrated to dialog
+        values: ['very-low', 'low', 'normal', 'high', 'very-high'],
+        defaultValue: 3
+    },
+    default_quality: {
+        values: ['Auto', 'source', '1080p60', '1080p30', '720p60', '720p30', '480p30', '360p30', '160p30'],
+        defaultValue: 1
+    },
+    check_source: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    fade_sidepannel: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    enable_embed: {
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    clock_offset: {
+        //Migrated to dialog
+        values: Settings_GenerateClock(),
+        defaultValue: 49
+    },
+    thumb_background: {
+        //Migrated to dialog
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    ui_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    custom_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    livenotification_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    blocked_codecs: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    player_buffers: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    playerend_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    preview_settings: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    update_settings: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    player_bitrate: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    dpad_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    chat_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    warnings_opt: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    vod_seek: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    block_qualities: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    vod_seek_min: {
+        //Migrated to dialog
+        values: JSON.parse(JSON.stringify(Settings_jumpTimers)),
+        defaultValue: 1
+    },
+    vod_seek_max: {
+        //Migrated to dialog
+        values: JSON.parse(JSON.stringify(Settings_jumpTimers)),
+        defaultValue: 11
+    },
+    vod_seek_time: {
+        //Migrated to dialog
+        values: JSON.parse(JSON.stringify(Settings_Seek_Time)),
+        defaultValue: 3
+    },
+    dpad_position: {
+        //Migrated to dialog
+        values: ['Right-Bottom', 'Right-Top', 'Left-Top', 'Left-Bottom'],
+        defaultValue: 1
+    },
+    dpad_opacity: {
+        //Migrated to dialog
+        values: ['0%', '5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '45%', '50%', '55%', '60%', '65%', '70%', '75%', '80%', '85%', '90%', '95%', '100%'],
+        defaultValue: 12
+    },
+    highlight_rewards: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    highlight_streamer: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    highlight_mod: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    highlight_atstreamer: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    highlight_atuser: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    highlight_user_send: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    show_sub: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    highlight_bits: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_bot: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    show_actions: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    clear_chat: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    show_chatters: {
+        //Migrated to dialog
+        values: ['no', 'chatters', 'viewers'],
+        defaultValue: 2
+    },
+    chat_line_animation: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    individual_lines: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_individual_background: {
+        //Migrated to dialog
+        values: ['disabled', 'enabled', 'bright', 'dark'],
+        defaultValue: 1
+    },
+    chat_logging: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_nickcolor: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    chat_timestamp: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    block_qualities_21: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_16: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_14: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_10: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_9: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_7: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_4: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    block_qualities_3: {
+        //Migrated to dialog
+        values: ['enabled', 'disabled'],
+        defaultValue: 1
+    },
+    hide_main_clock: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hide_player_clock: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hide_main_screen_title: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hide_etc_help_text: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    hide_screen_counter: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    round_images: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 2
+    },
+    update_background: {
+        values: ['yes', 'no'],
+        set_values: [''],
+        defaultValue: 1
+    },
+    update_show: {
+        values: ['yes', 'toast', 'no'],
+        set_values: [''],
+        defaultValue: 1
+    }
 };
 
 function Settings_GenerateClock() {
@@ -540,7 +610,7 @@ function Settings_GenerateClock() {
         i = 0;
 
     for (i; i < 48; i++) {
-        clock.push("-" + Play_timeS(time));
+        clock.push('-' + Play_timeS(time));
         time -= 900;
     }
 
@@ -567,35 +637,8 @@ function Settings_GetVolumes() {
 }
 
 var Settings_GetnotificationTimeMs = [
-    0,
-    600000,
-    1200000,
-    1800000,
-    2700000,
-    3600000,
-    7200000,
-    10800000,
-    14400000,
-    18000000,
-    21600000,
-    25200000,
-    28800000,
-    32400000,
-    36000000,
-    39600000,
-    43200000,
-    46800000,
-    50400000,
-    54000000,
-    57600000,
-    61200000,
-    64800000,
-    68400000,
-    72000000,
-    75600000,
-    79200000,
-    82800000,
-    86400000
+    0, 600000, 1200000, 1800000, 2700000, 3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000, 32400000, 36000000, 39600000, 43200000, 46800000, 50400000, 54000000, 57600000,
+    61200000, 64800000, 68400000, 72000000, 75600000, 79200000, 82800000, 86400000
 ];
 
 function Settings_GetnotificationTime(min, hour, hours) {
@@ -616,9 +659,8 @@ function Settings_GetPreviewDelay(ms, sec) {
         time;
 
     for (i; i < len; i++) {
-
         if (Settings_PreviewDelay[i] < 1000) time = Settings_PreviewDelay[i] + ms;
-        else time = (Settings_PreviewDelay[i] / 1000) + sec;
+        else time = Settings_PreviewDelay[i] / 1000 + sec;
 
         array.push(time);
     }
@@ -627,10 +669,12 @@ function Settings_GetPreviewDelay(ms, sec) {
 }
 
 function Settings_GetBitrates(values) {
-    var i = 0, len = values.length, array = [];
+    var i = 0,
+        len = values.length,
+        array = [];
 
     for (i; i < len; i++) {
-        array.push(values[i] + " Mbps");
+        array.push(values[i] + ' Mbps');
     }
 
     return array;
@@ -641,7 +685,7 @@ var Settings_positions_length = 0;
 //Variable initialization end
 
 function Settings_init() {
-    Main_addEventListener("keydown", Settings_handleKeyDown);
+    Main_addEventListener('keydown', Settings_handleKeyDown);
     ScreensObj_SetTopLable(STR_SETTINGS);
     Main_ShowElement('settings_holder');
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
@@ -653,7 +697,7 @@ function Settings_init() {
 
 function Settings_exit() {
     Settings_ScrollTableReset();
-    Main_removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener('keydown', Settings_handleKeyDown);
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
     Main_ShowElement('label_refresh');
     Settings_RemoveinputFocus();
@@ -675,10 +719,10 @@ function Settings_SetSettings() {
 
     //Individual settings
     Settings_value.content_lang.values[0] = STR_LANG_ALL;
-    key = "content_lang";
+    key = 'content_lang';
     div += Settings_Content(key, Settings_value[key].values, STR_CONTENT_LANG, STR_CONTENT_LANG_SUMMARY);
 
-    key = "app_lang";
+    key = 'app_lang';
     div += Settings_Content(key, Settings_value[key].values, STR_APP_LANG, STR_APP_LANG_SUMMARY);
 
     //Dialog settings
@@ -713,7 +757,7 @@ function Settings_SetSettings() {
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
-    key = "default_quality";
+    key = 'default_quality';
     Settings_value[key].values[0] = STR_AUTO;
     Settings_value[key].values[1] = STR_SOURCE;
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
@@ -727,52 +771,40 @@ function Settings_SetSettings() {
     div += Settings_Content('playerend_opt', [STR_ENTER_TO_OPEN], STR_END_DIALOG_OPT, null);
     div += Settings_Content('player_buffers', [STR_ENTER_TO_OPEN], STR_SETTINGS_BUFFER_SIZE, STR_SETTINGS_BUFFER_SIZE_SUMMARY);
 
-    Main_innerHTML("settings_main", div);
+    Main_innerHTML('settings_main', div);
     Settings_positions_length = Settings_value_keys.length;
 
     //Update array that are base on strings
-    var i = 0, len = Settings_Seek_Time.length, time;
+    var i = 0,
+        len = Settings_Seek_Time.length,
+        time;
 
     for (i; i < len; i++) {
-
         if (Settings_Seek_Time[i] >= 1000) {
-
             time = Settings_Seek_Time[i] / 1000;
 
             Settings_value.vod_seek_time.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
-
         } else {
-
             Settings_value.vod_seek_time.values[i] = Settings_Seek_Time[i] + STR_MILLISECONDS;
-
         }
     }
 
     i = 0;
     len = Settings_jumpTimers.length;
     for (i; i < len; i++) {
-
         if (Settings_jumpTimers[i] >= 3600) {
-
             time = Settings_jumpTimers[i] / 3600;
 
             Settings_value.vod_seek_min.values[i] = time + STR_HOUR;
-
         } else if (Settings_jumpTimers[i] >= 60) {
-
             time = Settings_jumpTimers[i] / 60;
 
-
             Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_MINUTES : STR_MINUTE);
-
         } else {
-
             time = Settings_jumpTimers[i];
 
             Settings_value.vod_seek_min.values[i] = time + (time > 1 ? STR_SECONDS : STR_SECOND);
-
         }
-
     }
 
     Settings_value.vod_seek_max.values = Settings_value.vod_seek_min.values;
@@ -783,20 +815,14 @@ function Settings_SetSettings() {
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
-    Settings_value.dpad_position.values = [
-        STR_RIGHT + '-' + STR_BOTTOM,
-        STR_RIGHT + '-' + STR_TOP,
-        STR_LEFT + '-' + STR_BOTTOM,
-        STR_LEFT + '-' + STR_TOP
-    ];
-
+    Settings_value.dpad_position.values = [STR_RIGHT + '-' + STR_BOTTOM, STR_RIGHT + '-' + STR_TOP, STR_LEFT + '-' + STR_BOTTOM, STR_LEFT + '-' + STR_TOP];
 }
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
     Settings_value_keys.push(key);
     if (valuesArray) Settings_value[key].values = valuesArray;
 
-    return (STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR));
+    return STR_SUMMARY ? Settings_DivOptionWithSummary(key, STR, STR_SUMMARY) : Settings_DivOptionNoSummary(key, STR);
 }
 
 function Settings_DivTitle(key, string) {
@@ -804,19 +830,55 @@ function Settings_DivTitle(key, string) {
 }
 
 function Settings_DivOptionNoSummary(key, string) {
-    return '<div id="' + key + '_div" class="settings_div"><div id="' +
-        key + '_name" class="settings_name">' + string + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + '_arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + '_arrow_right" class="right"></div></div></div>';
+    return (
+        '<div id="' +
+        key +
+        '_div" class="settings_div"><div id="' +
+        key +
+        '_name" class="settings_name">' +
+        string +
+        '</div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        '_arrow_left" class="left"></div></div>' +
+        '<div id="' +
+        key +
+        '" class="strokedeline settings_value">' +
+        Settings_Obj_values(key) +
+        '</div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        '_arrow_right" class="right"></div></div></div>'
+    );
 }
 
 function Settings_DivOptionWithSummary(key, string_title, string_summary, fontSize) {
-    return '<div id="' + key + '_div" class="settings_div"><div id="' + key + '_name" class="settings_name">' +
-        string_title + '<div id="' + key + '_summary" class="settings_summary" style="font-size: ' + (fontSize ? fontSize : 64) + '%;">' + string_summary + '</div></div>' +
-        '<div class="settings_arraw_div"><div id="' + key + '_arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedeline settings_value">' + Settings_Obj_values(key) + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + '_arrow_right" class="right"></div></div></div>';
+    return (
+        '<div id="' +
+        key +
+        '_div" class="settings_div"><div id="' +
+        key +
+        '_name" class="settings_name">' +
+        string_title +
+        '<div id="' +
+        key +
+        '_summary" class="settings_summary" style="font-size: ' +
+        (fontSize ? fontSize : 64) +
+        '%;">' +
+        string_summary +
+        '</div></div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        '_arrow_left" class="left"></div></div>' +
+        '<div id="' +
+        key +
+        '" class="strokedeline settings_value">' +
+        Settings_Obj_values(key) +
+        '</div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        '_arrow_right" class="right"></div></div></div>'
+    );
 }
 
 function Settings_SetDefautls() {
@@ -837,12 +899,12 @@ function Settings_SetDefautls() {
     Settings_SetAutoMinimizeTimeout();
     Settings_HideEtcHelp();
     Main_SetThumb();
-    if (!Settings_Obj_default("app_animations")) Settings_SetAnimations();
+    if (!Settings_Obj_default('app_animations')) Settings_SetAnimations();
     Settings_notification_background();
     Settings_notification_position();
     Settings_notification_repeat();
     Settings_notification_sicetime();
-    Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
+    Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     Settings_ShowCounter();
     Settings_UpdateRoundImages();
     Settings_DisableCodecsNames = Main_getItemJson('Settings_DisableCodecsNames', []);
@@ -851,11 +913,11 @@ function Settings_SetDefautls() {
     Settings_DisableQualities = Main_getItemJson('Settings_DisableQualities', []);
     Settings_Qualities();
 
-    Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
-    OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
-    OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
-    OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
-    OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
+    Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
+    OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
+    OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+    OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
+    OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
     Settings_set_all_notification();
@@ -865,17 +927,10 @@ function Settings_SetDefautls() {
 
     if (!Main_isTV) {
         //Do it again after a delay to make sure the view is ready to receive the update
-        Main_setTimeout(
-            Settings_SetDpad,
-            2500
-        );
+        Main_setTimeout(Settings_SetDpad, 2500);
     }
 
-    Main_setInterval(
-        Settings_burn_in_protection,
-        20 * 60 * 1000
-    );
-
+    Main_setInterval(Settings_burn_in_protection, 20 * 60 * 1000);
 }
 
 var Languages_Selected;
@@ -883,14 +938,13 @@ var Languages_Selected;
 function Settings_SetLang() {
     Main_ContentLang = Settings_value.content_lang.apply_values[Settings_Obj_default('content_lang')];
 
-    if (Main_ContentLang === "") {
+    if (Main_ContentLang === '') {
         Languages_Selected = STR_LANG_ALL;
         OSInterface_upDateLang(null);
     } else {
         Languages_Selected = Main_ContentLang.toUpperCase();
         OSInterface_upDateLang(Main_ContentLang);
     }
-
 }
 
 function Settings_RestoreAppLang() {
@@ -900,9 +954,7 @@ function Settings_RestoreAppLang() {
         len = array.length;
 
     for (i; i < len; i++) {
-
         if (Main_A_equals_B(array[i], lang)) {
-
             var key = 'app_lang';
             Settings_value[key].defaultValue = i;
             Main_setItem(key, Settings_Obj_default(key) + 1);
@@ -923,9 +975,7 @@ function Settings_SetAppLang() {
     var app_lang = Settings_value.app_lang.apply_values[Settings_Obj_default('app_lang')];
 
     if (!Main_values.WasLangChanged) {
-
         app_lang = Settings_CheckPageLang(app_lang);
-
     }
 
     en_USLang();
@@ -969,49 +1019,38 @@ function Settings_CheckPageLang(app_lang) {
     else return device_lang;
 
     if (Main_A_includes_B(Settings_value.app_lang.apply_values, device_lang)) {
-
-        var index = 0, len = Settings_value.app_lang.apply_values.length;
+        var index = 0,
+            len = Settings_value.app_lang.apply_values.length;
 
         for (index; index < len; index++) {
-
-            if (Settings_value.app_lang.apply_values[index] === device_lang)
-                break;
-
+            if (Settings_value.app_lang.apply_values[index] === device_lang) break;
         }
 
         Settings_value.app_lang.defaultValue = index;
         Main_setItem('app_lang', Settings_Obj_default('app_lang') + 1);
 
         device_lang = device_lang;
-
     }
-
 
     return device_lang;
 }
 
 function Settings_burn_in_protection() {
-    if (!Settings_Obj_default("burn_in_protection")) return;
+    if (!Settings_Obj_default('burn_in_protection')) return;
 
     Main_ShowElement('burn_in_protection');
 
-    Main_setTimeout(
-        function() {
-            Main_HideElement('burn_in_protection');
-        },
-        50
-    );
+    Main_setTimeout(function () {
+        Main_HideElement('burn_in_protection');
+    }, 50);
 }
 
 function Settings_SetDpad() {
     Settings_DpadOpacity();
     //prevent call OSInterface simultaneously, as the last may not work
-    Main_setTimeout(
-        function() {
-            Settings_DpadPOsition();
-        },
-        100
-    );
+    Main_setTimeout(function () {
+        Settings_DpadPOsition();
+    }, 100);
 }
 
 function Settings_Obj_values(key) {
@@ -1039,8 +1078,8 @@ function Settings_RemoveinputFocus() {
 }
 
 function Settings_RemoveinputFocusKey(key) {
-    Main_getElementById(key + "_arrow_left").style.opacity = "0";
-    Main_getElementById(key + "_arrow_right").style.opacity = "0";
+    Main_getElementById(key + '_arrow_left').style.opacity = '0';
+    Main_getElementById(key + '_arrow_right').style.opacity = '0';
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
 }
@@ -1064,77 +1103,78 @@ function Settings_SetarrowsKey(key) {
     var maxValue = Settings_Obj_length(key);
 
     if (currentValue > 0 && currentValue < maxValue) {
-        Main_getElementById(key + "_arrow_left").style.opacity = "1";
-        Main_getElementById(key + "_arrow_right").style.opacity = "1";
+        Main_getElementById(key + '_arrow_left').style.opacity = '1';
+        Main_getElementById(key + '_arrow_right').style.opacity = '1';
     } else if (currentValue === maxValue) {
-        Main_getElementById(key + "_arrow_left").style.opacity = "1";
-        Main_getElementById(key + "_arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + '_arrow_left').style.opacity = '1';
+        Main_getElementById(key + '_arrow_right').style.opacity = '0.2';
     } else {
-        Main_getElementById(key + "_arrow_left").style.opacity = "0.2";
-        Main_getElementById(key + "_arrow_right").style.opacity = "1";
+        Main_getElementById(key + '_arrow_left').style.opacity = '0.2';
+        Main_getElementById(key + '_arrow_right').style.opacity = '1';
     }
 }
 
 function Settings_SetDefault(position) {
-
-    if (position === "content_lang") Settings_SetLang();
-    else if (position === "app_lang") Settings_UpdateString();
-    else if (position === "live_notification") Settings_notification();
-    else if (position === "title_notification") Settings_notification_title();
-    else if (position === "game_notification") Settings_notification_game();
-    else if (position === "live_notification_background") Settings_notification_background();
-    else if (position === "live_notification_position") Settings_notification_position();
-    else if (position === "repeat_notification") Settings_notification_repeat();
-    else if (position === "since_notification") Settings_notification_sicetime();
-    else if (position === "ping_warn") Settings_SetPingWarning();
-    else if (position === "app_animations") Settings_SetAnimations();
-    else if (position === "buffer_live") Settings_SetBuffers(1);
-    else if (position === "key_up_timeout") Screens_KeyUptimeout = Settings_Obj_values("key_up_timeout");
-    else if (position === "buffer_vod") Settings_SetBuffers(2);
-    else if (position === "buffer_clip") Settings_SetBuffers(3);
-    else if (position === "end_dialog_counter") Play_EndSettingsCounter = Settings_Obj_default("end_dialog_counter");
-    else if (position === "default_quality") Play_SetQuality();
-    else if (position === "check_source") OSInterface_SetCheckSource(Settings_Obj_default("check_source") === 1);
-    else if (position === "thumb_quality") Main_SetThumb();
-    else if (position === "preview_others_volume") OSInterface_SetPreviewOthersAudio(Settings_Obj_default("preview_others_volume"));
-    else if (position === "preview_volume") OSInterface_SetPreviewAudio(Settings_Obj_default("preview_volume"));
-    else if (position === "preview_sizes") OSInterface_SetPreviewSize(Settings_Obj_default("preview_sizes"));
-    else if (position === "enable_embed") enable_embed = Settings_value.enable_embed.defaultValue;
-    else if (position === "global_font_offset") {
+    if (position === 'content_lang') Settings_SetLang();
+    else if (position === 'app_lang') Settings_UpdateString();
+    else if (position === 'live_notification') Settings_notification();
+    else if (position === 'title_notification') Settings_notification_title();
+    else if (position === 'game_notification') Settings_notification_game();
+    else if (position === 'live_notification_background') Settings_notification_background();
+    else if (position === 'live_notification_position') Settings_notification_position();
+    else if (position === 'repeat_notification') Settings_notification_repeat();
+    else if (position === 'since_notification') Settings_notification_sicetime();
+    else if (position === 'ping_warn') Settings_SetPingWarning();
+    else if (position === 'app_animations') Settings_SetAnimations();
+    else if (position === 'buffer_live') Settings_SetBuffers(1);
+    else if (position === 'key_up_timeout') Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
+    else if (position === 'buffer_vod') Settings_SetBuffers(2);
+    else if (position === 'buffer_clip') Settings_SetBuffers(3);
+    else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
+    else if (position === 'default_quality') Play_SetQuality();
+    else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
+    else if (position === 'thumb_quality') Main_SetThumb();
+    else if (position === 'preview_others_volume') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
+    else if (position === 'preview_volume') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+    else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
+    else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
+    else if (position === 'global_font_offset') {
         calculateFontSize();
         AddUser_UpdateSidepanelAfterShow();
         UserLiveFeed_ResetAddCellsize();
         Sidepannel_Scroll(true);
-    }
-    else if (position === "hide_screen_counter") Settings_ShowCounter();
-    else if (position === "round_images") Settings_UpdateRoundImages();
-    else if (position === "hide_main_clock") Settings_HideMainClock();
-    else if (position === "hide_player_clock") Settings_HidePlayerClock();
-    else if (position === "hide_main_screen_title") Settings_HideScreenTitle();
-    else if (position === "hide_etc_help_text") Settings_HideEtcHelp();
-    else if (position === "fade_sidepannel") Settings_check_sidePannelFade();
-    else if (position === "clock_offset") {
+    } else if (position === 'hide_screen_counter') Settings_ShowCounter();
+    else if (position === 'round_images') Settings_UpdateRoundImages();
+    else if (position === 'hide_main_clock') Settings_HideMainClock();
+    else if (position === 'hide_player_clock') Settings_HidePlayerClock();
+    else if (position === 'hide_main_screen_title') Settings_HideScreenTitle();
+    else if (position === 'hide_etc_help_text') Settings_HideEtcHelp();
+    else if (position === 'fade_sidepannel') Settings_check_sidePannelFade();
+    else if (position === 'clock_offset') {
         Settings_SetClock();
         Main_updateclock();
-    } else if (position === "bitrate_main") Settings_SetResBitRate(1);
-    else if (position === "bitrate_min") Settings_SetResBitRate(2);
-    else if (position === "res_max") Settings_SetResBitRate(1);
-    else if (position === "res_min") Settings_SetResBitRate(2);
-    else if (position === "dpad_opacity") Settings_DpadOpacity();
-    else if (position === "dpad_position") Settings_DpadPOsition();
-    else if (position === "PP_workaround") Settings_PP_Workaround();
-    else if (position === "vod_seek_min") Settings_check_min_seek();
-    else if (position === "vod_seek_max") Settings_check_max_seek();
-    else if (position === "auto_minimize_inactive") Settings_SetAutoMinimizeTimeout();
-    else if (position === "block_qualities_21" || position === "block_qualities_16" ||
-        position === "block_qualities_14" || position === "block_qualities_10" ||
-        position === "block_qualities_9" || position === "block_qualities_7" ||
-        position === "block_qualities_4" || position === "block_qualities_3") {
-
+    } else if (position === 'bitrate_main') Settings_SetResBitRate(1);
+    else if (position === 'bitrate_min') Settings_SetResBitRate(2);
+    else if (position === 'res_max') Settings_SetResBitRate(1);
+    else if (position === 'res_min') Settings_SetResBitRate(2);
+    else if (position === 'dpad_opacity') Settings_DpadOpacity();
+    else if (position === 'dpad_position') Settings_DpadPOsition();
+    else if (position === 'PP_workaround') Settings_PP_Workaround();
+    else if (position === 'vod_seek_min') Settings_check_min_seek();
+    else if (position === 'vod_seek_max') Settings_check_max_seek();
+    else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
+    else if (
+        position === 'block_qualities_21' ||
+        position === 'block_qualities_16' ||
+        position === 'block_qualities_14' ||
+        position === 'block_qualities_10' ||
+        position === 'block_qualities_9' ||
+        position === 'block_qualities_7' ||
+        position === 'block_qualities_4' ||
+        position === 'block_qualities_3'
+    ) {
         Settings_QualitiesCheck();
-
     }
-
 }
 
 function Settings_check_sidePannelFade() {
@@ -1152,7 +1192,7 @@ function Settings_check_min_seek() {
         var key = 'vod_seek_min';
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
-        Main_getElementById(key + "_arrow_right").style.opacity = "0.2";
+        Main_getElementById(key + '_arrow_right').style.opacity = '0.2';
     }
 }
 
@@ -1163,16 +1203,12 @@ function Settings_check_max_seek() {
         var key = 'vod_seek_max';
         Main_setItem(key, Settings_Obj_default(key) + 1);
         Main_textContent(key, Settings_Obj_values(key));
-        Main_getElementById(key + "_arrow_left").style.opacity = "0.2";
+        Main_getElementById(key + '_arrow_left').style.opacity = '0.2';
     }
-
 }
 
 function Settings_notification_check_any_enable() {
-
-    if (!Settings_Obj_default("live_notification") &&
-        !Settings_Obj_default("title_notification") &&
-        !Settings_Obj_default("game_notification")) {
+    if (!Settings_Obj_default('live_notification') && !Settings_Obj_default('title_notification') && !Settings_Obj_default('game_notification')) {
         OSInterface_StopNotificationService();
         return false;
     }
@@ -1181,45 +1217,41 @@ function Settings_notification_check_any_enable() {
 }
 
 function Settings_set_all_notification() {
-    OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
-    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
-    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
-    OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+    OSInterface_SetNotificationLive(Settings_Obj_default('live_notification') === 1);
+    OSInterface_SetNotificationTitle(Settings_Obj_default('title_notification') === 1);
+    OSInterface_SetNotificationTitle(Settings_Obj_default('title_notification') === 1);
+    OSInterface_SetNotificationGame(Settings_Obj_default('game_notification') === 1);
 }
 
 function Settings_notification() {
-    OSInterface_SetNotificationLive(Settings_Obj_default("live_notification") === 1);
+    OSInterface_SetNotificationLive(Settings_Obj_default('live_notification') === 1);
     Settings_notification_background();
 }
 
 function Settings_notification_title() {
-    OSInterface_SetNotificationTitle(Settings_Obj_default("title_notification") === 1);
+    OSInterface_SetNotificationTitle(Settings_Obj_default('title_notification') === 1);
     Settings_notification_background();
 }
 
 function Settings_notification_game() {
-    OSInterface_SetNotificationGame(Settings_Obj_default("game_notification") === 1);
+    OSInterface_SetNotificationGame(Settings_Obj_default('game_notification') === 1);
     Settings_notification_background();
 }
 
 function Settings_notification_background() {
-    OSInterface_upNotificationState(Settings_Obj_default("live_notification_background") === 1 && Settings_notification_check_any_enable());
+    OSInterface_upNotificationState(Settings_Obj_default('live_notification_background') === 1 && Settings_notification_check_any_enable());
 }
 
 function Settings_notification_position() {
-    OSInterface_SetNotificationPosition(Settings_Obj_default("live_notification_position"));
+    OSInterface_SetNotificationPosition(Settings_Obj_default('live_notification_position'));
 }
 
 function Settings_notification_repeat() {
-    OSInterface_SetNotificationRepeat(Settings_Obj_values("repeat_notification"));
+    OSInterface_SetNotificationRepeat(Settings_Obj_values('repeat_notification'));
 }
 
 function Settings_notification_sicetime() {
-
-    OSInterface_SetNotificationSinceTime(
-        Settings_GetnotificationTimeMs[Settings_Obj_default("since_notification")]
-    );
-
+    OSInterface_SetNotificationSinceTime(Settings_GetnotificationTimeMs[Settings_Obj_default('since_notification')]);
 }
 
 function Settings_SetPingWarning() {
@@ -1227,129 +1259,96 @@ function Settings_SetPingWarning() {
 }
 
 function Settings_PP_Workaround() {
-    OSInterface_msetPlayer(!Settings_Obj_default("PP_workaround"), Play_isFullScreen);
+    OSInterface_msetPlayer(!Settings_Obj_default('PP_workaround'), Play_isFullScreen);
 }
 
 function Settings_DpadOpacity() {
-    OSInterface_SetKeysOpacity(Settings_Obj_default("dpad_opacity"));
+    OSInterface_SetKeysOpacity(Settings_Obj_default('dpad_opacity'));
 }
 
 function Settings_DpadPOsition() {
-    OSInterface_SetKeysPosition(Settings_Obj_default("dpad_position"));
+    OSInterface_SetKeysPosition(Settings_Obj_default('dpad_position'));
 }
 
 function Settings_GetAutoRefreshTimeout() {
-
-    return Settings_GetnotificationTimeMs[Settings_Obj_default("auto_refresh_screen")];
-
+    return Settings_GetnotificationTimeMs[Settings_Obj_default('auto_refresh_screen')];
 }
 
 function Settings_GetAutoMinimizeTimeout() {
-
-    return Settings_GetnotificationTimeMs[Settings_Obj_default("auto_minimize_inactive")];
-
+    return Settings_GetnotificationTimeMs[Settings_Obj_default('auto_minimize_inactive')];
 }
 
 function Settings_SetAutoMinimizeTimeout() {
-
     var timeout = Settings_GetAutoMinimizeTimeout();
 
     if (timeout) {
-
         Settings_SetWarningAutoMinimize();
-        Main_addEventListener("keyup", Settings_SetWarningAutoMinimize);
-
+        Main_addEventListener('keyup', Settings_SetWarningAutoMinimize);
     } else {
-
         Settings_DisableAutoMinimizeTimeout();
-
     }
-
 }
-
 
 var Settings_AutoMinimizeTime = 15;
 var Settings_AutoMinimizeId;
 var Settings_AutoMinimizeWarningId;
 
 function Settings_SetWarningAutoMinimize() {
-
-    Settings_AutoMinimizeId = Main_setTimeout(
-        Settings_StartWarningAutoMinimize,
-        Settings_GetAutoMinimizeTimeout(),
-        Settings_AutoMinimizeId
-    );
-
+    Settings_AutoMinimizeId = Main_setTimeout(Settings_StartWarningAutoMinimize, Settings_GetAutoMinimizeTimeout(), Settings_AutoMinimizeId);
 }
 
 function Settings_StartWarningAutoMinimize() {
-
     Settings_DisableAutoMinimizeTimeout();
-    Main_removeEventListener("keyup", Settings_SetWarningAutoMinimize);
+    Main_removeEventListener('keyup', Settings_SetWarningAutoMinimize);
 
-    window.addEventListener("keydown", Settings_MinimizePreventClickfun, true);
-    window.addEventListener("keyup", Settings_MinimizePreventClickfun, true);
-    window.addEventListener("keypress", Settings_MinimizePreventClickfun, true);
+    window.addEventListener('keydown', Settings_MinimizePreventClickfun, true);
+    window.addEventListener('keyup', Settings_MinimizePreventClickfun, true);
+    window.addEventListener('keypress', Settings_MinimizePreventClickfun, true);
 
     Settings_AutoMinimizeTime = 15;
 
     Settings_CheckAutoMinimizeEnd();
     Main_ShowElement('minimize_warning');
-
 }
 
 function Settings_CheckAutoMinimizeEnd() {
-
     if (Settings_AutoMinimizeTime > 0) {
+        Settings_AutoMinimizeWarningId = Main_setTimeout(Settings_CheckAutoMinimizeEnd, 1000, Settings_AutoMinimizeWarningId);
 
-        Settings_AutoMinimizeWarningId = Main_setTimeout(
-            Settings_CheckAutoMinimizeEnd,
-            1000,
-            Settings_AutoMinimizeWarningId
-        );
-
-        Main_innerHTML(
-            'minimize_warning',
-            STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND))
-        );
-
+        Main_innerHTML('minimize_warning', STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND)));
     } else {
-
         Settings_DisableAutoMinimizeTimeout();
 
         if (Main_IsOn_OSInterface) OSInterface_mclose(false);
-
     }
 
     Settings_AutoMinimizeTime--;
-
 }
 
 function Settings_MinimizePreventClickfun(e) {
-
     e.stopPropagation();
     Settings_DisableAutoMinimizeTimeout();
     Settings_SetAutoMinimizeTimeout();
-
 }
 
 function Settings_DisableAutoMinimizeTimeout() {
-
     Main_clearTimeout(Settings_AutoMinimizeId);
     Main_clearTimeout(Settings_AutoMinimizeWarningId);
     Main_HideElement('minimize_warning');
 
-    Main_removeEventListener("keyup", Settings_SetWarningAutoMinimize);
+    Main_removeEventListener('keyup', Settings_SetWarningAutoMinimize);
 
-    window.removeEventListener("keydown", Settings_MinimizePreventClickfun, true);
-    window.removeEventListener("keyup", Settings_MinimizePreventClickfun, true);
-    window.removeEventListener("keypress", Settings_MinimizePreventClickfun, true);
-
+    window.removeEventListener('keydown', Settings_MinimizePreventClickfun, true);
+    window.removeEventListener('keyup', Settings_MinimizePreventClickfun, true);
+    window.removeEventListener('keypress', Settings_MinimizePreventClickfun, true);
 }
 
 function Settings_SetAnimations() {
-    var i, array, len,
-        classes = ['screen_holder',
+    var i,
+        array,
+        len,
+        classes = [
+            'screen_holder',
             'screen_holder_channel',
             'screen_holder_switch',
             'screen_holder_user',
@@ -1368,18 +1367,15 @@ function Settings_SetAnimations() {
             'inner_progress_bar',
             'inner_progress_bar_muted'
         ],
-        animate = Settings_Obj_default("app_animations"),
+        animate = Settings_Obj_default('app_animations'),
         mtransition = animate ? '' : 'none';
 
-    classes.forEach(
-        function(classe) {
-            array = document.getElementsByClassName(classe);
-            i = 0;
-            len = array.length;
-            for (i; i < len; i++)
-                array[i].style.transition = mtransition;
-        }
-    );
+    classes.forEach(function (classe) {
+        array = document.getElementsByClassName(classe);
+        i = 0;
+        len = array.length;
+        for (i; i < len; i++) array[i].style.transition = mtransition;
+    });
 
     if (UserLiveFeed_DataObj.length) UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
 
@@ -1387,11 +1383,9 @@ function Settings_SetAnimations() {
 
     try {
         //Array.prototype maybe not supported by all browsers
-        Array.prototype.forEach.call(array,
-            function(el) {
-                el.classList.remove(Main_classThumb);
-            }
-        );
+        Array.prototype.forEach.call(array, function (el) {
+            el.classList.remove(Main_classThumb);
+        });
     } catch (e) {
         Main_Log('Settings_SetAnimations Array.prototype crash ' + e);
     }
@@ -1412,78 +1406,69 @@ function Settings_SetResBitRate(whocall) {
 }
 
 function Settings_SetResBitRateMain() {
-    var resolution = 0, bitrate = 0;
+    var resolution = 0,
+        bitrate = 0;
 
-    if (Settings_Obj_default("bitrate_main") > 0)
-        bitrate = parseInt(Settings_Obj_values("bitrate_main").split(" ")[0] * 1000000);
+    if (Settings_Obj_default('bitrate_main') > 0) bitrate = parseInt(Settings_Obj_values('bitrate_main').split(' ')[0] * 1000000);
 
-    if (Settings_Obj_default("res_max") > 0)
-        resolution = parseInt(Settings_Obj_values("res_max").split("p")[0]);
+    if (Settings_Obj_default('res_max') > 0) resolution = parseInt(Settings_Obj_values('res_max').split('p')[0]);
 
     OSInterface_SetMainPlayerBitrate(bitrate, resolution);
 }
 
 function Settings_SetResBitRateMin() {
-    var resolution = 0, bitrate = 0;
+    var resolution = 0,
+        bitrate = 0;
 
-    if (Settings_Obj_default("bitrate_min") > 0)
-        bitrate = parseInt(Settings_Obj_values("bitrate_min").split(" ")[0] * 1000000);
+    if (Settings_Obj_default('bitrate_min') > 0) bitrate = parseInt(Settings_Obj_values('bitrate_min').split(' ')[0] * 1000000);
 
-    if (Settings_Obj_default("res_min") > 0)
-        resolution = parseInt(Settings_Obj_values("res_min").split("p")[0]);
+    if (Settings_Obj_default('res_min') > 0) resolution = parseInt(Settings_Obj_values('res_min').split('p')[0]);
 
     OSInterface_SetSmallPlayerBitrate(bitrate, resolution);
 }
 
 function Settings_SetBuffers(whocall) {
     if (!whocall) {
-        Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
-        PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
-        PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
+        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
+        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
+        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
         OSInterface_SetBuffer(1, Play_Buffer);
         OSInterface_SetBuffer(2, PlayVod_Buffer);
         OSInterface_SetBuffer(3, PlayClip_Buffer);
     } else if (whocall === 1) {
-        Play_Buffer = Settings_Obj_values("buffer_live") * 1000;
+        Play_Buffer = Settings_Obj_values('buffer_live') * 1000;
         OSInterface_SetBuffer(1, Play_Buffer);
     } else if (whocall === 2) {
-        PlayVod_Buffer = Settings_Obj_values("buffer_vod") * 1000;
+        PlayVod_Buffer = Settings_Obj_values('buffer_vod') * 1000;
         OSInterface_SetBuffer(2, PlayVod_Buffer);
     } else if (whocall === 3) {
-        PlayClip_Buffer = Settings_Obj_values("buffer_clip") * 1000;
+        PlayClip_Buffer = Settings_Obj_values('buffer_clip') * 1000;
         OSInterface_SetBuffer(3, PlayClip_Buffer);
     }
 }
 
 function Settings_SetClock() {
-    var time = Settings_Obj_default("clock_offset");
+    var time = Settings_Obj_default('clock_offset');
     Main_ClockOffset = time < 48 ? (48 - time) * -900000 : (time - 48) * 900000;
 }
 
 function Settings_HideMainClock() {
-    Settings_HideElem('clock_holder', Settings_Obj_default("hide_main_clock") === 1);
+    Settings_HideElem('clock_holder', Settings_Obj_default('hide_main_clock') === 1);
 }
 
 function Settings_HidePlayerClock() {
-    Settings_HideElem('stream_clock', Settings_Obj_default("hide_player_clock") === 1);
+    Settings_HideElem('stream_clock', Settings_Obj_default('hide_player_clock') === 1);
 }
 
 function Settings_HideScreenTitle() {
-    Settings_HideElem('top_lable', Settings_Obj_default("hide_main_screen_title") === 1);
+    Settings_HideElem('top_lable', Settings_Obj_default('hide_main_screen_title') === 1);
 }
 
 function Settings_HideEtcHelp() {
-    var hide = Settings_Obj_default("hide_etc_help_text") === 1;
-    var eleArray = [
-        'top_lable_etc',
-        'label_thumb',
-        'icon_feed_refresh',
-        'feed_last_refresh',
-        'feed_end',
-        'icon_feed_back',
-        'side_panel_top_text'
-    ];
-    var i = 0, len = eleArray.length;
+    var hide = Settings_Obj_default('hide_etc_help_text') === 1;
+    var eleArray = ['top_lable_etc', 'label_thumb', 'icon_feed_refresh', 'feed_last_refresh', 'feed_end', 'icon_feed_back', 'side_panel_top_text'];
+    var i = 0,
+        len = eleArray.length;
 
     for (i; i < len; i++) {
         Settings_HideElem(eleArray[i], hide);
@@ -1495,9 +1480,8 @@ function Settings_HideEtcHelp() {
     Sidepannel_Scroll_Offset = hide ? 1 : 0;
 }
 
-
 function Settings_ShowCounter() {
-    var hide = Settings_Obj_default("hide_screen_counter") === 1;
+    var hide = Settings_Obj_default('hide_screen_counter') === 1;
 
     Settings_HideElem('dialog_counter_text', hide);
     Settings_HideElem('feed_counter', hide);
@@ -1505,22 +1489,20 @@ function Settings_ShowCounter() {
 }
 
 function Settings_UpdateRoundImages() {
-
     Main_innerHTML(
         'round_images_css',
-        Settings_Obj_default("round_images") ?
-            'img.side_panel_channel_img {border-radius: 50%;}' +
-            'img.stream_img_channels {border-radius: 50%;}' +
-            'img.stream_info_icon {border-radius: 50%;}' +
-            'img.thumb_info_icon {border-radius: 50%;}' +
-            'img.panel_pp_img {border-radius: 50%;}' +
-            'img.multi_info_img {border-radius: 50%;}' +
-            'img.multi_info_img_big {border-radius: 50%;}' +
-            //'img.stream_img_channel_logo {border-radius: 50%;}' +//Let this square so we an have a reference of what is square or not by default
-            'img.side_panel_new_img {border-radius: 50%;}' :
-            ''
+        Settings_Obj_default('round_images')
+            ? 'img.side_panel_channel_img {border-radius: 50%;}' +
+                  'img.stream_img_channels {border-radius: 50%;}' +
+                  'img.stream_info_icon {border-radius: 50%;}' +
+                  'img.thumb_info_icon {border-radius: 50%;}' +
+                  'img.panel_pp_img {border-radius: 50%;}' +
+                  'img.multi_info_img {border-radius: 50%;}' +
+                  'img.multi_info_img_big {border-radius: 50%;}' +
+                  //'img.stream_img_channel_logo {border-radius: 50%;}' +//Let this square so we an have a reference of what is square or not by default
+                  'img.side_panel_new_img {border-radius: 50%;}'
+            : ''
     );
-
 }
 
 function Settings_HideElem(elem, hide) {
@@ -1533,7 +1515,7 @@ var Settings_CurY = 0;
 function Settings_ScrollDown() {
     var doc = Main_getElementById('settings_scroll');
     doc.scrollTop = doc.scrollHeight;
-    if (Settings_Obj_default("app_animations")) {
+    if (Settings_Obj_default('app_animations')) {
         var position = doc.scrollTop;
         doc.scrollTop = 0;
         scrollTo(doc, position, 200);
@@ -1542,23 +1524,18 @@ function Settings_ScrollDown() {
 
 function Settings_ScrollUp() {
     var doc = Main_getElementById('settings_scroll');
-    if (Settings_Obj_default("app_animations")) scrollTo(doc, 0, 200);
+    if (Settings_Obj_default('app_animations')) scrollTo(doc, 0, 200);
     else doc.scrollTop = 0;
-
 }
 
 function Settings_ScrollTable() {
     var scroolPos = 13,
-        offset = (!Main_isTV || !Main_IsOn_OSInterface) ? 1 : 0;
+        offset = !Main_isTV || !Main_IsOn_OSInterface ? 1 : 0;
 
-    if (Settings_CurY < Settings_cursorY && Settings_cursorY === (scroolPos + offset)) {
-
+    if (Settings_CurY < Settings_cursorY && Settings_cursorY === scroolPos + offset) {
         Settings_ScrollDown();
-
-    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === (scroolPos - 1 + offset)) {
-
+    } else if (Settings_CurY > Settings_cursorY && Settings_cursorY === scroolPos - 1 + offset) {
         Settings_ScrollUp();
-
     }
 
     Settings_CurY = Settings_cursorY;
@@ -1575,7 +1552,7 @@ function scrollTo(element, to, duration) {
         currentTime = 0,
         increment = 3;
 
-    var animateScroll = function() {
+    var animateScroll = function () {
         currentTime += increment;
         var val = Math.easeInOutQuad(currentTime, start, change, duration);
         element.scrollTop = val;
@@ -1590,11 +1567,11 @@ function scrollTo(element, to, duration) {
 //b = start value
 //c = change in value
 //d = duration
-Math.easeInOutQuad = function(t, b, c, d) {
+Math.easeInOutQuad = function (t, b, c, d) {
     t /= d / 2;
-    if (t < 1) return c / 2 * t * t + b;
+    if (t < 1) return (c / 2) * t * t + b;
     t--;
-    return -c / 2 * (t * (t - 2) - 1) + b;
+    return (-c / 2) * (t * (t - 2) - 1) + b;
 };
 
 function Settings_handleKeyLeft(key) {
@@ -1623,14 +1600,10 @@ function Settings_handleKeyDown(event) {
             }
             break;
         case KEY_LEFT:
-            Settings_handleKeyLeft(
-                Settings_value_keys[Settings_cursorY]
-            );
+            Settings_handleKeyLeft(Settings_value_keys[Settings_cursorY]);
             break;
         case KEY_RIGHT:
-            Settings_handleKeyRight(
-                Settings_value_keys[Settings_cursorY]
-            );
+            Settings_handleKeyRight(Settings_value_keys[Settings_cursorY]);
             break;
         case KEY_UP:
             if (Settings_cursorY > 0) {
@@ -1640,7 +1613,7 @@ function Settings_handleKeyDown(event) {
             }
             break;
         case KEY_DOWN:
-            if (Settings_cursorY < (Settings_positions_length - 1)) {
+            if (Settings_cursorY < Settings_positions_length - 1) {
                 Settings_RemoveinputFocus();
                 Settings_cursorY++;
                 Settings_inputFocus(Settings_cursorY);
@@ -1679,43 +1652,39 @@ var Settings_DisableQualitiesLen = 0;
 var Settings_CodecsDialogSet = false;
 
 function Settings_CodecsShow(click) {
-    Main_removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener('keydown', Settings_handleKeyDown);
 
     if (!Settings_CodecsDialogSet) {
-
         Settings_SetCodecsValue();
 
         if (Settings_CodecsValue.length) {
-
             var dialogContent = '',
                 DivContent,
-                spacer = " | ";
+                spacer = ' | ';
 
-            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR +
-                STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
+            dialogContent += STR_CODEC_DIALOG_TITLE + STR_BR + STR_DIV_TITLE + STR_SUPPORTED_CODEC + '</div>' + STR_BR;
 
-            var i = 0, len = Settings_CodecsValue.length;
+            var i = 0,
+                len = Settings_CodecsValue.length;
             for (i; i < len; i++) {
-
                 Settings_value[Settings_CodecsValue[i].name] = {
-                    "values": [STR_ENABLED, STR_DISABLED],
-                    "defaultValue": Main_getItemInt(Settings_CodecsValue[i].name, 0)
+                    values: [STR_ENABLED, STR_DISABLED],
+                    defaultValue: Main_getItemInt(Settings_CodecsValue[i].name, 0)
                 };
 
-                DivContent = "";
+                DivContent = '';
                 DivContent += STR_MAX_RES + Settings_CodecsValue[i].maxresolution + spacer;
                 DivContent += STR_MAX_BIT + Settings_CodecsValue[i].maxbitrate + spacer;
                 DivContent += STR_MAX_LEVEL + Settings_CodecsValue[i].maxlevel + spacer;
-                DivContent += STR_MAX_INSTANCES + ((Settings_CodecsValue[i].instances > -1) ? Settings_CodecsValue[i].instances : STR_UNKNOWN) + STR_BR;
+                DivContent += STR_MAX_INSTANCES + (Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : STR_UNKNOWN) + STR_BR;
                 DivContent += Settings_CodecsValue[i].resolutions;
 
                 dialogContent += Settings_DivOptionWithSummary(Settings_CodecsValue[i].name, Settings_CodecsValue[i].name, DivContent + STR_BR + STR_BR, 73);
             }
 
-            Main_innerHTML("dialog_codecs_text", dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+            Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
             Settings_CodecsDialogSet = true;
         }
-
     }
 
     if (Settings_CodecsValue.length) {
@@ -1726,14 +1695,14 @@ function Settings_CodecsShow(click) {
     }
 
     Main_ShowElement('dialog_codecs');
-    Main_addEventListener("keydown", Settings_handleKeyDownCodecs);
+    Main_addEventListener('keydown', Settings_handleKeyDownCodecs);
 }
 
 function Settings_handleKeyDownReturn() {
     Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Main_HideElement('dialog_codecs');
-    Main_removeEventListener("keydown", Settings_handleKeyDownCodecs);
-    Main_addEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener('keydown', Settings_handleKeyDownCodecs);
+    Main_addEventListener('keydown', Settings_handleKeyDown);
 }
 
 function Settings_handleKeyDownCodecsLeft() {
@@ -1741,12 +1710,10 @@ function Settings_handleKeyDownCodecsLeft() {
     if (Settings_Obj_default(key) > 0) Settings_CodecsRightLeft(-1);
 }
 
-
 function Settings_handleKeyDownCodecsRight() {
     var key = Settings_CodecsValue[Settings_CodecsPos].name;
     if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_CodecsRightLeft(1);
 }
-
 
 function Settings_handleKeyDownCodecs(event) {
     //console.log('event.keyCode ' + event.keyCode);
@@ -1766,7 +1733,7 @@ function Settings_handleKeyDownCodecs(event) {
             if (Settings_CodecsPos > 0) Settings_CodecsUpDown(-1);
             break;
         case KEY_DOWN:
-            if (Settings_CodecsPos < (Settings_CodecsValue.length - 1)) Settings_CodecsUpDown(1);
+            if (Settings_CodecsPos < Settings_CodecsValue.length - 1) Settings_CodecsUpDown(1);
             break;
         default:
             break;
@@ -1780,9 +1747,7 @@ function Settings_Codecs_isVisible() {
 function Settings_CodecsUpDown(offset) {
     Settings_RemoveinputFocusKey(Settings_CodecsValue[Settings_CodecsPos].name);
     Settings_CodecsPos += offset;
-    Settings_CodecsUpDownAfter(
-        Settings_CodecsValue[Settings_CodecsPos].name
-    );
+    Settings_CodecsUpDownAfter(Settings_CodecsValue[Settings_CodecsPos].name);
 }
 
 function Settings_CodecsUpDownAfter(key) {
@@ -1792,7 +1757,6 @@ function Settings_CodecsUpDownAfter(key) {
 }
 
 function Settings_CodecsRightLeft(offset) {
-
     if (Settings_CodecsValue.length < 2) {
         Main_showWarningDialog(STR_ONE_CODEC_ENA, 2000);
         return;
@@ -1858,35 +1822,25 @@ function Settings_SetMaxInstances() {
     if (!Settings_CodecsValue.length) Settings_SetCodecsValue();
     Play_MaxInstances = 0;
 
-    var i = 0, len = Settings_CodecsValue.length;
+    var i = 0,
+        len = Settings_CodecsValue.length;
     for (i; i < len; i++) {
-
-        if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) &&
-            !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : "", 'google')) {
-
-
-            Play_MaxInstances = (Settings_CodecsValue[i].instances > -1) ?
-                Settings_CodecsValue[i].instances : 10;
+        if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) && !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : '', 'google')) {
+            Play_MaxInstances = Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : 10;
 
             break;
         }
-
     }
 
     if (!Play_MaxInstances && len) {
-
-        Play_MaxInstances = (Settings_CodecsValue[0].instances > -1) ?
-            Settings_CodecsValue[0].instances : 10;
-
+        Play_MaxInstances = Settings_CodecsValue[0].instances > -1 ? Settings_CodecsValue[0].instances : 10;
     }
-
 }
 
 function Settings_SetCodecsValue() {
     if (Settings_CodecsValue.length) return;
 
     if (!Main_IsOn_OSInterface) {
-
         // Settings_CodecsValue = [
         //     {
         //         "instances": 32,
@@ -1915,18 +1869,16 @@ function Settings_SetCodecsValue() {
         //     }
         // ];
 
-        Settings_CodecsValue = JSON.parse('[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]');
-
+        Settings_CodecsValue = JSON.parse(
+            '[{"instances":32,"maxbitrate":"120 Mbps","maxlevel":"5.2","maxresolution":"3840x2176","name":"OMX.Nvidia.h264.decode","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 555 fps | 1080p : 245 fps | 1440p : 138 fps | 2160p : 61 fps","type":"video/avc"},{"instances":32,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.google.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"},{"instances":-1,"maxbitrate":"48 Mbps","maxlevel":"5.2","maxresolution":"4080x4080","name":"OMX.chico.h264.decoder","resolutions":"160p : 960 fps | 360p : 960 fps | 480p : 960 fps | 720p : 546 fps | 1080p : 240 fps | 1440p : 136 fps | 2160p : 60 fps","type":"video/avc"}]'
+        );
     } else {
-
         try {
             Settings_CodecsValue = JSON.parse(OSInterface_getcodecCapabilities('avc'));
         } catch (e) {
             Settings_CodecsValue = [];
         }
-
     }
-
 }
 
 function Settings_QualitiesCheck() {
@@ -1936,9 +1888,7 @@ function Settings_QualitiesCheck() {
         len = array_values.length;
 
     for (i; i < len; i++) {
-
-        if (Settings_Obj_default('block_qualities_' + array_values[i]))
-            Settings_DisableQualities.push(array_values[i]);
+        if (Settings_Obj_default('block_qualities_' + array_values[i])) Settings_DisableQualities.push(array_values[i]);
     }
 
     Settings_DisableQualitiesLen = Settings_DisableQualities.length;
@@ -1979,7 +1929,7 @@ function Settings_DialogShowBuffer(ckick) {
             values: Settings_value.buffer_clip.values,
             title: STR_SETTINGS_BUFFER_CLIP,
             summary: null
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY, ckick);
@@ -1991,7 +1941,6 @@ function Settings_DialogShowBitrate(click) {
 
     Settings_value.bitrate_main.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_value.bitrate_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
-
 
     var obj = {
         res_max: {
@@ -2017,7 +1966,7 @@ function Settings_DialogShowBitrate(click) {
             values: Settings_value.bitrate_min.values,
             title: STR_PLAYER_BITRATE_SMALL,
             summary: null
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC, click);
@@ -2042,7 +1991,7 @@ function Settings_vod_seek(click) {
             values: Settings_value.vod_seek_time.values,
             title: STR_VOD_SEEK_TIME,
             summary: null
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_VOD_SEEK + STR_BR + STR_BR + STR_VOD_SEEK_SUMMARY, click);
@@ -2133,7 +2082,7 @@ function Settings_DialogShowSmallPayer(click) {
             values: Settings_value.auto_clip_preview.values,
             title: STR_AUTO_PLAY_NEXT,
             summary: STR_PREVIEW_CLIP_NEXT
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_SIDE_PANEL_PLAYER, click);
@@ -2200,7 +2149,6 @@ function Settings_DialogShowNotification(click) {
 }
 
 function Settings_DialogShowDpad(click) {
-
     var obj = {
         dpad_position: {
             defaultValue: Settings_value.dpad_position.defaultValue,
@@ -2329,16 +2277,7 @@ function Settings_DialogShowCustomOpt(click) {
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
     Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
-    Settings_value.live_feed_sort.values = [
-        STR_VIWES_MOST,
-        STR_VIWES_LOWEST,
-        STR_NAME_A_Z,
-        STR_NAME_Z_A,
-        STR_GAME_A_Z,
-        STR_GAME_Z_A,
-        STR_CREATED_NEWEST,
-        STR_CREATED_OLDEST
-    ];
+    Settings_value.live_feed_sort.values = [STR_VIWES_MOST, STR_VIWES_LOWEST, STR_NAME_A_Z, STR_NAME_Z_A, STR_GAME_A_Z, STR_GAME_Z_A, STR_CREATED_NEWEST, STR_CREATED_OLDEST];
 
     var obj = {
         live_feed_sort: {
@@ -2370,7 +2309,7 @@ function Settings_DialogShowCustomOpt(click) {
             values: Settings_value.key_up_timeout.values,
             title: STR_KEY_UP_TIMEOUT,
             summary: STR_KEY_UP_TIMEOUT_SUMMARY
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_GENERAL_CUSTOM, click);
@@ -2404,7 +2343,6 @@ function Settings_DialogShowWarnings(click) {
 
     Settings_DialogShow(obj, STR_WARNINGS, click);
 }
-
 
 function Settings_UpdateSettings(click) {
     Settings_value.update_background.values = [STR_YES, STR_NO];
@@ -2459,7 +2397,7 @@ function Settings_PlayerEnd(click) {
             values: Settings_value.end_dialog_counter.values,
             title: STR_END_DIALOG_SETTINGS,
             summary: STR_END_DIALOG_SETTINGS_SUMMARY
-        },
+        }
     };
     Settings_DialogShow(obj, STR_END_DIALOG_OPT, click);
 }
@@ -2593,7 +2531,7 @@ function Settings_DialogShowChat(click) {
             values: Settings_value.chat_bot.values,
             title: STR_CHAT_BOTS,
             summary: null
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_CHAT_OPTIONS, click);
@@ -2658,7 +2596,7 @@ function Settings_block_qualities(click) {
             values: Settings_value.block_qualities_3.values,
             title: '3XXp',
             summary: null
-        },
+        }
     };
 
     Settings_DialogShow(obj, STR_BLOCK_RES + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY + STR_BR + STR_BR + STR_BLOCK_RES_SUMMARY_EXTRA, click);
@@ -2672,7 +2610,7 @@ var Settings_DialogValue = [];
 var Settings_DialogPos = 0;
 
 function Settings_DialogShow(obj, title, click) {
-    Main_removeEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener('keydown', Settings_handleKeyDown);
 
     var dialogContent = title + STR_BR;
     Settings_DialogValue = [];
@@ -2682,13 +2620,13 @@ function Settings_DialogShow(obj, title, click) {
         if (obj[property].keyenter) {
             dialogContent += Settings_Content(property, [STR_ENTER_TO_OPEN], obj[property].title, null);
         } else {
-            dialogContent += obj[property].summary ?
-                Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73) :
-                Settings_DivOptionNoSummary(property, obj[property].title);
+            dialogContent += obj[property].summary
+                ? Settings_DivOptionWithSummary(property, obj[property].title, obj[property].summary, 73)
+                : Settings_DivOptionNoSummary(property, obj[property].title);
         }
     }
 
-    Main_innerHTML("dialog_settings_text", dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
+    Main_innerHTML('dialog_settings_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
 
     Settings_DialogPos = 0;
     Main_AddClass(Settings_DialogValue[0], 'settings_value_focus');
@@ -2696,14 +2634,14 @@ function Settings_DialogShow(obj, title, click) {
     Settings_SetarrowsKey(Settings_DialogValue[0]);
 
     Main_ShowElement('dialog_settings');
-    Main_addEventListener("keydown", Settings_DialoghandleKeyDown);
+    Main_addEventListener('keydown', Settings_DialoghandleKeyDown);
 }
 
 function Settings_DialoghandleKeyReturn() {
     Settings_RemoveinputFocusKey(Settings_DialogValue[Settings_DialogPos]);
     Main_HideElement('dialog_settings');
-    Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
-    Main_addEventListener("keydown", Settings_handleKeyDown);
+    Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
+    Main_addEventListener('keydown', Settings_handleKeyDown);
 }
 
 function Settings_DialoghandleKeyLeft() {
@@ -2719,7 +2657,7 @@ function Settings_DialoghandleKeyRight() {
 function Settings_DialoghandleKeyDown(event) {
     switch (event.keyCode) {
         case KEY_ENTER:
-            if ((Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background'))) {
+            if (Main_A_includes_B(Settings_DialogValue[Settings_DialogPos], 'thumb_background')) {
                 SettingsColor_DialogColorsShow();
                 break;
             }
@@ -2738,7 +2676,7 @@ function Settings_DialoghandleKeyDown(event) {
             if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
             break;
         case KEY_DOWN:
-            if (Settings_DialogPos < (Settings_DialogValue.length - 1)) Settings_DialogUpDown(1);
+            if (Settings_DialogPos < Settings_DialogValue.length - 1) Settings_DialogUpDown(1);
             break;
         default:
             break;

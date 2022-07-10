@@ -28,7 +28,6 @@ var currentHeight;
 var scaledWidth;
 
 function calculateFontSize() {
-
     var offset = 0;
     //Prevent crash in case Settings_value is not yet loaded
     try {
@@ -50,7 +49,6 @@ function calculateFontSize() {
         calculated_Width;
 
     if (Horizontal_Wide_Mode) {
-
         // Horizontal Wide mode scale app on a fix Height dynamic Width
         calculated_Height = window_innerHeight;
         // Calculate scale factor
@@ -61,7 +59,6 @@ function calculateFontSize() {
         document.body.style.marginTop = 0;
         document.body.style.marginLeft = Math.ceil((window_innerWidth - calculated_Width) / 2) + 'px';
     } else {
-
         // Vertical Wide mode scale app on a fix Width dynamic Height
         calculated_Width = window_innerWidth;
         // Calculate scale factor
@@ -78,7 +75,7 @@ function calculateFontSize() {
     // Set app global width.
     scaledWidth = calculated_Width;
 
-    //Set new body width/height recalculated to 16 by 9 and scaled fontSize 
+    //Set new body width/height recalculated to 16 by 9 and scaled fontSize
     BodyfontSize = initialFontSize * scaleFactor;
     document.body.style.width = scaledWidth + 'px';
     document.body.style.height = currentHeight + 'px';
@@ -88,19 +85,27 @@ function calculateFontSize() {
     //Some sizes are based on VH but some devices have a wrong value for CSS vh
     var ele = Main_getElementById('settings_scroll');
     if (ele) {
-        ele.style.fontSize = (currentHeight * 0.0267) + 'px';
+        ele.style.fontSize = currentHeight * 0.0267 + 'px';
     }
 
-    var cssClass = '.side_panel_fix{font-size: ' + (currentHeight * 0.0265) + 'px;}' +
-        '.stream_thumbnail_feed_text_holder{font-size: ' + (currentHeight * 0.0255) + 'px;}' +
-        '.stream_thumbnail_game_feed_text_holder{font-size: ' + (currentHeight * 0.023) + 'px;}' +
-        '.icon_feed_refresh{font-size: ' + (currentHeight * 0.018) + 'px;}' +
-        '.side_panel_dialog{margin-top: ' + (currentHeight * 0.5) + 'px;}';
+    var cssClass =
+        '.side_panel_fix{font-size: ' +
+        currentHeight * 0.0265 +
+        'px;}' +
+        '.stream_thumbnail_feed_text_holder{font-size: ' +
+        currentHeight * 0.0255 +
+        'px;}' +
+        '.stream_thumbnail_game_feed_text_holder{font-size: ' +
+        currentHeight * 0.023 +
+        'px;}' +
+        '.icon_feed_refresh{font-size: ' +
+        currentHeight * 0.018 +
+        'px;}' +
+        '.side_panel_dialog{margin-top: ' +
+        currentHeight * 0.5 +
+        'px;}';
 
-    Main_innerHTML(
-        'vh_class',
-        cssClass
-    );
+    Main_innerHTML('vh_class', cssClass);
 }
 
 //Do the calculation and changes on proper events call

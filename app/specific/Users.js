@@ -39,15 +39,15 @@ var Users_Lang = '';
 function Users_init() {
     if (!Users_ids) {
         Users_ids = [
-            Main_Users + '_thumbdiv_',//0
-            Main_Users + '_img_',//1
-            Main_Users + '_infodiv_',//2
-            Main_Users + '_displayname_',//3
-            Main_Users + '_cell_',//4
-            'user_scroll',//5
-            Main_Users + '_row_',//6
-            Main_Users + '_imgholder_',//7
-            Main_Users + '_title_'//8
+            Main_Users + '_thumbdiv_', //0
+            Main_Users + '_img_', //1
+            Main_Users + '_infodiv_', //2
+            Main_Users + '_displayname_', //3
+            Main_Users + '_cell_', //4
+            'user_scroll', //5
+            Main_Users + '_row_', //6
+            Main_Users + '_imgholder_', //7
+            Main_Users + '_title_' //8
         ];
     }
 
@@ -70,12 +70,12 @@ function Users_init() {
     if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
-    Main_innerHTML("label_last_refresh", '');
+    Main_innerHTML('label_last_refresh', '');
 
     Main_values.Main_Go = Main_Users;
     Main_HideWarningDialog();
-    ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + " " + AddUser_UsernameArray[0].display_name);
-    Main_addEventListener("keydown", Users_handleKeyDown);
+    ScreensObj_SetTopLable(STR_USER, STR_MAIN_USER + ' ' + AddUser_UsernameArray[0].display_name);
+    Main_addEventListener('keydown', Users_handleKeyDown);
 
     if (Main_CheckAccessibilityVisible()) Main_CheckAccessibilitySet();
     else if (Users_status && Main_A_equals_B(Users_Lang, Settings_AppLang)) {
@@ -92,9 +92,9 @@ function Users_exit() {
     //Main_Log('Users_exit');
 
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
-    Main_removeEventListener("keydown", Users_handleKeyDown);
+    Main_removeEventListener('keydown', Users_handleKeyDown);
     Main_HideElement(Users_ids[5]);
-    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ":" + STR_GUIDE);
+    Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
 }
 
 function Users_StartLoad() {
@@ -125,22 +125,34 @@ function Users_loadData() {
     div.classList.add('stream_thumbnail_user_icon_holder');
     row.setAttribute('id', Users_ids[6] + '0');
 
-    div.innerHTML = '<div id="' + Users_ids[0] + '0_0' +
-        '" class="stream_thumbnail_user" ><div id="' + Users_ids[1] + '0_0' +
+    div.innerHTML =
+        '<div id="' +
+        Users_ids[0] +
+        '0_0' +
+        '" class="stream_thumbnail_user" ><div id="' +
+        Users_ids[1] +
+        '0_0' +
         '" class="stream_thumbnail_channel_img"></div>' +
-        '<div id="' + Users_ids[2] + '0_0' +
+        '<div id="' +
+        Users_ids[2] +
+        '0_0' +
         '" class="stream_thumbnail_user_text_holder">' +
-        '<div id="' + Users_ids[3] + '0_0' +
-        '" class="stream_info_user_name">' + STR_USER_ADD +
-        '</div><div id="' + Users_ids[6] + '0_0' +
+        '<div id="' +
+        Users_ids[3] +
+        '0_0' +
+        '" class="stream_info_user_name">' +
+        STR_USER_ADD +
+        '</div><div id="' +
+        Users_ids[6] +
+        '0_0' +
         '"style="color:#FFFFFF;font-size: 17vh; text-align: center; transform: translateY(-24.5vh);"><i id="' +
-        Users_ids[7] + '0_0' +
+        Users_ids[7] +
+        '0_0' +
         '" class="icon-user-plus" ></i></div></div></div>';
 
     row.appendChild(div);
 
     for (var user = 0; user < AddUser_UsernameArray.length; user++) {
-
         row.appendChild(Users_createCell(y + '_' + x, user));
         x++;
         if (x > 5) {
@@ -157,7 +169,6 @@ function Users_loadData() {
     Users_loadDataSuccessFinish();
 }
 
-
 function Users_createCell(id, pos) {
     var div = document.createElement('div');
 
@@ -165,16 +176,33 @@ function Users_createCell(id, pos) {
     div.setAttribute(Main_DataAttribute, pos);
     div.classList.add('stream_thumbnail_user_icon_holder');
 
-    div.innerHTML = '<div id="' + Users_ids[0] + id +
-        '" class="stream_thumbnail_user" ><div  id="' + Users_ids[2] + id +
-        '" class="stream_thumbnail_channel_img"><img id="' + Users_ids[1] +
-        id + '" alt="" class="stream_img_channels" src="' + AddUser_UsernameArray[pos].logo +
-        '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></div>' +
-        '<div id="' + Users_ids[3] + id +
+    div.innerHTML =
+        '<div id="' +
+        Users_ids[0] +
+        id +
+        '" class="stream_thumbnail_user" ><div  id="' +
+        Users_ids[2] +
+        id +
+        '" class="stream_thumbnail_channel_img"><img id="' +
+        Users_ids[1] +
+        id +
+        '" alt="" class="stream_img_channels" src="' +
+        AddUser_UsernameArray[pos].logo +
+        '" onerror="this.onerror=null;this.src=\'' +
+        IMG_404_LOGO +
+        '\';"></div>' +
+        '<div id="' +
+        Users_ids[3] +
+        id +
         '" class="stream_thumbnail_user_text_holder">' +
-        '<div id="' + Users_ids[7] + id +
-        '" class="stream_info_user_name">' + AddUser_UsernameArray[pos].display_name +
-        '</div><div id="' + Users_ids[8] + id +
+        '<div id="' +
+        Users_ids[7] +
+        id +
+        '" class="stream_info_user_name">' +
+        AddUser_UsernameArray[pos].display_name +
+        '</div><div id="' +
+        Users_ids[8] +
+        id +
         '" class="stream_info_user_title">' +
         (AddUser_UsernameArray[pos].access_token ? STR_USER_CODE_OK : STR_USER_CODE) +
         '</div></div></div>';
@@ -183,28 +211,26 @@ function Users_createCell(id, pos) {
 }
 
 function Users_loadDataSuccessFinish() {
-    Main_ready(
-        function() {
-            //Main_Log('Users_loadDataSuccessFinish');
-            if (!Users_status) {
-                Users_status = true;
-                Users_addFocus();
-                Main_HideLoadDialog();
-                Main_SaveValues();
-            }
-            Main_ShowElement(Users_ids[5]);
-            Main_FirstLoad = false;
-            Users_loadingData = false;
-            if (Users_ShowAutetication) {
-                Users_ShowAutetication = false;
-                Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
-                Users_Isautentication = true;
-                Users_showRemoveDialog();
-            }
-
-            if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
+    Main_ready(function () {
+        //Main_Log('Users_loadDataSuccessFinish');
+        if (!Users_status) {
+            Users_status = true;
+            Users_addFocus();
+            Main_HideLoadDialog();
+            Main_SaveValues();
         }
-    );
+        Main_ShowElement(Users_ids[5]);
+        Main_FirstLoad = false;
+        Users_loadingData = false;
+        if (Users_ShowAutetication) {
+            Users_ShowAutetication = false;
+            Users_showUserDialogPos = AddUser_UserFindpos(Users_Userlastadded);
+            Users_Isautentication = true;
+            Users_showRemoveDialog();
+        }
+
+        if (Main_FirstRun) Screens_loadDataSuccessFinishEnd();
+    });
 }
 
 function Users_addFocus(forceScroll) {
@@ -213,18 +239,12 @@ function Users_addFocus(forceScroll) {
     Main_CounterDialog(Users_cursorX, Users_cursorY, Main_ColoumnsCountChannel, AddUser_UsernameArray.length + 1);
 
     if (Main_YchangeAddFocus(Users_cursorY) || forceScroll) {
-
         if (Users_cursorY > 1) {
-
-            if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0])) {
-
-                Main_getElementById(Users_ids[5]).style.transform = 'translateY(' +
-                    (((Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight - Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop)) / BodyfontSize) +
-                    'em)';
-
+            if (Main_ThumbNull(Users_cursorY + 1, 0, Users_ids[0])) {
+                Main_getElementById(Users_ids[5]).style.transform =
+                    'translateY(' + (Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight - Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop) / BodyfontSize + 'em)';
             }
         } else Main_getElementById(Users_ids[5]).style.transform = '';
-
     }
 }
 
@@ -237,7 +257,7 @@ function Users_keyEnter() {
     if (!Users_cursorX && !Users_cursorY) {
         Main_values.Main_Before = Main_values.Main_Go;
         Main_HideElement(Users_ids[5]);
-        Main_removeEventListener("keydown", Users_handleKeyDown);
+        Main_removeEventListener('keydown', Users_handleKeyDown);
         AddUser_init();
     } else Users_showUserDialog();
 }
@@ -247,11 +267,7 @@ function Users_clearUserDialog() {
 }
 
 function Users_setUserDialog() {
-    Users_UserDialogID = Main_setTimeout(
-        Users_HideUserDialog,
-        20000,
-        Users_UserDialogID
-    );
+    Users_UserDialogID = Main_setTimeout(Users_HideUserDialog, 20000, Users_UserDialogID);
 }
 
 var Users_showUserDialogPos = 0;
@@ -261,8 +277,8 @@ function Users_showUserDialog() {
     Users_setUserDialog();
     Users_showUserDialogPos = parseInt(Main_getElementById(Users_ids[4] + Users_cursorY + '_' + Users_cursorX).getAttribute(Main_DataAttribute));
 
-    Main_innerHTML("main_dialog_user_text", STR_USER_OPTION + " " + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
-    Main_innerHTML("main_dialog_user_key", (AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE));
+    Main_innerHTML('main_dialog_user_text', STR_USER_OPTION + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].display_name);
+    Main_innerHTML('main_dialog_user_key', AddUser_UsernameArray[Users_showUserDialogPos].access_token ? STR_USER_CODE_OK : STR_USER_CODE);
 
     Main_ShowElement('main_dialog_user');
 }
@@ -293,17 +309,13 @@ function Users_clearRemoveDialog() {
 }
 
 function Users_setRemoveDialog() {
-    Users_RemoveDialogID = Main_setTimeout(
-        Users_HideRemoveDialog,
-        30000,
-        Users_RemoveDialogID
-    );
+    Users_RemoveDialogID = Main_setTimeout(Users_HideRemoveDialog, 30000, Users_RemoveDialogID);
 }
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    if (!Users_Isautentication) Main_innerHTML("main_dialog_remove", STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
-    else Main_innerHTML("main_dialog_remove", STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
+    if (!Users_Isautentication) Main_innerHTML('main_dialog_remove', STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
+    else Main_innerHTML('main_dialog_remove', STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     Main_ShowElement('yes_no_dialog');
 }
 
@@ -350,7 +362,7 @@ function Users_handleKeyEnter() {
         Users_HideRemoveDialog();
         if (!Users_Isautentication) {
             if (temp_RemoveCursor) {
-                Main_removeEventListener("keydown", Users_handleKeyDown);
+                Main_removeEventListener('keydown', Users_handleKeyDown);
                 Users_exit();
                 AddUser_removeUser(Users_showUserDialogPos);
             }
@@ -372,9 +384,8 @@ function Users_handleKeyEnter() {
                 scope = scope.slice(0, -1);
 
                 var force_verify = 'true';
-                var url = baseUrlCode + 'response_type=' + type_code + '&client_id=' +
-                    encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope +
-                    '&force_verify=' + force_verify;
+                var url =
+                    baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
                 OSInterface_AvoidClicks(true);
                 Main_LoadUrl(url);
             }
@@ -396,7 +407,6 @@ function Users_handleKeyEnter() {
         }
     } else Users_keyEnter();
 }
-
 
 function Users_handleKeyDown(event) {
     //Main_Log('Users_handleKeyDown ' + event.keyCode);
@@ -426,17 +436,17 @@ function Users_handleKeyDown(event) {
             } else if (!Users_cursorX) {
                 Users_removeFocus();
                 Sidepannel_Start(Users_handleKeyDown);
-            } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX - 1), Users_ids[0])) {
+            } else if (Main_ThumbNull(Users_cursorY, Users_cursorX - 1, Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX--;
                 Users_addFocus();
-            } else if (!Main_ThumbNull((Users_cursorY - 1), 0, Users_ids[0])) {
+            } else if (!Main_ThumbNull(Users_cursorY - 1, 0, Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX = Users_ColoumnsCount - 1;
                 Users_addFocus();
             } else {
-                for (i = (Users_ColoumnsCount - 1); i > -1; i--) {
-                    if (Main_ThumbNull((Users_cursorY - 1), i, Users_ids[0])) {
+                for (i = Users_ColoumnsCount - 1; i > -1; i--) {
+                    if (Main_ThumbNull(Users_cursorY - 1, i, Users_ids[0])) {
                         Users_removeFocus();
                         Users_cursorY--;
                         Users_cursorX = i;
@@ -457,11 +467,11 @@ function Users_handleKeyDown(event) {
                 if (Users_RemoveCursor > 2) Users_RemoveCursor = 0;
                 Users_UserCursorSet();
                 Users_setUserDialog();
-            } else if (Main_ThumbNull((Users_cursorY), (Users_cursorX + 1), Users_ids[0])) {
+            } else if (Main_ThumbNull(Users_cursorY, Users_cursorX + 1, Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorX++;
                 Users_addFocus();
-            } else if (Main_ThumbNull((Users_cursorY + 1), 0, Users_ids[0])) {
+            } else if (Main_ThumbNull(Users_cursorY + 1, 0, Users_ids[0])) {
                 Users_removeFocus();
                 Users_cursorY++;
                 Users_cursorX = 0;
@@ -476,7 +486,7 @@ function Users_handleKeyDown(event) {
             if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
             if (Users_cursorY) {
                 for (i = 0; i < Users_ColoumnsCount; i++) {
-                    if (Main_ThumbNull((Users_cursorY - 1), (Users_cursorX - i), Users_ids[0])) {
+                    if (Main_ThumbNull(Users_cursorY - 1, Users_cursorX - i, Users_ids[0])) {
                         Users_removeFocus();
                         Users_cursorY--;
                         Users_cursorX = Users_cursorX - i;
@@ -489,7 +499,7 @@ function Users_handleKeyDown(event) {
         case KEY_DOWN:
             if (Users_isRemoveDialogShown() || Users_isUserDialogShown()) break;
             for (i = 0; i < Users_ColoumnsCount; i++) {
-                if (Main_ThumbNull((Users_cursorY + 1), (Users_cursorX - i), Users_ids[0])) {
+                if (Main_ThumbNull(Users_cursorY + 1, Users_cursorX - i, Users_ids[0])) {
                     Users_removeFocus();
                     Users_cursorY++;
                     Users_cursorX = Users_cursorX - i;
@@ -498,7 +508,7 @@ function Users_handleKeyDown(event) {
                 }
             }
             break;
-        case KEY_PAUSE://key s
+        case KEY_PAUSE: //key s
         case KEY_6:
             Main_showSettings();
             break;

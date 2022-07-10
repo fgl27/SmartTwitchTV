@@ -2,7 +2,7 @@
 // © NightDev 2016 https://www.nightdev.com/kapchat/
 
 function emoteURL(id) {
-    return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0';//emotes 3.0 === 4.0
+    return 'https://static-cdn.jtvnw.net/emoticons/v2/' + id + '/default/dark/3.0'; //emotes 3.0 === 4.0
 }
 
 function emoteTemplate(url) {
@@ -21,23 +21,17 @@ function extraMessageTokenize(message, chat_number, bits) {
         len = SplittedMessage.length;
 
     for (i; i < len; i++) {
-
         cheer = bits ? findCheerInToken(SplittedMessage[i], chat_number) : 0;
 
         if (cheer) {
-
             SplittedMessage[i] = cheer;
-
         } else {
-
             emote = extraEmotes[SplittedMessage[i]];
             SplittedMessage[i] = emote ? emote.chat_div : mescape(SplittedMessage[i]);
-
         }
-
     }
 
-    return SplittedMessage.join(' ') + (bits ? (' ' + bits + ' bits') : '');
+    return SplittedMessage.join(' ') + (bits ? ' ' + bits + ' bits' : '');
 }
 
 function findCheerInToken(message, chat_number) {
@@ -49,16 +43,13 @@ function findCheerInToken(message, chat_number) {
 
     for (i; i < len; i++) {
         //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
-        if (Main_startsWith(message, cheerPrefixes[i]))
-            return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
+        if (Main_startsWith(message, cheerPrefixes[i])) return getCheer(cheerPrefixes[i], parseInt(message.substr(cheerPrefixes[i].length), 10), chat_number);
 
         //Try  case insensitive after
         if (Main_startsWith(tokenLower, cheerPrefixes[i].toLowerCase())) index = i;
     }
 
-    return ((index > -1) ?
-        getCheer(cheerPrefixes[index], parseInt(tokenLower.substr(cheerPrefixes[index].toLowerCase().length), 10), chat_number)
-        : null);
+    return index > -1 ? getCheer(cheerPrefixes[index], parseInt(tokenLower.substr(cheerPrefixes[index].toLowerCase().length), 10), chat_number) : null;
 }
 
 function getCheer(prefix, amount, chat_number) {
@@ -80,8 +71,11 @@ function emoticonize(message, emotes) {
 
     var tokenizedMessage = [],
         property,
-        replacements = [], replacement,
-        emote, i, len;
+        replacements = [],
+        replacement,
+        emote,
+        i,
+        len;
 
     for (property in emotes) {
         emote = emotes[property];
@@ -93,10 +87,9 @@ function emoticonize(message, emotes) {
                 last: emote[i][1]
             });
         }
-
     }
 
-    replacements.sort(function(a, b) {
+    replacements.sort(function (a, b) {
         return b.first - a.first;
     });
 
@@ -116,7 +109,6 @@ function emoticonize(message, emotes) {
 
         // Splice the unparsed piece of the message
         message = message.slice(0, replacement.first);
-
     }
 
     // Unshift the remaining part of the message (that contains no emotes)

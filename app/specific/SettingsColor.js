@@ -21,67 +21,77 @@
 var SettingsColor_DefaultColorsPos = 0;
 //Add a new Theme add the array pos + a name on STR_STYLES_ARRAY that is it
 var SettingsColor_DefaultColors = [
-    [//Default
-        'rgba(0,0,0,1)',        //background
-        'rgba(255,255,255,1)',  //TextColor
-        'rgba(235,235,235,1)',  //border
-        'rgba(195,0,0,1)'       //progressColor
+    [
+        //Default
+        'rgba(0,0,0,1)', //background
+        'rgba(255,255,255,1)', //TextColor
+        'rgba(235,235,235,1)', //border
+        'rgba(195,0,0,1)' //progressColor
     ],
-    [],//Custom
-    [//White
+    [], //Custom
+    [
+        //White
         'rgba(235,235,235,1)',
         'rgba(0,0,0,1)',
         'rgba(235,235,235,1)',
         'rgba(195,0,0,1)'
     ],
-    [//Grey
+    [
+        //Grey
         'rgba(56,56,56,1)',
         'rgba(255,255,255,1)',
         'rgba(56,56,56,1)',
         'rgba(195,0,0,1)'
     ],
-    [//Red
+    [
+        //Red
         'rgba(235,0,0,1)',
         'rgba(255,255,255,1)',
         'rgba(235,0,0,1)',
         'rgba(255,255,255,1)'
     ],
-    [//Orange
+    [
+        //Orange
         'rgba(255,75,0,1)',
         'rgba(255,255,255,1)',
         'rgba(255,75,0,1)',
         'rgba(255,255,255,1)'
     ],
-    [//Yellow
+    [
+        //Yellow
         'rgba(255,208,0,1)',
         'rgba(0,0,0,1)',
         'rgba(255,208,0,1)',
         'rgba(255,0,0,1)'
     ],
-    [//Green
+    [
+        //Green
         'rgba(0,200,0,1)',
         'rgba(0,0,0,1)',
         'rgba(0,200,0,1)',
         'rgba(255,0,0,1)'
     ],
-    [//Blue
+    [
+        //Blue
         'rgba(0,0,255,1)',
         'rgba(255,255,255,1)',
         'rgba(0,0,255,1)',
         'rgba(255,0,0,1)'
     ],
-    [//Purple
+    [
+        //Purple
         'rgba(100,65,164,1)',
         'rgba(255,255,255,1)',
         'rgba(100,65,164,1)',
         'rgba(255,0,0,1)'
     ],
-    [//Pink
+    [
+        //Pink
         'rgba(255,0,180,1)',
         'rgba(255,255,255,1)',
         'rgba(255,0,180,1)',
-        'rgba(255,255,255,1)',
-    ],
+        'rgba(255,255,255,1)'
+    ]
 ];
 var SettingsColor_DefaultColors_Len = SettingsColor_DefaultColors[0].length;
 
@@ -114,23 +124,20 @@ function SettingsColor_DialogColorsShow() {
     if (!SettingsColor_canvasDivContext) SettingsColor_DialogColorsStart();
 
     Main_ShowElement('dialog_color');
-    Main_removeEventListener("keydown", Settings_DialoghandleKeyDown);
-    Main_addEventListener("keydown", SettingsColor_DialogColorKeyDown);
+    Main_removeEventListener('keydown', Settings_DialoghandleKeyDown);
+    Main_addEventListener('keydown', SettingsColor_DialogColorKeyDown);
     SettingsColor_canvasPosY = 2;
     SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos = SettingsColor_DefaultColorsPos;
 
-    SettingsColor_ColorsReset(
-        SettingsColor_ColorsObj[SettingsColor_canvasPosY],
-        SettingsColor_ColorsObj[SettingsColor_canvasPosY].pos
-    );
+    SettingsColor_ColorsReset(SettingsColor_ColorsObj[SettingsColor_canvasPosY], SettingsColor_ColorsObj[SettingsColor_canvasPosY].pos);
 
     SettingsColor_ColorsObj[SettingsColor_canvasPosY].focus();
 }
 
 function SettingsColor_DialogColorsHide() {
     Main_HideElement('dialog_color');
-    Main_removeEventListener("keydown", SettingsColor_DialogColorKeyDown);
-    Main_addEventListener("keydown", Settings_DialoghandleKeyDown);
+    Main_removeEventListener('keydown', SettingsColor_DialogColorKeyDown);
+    Main_addEventListener('keydown', Settings_DialoghandleKeyDown);
     SettingsColor_ColorsObj[SettingsColor_canvasPosY].removefocus();
 }
 
@@ -183,31 +190,18 @@ function SettingsColor_DivColorsUpdate() {
 function SettingsColor_DialogColorsGet() {
     SettingsColor_canvasPosDiv[1].style.left = SettingsColor_canvasPosX[1] + '%';
 
-    var imgData = SettingsColor_canvasDivContext[1].getImageData(
-        SettingsColor_canvasPosX[1],
-        50,
-        1,
-        1
-    ),
+    var imgData = SettingsColor_canvasDivContext[1].getImageData(SettingsColor_canvasPosX[1], 50, 1, 1),
         rgba = imgData.data;
 
-    return "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", 1)";
+    return 'rgba(' + rgba[0] + ', ' + rgba[1] + ', ' + rgba[2] + ', 1)';
 }
 
 function SettingsColor_DialogColorsResultSet() {
-    SettingsColor_ColorUPdateResult(
-        SettingsColor_canvasDivContext[0].getImageData(
-            SettingsColor_canvasPosX[0],
-            50,
-            1,
-            1
-        ).data
-    );
+    SettingsColor_ColorUPdateResult(SettingsColor_canvasDivContext[0].getImageData(SettingsColor_canvasPosX[0], 50, 1, 1).data);
 }
 
 function SettingsColor_ColorUPdateResult(rgba) {
-
-    SettingsColor_ColorTemp = "rgba(" + rgba[0] + ", " + rgba[1] + ", " + rgba[2] + ", 1)";
+    SettingsColor_ColorTemp = 'rgba(' + rgba[0] + ', ' + rgba[1] + ', ' + rgba[2] + ', 1)';
 
     SettingsColor_DivColorResult.style.backgroundColor = SettingsColor_ColorTemp;
 
@@ -244,14 +238,14 @@ function SettingsColor_DialogColorsStart() {
 
     var DivContent = '';
 
-    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjStyles, STR_STYLES, (STR_STYLES_ARRAY).split(',')[0]);
+    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjStyles, STR_STYLES, STR_STYLES_ARRAY.split(',')[0]);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjApply, STR_APPLY, STR_ENTER);
-    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjColorType, STR_COLOR_TYPE, (STR_COLOR_ARRAY).split(',')[0]);
+    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjColorType, STR_COLOR_TYPE, STR_COLOR_ARRAY.split(',')[0]);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjR, 'R', SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[0]);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjG, 'G', SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[0]);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjB, 'B', SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[0]) + STR_BR + STR_BR;
 
-    Main_innerHTML("dialog_color_options", DivContent);
+    Main_innerHTML('dialog_color_options', DivContent);
 
     Main_textContent('cavas_text0', STR_SHADOWS);
     Main_textContent('cavas_text1', STR_COLORS);
@@ -288,25 +282,25 @@ function SettingsColor_DialogColorsStart() {
     gradient.addColorStop(offset, '#ff0000');
 
     gradient.addColorStop(1 / divider, '#ffff00');
-    gradient.addColorStop((1 / divider) + offset, '#ffff00');
+    gradient.addColorStop(1 / divider + offset, '#ffff00');
 
     gradient.addColorStop((1 / divider) * 2, '#00ff00');
-    gradient.addColorStop(((1 / divider) * 2) + offset, '#00ff00');
+    gradient.addColorStop((1 / divider) * 2 + offset, '#00ff00');
 
     gradient.addColorStop((1 / divider) * 3, '#00ffff');
-    gradient.addColorStop(((1 / divider) * 3) + offset, '#00ffff');
+    gradient.addColorStop((1 / divider) * 3 + offset, '#00ffff');
 
     gradient.addColorStop((1 / divider) * 4, '#0000ff');
-    gradient.addColorStop(((1 / divider) * 4) + offset, '#0000ff');
+    gradient.addColorStop((1 / divider) * 4 + offset, '#0000ff');
 
     gradient.addColorStop((1 / divider) * 5, '#ff00ff');
-    gradient.addColorStop(((1 / divider) * 5) + offset, '#ff00ff');
+    gradient.addColorStop((1 / divider) * 5 + offset, '#ff00ff');
 
     gradient.addColorStop((1 / divider) * 6, '#ff0000');
-    gradient.addColorStop(((1 / divider) * 6) + offset, '#ff0000');
+    gradient.addColorStop((1 / divider) * 6 + offset, '#ff0000');
 
     gradient.addColorStop((1 / divider) * 7, '#ffffff');
-    gradient.addColorStop(((1 / divider) * 7) + offset, '#ffffff');
+    gradient.addColorStop((1 / divider) * 7 + offset, '#ffffff');
 
     gradient.addColorStop(1 - offset, '#000000');
     gradient.addColorStop(1, '#000000');
@@ -325,43 +319,57 @@ function SettingsColor_DialogColorsStart() {
 }
 
 function SettingsColor_DivColorText(key, title, result) {
-    return '<div id="' + key + '_div" class="settings_div" style="width: 96%;"><div id="' +
-        key + '_name" class="settings_name color_name">' + title + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_left" class="left"></div></div>' +
-        '<div id="' + key + '" class="strokedeline settings_value">' + result + '</div>' +
-        '<div class="settings_arraw_div"><div id="' + key + 'arrow_right" class="right"></div></div></div>';
+    return (
+        '<div id="' +
+        key +
+        '_div" class="settings_div" style="width: 96%;"><div id="' +
+        key +
+        '_name" class="settings_name color_name">' +
+        title +
+        '</div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        'arrow_left" class="left"></div></div>' +
+        '<div id="' +
+        key +
+        '" class="strokedeline settings_value">' +
+        result +
+        '</div>' +
+        '<div class="settings_arraw_div"><div id="' +
+        key +
+        'arrow_right" class="right"></div></div></div>'
+    );
 }
 
 function SettingsColor_DivResultUpdate(div, text) {
     Main_innerHTML(
         div,
-        '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' + STR_SPACE_HTML +
-        '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' + STR_SPACE_HTML +
-        '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' + STR_SPACE_HTML +
-        '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' + STR_SPACE_HTML +
-        text
+        '<i class="icon-circle live_icon strokedeline" style="color: red;"></i>' +
+            STR_SPACE_HTML +
+            '<i class="icon-circle live_icon strokedeline" style="color: #FED000;">' +
+            STR_SPACE_HTML +
+            '</i><i class="icon-circle live_icon strokedeline" style="color: #00a94b;"></i>' +
+            STR_SPACE_HTML +
+            '</i><i class="icon-refresh live_icon strokedeline" style="color: #FFFFFF;"></i>' +
+            STR_SPACE_HTML +
+            text
     );
 }
 
 function SettingsColor_ColorExtrackRGB(DefaultColorsPos) {
-    var rgba = [], tempArray = [], i = 0, len = DefaultColorsPos.length;
+    var rgba = [],
+        tempArray = [],
+        i = 0,
+        len = DefaultColorsPos.length;
 
     for (i; i < len; i++) {
-        tempArray.push((DefaultColorsPos[i].replace(/\s/g, '')).split('(')[1].split(','));
+        tempArray.push(DefaultColorsPos[i].replace(/\s/g, '').split('(')[1].split(','));
     }
 
     i = 0;
     len = tempArray.length;
     for (i; i < len; i++) {
-
-        rgba.push(
-            [
-                parseInt(tempArray[0][i]),
-                parseInt(tempArray[1][i]),
-                parseInt(tempArray[2][i]),
-                parseInt(tempArray[3][i])
-            ]
-        );
+        rgba.push([parseInt(tempArray[0][i]), parseInt(tempArray[1][i]), parseInt(tempArray[2][i]), parseInt(tempArray[3][i])]);
     }
 
     return rgba;
@@ -372,30 +380,25 @@ function SettingsColor_SetAnimationStyleRestore() {
 
     //Workaround to fix color as default changed to black that was pos 2 now 0
     if (!Main_getItemInt('SettingsColor_DefaultColorsPos_check', 0) && SettingsColor_DefaultColorsPos === 2) {
-
         SettingsColor_DefaultColorsPos = 0;
         Main_setItem('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, SettingsColor_DefaultColorsPos);
         Main_setItem('SettingsColor_DefaultColorsPos_check', 1);
-
     }
 
     SettingsColor_InitialColors = SettingsColor_ColorExtrackRGB(SettingsColor_DefaultColors[0]);
     //Restore custom color
     var rgba = [],
         i = SettingsColor_ColorsObjR,
-        len = (SettingsColor_ColorsObjB + 1);
+        len = SettingsColor_ColorsObjB + 1;
 
     for (i; i < len; i++) {
-        rgba.push(Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[(i - SettingsColor_ColorsObjR)]));
+        rgba.push(Main_getItemJson('colo_rgb' + i, SettingsColor_InitialColors[i - SettingsColor_ColorsObjR]));
     }
 
     i = 0;
     len = SettingsColor_DefaultColors_Len;
     for (i; i < len; i++) {
-        SettingsColor_DefaultColors[1][i] = "rgba(" +
-            rgba[0][i] + ", " +
-            rgba[1][i] + ", " +
-            rgba[2][i] + ", 1)";
+        SettingsColor_DefaultColors[1][i] = 'rgba(' + rgba[0][i] + ', ' + rgba[1][i] + ', ' + rgba[2][i] + ', 1)';
     }
 
     SettingsColor_SetAnimationStyle(SettingsColor_DefaultColorsPos);
@@ -406,8 +409,14 @@ function SettingsColor_SetAnimationStyle(pos) {
         TextColor = SettingsColor_DefaultColors[pos][1],
         border = SettingsColor_DefaultColors[pos][2],
         progressColor = SettingsColor_DefaultColors[pos][3],
-        cssClass = '.feed_thumbnail_focused_no_ani,.feed_thumbnail_focused,.stream_thumbnail_focused_no_ani,.stream_thumbnail_focused {background-color:' +
-            background + ' !important;color:' + TextColor + ' !important;border-color:' + border + ' !important;}' +
+        cssClass =
+            '.feed_thumbnail_focused_no_ani,.feed_thumbnail_focused,.stream_thumbnail_focused_no_ani,.stream_thumbnail_focused {background-color:' +
+            background +
+            ' !important;color:' +
+            TextColor +
+            ' !important;border-color:' +
+            border +
+            ' !important;}' +
             //feed_thumbnail_focused same animation time as user_feed_scroll
             '.feed_thumbnail_focused {transition:background-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}' +
             //stream_thumbnail_focused same animation time as animate_height_transition
@@ -415,46 +424,32 @@ function SettingsColor_SetAnimationStyle(pos) {
 
     cssClass += '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
-    Main_innerHTML(
-        'focus_class_holder',
-        cssClass
-    );
+    Main_innerHTML('focus_class_holder', cssClass);
 
-    SettingsColor_SetAnimationStyleTest(
-        [
-            background,
-            TextColor,
-            border,
-            progressColor
-        ]
-    );
+    SettingsColor_SetAnimationStyleTest([background, TextColor, border, progressColor]);
 }
 
 function SettingsColor_SetAnimationStyleTest(arrayColors) {
-    var cssClass = '.stream_thumbnail_focused_test {background-color:' +
-        arrayColors[0] + ' !important;color:' + arrayColors[1] + ' !important;border-color:' + arrayColors[2] + ' !important;}';
+    var cssClass = '.stream_thumbnail_focused_test {background-color:' + arrayColors[0] + ' !important;color:' + arrayColors[1] + ' !important;border-color:' + arrayColors[2] + ' !important;}';
 
     cssClass += '.vod_watched_test{background:' + arrayColors[3] + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
-    Main_innerHTML(
-        'focus_class_test',
-        cssClass
-    );
+    Main_innerHTML('focus_class_test', cssClass);
 }
 
 function SettingsColor_SetColorsObj() {
     var baseCavasObj = {
-        left: function() {
+        left: function () {
             SettingsColor_DialogColorsLeftRight(-SettingsColor_DialogColorPosStep);
         },
-        right: function() {
+        right: function () {
             SettingsColor_DialogColorsLeftRight(SettingsColor_DialogColorPosStep);
         },
-        focus: function() {
+        focus: function () {
             SettingsColor_AddCavasFocus();
             Main_innerHTML('cavas_text' + this.property, this.str + STR_SPACE_HTML + '(' + STR_ENTER_RGB + ')');
         },
-        removefocus: function() {
+        removefocus: function () {
             SettingsColor_RemoveCavasFocus();
             Main_innerHTML('cavas_text' + this.property, this.str);
         },
@@ -462,50 +457,35 @@ function SettingsColor_SetColorsObj() {
     };
 
     var baseRGBObj = {
-        left: function() {
+        left: function () {
             SettingsColor_ColorsObjRGBLeftRight(this, -1, 255);
         },
-        right: function() {
+        right: function () {
             SettingsColor_ColorsObjRGBLeftRight(this, 1, 255);
         },
-        focus: function() {
+        focus: function () {
             SettingsColor_optFocus();
 
-            Main_textContent(
-                'color_options' + this.property,
-                this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]
-            );
+            Main_textContent('color_options' + this.property, this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]);
 
-            SettingsColor_ColorSetarrowsKey(
-                this.property,
-                this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
-                255
-            );
-
+            SettingsColor_ColorSetarrowsKey(this.property, this.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos], 255);
         },
         removefocus: SettingsColor_RemoveoptFocus
     };
 
     var baseStrigbj = {
-        left: function() {
-            SettingsColor_ColorsObjLeftRight(this, -1, (this.values.length - 1));
+        left: function () {
+            SettingsColor_ColorsObjLeftRight(this, -1, this.values.length - 1);
         },
-        right: function() {
-            SettingsColor_ColorsObjLeftRight(this, 1, (this.values.length - 1));
+        right: function () {
+            SettingsColor_ColorsObjLeftRight(this, 1, this.values.length - 1);
         },
-        focus: function() {
+        focus: function () {
             SettingsColor_optFocus();
 
-            Main_textContent(
-                'color_options' + this.property,
-                this.values[this.pos]
-            );
+            Main_textContent('color_options' + this.property, this.values[this.pos]);
 
-            SettingsColor_ColorSetarrowsKey(
-                this.property,
-                this.pos,
-                (this.values.length - 1)
-            );
+            SettingsColor_ColorSetarrowsKey(this.property, this.pos, this.values.length - 1);
         },
         removefocus: SettingsColor_RemoveoptFocus
     };
@@ -537,7 +517,7 @@ function SettingsColor_SetColorsObj() {
         {
             pos: 0,
             property: SettingsColor_ColorsObjColorType,
-            values: (STR_COLOR_ARRAY).split(',')
+            values: STR_COLOR_ARRAY.split(',')
         },
         baseStrigbj
     );
@@ -546,13 +526,12 @@ function SettingsColor_SetColorsObj() {
         {
             pos: SettingsColor_DefaultColorsPos,
             property: SettingsColor_ColorsObjStyles,
-            values: (STR_STYLES_ARRAY).split(',')
+            values: STR_STYLES_ARRAY.split(',')
         },
         baseStrigbj
     );
 
-    for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
-
+    for (var i = SettingsColor_ColorsObjR; i < SettingsColor_ColorsObjB + 1; i++) {
         SettingsColor_ColorsObj[i] = Screens_assign(
             {
                 property: i,
@@ -567,17 +546,22 @@ function SettingsColor_CollorApply() {
     SettingsColor_DefaultColorsPos = SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos;
     Main_setItem('SettingsColor_ColorsObj' + SettingsColor_ColorsObjStyles, SettingsColor_DefaultColorsPos);
 
-    if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {//Custom
+    if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
+        //Custom
         var i;
-        for (i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
+        for (i = SettingsColor_ColorsObjR; i < SettingsColor_ColorsObjB + 1; i++) {
             Main_setItem('colo_rgb' + i, JSON.stringify(SettingsColor_ColorsObj[i].pos));
         }
 
         for (i = 0; i < SettingsColor_DefaultColors_Len; i++) {
-            SettingsColor_DefaultColors[1][i] = "rgba(" +
-                SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[i] + ", " +
-                SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[i] + ", " +
-                SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[i] + ", 1)";
+            SettingsColor_DefaultColors[1][i] =
+                'rgba(' +
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[i] +
+                ', ' +
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[i] +
+                ', ' +
+                SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[i] +
+                ', 1)';
         }
     }
 
@@ -588,21 +572,16 @@ function SettingsColor_SetRGB() {
     SettingsColor_DialogColorsResultSet();
 
     for (var i = 0; i < 3; i++) {
-
-        SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_DialogColorsResultRGBA[i];
-        Main_textContent("color_options" + (i + SettingsColor_ColorsObjR), SettingsColor_DialogColorsResultRGBA[i]);
-
+        SettingsColor_ColorsObj[i + SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_DialogColorsResultRGBA[i];
+        Main_textContent('color_options' + (i + SettingsColor_ColorsObjR), SettingsColor_DialogColorsResultRGBA[i]);
     }
-
 }
 
 function SettingsColor_DialogColorsLeftRight(adder) {
     SettingsColor_canvasPosX[SettingsColor_canvasPosY] += adder;
 
-    if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] > SettingsColor_DialogColorPosMax)
-        SettingsColor_canvasPosX[SettingsColor_canvasPosY] = 0;
-    else if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] < 0)
-        SettingsColor_canvasPosX[SettingsColor_canvasPosY] = SettingsColor_DialogColorPosMax;
+    if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] > SettingsColor_DialogColorPosMax) SettingsColor_canvasPosX[SettingsColor_canvasPosY] = 0;
+    else if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] < 0) SettingsColor_canvasPosX[SettingsColor_canvasPosY] = SettingsColor_DialogColorPosMax;
 
     if (!SettingsColor_canvasPosY) SettingsColor_DivShadowsUpdate();
     else SettingsColor_DivColorsUpdate();
@@ -615,13 +594,9 @@ function SettingsColor_ColorsObjRGBLeftRight(obj, adder, maxValue) {
     obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] += adder;
 
     if (obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] > maxValue) {
-
         obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = maxValue;
-
     } else if (obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] < 0) {
-
         obj.pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = 0;
-
     }
 
     obj.focus();
@@ -633,20 +608,15 @@ function SettingsColor_ColorsObjRGBLeftRight(obj, adder, maxValue) {
 function SettingsColor_ColorsSetAsCustom() {
     SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos = 1;
 
-    Main_textContent(
-        "color_options" + SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].property,
-        SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].values[1]
-    );
+    Main_textContent('color_options' + SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].property, SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].values[1]);
 }
 
 function SettingsColor_ColorsSetRGBTest() {
-
     if (SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos === 1) {
-
         var rgba = [],
             colors = [],
             i = SettingsColor_ColorsObjR,
-            len = (SettingsColor_ColorsObjB + 1);
+            len = SettingsColor_ColorsObjB + 1;
 
         for (i; i < len; i++) {
             rgba.push(SettingsColor_ColorsObj[i].pos);
@@ -655,39 +625,28 @@ function SettingsColor_ColorsSetRGBTest() {
         i = 0;
         len = SettingsColor_DefaultColors_Len;
         for (i; i < len; i++) {
-            colors.push("rgba(" +
-                rgba[0][i] + ", " +
-                rgba[1][i] + ", " +
-                rgba[2][i] + ", 1)"
-            );
+            colors.push('rgba(' + rgba[0][i] + ', ' + rgba[1][i] + ', ' + rgba[2][i] + ', 1)');
         }
 
         colors[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_ColorTemp;
 
         SettingsColor_SetAnimationStyleTest(colors);
-
     } else {
-
-        SettingsColor_SetAnimationStyleTest(
-            SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos]
-        );
-
+        SettingsColor_SetAnimationStyleTest(SettingsColor_DefaultColors[SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos]);
     }
 }
 
 function SettingsColor_ColorsSetRGB() {
-    SettingsColor_ColorUPdateResult(
-        [
-            SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
-            SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
-            SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]
-        ]
-    );
+    SettingsColor_ColorUPdateResult([
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos],
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]
+    ]);
 }
 
 function SettingsColor_ColorsSetRGBText() {
-    for (var i = SettingsColor_ColorsObjR; i < (SettingsColor_ColorsObjB + 1); i++) {
-        Main_textContent("color_options" + i, SettingsColor_ColorsObj[i].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]);
+    for (var i = SettingsColor_ColorsObjR; i < SettingsColor_ColorsObjB + 1; i++) {
+        Main_textContent('color_options' + i, SettingsColor_ColorsObj[i].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos]);
     }
 }
 
@@ -719,23 +678,20 @@ function SettingsColor_ColorsReset(obj, CurPos) {
                 SettingsColor_RBG_temp = null;
             }
         } else if (CurPos === 1) {
-
             SettingsColor_RBG_temp = [];
             i = 0;
             len = 3;
             for (i; i < len; i++) {
-                SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos);
+                SettingsColor_RBG_temp.push(SettingsColor_ColorsObj[i + SettingsColor_ColorsObjR].pos);
             }
-
         }
 
         i = 0;
         len = 3;
 
         for (i; i < len; i++) {
-            SettingsColor_ColorsObj[(i + SettingsColor_ColorsObjR)].pos = array[i];
+            SettingsColor_ColorsObj[i + SettingsColor_ColorsObjR].pos = array[i];
         }
-
     }
 
     SettingsColor_ColorsSetRGB();
@@ -762,20 +718,19 @@ function SettingsColor_RemoveoptFocus() {
     var key = 'color_options' + SettingsColor_canvasPosY;
     Main_RemoveClass(key, 'settings_value_focus');
     Main_RemoveClass(key + '_div', 'settings_div_focus');
-    Main_getElementById(key + "arrow_left").style.opacity = "0";
-    Main_getElementById(key + "arrow_right").style.opacity = "0";
+    Main_getElementById(key + 'arrow_left').style.opacity = '0';
+    Main_getElementById(key + 'arrow_right').style.opacity = '0';
 }
 
 function SettingsColor_ColorSetarrowsKey(pos, currentValue, maxValue) {
-
     if (currentValue > 0 && currentValue < maxValue) {
-        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        Main_getElementById('color_options' + pos + 'arrow_left').style.opacity = '1';
+        Main_getElementById('color_options' + pos + 'arrow_right').style.opacity = '1';
     } else if (currentValue === maxValue) {
-        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "1";
-        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "0.2";
+        Main_getElementById('color_options' + pos + 'arrow_left').style.opacity = '1';
+        Main_getElementById('color_options' + pos + 'arrow_right').style.opacity = '0.2';
     } else {
-        Main_getElementById('color_options' + pos + "arrow_left").style.opacity = "0.2";
-        Main_getElementById('color_options' + pos + "arrow_right").style.opacity = "1";
+        Main_getElementById('color_options' + pos + 'arrow_left').style.opacity = '0.2';
+        Main_getElementById('color_options' + pos + 'arrow_right').style.opacity = '1';
     }
 }

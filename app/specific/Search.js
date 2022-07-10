@@ -28,7 +28,7 @@ function Search_init() {
     Main_HideWarningDialog();
     Main_HideElement('label_refresh');
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
-    Main_innerHTML("label_last_refresh", '');
+    Main_innerHTML('label_last_refresh', '');
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
     Main_ShowElement('search_scroll');
     Search_cursorY = 0;
@@ -39,7 +39,7 @@ function Search_init() {
 
 function Search_exit() {
     Search_RemoveinputFocus(false);
-    Main_removeEventListener("keydown", Search_handleKeyDown);
+    Main_removeEventListener('keydown', Search_handleKeyDown);
     Search_refreshInputFocusTools();
     Main_values.Main_Go = Main_values.Main_BeforeSearch;
     Main_IconLoad('label_thumb', 'icon-options', STR_THUMB_OPTIONS_TOP);
@@ -50,7 +50,7 @@ function Search_exit() {
 
 function Search_loadData() {
     Search_exit();
-    Main_ready(function() {
+    Main_ready(function () {
         if (!Search_cursorX) {
             Screens_init(Main_SearchChannels);
         } else if (Search_cursorX === 1) {
@@ -138,12 +138,9 @@ function Search_KeyEnter() {
             Search_loadData();
         } else {
             Main_showWarningDialog(STR_SEARCH_EMPTY);
-            Main_setTimeout(
-                function() {
-                    Main_HideWarningDialog();
-                },
-                1000
-            );
+            Main_setTimeout(function () {
+                Main_HideWarningDialog();
+            }, 1000);
         }
     }
 }
@@ -153,12 +150,12 @@ function Search_inputFocus() {
     Main_AddClass('scene_keys', 'avoidclicks');
     OSInterface_AvoidClicks(true);
     Main_AddClass('scenefeed', 'avoidclicks');
-    Main_removeEventListener("keydown", Search_handleKeyDown);
-    Main_addEventListener("keydown", Search_KeyboardEvent);
+    Main_removeEventListener('keydown', Search_handleKeyDown);
+    Main_addEventListener('keydown', Search_KeyboardEvent);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_SEARCH;
 
     Search_inputFocusId = Main_setTimeout(
-        function() {
+        function () {
             Main_SearchInput.focus();
             Search_keyBoardOn = true;
         },
@@ -176,10 +173,10 @@ function Search_RemoveinputFocus(EnaKeydown) {
     OSInterface_AvoidClicks(false);
     Main_SearchInput.blur();
     Search_removeEventListener();
-    Main_removeEventListener("keydown", Search_KeyboardEvent);
+    Main_removeEventListener('keydown', Search_KeyboardEvent);
     Main_SearchInput.placeholder = STR_PLACEHOLDER_PRESS + STR_PLACEHOLDER_SEARCH;
 
-    if (EnaKeydown) Main_addEventListener("keydown", Search_handleKeyDown);
+    if (EnaKeydown) Main_addEventListener('keydown', Search_handleKeyDown);
     Search_keyBoardOn = false;
 }
 
@@ -187,7 +184,7 @@ function Search_removeEventListener() {
     if (Main_SearchInput !== null) {
         var elClone = Main_SearchInput.cloneNode(true);
         Main_SearchInput.parentNode.replaceChild(elClone, Main_SearchInput);
-        Main_SearchInput = Main_getElementById("search_input");
+        Main_SearchInput = Main_getElementById('search_input');
     }
 }
 
