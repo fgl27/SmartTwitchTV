@@ -9,6 +9,22 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version July 11 2022
+==============
+
+* Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show
+* Update User channel Vod screen to use new Twitch API
+* Update Game Vod screen to use new Twitch API
+* General improves
+
+Web Version July 10 2022 and Apk Version 3.0.332 and up
+==============
+
+* Fix FFZ emotes from channels that recently changed name by @Js41637
+* Fix latency issues
+* Improve the option Open game from Thumbnail options
+* General improves
+
 Web Version February 21 2022 and Apk Version 3.0.330 and up
 ==============
 
