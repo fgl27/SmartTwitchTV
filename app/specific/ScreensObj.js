@@ -931,12 +931,12 @@ function ScreensObj_InitChannelVod() {
                 ScreensObj_CheckUser(this.screen);
 
                 if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                if (Main_values.Main_selectedChannel !== this.lastselectedChannel) {
+                if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) {
                     this.OffSetPos = 0;
                     this.extraoffset = 0;
                     this.status = false;
                 }
-                this.lastselectedChannel = Main_values.Main_selectedChannel;
+                this.lastselectedChannel = Main_values.Main_selectedChannel_id;
                 Main_cleanTopLabel();
                 Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
                 this.SetPeriod();
@@ -1405,11 +1405,12 @@ function ScreensObj_InitChannelClip() {
                 ScreensObj_CheckUser(this.screen);
 
                 if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+                if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) this.status = false;
+
                 Main_cleanTopLabel();
                 this.SetPeriod();
                 Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
-                this.lastselectedChannel = Main_values.Main_selectedChannel;
+                this.lastselectedChannel = Main_values.Main_selectedChannel_id;
             },
             label_exit: Main_RestoreTopLabel
         },
