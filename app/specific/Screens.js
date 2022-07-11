@@ -361,23 +361,32 @@ function Screens_loadDataRequest(key) {
         ScreenObj[key].history_concatenate();
     } else {
         var HeadersArray = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers;
+        var Method = null;
+        var PostString = null;
+
+        if (ScreenObj[key].isQuery) {
+            HeadersArray = Play_base_backup_headers_Array;
+            Method = 'POST';
+            PostString = ScreenObj[key].post;
+        } else if (!ScreenObj[key].useHelix) {
+            HeadersArray = ScreenObj[key].HeadersArray;
+        }
 
         FullxmlHttpGet(
-            ScreenObj[key].url + (ScreenObj[key].useHelix ? '' : Main_TwithcV5Flag),
-            ScreenObj[key].useHelix ? HeadersArray : ScreenObj[key].HeadersArray,
+            ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwithcV5Flag),
+            HeadersArray,
             Screens_HttpResultStatus,
             noop_fun,
             key,
             key,
-            null, //Method, null for get
-            null
+            Method, //Method, null for get
+            PostString
         );
     }
 }
 
 function Screens_HttpResultStatus(resultObj, key) {
     if (resultObj.status === 200) {
-        //console.log(resultObj.responseText);
         Screens_concatenate(JSON.parse(resultObj.responseText), key);
 
         //If the scroll position is at the end of the list after a loading success focus
@@ -387,7 +396,7 @@ function Screens_HttpResultStatus(resultObj, key) {
     } else if (resultObj.status === 401 || resultObj.status === 403) {
         //token expired
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
             AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
         } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
             Screens_loadDatafail(key);

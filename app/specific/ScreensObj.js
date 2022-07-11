@@ -611,9 +611,9 @@ function ScreensObj_StartAllVars() {
         },
         addCell: function (cell) {
             var hasLive = this.isLive || this.screen === Main_games;
-            var game = this.hasGameProp ? cell.game : cell;
+            var game = this.hasGameProp && !this.isQuery ? cell.game : cell;
 
-            var id_cell = this.useHelix ? game.id : game._id;
+            var id_cell = this.useHelix || this.isQuery ? game.id : game._id;
 
             if (!this.idObject[id_cell]) {
                 this.itemsCount++;
@@ -627,6 +627,25 @@ function ScreensObj_StartAllVars() {
                             game.box_art_url.replace('{width}x{height}', Main_GameSize), //0
                             game.name, //1
                             '', //2
+                            id_cell //3
+                        ],
+                        this.screen
+                    );
+                } else if (this.isQuery) {
+                    this.tempHtml += Screens_createCellGame(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        [
+                            game.boxArtURL.replace('{width}x{height}', Main_GameSize), //0
+                            game.displayName, //1
+                            Main_addCommas(cell.channelsCount) +
+                                STR_SPACE_HTML +
+                                STR_CHANNELS +
+                                STR_BR +
+                                STR_FOR +
+                                Main_addCommas(cell.viewersCount) +
+                                STR_SPACE_HTML +
+                                Main_GetViewerStrings(cell.viewersCount), //2
                             id_cell //3
                         ],
                         this.screen
@@ -1498,12 +1517,13 @@ function ScreensObj_InitUserGames() {
             hasGameProp: true,
             OldUserName: '',
             IsUser: true,
-            object: 'follows',
-            base_url: Main_kraken_api + 'users/',
+            object: 'data',
+            isQuery: true,
+            base_post: '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}',
             set_url: function () {
-                if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-
-                this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) + '/follows/games?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+                this.dataEnded = true;
+                this.url = PlayClip_BaseUrl;
+                this.post = this.base_post.replace('%x', AddUser_UsernameArray[0].id);
             },
             label_init: function () {
                 ScreensObj_TopLableUserInit(this.screen);
@@ -1521,6 +1541,26 @@ function ScreensObj_InitUserGames() {
 
     ScreenObj[key].init_fun = function (preventRefresh) {
         ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+    };
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
+
+        if (hasData) {
+            this.data = responseObj.data.user.followedGames.nodes;
+
+            this.data.sort(function (a, b) {
+                return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
+            });
+
+            this.loadDataSuccess();
+        }
+
+        this.loadingData = false;
+
+        if (this.hasBackupData) {
+            this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+        }
     };
 }
 
