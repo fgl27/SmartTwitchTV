@@ -378,7 +378,7 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
         Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
     }
 
-    Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+    Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], Play_MultiArray[pos].data[0]);
     Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
     Play_updateStreamInfoMulti(pos);

@@ -173,7 +173,7 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventCleanQualities) {
     ChatLive_Playing = true;
 
     if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
-    Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
+    Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], PlayExtra_data.data[0]);
 }
 
 function PlayExtra_SavePlayData() {
