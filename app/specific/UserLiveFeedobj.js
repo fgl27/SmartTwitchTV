@@ -1680,14 +1680,14 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                 } else if (isUserGames) {
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                         game.displayName, //0
-                        Main_addCommas(cell.channelsCount) +
+                        (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
                             STR_SPACE_HTML +
                             STR_CHANNELS +
                             STR_BR +
                             STR_FOR +
-                            Main_addCommas(cell.viewersCount) +
+                            (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
                             STR_SPACE_HTML +
-                            Main_GetViewerStrings(cell.viewersCount), //1
+                            Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //1
                         id_cell, //2
                         game.boxArtURL //3
                     ]);

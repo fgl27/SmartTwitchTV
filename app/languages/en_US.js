@@ -214,7 +214,7 @@ function en_USLang() {
     STR_YES = 'Yes';
     STR_REMOVE_USER = 'Are you sure you want to remove the user';
     STR_PLACEHOLDER_PRESS_UP = 'Press Up to';
-    STR_FOLLOW_GAMES = 'Followed Games';
+    STR_FOLLOW_GAMES = 'Followed Live Games';
     STR_USER_GAMES_CHANGE = 'Change between';
     STR_GUIDE = 'Hold enter';
     STR_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];

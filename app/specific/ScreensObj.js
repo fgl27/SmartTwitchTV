@@ -640,14 +640,14 @@ function ScreensObj_StartAllVars() {
                         [
                             game.boxArtURL.replace('{width}x{height}', Main_GameSize), //0
                             game.displayName, //1
-                            Main_addCommas(cell.channelsCount) +
+                            (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
                                 STR_SPACE_HTML +
                                 STR_CHANNELS +
                                 STR_BR +
                                 STR_FOR +
-                                Main_addCommas(cell.viewersCount) +
+                                (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
                                 STR_SPACE_HTML +
-                                Main_GetViewerStrings(cell.viewersCount), //2
+                                Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
                             id_cell //3
                         ],
                         this.screen
@@ -1550,6 +1550,7 @@ function ScreensObj_InitUserGames() {
 
         if (hasData) {
             this.data = responseObj.data.user.followedGames.nodes;
+            console.log(this.data.length);
 
             this.data.sort(function (a, b) {
                 return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;

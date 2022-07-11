@@ -1574,6 +1574,10 @@ function PlayVod_updateChaptersResult(responseObj, key, id) {
 }
 
 function PlayVod_ProcessChapters(obj) {
+    var hasMoments = obj.data && obj.data.video && obj.data.video.moments && obj.data.video.moments.edges;
+    if (!hasMoments) {
+        return;
+    }
     obj = obj.data.video.moments.edges;
 
     var i = 0,
