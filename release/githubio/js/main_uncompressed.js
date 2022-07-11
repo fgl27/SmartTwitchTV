@@ -23860,7 +23860,7 @@
             PlayVod_muted_segments_value = response.muted_segments;
             PlayVod_muted_segments(PlayVod_muted_segments_value);
 
-            //Main_values_Play_data = ScreensObj_VodCellArray(response);
+            Main_values_Play_data = ScreensObj_VodCellArray(response, true);
             Main_Set_history('vod', Main_values_Play_data);
 
             if (!Main_IsOn_OSInterface && enable_embed) {
@@ -24132,8 +24132,6 @@
     }
 
     function PlayVod_PreshutdownStream(saveOffset) {
-        //Main_Log('PlayVod_PreshutdownStream');
-
         PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
         if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
@@ -30369,7 +30367,7 @@
                 Main_videoCreatedAt(cell.created_at), //2
                 null, //3
                 Main_addCommas(cell.view_count), //4
-                '[' + cell.language + ']', //5
+                '[' + cell.language.toUpperCase() + ']', //5
                 cell.user_login, //6
                 cell.id, //7
                 null, //8
