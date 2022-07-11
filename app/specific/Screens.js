@@ -2110,87 +2110,87 @@ function Screens_PeriodhandleKeyDown(key, event) {
 
 var Screens_ThumbOptionSpecial;
 
-function Screens_OffSetStart(key, click) {
-    ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
-    Screens_setOffSetDialog(key);
-    Main_textContent('dialog_OffSet_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
-    Main_ShowElement('dialog_OffSet');
-    Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-    Main_addEventListener('keydown', ScreenObj[key].key_offset);
-}
+// function Screens_OffSetStart(key, click) {
+//     ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
+//     Screens_setOffSetDialog(key);
+//     Main_textContent('dialog_OffSet_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
+//     Main_ShowElement('dialog_OffSet');
+//     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
+//     Main_addEventListener('keydown', ScreenObj[key].key_offset);
+// }
 
-function Screens_setOffSetDialog(key) {
-    Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-}
+// function Screens_setOffSetDialog(key) {
+//     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+// }
 
-function Screens_OffSetDialogHide(key) {
-    Main_removeEventListener('keydown', ScreenObj[key].key_offset);
-    Main_addEventListener('keydown', ScreenObj[key].key_fun);
-    Main_HideElement('dialog_OffSet');
-}
+// function Screens_OffSetDialogHide(key) {
+//     Main_removeEventListener('keydown', ScreenObj[key].key_offset);
+//     Main_addEventListener('keydown', ScreenObj[key].key_fun);
+//     Main_HideElement('dialog_OffSet');
+// }
 
-function Screens_OffSetAddFocus(pos) {
-    Main_textContent('dialog_OffSet_val', pos);
-    var maxValue = 5000;
+// function Screens_OffSetAddFocus(pos) {
+//     Main_textContent('dialog_OffSet_val', pos);
+//     var maxValue = 5000;
 
-    if (pos > 0 && pos < maxValue) {
-        Main_getElementById('dialog_OffSet_left').style.opacity = '1';
-        Main_getElementById('dialog_OffSet_right').style.opacity = '1';
-    } else if (pos === maxValue) {
-        Main_getElementById('dialog_OffSet_left').style.opacity = '1';
-        Main_getElementById('dialog_OffSet_right').style.opacity = '0.2';
-    } else {
-        Main_getElementById('dialog_OffSet_left').style.opacity = '0.2';
-        Main_getElementById('dialog_OffSet_right').style.opacity = '1';
-    }
-}
+//     if (pos > 0 && pos < maxValue) {
+//         Main_getElementById('dialog_OffSet_left').style.opacity = '1';
+//         Main_getElementById('dialog_OffSet_right').style.opacity = '1';
+//     } else if (pos === maxValue) {
+//         Main_getElementById('dialog_OffSet_left').style.opacity = '1';
+//         Main_getElementById('dialog_OffSet_right').style.opacity = '0.2';
+//     } else {
+//         Main_getElementById('dialog_OffSet_left').style.opacity = '0.2';
+//         Main_getElementById('dialog_OffSet_right').style.opacity = '1';
+//     }
+// }
 
-function Screens_OffSethandleKeyRight(key) {
-    ScreenObj[key].OffSetPos++;
-    if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
-    Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-}
+// function Screens_OffSethandleKeyRight(key) {
+//     ScreenObj[key].OffSetPos++;
+//     if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
+//     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+// }
 
-function Screens_OffSethandleKeyLeft(key) {
-    ScreenObj[key].OffSetPos--;
-    if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
-    Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-}
+// function Screens_OffSethandleKeyLeft(key) {
+//     ScreenObj[key].OffSetPos--;
+//     if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
+//     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+// }
 
-function Screens_OffSethandleKeyEnter(key) {
-    Screens_OffSetDialogHide(key);
-    if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
-        ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
-        ScreenObj[key].SetPeriod();
-        Screens_StartLoad(key);
-    }
-}
+// function Screens_OffSethandleKeyEnter(key) {
+//     Screens_OffSetDialogHide(key);
+//     if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
+//         ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
+//         ScreenObj[key].SetPeriod();
+//         Screens_StartLoad(key);
+//     }
+// }
 
-function Screens_OffSethandleKeyDown(key, event) {
-    //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
+// function Screens_OffSethandleKeyDown(key, event) {
+//     //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
-    switch (event.keyCode) {
-        case KEY_KEYBOARD_BACKSPACE:
-        case KEY_RETURN:
-            Screens_OffSetDialogHide(key);
-            break;
-        case KEY_LEFT:
-            Screens_OffSethandleKeyLeft(key);
-            break;
-        case KEY_RIGHT:
-            Screens_OffSethandleKeyRight(key);
-            break;
-        case KEY_PLAY:
-        case KEY_PAUSE:
-        case KEY_PLAYPAUSE:
-        case KEY_KEYBOARD_SPACE:
-        case KEY_ENTER:
-            Screens_OffSethandleKeyEnter(key);
-            break;
-        default:
-            break;
-    }
-}
+//     switch (event.keyCode) {
+//         case KEY_KEYBOARD_BACKSPACE:
+//         case KEY_RETURN:
+//             Screens_OffSetDialogHide(key);
+//             break;
+//         case KEY_LEFT:
+//             Screens_OffSethandleKeyLeft(key);
+//             break;
+//         case KEY_RIGHT:
+//             Screens_OffSethandleKeyRight(key);
+//             break;
+//         case KEY_PLAY:
+//         case KEY_PAUSE:
+//         case KEY_PLAYPAUSE:
+//         case KEY_KEYBOARD_SPACE:
+//         case KEY_ENTER:
+//             Screens_OffSethandleKeyEnter(key);
+//             break;
+//         default:
+//             break;
+//     }
+// }
 
 function Screens_histStart(key, click) {
     ScreenObj[key].sethistDialog();
