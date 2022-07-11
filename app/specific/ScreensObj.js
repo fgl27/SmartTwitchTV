@@ -2160,7 +2160,7 @@ function ScreensObj_VodCellArray(cell, useHelix) {
             Main_videoCreatedAt(cell.created_at), //2
             null, //3
             Main_addCommas(cell.view_count), //4
-            '[' + cell.language + ']', //5
+            '[' + cell.language.toUpperCase() + ']', //5
             cell.user_login, //6
             cell.id, //7
             null, //8

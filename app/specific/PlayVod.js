@@ -308,7 +308,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         PlayVod_muted_segments_value = response.muted_segments;
         PlayVod_muted_segments(PlayVod_muted_segments_value);
 
-        //Main_values_Play_data = ScreensObj_VodCellArray(response);
+        Main_values_Play_data = ScreensObj_VodCellArray(response, true);
         Main_Set_history('vod', Main_values_Play_data);
 
         if (!Main_IsOn_OSInterface && enable_embed) {
@@ -579,8 +579,6 @@ function PlayVod_shutdownStream(SkipSaveOffset) {
 }
 
 function PlayVod_PreshutdownStream(saveOffset) {
-    //Main_Log('PlayVod_PreshutdownStream');
-
     PlayVod_UpdateHistory(Main_values.Main_Go, saveOffset);
 
     if (Main_IsOn_OSInterface && !Play_PreviewId) OSInterface_stopVideo();
