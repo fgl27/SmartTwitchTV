@@ -682,7 +682,7 @@ function Play_EndDialogPressed(PlayVodClip) {
         else if (PlayVodClip === 1) Play_StartStay();
         else if (PlayVodClip === 2 || PlayVodClip === 3) {
             canhide = false;
-            Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel_id);
+            Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
         }
     } else if (Play_EndCounter === 2) {
         if (PlayVodClip === 3) {
@@ -2054,7 +2054,7 @@ function Play_MakeControls() {
             Play_ForceHidePannel();
             Play_SavePlayData();
 
-            Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel_id);
+            Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
         },
         setLable: function (title, name) {
             Main_innerHTML(

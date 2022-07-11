@@ -995,7 +995,7 @@ function PlayClip_SetOpenLiveError() {
     }
 }
 
-function Play_ClipCheckIfIsLive(id) {
+function Play_ClipCheckIfIsLive(channelName) {
     Play_showBufferDialog();
 
     if (!Main_IsOn_OSInterface) {
@@ -1005,13 +1005,13 @@ function Play_ClipCheckIfIsLive(id) {
 
         OSInterface_getStreamDataAsync(
             PlayClip_BaseUrl,
-            Play_live_links.replace('%x', id),
+            Play_live_links.replace('%x', channelName),
             'Play_ClipCheckIfIsLiveEnd',
             Play_PreviewCheckId,
             2, //Main player runs on 0 extra player on 1 the check on 2
             DefaultHttpGetTimeout,
             false,
-            Play_live_token.replace('%x', id)
+            Play_live_token.replace('%x', channelName)
         );
     }
 }

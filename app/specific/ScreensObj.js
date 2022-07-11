@@ -2232,7 +2232,7 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
             null, //3
             cell.broadcaster_name, //6
             null, //5
-            cell.broadcaster_name, //6
+            cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
             cell.id, //7
             cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
             cell.vod !== null ? -1 : null, //9
