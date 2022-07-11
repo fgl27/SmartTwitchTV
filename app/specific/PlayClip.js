@@ -634,6 +634,11 @@ function PlayClip_OpenVod() {
     } else {
         PlayClip_OpenVodEndError(STR_NO_BROADCAST_WARNING);
     }
+
+    //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestStopClip();
+    }
 }
 
 function PlayClip_OpenVodEndError(string) {

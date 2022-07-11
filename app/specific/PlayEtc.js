@@ -1100,6 +1100,10 @@ function Play_OpenGame(PlayVodClip) {
         Main_values.Main_gameSelected_id = PlayVod_VodGameID;
     } else if (PlayVodClip === 3) {
         Main_values.Main_gameSelected_id = ChannelClip_game_Id;
+        //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+        if (!Main_IsOn_OSInterface) {
+            BrowserTestStopClip();
+        }
     }
 
     Play_hideChat();
