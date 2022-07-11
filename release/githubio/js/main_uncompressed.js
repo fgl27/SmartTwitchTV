@@ -1388,7 +1388,7 @@
         STR_YES = 'Yes';
         STR_REMOVE_USER = 'Are you sure you want to remove the user';
         STR_PLACEHOLDER_PRESS_UP = 'Press Up to';
-        STR_FOLLOW_GAMES = 'Followed Games';
+        STR_FOLLOW_GAMES = 'Followed Live Games';
         STR_USER_GAMES_CHANGE = 'Change between';
         STR_GUIDE = 'Hold enter';
         STR_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
@@ -4324,9 +4324,18 @@
         VersionBase: '3.0',
         publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
-        WebVersion: 'July 10 2022',
-        WebTag: 608, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'July 11 2022',
+        WebTag: 609, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version July 11 2022',
+                changes: [
+                    'Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show',
+                    'Update User channel Vod screen to use new Twitch API',
+                    'Update Game Vod screen to use new Twitch API',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
                 changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
             },
@@ -5463,11 +5472,13 @@
             Main_getElementById('dialog_OffSet').onclick = function(event) {
                 var id = event.target.id;
 
-                if (Main_A_includes_B(id, 'dialog_OffSet_left')) {
-                    Screens_OffSethandleKeyLeft(Main_values.Main_Go);
-                } else if (Main_A_includes_B(id, 'dialog_OffSet_right')) {
-                    Screens_OffSethandleKeyRight(Main_values.Main_Go);
-                } else if (Main_A_includes_B(id, 'dialog_OffSet_val') || Main_A_includes_B(id, 'dialog_OffSet_text') || Main_A_includes_B(id, 'dialog_OffSet_text_summary')) {
+                //if (Main_A_includes_B(id, 'dialog_OffSet_left')) {
+                //    Screens_OffSethandleKeyLeft(Main_values.Main_Go);
+                //} else
+                //if (Main_A_includes_B(id, 'dialog_OffSet_right')) {
+                //    Screens_OffSethandleKeyRight(Main_values.Main_Go);
+                //} else
+                if (Main_A_includes_B(id, 'dialog_OffSet_val') || Main_A_includes_B(id, 'dialog_OffSet_text') || Main_A_includes_B(id, 'dialog_OffSet_text_summary')) {
                     var div = id;
 
                     OnClickId = Main_setTimeout(
@@ -5478,14 +5489,15 @@
                         OnClickId
                     );
 
-                    if (Main_A_equals_B(OnDuploClick, div)) {
-                        Screens_OffSethandleKeyEnter(Main_values.Main_Go);
-                    }
+                    //if (Main_A_equals_B(OnDuploClick, div)) {
+                    //    Screens_OffSethandleKeyEnter(Main_values.Main_Go);
+                    //}
 
                     OnDuploClick = div;
-                } else if (Main_A_includes_B(id, 'dialog_OffSet')) {
-                    Screens_OffSetDialogHide(Main_values.Main_Go);
                 }
+                // else if (Main_A_includes_B(id, 'dialog_OffSet')) {
+                //    Screens_OffSetDialogHide(Main_values.Main_Go);
+                // }
             };
 
             var dialogHistory = Main_getElementById('dialog_hist_setting');
@@ -15699,6 +15711,11 @@
         } else {
             PlayClip_OpenVodEndError(STR_NO_BROADCAST_WARNING);
         }
+
+        //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+        if (!Main_IsOn_OSInterface) {
+            BrowserTestStopClip();
+        }
     }
 
     function PlayClip_OpenVodEndError(string) {
@@ -16056,7 +16073,7 @@
         }
     }
 
-    function Play_ClipCheckIfIsLive(id) {
+    function Play_ClipCheckIfIsLive(channelName) {
         Play_showBufferDialog();
 
         if (!Main_IsOn_OSInterface) {
@@ -16066,13 +16083,13 @@
 
             OSInterface_getStreamDataAsync(
                 PlayClip_BaseUrl,
-                Play_live_links.replace('%x', id),
+                Play_live_links.replace('%x', channelName),
                 'Play_ClipCheckIfIsLiveEnd',
                 Play_PreviewCheckId,
                 2, //Main player runs on 0 extra player on 1 the check on 2
                 DefaultHttpGetTimeout,
                 false,
-                Play_live_token.replace('%x', id)
+                Play_live_token.replace('%x', channelName)
             );
         }
     }
@@ -16111,6 +16128,11 @@
         Main_openStream();
 
         Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[15], screen);
+
+        //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+        if (!Main_IsOn_OSInterface) {
+            BrowserTestStopClip();
+        }
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -17215,6 +17237,10 @@
             Main_values.Main_gameSelected_id = PlayVod_VodGameID;
         } else if (PlayVodClip === 3) {
             Main_values.Main_gameSelected_id = ChannelClip_game_Id;
+            //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+            if (!Main_IsOn_OSInterface) {
+                BrowserTestStopClip();
+            }
         }
 
         Play_hideChat();
@@ -17235,7 +17261,11 @@
         var minute = time.substring(hourIndex + 1, minuteIndex);
         var second = time.substring(minuteIndex + 1, secondIndex);
 
-        return parseInt(parseInt(hour || 0) * 3600) + parseInt(parseInt(minute) * 60) + parseInt(second);
+        var hourInt = hour ? parseInt(hour) * 3600 : 0;
+        var minuteInt = minute ? parseInt(minute) * 60 : 0;
+        var secondInt = second ? parseInt(second) : 0;
+
+        return hourInt + minuteInt + secondInt;
     }
 
     function Play_UpdateGameInfo(PlayVodClip) {
@@ -22071,7 +22101,11 @@
         if (UserLiveFeed_isPreviewShowing()) Play_dialog_warning_play_middle.style.top = '90vh';
         else if (IsLiveWarning) {
             Play_dialog_warning_play_middle.style.top = '81.5vh';
-            Play_dialog_warning_play_middle.style.width = '49%';
+            if (PlayClip_isOn) {
+                Play_dialog_warning_play_middle.style.width = PlayClip_HasVOD ? '49%' : '55%';
+            } else {
+                Play_dialog_warning_play_middle.style.width = '55%';
+            }
         } else Play_dialog_warning_play_middle.style.top = '50vh';
 
         Main_ShowElementWithEle(Play_dialog_warning_play_middle);
@@ -25098,6 +25132,10 @@
     }
 
     function PlayVod_ProcessChapters(obj) {
+        var hasMoments = obj.data && obj.data.video && obj.data.video.moments && obj.data.video.moments.edges;
+        if (!hasMoments) {
+            return;
+        }
         obj = obj.data.video.moments.edges;
 
         var i = 0,
@@ -25112,7 +25150,7 @@
         for (i; i < len; i++) {
             if (obj[i].node.type === 'GAME_CHANGE') {
                 game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
-                name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) + STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
+                name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) + ' ' + STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
 
                 PlayVod_ChaptersArray.push({
                     name: name,
@@ -25311,7 +25349,7 @@
             ScreenObj[property].key_thumb = Screens_ThumbOptionhandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_hist = Screens_histhandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_histdelet = Screens_histDeleteKeyDown.bind(null, ScreenObj[property].screen);
-            ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
+            //ScreenObj[property].key_offset = Screens_OffSethandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_period = Screens_PeriodhandleKeyDown.bind(null, ScreenObj[property].screen);
             ScreenObj[property].key_controls = Screens_handleKeyControls.bind(null, ScreenObj[property].screen);
         }
@@ -25590,23 +25628,32 @@
             ScreenObj[key].history_concatenate();
         } else {
             var HeadersArray = AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers;
+            var Method = null;
+            var PostString = null;
+
+            if (ScreenObj[key].isQuery) {
+                HeadersArray = Play_base_backup_headers_Array;
+                Method = 'POST';
+                PostString = ScreenObj[key].post;
+            } else if (!ScreenObj[key].useHelix) {
+                HeadersArray = ScreenObj[key].HeadersArray;
+            }
 
             FullxmlHttpGet(
-                ScreenObj[key].url + (ScreenObj[key].useHelix ? '' : Main_TwithcV5Flag),
-                ScreenObj[key].useHelix ? HeadersArray : ScreenObj[key].HeadersArray,
+                ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwithcV5Flag),
+                HeadersArray,
                 Screens_HttpResultStatus,
                 noop_fun,
                 key,
                 key,
-                null, //Method, null for get
-                null
+                Method, //Method, null for get
+                PostString
             );
         }
     }
 
     function Screens_HttpResultStatus(resultObj, key) {
         if (resultObj.status === 200) {
-            //console.log(resultObj.responseText);
             Screens_concatenate(JSON.parse(resultObj.responseText), key);
 
             //If the scroll position is at the end of the list after a loading success focus
@@ -25616,7 +25663,7 @@
         } else if (resultObj.status === 401 || resultObj.status === 403) {
             //token expired
 
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !ScreenObj[key].isQuery) {
                 AddCode_refreshTokens(0, Screens_loadDataRequestStart, Screens_loadDatafail, key);
             } else if (key === Main_UserLive || key === Main_usergames || key === Main_UserVod || key === Main_UserChannels) {
                 Screens_loadDatafail(key);
@@ -27332,87 +27379,87 @@
 
     var Screens_ThumbOptionSpecial;
 
-    function Screens_OffSetStart(key, click) {
-        ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
-        Screens_setOffSetDialog(key);
-        Main_textContent('dialog_OffSet_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
-        Main_ShowElement('dialog_OffSet');
-        Main_removeEventListener('keydown', ScreenObj[key].key_fun);
-        Main_addEventListener('keydown', ScreenObj[key].key_offset);
-    }
+    // function Screens_OffSetStart(key, click) {
+    //     ScreenObj[key].OffSetPos = ScreenObj[key].extraoffset / 100;
+    //     Screens_setOffSetDialog(key);
+    //     Main_textContent('dialog_OffSet_text_end', click ? STR_THUMB_OPTIONS_CLICK : STR_THUMB_OPTIONS_KEY);
+    //     Main_ShowElement('dialog_OffSet');
+    //     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
+    //     Main_addEventListener('keydown', ScreenObj[key].key_offset);
+    // }
 
-    function Screens_setOffSetDialog(key) {
-        Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-    }
+    // function Screens_setOffSetDialog(key) {
+    //     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+    // }
 
-    function Screens_OffSetDialogHide(key) {
-        Main_removeEventListener('keydown', ScreenObj[key].key_offset);
-        Main_addEventListener('keydown', ScreenObj[key].key_fun);
-        Main_HideElement('dialog_OffSet');
-    }
+    // function Screens_OffSetDialogHide(key) {
+    //     Main_removeEventListener('keydown', ScreenObj[key].key_offset);
+    //     Main_addEventListener('keydown', ScreenObj[key].key_fun);
+    //     Main_HideElement('dialog_OffSet');
+    // }
 
-    function Screens_OffSetAddFocus(pos) {
-        Main_textContent('dialog_OffSet_val', pos);
-        var maxValue = 5000;
+    // function Screens_OffSetAddFocus(pos) {
+    //     Main_textContent('dialog_OffSet_val', pos);
+    //     var maxValue = 5000;
 
-        if (pos > 0 && pos < maxValue) {
-            Main_getElementById('dialog_OffSet_left').style.opacity = '1';
-            Main_getElementById('dialog_OffSet_right').style.opacity = '1';
-        } else if (pos === maxValue) {
-            Main_getElementById('dialog_OffSet_left').style.opacity = '1';
-            Main_getElementById('dialog_OffSet_right').style.opacity = '0.2';
-        } else {
-            Main_getElementById('dialog_OffSet_left').style.opacity = '0.2';
-            Main_getElementById('dialog_OffSet_right').style.opacity = '1';
-        }
-    }
+    //     if (pos > 0 && pos < maxValue) {
+    //         Main_getElementById('dialog_OffSet_left').style.opacity = '1';
+    //         Main_getElementById('dialog_OffSet_right').style.opacity = '1';
+    //     } else if (pos === maxValue) {
+    //         Main_getElementById('dialog_OffSet_left').style.opacity = '1';
+    //         Main_getElementById('dialog_OffSet_right').style.opacity = '0.2';
+    //     } else {
+    //         Main_getElementById('dialog_OffSet_left').style.opacity = '0.2';
+    //         Main_getElementById('dialog_OffSet_right').style.opacity = '1';
+    //     }
+    // }
 
-    function Screens_OffSethandleKeyRight(key) {
-        ScreenObj[key].OffSetPos++;
-        if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
-        Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-    }
+    // function Screens_OffSethandleKeyRight(key) {
+    //     ScreenObj[key].OffSetPos++;
+    //     if (ScreenObj[key].OffSetPos > 50) ScreenObj[key].OffSetPos = 50;
+    //     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+    // }
 
-    function Screens_OffSethandleKeyLeft(key) {
-        ScreenObj[key].OffSetPos--;
-        if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
-        Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
-    }
+    // function Screens_OffSethandleKeyLeft(key) {
+    //     ScreenObj[key].OffSetPos--;
+    //     if (ScreenObj[key].OffSetPos < 0) ScreenObj[key].OffSetPos = 0;
+    //     Screens_OffSetAddFocus(ScreenObj[key].OffSetPos * 100);
+    // }
 
-    function Screens_OffSethandleKeyEnter(key) {
-        Screens_OffSetDialogHide(key);
-        if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
-            ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
-            ScreenObj[key].SetPeriod();
-            Screens_StartLoad(key);
-        }
-    }
+    // function Screens_OffSethandleKeyEnter(key) {
+    //     Screens_OffSetDialogHide(key);
+    //     if (ScreenObj[key].extraoffset !== ScreenObj[key].OffSetPos) {
+    //         ScreenObj[key].extraoffset = ScreenObj[key].OffSetPos * 100;
+    //         ScreenObj[key].SetPeriod();
+    //         Screens_StartLoad(key);
+    //     }
+    // }
 
-    function Screens_OffSethandleKeyDown(key, event) {
-        //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
+    // function Screens_OffSethandleKeyDown(key, event) {
+    //     //Main_Log('ScreenObj[key].key_offset ' + event.keyCode);
 
-        switch (event.keyCode) {
-            case KEY_KEYBOARD_BACKSPACE:
-            case KEY_RETURN:
-                Screens_OffSetDialogHide(key);
-                break;
-            case KEY_LEFT:
-                Screens_OffSethandleKeyLeft(key);
-                break;
-            case KEY_RIGHT:
-                Screens_OffSethandleKeyRight(key);
-                break;
-            case KEY_PLAY:
-            case KEY_PAUSE:
-            case KEY_PLAYPAUSE:
-            case KEY_KEYBOARD_SPACE:
-            case KEY_ENTER:
-                Screens_OffSethandleKeyEnter(key);
-                break;
-            default:
-                break;
-        }
-    }
+    //     switch (event.keyCode) {
+    //         case KEY_KEYBOARD_BACKSPACE:
+    //         case KEY_RETURN:
+    //             Screens_OffSetDialogHide(key);
+    //             break;
+    //         case KEY_LEFT:
+    //             Screens_OffSethandleKeyLeft(key);
+    //             break;
+    //         case KEY_RIGHT:
+    //             Screens_OffSethandleKeyRight(key);
+    //             break;
+    //         case KEY_PLAY:
+    //         case KEY_PAUSE:
+    //         case KEY_PLAYPAUSE:
+    //         case KEY_KEYBOARD_SPACE:
+    //         case KEY_ENTER:
+    //             Screens_OffSethandleKeyEnter(key);
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     function Screens_histStart(key, click) {
         ScreenObj[key].sethistDialog();
@@ -28039,7 +28086,7 @@
 
     function Screens_OpenGame() {
         Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-        if (Play_data.data[3] === '') {
+        if (!Screens_values_Play_data[18] || Play_data.data[3] === '') {
             Main_showWarningDialog(STR_NO_GAME, 2000);
             return;
         }
@@ -28057,6 +28104,7 @@
 
         Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
         Main_values.Main_gameSelected = Play_data.data[3];
+
         Main_ReStartScreens();
     }
 
@@ -28242,6 +28290,8 @@
 
     var AffiliatedTIme = 60 * 120 * 1000;
 
+    var userGameQuery = '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
+
     var Base_obj;
     var Base_Vod_obj;
     var Base_Live_obj;
@@ -28364,7 +28414,7 @@
                     this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
                 }
 
-                //console.log(this.data)
+                //console.log(this.data);
             },
             setBackupData: function(responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
                 if (!this.BackupData) {
@@ -28597,7 +28647,12 @@
                 Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
             },
             setMax: function(tempObj) {
-                if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
+                if (this.useHelix) {
+                    this.cursor = tempObj.pagination.cursor;
+                    if (!this.cursor || this.cursor === '') this.dataEnded = true;
+                } else {
+                    if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
+                }
             },
             img_404: IMG_404_VOD,
             HasSwitches: true,
@@ -28607,11 +28662,11 @@
             Vod_newImg: new Image(),
             AnimateThumb: ScreensObj_AnimateThumbId,
             addCell: function(cell) {
-                if (!this.idObject[cell._id]) {
+                if (!this.idObject[cell.id]) {
                     this.itemsCount++;
-                    this.idObject[cell._id] = 1;
+                    this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
+                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell, this.useHelix), this.screen);
 
                     this.coloumn_id++;
                 }
@@ -28787,9 +28842,9 @@
             },
             addCell: function(cell) {
                 var hasLive = this.isLive || this.screen === Main_games;
-                var game = this.hasGameProp ? cell.game : cell;
+                var game = this.hasGameProp && !this.isQuery ? cell.game : cell;
 
-                var id_cell = this.useHelix ? game.id : game._id;
+                var id_cell = this.useHelix || this.isQuery ? game.id : game._id;
 
                 if (!this.idObject[id_cell]) {
                     this.itemsCount++;
@@ -28803,6 +28858,25 @@
                                 game.box_art_url.replace('{width}x{height}', Main_GameSize), //0
                                 game.name, //1
                                 '', //2
+                                id_cell //3
+                            ],
+                            this.screen
+                        );
+                    } else if (this.isQuery) {
+                        this.tempHtml += Screens_createCellGame(
+                            this.row_id + '_' + this.coloumn_id,
+                            this.ids,
+                            [
+                                game.boxArtURL.replace('{width}x{height}', Main_GameSize), //0
+                                game.displayName, //1
+                                (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                                STR_SPACE_HTML +
+                                STR_CHANNELS +
+                                STR_BR +
+                                STR_FOR +
+                                (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                                STR_SPACE_HTML +
+                                Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //2
                                 id_cell //3
                             ],
                             this.screen
@@ -29031,10 +29105,11 @@
         var key = Main_ChannelVod;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 periodMaxPos: 2,
                 HeadersArray: Main_base_array_header,
                 key_pgDown: Main_ChannelClip,
-                object: 'videos',
+                object: 'data',
                 ids: Screens_ScreenIds('ChannelVod', key),
                 ScreenName: 'ChannelVod',
                 table: 'stream_table_channel_vod',
@@ -29045,21 +29120,18 @@
                 highlightSTR: 'ChannelVod_highlight',
                 highlight: Main_getItemBool('ChannelVod_highlight', false),
                 periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-                base_url: Main_kraken_api + 'channels/',
+                base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&user_id=',
                 set_url: function() {
                     this.url =
                         this.base_url +
-                        encodeURIComponent(Main_values.Main_selectedChannel_id) +
-                        '/videos?limit=' +
-                        Main_ItemsLimitMax +
-                        '&broadcast_type=' +
+                        Main_values.Main_selectedChannel_id +
+                        '&type=' +
                         (this.highlight ? 'highlight' : 'archive') +
                         '&sort=' +
                         this.time[this.periodPos - 1] +
-                        '&offset=' +
-                        (this.offset + this.extraoffset);
+                        (this.cursor ? '&after=' + this.cursor : '');
                 },
-                key_play: function(click) {
+                key_play: function() {
                     if (this.is_a_Banner()) return;
 
                     if (this.posY === -1) {
@@ -29073,27 +29145,25 @@
                             if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                             this.SetPeriod();
                             Screens_StartLoad(this.screen);
-                        } else Screens_OffSetStart(this.screen, click);
+                        }
+                        //else Screens_OffSetStart(this.screen, click);
                     } else this.OpenVodStart();
                 },
-                SwitchesIcons: ['movie-play', 'history', 'offset'],
+                SwitchesIcons: ['movie-play', 'history'],
                 addSwitches: function() {
-                    ScreensObj_addSwitches(
-                        [STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_POS],
-                        this.screen
-                    );
+                    ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE], this.screen);
                 },
                 lastselectedChannel: '',
                 label_init: function() {
                     ScreensObj_CheckUser(this.screen);
 
                     if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                    if (Main_values.Main_selectedChannel !== this.lastselectedChannel) {
+                    if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) {
                         this.OffSetPos = 0;
                         this.extraoffset = 0;
                         this.status = false;
                     }
-                    this.lastselectedChannel = Main_values.Main_selectedChannel;
+                    this.lastselectedChannel = Main_values.Main_selectedChannel_id;
                     Main_cleanTopLabel();
                     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
                     this.SetPeriod();
@@ -29103,7 +29173,7 @@
 
                     ScreensObj_SetTopLable(
                         Main_values.Main_selectedChannelDisplayname,
-                        (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
+                        (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
                     );
                 },
                 label_exit: function() {
@@ -29121,9 +29191,10 @@
         var key = Main_AGameVod;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 periodMaxPos: 4,
                 HeadersArray: Main_base_array_header,
-                object: 'vods',
+                object: 'data',
                 key_pgDown: Main_Vod,
                 key_pgUp: Main_Featured,
                 ids: Screens_ScreenIds('AGameVod', key),
@@ -29136,19 +29207,17 @@
                 highlightSTR: 'AGameVod_highlight',
                 highlight: Main_getItemBool('AGameVod_highlight', false),
                 periodPos: Main_getItemInt('AGameVod_periodPos', 2),
-                base_url: Main_kraken_api + 'videos/top?game=',
+                base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&game_id=',
                 set_url: function() {
                     this.url =
                         this.base_url +
-                        encodeURIComponent(Main_values.Main_gameSelected) +
-                        '&limit=' +
-                        Main_ItemsLimitMax +
-                        '&broadcast_type=' +
+                        Main_values.Main_gameSelected_id +
+                        '&type=' +
                         (this.highlight ? 'highlight' : 'archive') +
-                        '&sort=views&offset=' +
-                        this.offset +
+                        '&sort=views' +
                         '&period=' +
                         this.period[this.periodPos - 1] +
+                        (this.cursor ? '&after=' + this.cursor : '') +
                         (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
                 },
                 key_play: function() {
@@ -29554,11 +29623,12 @@
                     ScreensObj_CheckUser(this.screen);
 
                     if (!Main_values.Search_isSearching && Main_values.Main_selectedChannel_id) ChannelContent_RestoreChannelValue();
-                    if (Main_values.Main_selectedChannel !== this.lastselectedChannel) this.status = false;
+                    if (Main_values.Main_selectedChannel_id !== this.lastselectedChannel) this.status = false;
+
                     Main_cleanTopLabel();
                     this.SetPeriod();
                     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
-                    this.lastselectedChannel = Main_values.Main_selectedChannel;
+                    this.lastselectedChannel = Main_values.Main_selectedChannel_id;
                 },
                 label_exit: Main_RestoreTopLabel
             },
@@ -29665,12 +29735,13 @@
                 hasGameProp: true,
                 OldUserName: '',
                 IsUser: true,
-                object: 'follows',
-                base_url: Main_kraken_api + 'users/',
+                object: 'data',
+                isQuery: true,
+                base_post: userGameQuery,
                 set_url: function() {
-                    if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-
-                    this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) + '/follows/games?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset;
+                    this.dataEnded = true;
+                    this.url = PlayClip_BaseUrl;
+                    this.post = this.base_post.replace('%x', AddUser_UsernameArray[0].id);
                 },
                 label_init: function() {
                     ScreensObj_TopLableUserInit(this.screen);
@@ -29688,6 +29759,27 @@
 
         ScreenObj[key].init_fun = function(preventRefresh) {
             ScreensObj_CheckIsOpen(this.screen, preventRefresh);
+        };
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
+
+            if (hasData) {
+                this.data = responseObj.data.user.followedGames.nodes;
+                console.log(this.data.length);
+
+                this.data.sort(function(a, b) {
+                    return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
+                });
+
+                this.loadDataSuccess();
+            }
+
+            this.loadingData = false;
+
+            if (this.hasBackupData) {
+                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+            }
         };
     }
 
@@ -30269,7 +30361,27 @@
         ];
     }
 
-    function ScreensObj_VodCellArray(cell) {
+    function ScreensObj_VodCellArray(cell, useHelix) {
+        if (useHelix) {
+            return [
+                ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
+                cell.user_name, //1
+                Main_videoCreatedAt(cell.created_at), //2
+                null, //3
+                Main_addCommas(cell.view_count), //4
+                '[' + cell.language + ']', //5
+                cell.user_login, //6
+                cell.id, //7
+                null, //8
+                cell.language, //9
+                twemoji.parse(cell.title), //10
+                Play_timeHMS(cell.duration), //11
+                cell.created_at, //12
+                cell.view_count, //13
+                cell.user_id //14
+            ];
+        }
+
         return [
             ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url), //0
             cell.channel.display_name, //1
@@ -30329,7 +30441,7 @@
                 null, //3
                 cell.broadcaster_name, //6
                 null, //5
-                cell.broadcaster_name, //6
+                cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
                 cell.id, //7
                 cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
                 cell.vod !== null ? -1 : null, //9
@@ -30369,12 +30481,12 @@
 
     function ScreensObj_VodGetPreview(preview, animated_preview_url) {
         //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-        if (!Main_IsOn_OSInterface) {
-            if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
-                console.log('Revise vod links');
-            }
-        }
-        return Main_A_includes_B(preview + '', '404_processing') ? ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace('{width}x{height}', Main_VideoSize);
+        // if (!Main_IsOn_OSInterface) {
+        //     if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+        //         console.log('Revise vod links');
+        //     }
+        // }
+        return Main_A_includes_B(preview + '', '404_processing') ? ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace('%{width}x%{height}', Main_VideoSize);
     }
 
     function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
@@ -35143,11 +35255,12 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = Main_getElementById('user_agames_scroll');
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'data';
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].useHelix = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
 
         //a game
@@ -35163,7 +35276,6 @@
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
-        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].useHelix = true;
         UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor = null;
 
         //User Games
@@ -35178,6 +35290,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].HasMore = true;
+        UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].useHelix = true;
         UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
         //Games
@@ -36176,7 +36289,10 @@
 
     function UserLiveFeed_KeyEnter(pos) {
         if (pos === UserLiveFeedobj_UserGamesPos) {
-            if (UserLiveFeed_ObjNotNull(pos)) UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
+            if (UserLiveFeed_ObjNotNull(pos)) {
+                UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
+                UserLiveFeedobj_CurrentUserAGameIdEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][2];
+            }
 
             if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
                 Play_showWarningMidleDialog(STR_NO_GAME, 1000);
@@ -36684,7 +36800,7 @@
     }
 
     function UserLiveFeedobj_loadCurrentGame() {
-        UserLiveFeedobj_CurrentGameName = Play_data.data[17];
+        UserLiveFeedobj_CurrentGameName = Play_data.data[18];
 
         var key = Main_aGame,
             game = UserLiveFeedobj_CurrentGameName,
@@ -36698,7 +36814,7 @@
                 UserLiveFeed_obj[pos].cellBackup[game] = null;
             }
 
-            if (Play_data.data[17]) {
+            if (Play_data.data[18]) {
                 UserLiveFeedobj_loadCurrentGameGetGames();
             } else {
                 UserLiveFeedobj_loadCurrentGameGetGameId();
@@ -36712,7 +36828,7 @@
         UserLiveFeedobj_BaseLoad(
             Main_helix_api +
             'streams?game_id=' +
-            Play_data.data[17] +
+            Play_data.data[18] +
             '&first=' +
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
@@ -36734,7 +36850,7 @@
         var response = JSON.parse(responseText);
 
         if (response.data && response.data.length) {
-            Play_data.data[17] = response.data[0].id;
+            Play_data.data[18] = response.data[0].id;
             UserLiveFeedobj_loadCurrentGameGetGames();
         } else {
             UserLiveFeedobj_loadDataError(UserLiveFeedobj_CurrentGamePos);
@@ -36782,7 +36898,7 @@
     function UserLiveFeedobj_ShowCurrentGame() {
         UserLiveFeedobj_SetBottomText(UserLiveFeedobj_CurrentGamePos - 1);
 
-        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[17]));
+        UserLiveFeedobj_ShowFeedCheck(UserLiveFeedobj_CurrentGamePos, !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentGameName, Play_data.data[18]));
     }
 
     function UserLiveFeedobj_HideCurrentGame() {
@@ -36793,7 +36909,7 @@
     }
 
     function UserLiveFeedobj_CurrentGameUpdateLastPositionGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[17]] = UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
+        UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].LastPositionGame[Play_data.data[18]] = UserLiveFeed_FeedPosY[UserLiveFeedobj_CurrentGamePos];
     }
     //Current game end
 
@@ -36806,24 +36922,24 @@
     function UserLiveFeedobj_loadUserGames() {
         UserLiveFeedobj_GamesFeedOldUserName = AddUser_UsernameArray[0].name;
 
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api +
-            'users/' +
-            encodeURIComponent(AddUser_UsernameArray[0].id) +
-            '/follows/games?limit=' +
-            Main_ItemsLimitMax +
-            '&offset=' +
-            UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].offset +
-            Main_TwithcV5Flag,
-            2,
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
             UserLiveFeedobj_loadDataUserGamesSuccess,
-            true,
-            UserLiveFeedobj_UserGamesPos
+            noop_fun,
+            UserLiveFeedobj_UserGamesPos,
+            UserLiveFeedobj_UserGamesPos, //checkResult
+            'POST', //Method, null for get
+            userGameQuery.replace('%x', AddUser_UsernameArray[0].id) //postMessage, null for get
         );
     }
 
-    function UserLiveFeedobj_loadDataUserGamesSuccess(responseText) {
-        UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, UserLiveFeedobj_UserGamesPos, 'follows');
+    function UserLiveFeedobj_loadDataUserGamesSuccess(resultObj) {
+        if (resultObj.status === 200) {
+            UserLiveFeedobj_loadDataBaseGamesSuccess(resultObj.responseText, UserLiveFeedobj_UserGamesPos, 'data');
+        } else {
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserGamesPos);
+        }
     }
 
     var UserLiveFeedobj_GamesFeedOldUserName = '';
@@ -36851,10 +36967,10 @@
     }
 
     function UserLiveFeedobj_loadCurrentUserAGame() {
-        UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameNameEnter;
+        UserLiveFeedobj_CurrentUserAGameName = UserLiveFeedobj_CurrentUserAGameIdEnter;
 
         var key = Main_aGame,
-            game = UserLiveFeedobj_CurrentUserAGameName,
+            game = UserLiveFeedobj_CurrentUserAGameIdEnter,
             pos = UserLiveFeedobj_UserAGamesPos;
 
         if (ScreenObj[key].hasBackupData && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && ScreenObj[key].CheckBackupData(game)) {
@@ -36866,13 +36982,13 @@
             }
 
             UserLiveFeedobj_BaseLoad(
-                Main_kraken_api +
-                'streams?game=' +
-                encodeURIComponent(UserLiveFeedobj_CurrentUserAGameNameEnter) +
-                '&limit=100&offset=' +
-                UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].offset +
-                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '') +
-                Main_TwithcV5Flag,
+                Main_helix_api +
+                'streams?game_id=' +
+                UserLiveFeedobj_CurrentUserAGameIdEnter +
+                '&first=' +
+                Main_ItemsLimitMax +
+                (UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor : '') +
+                (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
                 2,
                 UserLiveFeedobj_loadDataCurrentUserGameSuccess,
                 true,
@@ -36893,13 +37009,14 @@
 
     var UserLiveFeedobj_CurrentUserAGameName = '';
     var UserLiveFeedobj_CurrentUserAGameNameEnter = null;
+    var UserLiveFeedobj_CurrentUserAGameIdEnter = null;
 
     function UserLiveFeedobj_ShowCurrentUserAGame() {
         UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserGamesPos - 1);
 
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed = !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameNameEnter);
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed = !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameIdEnter);
 
-        if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed || !UserLiveFeedobj_CurrentUserAGameNameEnter) {
+        if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed || !UserLiveFeedobj_CurrentUserAGameIdEnter) {
             Main_values.UserLiveFeed_LastPosition[UserLiveFeedobj_UserAGamesPos] = 0;
         }
 
@@ -36917,7 +37034,7 @@
     }
 
     function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
-        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] = UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
+        UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameIdEnter] = UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
     }
 
     //Current user a game end
@@ -37828,16 +37945,17 @@
         var responseObj = JSON.parse(responseText),
             itemsCount = UserLiveFeed_itemsCount[pos],
             response = responseObj[type],
-            total;
+            total,
+            hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
 
-        if (UserLiveFeed_obj[pos].useHelix) {
+        if (pos === UserLiveFeedobj_UserGamesPos) {
+            response = hasData ? response.user.followedGames.nodes : [];
+        } else if (UserLiveFeed_obj[pos].useHelix) {
             UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
 
             if (!UserLiveFeed_obj[pos].cursor || UserLiveFeed_obj[pos].cursor === '') {
                 UserLiveFeed_obj[pos].dataEnded = true;
             }
-        } else {
-            total = responseObj._total;
         }
 
         UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCount);
@@ -37848,7 +37966,8 @@
             cell,
             game,
             i = 0,
-            useHelix;
+            useHelix,
+            isUserGames = pos === UserLiveFeedobj_UserGamesPos;
 
         if (response_items) {
             // if (pos === UserLiveFeedobj_UserGamesPos) {
@@ -37887,14 +38006,20 @@
             //     }
             // }
 
+            if (isUserGames) {
+                response.sort(function(a, b) {
+                    return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
+                });
+            }
+
             var isntUser = pos !== UserLiveFeedobj_UserGamesPos;
             useHelix = UserLiveFeed_obj[pos].useHelix;
 
             for (i; i < response_items; i++) {
                 cell = response[i];
-                game = useHelix ? cell : cell.game;
+                game = useHelix || isUserGames ? cell : cell.game;
 
-                var id_cell = useHelix ? game.id : game._id;
+                var id_cell = useHelix || isUserGames ? game.id : game._id;
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell)) {
                     UserLiveFeed_idObject[pos][id_cell] = itemsCount;
@@ -37905,6 +38030,20 @@
                             '', //1
                             id_cell, //2
                             game.box_art_url //3
+                        ]);
+                    } else if (isUserGames) {
+                        UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
+                            game.displayName, //0
+                            (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
+                            STR_SPACE_HTML +
+                            STR_CHANNELS +
+                            STR_BR +
+                            STR_FOR +
+                            (cell.viewersCount ? Main_addCommas(cell.viewersCount) : 0) +
+                            STR_SPACE_HTML +
+                            Main_GetViewerStrings(cell.viewersCount ? cell.viewersCount : 0), //1
+                            id_cell, //2
+                            game.boxArtURL //3
                         ]);
                     } else {
                         UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [

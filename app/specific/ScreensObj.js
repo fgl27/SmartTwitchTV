@@ -904,7 +904,7 @@ function ScreensObj_InitChannelVod() {
                     this.time[this.periodPos - 1] +
                     (this.cursor ? '&after=' + this.cursor : '');
             },
-            key_play: function (click) {
+            key_play: function () {
                 if (this.is_a_Banner()) return;
 
                 if (this.posY === -1) {
