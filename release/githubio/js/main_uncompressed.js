@@ -27131,7 +27131,7 @@
                             Sidepannel_Go(Main_UserLive);
                         } else {
                             ScreenObj[key].IsOpen = Main_games;
-                            Sidepannel_Go(Main_Featured);
+                            Sidepannel_Go(Main_Live);
                         }
                     } else Sidepannel_Go(ScreenObj[key].key_pgUp);
                 }
@@ -27150,10 +27150,10 @@
 
                         if (Main_values.Main_BeforeAgame === Main_usergames) {
                             ScreenObj[key].IsOpen = Main_usergames;
-                            Sidepannel_Go(Main_UserVod);
+                            Sidepannel_Go(Main_UserChannels);
                         } else {
                             ScreenObj[key].IsOpen = Main_games;
-                            Sidepannel_Go(Main_Vod);
+                            Sidepannel_Go(Main_Live);
                         }
                     } else Sidepannel_Go(ScreenObj[key].key_pgDown);
                 }
@@ -29031,7 +29031,7 @@
         ScreenObj[key] = Screens_assign({
                 periodMaxPos: 4,
                 HeadersArray: Main_base_array_header,
-                key_pgDown: Main_Clip,
+                key_pgDown: Main_Live,
                 key_pgUp: Main_games,
                 object: 'vods',
                 ids: Screens_ScreenIds('Vod', key),
@@ -29186,7 +29186,7 @@
                 HeadersArray: Main_base_array_header,
                 object: 'data',
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Featured,
+                key_pgUp: Main_Live,
                 ids: Screens_ScreenIds('AGameVod', key),
                 ScreenName: 'AGameVod',
                 table: 'stream_table_a_game_vod',
@@ -29543,7 +29543,7 @@
                 table: 'stream_table_clip',
                 screen: key,
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Vod,
+                key_pgUp: Main_Live,
                 CheckContentLang: 1,
                 ContentLang: '',
                 periodPos: Main_getItemInt('Clip_periodPos', 2),
