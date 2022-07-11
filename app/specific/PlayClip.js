@@ -1049,4 +1049,9 @@ function PlayClip_ClipCheckIfIsLiveOpen() {
     Main_openStream();
 
     Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[15], screen);
+
+    //if playing a clip in a browser the clip player will not close in PlayClip_PreshutdownStream
+    if (!Main_IsOn_OSInterface) {
+        BrowserTestStopClip();
+    }
 }
