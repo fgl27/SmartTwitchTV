@@ -15,6 +15,7 @@ Web Version July 11 2022
 * Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show
 * Update User channel Vod screen to use new Twitch API
 * Update Game Vod screen to use new Twitch API
+* Remove unsupported side panel screens
 * General improves
 
 Web Version July 10 2022 and Apk Version 3.0.332 and up

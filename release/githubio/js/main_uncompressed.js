@@ -4325,13 +4325,14 @@
         publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
         WebVersion: 'July 11 2022',
-        WebTag: 609, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 610, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version July 11 2022',
                 changes: [
                     'Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show',
                     'Update User channel Vod screen to use new Twitch API',
                     'Update Game Vod screen to use new Twitch API',
+                    'Remove unsupported side panel screens',
                     'General improves'
                 ]
             },
@@ -4350,16 +4351,6 @@
                     'Update app dependencies to latest version included the player',
                     'If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues'
                 ]
-            },
-            {
-                title: 'Web Version December 04 2021',
-                changes: [
-                    "Minor improve to screen aspect ratio, only improves on some devices that have issues, if you didn't had an screen size/aspect ratio  issue before and now you have please inform, contact inf in the about of the app"
-                ]
-            },
-            {
-                title: 'Web Version September 12 2021',
-                changes: ['Allow to control audio and volumes for all types of players']
             }
         ]
     };
@@ -12258,14 +12249,15 @@
     }
 
     function Main_CheckBroadcastIDStart() {
-        var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-        BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, false);
+        var theUrl = Main_helix_api + 'streams?user_id=' + Play_data.data[14];
+        BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
     }
 
     function Main_CheckBroadcastIDStartSucess(response) {
         response = JSON.parse(response);
-        if (response.stream !== null) {
-            if (Main_values_Play_data[7] === response.stream._id) {
+
+        if (response.data && response.data.length) {
+            if (Main_values_Play_data[7] === response.data[0].id) {
                 Main_openStream();
                 return;
             }
@@ -13157,7 +13149,7 @@
                             } else if (event.data.type === 'live' || event.data.type === 'vod') {
                                 //Live that is not a VOD or VOD
 
-                                theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
+                                theUrl = 'https://api.twitch.tv/helix/videos?id=' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]);
 
                                 onload = function(obj) {
                                     if (obj.status !== 200) {
@@ -13192,14 +13184,14 @@
                             } else if (event.data.type === 'clip') {
                                 //Clip
 
-                                theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
+                                theUrl = 'https://api.twitch.tv/helix/clips?id=' + event.data.obj.data[0];
 
                                 onload = function(obj) {
-                                    if (obj.status !== 200) {
-                                        var message = JSON.parse(obj.responseText).message;
+                                    if (obj.status === 200) {
+                                        var data = JSON.parse(obj.responseText).data;
 
                                         //Clip was deleted
-                                        if (message && typeof message === 'string' && message.toLowerCase().indexOf('clip does not exist') > -1) {
+                                        if (!data.length) {
                                             this.postMessage({
                                                 data: obj.mData.obj.data[7],
                                                 type: obj.mData.type,
@@ -20537,7 +20529,7 @@
         ChatLive_Playing = true;
 
         if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
-        Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], 0);
+        Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], PlayExtra_data.data[0]);
     }
 
     function PlayExtra_SavePlayData() {
@@ -21373,7 +21365,7 @@
         if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoStartId === ID) {
             Play_updateStreamInfoEnd(obj.data[0]);
 
-            Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id);
+            Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id, obj.data[0].thumbnail_url);
 
             if (!Main_IsOn_OSInterface) {
                 Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomimg);
@@ -21422,22 +21414,22 @@
         );
     }
 
-    function Play_updateVodInfo(Channel_id, BroadcastID) {
-        var theUrl = Main_kraken_api + 'channels/' + Channel_id + '/videos?limit=100&broadcast_type=archive&sort=time';
+    var Play_updateVodInfoThumbs = {};
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, BroadcastID);
+    function Play_updateVodInfo(Channel_id, BroadcastID, thumb) {
+        var theUrl = Main_helix_api + 'videos?first=1' + '&user_id=' + Channel_id + '&type=archive&sort=time';
+        Play_updateVodInfoThumbs[BroadcastID] = thumb;
+        BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, BroadcastID, null, true);
     }
 
     function Play_updateVodInfoSuccess(response, BroadcastID) {
-        response = JSON.parse(response).videos;
+        response = JSON.parse(response);
 
-        var i = 0,
-            len = response.length;
-        for (i; i < len; i++) {
-            if (Main_A_includes_B(response[i].status, 'recording')) {
-                Main_history_UpdateLiveVod(BroadcastID, response[i]._id.substr(1), ScreensObj_VodGetPreview(response[i].preview.template, response[i].animated_preview_url));
+        if (response.data && response.data.length) {
+            var firstVod = response.data[0];
 
-                break;
+            if (firstVod.stream_id === BroadcastID) {
+                Main_history_UpdateLiveVod(BroadcastID, firstVod.id, Play_updateVodInfoThumbs[BroadcastID]);
             }
         }
     }
@@ -23185,7 +23177,7 @@
             Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
         }
 
-        Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], 0);
+        Play_updateVodInfo(Play_MultiArray[pos].data[14], Play_MultiArray[pos].data[7], Play_MultiArray[pos].data[0]);
         Play_data_old = JSON.parse(JSON.stringify(Play_data_base));
 
         Play_updateStreamInfoMulti(pos);
@@ -29193,7 +29185,7 @@
                 periodMaxPos: 4,
                 HeadersArray: Main_base_array_header,
                 object: 'data',
-                key_pgDown: Main_Vod,
+                key_pgDown: Main_Live,
                 key_pgUp: Main_Featured,
                 ids: Screens_ScreenIds('AGameVod', key),
                 ScreenName: 'AGameVod',
@@ -29339,8 +29331,8 @@
                 screen: key,
                 object: 'data',
                 ScreenName: 'Live',
-                key_pgDown: Main_Featured,
-                key_pgUp: Main_Clip,
+                key_pgDown: Main_games,
+                key_pgUp: Main_games,
                 CheckContentLang: 1,
                 ContentLang: '',
                 base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
@@ -29445,8 +29437,8 @@
                 object: 'data',
                 CheckContentLang: 1,
                 ContentLang: '',
-                key_pgDown: Main_Vod,
-                key_pgUp: Main_Featured,
+                key_pgDown: Main_Live,
+                key_pgUp: Main_Live,
                 hasBackupData: true,
                 base_url: Main_helix_api + 'streams?game_id=',
                 set_url: function() {
@@ -29646,8 +29638,8 @@
                 ScreenName: 'AGameClip',
                 table: 'stream_table_a_game_clip',
                 screen: key,
-                key_pgDown: Main_Vod,
-                key_pgUp: Main_Featured,
+                key_pgDown: Main_Live,
+                key_pgUp: Main_Live,
                 CheckContentLang: 1,
                 ContentLang: '',
                 hasBackupData: true,
@@ -29691,8 +29683,8 @@
                 ScreenName: 'Game',
                 table: 'stream_table_games',
                 screen: key,
-                key_pgDown: Main_Vod,
-                key_pgUp: Main_Featured,
+                key_pgDown: Main_Live,
+                key_pgUp: Main_Live,
                 object: 'data',
                 base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
                 set_url: function() {
@@ -29727,7 +29719,7 @@
                 table: 'stream_table_user_games',
                 screen: key,
                 key_pgDownNext: Main_UserChannels,
-                key_pgDown: Main_UserVod,
+                key_pgDown: Main_UserChannels,
                 key_pgUp: Main_UserLive,
                 isLive: false,
                 hasGameProp: true,
@@ -29834,7 +29826,7 @@
                 object: 'follows',
                 IsUser: true,
                 key_pgDown: Main_History[Main_HistoryPos],
-                key_pgUp: Main_UserVod,
+                key_pgUp: Main_usergames,
                 key_pgUpNext: Main_usergames,
                 base_url: Main_kraken_api + 'users/',
                 set_url: function() {
@@ -34837,14 +34829,25 @@
     function Sidepannel_SetUserLables() {
         Main_values.Sidepannel_IsUser = true;
 
+        //No longer supported
+        Main_HideElement('side_panel_movel_new_5');
+        Main_HideElement('side_panel_new_5');
+
         Main_innerHTML('side_panel_movel_user_text', STR_SPACE_HTML + STR_USER_MENU + STR_SPACE_HTML);
         Main_ShowElement('side_panel_movel_user_text_holder');
         Main_ShowElement('side_panel_movel_new_8');
         Main_ShowElement('side_panel_new_8');
 
+        Main_ShowElement('side_panel_movel_new_4');
+        Main_ShowElement('side_panel_new_4');
+        Main_ShowElement('side_panel_movel_new_6');
+        Main_ShowElement('side_panel_new_6');
+        Main_ShowElement('side_panel_movel_new_7');
+        Main_ShowElement('side_panel_new_7');
+
         Main_innerHTML('side_panel_movel_new_2', STR_MAIN_MENU);
         Main_innerHTML('side_panel_movel_new_4', STR_GAMES);
-        Main_innerHTML('side_panel_movel_new_5', STR_VIDEOS);
+        //Main_innerHTML('side_panel_movel_new_5', STR_VIDEOS);
         Main_innerHTML('side_panel_movel_new_6', STR_CHANNELS);
         Main_innerHTML('side_panel_movel_new_7', STR_USER_MY_CHANNEL);
         Main_innerHTML('side_panel_movel_new_8', STR_HISTORY);
@@ -34860,8 +34863,18 @@
         if (AddUser_UsernameArray[0]) Sidepannel_SetUserlable(AddUser_UsernameArray[0].display_name);
         else Sidepannel_SetUserlable(STR_USER_ADD);
 
+        //No longer supported
+        Main_HideElement('side_panel_movel_new_4');
+        Main_HideElement('side_panel_movel_new_6');
+        Main_HideElement('side_panel_movel_new_7');
+        Main_HideElement('side_panel_new_4');
+        Main_HideElement('side_panel_new_6');
+        Main_HideElement('side_panel_new_7');
+
         Main_HideElement('side_panel_movel_new_8');
         Main_HideElement('side_panel_new_8');
+        Main_ShowElement('side_panel_movel_new_5');
+        Main_ShowElement('side_panel_new_5');
 
         Main_HideElement('side_panel_movel_user_text_holder');
 
@@ -34869,10 +34882,10 @@
 
         Main_innerHTML('side_panel_movel_new_2', STR_USER_MENU);
         Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
-        Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
+        //Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
         Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
-        Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
-        Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
+        //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+        //Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
         Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
         Main_innerHTML('side_panel_movel_new_10', STR_SPACE_HTML + STR_ABOUT);
@@ -35027,6 +35040,30 @@
         }
     }
 
+    function Sidepannel_handleMainKey(Down) {
+        if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
+
+        var feed4 = 3;
+        var feed5 = 5;
+        //Workaround for hiden options
+        if (Down) {
+            feed4 = 5;
+            feed5 = 9;
+        }
+
+        if (Main_values.Sidepannel_IsUser) {
+            if (Sidepannel_Sidepannel_Pos === 5) {
+                Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
+            }
+        } else {
+            if (Sidepannel_Sidepannel_Pos === 4) {
+                Sidepannel_Sidepannel_Pos = feed4;
+            } else if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
+                Sidepannel_Sidepannel_Pos = feed5;
+            }
+        }
+    }
+
     function Sidepannel_handleKeyDownMain(event) {
         switch (event.keyCode) {
             case KEY_KEYBOARD_BACKSPACE:
@@ -35044,7 +35081,7 @@
                 if (Sidepannel_Sidepannel_Pos) {
                     Sidepannel_RemoveFocusMain();
                     Sidepannel_Sidepannel_Pos--;
-                    if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos -= 1;
+                    Sidepannel_handleMainKey(false);
                     Sidepannel_AddFocusMain();
                 }
                 break;
@@ -35053,7 +35090,7 @@
                 if (Sidepannel_Sidepannel_Pos < 13) {
                     Sidepannel_RemoveFocusMain();
                     Sidepannel_Sidepannel_Pos++;
-                    if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += 1;
+                    Sidepannel_handleMainKey(true);
                     Sidepannel_AddFocusMain();
                 }
                 break;

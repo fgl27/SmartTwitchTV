@@ -24,7 +24,7 @@ var version = {
     publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
     WebVersion: 'July 11 2022',
-    WebTag: 609, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 610, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
             title: 'Web Version July 11 2022',
@@ -32,6 +32,7 @@ var version = {
                 'Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show',
                 'Update User channel Vod screen to use new Twitch API',
                 'Update Game Vod screen to use new Twitch API',
+                'Remove unsupported side panel screens',
                 'General improves'
             ]
         },
@@ -50,16 +51,6 @@ var version = {
                 'Update app dependencies to latest version included the player',
                 'If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues'
             ]
-        },
-        {
-            title: 'Web Version December 04 2021',
-            changes: [
-                "Minor improve to screen aspect ratio, only improves on some devices that have issues, if you didn't had an screen size/aspect ratio  issue before and now you have please inform, contact inf in the about of the app"
-            ]
-        },
-        {
-            title: 'Web Version September 12 2021',
-            changes: ['Allow to control audio and volumes for all types of players']
         }
     ]
 };
