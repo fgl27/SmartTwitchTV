@@ -1437,14 +1437,15 @@ function Main_CheckBroadcastID(index, doc) {
 }
 
 function Main_CheckBroadcastIDStart() {
-    var theUrl = Main_kraken_api + 'streams/' + Play_data.data[14] + Main_TwithcV5Flag_I;
-    BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, false);
+    var theUrl = Main_helix_api + 'streams?user_id=' + Play_data.data[14];
+    BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
     response = JSON.parse(response);
-    if (response.stream !== null) {
-        if (Main_values_Play_data[7] === response.stream._id) {
+
+    if (response.data && response.data.length) {
+        if (Main_values_Play_data[7] === response.data[0].id) {
             Main_openStream();
             return;
         }
