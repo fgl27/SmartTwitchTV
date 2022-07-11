@@ -182,7 +182,7 @@ function ScreensObj_StartAllVars() {
                 this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
             }
 
-            //console.log(this.data)
+            //console.log(this.data);
         },
         setBackupData: function (responseObj, data, lastScreenRefresh, game, ContentLang, Lang) {
             if (!this.BackupData) {
@@ -416,7 +416,12 @@ function ScreensObj_StartAllVars() {
             Main_textContent('dialog_thumb_opt_setting_name_3', STR_HISTORY_VOD_DIS);
         },
         setMax: function (tempObj) {
-            if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
+            if (this.useHelix) {
+                this.cursor = tempObj.pagination.cursor;
+                if (!this.cursor || this.cursor === '') this.dataEnded = true;
+            } else {
+                if (tempObj[this.object].length < Main_ItemsLimitMax - 5) this.dataEnded = true;
+            }
         },
         img_404: IMG_404_VOD,
         HasSwitches: true,
@@ -426,11 +431,11 @@ function ScreensObj_StartAllVars() {
         Vod_newImg: new Image(),
         AnimateThumb: ScreensObj_AnimateThumbId,
         addCell: function (cell) {
-            if (!this.idObject[cell._id]) {
+            if (!this.idObject[cell.id]) {
                 this.itemsCount++;
-                this.idObject[cell._id] = 1;
+                this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
+                this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell, this.useHelix), this.screen);
 
                 this.coloumn_id++;
             }
@@ -852,10 +857,11 @@ function ScreensObj_InitChannelVod() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             periodMaxPos: 2,
             HeadersArray: Main_base_array_header,
             key_pgDown: Main_ChannelClip,
-            object: 'videos',
+            object: 'data',
             ids: Screens_ScreenIds('ChannelVod', key),
             ScreenName: 'ChannelVod',
             table: 'stream_table_channel_vod',
@@ -866,19 +872,16 @@ function ScreensObj_InitChannelVod() {
             highlightSTR: 'ChannelVod_highlight',
             highlight: Main_getItemBool('ChannelVod_highlight', false),
             periodPos: Main_getItemInt('ChannelVod_periodPos', 1),
-            base_url: Main_kraken_api + 'channels/',
+            base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&user_id=',
             set_url: function () {
                 this.url =
                     this.base_url +
-                    encodeURIComponent(Main_values.Main_selectedChannel_id) +
-                    '/videos?limit=' +
-                    Main_ItemsLimitMax +
-                    '&broadcast_type=' +
+                    Main_values.Main_selectedChannel_id +
+                    '&type=' +
                     (this.highlight ? 'highlight' : 'archive') +
                     '&sort=' +
                     this.time[this.periodPos - 1] +
-                    '&offset=' +
-                    (this.offset + this.extraoffset);
+                    (this.cursor ? '&after=' + this.cursor : '');
             },
             key_play: function (click) {
                 if (this.is_a_Banner()) return;
@@ -894,15 +897,13 @@ function ScreensObj_InitChannelVod() {
                         if (this.periodPos > this.periodMaxPos) this.periodPos = 1;
                         this.SetPeriod();
                         Screens_StartLoad(this.screen);
-                    } else Screens_OffSetStart(this.screen, click);
+                    }
+                    //else Screens_OffSetStart(this.screen, click);
                 } else this.OpenVodStart();
             },
-            SwitchesIcons: ['movie-play', 'history', 'offset'],
+            SwitchesIcons: ['movie-play', 'history'],
             addSwitches: function () {
-                ScreensObj_addSwitches(
-                    [STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_POS],
-                    this.screen
-                );
+                ScreensObj_addSwitches([STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_VOD, STR_SPACE_HTML + STR_SPACE_HTML + STR_SWITCH_TYPE], this.screen);
             },
             lastselectedChannel: '',
             label_init: function () {
@@ -924,7 +925,7 @@ function ScreensObj_InitChannelVod() {
 
                 ScreensObj_SetTopLable(
                     Main_values.Main_selectedChannelDisplayname,
-                    (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) + ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
+                    (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
                 );
             },
             label_exit: function () {
@@ -2108,7 +2109,27 @@ function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
     ];
 }
 
-function ScreensObj_VodCellArray(cell) {
+function ScreensObj_VodCellArray(cell, useHelix) {
+    if (useHelix) {
+        return [
+            ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
+            cell.user_name, //1
+            Main_videoCreatedAt(cell.created_at), //2
+            null, //3
+            Main_addCommas(cell.view_count), //4
+            '[' + cell.language + ']', //5
+            cell.user_login, //6
+            cell.id, //7
+            null, //8
+            cell.language, //9
+            twemoji.parse(cell.title), //10
+            Play_timeHMS(cell.duration), //11
+            cell.created_at, //12
+            cell.view_count, //13
+            cell.user_id //14
+        ];
+    }
+
     return [
         ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url), //0
         cell.channel.display_name, //1
@@ -2208,12 +2229,12 @@ function ScreensObj_ClipCellArray(cell, useHelix) {
 
 function ScreensObj_VodGetPreview(preview, animated_preview_url) {
     //When the live hasn't yet ended the img is a default gray one, but the final is alredy generated for some reason not used
-    if (!Main_IsOn_OSInterface) {
-        if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
-            console.log('Revise vod links');
-        }
-    }
-    return Main_A_includes_B(preview + '', '404_processing') ? ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace('{width}x{height}', Main_VideoSize);
+    // if (!Main_IsOn_OSInterface) {
+    //     if (!Main_A_includes_B(preview + '', '404_processing') && !Main_A_includes_B(preview + '', 'cf_vods')) {
+    //         console.log('Revise vod links');
+    //     }
+    // }
+    return Main_A_includes_B(preview + '', '404_processing') ? ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) : preview.replace('%{width}x%{height}', Main_VideoSize);
 }
 
 function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
