@@ -944,9 +944,10 @@ function ScreensObj_InitAGameVod() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             periodMaxPos: 4,
             HeadersArray: Main_base_array_header,
-            object: 'vods',
+            object: 'data',
             key_pgDown: Main_Vod,
             key_pgUp: Main_Featured,
             ids: Screens_ScreenIds('AGameVod', key),
@@ -959,19 +960,17 @@ function ScreensObj_InitAGameVod() {
             highlightSTR: 'AGameVod_highlight',
             highlight: Main_getItemBool('AGameVod_highlight', false),
             periodPos: Main_getItemInt('AGameVod_periodPos', 2),
-            base_url: Main_kraken_api + 'videos/top?game=',
+            base_url: Main_helix_api + 'videos?first=' + Main_ItemsLimitMax + '&game_id=',
             set_url: function () {
                 this.url =
                     this.base_url +
-                    encodeURIComponent(Main_values.Main_gameSelected) +
-                    '&limit=' +
-                    Main_ItemsLimitMax +
-                    '&broadcast_type=' +
+                    Main_values.Main_gameSelected_id +
+                    '&type=' +
                     (this.highlight ? 'highlight' : 'archive') +
-                    '&sort=views&offset=' +
-                    this.offset +
+                    '&sort=views' +
                     '&period=' +
                     this.period[this.periodPos - 1] +
+                    (this.cursor ? '&after=' + this.cursor : '') +
                     (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : '');
             },
             key_play: function () {

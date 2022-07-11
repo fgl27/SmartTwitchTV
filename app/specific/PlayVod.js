@@ -1588,7 +1588,7 @@ function PlayVod_ProcessChapters(obj) {
     for (i; i < len; i++) {
         if (obj[i].node.type === 'GAME_CHANGE') {
             game = obj[i].node.details.game ? obj[i].node.details.game.displayName : obj[i].node.description;
-            name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) + STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
+            name = STR_PLAYED + game + ' ' + STR_FOR + Play_timeMs(obj[i].node.durationMilliseconds) + ' ' + STR_FROM_SIMPLE + Play_timeMs(obj[i].node.positionMilliseconds);
 
             PlayVod_ChaptersArray.push({
                 name: name,
