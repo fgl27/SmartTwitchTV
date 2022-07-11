@@ -60,6 +60,8 @@ var ScreensObj_banner_added_section = false;
 
 var AffiliatedTIme = 60 * 120 * 1000;
 
+var userGameQuery = '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
+
 var Base_obj;
 var Base_Vod_obj;
 var Base_Live_obj;
@@ -1519,7 +1521,7 @@ function ScreensObj_InitUserGames() {
             IsUser: true,
             object: 'data',
             isQuery: true,
-            base_post: '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}',
+            base_post: userGameQuery,
             set_url: function () {
                 this.dataEnded = true;
                 this.url = PlayClip_BaseUrl;

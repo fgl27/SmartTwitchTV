@@ -163,11 +163,12 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].show = UserLiveFeedobj_ShowCurrentUserAGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].hide = UserLiveFeedobj_HideCurrentUserAGame;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].div = Main_getElementById('user_agames_scroll');
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'streams';
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].StreamType = 'data';
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].cell = UserLiveFeedobj_CurrentAGameCell;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].HasMore = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Screen = 'preview_user_agame';
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame = {};
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].useHelix = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame;
 
     //a game
@@ -183,7 +184,6 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].CheckContentLang = 1;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame = {};
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].UpdateLastPositionGame = UserLiveFeedobj_CurrentAGameUpdateLastPositionGame;
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].useHelix = true;
     UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor = null;
 
     //User Games
@@ -198,6 +198,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].IsGame = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].checkPreview = false;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].HasMore = true;
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].useHelix = true;
     UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].Screen = 'preview_user_games';
 
     //Games
@@ -1193,7 +1194,10 @@ function UserLiveFeed_KeyUpDown(Adder) {
 
 function UserLiveFeed_KeyEnter(pos) {
     if (pos === UserLiveFeedobj_UserGamesPos) {
-        if (UserLiveFeed_ObjNotNull(pos)) UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
+        if (UserLiveFeed_ObjNotNull(pos)) {
+            UserLiveFeedobj_CurrentUserAGameNameEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][0];
+            UserLiveFeedobj_CurrentUserAGameIdEnter = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][2];
+        }
 
         if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
             Play_showWarningMidleDialog(STR_NO_GAME, 1000);
