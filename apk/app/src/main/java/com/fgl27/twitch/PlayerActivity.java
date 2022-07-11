@@ -744,6 +744,7 @@ public class PlayerActivity extends Activity {
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
+        PlayerCurrentPosition = 0L;
         PlayerObj[4].ResumePosition = 0L;
         CheckKeepScreenOn();
     }
@@ -3352,6 +3353,7 @@ public class PlayerActivity extends Activity {
 
                 VideoWebHolder.bringChildToFront(mWebView);
                 ClearPlayer(0);
+                PlayerCurrentPosition = 0L;
 
             });
         }
