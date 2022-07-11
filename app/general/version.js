@@ -23,9 +23,18 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
-    WebVersion: 'July 10 2022',
-    WebTag: 608, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'July 11 2022',
+    WebTag: 609, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version July 11 2022',
+            changes: [
+                'Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show',
+                'Update User channel Vod screen to use new Twitch API',
+                'Update Game Vod screen to use new Twitch API',
+                'General improves'
+            ]
+        },
         {
             title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
             changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
