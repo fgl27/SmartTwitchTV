@@ -2329,7 +2329,7 @@ function Main_SetHistoryworker() {
                         } else if (event.data.type === 'live' || event.data.type === 'vod') {
                             //Live that is not a VOD or VOD
 
-                            theUrl = 'https://api.twitch.tv/kraken/videos/' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]) + '?api_version=5';
+                            theUrl = 'https://api.twitch.tv/helix/videos?id=' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]);
 
                             onload = function (obj) {
                                 if (obj.status !== 200) {
@@ -2364,14 +2364,14 @@ function Main_SetHistoryworker() {
                         } else if (event.data.type === 'clip') {
                             //Clip
 
-                            theUrl = 'https://api.twitch.tv/kraken/clips/' + event.data.obj.data[0] + '?api_version=5';
+                            theUrl = 'https://api.twitch.tv/helix/clips?id=' + event.data.obj.data[0];
 
                             onload = function (obj) {
-                                if (obj.status !== 200) {
-                                    var message = JSON.parse(obj.responseText).message;
+                                if (obj.status === 200) {
+                                    var data = JSON.parse(obj.responseText).data;
 
                                     //Clip was deleted
-                                    if (message && typeof message === 'string' && message.toLowerCase().indexOf('clip does not exist') > -1) {
+                                    if (!data.length) {
                                         this.postMessage({
                                             data: obj.mData.obj.data[7],
                                             type: obj.mData.type,
