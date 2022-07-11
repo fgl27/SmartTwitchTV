@@ -1872,7 +1872,7 @@ function Screens_handleKeyDown(key, event) {
                         Sidepannel_Go(Main_UserLive);
                     } else {
                         ScreenObj[key].IsOpen = Main_games;
-                        Sidepannel_Go(Main_Featured);
+                        Sidepannel_Go(Main_Live);
                     }
                 } else Sidepannel_Go(ScreenObj[key].key_pgUp);
             }
@@ -1891,10 +1891,10 @@ function Screens_handleKeyDown(key, event) {
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) {
                         ScreenObj[key].IsOpen = Main_usergames;
-                        Sidepannel_Go(Main_UserVod);
+                        Sidepannel_Go(Main_UserChannels);
                     } else {
                         ScreenObj[key].IsOpen = Main_games;
-                        Sidepannel_Go(Main_Vod);
+                        Sidepannel_Go(Main_Live);
                     }
                 } else Sidepannel_Go(ScreenObj[key].key_pgDown);
             }
