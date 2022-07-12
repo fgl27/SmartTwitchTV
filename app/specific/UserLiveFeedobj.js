@@ -44,14 +44,14 @@ var UserLiveFeedobj_FeedSort = [
 ];
 
 var UserLiveFeedobj_FeedFeatureSort = [
-    [null, 'viewer_count', 0], //0
-    [null, 'viewer_count', 1], //1
-    [null, 'user_login', 1], //2
-    [null, 'user_login', 0], //3
-    [null, 'game_name', 1], //4
-    [null, 'game_name', 0], //5
-    [null, 'started_at', 0], //6
-    [null, 'started_at', 1] //7
+    [null, 'viewersCount', 0], //0
+    [null, 'viewersCount', 1], //1
+    ['broadcaster', 'login', 1], //2
+    ['broadcaster', 'login', 0], //3
+    ['game', 'displayName', 1], //4
+    ['game', 'displayName', 0], //5
+    [null, 'createdAt', 0], //6
+    [null, 'createdAt', 1] //7
 ];
 
 // var UserLiveFeedobj_FeedSortGames = [
@@ -1497,45 +1497,45 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         isFeatured = pos === UserLiveFeedobj_FeaturedPos;
 
     if (response_items) {
-        // if (isFeatured) {
-        //     var sorting = Settings_Obj_default('live_feed_sort');
+        if (isFeatured) {
+            var sorting = Settings_Obj_default('live_feed_sort');
 
-        //     var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
-        //         sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
-        //         sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
+            var sorting_type1 = UserLiveFeedobj_FeedFeatureSort[sorting][0],
+                sorting_type2 = UserLiveFeedobj_FeedFeatureSort[sorting][1],
+                sorting_direction = UserLiveFeedobj_FeedFeatureSort[sorting][2];
 
-        //     if (sorting_direction) {
-        //         //A-Z
-        //         if (sorting_type1) {
-        //             response.sort(function (a, b) {
-        //                 return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-        //                     ? -1
-        //                     : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-        //                     ? 1
-        //                     : 0;
-        //             });
-        //         } else {
-        //             response.sort(function (a, b) {
-        //                 return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
-        //             });
-        //         }
-        //     } else {
-        //         //Z-A
-        //         if (sorting_type1) {
-        //             response.sort(function (a, b) {
-        //                 return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-        //                     ? -1
-        //                     : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-        //                     ? 1
-        //                     : 0;
-        //             });
-        //         } else {
-        //             response.sort(function (a, b) {
-        //                 return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
-        //             });
-        //         }
-        //     }
-        // }
+            if (sorting_direction) {
+                //A-Z
+                if (sorting_type1) {
+                    response.sort(function (a, b) {
+                        return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
+                            ? -1
+                            : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
+                            ? 1
+                            : 0;
+                    });
+                } else {
+                    response.sort(function (a, b) {
+                        return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
+                    });
+                }
+            } else {
+                //Z-A
+                if (sorting_type1) {
+                    response.sort(function (a, b) {
+                        return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
+                            ? -1
+                            : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
+                            ? 1
+                            : 0;
+                    });
+                } else {
+                    response.sort(function (a, b) {
+                        return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
+                    });
+                }
+            }
+        }
         var useHelix = UserLiveFeed_obj[pos].useHelix;
 
         for (i; i < response_items; i++) {
