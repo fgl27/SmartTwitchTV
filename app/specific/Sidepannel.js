@@ -645,8 +645,6 @@ function Sidepannel_SetUserLables() {
     Main_ShowElement('side_panel_movel_new_8');
     Main_ShowElement('side_panel_new_8');
 
-    Main_ShowElement('side_panel_movel_new_4');
-    Main_ShowElement('side_panel_new_4');
     Main_ShowElement('side_panel_movel_new_6');
     Main_ShowElement('side_panel_new_6');
     Main_ShowElement('side_panel_movel_new_7');
@@ -671,10 +669,10 @@ function Sidepannel_SetDefaultLables() {
     else Sidepannel_SetUserlable(STR_USER_ADD);
 
     //No longer supported
-    Main_HideElement('side_panel_movel_new_4');
+
     Main_HideElement('side_panel_movel_new_6');
     Main_HideElement('side_panel_movel_new_7');
-    Main_HideElement('side_panel_new_4');
+
     Main_HideElement('side_panel_new_6');
     Main_HideElement('side_panel_new_7');
 
@@ -689,7 +687,7 @@ function Sidepannel_SetDefaultLables() {
 
     Main_innerHTML('side_panel_movel_new_2', STR_USER_MENU);
     Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
-    //Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
+    Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
     Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
     //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
     //Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
@@ -849,23 +847,15 @@ function Sidepannel_MainKeyLeft() {
 
 function Sidepannel_handleMainKey(Down) {
     if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
-
-    var feed4 = 3;
-    var feed5 = 5;
     //Workaround for hiden options
-    if (Down) {
-        feed4 = 5;
-        feed5 = 9;
-    }
+    var feed5 = Down ? 9 : 5;
 
     if (Main_values.Sidepannel_IsUser) {
         if (Sidepannel_Sidepannel_Pos === 5) {
             Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
         }
     } else {
-        if (Sidepannel_Sidepannel_Pos === 4) {
-            Sidepannel_Sidepannel_Pos = feed4;
-        } else if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
+        if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
             Sidepannel_Sidepannel_Pos = feed5;
         }
     }

@@ -1872,7 +1872,7 @@ function Screens_handleKeyDown(key, event) {
                         Sidepannel_Go(Main_UserLive);
                     } else {
                         ScreenObj[key].IsOpen = Main_games;
-                        Sidepannel_Go(Main_Live);
+                        Sidepannel_Go(Main_Featured);
                     }
                 } else Sidepannel_Go(ScreenObj[key].key_pgUp);
             }
