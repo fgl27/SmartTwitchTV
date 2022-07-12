@@ -1122,7 +1122,7 @@ function UserLiveFeed_KeyUpDown(Adder) {
             userSet = AddUser_UserIsSet();
 
         //Workaround for hiden options
-        if (NextPos === UserLiveFeedobj_FeaturedPos || NextPos === UserLiveFeedobj_UserVodPos) {
+        if (NextPos === UserLiveFeedobj_UserVodPos) {
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
             UserLiveFeed_FeedPosX = NextPos;
             UserLiveFeed_KeyUpDown(Adder);

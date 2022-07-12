@@ -61,6 +61,8 @@ var ScreensObj_banner_added_section = false;
 var AffiliatedTIme = 60 * 120 * 1000;
 
 var userGameQuery = '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
+var featuredQuery =
+    '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
 
 var Base_obj;
 var Base_Vod_obj;
@@ -1291,9 +1293,6 @@ function ScreensObj_InitAGame() {
     };
 }
 
-var featuredget =
-    '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
-
 function ScreensObj_InitFeatured() {
     var key = Main_Featured;
 
@@ -1307,7 +1306,7 @@ function ScreensObj_InitFeatured() {
             screen: key,
             key_pgDown: Main_games,
             key_pgUp: Main_Live,
-            base_post: featuredget,
+            base_post: featuredQuery,
             CheckContentLang: 1,
             set_url: function () {
                 this.dataEnded = true;
@@ -1343,6 +1342,10 @@ function ScreensObj_InitFeatured() {
         }
 
         this.loadingData = false;
+
+        if (this.hasBackupData) {
+            this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+        }
     };
 
     ScreenObj[key].addCell = function (cell) {

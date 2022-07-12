@@ -43,6 +43,17 @@ var UserLiveFeedobj_FeedSort = [
     [null, 'started_at', 1] //7
 ];
 
+var UserLiveFeedobj_FeedFeatureSort = [
+    [null, 'viewer_count', 0], //0
+    [null, 'viewer_count', 1], //1
+    [null, 'user_login', 1], //2
+    [null, 'user_login', 0], //3
+    [null, 'game_name', 1], //4
+    [null, 'game_name', 0], //5
+    [null, 'started_at', 0], //6
+    [null, 'started_at', 1] //7
+];
+
 // var UserLiveFeedobj_FeedSortGames = [
 //     [null, 'viewers', 0],//0
 //     [null, 'viewers', 1],//2
@@ -412,15 +423,15 @@ function UserLiveFeedobj_loadFeatured() {
     if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
     } else {
-        UserLiveFeedobj_BaseLoad(
-            Main_kraken_api +
-                'streams/featured?limit=100' +
-                (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' + AddUser_UsernameArray[0].access_token : '') +
-                Main_TwithcV5Flag,
-            2,
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
             UserLiveFeedobj_loadDataFeaturedSuccess,
-            false,
-            pos
+            noop_fun,
+            UserLiveFeedobj_FeaturedPos,
+            UserLiveFeedobj_FeaturedPos, //checkResult
+            'POST', //Method, null for get
+            featuredQuery.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
         );
     }
 
@@ -431,8 +442,12 @@ function UserLiveFeedobj_FeaturedCell(cell) {
     return cell.stream;
 }
 
-function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
-    UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_FeaturedPos);
+function UserLiveFeedobj_loadDataFeaturedSuccess(resultObj) {
+    if (resultObj.status === 200) {
+        UserLiveFeedobj_loadDataBaseLiveSuccess(resultObj.responseText, UserLiveFeedobj_FeaturedPos, 'data');
+    } else {
+        UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
+    }
 }
 
 function UserLiveFeedobj_ShowFeatured() {
@@ -1444,7 +1459,11 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
         response = responseObj[UserLiveFeed_obj[pos].StreamType],
         total;
 
-    if (UserLiveFeed_obj[pos].useHelix) {
+    if (pos === UserLiveFeedobj_FeaturedPos) {
+        var hasData = responseObj.data && responseObj.data.featuredStreams;
+
+        response = hasData ? responseObj.data.featuredStreams : [];
+    } else if (UserLiveFeed_obj[pos].useHelix) {
         UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
 
         if (!UserLiveFeed_obj[pos].cursor || UserLiveFeed_obj[pos].cursor === '') {
@@ -1474,57 +1493,63 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         stream,
         id,
         mArray,
-        i = 0;
+        i = 0,
+        isFeatured = pos === UserLiveFeedobj_FeaturedPos;
 
     if (response_items) {
-        if (pos === UserLiveFeedobj_FeaturedPos) {
-            var sorting = Settings_Obj_default('live_feed_sort');
+        // if (isFeatured) {
+        //     var sorting = Settings_Obj_default('live_feed_sort');
 
-            var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
-                sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
-                sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
+        //     var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
+        //         sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
+        //         sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
 
-            if (sorting_direction) {
-                //A-Z
-                if (sorting_type1) {
-                    response.sort(function (a, b) {
-                        return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-                            ? -1
-                            : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-                            ? 1
-                            : 0;
-                    });
-                } else {
-                    response.sort(function (a, b) {
-                        return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
-                    });
-                }
-            } else {
-                //Z-A
-                if (sorting_type1) {
-                    response.sort(function (a, b) {
-                        return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-                            ? -1
-                            : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-                            ? 1
-                            : 0;
-                    });
-                } else {
-                    response.sort(function (a, b) {
-                        return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
-                    });
-                }
-            }
-        }
+        //     if (sorting_direction) {
+        //         //A-Z
+        //         if (sorting_type1) {
+        //             response.sort(function (a, b) {
+        //                 return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
+        //                     ? -1
+        //                     : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
+        //                     ? 1
+        //                     : 0;
+        //             });
+        //         } else {
+        //             response.sort(function (a, b) {
+        //                 return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
+        //             });
+        //         }
+        //     } else {
+        //         //Z-A
+        //         if (sorting_type1) {
+        //             response.sort(function (a, b) {
+        //                 return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
+        //                     ? -1
+        //                     : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
+        //                     ? 1
+        //                     : 0;
+        //             });
+        //         } else {
+        //             response.sort(function (a, b) {
+        //                 return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
+        //             });
+        //         }
+        //     }
+        // }
         var useHelix = UserLiveFeed_obj[pos].useHelix;
 
         for (i; i < response_items; i++) {
-            stream = UserLiveFeed_obj[pos].cell(response[i]);
+            if (isFeatured) {
+                stream = response[i];
+                id = stream.stream.broadcaster.id;
+            } else {
+                stream = UserLiveFeed_obj[pos].cell(response[i]);
+                id = useHelix ? stream.user_id : stream.channel._id;
+            }
 
-            id = useHelix ? stream.user_id : stream.channel._id;
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream, useHelix);
+                mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream, useHelix);
 
                 UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 
@@ -1591,10 +1616,10 @@ function UserLiveFeedobj_loadDataBaseGamesSuccess(responseText, pos, type) {
     var responseObj = JSON.parse(responseText),
         itemsCount = UserLiveFeed_itemsCount[pos],
         response = responseObj[type],
-        total,
-        hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
-
+        total;
     if (pos === UserLiveFeedobj_UserGamesPos) {
+        var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
+
         response = hasData ? response.user.followedGames.nodes : [];
     } else if (UserLiveFeed_obj[pos].useHelix) {
         UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
