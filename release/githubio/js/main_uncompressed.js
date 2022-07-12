@@ -28165,12 +28165,11 @@
     var Screens_ThumbOptionLanguagesTitles = [];
 
     function Screens_ThumbOptionSetArrowArray(key) {
-        Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_VIDEOS, STR_CLIP];
+        Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES];
 
         if (AddUser_UserIsSet()) {
             Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
             Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_GAMES);
-            Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_VIDEOS);
             Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_CHANNELS);
             Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_HISTORY);
         }
@@ -28195,7 +28194,7 @@
 
         Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, Settings_Obj_default('content_lang'), 0];
 
-        Screens_ThumbOptionGOTO = [Main_Live, Main_Featured, Main_games, Main_Vod, Main_Clip, Main_UserLive, Main_usergames, Main_UserVod, Main_UserChannels, Main_History[Main_HistoryPos]];
+        Screens_ThumbOptionGOTO = [Main_Live, Main_Featured, Main_games, Main_UserLive, Main_usergames, Main_UserChannels, Main_History[Main_HistoryPos]];
     }
 
     function Screens_SetLastRefresh(key) {
