@@ -12,7 +12,7 @@ The app has a building update check function, so whenever there is a update a re
 Web Version July 12 2022
 ==============
 
-* Update User channel screen to use new Twitch API, the sorting now is base on the last channel you followed to show first, on the future this list may get a better sorting today the APIs don't support it
+* Update User channel screen to use new Twitch API
 * Update Search Game to use new Twitch API
 * Update Search Channel to use new Twitch API
 * Remove Search Live no longer supported by new Twitch API
