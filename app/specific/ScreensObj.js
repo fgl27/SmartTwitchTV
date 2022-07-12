@@ -683,15 +683,20 @@ function ScreensObj_StartAllVars() {
         screenType: 4,
         img_404: IMG_404_LOGO,
         setMax: function (tempObj) {
-            this.MaxOffset = tempObj._total;
-            if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+            if (this.useHelix) {
+                this.cursor = tempObj.pagination.cursor;
+                if (!this.cursor || this.cursor === '') this.dataEnded = true;
+            } else {
+                this.MaxOffset = tempObj._total;
+                if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+            }
         },
         addCellTemp: function (cell) {
-            if (!this.idObject[cell._id]) {
+            if (!this.idObject[cell.id]) {
                 this.itemsCount++;
-                this.idObject[cell._id] = 1;
+                this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellChannel(this.row_id + '_' + this.coloumn_id, this.ids, [cell.name, cell._id, cell.logo, cell.display_name, cell.partner], this.screen);
+                this.tempHtml += Screens_createCellChannel(this.row_id + '_' + this.coloumn_id, this.ids, [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null], this.screen);
 
                 this.coloumn_id++;
             }
@@ -1661,16 +1666,16 @@ function ScreensObj_InitSearchChannels() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('SearchChannels', key),
             ScreenName: 'SearchChannels',
             table: 'stream_table_search_channel',
             screen: key,
-            object: 'channels',
-            base_url: Main_kraken_api + 'search/channels?limit=' + Main_ItemsLimitMax + '&query=',
+            object: 'data',
+            base_url: Main_helix_api + 'search/channels?first=' + Main_ItemsLimitMax + '&query=',
             set_url: function () {
-                if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-                this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + '&offset=' + this.offset;
+                this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + (this.cursor ? '&after=' + this.cursor : '');
             },
             label_init: function () {
                 Main_values.Search_isSearching = true;
