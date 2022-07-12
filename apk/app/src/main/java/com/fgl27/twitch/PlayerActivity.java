@@ -744,7 +744,7 @@ public class PlayerActivity extends Activity {
 
         CurrentPositionHandler[1].removeCallbacksAndMessages(null);
         SmallPlayerCurrentPosition = 0L;
-        PlayerCurrentPosition = 0L;
+
         PlayerObj[4].ResumePosition = 0L;
         CheckKeepScreenOn();
     }
