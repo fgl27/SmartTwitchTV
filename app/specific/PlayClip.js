@@ -960,7 +960,15 @@ function PlayClip_SetOpenLive(response, key, ID) {
 
     if (obj.data && obj.data.length) {
         var tempData = ScreensObj_LiveCellArray(obj.data[0], true),
-            playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') + tempData[4];
+            playing =
+                (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') +
+                STR_SINCE +
+                tempData[11] +
+                STR_SPACE_HTML +
+                STR_FOR +
+                tempData[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(tempData[13]);
 
         Play_controls[Play_controlsOpenLive].setLable(playing, tempData[1]);
 
