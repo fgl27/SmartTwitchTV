@@ -7248,7 +7248,7 @@
             if (ChannelContent_DataObj) {
                 var obj = Main_Slice(ChannelContent_DataObj);
 
-                if ((!Play_PreviewId || !Main_A_equals_B(parseInt(obj[14]), parseInt(Play_PreviewId))) && !Play_PreviewVideoEnded) {
+                if ((!Play_PreviewId || !Main_A_equals_B(obj[14].toString(), Play_PreviewId.toString())) && !Play_PreviewVideoEnded) {
                     ChannelContent_LoadPreviewStart(obj);
                 } else if (Play_PreviewId) {
                     ChannelContent_LoadPreviewRestore();
@@ -7355,7 +7355,7 @@
         if (ChannelContent_isoffline) return false;
 
         if (ChannelContent_cursorY) {
-            return Main_A_equals_B(parseInt(ChannelContent_DataObj[14]), parseInt(play_data.data[14]));
+            return Main_A_equals_B(ChannelContent_DataObj[14].toString(), play_data.data[14].toString());
         }
 
         return false;
@@ -12970,7 +12970,7 @@
     function Main_history_UpdateLiveVod(id, vod, vod_img) {
         if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
-        var index = Main_history_Exist('live', parseInt(id));
+        var index = Main_history_Exist('live', id.toString());
 
         if (index > -1) {
             var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
@@ -13124,7 +13124,7 @@
                                         var response = JSON.parse(obj.responseText);
 
                                         if (response.data && response.data.length) {
-                                            if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.data[0].id)) {
+                                            if (obj.mData.obj.data[7].toString() !== response.data[0].id.toString()) {
                                                 this.postMessage({
                                                     data: obj.mData.obj.data[7],
                                                     ended: true,
@@ -17069,7 +17069,7 @@
             if (data.user && data.user.hosting) {
                 var response = data.user.hosting;
 
-                if (response && parseInt(response.id) !== Play_data.data[14]) {
+                if (response && response.id.toString() !== Play_data.data[14].toString()) {
                     Play_TargetHost = response;
 
                     Play_IsWarning = true;
@@ -17511,7 +17511,7 @@
                 Sidepannel_AddFocusLiveFeed(true);
             }
 
-            restorePreview = Main_A_equals_B(parseInt(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14]), parseInt(Play_data.data[14]));
+            restorePreview = Main_A_equals_B(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14].toString(), Play_data.data[14].toString());
 
             //live
         } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowingUserLive()) {
@@ -17523,8 +17523,8 @@
                 !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])
             ) {
                 restorePreview = Main_A_equals_B(
-                    parseInt(ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14]),
-                    parseInt(Play_data.data[14])
+                    ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14].toString(),
+                    Play_data.data[14].toString()
                 );
             }
         }
@@ -30468,7 +30468,7 @@
             Main_addCommas(cell.stream.viewersCount), //4
             '[' + cell.stream.broadcaster.language + ']', //5
             cell.stream.broadcaster.login, //6
-            parseInt(cell.stream.id), //7 broadcast id
+            cell.stream.id.toString(), //7 broadcast id
             Main_is_rerun(cell.stream.type), //8
             cell.stream.broadcaster.profileImageURL, //9
             cell.stream.broadcaster.roles.isPartner, //10
@@ -30493,7 +30493,7 @@
                 Main_addCommas(cell.viewer_count), //4
                 '[' + cell.language.toUpperCase() + ']', //5
                 cell.user_login, //6
-                parseInt(cell.id), //7 broadcast id
+                cell.id.toString(), //7 broadcast id
                 Main_is_rerun(cell.type), //8
                 logo ? logo : null, //9
                 partner ? partner : null, //10
