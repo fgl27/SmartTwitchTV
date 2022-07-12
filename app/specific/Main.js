@@ -2451,7 +2451,9 @@ function Main_SetHistoryworker() {
                 } else {
                     var vodInfo = event.data.updateobj.data[0];
 
-                    Main_history_UpdateLiveVod(event.data.data, event.data.updateobj.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
+                    if (vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
+                        Main_history_UpdateLiveVod(event.data.data, event.data.updateobj.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
+                    }
                 }
             } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
                 index = Main_history_Exist(event.data.type, event.data.data);
