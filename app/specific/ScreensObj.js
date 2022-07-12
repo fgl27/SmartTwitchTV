@@ -1670,13 +1670,30 @@ function ScreensObj_InitUserChannels() {
             key_pgUp: Main_usergames,
             key_pgUpNext: Main_usergames,
             getFollowed: true,
+            channelData: null,
+            channelDataPos: 0,
             base_url: Main_helix_api + 'users/follows?first=' + Main_ItemsLimitMax + '&from_id=',
             base_url_channels: Main_helix_api + 'users?',
             set_url: function () {
                 if (this.getFollowed) {
                     this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
                 } else {
+                    this.channels = 'id=' + this.channelData[this.channelDataPos].to_id;
+                    var i = this.channelDataPos + 1,
+                        dataLen = this.channelData.length,
+                        len = Math.min(dataLen, i + 99);
+
+                    this.channelDataPos++;
+                    for (i; i < len; i++) {
+                        this.channels += '&id=' + this.channelData[i].to_id;
+                        this.channelDataPos++;
+                    }
+
                     this.url = this.base_url_channels + this.channels;
+
+                    if (dataLen <= i) {
+                        this.dataEnded = true;
+                    }
                 }
             },
             label_init: function () {
@@ -1716,34 +1733,47 @@ function ScreensObj_InitUserChannels() {
     ScreenObj[key].concatenate = function (responseObj) {
         if (this.getFollowed) {
             var data = responseObj[this.object];
-
             this.cursor = responseObj.pagination.cursor;
-            if (!this.cursor || this.cursor === '') this.dataEnded = true;
 
             if (data.length) {
-                this.channels = 'id=' + data[0].to_id;
-                var i = 1,
-                    len = data.length;
-                for (i; i < len; i++) {
-                    this.channels += '&id=' + data[i].to_id;
+                if (!this.channelData) {
+                    this.channelData = data;
+                } else {
+                    this.channelData.push.apply(this.channelData, responseObj[this.object]);
                 }
-
-                this.getFollowed = false;
-                Screens_loadDataRequest(this.screen);
-            } else {
+            } else if (!this.channelData) {
                 this.dataEnded = true;
                 this.data = [];
                 this.loadDataSuccess();
                 this.loadingData = false;
+                return;
+            }
+
+            if (this.cursor && this.cursor !== '') {
+                Screens_loadDataRequest(this.screen);
+            } else {
+                //sort
+                this.channelData.sort(function (a, b) {
+                    return a.to_login < b.to_login ? -1 : a.to_login > b.to_login ? 1 : 0;
+                });
+                this.getFollowed = false;
+                Screens_loadDataRequest(this.screen);
             }
         } else {
+            var tempData = responseObj[this.object];
+            if (tempData) {
+                tempData.sort(function (a, b) {
+                    return a.login < b.login ? -1 : a.login > b.login ? 1 : 0;
+                });
+            }
+
             if (this.data) {
-                if (responseObj[this.object]) {
-                    this.data.push.apply(this.data, responseObj[this.object]);
+                if (tempData) {
+                    this.data.push.apply(this.data, tempData);
                     this.offset = this.data.length;
                 }
             } else {
-                this.data = responseObj[this.object];
+                this.data = tempData;
                 if (this.data) {
                     this.offset = this.data.length;
                 } else this.data = [];
@@ -1752,7 +1782,6 @@ function ScreensObj_InitUserChannels() {
             }
 
             this.loadingData = false;
-            this.getFollowed = true;
         }
     };
 }

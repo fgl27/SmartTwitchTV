@@ -329,7 +329,10 @@ function Screens_StartLoad(key) {
     ScreenObj[key].followerChannels = [];
     ScreenObj[key].followerChannelsDone = false;
     ScreenObj[key].coloumn_id = 0;
+    ScreenObj[key].channelDataPos = 0;
+    ScreenObj[key].getFollowed = true;
     ScreenObj[key].data = null;
+    ScreenObj[key].channelData = null;
     ScreenObj[key].data_cursor = 0;
     ScreenObj[key].dataEnded = false;
     ScreenObj[key].ContentLang = Main_ContentLang;
