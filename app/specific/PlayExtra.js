@@ -289,9 +289,9 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
             if (data.user && data.user.hosting) {
                 var TargetHost = data.user.hosting;
 
-                TargetHost.id = TargetHost.id;
+                TargetHost.id = TargetHost.id.toString();
 
-                if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
+                if (TargetHost.id !== PlayExtra_data.data[14].toString() && TargetHost.id !== Play_data.data[14].toString()) {
                     Play_IsWarning = true;
                     warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
 
