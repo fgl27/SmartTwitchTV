@@ -1399,8 +1399,6 @@ function ScreensObj_InitChannelClip() {
                     Main_ItemsLimitMax +
                     ScreensObj_ClipGetPeriod(this.periodPos) +
                     (this.cursor ? '&after=' + this.cursor : '');
-
-                //console.log(this.url);
             },
             SetPeriod: function () {
                 Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -1557,7 +1555,6 @@ function ScreensObj_InitUserGames() {
 
         if (hasData) {
             this.data = responseObj.data.user.followedGames.nodes;
-            console.log(this.data.length);
 
             this.data.sort(function (a, b) {
                 return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
@@ -1623,20 +1620,26 @@ function ScreensObj_InitUserChannels() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('UserChannels', key),
             ScreenName: 'UserChannels',
             table: 'stream_table_user_channels',
             screen: key,
-            object: 'follows',
+            object: 'data',
             IsUser: true,
             key_pgDown: Main_History[Main_HistoryPos],
             key_pgUp: Main_usergames,
             key_pgUpNext: Main_usergames,
-            base_url: Main_kraken_api + 'users/',
+            getFollowed: true,
+            base_url: Main_helix_api + 'users/follows?first=' + Main_ItemsLimitMax + '&from_id=',
+            base_url_channels: Main_helix_api + 'users?',
             set_url: function () {
-                if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-                this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) + '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
+                if (this.getFollowed) {
+                    this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
+                } else {
+                    this.url = this.base_url_channels + this.channels;
+                }
             },
             label_init: function () {
                 ScreensObj_TopLableUserInit(this.screen);
@@ -1649,8 +1652,19 @@ function ScreensObj_InitUserChannels() {
                 this.base_key_play(key, true);
             },
             addCell: function (cell) {
-                cell = cell.channel;
-                this.addCellTemp(cell);
+                if (!this.idObject[cell.id]) {
+                    this.itemsCount++;
+                    this.idObject[cell.id] = 1;
+
+                    this.tempHtml += Screens_createCellChannel(
+                        this.row_id + '_' + this.coloumn_id,
+                        this.ids,
+                        [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
+                        this.screen
+                    );
+
+                    this.coloumn_id++;
+                }
             }
         },
         Base_obj
@@ -1660,6 +1674,49 @@ function ScreensObj_InitUserChannels() {
     ScreenObj[key].addrow = Screens_addrowChannel;
     ScreenObj[key].visiblerows = 5;
     ScreenObj[key].Set_Scroll();
+
+    ScreenObj[key].concatenate = function (responseObj) {
+        if (this.getFollowed) {
+            var data = responseObj[this.object];
+
+            this.cursor = responseObj.pagination.cursor;
+            if (!this.cursor || this.cursor === '') this.dataEnded = true;
+
+            if (data.length) {
+                this.channels = 'id=' + data[0].to_id;
+                var i = 1,
+                    len = data.length;
+                for (i; i < len; i++) {
+                    this.channels += '&id=' + data[i].to_id;
+                }
+
+                this.getFollowed = false;
+                Screens_loadDataRequest(this.screen);
+            } else {
+                this.dataEnded = true;
+                this.data = [];
+                this.loadDataSuccess();
+                this.loadingData = false;
+            }
+        } else {
+            if (this.data) {
+                if (responseObj[this.object]) {
+                    this.data.push.apply(this.data, responseObj[this.object]);
+                    this.offset = this.data.length;
+                }
+            } else {
+                this.data = responseObj[this.object];
+                if (this.data) {
+                    this.offset = this.data.length;
+                } else this.data = [];
+
+                this.loadDataSuccess();
+            }
+
+            this.loadingData = false;
+            this.getFollowed = true;
+        }
+    };
 }
 
 function ScreensObj_InitSearchChannels() {
