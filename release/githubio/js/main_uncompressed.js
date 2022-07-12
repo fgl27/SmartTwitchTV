@@ -30462,7 +30462,7 @@
     function ScreensObj_FeaturedCellArray(cell) {
         return [
             cell.stream.previewImageURL ? cell.stream.previewImageURL.replace('{width}x{height}', Main_VideoSize) : '', //0
-            cell.stream.broadcaster.login, //1
+            cell.stream.broadcaster.displayName, //1
             cell.stream.title, //2
             cell.stream.game.displayName, //3
             Main_addCommas(cell.stream.viewersCount), //4
