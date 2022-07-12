@@ -12947,8 +12947,12 @@
         var index = 0,
             len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length;
 
+        id = id.toString();
+
         for (index; index < len; index++) {
-            if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+            if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id.toString() === id) {
+                return index;
+            }
         }
 
         return -1;
@@ -13169,6 +13173,7 @@
                                             }
                                         }
                                     } else if (isLiveVod) {
+                                        //Update vod image
                                         this.postMessage({
                                             data: obj.mData.obj.data[7],
                                             type: obj.mData.type,
@@ -13208,7 +13213,9 @@
                                     xmlHttp.timeout = 30000;
 
                                     if (event.data.header) {
-                                        for (var i = 0; i < event.data.header.length; i++) xmlHttp.setRequestHeader(event.data.header[i][0], event.data.header[i][1]);
+                                        for (var i = 0; i < event.data.header.length; i++) {
+                                            xmlHttp.setRequestHeader(event.data.header[i][0], event.data.header[i][1]);
+                                        }
                                     } else {
                                         xmlHttp.setRequestHeader('Client-ID', '5seja5ptej058mxqy7gh5tcudjqtm9');
                                         xmlHttp.setRequestHeader('Accept', 'application/vnd.twitchtv.v5+json');
@@ -13254,7 +13261,9 @@
                                 });
 
                                 Main_StartHistoryworkerBradcast(arrayPos, 'live', AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers);
-                            } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                            } else {
+                                Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
+                            }
                         }
                     } else {
                         Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
@@ -13271,7 +13280,7 @@
                         var vodInfo = event.data.updateobj.data[0];
 
                         if (vodInfo.thumbnail_url && vodInfo.thumbnail_url !== '') {
-                            Main_history_UpdateLiveVod(event.data.data, event.data.updateobj.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
+                            Main_history_UpdateLiveVod(event.data.data, vodInfo.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
                         }
                     }
                 } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
@@ -13306,7 +13315,7 @@
         for (i; i < len; i++) {
             if (!array[i].forceVod) {
                 if (array[i].data[14] && array[i].data[14] !== '') {
-                    Main_StartHistoryworkerBradcast(array[i], array[i].forceVod ? 'live' : 1, header);
+                    Main_StartHistoryworkerBradcast(array[i], 1, header);
                 } else {
                     array.splice(i, 1);
                 }
@@ -13328,7 +13337,14 @@
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
             i = 0,
-            len = array.length;
+            len = array.length,
+            header;
+
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            header = Main_Bearer_User_Headers;
+        } else {
+            header = Main_Bearer_Headers;
+        }
 
         for (i; i < len; i++) {
             //TODO remove this workaround after some updates
@@ -13343,7 +13359,8 @@
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
                 type: 'vod',
-                delay: i
+                delay: i,
+                header: header
             });
         }
 
@@ -13356,19 +13373,31 @@
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
             i = 0,
-            len = array.length;
+            len = array.length,
+            header;
+
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            header = Main_Bearer_User_Headers;
+        } else {
+            header = Main_Bearer_Headers;
+        }
 
         for (i; i < len; i++) {
             //TODO remove this workaround after some updates
             array[i].data[11] = array[i].data[11].replace('Since', '');
             array[i].data[4] = array[i].data[4].replace('Viewers', '');
 
-            if (array[i].forceVod && array[i].vodid) {
-                BradcastCheckerWorker.postMessage({
-                    obj: array[i],
-                    type: 'live',
-                    delay: i
-                });
+            if (array[i].forceVod) {
+                if (array[i].vodid) {
+                    BradcastCheckerWorker.postMessage({
+                        obj: array[i],
+                        type: 'live',
+                        delay: i,
+                        header: header
+                    });
+                } else {
+                    Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(i, 1); //delete the live entry as it doesn't have a VOD
+                }
             }
         }
     }
@@ -13380,7 +13409,14 @@
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
         var i = 0,
-            len = array.length;
+            len = array.length,
+            header;
+
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            header = Main_Bearer_User_Headers;
+        } else {
+            header = Main_Bearer_Headers;
+        }
 
         for (i; i < len; i++) {
             //TODO remove this workaround after some updates
@@ -13390,7 +13426,8 @@
             BradcastCheckerWorker.postMessage({
                 obj: array[i],
                 type: 'clip',
-                delay: i
+                delay: i,
+                header: header
             });
         }
     }
@@ -20668,9 +20705,9 @@
                 if (data.user && data.user.hosting) {
                     var TargetHost = data.user.hosting;
 
-                    TargetHost.id = TargetHost.id;
+                    TargetHost.id = TargetHost.id.toString();
 
-                    if (TargetHost.id !== PlayExtra_data.data[14] && TargetHost.id !== Play_data.data[14]) {
+                    if (TargetHost.id !== PlayExtra_data.data[14].toString() && TargetHost.id !== Play_data.data[14].toString()) {
                         Play_IsWarning = true;
                         warning_text = (doSwitch ? Play_data.data[1] : PlayExtra_data.data[1]) + STR_IS_NOW + STR_USER_HOSTING + TargetHost.displayName;
 
