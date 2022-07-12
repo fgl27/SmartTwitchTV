@@ -2518,7 +2518,8 @@ function Main_RunVODWorker() {
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0,
-        len = array.length;
+        len = array.length,
+        header;
 
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         header = Main_Bearer_User_Headers;
@@ -2553,7 +2554,8 @@ function Main_RunLiveVODWorker() {
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
         i = 0,
-        len = array.length;
+        len = array.length,
+        header;
 
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         header = Main_Bearer_User_Headers;
@@ -2588,7 +2590,8 @@ function Main_RunClipWorker() {
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
     var i = 0,
-        len = array.length;
+        len = array.length,
+        header;
 
     if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
         header = Main_Bearer_User_Headers;
