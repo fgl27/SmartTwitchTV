@@ -1150,6 +1150,7 @@ function ScreensObj_InitSearchLive() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             HeadersArray: Main_base_array_header,
             ids: Screens_ScreenIds('SearchLive', key),
             ScreenName: 'SearchLive',

@@ -89,14 +89,14 @@ function Search_handleKeyDown(event) {
         case KEY_LEFT:
             if (Search_cursorY === 1) {
                 Search_cursorX--;
-                if (Search_cursorX < 0) Search_cursorX = 2;
+                if (Search_cursorX < 0) Search_cursorX = 1;
                 Search_refreshInputFocusTools();
             }
             break;
         case KEY_RIGHT:
             if (Search_cursorY === 1) {
                 Search_cursorX++;
-                if (Search_cursorX > 2) Search_cursorX = 0;
+                if (Search_cursorX > 1) Search_cursorX = 0;
                 Search_refreshInputFocusTools();
             }
             break;
