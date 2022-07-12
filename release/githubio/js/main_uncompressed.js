@@ -4324,9 +4324,20 @@
         VersionBase: '3.0',
         publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
-        WebVersion: 'July 11 2022',
-        WebTag: 610, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'July 12 2022',
+        WebTag: 611, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version July 12 2022',
+                changes: [
+                    "Update User channel screen to use new Twitch API, the sorting now is base on the last channel you followed to show first, on the future this list may get a better sorting today the APIs don't support it",
+                    'Update Search Game to use new Twitch API',
+                    'Update Search Channel to use new Twitch API',
+                    'Remove Search Live no longer supported by new Twitch API',
+                    'Update Feature screen to use new Twitch API',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version July 11 2022',
                 changes: [
                     'Update User games screen, Twitch API no longer support Followed games this API is unsupported and may stop working, this Followed games API can only provide 100 Live games, if you follow more then that the last Games you follow will not show',
@@ -4339,18 +4350,6 @@
             {
                 title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
                 changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
-            },
-            {
-                title: 'Web Version February 21 2022 and Apk Version 3.0.330 and up',
-                changes: [
-                    'Prepare the app for API changes',
-                    "Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem",
-                    'When Twitch Shutdown they API some parts of the app will not work, the most used part will work as they are already using the new API',
-                    'After this update the user must add a new authorization key even if one was added before',
-                    'This new API demands the user to have a authorization key to access most of content, make sure you have added a user and a authorization key to prevent issues',
-                    'Update app dependencies to latest version included the player',
-                    'If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues'
-                ]
             }
         ]
     };
@@ -27131,7 +27130,7 @@
                             Sidepannel_Go(Main_UserLive);
                         } else {
                             ScreenObj[key].IsOpen = Main_games;
-                            Sidepannel_Go(Main_Live);
+                            Sidepannel_Go(Main_Featured);
                         }
                     } else Sidepannel_Go(ScreenObj[key].key_pgUp);
                 }
@@ -28281,6 +28280,8 @@
     var AffiliatedTIme = 60 * 120 * 1000;
 
     var userGameQuery = '{"query":"{user(id: \\"%x\\") {followedGames(first: 100,type:LIVE){nodes {id displayName boxArtURL viewersCount channelsCount }}}}"}';
+    var featuredQuery =
+        '{"query":"{featuredStreams(first:10,acceptedMature:true%x){stream{type,game{displayName,id},title,id,previewImageURL,viewersCount,createdAt,broadcaster{roles{isPartner},id,login,displayName,language,profileImageURL(width: 300)}}}}"}';
 
     var Base_obj;
     var Base_Vod_obj;
@@ -28845,7 +28846,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             [
-                                game.box_art_url.replace('{width}x{height}', Main_GameSize), //0
+                                game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize), //0
                                 game.name, //1
                                 '', //2
                                 id_cell //3
@@ -28902,15 +28903,20 @@
             screenType: 4,
             img_404: IMG_404_LOGO,
             setMax: function(tempObj) {
-                this.MaxOffset = tempObj._total;
-                if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+                if (this.useHelix) {
+                    this.cursor = tempObj.pagination.cursor;
+                    if (!this.cursor || this.cursor === '') this.dataEnded = true;
+                } else {
+                    this.MaxOffset = tempObj._total;
+                    if (this.data.length >= this.MaxOffset || typeof this.MaxOffset === 'undefined') this.dataEnded = true;
+                }
             },
             addCellTemp: function(cell) {
-                if (!this.idObject[cell._id]) {
+                if (!this.idObject[cell.id]) {
                     this.itemsCount++;
-                    this.idObject[cell._id] = 1;
+                    this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellChannel(this.row_id + '_' + this.coloumn_id, this.ids, [cell.name, cell._id, cell.logo, cell.display_name, cell.partner], this.screen);
+                    this.tempHtml += Screens_createCellChannel(this.row_id + '_' + this.coloumn_id, this.ids, [cell.broadcaster_login, cell.id, cell.thumbnail_url, cell.display_name, null], this.screen);
 
                     this.coloumn_id++;
                 }
@@ -29186,7 +29192,7 @@
                 HeadersArray: Main_base_array_header,
                 object: 'data',
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Live,
+                key_pgUp: Main_Featured,
                 ids: Screens_ScreenIds('AGameVod', key),
                 ScreenName: 'AGameVod',
                 table: 'stream_table_a_game_vod',
@@ -29331,7 +29337,7 @@
                 screen: key,
                 object: 'data',
                 ScreenName: 'Live',
-                key_pgDown: Main_games,
+                key_pgDown: Main_Featured,
                 key_pgUp: Main_games,
                 CheckContentLang: 1,
                 ContentLang: '',
@@ -29358,6 +29364,7 @@
         var key = Main_SearchLive;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('SearchLive', key),
                 ScreenName: 'SearchLive',
@@ -29438,7 +29445,7 @@
                 CheckContentLang: 1,
                 ContentLang: '',
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Live,
+                key_pgUp: Main_Featured,
                 hasBackupData: true,
                 base_url: Main_helix_api + 'streams?game_id=',
                 set_url: function() {
@@ -29500,6 +29507,7 @@
         var key = Main_Featured;
 
         ScreenObj[key] = Screens_assign({
+                isQuery: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('Featured', key),
                 ScreenName: 'Featured',
@@ -29507,11 +29515,12 @@
                 screen: key,
                 key_pgDown: Main_games,
                 key_pgUp: Main_Live,
-                base_url: Main_kraken_api + 'streams/featured?limit=' + Main_ItemsLimitMax,
+                base_post: featuredQuery,
+                CheckContentLang: 1,
                 set_url: function() {
-                    this.check_offset();
-
-                    this.url = this.base_url + '&offset=' + this.offset + (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' + AddUser_UsernameArray[0].access_token : '');
+                    this.dataEnded = true;
+                    this.url = PlayClip_BaseUrl;
+                    this.post = this.base_post.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"');
                 },
                 label_init: function() {
                     Sidepannel_SetDefaultLables();
@@ -29532,6 +29541,34 @@
             this.addCellTemp(cell);
         };
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            var hasData = responseObj.data && responseObj.data.featuredStreams;
+
+            if (hasData) {
+                this.data = responseObj.data.featuredStreams;
+                this.loadDataSuccess();
+            }
+
+            this.loadingData = false;
+
+            if (this.hasBackupData) {
+                this.setBackupData(responseObj, this.data, this.lastRefresh, this.gameSelected_Id, this.ContentLang, this.Lang);
+            }
+        };
+
+        ScreenObj[key].addCell = function(cell) {
+            var id_cell = cell.stream.broadcaster.id;
+
+            if (!this.idObject[id_cell]) {
+                this.itemsCount++;
+                this.idObject[id_cell] = 1;
+
+                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_FeaturedCellArray(cell), this.screen);
+
+                this.coloumn_id++;
+            }
+        };
     }
 
     function ScreensObj_InitClip() {
@@ -29601,8 +29638,6 @@
                         Main_ItemsLimitMax +
                         ScreensObj_ClipGetPeriod(this.periodPos) +
                         (this.cursor ? '&after=' + this.cursor : '');
-
-                    //console.log(this.url);
                 },
                 SetPeriod: function() {
                     Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -29639,7 +29674,7 @@
                 table: 'stream_table_a_game_clip',
                 screen: key,
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Live,
+                key_pgUp: Main_Featured,
                 CheckContentLang: 1,
                 ContentLang: '',
                 hasBackupData: true,
@@ -29684,7 +29719,7 @@
                 table: 'stream_table_games',
                 screen: key,
                 key_pgDown: Main_Live,
-                key_pgUp: Main_Live,
+                key_pgUp: Main_Featured,
                 object: 'data',
                 base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
                 set_url: function() {
@@ -29756,7 +29791,6 @@
 
             if (hasData) {
                 this.data = responseObj.data.user.followedGames.nodes;
-                console.log(this.data.length);
 
                 this.data.sort(function(a, b) {
                     return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
@@ -29777,15 +29811,17 @@
         var key = Main_SearchGames;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 ids: Screens_ScreenIds('SearchGames', key),
                 ScreenName: 'SearchGames',
                 table: 'stream_table_search_game',
                 screen: key,
+                isSearch: true,
                 isLive: false,
                 OldUserName: '',
-                object: 'games',
+                object: 'data',
                 lastData: '',
-                base_url: Main_kraken_api + 'search/games?query=',
+                base_url: Main_helix_api + 'search/categories?query=',
                 set_url: function() {
                     this.dataEnded = true;
                     this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
@@ -29818,20 +29854,26 @@
         var key = Main_UserChannels;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('UserChannels', key),
                 ScreenName: 'UserChannels',
                 table: 'stream_table_user_channels',
                 screen: key,
-                object: 'follows',
+                object: 'data',
                 IsUser: true,
                 key_pgDown: Main_History[Main_HistoryPos],
                 key_pgUp: Main_usergames,
                 key_pgUpNext: Main_usergames,
-                base_url: Main_kraken_api + 'users/',
+                getFollowed: true,
+                base_url: Main_helix_api + 'users/follows?first=' + Main_ItemsLimitMax + '&from_id=',
+                base_url_channels: Main_helix_api + 'users?',
                 set_url: function() {
-                    if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-                    this.url = this.base_url + encodeURIComponent(AddUser_UsernameArray[0].id) + '/follows/channels?limit=' + Main_ItemsLimitMax + '&offset=' + this.offset + '&sortby=login&direction=asc';
+                    if (this.getFollowed) {
+                        this.url = this.base_url + AddUser_UsernameArray[0].id + (this.cursor ? '&after=' + this.cursor : '');
+                    } else {
+                        this.url = this.base_url_channels + this.channels;
+                    }
                 },
                 label_init: function() {
                     ScreensObj_TopLableUserInit(this.screen);
@@ -29844,8 +29886,19 @@
                     this.base_key_play(key, true);
                 },
                 addCell: function(cell) {
-                    cell = cell.channel;
-                    this.addCellTemp(cell);
+                    if (!this.idObject[cell.id]) {
+                        this.itemsCount++;
+                        this.idObject[cell.id] = 1;
+
+                        this.tempHtml += Screens_createCellChannel(
+                            this.row_id + '_' + this.coloumn_id,
+                            this.ids,
+                            [cell.login, cell.id, cell.profile_image_url, cell.display_name, cell.broadcaster_type === 'partner'],
+                            this.screen
+                        );
+
+                        this.coloumn_id++;
+                    }
                 }
             },
             Base_obj
@@ -29855,22 +29908,65 @@
         ScreenObj[key].addrow = Screens_addrowChannel;
         ScreenObj[key].visiblerows = 5;
         ScreenObj[key].Set_Scroll();
+
+        ScreenObj[key].concatenate = function(responseObj) {
+            if (this.getFollowed) {
+                var data = responseObj[this.object];
+
+                this.cursor = responseObj.pagination.cursor;
+                if (!this.cursor || this.cursor === '') this.dataEnded = true;
+
+                if (data.length) {
+                    this.channels = 'id=' + data[0].to_id;
+                    var i = 1,
+                        len = data.length;
+                    for (i; i < len; i++) {
+                        this.channels += '&id=' + data[i].to_id;
+                    }
+
+                    this.getFollowed = false;
+                    Screens_loadDataRequest(this.screen);
+                } else {
+                    this.dataEnded = true;
+                    this.data = [];
+                    this.loadDataSuccess();
+                    this.loadingData = false;
+                }
+            } else {
+                if (this.data) {
+                    if (responseObj[this.object]) {
+                        this.data.push.apply(this.data, responseObj[this.object]);
+                        this.offset = this.data.length;
+                    }
+                } else {
+                    this.data = responseObj[this.object];
+                    if (this.data) {
+                        this.offset = this.data.length;
+                    } else this.data = [];
+
+                    this.loadDataSuccess();
+                }
+
+                this.loadingData = false;
+                this.getFollowed = true;
+            }
+        };
     }
 
     function ScreensObj_InitSearchChannels() {
         var key = Main_SearchChannels;
 
         ScreenObj[key] = Screens_assign({
+                useHelix: true,
                 HeadersArray: Main_base_array_header,
                 ids: Screens_ScreenIds('SearchChannels', key),
                 ScreenName: 'SearchChannels',
                 table: 'stream_table_search_channel',
                 screen: key,
-                object: 'channels',
-                base_url: Main_kraken_api + 'search/channels?limit=' + Main_ItemsLimitMax + '&query=',
+                object: 'data',
+                base_url: Main_helix_api + 'search/channels?first=' + Main_ItemsLimitMax + '&query=',
                 set_url: function() {
-                    if (this.offset && this.offset + Main_ItemsLimitMax > this.MaxOffset) this.dataEnded = true;
-                    this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + '&offset=' + this.offset;
+                    this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + (this.cursor ? '&after=' + this.cursor : '');
                 },
                 label_init: function() {
                     Main_values.Search_isSearching = true;
@@ -30306,6 +30402,30 @@
         Main_innerHTML('top_lable', text + STR_SPACE_HTML + (small_text ? '<div style="font-size: 65%;display: inline-block;">' + small_text + '</div>' : ''));
     }
 
+    function ScreensObj_FeaturedCellArray(cell) {
+        return [
+            cell.stream.previewImageURL ? cell.stream.previewImageURL.replace('{width}x{height}', Main_VideoSize) : '', //0
+            cell.stream.broadcaster.login, //1
+            cell.stream.title, //2
+            cell.stream.game.displayName, //3
+            Main_addCommas(cell.stream.viewersCount), //4
+            '[' + cell.stream.broadcaster.language + ']', //5
+            cell.stream.broadcaster.login, //6
+            parseInt(cell.stream.id), //7 broadcast id
+            Main_is_rerun(cell.stream.type), //8
+            cell.stream.broadcaster.profileImageURL, //9
+            cell.stream.broadcaster.roles.isPartner, //10
+            Play_streamLiveAt(cell.stream.createdAt), //11
+            cell.stream.createdAt, //12
+            cell.stream.viewersCount, //13
+            cell.stream.broadcaster.id, //14
+            cell.stream.broadcaster.language, //15
+            null, //16
+            null, //17
+            cell.stream.game.id //18
+        ];
+    }
+
     function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
         if (useHelix) {
             return [
@@ -30621,14 +30741,14 @@
             case KEY_LEFT:
                 if (Search_cursorY === 1) {
                     Search_cursorX--;
-                    if (Search_cursorX < 0) Search_cursorX = 2;
+                    if (Search_cursorX < 0) Search_cursorX = 1;
                     Search_refreshInputFocusTools();
                 }
                 break;
             case KEY_RIGHT:
                 if (Search_cursorY === 1) {
                     Search_cursorX++;
-                    if (Search_cursorX > 2) Search_cursorX = 0;
+                    if (Search_cursorX > 1) Search_cursorX = 0;
                     Search_refreshInputFocusTools();
                 }
                 break;
@@ -34838,8 +34958,6 @@
         Main_ShowElement('side_panel_movel_new_8');
         Main_ShowElement('side_panel_new_8');
 
-        Main_ShowElement('side_panel_movel_new_4');
-        Main_ShowElement('side_panel_new_4');
         Main_ShowElement('side_panel_movel_new_6');
         Main_ShowElement('side_panel_new_6');
         Main_ShowElement('side_panel_movel_new_7');
@@ -34864,10 +34982,10 @@
         else Sidepannel_SetUserlable(STR_USER_ADD);
 
         //No longer supported
-        Main_HideElement('side_panel_movel_new_4');
+
         Main_HideElement('side_panel_movel_new_6');
         Main_HideElement('side_panel_movel_new_7');
-        Main_HideElement('side_panel_new_4');
+
         Main_HideElement('side_panel_new_6');
         Main_HideElement('side_panel_new_7');
 
@@ -34882,7 +35000,7 @@
 
         Main_innerHTML('side_panel_movel_new_2', STR_USER_MENU);
         Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
-        //Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
+        Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
         Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
         //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
         //Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
@@ -35042,23 +35160,15 @@
 
     function Sidepannel_handleMainKey(Down) {
         if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
-
-        var feed4 = 3;
-        var feed5 = 5;
         //Workaround for hiden options
-        if (Down) {
-            feed4 = 5;
-            feed5 = 9;
-        }
+        var feed5 = Down ? 9 : 5;
 
         if (Main_values.Sidepannel_IsUser) {
             if (Sidepannel_Sidepannel_Pos === 5) {
                 Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
             }
         } else {
-            if (Sidepannel_Sidepannel_Pos === 4) {
-                Sidepannel_Sidepannel_Pos = feed4;
-            } else if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
+            if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
                 Sidepannel_Sidepannel_Pos = feed5;
             }
         }
@@ -36252,7 +36362,7 @@
                 userSet = AddUser_UserIsSet();
 
             //Workaround for hiden options
-            if (NextPos === UserLiveFeedobj_FeaturedPos || NextPos === UserLiveFeedobj_UserVodPos) {
+            if (NextPos === UserLiveFeedobj_UserVodPos) {
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].hide();
                 UserLiveFeed_FeedPosX = NextPos;
                 UserLiveFeed_KeyUpDown(Adder);
@@ -36428,6 +36538,17 @@
         [null, 'game_name', 0], //5
         [null, 'started_at', 0], //6
         [null, 'started_at', 1] //7
+    ];
+
+    var UserLiveFeedobj_FeedFeatureSort = [
+        [null, 'viewersCount', 0], //0
+        [null, 'viewersCount', 1], //1
+        ['broadcaster', 'login', 1], //2
+        ['broadcaster', 'login', 0], //3
+        ['game', 'displayName', 1], //4
+        ['game', 'displayName', 0], //5
+        [null, 'createdAt', 0], //6
+        [null, 'createdAt', 1] //7
     ];
 
     // var UserLiveFeedobj_FeedSortGames = [
@@ -36800,15 +36921,15 @@
         if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
         } else {
-            UserLiveFeedobj_BaseLoad(
-                Main_kraken_api +
-                'streams/featured?limit=100' +
-                (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? '&oauth_token=' + AddUser_UsernameArray[0].access_token : '') +
-                Main_TwithcV5Flag,
-                2,
+            FullxmlHttpGet(
+                PlayClip_BaseUrl,
+                Play_base_backup_headers_Array,
                 UserLiveFeedobj_loadDataFeaturedSuccess,
-                false,
-                pos
+                noop_fun,
+                UserLiveFeedobj_FeaturedPos,
+                UserLiveFeedobj_FeaturedPos, //checkResult
+                'POST', //Method, null for get
+                featuredQuery.replace('%x', Main_ContentLang === '' ? '' : ',language:\\"' + Main_ContentLang + '\\"') //postMessage, null for get
             );
         }
 
@@ -36819,8 +36940,12 @@
         return cell.stream;
     }
 
-    function UserLiveFeedobj_loadDataFeaturedSuccess(responseText) {
-        UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, UserLiveFeedobj_FeaturedPos);
+    function UserLiveFeedobj_loadDataFeaturedSuccess(resultObj) {
+        if (resultObj.status === 200) {
+            UserLiveFeedobj_loadDataBaseLiveSuccess(resultObj.responseText, UserLiveFeedobj_FeaturedPos, 'data');
+        } else {
+            UserLiveFeedobj_loadDataError(UserLiveFeedobj_FeaturedPos);
+        }
     }
 
     function UserLiveFeedobj_ShowFeatured() {
@@ -37840,7 +37965,11 @@
             response = responseObj[UserLiveFeed_obj[pos].StreamType],
             total;
 
-        if (UserLiveFeed_obj[pos].useHelix) {
+        if (pos === UserLiveFeedobj_FeaturedPos) {
+            var hasData = responseObj.data && responseObj.data.featuredStreams;
+
+            response = hasData ? responseObj.data.featuredStreams : [];
+        } else if (UserLiveFeed_obj[pos].useHelix) {
             UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;
 
             if (!UserLiveFeed_obj[pos].cursor || UserLiveFeed_obj[pos].cursor === '') {
@@ -37870,15 +37999,16 @@
             stream,
             id,
             mArray,
-            i = 0;
+            i = 0,
+            isFeatured = pos === UserLiveFeedobj_FeaturedPos;
 
         if (response_items) {
-            if (pos === UserLiveFeedobj_FeaturedPos) {
+            if (isFeatured) {
                 var sorting = Settings_Obj_default('live_feed_sort');
 
-                var sorting_type1 = UserLiveFeedobj_FeedSort[sorting][0],
-                    sorting_type2 = UserLiveFeedobj_FeedSort[sorting][1],
-                    sorting_direction = UserLiveFeedobj_FeedSort[sorting][2];
+                var sorting_type1 = UserLiveFeedobj_FeedFeatureSort[sorting][0],
+                    sorting_type2 = UserLiveFeedobj_FeedFeatureSort[sorting][1],
+                    sorting_direction = UserLiveFeedobj_FeedFeatureSort[sorting][2];
 
                 if (sorting_direction) {
                     //A-Z
@@ -37915,12 +38045,17 @@
             var useHelix = UserLiveFeed_obj[pos].useHelix;
 
             for (i; i < response_items; i++) {
-                stream = UserLiveFeed_obj[pos].cell(response[i]);
+                if (isFeatured) {
+                    stream = response[i];
+                    id = stream.stream.broadcaster.id;
+                } else {
+                    stream = UserLiveFeed_obj[pos].cell(response[i]);
+                    id = useHelix ? stream.user_id : stream.channel._id;
+                }
 
-                id = useHelix ? stream.user_id : stream.channel._id;
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[pos][id] = itemsCount;
-                    mArray = ScreensObj_LiveCellArray(stream, useHelix);
+                    mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream, useHelix);
 
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 
@@ -37988,10 +38123,10 @@
         var responseObj = JSON.parse(responseText),
             itemsCount = UserLiveFeed_itemsCount[pos],
             response = responseObj[type],
-            total,
-            hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
-
+            total;
         if (pos === UserLiveFeedobj_UserGamesPos) {
+            var hasData = responseObj.data && responseObj.data.user && responseObj.data.user.followedGames && responseObj.data.user.followedGames.nodes;
+
             response = hasData ? response.user.followedGames.nodes : [];
         } else if (UserLiveFeed_obj[pos].useHelix) {
             UserLiveFeed_obj[pos].cursor = responseObj.pagination.cursor;

@@ -23,9 +23,20 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 332, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/332/SmartTV_twitch_3_0_332.apk',
-    WebVersion: 'July 11 2022',
-    WebTag: 610, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'July 12 2022',
+    WebTag: 611, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version July 12 2022',
+            changes: [
+                "Update User channel screen to use new Twitch API, the sorting now is base on the last channel you followed to show first, on the future this list may get a better sorting today the APIs don't support it",
+                'Update Search Game to use new Twitch API',
+                'Update Search Channel to use new Twitch API',
+                'Remove Search Live no longer supported by new Twitch API',
+                'Update Feature screen to use new Twitch API',
+                'General improves'
+            ]
+        },
         {
             title: 'Web Version July 11 2022',
             changes: [
@@ -39,18 +50,6 @@ var version = {
         {
             title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
             changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
-        },
-        {
-            title: 'Web Version February 21 2022 and Apk Version 3.0.330 and up',
-            changes: [
-                'Prepare the app for API changes',
-                "Twitch is about to shutdown some of they API, because of that the app sometimes doesn't load content, the next few days the app will receive updates to deal with the shutdown, make sure you are on latest APK version to not have problem",
-                'When Twitch Shutdown they API some parts of the app will not work, the most used part will work as they are already using the new API',
-                'After this update the user must add a new authorization key even if one was added before',
-                'This new API demands the user to have a authorization key to access most of content, make sure you have added a user and a authorization key to prevent issues',
-                'Update app dependencies to latest version included the player',
-                'If you have any issue check github https://github.com/fgl27/SmartTwitchTV/issues'
-            ]
         }
     ]
 };
