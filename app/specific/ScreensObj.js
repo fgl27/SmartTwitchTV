@@ -2248,7 +2248,7 @@ function ScreensObj_FeaturedCellArray(cell) {
         Main_addCommas(cell.stream.viewersCount), //4
         '[' + cell.stream.broadcaster.language + ']', //5
         cell.stream.broadcaster.login, //6
-        parseInt(cell.stream.id), //7 broadcast id
+        cell.stream.id.toString(), //7 broadcast id
         Main_is_rerun(cell.stream.type), //8
         cell.stream.broadcaster.profileImageURL, //9
         cell.stream.broadcaster.roles.isPartner, //10
@@ -2273,7 +2273,7 @@ function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
             Main_addCommas(cell.viewer_count), //4
             '[' + cell.language.toUpperCase() + ']', //5
             cell.user_login, //6
-            parseInt(cell.id), //7 broadcast id
+            cell.id.toString(), //7 broadcast id
             Main_is_rerun(cell.type), //8
             logo ? logo : null, //9
             partner ? partner : null, //10

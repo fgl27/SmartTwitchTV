@@ -581,7 +581,7 @@ function ChannelContent_LoadPreview() {
         if (ChannelContent_DataObj) {
             var obj = Main_Slice(ChannelContent_DataObj);
 
-            if ((!Play_PreviewId || !Main_A_equals_B(parseInt(obj[14]), parseInt(Play_PreviewId))) && !Play_PreviewVideoEnded) {
+            if ((!Play_PreviewId || !Main_A_equals_B(obj[14].toString(), Play_PreviewId.toString())) && !Play_PreviewVideoEnded) {
                 ChannelContent_LoadPreviewStart(obj);
             } else if (Play_PreviewId) {
                 ChannelContent_LoadPreviewRestore();
@@ -687,7 +687,7 @@ function ChannelContent_RestoreThumb(play_data) {
     if (ChannelContent_isoffline) return false;
 
     if (ChannelContent_cursorY) {
-        return Main_A_equals_B(parseInt(ChannelContent_DataObj[14]), parseInt(play_data.data[14]));
+        return Main_A_equals_B(ChannelContent_DataObj[14].toString(), play_data.data[14].toString());
     }
 
     return false;

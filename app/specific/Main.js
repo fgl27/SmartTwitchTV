@@ -2155,7 +2155,7 @@ function Main_history_Find_Vod_In_Live(id) {
 function Main_history_UpdateLiveVod(id, vod, vod_img) {
     if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
-    var index = Main_history_Exist('live', parseInt(id));
+    var index = Main_history_Exist('live', id.toString());
 
     if (index > -1) {
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
@@ -2306,7 +2306,7 @@ function Main_SetHistoryworker() {
                                     var response = JSON.parse(obj.responseText);
 
                                     if (response.data && response.data.length) {
-                                        if (parseInt(obj.mData.obj.data[7]) !== parseInt(response.data[0].id)) {
+                                        if (obj.mData.obj.data[7].toString() !== response.data[0].id.toString()) {
                                             this.postMessage({
                                                 data: obj.mData.obj.data[7],
                                                 ended: true,

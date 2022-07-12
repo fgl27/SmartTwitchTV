@@ -932,7 +932,7 @@ function Play_CheckHostResult(responseObj) {
         if (data.user && data.user.hosting) {
             var response = data.user.hosting;
 
-            if (response && parseInt(response.id) !== Play_data.data[14]) {
+            if (response && response.id.toString() !== Play_data.data[14].toString()) {
                 Play_TargetHost = response;
 
                 Play_IsWarning = true;
@@ -1374,7 +1374,7 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
             Sidepannel_AddFocusLiveFeed(true);
         }
 
-        restorePreview = Main_A_equals_B(parseInt(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14]), parseInt(Play_data.data[14]));
+        restorePreview = Main_A_equals_B(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14].toString(), Play_data.data[14].toString());
 
         //live
     } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowingUserLive()) {
@@ -1386,8 +1386,8 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
             !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])
         ) {
             restorePreview = Main_A_equals_B(
-                parseInt(ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14]),
-                parseInt(Play_data.data[14])
+                ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14].toString(),
+                Play_data.data[14].toString()
             );
         }
     }
