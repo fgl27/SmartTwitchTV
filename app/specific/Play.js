@@ -545,7 +545,7 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
     if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoStartId === ID) {
         Play_updateStreamInfoEnd(obj.data[0]);
 
-        Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id, obj.data[0].thumbnail_url);
+        Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id);
 
         if (!Main_IsOn_OSInterface) {
             Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomimg);
@@ -594,10 +594,9 @@ function Play_setFollow() {
     );
 }
 
-var Play_updateVodInfoThumbs = {};
-function Play_updateVodInfo(Channel_id, BroadcastID, thumb) {
+function Play_updateVodInfo(Channel_id, BroadcastID) {
     var theUrl = Main_helix_api + 'videos?first=1' + '&user_id=' + Channel_id + '&type=archive&sort=time';
-    Play_updateVodInfoThumbs[BroadcastID] = thumb;
+
     BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, BroadcastID, null, true);
 }
 
@@ -608,7 +607,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
         var firstVod = response.data[0];
 
         if (firstVod.stream_id === BroadcastID) {
-            Main_history_UpdateLiveVod(BroadcastID, firstVod.id, Play_updateVodInfoThumbs[BroadcastID]);
+            Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
         }
     }
 }

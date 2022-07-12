@@ -2330,8 +2330,9 @@ function Main_SetHistoryworker() {
                             };
                         } else if (event.data.type === 'live' || event.data.type === 'vod') {
                             //Live that is not a VOD or VOD
+                            var isLiveVod = event.data.type === 'live';
 
-                            theUrl = 'https://api.twitch.tv/helix/videos?id=' + (event.data.type === 'live' ? event.data.obj.vodid : event.data.obj.data[7]);
+                            theUrl = 'https://api.twitch.tv/helix/videos?id=' + (isLiveVod ? event.data.obj.vodid : event.data.obj.data[7]);
 
                             onload = function (obj) {
                                 if (obj.status !== 200) {
@@ -2349,19 +2350,14 @@ function Main_SetHistoryworker() {
                                             });
                                         }
                                     }
+                                } else if (isLiveVod) {
+                                    this.postMessage({
+                                        data: obj.mData.obj.data[7],
+                                        type: obj.mData.type,
+                                        updateobj: JSON.parse(obj.responseText),
+                                        delete: false
+                                    });
                                 }
-                                //  else {
-
-                                //     this.postMessage(
-                                //         {
-                                //             data: obj.mData.obj.data[7],
-                                //             type: obj.mData.type,
-                                //             updateobj: JSON.parse(obj.responseText),
-                                //             delete: false
-                                //         }
-                                //     );
-
-                                // }
                             };
                         } else if (event.data.type === 'clip') {
                             //Clip
@@ -2432,9 +2428,27 @@ function Main_SetHistoryworker() {
 
                     if (index > -1) {
                         if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                            Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
+                            var arrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+
+                            arrayPos = Screens_assign(arrayPos, {
                                 forceVod: true
                             });
+
+                            var header;
+
+                            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+                                header = Main_Bearer_User_Headers;
+                            } else {
+                                header = Main_Bearer_Headers;
+                            }
+
+                            BradcastCheckerWorker.postMessage({
+                                obj: arrayPos,
+                                type: 'live',
+                                header: header
+                            });
+
+                            Main_StartHistoryworkerBradcast(array[i], 'live', header);
                         } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
                     }
                 } else {
@@ -2449,11 +2463,9 @@ function Main_SetHistoryworker() {
                         Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
                     }
                 } else {
-                    Main_history_UpdateLiveVod(
-                        event.data.data,
-                        event.data.updateobj._id.substr(1),
-                        ScreensObj_VodGetPreview(event.data.updateobj.preview.template, event.data.updateobj.animated_preview_url)
-                    );
+                    var vodInfo = event.data.updateobj.data[0];
+
+                    Main_history_UpdateLiveVod(event.data.data, event.data.updateobj.id, vodInfo.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize));
                 }
             } else if ((event.data.type === 'vod' || event.data.type === 'clip') && event.data.delete) {
                 index = Main_history_Exist(event.data.type, event.data.data);
@@ -2485,18 +2497,22 @@ function Main_StartHistoryworker() {
     }
 
     for (i; i < len; i++) {
-        if (!array[i].forceVod) {
+        if (!array[i].forceVod || !array[i].vodimg) {
             if (array[i].data[14] && array[i].data[14] !== '') {
-                BradcastCheckerWorker.postMessage({
-                    obj: array[i],
-                    type: 1,
-                    header: header
-                });
+                Main_StartHistoryworkerBradcast(array[i], array[i].forceVod ? 'live' : 1, header);
             } else {
                 array.splice(i, 1);
             }
         }
     }
+}
+
+function Main_StartHistoryworkerBradcast(obj, type, header) {
+    BradcastCheckerWorker.postMessage({
+        obj: obj,
+        type: type,
+        header: header
+    });
 }
 
 //Check if a VOD in history has ben deleted
