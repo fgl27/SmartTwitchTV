@@ -1541,6 +1541,11 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
         for (i; i < response_items; i++) {
             if (isFeatured) {
                 stream = response[i];
+
+                if (!stream || !stream.stream) {
+                    continue;
+                }
+
                 id = stream.stream.broadcaster.id;
             } else {
                 stream = UserLiveFeed_obj[pos].cell(response[i]);

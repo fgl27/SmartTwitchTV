@@ -1349,6 +1349,9 @@ function ScreensObj_InitFeatured() {
     };
 
     ScreenObj[key].addCell = function (cell) {
+        if (!cell || !cell.stream) {
+            return;
+        }
         var id_cell = cell.stream.broadcaster.id;
 
         if (!this.idObject[id_cell]) {
