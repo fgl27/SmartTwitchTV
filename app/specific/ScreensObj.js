@@ -626,7 +626,7 @@ function ScreensObj_StartAllVars() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         [
-                            game.box_art_url.replace('{width}x{height}', Main_GameSize), //0
+                            game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize), //0
                             game.name, //1
                             '', //2
                             id_cell //3
@@ -1573,15 +1573,17 @@ function ScreensObj_InitSearchGames() {
 
     ScreenObj[key] = Screens_assign(
         {
+            useHelix: true,
             ids: Screens_ScreenIds('SearchGames', key),
             ScreenName: 'SearchGames',
             table: 'stream_table_search_game',
             screen: key,
+            isSearch: true,
             isLive: false,
             OldUserName: '',
-            object: 'games',
+            object: 'data',
             lastData: '',
-            base_url: Main_kraken_api + 'search/games?query=',
+            base_url: Main_helix_api + 'search/categories?query=',
             set_url: function () {
                 this.dataEnded = true;
                 this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
