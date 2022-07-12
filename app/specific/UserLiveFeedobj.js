@@ -1708,6 +1708,9 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                         game.box_art_url //3
                     ]);
                 } else if (isUserGames) {
+                    if (!game) {
+                        continue;
+                    }
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                         game.displayName, //0
                         (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +

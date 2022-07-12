@@ -636,6 +636,9 @@ function ScreensObj_StartAllVars() {
                         this.screen
                     );
                 } else if (this.isQuery) {
+                    if (!game) {
+                        return;
+                    }
                     this.tempHtml += Screens_createCellGame(
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
