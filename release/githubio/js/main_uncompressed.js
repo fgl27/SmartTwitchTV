@@ -13304,7 +13304,7 @@
         }
 
         for (i; i < len; i++) {
-            if (!array[i].forceVod || !array[i].vodimg) {
+            if (!array[i].forceVod) {
                 if (array[i].data[14] && array[i].data[14] !== '') {
                     Main_StartHistoryworkerBradcast(array[i], array[i].forceVod ? 'live' : 1, header);
                 } else {
