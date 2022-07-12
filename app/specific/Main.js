@@ -2132,7 +2132,9 @@ function Main_history_Exist(type, id) {
     var index = 0,
         len = Main_values_History_data[AddUser_UsernameArray[0].id][type].length;
 
-    for (index; index < len; index++) if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+    for (index; index < len; index++) {
+        if (Main_values_History_data[AddUser_UsernameArray[0].id][type][index].id === id) return index;
+    }
 
     return -1;
 }
@@ -2153,7 +2155,7 @@ function Main_history_Find_Vod_In_Live(id) {
 function Main_history_UpdateLiveVod(id, vod, vod_img) {
     if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
-    var index = Main_history_Exist('live', id);
+    var index = Main_history_Exist('live', parseInt(id));
 
     if (index > -1) {
         var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
