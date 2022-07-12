@@ -2434,21 +2434,7 @@ function Main_SetHistoryworker() {
                                 forceVod: true
                             });
 
-                            var header;
-
-                            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-                                header = Main_Bearer_User_Headers;
-                            } else {
-                                header = Main_Bearer_Headers;
-                            }
-
-                            BradcastCheckerWorker.postMessage({
-                                obj: arrayPos,
-                                type: 'live',
-                                header: header
-                            });
-
-                            Main_StartHistoryworkerBradcast(array[i], 'live', header);
+                            Main_StartHistoryworkerBradcast(arrayPos, 'live', AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers);
                         } else Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
                     }
                 } else {
