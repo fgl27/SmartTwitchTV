@@ -28872,6 +28872,9 @@
                             this.screen
                         );
                     } else if (this.isQuery) {
+                        if (!game) {
+                            return;
+                        }
                         this.tempHtml += Screens_createCellGame(
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
@@ -29576,6 +29579,9 @@
         };
 
         ScreenObj[key].addCell = function(cell) {
+            if (!cell || !cell.stream) {
+                return;
+            }
             var id_cell = cell.stream.broadcaster.id;
 
             if (!this.idObject[id_cell]) {
@@ -38065,6 +38071,11 @@
             for (i; i < response_items; i++) {
                 if (isFeatured) {
                     stream = response[i];
+
+                    if (!stream || !stream.stream) {
+                        continue;
+                    }
+
                     id = stream.stream.broadcaster.id;
                 } else {
                     stream = UserLiveFeed_obj[pos].cell(response[i]);
@@ -38228,6 +38239,9 @@
                             game.box_art_url //3
                         ]);
                     } else if (isUserGames) {
+                        if (!game) {
+                            continue;
+                        }
                         UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                             game.displayName, //0
                             (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
