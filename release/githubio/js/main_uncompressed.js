@@ -16029,7 +16029,15 @@
 
         if (obj.data && obj.data.length) {
             var tempData = ScreensObj_LiveCellArray(obj.data[0], true),
-                playing = (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') + tempData[4];
+                playing =
+                (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') +
+                STR_SINCE +
+                tempData[11] +
+                STR_SPACE_HTML +
+                STR_FOR +
+                tempData[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(tempData[13]);
 
             Play_controls[Play_controlsOpenLive].setLable(playing, tempData[1]);
 
@@ -16907,7 +16915,17 @@
         if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
             Main_innerHTML('dialog_end_live_text_1', PlayClip_SetOpenLiveData[1]);
 
-            Main_innerHTML('end_live_title_text_1', (PlayClip_SetOpenLiveData[3] !== STR_IS_LIVE ? STR_PLAYING + PlayClip_SetOpenLiveData[3] + ', ' : '') + PlayClip_SetOpenLiveData[4]);
+            Main_innerHTML(
+                'end_live_title_text_1',
+                (PlayClip_SetOpenLiveData[3] !== STR_IS_LIVE ? STR_PLAYING + PlayClip_SetOpenLiveData[3] + ', ' : '') +
+                STR_SINCE +
+                PlayClip_SetOpenLiveData[11] +
+                STR_SPACE_HTML +
+                STR_FOR +
+                PlayClip_SetOpenLiveData[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(PlayClip_SetOpenLiveData[13])
+            );
 
             Main_innerHTML('end_live_name_text_1', Play_controls[Play_controlsOpenLive].string);
 
