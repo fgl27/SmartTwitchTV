@@ -12263,9 +12263,7 @@
         }
 
         //force set as vod and set the div
-        Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex], {
-            forceVod: true
-        });
+        Main_values_History_data[AddUser_UsernameArray[0].id].live[Main_CheckBroadcastIDex].forceVod = true;
 
         var doc = Main_getElementById(Main_CheckBroadcastIDoc);
         doc.childNodes[0].classList.add('hideimp');
@@ -12971,16 +12969,14 @@
         return -1;
     }
 
-    function Main_history_UpdateLiveVod(id, vod, vod_img) {
+    function Main_history_UpdateLiveVod(id, vod, vodimg) {
         if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
         var index = Main_history_Exist('live', id.toString());
 
         if (index > -1) {
-            var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
-
-            ArrayPos.vodid = vod;
-            ArrayPos.vodimg = vod_img;
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid = vod;
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodimg = vodimg;
 
             Main_setHistoryItem();
         }
@@ -12994,8 +12990,8 @@
         if (index > -1) {
             var ArrayPos = Main_values_History_data[AddUser_UsernameArray[0].id][type][index];
 
-            ArrayPos.date = new Date().getTime();
-            ArrayPos.watched = time;
+            Main_values_History_data[AddUser_UsernameArray[0].id][type][index].date = new Date().getTime();
+            Main_values_History_data[AddUser_UsernameArray[0].id][type][index].watched = time;
 
             Main_history_Watched_Obj[ArrayPos.data[7]] = (time / (type === 'vod' ? ArrayPos.data[11] : ArrayPos.data[1])) * 100;
 
@@ -13024,8 +13020,8 @@
 
     var Main_setHistoryItemId;
 
-    function Main_setHistoryItem() {
-        Main_setHistoryItemId = Main_setTimeout(Main_SaveHistoryItem, 1000, Main_setHistoryItemId);
+    function Main_setHistoryItem(time) {
+        Main_setHistoryItemId = Main_setTimeout(Main_SaveHistoryItem, time ? time : 1000, Main_setHistoryItemId);
     }
 
     function Main_SaveHistoryItem() {
@@ -13254,9 +13250,7 @@
 
                         if (index > -1) {
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
-                                    forceVod: true
-                                });
+                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod = true;
 
                                 Main_StartHistoryworkerBradcast(
                                     Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
@@ -13293,6 +13287,7 @@
                         Main_values_History_data[AddUser_UsernameArray[0].id][event.data.type].splice(index, 1);
                     }
                 }
+                Main_setHistoryItem(10000);
             }, 10);
         });
     }
