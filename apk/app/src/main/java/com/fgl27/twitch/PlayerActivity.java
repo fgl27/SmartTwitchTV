@@ -1526,12 +1526,12 @@ public class PlayerActivity extends Activity {
         if (!canRunChannel || Type == 0) return;
 
         ChannelHandler.post(() -> {
+            String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
             String[][] DEFAULT_HEADERS = {
                     {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
-                    {Constants.BASE_HEADERS[1][0], Constants.BASE_HEADERS[1][1]}
+                    {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
             };
-
 
             try {
                 switch (Type) {
@@ -1553,9 +1553,7 @@ public class PlayerActivity extends Activity {
                         break;
                     case Constants.CHANNEL_TYPE_FEATURED:
                         ChannelsUtils.StartFeatured(
-                                context,
-                                DEFAULT_HEADERS,
-                                Constants.CHANNELS_NAMES
+                                context
                         );
                         break;
                     case Constants.CHANNEL_TYPE_GAMES:

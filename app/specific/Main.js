@@ -2954,6 +2954,7 @@ function Main_onNewIntent(mobj) {
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_data.data[3] = obj.obj.name;
+        Play_data.data[18] = obj.obj.id;
 
         if (Main_isScene2DocVisible()) {
             var PlayVodClip = 1;
@@ -2983,6 +2984,7 @@ function Main_onNewIntent(mobj) {
             Main_values.Main_Go = Main_aGame;
 
             Main_values.Main_gameSelected = Play_data.data[3];
+            Main_values.Main_gameSelected_id = Play_data.data[18];
             Main_ReStartScreens();
         }
     } else if (Main_A_equals_B(obj.type, 'SCREEN')) {

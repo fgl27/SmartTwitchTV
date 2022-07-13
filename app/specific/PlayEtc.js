@@ -1105,7 +1105,7 @@ function Play_OpenGame(PlayVodClip) {
     Main_values.Main_gameSelected = Play_data.data[3];
 
     if (PlayVodClip === 1) {
-        Main_values.Main_gameSelected_id = Play_data.data[17];
+        Main_values.Main_gameSelected_id = Play_data.data[18];
     } else if (PlayVodClip === 2) {
         Main_values.Main_gameSelected_id = PlayVod_VodGameID;
     } else if (PlayVodClip === 3) {
