@@ -28,7 +28,12 @@ var version = {
     changelog: [
         {
             title: 'Web Version July 13 2022 and Apk Version 3.0.334 and up',
-            changes: ['Update channel on the home screen to work on the new Twitch API', 'Update notificatons to work on the new Twitch API', 'General improves']
+            changes: [
+                'Update channel on the home screen to work on the new Twitch API',
+                'Update notificatons to work on the new Twitch API',
+                'Is now necessary to have added a user and a key to all channel on the home screen',
+                'General improves'
+            ]
         },
         {
             title: 'Web Version July 12 2022 and Apk Version 3.0.333',
