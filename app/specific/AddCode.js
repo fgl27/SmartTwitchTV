@@ -276,7 +276,7 @@ function AddCode_AppTokenCheckReady(obj) {
 }
 
 function AddCode_AppToken(position, callbackFunc, callbackFuncNOK, key, sync) {
-    var url = 'https://id.twitch.tv/oauth2/token?client_id=' + AddCode_clientId + '&client_secret=' + AddCode_client_token + '&grant_type=client_credentials';
+    var url = AddCode_UrlToken + 'client_id=' + AddCode_clientId + '&client_secret=' + AddCode_client_token + '&grant_type=client_credentials';
 
     //Run in synchronous mode to prevent anything happening until user token is restored
     if (Main_IsOn_OSInterface && sync) {
