@@ -12970,11 +12970,14 @@
     }
 
     function Main_history_UpdateLiveVod(id, vod, vodimg) {
+        console.log('Main_history_UpdateLiveVod');
         if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
         var index = Main_history_Exist('live', id.toString());
+        console.log('index', index);
 
         if (index > -1) {
+            console.log('arra pos', Main_values_History_data[AddUser_UsernameArray[0].id].live[index]);
             Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid = vod;
             Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodimg = vodimg;
 
@@ -21479,7 +21482,7 @@
 
     function Play_updateVodInfoSuccess(response, BroadcastID) {
         response = JSON.parse(response);
-
+        console.log('Play_updateVodInfoSuccess', response);
         if (response.data && response.data.length) {
             var firstVod = response.data[0];
 
