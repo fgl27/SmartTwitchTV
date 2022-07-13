@@ -21483,10 +21483,13 @@
     function Play_updateVodInfoSuccess(response, BroadcastID) {
         response = JSON.parse(response);
         console.log('Play_updateVodInfoSuccess', response);
+        console.log('BroadcastID', BroadcastID);
+
         if (response.data && response.data.length) {
             var firstVod = response.data[0];
+            console.log('firstVod.stream_id', firstVod.stream_id);
 
-            if (firstVod.stream_id === BroadcastID) {
+            if (firstVod.stream_id.toString() === BroadcastID.toString()) {
                 Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
             }
         }
