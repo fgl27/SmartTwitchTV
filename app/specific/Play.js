@@ -597,7 +597,7 @@ function Play_setFollow() {
 function Play_updateVodInfo(Channel_id, BroadcastID) {
     var theUrl = Main_helix_api + 'videos?first=1' + '&user_id=' + Channel_id + '&type=archive&sort=time';
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, BroadcastID, null, true);
+    BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, parseInt(BroadcastID), null, true);
 }
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {
