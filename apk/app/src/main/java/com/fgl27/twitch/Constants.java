@@ -23,7 +23,7 @@ package com.fgl27.twitch;
 public final class Constants {
 
     //Load the page from assets for testing
-    private final static boolean LoadFromAssets = false;
+    private final static boolean LoadFromAssets = true;
 
     final static String PageUrl = LoadFromAssets ?
             "file:///android_asset/app/index.html" :
@@ -71,8 +71,7 @@ public final class Constants {
 
     public static final String[][] BASE_HEADERS = {
             {"Client-ID", ""},
-            {"Accept", "application/vnd.twitchtv.v5+json"},
-            {"Authorization", "OAuth "}
+            {"Authorization", "Bearer "}
     };
 
     public static final String[] CHANNELS_NAMES = {

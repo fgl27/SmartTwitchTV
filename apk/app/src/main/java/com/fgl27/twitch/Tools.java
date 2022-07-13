@@ -1050,7 +1050,7 @@ public final class Tools {
             String urlString = "https://id.twitch.tv/oauth2/validate";
 
             String[][] HEADERS = {
-                    {Constants.BASE_HEADERS[2][0], token}
+                    {Constants.BASE_HEADERS[1][0], token}
             };
 
             JsonObject obj;
@@ -1161,7 +1161,7 @@ public final class Tools {
                         appPreferences.put(
                                 UserId + Constants.PREF_ACCESS_TOKEN,
                                 !obj.get("access_token").isJsonNull() ?
-                                        (Constants.BASE_HEADERS[2][1] + obj.get("access_token").getAsString()) :
+                                        (Constants.BASE_HEADERS[1][1] + obj.get("access_token").getAsString()) :
                                         null
                         );
 

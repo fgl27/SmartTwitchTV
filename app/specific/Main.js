@@ -2927,7 +2927,7 @@ function Main_onNewIntent(mobj) {
         } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
 
         Main_openStream();
 

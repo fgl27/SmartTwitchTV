@@ -20,6 +20,8 @@
 
 package com.fgl27.twitch.channels;
 
+import static com.google.gson.JsonParser.parseString;
+
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
@@ -69,8 +71,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-
-import static com.google.gson.JsonParser.parseString;
 
 public final class ChannelsUtils {
 
@@ -781,12 +781,14 @@ public final class ChannelsUtils {
 
         JsonObject obj;
         JsonObject objChannel;
-        JsonObject objPreview;
 
+        String preview;
         String channelId;
         String description;
         String game;
         String StreamCreated_at;
+        String title;
+        String display_name;
 
         boolean emptyGame;
 
@@ -809,21 +811,21 @@ public final class ChannelsUtils {
                     obj = obj.get(object2).getAsJsonObject();//Featured holds the featured stream inside another level
                 }
 
-                if (obj.isJsonObject() && !obj.get("channel").isJsonNull()) {
-                    objChannel = obj.get("channel").getAsJsonObject(); //Get the channel obj in position
+                if (obj.isJsonObject()) {
 
-                    channelId = objChannel.get("_id").getAsString();
 
-                    if (!TempArray.contains(channelId) && //Prevent add duplicated
-                            !objChannel.get("display_name").isJsonNull()) {
+                    channelId = obj.get("user_id").getAsString();
+
+                    if (!TempArray.contains(channelId)) {//Prevent add duplicated
 
                         TempArray.add(channelId);
 
-                        objPreview = !obj.get("preview").isJsonNull() ? obj.get("preview").getAsJsonObject() : null;
-                        game = !obj.get("game").isJsonNull() ? obj.get("game").getAsString() : "";
-                        viewers = !obj.get("viewers").isJsonNull() ? obj.get("viewers").getAsInt() : 0;
-                        StreamCreated_at = !obj.get("created_at").isJsonNull() ? obj.get("created_at").getAsString() : null;
-
+                        preview = !obj.get("thumbnail_url").isJsonNull() ? obj.get("thumbnail_url").getAsString() : null;
+                        game = !obj.get("game_name").isJsonNull() ? obj.get("game_name").getAsString() : "";
+                        viewers = !obj.get("viewer_count").isJsonNull() ? obj.get("viewer_count").getAsInt() : 0;
+                        StreamCreated_at = !obj.get("started_at").isJsonNull() ? obj.get("started_at").getAsString() : null;
+                        title = !obj.get("title").isJsonNull() ? obj.get("title").getAsString() : null;
+                        display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
                         if (StreamCreated_at != null) {
 
                             date = input.parse(StreamCreated_at);
@@ -843,18 +845,18 @@ public final class ChannelsUtils {
                                 game + (emptyGame ? "" : ","),
                                 StreamCreated_at != null ? StreamCreated_at : "",
                                 decimalFormat.format(viewers),
-                                !objChannel.get("status").isJsonNull() ? objChannel.get("status").getAsString() : ""
+                                title != null ? title : ""
                         );
 
                         content.add(
                                 new ChannelContentObj(
-                                        objChannel.get("display_name").getAsString(),
+                                        display_name,
                                         description,
-                                        objPreview != null && !objPreview.get("large").isJsonNull() ? objPreview.get("large").getAsString() : Constants.VIDEO_404,
+                                        preview != null ? preview.replace("{width}x{height}", "640x360") : Constants.VIDEO_404,
                                         TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9,
                                         viewers,
                                         new Gson().toJson(new PreviewObj(obj, "LIVE", screen)),
-                                        !obj.get("broadcast_platform").isJsonNull() && (obj.get("broadcast_platform").getAsString()).contains("live")
+                                        !obj.get("type").isJsonNull() && (obj.get("type").getAsString()).contains("live")
                                 )
                         );
                     }
