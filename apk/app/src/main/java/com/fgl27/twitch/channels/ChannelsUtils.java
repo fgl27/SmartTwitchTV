@@ -780,7 +780,6 @@ public final class ChannelsUtils {
         Set<String> TempArray = new HashSet<>();
 
         JsonObject obj;
-        JsonObject objChannel;
 
         String preview;
         String channelId;

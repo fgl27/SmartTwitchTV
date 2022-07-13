@@ -124,14 +124,14 @@ public final class NotificationUtils {
                 (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
                         Tools.refreshTokens(UserId, appPreferences))) {
 
-            return GetLiveStreamsListToken(UserId, appPreferences);
+            return GetLiveStreamsListToken(UserId, appPreferences, true);
 
         }
 
         return null;
     }
 
-    private static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences) {
+    private static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences, Boolean tryAgain) {
         JsonArray StreamsResult = new JsonArray();
         boolean HttpRequestSuccess = false;
 
@@ -145,7 +145,6 @@ public final class NotificationUtils {
             JsonObject obj;
             JsonObject pagination;
 
-            int Offset = 0;
             int StreamsSize;
             int AddedToArray;
             int status;
@@ -199,14 +198,8 @@ public final class NotificationUtils {
 
                                 cursor = pagination.isJsonObject() && pagination.has("cursor") && !pagination.get("cursor").isJsonNull() ? pagination.get("cursor").getAsString() : null;
 
-                                if (StreamsSize > 0) {
-
-                                    Offset += StreamsSize;
-
-                                } else {
-
+                                if (StreamsSize == 0) {
                                     break;
-
                                 }
 
                                 for (int j = 0; j < StreamsSize; j++) {
@@ -231,9 +224,9 @@ public final class NotificationUtils {
                             break;
                         } else if (status == 401 || status == 403) {
 
-                            if (Tools.refreshTokens(UserId, appPreferences)) {
+                            if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
 
-                                return GetLiveStreamsListToken(UserId, appPreferences);
+                                return GetLiveStreamsListToken(UserId, appPreferences, false);
 
                             }
 
@@ -254,16 +247,110 @@ public final class NotificationUtils {
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
+    private static Map<String, String> GetStreamNotificationsLogo(JsonArray streams, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+        Map<String, String> logoMap = new HashMap<>();
+        int StreamsSize = streams.size();
+        int counter = 0;
+        int status;
+
+        String id;
+        JsonObject obj;
+        StringBuilder channels = new StringBuilder();
+        String url;
+        Tools.ResponseObj response;
+        JsonArray TempStreams;
+
+        String[][] DEFAULT_HEADERS = {
+                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
+        };
+
+        for (int i = 0; i < StreamsSize; i++) {
+            obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
+            id = obj.get("user_id").getAsString();//channel id
+            channels.append("&id=").append(id);
+            counter++;
+
+            if (counter == 100 || counter == StreamsSize) {
+
+                url = String.format(
+                        Locale.US,
+                        "https://api.twitch.tv/helix/users?first=100%s",
+                        channels
+                );
+                channels = new StringBuilder();
+                StreamsSize = 0;
+
+                for (int y = 0; y < 3; y++) {
+
+                    response = Tools.Internal_MethodUrl(
+                            url,
+                            Constants.DEFAULT_HTTP_TIMEOUT + (Constants.DEFAULT_HTTP_EXTRA_TIMEOUT * i),
+                            null,
+                            null,
+                            0,
+                            DEFAULT_HEADERS
+                    );
+
+                    if (response != null) {
+                        status = response.status;
+
+                        if (status == 200) {
+
+                            obj = parseString(response.responseText).getAsJsonObject();
+
+                            if (obj.isJsonObject() && !obj.get("data").isJsonNull()) {
+
+                                TempStreams = obj.get("data").getAsJsonArray();//Get the follows array
+                                StreamsSize = TempStreams.size();
+
+                                for (int j = 0; j < StreamsSize; j++) {
+
+                                    obj = TempStreams.get(j).getAsJsonObject();//Get the position in the array
+
+                                    if (obj.isJsonObject() && obj.has("profile_image_url") && !obj.get("profile_image_url").isJsonNull()) {//Prevent null img
+
+                                        id = obj.get("id").getAsString();//Channel id
+                                        logoMap.put(id, obj.get("profile_image_url").getAsString());
+
+                                    }
+
+                                }
+
+                            }
+                            break;
+                        } else if (status == 401 || status == 403) {
+
+                            if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
+
+                                return GetStreamNotificationsLogo(streams, UserId, appPreferences, false);
+
+                            }
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+
+        return logoMap;
+    }
+
     private static void GetStreamNotifications(Map<String, StreamObj> oldLive, JsonArray streams, String UserId,
                                                AppPreferences appPreferences, int Repeat, long NotifySinceTimeMs,
                                                Context context, boolean DoStreamLive, boolean DoStreamTitle, boolean DoStreamGame,
                                                ArrayList<NotifyList> result) {
 
         Map<String, StreamObj> currentLive = new HashMap<>();
+        Map<String, String> mapLogo = GetStreamNotificationsLogo(streams, UserId, appPreferences, true);
+        boolean mapEmpty = mapLogo.isEmpty();
 
         int StreamsSize = streams.size();
 
         String id;
+        String user_id;
         String game;
         String display_name;
         String title;
@@ -296,6 +383,7 @@ public final class NotificationUtils {
 
                 obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
                 id = obj.get("id").getAsString();//Broadcast id
+                user_id = obj.get("user_id").getAsString();//Channel id
 
                 display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
 
@@ -367,7 +455,7 @@ public final class NotificationUtils {
                                         display_name,
                                         GetBitmap(
                                                 //!ChannelObj.get("logo").isJsonNull() ? ChannelObj.get("logo").getAsString() : Constants.LOGO_404
-                                                Constants.LOGO_404
+                                                !mapEmpty && mapLogo.containsKey(user_id) ? mapLogo.get(user_id) : Constants.LOGO_404
                                         ),
                                         title,
                                         isLive
