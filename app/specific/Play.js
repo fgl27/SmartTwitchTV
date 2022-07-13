@@ -606,7 +606,7 @@ function Play_updateVodInfoSuccess(response, BroadcastID) {
     if (response.data && response.data.length) {
         var firstVod = response.data[0];
 
-        if (firstVod.stream_id === BroadcastID) {
+        if (firstVod.stream_id.toString() === BroadcastID.toString()) {
             Main_history_UpdateLiveVod(BroadcastID, firstVod.id, null);
         }
     }
