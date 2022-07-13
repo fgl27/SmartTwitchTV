@@ -13254,13 +13254,15 @@
 
                         if (index > -1) {
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) {
-                                var arrayPos = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
-
-                                arrayPos = Screens_assign(arrayPos, {
+                                Main_values_History_data[AddUser_UsernameArray[0].id].live[index] = Screens_assign(Main_values_History_data[AddUser_UsernameArray[0].id].live[index], {
                                     forceVod: true
                                 });
 
-                                Main_StartHistoryworkerBradcast(arrayPos, 'live', AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers);
+                                Main_StartHistoryworkerBradcast(
+                                    Main_values_History_data[AddUser_UsernameArray[0].id].live[index],
+                                    'live',
+                                    AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token ? Main_Bearer_User_Headers : Main_Bearer_Headers
+                                );
                             } else {
                                 Main_values_History_data[AddUser_UsernameArray[0].id].live.splice(index, 1); //delete the live entry as it doesn't have a VOD
                             }
