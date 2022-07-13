@@ -2212,6 +2212,7 @@ function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
     if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
+    console.log(Main_values_History_data);
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
