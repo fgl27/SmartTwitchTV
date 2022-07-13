@@ -748,7 +748,7 @@ public final class ChannelsUtils {
 
                         JsonObject obj = parseString(response.responseText).getAsJsonObject();
 
-                        if (obj.isJsonObject() && !obj.get(object).isJsonNull()) {
+                        if (obj.isJsonObject() && obj.has(object) && !obj.get(object).isJsonNull()) {
 
                             return ProcessLiveArray(
                                     obj.get(object).getAsJsonArray(),//Get the follows array
@@ -809,7 +809,6 @@ public final class ChannelsUtils {
                 obj = Streams.get(i).getAsJsonObject();//Get the position in the follows array
 
                 if (obj.isJsonObject()) {
-
 
                     channelId = obj.get("user_id").getAsString();
 

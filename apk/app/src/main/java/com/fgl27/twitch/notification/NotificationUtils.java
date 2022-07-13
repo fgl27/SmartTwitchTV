@@ -69,6 +69,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class NotificationUtils {
 
@@ -249,6 +250,9 @@ public final class NotificationUtils {
 
     private static Map<String, String> GetStreamNotificationsLogo(JsonArray streams, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
         Map<String, String> logoMap = new HashMap<>();
+
+        String randomImg = "?" + ThreadLocalRandom.current().nextInt(1, 1000000);
+
         int StreamsSize = streams.size();
         int counter = 0;
         int status;
@@ -299,7 +303,7 @@ public final class NotificationUtils {
 
                             obj = parseString(response.responseText).getAsJsonObject();
 
-                            if (obj.isJsonObject() && !obj.get("data").isJsonNull()) {
+                            if (obj.isJsonObject() && obj.has("data") && !obj.get("data").isJsonNull()) {
 
                                 TempStreams = obj.get("data").getAsJsonArray();//Get the follows array
                                 StreamsSize = TempStreams.size();
@@ -311,7 +315,7 @@ public final class NotificationUtils {
                                     if (obj.isJsonObject() && obj.has("profile_image_url") && !obj.get("profile_image_url").isJsonNull()) {//Prevent null img
 
                                         id = obj.get("id").getAsString();//Channel id
-                                        logoMap.put(id, obj.get("profile_image_url").getAsString());
+                                        logoMap.put(id, obj.get("profile_image_url").getAsString() + randomImg);
 
                                     }
 
