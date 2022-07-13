@@ -121,9 +121,7 @@ public final class NotificationUtils {
 
     public static JsonArray GetLiveStreamsList(String UserId, AppPreferences appPreferences) {
 
-        if (Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null &&
-                (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
-                        Tools.refreshTokens(UserId, appPreferences))) {
+        if (Tools.hasTokens(UserId, appPreferences)) {
 
             return GetLiveStreamsListToken(UserId, appPreferences, true);
 

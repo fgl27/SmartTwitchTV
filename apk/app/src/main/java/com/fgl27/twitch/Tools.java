@@ -1102,6 +1102,12 @@ public final class Tools {
         }
     }
 
+    public static boolean hasTokens(String UserId, AppPreferences appPreferences) {
+        return Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences) != null &&
+                (System.currentTimeMillis() < Tools.getLong(UserId + Constants.PREF_TOKEN_EXPIRES_WHEN, 0, appPreferences) ||
+                        Tools.refreshTokens(UserId, appPreferences));
+    }
+
     public static boolean refreshTokens(String UserId, AppPreferences appPreferences) {
 
         String refresh_token = getString(UserId + Constants.PREF_REFRESH_TOKEN, null, appPreferences);

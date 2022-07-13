@@ -515,6 +515,10 @@ public final class ChannelsUtils {
     public static void UpdateAllChannels(Context context, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
         String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
+        if (!Tools.hasTokens(UserId, appPreferences)) {
+            return;
+        }
+
         String[][] DEFAULT_HEADERS = {
                 {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
                 {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}

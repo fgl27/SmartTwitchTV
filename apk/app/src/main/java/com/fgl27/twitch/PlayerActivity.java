@@ -1523,10 +1523,13 @@ public class PlayerActivity extends Activity {
     }
 
     public void RefreshChannel(int Type, boolean skipToast, Context context) {
-        if (!canRunChannel || Type == 0) return;
+        String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
+
+        if (!canRunChannel || Type == 0 || !Tools.hasTokens(UserId, appPreferences)) {
+            return;
+        }
 
         ChannelHandler.post(() -> {
-            String UserId = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
 
             String[][] DEFAULT_HEADERS = {
                     {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
@@ -1546,7 +1549,7 @@ public class PlayerActivity extends Activity {
                     case Constants.CHANNEL_TYPE_USER_LIVE:
                         ChannelsUtils.SetUserLive(
                                 context,
-                                Tools.getString(Constants.PREF_USER_ID, null, appPreferences),
+                                UserId,
                                 appPreferences,
                                 Constants.CHANNELS_NAMES
                         );
