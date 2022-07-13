@@ -602,7 +602,7 @@ function Play_updateVodInfo(Channel_id, BroadcastID) {
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {
     response = JSON.parse(response);
-
+    console.log('Play_updateVodInfoSuccess', response);
     if (response.data && response.data.length) {
         var firstVod = response.data[0];
 
