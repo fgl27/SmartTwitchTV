@@ -212,7 +212,7 @@ function pt_BRLang() {
     STR_YES = 'Sim';
     STR_REMOVE_USER = 'Tem certeza que deseja remover o usuário';
     STR_PLACEHOLDER_PRESS_UP = 'Pressione até';
-    STR_FOLLOW_GAMES = 'Jogos Seguidos';
+    STR_FOLLOW_GAMES = 'Jogos Seguidos Ao Vivo';
     STR_USER_GAMES_CHANGE = 'Mudar entre';
     STR_GUIDE = 'Segure enter';
     STR_MONTHS = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
