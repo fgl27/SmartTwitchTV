@@ -2717,7 +2717,7 @@
         STR_YES = 'Sim';
         STR_REMOVE_USER = 'Tem certeza que deseja remover o usuário';
         STR_PLACEHOLDER_PRESS_UP = 'Pressione até';
-        STR_FOLLOW_GAMES = 'Jogos Seguidos';
+        STR_FOLLOW_GAMES = 'Jogos Seguidos Ao Vivo';
         STR_USER_GAMES_CHANGE = 'Mudar entre';
         STR_GUIDE = 'Segure enter';
         STR_MONTHS = ['jan', 'fev', 'mar', 'abr', 'maio', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
@@ -4322,11 +4322,20 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 333, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/333/SmartTV_twitch_3_0_333.apk',
-        WebVersion: 'July 12 2022',
-        WebTag: 611, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 334, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/334/SmartTV_twitch_3_0_334.apk',
+        WebVersion: 'July 13 2022',
+        WebTag: 613, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version July 13 2022 and Apk Version 3.0.334 and up',
+                changes: [
+                    'Update channel on the home screen to work on the new Twitch API',
+                    'Update notificatons to work on the new Twitch API',
+                    'Is now necessary to have added a user and a key for all channel on the home screen',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version July 12 2022 and Apk Version 3.0.333',
                 changes: [
                     'Update User channel screen to use new Twitch API',
@@ -4635,7 +4644,7 @@
     }
 
     function AddCode_AppToken(position, callbackFunc, callbackFuncNOK, key, sync) {
-        var url = 'https://id.twitch.tv/oauth2/token?client_id=' + AddCode_clientId + '&client_secret=' + AddCode_client_token + '&grant_type=client_credentials';
+        var url = AddCode_UrlToken + 'client_id=' + AddCode_clientId + '&client_secret=' + AddCode_client_token + '&grant_type=client_credentials';
 
         //Run in synchronous mode to prevent anything happening until user token is restored
         if (Main_IsOn_OSInterface && sync) {
@@ -13749,7 +13758,7 @@
             } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
 
             Main_openStream();
 
@@ -13776,6 +13785,7 @@
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
             Play_data.data[3] = obj.obj.name;
+            Play_data.data[18] = obj.obj.id;
 
             if (Main_isScene2DocVisible()) {
                 var PlayVodClip = 1;
@@ -13805,6 +13815,7 @@
                 Main_values.Main_Go = Main_aGame;
 
                 Main_values.Main_gameSelected = Play_data.data[3];
+                Main_values.Main_gameSelected_id = Play_data.data[18];
                 Main_ReStartScreens();
             }
         } else if (Main_A_equals_B(obj.type, 'SCREEN')) {
@@ -17280,7 +17291,7 @@
         Main_values.Main_gameSelected = Play_data.data[3];
 
         if (PlayVodClip === 1) {
-            Main_values.Main_gameSelected_id = Play_data.data[17];
+            Main_values.Main_gameSelected_id = Play_data.data[18];
         } else if (PlayVodClip === 2) {
             Main_values.Main_gameSelected_id = PlayVod_VodGameID;
         } else if (PlayVodClip === 3) {
@@ -26618,6 +26629,8 @@
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
                     error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
                 }
+            } else {
+                error += STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
             }
         } else {
             error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);

@@ -31,7 +31,7 @@ var version = {
             changes: [
                 'Update channel on the home screen to work on the new Twitch API',
                 'Update notificatons to work on the new Twitch API',
-                'Is now necessary to have added a user and a key to all channel on the home screen',
+                'Is now necessary to have added a user and a key for all channel on the home screen',
                 'General improves'
             ]
         },
