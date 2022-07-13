@@ -87,11 +87,11 @@ public final class NotificationUtils {
     };
 
     private static class StreamObj {
-        private final String game;
+        private final String game_name;
         private final String title;
 
         private StreamObj(String game, String title) {
-            this.game = game;
+            this.game_name = game;
             this.title = title;
         }
 
@@ -432,7 +432,7 @@ public final class NotificationUtils {
                     } else if (DoStreamTitle || DoStreamGame) {
 
                         TempObj = oldLive.get(id);
-                        gameChange = DoStreamGame && TempObj != null && !Objects.equals(TempObj.game, game);
+                        gameChange = DoStreamGame && TempObj != null && !Objects.equals(TempObj.game_name, game);
                         titleChange = DoStreamTitle && TempObj != null && !Objects.equals(TempObj.title, title);
 
                         if (gameChange || titleChange) {
@@ -503,8 +503,8 @@ public final class NotificationUtils {
                 currentLive.put(
                         obj.get("_id").getAsString(),
                         new StreamObj(
-                                !ChannelObj.get("game").isJsonNull() ? ChannelObj.get("game").getAsString() : "",
-                                !ChannelObj.get("status").isJsonNull() ? ChannelObj.get("status").getAsString() : ""
+                                !ChannelObj.get("game_name").isJsonNull() ? ChannelObj.get("game_name").getAsString() : "",
+                                !ChannelObj.get("title").isJsonNull() ? ChannelObj.get("title").getAsString() : ""
                         )
                 );
 
