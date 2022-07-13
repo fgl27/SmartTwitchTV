@@ -2155,14 +2155,11 @@ function Main_history_Find_Vod_In_Live(id) {
 }
 
 function Main_history_UpdateLiveVod(id, vod, vodimg) {
-    console.log('Main_history_UpdateLiveVod');
     if (!AddUser_IsUserSet() || ScreenObj[Main_HistoryLive].histPosX[1]) return;
 
     var index = Main_history_Exist('live', id.toString());
-    console.log('index', index);
 
     if (index > -1) {
-        console.log('arra pos', Main_values_History_data[AddUser_UsernameArray[0].id].live[index]);
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid = vod;
         Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodimg = vodimg;
 
@@ -2215,7 +2212,6 @@ function Main_SaveHistoryItem() {
     var string = JSON.stringify(Main_values_History_data);
     Main_setItem('Main_values_History_data', string);
     if (Main_CanBackup) OSInterface_BackupFile(Main_HistoryBackupFile, string);
-    console.log(Main_values_History_data);
 }
 
 //Only works on vectors, matrixs and etc need to use JSON.parse(JSON.stringify(array)) to prevent keeping the iner obj references
