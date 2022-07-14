@@ -1,39 +1,39 @@
 **SmartTV Twitch AndroidTV APK**
 
-- [About the project](#about-the-project)
-- [About this fork](#about-this-fork)
-- [How the application works](#how-the-application-works)
-	- [The web app](#the-web-app)
-	- [The Apk](#the-apk)
-	- [The interactions between web app and apk](#the-interactions-between-web-app-and-apk)
-- [How the application looks](#how-the-application-looks)
-- [How to translate this](#how-to-translate-this)
-	- [How to translate and test?](#how-to-translate-and-test)
-	- [Translate](#translate)
-	- [Testing app/languages/en_US.js](#testing-applanguagesen_usjs)
-	- [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
-	- [How to send the files](#how-to-send-the-files)
-- [Download](#download)
-- [Dependencies](#dependencies)
-	- [Web Dependencies](#web-dependencies)
-	- [Apk Dependencies](#apk-dependencies)
-- [Are phones and tablets supported?](#are-phones-and-tablets-supported)
-- [Authorization](#authorization)
-	- [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
-- [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
-	- [Code Languages used by the project](#code-languages-used-by-the-project)
-	- [How to Build](#how-to-build)
-	- [Building The web app](#building-the-web-app)
-	- [Javascript (building The web app)](#javascript-building-the-web-app)
-	- [Html (building The web app)](#html-building-the-web-app)
-	- [CSS (building The web app)](#css-building-the-web-app)
-	- [Build The apk](#build-the-apk)
-- [Contributing instructions](#contributing-instructions)
-- [How to make changes and test it](#how-to-make-changes-and-test-it)
-- [Changelog](#changelog)
-- [TODO list](#todo-list)
-- [Donations](#donations)
-- [In doubt open a issue](#in-doubt-open-a-issue)
+-   [About the project](#about-the-project)
+-   [About this fork](#about-this-fork)
+-   [How the application works](#how-the-application-works)
+    -   [The web app](#the-web-app)
+    -   [The Apk](#the-apk)
+    -   [The interactions between web app and apk](#the-interactions-between-web-app-and-apk)
+-   [How the application looks](#how-the-application-looks)
+-   [How to translate this](#how-to-translate-this)
+    -   [How to translate and test?](#how-to-translate-and-test)
+    -   [Translate](#translate)
+    -   [Testing app/languages/en_US.js](#testing-applanguagesen_usjs)
+    -   [Testing apk/app/src/main/res/values/strings.xml](#testing-apkappsrcmainresvaluesstringsxml)
+    -   [How to send the files](#how-to-send-the-files)
+-   [Download](#download)
+-   [Dependencies](#dependencies)
+    -   [Web Dependencies](#web-dependencies)
+    -   [Apk Dependencies](#apk-dependencies)
+-   [Are phones and tablets supported?](#are-phones-and-tablets-supported)
+-   [Authorization](#authorization)
+    -   [when accessing Twitch authorization site after adding yours credential (User and password) you will see the bellow information](#when-accessing-twitch-authorization-site-after-adding-yours-credential-user-and-password-you-will-see-the-bellow-information)
+-   [How to build, languages and etc related](#how-to-build-languages-and-etc-related)
+    -   [Code Languages used by the project](#code-languages-used-by-the-project)
+    -   [How to Build](#how-to-build)
+    -   [Building The web app](#building-the-web-app)
+    -   [Javascript (building The web app)](#javascript-building-the-web-app)
+    -   [Html (building The web app)](#html-building-the-web-app)
+    -   [CSS (building The web app)](#css-building-the-web-app)
+    -   [Build The apk](#build-the-apk)
+-   [Contributing instructions](#contributing-instructions)
+-   [How to make changes and test it](#how-to-make-changes-and-test-it)
+-   [Changelog](#changelog)
+-   [TODO list](#todo-list)
+-   [Donations](#donations)
+-   [In doubt open a issue](#in-doubt-open-a-issue)
 
 ## About the project
 
@@ -86,9 +86,7 @@ To the apk communicate with the web app it will use this function call `WebView.
 
 In order for the app to work is necessary that back and for communication between the UI and the apk, the process is technically simple but if you never sow it at first it may seems complicated.<br>
 
-
 ## [How the application looks](https://github.com/fgl27/SmartTwitchTV/tree/master/screenshot)
-
 
 The application never stops receiving updates the bellow video may be outdated, I try to keep a updated video always available but is not a priority
 [![How the application looks](https://fgl27.github.io/SmartTwitchTV/screenshot/Screenshot_you.png)](http://www.youtube.com/watch?v=LA2x1c-BOJg)
@@ -97,34 +95,34 @@ The application never stops receiving updates the bellow video may be outdated, 
 
 The app has two strings files:<br>
 
-- [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) 
-- [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
+-   [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js)
+-   [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 
 Follow the bellow instruction to translate, test and send the files back.
 
 ### How to translate and test?
 
-- [Download and extract the app source](https://github.com/fgl27/SmartTwitchTV/archive/master.zip)
-- Navigate and open [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) and follow the bellow Translate and Testing steps
-- Do the same for [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
+-   [Download and extract the app source](https://github.com/fgl27/SmartTwitchTV/archive/master.zip)
+-   Navigate and open [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) and follow the bellow Translate and Testing steps
+-   Do the same for [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 
 ### Translate
 
-- Translate all string to yours language
-- Delete from the file any string that when translated has no difference to the original EN_US String
-- Remove from the file any string that wasn't translated and add it to a separated file name it `untranslated_js.txt` for `app/languages/en_US.js` and `untranslated_xml.txt` for `apk/app/src/main/res/values/strings.xml` make sure you inform why you didn't translate in case is a issue that needed to be resolved.
-- The files `untranslated_*.txt` are a way so in the future is easier to know with string need to be updates, as when changes are made to the original strings I may remove them from the translation so the translator know that they need a update, also new string created after the translation will be added to `untranslated_*.txt`
+-   Translate all string to yours language
+-   Delete from the file any string that when translated has no difference to the original EN_US String
+-   Remove from the file any string that wasn't translated and add it to a separated file name it `untranslated_js.txt` for `app/languages/en_US.js` and `untranslated_xml.txt` for `apk/app/src/main/res/values/strings.xml` make sure you inform why you didn't translate in case is a issue that needed to be resolved.
+-   The files `untranslated_*.txt` are a way so in the future is easier to know with string need to be updates, as when changes are made to the original strings I may remove them from the translation so the translator know that they need a update, also new string created after the translation will be added to `untranslated_*.txt`
 
-### Testing [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js) 
+### Testing [app/languages/en_US.js](https://github.com/fgl27/SmartTwitchTV/blob/master/app/languages/en_US.js)
 
 This file is part of the web app to test that file the easiest way is to:<br>
 
-- Open this file [app/index.html](https://github.com/fgl27/SmartTwitchTV/blob/master/app/index.html) locally on a web browser (recommended chrome) that will load the web app
-- To navigate use the keyboard arrow keys, enter and esc
-- Make sure you go to all app screens included the player (open Live, VOD and clips) and check if the translate string do not overflow and or cause the app to look odd
-- Make sure you open the fallowing side panel screens Settings, About and Controls as those are the screens that have more text so they usually need some work to make all look OK.
-- If any screen looks odd and isn't possible in any for or way to make the string to feet inform with string/screen has the problem when you share the file
-- If you wanna compare yours changes VS the original app side by side open on a new tab the [main app page](https://fgl27.github.io/SmartTwitchTV/release/index.html)
+-   Open this file [app/index.html](https://github.com/fgl27/SmartTwitchTV/blob/master/app/index.html) locally on a web browser (recommended chrome) that will load the web app
+-   To navigate use the keyboard arrow keys, enter and esc
+-   Make sure you go to all app screens included the player (open Live, VOD and clips) and check if the translate string do not overflow and or cause the app to look odd
+-   Make sure you open the fallowing side panel screens Settings, About and Controls as those are the screens that have more text so they usually need some work to make all look OK.
+-   If any screen looks odd and isn't possible in any for or way to make the string to feet inform with string/screen has the problem when you share the file
+-   If you wanna compare yours changes VS the original app side by side open on a new tab the [main app page](https://fgl27.github.io/SmartTwitchTV/release/index.html)
 
 ### Testing [apk/app/src/main/res/values/strings.xml](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/src/main/res/values/strings.xml)
 
@@ -148,23 +146,23 @@ If you are using this on a Android TV device install it from play Google Play, i
 
 ### Web Dependencies
 
-- [crass - A CSS minification, pretty printing, and general utility library written in JS](https://github.com/mattbasta/crass)
-- [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
-- [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier](https://github.com/kangax/html-minifier)
-- [irc-message - Performant, streaming IRC message parser](https://github.com/sigkell/irc-message)
-- [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
-- [punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891](https://github.com/bestiejs/punycode.js)
-- [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
-- [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
-- [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
+-   [crass - A CSS minification, pretty printing, and general utility library written in JS](https://github.com/mattbasta/crass)
+-   [Fontastic - Create your customized icon fonts in seconds](http://app.fontastic.me)
+-   [HTMLMinifier - is a highly configurable, well-tested, JavaScript-based HTML minifier](https://github.com/kangax/html-minifier)
+-   [irc-message - Performant, streaming IRC message parser](https://github.com/sigkell/irc-message)
+-   [JSHint - A Static Code Analysis Tool for JavaScript](https://github.com/jshint/jshint)
+-   [punycode - A robust Punycode converter that fully complies to RFC 3492 and RFC 5891](https://github.com/bestiejs/punycode.js)
+-   [Twemoji - A simple library that provides standard Unicode emoji support across all platforms](https://github.com/twitter/twemoji)
+-   [Twitch Developer Documentation](https://dev.twitch.tv/docs/)
+-   [UglifyJS - is a JavaScript parser, minifier, compressor and beautifier toolkit](https://github.com/mishoo/UglifyJS2)
 
 ### Apk Dependencies
 
-- [ExoPlayer: An extensible media player for Android](https://github.com/google/ExoPlayer)
-- [Gradle Versions Plugin: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
-- [Gson: Gson is a Java library that can be used to convert Java Objects into their JSON representation.](https://github.com/google/gson)
-- [Leanback v17: Support classes for building Leanback user experiences](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
-- [Tray: a SharedPreferences replacement for Android](https://github.com/grandcentrix/tray)
+-   [ExoPlayer: An extensible media player for Android](https://github.com/google/ExoPlayer)
+-   [Gradle Versions Plugin: Gradle plugin to discover dependency updates](https://github.com/ben-manes/gradle-versions-plugin)
+-   [Gson: Gson is a Java library that can be used to convert Java Objects into their JSON representation.](https://github.com/google/gson)
+-   [Leanback v17: Support classes for building Leanback user experiences](https://developer.android.com/reference/android/support/v17/leanback/package-summary)
+-   [Tray: a SharedPreferences replacement for Android](https://github.com/grandcentrix/tray)
 
 ## Are phones and tablets supported?
 
@@ -181,44 +179,37 @@ That key will be used to access Twitch specific content of that user, it permiss
 
 **The app uses the following permission:**
 
-- user_read, user_follows_edit, user_subscriptions, chat:edit, chat:read they are summarized here [authentication twitch-api-v5](https://dev.twitch.tv/docs/authentication#twitch-api-v5)<br>
+-   user:read:follows, user:read:subscriptions, chat:edit, chat:read they are summarized here [Twitch Access Token Scopes](https://dev.twitch.tv/docs/authentication/scopes)<br>
 
 **How the app uses it individual permission:**
 
-**Manage your followed channels:**
+**Read your list of follows:**
 
-- The permission used for this is **user_follows_edit** the API used on this is [Follow Channel](https://dev.twitch.tv/docs/v5/reference/users/#follow-channel)
-- Allow to follow or unfollow streamers or games for that user (unfollow a game is current not supported by Twitch for third party app, but follow is).<br>
+-   The permission used for this is **user:read:follows** the API used on this is [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
+
+**Get the details of your subscription to a channel.:**
+
+-   The permission used for this is **user:read:subscriptions** the API's used on this is [Check User Subscription by Channel](https://dev.twitch.tv/docs/api/reference#check-user-subscription)
+-   Allows to check if you are sub to a particularly channel, that information is used to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example) and you don't have access because you aren't a sub of a particularly channel (unfortunately twitch has blocked all third party app's to access sub-only VOD's so this warning will let you know that, on the past that wasn't a issue for sub-only VOD's)<br>
 
 **Send live Stream Chat and Rooms messages:**
 
-- The permission used for this is **chat:edit** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
-- Allows access so you can use the app to logging in on Twitch chat using yours username to send chat messages.
-- Also enable you to receive gifted sub give for user in chat.<br>
-
-**View your email address:**
-
-- The permission used for this is **user_read** the API used on this is [Get Followed Streams](https://dev.twitch.tv/docs/v5/reference/streams#get-followed-streams)
-- Email will not be read! (you can search the source code if you are in doubt no user email is accessed), this permission has many uses, as the above API, it allows to access user live channels list in a faster way, the app can load user live list without this but it can be really slow if you follow too many streamers (100+ you already notice the slow down).<br>
-
-**View your paid subscriptions:**
-
-- The permission used for this is **user_subscriptions** the API's used on this are [Get User Emotes](https://dev.twitch.tv/docs/v5/reference/users/#get-user-emotes ) and [Check User Subscription by Channel](https://dev.twitch.tv/docs/v5/reference/users#check-user-subscription-by-channel)
-- Allows to get yours emotes list from all subscriptions you have, even if you aren't sub to a channel this is needed to get yours available Twitch emotes, this list will be used on the write to chat implementation.
-- Allows to check if you are sub to a particularly channel, that information is used to give a on screen warning when a content is block for Sub-only (a Sub-only chat ROOM (write mode, read will always work) or a VOD for example) and you don't have access because you aren't a sub of a particularly channel (unfortunately twitch has blocked all third party app's to access sub-only VOD's so this warning will let you know that, on the past that wasn't a issue for sub-only VOD's)<br>
+-   The permission used for this is **chat:edit** the API used on this is [Authenticating with the Twitch IRC Server](https://dev.twitch.tv/docs/irc/authenticate-bot#getting-an-access-token)
+-   Allows access so you can use the app to logging in on Twitch chat using yours username to send chat messages.
+-   Also enable you to receive gifted sub give for user in chat.<br>
 
 **View live Stream Chat and Rooms messages:**
 
-- The permission used for this is **chat:read** the API used on this is [Connecting to Twitch IRC](https://dev.twitch.tv/docs/irc/guide/#connecting-to-twitch-irc)
-- Allows access so you can use the app to logging in on Twitch chat using yours username to read chat messages as yours user (technically the app can read chat without a user but the bellow option will not work on that case as the login is as anonymous).
-- Also enable you to receive gifted sub give for user in chat.<br>
+-   The permission used for this is **chat:read** the API used on this is [Authenticating with the Twitch IRC Server](https://dev.twitch.tv/docs/irc/authenticate-bot#getting-an-access-token)
+-   Allows access so you can use the app to logging in on Twitch chat using yours username to read chat messages as yours user (technically the app can read chat without a user but the bellow option will not work on that case as the login is as anonymous).
+-   Also enable you to receive gifted sub give for user in chat.<br>
 
 ## How to build, languages and etc related
 
 ### Code Languages used by the project
 
-- The web app code is compose of HTML/CSS (UI code) and a JavaScript files (logic code), to edit those files use VS code (recommend) or any text editor of yours choice.
-- The apk code is compose of JAVA (logic code), xml (UI and related code) and basic build files use android Studio to edit and build apk.
+-   The web app code is compose of HTML/CSS (UI code) and a JavaScript files (logic code), to edit those files use VS code (recommend) or any text editor of yours choice.
+-   The apk code is compose of JAVA (logic code), xml (UI and related code) and basic build files use android Studio to edit and build apk.
 
 ### How to Build
 
@@ -254,23 +245,22 @@ The apk files are located here [SmartTwitchTV/apk](https://github.com/fgl27/Smar
 
 To build the apk:
 
-- Create a `new folder` (the name is irrelevant) inside of that folder...
-- [Download and extract](https://github.com/fgl27/SmartTwitchTV/archive/master.zip) the app source or clone it (`git clone https://github.com/fgl27/SmartTwitchTV`), if you download it make sure you extract it to the `new folder`
-- [Download and extract](https://github.com/fgl27/ExoPlayer/archive/dev-v2.zip) ExoPlayer or clone it (`https://github.com/fgl27/ExoPlayer`), if download make sure you extract it to the `new folder`
-- Make sure yours `new folder` contains this two folders `SmartTwitchTV` and `ExoPlayer` before proceed to next step
-- Install **Android Studio** after open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
-- Wait **Studio** do it's preparation it will load and download all app dependencies and etc related needed for this app, if it ask to install extra dependencies/sdk/etc follow it's instructions
-- Comment out `Crashlytics` and related services, this app uses [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics) to be able to get crash reports from the app and use those to improve it, that process uses a file `google-services.json` in that file there is private keys that can't be published, so in order to build the app for testing you need to comment out a few lines those lines start with `Crashlytics` and end `Crashlytics end` comment out all in between on this files [SmartTwitchTV/apk/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/build.gradle) and [SmartTwitchTV/apk/app/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/build.gradle)
-- Building the apk, on **Studio**, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments a app will be generated, a pop notification inside **Studio** will show and let you click to see where that apk is generated to.
-- If you have any problem using **Android Studio** just try to google as the project is solely build using **Android Studio** it must work for you, if it doesn't is because you did something wrong, **Android Studio** apk build is a very common thing one can find any type of help about it just by "googling it", but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
+-   Create a `new folder` (the name is irrelevant) inside of that folder...
+-   [Download and extract](https://github.com/fgl27/SmartTwitchTV/archive/master.zip) the app source or clone it (`git clone https://github.com/fgl27/SmartTwitchTV`), if you download it make sure you extract it to the `new folder`
+-   [Download and extract](https://github.com/fgl27/ExoPlayer/archive/dev-v2.zip) ExoPlayer or clone it (`https://github.com/fgl27/ExoPlayer`), if download make sure you extract it to the `new folder`
+-   Make sure yours `new folder` contains this two folders `SmartTwitchTV` and `ExoPlayer` before proceed to next step
+-   Install **Android Studio** after open it and add a new project ... File -> Open... Select the folder [SmartTwitchTV/apk](https://github.com/fgl27/SmartTwitchTV/tree/master/apk)
+-   Wait **Studio** do it's preparation it will load and download all app dependencies and etc related needed for this app, if it ask to install extra dependencies/sdk/etc follow it's instructions
+-   Comment out `Crashlytics` and related services, this app uses [Firebase Crashlytics](https://firebase.google.com/docs/crashlytics) to be able to get crash reports from the app and use those to improve it, that process uses a file `google-services.json` in that file there is private keys that can't be published, so in order to build the app for testing you need to comment out a few lines those lines start with `Crashlytics` and end `Crashlytics end` comment out all in between on this files [SmartTwitchTV/apk/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/build.gradle) and [SmartTwitchTV/apk/app/build.gradle](https://github.com/fgl27/SmartTwitchTV/blob/master/apk/app/build.gradle)
+-   Building the apk, on **Studio**, Build -> Build Bundle(s) / APK(s) -> Build APK(s)... if all OK after a few moments a app will be generated, a pop notification inside **Studio** will show and let you click to see where that apk is generated to.
+-   If you have any problem using **Android Studio** just try to google as the project is solely build using **Android Studio** it must work for you, if it doesn't is because you did something wrong, **Android Studio** apk build is a very common thing one can find any type of help about it just by "googling it", but if you have a problem that you can't solve [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or [send a email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com)
 
 ## Contributing instructions
 
 Any help is welcome.<br>
 
-- If you know how to code you can use a github PR to send yours changes/improves etc... Check [How to make changes and test it](#how-to-make-changes-and-test-it) to better understand how to do that...
-- If you have a idea, feature request, a problem or anything related you can inform it on a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or send a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com).
-
+-   If you know how to code you can use a github PR to send yours changes/improves etc... Check [How to make changes and test it](#how-to-make-changes-and-test-it) to better understand how to do that...
+-   If you have a idea, feature request, a problem or anything related you can inform it on a [issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose) or send a [email fglfgl27@gmail.com](mailto:fglfgl27@gmail.com).
 
 ## How to make changes and test it
 
@@ -293,10 +283,11 @@ To make changes to the app apk, just use the **Android Studio** to make the chan
 ## Donations
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/paypal.png) **Paypal email link (clickable donation link):** [fglfgl27@gmail.com](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fglfgl27@gmail.com&lc=US&no_note=0&item_name=Donate+to+thanks+for+the+Twitch+Android+app&cn=&curency_code=USD&bn=PP-DonationsBF:btn_donateCC_LG.gif:NonHosted)
+
 #
+
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/bitcoin.png)**Bitcoin wallet address (or use bellow QR code):** 1DuhCT6L3VfBtFcS8FNfVXgBzE2rwCPx3x
 
 ![Main](https://fgl27.github.io/SmartTwitchTV/screenshot/chart.png)
 
 ## In doubt [open a issue](https://github.com/fgl27/SmartTwitchTV/issues/new/choose)
-
