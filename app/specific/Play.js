@@ -668,7 +668,7 @@ function Play_updateStreamInfoValues(response, Is_play, ID) {
                 PlayExtra_updateStreamInfo();
             }
         } else {
-            var tempData = ScreensObj_LiveCellArray(obj.data[0]);
+            var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
             if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive

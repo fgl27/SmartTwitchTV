@@ -175,7 +175,7 @@ function Screens_first_init() {
         Main_values.Play_WasPlaying = 1;
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
 
         StartUser = false;
         restore_playback = true;
@@ -184,8 +184,10 @@ function Screens_first_init() {
         Main_GoBefore = Main_aGame;
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
         Play_data.data[3] = obj.obj.name;
+        Play_data.data[18] = obj.obj.id;
         StartUser = false;
         Main_values.Main_gameSelected = Play_data.data[3];
+        Main_values.Main_gameSelected_id = Play_data.data[18];
     } else if (screen_channel_call) {
         Main_GoBefore = Main_onNewIntentGetScreen(obj);
         Main_values.Play_WasPlaying = 0;
