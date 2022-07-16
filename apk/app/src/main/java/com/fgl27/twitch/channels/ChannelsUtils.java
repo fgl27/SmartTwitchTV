@@ -518,15 +518,9 @@ public final class ChannelsUtils {
         if (!Tools.hasTokens(UserId, appPreferences)) {
             return;
         }
-
-        String[][] DEFAULT_HEADERS = {
-                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
-                {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
-        };
-
-        StartLive(context, appPreferences, DEFAULT_HEADERS, CHANNELS_NAMES);
+        StartLive(context, UserId, appPreferences, CHANNELS_NAMES);
         StartFeatured(context);
-        StartGames(context, DEFAULT_HEADERS, CHANNELS_NAMES);
+        StartGames(context, UserId, appPreferences, CHANNELS_NAMES);
         UpdateUserChannels(context, appPreferences, CHANNELS_NAMES);
     }
 
@@ -539,7 +533,7 @@ public final class ChannelsUtils {
         );
     }
 
-    public static void StartLive(Context context, AppPreferences appPreferences, String[][] DEFAULT_HEADERS, String[] CHANNELS_NAMES) {
+    public static void StartLive(Context context, String UserId, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         String lang = Tools.getString(Constants.PREF_USER_LANGUAGE, null, appPreferences);
@@ -558,8 +552,10 @@ public final class ChannelsUtils {
                     "data",
                     true,
                     Constants.CHANNEL_TYPE_LIVE,
-                    DEFAULT_HEADERS,
-                    context
+                    context,
+                    UserId,
+                    appPreferences,
+                    true
             );
 
         }
@@ -687,7 +683,7 @@ public final class ChannelsUtils {
 //        );
     }
 
-    public static void StartGames(Context context, String[][] DEFAULT_HEADERS, String[] CHANNELS_NAMES) {
+    public static void StartGames(Context context, String UserId, AppPreferences appPreferences, String[] CHANNELS_NAMES) {
         if (!Tools.isConnected(context)) return;
 
         long channelId = getChannelIdFromTvProvider(
@@ -699,8 +695,9 @@ public final class ChannelsUtils {
         if (channelId != -1L && getChannelIsBrowsable(context, channelId)) {
 
             content = GetGamesContent(
-                    DEFAULT_HEADERS,
-                    context
+                    context,
+                    UserId,
+                    appPreferences
             );
 
             if (content != null) {
@@ -730,7 +727,12 @@ public final class ChannelsUtils {
         );
     }
 
-    private static List<ChannelContentObj> GetLiveContent(String url, String object, boolean sort, int screen, String[][] DEFAULT_HEADERS, Context context) {
+    private static List<ChannelContentObj> GetLiveContent(String url, String object, boolean sort, int screen, Context context, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+        String[][] DEFAULT_HEADERS = {
+                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
+        };
+        int status;
 
         try {
             Tools.ResponseObj response;
@@ -747,8 +749,9 @@ public final class ChannelsUtils {
                 );
 
                 if (response != null) {
+                    status = response.status;
 
-                    if (response.status == 200) {
+                    if (status == 200) {
 
                         JsonObject obj = parseString(response.responseText).getAsJsonObject();
 
@@ -763,6 +766,16 @@ public final class ChannelsUtils {
                         }
 
                         break;
+                    } else if (status == 401 || status == 403) {
+
+                        if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
+
+                            return GetLiveContent(url, object, sort, screen, context, UserId, appPreferences, false);
+
+                        } else if (!tryAgain) {
+                            break;
+                        }
+
                     }
 
                 }
@@ -880,9 +893,9 @@ public final class ChannelsUtils {
         return contentSize > 0 ? content : null;
     }
 
-    private static List<ChannelContentObj> GetGamesContent(String[][] HEADERS, Context context) {
+    private static List<ChannelContentObj> GetGamesContent(Context context, String UserId, AppPreferences appPreferences) {
 
-        JsonArray Games = GetLiveGames(HEADERS);//Get the Games array
+        JsonArray Games = GetLiveGames(UserId, appPreferences, true);//Get the Games array
         List<ChannelContentObj> content = new ArrayList<>();
 
         int objSize = Games != null ? Games.size() : 0;
@@ -928,9 +941,14 @@ public final class ChannelsUtils {
 
     }
 
-    private static JsonArray GetLiveGames(String[][] HEADERS) {
+    private static JsonArray GetLiveGames(String UserId, AppPreferences appPreferences, Boolean tryAgain) {
         JsonArray Result = new JsonArray();
         int status = 0;
+
+        String[][] HEADERS = {
+                {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
+                {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
+        };
 
         try {
             Set<String> TempArray = new HashSet<>();
@@ -989,6 +1007,16 @@ public final class ChannelsUtils {
 
                         }
                         break;
+                    } else if (status == 401 || status == 403) {
+
+                        if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
+
+                            return GetLiveGames(UserId, appPreferences, false);
+
+                        } else if (!tryAgain) {
+                            break;
+                        }
+
                     }
 
                 }

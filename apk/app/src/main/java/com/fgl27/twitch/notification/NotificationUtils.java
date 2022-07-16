@@ -123,14 +123,14 @@ public final class NotificationUtils {
 
         if (Tools.hasTokens(UserId, appPreferences)) {
 
-            return GetLiveStreamsListToken(UserId, appPreferences, true);
+            return GetUserLiveStreams(UserId, appPreferences, true);
 
         }
 
         return null;
     }
 
-    private static JsonArray GetLiveStreamsListToken(String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+    private static JsonArray GetUserLiveStreams(String UserId, AppPreferences appPreferences, Boolean tryAgain) {
         JsonArray StreamsResult = new JsonArray();
         boolean HttpRequestSuccess = false;
 
@@ -151,7 +151,6 @@ public final class NotificationUtils {
             String id;
             String url;
             String cursor = null;
-            String user_id = Tools.getString(Constants.PREF_USER_ID, null, appPreferences);
             String[][] DEFAULT_HEADERS = {
                     {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
                     {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
@@ -163,7 +162,7 @@ public final class NotificationUtils {
                         Locale.US,
                         "https://api.twitch.tv/helix/streams/followed?first=100%s&user_id=%s",
                         cursor != null ? "&after=" + cursor : "",
-                        user_id
+                        UserId
                 );
 
                 StreamsSize = 0;
@@ -189,7 +188,7 @@ public final class NotificationUtils {
                             obj = parseString(response.responseText).getAsJsonObject();
 
 
-                            if (obj.isJsonObject() && !obj.get("data").isJsonNull()) {
+                            if (obj.isJsonObject() && obj.has("data") && !obj.get("data").isJsonNull()) {
 
                                 TempStreams = obj.get("data").getAsJsonArray();//Get the follows array
                                 StreamsSize = TempStreams.size();
@@ -225,8 +224,10 @@ public final class NotificationUtils {
 
                             if (tryAgain && Tools.refreshTokens(UserId, appPreferences)) {
 
-                                return GetLiveStreamsListToken(UserId, appPreferences, false);
+                                return GetUserLiveStreams(UserId, appPreferences, false);
 
+                            } else if (!tryAgain) {
+                                break;
                             }
 
                         }
@@ -327,6 +328,8 @@ public final class NotificationUtils {
 
                                 return GetStreamNotificationsLogo(streams, UserId, appPreferences, false);
 
+                            } else if (!tryAgain) {
+                                break;
                             }
 
                         }

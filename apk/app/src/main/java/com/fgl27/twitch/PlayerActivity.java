@@ -1531,18 +1531,13 @@ public class PlayerActivity extends Activity {
 
         ChannelHandler.post(() -> {
 
-            String[][] DEFAULT_HEADERS = {
-                    {Constants.BASE_HEADERS[0][0], Tools.getString(Constants.PREF_CLIENT_ID, null, appPreferences)},
-                    {Constants.BASE_HEADERS[1][0], Tools.getString(UserId + Constants.PREF_ACCESS_TOKEN, null, appPreferences)}
-            };
-
             try {
                 switch (Type) {
                     case Constants.CHANNEL_TYPE_LIVE:
                         ChannelsUtils.StartLive(
                                 context,
+                                UserId,
                                 appPreferences,
-                                DEFAULT_HEADERS,
                                 Constants.CHANNELS_NAMES
                         );
                         break;
@@ -1562,7 +1557,8 @@ public class PlayerActivity extends Activity {
                     case Constants.CHANNEL_TYPE_GAMES:
                         ChannelsUtils.StartGames(
                                 context,
-                                DEFAULT_HEADERS,
+                                UserId,
+                                appPreferences,
                                 Constants.CHANNELS_NAMES
                         );
                         break;
