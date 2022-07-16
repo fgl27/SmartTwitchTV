@@ -70,19 +70,18 @@ import com.fgl27.twitch.notification.NotificationUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLivePlaybackSpeedControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.TracksInfo;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.FirebaseApp;
@@ -100,6 +99,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("WeakerAccess")
 public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
@@ -281,12 +281,12 @@ public class PlayerActivity extends Activity {
         PlayerEventListener Listener;
         PlayerView playerView;
 
-        SimpleExoPlayer player;
+        ExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
                   int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter, float volume,
                   Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
-                  PlayerView playerView, SimpleExoPlayer player, long LatencyOffSet) {
+                  PlayerView playerView, ExoPlayer player, long LatencyOffSet) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
@@ -541,7 +541,7 @@ public class PlayerActivity extends Activity {
         PlayerObj[PlayerObjPosition].trackSelector = PlayerObj[4].trackSelector;
         PlayerObj[PlayerObjPosition].mediaSources = PlayerObj[4].mediaSources;
 
-        SimpleExoPlayer tempPlayer = PlayerObj[PlayerObjPosition].player;
+        ExoPlayer tempPlayer = PlayerObj[PlayerObjPosition].player;
         PlayerObj[PlayerObjPosition].player = PlayerObj[4].player;
         PlayerObj[4].player = tempPlayer;
 
@@ -601,7 +601,7 @@ public class PlayerActivity extends Activity {
             if (BLACKLISTED_CODECS != null)
                 renderersFactory.setMediaCodecSelector(BLACKLISTED_CODECS);
 
-            PlayerObj[PlayerObjPosition].player = new SimpleExoPlayer.Builder(this, renderersFactory, ExtractorsFactory.EMPTY)
+            PlayerObj[PlayerObjPosition].player = new ExoPlayer.Builder(this, renderersFactory)
                     .setTrackSelector(PlayerObj[PlayerObjPosition].trackSelector)
                     .setLoadControl(
                             Tools.getLoadControl(
@@ -877,7 +877,7 @@ public class PlayerActivity extends Activity {
     }
 
     private long GetResumePosition(int position) {
-        return PlayerObj[position].player != null && PlayerObj[position].player.isCurrentWindowSeekable() ?
+        return PlayerObj[position].player != null && PlayerObj[position].player.isCurrentMediaItemSeekable() ?
                 Math.max(0, PlayerObj[position].player.getCurrentPosition()) : C.TIME_UNSET;
     }
 
@@ -3914,7 +3914,7 @@ public class PlayerActivity extends Activity {
         private int position;
         private final int Delay_ms;
         private final int defaultDelayPlayerCheck = 8000;
-        private TrackGroupArray lastSeenTrackGroupArray = null;
+        private TracksInfo lastSeenTracksInfo = null;
 
         private PlayerEventListener(int position) {
             this.position = position;
@@ -3926,13 +3926,12 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        @SuppressWarnings("ReferenceEquality")
-        public void onTracksChanged(@NonNull TrackGroupArray trackGroups, @NonNull TrackSelectionArray trackSelections) {
+        public void onTracksInfoChanged(TracksInfo tracksInfo) {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
-            //So trackGroups.length will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (trackGroups != lastSeenTrackGroupArray && trackGroups.length > 0 && PlayerObj[position].Type < 3) {
-                lastSeenTrackGroupArray = trackGroups;
+            //So getTrackGroupInfos().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
+            if (tracksInfo != lastSeenTracksInfo && tracksInfo.getTrackGroupInfos().size() > 0 && PlayerObj[position].Type < 3) {
+                lastSeenTracksInfo = tracksInfo;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {
 

@@ -71,7 +71,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -614,34 +614,31 @@ public final class Tools {
 
     static MediaSource buildMediaSource(Uri uri, Context context, int Type, int LowLatency, String mainPlaylist, String userAgent) {
         if (Type == 1) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .setLowLatency(LowLatency)
                     .createMediaSource(MediaItemBuilder(uri));
         } else if (Type == 2) {
-            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(context, mainPlaylist, uri, userAgent))
+            return new HlsMediaSource.Factory(getDefaultDataSourceFactory(mainPlaylist, uri, userAgent))
                     .setAllowChunklessPreparation(true)
                     .createMediaSource(MediaItemBuilder(uri));
         } else
             return new ProgressiveMediaSource
-                    .Factory(new DefaultDataSourceFactory(context, userAgent), new Mp4ExtractorsFactory())
+                    .Factory(new DefaultDataSource.Factory(context), new Mp4ExtractorsFactory())
                     .createMediaSource(MediaItemBuilder(uri));
     }
 
-    private static DefaultDataSourceFactory getDefaultDataSourceFactory(Context context, String mainPlaylist, Uri uri, String userAgent) {
+    private static DefaultHttpDataSource.Factory getDefaultDataSourceFactory(String mainPlaylist, Uri uri, String userAgent) {
         if (mainPlaylist == null)
             mainPlaylist = "";//technically should not happen but check to prevent exception when converting to byte[]
 
-        return new DefaultDataSourceFactory(
-                context,
-                new DefaultHttpDataSource.Factory()
-                        .setUserAgent(userAgent)
-                        .setConnectTimeoutMs(10000)
-                        .setReadTimeoutMs(10000)
-                        .setAllowCrossProtocolRedirects(false)
-                        .setMainPlaylistBytes(mainPlaylist.getBytes())
-                        .setUri(uri)
-        );
+        return new DefaultHttpDataSource.Factory()
+                .setUserAgent(userAgent)
+                .setConnectTimeoutMs(10000)
+                .setReadTimeoutMs(10000)
+                .setAllowCrossProtocolRedirects(false)
+                .setMainPlaylistBytes(mainPlaylist.getBytes())
+                .setUri(uri);
     }
 
     static boolean deviceIsTV(@NonNull Context context) {
