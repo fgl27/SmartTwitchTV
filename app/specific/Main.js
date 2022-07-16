@@ -355,7 +355,11 @@ function Main_initWindows() {
     if (!AddCode_main_token) {
         OSInterface_getAppToken();
     }
-    AddCode_AppTokenCheck();
+    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+        Main_initWindowsEnd();
+    } else {
+        AddCode_AppTokenCheck();
+    }
 }
 
 function Main_initWindowsEnd() {
