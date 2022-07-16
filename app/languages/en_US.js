@@ -66,7 +66,7 @@ function en_USLang() {
     STR_CHECK_HOST = ', checking host';
     STR_IS_SUB_ONLY = 'This video is only available to subs';
     STR_IS_SUB_ONLY_ERROR = 'is sub-only content.';
-    STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) User: Switch, add, key, press enter on the user';
+    STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) Add User or User: Switch, add, key, press enter on the user';
     STR_REFRESH_PROBLEM = 'Connection failed or there is no content for this. Refresh to try again';
     STR_REFRESH_PROBLEM_ENTER = 'Connection failed or there is no content for this. Press enter to Refresh';
     STR_NO = 'No';
