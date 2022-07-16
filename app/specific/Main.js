@@ -1882,7 +1882,18 @@ function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, 
     }
 
     if (Main_IsOn_OSInterface) {
-        OSInterface_BaseXmlHttpGet(theUrl, DefaultHttpGetTimeout, null, null, JSON.stringify(headers), 'Main_CheckBasexmlHttpGet', checkResult, key, callbackSucess.name, calbackError.name);
+        OSInterface_BaseXmlHttpGet(
+            theUrl,
+            DefaultHttpGetTimeout,
+            null,
+            null,
+            UseHeaders ? JSON.stringify(headers) : null,
+            'Main_CheckBasexmlHttpGet',
+            checkResult,
+            key,
+            callbackSucess.name,
+            calbackError.name
+        );
     } else {
         var xmlHttp = new XMLHttpRequest(),
             i = 0;
