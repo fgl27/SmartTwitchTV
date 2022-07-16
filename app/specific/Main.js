@@ -887,22 +887,22 @@ function Main_GetViewsStrings(value) {
     return value === 1 ? STR_VIEW : STR_VIEWS;
 }
 
-function Main_videoqualitylang(video_height, average_fps, language) {
-    video_height = video_height + ''; //stringfy doesnot work 8|
-    if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
+// function Main_videoqualitylang(video_height, average_fps, language) {
+//     video_height = video_height + ''; //stringfy doesnot work 8|
+//     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
-    average_fps = Main_Calculatefps(average_fps);
+//     average_fps = Main_Calculatefps(average_fps);
 
-    return video_height + 'p' + average_fps + (language !== '' ? ' [' + language.toUpperCase() + ']' : '');
-}
+//     return video_height + 'p' + average_fps + (language !== '' ? ' [' + language.toUpperCase() + ']' : '');
+// }
 
-function Main_Calculatefps(fps) {
-    if (fps > 88 && fps < 92) return 90;
-    else if (fps > 58 && fps < 62) return 60;
-    else if (fps > 28 && fps < 32) return 30;
+// function Main_Calculatefps(fps) {
+//     if (fps > 88 && fps < 92) return 90;
+//     else if (fps > 58 && fps < 62) return 60;
+//     else if (fps > 28 && fps < 32) return 30;
 
-    return Math.ceil(fps);
-}
+//     return Math.ceil(fps);
+// }
 
 function Main_is_rerun(content) {
     return !Main_A_includes_B(content + '', 'live');
@@ -2447,7 +2447,7 @@ function Main_SetHistoryworker() {
                         }
                     }
                 } else {
-                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
+                    Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
                 }
             } else if (event.data.type === 'live') {
                 if (event.data.delete) {
@@ -2931,7 +2931,7 @@ function Main_onNewIntent(mobj) {
         } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
         Main_openStream();
 

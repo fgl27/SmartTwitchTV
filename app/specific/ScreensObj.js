@@ -439,7 +439,7 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[cell.id] = 1;
 
-                this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell, this.useHelix), this.screen);
+                this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
 
                 this.coloumn_id++;
             }
@@ -488,7 +488,7 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[id_cell] = 1;
 
-                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_LiveCellArray(cell, this.useHelix), this.screen);
+                this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen);
 
                 this.coloumn_id++;
             }
@@ -566,7 +566,7 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[idValue] = 1;
 
-                this.tempHtml += Screens_createCellClip(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_ClipCellArray(cell, this.useHelix), this.screen);
+                this.tempHtml += Screens_createCellClip(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_ClipCellArray(cell), this.screen);
 
                 this.coloumn_id++;
             }
@@ -2264,89 +2264,70 @@ function ScreensObj_FeaturedCellArray(cell) {
 }
 
 function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
-    if (useHelix) {
-        return [
-            cell.thumbnail_url, //0
-            cell.user_name, //1
-            cell.title, //2
-            cell.game_name, //3
-            Main_addCommas(cell.viewer_count), //4
-            '[' + cell.language.toUpperCase() + ']', //5
-            cell.user_login, //6
-            cell.id.toString(), //7 broadcast id
-            Main_is_rerun(cell.type), //8
-            logo ? logo : null, //9
-            partner ? partner : null, //10
-            Play_streamLiveAt(cell.started_at), //11
-            cell.started_at, //12
-            cell.viewer_count, //13
-            cell.user_id, //14
-            cell.language, //15
-            null, //16
-            null, //17
-            cell.game_id //18
-        ];
-    }
-
     return [
-        cell.preview.template, //0
-        cell.channel.display_name, //1
-        cell.channel.status, //2
-        cell.game, //3
-        Main_addCommas(cell.viewers), //4
-        Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language), //5
-        cell.channel.name, //6
-        cell._id, //7 broadcast id
-        Main_is_rerun(cell.broadcast_platform), //8
-        cell.channel.logo, //9
-        cell.channel.partner, //10
-        Play_streamLiveAt(cell.created_at), //11
-        cell.created_at, //12
-        cell.viewers, //13
-        cell.channel._id, //14
-        cell.channel.broadcaster_language //15
+        cell.thumbnail_url, //0
+        cell.user_name, //1
+        cell.title, //2
+        cell.game_name, //3
+        Main_addCommas(cell.viewer_count), //4
+        '[' + cell.language.toUpperCase() + ']', //5
+        cell.user_login, //6
+        cell.id.toString(), //7 broadcast id
+        Main_is_rerun(cell.type), //8
+        logo ? logo : null, //9
+        partner ? partner : null, //10
+        Play_streamLiveAt(cell.started_at), //11
+        cell.started_at, //12
+        cell.viewer_count, //13
+        cell.user_id, //14
+        cell.language, //15
+        null, //16
+        null, //17
+        cell.game_id //18
     ];
 }
 
-function ScreensObj_VodCellArray(cell, useHelix) {
-    if (useHelix) {
-        return [
-            ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
-            cell.user_name, //1
-            Main_videoCreatedAt(cell.created_at), //2
-            null, //3
-            Main_addCommas(cell.view_count), //4
-            '[' + cell.language.toUpperCase() + ']', //5
-            cell.user_login, //6
-            cell.id, //7
-            null, //8
-            cell.language, //9
-            twemoji.parse(cell.title), //10
-            Play_timeHMS(cell.duration), //11
-            cell.created_at, //12
-            cell.view_count, //13
-            cell.user_id //14
-        ];
-    }
-
+function ScreensObj_VodCellArray(cell) {
     return [
-        ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url), //0
-        cell.channel.display_name, //1
+        ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
+        cell.user_name, //1
         Main_videoCreatedAt(cell.created_at), //2
-        cell.game, //3
-        Main_addCommas(cell.views), //4
-        cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), parseInt(cell.fps.chunked) || 0, cell.channel.broadcaster_language) : '', //5
-        cell.channel.name, //6
-        cell._id.substr(1), //7
-        cell.animated_preview_url, //8
-        cell.channel.broadcaster_language, //9
+        null, //3
+        Main_addCommas(cell.view_count), //4
+        '[' + cell.language.toUpperCase() + ']', //5
+        cell.user_login, //6
+        cell.id, //7
+        null, //8
+        cell.language, //9
         twemoji.parse(cell.title), //10
-        cell.length, //11
+        Play_timeHMS(cell.duration), //11
         cell.created_at, //12
-        cell.views, //13
-        cell.channel._id, //14
-        cell.channel.logo, //15
-        cell.channel.partner //16
+        cell.view_count, //13
+        cell.user_id //14
+    ];
+}
+
+function ScreensObj_ClipCellArray(cell) {
+    return [
+        cell.id, //0
+        cell.duration, //1
+        cell.broadcaster_id, //2
+        null, //3
+        cell.broadcaster_name, //6
+        null, //5
+        cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
+        cell.id, //7
+        cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
+        cell.vod !== null ? -1 : null, //9
+        twemoji.parse(cell.title), //10
+        '[' + cell.language.toUpperCase() + ']', //11
+        cell.created_at, //12
+        cell.view_count, //13
+        Main_addCommas(cell.view_count), //14
+        cell.thumbnail_url, //15
+        Main_videoCreatedAt(cell.created_at), //16
+        cell.language, //17
+        cell.game_id //18
     ];
 }
 
@@ -2377,53 +2358,6 @@ function ScreensObj_ClipGetPeriod(periodPos) {
     date += dayEnd;
 
     return date;
-}
-
-function ScreensObj_ClipCellArray(cell, useHelix) {
-    if (useHelix) {
-        return [
-            cell.id, //0
-            cell.duration, //1
-            cell.broadcaster_id, //2
-            null, //3
-            cell.broadcaster_name, //6
-            null, //5
-            cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
-            cell.id, //7
-            cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
-            cell.vod !== null ? -1 : null, //9
-            twemoji.parse(cell.title), //10
-            '[' + cell.language.toUpperCase() + ']', //11
-            cell.created_at, //12
-            cell.view_count, //13
-            Main_addCommas(cell.view_count), //14
-            cell.thumbnail_url, //15
-            Main_videoCreatedAt(cell.created_at), //16
-            cell.language, //17
-            cell.game_id //18
-        ];
-    }
-
-    return [
-        cell.slug, //0
-        cell.duration, //1
-        cell.broadcaster.id, //2
-        cell.game, //3
-        cell.broadcaster.display_name, //4
-        cell.broadcaster.logo.replace('150x150', '300x300'), //5
-        cell.broadcaster.name, //6
-        cell.tracking_id, //7
-        cell.vod !== null ? cell.vod.id : null, //8
-        cell.vod !== null ? cell.vod.offset : null, //9
-        twemoji.parse(cell.title), //10
-        '[' + cell.language.toUpperCase() + ']', //11
-        cell.created_at, //12
-        cell.views, //13
-        Main_addCommas(cell.views), //14
-        cell.thumbnails.medium, //15
-        Main_videoCreatedAt(cell.created_at), //16
-        cell.language //17
-    ];
 }
 
 function ScreensObj_VodGetPreview(preview, animated_preview_url) {

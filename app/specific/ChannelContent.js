@@ -232,7 +232,7 @@ function ChannelContent_loadDataSuccess() {
             stream.user_name = Main_values.Main_selectedChannelDisplayname + STR_USER_HOSTING + stream.user_name;
         }
 
-        ChannelContent_createCell(ScreensObj_LiveCellArray(stream, true));
+        ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
         ChannelContent_cursorX = 1;
     } else ChannelContent_createCellOffline();

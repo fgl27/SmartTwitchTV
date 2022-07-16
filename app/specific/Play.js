@@ -556,7 +556,7 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
 }
 
 function Play_updateStreamInfoEnd(response) {
-    var tempData = ScreensObj_LiveCellArray(response, true);
+    var tempData = ScreensObj_LiveCellArray(response);
 
     //Prevent save the wrong stream data this can happen when switching right after enable PP mode
     if (Play_data.data.length > 0 && Main_A_equals_B(tempData[14], Play_data.data[14])) {
@@ -668,7 +668,7 @@ function Play_updateStreamInfoValues(response, Is_play, ID) {
                 PlayExtra_updateStreamInfo();
             }
         } else {
-            var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
+            var tempData = ScreensObj_LiveCellArray(obj.data[0]);
             if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
             //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive

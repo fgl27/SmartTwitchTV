@@ -100,7 +100,7 @@ if which 'jshint' >/dev/null ; then
 		npm install jshint -g
 	fi;
 	echo -e "${bldgrn}\nJSHint Test started...\\n";
-	echo -e '/* jshint eqeqeq: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer, ActiveXObject, Twitch */' > "$mainfolder"/release/main.js;
+	echo -e '/* jshint eqeqeq: true, laxbreak: true, undef: true, unused: true, node: true, browser: true */\n/*globals Android, punycode, smartTwitchTV, firebase, dataLayer, ActiveXObject, Twitch */' > "$mainfolder"/release/main.js;
 	echo "$main_start" >> "$mainfolder"/release/main.js;
 	js_jshint "${js_folders[@]}";
 else

@@ -959,7 +959,7 @@ function PlayClip_SetOpenLive(response, key, ID) {
     var obj = JSON.parse(response);
 
     if (obj.data && obj.data.length) {
-        var tempData = ScreensObj_LiveCellArray(obj.data[0], true),
+        var tempData = ScreensObj_LiveCellArray(obj.data[0]),
             playing =
                 (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') +
                 STR_SINCE +

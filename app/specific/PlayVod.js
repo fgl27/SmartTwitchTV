@@ -308,7 +308,7 @@ function PlayVod_updateVodInfoPannel(response, key, ID) {
         PlayVod_muted_segments_value = response.muted_segments;
         PlayVod_muted_segments(PlayVod_muted_segments_value);
 
-        Main_values_Play_data = ScreensObj_VodCellArray(response, true);
+        Main_values_Play_data = ScreensObj_VodCellArray(response);
         Main_Set_history('vod', Main_values_Play_data);
 
         if (!Main_IsOn_OSInterface && enable_embed) {

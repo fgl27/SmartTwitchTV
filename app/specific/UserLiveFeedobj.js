@@ -1222,7 +1222,7 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
 
             if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream, true, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
+                mArray = ScreensObj_LiveCellArray(stream,  mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos, itemsCount, UserLiveFeedobj_UserLivePos + '_' + itemsCount, mArray);
@@ -1554,7 +1554,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
-                mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream, useHelix);
+                mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
                 UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 

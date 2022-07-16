@@ -175,7 +175,7 @@ function Screens_first_init() {
         Main_values.Play_WasPlaying = 1;
 
         Play_data = JSON.parse(JSON.stringify(Play_data_base));
-        Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
+        Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
         StartUser = false;
         restore_playback = true;
