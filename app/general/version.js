@@ -23,11 +23,15 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 335, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/335/SmartTV_twitch_3_0_335.apk',
-    WebVersion: 'July 13 2022',
+    WebVersion: 'July 16 2022',
     WebTag: 615, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'Web Version July 13 2022 and Apk Version 3.0.334 and up',
+            title: 'Web Version July 16 2022 and Apk Version 3.0.335 and up',
+            changes: ['Update app Player to latest version', 'General improves']
+        },
+        {
+            title: 'Web Version July 13 2022 and Apk Version 3.0.334',
             changes: [
                 'Update channel on the home screen to work on the new Twitch API',
                 'Update notificatons to work on the new Twitch API',
@@ -55,10 +59,6 @@ var version = {
                 'Remove unsupported side panel screens',
                 'General improves'
             ]
-        },
-        {
-            title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
-            changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
         }
     ]
 };
