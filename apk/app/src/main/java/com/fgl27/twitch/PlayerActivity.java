@@ -2159,7 +2159,7 @@ public class PlayerActivity extends Activity {
 
                         if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
 
-                            builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), position));//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                            builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), position));//getTrackGroups.get(0) as the length of trackGroups in trackGroupArray is always 1
 
                         }
 
@@ -2233,7 +2233,7 @@ public class PlayerActivity extends Activity {
                                     ret.add(result.get(i));
                                 }
 
-                                builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), ret));//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
+                                builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), ret));//getTrackGroups.get(0) as the length of trackGroups in trackGroupArray is always 1
 
                             }
                         }
