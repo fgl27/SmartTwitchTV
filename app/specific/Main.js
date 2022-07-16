@@ -1869,7 +1869,7 @@ function CheckPage(pageUrlCode) {
 }
 
 function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, UseHeaders) {
-    var headers = null;
+    var headers;
 
     if (UseHeaders) {
         if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
