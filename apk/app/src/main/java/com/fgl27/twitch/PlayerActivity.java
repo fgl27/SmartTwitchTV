@@ -75,14 +75,16 @@ import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.TracksInfo;
+import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.trackselection.TrackSelectionOverride;
+import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
+import com.google.android.exoplayer2.ui.StyledPlayerView;
 import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -91,6 +93,7 @@ import com.google.gson.Gson;
 import net.grandcentrix.tray.AppPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -279,14 +282,14 @@ public class PlayerActivity extends Activity {
         MediaSource mediaSources;
 
         PlayerEventListener Listener;
-        PlayerView playerView;
+        StyledPlayerView playerView;
 
         ExoPlayer player;
 
         PlayerObj(boolean IsPlaying, boolean isScreenPreview, DefaultTrackSelector trackSelector,
                   int trackSelectorParameters, int loadControlRamDivider, int Type, int CheckCounter, float volume,
                   Handler CheckHandler, long ResumePosition, MediaSource mediaSources, PlayerEventListener Listener,
-                  PlayerView playerView, ExoPlayer player, long LatencyOffSet) {
+                  StyledPlayerView playerView, ExoPlayer player, long LatencyOffSet) {
 
             this.IsPlaying = IsPlaying;
             this.isScreenPreview = isScreenPreview;
@@ -688,8 +691,8 @@ public class PlayerActivity extends Activity {
         //Reset the Z position of the PP player so it show above the other
         if (IsUsingSurfaceView) {
 
-            PlayerView ViewOnTop = PlayerObj[1].playerView;
-            PlayerView ViewOnBottom = PlayerObj[0].playerView;
+            StyledPlayerView ViewOnTop = PlayerObj[1].playerView;
+            StyledPlayerView ViewOnBottom = PlayerObj[0].playerView;
 
             SurfaceView TopSurfaceView = (SurfaceView) ViewOnTop.getVideoSurfaceView();
             SurfaceView BottomSurfaceView = (SurfaceView) ViewOnBottom.getVideoSurfaceView();
@@ -1140,7 +1143,7 @@ public class PlayerActivity extends Activity {
                 PlayerObjUpdateTrackSelector(i, i);
             }
         } else {
-            updateVideSizePP(isFullScreen);
+            updateVideSizePP(false);
             ResetPPView();
         }
 
@@ -2149,20 +2152,18 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = PlayerObj[0].trackSelector.getParameters().buildUpon();
-                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
+                        TrackSelectionParameters.Builder builder = PlayerObj[0].trackSelector.getParameters().buildUpon();
+
+                        builder.setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, false);
+                        builder.clearOverridesOfType(C.TRACK_TYPE_VIDEO);
 
                         if (position < mappedTrackInfo.getTrackGroups(rendererIndex).get(/* groupIndex */ 0).length) {// else auto quality
 
-                            builder.setSelectionOverride(
-                                    rendererIndex,
-                                    mappedTrackInfo.getTrackGroups(rendererIndex),
-                                    new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, position)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
-                            );
+                            builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), position));//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
 
                         }
 
-                        PlayerObj[0].trackSelector.setParameters(builder);
+                        PlayerObj[0].trackSelector.setParameters(builder.build());
                         break;
                     }
 
@@ -2182,8 +2183,10 @@ public class PlayerActivity extends Activity {
 
                     if (mappedTrackInfo.getRendererType(rendererIndex) == C.TRACK_TYPE_VIDEO) {
 
-                        DefaultTrackSelector.ParametersBuilder builder = trackSelectorParameters[PlayerObj[position].trackSelectorParametersPosition].buildUpon();
-                        builder.clearSelectionOverrides(rendererIndex).setRendererDisabled(rendererIndex, false);
+                        TrackSelectionParameters.Builder builder = trackSelectorParameters[PlayerObj[position].trackSelectorParametersPosition].buildUpon();
+
+                        builder.setTrackTypeDisabled(C.TRACK_TYPE_VIDEO, false);
+                        builder.clearOverridesOfType(C.TRACK_TYPE_VIDEO);
 
                         TrackGroupArray trackGroupArray = mappedTrackInfo.getTrackGroups(rendererIndex);
                         if (trackGroupArray.length > 0) {
@@ -2224,22 +2227,18 @@ public class PlayerActivity extends Activity {
 
                             if (len > 0) {
 
-                                int[] ret = new int[len];
+                                List<Integer> ret = new ArrayList<>();
 
                                 for (int i = 0; i < len; i++) {
-                                    ret[i] = result.get(i);
+                                    ret.add(result.get(i));
                                 }
 
-                                builder.setSelectionOverride(
-                                        rendererIndex,
-                                        mappedTrackInfo.getTrackGroups(rendererIndex),
-                                        new DefaultTrackSelector.SelectionOverride(/* groupIndex */ 0, ret)//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
-                                );
+                                builder.addOverride(new TrackSelectionOverride(mappedTrackInfo.getTrackGroups(rendererIndex).get(0), ret));//groupIndex = 0 as the length of trackGroups in trackGroupArray is always 1
 
                             }
                         }
 
-                        PlayerObj[position].trackSelector.setParameters(builder);
+                        PlayerObj[position].trackSelector.setParameters(builder.build());
                         break;
                     }
 
@@ -3914,7 +3913,7 @@ public class PlayerActivity extends Activity {
         private int position;
         private final int Delay_ms;
         private final int defaultDelayPlayerCheck = 8000;
-        private TracksInfo lastSeenTracksInfo = null;
+        private Tracks lastSeenTracks = null;
 
         private PlayerEventListener(int position) {
             this.position = position;
@@ -3926,12 +3925,12 @@ public class PlayerActivity extends Activity {
         }
 
         @Override
-        public void onTracksInfoChanged(TracksInfo tracksInfo) {
+        public void onTracksChanged(@NonNull Tracks tracks) {
             //onTracksChanged -> Called when the available or selected tracks change.
             //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
-            //So getTrackGroupInfos().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
-            if (tracksInfo != lastSeenTracksInfo && tracksInfo.getTrackGroupInfos().size() > 0 && PlayerObj[position].Type < 3) {
-                lastSeenTracksInfo = tracksInfo;
+            //So tracks.getGroups().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
+            if (lastSeenTracks != tracks && tracks.getGroups().size() > 0 && PlayerObj[position].Type < 3) {
+                lastSeenTracks = tracks;
 
                 if ((IsInAutoMode || MultiStreamEnable || PicturePicture) && BLACKLISTED_QUALITIES != null && PlayerObj[position].player != null) {
 

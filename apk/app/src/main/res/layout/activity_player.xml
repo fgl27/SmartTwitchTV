@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="false">
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -47,7 +47,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -56,7 +56,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -65,7 +65,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -74,7 +74,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view_texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -84,7 +84,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view2_texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -94,7 +94,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view3_texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                 app:use_artwork="false"
                 app:use_controller="false" />
 
-            <com.google.android.exoplayer2.ui.PlayerView
+            <com.google.android.exoplayer2.ui.StyledPlayerView
                 android:id="@+id/player_view4_texture_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -128,7 +128,7 @@
         android:layout_height="match_parent"
         android:focusableInTouchMode="false">
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/player_view_e_texture_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -139,7 +139,7 @@
             app:use_artwork="false"
             app:use_controller="false" />
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/player_view_e"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
