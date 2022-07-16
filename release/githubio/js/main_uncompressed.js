@@ -1240,7 +1240,7 @@
         STR_CHECK_HOST = ', checking host';
         STR_IS_SUB_ONLY = 'This video is only available to subs';
         STR_IS_SUB_ONLY_ERROR = 'is sub-only content.';
-        STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) User: Switch, add, key, press enter on the user';
+        STR_NOKEY_GENERAL_WARN = ', navigate to the side panel (Top option) Add User or User: Switch, add, key, press enter on the user';
         STR_REFRESH_PROBLEM = 'Connection failed or there is no content for this. Refresh to try again';
         STR_REFRESH_PROBLEM_ENTER = 'Connection failed or there is no content for this. Press enter to Refresh';
         STR_NO = 'No';
@@ -4322,12 +4322,16 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 334, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/334/SmartTV_twitch_3_0_334.apk',
-        WebVersion: 'July 13 2022',
-        WebTag: 613, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 335, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/335/SmartTV_twitch_3_0_335.apk',
+        WebVersion: 'July 16 2022',
+        WebTag: 615, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'Web Version July 13 2022 and Apk Version 3.0.334 and up',
+                title: 'Web Version July 16 2022 and Apk Version 3.0.335 and up',
+                changes: ['Update app Player to latest version', 'General improves']
+            },
+            {
+                title: 'Web Version July 13 2022 and Apk Version 3.0.334',
                 changes: [
                     'Update channel on the home screen to work on the new Twitch API',
                     'Update notificatons to work on the new Twitch API',
@@ -4355,10 +4359,6 @@
                     'Remove unsupported side panel screens',
                     'General improves'
                 ]
-            },
-            {
-                title: 'Web Version July 10 2022 and Apk Version 3.0.332 and up',
-                changes: ['Fix FFZ emotes from channels that recently changed name by @Js41637', 'Fix latency issues', 'Improve the option Open game from Thumbnail options', 'General improves']
             }
         ]
     };
@@ -5089,7 +5089,7 @@
     function AddUser_loadDataRequest() {
         var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
 
-        BaseXmlHttpGet(theUrl, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, 0, null, true);
+        BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
     }
 
     function AddUser_loadDataRequestSuccess(response) {
@@ -5207,7 +5207,7 @@
     function AddUser_UpdateUser(position) {
         var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
-        BaseXmlHttpGet(theUrl, 2, null, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
+        BaseXmlHttpGet(theUrl, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
     }
 
     function AddUser_UpdateUsertSuccess(response, position) {
@@ -6785,7 +6785,7 @@
     function ChannelContent_loadDataRequest() {
         var theUrl = Main_helix_api + 'streams?user_id=' + (ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id);
 
-        BaseXmlHttpGet(theUrl, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError, null, 0, true);
+        BaseXmlHttpGet(theUrl, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError, null, 0, true);
     }
 
     function ChannelContent_loadDataRequestSuccess(response) {
@@ -6841,7 +6841,7 @@
     function ChannelContent_GetStreamerInfo() {
         var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
 
-        BaseXmlHttpGet(theUrl, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError, null, 0, true);
+        BaseXmlHttpGet(theUrl, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError, null, 0, true);
     }
 
     function ChannelContent_GetStreamerInfoSuccess(responseText) {
@@ -6908,7 +6908,7 @@
                 stream.user_name = Main_values.Main_selectedChannelDisplayname + STR_USER_HOSTING + stream.user_name;
             }
 
-            ChannelContent_createCell(ScreensObj_LiveCellArray(stream, true));
+            ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
 
             ChannelContent_cursorX = 1;
         } else ChannelContent_createCellOffline();
@@ -8552,7 +8552,7 @@
         ChatLive_FollowState[chat_number] = {};
         var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
 
-        BaseXmlHttpGet(theUrl, 2, null, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
     }
 
     function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
@@ -8596,7 +8596,7 @@
 
         var theUrl = Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] + '&user_id=' + AddUser_UsernameArray[0].id;
 
-        BaseXmlHttpGet(theUrl, 3, Main_OAuth + AddUser_UsernameArray[0].access_token, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
     }
 
     function ChatLive_checkSubSucess(responseText, chat_number, id) {
@@ -8612,7 +8612,7 @@
 
             var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
-            BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
+            BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
         } else {
             ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
         }
@@ -8632,7 +8632,7 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display', 0, null, ChatLive_loadBadgesChannelSuccess, noop_fun, chat_number, id);
+            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display', ChatLive_loadBadgesChannelSuccess, noop_fun, chat_number, id);
         } else {
             Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
         }
@@ -8683,7 +8683,7 @@
     function ChatLive_loadChattersViewers(chat_number, id) {
         var theUrl = Main_helix_api + 'streams/?user_id=' + ChatLive_selectedChannel_id[chat_number];
 
-        BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadChattersViewersSuccess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_loadChattersViewersSuccess, noop_fun, chat_number, id, true);
     }
 
     function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
@@ -8703,7 +8703,7 @@
     }
 
     function ChatLive_loadChattersLoad(chat_number, id) {
-        BaseXmlHttpGet(ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number], 0, null, ChatLive_loadChattersSuccess, noop_fun, chat_number, id);
+        BaseXmlHttpGet(ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number], ChatLive_loadChattersSuccess, noop_fun, chat_number, id);
     }
 
     function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
@@ -8723,7 +8723,7 @@
             extraEmotesDone.GlobalTwitch = {};
             var theUrl = Main_helix_api + 'chat/emotes/global';
 
-            BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
+            BaseXmlHttpGet(theUrl, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
         } else {
             ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
         }
@@ -8799,8 +8799,6 @@
         if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                0,
-                null,
                 ChatLive_loadEmotesChannelbttvSuccess,
                 noop_fun,
                 chat_number,
@@ -8869,8 +8867,6 @@
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '&client_id=' + AddCode_backup_client_id,
-                0,
-                null,
                 ChatLive_loadCheersChannelSuccess,
                 noop_fun,
                 chat_number,
@@ -8916,15 +8912,7 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet(
-                'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-                0,
-                null,
-                ChatLive_loadEmotesChannelffzSuccess,
-                noop_fun,
-                chat_number,
-                id
-            );
+            BaseXmlHttpGet('https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]), ChatLive_loadEmotesChannelffzSuccess, noop_fun, chat_number, id);
         } else {
             ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
         }
@@ -8996,8 +8984,6 @@
         if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
                 'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
-                0,
-                null,
                 ChatLive_loadEmotesChannelseven_tvSuccess,
                 noop_fun,
                 chat_number,
@@ -9057,8 +9043,6 @@
     function ChatLive_PreLoadChat(chat_number, id) {
         BaseXmlHttpGet(
             'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30&hide_moderation_messages=true',
-            0,
-            null,
             ChatLive_PreLoadChatSuccess,
             noop_fun,
             chat_number,
@@ -10360,14 +10344,14 @@
     }
 
     function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
-        BaseXmlHttpGet(theUrl, 0, null, callbackSucess, calbackError);
+        BaseXmlHttpGet(theUrl, callbackSucess, calbackError);
     }
 
     function Chat_loadBadgesGlobalRequest(chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
         if (!Chat_GlobalBadges) {
-            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', 0, null, Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
+            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
         } else {
             if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
                 Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
@@ -10495,7 +10479,7 @@
         var theUrl =
             'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-        BaseXmlHttpGet(theUrl, 0, null, Chat_loadChatSuccess, Chat_loadChatError, id);
+        BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatError, id);
     }
 
     function Chat_loadChatError(id) {
@@ -10757,7 +10741,7 @@
     function Chat_loadChatNextRequest(id) {
         var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
-        BaseXmlHttpGet(theUrl, 0, null, Chat_loadChatSuccess, Chat_loadChatNextError, id);
+        BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatNextError, id);
     }
 
     function Chat_loadChatNextError(id) {
@@ -11167,7 +11151,11 @@
         if (!AddCode_main_token) {
             OSInterface_getAppToken();
         }
-        AddCode_AppTokenCheck();
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            Main_initWindowsEnd();
+        } else {
+            AddCode_AppTokenCheck();
+        }
     }
 
     function Main_initWindowsEnd() {
@@ -11696,22 +11684,22 @@
         return value === 1 ? STR_VIEW : STR_VIEWS;
     }
 
-    function Main_videoqualitylang(video_height, average_fps, language) {
-        video_height = video_height + ''; //stringfy doesnot work 8|
-        if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
+    // function Main_videoqualitylang(video_height, average_fps, language) {
+    //     video_height = video_height + ''; //stringfy doesnot work 8|
+    //     if (!video_height.indexOf('x')) video_height = video_height.slice(-3);
 
-        average_fps = Main_Calculatefps(average_fps);
+    //     average_fps = Main_Calculatefps(average_fps);
 
-        return video_height + 'p' + average_fps + (language !== '' ? ' [' + language.toUpperCase() + ']' : '');
-    }
+    //     return video_height + 'p' + average_fps + (language !== '' ? ' [' + language.toUpperCase() + ']' : '');
+    // }
 
-    function Main_Calculatefps(fps) {
-        if (fps > 88 && fps < 92) return 90;
-        else if (fps > 58 && fps < 62) return 60;
-        else if (fps > 28 && fps < 32) return 30;
+    // function Main_Calculatefps(fps) {
+    //     if (fps > 88 && fps < 92) return 90;
+    //     else if (fps > 58 && fps < 62) return 60;
+    //     else if (fps > 28 && fps < 32) return 30;
 
-        return Math.ceil(fps);
-    }
+    //     return Math.ceil(fps);
+    // }
 
     function Main_is_rerun(content) {
         return !Main_A_includes_B(content + '', 'live');
@@ -11852,7 +11840,7 @@
         if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
         if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
-            BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', 0, null, Main_CheckUpdateResult, Main_CheckUpdateFail, 0, 0);
+            BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', Main_CheckUpdateResult, Main_CheckUpdateFail);
         } else {
             Main_setTimeout(function() {
                 Main_Ischecking = false;
@@ -12258,7 +12246,7 @@
 
     function Main_CheckBroadcastIDStart() {
         var theUrl = Main_helix_api + 'streams?user_id=' + Play_data.data[14];
-        BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
+        BaseXmlHttpGet(theUrl, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
     }
 
     function Main_CheckBroadcastIDStartSucess(response) {
@@ -12687,23 +12675,32 @@
         }
     }
 
-    function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, useHelix) {
-        if (Main_IsOn_OSInterface) {
-            var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+    function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, UseHeaders) {
+        var headers;
 
-            if (useHelix) {
-                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-                    Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+        if (UseHeaders) {
+            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+                Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
-                    JsonHeadersArray = JSON.stringify(Main_Bearer_User_Headers);
-                } else {
-                    JsonHeadersArray = JSON.stringify(Main_Bearer_Headers);
-                }
-            } else if (HeaderQuatity && HeaderQuatity !== 2) {
-                JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
+                headers = Main_Bearer_User_Headers;
+            } else {
+                headers = Main_Bearer_Headers;
             }
+        }
 
-            OSInterface_BaseXmlHttpGet(theUrl, DefaultHttpGetTimeout, null, null, JsonHeadersArray, 'Main_CheckBasexmlHttpGet', checkResult, key, callbackSucess.name, calbackError.name);
+        if (Main_IsOn_OSInterface) {
+            OSInterface_BaseXmlHttpGet(
+                theUrl,
+                DefaultHttpGetTimeout,
+                null,
+                null,
+                UseHeaders ? JSON.stringify(headers) : null,
+                'Main_CheckBasexmlHttpGet',
+                checkResult,
+                key,
+                callbackSucess.name,
+                calbackError.name
+            );
         } else {
             var xmlHttp = new XMLHttpRequest(),
                 i = 0;
@@ -12711,18 +12708,10 @@
             xmlHttp.open('GET', theUrl, true);
             xmlHttp.timeout = DefaultHttpGetTimeout;
 
-            if (useHelix) {
-                if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-                    Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
-
-                    for (i; i < Main_Bearer_User_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_User_Headers[i][0], Main_Bearer_User_Headers[i][1]);
-                } else {
-                    for (i; i < Main_Bearer_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_Headers[i][0], Main_Bearer_Headers[i][1]);
+            if (UseHeaders) {
+                for (i; i < headers.length; i++) {
+                    xmlHttp.setRequestHeader(headers[i][0], headers[i][1]);
                 }
-            } else {
-                if (access_token) Main_Headers[2][1] = access_token;
-
-                for (i; i < HeaderQuatity; i++) xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
             }
 
             xmlHttp.onreadystatechange = function() {
@@ -13271,7 +13260,7 @@
                             }
                         }
                     } else {
-                        Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data, true), true);
+                        Main_Set_history('live', ScreensObj_LiveCellArray(event.data.data), true);
                     }
                 } else if (event.data.type === 'live') {
                     if (event.data.delete) {
@@ -13758,7 +13747,7 @@
             } else if (ScreenObj[Main_values.Main_Go].exit_fun) ScreenObj[Main_values.Main_Go].exit_fun();
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
             Main_openStream();
 
@@ -15263,7 +15252,7 @@
         if (!Main_values.ChannelVod_vodId) return;
 
         var theUrl = Main_helix_api + 'videos?id=' + Main_values.ChannelVod_vodId;
-        BaseXmlHttpGet(theUrl, 2, null, PlayClip_updateVodInfoSuccess, noop_fun, null, null, true);
+        BaseXmlHttpGet(theUrl, PlayClip_updateVodInfoSuccess, noop_fun, null, null, true);
     }
 
     function PlayClip_updateVodInfoSuccess(response) {
@@ -16067,7 +16056,7 @@
 
         var theUrl = Main_helix_api + 'streams?user_id=' + id;
 
-        BaseXmlHttpGet(theUrl, 2, null, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId, true);
+        BaseXmlHttpGet(theUrl, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId, true);
     }
 
     var PlayClip_SetOpenLiveData;
@@ -16078,7 +16067,7 @@
         var obj = JSON.parse(response);
 
         if (obj.data && obj.data.length) {
-            var tempData = ScreensObj_LiveCellArray(obj.data[0], true),
+            var tempData = ScreensObj_LiveCellArray(obj.data[0]),
                 playing =
                 (tempData[3] !== STR_IS_LIVE ? STR_PLAYING + tempData[3] + ', ' : '') +
                 STR_SINCE +
@@ -17027,7 +17016,7 @@
     function Play_StayGetStreamerInfo() {
         var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_StayGetStreamerInfoSucess, noop_fun, null, 0, true);
+        BaseXmlHttpGet(theUrl, Play_StayGetStreamerInfoSucess, noop_fun, null, 0, true);
     }
 
     function Play_StayGetStreamerInfoSucess(responseText) {
@@ -17330,7 +17319,7 @@
     function Play_UpdateGameInfo(PlayVodClip) {
         var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
+        BaseXmlHttpGet(theUrl, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
     }
 
     function Play_UpdateGameInfoSuccess(response, PlayVodClip) {
@@ -20826,7 +20815,7 @@
         PlayExtra_updateStreamLogoValuesId = new Date().getTime();
         var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-        BaseXmlHttpGet(theUrl, 2, null, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
+        BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
     }
 
     function PlayExtra_updateStreamLogoValues(responseText, key, id) {
@@ -21423,7 +21412,7 @@
 
         Play_updateStreamInfoStartId = new Date().getTime();
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, 0, Play_updateStreamInfoStartId, true);
+        BaseXmlHttpGet(theUrl, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, 0, Play_updateStreamInfoStartId, true);
     }
 
     function Play_updateStreamInfoStartValues(response, key, ID) {
@@ -21443,7 +21432,7 @@
     }
 
     function Play_updateStreamInfoEnd(response) {
-        var tempData = ScreensObj_LiveCellArray(response, true);
+        var tempData = ScreensObj_LiveCellArray(response);
 
         //Prevent save the wrong stream data this can happen when switching right after enable PP mode
         if (Play_data.data.length > 0 && Main_A_equals_B(tempData[14], Play_data.data[14])) {
@@ -21484,7 +21473,7 @@
     function Play_updateVodInfo(Channel_id, BroadcastID) {
         var theUrl = Main_helix_api + 'videos?first=1' + '&user_id=' + Channel_id + '&type=archive&sort=time';
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, parseInt(BroadcastID), null, true);
+        BaseXmlHttpGet(theUrl, Play_updateVodInfoSuccess, noop_fun, parseInt(BroadcastID), null, true);
     }
 
     function Play_updateVodInfoSuccess(response, BroadcastID) {
@@ -21518,7 +21507,7 @@
         Play_updateStreamLogoValuesId = new Date().getTime();
         var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamLogoValues, noop_fun, null, Play_updateStreamLogoValuesId, true);
+        BaseXmlHttpGet(theUrl, Play_updateStreamLogoValues, noop_fun, null, Play_updateStreamLogoValuesId, true);
     }
 
     function Play_updateStreamLogoValues(responseText, key, id) {
@@ -21543,7 +21532,7 @@
     function Play_updateStreamInfoGet(theUrl, Is_play) {
         Play_updateStreamInfoGetId = new Date().getTime();
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoGetError, Is_play, Play_updateStreamInfoGetId, true);
+        BaseXmlHttpGet(theUrl, Play_updateStreamInfoValues, Play_updateStreamInfoGetError, Is_play, Play_updateStreamInfoGetId, true);
     }
 
     function Play_updateStreamInfoValues(response, Is_play, ID) {
@@ -21557,7 +21546,7 @@
                     PlayExtra_updateStreamInfo();
                 }
             } else {
-                var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
+                var tempData = ScreensObj_LiveCellArray(obj.data[0]);
                 if (!Play_StayDialogVisible()) Main_Set_history('live', tempData);
 
                 //if ... Player is playing ... else... was closed by Play_CloseSmall just Main_history_UpdateLive
@@ -22891,8 +22880,6 @@
 
         BaseXmlHttpGet(
             Main_helix_api + 'streams?user_id=' + Play_MultiArray[pos].data[14],
-            2,
-            null,
             Play_updateStreamInfoMultiValues,
             Play_updateStreamInfoMultiError,
             pos,
@@ -22905,7 +22892,7 @@
         var obj = JSON.parse(response);
 
         if (Play_isOn && obj.data && obj.data.length && Play_updateStreamInfoMultiId[pos] === ID) {
-            var tempData = ScreensObj_LiveCellArray(obj.data[0], true);
+            var tempData = ScreensObj_LiveCellArray(obj.data[0]);
 
             //Prevent save the wrong stream data
             if (Play_MultiArray[pos].data.length > 0 && Main_A_equals_B(tempData[14], Play_MultiArray[pos].data[14])) {
@@ -23393,7 +23380,7 @@
     function Play_MultiupdateStreamLogo(channeiId, pos) {
         var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
+        BaseXmlHttpGet(theUrl, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
     }
 
     function Play_MultiupdateStreamLogoValues(responseText, i) {
@@ -23536,7 +23523,7 @@
     function Play_MultiSetUpdateDialogLogo(channeiId, pos) {
         var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-        BaseXmlHttpGet(theUrl, 2, null, Play_MultiSetUpdateDialogLogoValues, noop_fun, pos, 0, true);
+        BaseXmlHttpGet(theUrl, Play_MultiSetUpdateDialogLogoValues, noop_fun, pos, 0, true);
     }
 
     function Play_MultiSetUpdateDialogLogoValues(responseText, i) {
@@ -23785,7 +23772,7 @@
         PlayVod_updateStreamLogoValuesId = new Date().getTime();
         var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
 
-        BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
+        BaseXmlHttpGet(theUrl, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
     }
 
     function PlayVod_updateStreamLogoValues(responseText, key, id) {
@@ -23856,7 +23843,7 @@
     function PlayVod_UpdateGameInfo() {
         var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-        BaseXmlHttpGet(theUrl, 2, null, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
+        BaseXmlHttpGet(theUrl, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
     }
 
     function PlayVod_UpdateGameInfoSuccess(response) {
@@ -23873,7 +23860,7 @@
 
         PlayVod_updateVodInfoId = new Date().getTime();
 
-        BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
+        BaseXmlHttpGet(theUrl, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
     }
 
     function PlayVod_updateVodInfoPannel(response, key, ID) {
@@ -23917,7 +23904,7 @@
             PlayVod_muted_segments_value = response.muted_segments;
             PlayVod_muted_segments(PlayVod_muted_segments_value);
 
-            Main_values_Play_data = ScreensObj_VodCellArray(response, true);
+            Main_values_Play_data = ScreensObj_VodCellArray(response);
             Main_Set_history('vod', Main_values_Play_data);
 
             if (!Main_IsOn_OSInterface && enable_embed) {
@@ -25497,7 +25484,7 @@
             Main_values.Play_WasPlaying = 1;
 
             Play_data = JSON.parse(JSON.stringify(Play_data_base));
-            Play_data.data = ScreensObj_LiveCellArray(obj.obj, true);
+            Play_data.data = ScreensObj_LiveCellArray(obj.obj);
 
             StartUser = false;
             restore_playback = true;
@@ -27838,7 +27825,7 @@
     function Screens_ThumbUpdateGameInfo(id) {
         var theUrl = Main_helix_api + 'games?id=' + id;
 
-        BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
+        BaseXmlHttpGet(theUrl, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
     }
 
     function Screens_ThumbUpdateGameInfoSuccess(response) {
@@ -27867,7 +27854,7 @@
     function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
         var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
 
-        BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
+        BaseXmlHttpGet(theUrl, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
     }
 
     function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {
@@ -28729,7 +28716,7 @@
                     this.itemsCount++;
                     this.idObject[cell.id] = 1;
 
-                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell, this.useHelix), this.screen);
+                    this.tempHtml += Screens_createCellVod(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_VodCellArray(cell), this.screen);
 
                     this.coloumn_id++;
                 }
@@ -28778,7 +28765,7 @@
                     this.itemsCount++;
                     this.idObject[id_cell] = 1;
 
-                    this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_LiveCellArray(cell, this.useHelix), this.screen);
+                    this.tempHtml += Screens_createCellLive(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_LiveCellArray(cell), this.screen);
 
                     this.coloumn_id++;
                 }
@@ -28856,7 +28843,7 @@
                     this.itemsCount++;
                     this.idObject[idValue] = 1;
 
-                    this.tempHtml += Screens_createCellClip(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_ClipCellArray(cell, this.useHelix), this.screen);
+                    this.tempHtml += Screens_createCellClip(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_ClipCellArray(cell), this.screen);
 
                     this.coloumn_id++;
                 }
@@ -30533,90 +30520,71 @@
         ];
     }
 
-    function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
-        if (useHelix) {
-            return [
-                cell.thumbnail_url, //0
-                cell.user_name, //1
-                cell.title, //2
-                cell.game_name, //3
-                Main_addCommas(cell.viewer_count), //4
-                '[' + cell.language.toUpperCase() + ']', //5
-                cell.user_login, //6
-                cell.id.toString(), //7 broadcast id
-                Main_is_rerun(cell.type), //8
-                logo ? logo : null, //9
-                partner ? partner : null, //10
-                Play_streamLiveAt(cell.started_at), //11
-                cell.started_at, //12
-                cell.viewer_count, //13
-                cell.user_id, //14
-                cell.language, //15
-                null, //16
-                null, //17
-                cell.game_id //18
-            ];
-        }
-
+    function ScreensObj_LiveCellArray(cell, logo, partner) {
         return [
-            cell.preview.template, //0
-            cell.channel.display_name, //1
-            cell.channel.status, //2
-            cell.game, //3
-            Main_addCommas(cell.viewers), //4
-            Main_videoqualitylang(cell.video_height, cell.average_fps, cell.channel.broadcaster_language), //5
-            cell.channel.name, //6
-            cell._id, //7 broadcast id
-            Main_is_rerun(cell.broadcast_platform), //8
-            cell.channel.logo, //9
-            cell.channel.partner, //10
-            Play_streamLiveAt(cell.created_at), //11
-            cell.created_at, //12
-            cell.viewers, //13
-            cell.channel._id, //14
-            cell.channel.broadcaster_language //15
+            cell.thumbnail_url, //0
+            cell.user_name, //1
+            cell.title, //2
+            cell.game_name, //3
+            Main_addCommas(cell.viewer_count), //4
+            '[' + cell.language.toUpperCase() + ']', //5
+            cell.user_login, //6
+            cell.id.toString(), //7 broadcast id
+            Main_is_rerun(cell.type), //8
+            logo ? logo : null, //9
+            partner ? partner : null, //10
+            Play_streamLiveAt(cell.started_at), //11
+            cell.started_at, //12
+            cell.viewer_count, //13
+            cell.user_id, //14
+            cell.language, //15
+            null, //16
+            null, //17
+            cell.game_id //18
         ];
     }
 
-    function ScreensObj_VodCellArray(cell, useHelix) {
-        if (useHelix) {
-            return [
-                ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
-                cell.user_name, //1
-                Main_videoCreatedAt(cell.created_at), //2
-                null, //3
-                Main_addCommas(cell.view_count), //4
-                '[' + cell.language.toUpperCase() + ']', //5
-                cell.user_login, //6
-                cell.id, //7
-                null, //8
-                cell.language, //9
-                twemoji.parse(cell.title), //10
-                Play_timeHMS(cell.duration), //11
-                cell.created_at, //12
-                cell.view_count, //13
-                cell.user_id //14
-            ];
-        }
-
+    function ScreensObj_VodCellArray(cell) {
         return [
-            ScreensObj_VodGetPreview(cell.preview.template, cell.animated_preview_url), //0
-            cell.channel.display_name, //1
+            ScreensObj_VodGetPreview(cell.thumbnail_url, null), //0
+            cell.user_name, //1
             Main_videoCreatedAt(cell.created_at), //2
-            cell.game, //3
-            Main_addCommas(cell.views), //4
-            cell.resolutions.chunked ? Main_videoqualitylang(cell.resolutions.chunked.slice(-4), parseInt(cell.fps.chunked) || 0, cell.channel.broadcaster_language) : '', //5
-            cell.channel.name, //6
-            cell._id.substr(1), //7
-            cell.animated_preview_url, //8
-            cell.channel.broadcaster_language, //9
+            null, //3
+            Main_addCommas(cell.view_count), //4
+            '[' + cell.language.toUpperCase() + ']', //5
+            cell.user_login, //6
+            cell.id, //7
+            null, //8
+            cell.language, //9
             twemoji.parse(cell.title), //10
-            cell.length, //11
+            Play_timeHMS(cell.duration), //11
             cell.created_at, //12
-            cell.views, //13
-            cell.channel._id, //14
-            cell.channel.logo, //15
-            cell.channel.partner //16
+            cell.view_count, //13
+            cell.user_id //14
+        ];
+    }
+
+    function ScreensObj_ClipCellArray(cell) {
+        return [
+            cell.id, //0
+            cell.duration, //1
+            cell.broadcaster_id, //2
+            null, //3
+            cell.broadcaster_name, //6
+            null, //5
+            cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
+            cell.id, //7
+            cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
+            cell.vod !== null ? -1 : null, //9
+            twemoji.parse(cell.title), //10
+            '[' + cell.language.toUpperCase() + ']', //11
+            cell.created_at, //12
+            cell.view_count, //13
+            Main_addCommas(cell.view_count), //14
+            cell.thumbnail_url, //15
+            Main_videoCreatedAt(cell.created_at), //16
+            cell.language, //17
+            cell.game_id //18
         ];
     }
 
@@ -30647,53 +30615,6 @@
         date += dayEnd;
 
         return date;
-    }
-
-    function ScreensObj_ClipCellArray(cell, useHelix) {
-        if (useHelix) {
-            return [
-                cell.id, //0
-                cell.duration, //1
-                cell.broadcaster_id, //2
-                null, //3
-                cell.broadcaster_name, //6
-                null, //5
-                cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
-                cell.id, //7
-                cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
-                cell.vod !== null ? -1 : null, //9
-                twemoji.parse(cell.title), //10
-                '[' + cell.language.toUpperCase() + ']', //11
-                cell.created_at, //12
-                cell.view_count, //13
-                Main_addCommas(cell.view_count), //14
-                cell.thumbnail_url, //15
-                Main_videoCreatedAt(cell.created_at), //16
-                cell.language, //17
-                cell.game_id //18
-            ];
-        }
-
-        return [
-            cell.slug, //0
-            cell.duration, //1
-            cell.broadcaster.id, //2
-            cell.game, //3
-            cell.broadcaster.display_name, //4
-            cell.broadcaster.logo.replace('150x150', '300x300'), //5
-            cell.broadcaster.name, //6
-            cell.tracking_id, //7
-            cell.vod !== null ? cell.vod.id : null, //8
-            cell.vod !== null ? cell.vod.offset : null, //9
-            twemoji.parse(cell.title), //10
-            '[' + cell.language.toUpperCase() + ']', //11
-            cell.created_at, //12
-            cell.views, //13
-            Main_addCommas(cell.views), //14
-            cell.thumbnails.medium, //15
-            Main_videoCreatedAt(cell.created_at), //16
-            cell.language //17
-        ];
     }
 
     function ScreensObj_VodGetPreview(preview, animated_preview_url) {
@@ -30740,7 +30661,7 @@
     function ScreensObj_UpdateGameInfo(PlayVodClip, key) {
         var theUrl = Main_helix_api + 'games?id=' + Main_values.Main_gameSelected_id;
 
-        BaseXmlHttpGet(theUrl, 2, null, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
+        BaseXmlHttpGet(theUrl, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
     }
 
     function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
@@ -34758,7 +34679,7 @@
 
     function Sidepannel_KeyEnterUser() {
         if (Sidepannel_Sidepannel_Pos >= 3 && Sidepannel_Sidepannel_Pos <= 6 && !AddUser_UsernameArray[0].access_token) {
-            Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
+            Sidepannel_ShowNoUserWarning();
             return;
         }
 
@@ -34831,7 +34752,7 @@
                 Sidepannel_SetUserLables();
                 Sidepannel_UnSetTopOpacity();
             } else {
-                Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
+                Sidepannel_ShowNoUserWarning();
             }
         } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_Live);
         else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_Featured);
@@ -34863,7 +34784,7 @@
         if (!Sidepannel_IsMain || forceFeed) {
             if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) Sidepannel_StartFeed();
             else {
-                Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
+                Sidepannel_ShowNoUserWarning();
                 Sidepannel_StartMain();
             }
         } else Sidepannel_StartMain();
@@ -35261,8 +35182,12 @@
             Main_removeEventListener('keydown', Sidepannel_handleKeyDownMain);
             Sidepannel_StartFeed();
         } else {
-            Main_showWarningDialog(STR_NOKUSER_WARNING, 2000);
+            Sidepannel_ShowNoUserWarning();
         }
+    }
+
+    function Sidepannel_ShowNoUserWarning() {
+        Main_showWarningDialog(STR_NOKUSER_WARNING, 5000);
     }
 
     function Sidepannel_handleMainKey(Down) {
@@ -36757,10 +36682,10 @@
         Screens_Some_Screen_Is_Refreshing = true;
     }
 
-    function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
+    function UserLiveFeedobj_BaseLoad(url, callback, CheckOffset, pos) {
         if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-        BaseXmlHttpGet(url, headers, null, callback, UserLiveFeedobj_loadDataError, pos, null, UserLiveFeed_obj[pos].useHelix);
+        BaseXmlHttpGet(url, callback, UserLiveFeedobj_loadDataError, pos, null, UserLiveFeed_obj[pos].useHelix);
     }
 
     function UserLiveFeedobj_loadDataError(pos) {
@@ -36985,7 +36910,6 @@
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-                2,
                 UserLiveFeedobj_loadDataLiveSuccess,
                 true,
                 pos
@@ -37108,7 +37032,6 @@
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
             (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            2,
             UserLiveFeedobj_loadDataCurrentGameSuccess,
             true,
             UserLiveFeedobj_CurrentGamePos
@@ -37118,7 +37041,7 @@
     function UserLiveFeedobj_loadCurrentGameGetGameId() {
         var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-        UserLiveFeedobj_BaseLoad(theUrl, 2, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
+        UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
     }
 
     function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
@@ -37264,7 +37187,6 @@
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-                2,
                 UserLiveFeedobj_loadDataCurrentUserGameSuccess,
                 true,
                 pos
@@ -37329,7 +37251,6 @@
         } else {
             UserLiveFeedobj_BaseLoad(
                 Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax + (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
-                2,
                 UserLiveFeedobj_loadDataGamesSuccess,
                 false,
                 pos
@@ -37397,7 +37318,6 @@
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
             (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            2,
             UserLiveFeedobj_loadDataCurrentAGameSuccess,
             true,
             UserLiveFeedobj_AGamesPos
@@ -37407,7 +37327,7 @@
     function UserLiveFeedobj_loadCurrentAGameGetGameId() {
         var theUrl = Main_helix_api + 'games?name=' + UserLiveFeedobj_CurrentAGameNameEnter;
 
-        UserLiveFeedobj_BaseLoad(theUrl, 2, UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess, true, UserLiveFeedobj_AGamesPos);
+        UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess, true, UserLiveFeedobj_AGamesPos);
     }
 
     function UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess(responseText) {
@@ -37759,7 +37679,7 @@
     }
 
     function UserLiveFeed_loadDataSuccessHttpRequest() {
-        BaseXmlHttpGet(UserLiveFeed_loadDataSuccessUrl, 2, null, UserLiveFeed_loadDataSuccessUpdateMap, UserLiveFeed_loadDataSuccessError, 0, UserLiveFeedobj_loadDataSuccessId, true);
+        BaseXmlHttpGet(UserLiveFeed_loadDataSuccessUrl, UserLiveFeed_loadDataSuccessUpdateMap, UserLiveFeed_loadDataSuccessError, 0, UserLiveFeedobj_loadDataSuccessId, true);
     }
 
     function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
@@ -37834,7 +37754,7 @@
 
                 if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                    mArray = ScreensObj_LiveCellArray(stream, true, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
+                    mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                     UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                     UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos, itemsCount, UserLiveFeedobj_UserLivePos + '_' + itemsCount, mArray);
@@ -38167,7 +38087,7 @@
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[pos][id] = itemsCount;
-                    mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream, useHelix);
+                    mArray = isFeatured ? ScreensObj_FeaturedCellArray(stream) : ScreensObj_LiveCellArray(stream);
 
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatFeed(pos, itemsCount, pos + '_' + itemsCount, mArray);
 
