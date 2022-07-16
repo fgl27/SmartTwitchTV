@@ -2263,7 +2263,7 @@ function ScreensObj_FeaturedCellArray(cell) {
     ];
 }
 
-function ScreensObj_LiveCellArray(cell, useHelix, logo, partner) {
+function ScreensObj_LiveCellArray(cell, logo, partner) {
     return [
         cell.thumbnail_url, //0
         cell.user_name, //1
@@ -2404,7 +2404,7 @@ function ScreensObj_AnimateThumbId(screen) {
 function ScreensObj_UpdateGameInfo(PlayVodClip, key) {
     var theUrl = Main_helix_api + 'games?id=' + Main_values.Main_gameSelected_id;
 
-    BaseXmlHttpGet(theUrl, 2, null, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
+    BaseXmlHttpGet(theUrl, ScreensObj_UpdateGameInfoSuccess, noop_fun, PlayVodClip, key, true);
 }
 
 function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {

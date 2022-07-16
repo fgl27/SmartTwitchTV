@@ -27,8 +27,6 @@ function Play_updateStreamInfoMulti(pos) {
 
     BaseXmlHttpGet(
         Main_helix_api + 'streams?user_id=' + Play_MultiArray[pos].data[14],
-        2,
-        null,
         Play_updateStreamInfoMultiValues,
         Play_updateStreamInfoMultiError,
         pos,
@@ -529,7 +527,7 @@ function Play_MultiUpdateinfoMainBig(extraText) {
 function Play_MultiupdateStreamLogo(channeiId, pos) {
     var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
+    BaseXmlHttpGet(theUrl, Play_MultiupdateStreamLogoValues, noop_fun, pos, 0, true);
 }
 
 function Play_MultiupdateStreamLogoValues(responseText, i) {
@@ -671,7 +669,7 @@ function Play_MultiSetUpdateDialog(obj) {
 function Play_MultiSetUpdateDialogLogo(channeiId, pos) {
     var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_MultiSetUpdateDialogLogoValues, noop_fun, pos, 0, true);
+    BaseXmlHttpGet(theUrl, Play_MultiSetUpdateDialogLogoValues, noop_fun, pos, 0, true);
 }
 
 function Play_MultiSetUpdateDialogLogoValues(responseText, i) {

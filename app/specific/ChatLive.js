@@ -231,7 +231,7 @@ function ChatLive_checkFallow(chat_number, id) {
     ChatLive_FollowState[chat_number] = {};
     var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + ChatLive_selectedChannel_id[chat_number];
 
-    BaseXmlHttpGet(theUrl, 2, null, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
+    BaseXmlHttpGet(theUrl, ChatLive_checkFallowSuccess, ChatLive_RequestCheckFollowNOK, chat_number, id, true);
 }
 
 function ChatLive_checkFallowSuccess(responseText, chat_number, id) {
@@ -275,7 +275,7 @@ function ChatLive_checkSub(chat_number, id) {
 
     var theUrl = Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] + '&user_id=' + AddUser_UsernameArray[0].id;
 
-    BaseXmlHttpGet(theUrl, 3, Main_OAuth + AddUser_UsernameArray[0].access_token, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
+    BaseXmlHttpGet(theUrl, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
 }
 
 function ChatLive_checkSubSucess(responseText, chat_number, id) {
@@ -291,7 +291,7 @@ function ChatLive_loadChannelEmotes(chat_number, id) {
 
         var theUrl = Main_helix_api + 'chat/emotes?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number];
 
-        BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_loadChannelEmotesSucess, noop_fun, chat_number, id, true);
     } else {
         ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.ChannelEmotes[ChatLive_selectedChannel_id[chat_number]]);
     }
@@ -311,7 +311,7 @@ function ChatLive_loadBadgesChannel(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-        BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display', 0, null, ChatLive_loadBadgesChannelSuccess, noop_fun, chat_number, id);
+        BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display', ChatLive_loadBadgesChannelSuccess, noop_fun, chat_number, id);
     } else {
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
@@ -362,7 +362,7 @@ function ChatLive_loadChattersCheckType(chat_number, id) {
 function ChatLive_loadChattersViewers(chat_number, id) {
     var theUrl = Main_helix_api + 'streams/?user_id=' + ChatLive_selectedChannel_id[chat_number];
 
-    BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadChattersViewersSuccess, noop_fun, chat_number, id, true);
+    BaseXmlHttpGet(theUrl, ChatLive_loadChattersViewersSuccess, noop_fun, chat_number, id, true);
 }
 
 function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
@@ -382,7 +382,7 @@ function ChatLive_loadChattersViewersSuccess(responseText, chat_number, id) {
 }
 
 function ChatLive_loadChattersLoad(chat_number, id) {
-    BaseXmlHttpGet(ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number], 0, null, ChatLive_loadChattersSuccess, noop_fun, chat_number, id);
+    BaseXmlHttpGet(ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number], ChatLive_loadChattersSuccess, noop_fun, chat_number, id);
 }
 
 function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
@@ -402,7 +402,7 @@ function ChatLive_loadGloabalEmotes(chat_number, id) {
         extraEmotesDone.GlobalTwitch = {};
         var theUrl = Main_helix_api + 'chat/emotes/global';
 
-        BaseXmlHttpGet(theUrl, 2, null, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
     } else {
         ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
     }
@@ -478,8 +478,6 @@ function ChatLive_loadEmotesChannelbttv(chat_number, id) {
     if (!extraEmotesDone.bttv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.betterttv.net/3/cached/users/twitch/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            0,
-            null,
             ChatLive_loadEmotesChannelbttvSuccess,
             noop_fun,
             chat_number,
@@ -548,8 +546,6 @@ function ChatLive_loadCheersChannel(chat_number, id) {
     if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '&client_id=' + AddCode_backup_client_id,
-            0,
-            null,
             ChatLive_loadCheersChannelSuccess,
             noop_fun,
             chat_number,
@@ -595,15 +591,7 @@ function ChatLive_loadEmotesChannelffz(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-        BaseXmlHttpGet(
-            'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
-            0,
-            null,
-            ChatLive_loadEmotesChannelffzSuccess,
-            noop_fun,
-            chat_number,
-            id
-        );
+        BaseXmlHttpGet('https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]), ChatLive_loadEmotesChannelffzSuccess, noop_fun, chat_number, id);
     } else {
         ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
     }
@@ -675,8 +663,6 @@ function ChatLive_loadEmotesChannelseven_tv(chat_number, id) {
     if (!extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[chat_number]]) {
         BaseXmlHttpGet(
             'https://api.7tv.app/v2/users/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '/emotes',
-            0,
-            null,
             ChatLive_loadEmotesChannelseven_tvSuccess,
             noop_fun,
             chat_number,
@@ -736,8 +722,6 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
 function ChatLive_PreLoadChat(chat_number, id) {
     BaseXmlHttpGet(
         'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30&hide_moderation_messages=true',
-        0,
-        null,
         ChatLive_PreLoadChatSuccess,
         noop_fun,
         chat_number,

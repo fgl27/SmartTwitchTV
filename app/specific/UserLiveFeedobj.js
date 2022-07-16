@@ -153,10 +153,10 @@ function UserLiveFeedobj_loadDataPrepare(pos) {
     Screens_Some_Screen_Is_Refreshing = true;
 }
 
-function UserLiveFeedobj_BaseLoad(url, headers, callback, CheckOffset, pos) {
+function UserLiveFeedobj_BaseLoad(url, callback, CheckOffset, pos) {
     if (CheckOffset) UserLiveFeedobj_CheckOffset(pos);
 
-    BaseXmlHttpGet(url, headers, null, callback, UserLiveFeedobj_loadDataError, pos, null, UserLiveFeed_obj[pos].useHelix);
+    BaseXmlHttpGet(url, callback, UserLiveFeedobj_loadDataError, pos, null, UserLiveFeed_obj[pos].useHelix);
 }
 
 function UserLiveFeedobj_loadDataError(pos) {
@@ -380,7 +380,6 @@ function UserLiveFeedobj_loadLive() {
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_LivePos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            2,
             UserLiveFeedobj_loadDataLiveSuccess,
             true,
             pos
@@ -503,7 +502,6 @@ function UserLiveFeedobj_loadCurrentGameGetGames() {
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_CurrentGamePos].cursor : '') +
             (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-        2,
         UserLiveFeedobj_loadDataCurrentGameSuccess,
         true,
         UserLiveFeedobj_CurrentGamePos
@@ -513,7 +511,7 @@ function UserLiveFeedobj_loadCurrentGameGetGames() {
 function UserLiveFeedobj_loadCurrentGameGetGameId() {
     var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-    UserLiveFeedobj_BaseLoad(theUrl, 2, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
+    UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentGameGetGamesSucess, true, UserLiveFeedobj_CurrentGamePos);
 }
 
 function UserLiveFeedobj_loadCurrentGameGetGamesSucess(responseText) {
@@ -656,7 +654,6 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
                 Main_ItemsLimitMax +
                 (UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_UserGamesPos].cursor : '') +
                 (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-            2,
             UserLiveFeedobj_loadDataCurrentUserGameSuccess,
             true,
             pos
@@ -720,7 +717,6 @@ function UserLiveFeedobj_loadGames() {
     } else {
         UserLiveFeedobj_BaseLoad(
             Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax + (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
-            2,
             UserLiveFeedobj_loadDataGamesSuccess,
             false,
             pos
@@ -787,7 +783,6 @@ function UserLiveFeedobj_loadCurrentAGameGetGames() {
             Main_ItemsLimitMax +
             (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].cursor : '') +
             (Main_ContentLang !== '' ? '&language=' + Main_ContentLang : ''),
-        2,
         UserLiveFeedobj_loadDataCurrentAGameSuccess,
         true,
         UserLiveFeedobj_AGamesPos
@@ -797,7 +792,7 @@ function UserLiveFeedobj_loadCurrentAGameGetGames() {
 function UserLiveFeedobj_loadCurrentAGameGetGameId() {
     var theUrl = Main_helix_api + 'games?name=' + UserLiveFeedobj_CurrentAGameNameEnter;
 
-    UserLiveFeedobj_BaseLoad(theUrl, 2, UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess, true, UserLiveFeedobj_AGamesPos);
+    UserLiveFeedobj_BaseLoad(theUrl, UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess, true, UserLiveFeedobj_AGamesPos);
 }
 
 function UserLiveFeedobj_loadCurrentAGameGetGameIdSuccess(responseText) {
@@ -1147,7 +1142,7 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 }
 
 function UserLiveFeed_loadDataSuccessHttpRequest() {
-    BaseXmlHttpGet(UserLiveFeed_loadDataSuccessUrl, 2, null, UserLiveFeed_loadDataSuccessUpdateMap, UserLiveFeed_loadDataSuccessError, 0, UserLiveFeedobj_loadDataSuccessId, true);
+    BaseXmlHttpGet(UserLiveFeed_loadDataSuccessUrl, UserLiveFeed_loadDataSuccessUpdateMap, UserLiveFeed_loadDataSuccessError, 0, UserLiveFeedobj_loadDataSuccessId, true);
 }
 
 function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
@@ -1222,7 +1217,7 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
 
             if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
-                mArray = ScreensObj_LiveCellArray(stream,  mapLogoPartner[id].logo, mapLogoPartner[id].partner);
+                mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
                 UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos, itemsCount, UserLiveFeedobj_UserLivePos + '_' + itemsCount, mArray);

@@ -842,7 +842,7 @@ function Play_StartStayShowBottom() {
 function Play_StayGetStreamerInfo() {
     var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_StayGetStreamerInfoSucess, noop_fun, null, 0, true);
+    BaseXmlHttpGet(theUrl, Play_StayGetStreamerInfoSucess, noop_fun, null, 0, true);
 }
 
 function Play_StayGetStreamerInfoSucess(responseText) {
@@ -1144,7 +1144,7 @@ function Play_timeHMS(time) {
 function Play_UpdateGameInfo(PlayVodClip) {
     var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
+    BaseXmlHttpGet(theUrl, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
 }
 
 function Play_UpdateGameInfoSuccess(response, PlayVodClip) {

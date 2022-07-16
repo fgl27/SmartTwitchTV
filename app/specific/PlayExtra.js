@@ -401,7 +401,7 @@ function PlayExtra_updateStreamLogo(channeiId, main) {
     PlayExtra_updateStreamLogoValuesId = new Date().getTime();
     var theUrl = Main_helix_api + 'users?id=' + channeiId;
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
+    BaseXmlHttpGet(theUrl, PlayExtra_updateStreamLogoValues, noop_fun, main, PlayExtra_updateStreamLogoValuesId, true);
 }
 
 function PlayExtra_updateStreamLogoValues(responseText, key, id) {

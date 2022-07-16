@@ -149,7 +149,7 @@ function PlayClip_updateVodInfo() {
     if (!Main_values.ChannelVod_vodId) return;
 
     var theUrl = Main_helix_api + 'videos?id=' + Main_values.ChannelVod_vodId;
-    BaseXmlHttpGet(theUrl, 2, null, PlayClip_updateVodInfoSuccess, noop_fun, null, null, true);
+    BaseXmlHttpGet(theUrl, PlayClip_updateVodInfoSuccess, noop_fun, null, null, true);
 }
 
 function PlayClip_updateVodInfoSuccess(response) {
@@ -949,7 +949,7 @@ function PlayClip_CheckIsLive(id, SetInterval, SkipHide) {
 
     var theUrl = Main_helix_api + 'streams?user_id=' + id;
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId, true);
+    BaseXmlHttpGet(theUrl, PlayClip_SetOpenLive, PlayClip_SetOpenLiveError, 0, PlayClip_CheckIsLiveId, true);
 }
 
 var PlayClip_SetOpenLiveData;

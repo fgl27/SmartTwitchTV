@@ -110,7 +110,7 @@ function ChannelContent_StartLoad() {
 function ChannelContent_loadDataRequest() {
     var theUrl = Main_helix_api + 'streams?user_id=' + (ChannelContent_TargetId !== undefined ? ChannelContent_TargetId : Main_values.Main_selectedChannel_id);
 
-    BaseXmlHttpGet(theUrl, 2, null, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError, null, 0, true);
+    BaseXmlHttpGet(theUrl, ChannelContent_loadDataRequestSuccess, ChannelContent_loadDataError, null, 0, true);
 }
 
 function ChannelContent_loadDataRequestSuccess(response) {
@@ -165,7 +165,7 @@ function ChannelContent_CheckHost(responseObj, key, id) {
 function ChannelContent_GetStreamerInfo() {
     var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
 
-    BaseXmlHttpGet(theUrl, 2, null, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError, null, 0, true);
+    BaseXmlHttpGet(theUrl, ChannelContent_GetStreamerInfoSuccess, ChannelContent_GetStreamerInfoError, null, 0, true);
 }
 
 function ChannelContent_GetStreamerInfoSuccess(responseText) {

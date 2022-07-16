@@ -177,7 +177,7 @@ function PlayVod_updateStreamLogo() {
     PlayVod_updateStreamLogoValuesId = new Date().getTime();
     var theUrl = Main_helix_api + 'users?id=' + Main_values.Main_selectedChannel_id;
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
+    BaseXmlHttpGet(theUrl, PlayVod_updateStreamLogoValues, noop_fun, null, PlayVod_updateStreamLogoValuesId, true);
 }
 
 function PlayVod_updateStreamLogoValues(responseText, key, id) {
@@ -248,7 +248,7 @@ function PlayVod_PosStart() {
 function PlayVod_UpdateGameInfo() {
     var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
+    BaseXmlHttpGet(theUrl, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
 }
 
 function PlayVod_UpdateGameInfoSuccess(response) {
@@ -264,7 +264,7 @@ function PlayVod_updateVodInfo() {
 
     PlayVod_updateVodInfoId = new Date().getTime();
 
-    BaseXmlHttpGet(theUrl, 2, null, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
+    BaseXmlHttpGet(theUrl, PlayVod_updateVodInfoPannel, noop_fun, 0, PlayVod_updateVodInfoId, true);
 }
 
 function PlayVod_updateVodInfoPannel(response, key, ID) {

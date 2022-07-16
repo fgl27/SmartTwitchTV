@@ -536,7 +536,7 @@ function Play_updateStreamInfoStart() {
 
     Play_updateStreamInfoStartId = new Date().getTime();
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, 0, Play_updateStreamInfoStartId, true);
+    BaseXmlHttpGet(theUrl, Play_updateStreamInfoStartValues, Play_updateStreamInfoStartError, 0, Play_updateStreamInfoStartId, true);
 }
 
 function Play_updateStreamInfoStartValues(response, key, ID) {
@@ -597,7 +597,7 @@ function Play_setFollow() {
 function Play_updateVodInfo(Channel_id, BroadcastID) {
     var theUrl = Main_helix_api + 'videos?first=1' + '&user_id=' + Channel_id + '&type=archive&sort=time';
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_updateVodInfoSuccess, noop_fun, parseInt(BroadcastID), null, true);
+    BaseXmlHttpGet(theUrl, Play_updateVodInfoSuccess, noop_fun, parseInt(BroadcastID), null, true);
 }
 
 function Play_updateVodInfoSuccess(response, BroadcastID) {
@@ -630,7 +630,7 @@ function Play_updateStreamLogo() {
     Play_updateStreamLogoValuesId = new Date().getTime();
     var theUrl = Main_helix_api + 'users?id=' + Play_data.data[14];
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamLogoValues, noop_fun, null, Play_updateStreamLogoValuesId, true);
+    BaseXmlHttpGet(theUrl, Play_updateStreamLogoValues, noop_fun, null, Play_updateStreamLogoValuesId, true);
 }
 
 function Play_updateStreamLogoValues(responseText, key, id) {
@@ -654,7 +654,7 @@ var Play_updateStreamInfoGetId;
 function Play_updateStreamInfoGet(theUrl, Is_play) {
     Play_updateStreamInfoGetId = new Date().getTime();
 
-    BaseXmlHttpGet(theUrl, 2, null, Play_updateStreamInfoValues, Play_updateStreamInfoGetError, Is_play, Play_updateStreamInfoGetId, true);
+    BaseXmlHttpGet(theUrl, Play_updateStreamInfoValues, Play_updateStreamInfoGetError, Is_play, Play_updateStreamInfoGetId, true);
 }
 
 function Play_updateStreamInfoValues(response, Is_play, ID) {

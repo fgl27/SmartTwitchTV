@@ -2514,7 +2514,7 @@ function Screens_ThumbOptionStringSet(key) {
 function Screens_ThumbUpdateGameInfo(id) {
     var theUrl = Main_helix_api + 'games?id=' + id;
 
-    BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
+    BaseXmlHttpGet(theUrl,  Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
 }
 
 function Screens_ThumbUpdateGameInfoSuccess(response) {
@@ -2543,7 +2543,7 @@ function Screens_ThumbOption_CheckFollow(data, key) {
 function Screens_ThumbOption_RequestCheckFollow(channel_id, ID, key) {
     var theUrl = Main_helix_api + 'users/follows?from_id=' + AddUser_UsernameArray[0].id + '&to_id=' + channel_id;
 
-    BaseXmlHttpGet(theUrl, 2, null, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
+    BaseXmlHttpGet(theUrl, Screens_ThumbOption_RequestCheckFollowSuccess, Screens_ThumbOption_RequestCheckFollowFail, key, ID, true);
 }
 
 function Screens_ThumbOption_RequestCheckFollowSuccess(obj, key, ID) {

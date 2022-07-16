@@ -160,7 +160,7 @@ function AddUser_KeyboardDismiss() {
 function AddUser_loadDataRequest() {
     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_Username);
 
-    BaseXmlHttpGet(theUrl, 2, null, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, 0, null, true);
+    BaseXmlHttpGet(theUrl, AddUser_loadDataRequestSuccess, AddUser_loadDataNoUser, null, null, true);
 }
 
 function AddUser_loadDataRequestSuccess(response) {
@@ -278,7 +278,7 @@ function AddUser_UpdateUserAllUsers() {
 function AddUser_UpdateUser(position) {
     var theUrl = Main_helix_api + 'users?login=' + encodeURIComponent(AddUser_UsernameArray[position].name);
 
-    BaseXmlHttpGet(theUrl, 2, null, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
+    BaseXmlHttpGet(theUrl, AddUser_UpdateUsertSuccess, noop_fun, position, null, true);
 }
 
 function AddUser_UpdateUsertSuccess(response, position) {

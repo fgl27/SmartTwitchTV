@@ -1041,7 +1041,7 @@ function Main_CheckUpdate(forceUpdate) {
     if (Main_HasUpdate && Main_isUpdateDialogVisible() && Settings_value.update_background.defaultValue && !forceUpdate) return;
 
     if (Main_A_includes_B(window.location.href, 'https://fgl27.github.io')) {
-        BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', 0, null, Main_CheckUpdateResult, Main_CheckUpdateFail, 0, 0);
+        BaseXmlHttpGet('https://fgl27.github.io/SmartTwitchTV/release/githubio/version/version.json', Main_CheckUpdateResult, Main_CheckUpdateFail);
     } else {
         Main_setTimeout(function () {
             Main_Ischecking = false;
@@ -1442,7 +1442,7 @@ function Main_CheckBroadcastID(index, doc) {
 
 function Main_CheckBroadcastIDStart() {
     var theUrl = Main_helix_api + 'streams?user_id=' + Play_data.data[14];
-    BaseXmlHttpGet(theUrl, 2, null, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
+    BaseXmlHttpGet(theUrl, Main_CheckBroadcastIDStartSucess, Main_openStream, null, null, true);
 }
 
 function Main_CheckBroadcastIDStartSucess(response) {
@@ -1868,23 +1868,21 @@ function CheckPage(pageUrlCode) {
     }
 }
 
-function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, calbackError, key, checkResult, useHelix) {
-    if (Main_IsOn_OSInterface) {
-        var JsonHeadersArray = !HeaderQuatity ? null : Main_base_string_header;
+function BaseXmlHttpGet(theUrl, callbackSucess, calbackError, key, checkResult, UseHeaders) {
+    var headers = null;
 
-        if (useHelix) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-                Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
+    if (UseHeaders) {
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
+            Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
 
-                JsonHeadersArray = JSON.stringify(Main_Bearer_User_Headers);
-            } else {
-                JsonHeadersArray = JSON.stringify(Main_Bearer_Headers);
-            }
-        } else if (HeaderQuatity && HeaderQuatity !== 2) {
-            JsonHeadersArray = JSON.stringify(Main_GetHeader(HeaderQuatity, access_token));
+            headers = Main_Bearer_User_Headers;
+        } else {
+            headers = Main_Bearer_Headers;
         }
+    }
 
-        OSInterface_BaseXmlHttpGet(theUrl, DefaultHttpGetTimeout, null, null, JsonHeadersArray, 'Main_CheckBasexmlHttpGet', checkResult, key, callbackSucess.name, calbackError.name);
+    if (Main_IsOn_OSInterface) {
+        OSInterface_BaseXmlHttpGet(theUrl, DefaultHttpGetTimeout, null, null, JSON.stringify(headers), 'Main_CheckBasexmlHttpGet', checkResult, key, callbackSucess.name, calbackError.name);
     } else {
         var xmlHttp = new XMLHttpRequest(),
             i = 0;
@@ -1892,18 +1890,10 @@ function BaseXmlHttpGet(theUrl, HeaderQuatity, access_token, callbackSucess, cal
         xmlHttp.open('GET', theUrl, true);
         xmlHttp.timeout = DefaultHttpGetTimeout;
 
-        if (useHelix) {
-            if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) {
-                Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
-
-                for (i; i < Main_Bearer_User_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_User_Headers[i][0], Main_Bearer_User_Headers[i][1]);
-            } else {
-                for (i; i < Main_Bearer_Headers.length; i++) xmlHttp.setRequestHeader(Main_Bearer_Headers[i][0], Main_Bearer_Headers[i][1]);
+        if (UseHeaders) {
+            for (i; i < headers.length; i++) {
+                xmlHttp.setRequestHeader(headers[i][0], headers[i][1]);
             }
-        } else {
-            if (access_token) Main_Headers[2][1] = access_token;
-
-            for (i; i < HeaderQuatity; i++) xmlHttp.setRequestHeader(Main_Headers[i][0], Main_Headers[i][1]);
         }
 
         xmlHttp.onreadystatechange = function () {

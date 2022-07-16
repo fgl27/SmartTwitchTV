@@ -172,14 +172,14 @@ function Chat_loadBadgesGlobal() {
 }
 
 function Chat_BaseLoadUrl(theUrl, callbackSucess, calbackError) {
-    BaseXmlHttpGet(theUrl, 0, null, callbackSucess, calbackError);
+    BaseXmlHttpGet(theUrl, callbackSucess, calbackError);
 }
 
 function Chat_loadBadgesGlobalRequest(chat_number, id) {
     if (id !== Chat_Id[chat_number]) return;
 
     if (!Chat_GlobalBadges) {
-        BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', 0, null, Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
+        BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
     } else {
         if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
             Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
@@ -307,7 +307,7 @@ function Chat_loadChatRequest(id) {
     var theUrl =
         'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
-    BaseXmlHttpGet(theUrl, 0, null, Chat_loadChatSuccess, Chat_loadChatError, id);
+    BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatError, id);
 }
 
 function Chat_loadChatError(id) {
@@ -569,7 +569,7 @@ function Chat_loadChatNext(id) {
 function Chat_loadChatNextRequest(id) {
     var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
-    BaseXmlHttpGet(theUrl, 0, null, Chat_loadChatSuccess, Chat_loadChatNextError, id);
+    BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatNextError, id);
 }
 
 function Chat_loadChatNextError(id) {
