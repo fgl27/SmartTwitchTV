@@ -1503,6 +1503,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 //A-Z
                 if (sorting_type1) {
                     response.sort(function (a, b) {
+                        //a or b stream may be null
+                        if (!a || !b || !a.stream || !b.stream) {
+                            return 0;
+                        }
                         return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
                             ? -1
                             : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
@@ -1511,6 +1515,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                     });
                 } else {
                     response.sort(function (a, b) {
+                        //a or b stream may be null
+                        if (!a || !b || !a.stream || !b.stream) {
+                            return 0;
+                        }
                         return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
                     });
                 }
@@ -1518,6 +1526,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 //Z-A
                 if (sorting_type1) {
                     response.sort(function (a, b) {
+                        //a or b stream may be null
+                        if (!a || !b || !a.stream || !b.stream) {
+                            return 0;
+                        }
                         return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
                             ? -1
                             : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
@@ -1526,6 +1538,10 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                     });
                 } else {
                     response.sort(function (a, b) {
+                        //a or b stream may be null
+                        if (!a || !b || !a.stream || !b.stream) {
+                            return 0;
+                        }
                         return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
                     });
                 }
