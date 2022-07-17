@@ -1553,6 +1553,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
             if (isFeatured) {
                 stream = response[i];
 
+                //stream may be null
                 if (!stream || !stream.stream) {
                     continue;
                 }
