@@ -34290,24 +34290,24 @@
                     break;
                 }
                 /* falls through */
-                case KEY_KEYBOARD_BACKSPACE:
-                case KEY_RETURN:
-                    Settings_DialoghandleKeyReturn();
-                    break;
-                case KEY_LEFT:
-                    Settings_DialoghandleKeyLeft();
-                    break;
-                case KEY_RIGHT:
-                    Settings_DialoghandleKeyRight();
-                    break;
-                case KEY_UP:
-                    if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
-                    break;
-                case KEY_DOWN:
-                    if (Settings_DialogPos < Settings_DialogValue.length - 1) Settings_DialogUpDown(1);
-                    break;
-                default:
-                    break;
+            case KEY_KEYBOARD_BACKSPACE:
+            case KEY_RETURN:
+                Settings_DialoghandleKeyReturn();
+                break;
+            case KEY_LEFT:
+                Settings_DialoghandleKeyLeft();
+                break;
+            case KEY_RIGHT:
+                Settings_DialoghandleKeyRight();
+                break;
+            case KEY_UP:
+                if (Settings_DialogPos > 0) Settings_DialogUpDown(-1);
+                break;
+            case KEY_DOWN:
+                if (Settings_DialogPos < Settings_DialogValue.length - 1) Settings_DialogUpDown(1);
+                break;
+            default:
+                break;
         }
     }
 
@@ -38091,6 +38091,7 @@
                 if (isFeatured) {
                     stream = response[i];
 
+                    //stream or stream.stream may be null
                     if (!stream || !stream.stream) {
                         continue;
                     }
