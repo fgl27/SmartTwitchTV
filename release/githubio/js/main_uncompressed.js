@@ -38241,6 +38241,9 @@
 
             if (isUserGames) {
                 response.sort(function(a, b) {
+                    if (!a || !b) {
+                        return 0;
+                    }
                     return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
                 });
             }
