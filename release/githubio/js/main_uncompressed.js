@@ -39063,10 +39063,14 @@
 
         for (i; i < len; i++) {
             //Try  case sensitive first as some prefixes start the same, but some users type without carrying about case
-            if (Main_startsWith(message, cheerPrefixes[i])) return getCheer(cheerPrefixes[i], parseInt(message.slice(cheerPrefixes[i].length), 10), chat_number);
+            if (Main_startsWith(message, cheerPrefixes[i])) {
+                return getCheer(cheerPrefixes[i], parseInt(message.slice(cheerPrefixes[i].length), 10), chat_number);
+            }
 
             //Try  case insensitive after
-            if (Main_startsWith(tokenLower, cheerPrefixes[i].toLowerCase())) index = i;
+            if (Main_startsWith(tokenLower, cheerPrefixes[i].toLowerCase())) {
+                index = i;
+            }
         }
 
         return index > -1 ? getCheer(cheerPrefixes[index], parseInt(tokenLower.slice(cheerPrefixes[index].toLowerCase().length), 10), chat_number) : null;
