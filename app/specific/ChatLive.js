@@ -688,6 +688,9 @@ function ChatLive_loadEmotesseven_tv(data, chat_number, isGlobal) {
 
     try {
         data.forEach(function (emote) {
+            if (!emote.urls || !emote.urls.length) {
+                return;
+            }
             url = emote.urls[3][1];
             chat_div = emoteTemplate(url);
             id = emote.name + emote.id;
