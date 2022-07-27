@@ -4324,9 +4324,13 @@
         VersionBase: '3.0',
         publishVersionCode: 335, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/335/SmartTV_twitch_3_0_335.apk',
-        WebVersion: 'July 16 2022',
-        WebTag: 615, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'July 27 2022',
+        WebTag: 616, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version July 27 2022',
+                changes: ['Fixes issue when using the app without a user']
+            },
+            {
                 title: 'Web Version July 16 2022 and Apk Version 3.0.335 and up',
                 changes: ['Update app Player to latest version', 'General improves']
             },
@@ -8456,10 +8460,12 @@
             ChatLive_loadChatters(chat_number, Chat_Id[chat_number]);
         }
 
-        ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
+        if (ChatLive_User_Set) {
+            ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
 
-        ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
-        ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
+            ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
+            ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
+        }
     }
 
     function ChatLive_Switch() {
