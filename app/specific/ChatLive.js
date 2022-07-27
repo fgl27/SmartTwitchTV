@@ -130,7 +130,7 @@ function ChatLive_Init(chat_number, SkipClear) {
     }
 
     if (ChatLive_User_Set) {
-        ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
+        ChatLive_loadGlobalEmotes(chat_number, Chat_Id[chat_number]);
 
         ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
         ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
@@ -399,18 +399,18 @@ function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
     }
 }
 
-function ChatLive_loadGloabalEmotes(chat_number, id) {
+function ChatLive_loadGlobalEmotes(chat_number, id) {
     if (!extraEmotesDone.GlobalTwitch) {
         extraEmotesDone.GlobalTwitch = {};
         var theUrl = Main_helix_api + 'chat/emotes/global';
 
-        BaseXmlHttpGet(theUrl, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
+        BaseXmlHttpGet(theUrl, ChatLive_loadGlobalEmotesSucess, noop_fun, chat_number, id, true);
     } else {
         ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
     }
 }
 
-function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
+function ChatLive_loadGlobalEmotesSucess(responseText, chat_number, chat_id) {
     ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
 }
 
