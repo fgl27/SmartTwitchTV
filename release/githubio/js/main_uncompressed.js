@@ -8461,7 +8461,7 @@
         }
 
         if (ChatLive_User_Set) {
-            ChatLive_loadGloabalEmotes(chat_number, Chat_Id[chat_number]);
+            ChatLive_loadGlobalEmotes(chat_number, Chat_Id[chat_number]);
 
             ChatLive_checkFallow(chat_number, Chat_Id[chat_number]);
             ChatLive_checkSub(chat_number, Chat_Id[chat_number]);
@@ -8730,18 +8730,18 @@
         }
     }
 
-    function ChatLive_loadGloabalEmotes(chat_number, id) {
+    function ChatLive_loadGlobalEmotes(chat_number, id) {
         if (!extraEmotesDone.GlobalTwitch) {
             extraEmotesDone.GlobalTwitch = {};
             var theUrl = Main_helix_api + 'chat/emotes/global';
 
-            BaseXmlHttpGet(theUrl, ChatLive_loadGloabalEmotesSucess, noop_fun, chat_number, id, true);
+            BaseXmlHttpGet(theUrl, ChatLive_loadGlobalEmotesSucess, noop_fun, chat_number, id, true);
         } else {
             ChatLive_SetTwitchEmotesSuccess(extraEmotesDone.GlobalTwitch);
         }
     }
 
-    function ChatLive_loadGloabalEmotesSucess(responseText, chat_number, chat_id) {
+    function ChatLive_loadGlobalEmotesSucess(responseText, chat_number, chat_id) {
         ChatLive_loadTwitchEmotesSucess(responseText, chat_number, chat_id, extraEmotesDone.GlobalTwitch);
     }
 
@@ -29870,6 +29870,9 @@
                 this.data = responseObj.data.user.followedGames.nodes;
 
                 this.data.sort(function(a, b) {
+                    if (!a || !b) {
+                        return 0;
+                    }
                     return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
                 });
 
@@ -29900,8 +29903,7 @@
                 lastData: '',
                 base_url: Main_helix_api + 'search/categories?query=',
                 set_url: function() {
-                    this.dataEnded = true;
-                    this.url = this.base_url + encodeURIComponent(Main_values.Search_data);
+                    this.url = this.base_url + encodeURIComponent(Main_values.Search_data) + '&first=' + Main_ItemsLimitMax + (this.cursor ? '&after=' + this.cursor : '');
                 },
                 label_init: function() {
                     if (!Main_values.gameSelected_IdOld) Main_values.gameSelected_IdOld = Main_values.Main_gameSelected_id;
@@ -29923,7 +29925,6 @@
         );
 
         ScreenObj[key] = Screens_assign(ScreenObj[key], Base_Game_obj);
-        ScreenObj[key].ItemsLimit = 100;
         ScreenObj[key].Set_Scroll();
     }
 
@@ -30027,6 +30028,9 @@
                 } else {
                     //sort
                     this.channelData.sort(function(a, b) {
+                        if (!a || !b) {
+                            return 0;
+                        }
                         return a.to_login < b.to_login ? -1 : a.to_login > b.to_login ? 1 : 0;
                     });
                     this.getFollowed = false;
@@ -30036,6 +30040,9 @@
                 var tempData = responseObj[this.object];
                 if (tempData) {
                     tempData.sort(function(a, b) {
+                        if (!a || !b) {
+                            return 0;
+                        }
                         return a.login < b.login ? -1 : a.login > b.login ? 1 : 0;
                     });
                 }
