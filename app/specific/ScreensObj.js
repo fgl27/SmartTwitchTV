@@ -2253,7 +2253,7 @@ function ScreensObj_FeaturedCellArray(cell) {
         cell.stream.title, //2
         cell.stream.game.displayName, //3
         Main_addCommas(cell.stream.viewersCount), //4
-        '[' + cell.stream.broadcaster.language + ']', //5
+        cell.stream.broadcaster.language ? '[' + cell.stream.broadcaster.language.toUpperCase() + ']' : '', //5
         cell.stream.broadcaster.login, //6
         cell.stream.id.toString(), //7 broadcast id
         Main_is_rerun(cell.stream.type), //8
