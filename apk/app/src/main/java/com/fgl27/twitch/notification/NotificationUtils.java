@@ -391,6 +391,10 @@ public final class NotificationUtils {
                 user_id = obj.get("user_id").getAsString();//Channel id
 
                 display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
+                //When stream comes online for the first time the display name may be and empty string
+                if (display_name.isEmpty()) {
+                    display_name = !obj.get("user_login").isJsonNull() ? obj.get("user_login").getAsString() : null;
+                }
 
                 if (display_name != null) {
 
