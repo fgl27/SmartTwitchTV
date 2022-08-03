@@ -838,7 +838,13 @@ public final class ChannelsUtils {
                         viewers = !obj.get("viewer_count").isJsonNull() ? obj.get("viewer_count").getAsInt() : 0;
                         StreamCreated_at = !obj.get("started_at").isJsonNull() ? obj.get("started_at").getAsString() : null;
                         title = !obj.get("title").isJsonNull() ? obj.get("title").getAsString() : null;
+
                         display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
+                        //When stream comes online for the first time the display name may be and empty string
+                        if (display_name != null && display_name.isEmpty()) {
+                            display_name = !obj.get("user_login").isJsonNull() ? obj.get("user_login").getAsString() : null;
+                        }
+
                         if (StreamCreated_at != null) {
 
                             date = input.parse(StreamCreated_at);
