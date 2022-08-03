@@ -841,7 +841,7 @@ public final class ChannelsUtils {
 
                         display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
                         //When stream comes online for the first time the display name may be and empty string
-                        if (display_name != null && display_name.isEmpty()) {
+                        if (display_name == null || display_name.isEmpty()) {
                             display_name = !obj.get("user_login").isJsonNull() ? obj.get("user_login").getAsString() : null;
                         }
 
