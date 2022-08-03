@@ -23773,6 +23773,7 @@
     function PlayVod_SetStart() {
         PlayVod_muted_segments_value = null;
         PlayVod_previews_clear();
+        PlayVod_get_preview_Url();
 
         PlayVod_updateStreamLogo();
         PlayVod_updateChapters();
@@ -23914,8 +23915,6 @@
 
             Play_CheckFollow(Main_values.Main_selectedChannel_id);
 
-            //TODO update this
-            PlayVod_previews_pre_start(null);
             PlayVod_muted_segments_value = response.muted_segments;
             PlayVod_muted_segments(PlayVod_muted_segments_value);
 
@@ -24970,6 +24969,33 @@
         PlayVod_jumpStart(position, Play_DurationSeconds);
         PlayVod_ProgressBaroffset = 2500;
         PlayVod_setHidePanel();
+    }
+
+    var previewUrl = '{"query":"{video(id:%x){seekPreviewsURL}}"}';
+
+    function PlayVod_get_preview_Url() {
+        FullxmlHttpGet(
+            PlayClip_BaseUrl,
+            Play_base_backup_headers_Array,
+            PlayVod_get_preview_UrlResult,
+            noop_fun,
+            0,
+            PlayClip_loadVodOffsetStartVodId,
+            'POST', //Method, null for get
+            previewUrl.replace('%x', Main_values.ChannelVod_vodId)
+        );
+    }
+
+    function PlayVod_get_preview_UrlResult(responseObj) {
+        if (PlayVod_isOn) {
+            if (responseObj.status === 200) {
+                var obj = JSON.parse(responseObj.responseText);
+
+                if (obj.data && obj.data.video && obj.data.video.seekPreviewsURL) {
+                    PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
+                }
+            }
+        }
     }
 
     var PlayVod_previews_url;
