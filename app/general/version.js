@@ -21,14 +21,14 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 336, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/336/SmartTV_twitch_3_0_336.apk',
+    publishVersionCode: 337, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/337/SmartTV_twitch_3_0_337.apk',
     WebVersion: 'August 03 2022',
-    WebTag: 616, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 617, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'August 03 2022 and Apk Version 3.0.336',
-            changes: ['Fix missing notification streamer name', 'Migrate Vod seek preview image to new Twitch API']
+            title: 'August 03 2022 and Apk Version 3.0.337',
+            changes: ['Fix sometimes missing streamer name on notification and home screen content', 'Migrate Vod seek preview image to new Twitch API']
         },
         {
             title: 'Web Version July 27 2022',
