@@ -6,7 +6,7 @@ ext.versions = [
         gradlePlugin               : '7.2.2',
 
         publishVersion             : '3.0.',
-        publishVersionCode         : 338,
+        publishVersionCode         : 339,
 
         tray                       : '0.12.0',
         leanback                   : '1.0.0',
