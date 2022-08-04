@@ -4322,13 +4322,13 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 338, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/338/SmartTV_twitch_3_0_338.apk',
+        publishVersionCode: 339, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/339/SmartTV_twitch_3_0_339.apk',
         WebVersion: 'August 03 2022',
         WebTag: 617, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'August 03 2022 and Apk Version 3.0.338',
-                changes: ['Fix sometimes missing streamer name on notification and home screen content', 'Migrate Vod seek preview image to new Twitch API']
+                title: 'August 03 2022 and Apk Version 3.0.338 and Up',
+                changes: ['Fix sometimes missing streamer name on notification and home screen content', 'Migrate Vod seek preview image to new Twitch API', 'General improves']
             },
             {
                 title: 'Web Version July 27 2022',
@@ -37732,7 +37732,8 @@
             for (var i = 0; i < data.length; i++) {
                 mapLogoPartner[data[i].id] = {
                     partner: data[i].broadcaster_type === 'partner',
-                    logo: data[i].profile_image_url
+                    logo: data[i].profile_image_url,
+                    display_name: data[i].display_name
                 };
             }
 
@@ -37794,6 +37795,9 @@
 
                 if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
                     UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
+                    if (!stream.user_name) {
+                        stream.user_name = mapLogoPartner[id].display_name;
+                    }
                     mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                     UserLiveFeed_PreloadImgs.push(mArray[0]);
 
