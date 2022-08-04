@@ -23767,7 +23767,7 @@
     function PlayVod_SetStart() {
         PlayVod_muted_segments_value = null;
         PlayVod_previews_clear();
-        PlayVod_get_preview_Url();
+        PlayVod_get_vod_extra_info();
 
         PlayVod_updateStreamLogo();
         PlayVod_updateChapters();
@@ -23851,9 +23851,11 @@
     }
 
     function PlayVod_UpdateGameInfo() {
-        var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
+        if (Play_data.data[3]) {
+            var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
 
-        BaseXmlHttpGet(theUrl, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
+            BaseXmlHttpGet(theUrl, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
+        }
     }
 
     function PlayVod_UpdateGameInfoSuccess(response) {
@@ -24965,13 +24967,13 @@
         PlayVod_setHidePanel();
     }
 
-    var previewUrl = '{"query":"{video(id:%x){seekPreviewsURL}}"}';
+    var previewUrl = '{"query":"{video(id:%x){game{displayName, id},seekPreviewsURL}}"}';
 
-    function PlayVod_get_preview_Url() {
+    function PlayVod_get_vod_extra_info() {
         FullxmlHttpGet(
             PlayClip_BaseUrl,
             Play_base_backup_headers_Array,
-            PlayVod_get_preview_UrlResult,
+            PlayVod_get_vod_extra_infoResult,
             noop_fun,
             0,
             PlayClip_loadVodOffsetStartVodId,
@@ -24980,13 +24982,25 @@
         );
     }
 
-    function PlayVod_get_preview_UrlResult(responseObj) {
+    function PlayVod_get_vod_extra_infoResult(responseObj) {
         if (PlayVod_isOn) {
             if (responseObj.status === 200) {
                 var obj = JSON.parse(responseObj.responseText);
 
-                if (obj.data && obj.data.video && obj.data.video.seekPreviewsURL) {
-                    PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
+                if (obj.data && obj.data.video) {
+                    if (obj.data.video.seekPreviewsURL) {
+                        PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
+                    }
+                    if (obj.data.video.game && !Play_data.data[3]) {
+                        Main_innerHTML('stream_info_game', STR_PLAYING + obj.data.video.game.displayName);
+
+                        PlayVod_VodGameID = obj.data.video.game.id;
+                        Play_data.data[18] = PlayVod_VodGameID;
+
+                        Play_data.data[3] = obj.data.video.game.displayName;
+                        Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+                        console.log(Play_data.data[3]);
+                    }
                 }
             }
         }
@@ -25264,6 +25278,9 @@
                 if (timeMs >= PlayVod_ChaptersArray[len].posMs) {
                     if (PlayVod_ChaptersArray[len].game) {
                         Main_innerHTML('stream_info_game', STR_PLAYING + PlayVod_ChaptersArray[len].game);
+
+                        PlayVod_VodGameID = PlayVod_ChaptersArray[len].gameId;
+                        Play_data.data[18] = PlayVod_VodGameID;
 
                         Play_data.data[3] = PlayVod_ChaptersArray[len].game;
                         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
