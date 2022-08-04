@@ -1155,7 +1155,8 @@ function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
         for (var i = 0; i < data.length; i++) {
             mapLogoPartner[data[i].id] = {
                 partner: data[i].broadcaster_type === 'partner',
-                logo: data[i].profile_image_url
+                logo: data[i].profile_image_url,
+                display_name: data[i].display_name
             };
         }
 
@@ -1217,6 +1218,9 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
 
             if (!UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[UserLiveFeedobj_UserLivePos][id] = itemsCount;
+                if (!stream.user_name) {
+                    stream.user_name = mapLogoPartner[id].display_name;
+                }
                 mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
