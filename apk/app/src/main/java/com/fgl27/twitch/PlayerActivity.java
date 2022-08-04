@@ -109,6 +109,8 @@ public class PlayerActivity extends Activity {
     private final String TAG = "STTV_PlayerActivity";
     private final Pattern TIME_NAME = Pattern.compile("time=([^\\s]+)");
 
+    private BroadcastReceiver mScreenOffReceiver = null;
+
     private final int[] keys = {//same order as Main_initClickDoc /smartTwitchTV/app/specific/Main.js
             KeyEvent.KEYCODE_DPAD_UP,//0
             KeyEvent.KEYCODE_DPAD_DOWN,//1
@@ -1648,26 +1650,32 @@ public class PlayerActivity extends Activity {
     private void registerScreenReceiver() {
         try {
             unRegisterScreenReceiver();
-            this.registerReceiver(screenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+            mScreenOffReceiver = new screenOffReceiver();
+            this.registerReceiver(mScreenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
         } catch (Exception ignored) {
         }
     }
 
     private void unRegisterScreenReceiver() {
         try {
-            unregisterReceiver(screenOffReceiver);
+            if (mScreenOffReceiver != null) unregisterReceiver(mScreenOffReceiver);
+            mScreenOffReceiver = null;
         } catch (Exception ignored) {
         }
     }
 
-    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
+    public class screenOffReceiver extends BroadcastReceiver {
+
         @Override
         public void onReceive(Context context, Intent intent) {
+
             if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
                 monStop();
             }
+
         }
-    };
+
+    }
 
     //This function is called when home key is pressed
     @Override
@@ -1679,6 +1687,7 @@ public class PlayerActivity extends Activity {
     private void monStop() {
         IsStopped = true;
         if (!WebviewLoaded) return;
+        unRegisterScreenReceiver();
 
         updateResumePosition(0);//VOD only uses mainPlayer
         for (int i = 0; i < PlayerAccount; i++) {
