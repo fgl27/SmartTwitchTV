@@ -98,6 +98,17 @@ public final class NotificationUtils {
 
     }
 
+    private static class LogoObj {
+        private final String logo;
+        private final String display_name;
+
+        private LogoObj(String logo, String display_name) {
+            this.logo = logo;
+            this.display_name = display_name;
+        }
+
+    }
+
     private static class NotifyList {
         private final boolean isGame;
         private final String notificationTitle;
@@ -247,8 +258,8 @@ public final class NotificationUtils {
         return HttpRequestSuccess ? StreamsResult : null;
     }
 
-    private static Map<String, String> GetStreamNotificationsLogo(JsonArray streams, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
-        Map<String, String> logoMap = new HashMap<>();
+    private static Map<String, LogoObj> GetStreamNotificationsLogo(JsonArray streams, String UserId, AppPreferences appPreferences, Boolean tryAgain) {
+        Map<String, LogoObj> logoMap = new HashMap<>();
 
         String randomImg = "?" + ThreadLocalRandom.current().nextInt(1, 1000000);
 
@@ -314,7 +325,12 @@ public final class NotificationUtils {
                                     if (obj.isJsonObject() && obj.has("profile_image_url") && !obj.get("profile_image_url").isJsonNull()) {//Prevent null img
 
                                         id = obj.get("id").getAsString();//Channel id
-                                        logoMap.put(id, obj.get("profile_image_url").getAsString() + randomImg);
+                                        logoMap.put(id,
+                                                new LogoObj(
+                                                        obj.get("profile_image_url").getAsString() + randomImg,
+                                                        obj.has("display_name") ? obj.get("display_name").getAsString() : null
+                                                )
+                                        );
 
                                     }
 
@@ -349,7 +365,7 @@ public final class NotificationUtils {
                                                ArrayList<NotifyList> result) {
 
         Map<String, StreamObj> currentLive = new HashMap<>();
-        Map<String, String> mapLogo = GetStreamNotificationsLogo(streams, UserId, appPreferences, true);
+        Map<String, LogoObj> mapLogo = GetStreamNotificationsLogo(streams, UserId, appPreferences, true);
         boolean mapEmpty = mapLogo.isEmpty();
 
         int StreamsSize = streams.size();
@@ -381,6 +397,7 @@ public final class NotificationUtils {
         boolean gameChange;
         boolean titleChange;
         StreamObj TempObj;
+        LogoObj currentLogo;
 
         try {
             //There is no need to check for obj.isJsonObject() && !obj.get("_id").isJsonNull() and etc here as was already checked before reaching here
@@ -389,9 +406,13 @@ public final class NotificationUtils {
                 obj = streams.get(i).getAsJsonObject();//Get the position in the follows array
                 id = obj.get("id").getAsString();//Broadcast id
                 user_id = obj.get("user_id").getAsString();//Channel id
+                currentLogo = !mapEmpty && mapLogo.containsKey(user_id) ? mapLogo.get(user_id) : null;
 
                 display_name = !obj.get("user_name").isJsonNull() ? obj.get("user_name").getAsString() : null;
-                //When stream comes online for the first time the display name may be and empty string
+                //When stream comes online in the first 1 to 3 minutes, the display name may be an empty string
+                if ((display_name == null || display_name.isEmpty()) && currentLogo != null) {
+                    display_name = currentLogo.display_name;
+                }
                 if (display_name == null || display_name.isEmpty()) {
                     display_name = !obj.get("user_login").isJsonNull() ? obj.get("user_login").getAsString() : null;
                 }
@@ -456,6 +477,7 @@ public final class NotificationUtils {
 
                     if (NotificationTitle != null) {
 
+
                         NotifyListResultAdd(
                                 new NotifyList(
                                         false,
@@ -463,8 +485,7 @@ public final class NotificationUtils {
                                         game,
                                         display_name,
                                         GetBitmap(
-                                                //!ChannelObj.get("logo").isJsonNull() ? ChannelObj.get("logo").getAsString() : Constants.LOGO_404
-                                                !mapEmpty && mapLogo.containsKey(user_id) ? mapLogo.get(user_id) : Constants.LOGO_404
+                                                currentLogo != null ? currentLogo.logo : Constants.LOGO_404
                                         ),
                                         title,
                                         isLive
