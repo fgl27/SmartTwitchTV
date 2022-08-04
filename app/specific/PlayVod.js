@@ -157,8 +157,6 @@ function PlayVod_Start() {
     } else {
         PlayVod_PosStart();
     }
-
-    PlayVod_UpdateGameInfo();
 }
 
 function PlayVod_SetStart() {
@@ -244,21 +242,6 @@ function PlayVod_PosStart() {
 
     Main_values.Play_WasPlaying = 2;
     Main_SaveValues();
-}
-
-function PlayVod_UpdateGameInfo() {
-    if (Play_data.data[3]) {
-        var theUrl = Main_helix_api + 'games?name=' + Play_data.data[3];
-
-        BaseXmlHttpGet(theUrl, PlayVod_UpdateGameInfoSuccess, noop_fun, null, null, true);
-    }
-}
-
-function PlayVod_UpdateGameInfoSuccess(response) {
-    response = JSON.parse(response);
-    if (response.data && response.data.length) {
-        PlayVod_VodGameID = response.data[0].id;
-    }
 }
 
 var PlayVod_updateVodInfoId;
@@ -1383,14 +1366,7 @@ function PlayVod_get_vod_extra_infoResult(responseObj) {
                     PlayVod_previews_pre_start(obj.data.video.seekPreviewsURL);
                 }
                 if (obj.data.video.game && !Play_data.data[3]) {
-                    Main_innerHTML('stream_info_game', STR_PLAYING + obj.data.video.game.displayName);
-
-                    PlayVod_VodGameID = obj.data.video.game.id;
-                    Play_data.data[18] = PlayVod_VodGameID;
-
-                    Play_data.data[3] = obj.data.video.game.displayName;
-                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
-                    console.log(Play_data.data[3]);
+                    PlayVod_UpdateGameInfoLabels(obj.data.video.game.id, obj.data.video.game.displayName);
                 }
             }
         }
@@ -1666,13 +1642,7 @@ function PlayVod_ChaptersSetGame(timeMs) {
         while (len--) {
             if (timeMs >= PlayVod_ChaptersArray[len].posMs) {
                 if (PlayVod_ChaptersArray[len].game) {
-                    Main_innerHTML('stream_info_game', STR_PLAYING + PlayVod_ChaptersArray[len].game);
-
-                    PlayVod_VodGameID = PlayVod_ChaptersArray[len].gameId;
-                    Play_data.data[18] = PlayVod_VodGameID;
-
-                    Play_data.data[3] = PlayVod_ChaptersArray[len].game;
-                    Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
+                    PlayVod_UpdateGameInfoLabels(PlayVod_ChaptersArray[len].gameId, PlayVod_ChaptersArray[len].game);
 
                     if (!Play_isPanelShowing() || Play_Panelcounter !== Play_controlsChapters) {
                         Play_controls[Play_controlsChapters].defaultValue = len;
@@ -1684,6 +1654,17 @@ function PlayVod_ChaptersSetGame(timeMs) {
                 break;
             }
         }
+    }
+}
+
+function PlayVod_UpdateGameInfoLabels(gameId, gameName) {
+    PlayVod_VodGameID = gameId;
+    Play_data.data[18] = gameId;
+
+    Play_data.data[3] = gameName;
+    if (gameName) {
+        Play_controls[Play_controlsGameCont].setLable(gameName);
+        Main_innerHTML('stream_info_game', STR_PLAYING + gameName);
     }
 }
 
