@@ -24,8 +24,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -432,6 +434,7 @@ public class PlayerActivity extends Activity {
 
             DataThreadPool.execute(() -> Tools.GetUpdateFile(getApplicationContext()));
 
+            registerScreenReceiver();
         }
     }
 
@@ -1499,6 +1502,8 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "onResume end");
 
         }
+
+        registerScreenReceiver();
     }
 
     private void SaveIntent(Intent intent) {
@@ -1639,6 +1644,30 @@ public class PlayerActivity extends Activity {
             }
         }
     }
+
+    private void registerScreenReceiver() {
+        try {
+            unRegisterScreenReceiver();
+            this.registerReceiver(screenOffReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void unRegisterScreenReceiver() {
+        try {
+            unregisterReceiver(screenOffReceiver);
+        } catch (Exception ignored) {
+        }
+    }
+
+    private final BroadcastReceiver screenOffReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Objects.equals(intent.getAction(), Intent.ACTION_SCREEN_OFF)) {
+                monStop();
+            }
+        }
+    };
 
     //This function is called when home key is pressed
     @Override
