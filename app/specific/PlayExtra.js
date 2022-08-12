@@ -50,11 +50,11 @@ function PlayExtra_KeyEnter() {
         PlayExtra_data.data = doc;
         PlayExtra_data.watching_time = new Date().getTime();
 
-        PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTING);
+        PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTED_BY);
 
         if (PlayExtra_data.isHost) {
-            PlayExtra_data.DisplaynameHost = PlayExtra_data.data[1];
-            PlayExtra_data.data[1] = PlayExtra_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+            PlayExtra_data.DisplayNameHost = PlayExtra_data.data[1];
+            PlayExtra_data.data[1] = PlayExtra_data.DisplayNameHost.split(STR_USER_HOSTED_BY)[0];
         }
 
         PlayExtra_PicturePicture = true;
@@ -298,7 +298,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
                     if (doSwitch) {
                         Main_values.Play_isHost = true;
 
-                        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                        Play_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
                         Play_data.data[6] = TargetHost.login;
                         Play_data.data[1] = TargetHost.displayName;
                         Play_data.data[14] = TargetHost.id;
@@ -307,7 +307,7 @@ function PlayExtra_CheckHost(responseObj, doSwitch, id) {
 
                         Play_AudioReset(0);
                     } else if (PlayExtra_PicturePicture) {
-                        PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                        PlayExtra_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
                         PlayExtra_data.data[6] = TargetHost.login;
                         PlayExtra_data.data[1] = TargetHost.displayName;
                         PlayExtra_data.data[14] = TargetHost.id;
@@ -361,7 +361,7 @@ function PlayExtra_ClearExtra() {
 function PlayExtra_UpdatePanel() {
     Main_innerHTML(
         'stream_info_pp_name0',
-        Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+        Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
     );
     if (Play_data.data[9]) {
         Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
@@ -376,7 +376,7 @@ function PlayExtra_UpdatePanel() {
     Main_innerHTML(
         'stream_info_pp_name1',
         Play_partnerIcon(
-            PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+            PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
             PlayExtra_data.data[10],
             0,
             PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
@@ -416,7 +416,7 @@ function PlayExtra_updateStreamLogoValues(responseText, key, id) {
             Main_innerHTML(
                 'stream_info_pp_name0',
                 Play_partnerIcon(
-                    Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+                    Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
                     Play_data.data[10],
                     0,
                     Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
@@ -432,7 +432,7 @@ function PlayExtra_updateStreamLogoValues(responseText, key, id) {
             Main_innerHTML(
                 'stream_info_pp_name1',
                 Play_partnerIcon(
-                    PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+                    PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
                     PlayExtra_data.data[10],
                     0,
                     PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',

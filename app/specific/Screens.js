@@ -2484,10 +2484,10 @@ function Screens_ThumbOptionStringSet(key) {
     Main_textContent('dialog_thumb_opt_val_2', '...');
 
     if (ScreenObj[key].screenType < 2) {
-        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
+        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTED_BY);
 
         if (Main_values.Play_isHost) {
-            Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
+            Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTED_BY)[0]);
         } else Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1]);
     } else if (ScreenObj[key].screenType === 2) {
         Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
@@ -2514,7 +2514,7 @@ function Screens_ThumbOptionStringSet(key) {
 function Screens_ThumbUpdateGameInfo(id) {
     var theUrl = Main_helix_api + 'games?id=' + id;
 
-    BaseXmlHttpGet(theUrl,  Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
+    BaseXmlHttpGet(theUrl, Screens_ThumbUpdateGameInfoSuccess, noop_fun, null, null, true);
 }
 
 function Screens_ThumbUpdateGameInfoSuccess(response) {
@@ -2854,10 +2854,10 @@ function Screens_OpenChannel(key) {
     if (ScreenObj[key].screenType < 2) {
         Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
 
-        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
+        Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTED_BY);
 
         if (Main_values.Play_isHost) {
-            Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTING)[1];
+            Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTED_BY)[0];
         } else Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
     } else {
         Main_values.Main_selectedChannel_id = Screens_values_Play_data[2];

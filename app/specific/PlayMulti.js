@@ -268,7 +268,7 @@ function Play_MultiStartPrestart(position) {
             'MultiStream',
             Play_MultiArray[position].data[6],
             Play_MultiArray[position].data[3],
-            !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
+            !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTED_BY) ? Play_MultiArray[position].data[15] : 'HOSTING',
             UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
         );
     }
@@ -554,11 +554,11 @@ function Play_MultiInfoReset(pos) {
 }
 
 function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title, id) {
-    Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTING);
+    Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTED_BY);
 
     if (Play_MultiArray[pos].isHost) {
-        Play_MultiArray[pos].DisplaynameHost = displayname;
-        Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTING)[1];
+        Play_MultiArray[pos].DisplayNameHost = displayname;
+        Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTED_BY)[0];
         displayname = Play_MultiArray[pos].data[1];
     }
 
@@ -645,7 +645,7 @@ function Play_MultiSetUpdateDialog(obj) {
         Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
     }
 
-    Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]);
+    Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTED_BY) ? obj[1].split(STR_USER_HOSTED_BY)[0] : obj[1]);
 
     if (obj[9]) {
         Main_getElementById('stream_dialog_multiimg-1').src = obj[9];

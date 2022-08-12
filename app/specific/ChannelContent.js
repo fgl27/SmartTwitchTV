@@ -179,12 +179,11 @@ function ChannelContent_GetStreamerInfoSuccess(responseText) {
         ChannelContent_description = channel.description;
         Main_values.Main_selectedChannelLogo = channel.profile_image_url;
         Main_values.Main_selectedChannelPartner = channel.broadcaster_type;
-    
+
         ChannelContent_loadDataSuccess();
     } else {
         ChannelContent_GetStreamerInfoError();
     }
-  
 }
 
 function ChannelContent_GetStreamerInfoError() {
@@ -235,7 +234,7 @@ function ChannelContent_loadDataSuccess() {
         var stream = ChannelContent_responseText[0];
 
         if (ChannelContent_TargetId !== undefined) {
-            stream.user_name = Main_values.Main_selectedChannelDisplayname + STR_USER_HOSTING + stream.user_name;
+            stream.user_name = stream.user_name + STR_USER_HOSTED_BY + Main_values.Main_selectedChannelDisplayname;
         }
 
         ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
@@ -428,11 +427,11 @@ function ChannelContent_keyEnter() {
             Main_values_Play_data = Main_Slice(ChannelContent_DataObj);
 
             Play_data.data = Main_values_Play_data;
-            Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+            Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTED_BY);
 
             if (Main_values.Play_isHost) {
-                Play_data.DisplaynameHost = Play_data.data[1];
-                Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+                Play_data.DisplayNameHost = Play_data.data[1];
+                Play_data.data[1] = Play_data.DisplayNameHost.split(STR_USER_HOSTED_BY)[0];
                 Play_data.data[14] = ChannelContent_TargetId;
             } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 

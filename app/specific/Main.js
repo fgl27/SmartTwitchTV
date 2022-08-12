@@ -1410,11 +1410,11 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
         }
     }
 
-    isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+    isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTED_BY);
     Main_values.Play_isHost = isHosting;
 
     if (Main_values.Play_isHost) {
-        Play_data.DisplaynameHost = Play_data.data[1];
+        Play_data.DisplayNameHost = Play_data.data[1];
         Play_data.data[1] = Play_data.data[15];
     }
 

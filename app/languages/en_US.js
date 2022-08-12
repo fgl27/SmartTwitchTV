@@ -124,6 +124,7 @@ function en_USLang() {
     STR_USER_REMOVE = 'Remove User';
     STR_USER_ERROR = "User doesn't exist";
     STR_USER_HOSTING = 'hosting';
+    STR_USER_HOSTED_BY = 'hosted by';
     STR_USER_SET = 'already set';
     STR_USER_MAKE_ONE = 'Switch to';
     STR_USER_NUMBER_ONE = 'First user can (when providing a key) follow and see live channels feed outside of the user screen';

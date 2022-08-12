@@ -803,7 +803,7 @@ function Play_EndTextsSetHasLive() {
 }
 
 function Play_OpenHost() {
-    Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.displayName;
+    Play_data.DisplayNameHost = Play_TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
     Play_data.data[6] = Play_TargetHost.login;
     Play_data.data[1] = Play_TargetHost.displayName;
     Play_PreshutdownStream(false);
@@ -2605,7 +2605,7 @@ function Play_MakeControls() {
                     'MultiStream',
                     Play_MultiArray[0].data[6],
                     Play_MultiArray[0].data[3],
-                    !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTING) ? Play_MultiArray[0].data[15] : 'HOSTING'
+                    !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTED_BY) ? Play_MultiArray[0].data[15] : 'HOSTING'
                 );
             } else {
                 OSInterface_DisableMultiStream();

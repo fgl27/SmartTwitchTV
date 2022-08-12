@@ -497,7 +497,7 @@ function Play_UpdateMainStreamDiv() {
     Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML(
         'stream_info_name',
-        Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+        Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
     );
     Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
     Main_innerHTML('stream_live_viewers', STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]));
@@ -642,7 +642,7 @@ function Play_updateStreamLogoValues(responseText, key, id) {
         Play_data.data[10] = objData.broadcaster_type === 'partner';
         Main_innerHTML(
             'stream_info_name',
-            Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+            Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
         );
 
         Play_data.data[9] = objData.profile_image_url;

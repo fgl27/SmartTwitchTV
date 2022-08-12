@@ -119,6 +119,7 @@ function pt_BRLang() {
     STR_USER_REMOVE = 'Remover usuário';
     STR_USER_ERROR = 'Usuário não existe';
     STR_USER_HOSTING = 'host';
+    STR_USER_HOSTED_BY = 'host por';
     STR_USER_SET = 'já definido';
     STR_USER_MAKE_ONE = 'Mudar para';
     STR_USER_NUMBER_ONE = 'O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário';
