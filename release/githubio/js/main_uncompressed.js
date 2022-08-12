@@ -94,6 +94,7 @@
     var STR_USER_REMOVE;
     var STR_USER_ERROR;
     var STR_USER_HOSTING;
+    var STR_USER_HOSTED_BY;
     var STR_USER_SET;
     var STR_USER_MAKE_ONE;
     var STR_USER_NUMBER_ONE;
@@ -779,6 +780,7 @@
         //Strings that are used between others strings
         STR_FOR_THIS = STR_SPACE + STR_FOR_THIS + STR_SPACE;
         STR_USER_HOSTING = STR_SPACE + STR_USER_HOSTING + STR_SPACE;
+        STR_USER_HOSTED_BY = STR_SPACE + STR_USER_HOSTED_BY + STR_SPACE;
         STR_JUMP_T0 = STR_SPACE + STR_JUMP_T0 + STR_SPACE;
         STR_LATEST_VERSION = STR_SPACE + STR_LATEST_VERSION + STR_SPACE;
         STR_OAUTH_WRONG2 = STR_SPACE + STR_OAUTH_WRONG2 + STR_SPACE;
@@ -1298,6 +1300,7 @@
         STR_USER_REMOVE = 'Remove User';
         STR_USER_ERROR = "User doesn't exist";
         STR_USER_HOSTING = 'hosting';
+        STR_USER_HOSTED_BY = 'hosted by';
         STR_USER_SET = 'already set';
         STR_USER_MAKE_ONE = 'Switch to';
         STR_USER_NUMBER_ONE = 'First user can (when providing a key) follow and see live channels feed outside of the user screen';
@@ -2624,6 +2627,7 @@
         STR_USER_REMOVE = 'Remover usuário';
         STR_USER_ERROR = 'Usuário não existe';
         STR_USER_HOSTING = 'host';
+        STR_USER_HOSTED_BY = 'host por';
         STR_USER_SET = 'já definido';
         STR_USER_MAKE_ONE = 'Mudar para';
         STR_USER_NUMBER_ONE = 'O primeiro usuário pode seguir (ao fornecer uma chave) e ver o feed dos canais ao vivo fora da tela do usuário';
@@ -6858,7 +6862,6 @@
         } else {
             ChannelContent_GetStreamerInfoError();
         }
-
     }
 
     function ChannelContent_GetStreamerInfoError() {
@@ -6909,7 +6912,7 @@
             var stream = ChannelContent_responseText[0];
 
             if (ChannelContent_TargetId !== undefined) {
-                stream.user_name = Main_values.Main_selectedChannelDisplayname + STR_USER_HOSTING + stream.user_name;
+                stream.user_name = stream.user_name + STR_USER_HOSTED_BY + Main_values.Main_selectedChannelDisplayname;
             }
 
             ChannelContent_createCell(ScreensObj_LiveCellArray(stream));
@@ -7102,11 +7105,11 @@
                 Main_values_Play_data = Main_Slice(ChannelContent_DataObj);
 
                 Play_data.data = Main_values_Play_data;
-                Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+                Main_values.Play_isHost = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTED_BY);
 
                 if (Main_values.Play_isHost) {
-                    Play_data.DisplaynameHost = Play_data.data[1];
-                    Play_data.data[1] = Play_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+                    Play_data.DisplayNameHost = Play_data.data[1];
+                    Play_data.data[1] = Play_data.DisplayNameHost.split(STR_USER_HOSTED_BY)[0];
                     Play_data.data[14] = ChannelContent_TargetId;
                 } else Play_data.data[14] = Main_values.Main_selectedChannel_id;
 
@@ -12223,11 +12226,11 @@
             }
         }
 
-        isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTING);
+        isHosting = Main_A_includes_B(Play_data.data[1], STR_USER_HOSTED_BY);
         Main_values.Play_isHost = isHosting;
 
         if (Main_values.Play_isHost) {
-            Play_data.DisplaynameHost = Play_data.data[1];
+            Play_data.DisplayNameHost = Play_data.data[1];
             Play_data.data[1] = Play_data.data[15];
         }
 
@@ -16986,7 +16989,7 @@
     }
 
     function Play_OpenHost() {
-        Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + Play_TargetHost.displayName;
+        Play_data.DisplayNameHost = Play_TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
         Play_data.data[6] = Play_TargetHost.login;
         Play_data.data[1] = Play_TargetHost.displayName;
         Play_PreshutdownStream(false);
@@ -18790,7 +18793,7 @@
                         'MultiStream',
                         Play_MultiArray[0].data[6],
                         Play_MultiArray[0].data[3],
-                        !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTING) ? Play_MultiArray[0].data[15] : 'HOSTING'
+                        !Main_A_includes_B(Play_MultiArray[0].data[1], STR_USER_HOSTED_BY) ? Play_MultiArray[0].data[15] : 'HOSTING'
                     );
                 } else {
                     OSInterface_DisableMultiStream();
@@ -20470,11 +20473,11 @@
             PlayExtra_data.data = doc;
             PlayExtra_data.watching_time = new Date().getTime();
 
-            PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTING);
+            PlayExtra_data.isHost = Main_A_includes_B(PlayExtra_data.data[1], STR_USER_HOSTED_BY);
 
             if (PlayExtra_data.isHost) {
-                PlayExtra_data.DisplaynameHost = PlayExtra_data.data[1];
-                PlayExtra_data.data[1] = PlayExtra_data.DisplaynameHost.split(STR_USER_HOSTING)[1];
+                PlayExtra_data.DisplayNameHost = PlayExtra_data.data[1];
+                PlayExtra_data.data[1] = PlayExtra_data.DisplayNameHost.split(STR_USER_HOSTED_BY)[0];
             }
 
             PlayExtra_PicturePicture = true;
@@ -20720,7 +20723,7 @@
                         if (doSwitch) {
                             Main_values.Play_isHost = true;
 
-                            Play_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                            Play_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
                             Play_data.data[6] = TargetHost.login;
                             Play_data.data[1] = TargetHost.displayName;
                             Play_data.data[14] = TargetHost.id;
@@ -20729,7 +20732,7 @@
 
                             Play_AudioReset(0);
                         } else if (PlayExtra_PicturePicture) {
-                            PlayExtra_data.DisplaynameHost = Play_data.data[1] + STR_USER_HOSTING + TargetHost.displayName;
+                            PlayExtra_data.DisplayNameHost = TargetHost.displayName + STR_USER_HOSTED_BY + Play_data.data[1];
                             PlayExtra_data.data[6] = TargetHost.login;
                             PlayExtra_data.data[1] = TargetHost.displayName;
                             PlayExtra_data.data[14] = TargetHost.id;
@@ -20783,7 +20786,7 @@
     function PlayExtra_UpdatePanel() {
         Main_innerHTML(
             'stream_info_pp_name0',
-            Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+            Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
         );
         if (Play_data.data[9]) {
             Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
@@ -20798,7 +20801,7 @@
         Main_innerHTML(
             'stream_info_pp_name1',
             Play_partnerIcon(
-                PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+                PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
                 PlayExtra_data.data[10],
                 0,
                 PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
@@ -20839,7 +20842,7 @@
                 Main_innerHTML(
                     'stream_info_pp_name0',
                     Play_partnerIcon(
-                        Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1],
+                        Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
                         Play_data.data[10],
                         0,
                         Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
@@ -20855,7 +20858,7 @@
                 Main_innerHTML(
                     'stream_info_pp_name1',
                     Play_partnerIcon(
-                        PlayExtra_data.isHost ? PlayExtra_data.DisplaynameHost : PlayExtra_data.data[1],
+                        PlayExtra_data.isHost ? PlayExtra_data.DisplayNameHost : PlayExtra_data.data[1],
                         PlayExtra_data.data[10],
                         0,
                         PlayExtra_data.data[5] ? '[' + PlayExtra_data.data[5].split('[')[1] : '',
@@ -21381,7 +21384,7 @@
         Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
         Main_innerHTML(
             'stream_info_name',
-            Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+            Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
         );
         Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
         Main_innerHTML('stream_live_viewers', STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]));
@@ -21528,7 +21531,7 @@
             Play_data.data[10] = objData.broadcaster_type === 'partner';
             Main_innerHTML(
                 'stream_info_name',
-                Play_partnerIcon(Play_data.isHost ? Play_data.DisplaynameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+                Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
             );
 
             Play_data.data[9] = objData.profile_image_url;
@@ -23130,7 +23133,7 @@
                 'MultiStream',
                 Play_MultiArray[position].data[6],
                 Play_MultiArray[position].data[3],
-                !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTING) ? Play_MultiArray[position].data[15] : 'HOSTING',
+                !Main_A_includes_B(Play_MultiArray[position].data[1], STR_USER_HOSTED_BY) ? Play_MultiArray[position].data[15] : 'HOSTING',
                 UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
             );
         }
@@ -23416,11 +23419,11 @@
     }
 
     function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title, id) {
-        Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTING);
+        Play_MultiArray[pos].isHost = Main_A_includes_B(displayname, STR_USER_HOSTED_BY);
 
         if (Play_MultiArray[pos].isHost) {
-            Play_MultiArray[pos].DisplaynameHost = displayname;
-            Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTING)[1];
+            Play_MultiArray[pos].DisplayNameHost = displayname;
+            Play_MultiArray[pos].data[1] = displayname.split(STR_USER_HOSTED_BY)[0];
             displayname = Play_MultiArray[pos].data[1];
         }
 
@@ -23508,7 +23511,7 @@
             Main_innerHTML('stream_dialog_multi_title' + extraText + i, twemoji.parse(Play_MultiArray[i].data[2]));
         }
 
-        Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTING) ? obj[1].split(STR_USER_HOSTING)[1] : obj[1]);
+        Main_textContent('stream_dialog_multi_name-1', Main_A_includes_B(obj[1], STR_USER_HOSTED_BY) ? obj[1].split(STR_USER_HOSTED_BY)[0] : obj[1]);
 
         if (obj[9]) {
             Main_getElementById('stream_dialog_multiimg-1').src = obj[9];
@@ -27828,10 +27831,10 @@
         Main_textContent('dialog_thumb_opt_val_2', '...');
 
         if (ScreenObj[key].screenType < 2) {
-            Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
+            Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTED_BY);
 
             if (Main_values.Play_isHost) {
-                Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTING)[1]);
+                Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1].split(STR_USER_HOSTED_BY)[0]);
             } else Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[1]);
         } else if (ScreenObj[key].screenType === 2) {
             Main_textContent('dialog_thumb_opt_val_0', Screens_values_Play_data[4]);
@@ -28199,10 +28202,10 @@
         if (ScreenObj[key].screenType < 2) {
             Main_values.Main_selectedChannel_id = Screens_values_Play_data[14];
 
-            Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTING);
+            Main_values.Play_isHost = Main_A_includes_B(Screens_values_Play_data[1], STR_USER_HOSTED_BY);
 
             if (Main_values.Play_isHost) {
-                Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTING)[1];
+                Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1].split(STR_USER_HOSTED_BY)[0];
             } else Main_values.Main_selectedChannelDisplayname = Screens_values_Play_data[1];
         } else {
             Main_values.Main_selectedChannel_id = Screens_values_Play_data[2];
