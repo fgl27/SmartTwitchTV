@@ -21176,13 +21176,13 @@
             callback();
             return;
         } else {
-            error += Play_CheckIfIsLiveGetEror(response, isVod);
+            error += Play_CheckIfIsLiveGetError(response, isVod);
         }
 
         Play_CheckIfIsLiveStartFail(error, 2000, callbackError);
     }
 
-    function Play_CheckIfIsLiveGetEror(response, isVod) {
+    function Play_CheckIfIsLiveGetError(response, isVod) {
         var error;
 
         if (response.status === 1) {
@@ -26648,15 +26648,13 @@
         } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
             var index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
-            if (index > -1) {
-                if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
-                    error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-                }
+            if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
             } else {
                 error += STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
             }
         } else {
-            error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
+            error += Play_CheckIfIsLiveGetError(StreamDataObj, ScreenObj[x].screenType === 1);
         }
 
         Screens_LoadPreviewWarn(error, x, 4000);
@@ -36181,7 +36179,7 @@
 
                     return;
                 } else {
-                    error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
+                    error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetError(StreamDataObj, isVod);
                 }
 
                 Play_showWarningMidleDialog(error, 0);
