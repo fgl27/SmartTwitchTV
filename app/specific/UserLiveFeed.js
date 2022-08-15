@@ -868,7 +868,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
 
                 return;
             } else {
-                error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetEror(StreamDataObj, isVod);
+                error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetError(StreamDataObj, isVod);
             }
 
             Play_showWarningMidleDialog(error, 0);

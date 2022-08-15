@@ -1312,7 +1312,7 @@ function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x)
             error += STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
         }
     } else {
-        error += Play_CheckIfIsLiveGetEror(StreamDataObj, ScreenObj[x].screenType === 1);
+        error += Play_CheckIfIsLiveGetError(StreamDataObj, ScreenObj[x].screenType === 1);
     }
 
     Screens_LoadPreviewWarn(error, x, 4000);

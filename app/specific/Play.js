@@ -289,13 +289,13 @@ function Play_CheckIfIsLiveResultCheck(response, responseObj, error, isVod, call
         callback();
         return;
     } else {
-        error += Play_CheckIfIsLiveGetEror(response, isVod);
+        error += Play_CheckIfIsLiveGetError(response, isVod);
     }
 
     Play_CheckIfIsLiveStartFail(error, 2000, callbackError);
 }
 
-function Play_CheckIfIsLiveGetEror(response, isVod) {
+function Play_CheckIfIsLiveGetError(response, isVod) {
     var error;
 
     if (response.status === 1) {
