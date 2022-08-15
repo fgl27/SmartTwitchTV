@@ -1304,10 +1304,8 @@ function Screens_LoadPreviewResultError(UserIsSet, StreamInfo, StreamDataObj, x)
     } else if (ScreenObj[x].screen === Main_HistoryLive && StreamDataObj.status !== 1 && StreamDataObj.status !== 403) {
         var index = UserIsSet ? Main_history_Exist('live', StreamInfo[7]) : -1;
 
-        if (index > -1) {
-            if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
-                error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
-            }
+        if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
+            error = STR_PREVIEW_ERROR_LOAD + STR_SPACE_HTML + 'VOD' + STR_PREVIEW_ERROR_LINK + STR_PREVIEW_VOD_DELETED;
         } else {
             error += STR_LIVE + STR_SPACE_HTML + STR_IS_OFFLINE;
         }
