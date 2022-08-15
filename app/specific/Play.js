@@ -754,9 +754,7 @@ function Play_loadDataResultEnd(responseObj) {
     Play_loadDataErrorFinish();
 }
 
-function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory, PreventcleanQuailities) {
-    UserLiveFeed_Hide(PreventcleanQuailities);
-
+function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory) {
     if (Play_EndDialogEnter === 2) PlayVod_PreshutdownStream(true);
     else if (Play_EndDialogEnter === 3) {
         PlayClip_PreshutdownStream(false);
