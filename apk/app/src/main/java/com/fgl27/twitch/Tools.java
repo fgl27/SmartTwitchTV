@@ -232,13 +232,13 @@ public final class Tools {
         return null;
     }
 
-    private static String getStreamUrl(String hls_url, String StreamSig, String StreamToken, long checkResult, int Timeout, Boolean useProxy) throws Exception {
+    private static String getStreamUrl(String hls_url, String proxy_url, String StreamSig, String StreamToken, long checkResult, int Timeout, Boolean useProxy) throws Exception {
         ResponseObj response;
         int status;
 
         String url = String.format(
                 Locale.US,
-                hls_url,
+                useProxy ? proxy_url : hls_url,
                 URLEncoder.encode(StreamToken, "UTF-8"),
                 StreamSig,
                 ThreadLocalRandom.current().nextInt(1, 100000)
@@ -254,6 +254,11 @@ public final class Tools {
         if (response != null) {
             status = response.status;
 
+            //fallback from proxy service
+            if (useProxy && status != 200) {
+                return getStreamUrl(hls_url, proxy_url, StreamSig, StreamToken, checkResult, Timeout, false);
+            }
+
             //404 = off line
             //403 = forbidden access
             //410 = api v3 is gone use v5 bug
@@ -266,8 +271,9 @@ public final class Tools {
                                 checkResult
                         )
                 );
-            } else if (status == 403 || status == 404 || status == 410)
+            } else if (status == 403 || status == 404 || status == 410) {
                 return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
+            }
 
         }
 
@@ -276,11 +282,9 @@ public final class Tools {
 
     //NullPointerException some time from token isJsonNull must prevent but throws anyway
     //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, String ping_url, long checkResult, int Timeout, String dataProp, String postMessage, boolean useProxy) throws Exception {
-
-
+    static String getStreamData(String token_url, String hls_url, String proxy_url, String ping_url, long checkResult, int Timeout, String dataProp, String postMessage, boolean useProxy) throws Exception {
         if (useProxy) {
-            //Test a ping to proxy to check access and availability
+            //Test a ping to proxy to check access and availability of the service
             ResponseObj ping = Internal_MethodUrl(ping_url, Timeout, null, null, 0, StreamDataProxyHeaders);
 
             if (ping == null || ping.status != 200) {
@@ -298,7 +302,7 @@ public final class Tools {
 
         //get Stream playlist url
         if (tokenObj.StreamSig != null && tokenObj.StreamToken != null) {
-            return getStreamUrl(hls_url, tokenObj.StreamSig, tokenObj.StreamToken, checkResult, Timeout, useProxy);
+            return getStreamUrl(hls_url, proxy_url, tokenObj.StreamSig, tokenObj.StreamToken, checkResult, Timeout, useProxy);
         }
 
         return null;

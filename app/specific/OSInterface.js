@@ -123,9 +123,21 @@ function OSInterface_SetQuality(position) {
 function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
     //TODO remove this after some app updates
     try {
-        Android.getStreamDataAsync(token_url, hls_url, proxy_ping_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        Android.getStreamDataAsync(
+            token_url,
+            (isVod ? '' : Play_original_live_links) + hls_url,
+            Play_live_ttv_lol_links + hls_url,
+            proxy_ping_url,
+            callback,
+            checkResult,
+            position,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST,
+            !isVod && use_proxy
+        );
     } catch (e) {
-        Android.getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        Android.getStreamDataAsync(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
     }
 }
 
@@ -140,9 +152,21 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
     //TODO remove this after some app updates
     try {
-        Android.CheckIfIsLiveFeed(token_url, hls_url, proxy_ping_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        Android.CheckIfIsLiveFeed(
+            token_url,
+            (isVod ? '' : Play_original_live_links) + hls_url,
+            Play_live_ttv_lol_links + hls_url,
+            proxy_ping_url,
+            callback,
+            x,
+            y,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST,
+            !isVod && use_proxy
+        );
     } catch (e) {
-        Android.CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        Android.CheckIfIsLiveFeed(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
     }
 }
 
@@ -156,9 +180,18 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
 function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
     //TODO remove this after some app updates
     try {
-        return Android.getStreamData(token_url, hls_url, proxy_ping_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        return Android.getStreamData(
+            token_url,
+            (isVod ? '' : Play_original_live_links) + hls_url,
+            Play_live_ttv_lol_links + hls_url,
+            proxy_ping_url,
+            Timeout,
+            isVod ? Play_vod_token_prop : Play_live_token_prop,
+            POST,
+            !isVod && use_proxy
+        );
     } catch (e) {
-        return Android.getStreamData(token_url, hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        return Android.getStreamData(token_url, (isVod ? '' : Play_original_live_links) + hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
     }
 }
 

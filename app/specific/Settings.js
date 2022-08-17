@@ -751,7 +751,7 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    //div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+    div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
@@ -1187,8 +1187,6 @@ function Settings_SetDefault(position) {
 
 function Settings_set_TTV_LOL() {
     use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
-
-    Play_live_links = use_proxy ? Play_live_ttvlol_links : Play_original_live_links;
 }
 
 function Settings_check_sidePannelFade() {

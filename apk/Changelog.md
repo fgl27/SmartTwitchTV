@@ -9,6 +9,11 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+August 17 2022 and Apk Version 3.0.340 and Up
+==============
+
+* Add TTV LOL proxy to setting player options (disabled by default), Internet censorship and related proxy
+
 August 03 2022 and Apk Version 3.0.338 and Up
 ==============
 

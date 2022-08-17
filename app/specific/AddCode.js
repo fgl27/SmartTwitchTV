@@ -550,15 +550,14 @@ var Play_Headers;
 //Live
 var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token = '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
-var Play_base_live = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
+var Play_live_links = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
 
-var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/' + Play_base_live;
+var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
-var Play_live_ttvlol_links = 'https://api.ttv.lol/playlist/' + Play_base_live;
+var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
 var proxy_ping_url = 'https://api.ttv.lol/ping';
 
-var Play_live_links = Play_original_live_links;
 var use_proxy = false;
 
 //VOD

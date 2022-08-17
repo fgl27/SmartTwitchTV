@@ -3040,7 +3040,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void CheckIfIsLiveFeed(String token_url, String hls_url, String ping_url, String callback, int x, int y,
+        public void CheckIfIsLiveFeed(String token_url, String hls_url, String proxy_url, String ping_url, String callback, int x, int y,
                                       int Timeout, String dataProp, String postMessage, boolean useProxy) {
 
             PreviewFeedResult[x][y] = null;
@@ -3049,7 +3049,7 @@ public class PlayerActivity extends Activity {
                 DataThreadPool.execute(() ->
                         {
                             try {
-                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, ping_url, 0L, Timeout, dataProp, postMessage, useProxy);
+                                PreviewFeedResult[x][y] = Tools.getStreamData(token_url, hls_url, proxy_url, ping_url, 0L, Timeout, dataProp, postMessage, useProxy);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "CheckIfIsLiveFeed Exception ", e);
                             }
@@ -3079,9 +3079,9 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public String getStreamData(String token_url, String hls_url, String ping_url, int Timeout, String dataProp, String postMessage, boolean useProxy) {
+        public String getStreamData(String token_url, String hls_url, String proxy_url, String ping_url, int Timeout, String dataProp, String postMessage, boolean useProxy) {
             try {
-                return Tools.getStreamData(token_url, hls_url, ping_url, 0L, Timeout, dataProp, postMessage, useProxy);
+                return Tools.getStreamData(token_url, hls_url, proxy_url, ping_url, 0L, Timeout, dataProp, postMessage, useProxy);
             } catch (Exception e) {
                 Tools.recordException(TAG, "getStreamData Exception ", e);
             }
@@ -3090,7 +3090,7 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void getStreamDataAsync(String token_url, String hls_url, String ping_url, String callback, long checkResult, int position, int Timeout, String dataProp, String postMessage, boolean useProxy) {
+        public void getStreamDataAsync(String token_url, String hls_url, String proxy_url, String ping_url, String callback, long checkResult, int position, int Timeout, String dataProp, String postMessage, boolean useProxy) {
 
             StreamDataResult[position] = null;
 
@@ -3099,7 +3099,7 @@ public class PlayerActivity extends Activity {
                         {
 
                             try {
-                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, ping_url, checkResult, Timeout, dataProp, postMessage, useProxy);
+                                StreamDataResult[position] = Tools.getStreamData(token_url, hls_url, proxy_url, ping_url, checkResult, Timeout, dataProp, postMessage, useProxy);
                             } catch (Exception e) {
                                 Tools.recordException(TAG, "getStreamDataAsync Exception ", e);
                             }
