@@ -751,7 +751,7 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+    //div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
