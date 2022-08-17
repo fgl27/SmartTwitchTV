@@ -21,11 +21,15 @@
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 339, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/339/SmartTV_twitch_3_0_339.apk',
-    WebVersion: 'August 03 2022',
-    WebTag: 617, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    publishVersionCode: 340, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/340/SmartTV_twitch_3_0_340.apk',
+    WebVersion: 'August 17 2022',
+    WebTag: 619, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'August 17 2022 and Apk Version 3.0.340 and Up',
+            changes: ['Add TTV LOL proxy to setting player options (disabled by default), Internet censorship and related proxy']
+        },
         {
             title: 'August 03 2022 and Apk Version 3.0.338 and Up',
             changes: ['Fix sometimes missing streamer name on notification and home screen content', 'Migrate Vod seek preview image to new Twitch API', 'General improves']

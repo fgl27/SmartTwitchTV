@@ -771,7 +771,7 @@ function pt_BRLang() {
     STR_FAIL_VOD_INFO = 'Falha ao carregar a informação do Video';
     STR_NOKEY_GENERAL_WARN = ', navegue até o painel lateral (opção superior) Usuário: Mudar, adicionar, chave, pressionar enter no usuário';
 
-    STR_TTV_LOL = 'Proxy TTV LOL (Censura da Internet e afins)';
+    STR_TTV_LOL = 'Proxy TTV LOL (Proxy contra censura da Internet e afins)';
     STR_TTV_LOL_SUMMARY =
         'Permite que o servidor proxy obtenha links de streaming de um servidor diferente, que pode permitir que você veja conteúdo proibido em sua região e evita anúncios, desative isso se você tiver algum problema de transmissão com Lives como buffers longos e repetidos, travamentos ou conexão lenta que faz com que a qualidade da stream seja reduzida';
 }

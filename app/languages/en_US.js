@@ -780,7 +780,7 @@ function en_USLang() {
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
 
-    STR_TTV_LOL = 'Proxy TTV LOL (Internet censorship)';
+    STR_TTV_LOL = 'Proxy TTV LOL (Internet censorship and related proxy)';
     STR_TTV_LOL_SUMMARY =
         'Enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop';
 }
