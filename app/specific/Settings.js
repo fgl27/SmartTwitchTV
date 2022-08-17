@@ -75,6 +75,10 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
+    ttv_lol_proxy: {
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     restor_playback: {
         values: ['no', 'yes'],
         defaultValue: 2
@@ -747,6 +751,8 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
+    div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
     div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -920,6 +926,7 @@ function Settings_SetDefautls() {
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
+    Settings_set_TTV_LOL();
     Settings_set_all_notification();
     Settings_SetLang();
 
@@ -1160,6 +1167,7 @@ function Settings_SetDefault(position) {
     else if (position === 'dpad_opacity') Settings_DpadOpacity();
     else if (position === 'dpad_position') Settings_DpadPOsition();
     else if (position === 'PP_workaround') Settings_PP_Workaround();
+    else if (position === 'ttv_lol_proxy') Settings_set_TTV_LOL();
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -1175,6 +1183,12 @@ function Settings_SetDefault(position) {
     ) {
         Settings_QualitiesCheck();
     }
+}
+
+function Settings_set_TTV_LOL() {
+    use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
+
+    Play_live_links = use_proxy ? Play_live_ttvlol_links : Play_original_live_links;
 }
 
 function Settings_check_sidePannelFade() {

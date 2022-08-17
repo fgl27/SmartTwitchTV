@@ -226,7 +226,7 @@ function Main_StartApp() {
             Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
             OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
-            OSInterface_SetStreamDataHeaders(Play_Headers);
+            OSInterface_SetStreamDataHeaders(Play_Headers, ttv_lol_headers);
         } catch (e) {
             Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
             Main_IsOn_OSInterface = 0;

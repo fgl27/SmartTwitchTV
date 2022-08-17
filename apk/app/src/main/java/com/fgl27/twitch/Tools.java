@@ -113,6 +113,7 @@ public final class Tools {
     }.getType();
 
     private static String[][] StreamDataHeaders = new String[0][0];
+    private static String[][] StreamDataProxyHeaders = new String[0][0];
 
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
@@ -153,18 +154,24 @@ public final class Tools {
             2160
     };
 
+    public static class TokenObj {
+        public final int status;
+        final String StreamSig;
+        final String StreamToken;
+
+        TokenObj(int status, String StreamSig, String StreamToken) {
+            this.StreamSig = StreamSig;
+            this.StreamToken = StreamToken;
+            this.status = status;
+        }
+
+    }
+
     public static class ResponseObj {
         public final int status;
         public final String responseText;
         final long checkResult;
         final String url;
-
-        ResponseObj(int status, String responseText) {
-            this.status = status;
-            this.responseText = responseText;
-            this.checkResult = 0L;
-            this.url = null;
-        }
 
         ResponseObj(int status, String responseText, long checkResult) {
             this.status = status;
@@ -182,14 +189,12 @@ public final class Tools {
 
     }
 
-    //NullPointerException some time from token isJsonNull must prevent but throws anyway
-    //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, long checkResult, int Timeout, String dataProp, String postMessage) throws Exception {
+    private static TokenObj getStreamToken(String token_url, long checkResult, int Timeout, String dataProp, String postMessage) {
         ResponseObj response;
         int status;
         JsonObject Token;
-        String StreamSig = null;
-        String StreamToken = null;
+        String StreamSig;
+        String StreamToken;
 
         response = Internal_MethodUrl(token_url, Timeout, postMessage, "POST", checkResult, StreamDataHeaders);
 
@@ -200,10 +205,10 @@ public final class Tools {
             if (status == 200) {
                 Token = parseString(response.responseText).getAsJsonObject();
 
-                if (Token.isJsonObject() && !Token.get("data").isJsonNull()) {
+                if (Token.isJsonObject() && Token.has("data") && !Token.get("data").isJsonNull()) {
                     JsonObject data = Token.get("data").getAsJsonObject();
 
-                    data = !data.get(dataProp).isJsonNull() ? data.get(dataProp).getAsJsonObject() : null;
+                    data = data.has(dataProp) && !data.get(dataProp).isJsonNull() ? data.get(dataProp).getAsJsonObject() : null;
 
                     if (data != null) {
 
@@ -214,46 +219,86 @@ public final class Tools {
                             Log.d(TAG, "StreamToken" + StreamToken);
                         }
 
+                        return new TokenObj(status, StreamSig, StreamToken);
+
                     }
                 }
 
+            } else if (status == 403 || status == 404 || status == 410) {
+                return new TokenObj(status, null, null);
+            }
+        }
+
+        return null;
+    }
+
+    private static String getStreamUrl(String hls_url, String StreamSig, String StreamToken, long checkResult, int Timeout, Boolean useProxy) throws Exception {
+        ResponseObj response;
+        int status;
+
+        String url = String.format(
+                Locale.US,
+                hls_url,
+                URLEncoder.encode(StreamToken, "UTF-8"),
+                StreamSig,
+                ThreadLocalRandom.current().nextInt(1, 100000)
+        );
+
+        if (useProxy) {
+            String[] url_split = url.split("m3u8");
+            url = url_split[0] + "m3u8" + URLEncoder.encode(url_split[1], "UTF-8");
+        }
+
+        response = Internal_MethodUrl(url, Timeout, null, null, 0, useProxy ? StreamDataProxyHeaders : new String[0][0]);
+
+        if (response != null) {
+            status = response.status;
+
+            //404 = off line
+            //403 = forbidden access
+            //410 = api v3 is gone use v5 bug
+            if (status == 200) {
+                return new Gson().toJson(
+                        new ResponseObj(
+                                status,
+                                url,
+                                response.responseText,
+                                checkResult
+                        )
+                );
             } else if (status == 403 || status == 404 || status == 410)
-                return ResponseObjToString(status, "token", checkResult);
+                return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
 
         }
 
-        if (StreamToken != null && StreamSig != null) {
+        return null;
+    }
 
-            String url = String.format(
-                    Locale.US,
-                    hls_url,
-                    URLEncoder.encode(StreamToken, "UTF-8"),
-                    StreamSig,
-                    ThreadLocalRandom.current().nextInt(1, 100000)
-            );
+    //NullPointerException some time from token isJsonNull must prevent but throws anyway
+    //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
+    static String getStreamData(String token_url, String hls_url, String ping_url, long checkResult, int Timeout, String dataProp, String postMessage, boolean useProxy) throws Exception {
 
-            response = GetResponseObj(url, Timeout);
 
-            if (response != null) {
+        if (useProxy) {
+            //Test a ping to proxy to check access and availability
+            ResponseObj ping = Internal_MethodUrl(ping_url, Timeout, null, null, 0, StreamDataProxyHeaders);
 
-                status = response.status;
-
-                //404 = off line
-                //403 = forbidden access
-                //410 = api v3 is gone use v5 bug
-                if (status == 200) {
-                    return new Gson().toJson(
-                            new ResponseObj(
-                                    status,
-                                    url,
-                                    response.responseText,
-                                    checkResult
-                            )
-                    );
-                } else if (status == 403 || status == 404 || status == 410)
-                    return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
-
+            if (ping == null || ping.status != 200) {
+                useProxy = false;
             }
+        }
+
+        //Get token
+        TokenObj tokenObj = getStreamToken(token_url, checkResult, Timeout, dataProp, postMessage);
+        if (tokenObj == null) {
+            return null;
+        } else if (tokenObj.status != 200) {
+            return ResponseObjToString(tokenObj.status, "token", checkResult);
+        }
+
+        //get Stream playlist url
+        if (tokenObj.StreamSig != null && tokenObj.StreamToken != null) {
+            return getStreamUrl(hls_url, tokenObj.StreamSig, tokenObj.StreamToken, checkResult, Timeout, useProxy);
         }
 
         return null;
@@ -262,7 +307,7 @@ public final class Tools {
     private static boolean CheckToken(String token) {
         JsonObject Token = parseString(token).getAsJsonObject();
 
-        if (Token.isJsonObject() && !Token.get("chansub").isJsonNull()) {
+        if (Token.isJsonObject() && Token.has("chansub") && !Token.get("chansub").isJsonNull()) {
 
             JsonElement restricted_bitrates = Token.get("chansub").getAsJsonObject().get("restricted_bitrates");
 
@@ -288,51 +333,16 @@ public final class Tools {
         );
     }
 
-    static void SetStreamDataHeaders(String header) {
+    static void SetStreamDataHeaders(String DataHeaders, String ProxyHeaders) {
 
-        StreamDataHeaders = header == null ?
+        StreamDataHeaders = DataHeaders == null ?
                 new String[0][0] :
-                new Gson().fromJson(header, ArrayType);
+                new Gson().fromJson(DataHeaders, ArrayType);
 
-    }
+        StreamDataProxyHeaders = ProxyHeaders == null ?
+                new String[0][0] :
+                new Gson().fromJson(ProxyHeaders, ArrayType);
 
-    private static ResponseObj GetResponseObj(String urlString, int Timeout) {
-        HttpURLConnection urlConnection = null;
-
-        try {
-            urlConnection = (HttpURLConnection) new URL(urlString).openConnection();
-            urlConnection.setConnectTimeout(Timeout);
-            urlConnection.setReadTimeout(Timeout);
-
-            urlConnection.connect();
-
-            int status = urlConnection.getResponseCode();
-
-            if (status != -1) {
-
-                if (status == 200) {
-
-                    return new ResponseObj(
-                            status,
-                            readFullyString(urlConnection.getInputStream())
-                    );
-
-                } else {
-
-                    return new ResponseObj(status, "");
-
-                }
-
-            } else {
-                return null;
-            }
-        } catch (Throwable ignore) {
-            //recordException(TAG, "GetResponseObj ", e);
-            return null;
-        } finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
     }
 
     static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
@@ -1073,7 +1083,7 @@ public final class Tools {
                     if (status == 200) {
                         obj = parseString(response.responseText).getAsJsonObject();
 
-                        if (obj.get("expires_in").isJsonNull()) {
+                        if (obj.has("expires_in") && obj.get("expires_in").isJsonNull()) {
 
                             appPreferences.put(
                                     UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
@@ -1156,21 +1166,21 @@ public final class Tools {
 
                         appPreferences.put(
                                 UserId + Constants.PREF_REFRESH_TOKEN,
-                                !obj.get("refresh_token").isJsonNull() ?
+                                obj.has("refresh_token") && !obj.get("refresh_token").isJsonNull() ?
                                         obj.get("refresh_token").getAsString() :
                                         null
                         );
 
                         appPreferences.put(
                                 UserId + Constants.PREF_ACCESS_TOKEN,
-                                !obj.get("access_token").isJsonNull() ?
+                                obj.has("access_token") && !obj.get("access_token").isJsonNull() ?
                                         (Constants.BASE_HEADERS[1][1] + obj.get("access_token").getAsString()) :
                                         null
                         );
 
                         appPreferences.put(
                                 UserId + Constants.PREF_TOKEN_EXPIRES_WHEN,
-                                !obj.get("expires_in").isJsonNull() ?
+                                obj.has("expires_in") && !obj.get("expires_in").isJsonNull() ?
                                         (System.currentTimeMillis() + ((obj.get("expires_in").getAsLong() - 100) * 1000)) :
                                         0
                         );
