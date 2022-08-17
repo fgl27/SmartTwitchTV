@@ -4330,7 +4330,7 @@
      *
      * You should have received a copy of the GNU General Public License
      * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
-     *
+     *y
      */
 
     //Spacing for release maker not trow errors from jshint
@@ -4338,10 +4338,10 @@
         VersionBase: '3.0',
         publishVersionCode: 339, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/339/SmartTV_twitch_3_0_339.apk',
-        WebVersion: 'August 03 2022',
-        WebTag: 617, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'August 17 2022',
+        WebTag: 619, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'August 03 2022 and Apk Version 3.0.338 and Up',
+                title: 'August 03 2022 and Apk Version 3.0.338',
                 changes: ['Fix sometimes missing streamer name on notification and home screen content', 'Migrate Vod seek preview image to new Twitch API', 'General improves']
             },
             {
@@ -4934,17 +4934,16 @@
     //Live
     var Play_live_token_prop = 'streamPlaybackAccessToken';
     var Play_live_token = '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
-    var Play_base_live = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
+    var Play_live_links = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
 
-    var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/' + Play_base_live;
+    var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
-    var Play_live_ttvlol_links = 'https://api.ttv.lol/playlist/' + Play_base_live;
+    var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
     var ttv_lol_headers = JSON.stringify([
         ['X-Donate-To', 'https://ttv.lol/donate']
     ]);
     var proxy_ping_url = 'https://api.ttv.lol/ping';
 
-    var Play_live_links = Play_original_live_links;
     var use_proxy = false;
 
     //VOD
@@ -14198,9 +14197,21 @@
     function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
         //TODO remove this after some app updates
         try {
-            Android.getStreamDataAsync(token_url, hls_url, proxy_ping_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+            Android.getStreamDataAsync(
+                token_url,
+                (isVod ? '' : Play_original_live_links) + hls_url,
+                Play_live_ttv_lol_links + hls_url,
+                proxy_ping_url,
+                callback,
+                checkResult,
+                position,
+                Timeout,
+                isVod ? Play_vod_token_prop : Play_live_token_prop,
+                POST,
+                !isVod && use_proxy
+            );
         } catch (e) {
-            Android.getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+            Android.getStreamDataAsync(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
         }
     }
 
@@ -14215,9 +14226,21 @@
     function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
         //TODO remove this after some app updates
         try {
-            Android.CheckIfIsLiveFeed(token_url, hls_url, proxy_ping_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+            Android.CheckIfIsLiveFeed(
+                token_url,
+                (isVod ? '' : Play_original_live_links) + hls_url,
+                Play_live_ttv_lol_links + hls_url,
+                proxy_ping_url,
+                callback,
+                x,
+                y,
+                Timeout,
+                isVod ? Play_vod_token_prop : Play_live_token_prop,
+                POST,
+                !isVod && use_proxy
+            );
         } catch (e) {
-            Android.CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+            Android.CheckIfIsLiveFeed(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
         }
     }
 
@@ -14231,9 +14254,18 @@
     function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
         //TODO remove this after some app updates
         try {
-            return Android.getStreamData(token_url, hls_url, proxy_ping_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+            return Android.getStreamData(
+                token_url,
+                (isVod ? '' : Play_original_live_links) + hls_url,
+                Play_live_ttv_lol_links + hls_url,
+                proxy_ping_url,
+                Timeout,
+                isVod ? Play_vod_token_prop : Play_live_token_prop,
+                POST,
+                !isVod && use_proxy
+            );
         } catch (e) {
-            return Android.getStreamData(token_url, hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+            return Android.getStreamData(token_url, (isVod ? '' : Play_original_live_links) + hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
         }
     }
 
@@ -32460,7 +32492,7 @@
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-        //div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+        div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
 
         div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
@@ -32897,8 +32929,6 @@
 
     function Settings_set_TTV_LOL() {
         use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
-
-        Play_live_links = use_proxy ? Play_live_ttvlol_links : Play_original_live_links;
     }
 
     function Settings_check_sidePannelFade() {

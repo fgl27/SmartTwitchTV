@@ -15,14 +15,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with SmartTwitchTV.  If not, see <https://github.com/fgl27/SmartTwitchTV/blob/master/LICENSE>.
- *
+ *y
  */
 
 //Spacing for release maker not trow errors from jshint
 var version = {
     VersionBase: '3.0',
-    publishVersionCode: 340, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/340/SmartTV_twitch_3_0_340.apk',
+    publishVersionCode: 339, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+    ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/339/SmartTV_twitch_3_0_339.apk',
     WebVersion: 'August 17 2022',
     WebTag: 619, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
