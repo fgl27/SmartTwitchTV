@@ -547,20 +547,21 @@ var AddCode_ValidateUrl = 'https://id.twitch.tv/oauth2/validate';
 
 //To pass to Java
 var Play_Headers;
+//Live
 var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token = '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
-
 var Play_base_live = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/' + Play_base_live;
 
 var Play_live_ttvlol_links = 'https://api.ttv.lol/playlist/' + Play_base_live;
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
-
-var use_proxy = false;
 var proxy_ping_url = 'https://api.ttv.lol/ping';
-var Play_live_links = Play_original_live_links;
 
+var Play_live_links = Play_original_live_links;
+var use_proxy = false;
+
+//VOD
 var Play_vod_token_prop = 'videoPlaybackAccessToken';
 var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_vod_links = 'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
