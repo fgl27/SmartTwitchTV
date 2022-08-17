@@ -725,6 +725,8 @@
     var STR_FAIL_VOD_INFO;
     var STR_NOKUSER_WARNING;
     var STR_NOKEY_GENERAL_WARN;
+    var STR_TTV_LOL;
+    var STR_TTV_LOL_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1955,6 +1957,10 @@
 
         STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
         STR_FAIL_VOD_INFO = 'Fail to load VOD info';
+
+        STR_TTV_LOL = 'Proxy TTV LOL (Internet censorship and related proxy)';
+        STR_TTV_LOL_SUMMARY =
+            'Enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -3278,6 +3284,10 @@
         STR_SPECIAL_FEATURE = 'Use o teclado para este recurso';
         STR_FAIL_VOD_INFO = 'Falha ao carregar a informação do Video';
         STR_NOKEY_GENERAL_WARN = ', navegue até o painel lateral (opção superior) Usuário: Mudar, adicionar, chave, pressionar enter no usuário';
+
+        STR_TTV_LOL = 'Proxy TTV LOL (Proxy contra censura da Internet e afins)';
+        STR_TTV_LOL_SUMMARY =
+            'Permite que o servidor proxy obtenha links de streaming de um servidor diferente, que pode permitir que você veja conteúdo proibido em sua região e evita anúncios, desative isso se você tiver algum problema de transmissão com Lives como buffers longos e repetidos, travamentos ou conexão lenta que faz com que a qualidade da stream seja reduzida';
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
@@ -4921,10 +4931,23 @@
 
     //To pass to Java
     var Play_Headers;
+    //Live
     var Play_live_token_prop = 'streamPlaybackAccessToken';
     var Play_live_token = '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
-    var Play_live_links = 'https://usher.ttvnw.net/api/channel/hls/%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
+    var Play_base_live = '%x.m3u8?&token=%s&sig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
 
+    var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/' + Play_base_live;
+
+    var Play_live_ttvlol_links = 'https://api.ttv.lol/playlist/' + Play_base_live;
+    var ttv_lol_headers = JSON.stringify([
+        ['X-Donate-To', 'https://ttv.lol/donate']
+    ]);
+    var proxy_ping_url = 'https://api.ttv.lol/ping';
+
+    var Play_live_links = Play_original_live_links;
+    var use_proxy = false;
+
+    //VOD
     var Play_vod_token_prop = 'videoPlaybackAccessToken';
     var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
     var Play_vod_links = 'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
@@ -11034,7 +11057,7 @@
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
                 OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
-                OSInterface_SetStreamDataHeaders(Play_Headers);
+                OSInterface_SetStreamDataHeaders(Play_Headers, ttv_lol_headers);
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
                 Main_IsOn_OSInterface = 0;
@@ -14173,7 +14196,12 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
-        Android.getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        //TODO remove this after some app updates
+        try {
+            Android.getStreamDataAsync(token_url, hls_url, proxy_ping_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        } catch (e) {
+            Android.getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        }
     }
 
     //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
@@ -14185,7 +14213,12 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
-        Android.CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        //TODO remove this after some app updates
+        try {
+            Android.CheckIfIsLiveFeed(token_url, hls_url, proxy_ping_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        } catch (e) {
+            Android.CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        }
     }
 
     //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
@@ -14196,7 +14229,12 @@
     //Android specific: false
     //Allows to get the stream data, that if called from JS will fail do to CORS error
     function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
-        return Android.getStreamData(token_url, hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        //TODO remove this after some app updates
+        try {
+            return Android.getStreamData(token_url, hls_url, proxy_ping_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST, !isVod && use_proxy);
+        } catch (e) {
+            return Android.getStreamData(token_url, hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
+        }
     }
 
     //public String getQualities()
@@ -14434,12 +14472,17 @@
         }
     }
 
-    //public void SetStreamDataHeaders(String header)
+    //public void SetStreamDataHeaders(String DataHeaders, String DataHeaders)
     //Android specific: true
-    //Set app play header if necessary
-    function OSInterface_SetStreamDataHeaders(header) {
+    //Set app play DataHeaders and ProxyHeaders
+    function OSInterface_SetStreamDataHeaders(DataHeaders, ProxyHeaders) {
         if (Main_IsOn_OSInterface) {
-            Android.SetStreamDataHeaders(header ? header : null);
+            //TODO remove this after some app updates
+            try {
+                Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null, ProxyHeaders ? ProxyHeaders : null);
+            } catch (e) {
+                Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null);
+            }
         }
     }
 
@@ -31741,6 +31784,10 @@
             values: ['no', 'yes'],
             defaultValue: 2
         },
+        ttv_lol_proxy: {
+            values: ['no', 'yes'],
+            defaultValue: 1
+        },
         restor_playback: {
             values: ['no', 'yes'],
             defaultValue: 2
@@ -32413,6 +32460,8 @@
         // Player settings title
         div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
+        //div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+
         div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
         div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
@@ -32586,6 +32635,7 @@
         OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
         Settings_SetPingWarning();
         SettingsColor_SetAnimationStyleRestore();
+        Settings_set_TTV_LOL();
         Settings_set_all_notification();
         Settings_SetLang();
 
@@ -32827,6 +32877,7 @@
         else if (position === 'dpad_opacity') Settings_DpadOpacity();
         else if (position === 'dpad_position') Settings_DpadPOsition();
         else if (position === 'PP_workaround') Settings_PP_Workaround();
+        else if (position === 'ttv_lol_proxy') Settings_set_TTV_LOL();
         else if (position === 'vod_seek_min') Settings_check_min_seek();
         else if (position === 'vod_seek_max') Settings_check_max_seek();
         else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -32842,6 +32893,12 @@
         ) {
             Settings_QualitiesCheck();
         }
+    }
+
+    function Settings_set_TTV_LOL() {
+        use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
+
+        Play_live_links = use_proxy ? Play_live_ttvlol_links : Play_original_live_links;
     }
 
     function Settings_check_sidePannelFade() {
