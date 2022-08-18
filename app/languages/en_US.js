@@ -808,9 +808,10 @@ function en_USLang() {
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
 
+    STR_TTV_LOL_DONATE = 'If you wanna to thanks the proxy server maintainer use the link:';
     STR_TTV_LOL = 'Proxy TTV LOL (Internet censorship and related proxy)';
     STR_TTV_LOL_SUMMARY =
-        'Enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop';
+        'Enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop.';
     PROXY_SERVICE = 'Proxy: ';
     PROXY_SERVICE_STATUS = 'Enabled and working';
     PROXY_SERVICE_OFF = 'Disabled in settings';

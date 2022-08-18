@@ -395,7 +395,17 @@ function DefaultLang() {
         STR_CLOSE_THIS +
         '</div>';
 
-    STR_CONTACT = STR_DIV_TITLE + STR_ABOUT_INFO_3 + '</div>' + STR_DIV_LINK + DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') + '</div>' + STR_BR + STR_PAYPAL + STR_BITCOIN + STR_BR;
+    STR_CONTACT =
+        STR_DIV_TITLE +
+        STR_ABOUT_INFO_3 +
+        '</div>' +
+        STR_DIV_LINK +
+        DefaultMakeLink(STR_ABOUT_EMAIL, 'mailto:') +
+        '</div>' +
+        STR_BR +
+        STR_PAYPAL +
+        STR_BITCOIN +
+        STR_BR;
 
     STR_ABOUT_INFO_HEADER = STR_DIV_TITLE + STR_TWITCH_TV + '</div></div>';
     STR_ABOUT_INFO_0 =
@@ -438,12 +448,19 @@ function DefaultLang() {
         '</div></div>';
 
     STR_NOKUSER_WARNING = STR_NOKUSER_WARN + STR_NOKEY_GENERAL_WARN;
+
+    STR_TTV_LOL_SUMMARY +=
+        STR_BR + STR_TTV_LOL_DONATE + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 }
 
 function DefaultReplaceLink(link, string, center) {
-    return center ? string.replace('%x', STR_DIV_LINK + DefaultMakeLink(link) + '</div>') : string.replace('%x', STR_SPAN_LINK + DefaultMakeLink(link) + '</span>');
+    return center
+        ? string.replace('%x', STR_DIV_LINK + DefaultMakeLink(link) + '</div>')
+        : string.replace('%x', STR_SPAN_LINK + DefaultMakeLink(link) + '</span>');
 }
 
 function DefaultMakeLink(link, prefix) {
-    return '<a style="color: ' + LINK_COLOR + '; text-decoration:none;" href="' + (prefix ? prefix : '') + link + '" target="_blank">' + link + '</a>';
+    return (
+        '<a style="color: ' + LINK_COLOR + '; text-decoration:none;" href="' + (prefix ? prefix : '') + link + '" target="_blank">' + link + '</a>'
+    );
 }
