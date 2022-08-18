@@ -808,11 +808,10 @@ function en_USLang() {
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
 
-    STR_TTV_LOL = 'Proxy TTV LOL';
-    STR_TTV_LOL_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
+    STR_PROXY_DONATE_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
 
+    STR_TTV_LOL = 'TTV LOL';
     STR_PURPLE_ADBLOCK = 'Purple Adblock ';
-    STR_PURPLE_ADBLOCK_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
 
     STR_PROXY_TIMEOUT = 'Proxy timeout (time in seconds)';
     STR_PROXY_TIMEOUT_SUMMARY =

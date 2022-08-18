@@ -449,10 +449,16 @@ function DefaultLang() {
 
     STR_NOKUSER_WARNING = STR_NOKUSER_WARN + STR_NOKEY_GENERAL_WARN;
 
-    STR_TTV_LOL_SUMMARY += STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
+    STR_PURPLE_ADBLOCK_SUMMARY =
+        STR_PROXY_DONATE_SUMMARY +
+        STR_SPACE_HTML +
+        STR_SPACE_HTML +
+        STR_SPAN_LINK +
+        DefaultMakeLink('https://github.com/arthurbolsoni/Purple-adblock') +
+        '</span>';
 
-    STR_PURPLE_ADBLOCK_SUMMARY +=
-        STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://github.com/arthurbolsoni/Purple-adblock') + '</span>';
+    STR_TTV_LOL_SUMMARY =
+        STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 }
 
 function DefaultReplaceLink(link, string, center) {
