@@ -808,12 +808,22 @@ function en_USLang() {
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
 
-    STR_TTV_LOL_DONATE = 'If you wanna to thanks the proxy server maintainer use the link:';
-    STR_TTV_LOL = 'Proxy TTV LOL (Internet censorship and related proxy)';
-    STR_TTV_LOL_SUMMARY =
-        'Enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop.';
+    STR_TTV_LOL = 'Proxy TTV LOL';
+    STR_TTV_LOL_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
+
+    STR_PURPLE_ADBLOCK = 'Purple Adblock ';
+    STR_PURPLE_ADBLOCK_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
+
+    STR_PROXY_TIMEOUT = 'Proxy timeout (time in seconds)';
+    STR_PROXY_TIMEOUT_SUMMARY =
+        'If the proxy server is out this will be the time that will take to "give up" on the connection and fallback to default Twitch implementation';
+
     PROXY_SERVICE = 'Proxy: ';
     PROXY_SERVICE_STATUS = 'Enabled and working';
     PROXY_SERVICE_OFF = 'Disabled in settings';
     PROXY_SERVICE_FAIL = 'Not working, fail %x times';
+
+    PROXY_SETTINGS = 'Proxy Settings (Internet censorship and related proxy)';
+    PROXY_SETTINGS_SUMMARY =
+        'Only one proxy can be enable, enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop.';
 }

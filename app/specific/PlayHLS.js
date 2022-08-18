@@ -31,6 +31,14 @@ var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
 var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
+
+var purpel_proxy = 'https://jupter.ga/hls/v2/channel/';
+
+var proxy_timeout = 5000;
+var proxy_url = '';
+var proxy_headers = null;
+var proxy_has_parameter = false;
+
 //var proxy_ping_url = 'https://api.ttv.lol/ping';
 
 var use_proxy = false;
@@ -139,7 +147,7 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
 
         if (useProxy) {
             headers = ttv_lol_headers;
-            url = Play_live_ttv_lol_links + Channel_or_VOD_Id + '.m3u8' + encodeURIComponent('?' + URL_parameters);
+            url = proxy_url + Channel_or_VOD_Id + (proxy_has_parameter ? '.m3u8' + encodeURIComponent('?' + URL_parameters) : '');
         } else {
             url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
         }
@@ -164,7 +172,7 @@ function PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, ca
 
     OSInterface_XmlHttpGetFull(
         urlObj.url, //String urlString
-        useProxy ? 3500 : DefaultHttpGetTimeout, //int timeout
+        useProxy ? proxy_timeout : DefaultHttpGetTimeout, //int timeout
         null, // String postMessage
         null, //String Method
         urlObj.headers ? urlObj.headers : null, //String JsonHeadersArray
@@ -266,7 +274,7 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
 
     var obj = OSInterface_mMethodUrlHeaders(
         urlObj.url, //urlString
-        DefaultHttpGetTimeout, //timeout
+        useProxy ? proxy_timeout : DefaultHttpGetTimeout, //timeout
         null, //postMessage
         null, //Method
         0, //checkResult
