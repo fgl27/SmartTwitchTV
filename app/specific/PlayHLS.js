@@ -164,7 +164,7 @@ function PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, ca
 
     OSInterface_XmlHttpGetFull(
         urlObj.url, //String urlString
-        DefaultHttpGetTimeout, //int timeout
+        useProxy ? 3500 : DefaultHttpGetTimeout, //int timeout
         null, // String postMessage
         null, //String Method
         urlObj.headers ? urlObj.headers : null, //String JsonHeadersArray
