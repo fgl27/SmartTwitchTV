@@ -152,7 +152,8 @@ function pt_BRLang() {
     STR_CONTROLS_MAIN_4 = 'Saia do aplicativo: no painel lateral, clique em sair';
     STR_CONTROLS_MAIN_5 = 'Forçar o fechamento do aplicativo: Segure a tecla Enter até forçar o fechamento automático';
     STR_CONTROLS_MAIN_6 = 'Alternar tela: tecla de retorno e depois D-Pad para cima/para baixo ou' + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
-    STR_CONTROLS_MAIN_10 = 'Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa';
+    STR_CONTROLS_MAIN_10 =
+        'Iniciar uma pesquisa: no painel lateral clique em pesquisa, escrevendo a pesquisa pressione a tecla Enter no teclado virtual e escolha uma opção de pesquisa';
     STR_CONTROLS_MAIN_14 = 'Sobre este aplicativo: no painel lateral, clique em';
     STR_ABOUT_INFO_1 = 'Este é um cliente Twitch para Android TV, lançado gratuitamente para quem quiser usá-lo.';
     STR_ABOUT_INFO_2 =
@@ -166,7 +167,8 @@ function pt_BRLang() {
         'Sim, é possível usar este aplicativo em telefones e tablets, mas este aplicativo foi projetado para ser usado principalmente em TVs, o suporte para outros dispositivos é limitado e por isso não é liberado na play store, use o link abaixo para fazer o download APK mais recente e instale manualmente em um telefone ou tablets';
 
     STR_CONTROLS_PLAY_0 = 'ou nos controles da parte inferior do player';
-    STR_CONTROLS_PLAY_1 = 'Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos';
+    STR_CONTROLS_PLAY_1 =
+        'Mostrar painel de informações: Pressione a tecla Enter ou D-pad se o chat e o feed do canais ao vivo não estiverem sendo exibidos';
     STR_CONTROLS_PLAY_2 = 'Fechar o vídeo: pressione a tecla de retorno duas vezes ou a tecla de mídia Parar';
     STR_CONTROLS_PLAY_3 = 'Reproduzir/pausar um vídeo: abra o painel de informações e clique no símbolo de pausa';
     STR_CONTROLS_PLAY_4 = 'Mostrar preview: D-pad para cima';
@@ -178,10 +180,12 @@ function pt_BRLang() {
     STR_CONTROLS_PLAY_10 = 'Alterar brilho de fundo do chat: alterar os controles da parte inferior do player';
     STR_CONTROLS_PLAY_11 =
         'Forçar atualização do chat nas transmissões ao vivo (caso ele congele ou não carregue): use os controles da parte inferior do player para desativar o chat (clique duas vezes)';
-    STR_CONTROLS_PLAY_12 = 'Iniciar uma pesquisa: abra o painel de informações, navegue usando o teclado direcional (esquerda/direita) para " Pesquisar "e pressione Enter';
+    STR_CONTROLS_PLAY_12 =
+        'Iniciar uma pesquisa: abra o painel de informações, navegue usando o teclado direcional (esquerda/direita) para " Pesquisar "e pressione Enter';
     STR_CONTROLS_PLAY_13 =
         'Todas as teclas de mídia são suportadas (reproduzir, pausar, parar, próxima faixa, avanço rápido, etc ...) algumas são usadas como atalhos para mudanças de modo de áudio e vídeo';
-    STR_CONTROLS_PLAY_14 = 'chat e vídeo (lado a lado): tecla 2 ou tecla de mídia avanço rápido, também alterna entre Picture in Picture e modo 50/50';
+    STR_CONTROLS_PLAY_14 =
+        'chat e vídeo (lado a lado): tecla 2 ou tecla de mídia avanço rápido, também alterna entre Picture in Picture e modo 50/50';
     STR_F_DISABLE_CHAT = 'Chat desabilitado forçado';
     STR_OAUTH_IN =
         'Adicionar uma chave permite que o aplicativo acesse o chat usando seu usuário para enviar mensagens e obter sua lista de emoticons (permite que você receba sub de presente pelo chat), seguir/parar de seguir canais e acessar algum conteúdo do usuário mais rápido <br><br>Adicionar uma chave não é obrigatorio e pode ser feito a qualquer momento mais tarde <br><br> Em caso de dúvida, leia este link: <br><br>%x<br><br> Para alguns dispositivos é necessário um mouse para concluir a ação de autorização, pois pode ser necessário clicar manualmente em um botão para confirmar. <br><br> adicionar chave para';
@@ -277,7 +281,8 @@ function pt_BRLang() {
         'O aplicativo salva o que estava reproduzindo no caso de fechamento acidentalmente, alterando os aplicativos por exemplo, o sistema pode ficar sem memória e forçar o fechamento, nesses casos o aplicativo irá restaurar o que estava reproduzindo na próxima inicialização';
     STR_CHAT_FONT = 'Tamanho da fonte do chat';
     STR_VIDEOS_ANIMATION = 'Miniaturas animadas de vídeos';
-    STR_VIDEOS_ANIMATION_SUMMARY = 'Quando um Vídeo ou destaque é selecionado a miniatura é animada se estiver disponível para aquele vídeo (nem todos os vídeos têm animação)';
+    STR_VIDEOS_ANIMATION_SUMMARY =
+        'Quando um Vídeo ou destaque é selecionado a miniatura é animada se estiver disponível para aquele vídeo (nem todos os vídeos têm animação)';
     STR_SIDE_PANEL = 'Painel lateral: D-pad para a esquerda ou tecla de retorno';
     STR_SIZE = 'Tamanho';
     STR_BRIGHTNESS = 'Brilho';
@@ -317,7 +322,8 @@ function pt_BRLang() {
     STR_VOD_DIALOG_SHOW = 'Sempre perguntar';
     STR_END_DIALOG_OPT = 'Opções diálogo de fim de reprodução';
     STR_END_DIALOG_SETTINGS = 'Tempo limite da do diálogo de fim de reprodução';
-    STR_END_DIALOG_SETTINGS_SUMMARY = 'Quando um Live/Vídeo/Clipe termina uma caixa de diálogo mostra opçôes do que fazer a seguir, defina o tempo (em segundos) que levará para a opção padrão agir';
+    STR_END_DIALOG_SETTINGS_SUMMARY =
+        'Quando um Live/Vídeo/Clipe termina uma caixa de diálogo mostra opçôes do que fazer a seguir, defina o tempo (em segundos) que levará para a opção padrão agir';
     STR_END_DIALOG_DISABLE = 'Desativar o cronômetro';
     STR_CHAT_SIZE = 'Tamanho do chat';
     STR_CHAT_POS = 'Posição de chat';
@@ -426,13 +432,19 @@ function pt_BRLang() {
     STR_SCREEN_COUNTER_SUMMARY =
         'Existe um contador de posição que informa a posição atual e o conteúdo total carregado nas telas que possuem conteúdo reproduzível, conforme você carrega mais conteúdo o total será atualizado';
     STR_SWITCH_POS = 'Trocar: Deslocar posição inicial';
-    STR_SWITCH_POS_SUMMARY = 'Em vez de começar no primeiro vídeo possível, comece uma posição inferior na lista, evita ter que descer e descer para encontrar um vídeo mais antigo';
+    STR_SWITCH_POS_SUMMARY =
+        'Em vez de começar no primeiro vídeo possível, comece uma posição inferior na lista, evita ter que descer e descer para encontrar um vídeo mais antigo';
     STR_USER_OPTION = 'Escolha uma opção para o usuário';
     STR_MAIN_USER = 'Usuário principal';
     STR_USER_TOP_LABLE = 'Clique em um usuário para ver as opções';
     STR_USER_EXTRAS = 'Usuário: Mudar, adicionar, chave';
     STR_LOW_LATENCY = 'Latência Baixa';
-    STR_LOW_LATENCY_SUMMARY = 'Se começar a obter problemas de buffers, desative' + STR_LOW_LATENCY + '<br> Use' + STR_SETTINGS_BUFFER_LIVE + 'igual ou menor que 1 para que tenha efeito';
+    STR_LOW_LATENCY_SUMMARY =
+        'Se começar a obter problemas de buffers, desative' +
+        STR_LOW_LATENCY +
+        '<br> Use' +
+        STR_SETTINGS_BUFFER_LIVE +
+        'igual ou menor que 1 para que tenha efeito';
     STR_GAME_SORT = 'Classificação da prévia dos jogos';
     STR_LIVE_FEED_SORT = 'Ordenar o painel lateral ou preview do player';
     STR_LIVE_FEED_SORT_SUMMARY =
@@ -491,7 +503,8 @@ function pt_BRLang() {
     STR_SORTING = 'Classificação';
     STR_DELETE_HISTORY = 'Excluir este histórico';
     STR_DELETE_UNREACHABLE = 'Apagar automaticamente conteúdo inacessível';
-    STR_DELETE_UNREACHABLE_SUMMARY = 'Se estiver definido como SIM, o aplicativo removerá automaticamente VODs e clipes que estão inacessíveis (foram excluídos pelo streamer/criador) do histórico';
+    STR_DELETE_UNREACHABLE_SUMMARY =
+        'Se estiver definido como SIM, o aplicativo removerá automaticamente VODs e clipes que estão inacessíveis (foram excluídos pelo streamer/criador) do histórico';
     STR_NAME_A_Z = 'Nome A - Z';
     STR_NAME_Z_A = 'Nome Z - A';
     STR_GAME_A_Z = 'Jogo A - Z';
@@ -539,8 +552,10 @@ function pt_BRLang() {
     STR_CONTROLS_MULTI_1 =
         'Se você está tendo problemas de lentidão após habilitar o multistream, tente diminuir o valor de "Taxa de bits do player pequeno" nas configurações, o acúmulo de quadros pulados ou buffer constante é uma indicação de taxa de bits muito alta ou Internet lenta';
     STR_CONTROLS_MULTI_2 = 'Adicionar streams: abra o feed de preview e clique em um stream ao vivo';
-    STR_CONTROLS_MULTI_3 = 'Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo';
-    STR_CONTROLS_MULTI_4 = 'Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha enter pressionado para fonte de áudio todos os vídeos';
+    STR_CONTROLS_MULTI_3 =
+        'Substituir streams: depois que o multistream estiver cheio, escolha um no feed de preview e escolha um para substituir na caixa de diálogo';
+    STR_CONTROLS_MULTI_4 =
+        'Alterar fonte de áudio: D-pad direita ou esquerda ou teclas de mídia próxima faixa de visualização, mantenha enter pressionado para fonte de áudio todos os vídeos';
     STR_CONTROLS_MULTI_5 = 'Sair do multistream: do controle inferior do player ou tecla de retorno duas vezes';
     STR_CONTROLS_MULTI_6 = 'Para fechar este abra as 4 transmissões ao vivo';
     STR_PICTURE_LIVE_FEED = 'Picture in picture: Segure enter, após use o D-Pad para mover, redimensionar ou mudar os vídeos';
@@ -577,10 +592,12 @@ function pt_BRLang() {
     STR_PREVIEW_VOLUME = 'Volume de pré-visualização';
     STR_PREVIEW_VOLUME_SUMMARY = 'Permitir definir qual será o volume de pré-visualização do feed';
     STR_PREVIEW_OTHERS_VOLUME = 'Volume dos players principais';
-    STR_PREVIEW_OTHERS_VOLUME_SUMMARY = 'O volume do player principal (todos os players picture in picture, players multistream) pode ser menor quando o player de pré-visualização é exibido';
+    STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
+        'O volume do player principal (todos os players picture in picture, players multistream) pode ser menor quando o player de pré-visualização é exibido';
     STR_SIDE_PANEL_PLAYER = 'Configurações de players em miniatura';
     STR_START_AT_USER = 'Sempre inicie o aplicativo na tela do usuário';
-    STR_START_AT_USER_SUMMARY = 'Isso impedirá restaurar o ponto onde o app esava antes de ser fechado, mas permite escolher o usuário ao iniciar o aplicativo';
+    STR_START_AT_USER_SUMMARY =
+        'Isso impedirá restaurar o ponto onde o app esava antes de ser fechado, mas permite escolher o usuário ao iniciar o aplicativo';
     STR_LAST_REFRESH = 'última atualização:';
     STR_PP_VOD_ERROR = 'Saia do PP ou Multistream para abrir este Vídeo';
     STR_SETTINGS_ACCESSIBILITY = 'Mostrar "um serviço de acessibilidade está em execução aviso"';
@@ -598,7 +615,8 @@ function pt_BRLang() {
         'Quando "Tempo limite de atualização automática" está definido e habilitado, a atualização automática acontecerá em segundo plano (mas com o aplicativo visível, o Android não permite a execução irrestrita em segundo plano para evitar lentdão em outro aplicativo), esteja ciente porque o aplicativo tem muitas telas quando esta opção está habilitada, a atualização automática pode causar um leve atraso aleatório em alguns dispositivos mais lentos';
     STR_MAIN_WINDOW = 'Vídeo principal';
     STR_MULTI_MAIN_WINDOW = 'Vídeo principal MultiStream';
-    STR_MAIN_MULTI_BIG = STR_MULTI_MAIN_WINDOW + 'maior e chat: pressione a tecla para baixo, depois use esquerda/direita para mudar com é o grande vídeo';
+    STR_MAIN_MULTI_BIG =
+        STR_MULTI_MAIN_WINDOW + 'maior e chat: pressione a tecla para baixo, depois use esquerda/direita para mudar com é o grande vídeo';
     STR_SOURCE_CHECK = 'Alterar automaticamente a qualidade do player de Source para Auto quando o player atrasar';
     STR_SOURCE_CHECK_SUMMARY =
         'Quando esta opção está habilitada e você não está usando qualidade automática se o player estiver lento, ele mudará para qualidade automática e avisará sobre isso, um atraso do player é, por exemplo, quando o player não conseguiu reproduzir por mais de 15 segundos ( o algoritmo é mais complexo do que apenas o tempo, é claro), após essa mudança, o reprodutor voltará automaticamente à fonte quando você iniciar um novo fluxo de vod';
@@ -607,13 +625,15 @@ function pt_BRLang() {
     STR_TOO_ERRORS = 'ou muitos erros';
     STR_STREAM_ERROR_SMALL = 'Pré-visualização, stream encerrado' + STR_TOO_ERRORS;
     STR_CONTROLS_MEDIA_FF = 'Avançar ou retroceder (apenas para VOD e Clips): use as teclas direcional direita/esquerda ou avançar/retroceder mídia';
-    STR_VOD_MUTED = 'Uma parte deste está silenciado porque contém conteúdo protegido por direitos autorais, a cor mais escura na barra de busca indica as partes';
+    STR_VOD_MUTED =
+        'Uma parte deste está silenciado porque contém conteúdo protegido por direitos autorais, a cor mais escura na barra de busca indica as partes';
     STR_GIFT_SUB = 'tem de presente um sub!';
     STR_ANONYMOUS = 'Anônimo';
     STR_CHAT_BANNED = 'Você está permanentemente proibido de escrever em';
     STR_CHAT_WRITE = 'Escreva no chat';
     STR_CHAT_EXTRA = 'Configurações extras de chat';
-    STR_PLACEHOLDER_CHAT = 'Quando selecionado, pressione Enter para mostrar o teclado na tela. Se você tiver um teclado físico conectado, pressione Enter ou Esc para ocultar o teclado na tela';
+    STR_PLACEHOLDER_CHAT =
+        'Quando selecionado, pressione Enter para mostrar o teclado na tela. Se você tiver um teclado físico conectado, pressione Enter ou Esc para ocultar o teclado na tela';
     STR_CHAT_ROOMSTATE = 'chat ROOMSTATE:';
     STR_CHAT_NO_RESTRICTIONS = 'Sem restrições';
     STR_OPTIONS = 'Opções';
@@ -628,7 +648,8 @@ function pt_BRLang() {
     STR_CHAT_CHOOSE = 'Escolha qual chat escrever ou pressione retornar para fechar';
     STR_CHAT_OPTIONS_TITLE = 'Opções de escrita no chat';
     STR_CHAT_OPTIONS_KEYBOARD = 'Auto ocultar teclado virtual';
-    STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = 'Permite controlar o comportamento do teclado virtual na tela, se você tiver um teclado físico conectado use-o, se não estiver configure para nunca';
+    STR_CHAT_OPTIONS_KEYBOARD_SUMMARY =
+        'Permite controlar o comportamento do teclado virtual na tela, se você tiver um teclado físico conectado use-o, se não estiver configure para nunca';
     STR_CHAT_OPTIONS_KEYBOARD_1 = 'Nunca';
     STR_CHAT_OPTIONS_KEYBOARD_2 = 'Se teclado detectado';
     STR_CHAT_OPTIONS_KEYBOARD_3 = 'Sempre';
@@ -663,7 +684,8 @@ function pt_BRLang() {
     STR_CHAT_BOTS = 'Bloquear bots e comandos de bot (!comando) de serem exibidos no chat';
     STR_CHAT_TIMESTAMP = 'Mostrar data e hora da mensagem';
     STR_CHAT_NICK_COLOR = 'Cores de nick legíveis';
-    STR_CHAT_NICK_COLOR_SUMMARY = 'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';
+    STR_CHAT_NICK_COLOR_SUMMARY =
+        'Em vez de usar a cor padrão do nick que algumas vezes não pode ser lida em um fundo escuro, use uma cor personalizada fácil de visualizar';
     STR_CHAT_CLEAR_MSG = 'Limpar chat, apagar mensagens do usuário';
     STR_CHAT_MESSAGE_DELETED = 'Esta unica mensagem de usuário foi solicitada para ser excluída';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Todas as mensagens deste usuário foram solicitadas para serem excluídas';
@@ -676,10 +698,12 @@ function pt_BRLang() {
     STR_PING_WARNING_SUMMARY =
         'O aplicativo está constantemente verificando a conexão com o Twitch por meio de um ping, se isso falhar muitas vezes, um aviso será exibido, se esse aviso estiver encomodando, defina como NÃO';
     STR_KEY_UP_TIMEOUT = 'Tempo limite de segurar a tecla (em milissegundos)';
-    STR_KEY_UP_TIMEOUT_SUMMARY = 'Quanto tempo você precisa para segurar uma tecla para que uma ação de segurar aconteça, as ações são atualizar a tela, mostra opções de miniaturas etc.';
+    STR_KEY_UP_TIMEOUT_SUMMARY =
+        'Quanto tempo você precisa para segurar uma tecla para que uma ação de segurar aconteça, as ações são atualizar a tela, mostra opções de miniaturas etc.';
     STR_CURRENT_THUMB_STYLE = 'Estilo de seleção atual';
     STR_NEW_THUMB_STYLE = 'Novo estilo de seleção';
-    STR_COLOR_STYLE_TEXT = 'Use cima/baixo para selecionar uma opção, pressione retornar para sair, pressione Enter em "Aplicar alterações" para confirmar.';
+    STR_COLOR_STYLE_TEXT =
+        'Use cima/baixo para selecionar uma opção, pressione retornar para sair, pressione Enter em "Aplicar alterações" para confirmar.';
     STR_SHADOWS = 'Sombras';
     STR_SHADOWS_NONE = 'Nenhum';
     STR_SHADOWS_WHITE = 'Branco';
@@ -697,10 +721,26 @@ function pt_BRLang() {
     STR_THUMB_STYLE = 'Estilo de miniatura selecionado';
     STR_OPEN_EXTERNAL_PLAYER = 'Abrir em um player externo';
     STR_CHAT_SIDE_ARRAY = ['Esquerda', 'Direita'];
-    STR_CHAT_BASE_ARRAY = ['Inferior direito', 'Centro direito', 'Superior direito', 'Centro superior', 'Superior esquerdo', 'Centro esquerdo', 'Inferior esquerdo', 'Centro inferior'];
+    STR_CHAT_BASE_ARRAY = [
+        'Inferior direito',
+        'Centro direito',
+        'Superior direito',
+        'Centro superior',
+        'Superior esquerdo',
+        'Centro esquerdo',
+        'Inferior esquerdo',
+        'Centro inferior'
+    ];
     STR_CHAT_100_ARRAY = ['Direita', 'Centro', 'Esquerda'];
     STR_NOTIFICATION_POS = 'Posição de notificação na tela';
-    STR_NOTIFICATION_POS_ARRAY = [' Canto superior direito', 'Centro superior', 'Esquerda superior', 'Esquerda inferior', 'Centro inferior', 'Direita inferior'];
+    STR_NOTIFICATION_POS_ARRAY = [
+        ' Canto superior direito',
+        'Centro superior',
+        'Esquerda superior',
+        'Esquerda inferior',
+        'Centro inferior',
+        'Direita inferior'
+    ];
     STR_LOWLATENCY_ARRAY = [STR_DISABLE, 'Modo normal, pode causar re-buffers', 'Modo mais baixo, pode causar ainda mais re-buffers'];
     STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + '-' + STR_DISABLED, STR_LOW_LATENCY + '- modo normal', STR_LOW_LATENCY + '- Modo mais baixo'];
     STR_VOD_SEEK = 'Vídeos controles de retroceder/avançar rápido';
@@ -729,14 +769,16 @@ function pt_BRLang() {
     STR_INACTIVE_SETTINGS = 'Minimizar automaticamente o aplicativo quando inativo por';
     STR_INACTIVE_SETTINGS_SUMMARY =
         'Impedir que o aplicativo fique executado quando ninguém estiver vendo, um aviso aparecerá dando ao usuário 15 segundos para pressionar qualquer tecla para evitar a minimização';
-    STR_INACTIVE_WARNING = 'O aplicativo irá minimizar automaticamente devido à inatividade em <br><br>% x <br><br> Pressione qualquer tecla para prevenir';
+    STR_INACTIVE_WARNING =
+        'O aplicativo irá minimizar automaticamente devido à inatividade em <br><br>% x <br><br> Pressione qualquer tecla para prevenir';
     STR_REMAINING = 'Restantes:';
     STR_PLAYER_INFO_VISIBILITY = 'Visibilidade do status do player';
     STR_PREVIEW_SET = 'Configurações de pré-visualização';
     STR_PREVIEW_SHOW = 'Mostrar pré-visualização';
     STR_PREVIEW_SIZE_CONTROLS = 'Tamanho da pré-visualização';
     STR_OLED_BURN_IN = 'Proteção OLED';
-    STR_OLED_BURN_IN_SUMMARY = 'Quando ativado, a tela ficará totalmente preta por 50 ms a cada 20 minutos, apenas necessário para dispositivos com telas OLED que apresentam problemas de burn-ins';
+    STR_OLED_BURN_IN_SUMMARY =
+        'Quando ativado, a tela ficará totalmente preta por 50 ms a cada 20 minutos, apenas necessário para dispositivos com telas OLED que apresentam problemas de burn-ins';
     STR_AS = 'como';
     STR_MILLISECONDS = 'milissegundos';
     STR_HOUR = 'hora';
@@ -766,7 +808,8 @@ function pt_BRLang() {
     STR_THUMB_OPTIONS_CLICK = 'Clique duas vezes sobre uma ação (para abri-la ou aplicá-la), clique fora da caixa para sair sem aplicar';
     STR_CLOSE_THIS_BROWSER = 'Pressione voltar, entrar ou clique fora para fechar';
     STR_DISABLE_EMBED = 'Habilitar Live e Vod Twitch player';
-    STR_DISABLE_EMBED_SUMMARY = 'Isso só é necessário desativar se você quiser ver o player usado em TVs para verificar suas strings e layout por motivos de teste';
+    STR_DISABLE_EMBED_SUMMARY =
+        'Isso só é necessário desativar se você quiser ver o player usado em TVs para verificar suas strings e layout por motivos de teste';
     STR_SPECIAL_FEATURE = 'Use o teclado para este recurso';
     STR_FAIL_VOD_INFO = 'Falha ao carregar a informação do Video';
     STR_NOKEY_GENERAL_WARN = ', navegue até o painel lateral (opção superior) Usuário: Mudar, adicionar, chave, pressionar enter no usuário';
@@ -774,4 +817,7 @@ function pt_BRLang() {
     STR_TTV_LOL = 'Proxy TTV LOL (Proxy contra censura da Internet e afins)';
     STR_TTV_LOL_SUMMARY =
         'Permite que o servidor proxy obtenha links de streaming de um servidor diferente, que pode permitir que você veja conteúdo proibido em sua região e evita anúncios, desative isso se você tiver algum problema de transmissão com Lives como buffers longos e repetidos, travamentos ou conexão lenta que faz com que a qualidade da stream seja reduzida';
+    PROXY_SERVICE_STATUS = 'Habilitado e funcionando';
+    PROXY_SERVICE_OFF = 'Desativado nas configurações';
+    PROXY_SERVICE_FAIL = 'Não funciona, falhou %x vezes';
 }

@@ -34,6 +34,8 @@ var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]
 //var proxy_ping_url = 'https://api.ttv.lol/ping';
 
 var use_proxy = false;
+var proxy_fail_counter = 0;
+var proxy_fail_counter_checker = 0;
 
 //VOD
 var Play_vod_token_prop = 'videoPlaybackAccessToken';
@@ -47,6 +49,9 @@ function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_
     // console.log('CheckId_y', CheckId_y);
     // console.log('CheckId_x', CheckId_x);
     // console.log('callBackSuccess', callBackSuccess.name);
+
+    //if at te end of a request the values are different we have a issues
+    proxy_fail_counter_checker = proxy_fail_counter;
     if (use_proxy && isLive) {
         PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, null, null, true);
     } else {
@@ -194,13 +199,11 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
         response = JSON.parse(result);
 
     if (response.status !== 200) {
-        console.log('if 1');
         if (useProxy) {
-            console.log('if 2');
+            proxy_fail_counter++;
             PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
             return;
         } else {
-            console.log('else ');
             result = JSON.stringify({
                 status: Checked_Token === '1' ? 1 : response.status,
                 responseText: response.responseText,
@@ -218,6 +221,9 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
 }
 
 function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
+    //if at te end of a request the values are different we have a issues
+    proxy_fail_counter_checker = proxy_fail_counter;
+
     return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, use_proxy);
 }
 
@@ -275,6 +281,7 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
                 return obj;
             } else {
                 if (useProxy) {
+                    proxy_fail_counter++;
                     return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                 } else {
                     return JSON.stringify({

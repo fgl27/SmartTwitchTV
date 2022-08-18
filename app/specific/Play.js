@@ -1501,7 +1501,14 @@ function Play_UpdateVideoStatus(net_speed, net_act, dropped_frames, buffer_size,
             (latency !== null ? STR_LATENCY + latency + STR_BR : '') +
             STR_PING +
             ping +
-            STR_AVG
+            STR_AVG +
+            STR_BR +
+            PROXY_SERVICE +
+            (use_proxy
+                ? proxy_fail_counter > proxy_fail_counter_checker
+                    ? PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter)
+                    : PROXY_SERVICE_STATUS
+                : PROXY_SERVICE_OFF)
     );
 }
 
