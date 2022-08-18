@@ -217,6 +217,8 @@ function Main_StartApp() {
                     Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
                     AddCode_refreshTokensResult: AddCode_refreshTokensResult,
                     Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
+                    PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
+                    PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
                     AddCode_AppTokenResult: AddCode_AppTokenResult
                 };
             }
@@ -240,7 +242,6 @@ function Main_StartApp() {
             KEY_RETURN = 27;
             Main_HideElement('scene_keys');
         }
-
         Main_showLoadDialog();
 
         Main_initClick();
@@ -558,9 +559,15 @@ function Main_SetStringsSecondary() {
 
     Main_innerHTML('dialog_vod_start_text', STR_FROM_START);
 
-    Main_innerHTML('channel_content_titley_0', '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS);
+    Main_innerHTML(
+        'channel_content_titley_0',
+        '<i class="icon-movie-play stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_VIDEOS
+    );
     Main_innerHTML('channel_content_titley_1', '<i class="icon-movie stream_channel_follow_icon"></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_CLIPS);
-    Main_innerHTML('channel_content_titley_2', '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW);
+    Main_innerHTML(
+        'channel_content_titley_2',
+        '<i class="icon-heart-o" style="color: #FFFFFF; font-size: 100%; "></i>' + STR_SPACE_HTML + STR_SPACE_HTML + STR_FOLLOW
+    );
 
     Main_textContent('dialog_hist_setting_name_0', STR_SORTING);
     Main_textContent('dialog_hist_setting_name_2', STR_DELETE_HISTORY);
@@ -1398,7 +1405,8 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
             } else {
                 //is live check if is the same BroadcastID
 
-                if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid) Main_CheckBroadcastID(index, idsArray[2] + id);
+                if (!Play_PreviewId && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid)
+                    Main_CheckBroadcastID(index, idsArray[2] + id);
                 else {
                     Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], Main_values_Play_data[15], screen);
 
@@ -1754,7 +1762,13 @@ function Main_getclock() {
 function Main_updateUserFeed() {
     //Main_Log('Main_updateUserFeed');
 
-    if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token && !UserLiveFeed_isPreviewShowing() && !Sidepannel_isShowingUserLive() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+    if (
+        AddUser_UserIsSet() &&
+        AddUser_UsernameArray[0].access_token &&
+        !UserLiveFeed_isPreviewShowing() &&
+        !Sidepannel_isShowingUserLive() &&
+        !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]
+    ) {
         UserLiveFeed_RefreshLive();
         UserLiveFeedobj_LiveFeedOldUserName = AddUser_UsernameArray[0].name;
     }
@@ -2011,13 +2025,13 @@ function FullxmlHttpGet(theUrl, Headers, callbackSucess, calbackError, key, chec
     }
 }
 
-function Main_CheckFullxmlHttpGet(result, key, callbackSucess, calbackError, checkResult) {
+function Main_CheckFullxmlHttpGet(result, key, callbackSuccess, callBackError, checkResult) {
     // prettier-ignore
-    eval(callbackSucess)(// jshint ignore:line
+    eval(callbackSuccess)(// jshint ignore:line
         JSON.parse(result),
         key,
         checkResult
-        //eval(calbackError)// jshint ignore:line
+        //eval(callBackError)// jshint ignore:line
     );
 }
 
@@ -2151,7 +2165,10 @@ function Main_history_Find_Vod_In_Live(id) {
         len = Main_values_History_data[AddUser_UsernameArray[0].id].live.length;
 
     for (index; index < len; index++) {
-        if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid === id) {
+        if (
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod &&
+            Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid === id
+        ) {
             return index;
         }
     }
@@ -2173,7 +2190,12 @@ function Main_history_UpdateLiveVod(id, vod, vodimg) {
 }
 
 function Main_history_UpdateVodClip(id, time, type) {
-    if (!AddUser_IsUserSet() || (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) || (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])) return;
+    if (
+        !AddUser_IsUserSet() ||
+        (type === 'vod' && ScreenObj[Main_HistoryVod].histPosX[1]) ||
+        (type === 'clip' && ScreenObj[Main_HistoryClip].histPosX[1])
+    )
+        return;
 
     var index = Main_history_Exist(type, id);
 
@@ -2710,7 +2732,9 @@ function Main_CheckStop() {
     } else Main_CheckDialogs();
 
     //Reset Screen img if hiden
-    var doc = ScreenObj[Main_values.Main_Go].ids ? Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX) : null;
+    var doc = ScreenObj[Main_values.Main_Go].ids
+        ? Main_getElementById(ScreenObj[Main_values.Main_Go].ids[1] + ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX)
+        : null;
     if (doc) Main_RemoveClassWithEle(doc, 'opacity_zero');
     else if (ChannelContent_Isfocused()) {
         Main_RemoveClass('channel_content_cell0_1_img', 'opacity_zero');
@@ -2801,7 +2825,12 @@ function Main_CheckAccessibility(skipRefresCheck) {
         else {
             Main_CheckAccessibilityHide(false);
             //if focused and showing force a refresh check
-            if ((Screens_Isfocused() || ChannelContent_Isfocused()) && !Sidepannel_isShowingUserLive() && !Sidepannel_isShowingMenus() && !skipRefresCheck) {
+            if (
+                (Screens_Isfocused() || ChannelContent_Isfocused()) &&
+                !Sidepannel_isShowingUserLive() &&
+                !Sidepannel_isShowingMenus() &&
+                !skipRefresCheck
+            ) {
                 Main_removeEventListener('keydown', ScreenObj[Main_values.Main_Go].key_fun);
                 Main_SwitchScreen();
             }
@@ -2979,7 +3008,10 @@ function Main_onNewIntent(mobj) {
 
             if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
                 Main_values.Main_BeforeAgame =
-                    Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip
+                    Main_values.Main_BeforeChannelisSet &&
+                    Main_values.Main_Go !== Main_ChannelContent &&
+                    Main_values.Main_Go !== Main_ChannelVod &&
+                    Main_values.Main_Go !== Main_ChannelClip
                         ? Main_values.Main_BeforeChannel
                         : Main_values.Main_Go;
                 Main_values.Main_BeforeAgameisSet = true;
@@ -3204,7 +3236,15 @@ function Main_EventChannel(obj) {
 }
 
 var UNKNOWN = 'UNKNOWN';
-var Main_EventChannelScreens = ['CHANNEL_' + UNKNOWN, 'CHANNEL_LIVE', 'CHANNEL_USER_LIVE', 'CHANNEL_FEATURED', 'CHANNEL_GAMES', 'CHANNEL_USER_GAMES', 'CHANNEL_USER_HOSTS'];
+var Main_EventChannelScreens = [
+    'CHANNEL_' + UNKNOWN,
+    'CHANNEL_LIVE',
+    'CHANNEL_USER_LIVE',
+    'CHANNEL_FEATURED',
+    'CHANNEL_GAMES',
+    'CHANNEL_USER_GAMES',
+    'CHANNEL_USER_HOSTS'
+];
 
 function Main_EventGetChannelScreen(obj) {
     return obj.screen && Main_EventChannelScreens[obj.screen] ? Main_EventChannelScreens[obj.screen] : Main_EventChannelScreens[0];

@@ -42,7 +42,8 @@ var PlayClip_All = false;
 var PlayClip_BaseUrl = 'https://gql.twitch.tv/gql';
 var PlayClip_postMessage =
     '{"operationName":"VideoAccessToken_Clip","variables":{"slug":"%x"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"36b89d2507fce29e5ca551df756d27c1cfe079e2609642b4390aa4c35796eb11"}}}';
-var PlayClip_ExtraClipInfo = '{"query":"{clip(slug:\\"%x\\"){game{displayName},videoOffsetSeconds,broadcaster{roles{isPartner},displayName,profileImageURL(width: 300)}}}"}';
+var PlayClip_ExtraClipInfo =
+    '{"query":"{clip(slug:\\"%x\\"){game{displayName},videoOffsetSeconds,broadcaster{roles{isPartner},displayName,profileImageURL(width: 300)}}}"}';
 
 function PlayClip_Start() {
     //Main_Log('PlayClip_Start');
@@ -91,7 +92,10 @@ function PlayClip_Start() {
 
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
 
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i> </div>');
+    Main_innerHTMLWithEle(
+        Play_BottonIcons_Pause,
+        '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i> </div>'
+    );
     Main_ShowElementWithEle(Play_Controls_Holder);
 
     UserLiveFeed_PreventHide = false;
@@ -238,7 +242,15 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                 }
 
                 if (clip.broadcaster) {
-                    Main_innerHTML('stream_info_name', Play_partnerIcon(clip.broadcaster.displayName, clip.broadcaster.roles && clip.broadcaster.roles.isPartner, 2, ChannelClip_language));
+                    Main_innerHTML(
+                        'stream_info_name',
+                        Play_partnerIcon(
+                            clip.broadcaster.displayName,
+                            clip.broadcaster.roles && clip.broadcaster.roles.isPartner,
+                            2,
+                            ChannelClip_language
+                        )
+                    );
 
                     Play_LoadLogo(Main_getElementById('stream_info_icon'), clip.broadcaster.profileImageURL);
 
@@ -299,7 +311,11 @@ function PlayClip_QualityGenerate(mresponse) {
         token;
 
     if (response && response.hasOwnProperty('data') && response.data.hasOwnProperty('clip') && response.data.clip) {
-        token = '?sig=' + encodeURIComponent(response.data.clip.playbackAccessToken.signature) + '&token=' + encodeURIComponent(response.data.clip.playbackAccessToken.value);
+        token =
+            '?sig=' +
+            encodeURIComponent(response.data.clip.playbackAccessToken.signature) +
+            '&token=' +
+            encodeURIComponent(response.data.clip.playbackAccessToken.value);
         response = response.data.clip.videoQualities;
 
         var i = 0,
@@ -455,7 +471,8 @@ function PlayClip_UpdateHistory(screen) {
             var data = ScreenObj[screen].DataObj[ScreenObj[screen].posY + '_' + ScreenObj[screen].posX];
 
             if (data && ChannelClip_Id === data[7]) {
-                Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width = (time / data[1]) * 100 + '%';
+                Main_getElementById(ScreenObj[screen].ids[7] + (ScreenObj[screen].posY + '_' + ScreenObj[screen].posX)).style.width =
+                    (time / data[1]) * 100 + '%';
             }
         }
     }
@@ -663,7 +680,7 @@ function PlayClip_CheckIfIsLiveResult(response) {
 
 function PlayClip_CheckIfIsLiveStart() {
     if (!Main_IsOn_OSInterface || Play_PreviewId) PlayClip_OpenLiveStream();
-    else Play_CheckIfIsLiveStart('PlayClip_CheckIfIsLiveResult');
+    else Play_CheckIfIsLiveStart(PlayClip_CheckIfIsLiveResult);
 }
 
 function PlayClip_OpenLiveStream() {
@@ -838,7 +855,8 @@ function PlayClip_handleKeyDown(e) {
                 Play_EndTextClear();
 
                 if (!Play_EndFocus) {
-                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                    if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos)
+                        UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                     else {
                         Play_EndFocus = true;
                         UserLiveFeed_FeedRemoveFocus(UserLiveFeed_FeedPosX);
@@ -851,7 +869,8 @@ function PlayClip_handleKeyDown(e) {
                 }
             } else if (Play_isPanelShowing()) PlayClip_hidePanel();
             else if (UserLiveFeed_isPreviewShowing() && !Play_isEndDialogVisible()) {
-                if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos) UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
+                if (UserLiveFeed_FeedPosX === UserLiveFeedobj_UserAGamesPos || UserLiveFeed_FeedPosX === UserLiveFeedobj_AGamesPos)
+                    UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                 else UserLiveFeed_Hide();
             } else {
                 if (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit')) {
@@ -1011,16 +1030,7 @@ function Play_ClipCheckIfIsLive(channelName) {
     } else {
         Play_PreviewCheckId = new Date().getTime();
 
-        OSInterface_getStreamDataAsync(
-            PlayClip_BaseUrl,
-            Play_live_links.replace('%x', channelName),
-            'Play_ClipCheckIfIsLiveEnd',
-            Play_PreviewCheckId,
-            2, //Main player runs on 0 extra player on 1 the check on 2
-            DefaultHttpGetTimeout,
-            false,
-            Play_live_token.replace('%x', channelName)
-        );
+        PlayHLS_GetPlayListAsync(true, channelName, Play_PreviewCheckId, null, Play_ClipCheckIfIsLiveEnd);
     }
 }
 

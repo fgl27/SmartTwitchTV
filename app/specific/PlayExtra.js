@@ -96,22 +96,14 @@ function PlayExtra_Resume(synchronous) {
         //On resume to avoid out of sync resumes we run PP synchronous
         if (synchronous) {
             var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
+            console.log(StreamData);
 
             //Do not check host on async, as both player may have endede with will cause a out of sync error
             //causing the player to stop in a black state
             if (StreamData) PlayExtra_ResumeResultEnd(JSON.parse(StreamData), false);
             else PlayExtra_End(false, 0);
         } else {
-            OSInterface_getStreamDataAsync(
-                PlayClip_BaseUrl,
-                Play_live_links.replace('%x', PlayExtra_data.data[6]),
-                'PlayExtra_ResumeResult',
-                PlayExtra_ResumeId,
-                1,
-                DefaultHttpGetTimeout,
-                false,
-                Play_live_token.replace('%x', PlayExtra_data.data[6])
-            );
+            PlayHLS_GetPlayListAsync(true, PlayExtra_data.data[6], PlayExtra_ResumeId, null, PlayExtra_ResumeResult);
         }
     }
 }
@@ -361,7 +353,13 @@ function PlayExtra_ClearExtra() {
 function PlayExtra_UpdatePanel() {
     Main_innerHTML(
         'stream_info_pp_name0',
-        Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+        Play_partnerIcon(
+            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+            Play_data.data[10],
+            0,
+            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+            Play_data.data[8]
+        )
     );
     if (Play_data.data[9]) {
         Main_getElementById('stream_info_ppimg0').src = Play_data.data[9];
@@ -371,7 +369,10 @@ function PlayExtra_UpdatePanel() {
 
     Main_innerHTML('stream_info_pp_title0', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML('stream_info_pp_game0', Play_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + Play_data.data[3]);
-    Main_innerHTML('stream_info_pp_viewers0', STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ',');
+    Main_innerHTML(
+        'stream_info_pp_viewers0',
+        STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]) + ','
+    );
 
     Main_innerHTML(
         'stream_info_pp_name1',
@@ -393,7 +394,10 @@ function PlayExtra_UpdatePanel() {
     Main_innerHTML('stream_info_pp_title1', twemoji.parse(PlayExtra_data.data[2], false, true));
 
     Main_innerHTML('stream_info_pp_game1', PlayExtra_data.data[3] === '' ? STR_SPACE_HTML : STR_PLAYING + PlayExtra_data.data[3]);
-    Main_innerHTML('stream_info_pp_viewers1', STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ',');
+    Main_innerHTML(
+        'stream_info_pp_viewers1',
+        STR_FOR + Main_addCommas(PlayExtra_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(PlayExtra_data.data[13]) + ','
+    );
 }
 
 var PlayExtra_updateStreamLogoValuesId;

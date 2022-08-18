@@ -20,16 +20,15 @@
 
 //Same method used by punycode to start as a API
 //APISTART this line is here so release_maker can work don't remove
-(function(root) {
-
+(function (root) {
     /** Detect free variables */
     var smartTwitchTVGlobal = typeof global === 'object' && global;
-    if (smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
+    if (
+        smartTwitchTVGlobal.global === smartTwitchTVGlobal ||
         smartTwitchTVGlobal.window === smartTwitchTVGlobal ||
-        smartTwitchTVGlobal.self === smartTwitchTVGlobal) {
-
+        smartTwitchTVGlobal.self === smartTwitchTVGlobal
+    ) {
         root = smartTwitchTVGlobal;
-
     }
     //APIMID this line is here so release_maker can work don't remove
     //APICENTER this line is here so release_maker can work don't remove
@@ -39,45 +38,48 @@
      * and all function need to be called outiside the API
      * smartTwitchTV + all functions called by java
      */
-    smartTwitchTV = {// smartTwitchTV var is defined in app/specific/Main.js
-        'mainstart': Main_Start,
-        'Play_PannelEndStart': Play_PannelEndStart,
-        'Play_PlayerCheck': Play_PlayerCheck,
-        'Play_UpdateDuration': Play_UpdateDuration,
-        'PlayExtra_End': PlayExtra_End,
-        'Play_MultiEnd': Play_MultiEnd,
-        'Play_CheckIfIsLiveClean': Play_CheckIfIsLiveClean,
-        'UserLiveFeed_CheckIfIsLiveResult': UserLiveFeed_CheckIfIsLiveResult,
-        'Sidepannel_CheckIfIsLiveResult': Sidepannel_CheckIfIsLiveResult,
-        'Main_CheckStop': Main_CheckStop,
-        'Main_CheckResume': Main_CheckResume,
-        'Play_getQualities': Play_getQualities,
-        'Play_ShowVideoStatus': Play_ShowVideoStatus,
-        'Play_ShowVideoQuality': Play_ShowVideoQuality,
-        'Play_PlayPauseChange': Play_PlayPauseChange,
-        'PlayVod_loadDataResult': PlayVod_loadDataResult,
-        'PlayExtra_ResumeResult': PlayExtra_ResumeResult,
-        'Play_loadDataResult': Play_loadDataResult,
-        'PlayClip_CheckIfIsLiveResult': PlayClip_CheckIfIsLiveResult,
-        'PlayVod_CheckIfIsLiveResult': PlayVod_CheckIfIsLiveResult,
-        'Play_MultiResult': Play_MultiResult,
-        'Screens_LoadPreviewResult': Screens_LoadPreviewResult,
-        'ChannelContent_LoadPreviewResult': ChannelContent_LoadPreviewResult,
-        'Play_StayCheckLiveResult': Play_StayCheckLiveResult,
-        'Play_CheckIfIsLiveResult': Play_CheckIfIsLiveResult,
-        'Play_ClipCheckIfIsLiveEnd': Play_ClipCheckIfIsLiveEnd,
-        'Main_onNewIntent': Main_onNewIntent,
-        'Main_EventChannelRefresh': Main_EventChannelRefresh,
-        'ChatLive_SetLatency': ChatLive_SetLatency,
-        'Main_CheckBasexmlHttpGet': Main_CheckBasexmlHttpGet,
-        'AddCode_refreshTokensResult': AddCode_refreshTokensResult,
-        'Main_CheckFullxmlHttpGet': Main_CheckFullxmlHttpGet,
-        'AddCode_AppTokenResult': AddCode_AppTokenResult
+    smartTwitchTV = {
+        // smartTwitchTV var is defined in app/specific/Main.js
+        mainstart: Main_Start,
+        Play_PannelEndStart: Play_PannelEndStart,
+        Play_PlayerCheck: Play_PlayerCheck,
+        Play_UpdateDuration: Play_UpdateDuration,
+        PlayExtra_End: PlayExtra_End,
+        Play_MultiEnd: Play_MultiEnd,
+        Play_CheckIfIsLiveClean: Play_CheckIfIsLiveClean,
+        UserLiveFeed_CheckIfIsLiveResult: UserLiveFeed_CheckIfIsLiveResult,
+        Sidepannel_CheckIfIsLiveResult: Sidepannel_CheckIfIsLiveResult,
+        Main_CheckStop: Main_CheckStop,
+        Main_CheckResume: Main_CheckResume,
+        Play_getQualities: Play_getQualities,
+        Play_ShowVideoStatus: Play_ShowVideoStatus,
+        Play_ShowVideoQuality: Play_ShowVideoQuality,
+        Play_PlayPauseChange: Play_PlayPauseChange,
+        PlayVod_loadDataResult: PlayVod_loadDataResult,
+        PlayExtra_ResumeResult: PlayExtra_ResumeResult,
+        Play_loadDataResult: Play_loadDataResult,
+        PlayClip_CheckIfIsLiveResult: PlayClip_CheckIfIsLiveResult,
+        PlayVod_CheckIfIsLiveResult: PlayVod_CheckIfIsLiveResult,
+        Play_MultiResult: Play_MultiResult,
+        Screens_LoadPreviewResult: Screens_LoadPreviewResult,
+        ChannelContent_LoadPreviewResult: ChannelContent_LoadPreviewResult,
+        Play_StayCheckLiveResult: Play_StayCheckLiveResult,
+        Play_CheckIfIsLiveResult: Play_CheckIfIsLiveResult,
+        Play_ClipCheckIfIsLiveEnd: Play_ClipCheckIfIsLiveEnd,
+        Main_onNewIntent: Main_onNewIntent,
+        Main_EventChannelRefresh: Main_EventChannelRefresh,
+        ChatLive_SetLatency: ChatLive_SetLatency,
+        Main_CheckBasexmlHttpGet: Main_CheckBasexmlHttpGet,
+        AddCode_refreshTokensResult: AddCode_refreshTokensResult,
+        Main_CheckFullxmlHttpGet: Main_CheckFullxmlHttpGet,
+        PlayHLS_GetTokenResult: PlayHLS_GetTokenResult,
+        PlayHLS_PlayListUrlResult: PlayHLS_PlayListUrlResult,
+        AddCode_AppTokenResult: AddCode_AppTokenResult
     };
 
     /** Expose `smartTwitchTV` */
     root.smartTwitchTV = smartTwitchTV;
-}(this));
+})(this);
 
 smartTwitchTV.mainstart();
 //If running from fs and not from internet add a timeout to prevet crash as the parsing of the file will not be defer

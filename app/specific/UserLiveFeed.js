@@ -395,7 +395,12 @@ function UserLiveFeed_loadDataSuccessFinish(pos) {
 }
 
 function UserLiveFeed_SetRefresh(pos) {
-    if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background') && pos !== UserLiveFeedobj_UserVodHistoryPos && pos !== UserLiveFeedobj_UserHistoryPos) {
+    if (
+        Settings_Obj_default('auto_refresh_screen') &&
+        Settings_Obj_default('auto_refresh_background') &&
+        pos !== UserLiveFeedobj_UserVodHistoryPos &&
+        pos !== UserLiveFeedobj_UserHistoryPos
+    ) {
         UserLiveFeed_CheckRefresh(pos, Settings_GetAutoRefreshTimeout());
     } else Main_clearTimeout(UserLiveFeed_RefreshId[pos]);
 }
@@ -601,21 +606,32 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
 
                 Main_innerHTML(
                     UserLiveFeed_ids[4] + id,
-                    STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13])
+                    STR_SINCE +
+                        Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
+                        STR_SPACE_HTML +
+                        STR_FOR +
+                        data[4] +
+                        STR_SPACE_HTML +
+                        Main_GetViewerStrings(data[13])
                 );
             }
         }
     }
 
     if (!UserLiveFeed_obj[pos].AddCellsize) {
-        UserLiveFeed_obj[pos].AddCellsize = Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth / BodyfontSize;
+        UserLiveFeed_obj[pos].AddCellsize =
+            Main_getElementById(UserLiveFeed_ids[3] + pos + '_' + UserLiveFeed_FeedPosY[pos]).offsetWidth / BodyfontSize;
     }
 
     if (isGame) {
         if (UserLiveFeed_FeedPosY[pos] < 5 || total < 9) {
             UserLiveFeed_FeedSetPos(Adder < 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 4 : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < total - 4 || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos(Adder > 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5 : true && total - UserLiveFeed_FeedPosY[pos] !== 5, pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(
+                Adder > 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 5 : true && total - UserLiveFeed_FeedPosY[pos] !== 5,
+                pos,
+                -1 * UserLiveFeed_obj[pos].AddCellsize
+            );
         } else {
             UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
@@ -623,7 +639,11 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         if (UserLiveFeed_FeedPosY[pos] < 3 || total < 6) {
             UserLiveFeed_FeedSetPos(Adder < 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 2 : true, pos, 0);
         } else if (UserLiveFeed_FeedPosY[pos] < total - 3 || total < UserLiveFeed_cellVisible[pos]) {
-            UserLiveFeed_FeedSetPos(Adder > 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3 : true && total - UserLiveFeed_FeedPosY[pos] !== 4, pos, -1 * UserLiveFeed_obj[pos].AddCellsize);
+            UserLiveFeed_FeedSetPos(
+                Adder > 0 ? skipAnimation || UserLiveFeed_FeedPosY[pos] !== 3 : true && total - UserLiveFeed_FeedPosY[pos] !== 4,
+                pos,
+                -1 * UserLiveFeed_obj[pos].AddCellsize
+            );
         } else {
             UserLiveFeed_FeedSetPos(skipAnimation, pos, -2 * UserLiveFeed_obj[pos].AddCellsize);
         }
@@ -635,7 +655,12 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
         UserLiveFeed_CounterDialog(UserLiveFeed_FeedPosY[pos], UserLiveFeed_itemsCount[pos]);
     }
 
-    if (UserLiveFeed_obj[pos].HasMore && !UserLiveFeed_obj[pos].loadingMore && !UserLiveFeed_obj[pos].dataEnded && total - UserLiveFeed_FeedPosY[pos] < 80) {
+    if (
+        UserLiveFeed_obj[pos].HasMore &&
+        !UserLiveFeed_obj[pos].loadingMore &&
+        !UserLiveFeed_obj[pos].dataEnded &&
+        total - UserLiveFeed_FeedPosY[pos] < 80
+    ) {
         //Load more as the data is getting used
         UserLiveFeed_obj[pos].loadingMore = true;
         UserLiveFeed_obj[pos].load();
@@ -645,7 +670,11 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
     Main_SaveValuesWithTimeout();
 
     if (isBanner && UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name) {
-        Main_EventBanner(UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name + '_viewed', UserLiveFeed_obj[pos].Screen, UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image);
+        Main_EventBanner(
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].event_name + '_viewed',
+            UserLiveFeed_obj[pos].Screen,
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
+        );
     }
 }
 
@@ -751,35 +780,27 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
 function UserLiveFeed_CheckIfIsLive(obj) {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface || Main_isStoped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible()) return;
+    if (!Main_IsOn_OSInterface || Main_isStoped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
+        return;
 
-    var id, token, link, isVod;
+    var id, token, link, isLive;
 
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
         //vod
 
-        isVod = true;
         id = obj[7];
         token = Play_vod_token;
         link = Play_vod_links;
     } else {
         //live
 
+        isLive = true;
         id = obj[6];
         token = Play_live_token;
         link = Play_live_links;
     }
 
-    OSInterface_CheckIfIsLiveFeed(
-        PlayClip_BaseUrl,
-        link.replace('%x', id),
-        'UserLiveFeed_CheckIfIsLiveResult',
-        UserLiveFeed_FeedPosX,
-        UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100,
-        DefaultHttpGetTimeout,
-        isVod,
-        token.replace('%x', id)
-    );
+    PlayHLS_GetPlayListAsync(isLive, id, UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100, UserLiveFeed_FeedPosX, UserLiveFeed_CheckIfIsLiveResult);
 }
 
 var UserLiveFeed_CheckIfIsLiveResultThumb;
@@ -819,7 +840,9 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                     //Make sure transition has ended to calculate rect
                     UserLiveFeed_FeedHolderDocId.style.transition = 'none';
 
-                    var Rect = Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).parentElement.getBoundingClientRect();
+                    var Rect = Main_getElementById(
+                        UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]
+                    ).parentElement.getBoundingClientRect();
                     OSInterface_SetPlayerViewFeedBottom(Rect.bottom, window.innerHeight);
                     UserLiveFeed_CheckIfIsLiveResultThumb = true;
 
@@ -846,7 +869,9 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                             VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
 
                             if (VodIdex > -1) {
-                                UserLiveFeed_PreviewOffset = (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(StreamInfo[12]).getTime()) / 1000;
+                                UserLiveFeed_PreviewOffset =
+                                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(StreamInfo[12]).getTime()) /
+                                    1000;
                             }
                         }
                     }
@@ -864,7 +889,13 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                     Play_showWarningMidleDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000), 2000);
                 }
 
-                Main_EventPreview('Preview_player', StreamInfo[6], StreamInfo[3], isVod ? StreamInfo[9] : StreamInfo[16] ? 'HOSTING' : StreamInfo[15], UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen);
+                Main_EventPreview(
+                    'Preview_player',
+                    StreamInfo[6],
+                    StreamInfo[3],
+                    isVod ? StreamInfo[9] : StreamInfo[16] ? 'HOSTING' : StreamInfo[15],
+                    UserLiveFeed_obj[UserLiveFeed_FeedPosX].Screen
+                );
 
                 return;
             } else {
@@ -938,7 +969,12 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     if (Adder > 0) {
         // right
         if (x > 3 && UserLiveFeed_cell[pos][x + 3]) {
-            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX && Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) {
+            if (
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] &&
+                pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations &&
+                !UserLiveFeed_ChangeFocusAnimationFast
+            ) {
                 //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -968,7 +1004,12 @@ function UserLiveFeed_FeedAddCellVideo(Adder, pos, x) {
     } else {
         // Left
         if (x > 2 && UserLiveFeed_cell[pos].length > x + 3) {
-            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX && Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) {
+            if (
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] &&
+                pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations &&
+                !UserLiveFeed_ChangeFocusAnimationFast
+            ) {
                 //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -1002,7 +1043,12 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     if (Adder > 0) {
         // right
         if (x > 5 && UserLiveFeed_cell[pos][x + 4]) {
-            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX && Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) {
+            if (
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] &&
+                pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations &&
+                !UserLiveFeed_ChangeFocusAnimationFast
+            ) {
                 //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -1032,7 +1078,12 @@ function UserLiveFeed_FeedAddCellGame(Adder, pos, x) {
     } else {
         // Left
         if (x > 4 && UserLiveFeed_cell[pos].length > x + 4) {
-            if (UserLiveFeed_ChangeFocusAnimationFinished[pos] && pos === UserLiveFeed_FeedPosX && Screens_SettingDoAnimations && !UserLiveFeed_ChangeFocusAnimationFast) {
+            if (
+                UserLiveFeed_ChangeFocusAnimationFinished[pos] &&
+                pos === UserLiveFeed_FeedPosX &&
+                Screens_SettingDoAnimations &&
+                !UserLiveFeed_ChangeFocusAnimationFast
+            ) {
                 //If with animation
 
                 UserLiveFeed_FeedAddCellAnimated(
@@ -1110,7 +1161,8 @@ function UserLiveFeed_KeyRightLeft(Adder) {
 
         UserLiveFeed_obj[UserLiveFeed_FeedPosX].AddCell(Adder, UserLiveFeed_FeedPosX, NextPos);
 
-        Main_values.UserLiveFeed_LastPositionId[UserLiveFeed_FeedPosX] = UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
+        Main_values.UserLiveFeed_LastPositionId[UserLiveFeed_FeedPosX] =
+            UserLiveFeed_DataObj[UserLiveFeed_FeedPosX][UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]][14];
     }
 }
 

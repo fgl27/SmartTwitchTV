@@ -348,7 +348,12 @@ function Screens_StartLoad(key) {
 function Screens_loadDataRequestStart(key) {
     ScreenObj[key].loadingData = true;
 
-    if (!ScreenObj[key].itemsCount && !ScreenObj[key].isReloadScreen && ScreenObj[key].hasBackupData && ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)) {
+    if (
+        !ScreenObj[key].itemsCount &&
+        !ScreenObj[key].isReloadScreen &&
+        ScreenObj[key].hasBackupData &&
+        ScreenObj[key].CheckBackupData(Main_values.Main_gameSelected_id)
+    ) {
         ScreenObj[key].restoreBackup();
     } else {
         Screens_loadDataRequest(key);
@@ -473,7 +478,11 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].coloumn_id = 0;
             }
 
-            for (ScreenObj[key].coloumn_id; ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length; ScreenObj[key].data_cursor++) {
+            for (
+                ScreenObj[key].coloumn_id;
+                ScreenObj[key].coloumn_id < ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < data_length;
+                ScreenObj[key].data_cursor++
+            ) {
                 if (ScreenObj[key].data[ScreenObj[key].data_cursor]) ScreenObj[key].addCell(ScreenObj[key].data[ScreenObj[key].data_cursor]);
             }
 
@@ -482,7 +491,12 @@ function Screens_loadDataSuccess(key) {
                 ScreenObj[key].row_id++;
                 ScreenObj[key].tempHtml = '';
 
-                if (ScreenObj[key].hasBanner() && ScreenObj[key].BannerTime < new Date().getTime() && !ScreenObj[key].BannerCreated && ScreenObj[key].row_id > 2) {
+                if (
+                    ScreenObj[key].hasBanner() &&
+                    ScreenObj[key].BannerTime < new Date().getTime() &&
+                    !ScreenObj[key].BannerCreated &&
+                    ScreenObj[key].row_id > 2
+                ) {
                     ScreenObj[key].addBanner();
                 }
 
@@ -560,7 +574,13 @@ function Screens_createCellChannel(id, idArray, valuesArray, key) {
         id +
         '" class="stream_info_channel_name">' +
         valuesArray[3] +
-        (valuesArray[4] ? STR_SPACE_HTML + STR_SPACE_HTML + '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' + IMG_PARTNER + '">' : '') +
+        (valuesArray[4]
+            ? STR_SPACE_HTML +
+              STR_SPACE_HTML +
+              '</div><div class="stream_info_channel_partner_icon"><img style="width: 2ch;" alt="" src="' +
+              IMG_PARTNER +
+              '">'
+            : '') +
         '</div></div></div></div>'
     );
 }
@@ -712,7 +732,15 @@ function Screens_createCellVod(id, idArray, valuesArray, key, Extra_when, Extra_
         valuesArray[4] +
         Main_GetViewsStrings(valuesArray[13]) +
         '</div></div>' +
-        (Extra_when ? '<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_SPACE_HTML + STR_UNTIL + Play_timeS(Extra_until) + '</div>' : '') +
+        (Extra_when
+            ? '<div class="stream_info_live">' +
+              STR_WATCHED +
+              Main_videoCreatedAtWithHM(Extra_when) +
+              STR_SPACE_HTML +
+              STR_UNTIL +
+              Play_timeS(Extra_until) +
+              '</div>'
+            : '') +
         '</div></div></div></div>'
     );
 }
@@ -878,7 +906,13 @@ function Screens_loadDataSuccessFinish(key) {
 }
 
 function Screens_SetAutoRefresh(key) {
-    if (Settings_Obj_default('auto_refresh_screen') && Settings_Obj_default('auto_refresh_background') && key !== Main_SearchGames && key !== Main_SearchLive && ScreenObj[key].screenType !== 4) {
+    if (
+        Settings_Obj_default('auto_refresh_screen') &&
+        Settings_Obj_default('auto_refresh_background') &&
+        key !== Main_SearchGames &&
+        key !== Main_SearchLive &&
+        ScreenObj[key].screenType !== 4
+    ) {
         Screens_CheckAutoRefresh(key, Settings_GetAutoRefreshTimeout());
     } else Main_clearTimeout(ScreenObj[key].AutoRefreshId);
 }
@@ -1008,9 +1042,17 @@ function Screens_addFocus(forceScroll, key) {
 
     //Load more as the data is getting used
     if (ScreenObj[key].data) {
-        if (ScreenObj[key].posY > 2 && ScreenObj[key].data_cursor + Main_ItemsLimitMax > ScreenObj[key].data.length && !ScreenObj[key].dataEnded && !ScreenObj[key].loadingData) {
+        if (
+            ScreenObj[key].posY > 2 &&
+            ScreenObj[key].data_cursor + Main_ItemsLimitMax > ScreenObj[key].data.length &&
+            !ScreenObj[key].dataEnded &&
+            !ScreenObj[key].loadingData
+        ) {
             Screens_loadDataRequestStart(key);
-        } else if (ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount && ScreenObj[key].data_cursor < ScreenObj[key].data.length) {
+        } else if (
+            ScreenObj[key].posY + ScreenObj[key].ItemsReloadLimit > ScreenObj[key].itemsCount / ScreenObj[key].ColoumnsCount &&
+            ScreenObj[key].data_cursor < ScreenObj[key].data.length
+        ) {
             ScreenObj[key].loadDataSuccess();
         }
     }
@@ -1116,7 +1158,10 @@ function Screens_LoadPreviewStart(key, obj) {
         return;
     }
 
-    var id, token, link, isVod;
+    var id,
+        token,
+        link,
+        isLive = true;
 
     if (ScreenObj[key].screenType === 2) {
         //clip
@@ -1136,7 +1181,7 @@ function Screens_LoadPreviewStart(key, obj) {
     } else if (ScreenObj[key].screenType === 1) {
         //vod
 
-        isVod = true;
+        isLive = false;
         id = obj[7];
         token = Play_vod_token;
         link = Play_vod_links;
@@ -1148,7 +1193,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
             if (index > -1) {
                 if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
-                    isVod = true;
+                    isLive = false;
                     id = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
                     token = Play_vod_token;
                     link = Play_vod_links;
@@ -1169,21 +1214,16 @@ function Screens_LoadPreviewStart(key, obj) {
         }
     }
 
-    OSInterface_CheckIfIsLiveFeed(
-        PlayClip_BaseUrl,
-        link.replace('%x', id),
-        'Screens_LoadPreviewResult',
-        key,
+    PlayHLS_GetPlayListAsync(
+        isLive,
+        id,
         (ScreenObj[key].posY * ScreenObj[key].ColoumnsCount + ScreenObj[key].posX) % 100,
-        DefaultHttpGetTimeout,
-        isVod,
-        token.replace('%x', id)
+        key,
+        Screens_LoadPreviewResult
     );
 }
 
 function Screens_LoadPreviewResult(StreamData, x, y) {
-    //Called by Java
-
     if (
         !Main_isStoped &&
         Screens_IsInUse(x) &&
@@ -1241,7 +1281,9 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                             VodIdex = UserIsSet ? Main_history_Find_Vod_In_Live(Play_PreviewId) : -1;
 
                             if (VodIdex > -1) {
-                                offset = (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(StreamInfo[12]).getTime()) / 1000;
+                                offset =
+                                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[VodIdex].date - new Date(StreamInfo[12]).getTime()) /
+                                    1000;
                             }
                         }
                     }
@@ -1260,7 +1302,9 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                             if (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
                                 Play_PreviewId = Main_values_History_data[AddUser_UsernameArray[0].id].live[index].vodid;
 
-                                offset = (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - new Date(StreamInfo[12]).getTime()) / 1000;
+                                offset =
+                                    (Main_values_History_data[AddUser_UsernameArray[0].id].live[index].date - new Date(StreamInfo[12]).getTime()) /
+                                    1000;
 
                                 who_called = 2;
                             } else {
@@ -1279,13 +1323,26 @@ function Screens_LoadPreviewResult(StreamData, x, y) {
                 var img = Main_getElementById(ScreenObj[x].ids[1] + ScreenObj[x].posY + '_' + ScreenObj[x].posX);
                 var Rect = img.parentElement.getBoundingClientRect();
 
-                OSInterface_StartScreensPlayer(Play_PreviewURL, PreviewResponseText, offset * 1000, Rect.bottom, Rect.right, Rect.left, window.innerHeight, who_called);
+                OSInterface_StartScreensPlayer(
+                    Play_PreviewURL,
+                    PreviewResponseText,
+                    offset * 1000,
+                    Rect.bottom,
+                    Rect.right,
+                    Rect.left,
+                    window.innerHeight,
+                    who_called
+                );
 
                 Screens_ClearAnimation(x);
                 Main_AddClassWitEle(img, 'opacity_zero');
 
                 if (offset) {
-                    Main_showWarningDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(offset * 1000), 2000, !ScreenObj[x].Cells[ScreenObj[x].posY + 1]);
+                    Main_showWarningDialog(
+                        STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(offset * 1000),
+                        2000,
+                        !ScreenObj[x].Cells[ScreenObj[x].posY + 1]
+                    );
                 }
 
                 Main_EventPreview('Preview_screen', StreamInfo[6], StreamInfo[3], lang, ScreenObj[x].ScreenName);
@@ -1331,7 +1388,10 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
     if (down) {
         ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
     } else {
-        ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
+        ScreenObj[key].tableDoc.insertBefore(
+            ScreenObj[key].Cells[y + y_plus],
+            ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]
+        );
     }
 
     //Delay to make sure ScreenObj[key].Cells[y + y_plus] is added and it's position is ready
@@ -1376,7 +1436,11 @@ function Screens_addrowAnimated(y, y_plus, y_plus_offset, for_in, for_out, for_o
 
 function Screens_addrowNotAnimated(y, y_plus, for_in, for_out, for_offset, eleRemovePos, down, key) {
     if (down) ScreenObj[key].tableDoc.appendChild(ScreenObj[key].Cells[y + y_plus]);
-    else ScreenObj[key].tableDoc.insertBefore(ScreenObj[key].Cells[y + y_plus], ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]);
+    else
+        ScreenObj[key].tableDoc.insertBefore(
+            ScreenObj[key].Cells[y + y_plus],
+            ScreenObj[key].tableDoc.childNodes[ScreenObj[key].HasSwitches ? 1 : 0]
+        );
 
     for (var i = for_in; i < for_out; i++) {
         if (ScreenObj[key].Cells[y + i]) {
@@ -1589,7 +1653,8 @@ function Screens_addrowEnd(forceScroll, key) {
 
         ScreenObj[key].addFocus(forceScroll, key);
 
-        if (key === Main_values.Main_Go && !Settings_isVisible()) Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
+        if (key === Main_values.Main_Go && !Settings_isVisible())
+            Main_CounterDialog(ScreenObj[key].posX, ScreenObj[key].posY, ScreenObj[key].ColoumnsCount, ScreenObj[key].itemsCount);
 
         if (ScreenObj[key].DataObj[id].event_name) {
             Main_EventBanner(ScreenObj[key].DataObj[id].event_name + '_viewed', ScreenObj[key].ScreenName, ScreenObj[key].DataObj[id].image);
@@ -1601,14 +1666,27 @@ var Screens_UpdateSinceId;
 function Screens_UpdateSince(key) {
     var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
-    if (Main_isStoped || !Screens_IsInUse(key) || !Screens_IsDivFocused(key) || !ScreenObj[key].Cells[ScreenObj[key].posY] || ScreenObj[key].DataObj[id].image) return;
+    if (
+        Main_isStoped ||
+        !Screens_IsInUse(key) ||
+        !Screens_IsDivFocused(key) ||
+        !ScreenObj[key].Cells[ScreenObj[key].posY] ||
+        ScreenObj[key].DataObj[id].image
+    )
+        return;
 
     if (Screens_ObjNotNull(key)) {
         var data = Screens_GetObj(key);
 
         Main_innerHTML(
             ScreenObj[key].ids[4] + id,
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), data[12]) + STR_SPACE_HTML + STR_FOR + data[4] + STR_SPACE_HTML + Main_GetViewerStrings(data[13])
+            STR_SINCE +
+                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
+                STR_SPACE_HTML +
+                STR_FOR +
+                data[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(data[13])
         );
     }
 
@@ -1625,7 +1703,9 @@ function Screens_setOffset(pos, y, key) {
     if (!ScreenObj[key].offsettop || ScreenObj[key].offsettopFontsize !== Settings_Obj_default('global_font_offset')) {
         pos = !y ? y + pos : y;
         if (ScreenObj[key].Cells[pos]) {
-            ScreenObj[key].offsettop = (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) / BodyfontSize;
+            ScreenObj[key].offsettop =
+                (Main_getElementById(ScreenObj[key].ids[6] + pos).offsetHeight + Main_getElementById(ScreenObj[key].ids[0] + pos + '_0').offsetTop) /
+                BodyfontSize;
         } else ScreenObj[key].offsettop = 1;
 
         ScreenObj[key].offsettopFontsize = Settings_Obj_default('global_font_offset');
@@ -1642,7 +1722,8 @@ function Screens_addFocusChannel(forceScroll, key) {
             if (ScreenObj[key].Cells.length < 6) {
                 if ((ScreenObj[key].Cells[y + 1] && y + 2 < ScreenObj[key].Cells.length) || ScreenObj[key].Cells.length === 4)
                     ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop + 'em)';
-                else if (ScreenObj[key].Cells.length > 3) ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop * 2 + 'em)';
+                else if (ScreenObj[key].Cells.length > 3)
+                    ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop * 2 + 'em)';
             } else {
                 if (ScreenObj[key].Cells[y + 2]) ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop + 'em)';
                 else ScreenObj[key].ScrollDoc.style.transform = 'translateY(-' + ScreenObj[key].offsettop * 2 + 'em)';
@@ -1738,7 +1819,12 @@ function Screens_KeyUpDown(y, key) {
 }
 
 function Screens_ClearAnimation(key) {
-    if (ScreenObj[key].HasAnimateThumb && ScreenObj[key].posY > -1 && ScreenObj[key].itemsCount && !ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].image) {
+    if (
+        ScreenObj[key].HasAnimateThumb &&
+        ScreenObj[key].posY > -1 &&
+        ScreenObj[key].itemsCount &&
+        !ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX].image
+    ) {
         Main_clearInterval(ScreenObj[key].AnimateThumbId);
 
         if (Screens_ObjNotNull(key) && ScreenObj[key].FirstRunEnd) {
@@ -1827,7 +1913,11 @@ function Screens_keyRight(key) {
 
     //Prevent scroll too fast out of ScreenObj[key].Cells.length
     //here (ScreenObj[key].posY + 3) the 3 is 1 bigger then the 2 in Screens_addrow*Down (ScreenObj[key].Cells[y + 2])
-    if (ScreenObj[key].dataEnded || ScreenObj[key].posX < ScreenObj[key].ColoumnsCount - 1 || ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1) {
+    if (
+        ScreenObj[key].dataEnded ||
+        ScreenObj[key].posX < ScreenObj[key].ColoumnsCount - 1 ||
+        ScreenObj[key].Cells.length - 1 >= ScreenObj[key].posY + 1
+    ) {
         if (ScreenObj[key].posX === ScreenObj[key].ColoumnsCount - 1) {
             if (Screens_ChangeFocusAnimationFinished) Screens_KeyLeftRight(1, 0, key);
         } else Screens_KeyLeftRight(1, 0, key);
@@ -1869,7 +1959,11 @@ function Screens_handleKeyDown(key, event) {
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgUpNext : ScreenObj[key].key_pgUp);
                 } else if (ScreenObj[key].screen === Main_UserLive) {
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                } else if (ScreenObj[key].screen === Main_aGame || ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
+                } else if (
+                    ScreenObj[key].screen === Main_aGame ||
+                    ScreenObj[key].screen === Main_AGameVod ||
+                    ScreenObj[key].screen === Main_AGameClip
+                ) {
                     ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) {
@@ -1891,7 +1985,11 @@ function Screens_handleKeyDown(key, event) {
                     Sidepannel_Go(!AddUser_UsernameArray[0].access_token ? ScreenObj[key].key_pgDownNext : ScreenObj[key].key_pgDown);
                 } else if (ScreenObj[key].screen === Main_UserChannels) {
                     Sidepannel_Go(Main_History[Main_HistoryPos]);
-                } else if (ScreenObj[key].screen === Main_aGame || ScreenObj[key].screen === Main_AGameVod || ScreenObj[key].screen === Main_AGameClip) {
+                } else if (
+                    ScreenObj[key].screen === Main_aGame ||
+                    ScreenObj[key].screen === Main_AGameVod ||
+                    ScreenObj[key].screen === Main_AGameClip
+                ) {
                     ScreenObj[key].gameSelected_IdBefore = ScreenObj[key].gameSelected_Id;
 
                     if (Main_values.Main_BeforeAgame === Main_usergames) {
@@ -2699,7 +2797,8 @@ function Screens_ThumbOptionDialogHide(Update, key) {
         else if (Screens_ThumbOptionPosY === 1) Screens_OpenGame();
         else if (Screens_ThumbOptionPosY === 3) {
             if (!ScreenObj[key].screenType) {
-                var index = ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
+                var index =
+                    ScreenObj[key].screen === Main_HistoryLive && AddUser_UserIsSet() ? Main_history_Exist('live', Screens_values_Play_data[7]) : -1;
 
                 if (index > -1 && Main_values_History_data[AddUser_UsernameArray[0].id].live[index].forceVod) {
                     ScreenObj[Main_HistoryVod].histPosX[1] = Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY];
@@ -2807,7 +2906,10 @@ function Screens_OpenScreen() {
 
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
         Main_values.Main_BeforeAgame =
-            Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip
+            Main_values.Main_BeforeChannelisSet &&
+            Main_values.Main_Go !== Main_ChannelContent &&
+            Main_values.Main_Go !== Main_ChannelVod &&
+            Main_values.Main_Go !== Main_ChannelClip
                 ? Main_values.Main_BeforeChannel
                 : Main_values.Main_Go;
         Main_values.Main_BeforeAgameisSet = true;
@@ -2828,7 +2930,10 @@ function Screens_OpenGame() {
 
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
         Main_values.Main_BeforeAgame =
-            Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip
+            Main_values.Main_BeforeChannelisSet &&
+            Main_values.Main_Go !== Main_ChannelContent &&
+            Main_values.Main_Go !== Main_ChannelVod &&
+            Main_values.Main_Go !== Main_ChannelClip
                 ? Main_values.Main_BeforeChannel
                 : Main_values.Main_Go;
         Main_values.Main_BeforeAgameisSet = true;
@@ -2845,7 +2950,8 @@ function Screens_OpenGame() {
 
 function Screens_OpenChannel(key) {
     if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
-        Main_values.Main_BeforeChannel = Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
+        Main_values.Main_BeforeChannel =
+            Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
         Main_values.Main_BeforeChannelisSet = true;
     }
 
@@ -2877,7 +2983,13 @@ function Screens_ThumbOptionAddFocus(divPos) {
 }
 
 function Screens_ThumbOptionSetArrow(array) {
-    Screens_histArrow('thumb_opt', Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY], array.length, array[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]], Screens_ThumbOptionPosY);
+    Screens_histArrow(
+        'thumb_opt',
+        Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY],
+        array.length,
+        array[Screens_ThumbOptionPosXArrays[Screens_ThumbOptionPosY]],
+        Screens_ThumbOptionPosY
+    );
 }
 
 var Screens_ThumbOptionScreens = [];
@@ -2922,9 +3034,19 @@ function Screens_ThumbOptionSetArrowArray(key) {
 }
 
 function Screens_SetLastRefresh(key) {
-    if (Main_values.Main_Go === Main_Users || Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_Search || Main_values.Main_Go === Main_addUser || !ScreenObj[key]) return;
+    if (
+        Main_values.Main_Go === Main_Users ||
+        Main_values.Main_Go === Main_ChannelContent ||
+        Main_values.Main_Go === Main_Search ||
+        Main_values.Main_Go === Main_addUser ||
+        !ScreenObj[key]
+    )
+        return;
 
-    Main_innerHTML('label_last_refresh', STR_SPACE_HTML + '(' + STR_LAST_REFRESH + Play_timeDay(new Date().getTime() - ScreenObj[key].lastRefresh) + ')');
+    Main_innerHTML(
+        'label_last_refresh',
+        STR_SPACE_HTML + '(' + STR_LAST_REFRESH + Play_timeDay(new Date().getTime() - ScreenObj[key].lastRefresh) + ')'
+    );
 }
 
 function Screens_RefreshTimeout(key) {
