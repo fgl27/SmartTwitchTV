@@ -63,7 +63,34 @@ var Settings_value = {
             'Tiếng Việt [VI]',
             '中文 [ZH]'
         ],
-        apply_values: ['', 'bg', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'it', 'hu', 'ja', 'ko', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sv', 'th', 'tr', 'vi', 'zh'],
+        apply_values: [
+            '',
+            'bg',
+            'cs',
+            'da',
+            'de',
+            'el',
+            'en',
+            'es',
+            'fi',
+            'fr',
+            'it',
+            'hu',
+            'ja',
+            'ko',
+            'nl',
+            'no',
+            'pl',
+            'pt',
+            'ro',
+            'ru',
+            'sk',
+            'sv',
+            'th',
+            'tr',
+            'vi',
+            'zh'
+        ],
         defaultValue: 1
     },
     app_lang: {
@@ -75,7 +102,7 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    ttv_lol_proxy: {
+    ttv_lolProxy: {
         values: ['no', 'yes'],
         defaultValue: 1
     },
@@ -83,7 +110,7 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    clip_auto_play_next: {
+    clip_autoPlayNext: {
         //Migrated to dialog
         values: ['no', 'yes'],
         defaultValue: 2
@@ -92,7 +119,7 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
-    single_click_exit: {
+    single_clickExit: {
         values: ['no', 'yes'],
         defaultValue: 1
     },
@@ -201,7 +228,10 @@ var Settings_value = {
     },
     key_up_timeout: {
         //Migrated to dialog
-        values: [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
+        values: [
+            100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
+            1900, 2000
+        ],
         defaultValue: 6
     },
     live_feed_sort: {
@@ -433,7 +463,29 @@ var Settings_value = {
     },
     dpad_opacity: {
         //Migrated to dialog
-        values: ['0%', '5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '45%', '50%', '55%', '60%', '65%', '70%', '75%', '80%', '85%', '90%', '95%', '100%'],
+        values: [
+            '0%',
+            '5%',
+            '10%',
+            '15%',
+            '20%',
+            '25%',
+            '30%',
+            '35%',
+            '40%',
+            '45%',
+            '50%',
+            '55%',
+            '60%',
+            '65%',
+            '70%',
+            '75%',
+            '80%',
+            '85%',
+            '90%',
+            '95%',
+            '100%'
+        ],
         defaultValue: 12
     },
     highlight_rewards: {
@@ -641,8 +693,8 @@ function Settings_GetVolumes() {
 }
 
 var Settings_GetnotificationTimeMs = [
-    0, 600000, 1200000, 1800000, 2700000, 3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000, 32400000, 36000000, 39600000, 43200000, 46800000, 50400000, 54000000, 57600000,
-    61200000, 64800000, 68400000, 72000000, 75600000, 79200000, 82800000, 86400000
+    0, 600000, 1200000, 1800000, 2700000, 3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000, 32400000, 36000000, 39600000,
+    43200000, 46800000, 50400000, 54000000, 57600000, 61200000, 64800000, 68400000, 72000000, 75600000, 79200000, 82800000, 86400000
 ];
 
 function Settings_GetnotificationTime(min, hour, hours) {
@@ -751,11 +803,11 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
+    div += Settings_Content('ttv_lolProxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
 
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
-    div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
+    div += Settings_Content('single_clickExit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     div += Settings_Content('PP_workaround', dis_ena, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
@@ -821,7 +873,12 @@ function Settings_SetSettings() {
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
-    Settings_value.dpad_position.values = [STR_RIGHT + '-' + STR_BOTTOM, STR_RIGHT + '-' + STR_TOP, STR_LEFT + '-' + STR_BOTTOM, STR_LEFT + '-' + STR_TOP];
+    Settings_value.dpad_position.values = [
+        STR_RIGHT + '-' + STR_BOTTOM,
+        STR_RIGHT + '-' + STR_TOP,
+        STR_LEFT + '-' + STR_BOTTOM,
+        STR_LEFT + '-' + STR_TOP
+    ];
 }
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
@@ -1167,7 +1224,7 @@ function Settings_SetDefault(position) {
     else if (position === 'dpad_opacity') Settings_DpadOpacity();
     else if (position === 'dpad_position') Settings_DpadPOsition();
     else if (position === 'PP_workaround') Settings_PP_Workaround();
-    else if (position === 'ttv_lol_proxy') Settings_set_TTV_LOL();
+    else if (position === 'ttv_lolProxy') Settings_set_TTV_LOL();
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -1186,7 +1243,7 @@ function Settings_SetDefault(position) {
 }
 
 function Settings_set_TTV_LOL() {
-    use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
+    use_proxy = Settings_Obj_default('ttv_lolProxy') === 1;
 }
 
 function Settings_check_sidePannelFade() {
@@ -1327,7 +1384,10 @@ function Settings_CheckAutoMinimizeEnd() {
     if (Settings_AutoMinimizeTime > 0) {
         Settings_AutoMinimizeWarningId = Main_setTimeout(Settings_CheckAutoMinimizeEnd, 1000, Settings_AutoMinimizeWarningId);
 
-        Main_innerHTML('minimize_warning', STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND)));
+        Main_innerHTML(
+            'minimize_warning',
+            STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND))
+        );
     } else {
         Settings_DisableAutoMinimizeTimeout();
 
@@ -1691,7 +1751,12 @@ function Settings_CodecsShow(click) {
                 DivContent += STR_MAX_INSTANCES + (Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : STR_UNKNOWN) + STR_BR;
                 DivContent += Settings_CodecsValue[i].resolutions;
 
-                dialogContent += Settings_DivOptionWithSummary(Settings_CodecsValue[i].name, Settings_CodecsValue[i].name, DivContent + STR_BR + STR_BR, 73);
+                dialogContent += Settings_DivOptionWithSummary(
+                    Settings_CodecsValue[i].name,
+                    Settings_CodecsValue[i].name,
+                    DivContent + STR_BR + STR_BR,
+                    73
+                );
             }
 
             Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
@@ -1837,7 +1902,10 @@ function Settings_SetMaxInstances() {
     var i = 0,
         len = Settings_CodecsValue.length;
     for (i; i < len; i++) {
-        if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) && !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : '', 'google')) {
+        if (
+            !Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) &&
+            !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : '', 'google')
+        ) {
             Play_MaxInstances = Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : 10;
 
             break;
@@ -1981,7 +2049,11 @@ function Settings_DialogShowBitrate(click) {
         }
     };
 
-    Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC, click);
+    Settings_DialogShow(
+        obj,
+        STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC,
+        click
+    );
 }
 
 function Settings_vod_seek(click) {
@@ -2289,7 +2361,16 @@ function Settings_DialogShowCustomOpt(click) {
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
     Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
-    Settings_value.live_feed_sort.values = [STR_VIWES_MOST, STR_VIWES_LOWEST, STR_NAME_A_Z, STR_NAME_Z_A, STR_GAME_A_Z, STR_GAME_Z_A, STR_CREATED_NEWEST, STR_CREATED_OLDEST];
+    Settings_value.live_feed_sort.values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_GAME_A_Z,
+        STR_GAME_Z_A,
+        STR_CREATED_NEWEST,
+        STR_CREATED_OLDEST
+    ];
 
     var obj = {
         live_feed_sort: {
@@ -2382,7 +2463,7 @@ function Settings_PlayerEnd(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.open_host.values = yes_no;
     Settings_value.play_stay.values = yes_no;
-    Settings_value.clip_auto_play_next.values = yes_no;
+    Settings_value.clip_autoPlayNext.values = yes_no;
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
     var obj = {
@@ -2398,9 +2479,9 @@ function Settings_PlayerEnd(click) {
             title: STR_ALWAYS_STAY,
             summary: null
         },
-        clip_auto_play_next: {
-            defaultValue: Settings_value.clip_auto_play_next.defaultValue,
-            values: Settings_value.clip_auto_play_next.values,
+        clip_autoPlayNext: {
+            defaultValue: Settings_value.clip_autoPlayNext.defaultValue,
+            values: Settings_value.clip_autoPlayNext.values,
             title: STR_AUTO_PLAY_NEXT,
             summary: null
         },

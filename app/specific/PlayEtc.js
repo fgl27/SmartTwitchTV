@@ -508,7 +508,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_HideBufferDialog();
     Play_CleanHideExit();
 
-    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next'))) {
+    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))) {
         Play_EndIconsRemoveFocus();
         Play_EndCounter = -1;
     }
@@ -620,7 +620,7 @@ function Play_EndText(PlayVodClip) {
         Play_DialogEndText +
             STR_IS_OFFLINE +
             STR_BR +
-            (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next'))
+            (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))
                 ? STR_PLAY_NEXT_IN
                 : STR_STREAM_END) +
             Play_EndTextCounter +
@@ -643,7 +643,7 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next'))) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
         } else {
@@ -1348,11 +1348,11 @@ function Play_KeyReturn(is_vod) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
-        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit'))) {
+        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
-        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit')) {
+        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {

@@ -873,7 +873,7 @@ function PlayClip_handleKeyDown(e) {
                     UserLiveFeed_KeyEnter(UserLiveFeed_FeedPosX);
                 else UserLiveFeed_Hide();
             } else {
-                if (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit')) {
+                if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
                     PlayClip_CheckPreview();
                     Play_CleanHideExit();
                     PlayClip_shutdownStream();
