@@ -245,8 +245,8 @@ public final class Tools {
         );
 
         if (useProxy) {
-            String[] url_split = url.split("m3u8");
-            url = url_split[0] + "m3u8" + URLEncoder.encode(url_split[1], "UTF-8");
+            String[] url_split = url.split(".m3u8?");
+            url = url_split[0] + ".m3u8" + URLEncoder.encode("?" + url_split[1], "UTF-8");
         }
 
         response = Internal_MethodUrl(url, Timeout, null, null, 0, useProxy ? StreamDataProxyHeaders : new String[0][0]);
