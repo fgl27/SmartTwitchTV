@@ -256,6 +256,7 @@ public final class Tools {
 
             //fallback from proxy service
             if (useProxy && status != 200) {
+                recordException(TAG, "Proxy get fail status" + status + " responseText " + response.responseText, null);
                 return getStreamUrl(hls_url, proxy_url, StreamSig, StreamToken, checkResult, Timeout, false);
             }
 
@@ -289,6 +290,7 @@ public final class Tools {
 
             if (ping == null || ping.status != 200) {
                 useProxy = false;
+                recordException(TAG, "Proxy ping fail status " + (ping == null ? "null" : ping.status + " responseText " + ping.responseText), null);
             }
         }
 
