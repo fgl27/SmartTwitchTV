@@ -24,21 +24,17 @@ var version = {
     publishVersionCode: 343, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/343/SmartTV_twitch_3_0_343.apk',
     WebVersion: 'August 17 2022',
-    WebTag: 625, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 627, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'August XX 2022',
+            title: 'August XX 2022 and Apk Version 3.0.343 and Up',
             changes: [
                 'Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly',
-                'Add proxy status to the player status (player top right info) is now possible to see if the proxy service is working',
+                'Add Proxy to setting player options (all proxy disabled by default), this are internet censorship and related proxy',
+                'When the Proxy is enable you may experience longer buffer at start of a stream, but after all must work OK, if not disable it or change to a different proxy option',
+                'Add proxy status to the player status (player top right info)',
+                'Proxy only affects live streams',
                 'General improves'
-            ]
-        },
-        {
-            title: 'August 17 2022 and Apk Version 3.0.343 and Up',
-            changes: [
-                'Add TTV LOL proxy to setting player options (disabled by default), Internet censorship and related proxy',
-                'When the Proxy is enable you may experience longer buffer at start of a stream, but after all must work OK, if not disable it'
             ]
         },
         {
