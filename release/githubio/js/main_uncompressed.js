@@ -4469,7 +4469,7 @@
         publishVersionCode: 343, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/343/SmartTV_twitch_3_0_343.apk',
         WebVersion: 'August 17 2022',
-        WebTag: 627, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 629, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'August 19 2022 and Apk Version 3.0.343 and Up',
                 changes: [
@@ -21477,7 +21477,7 @@
             DefaultHttpGetTimeout, //int timeout
             (isLive ? Play_live_token : Play_vod_token).replace('%x', Channel_or_VOD_Id), // String postMessage
             'POST', //String Method
-            JSON.stringify(Play_base_backup_headers_Array), //String JsonHeadersArray
+            Play_Headers, //String JsonHeadersArray
             'PlayHLS_GetTokenResult', //String callback
             CheckId_y, //long checkResult
             isLive ? '1' : '0', //String check_1
@@ -21491,7 +21491,7 @@
     }
 
     function PlayHLS_GetTokenResult(result, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess) {
-        // console.log('result', result);
+        //console.log('result', result);
         // console.log('checkResult', checkResult);
         // console.log('check_1', check_1);
         // console.log('check_2', check_2);
