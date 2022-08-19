@@ -50,7 +50,13 @@ function Play_updateStreamInfoMultiValues(response, pos, ID) {
                 Play_controls[Play_controlsGameCont].setLable(Play_MultiArray[pos].data[3]);
             }
 
-            Play_MultiUpdateinfo(pos, obj.data[0].game_name, obj.data[0].viewer_count, twemoji.parse(obj.data[0].title, false, true), Play_Multi_MainBig ? '_big' : '');
+            Play_MultiUpdateinfo(
+                pos,
+                obj.data[0].game_name,
+                obj.data[0].viewer_count,
+                twemoji.parse(obj.data[0].title, false, true),
+                Play_Multi_MainBig ? '_big' : ''
+            );
 
             Main_Set_history('live', Play_MultiArray[pos].data);
         }
@@ -237,11 +243,21 @@ function Play_MultiIsAlredyOPen(Id) {
 }
 
 function Play_MultiIsFull() {
-    return Play_MultiArray[0].data.length > 0 && Play_MultiArray[1].data.length > 0 && Play_MultiArray[2].data.length > 0 && Play_MultiArray[3].data.length > 0;
+    return (
+        Play_MultiArray[0].data.length > 0 &&
+        Play_MultiArray[1].data.length > 0 &&
+        Play_MultiArray[2].data.length > 0 &&
+        Play_MultiArray[3].data.length > 0
+    );
 }
 
 function Play_MultiHasOne() {
-    return Play_MultiArray[0].data.length > 0 || Play_MultiArray[1].data.length > 0 || Play_MultiArray[2].data.length > 0 || Play_MultiArray[3].data.length > 0;
+    return (
+        Play_MultiArray[0].data.length > 0 ||
+        Play_MultiArray[1].data.length > 0 ||
+        Play_MultiArray[2].data.length > 0 ||
+        Play_MultiArray[3].data.length > 0
+    );
 }
 
 function Play_MultiStartPrestart(position) {
@@ -283,16 +299,7 @@ function Play_MultiStart(pos) {
 
     Play_MultiArray[pos].resultId = new Date().getTime();
 
-    OSInterface_getStreamDataAsync(
-        PlayClip_BaseUrl,
-        Play_live_links.replace('%x', Play_MultiArray[pos].data[6]),
-        'Play_MultiResult',
-        Play_MultiArray[pos].resultId,
-        pos,
-        DefaultHttpGetTimeout,
-        false,
-        Play_live_token.replace('%x', Play_MultiArray[pos].data[6])
-    );
+    PlayHLS_GetPlayListAsync(true, Play_MultiArray[pos].data[6], Play_MultiArray[pos].resultId, pos, Play_MultiResult);
 }
 
 function Play_MultiResult(response, pos) {
@@ -544,7 +551,13 @@ function Play_MultiupdateStreamLogoValues(responseText, i) {
 
         Main_innerHTML(
             'stream_info_multi_name' + extraText + i,
-            Play_partnerIcon(Play_MultiArray[i].data[1], Play_MultiArray[i].data[10], 0, Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '', Play_MultiArray[i].data[8])
+            Play_partnerIcon(
+                Play_MultiArray[i].data[1],
+                Play_MultiArray[i].data[10],
+                0,
+                Play_MultiArray[i].data[5] ? '[' + Play_MultiArray[i].data[5].split('[')[1] : '',
+                Play_MultiArray[i].data[8]
+            )
         );
     }
 }
@@ -573,14 +586,20 @@ function Play_MultiSetinfo(pos, game, views, displayname, is_rerun, logo, title,
         Play_MultiupdateStreamLogo(id, pos);
     }
 
-    Main_innerHTML('stream_info_multi_name' + extraText + pos, displayname === '' ? STR_SPACE_HTML : Play_partnerIcon(displayname, partner, 0, lang, is_rerun));
+    Main_innerHTML(
+        'stream_info_multi_name' + extraText + pos,
+        displayname === '' ? STR_SPACE_HTML : Play_partnerIcon(displayname, partner, 0, lang, is_rerun)
+    );
     Play_MultiUpdateinfo(pos, game, views, title, extraText);
 }
 
 function Play_MultiUpdateinfo(pos, game, views, title, extraText) {
     Main_innerHTML('stream_info_multi_title' + extraText + pos, title);
     Main_innerHTML('stream_info_multi_game' + extraText + pos, game === '' ? STR_SPACE_HTML : STR_PLAYING + game);
-    Main_innerHTML('stream_info_multi_views' + extraText + pos, views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML);
+    Main_innerHTML(
+        'stream_info_multi_views' + extraText + pos,
+        views > 0 ? STR_SPACE_HTML + STR_FOR + Main_addCommas(views) + STR_SPACE_HTML + Main_GetViewerStrings(views) : STR_SPACE_HTML
+    );
 }
 
 function Play_MultiSetpannelInfo() {
@@ -589,22 +608,50 @@ function Play_MultiSetpannelInfo() {
     for (var i = 0; i < 4; i++) {
         Main_innerHTML(
             'stream_info_multiimgholder' + i,
-            '<img id="stream_info_multiimg' + i + '" alt="" class="multi_info_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+            '<img id="stream_info_multiimg' +
+                i +
+                '" alt="" class="multi_info_img" src="' +
+                IMG_404_BANNER +
+                '"' +
+                'onerror="this.onerror=null;this.src=\'' +
+                IMG_404_LOGO +
+                '\';"></img>'
         );
 
         Main_innerHTML(
             'stream_info_multiimgholder_big' + i,
-            '<img id="stream_info_multiimg_big' + i + '" alt="" class="multi_info_img_big" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+            '<img id="stream_info_multiimg_big' +
+                i +
+                '" alt="" class="multi_info_img_big" src="' +
+                IMG_404_BANNER +
+                '"' +
+                'onerror="this.onerror=null;this.src=\'' +
+                IMG_404_LOGO +
+                '\';"></img>'
         );
 
         Main_innerHTML(
             'stream_dialog_multiimgholder_big' + i,
-            '<img id="stream_dialog_multiimg_big' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+            '<img id="stream_dialog_multiimg_big' +
+                i +
+                '" alt="" class="side_panel_channel_img" src="' +
+                IMG_404_BANNER +
+                '"' +
+                'onerror="this.onerror=null;this.src=\'' +
+                IMG_404_LOGO +
+                '\';"></img>'
         );
 
         Main_innerHTML(
             'stream_dialog_multiimgholder' + i,
-            '<img id="stream_dialog_multiimg' + i + '" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+            '<img id="stream_dialog_multiimg' +
+                i +
+                '" alt="" class="side_panel_channel_img" src="' +
+                IMG_404_BANNER +
+                '"' +
+                'onerror="this.onerror=null;this.src=\'' +
+                IMG_404_LOGO +
+                '\';"></img>'
         );
     }
 
@@ -614,17 +661,32 @@ function Play_MultiSetpannelInfo() {
 
     Main_innerHTML(
         'stream_dialog_multiimgholder-1',
-        '<img id="stream_dialog_multiimg-1" alt="" class="side_panel_channel_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        '<img id="stream_dialog_multiimg-1" alt="" class="side_panel_channel_img" src="' +
+            IMG_404_BANNER +
+            '"' +
+            'onerror="this.onerror=null;this.src=\'' +
+            IMG_404_LOGO +
+            '\';"></img>'
     );
 
     Main_innerHTML(
         'stream_info_ppimgholder0',
-        '<img id="stream_info_ppimg0" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        '<img id="stream_info_ppimg0" alt="" class="panel_pp_img" src="' +
+            IMG_404_BANNER +
+            '"' +
+            'onerror="this.onerror=null;this.src=\'' +
+            IMG_404_LOGO +
+            '\';"></img>'
     );
 
     Main_innerHTML(
         'stream_info_ppimgholder1',
-        '<img id="stream_info_ppimg1" alt="" class="panel_pp_img" src="' + IMG_404_BANNER + '"' + 'onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';"></img>'
+        '<img id="stream_info_ppimg1" alt="" class="panel_pp_img" src="' +
+            IMG_404_BANNER +
+            '"' +
+            'onerror="this.onerror=null;this.src=\'' +
+            IMG_404_LOGO +
+            '\';"></img>'
     );
 }
 

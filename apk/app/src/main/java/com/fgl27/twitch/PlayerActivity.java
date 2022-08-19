@@ -3157,6 +3157,81 @@ public class PlayerActivity extends Activity {
         }
 
         @JavascriptInterface
+        public void XmlHttpGetFull(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+                                   String callback, long checkResult, String check_1, String check_2, String check_3, String check_4, String check_5,
+                                   String callBackSuccess, String callBackError) {
+
+            BasexmlHttpGetResultpos++;
+            if (BasexmlHttpGetResultpos > BasexmlHttpGetResultArray.length - 1) {
+                BasexmlHttpGetResultpos = 0;
+            }
+
+            int DataResultPos = BasexmlHttpGetResultpos;
+            BasexmlHttpGetResultArray[DataResultPos] = null;
+
+            try {
+                DataThreadPool.execute(() ->
+                        {
+                            Tools.ResponseObj response;
+
+                            response = Tools.MethodUrlHeaders(
+                                    urlString,
+                                    timeout,
+                                    postMessage,
+                                    Method,
+                                    checkResult,
+                                    JsonHeadersArray
+                            );
+
+                            if (response != null) {
+
+                                BasexmlHttpGetResultArray[DataResultPos] = new Gson().toJson(response);
+                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
+                                        checkResult + ",'" +
+                                        check_1 + "','" +
+                                        check_2 + "','" +
+                                        check_3 + "','" +
+                                        check_4 + "','" +
+                                        check_5 + "','" +
+                                        callBackSuccess + "','" +
+                                        callBackError + "')"
+                                );
+
+                            } else {
+
+                                XmlHttpGetFullError(DataResultPos, callback, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError);
+
+                            }
+
+                        }
+                );
+            } catch (Exception e) {//Most are RejectedExecutionException
+
+                XmlHttpGetFullError(DataResultPos, callback, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess, callBackError);
+
+                Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
+
+            }
+        }
+
+        void XmlHttpGetFullError(int DataResultPos, String callback, long checkResult,
+                                 String check_1, String check_2, String check_3, String check_4, String check_5,
+                                 String callBackSuccess, String callBackError) {
+            //MethodUrl is null inform JS callback
+            BasexmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(0, "", checkResult);
+            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
+                    checkResult + ",'" +
+                    check_1 + "','" +
+                    check_2 + "','" +
+                    check_3 + "','" +
+                    check_4 + "','" +
+                    check_5 + "','" +
+                    callBackSuccess + "','" +
+                    callBackError + "')"
+            );
+        }
+
+        @JavascriptInterface
         public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
                                    String callback, long checkResult, long key, String callbackSucess, String calbackError) {
 

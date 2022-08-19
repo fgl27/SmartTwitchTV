@@ -52,11 +52,17 @@ var Sidepannel_Positions = {};
 var Sidepannel_AnimationTimeout = 200; //Same value as side_panel_holder_ani
 
 function Sidepannel_AddFocusMain() {
-    Main_AddClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton');
+    Main_AddClass(
+        'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+        Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+    );
 }
 
 function Sidepannel_RemoveFocusMain() {
-    Main_RemoveClass('side_panel_movel_new_' + Sidepannel_Sidepannel_Pos, Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton');
+    Main_RemoveClass(
+        'side_panel_movel_new_' + Sidepannel_Sidepannel_Pos,
+        Sidepannel_Sidepannel_Pos < 8 ? 'side_panel_new_icons_text' : 'side_panel_new_icons_text_botton'
+    );
 }
 
 function Sidepannel_AddFocusLiveFeed(skipAnimation) {
@@ -127,7 +133,9 @@ function Sidepannel_GetObj() {
 }
 
 function Sidepannel_ObjNotNull() {
-    return Boolean(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed] && !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image);
+    return Boolean(
+        UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed] && !UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][0].image
+    );
 }
 
 var Sidepannel_UpdateThumbDivName;
@@ -165,7 +173,13 @@ function Sidepannel_UpdateSince() {
 
         Main_innerHTMLWithEle(
             Sidepannel_UpdateThumbDivViews,
-            STR_SINCE + Play_streamLiveAtWitDate(new Date().getTime(), info[12]) + STR_SPACE_HTML + STR_FOR + info[4] + STR_SPACE_HTML + Main_GetViewerStrings(info[13])
+            STR_SINCE +
+                Play_streamLiveAtWitDate(new Date().getTime(), info[12]) +
+                STR_SPACE_HTML +
+                STR_FOR +
+                info[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(info[13])
         );
     }
 
@@ -226,16 +240,7 @@ function Sidepannel_CheckIfIsLive() {
     if (!Main_isStoped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
-        OSInterface_CheckIfIsLiveFeed(
-            PlayClip_BaseUrl,
-            Play_live_links.replace('%x', channel),
-            'Sidepannel_CheckIfIsLiveResult',
-            0,
-            Sidepannel_PosFeed % 100,
-            DefaultHttpGetTimeout,
-            false,
-            Play_live_token.replace('%x', channel)
-        );
+        PlayHLS_GetPlayListAsync(true, channel, Sidepannel_PosFeed % 100, 0, Sidepannel_CheckIfIsLiveResult);
     }
 }
 
@@ -243,7 +248,14 @@ var Sidepannel_PlayerViewSidePanelSet;
 function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {
     //Called by Java
 
-    if (!Main_isStoped && Sidepannel_isShowingUserLive() && x === 0 && y === Sidepannel_PosFeed % 100 && !Main_isUpdateDialogVisible() && !Main_isChangeDialogVisible()) {
+    if (
+        !Main_isStoped &&
+        Sidepannel_isShowingUserLive() &&
+        x === 0 &&
+        y === Sidepannel_PosFeed % 100 &&
+        !Main_isUpdateDialogVisible() &&
+        !Main_isChangeDialogVisible()
+    ) {
         if (StreamData && Sidepannel_ObjNotNull()) {
             StreamData = JSON.parse(StreamData);
 
@@ -264,7 +276,14 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {
 
                 Main_EventPreview('Preview_sidepanel', StreamInfo[6], StreamInfo[3], StreamInfo[15], 'sidepanel');
             } else {
-                Sidepannel_CheckIfIsLiveWarn(StreamInfo[1] + STR_SPACE_HTML + STR_LIVE + STR_BR + (StreamData.status === 1 || StreamData.status === 403 ? STR_FORBIDDEN : STR_IS_OFFLINE), 0);
+                Sidepannel_CheckIfIsLiveWarn(
+                    StreamInfo[1] +
+                        STR_SPACE_HTML +
+                        STR_LIVE +
+                        STR_BR +
+                        (StreamData.status === 1 || StreamData.status === 403 ? STR_FORBIDDEN : STR_IS_OFFLINE),
+                    0
+                );
             }
         }
     }
@@ -305,7 +324,9 @@ function Sidepannel_partnerIcon(name, partner, isrerun) {
         STR_SPACE_HTML +
         STR_SPACE_HTML +
         '</div>' +
-        (partner ? '<img id="feed_thumb_partnerimg" class="partnericon_img" alt="" src="' + IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML : '') +
+        (partner
+            ? '<img id="feed_thumb_partnerimg" class="partnericon_img" alt="" src="' + IMG_PARTNER + '">' + STR_SPACE_HTML + STR_SPACE_HTML
+            : '') +
         '<div id="feed_thumb_partnertext" class="partnericon_text" style="background: #' +
         (isrerun ? 'FFFFFF; color: #000000;' : 'E21212;') +
         '">' +
@@ -322,7 +343,9 @@ function Sidepannel_PreloadImgs() {
     if (!Sidepannel_isShowingUserLive()) return;
 
     if (UserLiveFeed_PreloadImgs[Sidepannel_PosFeed]) {
-        Main_ImageLoaderWorker.postMessage(UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace('{width}x{height}', Main_SidePannelSize) + Main_randomimg);
+        Main_ImageLoaderWorker.postMessage(
+            UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace('{width}x{height}', Main_SidePannelSize) + Main_randomimg
+        );
     }
     UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
 
@@ -355,7 +378,9 @@ function Sidepannel_KeyEnterUser() {
     else if (Sidepannel_Sidepannel_Pos === 6) Sidepannel_Go(Main_UserChannels);
     else if (Sidepannel_Sidepannel_Pos === 7) {
         Main_values.Main_selectedChannel_id = AddUser_UsernameArray[0].id;
-        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name ? AddUser_UsernameArray[0].display_name : AddUser_UsernameArray[0].name;
+        Main_values.Main_selectedChannelDisplayname = AddUser_UsernameArray[0].display_name
+            ? AddUser_UsernameArray[0].display_name
+            : AddUser_UsernameArray[0].name;
         Main_values.Main_selectedChannel = AddUser_UsernameArray[0].name;
 
         Main_values.Main_BeforeChannel = Main_values.Main_Go;
@@ -378,7 +403,10 @@ function Sidepannel_KeyEnterBase() {
         else AddUser_init();
     } else if (Sidepannel_Sidepannel_Pos === 1) {
         if (Main_values.Main_Go !== Main_Search) {
-            if (!Main_values.Search_isSearching && (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod)) {
+            if (
+                !Main_values.Search_isSearching &&
+                (Main_values.Main_Go === Main_ChannelContent || Main_values.Main_Go === Main_ChannelClip || Main_values.Main_Go === Main_ChannelVod)
+            ) {
                 ChannelContent_SetChannelValue();
             }
 
@@ -707,11 +735,24 @@ function Sidepannel_SetDefaultLables() {
 }
 
 function Sidepannel_SetUserlable(text) {
-    Main_innerHTML('side_panel_movel_new_0', text + STR_BR + '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>');
+    Main_innerHTML(
+        'side_panel_movel_new_0',
+        text + STR_BR + '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>'
+    );
 }
 
 function Sidepannel_SetIcons(div, icon, extra_style) {
-    if (icon) Main_innerHTML(div, '<i id="icon_' + div + '" class="icon icon-' + icon + ' side_panel_new_icons_pad" ' + (extra_style ? ' style="' + extra_style + '"' : '') + '></i>');
+    if (icon)
+        Main_innerHTML(
+            div,
+            '<i id="icon_' +
+                div +
+                '" class="icon icon-' +
+                icon +
+                ' side_panel_new_icons_pad" ' +
+                (extra_style ? ' style="' + extra_style + '"' : '') +
+                '></i>'
+        );
     else Main_textContent(div, '');
 }
 
@@ -794,7 +835,11 @@ function Sidepannel_handleKeyDown(event) {
             break;
         case KEY_PG_DOWN:
         case KEY_DOWN:
-            if (Sidepannel_ChangeFocusAnimationFinished && Sidepannel_PosFeed < Sidepannel_GetSize() - 1 && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
+            if (
+                Sidepannel_ChangeFocusAnimationFinished &&
+                Sidepannel_PosFeed < Sidepannel_GetSize() - 1 &&
+                !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]
+            ) {
                 Sidepannel_RemoveFocusFeed();
                 Sidepannel_PosFeed++;
                 Sidepannel_AddFocusLiveFeed();

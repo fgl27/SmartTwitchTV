@@ -814,7 +814,17 @@ function pt_BRLang() {
     STR_FAIL_VOD_INFO = 'Falha ao carregar a informação do Video';
     STR_NOKEY_GENERAL_WARN = ', navegue até o painel lateral (opção superior) Usuário: Mudar, adicionar, chave, pressionar enter no usuário';
 
-    STR_TTV_LOL = 'Proxy TTV LOL (Proxy contra censura da Internet e afins)';
-    STR_TTV_LOL_SUMMARY =
-        'Habilita o servidor proxy para obter links de stream de um servidor diferente isso se aplica apenas a transmissões ao vivo, este pode permitir que você veja conteúdo proibido em sua região e evite anúncios, desative este se tiver algum problema como muitos ou longos buffers, congelamentos aleatórios ou uma venor velocidade da rede que pode fazer com que a qualidade seja alterada';
+    PROXY_SERVICE_STATUS = 'Habilitado e funcionando';
+
+    STR_PROXY_DONATE_SUMMARY = 'Se você quiser agradecer ao mantenedor do servidor proxy, use o link:';
+    PROXY_SERVICE_OFF = 'Desativado nas configurações';
+    PROXY_SERVICE_FAIL = 'Não funciona, falhou %x vezes';
+
+    PROXY_SETTINGS = 'Configurações de Proxy (Proxy contra censura da Internet e afins)';
+    PROXY_SETTINGS_SUMMARY =
+        'Somente um proxy pode ser habilitado por vez, Permite que o servidor proxy obtenha links de streaming de um servidor diferente, que pode permitir que você veja conteúdo proibido em sua região e evita anúncios, desative isso se você tiver algum problema de transmissão com Lives como buffers longos e repetidos, travamentos ou conexão lenta que faz com que a qualidade da stream seja reduzida.';
+
+    STR_PROXY_TIMEOUT = 'Tempo limite do proxy (tempo em segundos)';
+    STR_PROXY_TIMEOUT_SUMMARY =
+        'Se o servidor proxy estiver fora, este será o tempo que levará para "desistir" da conexão e retornar à implementação padrão do Twitch';
 }

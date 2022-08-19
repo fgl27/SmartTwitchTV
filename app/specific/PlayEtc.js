@@ -157,7 +157,10 @@ function Play_controlsAudioVolupsetLable(pos, data, obj) {
 
     Main_textContentWithEle(obj.doc_name, Play_volumes[pos] + ' %');
 
-    Main_innerHTML('controls_button_icon_holder_' + obj.position, '<i id="controls_button_icon_' + obj.position + '" class="pause_button3d icon-' + Play_GetVolLevel(pos) + '" ></i > ');
+    Main_innerHTML(
+        'controls_button_icon_holder_' + obj.position,
+        '<i id="controls_button_icon_' + obj.position + '" class="pause_button3d icon-' + Play_GetVolLevel(pos) + '" ></i > '
+    );
 }
 
 function Play_GetVolLevel(pos) {
@@ -173,12 +176,18 @@ function Play_GetVolLevel(pos) {
 
 function Play_ResetLowlatency() {
     Play_A_Control(Play_LowLatency, Play_controlsLowLatency);
-    Main_textContentWithEle(Play_controls[Play_controlsLowLatency].doc_title, STR_LOWLATENCY_ENABLE_ARRAY[Play_controls[Play_controlsLowLatency].defaultValue]);
+    Main_textContentWithEle(
+        Play_controls[Play_controlsLowLatency].doc_title,
+        STR_LOWLATENCY_ENABLE_ARRAY[Play_controls[Play_controlsLowLatency].defaultValue]
+    );
 }
 
 function Play_ResetSpeed() {
     Play_A_Control(Play_CurrentSpeed, Play_controlsSpeed);
-    Main_textContentWithEle(Play_controls[Play_controlsSpeed].doc_title, STR_SPEED + ' - ' + Play_controls[Play_controlsSpeed].values[Play_controls[Play_controlsSpeed].defaultValue] + 'x');
+    Main_textContentWithEle(
+        Play_controls[Play_controlsSpeed].doc_title,
+        STR_SPEED + ' - ' + Play_controls[Play_controlsSpeed].values[Play_controls[Play_controlsSpeed].defaultValue] + 'x'
+    );
 }
 
 function Play_ResetQualityControls() {
@@ -406,7 +415,16 @@ function Play_SetChatFont() {
 
 function Play_partnerIcon(name, partner, live_vod_clip, lang, rerun) {
     var div =
-        '<div class="partnericon_div"> ' + name + STR_SPACE_HTML + STR_SPACE_HTML + '</div>' + '<img class="partnericon_img' + (partner ? '' : ' opacity_zero') + '" alt="" src="' + IMG_PARTNER + '">';
+        '<div class="partnericon_div"> ' +
+        name +
+        STR_SPACE_HTML +
+        STR_SPACE_HTML +
+        '</div>' +
+        '<img class="partnericon_img' +
+        (partner ? '' : ' opacity_zero') +
+        '" alt="" src="' +
+        IMG_PARTNER +
+        '">';
 
     if (!live_vod_clip) {
         var isStay = Play_StayDialogVisible();
@@ -490,7 +508,7 @@ function Play_PrepareshowEndDialog(PlayVodClip) {
     Play_HideBufferDialog();
     Play_CleanHideExit();
 
-    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next'))) {
+    if (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))) {
         Play_EndIconsRemoveFocus();
         Play_EndCounter = -1;
     }
@@ -602,7 +620,9 @@ function Play_EndText(PlayVodClip) {
         Play_DialogEndText +
             STR_IS_OFFLINE +
             STR_BR +
-            (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next')) ? STR_PLAY_NEXT_IN : STR_STREAM_END) +
+            (PlayVodClip === 3 && PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))
+                ? STR_PLAY_NEXT_IN
+                : STR_STREAM_END) +
             Play_EndTextCounter +
             '...'
     );
@@ -623,7 +643,7 @@ function Play_EndText(PlayVodClip) {
                 Play_shutdownStream();
             } else if (PlayVodClip === 2) PlayVod_shutdownStream();
             else if (PlayVodClip === 3) {
-                if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_auto_play_next'))) PlayClip_PlayNext();
+                if (PlayClip_HasNext && (PlayClip_All || Settings_Obj_default('clip_autoPlayNext'))) PlayClip_PlayNext();
                 else PlayClip_shutdownStream();
             }
         } else {
@@ -717,7 +737,10 @@ function Play_EndSet(PlayVodClip) {
 
         Play_EndTextsReset();
         Main_innerHTML('end_channel_name_text_3', Play_data.data[1]);
-        Main_innerHTML('end_live_title_text_1', Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName));
+        Main_innerHTML(
+            'end_live_title_text_1',
+            Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName)
+        );
     } else if (PlayVodClip === 1) {
         // play
         Play_EndIconsRemoveFocus();
@@ -890,7 +913,13 @@ function Play_StartStay() {
 
 function Play_StartStayCheck(time) {
     time--;
-    Main_innerHTML('play_dialog_retry_text', (Play_StartStayTryedResult !== '' ? STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR : '') + STR_STAY_CHECK + STR_BR + time);
+    Main_innerHTML(
+        'play_dialog_retry_text',
+        (Play_StartStayTryedResult !== '' ? STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR : '') +
+            STR_STAY_CHECK +
+            STR_BR +
+            time
+    );
 
     Play_StartStayTryId = Main_setTimeout(
         function () {
@@ -958,16 +987,7 @@ function Play_CheckHostResult(responseObj) {
 function Play_StayCheckLive() {
     Play_loadDataId = new Date().getTime();
 
-    OSInterface_getStreamDataAsync(
-        PlayClip_BaseUrl,
-        Play_live_links.replace('%x', Play_data.data[6]),
-        'Play_StayCheckLiveResult',
-        Play_loadDataId,
-        0,
-        DefaultHttpGetTimeout,
-        false,
-        Play_live_token.replace('%x', Play_data.data[6])
-    );
+    PlayHLS_GetPlayListAsync(true, Play_data.data[6], Play_loadDataId, null, Play_StayCheckLiveResult);
 }
 
 function Play_StayCheckLiveResult(response) {
@@ -1013,7 +1033,10 @@ function Play_StayCheckLiveResultEnd(responseObj) {
 function Play_StayCheckLiveErrorFinish(Isforbiden) {
     Play_StartStayTryedResult = Isforbiden ? STR_FORBIDDEN : STR_STAY_IS_OFFLINE;
 
-    Main_innerHTML('play_dialog_retry_text', STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR + STR_STAY_CHECK + STR_BR + 10);
+    Main_innerHTML(
+        'play_dialog_retry_text',
+        STR_STAY_CHECK_LAST + STR_BR + Play_StartStayTryedResult + STR_BR + STR_BR + STR_STAY_CHECK + STR_BR + 10
+    );
 
     Play_StartStayTryId = Main_setTimeout(
         function () {
@@ -1026,7 +1049,8 @@ function Play_StayCheckLiveErrorFinish(Isforbiden) {
 
 function Play_OpenChannel(PlayVodClip) {
     if (!Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip) {
-        Main_values.Main_BeforeChannel = Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
+        Main_values.Main_BeforeChannel =
+            Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_aGame ? Main_values.Main_BeforeAgame : Main_values.Main_Go;
         Main_values.Main_BeforeChannelisSet = true;
     }
 
@@ -1090,7 +1114,10 @@ function Play_OpenGame(PlayVodClip) {
     Play_PreviewVideoEnded = false;
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
         Main_values.Main_BeforeAgame =
-            Main_values.Main_BeforeChannelisSet && Main_values.Main_Go !== Main_ChannelContent && Main_values.Main_Go !== Main_ChannelVod && Main_values.Main_Go !== Main_ChannelClip
+            Main_values.Main_BeforeChannelisSet &&
+            Main_values.Main_Go !== Main_ChannelContent &&
+            Main_values.Main_Go !== Main_ChannelVod &&
+            Main_values.Main_Go !== Main_ChannelClip
                 ? Main_values.Main_BeforeChannel
                 : Main_values.Main_Go;
         Main_values.Main_BeforeAgameisSet = true;
@@ -1218,7 +1245,12 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         } else if (UserLiveFeed_obj[UserLiveFeed_FeedPosX].checkHistory) {
             error = STR_ALREDY_PLAYING;
 
-            if (Main_A_includes_B(Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src, 's3_vods')) {
+            if (
+                Main_A_includes_B(
+                    Main_getElementById(UserLiveFeed_ids[1] + UserLiveFeed_FeedPosX + '_' + UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX]).src,
+                    's3_vods'
+                )
+            ) {
                 if (Play_MultiEnable || PlayExtra_PicturePicture) error = STR_PP_VOD_ERROR;
                 else return obj;
             } else if (Play_MultiEnable) {
@@ -1282,7 +1314,11 @@ function Play_PlayPauseChange(State, PlayVodClip) {
 }
 
 function Play_GetPlayPauseIcon(not_playing) {
-    return '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d ' + (not_playing ? 'icon-pause' : 'icon-play-1') + '"></i></div>';
+    return (
+        '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d ' +
+        (not_playing ? 'icon-pause' : 'icon-play-1') +
+        '"></i></div>'
+    );
 }
 
 function Play_KeyReturn(is_vod) {
@@ -1312,11 +1348,11 @@ function Play_KeyReturn(is_vod) {
         if (is_vod) PlayVod_hidePanel();
         else Play_hidePanel();
     } else {
-        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit'))) {
+        if (Play_isVodDialogVisible() && (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit'))) {
             Play_HideVodDialog();
             PlayVod_PreshutdownStream(false);
             Play_exitMain();
-        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_click_exit')) {
+        } else if (Play_ExitDialogVisible() || Settings_Obj_default('single_clickExit')) {
             if (Play_MultiEnable) Play_controls[Play_MultiStream].enterKey();
             else if (PlayExtra_PicturePicture) Play_CloseSmall();
             else {
@@ -1374,7 +1410,10 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
             Sidepannel_AddFocusLiveFeed(true);
         }
 
-        restorePreview = Main_A_equals_B(UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14].toString(), Play_data.data[14].toString());
+        restorePreview = Main_A_equals_B(
+            UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14].toString(),
+            Play_data.data[14].toString()
+        );
 
         //live
     } else if (Settings_Obj_default('show_live_player') && !Sidepannel_isShowingUserLive()) {
@@ -1383,10 +1422,15 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
         } else if (
             ScreenObj[Main_values.Main_Go].screenType === 0 &&
             ScreenObj[Main_values.Main_Go].posY > -1 &&
-            !Main_ThumbOpenIsNull(ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX, ScreenObj[Main_values.Main_Go].ids[0])
+            !Main_ThumbOpenIsNull(
+                ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX,
+                ScreenObj[Main_values.Main_Go].ids[0]
+            )
         ) {
             restorePreview = Main_A_equals_B(
-                ScreenObj[Main_values.Main_Go].DataObj[ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX][14].toString(),
+                ScreenObj[Main_values.Main_Go].DataObj[
+                    ScreenObj[Main_values.Main_Go].posY + '_' + ScreenObj[Main_values.Main_Go].posX
+                ][14].toString(),
                 Play_data.data[14].toString()
             );
         }
@@ -1399,7 +1443,16 @@ function Play_CheckPreviewLive(SkipSidepanelFocus) {
 }
 
 function Play_GetAudioIcon(pos) {
-    return STR_SPACE_HTML + '<i class="icon-' + (Play_audio_enable[pos] ? 'volume' : 'mute') + ' strokicon" ></i>' + STR_SPACE_HTML + '<i class="icon-' + Play_GetVolLevel(pos) + ' strokicon" ></i>';
+    return (
+        STR_SPACE_HTML +
+        '<i class="icon-' +
+        (Play_audio_enable[pos] ? 'volume' : 'mute') +
+        ' strokicon" ></i>' +
+        STR_SPACE_HTML +
+        '<i class="icon-' +
+        Play_GetVolLevel(pos) +
+        ' strokicon" ></i>'
+    );
 }
 
 function Play_SetAudioIcon() {
@@ -2007,7 +2060,9 @@ function Play_MakeControls() {
         setLable: function (title) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
-                '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' + title + '</div>'
+                '<div style="display: initial; max-width: 27%; text-overflow: ellipsis; overflow: hidden; transform: translate(135.5%, 0);">' +
+                    title +
+                    '</div>'
             );
         }
     };
@@ -2037,7 +2092,9 @@ function Play_MakeControls() {
         setLable: function (title) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
-                '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' + (title === '' ? STR_NO_GAME : title) + '</div>'
+                '<div style="display: initial; max-width: 40%; text-overflow: ellipsis; overflow: hidden; transform: translate(75%, 0);">' +
+                    (title === '' ? STR_NO_GAME : title) +
+                    '</div>'
             );
         }
     };
@@ -2069,7 +2126,9 @@ function Play_MakeControls() {
         setLable: function (title, name) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
-                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' + title + '</div>'
+                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                    title +
+                    '</div>'
             );
 
             Main_innerHTMLWithEle(Play_controls[this.position].doc_title, name + STR_SPACE_HTML + this.string);
@@ -2101,7 +2160,9 @@ function Play_MakeControls() {
         setLable: function (title, name) {
             Main_innerHTML(
                 'controls_text_summary_' + this.position,
-                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' + title + '</div>'
+                '<div style="display: initial; max-width: 60%; text-overflow: ellipsis; overflow: hidden; transform: translate(33%, 0);">' +
+                    title +
+                    '</div>'
             );
 
             Main_textContentWithEle(Play_controls[this.position].doc_title, this.string + ' - ' + name);
@@ -2184,7 +2245,10 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function () {
-            Main_textContentWithEle(this.doc_name, this.values[this.defaultValue] + (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x'));
+            Main_textContentWithEle(
+                this.doc_name,
+                this.values[this.defaultValue] + (this.values[this.defaultValue] === 1 ? 'x (' + STR_NORMAL + ')' : 'x')
+            );
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position);
@@ -2697,7 +2761,10 @@ function Play_MakeControls() {
             var icon = Play_isFullScreen ? 'resize-down' : 'resize-up';
             if (PlayExtra_PicturePicture) icon = 'pp';
 
-            Main_innerHTML('controls_button_icon_holder_' + this.position, '<i id="controls_button_icon_' + this.position + '" class="pause_button3d icon-' + icon + '" ></i>');
+            Main_innerHTML(
+                'controls_button_icon_holder_' + this.position,
+                '<i id="controls_button_icon_' + this.position + '" class="pause_button3d icon-' + icon + '" ></i>'
+            );
         }
     };
 
@@ -2923,7 +2990,36 @@ function Play_MakeControls() {
         icons: 'chat-delay',
         offsetY: -5,
         string: STR_CHAT_DELAY,
-        values: [STR_DISABLED, STR_CHAT_DELAY_LATENCY_TO_BROADCASTER, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30, 45, 60, 90, 120, 150, 180, 240, 300],
+        values: [
+            STR_DISABLED,
+            STR_CHAT_DELAY_LATENCY_TO_BROADCASTER,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            20,
+            25,
+            30,
+            45,
+            60,
+            90,
+            120,
+            150,
+            180,
+            240,
+            300
+        ],
         defaultValue: Play_ChatDelayPosition,
         isChat: false,
         updown: function (adder) {
@@ -3054,7 +3150,10 @@ function Play_MakeControls() {
             this.setLable();
         },
         setLable: function () {
-            Main_textContentWithEle(Play_controls[Play_controlsChatPos].doc_name, Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]);
+            Main_textContentWithEle(
+                Play_controls[Play_controlsChatPos].doc_name,
+                Play_controls[Play_controlsChatPos].values[Play_controls[Play_controlsChatPos].defaultValue]
+            );
 
             Main_textContentWithEle(this.doc_name, this.values[this.defaultValue]);
         },
@@ -3079,7 +3178,29 @@ function Play_MakeControls() {
         icons: 'chat-brig',
         offsetY: -5,
         string: STR_CHAT_BRIGHTNESS,
-        values: ['0%', '5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '45%', '50%', '55%', '60%', '65%', '70%', '75%', '80%', '85%', '90%', '95%', '100%'],
+        values: [
+            '0%',
+            '5%',
+            '10%',
+            '15%',
+            '20%',
+            '25%',
+            '30%',
+            '35%',
+            '40%',
+            '45%',
+            '50%',
+            '55%',
+            '60%',
+            '65%',
+            '70%',
+            '75%',
+            '80%',
+            '85%',
+            '90%',
+            '95%',
+            '100%'
+        ],
         defaultValue: Main_values.ChatBackground,
         isChat: true,
         updown: function (adder) {

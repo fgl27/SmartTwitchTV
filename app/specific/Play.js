@@ -277,6 +277,8 @@ function Play_CheckIfIsLiveResultEnd(response, isOn, callback, callbackError) {
                 isVod = UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos,
                 error = StreamInfo[6] + STR_SPACE_HTML;
 
+            Play_PreviewId = StreamInfo[7];
+
             Play_CheckIfIsLiveResultCheck(response, responseObj, error, isVod, callback, callbackError);
         }
     }
@@ -325,18 +327,18 @@ function Play_CheckIfIsLiveStart(callback) {
             id,
             token,
             link,
-            isVod;
+            isLive = false;
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
             //vod
 
-            isVod = true;
             id = obj[7];
             token = Play_vod_token;
             link = Play_vod_links;
         } else {
             //live
 
+            isLive = true;
             id = obj[6];
             token = Play_live_token;
             link = Play_live_links;
@@ -344,16 +346,7 @@ function Play_CheckIfIsLiveStart(callback) {
 
         Play_PreviewCheckId = new Date().getTime();
 
-        OSInterface_getStreamDataAsync(
-            PlayClip_BaseUrl,
-            link.replace('%x', id),
-            callback,
-            Play_PreviewCheckId,
-            2, //Main player runs on 0 extra player on 1 the check on 2
-            DefaultHttpGetTimeout,
-            isVod,
-            token.replace('%x', id)
-        );
+        PlayHLS_GetPlayListAsync(isLive, id, Play_PreviewCheckId, null, callback);
     }
 }
 
@@ -434,7 +427,10 @@ function Play_Resume() {
     UserLiveFeed_Hide();
 
     ChatLive_Playing = true;
-    Main_innerHTMLWithEle(Play_BottonIcons_Pause, '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i></div>');
+    Main_innerHTMLWithEle(
+        Play_BottonIcons_Pause,
+        '<div id="pause_button_icon_holder"><i id="pause_button_icon" class="pause_button3d icon-pause"></i></div>'
+    );
     Play_showBufferDialog();
     Play_ResumeAfterOnlineCounter = 0;
 
@@ -487,7 +483,7 @@ function Play_ResumeAfterOnline() {
 }
 
 function Play_getStreamData(channel_name) {
-    return OSInterface_getStreamData(PlayClip_BaseUrl, Play_live_links.replace('%x', channel_name), DefaultHttpGetTimeout, false, Play_live_token.replace('%x', channel_name));
+    return PlayHLS_GetPlayListSync(true, channel_name);
 }
 
 function Play_UpdateMainStreamDiv() {
@@ -497,10 +493,19 @@ function Play_UpdateMainStreamDiv() {
     Main_innerHTML('stream_info_title', twemoji.parse(Play_data.data[2], false, true));
     Main_innerHTML(
         'stream_info_name',
-        Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+        Play_partnerIcon(
+            Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+            Play_data.data[10],
+            0,
+            Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+            Play_data.data[8]
+        )
     );
     Main_textContent('stream_info_game', Play_data.data[3] !== '' ? STR_PLAYING + Play_data.data[3] : '');
-    Main_innerHTML('stream_live_viewers', STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13]));
+    Main_innerHTML(
+        'stream_live_viewers',
+        STR_SPACE_HTML + STR_FOR + Main_addCommas(Play_data.data[13]) + STR_SPACE_HTML + Main_GetViewerStrings(Play_data.data[13])
+    );
 
     if (Play_data.data[9]) {
         Play_LoadLogo(Main_getElementById('stream_info_icon'), Play_data.data[9]);
@@ -642,7 +647,13 @@ function Play_updateStreamLogoValues(responseText, key, id) {
         Play_data.data[10] = objData.broadcaster_type === 'partner';
         Main_innerHTML(
             'stream_info_name',
-            Play_partnerIcon(Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1], Play_data.data[10], 0, Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '', Play_data.data[8])
+            Play_partnerIcon(
+                Play_data.isHost ? Play_data.DisplayNameHost : Play_data.data[1],
+                Play_data.data[10],
+                0,
+                Play_data.data[5] ? '[' + Play_data.data[5].split('[')[1] : '',
+                Play_data.data[8]
+            )
         );
 
         Play_data.data[9] = objData.profile_image_url;
@@ -714,26 +725,21 @@ function Play_loadData(synchronous) {
             if (StreamData) Play_loadDataResultEnd(JSON.parse(StreamData));
             else Play_loadDataErrorFinish();
         } else {
-            OSInterface_getStreamDataAsync(
-                PlayClip_BaseUrl,
-                Play_live_links.replace('%x', Play_data.data[6]),
-                'Play_loadDataResult',
-                Play_loadDataId,
-                0,
-                DefaultHttpGetTimeout,
-                false,
-                Play_live_token.replace('%x', Play_data.data[6])
-            );
+            PlayHLS_GetPlayListAsync(true, Play_data.data[6], Play_loadDataId, null, Play_loadDataResult);
         }
     } else Play_loadDataSuccessFake();
 }
 
 function Play_loadDataResult(response) {
-    if (Play_isOn && response) {
-        var responseObj = JSON.parse(response);
+    if (Play_isOn) {
+        if (response) {
+            var responseObj = JSON.parse(response);
 
-        if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
-            Play_loadDataResultEnd(responseObj);
+            if (responseObj.checkResult > 0 && responseObj.checkResult === Play_loadDataId) {
+                Play_loadDataResultEnd(responseObj);
+            }
+        } else {
+            Play_loadDataErrorFinish();
         }
     }
 }
@@ -1013,7 +1019,12 @@ function Play_onPlayer() {
 }
 
 function Play_SetHtmlQuality(element) {
-    if (!Play_data.qualities.length || !Play_data.qualities[Play_data.qualityIndex] || !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')) return;
+    if (
+        !Play_data.qualities.length ||
+        !Play_data.qualities[Play_data.qualityIndex] ||
+        !Play_data.qualities[Play_data.qualityIndex].hasOwnProperty('id')
+    )
+        return;
 
     Play_data.quality = Play_data.qualities[Play_data.qualityIndex].id;
     Play_data_base.quality = Play_data.quality;
@@ -1033,7 +1044,9 @@ function Play_SetHtmlQuality(element) {
     } else if (Main_A_includes_B(Play_data.quality, 'source')) quality_string = Play_data.quality.replace('source', STR_SOURCE);
     else quality_string = Play_data.quality;
 
-    quality_string += !Main_A_includes_B(Play_data.quality, 'Auto') ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec : '';
+    quality_string += !Main_A_includes_B(Play_data.quality, 'Auto')
+        ? Play_data.qualities[Play_data.qualityIndex].band + Play_data.qualities[Play_data.qualityIndex].codec
+        : '';
 
     Main_innerHTMLWithEle(element, quality_string);
 }
@@ -1417,8 +1430,14 @@ function Play_RefreshWatchingTime() {
 
         for (i = 0; i < 4; i++) {
             if (Play_MultiArray[i].data.length > 0) {
-                Main_textContentWithEle(Play_infoMultiWatchingTime[i][extraText], STR_WATCHING + Play_timeMs(dateNow - Play_MultiArray[i].watching_time));
-                Main_textContentWithEle(Play_infoMultiLiveTime[i][extraText], Play_GetLiveTime(dateNow, Play_MultiArray[i].data[12], Play_MultiArray[i].watching_time));
+                Main_textContentWithEle(
+                    Play_infoMultiWatchingTime[i][extraText],
+                    STR_WATCHING + Play_timeMs(dateNow - Play_MultiArray[i].watching_time)
+                );
+                Main_textContentWithEle(
+                    Play_infoMultiLiveTime[i][extraText],
+                    Play_GetLiveTime(dateNow, Play_MultiArray[i].data[12], Play_MultiArray[i].watching_time)
+                );
             } else {
                 Main_innerHTMLWithEle(Play_infoMultiWatchingTime[i][extraText], STR_SPACE_HTML);
                 Main_innerHTMLWithEle(Play_infoMultiLiveTime[i][extraText], STR_SPACE_HTML);
@@ -1482,8 +1501,26 @@ function Play_UpdateVideoStatus(net_speed, net_act, dropped_frames, buffer_size,
             (latency !== null ? STR_LATENCY + latency + STR_BR : '') +
             STR_PING +
             ping +
-            STR_AVG
+            STR_AVG +
+            Play_UpdateVideoStatusGetProxy()
     );
+}
+
+function Play_UpdateVideoStatusGetProxy() {
+    if (!Play_isOn) {
+        return '';
+    }
+    var proxyString = STR_BR + PROXY_SERVICE;
+
+    if (!use_proxy) {
+        return proxyString + PROXY_SERVICE_OFF;
+    }
+
+    if (proxy_fail_counter > proxy_fail_counter_checker) {
+        return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
+    }
+
+    return proxyString + PROXY_SERVICE_STATUS;
 }
 
 var Play_BufferSize = 0;
@@ -1493,7 +1530,14 @@ function Play_ShowVideoStatus(showLatency, Who_Called, valueString) {
     var value = JSON.parse(valueString);
 
     if (Play_Status_Visible !== 2) {
-        Play_UpdateVideoStatus(value[0], value[1], value[2] + ' | ' + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : '') + value[3], value[4], showLatency ? value[5] : null, value[6]);
+        Play_UpdateVideoStatus(
+            value[0],
+            value[1],
+            value[2] + ' | ' + (value[3] < 10 ? STR_SPACE_HTML + STR_SPACE_HTML : '') + value[3],
+            value[4],
+            showLatency ? value[5] : null,
+            value[6]
+        );
     }
 
     //Remove the check after some app updates
@@ -1604,7 +1648,8 @@ function Play_ChatPosition() {
     if (Play_ChatPositions < 0) Play_ChatPositions = bool ? 2 : 7;
     else if (Play_ChatPositions > (bool ? 2 : 7)) Play_ChatPositions = 0;
 
-    Play_chat_container.style.top = (bool ? 0.2 : Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue]) + '%';
+    Play_chat_container.style.top =
+        (bool ? 0.2 : Play_ChatPositionVal[Play_ChatPositions].top + Play_ChatPositionVal[Play_ChatPositions].sizeOffset[Play_ChatSizeValue]) + '%';
 
     Play_chat_container.style.left = Play_ChatPositionVal[Play_ChatPositions + (bool ? 2 : 0)].left + '%';
 
@@ -1818,11 +1863,7 @@ function Play_OpenLiveFeed() {
     Play_SavePlayData();
     Main_values.Play_isHost = false;
 
-    if (!Main_IsOn_OSInterface || Play_PreviewId || UserLiveFeed_FeedPosX < UserLiveFeedobj_UserVodPos) {
-        Play_OpenFeed(Play_handleKeyDown);
-    } else {
-        Play_CheckIfIsLiveStart('Play_CheckIfIsLiveResult');
-    }
+    Play_OpenFeed(Play_handleKeyDown);
 }
 
 function Play_OpenFeed(keyfun) {
@@ -1891,7 +1932,10 @@ function Play_OpenLiveStream(keyfun) {
 function Play_RestorePlayData(error_410, Isforbiden) {
     Play_HideBufferDialog();
 
-    Play_showWarningMidleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE), 2000);
+    Play_showWarningMidleDialog(
+        error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
+        2000
+    );
 
     Play_RestorePlayDataValues();
 

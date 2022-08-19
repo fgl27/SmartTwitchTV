@@ -120,26 +120,36 @@ function OSInterface_SetQuality(position) {
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
-    //TODO remove this after some app updates
-    try {
-        Android.getStreamDataAsync(
-            token_url,
-            (isVod ? '' : Play_original_live_links) + hls_url,
-            Play_live_ttv_lol_links + hls_url,
-            proxy_ping_url,
-            callback,
-            checkResult,
-            position,
-            Timeout,
-            isVod ? Play_vod_token_prop : Play_live_token_prop,
-            POST,
-            !isVod && use_proxy
-        );
-    } catch (e) {
-        Android.getStreamDataAsync(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, checkResult, position, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
-    }
-}
+//TODO remove this
+// function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
+//     //TODO remove this after some app updates
+//     try {
+//         Android.getStreamDataAsync(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             Play_live_ttv_lol_links + hls_url,
+//             proxy_ping_url,
+//             callback,
+//             checkResult,
+//             position,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST,
+//             !isVod && use_proxy
+//         );
+//     } catch (e) {
+//         Android.getStreamDataAsync(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             callback,
+//             checkResult,
+//             position,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST
+//         );
+//     }
+// }
 
 //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
 //token_url = the base token url
@@ -149,26 +159,36 @@ function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResul
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
-    //TODO remove this after some app updates
-    try {
-        Android.CheckIfIsLiveFeed(
-            token_url,
-            (isVod ? '' : Play_original_live_links) + hls_url,
-            Play_live_ttv_lol_links + hls_url,
-            proxy_ping_url,
-            callback,
-            x,
-            y,
-            Timeout,
-            isVod ? Play_vod_token_prop : Play_live_token_prop,
-            POST,
-            !isVod && use_proxy
-        );
-    } catch (e) {
-        Android.CheckIfIsLiveFeed(token_url, (isVod ? '' : Play_original_live_links) + hls_url, callback, x, y, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
-    }
-}
+//TODO remove this
+// function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
+//     //TODO remove this after some app updates
+//     try {
+//         Android.CheckIfIsLiveFeed(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             Play_live_ttv_lol_links + hls_url,
+//             proxy_ping_url,
+//             callback,
+//             x,
+//             y,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST,
+//             !isVod && use_proxy
+//         );
+//     } catch (e) {
+//         Android.CheckIfIsLiveFeed(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             callback,
+//             x,
+//             y,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST
+//         );
+//     }
+// }
 
 //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
 //token_url = the base token url
@@ -177,23 +197,30 @@ function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeo
 //Timeout = http request timeout
 //Android specific: false
 //Allows to get the stream data, that if called from JS will fail do to CORS error
-function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
-    //TODO remove this after some app updates
-    try {
-        return Android.getStreamData(
-            token_url,
-            (isVod ? '' : Play_original_live_links) + hls_url,
-            Play_live_ttv_lol_links + hls_url,
-            proxy_ping_url,
-            Timeout,
-            isVod ? Play_vod_token_prop : Play_live_token_prop,
-            POST,
-            !isVod && use_proxy
-        );
-    } catch (e) {
-        return Android.getStreamData(token_url, (isVod ? '' : Play_original_live_links) + hls_url, Timeout, isVod ? Play_vod_token_prop : Play_live_token_prop, POST);
-    }
-}
+//TODO remove this
+// function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
+//     //TODO remove this after some app updates
+//     try {
+//         return Android.getStreamData(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             Play_live_ttv_lol_links + hls_url,
+//             proxy_ping_url,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST,
+//             !isVod && use_proxy
+//         );
+//     } catch (e) {
+//         return Android.getStreamData(
+//             token_url,
+//             (isVod ? '' : Play_original_live_links) + hls_url,
+//             Timeout,
+//             isVod ? Play_vod_token_prop : Play_live_token_prop,
+//             POST
+//         );
+//     }
+// }
 
 //public String getQualities()
 //Android specific: true
@@ -203,10 +230,76 @@ function OSInterface_getQualities() {
 }
 
 //public void BaseXmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
+// String callback, long checkResult, String check_1, String check_2, String check_3, String check_4, String check_5, String callBackSuccess, String callBackError) {
+//Android specific: true
+function OSInterface_XmlHttpGetFull(
+    urlString,
+    timeout,
+    postMessage,
+    Method,
+    JsonHeadersArray,
+    callback,
+    checkResult,
+    check_1,
+    check_2,
+    check_3,
+    check_4,
+    check_5,
+    callBackSuccess,
+    callBackError
+) {
+    try {
+        Android.XmlHttpGetFull(
+            urlString,
+            timeout,
+            postMessage,
+            Method,
+            JsonHeadersArray,
+            callback,
+            !checkResult ? 0 : checkResult,
+            check_1,
+            check_2,
+            check_3,
+            check_4,
+            check_5,
+            callBackSuccess,
+            callBackError
+        );
+    } catch (e) {
+        // prettier-ignore
+        eval(callbackSuccess)(// jshint ignore:line
+            null
+        );
+    }
+}
+
+//public void BaseXmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
 //                           String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
 //Android specific: true
-function OSInterface_BaseXmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, checkResult, key, callbackSucess, calbackError) {
-    Android.BasexmlHttpGet(urlString, timeout, postMessage, Method, JsonHeadersArray, callback, !checkResult ? 0 : checkResult, !key ? 0 : key, callbackSucess, calbackError);
+function OSInterface_BaseXmlHttpGet(
+    urlString,
+    timeout,
+    postMessage,
+    Method,
+    JsonHeadersArray,
+    callback,
+    checkResult,
+    key,
+    callBackSuccess,
+    calBackError
+) {
+    Android.BasexmlHttpGet(
+        urlString,
+        timeout,
+        postMessage,
+        Method,
+        JsonHeadersArray,
+        callback,
+        !checkResult ? 0 : checkResult,
+        !key ? 0 : key,
+        callBackSuccess,
+        calBackError
+    );
 }
 
 //public String mMethodUrlHeaders(String urlString, int timeout, String postMessage, String Method, long checkResult, String JsonHeadersArray)
@@ -833,7 +926,17 @@ function OSInterface_SetPlayerViewSidePanel(bottom, right, left, web_height) {
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, web_height, who_called) {
-    Android.StartScreensPlayer(uri, mainPlaylistString, ResumePosition, bottom, right, left, parseInt(web_height), who_called, Settings_Obj_default('preview_screen_sizes') === 1);
+    Android.StartScreensPlayer(
+        uri,
+        mainPlaylistString,
+        ResumePosition,
+        bottom,
+        right,
+        left,
+        parseInt(web_height),
+        who_called,
+        Settings_Obj_default('preview_screen_sizes') === 1
+    );
 }
 
 //public void StartScreensPlayer(float bottom, float right, float left, int web_height, int who_called, boolean bigger)
@@ -844,7 +947,8 @@ function OSInterface_StartScreensPlayer(uri, mainPlaylistString, ResumePosition,
 //Android specific: true
 //Start MultiStream at position
 function OSInterface_ScreenPlayerRestore(bottom, right, left, web_height, who_called) {
-    if (Main_IsOn_OSInterface) Android.ScreenPlayerRestore(bottom, right, left, parseInt(web_height), who_called, Settings_Obj_default('preview_screen_sizes') === 1);
+    if (Main_IsOn_OSInterface)
+        Android.ScreenPlayerRestore(bottom, right, left, parseInt(web_height), who_called, Settings_Obj_default('preview_screen_sizes') === 1);
 }
 
 //public void ClearFeedPlayer()
@@ -1007,7 +1111,12 @@ function OSInterface_mKeepScreenOn(keepOn) {
 //Sets a audio enable or not
 function OSInterface_SetAudioEnabled() {
     if (Main_IsOn_OSInterface) {
-        Android.SetAudioEnabled(Boolean(Play_audio_enable[0]), Boolean(Play_audio_enable[1]), Boolean(Play_audio_enable[2]), Boolean(Play_audio_enable[3]));
+        Android.SetAudioEnabled(
+            Boolean(Play_audio_enable[0]),
+            Boolean(Play_audio_enable[1]),
+            Boolean(Play_audio_enable[2]),
+            Boolean(Play_audio_enable[3])
+        );
     } else if (PlayClip_isOn) {
         try {
             clip_player.volume = Boolean(Play_audio_enable[0]) ? 1.0 : 0.0;
@@ -1023,7 +1132,12 @@ function OSInterface_SetAudioEnabled() {
 //Sets a audio enable or not
 function OSInterface_SetVolumes() {
     if (Main_IsOn_OSInterface) {
-        Android.SetVolumes(parseFloat(Play_volumes[0] / 100), parseFloat(Play_volumes[1] / 100), parseFloat(Play_volumes[2] / 100), parseFloat(Play_volumes[3] / 100));
+        Android.SetVolumes(
+            parseFloat(Play_volumes[0] / 100),
+            parseFloat(Play_volumes[1] / 100),
+            parseFloat(Play_volumes[2] / 100),
+            parseFloat(Play_volumes[3] / 100)
+        );
     } else if (PlayClip_isOn) {
         try {
             clip_player.volume = Play_volumes[0] / 100;

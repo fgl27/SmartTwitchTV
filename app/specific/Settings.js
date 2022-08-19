@@ -63,7 +63,34 @@ var Settings_value = {
             'Tiếng Việt [VI]',
             '中文 [ZH]'
         ],
-        apply_values: ['', 'bg', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'it', 'hu', 'ja', 'ko', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sv', 'th', 'tr', 'vi', 'zh'],
+        apply_values: [
+            '',
+            'bg',
+            'cs',
+            'da',
+            'de',
+            'el',
+            'en',
+            'es',
+            'fi',
+            'fr',
+            'it',
+            'hu',
+            'ja',
+            'ko',
+            'nl',
+            'no',
+            'pl',
+            'pt',
+            'ro',
+            'ru',
+            'sk',
+            'sv',
+            'th',
+            'tr',
+            'vi',
+            'zh'
+        ],
         defaultValue: 1
     },
     app_lang: {
@@ -75,7 +102,18 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    ttv_lol_proxy: {
+    ttv_lolProxy: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
+    proxy_timeout: {
+        //Migrated to dialog
+        values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30],
+        defaultValue: 10
+    },
+    purple_adblock: {
+        //Migrated to dialog
         values: ['no', 'yes'],
         defaultValue: 1
     },
@@ -83,7 +121,7 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    clip_auto_play_next: {
+    clip_autoPlayNext: {
         //Migrated to dialog
         values: ['no', 'yes'],
         defaultValue: 2
@@ -92,7 +130,7 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 1
     },
-    single_click_exit: {
+    single_clickExit: {
         values: ['no', 'yes'],
         defaultValue: 1
     },
@@ -201,7 +239,10 @@ var Settings_value = {
     },
     key_up_timeout: {
         //Migrated to dialog
-        values: [100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000],
+        values: [
+            100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
+            1900, 2000
+        ],
         defaultValue: 6
     },
     live_feed_sort: {
@@ -381,6 +422,11 @@ var Settings_value = {
         set_values: [''],
         defaultValue: 1
     },
+    proxy_settings: {
+        values: ['None'],
+        set_values: [''],
+        defaultValue: 1
+    },
     player_bitrate: {
         values: ['None'],
         set_values: [''],
@@ -433,7 +479,29 @@ var Settings_value = {
     },
     dpad_opacity: {
         //Migrated to dialog
-        values: ['0%', '5%', '10%', '15%', '20%', '25%', '30%', '35%', '40%', '45%', '50%', '55%', '60%', '65%', '70%', '75%', '80%', '85%', '90%', '95%', '100%'],
+        values: [
+            '0%',
+            '5%',
+            '10%',
+            '15%',
+            '20%',
+            '25%',
+            '30%',
+            '35%',
+            '40%',
+            '45%',
+            '50%',
+            '55%',
+            '60%',
+            '65%',
+            '70%',
+            '75%',
+            '80%',
+            '85%',
+            '90%',
+            '95%',
+            '100%'
+        ],
         defaultValue: 12
     },
     highlight_rewards: {
@@ -641,8 +709,8 @@ function Settings_GetVolumes() {
 }
 
 var Settings_GetnotificationTimeMs = [
-    0, 600000, 1200000, 1800000, 2700000, 3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000, 32400000, 36000000, 39600000, 43200000, 46800000, 50400000, 54000000, 57600000,
-    61200000, 64800000, 68400000, 72000000, 75600000, 79200000, 82800000, 86400000
+    0, 600000, 1200000, 1800000, 2700000, 3600000, 7200000, 10800000, 14400000, 18000000, 21600000, 25200000, 28800000, 32400000, 36000000, 39600000,
+    43200000, 46800000, 50400000, 54000000, 57600000, 61200000, 64800000, 68400000, 72000000, 75600000, 79200000, 82800000, 86400000
 ];
 
 function Settings_GetnotificationTime(min, hour, hours) {
@@ -751,11 +819,9 @@ function Settings_SetSettings() {
     // Player settings title
     div += Settings_DivTitle('play', STR_SETTINGS_PLAYER);
 
-    div += Settings_Content('ttv_lol_proxy', array_no_yes, STR_TTV_LOL, STR_TTV_LOL_SUMMARY);
-
     div += Settings_Content('restor_playback', array_no_yes, STR_RESTORE_PLAYBACK, STR_RESTORE_PLAYBACK_SUMMARY);
 
-    div += Settings_Content('single_click_exit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
+    div += Settings_Content('single_clickExit', array_no_yes, STR_SINGLE_EXIT, STR_SINGLE_EXIT_SUMMARY);
 
     div += Settings_Content('PP_workaround', dis_ena, STR_PP_WORKAROUND, STR_PP_WORKAROUND_SUMMARY);
 
@@ -769,6 +835,7 @@ function Settings_SetSettings() {
     div += Settings_Content('default_quality', Settings_value[key].values, STR_DEF_QUALITY, STR_DEF_QUALITY_SUMMARY);
 
     //Dialog settings
+    div += Settings_Content('proxy_settings', [STR_ENTER_TO_OPEN], PROXY_SETTINGS, null);
     div += Settings_Content('player_bitrate', [STR_ENTER_TO_OPEN], STR_PLAYER_BITRATE, STR_PLAYER_BITRATE_SUMMARY);
     div += Settings_Content('block_qualities', [STR_ENTER_TO_OPEN], STR_BLOCK_RES, STR_BLOCK_RES_SUMMARY);
     div += Settings_Content('blocked_codecs', [STR_ENTER_TO_OPEN], STR_BLOCKED_CODEC, STR_BLOCKED_CODEC_SUMMARY);
@@ -821,7 +888,12 @@ function Settings_SetSettings() {
     Settings_value.auto_minimize_inactive.values = Settings_value.auto_refresh_screen.values;
     Settings_value.auto_refresh_background.values = Settings_value.auto_refresh_screen.values;
 
-    Settings_value.dpad_position.values = [STR_RIGHT + '-' + STR_BOTTOM, STR_RIGHT + '-' + STR_TOP, STR_LEFT + '-' + STR_BOTTOM, STR_LEFT + '-' + STR_TOP];
+    Settings_value.dpad_position.values = [
+        STR_RIGHT + '-' + STR_BOTTOM,
+        STR_RIGHT + '-' + STR_TOP,
+        STR_LEFT + '-' + STR_BOTTOM,
+        STR_LEFT + '-' + STR_TOP
+    ];
 }
 
 function Settings_Content(key, valuesArray, STR, STR_SUMMARY) {
@@ -926,7 +998,8 @@ function Settings_SetDefautls() {
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     Settings_SetPingWarning();
     SettingsColor_SetAnimationStyleRestore();
-    Settings_set_TTV_LOL();
+    Settings_proxy_set_start();
+    Settings_set_proxy_timeout();
     Settings_set_all_notification();
     Settings_SetLang();
 
@@ -1167,7 +1240,9 @@ function Settings_SetDefault(position) {
     else if (position === 'dpad_opacity') Settings_DpadOpacity();
     else if (position === 'dpad_position') Settings_DpadPOsition();
     else if (position === 'PP_workaround') Settings_PP_Workaround();
-    else if (position === 'ttv_lol_proxy') Settings_set_TTV_LOL();
+    else if (position === 'ttv_lolProxy') Settings_set_TTV_LOL();
+    else if (position === 'proxy_timeout') Settings_set_proxy_timeout();
+    else if (position === 'purple_adblock') Settings_set_purple_adblock();
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -1185,8 +1260,59 @@ function Settings_SetDefault(position) {
     }
 }
 
+function Settings_set_proxy_timeout() {
+    proxy_timeout = Settings_Obj_values('proxy_timeout') * 1000;
+}
+
+var proxyArray = ['ttv_lolProxy', 'purple_adblock'];
+function Settings_set_purple_adblock() {
+    Settings_set_all_proxy('purple_adblock');
+}
+
 function Settings_set_TTV_LOL() {
-    use_proxy = Settings_Obj_default('ttv_lol_proxy') === 1;
+    Settings_set_all_proxy('ttv_lolProxy');
+}
+
+function Settings_set_all_proxy(current) {
+    var currentEnable = Settings_Obj_default(current) === 1;
+
+    use_proxy = currentEnable;
+
+    if (currentEnable) {
+        Settings_proxy_set_current(current);
+
+        var i = 0,
+            len = proxyArray.length;
+        for (i; i < len; i++) {
+            if (proxyArray[i] !== current && Settings_Obj_default(proxyArray[i]) === 1) {
+                Settings_DialogRightLeftAfter(proxyArray[i], -1, true);
+            }
+        }
+    }
+}
+
+function Settings_proxy_set_start() {
+    var i = 0,
+        len = proxyArray.length;
+    for (i; i < len; i++) {
+        if (Settings_Obj_default(proxyArray[i]) === 1) {
+            use_proxy = true;
+            Settings_proxy_set_current(proxyArray[i]);
+            break;
+        }
+    }
+}
+
+function Settings_proxy_set_current(current) {
+    if (current === 'purple_adblock') {
+        proxy_url = purple_proxy;
+        proxy_headers = null;
+        proxy_has_parameter = false;
+    } else {
+        proxy_url = Play_live_ttv_lol_links;
+        proxy_headers = ttv_lol_headers;
+        proxy_has_parameter = true;
+    }
 }
 
 function Settings_check_sidePannelFade() {
@@ -1327,7 +1453,10 @@ function Settings_CheckAutoMinimizeEnd() {
     if (Settings_AutoMinimizeTime > 0) {
         Settings_AutoMinimizeWarningId = Main_setTimeout(Settings_CheckAutoMinimizeEnd, 1000, Settings_AutoMinimizeWarningId);
 
-        Main_innerHTML('minimize_warning', STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND)));
+        Main_innerHTML(
+            'minimize_warning',
+            STR_INACTIVE_WARNING.replace('%x', Settings_AutoMinimizeTime + (Settings_AutoMinimizeTime > 1 ? STR_SECONDS : STR_SECOND))
+        );
     } else {
         Settings_DisableAutoMinimizeTimeout();
 
@@ -1644,6 +1773,7 @@ function Settings_KeyEnter(click) {
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'blocked_codecs')) Settings_CodecsShow(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_buffers')) Settings_DialogShowBuffer(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'player_bitrate')) Settings_DialogShowBitrate(click);
+    else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'proxy_settings')) Settings_DialogShowProxy(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'vod_seek')) Settings_vod_seek(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'block_qualities')) Settings_block_qualities(click);
     else if (Main_A_includes_B(Settings_value_keys[Settings_cursorY], 'preview_settings')) Settings_DialogShowSmallPayer(click);
@@ -1691,7 +1821,12 @@ function Settings_CodecsShow(click) {
                 DivContent += STR_MAX_INSTANCES + (Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : STR_UNKNOWN) + STR_BR;
                 DivContent += Settings_CodecsValue[i].resolutions;
 
-                dialogContent += Settings_DivOptionWithSummary(Settings_CodecsValue[i].name, Settings_CodecsValue[i].name, DivContent + STR_BR + STR_BR, 73);
+                dialogContent += Settings_DivOptionWithSummary(
+                    Settings_CodecsValue[i].name,
+                    Settings_CodecsValue[i].name,
+                    DivContent + STR_BR + STR_BR,
+                    73
+                );
             }
 
             Main_innerHTML('dialog_codecs_text', dialogContent + STR_DIV_TITLE + (click ? STR_CLOSE_THIS_BROWSER : STR_CLOSE_THIS) + '</div>');
@@ -1837,7 +1972,10 @@ function Settings_SetMaxInstances() {
     var i = 0,
         len = Settings_CodecsValue.length;
     for (i; i < len; i++) {
-        if (!Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) && !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : '', 'google')) {
+        if (
+            !Settings_DisableCodecsNames.includes(Settings_CodecsValue[i].name) &&
+            !Main_A_includes_B(Settings_CodecsValue[i].name ? Settings_CodecsValue[i].name.toLowerCase() : '', 'google')
+        ) {
             Play_MaxInstances = Settings_CodecsValue[i].instances > -1 ? Settings_CodecsValue[i].instances : 10;
 
             break;
@@ -1947,6 +2085,35 @@ function Settings_DialogShowBuffer(ckick) {
     Settings_DialogShow(obj, STR_SETTINGS_BUFFER_SIZE + STR_BR + STR_SETTINGS_BUFFER_SIZE_SUMMARY, ckick);
 }
 
+function Settings_DialogShowProxy(click) {
+    var array_no_yes = [STR_NO, STR_YES];
+    Settings_value.ttv_lolProxy.values = array_no_yes;
+    Settings_value.purple_adblock.values = array_no_yes;
+
+    var obj = {
+        proxy_timeout: {
+            defaultValue: Settings_value.purple_adblock.defaultValue,
+            values: Settings_value.purple_adblock.values,
+            title: STR_PROXY_TIMEOUT,
+            summary: STR_PROXY_TIMEOUT_SUMMARY
+        },
+        purple_adblock: {
+            defaultValue: Settings_value.ttv_lolProxy.defaultValue,
+            values: Settings_value.ttv_lolProxy.values,
+            title: STR_PURPLE_ADBLOCK,
+            summary: STR_PURPLE_ADBLOCK_SUMMARY
+        },
+        ttv_lolProxy: {
+            defaultValue: Settings_value.purple_adblock.defaultValue,
+            values: Settings_value.purple_adblock.values,
+            title: STR_TTV_LOL,
+            summary: STR_TTV_LOL_SUMMARY
+        }
+    };
+
+    Settings_DialogShow(obj, PROXY_SETTINGS + STR_BR + STR_BR + PROXY_SETTINGS_SUMMARY, click);
+}
+
 function Settings_DialogShowBitrate(click) {
     Settings_value.res_max.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
     Settings_value.res_min.values[0] = STR_PLAYER_BITRATE_UNLIMITED;
@@ -1981,7 +2148,11 @@ function Settings_DialogShowBitrate(click) {
         }
     };
 
-    Settings_DialogShow(obj, STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC, click);
+    Settings_DialogShow(
+        obj,
+        STR_PLAYER_BITRATE + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY + STR_BR + STR_BR + STR_PLAYER_BITRATE_SUMMARY_ETC,
+        click
+    );
 }
 
 function Settings_vod_seek(click) {
@@ -2289,7 +2460,16 @@ function Settings_DialogShowCustomOpt(click) {
     Settings_value.auto_refresh_screen.values[0] = STR_DISABLED;
     Settings_value.auto_minimize_inactive.values[0] = STR_DISABLED;
 
-    Settings_value.live_feed_sort.values = [STR_VIWES_MOST, STR_VIWES_LOWEST, STR_NAME_A_Z, STR_NAME_Z_A, STR_GAME_A_Z, STR_GAME_Z_A, STR_CREATED_NEWEST, STR_CREATED_OLDEST];
+    Settings_value.live_feed_sort.values = [
+        STR_VIWES_MOST,
+        STR_VIWES_LOWEST,
+        STR_NAME_A_Z,
+        STR_NAME_Z_A,
+        STR_GAME_A_Z,
+        STR_GAME_Z_A,
+        STR_CREATED_NEWEST,
+        STR_CREATED_OLDEST
+    ];
 
     var obj = {
         live_feed_sort: {
@@ -2382,7 +2562,7 @@ function Settings_PlayerEnd(click) {
     var yes_no = [STR_NO, STR_YES];
     Settings_value.open_host.values = yes_no;
     Settings_value.play_stay.values = yes_no;
-    Settings_value.clip_auto_play_next.values = yes_no;
+    Settings_value.clip_autoPlayNext.values = yes_no;
     Settings_value.end_dialog_counter.values[0] = STR_END_DIALOG_DISABLE;
 
     var obj = {
@@ -2398,9 +2578,9 @@ function Settings_PlayerEnd(click) {
             title: STR_ALWAYS_STAY,
             summary: null
         },
-        clip_auto_play_next: {
-            defaultValue: Settings_value.clip_auto_play_next.defaultValue,
-            values: Settings_value.clip_auto_play_next.values,
+        clip_autoPlayNext: {
+            defaultValue: Settings_value.clip_autoPlayNext.defaultValue,
+            values: Settings_value.clip_autoPlayNext.values,
             title: STR_AUTO_PLAY_NEXT,
             summary: null
         },
@@ -2658,12 +2838,12 @@ function Settings_DialoghandleKeyReturn() {
 
 function Settings_DialoghandleKeyLeft() {
     var key = Settings_DialogValue[Settings_DialogPos];
-    if (Settings_Obj_default(key) > 0) Settings_DialogRigthLeft(-1);
+    if (Settings_Obj_default(key) > 0) Settings_DialogRightLeft(-1);
 }
 
 function Settings_DialoghandleKeyRight() {
     var key = Settings_DialogValue[Settings_DialogPos];
-    if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRigthLeft(1);
+    if (Settings_Obj_default(key) < Settings_Obj_length(key)) Settings_DialogRightLeft(1);
 }
 
 function Settings_DialoghandleKeyDown(event) {
@@ -2708,13 +2888,19 @@ function Settings_DialogUpDownAfter() {
     Settings_SetarrowsKey(key);
 }
 
-function Settings_DialogRigthLeft(offset) {
+function Settings_DialogRightLeft(offset) {
     var key = Settings_DialogValue[Settings_DialogPos];
+    Settings_DialogRightLeftAfter(key, offset);
+}
 
+function Settings_DialogRightLeftAfter(key, offset, skipDefault) {
     Settings_value[key].defaultValue += offset;
 
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
-    Settings_SetarrowsKey(key);
-    Settings_SetDefault(key);
+
+    if (!skipDefault) {
+        Settings_SetarrowsKey(key);
+        Settings_SetDefault(key);
+    }
 }
