@@ -110,7 +110,7 @@ var Settings_value = {
     proxy_timeout: {
         //Migrated to dialog
         values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30],
-        defaultValue: 5
+        defaultValue: 10
     },
     purple_adblock: {
         //Migrated to dialog
