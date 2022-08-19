@@ -2898,8 +2898,9 @@ function Settings_DialogRightLeftAfter(key, offset, skipDefault) {
 
     Main_setItem(key, Settings_Obj_default(key) + 1);
     Main_textContent(key, Settings_Obj_values(key));
-    Settings_SetarrowsKey(key);
+
     if (!skipDefault) {
+        Settings_SetarrowsKey(key);
         Settings_SetDefault(key);
     }
 }

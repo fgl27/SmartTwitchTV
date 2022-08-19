@@ -146,7 +146,7 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
         var URL_parameters = Play_base_live_links.replace('%d', Math.random() * 100000);
 
         if (useProxy) {
-            headers = ttv_lol_headers;
+            headers = proxy_headers;
             url = proxy_url + Channel_or_VOD_Id + (proxy_has_parameter ? '.m3u8' + encodeURIComponent('?' + URL_parameters) : '');
         } else {
             url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
