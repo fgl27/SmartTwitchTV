@@ -73,7 +73,7 @@ function PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callB
         DefaultHttpGetTimeout, //int timeout
         (isLive ? Play_live_token : Play_vod_token).replace('%x', Channel_or_VOD_Id), // String postMessage
         'POST', //String Method
-        JSON.stringify(Play_base_backup_headers_Array), //String JsonHeadersArray
+        Play_Headers, //String JsonHeadersArray
         'PlayHLS_GetTokenResult', //String callback
         CheckId_y, //long checkResult
         isLive ? '1' : '0', //String check_1
@@ -87,7 +87,7 @@ function PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callB
 }
 
 function PlayHLS_GetTokenResult(result, checkResult, check_1, check_2, check_3, check_4, check_5, callBackSuccess) {
-    // console.log('result', result);
+    //console.log('result', result);
     // console.log('checkResult', checkResult);
     // console.log('check_1', check_1);
     // console.log('check_2', check_2);
