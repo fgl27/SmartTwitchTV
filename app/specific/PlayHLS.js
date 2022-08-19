@@ -32,7 +32,7 @@ var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
 
-var purpel_proxy = 'https://jupter.ga/hls/v2/channel/';
+var purple_proxy = 'https://jupter.ga/hls/v2/channel/';
 
 var proxy_timeout = 5000;
 var proxy_url = '';

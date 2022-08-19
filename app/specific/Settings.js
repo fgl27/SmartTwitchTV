@@ -1305,7 +1305,7 @@ function Settings_proxy_set_start() {
 
 function Settings_proxy_set_current(current) {
     if (current === 'purple_adblock') {
-        proxy_url = purpel_proxy;
+        proxy_url = purple_proxy;
         proxy_headers = null;
         proxy_has_parameter = false;
     } else {
