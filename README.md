@@ -186,6 +186,7 @@ That key will be used to access Twitch specific content of that user, it permiss
 **Read your list of follows:**
 
 -   The permission used for this is **user:read:follows** the API used on this is [Get Followed Streams](https://dev.twitch.tv/docs/api/reference#get-followed-streams)
+-   This allows to show yours list of followed channels
 
 **Get the details of your subscription to a channel.:**
 
