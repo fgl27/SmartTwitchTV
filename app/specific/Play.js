@@ -1502,14 +1502,25 @@ function Play_UpdateVideoStatus(net_speed, net_act, dropped_frames, buffer_size,
             STR_PING +
             ping +
             STR_AVG +
-            STR_BR +
-            PROXY_SERVICE +
-            (use_proxy
-                ? proxy_fail_counter > proxy_fail_counter_checker
-                    ? PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter)
-                    : PROXY_SERVICE_STATUS
-                : PROXY_SERVICE_OFF)
+            Play_UpdateVideoStatusGetProxy()
     );
+}
+
+function Play_UpdateVideoStatusGetProxy() {
+    if (!Play_isOn) {
+        return '';
+    }
+    var proxyString = STR_BR + PROXY_SERVICE;
+
+    if (!use_proxy) {
+        return proxyString + PROXY_SERVICE_OFF;
+    }
+
+    if (proxy_fail_counter > proxy_fail_counter_checker) {
+        return proxyString + PROXY_SERVICE_FAIL.replace('%x', proxy_fail_counter);
+    }
+
+    return proxyString + PROXY_SERVICE_STATUS;
 }
 
 var Play_BufferSize = 0;
