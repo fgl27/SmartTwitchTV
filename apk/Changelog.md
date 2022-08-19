@@ -9,10 +9,15 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-August 17 2022 and Apk Version 3.0.343
+August 19 2022 and Apk Version 3.0.343 and Up
 ==============
 
-* Add TTV LOL proxy to setting player options (disabled by default), Internet censorship and related proxy
+* Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly
+* Add Proxy to setting player options (all proxy disabled by default), this are internet censorship and related proxy
+* When the Proxy is enable you may experience longer buffer at start of a stream, but after all must work OK, if not disable it or change to a different proxy option
+* Add proxy status to the player status (player top right info)
+* Proxy only affects live streams
+* General improves
 
 August 03 2022 and Apk Version 3.0.338 and Up
 ==============

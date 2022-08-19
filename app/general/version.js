@@ -27,7 +27,7 @@ var version = {
     WebTag: 627, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
-            title: 'August XX 2022 and Apk Version 3.0.343 and Up',
+            title: 'August 19 2022 and Apk Version 3.0.343 and Up',
             changes: [
                 'Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly',
                 'Add Proxy to setting player options (all proxy disabled by default), this are internet censorship and related proxy',
