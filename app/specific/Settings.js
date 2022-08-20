@@ -1264,7 +1264,18 @@ function Settings_set_proxy_timeout() {
     proxy_timeout = Settings_Obj_values('proxy_timeout') * 1000;
 }
 
-var proxyArray = ['ttv_lolProxy', 'purple_adblock'];
+function Settings_get_enabled() {
+    if (Settings_Obj_default('purple_adblock') === 1) {
+        return 0;
+    }
+    if (Settings_Obj_default('ttv_lolProxy') === 1) {
+        return 1;
+    }
+
+    return 2;
+}
+
+var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
 function Settings_set_purple_adblock() {
     Settings_set_all_proxy('purple_adblock');
 }

@@ -256,6 +256,8 @@ function Play_Start(offline_chat) {
             BrowserTestStartLive(Play_data.data[6]);
         }
     }
+
+    Play_ResetProxy();
 }
 
 // To Force a warn, not used regularly so keep commented out
@@ -1385,6 +1387,7 @@ function Play_hidePanel() {
     //Reset values
     Play_qualityReset();
     Play_ResetSpeed();
+    Play_ResetProxy();
     Play_ResetLowlatency();
     Play_controls[Play_controlsBack].enterKey(1, true);
     Play_BottonIconsResetFocus(true);

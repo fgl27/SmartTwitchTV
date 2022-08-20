@@ -190,6 +190,10 @@ function Play_ResetSpeed() {
     );
 }
 
+function Play_ResetProxy() {
+    Play_A_Control(Settings_get_enabled(), Play_controlsProxy);
+}
+
 function Play_ResetQualityControls() {
     if (Play_MultiEnable) {
         Play_A_Control(0, Play_controlsQualityMulti);
@@ -1950,6 +1954,7 @@ var Play_controlsChatSend = temp_controls_pos++;
 
 var Play_controlsChatSettings = temp_controls_pos++;
 var Play_controlsPlayerStatus = temp_controls_pos++;
+var Play_controlsProxy = temp_controls_pos++;
 var Play_controlsPreview = temp_controls_pos++;
 
 var Play_controlsChatForceDis = temp_controls_pos++;
@@ -2866,6 +2871,75 @@ function Play_MakeControls() {
         }
     };
 
+    Play_controls[Play_controlsProxy] = {
+        ShowInLive: true,
+        ShowInVod: false,
+        ShowInClip: false,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: false,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: false,
+        icons: 'proxy',
+        offsetY: -5,
+        string: PROXY_SERVICE,
+        values: STR_PROXY_CONTROLS_ARRAY,
+        defaultValue: Settings_get_enabled(),
+        enterKey: function () {
+            var currentProxyEnabled = Settings_get_enabled(),
+                i,
+                key;
+
+            if (this.defaultValue < 2) {
+                key = proxyArray[this.defaultValue];
+                Settings_value[key].defaultValue = 1;
+                Main_setItem(key, 2);
+                Settings_set_all_proxy(key);
+            } else {
+                //reset all proxy to disable
+                i = 0;
+                var len = proxyArray.length;
+                for (i; i < len; i++) {
+                    key = proxyArray[i];
+                    Settings_value[key].defaultValue = 0;
+                    Main_setItem(key, 1);
+                }
+                use_proxy = false;
+            }
+
+            if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled()) {
+                Play_showBufferDialog();
+                if (Play_MultiEnable) {
+                    i = 0;
+
+                    for (i; i < Play_MultiArray_length; i++) {
+                        Play_ResumeAfterOnlineMulti(i);
+                    }
+                } else {
+                    if (PlayExtra_PicturePicture) PlayExtra_Resume();
+                    Play_loadData();
+                }
+            }
+
+            Play_ResetProxy();
+        },
+        updown: function (adder) {
+            this.defaultValue += adder;
+            if (this.defaultValue < 0) this.defaultValue = 0;
+            else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+            this.bottomArrows();
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position);
+        },
+        setLable: function () {
+            Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
+        }
+    };
+
     Play_controls[Play_controlsPlayerStatus] = {
         ShowInLive: true,
         ShowInVod: true,
@@ -3623,6 +3697,7 @@ function Play_MakeControls() {
             Play_BottomArrows(this.position);
         }
     };
+
     Play_controls[Play_controlsPreviewVolume] = {
         ShowInLive: false,
         ShowInVod: false,
@@ -3766,6 +3841,7 @@ function Play_MakeControls() {
 
     Play_ResetLowlatency();
     Play_ResetSpeed();
+    Play_ResetProxy();
 }
 
 function Play_SetControlsArrows(key) {
