@@ -737,6 +737,7 @@
     var STR_PROXY_TIMEOUT;
     var STR_PROXY_TIMEOUT_SUMMARY;
     var STR_PROXY_DONATE_SUMMARY;
+    var STR_PROXY_CONTROLS_ARRAY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1198,6 +1199,8 @@
 
         STR_TTV_LOL_SUMMARY =
             STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
+
+        STR_PROXY_CONTROLS_ARRAY = [STR_PURPLE_ADBLOCK, STR_TTV_LOL, STR_DISABLED];
     }
 
     function DefaultReplaceLink(link, string, center) {
@@ -1457,7 +1460,7 @@
         STR_STAY_CHECKING = 'Checking if is live ...';
         STR_STAY_CHECK_LAST = 'Last result:';
         STR_STAY_IS_OFFLINE = 'The stream was offline';
-        STR_NO_BROADCAST = 'No Broadcasts';
+        STR_NO_BROADCAST = 'No Broadcast';
         STR_NO_BROADCAST_WARNING = 'There are no VODs for this clip';
         STR_NO_CHAT = 'and because of that no chat';
         STR_IS_NOW = 'is now';
@@ -1846,7 +1849,7 @@
         STR_CHAT_WRITE = 'Write to chat';
         STR_CHAT_EXTRA = 'Chat extra settings';
         STR_PLACEHOLDER_CHAT =
-            'When this is seleceted, press enter to show onscreen keyboard. If you have a physical keyboard connected, press return or esc to hide the onscreen keyboard';
+            'When this is selected, press enter to show onscreen keyboard. If you have a physical keyboard connected, press return or esc to hide the onscreen keyboard';
         STR_CHAT_ROOMSTATE = 'Chat ROOMSTATE:';
         STR_CHAT_NO_RESTRICTIONS = 'No restrictions';
         STR_OPTIONS = 'Options';
@@ -4468,9 +4471,13 @@
         VersionBase: '3.0',
         publishVersionCode: 343, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/343/SmartTV_twitch_3_0_343.apk',
-        WebVersion: 'August 17 2022',
-        WebTag: 629, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'August 20 2022',
+        WebTag: 630, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version August 20 2022',
+                changes: ['Add proxy controls to player']
+            },
+            {
                 title: 'August 19 2022 and Apk Version 3.0.343 and Up',
                 changes: [
                     'Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly',
@@ -16637,6 +16644,10 @@
         );
     }
 
+    function Play_ResetProxy() {
+        Play_A_Control(Settings_get_enabled(), Play_controlsProxy);
+    }
+
     function Play_ResetQualityControls() {
         if (Play_MultiEnable) {
             Play_A_Control(0, Play_controlsQualityMulti);
@@ -18399,6 +18410,7 @@
 
     var Play_controlsChatSettings = temp_controls_pos++;
     var Play_controlsPlayerStatus = temp_controls_pos++;
+    var Play_controlsProxy = temp_controls_pos++;
     var Play_controlsPreview = temp_controls_pos++;
 
     var Play_controlsChatForceDis = temp_controls_pos++;
@@ -19315,6 +19327,75 @@
             }
         };
 
+        Play_controls[Play_controlsProxy] = {
+            ShowInLive: true,
+            ShowInVod: false,
+            ShowInClip: false,
+            ShowInPP: true,
+            ShowInMulti: true,
+            ShowInChat: false,
+            ShowInAudio: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: false,
+            icons: 'proxy',
+            offsetY: -5,
+            string: PROXY_SERVICE,
+            values: STR_PROXY_CONTROLS_ARRAY,
+            defaultValue: Settings_get_enabled(),
+            enterKey: function() {
+                var currentProxyEnabled = Settings_get_enabled(),
+                    i,
+                    key;
+
+                if (this.defaultValue < 2) {
+                    key = proxyArray[this.defaultValue];
+                    Settings_value[key].defaultValue = 1;
+                    Main_setItem(key, 2);
+                    Settings_set_all_proxy(key);
+                } else {
+                    //reset all proxy to disable
+                    i = 0;
+                    var len = proxyArray.length;
+                    for (i; i < len; i++) {
+                        key = proxyArray[i];
+                        Settings_value[key].defaultValue = 0;
+                        Main_setItem(key, 1);
+                    }
+                    use_proxy = false;
+                }
+
+                if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled()) {
+                    Play_showBufferDialog();
+                    if (Play_MultiEnable) {
+                        i = 0;
+
+                        for (i; i < Play_MultiArray_length; i++) {
+                            Play_ResumeAfterOnlineMulti(i);
+                        }
+                    } else {
+                        if (PlayExtra_PicturePicture) PlayExtra_Resume();
+                        Play_loadData();
+                    }
+                }
+
+                Play_ResetProxy();
+            },
+            updown: function(adder) {
+                this.defaultValue += adder;
+                if (this.defaultValue < 0) this.defaultValue = 0;
+                else if (this.defaultValue > this.values.length - 1) this.defaultValue = this.values.length - 1;
+                this.bottomArrows();
+            },
+            bottomArrows: function() {
+                Play_BottomArrows(this.position);
+            },
+            setLable: function() {
+                Main_textContentWithEle(this.doc_title, PROXY_SERVICE + this.values[this.defaultValue]);
+            }
+        };
+
         Play_controls[Play_controlsPlayerStatus] = {
             ShowInLive: true,
             ShowInVod: true,
@@ -20072,6 +20153,7 @@
                 Play_BottomArrows(this.position);
             }
         };
+
         Play_controls[Play_controlsPreviewVolume] = {
             ShowInLive: false,
             ShowInVod: false,
@@ -20215,6 +20297,7 @@
 
         Play_ResetLowlatency();
         Play_ResetSpeed();
+        Play_ResetProxy();
     }
 
     function Play_SetControlsArrows(key) {
@@ -21840,6 +21923,8 @@
                 BrowserTestStartLive(Play_data.data[6]);
             }
         }
+
+        Play_ResetProxy();
     }
 
     // To Force a warn, not used regularly so keep commented out
@@ -22977,6 +23062,7 @@
         //Reset values
         Play_qualityReset();
         Play_ResetSpeed();
+        Play_ResetProxy();
         Play_ResetLowlatency();
         Play_controls[Play_controlsBack].enterKey(1, true);
         Play_BottonIconsResetFocus(true);
@@ -33914,7 +34000,18 @@
         proxy_timeout = Settings_Obj_values('proxy_timeout') * 1000;
     }
 
-    var proxyArray = ['ttv_lolProxy', 'purple_adblock'];
+    function Settings_get_enabled() {
+        if (Settings_Obj_default('purple_adblock') === 1) {
+            return 0;
+        }
+        if (Settings_Obj_default('ttv_lolProxy') === 1) {
+            return 1;
+        }
+
+        return 2;
+    }
+
+    var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
 
     function Settings_set_purple_adblock() {
         Settings_set_all_proxy('purple_adblock');
