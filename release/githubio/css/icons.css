@@ -319,3 +319,11 @@
 .icon-side-by-side:before {
   content: "\36";
 }
+
+.icon-closed-captioning:before {
+  content: "\38";
+}
+
+.icon-proxy:before {
+  content: "\39";
+}
