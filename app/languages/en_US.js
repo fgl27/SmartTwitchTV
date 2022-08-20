@@ -244,7 +244,7 @@ function en_USLang() {
     STR_STAY_CHECKING = 'Checking if is live ...';
     STR_STAY_CHECK_LAST = 'Last result:';
     STR_STAY_IS_OFFLINE = 'The stream was offline';
-    STR_NO_BROADCAST = 'No Broadcasts';
+    STR_NO_BROADCAST = 'No Broadcast';
     STR_NO_BROADCAST_WARNING = 'There are no VODs for this clip';
     STR_NO_CHAT = 'and because of that no chat';
     STR_IS_NOW = 'is now';
@@ -633,7 +633,7 @@ function en_USLang() {
     STR_CHAT_WRITE = 'Write to chat';
     STR_CHAT_EXTRA = 'Chat extra settings';
     STR_PLACEHOLDER_CHAT =
-        'When this is seleceted, press enter to show onscreen keyboard. If you have a physical keyboard connected, press return or esc to hide the onscreen keyboard';
+        'When this is selected, press enter to show onscreen keyboard. If you have a physical keyboard connected, press return or esc to hide the onscreen keyboard';
     STR_CHAT_ROOMSTATE = 'Chat ROOMSTATE:';
     STR_CHAT_NO_RESTRICTIONS = 'No restrictions';
     STR_OPTIONS = 'Options';
