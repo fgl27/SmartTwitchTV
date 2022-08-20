@@ -522,20 +522,6 @@ function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
     }
 }
 
-//public void SetStreamDataHeaders(String DataHeaders, String DataHeaders)
-//Android specific: true
-//Set app play DataHeaders and ProxyHeaders
-function OSInterface_SetStreamDataHeaders(DataHeaders, ProxyHeaders) {
-    if (Main_IsOn_OSInterface) {
-        //TODO remove this after some app updates
-        try {
-            Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null, ProxyHeaders ? ProxyHeaders : null);
-        } catch (e) {
-            Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null);
-        }
-    }
-}
-
 //public void BackupFile(String file, String file_content)
 //file =  the file name and or path
 //file_content = the file content

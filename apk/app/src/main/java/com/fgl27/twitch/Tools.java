@@ -74,8 +74,6 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -94,16 +92,13 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.concurrent.ThreadLocalRandom;
 
 public final class Tools {
 
@@ -111,9 +106,6 @@ public final class Tools {
 
     private static final Type ArrayType = new TypeToken<String[][]>() {
     }.getType();
-
-    private static String[][] StreamDataHeaders = new String[0][0];
-    private static String[][] StreamDataProxyHeaders = new String[0][0];
 
     //https://developer.android.com/reference/android/media/MediaCodecInfo.CodecProfileLevel.html
     private static final String[] AvcLevels = {
@@ -154,19 +146,6 @@ public final class Tools {
             2160
     };
 
-    public static class TokenObj {
-        public final int status;
-        final String StreamSig;
-        final String StreamToken;
-
-        TokenObj(int status, String StreamSig, String StreamToken) {
-            this.StreamSig = StreamSig;
-            this.StreamToken = StreamToken;
-            this.status = status;
-        }
-
-    }
-
     public static class ResponseObj {
         public final int status;
         public final String responseText;
@@ -180,181 +159,16 @@ public final class Tools {
             this.url = null;
         }
 
-        ResponseObj(int status, String url, String responseText, long checkResult) {
-            this.status = status;
-            this.responseText = responseText;
-            this.checkResult = checkResult;
-            this.url = url;
-        }
-
     }
 
-    private static TokenObj getStreamToken(String token_url, long checkResult, int Timeout, String dataProp, String postMessage) {
-        ResponseObj response;
-        int status;
-        JsonObject Token;
-        String StreamSig;
-        String StreamToken;
-
-        response = Internal_MethodUrl(token_url, Timeout, postMessage, "POST", checkResult, StreamDataHeaders);
-
-        if (response != null) {
-
-            status = response.status;
-
-            if (status == 200) {
-                Token = parseString(response.responseText).getAsJsonObject();
-
-                if (Token.isJsonObject() && Token.has("data") && !Token.get("data").isJsonNull()) {
-                    JsonObject data = Token.get("data").getAsJsonObject();
-
-                    data = data.has(dataProp) && !data.get(dataProp).isJsonNull() ? data.get(dataProp).getAsJsonObject() : null;
-
-                    if (data != null) {
-
-                        StreamToken = data.get("value").getAsString();
-                        StreamSig = data.get("signature").getAsString();
-
-                        if (BuildConfig.DEBUG) {
-                            Log.d(TAG, "StreamToken" + StreamToken);
-                        }
-
-                        return new TokenObj(status, StreamSig, StreamToken);
-
-                    }
-                }
-
-            } else if (status == 403 || status == 404 || status == 410) {
-                return new TokenObj(status, null, null);
-            }
-        }
-
-        return null;
-    }
-
-    private static String getStreamUrl(String hls_url, String proxy_url, String StreamSig, String StreamToken, long checkResult, int Timeout, Boolean useProxy) throws Exception {
-        ResponseObj response;
-        int status;
-
-        String url = String.format(
-                Locale.US,
-                useProxy ? proxy_url : hls_url,
-                URLEncoder.encode(StreamToken, "UTF-8"),
-                StreamSig,
-                ThreadLocalRandom.current().nextInt(1, 100000)
-        );
-
-        if (useProxy) {
-            String[] url_split = url.split(".m3u8?");
-            url = url_split[0] + ".m3u8" + URLEncoder.encode("?" + url_split[1], "UTF-8");
-        }
-
-        response = Internal_MethodUrl(url, Timeout, null, null, 0, useProxy ? StreamDataProxyHeaders : new String[0][0]);
-
-        if (response != null) {
-            status = response.status;
-
-            //fallback from proxy service
-            if (useProxy && status != 200) {
-                recordException(TAG, "Proxy get fail status" + status + " responseText " + response.responseText, null);
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Proxy get fail status" + status + " responseText " + response.responseText);
-                }
-                return getStreamUrl(hls_url, proxy_url, StreamSig, StreamToken, checkResult, Timeout, false);
-            }
-
-            //404 = off line
-            //403 = forbidden access
-            //410 = api v3 is gone use v5 bug
-            if (status == 200) {
-                return new Gson().toJson(
-                        new ResponseObj(
-                                status,
-                                url,
-                                response.responseText,
-                                checkResult
-                        )
-                );
-            } else if (status == 403 || status == 404 || status == 410) {
-                return ResponseObjToString(CheckToken(StreamToken) ? 1 : status, "link", checkResult);
-            }
-
-        }
-
-        return null;
-    }
-
-    //NullPointerException some time from token isJsonNull must prevent but throws anyway
-    //UnsupportedEncodingException impossible to happen as encode "UTF-8" is bepassed but throws anyway
-    static String getStreamData(String token_url, String hls_url, String proxy_url, String ping_url, long checkResult, int Timeout, String dataProp, String postMessage, boolean useProxy) throws Exception {
-        if (useProxy) {
-            //Test a ping to proxy to check access and availability of the service
-            ResponseObj ping = Internal_MethodUrl(ping_url, Timeout, null, null, 0, StreamDataProxyHeaders);
-
-            if (ping == null || ping.status != 200) {
-                useProxy = false;
-                recordException(TAG, "Proxy ping fail status " + (ping == null ? "null" : ping.status + " responseText " + ping.responseText), null);
-                if (BuildConfig.DEBUG) {
-                    Log.d(TAG, "Proxy ping fail status " + (ping == null ? "null" : ping.status + " responseText " + ping.responseText));
-                }
-            }
-        }
-
-        //Get token
-        TokenObj tokenObj = getStreamToken(token_url, checkResult, Timeout, dataProp, postMessage);
-        if (tokenObj == null) {
-            return null;
-        } else if (tokenObj.status != 200) {
-            return ResponseObjToString(tokenObj.status, "token", checkResult);
-        }
-
-        //get Stream playlist url
-        if (tokenObj.StreamSig != null && tokenObj.StreamToken != null) {
-            return getStreamUrl(hls_url, proxy_url, tokenObj.StreamSig, tokenObj.StreamToken, checkResult, Timeout, useProxy);
-        }
-
-        return null;
-    }
-
-    private static boolean CheckToken(String token) {
-        JsonObject Token = parseString(token).getAsJsonObject();
-
-        if (Token.isJsonObject() && Token.has("chansub") && !Token.get("chansub").isJsonNull()) {
-
-            JsonElement restricted_bitrates = Token.get("chansub").getAsJsonObject().get("restricted_bitrates");
-
-            if (!restricted_bitrates.isJsonNull()) {
-
-                JsonArray restricted_Array = restricted_bitrates.getAsJsonArray();
-
-                return restricted_Array.size() > 0 && !Objects.equals(restricted_Array.get(0).getAsString().toLowerCase(), "archives");
-            }
-
-        }
-
-        return false;
-    }
-
-    static String ResponseObjToString(int status, String responseText, long checkResult) {
+    static String ResponseObjToString(long checkResult) {
         return new Gson().toJson(
                 new ResponseObj(
-                        status,
-                        responseText,
+                        0,
+                        "",
                         checkResult
                 )
         );
-    }
-
-    static void SetStreamDataHeaders(String DataHeaders, String ProxyHeaders) {
-
-        StreamDataHeaders = DataHeaders == null ?
-                new String[0][0] :
-                new Gson().fromJson(DataHeaders, ArrayType);
-
-        StreamDataProxyHeaders = ProxyHeaders == null ?
-                new String[0][0] :
-                new Gson().fromJson(ProxyHeaders, ArrayType);
-
     }
 
     static ResponseObj MethodUrlHeaders(String urlString, int timeout, String postMessage,
