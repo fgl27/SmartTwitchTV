@@ -11207,7 +11207,6 @@
                 Main_IsOn_OSInterface = Main_IsOn_OSInterfaceVersion !== '';
 
                 OSInterface_setAppIds(AddCode_clientId, AddCode_client_token, AddCode_redirect_uri);
-                OSInterface_SetStreamDataHeaders(Play_Headers, ttv_lol_headers);
             } catch (e) {
                 Main_IsOn_OSInterfaceVersion = version.VersionBase + '.' + version.publishVersionCode;
                 Main_IsOn_OSInterface = 0;
@@ -14373,118 +14372,6 @@
         if (Main_IsOn_OSInterface) Android.SetQuality(position);
     }
 
-    //public void getStreamDataAsync(String token_url, String hls_url, String callback, long checkResult, int position, int ReTryMax, int Timeout)
-    //token_url = the base token url
-    //hls_url = the base hls playlist url
-    //callback = the call back function
-    //checkResult = a uniq ID number to prevent the callback answer to the wrong request, as this is a Async fun
-    //position = the position of the arrays that this function uses, arrays of string result and threads
-    //ReTryMax = the retry quanity in case the http request fails
-    //Timeout = http request timeout
-    //Android specific: false
-    //Allows to get the stream data, that if called from JS will fail do to CORS error
-    //TODO remove this
-    // function OSInterface_getStreamDataAsync(token_url, hls_url, callback, checkResult, position, Timeout, isVod, POST) {
-    //     //TODO remove this after some app updates
-    //     try {
-    //         Android.getStreamDataAsync(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             Play_live_ttv_lol_links + hls_url,
-    //             proxy_ping_url,
-    //             callback,
-    //             checkResult,
-    //             position,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST,
-    //             !isVod && use_proxy
-    //         );
-    //     } catch (e) {
-    //         Android.getStreamDataAsync(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             callback,
-    //             checkResult,
-    //             position,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST
-    //         );
-    //     }
-    // }
-
-    //public void CheckIfIsLiveFeed(String token_url, String hls_url, int Delay_ms, String callback, int x, int y, int ReTryMax, int Timeout)
-    //token_url = the base token url
-    //hls_url = the base hls playlist url
-    //callback = the call back function
-    //x & y the position of the array that hold the result also used to check the received info can be used by callback
-    //Timeout = http request timeout
-    //Android specific: false
-    //Allows to get the stream data, that if called from JS will fail do to CORS error
-    //TODO remove this
-    // function OSInterface_CheckIfIsLiveFeed(token_url, hls_url, callback, x, y, Timeout, isVod, POST) {
-    //     //TODO remove this after some app updates
-    //     try {
-    //         Android.CheckIfIsLiveFeed(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             Play_live_ttv_lol_links + hls_url,
-    //             proxy_ping_url,
-    //             callback,
-    //             x,
-    //             y,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST,
-    //             !isVod && use_proxy
-    //         );
-    //     } catch (e) {
-    //         Android.CheckIfIsLiveFeed(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             callback,
-    //             x,
-    //             y,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST
-    //         );
-    //     }
-    // }
-
-    //public String getStreamData(String token_url, String hls_url, int ReTryMax, int Timeout)
-    //token_url = the base token url
-    //hls_url = the base hls playlist url
-    //ReTryMax = the retry quanity in case the http request fails
-    //Timeout = http request timeout
-    //Android specific: false
-    //Allows to get the stream data, that if called from JS will fail do to CORS error
-    //TODO remove this
-    // function OSInterface_getStreamData(token_url, hls_url, Timeout, isVod, POST) {
-    //     //TODO remove this after some app updates
-    //     try {
-    //         return Android.getStreamData(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             Play_live_ttv_lol_links + hls_url,
-    //             proxy_ping_url,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST,
-    //             !isVod && use_proxy
-    //         );
-    //     } catch (e) {
-    //         return Android.getStreamData(
-    //             token_url,
-    //             (isVod ? '' : Play_original_live_links) + hls_url,
-    //             Timeout,
-    //             isVod ? Play_vod_token_prop : Play_live_token_prop,
-    //             POST
-    //         );
-    //     }
-    // }
-
     //public String getQualities()
     //Android specific: true
     //Allows to get the stream data, that if called from JS will fail do to CORS error
@@ -14783,20 +14670,6 @@
     function OSInterface_setAppIds(client_id, client_secret, redirect_uri) {
         if (Main_IsOn_OSInterface) {
             Android.setAppIds(client_id, client_secret ? client_secret : null, redirect_uri);
-        }
-    }
-
-    //public void SetStreamDataHeaders(String DataHeaders, String DataHeaders)
-    //Android specific: true
-    //Set app play DataHeaders and ProxyHeaders
-    function OSInterface_SetStreamDataHeaders(DataHeaders, ProxyHeaders) {
-        if (Main_IsOn_OSInterface) {
-            //TODO remove this after some app updates
-            try {
-                Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null, ProxyHeaders ? ProxyHeaders : null);
-            } catch (e) {
-                Android.SetStreamDataHeaders(DataHeaders ? DataHeaders : null);
-            }
         }
     }
 
