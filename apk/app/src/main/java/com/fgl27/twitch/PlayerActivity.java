@@ -128,7 +128,7 @@ public class PlayerActivity extends Activity {
             KeyEvent.ACTION_UP//1
     };
 
-    private final int[] idsurface = {
+    private final int[] idSurface = {
             R.id.player_view,//0
             R.id.player_view2,//1
             R.id.player_view3,//2
@@ -136,7 +136,7 @@ public class PlayerActivity extends Activity {
             R.id.player_view_e//4
     };
 
-    private final int[] idtexture = {
+    private final int[] idTexture = {
             R.id.player_view_texture_view,//0
             R.id.player_view2_texture_view,//1
             R.id.player_view3_texture_view,//2
@@ -166,7 +166,7 @@ public class PlayerActivity extends Activity {
     private long PingCounter = 0L;
     private long PingErrorCounter = 0L;
     private boolean warningShowing = false;
-    private boolean WebviewLoaded = false;
+    private boolean WebViewLoaded = false;
     private boolean mWebViewKeyIsShowing = false;
     private long PlayerCurrentPosition = 0L;
     private long SmallPlayerCurrentPosition = 0L;
@@ -203,7 +203,7 @@ public class PlayerActivity extends Activity {
     private FrameLayout.LayoutParams[][] PlayerViewSmallSize;
     //the default size for the extra player used by side panel and live player feed
     private FrameLayout.LayoutParams[][] PlayerViewExtraLayout;
-    //the default size for the players of multistream 4 player two modes
+    //the default size for the players of multiStream 4 player two modes
     private FrameLayout.LayoutParams[] MultiStreamPlayerViewLayout;
     //the default size for the side panel players
     private FrameLayout.LayoutParams PlayerViewSidePanel;
@@ -240,7 +240,7 @@ public class PlayerActivity extends Activity {
     private final int PlayerAccount = 4;
     private final int PlayerAccountPlus = PlayerAccount + 1;
 
-    private final String[] BasexmlHttpGetResultArray = new String[500];//0 to 29 screen, 30 to 50 preview player, 50+ etc
+    private final String[] BaseXmlHttpGetResultArray = new String[500];//0 to 29 screen, 30 to 50 preview player, 50+ etc
     private int BaseXmlHttpGetResultPosition = 0;
 
     private final ProgressBar[] loadingView = new ProgressBar[PlayerAccount + 3];
@@ -251,7 +251,7 @@ public class PlayerActivity extends Activity {
     //TODO some day convert js to use 0 = live, 1 = vod, 2 = clip, as today is  1 2 3
     private final int[] BUFFER_SIZE = {250, 250, 250};//live, vod, clips
 
-    ////Main Player, PP or Multistream, Player preview
+    ////Main Player, PP or MultiStream, Player preview
     private final DefaultTrackSelector.Parameters[] trackSelectorParameters = new DefaultTrackSelector.Parameters[3];
     private final int[] PlayerBitrate = {Integer.MAX_VALUE, Integer.MAX_VALUE, 4000000};
     private final int[] PlayerResolution = {Integer.MAX_VALUE, Integer.MAX_VALUE, 730};
@@ -466,11 +466,11 @@ public class PlayerActivity extends Activity {
     public void setPlayerSurface(boolean surface_view) {
         IsUsingSurfaceView = surface_view;
 
-        int[] idGone = idtexture, idVisible = idsurface;
+        int[] idGone = idTexture, idVisible = idSurface;
         //Some old devices (old OS N or older) is need to use texture_view to have a proper working PP mode
         if (!surface_view) {
-            idGone = idsurface;
-            idVisible = idtexture;
+            idGone = idSurface;
+            idVisible = idTexture;
         }
 
         for (int i = 0; i < PlayerAccountPlus; i++) {
@@ -514,7 +514,7 @@ public class PlayerActivity extends Activity {
 
     private boolean CanReUsePlayer(String mainPlaylistString, int trackSelectorParametersPosition) {
 
-        //If all 4 player are running skip checking resolution and bitrate as we are update multistream base on multistream dialog
+        //If all 4 player are running skip checking resolution and bitrate as we are update multiStream base on multiStream dialog
         //With is a special case always different
         return reUsePlayer &&
                 PlayerObj[4].player != null &&
@@ -644,7 +644,7 @@ public class PlayerActivity extends Activity {
             //Main players
             ApplyAudioAll();
 
-            //Player can only be accessed from main thread so start a "position listener" to pass the value to Webview
+            //Player can only be accessed from main thread so start a "position listener" to pass the value to WebView
             if (PlayerObjPosition == 0) {
                 PlayerCurrentPosition =
                         PlayerObj[PlayerObjPosition].ResumePosition == C.TIME_UNSET ?
@@ -905,7 +905,7 @@ public class PlayerActivity extends Activity {
         loadingView[5].setVisibility(View.VISIBLE);
     }
 
-    private void showLoadingBotton() {
+    private void showLoadingButtonDialog() {
         loadingView[6].setVisibility(View.VISIBLE);
     }
 
@@ -1113,7 +1113,7 @@ public class PlayerActivity extends Activity {
         isFullScreen = FullScreen;
         if (FullScreen) {
             PlayerObj[0].playerView.setLayoutParams(PlayerViewDefaultSize);
-            UpdadeSizePosSmall(1, false);
+            UpdateSizePosSmall(1, false);
 
             //reset track selector as SwitchPlayer may have skipped if isFullScreen == false
             for (int i = 0; i < 2; i++) {
@@ -1195,7 +1195,7 @@ public class PlayerActivity extends Activity {
 
     }
 
-    public void UpdadeSizePosSmall(int pos, boolean animate) {
+    public void UpdateSizePosSmall(int pos, boolean animate) {
         PlayerObj[pos].playerView.setLayoutParams(PlayerViewSmallSize[PicturePicturePosition][PicturePictureSize]);
         AnimateSetLayoutParams(
                 PlayerObj[pos].playerView,
@@ -1477,7 +1477,7 @@ public class PlayerActivity extends Activity {
 
         IsStopped = false;
 
-        if (!WebviewLoaded) return;
+        if (!WebViewLoaded) return;
 
         Intent intent = getIntent();
         boolean isChannelIntent = Objects.equals(intent.getAction(), Constants.CHANNEL_INTENT);
@@ -1595,7 +1595,7 @@ public class PlayerActivity extends Activity {
                 ),
                 Toast.LENGTH_LONG).show();
 
-        LoadUrlWebview("javascript:smartTwitchTV.Main_EventChannelRefresh(" + Type + ")");
+        LoadUrlWebView("javascript:smartTwitchTV.Main_EventChannelRefresh(" + Type + ")");
     }
 
     private void DoResume(boolean skipResumeJS) {
@@ -1626,7 +1626,7 @@ public class PlayerActivity extends Activity {
         }, 250);
     }
 
-    private void ClearWebViewChache(boolean deleteBackground) {
+    private void ClearWebViewCache(boolean deleteBackground) {
         if (mWebView != null) {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
@@ -1684,7 +1684,7 @@ public class PlayerActivity extends Activity {
 
     private void monStop() {
         IsStopped = true;
-        if (!WebviewLoaded) return;
+        if (!WebViewLoaded) return;
         unRegisterScreenReceiver();
 
         updateResumePosition(0);//VOD only uses mainPlayer
@@ -1694,7 +1694,7 @@ public class PlayerActivity extends Activity {
         Clear_PreviewPlayer();
         CurrentPositionHandler[0].removeCallbacksAndMessages(null);
 
-        ClearWebViewChache(true);
+        ClearWebViewCache(true);
 
         //Prevent java timeout and related on background
         if (mWebView != null && AlreadyStarted) {
@@ -1902,7 +1902,7 @@ public class PlayerActivity extends Activity {
                 //User is on the authentication page or some page that the app provides and press back
                 //return to AppUrl
                 isAppUrlPageUrl = true;
-                LoadUrlWebview(AppUrl);
+                LoadUrlWebView(AppUrl);
 
             }
 
@@ -1950,7 +1950,7 @@ public class PlayerActivity extends Activity {
         return super.dispatchKeyEvent(event);
     }
 
-    public void LoadUrlWebview(String LoadUrlString) {
+    public void LoadUrlWebView(String LoadUrlString) {
         runOnUiThread(() -> mWebView.loadUrl(LoadUrlString));
     }
 
@@ -1980,7 +1980,7 @@ public class PlayerActivity extends Activity {
 
         mWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        //When we request a full url change on autentication key request
+        //When we request a full url change on authentication key request
         //prevent open it on a external browser
         mWebView.setWebViewClient(new WebViewClient() {
 
@@ -2050,7 +2050,7 @@ public class PlayerActivity extends Activity {
         }
         AppUrl = Constants.PageUrl;
         mWebView.loadUrl(AppUrl);
-        WebviewLoaded = true;
+        WebViewLoaded = true;
         mWebView.requestFocus();
 
         //The recommendation is to start this on BroadcastReceiver action ACTION_INITIALIZE_PROGRAMS
@@ -2106,7 +2106,7 @@ public class PlayerActivity extends Activity {
 
         mWebViewKey.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        //When we request a full url change on autentication key request
+        //When we request a full url change on authentication key request
         //prevent open it on a external browser
         mWebViewKey.setWebViewClient(new WebViewClient() {
 
@@ -2316,7 +2316,7 @@ public class PlayerActivity extends Activity {
 
                 } else {
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + "," + errorCode + ")");
+                    LoadUrlWebView("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + "," + errorCode + ")");
 
                 }
 
@@ -2337,7 +2337,7 @@ public class PlayerActivity extends Activity {
             } else {
 
                 Clear_PreviewPlayer();
-                LoadUrlWebview("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + "," + errorCode + ")");
+                LoadUrlWebView("javascript:smartTwitchTV.Play_CheckIfIsLiveClean(" + fail_type + "," + errorCode + ")");
 
             }
 
@@ -2386,7 +2386,7 @@ public class PlayerActivity extends Activity {
 
             } else {
 
-                //Don't call ClearPlayer so Play_Play_PannelEndStart works as intend
+                //Don't call ClearPlayer so Play_PanelEndStart works as intend
                 WebViewLoad = "Play_PannelEndStart(" + PlayerObj[position].Type + "," + fail_type + "," + errorCode + ")";
 
             }
@@ -2400,7 +2400,7 @@ public class PlayerActivity extends Activity {
 
         }
 
-        LoadUrlWebview("javascript:smartTwitchTV." + WebViewLoad);
+        LoadUrlWebView("javascript:smartTwitchTV." + WebViewLoad);
     }
 
     @TargetApi(23)
@@ -2413,7 +2413,7 @@ public class PlayerActivity extends Activity {
         }
     }
 
-    //TO understand better the use of it WebAppInterface functon is used check the file app/specific/Android.js
+    //TO understand better the use of it WebAppInterface function is used check the file app/specific/Android.js
     @SuppressWarnings({"unused", "RedundantSuppression"})
     public class WebAppInterface {
         final Context mWebViewContext;
@@ -2465,7 +2465,7 @@ public class PlayerActivity extends Activity {
 
         void loadUrlInternal(String url) {
             isAppUrlPageUrl = url.contains(AppUrl);
-            LoadUrlWebview(url);
+            LoadUrlWebView(url);
         }
 
         @JavascriptInterface
@@ -2473,7 +2473,7 @@ public class PlayerActivity extends Activity {
 
             runOnUiThread(() -> {
 
-                ClearWebViewChache(false);
+                ClearWebViewCache(false);
                 mWebView.loadUrl(url);
 
             });
@@ -2491,7 +2491,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mshowLoadingBottom(boolean show) {
             runOnUiThread(() -> {
-                if (show) showLoadingBotton();
+                if (show) showLoadingButtonDialog();
                 else hideLoading(6);
             });
         }
@@ -3049,7 +3049,7 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public String BasexmlHttpGetResult(int DataResultPos) {
-            return BasexmlHttpGetResultArray[DataResultPos];
+            return BaseXmlHttpGetResultArray[DataResultPos];
         }
 
         @JavascriptInterface
@@ -3058,12 +3058,12 @@ public class PlayerActivity extends Activity {
                                    String callBackSuccess, String callBackError) {
 
             BaseXmlHttpGetResultPosition++;
-            if (BaseXmlHttpGetResultPosition > BasexmlHttpGetResultArray.length - 1) {
+            if (BaseXmlHttpGetResultPosition > BaseXmlHttpGetResultArray.length - 1) {
                 BaseXmlHttpGetResultPosition = 0;
             }
 
             int DataResultPos = BaseXmlHttpGetResultPosition;
-            BasexmlHttpGetResultArray[DataResultPos] = null;
+            BaseXmlHttpGetResultArray[DataResultPos] = null;
 
             try {
                 DataThreadPool.execute(() ->
@@ -3081,8 +3081,8 @@ public class PlayerActivity extends Activity {
 
                             if (response != null) {
 
-                                BasexmlHttpGetResultArray[DataResultPos] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
+                                BaseXmlHttpGetResultArray[DataResultPos] = new Gson().toJson(response);
+                                LoadUrlWebView("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
                                         checkResult + ",'" +
                                         check_1 + "','" +
                                         check_2 + "','" +
@@ -3114,8 +3114,8 @@ public class PlayerActivity extends Activity {
                                  String check_1, String check_2, String check_3, String check_4, String check_5,
                                  String callBackSuccess, String callBackError) {
             //MethodUrl is null inform JS callback
-            BasexmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
+            BaseXmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(checkResult);
+            LoadUrlWebView("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " +
                     checkResult + ",'" +
                     check_1 + "','" +
                     check_2 + "','" +
@@ -3129,15 +3129,15 @@ public class PlayerActivity extends Activity {
 
         @JavascriptInterface
         public void BasexmlHttpGet(String urlString, int timeout, String postMessage, String Method, String JsonHeadersArray,
-                                   String callback, long checkResult, long key, String callbackSucess, String calbackError) {
+                                   String callback, long checkResult, long key, String callbackSuccess, String calbackError) {
 
             BaseXmlHttpGetResultPosition++;
-            if (BaseXmlHttpGetResultPosition > BasexmlHttpGetResultArray.length - 1) {
+            if (BaseXmlHttpGetResultPosition > BaseXmlHttpGetResultArray.length - 1) {
                 BaseXmlHttpGetResultPosition = 0;
             }
 
             int DataResultPos = BaseXmlHttpGetResultPosition;
-            BasexmlHttpGetResultArray[DataResultPos] = null;
+            BaseXmlHttpGetResultArray[DataResultPos] = null;
 
             try {
                 DataThreadPool.execute(() ->
@@ -3155,12 +3155,12 @@ public class PlayerActivity extends Activity {
 
                             if (response != null) {
 
-                                BasexmlHttpGetResultArray[DataResultPos] = new Gson().toJson(response);
-                                LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " + key + ",'" + callbackSucess + "','" + calbackError + "'," + checkResult + ")");
+                                BaseXmlHttpGetResultArray[DataResultPos] = new Gson().toJson(response);
+                                LoadUrlWebView("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " + key + ",'" + callbackSuccess + "','" + calbackError + "'," + checkResult + ")");
 
                             } else {
 
-                                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSucess, calbackError);
+                                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSuccess, calbackError);
 
                             }
 
@@ -3168,17 +3168,17 @@ public class PlayerActivity extends Activity {
                 );
             } catch (Exception e) {//Most are RejectedExecutionException
 
-                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSucess, calbackError);
+                BasexmlHttpGetError(callback, checkResult, key, DataResultPos, callbackSuccess, calbackError);
 
                 Tools.recordException(TAG, "GetMethodUrlHeadersAsync Exception ", e);
 
             }
         }
 
-        void BasexmlHttpGetError(String callback, long checkResult, long key, int DataResultPos, String callbackSucess, String calbackError) {
+        void BasexmlHttpGetError(String callback, long checkResult, long key, int DataResultPos, String callBackSuccess, String callBackError) {
             //MethodUrl is null inform JS callback
-            BasexmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(checkResult);
-            LoadUrlWebview("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " + key + ",'" + callbackSucess + "','" + calbackError + "'," + checkResult + ")");
+            BaseXmlHttpGetResultArray[DataResultPos] = Tools.ResponseObjToString(checkResult);
+            LoadUrlWebView("javascript:smartTwitchTV." + callback + "(Android.BasexmlHttpGetResult(" + DataResultPos + "), " + key + ",'" + callBackSuccess + "','" + callBackError + "'," + checkResult + ")");
         }
 
         @JavascriptInterface
@@ -3332,7 +3332,7 @@ public class PlayerActivity extends Activity {
             runOnUiThread(() -> {
                 PlayerObj[0].isScreenPreview = true;
                 VideoWebHolder.bringChildToFront(VideoHolder);
-                //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also webview may need a small delay to hide the player UI and show the screen
+                //Add a delay to make sure the VideoWebHolder already bringChildToFront before change size also WebView may need a small delay to hide the player UI and show the screen
                 MainThreadHandler.postDelayed(() -> PlayerObj[0].playerView.setLayoutParams(PlayerViewSidePanel), 100);
             });
         }
@@ -3390,7 +3390,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerPosition(int mPicturePicturePosition) {
             PicturePicturePosition = mPicturePicturePosition;
-            runOnUiThread(() -> UpdadeSizePosSmall(1, true));
+            runOnUiThread(() -> UpdateSizePosSmall(1, true));
         }
 
         @JavascriptInterface
@@ -3401,7 +3401,7 @@ public class PlayerActivity extends Activity {
         @JavascriptInterface
         public void mSwitchPlayerSize(int mPicturePictureSize) {
             PicturePictureSize = mPicturePictureSize;
-            runOnUiThread(() -> UpdadeSizePosSmall(1, false));
+            runOnUiThread(() -> UpdateSizePosSmall(1, false));
         }
 
         @JavascriptInterface
@@ -3716,7 +3716,7 @@ public class PlayerActivity extends Activity {
                 if (FullScreen) updateVideSizePP(true);
                 else updateVideSize(false);
 
-                UpdadeSizePosSmall(1, false);
+                UpdateSizePosSmall(1, false);
             });
         }
 
@@ -3937,7 +3937,7 @@ public class PlayerActivity extends Activity {
         @Override
         public void onTracksChanged(@NonNull Tracks tracks) {
             //onTracksChanged -> Called when the available or selected tracks change.
-            //When the player is already prepare and one changes the Mediasource this will be called before the new Mediasource is prepare
+            //When the player is already prepare and one changes the MediaSource this will be called before the new MediaSource is prepare
             //So tracks.getGroups().size() will be 0 and getQualities result = null, after 100ms or so this will be again called and all will be fine
             if (lastSeenTracks != tracks && tracks.getGroups().size() > 0 && PlayerObj[position].Type < 3) {
                 lastSeenTracks = tracks;
@@ -3950,7 +3950,7 @@ public class PlayerActivity extends Activity {
 
                 if (position == 0 && !PicturePicture && !MultiStreamEnable) {
 
-                    LoadUrlWebview("javascript:smartTwitchTV.Play_getQualities(" + PlayerObj[position].Type + ")");
+                    LoadUrlWebView("javascript:smartTwitchTV.Play_getQualities(" + PlayerObj[position].Type + ")");
 
                 }
 
@@ -4031,13 +4031,13 @@ public class PlayerActivity extends Activity {
                                     PlayerObj[position].player.getCurrentPosition()
                             );
 
-                            LoadUrlWebview("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + LiveOffset + ")");
+                            LoadUrlWebView("javascript:smartTwitchTV.ChatLive_SetLatency(" + position + "," + LiveOffset + ")");
 
                         }
 
                     } else {
 
-                        LoadUrlWebview("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[position].player.getDuration() + ")");
+                        LoadUrlWebView("javascript:smartTwitchTV.Play_UpdateDuration(" + PlayerObj[position].player.getDuration() + ")");
 
                     }
 
@@ -4059,7 +4059,7 @@ public class PlayerActivity extends Activity {
 
             Tools.recordException(TAG, "onPlayerError pos " + position + " e.errorCode " + e.errorCode + " e ", e);
 
-            PlayerEventListenerCheckCounter(position, 1, e.errorCode);//player_Erro
+            PlayerEventListenerCheckCounter(position, 1, e.errorCode);//player_Error
 
         }
 
