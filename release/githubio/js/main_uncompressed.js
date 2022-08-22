@@ -14153,6 +14153,21 @@
         }
     }
 
+    function Main_EventProxy(success) {
+        Main_ready(function() {
+            if (skipfirebase) return;
+
+            try {
+                gtag('event', 'proxy_status', {
+                    name: proxyStatus,
+                    result: success ? 'Success' : 'Fail'
+                });
+            } catch (e) {
+                console.log('Main_EventProxy e ' + e);
+            }
+        });
+    }
+
     function Main_EventPlay(type, name, game, lang, screen, mode) {
         Main_ready(function() {
             if (skipfirebase) return;
@@ -14163,7 +14178,8 @@
                     lang: lang ? lang.toUpperCase() : UNKNOWN,
                     game: game ? game : UNKNOWN,
                     screen: screen ? screen : UNKNOWN,
-                    mode: mode ? mode : 'NORMAL'
+                    mode: mode ? mode : 'NORMAL',
+                    proxy: proxyStatus
                 });
             } catch (e) {
                 console.log('Main_EventPlay e ' + e);
@@ -14180,7 +14196,8 @@
                     name: name,
                     lang: lang ? lang.toUpperCase() : UNKNOWN,
                     game: game ? game : UNKNOWN,
-                    screen: screen ? screen : UNKNOWN
+                    screen: screen ? screen : UNKNOWN,
+                    proxy: proxyStatus
                 });
             } catch (e) {
                 console.log('Main_EventPreview e ' + e);
@@ -19381,6 +19398,7 @@
                 }
 
                 Play_ResetProxy();
+                Settings_proxy_set_Status();
             },
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -21573,6 +21591,7 @@
             if (useProxy) {
                 proxy_fail_counter++;
                 PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
+                Main_EventProxy(false);
                 return;
             } else {
                 result = JSON.stringify({
@@ -21589,6 +21608,10 @@
             parseInt(CheckId_x),
             parseInt(CheckId_y)
         );
+
+        if (useProxy) {
+            Main_EventProxy(true);
+        }
     }
 
     function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
@@ -21649,10 +21672,14 @@
 
             if (response) {
                 if (response.status === 200) {
+                    if (useProxy) {
+                        Main_EventProxy(true);
+                    }
                     return obj;
                 } else {
                     if (useProxy) {
                         proxy_fail_counter++;
+                        Main_EventProxy(false);
                         return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                     } else {
                         return JSON.stringify({
@@ -34012,6 +34039,8 @@
     }
 
     var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
+    var proxyArrayFull = ['purple_adblock', 'ttv_lolProxy', 'disabled'];
+    var proxyStatus = 'disabled';
 
     function Settings_set_purple_adblock() {
         Settings_set_all_proxy('purple_adblock');
@@ -34037,6 +34066,7 @@
                 }
             }
         }
+        Settings_proxy_set_Status();
     }
 
     function Settings_proxy_set_start() {
@@ -34049,6 +34079,11 @@
                 break;
             }
         }
+        Settings_proxy_set_Status();
+    }
+
+    function Settings_proxy_set_Status() {
+        proxyStatus = proxyArrayFull[Settings_get_enabled()];
     }
 
     function Settings_proxy_set_current(current) {
