@@ -3152,7 +3152,7 @@ function Main_EventProxy(success) {
 
         try {
             gtag('event', 'proxy_status', {
-                name: proxyStatus,
+                name: proxyType,
                 result: success ? 'Success' : 'Fail'
             });
         } catch (e) {
@@ -3172,7 +3172,7 @@ function Main_EventPlay(type, name, game, lang, screen, mode) {
                 game: game ? game : UNKNOWN,
                 screen: screen ? screen : UNKNOWN,
                 mode: mode ? mode : 'NORMAL',
-                proxy: proxyStatus
+                proxy: proxyType
             });
         } catch (e) {
             console.log('Main_EventPlay e ' + e);
@@ -3190,7 +3190,7 @@ function Main_EventPreview(type, name, game, lang, screen) {
                 lang: lang ? lang.toUpperCase() : UNKNOWN,
                 game: game ? game : UNKNOWN,
                 screen: screen ? screen : UNKNOWN,
-                proxy: proxyStatus
+                proxy: proxyType
             });
         } catch (e) {
             console.log('Main_EventPreview e ' + e);

@@ -2925,7 +2925,7 @@ function Play_MakeControls() {
             }
 
             Play_ResetProxy();
-            Settings_proxy_set_Status();
+            Settings_proxy_set_Type();
         },
         updown: function (adder) {
             this.defaultValue += adder;

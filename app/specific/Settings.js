@@ -1277,7 +1277,7 @@ function Settings_get_enabled() {
 
 var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
 var proxyArrayFull = ['purple_adblock', 'ttv_lolProxy', 'disabled'];
-var proxyStatus = 'disabled';
+var proxyType = 'disabled';
 function Settings_set_purple_adblock() {
     Settings_set_all_proxy('purple_adblock');
 }
@@ -1302,7 +1302,7 @@ function Settings_set_all_proxy(current) {
             }
         }
     }
-    Settings_proxy_set_Status();
+    Settings_proxy_set_Type();
 }
 
 function Settings_proxy_set_start() {
@@ -1315,11 +1315,11 @@ function Settings_proxy_set_start() {
             break;
         }
     }
-    Settings_proxy_set_Status();
+    Settings_proxy_set_Type();
 }
 
-function Settings_proxy_set_Status() {
-    proxyStatus = proxyArrayFull[Settings_get_enabled()];
+function Settings_proxy_set_Type() {
+    proxyType = proxyArrayFull[Settings_get_enabled()];
 }
 
 function Settings_proxy_set_current(current) {
