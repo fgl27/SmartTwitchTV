@@ -3146,6 +3146,21 @@ function Main_EventShowScreen(type, name) {
     }
 }
 
+function Main_EventProxy(success) {
+    Main_ready(function () {
+        if (skipfirebase) return;
+
+        try {
+            gtag('event', 'proxy_status', {
+                name: proxyStatus,
+                result: success ? 'Success' : 'Fail'
+            });
+        } catch (e) {
+            console.log('Main_EventProxy e ' + e);
+        }
+    });
+}
+
 function Main_EventPlay(type, name, game, lang, screen, mode) {
     Main_ready(function () {
         if (skipfirebase) return;
@@ -3156,7 +3171,8 @@ function Main_EventPlay(type, name, game, lang, screen, mode) {
                 lang: lang ? lang.toUpperCase() : UNKNOWN,
                 game: game ? game : UNKNOWN,
                 screen: screen ? screen : UNKNOWN,
-                mode: mode ? mode : 'NORMAL'
+                mode: mode ? mode : 'NORMAL',
+                proxy: proxyStatus
             });
         } catch (e) {
             console.log('Main_EventPlay e ' + e);
@@ -3173,7 +3189,8 @@ function Main_EventPreview(type, name, game, lang, screen) {
                 name: name,
                 lang: lang ? lang.toUpperCase() : UNKNOWN,
                 game: game ? game : UNKNOWN,
-                screen: screen ? screen : UNKNOWN
+                screen: screen ? screen : UNKNOWN,
+                proxy: proxyStatus
             });
         } catch (e) {
             console.log('Main_EventPreview e ' + e);

@@ -210,6 +210,7 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
         if (useProxy) {
             proxy_fail_counter++;
             PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
+            Main_EventProxy(false);
             return;
         } else {
             result = JSON.stringify({
@@ -226,6 +227,10 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
        parseInt(CheckId_x),
        parseInt(CheckId_y)
     );
+
+    if (useProxy) {
+        Main_EventProxy(true);
+    }
 }
 
 function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
@@ -286,10 +291,14 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
 
         if (response) {
             if (response.status === 200) {
+                if (useProxy) {
+                    Main_EventProxy(true);
+                }
                 return obj;
             } else {
                 if (useProxy) {
                     proxy_fail_counter++;
+                    Main_EventProxy(false);
                     return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                 } else {
                     return JSON.stringify({
