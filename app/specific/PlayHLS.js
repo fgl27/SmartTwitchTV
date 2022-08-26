@@ -207,18 +207,16 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
         response = JSON.parse(result);
 
     if (response.status !== 200) {
-        if (useProxy) {
-            proxy_fail_counter++;
+        if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
             PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
-            Main_EventProxy(false);
             return;
-        } else {
-            result = JSON.stringify({
-                status: Checked_Token === '1' ? 1 : response.status,
-                responseText: response.responseText,
-                checkResult: response.checkResult
-            });
         }
+
+        result = JSON.stringify({
+            status: Checked_Token === '1' ? 1 : response.status,
+            responseText: response.responseText,
+            checkResult: response.checkResult
+        });
     }
 
     // prettier-ignore
@@ -231,6 +229,15 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
     if (useProxy) {
         Main_EventProxy(true);
     }
+}
+
+function PlayHLS_CheckProxyResultFail(responseText) {
+    if (Main_A_includes_B(responseText, 'not_found: transcode does not exist')) {
+        proxy_fail_counter++;
+        Main_EventProxy(false);
+        return false;
+    }
+    return true;
 }
 
 function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
@@ -296,9 +303,7 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
                 }
                 return obj;
             } else {
-                if (useProxy) {
-                    proxy_fail_counter++;
-                    Main_EventProxy(false);
+                if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                     return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                 } else {
                     return JSON.stringify({
