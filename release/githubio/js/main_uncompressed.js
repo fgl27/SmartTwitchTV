@@ -14159,7 +14159,7 @@
 
             try {
                 gtag('event', 'proxy_status', {
-                    name: proxyStatus,
+                    name: proxyType,
                     result: success ? 'Success' : 'Fail'
                 });
             } catch (e) {
@@ -14179,7 +14179,7 @@
                     game: game ? game : UNKNOWN,
                     screen: screen ? screen : UNKNOWN,
                     mode: mode ? mode : 'NORMAL',
-                    proxy: proxyStatus
+                    proxy: proxyType
                 });
             } catch (e) {
                 console.log('Main_EventPlay e ' + e);
@@ -14197,7 +14197,7 @@
                     lang: lang ? lang.toUpperCase() : UNKNOWN,
                     game: game ? game : UNKNOWN,
                     screen: screen ? screen : UNKNOWN,
-                    proxy: proxyStatus
+                    proxy: proxyType
                 });
             } catch (e) {
                 console.log('Main_EventPreview e ' + e);
@@ -19398,7 +19398,7 @@
                 }
 
                 Play_ResetProxy();
-                Settings_proxy_set_Status();
+                Settings_proxy_set_Type();
             },
             updown: function(adder) {
                 this.defaultValue += adder;
@@ -21588,18 +21588,16 @@
             response = JSON.parse(result);
 
         if (response.status !== 200) {
-            if (useProxy) {
-                proxy_fail_counter++;
+            if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                 PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
-                Main_EventProxy(false);
                 return;
-            } else {
-                result = JSON.stringify({
-                    status: Checked_Token === '1' ? 1 : response.status,
-                    responseText: response.responseText,
-                    checkResult: response.checkResult
-                });
             }
+
+            result = JSON.stringify({
+                status: Checked_Token === '1' ? 1 : response.status,
+                responseText: response.responseText,
+                checkResult: response.checkResult
+            });
         }
 
         // prettier-ignore
@@ -21612,6 +21610,15 @@
         if (useProxy) {
             Main_EventProxy(true);
         }
+    }
+
+    function PlayHLS_CheckProxyResultFail(responseText) {
+        if (Main_A_includes_B(responseText, 'not_found: transcode does not exist')) {
+            proxy_fail_counter++;
+            Main_EventProxy(false);
+            return false;
+        }
+        return true;
     }
 
     function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
@@ -21677,9 +21684,7 @@
                     }
                     return obj;
                 } else {
-                    if (useProxy) {
-                        proxy_fail_counter++;
-                        Main_EventProxy(false);
+                    if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                         return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                     } else {
                         return JSON.stringify({
@@ -34040,7 +34045,7 @@
 
     var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
     var proxyArrayFull = ['purple_adblock', 'ttv_lolProxy', 'disabled'];
-    var proxyStatus = 'disabled';
+    var proxyType = 'disabled';
 
     function Settings_set_purple_adblock() {
         Settings_set_all_proxy('purple_adblock');
@@ -34066,7 +34071,7 @@
                 }
             }
         }
-        Settings_proxy_set_Status();
+        Settings_proxy_set_Type();
     }
 
     function Settings_proxy_set_start() {
@@ -34079,11 +34084,11 @@
                 break;
             }
         }
-        Settings_proxy_set_Status();
+        Settings_proxy_set_Type();
     }
 
-    function Settings_proxy_set_Status() {
-        proxyStatus = proxyArrayFull[Settings_get_enabled()];
+    function Settings_proxy_set_Type() {
+        proxyType = proxyArrayFull[Settings_get_enabled()];
     }
 
     function Settings_proxy_set_current(current) {
