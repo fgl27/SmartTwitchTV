@@ -374,7 +374,9 @@ function Screens_loadDataRequest(key) {
         var Method = null;
         var PostString = null;
 
-        if (ScreenObj[key].isQuery) {
+        if (ScreenObj[key].isKraken) {
+            HeadersArray = Play_base_backup_headers_Array;
+        } else if (ScreenObj[key].isQuery) {
             HeadersArray = Play_base_backup_headers_Array;
             Method = 'POST';
             PostString = ScreenObj[key].post;
@@ -1997,7 +1999,7 @@ function Screens_handleKeyDown(key, event) {
                         Sidepannel_Go(Main_UserChannels);
                     } else {
                         ScreenObj[key].IsOpen = Main_games;
-                        Sidepannel_Go(Main_Live);
+                        Sidepannel_Go(Main_Clip);
                     }
                 } else Sidepannel_Go(ScreenObj[key].key_pgDown);
             }
@@ -3001,7 +3003,7 @@ var Screens_ThumbOptionLanguages = [];
 var Screens_ThumbOptionLanguagesTitles = [];
 
 function Screens_ThumbOptionSetArrowArray(key) {
-    Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES];
+    Screens_ThumbOptionScreens = [STR_LIVE, STR_FEATURED, STR_GAMES, STR_CLIPS];
 
     if (AddUser_UserIsSet()) {
         Screens_ThumbOptionScreens.push(STR_USER + STR_SPACE_HTML + STR_LIVE);
@@ -3030,7 +3032,16 @@ function Screens_ThumbOptionSetArrowArray(key) {
 
     Screens_ThumbOptionPosXArrays = [0, 0, 0, historyType, Settings_Obj_default('content_lang'), 0];
 
-    Screens_ThumbOptionGOTO = [Main_Live, Main_Featured, Main_games, Main_UserLive, Main_usergames, Main_UserChannels, Main_History[Main_HistoryPos]];
+    Screens_ThumbOptionGOTO = [
+        Main_Live,
+        Main_Featured,
+        Main_games,
+        Main_Clip,
+        Main_UserLive,
+        Main_usergames,
+        Main_UserChannels,
+        Main_History[Main_HistoryPos]
+    ];
 }
 
 function Screens_SetLastRefresh(key) {

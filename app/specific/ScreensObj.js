@@ -571,7 +571,12 @@ function ScreensObj_StartAllVars() {
                 this.itemsCount++;
                 this.idObject[idValue] = 1;
 
-                this.tempHtml += Screens_createCellClip(this.row_id + '_' + this.coloumn_id, this.ids, ScreensObj_ClipCellArray(cell), this.screen);
+                this.tempHtml += Screens_createCellClip(
+                    this.row_id + '_' + this.coloumn_id,
+                    this.ids,
+                    ScreensObj_ClipCellArray(cell, this.isKraken),
+                    this.screen
+                );
 
                 this.coloumn_id++;
             }
@@ -851,7 +856,7 @@ function ScreensObj_InitVod() {
         {
             periodMaxPos: 4,
             HeadersArray: Main_base_array_header,
-            key_pgDown: Main_Live,
+            key_pgDown: Main_Clip,
             key_pgUp: Main_games,
             object: 'vods',
             ids: Screens_ScreenIds('Vod', key),
@@ -1016,7 +1021,7 @@ function ScreensObj_InitAGameVod() {
             periodMaxPos: 4,
             HeadersArray: Main_base_array_header,
             object: 'data',
-            key_pgDown: Main_Live,
+            key_pgDown: Main_Clip,
             key_pgUp: Main_Featured,
             ids: Screens_ScreenIds('AGameVod', key),
             ScreenName: 'AGameVod',
@@ -1181,7 +1186,7 @@ function ScreensObj_InitLive() {
             object: 'data',
             ScreenName: 'Live',
             key_pgDown: Main_Featured,
-            key_pgUp: Main_games,
+            key_pgUp: Main_Clip,
             CheckContentLang: 1,
             ContentLang: '',
             base_url: Main_helix_api + 'streams?first=' + Main_ItemsLimitMax,
@@ -1297,7 +1302,7 @@ function ScreensObj_InitAGame() {
             object: 'data',
             CheckContentLang: 1,
             ContentLang: '',
-            key_pgDown: Main_Live,
+            key_pgDown: Main_Clip,
             key_pgUp: Main_Featured,
             hasBackupData: true,
             base_url: Main_helix_api + 'streams?game_id=',
@@ -1438,11 +1443,12 @@ function ScreensObj_InitClip() {
             table: 'stream_table_clip',
             screen: key,
             key_pgDown: Main_Live,
-            key_pgUp: Main_Live,
+            key_pgUp: Main_games,
             CheckContentLang: 1,
             ContentLang: '',
             periodPos: Main_getItemInt('Clip_periodPos', 2),
             base_url: Main_kraken_api + 'clips/top?limit=' + Main_ItemsLimitMax,
+            isKraken: true,
             set_url: function () {
                 this.url =
                     this.base_url +
@@ -1535,7 +1541,7 @@ function ScreensObj_InitAGameClip() {
             ScreenName: 'AGameClip',
             table: 'stream_table_a_game_clip',
             screen: key,
-            key_pgDown: Main_Live,
+            key_pgDown: Main_Clip,
             key_pgUp: Main_Featured,
             CheckContentLang: 1,
             ContentLang: '',
@@ -1587,7 +1593,7 @@ function ScreensObj_InitGame() {
             ScreenName: 'Game',
             table: 'stream_table_games',
             screen: key,
-            key_pgDown: Main_Live,
+            key_pgDown: Main_Clip,
             key_pgUp: Main_Featured,
             object: 'data',
             base_url: Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax,
@@ -2417,7 +2423,29 @@ function ScreensObj_VodCellArray(cell) {
     ];
 }
 
-function ScreensObj_ClipCellArray(cell) {
+function ScreensObj_ClipCellArray(cell, isKraken) {
+    if (isKraken) {
+        return [
+            cell.slug, //0
+            cell.duration, //1
+            cell.broadcaster.id, //2
+            cell.game, //3
+            cell.broadcaster.display_name, //4
+            cell.broadcaster.logo.replace('150x150', '300x300'), //5
+            cell.broadcaster.name, //6
+            cell.tracking_id, //7
+            cell.vod !== null ? cell.vod.id : null, //8
+            cell.vod !== null ? cell.vod.offset : null, //9
+            twemoji.parse(cell.title), //10
+            '[' + cell.language.toUpperCase() + ']', //11
+            cell.created_at, //12
+            cell.views, //13
+            Main_addCommas(cell.views), //14
+            cell.thumbnails.medium, //15
+            Main_videoCreatedAt(cell.created_at), //16
+            cell.language //17
+        ];
+    }
     return [
         cell.id, //0
         cell.duration, //1

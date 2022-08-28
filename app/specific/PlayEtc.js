@@ -4354,6 +4354,10 @@ function Play_PreStart() {
     }
 
     Play_base_backup_headers_Array = [[clientIdHeader, Main_Headers_Backup[0][1]]];
+    Play_base_kraken_headers_Array = [
+        [clientIdHeader, Main_Headers_Backup[0][1]],
+        ['Accept', 'application/vnd.twitchtv.v5+json']
+    ];
 
     Play_base_backup_headers = JSON.stringify(Play_base_backup_headers_Array);
 
