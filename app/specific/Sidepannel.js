@@ -370,7 +370,7 @@ function Sidepannel_KeyEnterUser() {
 
     if (Sidepannel_Sidepannel_Pos === 2) {
         Main_values.Sidepannel_IsUser = false;
-        Sidepannel_SetDefaultLables();
+        Sidepannel_SetDefaultLabels();
         Sidepannel_UnSetTopOpacity();
     } else if (Sidepannel_Sidepannel_Pos === 3) Sidepannel_Go(Main_UserLive);
     else if (Sidepannel_Sidepannel_Pos === 4) Sidepannel_Go(Main_usergames);
@@ -437,7 +437,7 @@ function Sidepannel_KeyEnter() {
 
     if (Sidepannel_Sidepannel_Pos === 2) {
         if (AddUser_IsUserSet()) {
-            Sidepannel_SetUserLables();
+            Sidepannel_SetUserLabels();
             Sidepannel_UnSetTopOpacity();
         } else {
             Sidepannel_ShowNoUserWarning();
@@ -661,7 +661,7 @@ function Sidepannel_UnSetTopOpacity() {
     for (var i = 1; i < 9; i++) Main_RemoveClass('side_panel_new_' + i, 'side_panel_new_icons_start');
 }
 
-function Sidepannel_SetUserLables() {
+function Sidepannel_SetUserLabels() {
     Main_values.Sidepannel_IsUser = true;
 
     //No longer supported
@@ -692,15 +692,13 @@ function Sidepannel_SetUserLables() {
     Sidepannel_SetIcons('side_panel_new_7', 'user', 'font-size: 115%; position: relative; top: 2%;');
 }
 
-function Sidepannel_SetDefaultLables() {
-    if (AddUser_UsernameArray[0]) Sidepannel_SetUserlable(AddUser_UsernameArray[0].display_name);
-    else Sidepannel_SetUserlable(STR_USER_ADD);
+function Sidepannel_SetDefaultLabels() {
+    if (AddUser_UsernameArray[0]) Sidepannel_SetUserLabel(AddUser_UsernameArray[0].display_name);
+    else Sidepannel_SetUserLabel(STR_USER_ADD);
 
     //No longer supported
-
     Main_HideElement('side_panel_movel_new_6');
     Main_HideElement('side_panel_movel_new_7');
-
     Main_HideElement('side_panel_new_6');
     Main_HideElement('side_panel_new_7');
 
@@ -717,8 +715,8 @@ function Sidepannel_SetDefaultLables() {
     Main_innerHTML('side_panel_movel_new_3', STR_LIVE);
     Main_innerHTML('side_panel_movel_new_4', STR_FEATURED);
     Main_innerHTML('side_panel_movel_new_5', STR_GAMES);
-    //Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
-    //Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
+    // Main_innerHTML('side_panel_movel_new_6', STR_VIDEOS);
+    // Main_innerHTML('side_panel_movel_new_7', STR_CLIPS);
 
     Main_innerHTML('side_panel_movel_new_9', STR_SPACE_HTML + STR_SETTINGS);
     Main_innerHTML('side_panel_movel_new_10', STR_SPACE_HTML + STR_ABOUT);
@@ -734,7 +732,7 @@ function Sidepannel_SetDefaultLables() {
     Sidepannel_SetIcons('side_panel_new_7', 'movie');
 }
 
-function Sidepannel_SetUserlable(text) {
+function Sidepannel_SetUserLabel(text) {
     Main_innerHTML(
         'side_panel_movel_new_0',
         text + STR_BR + '<div style="font-size: 45%;display: inline-block; transform: translateY(-80%);">' + STR_USER_EXTRAS + '</div>'
@@ -896,18 +894,19 @@ function Sidepannel_ShowNoUserWarning() {
 
 function Sidepannel_handleMainKey(Down) {
     if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
-    //Workaround for hiden options
-    var feed5 = Down ? 9 : 5;
+    //Workaround for hidden options
+    //var feed5 = Down ? 9 : 5;
 
     if (Main_values.Sidepannel_IsUser) {
         if (Sidepannel_Sidepannel_Pos === 5) {
             Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
         }
-    } else {
-        if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
-            Sidepannel_Sidepannel_Pos = feed5;
-        }
     }
+    //  else {
+    //     if (Sidepannel_Sidepannel_Pos === 7 || Sidepannel_Sidepannel_Pos === 6) {
+    //         Sidepannel_Sidepannel_Pos = feed5;
+    //     }
+    // }
 }
 
 function Sidepannel_handleKeyDownMain(event) {

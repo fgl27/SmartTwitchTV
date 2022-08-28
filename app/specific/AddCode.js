@@ -57,7 +57,13 @@ function AddCode_refreshTokens(position, callbackFunc, callbackFuncNOK, key, syn
 
     //Run in synchronous mode to prevent anything happening until user token is restored
     if (Main_IsOn_OSInterface && sync) {
-        AddCode_refreshTokensReady(position, callbackFunc, callbackFuncNOK, key, JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null)));
+        AddCode_refreshTokensReady(
+            position,
+            callbackFunc,
+            callbackFuncNOK,
+            key,
+            JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
+        );
     } else {
         if (!Main_IsOn_OSInterface) {
             var xmlHttp = new XMLHttpRequest();
@@ -156,7 +162,15 @@ function AddCode_TokensCheckScope(scope) {
 
 function AddCode_requestTokens() {
     var theUrl =
-        AddCode_UrlToken + 'grant_type=authorization_code&client_id=' + AddCode_clientId + '&client_secret=' + AddCode_client_token + '&code=' + AddCode_Code + '&redirect_uri=' + AddCode_redirect_uri;
+        AddCode_UrlToken +
+        'grant_type=authorization_code&client_id=' +
+        AddCode_clientId +
+        '&client_secret=' +
+        AddCode_client_token +
+        '&code=' +
+        AddCode_Code +
+        '&redirect_uri=' +
+        AddCode_redirect_uri;
 
     FullxmlHttpGet(theUrl, null, AddCode_requestTokensSucess, noop_fun, 0, 0, 'POST', null);
 }
@@ -280,7 +294,13 @@ function AddCode_AppToken(position, callbackFunc, callbackFuncNOK, key, sync) {
 
     //Run in synchronous mode to prevent anything happening until user token is restored
     if (Main_IsOn_OSInterface && sync) {
-        AddCode_AppTokenReady(position, callbackFunc, callbackFuncNOK, key, JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null)));
+        AddCode_AppTokenReady(
+            position,
+            callbackFunc,
+            callbackFuncNOK,
+            key,
+            JSON.parse(OSInterface_mMethodUrlHeaders(url, DefaultHttpGetTimeout, 'POST', null, 0, null))
+        );
     } else {
         if (!Main_IsOn_OSInterface) {
             var xmlHttp = new XMLHttpRequest();
@@ -374,7 +394,16 @@ function AddCode_CheckTokenStart(position) {
 
         AddCode_refreshTokens(position, null, null, null, !position); //token expired
     } else {
-        FullxmlHttpGet(AddCode_ValidateUrl, [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]], AddCode_CheckTokenReady, noop_fun, position, 0, null, null);
+        FullxmlHttpGet(
+            AddCode_ValidateUrl,
+            [[Main_Authorization, Main_OAuth + AddUser_UsernameArray[position].access_token]],
+            AddCode_CheckTokenReady,
+            noop_fun,
+            position,
+            0,
+            null,
+            null
+        );
     }
 }
 
@@ -485,7 +514,16 @@ function AddCode_FollowSucess(obj) {
 function AddCode_UnFollow() {
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_UnFollowSucess, noop_fun, 0, 0, 'DELETE', null);
+    FullxmlHttpGet(
+        theUrl,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+        AddCode_UnFollowSucess,
+        noop_fun,
+        0,
+        0,
+        'DELETE',
+        null
+    );
 }
 
 function AddCode_UnFollowSucess(xmlHttp) {
@@ -510,7 +548,16 @@ function AddCode_CheckSub() {
 
     var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
 
-    FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_CheckSubSucess, noop_fun, 0, 0, 'GET', null);
+    FullxmlHttpGet(
+        theUrl,
+        Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token),
+        AddCode_CheckSubSucess,
+        noop_fun,
+        0,
+        0,
+        'GET',
+        null
+    );
 }
 
 function AddCode_CheckSubSucess(obj) {

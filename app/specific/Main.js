@@ -510,7 +510,7 @@ function Main_SetStringsMain() {
     if (Main_IsOn_OSInterface) UserLiveFeed_SetFeedPicText();
     else UserLiveFeed_Unset();
 
-    Sidepannel_SetDefaultLables();
+    Sidepannel_SetDefaultLabels();
 
     Main_textContent('dialog_end_next_text_-1', STR_PLAY_NEXT);
     Main_textContent('dialog_end_replay_text_0', STR_REPLAY);

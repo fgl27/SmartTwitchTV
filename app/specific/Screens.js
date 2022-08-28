@@ -1011,8 +1011,8 @@ function Screens_loadDataSuccessFinishEnd(SkipHidedialog) {
     Main_ShowElement('side_panel_new_holder');
     AddUser_UpdateSidepanelAfterShow();
 
-    if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLables();
-    else Sidepannel_SetDefaultLables();
+    if (Main_values.Sidepannel_IsUser) Sidepannel_SetUserLabels();
+    else Sidepannel_SetDefaultLabels();
 
     Sidepannel_SetTopOpacity(Main_values.Main_Go);
     Main_CheckAccessibility(true);

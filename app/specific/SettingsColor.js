@@ -241,9 +241,20 @@ function SettingsColor_DialogColorsStart() {
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjStyles, STR_STYLES, STR_STYLES_ARRAY.split(',')[0]);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjApply, STR_APPLY, STR_ENTER);
     DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjColorType, STR_COLOR_TYPE, STR_COLOR_ARRAY.split(',')[0]);
-    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjR, 'R', SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[0]);
-    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjG, 'G', SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[0]);
-    DivContent += SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjB, 'B', SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[0]) + STR_BR + STR_BR;
+    DivContent += SettingsColor_DivColorText(
+        'color_options' + SettingsColor_ColorsObjR,
+        'R',
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjR].pos[0]
+    );
+    DivContent += SettingsColor_DivColorText(
+        'color_options' + SettingsColor_ColorsObjG,
+        'G',
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjG].pos[0]
+    );
+    DivContent +=
+        SettingsColor_DivColorText('color_options' + SettingsColor_ColorsObjB, 'B', SettingsColor_ColorsObj[SettingsColor_ColorsObjB].pos[0]) +
+        STR_BR +
+        STR_BR;
 
     Main_innerHTML('dialog_color_options', DivContent);
 
@@ -422,7 +433,8 @@ function SettingsColor_SetAnimationStyle(pos) {
             //stream_thumbnail_focused same animation time as animate_height_transition
             '.stream_thumbnail_focused {transition:background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s,border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;}';
 
-    cssClass += '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
+    cssClass +=
+        '.vod_watched{background:' + progressColor + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
     Main_innerHTML('focus_class_holder', cssClass);
 
@@ -430,9 +442,19 @@ function SettingsColor_SetAnimationStyle(pos) {
 }
 
 function SettingsColor_SetAnimationStyleTest(arrayColors) {
-    var cssClass = '.stream_thumbnail_focused_test {background-color:' + arrayColors[0] + ' !important;color:' + arrayColors[1] + ' !important;border-color:' + arrayColors[2] + ' !important;}';
+    var cssClass =
+        '.stream_thumbnail_focused_test {background-color:' +
+        arrayColors[0] +
+        ' !important;color:' +
+        arrayColors[1] +
+        ' !important;border-color:' +
+        arrayColors[2] +
+        ' !important;}';
 
-    cssClass += '.vod_watched_test{background:' + arrayColors[3] + ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
+    cssClass +=
+        '.vod_watched_test{background:' +
+        arrayColors[3] +
+        ' !important;height:1.5%;max-width:100%;position:absolute;bottom:0;transform:translateY(150%);}';
 
     Main_innerHTML('focus_class_test', cssClass);
 }
@@ -572,7 +594,8 @@ function SettingsColor_SetRGB() {
     SettingsColor_DialogColorsResultSet();
 
     for (var i = 0; i < 3; i++) {
-        SettingsColor_ColorsObj[i + SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] = SettingsColor_DialogColorsResultRGBA[i];
+        SettingsColor_ColorsObj[i + SettingsColor_ColorsObjR].pos[SettingsColor_ColorsObj[SettingsColor_ColorsObjColorType].pos] =
+            SettingsColor_DialogColorsResultRGBA[i];
         Main_textContent('color_options' + (i + SettingsColor_ColorsObjR), SettingsColor_DialogColorsResultRGBA[i]);
     }
 }
@@ -581,7 +604,8 @@ function SettingsColor_DialogColorsLeftRight(adder) {
     SettingsColor_canvasPosX[SettingsColor_canvasPosY] += adder;
 
     if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] > SettingsColor_DialogColorPosMax) SettingsColor_canvasPosX[SettingsColor_canvasPosY] = 0;
-    else if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] < 0) SettingsColor_canvasPosX[SettingsColor_canvasPosY] = SettingsColor_DialogColorPosMax;
+    else if (SettingsColor_canvasPosX[SettingsColor_canvasPosY] < 0)
+        SettingsColor_canvasPosX[SettingsColor_canvasPosY] = SettingsColor_DialogColorPosMax;
 
     if (!SettingsColor_canvasPosY) SettingsColor_DivShadowsUpdate();
     else SettingsColor_DivColorsUpdate();
@@ -608,7 +632,10 @@ function SettingsColor_ColorsObjRGBLeftRight(obj, adder, maxValue) {
 function SettingsColor_ColorsSetAsCustom() {
     SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].pos = 1;
 
-    Main_textContent('color_options' + SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].property, SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].values[1]);
+    Main_textContent(
+        'color_options' + SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].property,
+        SettingsColor_ColorsObj[SettingsColor_ColorsObjStyles].values[1]
+    );
 }
 
 function SettingsColor_ColorsSetRGBTest() {

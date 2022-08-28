@@ -242,7 +242,11 @@ function Users_addFocus(forceScroll) {
         if (Users_cursorY > 1) {
             if (Main_ThumbNull(Users_cursorY + 1, 0, Users_ids[0])) {
                 Main_getElementById(Users_ids[5]).style.transform =
-                    'translateY(' + (Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight - Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop) / BodyfontSize + 'em)';
+                    'translateY(' +
+                    (Main_getElementById(Users_ids[6] + Users_cursorY).offsetHeight -
+                        Main_getElementById(Users_ids[4] + Users_cursorY + '_0').offsetTop) /
+                        BodyfontSize +
+                    'em)';
             }
         } else Main_getElementById(Users_ids[5]).style.transform = '';
     }
@@ -314,7 +318,8 @@ function Users_setRemoveDialog() {
 
 function Users_showRemoveDialog() {
     Users_setRemoveDialog();
-    if (!Users_Isautentication) Main_innerHTML('main_dialog_remove', STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
+    if (!Users_Isautentication)
+        Main_innerHTML('main_dialog_remove', STR_REMOVE_USER + STR_BR + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     else Main_innerHTML('main_dialog_remove', STR_OAUTH_IN + ' ' + AddUser_UsernameArray[Users_showUserDialogPos].name + '?');
     Main_ShowElement('yes_no_dialog');
 }
@@ -385,7 +390,17 @@ function Users_handleKeyEnter() {
 
                 var force_verify = 'true';
                 var url =
-                    baseUrlCode + 'response_type=' + type_code + '&client_id=' + encodeURIComponent(client_id) + '&redirect_uri=' + redirect_uri + '&scope=' + scope + '&force_verify=' + force_verify;
+                    baseUrlCode +
+                    'response_type=' +
+                    type_code +
+                    '&client_id=' +
+                    encodeURIComponent(client_id) +
+                    '&redirect_uri=' +
+                    redirect_uri +
+                    '&scope=' +
+                    scope +
+                    '&force_verify=' +
+                    force_verify;
                 OSInterface_AvoidClicks(true);
                 Main_LoadUrl(url);
             }

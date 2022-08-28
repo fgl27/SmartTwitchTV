@@ -235,9 +235,13 @@ function AddUser_UpdateSidepanelSize(logo, username) {
 
     Main_innerHTML(
         'icon_side_panel_imgholder_0',
-        '<img id="icon_side_panel_img_0" class="side_panel_new_img" alt="" src="' + logo + '" onerror="this.onerror=null;this.src=\'' + IMG_404_LOGO + '\';">'
+        '<img id="icon_side_panel_img_0" class="side_panel_new_img" alt="" src="' +
+            logo +
+            '" onerror="this.onerror=null;this.src=\'' +
+            IMG_404_LOGO +
+            '\';">'
     );
-    Sidepannel_SetUserlable(username);
+    Sidepannel_SetUserLabel(username);
 
     var size = username.length;
 
@@ -248,7 +252,8 @@ function AddUser_UpdateSidepanelSize(logo, username) {
     var pos = Sidepannel_MovelDiv.offsetWidth - Sidepannel_FixDiv.offsetWidth;
 
     if (pos) {
-        if (!Sidepannel_isShowingMenus()) Sidepannel_MovelDiv.style.transform = 'translateX(-' + (pos / BodyfontSize + Sidepannel_OffsetMovelTransform) + 'em)';
+        if (!Sidepannel_isShowingMenus())
+            Sidepannel_MovelDiv.style.transform = 'translateX(-' + (pos / BodyfontSize + Sidepannel_OffsetMovelTransform) + 'em)';
     } else {
         var newsize = document.body.offsetWidth;
         newsize = (newsize / 100) * (MoveldefaultWidth + size) - (newsize / 100) * 5;

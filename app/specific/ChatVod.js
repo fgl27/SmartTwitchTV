@@ -182,7 +182,10 @@ function Chat_loadBadgesGlobalRequest(chat_number, id) {
         BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/global/display', Chat_loadBadgesGlobalSuccess, noop_fun, chat_number, id);
     } else {
         if (!Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]]) {
-            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(/\%x/g, ChatLive_selectedChannel_id[chat_number]);
+            Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]] = Chat_GlobalBadges[0].replace(
+                /\%x/g,
+                ChatLive_selectedChannel_id[chat_number]
+            );
         }
 
         Chat_tagCSS(Chat_GlobalBadges[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
@@ -305,7 +308,11 @@ function Chat_loadChat(id) {
 
 function Chat_loadChatRequest(id) {
     var theUrl =
-        'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
+        'https://api.twitch.tv/v5/videos/' +
+        Main_values.ChannelVod_vodId +
+        '/comments?client_id=' +
+        AddCode_backup_client_id +
+        (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
 
     BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatError, id);
 }
@@ -352,7 +359,14 @@ function Chat_loadChatSuccess(responseText, id) {
         Chat_MessageVector({
             chat_number: 0,
             time: 0,
-            message: '<span class="message">' + STR_LOADING_CHAT + STR_SPACE_HTML + Main_values.Main_selectedChannelDisplayname + STR_SPACE_HTML + Chat_title + '</span>'
+            message:
+                '<span class="message">' +
+                STR_LOADING_CHAT +
+                STR_SPACE_HTML +
+                Main_values.Main_selectedChannelDisplayname +
+                STR_SPACE_HTML +
+                Chat_title +
+                '</span>'
         });
 
         Chat_MessageVector({
@@ -379,7 +393,9 @@ function Chat_loadChatSuccess(responseText, id) {
 
         if (
             (!ChatLive_Highlight_Actions && mmessage.is_action) ||
-            (ChatLive_HideBots && (KnowBots[comments[i].commenter.display_name] || (mmessage.body && mmessage.body.startsWith('!') && mmessage.body.indexOf(' ') === -1)))
+            (ChatLive_HideBots &&
+                (KnowBots[comments[i].commenter.display_name] ||
+                    (mmessage.body && mmessage.body.startsWith('!') && mmessage.body.indexOf(' ') === -1)))
         ) {
             continue;
         }
@@ -422,7 +438,10 @@ function Chat_loadChatSuccess(responseText, id) {
 
         if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(comments[i].commenter.display_name.toLowerCase(), ChatLive_selectedChannel[0])) {
             fromstreamer = true;
-        } else if (ChatLive_Highlight_User_send && Main_A_equals_B(comments[i].commenter.display_name.toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())) {
+        } else if (
+            ChatLive_Highlight_User_send &&
+            Main_A_equals_B(comments[i].commenter.display_name.toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())
+        ) {
             atuser = true;
         }
 
@@ -567,7 +586,12 @@ function Chat_loadChatNext(id) {
 }
 
 function Chat_loadChatNextRequest(id) {
-    var theUrl = 'https://api.twitch.tv/v5/videos/' + Main_values.ChannelVod_vodId + '/comments?client_id=' + AddCode_backup_client_id + (Chat_next !== null ? '&cursor=' + Chat_next : '');
+    var theUrl =
+        'https://api.twitch.tv/v5/videos/' +
+        Main_values.ChannelVod_vodId +
+        '/comments?client_id=' +
+        AddCode_backup_client_id +
+        (Chat_next !== null ? '&cursor=' + Chat_next : '');
 
     BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatNextError, id);
 }

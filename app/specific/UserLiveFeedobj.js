@@ -84,7 +84,8 @@ var UserLiveFeedobj_MAX_No_user = UserLiveFeedobj_LivePos;
 function UserLiveFeedobj_StartDefault(pos) {
     if (UserLiveFeed_status[pos]) {
         if (UserLiveFeed_ObjNotNull(pos)) {
-            Main_values.UserLiveFeed_LastPositionId[pos] = UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
+            Main_values.UserLiveFeed_LastPositionId[pos] =
+                UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]][UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos ? 7 : 14];
 
             if (!UserLiveFeed_obj[pos].Game_changed) {
                 Main_values.UserLiveFeed_LastPosition[pos] = UserLiveFeed_FeedPosY[pos] < 100 ? UserLiveFeed_FeedPosY[pos] : 0;
@@ -185,7 +186,10 @@ function UserLiveFeedobj_loadDataError(pos) {
 }
 
 function UserLiveFeedobj_Empty(pos) {
-    UserLiveFeedobj_HolderDiv(pos, pos === UserLiveFeedobj_UserVodHistoryPos || pos === UserLiveFeedobj_UserHistoryPos ? STR_HISTORY_EMPTY_CONTENT : STR_REFRESH_PROBLEM);
+    UserLiveFeedobj_HolderDiv(
+        pos,
+        pos === UserLiveFeedobj_UserVodHistoryPos || pos === UserLiveFeedobj_UserHistoryPos ? STR_HISTORY_EMPTY_CONTENT : STR_REFRESH_PROBLEM
+    );
 }
 
 function UserLiveFeedobj_HolderDiv(pos, text) {
@@ -209,7 +213,16 @@ function UserLiveFeedobj_loadChannelUserLiveGet(theUrl) {
         Main_Bearer_User_Headers[1][1] = Bearer + AddUser_UsernameArray[0].access_token;
     }
 
-    FullxmlHttpGet(theUrl, Main_Bearer_User_Headers, UserLiveFeedobj_loadChannelUserLiveGetEnd, noop_fun, UserLiveFeedobj_UserLivePos, UserLiveFeedobj_UserLivePos, null, null);
+    FullxmlHttpGet(
+        theUrl,
+        Main_Bearer_User_Headers,
+        UserLiveFeedobj_loadChannelUserLiveGetEnd,
+        noop_fun,
+        UserLiveFeedobj_UserLivePos,
+        UserLiveFeedobj_UserLivePos,
+        null,
+        null
+    );
 }
 
 function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
@@ -221,7 +234,8 @@ function UserLiveFeedobj_loadChannelUserLiveGetEnd(xmlHttp) {
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
+            AddCode_refreshTokens(0, UserLiveFeedobj_CheckToken, UserLiveFeedobj_loadDataRefreshTokenError);
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserLivePos);
@@ -475,7 +489,12 @@ function UserLiveFeedobj_loadCurrentGame() {
         game = UserLiveFeedobj_CurrentGameName,
         pos = UserLiveFeedobj_CurrentGamePos;
 
-    if (ScreenObj[key].hasBackupData && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && ScreenObj[key].CheckBackupData(game)) {
+    if (
+        ScreenObj[key].hasBackupData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckBackupData(game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
     } else {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
@@ -638,7 +657,12 @@ function UserLiveFeedobj_loadCurrentUserAGame() {
         game = UserLiveFeedobj_CurrentUserAGameIdEnter,
         pos = UserLiveFeedobj_UserAGamesPos;
 
-    if (ScreenObj[key].hasBackupData && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && ScreenObj[key].CheckBackupData(game)) {
+    if (
+        ScreenObj[key].hasBackupData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckBackupData(game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
     } else {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
@@ -677,7 +701,10 @@ var UserLiveFeedobj_CurrentUserAGameIdEnter = null;
 function UserLiveFeedobj_ShowCurrentUserAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_UserGamesPos - 1);
 
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed = !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentUserAGameName, UserLiveFeedobj_CurrentUserAGameIdEnter);
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed = !Main_A_equals_B_No_Case(
+        UserLiveFeedobj_CurrentUserAGameName,
+        UserLiveFeedobj_CurrentUserAGameIdEnter
+    );
 
     if (UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].Game_changed || !UserLiveFeedobj_CurrentUserAGameIdEnter) {
         Main_values.UserLiveFeed_LastPosition[UserLiveFeedobj_UserAGamesPos] = 0;
@@ -697,7 +724,8 @@ function UserLiveFeedobj_HideCurrentUserAGame() {
 }
 
 function UserLiveFeedobj_CurrentUserAGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameIdEnter] = UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
+    UserLiveFeed_obj[UserLiveFeedobj_UserAGamesPos].LastPositionGame[UserLiveFeedobj_CurrentUserAGameIdEnter] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_UserAGamesPos];
 }
 
 //Current user a game end
@@ -716,7 +744,10 @@ function UserLiveFeedobj_loadGames() {
         UserLiveFeedobj_loadDataGamesSuccessEnd(ScreenObj[key].data.slice(0, 100), ScreenObj[key].MaxOffset, pos, UserLiveFeed_itemsCount[pos]);
     } else {
         UserLiveFeedobj_BaseLoad(
-            Main_helix_api + 'games/top?first=' + Main_ItemsLimitMax + (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
+            Main_helix_api +
+                'games/top?first=' +
+                Main_ItemsLimitMax +
+                (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor ? '&after=' + UserLiveFeed_obj[UserLiveFeedobj_GamesPos].cursor : ''),
             UserLiveFeedobj_loadDataGamesSuccess,
             false,
             pos
@@ -724,7 +755,10 @@ function UserLiveFeedobj_loadGames() {
     }
     UserLiveFeed_obj[pos].neverLoaded = false;
 
-    if (UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset && UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100 > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset)
+    if (
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset &&
+        UserLiveFeed_obj[UserLiveFeedobj_GamesPos].offset + 100 > UserLiveFeed_obj[UserLiveFeedobj_GamesPos].MaxOffset
+    )
         UserLiveFeed_obj[UserLiveFeedobj_GamesPos].dataEnded = true;
 }
 
@@ -756,7 +790,12 @@ function UserLiveFeedobj_loadCurrentAGame() {
         game = UserLiveFeedobj_CurrentAGameIdEnter,
         pos = UserLiveFeedobj_AGamesPos;
 
-    if (ScreenObj[key].hasBackupData && !UserLiveFeed_itemsCount[pos] && !UserLiveFeed_obj[pos].isReloadScreen && ScreenObj[key].CheckBackupData(game)) {
+    if (
+        ScreenObj[key].hasBackupData &&
+        !UserLiveFeed_itemsCount[pos] &&
+        !UserLiveFeed_obj[pos].isReloadScreen &&
+        ScreenObj[key].CheckBackupData(game)
+    ) {
         UserLiveFeedobj_oldGameDataLoad(pos, game, key);
     } else {
         if (UserLiveFeed_obj[pos].isReloadScreen) {
@@ -820,7 +859,10 @@ var UserLiveFeedobj_CurrentAGameIdEnter = null;
 function UserLiveFeedobj_ShowCurrentAGame() {
     UserLiveFeedobj_SetBottomText(UserLiveFeedobj_AGamesPos);
 
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed = !Main_A_equals_B_No_Case(UserLiveFeedobj_CurrentAGameName, UserLiveFeedobj_CurrentAGameNameEnter);
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed = !Main_A_equals_B_No_Case(
+        UserLiveFeedobj_CurrentAGameName,
+        UserLiveFeedobj_CurrentAGameNameEnter
+    );
 
     if (UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].Game_changed || !UserLiveFeedobj_CurrentAGameNameEnter) {
         Main_values.UserLiveFeed_LastPosition[UserLiveFeedobj_AGamesPos] = 0;
@@ -842,7 +884,8 @@ function UserLiveFeedobj_HideCurrentAGame() {
 }
 
 function UserLiveFeedobj_CurrentAGameUpdateLastPositionGame() {
-    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] = UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
+    UserLiveFeed_obj[UserLiveFeedobj_AGamesPos].LastPositionGame[UserLiveFeedobj_CurrentAGameIdEnter] =
+        UserLiveFeed_FeedPosY[UserLiveFeedobj_AGamesPos];
 }
 //Current a game end
 
@@ -876,7 +919,10 @@ function UserLiveFeedobj_SetBottomText(pos) {
 
     Main_innerHTML('feed_end_0', UserLiveFeedobj_CurrentAGameEnable ? UserLiveFeedobj_CurrentAGameNameEnter : STR_GAMES);
     Main_innerHTML('feed_end_2', Play_data.data[3] !== '' ? Play_data.data[3] : STR_NO_GAME);
-    Main_innerHTML('feed_end_6', UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : STR_USER + STR_SPACE_HTML + STR_GAMES);
+    Main_innerHTML(
+        'feed_end_6',
+        UserLiveFeedobj_CurrentUserAGameEnable ? UserLiveFeedobj_CurrentUserAGameNameEnter : STR_USER + STR_SPACE_HTML + STR_GAMES
+    );
 
     if (Settings_Obj_default('hide_etc_help_text') === 1) {
         Main_RemoveClass('feed_end', 'opacity_zero');
@@ -1008,7 +1054,13 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
         Main_GetViewerStrings(data[13]) +
         '</div>' +
         (Extra_when
-            ? '<div class="stream_info_live">' + STR_WATCHED + Main_videoCreatedAtWithHM(Extra_when) + STR_BR + STR_UNTIL + Play_timeMs(Extra_when - new Date(data[12]).getTime()) + '</div>'
+            ? '<div class="stream_info_live">' +
+              STR_WATCHED +
+              Main_videoCreatedAtWithHM(Extra_when) +
+              STR_BR +
+              STR_UNTIL +
+              Play_timeMs(Extra_when - new Date(data[12]).getTime()) +
+              '</div>'
             : '') +
         '</div></div></div>';
 
@@ -1142,7 +1194,14 @@ function UserLiveFeedobj_loadDataSuccess(responseText) {
 }
 
 function UserLiveFeed_loadDataSuccessHttpRequest() {
-    BaseXmlHttpGet(UserLiveFeed_loadDataSuccessUrl, UserLiveFeed_loadDataSuccessUpdateMap, UserLiveFeed_loadDataSuccessError, 0, UserLiveFeedobj_loadDataSuccessId, true);
+    BaseXmlHttpGet(
+        UserLiveFeed_loadDataSuccessUrl,
+        UserLiveFeed_loadDataSuccessUpdateMap,
+        UserLiveFeed_loadDataSuccessError,
+        0,
+        UserLiveFeedobj_loadDataSuccessId,
+        true
+    );
 }
 
 function UserLiveFeed_loadDataSuccessUpdateMap(response, key, ID) {
@@ -1192,7 +1251,11 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
             //A-Z
             if (sorting_type1) {
                 response.sort(function (a, b) {
-                    return a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? -1 : a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? 1 : 0;
+                    return a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2]
+                        ? -1
+                        : a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2]
+                        ? 1
+                        : 0;
                 });
             } else {
                 response.sort(function (a, b) {
@@ -1203,7 +1266,11 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
             //Z-A
             if (sorting_type1) {
                 response.sort(function (a, b) {
-                    return a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2] ? -1 : a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2] ? 1 : 0;
+                    return a[sorting_type1][sorting_type2] > b[sorting_type1][sorting_type2]
+                        ? -1
+                        : a[sorting_type1][sorting_type2] < b[sorting_type1][sorting_type2]
+                        ? 1
+                        : 0;
                 });
             } else {
                 response.sort(function (a, b) {
@@ -1224,7 +1291,12 @@ function UserLiveFeed_loadDataSuccessEnd(response, mapLogoPartner) {
                 mArray = ScreensObj_LiveCellArray(stream, mapLogoPartner[id].logo, mapLogoPartner[id].partner);
                 UserLiveFeed_PreloadImgs.push(mArray[0]);
 
-                UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(UserLiveFeedobj_UserLivePos, itemsCount, UserLiveFeedobj_UserLivePos + '_' + itemsCount, mArray);
+                UserLiveFeed_cell[UserLiveFeedobj_UserLivePos][itemsCount] = UserLiveFeedobj_CreatFeed(
+                    UserLiveFeedobj_UserLivePos,
+                    itemsCount,
+                    UserLiveFeedobj_UserLivePos + '_' + itemsCount,
+                    mArray
+                );
 
                 Sidepannel_Html += UserLiveFeedobj_CreatSideFeed(itemsCount, mArray);
 
@@ -1309,7 +1381,12 @@ function UserLiveFeedobj_UserVod() {
 }
 
 function UserLiveFeedobj_loadUserVod() {
-    UserLiveFeedobj_loadUserVodGet(Main_kraken_api + 'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' + UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset + Main_TwithcV5Flag);
+    UserLiveFeedobj_loadUserVodGet(
+        Main_kraken_api +
+            'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
+            UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset +
+            Main_TwithcV5Flag
+    );
 }
 
 function UserLiveFeedobj_loadUserVodGet(theUrl) {
@@ -1334,7 +1411,8 @@ function UserLiveFeedobj_loadUserVodGetEnd(xmlHttp) {
         //Token has change or because is new or because it is invalid because user delete in twitch settings
         // so callbackFuncOK and callbackFuncNOK must be the same to recheck the token
 
-        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token) AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
+        if (AddUser_UserIsSet() && AddUser_UsernameArray[0].access_token)
+            AddCode_refreshTokens(0, UserLiveFeedobj_loadUserVod, UserLiveFeedobj_loadDataError, UserLiveFeedobj_UserVodPos);
         else UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
     } else {
         UserLiveFeedobj_loadDataError(UserLiveFeedobj_UserVodPos);
@@ -1435,7 +1513,14 @@ function UserLiveFeedobj_UserVodHistory() {
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id)) {
                 UserLiveFeed_idObject[pos][id] = itemsCount;
 
-                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(pos, itemsCount, pos + '_' + itemsCount, cell.data, cell.date, cell.watched);
+                UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatVodFeed(
+                    pos,
+                    itemsCount,
+                    pos + '_' + itemsCount,
+                    cell.data,
+                    cell.date,
+                    cell.watched
+                );
 
                 itemsCount++;
             }
@@ -1481,7 +1566,14 @@ function UserLiveFeedobj_loadDataBaseLiveSuccess(responseText, pos, game) {
             UserLiveFeed_obj[pos].data[game] = response;
         }
 
-        ScreenObj[key].setBackupData(responseObj, UserLiveFeed_obj[pos].data[game], UserLiveFeed_lastRefresh[pos], game, UserLiveFeed_obj[pos].ContentLang, UserLiveFeed_obj[pos].Lang);
+        ScreenObj[key].setBackupData(
+            responseObj,
+            UserLiveFeed_obj[pos].data[game],
+            UserLiveFeed_lastRefresh[pos],
+            game,
+            UserLiveFeed_obj[pos].ContentLang,
+            UserLiveFeed_obj[pos].Lang
+        );
     }
 
     UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsCount, game);
@@ -1747,7 +1839,14 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                         game.name, //0
                         isntUser
-                            ? Main_addCommas(cell.channels) + STR_SPACE_HTML + STR_CHANNELS + STR_BR + STR_FOR + Main_addCommas(cell.viewers) + STR_SPACE_HTML + Main_GetViewerStrings(cell.viewers)
+                            ? Main_addCommas(cell.channels) +
+                              STR_SPACE_HTML +
+                              STR_CHANNELS +
+                              STR_BR +
+                              STR_FOR +
+                              Main_addCommas(cell.viewers) +
+                              STR_SPACE_HTML +
+                              Main_GetViewerStrings(cell.viewers)
                             : '', //1
                         id_cell, //2
                         game.box.template //3

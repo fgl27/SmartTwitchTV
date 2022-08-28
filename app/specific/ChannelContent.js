@@ -60,7 +60,7 @@ function ChannelContent_init() {
 
     if (Main_values.Main_BeforeChannel === Main_UserChannels || Main_values.My_channel) {
         Sidepannel_Sidepannel_Pos = Main_values.My_channel ? 7 : 6;
-        Sidepannel_SetUserLables();
+        Sidepannel_SetUserLabels();
         Sidepannel_SetTopOpacity(Main_values.Main_Go);
     }
 
@@ -527,7 +527,7 @@ function ChannelContent_handleKeyBakc() {
         Main_values.Main_Go = Main_values.Main_BeforeChannel;
         Main_values.Main_BeforeChannel = Main_Live;
         ChannelContent_exit();
-        Sidepannel_SetDefaultLables();
+        Sidepannel_SetDefaultLabels();
         Main_values.Main_selectedChannel_id = '';
         Main_SwitchScreen();
     }
