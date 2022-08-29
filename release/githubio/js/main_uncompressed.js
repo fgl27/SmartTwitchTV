@@ -36852,14 +36852,12 @@
     }
 
     function Sidepannel_handleMainKey(Down) {
-        if (!Main_values.Sidepannel_IsUser && Sidepannel_Sidepannel_Pos === 8) Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
-
         if (Main_values.Sidepannel_IsUser) {
             if (Sidepannel_Sidepannel_Pos === 5) {
                 Sidepannel_Sidepannel_Pos = Down ? 6 : 4;
             }
         } else {
-            if (Sidepannel_Sidepannel_Pos === 6) {
+            if (Sidepannel_Sidepannel_Pos === 8 || Sidepannel_Sidepannel_Pos === 6) {
                 Sidepannel_Sidepannel_Pos += Down ? 1 : -1;
             }
         }
