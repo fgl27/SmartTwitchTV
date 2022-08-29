@@ -1005,7 +1005,7 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
 
     div.className = 'user_feed_thumb';
 
-    var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg;
+    var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
 
     div.innerHTML =
         '<div id="' +
@@ -1385,7 +1385,7 @@ function UserLiveFeedobj_loadUserVod() {
         Main_kraken_api +
             'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
             UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset +
-            Main_TwithcV5Flag
+            Main_TwitchV5Flag
     );
 }
 

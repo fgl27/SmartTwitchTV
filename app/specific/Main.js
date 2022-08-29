@@ -121,7 +121,7 @@ var Main_IsDayFirst = false;
 var Main_SearchInput;
 var Main_AddUserInput;
 var Main_ChatLiveInput;
-var Main_updateclockId;
+var Main_UpdateClockId;
 var Main_ContentLang = '';
 var Main_Periods = [];
 var Main_addFocusVideoOffset = 0;
@@ -140,8 +140,8 @@ var Main_kraken_api = 'https://api.twitch.tv/kraken/';
 var Main_helix_api = 'https://api.twitch.tv/helix/';
 var Main_Authorization = 'Authorization';
 var Main_OAuth = 'OAuth ';
-var Main_TwithcV5Flag = '&api_version=5';
-var Main_TwithcV5Flag_I = '?api_version=5';
+var Main_TwitchV5Flag = '&api_version=5';
+var Main_TwitchV5Flag_I = '?api_version=5';
 
 var Main_classThumb = 'stream_thumbnail_focused';
 var Main_DataAttribute = 'data-array';
@@ -151,7 +151,7 @@ var Main_update_show_toast = false;
 var Main_IsOn_OSInterfaceVersion = '';
 var Main_ClockOffset = 0;
 var Main_IsOn_OSInterface = 0;
-var Main_randomimg = '?' + Math.random();
+var Main_randomImg = '?' + Math.random();
 var Main_DoRestore = true;
 var Main_CanBackup = false;
 var Main_UserBackupFile = 'user.json';
@@ -1434,7 +1434,7 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], !isHosting ? Main_values_Play_data[15] : 'HOSTING', screen);
 
     if (!Main_IsOn_OSInterface) {
-        Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomimg);
+        Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomImg);
     }
 }
 
@@ -1715,14 +1715,14 @@ function Main_ready(func) {
 var Main_SetUpdateclockId;
 function Main_SetUpdateclock() {
     Main_updateclock();
-    Main_clearInterval(Main_updateclockId);
+    Main_clearInterval(Main_UpdateClockId);
 
     //sync with device clock
     var seconds = 61 - new Date().getSeconds();
     Main_SetUpdateclockId = Main_setTimeout(
         function () {
             Main_updateclock();
-            Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+            Main_UpdateClockId = Main_setInterval(Main_updateclock, 60000, Main_UpdateClockId);
         },
         seconds * 1000,
         Main_SetUpdateclockId
@@ -1734,7 +1734,7 @@ function Main_updateclock() {
     Main_textContent('stream_clock', clock);
     Main_textContent('label_clock', clock);
 
-    Main_randomimg = '?' + parseInt(Math.random() * 100000);
+    Main_randomImg = '?' + parseInt(Math.random() * 100000);
 
     Screens_SetLastRefresh(Main_values.Main_Go);
     UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
@@ -2698,7 +2698,7 @@ function Main_CheckStop() {
     //General related
     Screens_ClearAnimation(Main_values.Main_Go);
 
-    Main_clearInterval(Main_updateclockId);
+    Main_clearInterval(Main_UpdateClockId);
     Main_clearInterval(Main_StartHistoryworkerId);
     Main_clearInterval(Main_checkWebVersionId);
     Main_clearTimeout(Main_checkWebVersionResumeId);

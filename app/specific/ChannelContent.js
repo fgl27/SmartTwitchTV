@@ -285,7 +285,7 @@ function ChannelContent_createCell(valuesArray) {
             Main_ChannelContent +
             '_cell_0_1_img" class="stream_img" alt="" src="' +
             valuesArray[0].replace('{width}x{height}', Main_VideoSize) +
-            Main_randomimg +
+            Main_randomImg +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' +
@@ -325,7 +325,7 @@ function ChannelContent_createCellOffline() {
         '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
             '_cell_0_1_img" class="stream_img" alt="" src="' +
-            (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomimg : IMG_404_VIDEO) +
+            (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomImg : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 140%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +

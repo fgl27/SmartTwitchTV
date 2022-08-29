@@ -385,7 +385,7 @@ function Screens_loadDataRequest(key) {
         }
 
         FullxmlHttpGet(
-            ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwithcV5Flag),
+            ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwitchV5Flag),
             HeadersArray,
             Screens_HttpResultStatus,
             noop_fun,
@@ -751,7 +751,7 @@ function Screens_createCellLive(id, idArray, valuesArray, key, Extra_when, Extra
     if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
     var ishosting = valuesArray[16],
-        image = force_VOD ? Extra_vodimg : valuesArray[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg;
+        image = force_VOD ? Extra_vodimg : valuesArray[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
 
     ScreenObj[key].DataObj[id] = valuesArray;
 
@@ -2852,7 +2852,7 @@ function Screens_SetLang(key) {
 //         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 
 //         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
-//             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+//             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwitchV5Flag_I;
 
 //         FullxmlHttpGet(
 //             theUrl,

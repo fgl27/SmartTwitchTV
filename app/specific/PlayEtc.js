@@ -552,7 +552,7 @@ function Play_showEndDialog(PlayVodClip) {
     }
 
     if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
-        PlayClip_NextImg(Play_BottonIcons_End_Live_Img, PlayClip_SetOpenLiveData[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg);
+        PlayClip_NextImg(Play_BottonIcons_End_Live_Img, PlayClip_SetOpenLiveData[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg);
     }
 
     Play_EndCheckPreview(PlayVodClip);

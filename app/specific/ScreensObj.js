@@ -1504,7 +1504,8 @@ function ScreensObj_InitChannelClip() {
                     '&first=' +
                     Main_ItemsLimitMax +
                     ScreensObj_ClipGetPeriod(this.periodPos) +
-                    (this.cursor ? '&after=' + this.cursor : '');
+                    (this.cursor ? '&after=' + this.cursor : '') +
+                    Main_TwitchV5Flag;
             },
             SetPeriod: function () {
                 Main_setItem('ChannelClip_periodPos', this.periodPos);

@@ -487,7 +487,7 @@ function AddCode_RequestCheckFollowEnd() {
 }
 
 function AddCode_Follow() {
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
     FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_FollowSucess, noop_fun, 0, 0, 'PUT', null);
 }
@@ -512,7 +512,7 @@ function AddCode_FollowSucess(obj) {
 }
 
 function AddCode_UnFollow() {
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
     FullxmlHttpGet(
         theUrl,
@@ -546,7 +546,7 @@ function AddCode_UnFollowSucess(xmlHttp) {
 function AddCode_CheckSub() {
     AddCode_IsSub = false;
 
-    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+    var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
     FullxmlHttpGet(
         theUrl,

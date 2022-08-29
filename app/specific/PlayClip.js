@@ -165,7 +165,7 @@ function PlayClip_updateVodInfoSuccess(response) {
         ChannelVod_title = Main_ReplaceLargeFont(response.title);
         Main_innerHTML('end_vod_title_text_2', ChannelVod_title);
         Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
-        PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomimg);
+        PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomImg);
     }
 }
 

@@ -556,7 +556,7 @@ function Play_updateStreamInfoStartValues(response, key, ID) {
         Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id);
 
         if (!Main_IsOn_OSInterface) {
-            Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomimg);
+            Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomImg);
         }
     } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
         Play_StartStay();
