@@ -5007,7 +5007,7 @@
     }
 
     function AddCode_Follow() {
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
         FullxmlHttpGet(theUrl, Main_GetHeader(3, Main_OAuth + AddUser_UsernameArray[0].access_token), AddCode_FollowSucess, noop_fun, 0, 0, 'PUT', null);
     }
@@ -5032,7 +5032,7 @@
     }
 
     function AddCode_UnFollow() {
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
         FullxmlHttpGet(
             theUrl,
@@ -5066,7 +5066,7 @@
     function AddCode_CheckSub() {
         AddCode_IsSub = false;
 
-        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwithcV5Flag_I;
+        var theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/subscriptions/' + AddCode_Channel_id + Main_TwitchV5Flag_I;
 
         FullxmlHttpGet(
             theUrl,
@@ -7151,7 +7151,7 @@
             Main_ChannelContent +
             '_cell_0_1_img" class="stream_img" alt="" src="' +
             valuesArray[0].replace('{width}x{height}', Main_VideoSize) +
-            Main_randomimg +
+            Main_randomImg +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder"><div id="channel_content_cell0_3" style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:' +
@@ -7191,7 +7191,7 @@
             '<div class="stream_thumbnail_live_img"><img id="' +
             Main_ChannelContent +
             '_cell_0_1_img" class="stream_img" alt="" src="' +
-            (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomimg : IMG_404_VIDEO) +
+            (ChannelContent_offline_image ? ChannelContent_offline_image + Main_randomImg : IMG_404_VIDEO) +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_VIDEO +
             '\';"></div><div class="stream_thumbnail_live_text_holder"><div class="stream_text_holder" style="font-size: 140%;"><div style="line-height: 1.6ch;"><div class="stream_info_live_name" style="width:99%; display: inline-block;">' +
@@ -11177,7 +11177,7 @@
     var Main_SearchInput;
     var Main_AddUserInput;
     var Main_ChatLiveInput;
-    var Main_updateclockId;
+    var Main_UpdateClockId;
     var Main_ContentLang = '';
     var Main_Periods = [];
     var Main_addFocusVideoOffset = 0;
@@ -11196,8 +11196,8 @@
     var Main_helix_api = 'https://api.twitch.tv/helix/';
     var Main_Authorization = 'Authorization';
     var Main_OAuth = 'OAuth ';
-    var Main_TwithcV5Flag = '&api_version=5';
-    var Main_TwithcV5Flag_I = '?api_version=5';
+    var Main_TwitchV5Flag = '&api_version=5';
+    var Main_TwitchV5Flag_I = '?api_version=5';
 
     var Main_classThumb = 'stream_thumbnail_focused';
     var Main_DataAttribute = 'data-array';
@@ -11207,7 +11207,7 @@
     var Main_IsOn_OSInterfaceVersion = '';
     var Main_ClockOffset = 0;
     var Main_IsOn_OSInterface = 0;
-    var Main_randomimg = '?' + Math.random();
+    var Main_randomImg = '?' + Math.random();
     var Main_DoRestore = true;
     var Main_CanBackup = false;
     var Main_UserBackupFile = 'user.json';
@@ -12498,7 +12498,7 @@
         Main_EventPlay('live', Main_values_Play_data[6], Main_values_Play_data[3], !isHosting ? Main_values_Play_data[15] : 'HOSTING', screen);
 
         if (!Main_IsOn_OSInterface) {
-            Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomimg);
+            Play_SetSceneBackground(data[0].replace('{width}x{height}', '1280x720') + Main_randomImg);
         }
     }
 
@@ -12781,14 +12781,14 @@
 
     function Main_SetUpdateclock() {
         Main_updateclock();
-        Main_clearInterval(Main_updateclockId);
+        Main_clearInterval(Main_UpdateClockId);
 
         //sync with device clock
         var seconds = 61 - new Date().getSeconds();
         Main_SetUpdateclockId = Main_setTimeout(
             function() {
                 Main_updateclock();
-                Main_updateclockId = Main_setInterval(Main_updateclock, 60000, Main_updateclockId);
+                Main_UpdateClockId = Main_setInterval(Main_updateclock, 60000, Main_UpdateClockId);
             },
             seconds * 1000,
             Main_SetUpdateclockId
@@ -12800,7 +12800,7 @@
         Main_textContent('stream_clock', clock);
         Main_textContent('label_clock', clock);
 
-        Main_randomimg = '?' + parseInt(Math.random() * 100000);
+        Main_randomImg = '?' + parseInt(Math.random() * 100000);
 
         Screens_SetLastRefresh(Main_values.Main_Go);
         UserLiveFeedobj_SetLastRefresh(UserLiveFeed_FeedPosX);
@@ -13770,7 +13770,7 @@
         //General related
         Screens_ClearAnimation(Main_values.Main_Go);
 
-        Main_clearInterval(Main_updateclockId);
+        Main_clearInterval(Main_UpdateClockId);
         Main_clearInterval(Main_StartHistoryworkerId);
         Main_clearInterval(Main_checkWebVersionId);
         Main_clearTimeout(Main_checkWebVersionResumeId);
@@ -15625,7 +15625,7 @@
             ChannelVod_title = Main_ReplaceLargeFont(response.title);
             Main_innerHTML('end_vod_title_text_2', ChannelVod_title);
             Play_controls[Play_controlsOpenVod].setLable(ChannelVod_title, Main_values.Main_selectedChannelDisplayname);
-            PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomimg);
+            PlayClip_NextImg(Play_BottonIcons_End_Vod_Img, response.thumbnail_url.replace('%{width}x%{height}', Main_VideoSize) + Main_randomImg);
         }
     }
 
@@ -17093,7 +17093,7 @@
         }
 
         if (Play_HasLive && PlayClip_SetOpenLiveData.length) {
-            PlayClip_NextImg(Play_BottonIcons_End_Live_Img, PlayClip_SetOpenLiveData[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg);
+            PlayClip_NextImg(Play_BottonIcons_End_Live_Img, PlayClip_SetOpenLiveData[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg);
         }
 
         Play_EndCheckPreview(PlayVodClip);
@@ -22332,7 +22332,7 @@
             Play_updateVodInfo(obj.data[0].user_id, obj.data[0].id);
 
             if (!Main_IsOn_OSInterface) {
-                Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomimg);
+                Play_SetSceneBackground(obj.data[0].thumbnail_url.replace('{width}x{height}', '1280x720') + Main_randomImg);
             }
         } else if (!obj.streams.length && !Main_IsOn_OSInterface) {
             Play_StartStay();
@@ -26786,7 +26786,7 @@
             }
 
             FullxmlHttpGet(
-                ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwithcV5Flag),
+                ScreenObj[key].url + (ScreenObj[key].useHelix || ScreenObj[key].isQuery ? '' : Main_TwitchV5Flag),
                 HeadersArray,
                 Screens_HttpResultStatus,
                 noop_fun,
@@ -27150,7 +27150,7 @@
         if (!valuesArray[1]) valuesArray[1] = valuesArray[6];
 
         var ishosting = valuesArray[16],
-            image = force_VOD ? Extra_vodimg : valuesArray[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg;
+            image = force_VOD ? Extra_vodimg : valuesArray[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
 
         ScreenObj[key].DataObj[id] = valuesArray;
 
@@ -29254,7 +29254,7 @@
     //         Screens_ThumbOption_Follow_ID = (new Date()).getTime();
 
     //         var channel_id = ScreenObj[key].screenType < 2 ? Screens_values_Play_data[14] : Screens_values_Play_data[2],
-    //             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwithcV5Flag_I;
+    //             theUrl = Main_kraken_api + 'users/' + AddUser_UsernameArray[0].id + '/follows/channels/' + channel_id + Main_TwitchV5Flag_I;
 
     //         FullxmlHttpGet(
     //             theUrl,
@@ -30991,7 +30991,8 @@
                         '&first=' +
                         Main_ItemsLimitMax +
                         ScreensObj_ClipGetPeriod(this.periodPos) +
-                        (this.cursor ? '&after=' + this.cursor : '');
+                        (this.cursor ? '&after=' + this.cursor : '') +
+                        Main_TwitchV5Flag;
                 },
                 SetPeriod: function() {
                     Main_setItem('ChannelClip_periodPos', this.periodPos);
@@ -36106,7 +36107,7 @@
                 this.onerror = null;
                 this.src = IMG_404_VIDEO;
             };
-            Sidepannel_UpdateThumbDoc.src = info[0].replace('{width}x{height}', Main_SidePannelSize) + Main_randomimg;
+            Sidepannel_UpdateThumbDoc.src = info[0].replace('{width}x{height}', Main_SidePannelSize) + Main_randomImg;
 
             Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivName, Sidepannel_partnerIcon(Main_ReplaceLargeFont(info[1]), info[10], info[8]));
             Main_innerHTMLWithEle(Sidepannel_UpdateThumbDivQuality, info[5]);
@@ -36301,7 +36302,7 @@
 
         if (UserLiveFeed_PreloadImgs[Sidepannel_PosFeed]) {
             Main_ImageLoaderWorker.postMessage(
-                UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace('{width}x{height}', Main_SidePannelSize) + Main_randomimg
+                UserLiveFeed_PreloadImgs[Sidepannel_PosFeed].replace('{width}x{height}', Main_SidePannelSize) + Main_randomImg
             );
         }
         UserLiveFeed_PreloadImgs.splice(Sidepannel_PosFeed, 1);
@@ -36309,7 +36310,7 @@
         var i = 0,
             len = UserLiveFeed_PreloadImgs.length;
         for (i; i < len; i++) {
-            Main_ImageLoaderWorker.postMessage(UserLiveFeed_PreloadImgs[i].replace('{width}x{height}', Main_SidePannelSize) + Main_randomimg);
+            Main_ImageLoaderWorker.postMessage(UserLiveFeed_PreloadImgs[i].replace('{width}x{height}', Main_SidePannelSize) + Main_randomImg);
         }
     }
 
@@ -39252,7 +39253,7 @@
 
         div.className = 'user_feed_thumb';
 
-        var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomimg;
+        var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
 
         div.innerHTML =
             '<div id="' +
@@ -39633,7 +39634,7 @@
             Main_kraken_api +
             'videos/followed?limit=100&broadcast_type=archive&sort=time&offset=' +
             UserLiveFeed_obj[UserLiveFeedobj_UserVodPos].offset +
-            Main_TwithcV5Flag
+            Main_TwitchV5Flag
         );
     }
 
