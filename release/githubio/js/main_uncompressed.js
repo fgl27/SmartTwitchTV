@@ -21662,7 +21662,7 @@
             response = JSON.parse(result);
 
         if (response.status !== 200) {
-            if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
+            if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                 PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
                 return;
             }
@@ -21760,7 +21760,7 @@
                     }
                     return obj;
                 } else {
-                    if (useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
+                    if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                         return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                     } else {
                         return JSON.stringify({
