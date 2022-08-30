@@ -123,17 +123,17 @@ function PlayHLS_GetTokenResult(result, checkResult, check_1, check_2, check_3, 
     );
 }
 
-function PlayHLS_CheckToken(token) {
-    if (!token) {
+function PlayHLS_CheckToken(tokenString) {
+    if (!tokenString) {
         return '0';
     }
 
-    var Token = JSON.parse(token);
+    var Token = JSON.parse(tokenString);
 
     if (Token.chansub && Token.chansub.restricted_bitrates) {
         var restricted_bitrates = Token.chansub.restricted_bitrates;
 
-        return restricted_bitrates.length && restricted_bitrates[0].toLowerCase() === 'archives' ? '1' : '0';
+        return restricted_bitrates.length ? '1' : '0';
     }
 
     return '0';
