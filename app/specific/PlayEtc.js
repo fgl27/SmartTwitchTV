@@ -1178,8 +1178,9 @@ function Play_UpdateGameInfo(PlayVodClip) {
     BaseXmlHttpGet(theUrl, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
 }
 
-function Play_UpdateGameInfoSuccess(response, PlayVodClip) {
-    response = JSON.parse(response);
+function Play_UpdateGameInfoSuccess(responseText, PlayVodClip) {
+    var response = JSON.parse(responseText);
+
     if (response.data && response.data.length) {
         Main_values.Main_gameSelected_id = response.data[0].id;
     }

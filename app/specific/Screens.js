@@ -2925,11 +2925,45 @@ function Screens_OpenScreen() {
 
 function Screens_OpenGame() {
     Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-    if (!Screens_values_Play_data[18] || Play_data.data[3] === '') {
-        Main_showWarningDialog(STR_NO_GAME, 2000);
+    if (!Screens_values_Play_data[18] && Play_data.data[3] === '') {
+        Screens_UpdateGameInfoSuccessError();
         return;
     }
 
+    Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
+    Main_values.Main_gameSelected = Play_data.data[3];
+
+    if (!Main_values.Main_gameSelected_id) {
+        Screens_UpdateGameInfo();
+    } else {
+        Screens_OpenGameEnd();
+    }
+}
+
+function Screens_UpdateGameInfo(PlayVodClip) {
+    Main_showLoadDialog();
+    var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
+
+    BaseXmlHttpGet(theUrl, Screens_UpdateGameInfoSuccess, Screens_UpdateGameInfoSuccessError, PlayVodClip, null, true);
+}
+
+function Screens_UpdateGameInfoSuccess(responseText, PlayVodClip) {
+    var response = JSON.parse(responseText);
+
+    if (response.data && response.data.length) {
+        Main_values.Main_gameSelected_id = response.data[0].id;
+        Screens_OpenGameEnd(PlayVodClip);
+    } else {
+        Screens_UpdateGameInfoSuccessError();
+    }
+}
+
+function Screens_UpdateGameInfoSuccessError() {
+    Main_HideLoadDialog();
+    Main_showWarningDialog(STR_NO_GAME, 2000);
+}
+
+function Screens_OpenGameEnd() {
     if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
         Main_values.Main_BeforeAgame =
             Main_values.Main_BeforeChannelisSet &&
@@ -2943,11 +2977,6 @@ function Screens_OpenGame() {
 
     Main_ExitCurrent(Main_values.Main_Go);
     Main_values.Main_Go = Main_aGame;
-
-    Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
-    Main_values.Main_gameSelected = Play_data.data[3];
-    console.log(Main_values.Main_gameSelected);
-    console.log(Main_values.Main_gameSelected_id);
 
     Main_ReStartScreens();
 }
