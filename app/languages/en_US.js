@@ -440,7 +440,7 @@ function en_USLang() {
         'Instead of starting at the first possible video, start a a lower position on the list, so there is no need to go lower down to find an older video.';
     STR_USER_OPTION = 'Choose an option for user';
     STR_MAIN_USER = 'Main user';
-    STR_USER_TOP_LABLE = 'Click on a user to see options';
+    STR_USER_TOP_LABEL = 'Click on a user to see options';
     STR_USER_EXTRAS = 'User: Switch, add, key';
     STR_LOW_LATENCY = 'Low latency';
     STR_LOW_LATENCY_SUMMARY =

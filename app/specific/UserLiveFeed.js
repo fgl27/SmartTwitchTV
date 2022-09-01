@@ -731,7 +731,7 @@ function UserLiveFeed_MaxInstances() {
     var result = Play_MaxInstances > numberOfPlayers;
 
     if (!result && !Main_values.MaxInstancesWarn) {
-        Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW, 7500);
+        Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW, 7500);
 
         Main_values.MaxInstancesWarn = true;
     }
@@ -886,7 +886,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                 );
 
                 if (UserLiveFeed_PreviewOffset) {
-                    Play_showWarningMidleDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000), 2000);
+                    Play_showWarningMiddleDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000), 2000);
                 }
 
                 Main_EventPreview(
@@ -902,7 +902,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
                 error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetError(StreamDataObj, isVod);
             }
 
-            Play_showWarningMidleDialog(error, 0);
+            Play_showWarningMiddleDialog(error, 0);
         }
     }
 }
@@ -1183,10 +1183,10 @@ function UserLiveFeed_KeyUpDown(Adder) {
 
         if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
             NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
-            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+            if (!userSet) Play_showWarningMiddleDialog(STR_NOKUSER_WARNING, 1000);
         } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
             NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
-            if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+            if (!userSet) Play_showWarningMiddleDialog(STR_NOKUSER_WARNING, 1000);
         }
 
         //If current game is empty, skip current game screen
@@ -1260,7 +1260,7 @@ function UserLiveFeed_KeyEnter(pos) {
         }
 
         if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
-            Play_showWarningMidleDialog(STR_NO_GAME, 1000);
+            Play_showWarningMiddleDialog(STR_NO_GAME, 1000);
             return;
         }
 
@@ -1281,7 +1281,7 @@ function UserLiveFeed_KeyEnter(pos) {
         }
 
         if (!UserLiveFeed_ObjNotNull(pos)) {
-            Play_showWarningMidleDialog(STR_NO_GAME, 1000);
+            Play_showWarningMiddleDialog(STR_NO_GAME, 1000);
             return;
         }
 

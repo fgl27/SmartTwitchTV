@@ -63,7 +63,7 @@ function ChatLiveControls_Show() {
     var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
 
     if (ChatLive_Banned[ChatLiveControls_Channel]) {
-        Play_showWarningMidleDialog(STR_CHAT_BANNED + streamer, 1500);
+        Play_showWarningMiddleDialog(STR_CHAT_BANNED + streamer, 1500);
         return;
     }
 
@@ -291,7 +291,11 @@ function ChatLiveControls_HandleKeyEnter() {
 
             break;
         case ChatLiveControls_Cursor_7TV_STREAMER:
-            ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM, 'code');
+            ChatLiveControls_SetEmotesDiv(
+                extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]],
+                STR_CHAT_SEVENTV_STREAM,
+                'code'
+            );
 
             break;
         default:
@@ -501,7 +505,10 @@ function ChatLiveControls_EmotesEvent(event) {
             ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
             break;
         case KEY_ENTER:
-            if ((ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
+            if (
+                (ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) &&
+                ChatLiveControls_CanSend()
+            )
                 ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
             break;
         default:
@@ -564,7 +571,8 @@ function ChatLiveControls_EmotesScroll(position) {
 }
 
 function ChatLiveControls_UpdateTextInput(text) {
-    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !Main_endsWith(Main_ChatLiveInput.value, ' ')) Main_ChatLiveInput.value += ' ';
+    if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !Main_endsWith(Main_ChatLiveInput.value, ' '))
+        Main_ChatLiveInput.value += ' ';
     Main_ChatLiveInput.value += text + ' ';
     ChatLiveControls_UpdateResultText();
 }
@@ -740,7 +748,11 @@ function ChatLiveControls_CanSend() {
                 ChatLiveControls_PreventInput();
 
                 return false;
-            } else if (tags['followers-only'] && user_fallow.hasOwnProperty('created_at') && tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at)) {
+            } else if (
+                tags['followers-only'] &&
+                user_fallow.hasOwnProperty('created_at') &&
+                tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at)
+            ) {
                 var time = ChatLive_GetMinutes(user_fallow.created_at);
 
                 ChatLiveControls_CanSendText =

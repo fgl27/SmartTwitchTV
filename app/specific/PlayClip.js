@@ -996,7 +996,7 @@ function PlayClip_SetOpenLive(response, key, ID) {
         PlayClip_SetOpenLiveData = tempData;
 
         if (!Play_HasLive && Settings_value.live_warn.defaultValue === 1) {
-            Play_showWarningMidleDialog(tempData[1] + STR_BR + Play_controls[Play_controlsOpenLive].string, 3000, true);
+            Play_showWarningMiddleDialog(tempData[1] + STR_BR + Play_controls[Play_controlsOpenLive].string, 3000, true);
         }
 
         Play_HasLive = true;

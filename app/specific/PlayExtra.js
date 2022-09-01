@@ -30,7 +30,7 @@ function PlayExtra_KeyEnter() {
     PlayExtra_loadDataCheckHostId = 0;
 
     if (Play_MaxInstances < 2) {
-        Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
+        Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
 
         return;
     }
@@ -174,7 +174,7 @@ function PlayExtra_SavePlayData() {
 }
 
 function PlayExtra_RestorePlayData() {
-    Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+    Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
     PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
     PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -231,7 +231,7 @@ function PlayExtra_End(doSwitch, fail_type) {
     // Called only by JAVA
 
     if (!fail_type && Settings_value.open_host.defaultValue) {
-        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
+        Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
         Main_setTimeout(
             function () {
@@ -255,7 +255,7 @@ function PlayExtra_End_success(doSwitch, fail_type, errorCode) {
         PlayExtra_SwitchPlayer();
     }
 
-    Play_showWarningMidleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
+    Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
 
     Play_CloseSmall();
 }
@@ -458,7 +458,7 @@ function PlayExtra_loadDataFail(Reason) {
         if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
         PlayExtra_UnSetPanel();
         Play_HideBufferDialog();
-        Play_showWarningMidleDialog(Reason, 2500);
+        Play_showWarningMiddleDialog(Reason, 2500);
     }
 }
 

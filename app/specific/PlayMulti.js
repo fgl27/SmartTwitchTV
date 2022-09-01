@@ -190,7 +190,7 @@ function Play_MultiEnd(position, fail_type, errorCode) {
     if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
     if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
-    Play_showWarningMidleDialog(reason + Play_GetErrorCode(errorCode), 5000);
+    Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 5000);
 
     Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
     Play_MultiInfoReset(position);
@@ -324,7 +324,7 @@ function Play_MultiResult(response, pos) {
 }
 
 function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-    Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : display_name + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+    Play_showWarningMiddleDialog(string_fail_reason ? string_fail_reason : display_name + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
     Play_HideBufferDialog();
 
     if (Play_OlddataSet()) {
@@ -418,7 +418,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
-            Play_showWarningMidleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
+            Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
             Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
             Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
             Play_MultiUpdateinfoMainBig('_big');
@@ -446,7 +446,7 @@ function Play_MultiEnableKeyRightLeft(adder) {
 
         Play_AudioReset(pos);
 
-        Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1], 2000);
+        Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1], 2000);
     }
 
     Play_SetAudioIcon();

@@ -68,8 +68,8 @@ function pt_BRLang() {
     STR_NO = 'Não';
     STR_FOR_THIS = 'para este';
     STR_PLAYER_PROBLEM = 'Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...';
-    STR_PAST_BROA = 'Vídeos';
-    STR_PAST_HIGHL = 'Destaques';
+    STR_VODS = 'Vídeos';
+    STR_HIGHLIGHTS = 'Destaques';
     STR_CLIPS = 'Clipes';
     STR_CONTENT = 'Conteúdo';
     STR_STREAM_ON = 'Em';
@@ -436,7 +436,7 @@ function pt_BRLang() {
         'Em vez de começar no primeiro vídeo possível, comece uma posição inferior na lista, evita ter que descer e descer para encontrar um vídeo mais antigo';
     STR_USER_OPTION = 'Escolha uma opção para o usuário';
     STR_MAIN_USER = 'Usuário principal';
-    STR_USER_TOP_LABLE = 'Clique em um usuário para ver as opções';
+    STR_USER_TOP_LABEL = 'Clique em um usuário para ver as opções';
     STR_USER_EXTRAS = 'Usuário: Mudar, adicionar, chave';
     STR_LOW_LATENCY = 'Latência Baixa';
     STR_LOW_LATENCY_SUMMARY =

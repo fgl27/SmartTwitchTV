@@ -68,8 +68,8 @@ function es_ESLang() {
     STR_NO = 'No';
     STR_FOR_THIS = 'for this';
     STR_PLAYER_PROBLEM = 'La conexión falló, no se pudo cargar el contenido de video saliendo...';
-    STR_PAST_BROA = 'Vods';
-    STR_PAST_HIGHL = 'Destacados';
+    STR_VODS = 'Vods';
+    STR_HIGHLIGHTS = 'Destacados';
     STR_CLIPS = 'Clips';
     STR_CONTENT = 'Contenido';
     STR_STREAM_ON = 'Transmitido';
@@ -144,12 +144,14 @@ function es_ESLang() {
     STR_CHAT_SHOW = 'Mostrar chat';
     STR_CURRENT_VERSION = 'Versión actual instalada';
     STR_LATEST_VERSION = 'última versión disponible';
-    STR_CONTROLS_MAIN_2 = 'Reproduce un vídeo: Navega con el pad direccional (arriba/abajo/izquierda/derecha), pulsa enter o las teclas multimedia de reproducir/pausa o ver pista o 1 tecla';
+    STR_CONTROLS_MAIN_2 =
+        'Reproduce un vídeo: Navega con el pad direccional (arriba/abajo/izquierda/derecha), pulsa enter o las teclas multimedia de reproducir/pausa o ver pista o 1 tecla';
     STR_CONTROLS_MAIN_3 = 'Actualizar el contenido de la pantalla:';
     STR_CONTROLS_MAIN_4 = 'Salir de la aplicación: desde el panel lateral haga clic en salir';
     STR_CONTROLS_MAIN_5 = 'Forzar el cierre de la aplicación: Mantenga la tecla de retorno hasta que se cierre automáticamente';
     STR_CONTROLS_MAIN_6 = 'Cambiar de pantalla: tecla de retorno y luego D-Pad arriba/abajo o' + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
-    STR_CONTROLS_MAIN_10 = 'Inicie una búsqueda: desde el panel lateral haga clic en buscar, escribiendo la búsqueda pulse la tecla Enter en el teclado virtual y elija una opción de búsqueda';
+    STR_CONTROLS_MAIN_10 =
+        'Inicie una búsqueda: desde el panel lateral haga clic en buscar, escribiendo la búsqueda pulse la tecla Enter en el teclado virtual y elija una opción de búsqueda';
     STR_CONTROLS_MAIN_14 = 'Acerca de esta aplicación: en el panel lateral haga clic en Acerca de';
     STR_ABOUT_INFO_1 = 'Se trata de un cliente de Twitch para Android TV, liberado de forma gratuita para todo aquel que quiera utilizarlo';
     STR_ABOUT_INFO_2_SOURCE = 'Esta versión de la aplicación es sólo de prueba en el navegador!';
@@ -157,7 +159,8 @@ function es_ESLang() {
     STR_ABOUT_INFO_4 = 'Esta es una aplicación de código abierto licenciada bajo la Licencia Pública General GNU v3.0, consúltela en GitHub';
     STR_ABOUT_INFO_6 = 'Esta aplicación utiliza las siguientes dependencias:';
 
-    STR_CONTROLS_PLAY_14 = 'Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50';
+    STR_CONTROLS_PLAY_14 =
+        'Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50';
     STR_F_DISABLE_CHAT = 'Forzar deshabilitar el chat';
     STR_OAUTH_IN =
         'Añadir una clave permite que la aplicación acceda al chat usando tu usuario para enviar mensajes y obtener tu lista de emote (te permite obtener sub dones para el chat), seguir/deshacer canales y acceder a algunos contenidos de los usuarios más rápidamente<br><br>Añadir una clave no es exigente y puede hacerse en cualquier momento posterior<br><br>En caso de duda lee este enlace:<br><br>%x<br><br>Para algunos dispositivos es necesario un ratón para completar la acción de autorización ya que puede ser necesario pulsar manualmente un botón para confirmar.<br><br>Añadir clave para';
@@ -325,7 +328,8 @@ function es_ESLang() {
     STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
     STR_NOTIFICATION_REPEAT_SUMMARY =
         'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
-    STR_NOTIFICATION_SINCE = 'Evitar que se muestre la notificación "Streamer está en directo" para las transmisiones que están en directo hace más de';
+    STR_NOTIFICATION_SINCE =
+        'Evitar que se muestre la notificación "Streamer está en directo" para las transmisiones que están en directo hace más de';
     STR_NOTIFICATION_SINCE_SUMMARY =
         'Esto es útil para evitar que la aplicación muestre una larga lista de notificaciones cuando la aplicación no se utiliza durante algún tiempo, por ejemplo, cuando se apaga el dispositivo o la pantalla está apagada (la aplicación no mostrará notificaciones cuando el dispositivo está encendido pero la pantalla está apagada)';
     STR_GLOBAL_FONT = 'Tamaño de la fuente en la aplicación';
@@ -341,7 +345,7 @@ function es_ESLang() {
         'Hay un contador de posiciones que informa de la posición actual y del contenido total cargado en las pantallas que tienen contenido jugable, a medida que se desplaza se carga más contenido y el total se actualiza';
 
     STR_MAIN_USER = 'Usuario principal';
-    STR_USER_TOP_LABLE = 'Haga clic en un usuario para ver las opciones';
+    STR_USER_TOP_LABEL = 'Haga clic en un usuario para ver las opciones';
     STR_USER_EXTRAS = 'Usuario: Cambiar, añadir, llave';
     STR_LOW_LATENCY = 'Baja Latencia';
 
@@ -481,7 +485,8 @@ function es_ESLang() {
         'La aplicación siempre iniciará sesión en el chat con el usuario actual cuando se proporcione una clave de autorización, a menos que el chat esté desactivado en los controles inferiores del reproductor, pero si esta opción está configurada en NO, evitará el inicio de sesión con el nombre de usuario actual y en su lugar, iniciará sesión como anónimo, incluso proporcionando una clave de autorización. Esto no evita que se envíe un mensaje de chat para este usuario si se agrega una clave, pero evita que se sepa si está prohibido en el chat y evita que se conozca el estado del chat ROOMSTATE';
     STR_CHAT_TIMESTAMP = 'Mostrar la marca de tiempo del mensaje';
     STR_CHAT_NICK_COLOR = 'Colores de nick legibles';
-    STR_CHAT_NICK_COLOR_SUMMARY = 'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
+    STR_CHAT_NICK_COLOR_SUMMARY =
+        'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
     STR_CHAT_CLEAR_MSG = 'Limpiar el chat, eliminar los mensajes del usuario';
     STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
     STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
@@ -493,7 +498,8 @@ function es_ESLang() {
     STR_PING_WARNING_SUMMARY =
         'La aplicación está constantemente comprobando la conexión con Twitch a través de un ping, si eso falla demasiado se mostrará una advertencia, si esa advertencia se muestra involuntariamente establece esto en NO';
     STR_KEY_UP_TIMEOUT = 'Tiempo de espera de la tecla (en milisegundos)';
-    STR_KEY_UP_TIMEOUT_SUMMARY = 'Cuánto tiempo hay que mantener una tecla para que ocurra una acción de retención, las acciones son refrescar una pantalla, mostrar opciones de miniaturas, etc.';
+    STR_KEY_UP_TIMEOUT_SUMMARY =
+        'Cuánto tiempo hay que mantener una tecla para que ocurra una acción de retención, las acciones son refrescar una pantalla, mostrar opciones de miniaturas, etc.';
     STR_THUMB_STYLE = 'Estilo de miniatura seleccionado';
     STR_OPEN_EXTERNAL_PLAYER = 'Abrir en un reproductor externo';
     STR_CHAT_BASE_ARRAY = [
@@ -508,7 +514,9 @@ function es_ESLang() {
     ];
     STR_CHAT_100_ARRAY = ['Derecha", "Centro", "Izquierda'];
     STR_NOTIFICATION_POS = 'Posición de la notificación en la pantalla';
-    STR_NOTIFICATION_POS_ARRAY = ['Arriba a la derecha", "Arriba al centro", "Arriba a la izquierda", "Abajo a la izquierda", "Abajo al centro", "Abajo a la derecha'];
+    STR_NOTIFICATION_POS_ARRAY = [
+        'Arriba a la derecha", "Arriba al centro", "Arriba a la izquierda", "Abajo a la izquierda", "Abajo al centro", "Abajo a la derecha'
+    ];
     STR_LOWLATENCY_ARRAY = [STR_DISABLE, 'Modo normal, puede provocar re-buffers', 'El modo más bajo, puede causar aún más re-buffers'];
     STR_VOD_SEEK = 'Controles de avance/retroceso rápido de VOD';
     STR_VOD_SEEK_SUMMARY =
