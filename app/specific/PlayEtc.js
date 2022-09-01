@@ -1215,10 +1215,11 @@ function Play_FollowUnfollow() {
     //     if (AddCode_IsFollowing) AddCode_UnFollow();
     //     else AddCode_Follow();
     // } else {
-    //     Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
+    //     Play_showWarningMiddleDialog(STR_NOKEY_WARN, 2000);
     //     Play_IsWarning = true;
     // }
-    Play_showWarningMidleDialog(STR_FOLLOW_ISSUE, 2000);
+    Play_showWarningMiddleDialog(STR_FOLLOW_ISSUE, 2000);
+    //Play_showWarningMiddleDialog
 }
 
 function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
@@ -1269,7 +1270,7 @@ function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
         }
     }
 
-    if (!PreventWarn) Play_showWarningMidleDialog(error, 1500);
+    if (!PreventWarn) Play_showWarningMiddleDialog(error, 1500);
 
     if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
 
@@ -1314,7 +1315,7 @@ function Play_PlayPauseChange(State, PlayVodClip) {
     }
 
     Main_innerHTMLWithEle(Play_BottonIcons_Pause, Play_GetPlayPauseIcon(State));
-    Play_showWarningMidleDialog(Play_GetPlayPauseIcon(!State), 500);
+    Play_showWarningMiddleDialog(Play_GetPlayPauseIcon(!State), 500);
 }
 
 function Play_GetPlayPauseIcon(not_playing) {
@@ -1372,7 +1373,7 @@ function Play_KeyReturn(is_vod) {
                 }
             }
         } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
-            Main_clearTimeout(Play_showWarningMidleDialogId);
+            Main_clearTimeout(Play_showWarningMiddleDialogId);
             Main_clearTimeout(Play_showWarningDialogId);
             Play_HideWarningDialog();
             Play_HideWarningMidleDialog();
@@ -1514,7 +1515,7 @@ function Play_PP_Multi_KeyDownHold() {
         Play_audio_enable_Before = Main_Slice(Play_audio_enable);
         Play_audio_enable = [1, 1, 1, 1];
 
-        Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + STR_PLAYER_MULTI_ALL, 2000);
+        Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + STR_PLAYER_MULTI_ALL, 2000);
     } else {
         if (Play_audio_enable_Before.length) {
             Play_audio_enable = Main_Slice(Play_audio_enable_Before);
@@ -1546,7 +1547,7 @@ function Play_PP_Multi_KeyDownHold() {
             }
         }
 
-        Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + text, 2000);
+        Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + text, 2000);
     }
 
     OSInterface_SetAudioEnabled();
@@ -1570,7 +1571,7 @@ function Play_AudioChangeLeftRight() {
     OSInterface_SetAudioEnabled();
     OSInterface_ApplyAudio();
 
-    Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]), 2000);
+    Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]), 2000);
 
     Play_SetAudioIcon();
 }
@@ -1588,7 +1589,7 @@ function Play_MultiKeyDown() {
 
         OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
 
-        Play_showWarningMidleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
+        Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
 
         Play_MultiUpdateinfoMainBig('_big');
         Main_HideElement('stream_info_multi');
@@ -2283,7 +2284,7 @@ function Play_MakeControls() {
             if (Main_IsOn_OSInterface) {
                 OSInterface_OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
             } else {
-                Play_showWarningMidleDialog(STR_NOT_SUPPORT_BROWSER, 2000);
+                Play_showWarningMiddleDialog(STR_NOT_SUPPORT_BROWSER, 2000);
                 return;
             }
 
@@ -2536,7 +2537,7 @@ function Play_MakeControls() {
                 }
             }
 
-            if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
+            if (Play_LowLatency) Play_showWarningMiddleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
             Main_setItem('Play_LowLatency', Play_LowLatency);
             Play_ResetLowlatency();
@@ -2616,7 +2617,7 @@ function Play_MakeControls() {
             if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
             if (Play_MaxInstances < 4) {
-                Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI, 3000);
+                Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI, 3000);
                 return;
             }
 
@@ -2833,10 +2834,10 @@ function Play_MakeControls() {
         defaultValue: null,
         enterKey: function () {
             if (Main_values.Play_ChatForceDisable) {
-                Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                Play_showWarningMiddleDialog(STR_CHAT_DISABLE, 1500);
                 return;
             } else if (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token) {
-                Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                Play_showWarningMiddleDialog(STR_NOKEY_CHAT_WARN, 1500);
                 return;
             }
 
@@ -3379,7 +3380,7 @@ function Play_MakeControls() {
             OSInterface_ApplyAudio();
             Play_controlsAudioUpdateicons();
 
-            Play_showWarningMidleDialog(STR_AUDIO_ALL_ENA, 2000);
+            Play_showWarningMiddleDialog(STR_AUDIO_ALL_ENA, 2000);
 
             Play_SetAudioIcon();
         }
@@ -3408,7 +3409,7 @@ function Play_MakeControls() {
             OSInterface_ApplyAudio();
             Play_controlsAudioUpdateicons();
 
-            Play_showWarningMidleDialog(STR_AUDIO_ALL_100_SET, 2000);
+            Play_showWarningMiddleDialog(STR_AUDIO_ALL_100_SET, 2000);
 
             Play_SetAudioIcon();
         }
@@ -4371,7 +4372,7 @@ function Play_PreStart() {
 
 function Play_preventVodOnPP() {
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
-        Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 1500);
+        Play_showWarningMiddleDialog(STR_PP_VOD_ERROR, 1500);
 
         return false;
     }

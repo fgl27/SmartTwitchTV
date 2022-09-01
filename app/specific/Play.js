@@ -263,7 +263,7 @@ function Play_Start(offline_chat) {
 
 // To Force a warn, not used regularly so keep commented out
 //function Play_Warn(text) {
-//    Play_showWarningMidleDialog(text);
+//    Play_showWarningMiddleDialog(text);
 //}
 
 //When update this check PlayClip_CheckIfIsLiveResult
@@ -357,7 +357,7 @@ function Play_CheckIfIsLiveStartFail(text, time, callbackError) {
     Play_HideBufferDialog();
     Play_CheckIfIsLiveCleanEnd();
 
-    Play_showWarningMidleDialog(text, time);
+    Play_showWarningMiddleDialog(text, time);
 
     if (callbackError) callbackError();
 }
@@ -800,7 +800,7 @@ function Play_loadDataErrorFinish(error_410, Isforbiden) {
         Main_removeEventListener('keydown', Play_handleKeyDown);
         Main_addEventListener('keydown', Play_EndUpclearCalback);
 
-        Play_showWarningMidleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+        Play_showWarningMiddleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
         Play_RestorePlayDataValues();
         Main_values.Play_WasPlaying = 0;
@@ -821,7 +821,7 @@ function Play_OlddataSet() {
 
 function Play_ForbiddenLive() {
     Play_HideBufferDialog();
-    Play_showWarningMidleDialog(STR_FORBIDDEN, 3000);
+    Play_showWarningMiddleDialog(STR_FORBIDDEN, 3000);
 
     Main_setTimeout(function () {
         if (Play_isOn) Play_CheckHostStart();
@@ -1062,14 +1062,14 @@ function Play_PlayerCheck(mwhocall, errorCode) {
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(1, 0, 0);
         Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-        Play_showWarningMidleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
+        Play_showWarningMiddleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
     } else if (mwhocall === 2) {
         PlayVod_quality = 'Auto';
         PlayVod_qualityPlaying = PlayVod_quality;
         OSInterface_SetQuality(-1);
         OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
         Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-        Play_showWarningMidleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
+        Play_showWarningMiddleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
     } else if (mwhocall === 3) {
         if (!navigator.onLine) Play_EndStart(false, mwhocall);
         else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
@@ -1077,7 +1077,7 @@ function Play_PlayerCheck(mwhocall, errorCode) {
             Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
             PlayClip_qualityChanged();
 
-            Play_showWarningMidleDialog(STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode), 2000);
+            Play_showWarningMiddleDialog(STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode), 2000);
         } else Play_EndStart(false, 3);
     }
 }
@@ -1271,8 +1271,8 @@ function Play_WarningDialogVisible() {
     return Main_isElementShowingWithEle(Play_dialog_warning_play);
 }
 
-var Play_showWarningMidleDialogId;
-function Play_showWarningMidleDialog(text, timeout, IsLiveWarning) {
+var Play_showWarningMiddleDialogId;
+function Play_showWarningMiddleDialog(text, timeout, IsLiveWarning) {
     Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
     Play_dialog_warning_play_middle.style.width = '';
 
@@ -1289,19 +1289,19 @@ function Play_showWarningMidleDialog(text, timeout, IsLiveWarning) {
     Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
     if (timeout) {
-        Play_showWarningMidleDialogId = Main_setTimeout(
+        Play_showWarningMiddleDialogId = Main_setTimeout(
             function () {
                 Play_HideWarningMidleDialog();
             },
             timeout,
-            Play_showWarningMidleDialogId
+            Play_showWarningMiddleDialogId
         );
-    } else Main_clearTimeout(Play_showWarningMidleDialogId);
+    } else Main_clearTimeout(Play_showWarningMiddleDialogId);
 }
 
 function Play_HideWarningMidleDialog() {
     Main_HideElementWithEle(Play_dialog_warning_play_middle);
-    Main_clearTimeout(Play_showWarningMidleDialogId);
+    Main_clearTimeout(Play_showWarningMiddleDialogId);
 }
 
 function Play_WarningMidleDialogVisible() {
@@ -1820,7 +1820,7 @@ function Play_UpdateDurationDiv(duration) {
 function Play_CloseBigAndSwich(error_410) {
     Play_HideBufferDialog();
 
-    Play_showWarningMidleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+    Play_showWarningMiddleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
     if (PlayExtra_data.data.length > 0) {
         if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
@@ -1882,7 +1882,7 @@ function Play_OpenFeed(keyfun) {
 
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
         if (Play_MultiEnable || PlayExtra_PicturePicture) {
-            Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 2500);
+            Play_showWarningMiddleDialog(STR_PP_VOD_ERROR, 2500);
             return;
         }
 
@@ -1936,7 +1936,7 @@ function Play_OpenLiveStream(keyfun) {
 function Play_RestorePlayData(error_410, Isforbiden) {
     Play_HideBufferDialog();
 
-    Play_showWarningMidleDialog(
+    Play_showWarningMiddleDialog(
         error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
         2000
     );
