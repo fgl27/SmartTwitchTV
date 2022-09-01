@@ -68,8 +68,8 @@
     var STR_NO;
     var STR_FOR_THIS;
     var STR_PLAYER_PROBLEM;
-    var STR_PAST_BROA;
-    var STR_PAST_HIGHL;
+    var STR_VODS;
+    var STR_HIGHLIGHTS;
     var STR_CLIPS;
     var STR_CONTENT;
     var STR_STREAM_ON;
@@ -314,7 +314,7 @@
     var STR_SWITCH_POS_SUMMARY;
     var STR_MAIN_USER;
     var STR_USER_OPTION;
-    var STR_USER_TOP_LABLE;
+    var STR_USER_TOP_LABEL;
     var STR_USER_EXTRAS;
     var STR_LOW_LATENCY;
     var STR_LIVE_FEED_SORT;
@@ -859,8 +859,8 @@
         STR_GUIDE_EXTRA2 = STR_SPACE + STR_GUIDE_EXTRA2;
         STR_IS_OFFLINE = STR_SPACE + STR_IS_OFFLINE;
         STR_IS_SUB_ONLY_ERROR = STR_SPACE + STR_IS_SUB_ONLY_ERROR;
-        STR_PAST_BROA = STR_SPACE + STR_PAST_BROA;
-        STR_PAST_HIGHL = STR_SPACE + STR_PAST_HIGHL;
+        STR_VODS = STR_SPACE + STR_VODS;
+        STR_HIGHLIGHTS = STR_SPACE + STR_HIGHLIGHTS;
         STR_CONTENT = STR_SPACE + STR_CONTENT;
         STR_VIEWS = STR_SPACE + STR_VIEWS;
         STR_VIEW = STR_SPACE + STR_VIEW;
@@ -1288,8 +1288,8 @@
         STR_NO = 'No';
         STR_FOR_THIS = 'for this';
         STR_PLAYER_PROBLEM = 'Connection failed, unable to load video content, exiting ...';
-        STR_PAST_BROA = 'VODs';
-        STR_PAST_HIGHL = 'Highlights';
+        STR_VODS = 'VODs';
+        STR_HIGHLIGHTS = 'Highlights';
         STR_CLIPS = 'Clips';
         STR_CONTENT = 'Content';
         STR_STREAM_ON = 'Streamed';
@@ -1519,7 +1519,7 @@
         STR_APP_LANG_SUMMARY = "The language of the app's text.";
         STR_ENTER_TO_OPEN = 'Press enter to access';
         STR_LANG_ALL = 'All';
-        STR_NO_GAME = 'No game from this';
+        STR_NO_GAME = "Can't get game from this";
         STR_EMPTY = 'Empty';
         STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
         STR_CHAT_DISABLE = "Chat is force disabled, enable it with the 'Chat force disable' option at the bottom of the player";
@@ -1656,7 +1656,7 @@
             'Instead of starting at the first possible video, start a a lower position on the list, so there is no need to go lower down to find an older video.';
         STR_USER_OPTION = 'Choose an option for user';
         STR_MAIN_USER = 'Main user';
-        STR_USER_TOP_LABLE = 'Click on a user to see options';
+        STR_USER_TOP_LABEL = 'Click on a user to see options';
         STR_USER_EXTRAS = 'User: Switch, add, key';
         STR_LOW_LATENCY = 'Low latency';
         STR_LOW_LATENCY_SUMMARY =
@@ -2112,8 +2112,8 @@
         STR_NO = 'No';
         STR_FOR_THIS = 'for this';
         STR_PLAYER_PROBLEM = 'La conexión falló, no se pudo cargar el contenido de video saliendo...';
-        STR_PAST_BROA = 'Vods';
-        STR_PAST_HIGHL = 'Destacados';
+        STR_VODS = 'Vods';
+        STR_HIGHLIGHTS = 'Destacados';
         STR_CLIPS = 'Clips';
         STR_CONTENT = 'Contenido';
         STR_STREAM_ON = 'Transmitido';
@@ -2188,12 +2188,14 @@
         STR_CHAT_SHOW = 'Mostrar chat';
         STR_CURRENT_VERSION = 'Versión actual instalada';
         STR_LATEST_VERSION = 'última versión disponible';
-        STR_CONTROLS_MAIN_2 = 'Reproduce un vídeo: Navega con el pad direccional (arriba/abajo/izquierda/derecha), pulsa enter o las teclas multimedia de reproducir/pausa o ver pista o 1 tecla';
+        STR_CONTROLS_MAIN_2 =
+            'Reproduce un vídeo: Navega con el pad direccional (arriba/abajo/izquierda/derecha), pulsa enter o las teclas multimedia de reproducir/pausa o ver pista o 1 tecla';
         STR_CONTROLS_MAIN_3 = 'Actualizar el contenido de la pantalla:';
         STR_CONTROLS_MAIN_4 = 'Salir de la aplicación: desde el panel lateral haga clic en salir';
         STR_CONTROLS_MAIN_5 = 'Forzar el cierre de la aplicación: Mantenga la tecla de retorno hasta que se cierre automáticamente';
         STR_CONTROLS_MAIN_6 = 'Cambiar de pantalla: tecla de retorno y luego D-Pad arriba/abajo o' + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
-        STR_CONTROLS_MAIN_10 = 'Inicie una búsqueda: desde el panel lateral haga clic en buscar, escribiendo la búsqueda pulse la tecla Enter en el teclado virtual y elija una opción de búsqueda';
+        STR_CONTROLS_MAIN_10 =
+            'Inicie una búsqueda: desde el panel lateral haga clic en buscar, escribiendo la búsqueda pulse la tecla Enter en el teclado virtual y elija una opción de búsqueda';
         STR_CONTROLS_MAIN_14 = 'Acerca de esta aplicación: en el panel lateral haga clic en Acerca de';
         STR_ABOUT_INFO_1 = 'Se trata de un cliente de Twitch para Android TV, liberado de forma gratuita para todo aquel que quiera utilizarlo';
         STR_ABOUT_INFO_2_SOURCE = 'Esta versión de la aplicación es sólo de prueba en el navegador!';
@@ -2201,7 +2203,8 @@
         STR_ABOUT_INFO_4 = 'Esta es una aplicación de código abierto licenciada bajo la Licencia Pública General GNU v3.0, consúltela en GitHub';
         STR_ABOUT_INFO_6 = 'Esta aplicación utiliza las siguientes dependencias:';
 
-        STR_CONTROLS_PLAY_14 = 'Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50';
+        STR_CONTROLS_PLAY_14 =
+            'Chat y vídeo (lado a lado): tecla 2 o tecla multimedia avance rápido, también cambia entre los modos Picture in Picture y 50/50';
         STR_F_DISABLE_CHAT = 'Forzar deshabilitar el chat';
         STR_OAUTH_IN =
             'Añadir una clave permite que la aplicación acceda al chat usando tu usuario para enviar mensajes y obtener tu lista de emote (te permite obtener sub dones para el chat), seguir/deshacer canales y acceder a algunos contenidos de los usuarios más rápidamente<br><br>Añadir una clave no es exigente y puede hacerse en cualquier momento posterior<br><br>En caso de duda lee este enlace:<br><br>%x<br><br>Para algunos dispositivos es necesario un ratón para completar la acción de autorización ya que puede ser necesario pulsar manualmente un botón para confirmar.<br><br>Añadir clave para';
@@ -2369,7 +2372,8 @@
         STR_NOTIFICATION_REPEAT = 'Cuántas veces hay que mostrar la notificación individual';
         STR_NOTIFICATION_REPEAT_SUMMARY =
             'El tiempo de espera de las notificaciones individuales es de unos 3 segundos, y no se puede cambiar porque este tiempo de espera está controlado por el sistema, pero se puede establecer el número de veces que se mostrará la misma notificación';
-        STR_NOTIFICATION_SINCE = 'Evitar que se muestre la notificación "Streamer está en directo" para las transmisiones que están en directo hace más de';
+        STR_NOTIFICATION_SINCE =
+            'Evitar que se muestre la notificación "Streamer está en directo" para las transmisiones que están en directo hace más de';
         STR_NOTIFICATION_SINCE_SUMMARY =
             'Esto es útil para evitar que la aplicación muestre una larga lista de notificaciones cuando la aplicación no se utiliza durante algún tiempo, por ejemplo, cuando se apaga el dispositivo o la pantalla está apagada (la aplicación no mostrará notificaciones cuando el dispositivo está encendido pero la pantalla está apagada)';
         STR_GLOBAL_FONT = 'Tamaño de la fuente en la aplicación';
@@ -2385,7 +2389,7 @@
             'Hay un contador de posiciones que informa de la posición actual y del contenido total cargado en las pantallas que tienen contenido jugable, a medida que se desplaza se carga más contenido y el total se actualiza';
 
         STR_MAIN_USER = 'Usuario principal';
-        STR_USER_TOP_LABLE = 'Haga clic en un usuario para ver las opciones';
+        STR_USER_TOP_LABEL = 'Haga clic en un usuario para ver las opciones';
         STR_USER_EXTRAS = 'Usuario: Cambiar, añadir, llave';
         STR_LOW_LATENCY = 'Baja Latencia';
 
@@ -2525,7 +2529,8 @@
             'La aplicación siempre iniciará sesión en el chat con el usuario actual cuando se proporcione una clave de autorización, a menos que el chat esté desactivado en los controles inferiores del reproductor, pero si esta opción está configurada en NO, evitará el inicio de sesión con el nombre de usuario actual y en su lugar, iniciará sesión como anónimo, incluso proporcionando una clave de autorización. Esto no evita que se envíe un mensaje de chat para este usuario si se agrega una clave, pero evita que se sepa si está prohibido en el chat y evita que se conozca el estado del chat ROOMSTATE';
         STR_CHAT_TIMESTAMP = 'Mostrar la marca de tiempo del mensaje';
         STR_CHAT_NICK_COLOR = 'Colores de nick legibles';
-        STR_CHAT_NICK_COLOR_SUMMARY = 'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
+        STR_CHAT_NICK_COLOR_SUMMARY =
+            'En lugar de usar el color de nick predeterminado que algunas veces no se puede leer sobre un fondo oscuro, use un color personalizado fácil de ver';
         STR_CHAT_CLEAR_MSG = 'Limpiar el chat, eliminar los mensajes del usuario';
         STR_CHAT_MESSAGE_DELETED = 'Se solicitó la eliminación de este mensaje de usuario único';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Se solicitó la eliminación de todos los mensajes de este usuario';
@@ -2537,7 +2542,8 @@
         STR_PING_WARNING_SUMMARY =
             'La aplicación está constantemente comprobando la conexión con Twitch a través de un ping, si eso falla demasiado se mostrará una advertencia, si esa advertencia se muestra involuntariamente establece esto en NO';
         STR_KEY_UP_TIMEOUT = 'Tiempo de espera de la tecla (en milisegundos)';
-        STR_KEY_UP_TIMEOUT_SUMMARY = 'Cuánto tiempo hay que mantener una tecla para que ocurra una acción de retención, las acciones son refrescar una pantalla, mostrar opciones de miniaturas, etc.';
+        STR_KEY_UP_TIMEOUT_SUMMARY =
+            'Cuánto tiempo hay que mantener una tecla para que ocurra una acción de retención, las acciones son refrescar una pantalla, mostrar opciones de miniaturas, etc.';
         STR_THUMB_STYLE = 'Estilo de miniatura seleccionado';
         STR_OPEN_EXTERNAL_PLAYER = 'Abrir en un reproductor externo';
         STR_CHAT_BASE_ARRAY = [
@@ -2552,7 +2558,9 @@
         ];
         STR_CHAT_100_ARRAY = ['Derecha", "Centro", "Izquierda'];
         STR_NOTIFICATION_POS = 'Posición de la notificación en la pantalla';
-        STR_NOTIFICATION_POS_ARRAY = ['Arriba a la derecha", "Arriba al centro", "Arriba a la izquierda", "Abajo a la izquierda", "Abajo al centro", "Abajo a la derecha'];
+        STR_NOTIFICATION_POS_ARRAY = [
+            'Arriba a la derecha", "Arriba al centro", "Arriba a la izquierda", "Abajo a la izquierda", "Abajo al centro", "Abajo a la derecha'
+        ];
         STR_LOWLATENCY_ARRAY = [STR_DISABLE, 'Modo normal, puede provocar re-buffers', 'El modo más bajo, puede causar aún más re-buffers'];
         STR_VOD_SEEK = 'Controles de avance/retroceso rápido de VOD';
         STR_VOD_SEEK_SUMMARY =
@@ -2662,8 +2670,8 @@
         STR_NO = 'Não';
         STR_FOR_THIS = 'para este';
         STR_PLAYER_PROBLEM = 'Falha na conexão, não foi possível carregar o conteúdo do vídeo saindo de ...';
-        STR_PAST_BROA = 'Vídeos';
-        STR_PAST_HIGHL = 'Destaques';
+        STR_VODS = 'Vídeos';
+        STR_HIGHLIGHTS = 'Destaques';
         STR_CLIPS = 'Clipes';
         STR_CONTENT = 'Conteúdo';
         STR_STREAM_ON = 'Em';
@@ -2894,7 +2902,7 @@
         STR_CONTENT_LANG_SUMMARY = 'O idioma do conteúdo das telas, ao vivo, Vídeos, clipes';
         STR_ENTER_TO_OPEN = 'Pressione Enter para abrir';
         STR_LANG_ALL = 'Todas';
-        STR_NO_GAME = 'Nenhum jogo para este';
+        STR_NO_GAME = 'Não é possivel obter o jogo deste';
         STR_EMPTY = 'vazio';
         STR_JUMP_BUFFER_WARNING = 'Não é possível saltar durante o buffer';
         STR_CHAT_DISABLE = 'chat foi desabilitado à força, habilite-o nos controles da parte inferior do player chat desabilitado forçado';
@@ -3030,7 +3038,7 @@
             'Em vez de começar no primeiro vídeo possível, comece uma posição inferior na lista, evita ter que descer e descer para encontrar um vídeo mais antigo';
         STR_USER_OPTION = 'Escolha uma opção para o usuário';
         STR_MAIN_USER = 'Usuário principal';
-        STR_USER_TOP_LABLE = 'Clique em um usuário para ver as opções';
+        STR_USER_TOP_LABEL = 'Clique em um usuário para ver as opções';
         STR_USER_EXTRAS = 'Usuário: Mudar, adicionar, chave';
         STR_LOW_LATENCY = 'Latência Baixa';
         STR_LOW_LATENCY_SUMMARY =
@@ -3487,8 +3495,8 @@
         STR_NO = 'Нет';
         STR_FOR_THIS = 'для';
         STR_PLAYER_PROBLEM = 'Ошибка подключения, невозможно загрузить контент, выход...';
-        STR_PAST_BROA = 'Стримы';
-        STR_PAST_HIGHL = 'Хайлайты';
+        STR_VODS = 'Стримы';
+        STR_HIGHLIGHTS = 'Хайлайты';
         STR_CLIPS = 'Клипы';
         STR_CONTENT = 'Контент';
         STR_STREAM_ON = 'Транслировал';
@@ -3541,7 +3549,8 @@
         STR_USER_HOSTING = 'ретранслирует';
         STR_USER_SET = 'уже установлено';
         STR_USER_MAKE_ONE = 'Сменить';
-        STR_USER_NUMBER_ONE = 'Первый пользователь может отслеживать (при добавлении ключа) и видеть трансляции каналов в реальном времени за пределами экрана пользователя';
+        STR_USER_NUMBER_ONE =
+            'Первый пользователь может отслеживать (при добавлении ключа) и видеть трансляции каналов в реальном времени за пределами экрана пользователя';
         STR_ADD_USER_SH = 'Добавьте пользователя Twitch, чтобы отображать контент отслеживаемых каналов';
         STR_CLIP_DAY = '24ч';
         STR_CLIP_WEEK = '7д';
@@ -3570,7 +3579,8 @@
         STR_CONTROLS_MAIN_4 = 'Выход из приложения: на боковой панели нажмите Выход.';
         STR_CONTROLS_MAIN_5 = 'Принудительное закрытие приложения: удерживайте кнопку назад, пока оно не закроется автоматически';
         STR_CONTROLS_MAIN_6 = 'Переключить экран: кнопка назад, затем D-Pad' + STR_KEY_UP_DOWN + STR_KEY_MEDIA_FF;
-        STR_CONTROLS_MAIN_10 = 'Начать поиск: на боковой панели нажмите поиск, введите текст, нажмите кнопку ОК на виртуальной клавиатуре и выберите вариант поиска.';
+        STR_CONTROLS_MAIN_10 =
+            'Начать поиск: на боковой панели нажмите поиск, введите текст, нажмите кнопку ОК на виртуальной клавиатуре и выберите вариант поиска.';
         STR_CONTROLS_MAIN_14 = 'Об этом приложении: на боковой панели нажмите Описание';
         STR_ABOUT_INFO_1 = 'Это клиент Twitch для Android TV, выпущенный бесплатно для всех, кто хочет им пользоваться.';
         STR_ABOUT_INFO_2 =
@@ -3594,7 +3604,8 @@
         STR_CONTROLS_PLAY_8 = 'Изменить положение чата: D-pad влево, или перемотка назад (только видео и клипы)' + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_9 = 'Изменить размер чата: D-pad вправо' + STR_CONTROLS_PLAY_0;
         STR_CONTROLS_PLAY_10 = 'Изменение яркости фона чата: изменените в нижних элементах управления плеером';
-        STR_CONTROLS_PLAY_11 = 'Принудительно обновить чат в прямых трансляциях (в случае, если он зависает или не загружается): используйте нижние элементы управления плеера.';
+        STR_CONTROLS_PLAY_11 =
+            'Принудительно обновить чат в прямых трансляциях (в случае, если он зависает или не загружается): используйте нижние элементы управления плеера.';
         STR_CONTROLS_PLAY_12 = 'Начать поиск: откройте инф. панель, перейдите с помощью нав. панели (влево/вправо) в Поиск и нажмите ОК.';
         STR_CONTROLS_PLAY_13 = 'Поддерживаются все мультимедийные кнопки (плей,пауза,стоп,перемотка и т.д.).';
         STR_CONTROLS_PLAY_14 = 'Чат и видео: кнопка 2 или кнопка перемотки вперед, переключает между режимом «Картинка в картинке» и режимом 50/50';
@@ -3692,7 +3703,8 @@
             'Приложение сохраняет то, что играло, на случай непреднамеренного закрытия. При нехватке памяти система может закрыть приложение или принудительно его может закрыть пользователь. В таком случае, приложение восстановит то, что ранее воспроизводилось, при следующем запуске.';
         STR_CHAT_FONT = 'Размер шрифта чата';
         STR_VIDEOS_ANIMATION = 'Анимированные превью видео';
-        STR_VIDEOS_ANIMATION_SUMMARY = 'Анимировать превью, когда выбран хайлайт или видео, если для этого видео доступно анимированное превью (не во всех видео оно есть).';
+        STR_VIDEOS_ANIMATION_SUMMARY =
+            'Анимировать превью, когда выбран хайлайт или видео, если для этого видео доступно анимированное превью (не во всех видео оно есть).';
         STR_SIDE_PANEL = 'Боковая панель: D-Pad влево или кнопка назад';
         STR_SIZE = 'Размер';
         STR_BRIGHTNESS = 'Яркость';
@@ -3710,7 +3722,6 @@
         STR_APP_LANG_SUMMARY = 'Язык приложения';
         STR_ENTER_TO_OPEN = 'Нажмите ОК';
         STR_LANG_ALL = 'Все';
-        STR_NO_GAME = 'Нет игры из этого';
         STR_EMPTY = 'Пусто';
         STR_JUMP_BUFFER_WARNING = 'Невозможно перейти во время буферизации';
         STR_CHAT_DISABLE = 'Чат принудительно отключен, включите его в нижних элементах управления плеера. Чат принудительно отключен.';
@@ -3794,7 +3805,8 @@
             STR_PLAYER_BITRATE +
             '"';
         STR_PICTURE_PICTURE = 'Картинка в Картинке, 50/50 или Мультистрим (Только для прямых трансляций):';
-        STR_PICTURE_CONTROLS1 = 'Включить режим «Картинка в картинке»: при воспр. видео нажмите вверх, чтобы отобразить предпросмотр. Выберите поток, затем удерживайте «ОК» чтобы начать.';
+        STR_PICTURE_CONTROLS1 =
+            'Включить режим «Картинка в картинке»: при воспр. видео нажмите вверх, чтобы отобразить предпросмотр. Выберите поток, затем удерживайте «ОК» чтобы начать.';
         STR_PICTURE_CONTROLS2 =
             'Изменение видеоконтента: из предпросмотра плеера, если в режиме мультистрима всегда одно нажатие. Если на КвК или 50/50 одним нажатием обновляется большое или верхнее видео. Удерживайте кнопку ОК или нажмите 1, чтобы обновить маленькое или нижнее видео';
         STR_PICTURE_CONTROLS3 = 'Сменить аудио источник для всех видео: зажать D-pad вниз';
@@ -3803,10 +3815,13 @@
         STR_PICTURE_CONTROLS6 = 'Изменение размера малого видео (только картинка в картинке): D-pad вправо';
         STR_PICTURE_CONTROLS7 =
             'Изменить источник звука: используйте нижний элемент (Источник звука). Если в режиме 50/50 или мультистриме, используйте левую/правую кнопки. Если на КвК, используйте кнопки мультимедиа следующей/предыдущей дорожки.';
-        STR_PICTURE_CONTROLS8 = 'Перезапуск плеера: используйте нижний элемент управления (Перезапуск проигрывателя), это перезапустит плееры. Это не синхронизирует содержимое плеера с другим';
-        STR_PICTURE_CONTROLS9 = 'Ручная синхронизация плееров: Используйте элемент управления (Скорость) для замедления потока, который спешит, или наоборот. Работает только в режиме КвК';
+        STR_PICTURE_CONTROLS8 =
+            'Перезапуск плеера: используйте нижний элемент управления (Перезапуск проигрывателя), это перезапустит плееры. Это не синхронизирует содержимое плеера с другим';
+        STR_PICTURE_CONTROLS9 =
+            'Ручная синхронизация плееров: Используйте элемент управления (Скорость) для замедления потока, который спешит, или наоборот. Работает только в режиме КвК';
         STR_PICTURE_CONTROLS10 = 'Качество видео "Картинка в картинке": проверьте в настройках приложения "' + STR_PLAYER_BITRATE + '"';
-        STR_PICTURE_CONTROLS11 = 'Закрыть маленькое или нижнее видео (только картинка в картинке): дважды нажмите кнопку назад, чтобы выйти из режима КвК или 50/50';
+        STR_PICTURE_CONTROLS11 =
+            'Закрыть маленькое или нижнее видео (только картинка в картинке): дважды нажмите кнопку назад, чтобы выйти из режима КвК или 50/50';
         STR_PICTURE_CONTROLS12 =
             'Включить режим 50/50 (два потока, два чата): если картинка в картинке включена, нажмите 2 или кнопку для быстрой перемотки вперед или используйте нижние элементы управления «Режим видео»';
         STR_PICTURE_CONTROLS13 = 'Включить мультистрим: используйте нижние элементы управления или медиа-кнопку перемотки';
@@ -3836,16 +3851,22 @@
         STR_ROUND_IMAGES = 'Использовать закругленные аватары каналов';
         STR_ROUND_IMAGES_SUMMARY = 'Поскольку большинство аватаров каналов имеют квадратную форму, некоторые аватары могут выглядеть некорректно.';
         STR_SCREEN_COUNTER = 'Скрыть счетчик позиции/общего количества';
-        STR_SCREEN_COUNTER_SUMMARY = 'Есть счетчик позиции, который информирует о текущей позиции и общем загруженном контенте на экранах, на которых есть воспроизводимый контент.';
+        STR_SCREEN_COUNTER_SUMMARY =
+            'Есть счетчик позиции, который информирует о текущей позиции и общем загруженном контенте на экранах, на которых есть воспроизводимый контент.';
         STR_SWITCH_POS = 'Сменить: Смещение начальной позиции';
         STR_SWITCH_POS_SUMMARY =
             'Вместо того, чтобы начинать с первого возможного видео, начните с более низкой позиции в списке, чтобы избежать необходимости спускаться вниз и вниз, чтобы найти более старое видео.';
         STR_USER_OPTION = 'Выберете действие для аккаунта';
         STR_MAIN_USER = 'Пользователь';
-        STR_USER_TOP_LABLE = 'Нажмите на пользователя, чтобы просмотреть параметры';
+        STR_USER_TOP_LABEL = 'Нажмите на пользователя, чтобы просмотреть параметры';
         STR_USER_EXTRAS = 'Сменить, добавить, ключ';
         STR_LOW_LATENCY = 'Низкая задержка';
-        STR_LOW_LATENCY_SUMMARY = 'Если есть получать проблемы с буферами, отключите ' + STR_LOW_LATENCY + '<br>Используйте ' + STR_SETTINGS_BUFFER_LIVE + ' равное или меньше 1, чтобы это имело эффект';
+        STR_LOW_LATENCY_SUMMARY =
+            'Если есть получать проблемы с буферами, отключите ' +
+            STR_LOW_LATENCY +
+            '<br>Используйте ' +
+            STR_SETTINGS_BUFFER_LIVE +
+            ' равное или меньше 1, чтобы это имело эффект';
         STR_GAME_SORT = 'Сортировка превью игр';
         STR_LIVE_FEED_SORT = 'Боковая панель или сортировка превью плеера';
         STR_LIVE_FEED_SORT_SUMMARY =
@@ -3915,7 +3936,8 @@
         STR_NEWEST = 'Просмотренные новейшие';
         STR_OLDEST = 'Просмотренные старейшие';
         STR_PRESS_ENTER_D = 'Нажмите ОК, чтобы удалить';
-        STR_LIVE_VOD = 'Эта прямая трансляция теперь видео<br>открыть видео с того места, где вы в последний раз прекратили смотреть прямую трансляцию:<br>';
+        STR_LIVE_VOD =
+            'Эта прямая трансляция теперь видео<br>открыть видео с того места, где вы в последний раз прекратили смотреть прямую трансляцию:<br>';
         STR_BACKUP =
             'Разрешить приложению создавать и восстанавливать резервные копии?<br>(Пользователи и их история будут зарезервированы)' +
             '<br><br>' +
@@ -3966,7 +3988,8 @@
         STR_PREVIEW_CLIP_NEXT = 'Когда предварительный просмотр клипа заканчивается, автоматический переход к следующему доступному клипу';
         STR_SHOW_SIDE_PLAYER = 'Предварительный просмотр на боковой панели';
         STR_SHOW_FEED_PLAYER = 'Предварительный просмотр на эскизах превью проигрывателя';
-        STR_SHOW_FEED_PLAYER_SUMMARY = 'Если вам не нужно или ваше устройство тормозит, когда активно более одного плеера, установите для этого параметра значение НЕТ.';
+        STR_SHOW_FEED_PLAYER_SUMMARY =
+            'Если вам не нужно или ваше устройство тормозит, когда активно более одного плеера, установите для этого параметра значение НЕТ.';
         STR_DISABLED_FEED_PLAYER_MULTI = 'Отключить превью при включенном мультистриме';
         STR_DISABLED_FEED_PLAYER_MULTI_SUMMARY =
             'По соображениям производительности некоторые устройства могут отставать от некоторых плееров. Если у вас все в порядке на мультистриме, но когда активны плеер превью и мультистрим, устройство лагает, установите для этого параметра значение НЕТ';
@@ -3989,7 +4012,8 @@
         STR_PREVIEW_VOLUME = 'Громкость превью';
         STR_PREVIEW_VOLUME_SUMMARY = 'Установки, какая будет громкость превью ленты';
         STR_PREVIEW_OTHERS_VOLUME = 'Главная громкость плееров';
-        STR_PREVIEW_OTHERS_VOLUME_SUMMARY = 'Громкость основного плеера (все плееры - картинка в картинке, мультистрим плееры) может быть меньше, когда отображается проигрыватель превью';
+        STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
+            'Громкость основного плеера (все плееры - картинка в картинке, мультистрим плееры) может быть меньше, когда отображается проигрыватель превью';
         STR_SIDE_PANEL_PLAYER = 'Настройки плеера превью';
         STR_START_AT_USER = 'Всегда запускать приложение на экране пользователя';
         STR_START_AT_USER_SUMMARY = 'Это предотвратит работу восстановления воспроизведения, но позволит выбрать пользователя при запуске приложения.';
@@ -4019,7 +4043,8 @@
         STR_TOO_ERRORS = 'или слишком много ошибок';
         STR_STREAM_ERROR_SMALL = 'Превью, трансляция завершена' + STR_TOO_ERRORS;
         STR_CONTROLS_MEDIA_FF = 'Перемотка (только для видео и клипов): используйте D-pad вправо/влево или кнопки для быстрой перемотки вперед/назад';
-        STR_VOD_MUTED = 'Часть звука отключена, поскольку содержит контент, защищенный авторским правом, более темный цвет на панели поиска указывает эти на части';
+        STR_VOD_MUTED =
+            'Часть звука отключена, поскольку содержит контент, защищенный авторским правом, более темный цвет на панели поиска указывает эти на части';
         STR_GIFT_SUB = 'подарил вам подписку!';
         STR_ANONYMOUS = 'анонимный';
         STR_CHAT_BANNED = 'Вы забанены на этом канале';
@@ -4050,7 +4075,8 @@
         STR_CHAT_CHOOSE = 'Выберите чат, в который хотите написать, или нажмите кнопку назад, чтобы закрыть это';
         STR_CHAT_OPTIONS_TITLE = 'Написать для опций чата';
         STR_CHAT_OPTIONS_KEYBOARD = 'Авто скрытие клавиатуры';
-        STR_CHAT_OPTIONS_KEYBOARD_SUMMARY = 'Позволяет управлять поведением экранной клавиатуры, если у вас подключена физическая клавиатура, используйте ее, если не установлено Никогда';
+        STR_CHAT_OPTIONS_KEYBOARD_SUMMARY =
+            'Позволяет управлять поведением экранной клавиатуры, если у вас подключена физическая клавиатура, используйте ее, если не установлено Никогда';
         STR_CHAT_OPTIONS_KEYBOARD_1 = 'Никогда';
         STR_CHAT_OPTIONS_KEYBOARD_2 = 'Если клавиатура обнаружена';
         STR_CHAT_OPTIONS_KEYBOARD_3 = 'Всегда';
@@ -4085,7 +4111,8 @@
         STR_CHAT_BOTS = 'Блокировать отображение ботов и команды ботов (!команда) в чате';
         STR_CHAT_TIMESTAMP = 'Показать время сообщения';
         STR_CHAT_NICK_COLOR = 'Читаемые цвета ников';
-        STR_CHAT_NICK_COLOR_SUMMARY = 'Вместо использования цвета ников по умолчанию, который иногда не читается на темном фоне, использовать настраиваемый, удобный для чтения цвет.';
+        STR_CHAT_NICK_COLOR_SUMMARY =
+            'Вместо использования цвета ников по умолчанию, который иногда не читается на темном фоне, использовать настраиваемый, удобный для чтения цвет.';
         STR_CHAT_CLEAR_MSG = 'Очистка чата, удаление сообщений пользователей';
         STR_CHAT_MESSAGE_DELETED = 'Это сообщение пользователя было запрошено на удаление';
         STR_CHAT_MESSAGE_DELETED_ALL = 'Все сообщения от этого пользователя были запрошены на удаление';
@@ -4098,7 +4125,8 @@
         STR_PING_WARNING_SUMMARY =
             'Приложение постоянно проверяет соединение с Twitch с помощью пинга. Если это не удается, будет отображаться предупреждение, если это предупреждение отображается непреднамеренно, установите для этого параметра значение НЕТ';
         STR_KEY_UP_TIMEOUT = 'Тайм-аут удержания кнопки (в миллисекундах)';
-        STR_KEY_UP_TIMEOUT_SUMMARY = 'Как долго вам нужно удерживать кнопку для действия удержания, действия обновляют экран, показывают параметры эскизов и т.д.';
+        STR_KEY_UP_TIMEOUT_SUMMARY =
+            'Как долго вам нужно удерживать кнопку для действия удержания, действия обновляют экран, показывают параметры эскизов и т.д.';
         STR_CURRENT_THUMB_STYLE = 'Текущий стиль';
         STR_NEW_THUMB_STYLE = 'Новый стиль';
         STR_COLOR_STYLE_TEXT = 'Нажмите вверх/вниз, чтобы выбрать. Нажмите назад, чтобы выйти.';
@@ -4119,12 +4147,29 @@
         STR_THUMB_STYLE = 'Выбранный стиль превью';
         STR_OPEN_EXTERNAL_PLAYER = 'Открыть во внешнем плеере';
         STR_CHAT_SIDE_ARRAY = ['Слева', 'Справа'];
-        STR_CHAT_BASE_ARRAY = ['Внизу справа', 'Центр справа', 'Сверху справа', 'Центр сверху', 'Сверху слева', 'Центр слева', 'Снизу слева', 'Центр снизу'];
+        STR_CHAT_BASE_ARRAY = [
+            'Внизу справа',
+            'Центр справа',
+            'Сверху справа',
+            'Центр сверху',
+            'Сверху слева',
+            'Центр слева',
+            'Снизу слева',
+            'Центр снизу'
+        ];
         STR_CHAT_100_ARRAY = ['Справа', 'Центр', 'Слева'];
         STR_NOTIFICATION_POS = 'Позиция уведомления';
         STR_NOTIFICATION_POS_ARRAY = ['Правый верх', 'Центр верх', 'Левый верх', 'Левый низ', 'Центр снизу', 'Правый низ'];
-        STR_LOWLATENCY_ARRAY = [STR_DISABLE, 'Нормальный режим, может вызвать повторную буферизацию', 'Минимальный режим, может вызвать еще большее количество повторных буферизаций'];
-        STR_LOWLATENCY_ENABLE_ARRAY = [STR_LOW_LATENCY + ' - ' + STR_DISABLED, STR_LOW_LATENCY + ' - Нормальный режим', STR_LOW_LATENCY + ' - Минимальный режим'];
+        STR_LOWLATENCY_ARRAY = [
+            STR_DISABLE,
+            'Нормальный режим, может вызвать повторную буферизацию',
+            'Минимальный режим, может вызвать еще большее количество повторных буферизаций'
+        ];
+        STR_LOWLATENCY_ENABLE_ARRAY = [
+            STR_LOW_LATENCY + ' - ' + STR_DISABLED,
+            STR_LOW_LATENCY + ' - Нормальный режим',
+            STR_LOW_LATENCY + ' - Минимальный режим'
+        ];
         STR_VOD_SEEK = 'Видео быстрая перемотка назад/вперед';
         STR_VOD_SEEK_SUMMARY =
             'Управляет тем, насколько быстро будет выполняться переход назад/вперед. При нажатии и удерживании влево/вправо время шага увеличится. После истечения тайм-аута увеличения, оно увеличится до максимального времени шага. После отпускания кнопки и отсутствия нажатия в течение одной секунды время шага будет сброшено обратно на минимальное время шага.<br><br>Нажатие вверх перезапишет минимальное/максимальное значение, позволяя вам пройти через все возможные шаги, и заблокирует значение, пока индикатор выполнения не исчезнет<br><br>Выполнение одиночных нажатий без удержания кнопки не увеличит время<br><br>Эти параметры работают только с видео. Для клипа, шаг всегда составляет 1 секунду';
@@ -4135,7 +4180,8 @@
         STR_LOCKED = 'заблокировано нажмите вверх, чтобы изменить';
         STR_IN_CHAT = 'В чате';
         STR_SHOW_IN_CHAT = 'Показывать общее количество пользователей или зрителей поверх чата';
-        STR_SHOW_IN_CHAT_SUMMARY = 'Это очень полезно, например, узнать, есть ли в чате какой-либо пользователь, с которым можно поговорить, а также узнать разницу зрители/пользователи чата.';
+        STR_SHOW_IN_CHAT_SUMMARY =
+            'Это очень полезно, например, узнать, есть ли в чате какой-либо пользователь, с которым можно поговорить, а также узнать разницу зрители/пользователи чата.';
         STR_SHOW_IN_CHAT_VIEWERS = 'Показать зрителей';
         STR_SHOW_IN_CHAT_CHATTERS = 'Показать пользователей';
         STR_PLAYED = 'Воиспроизведено';
@@ -4184,7 +4230,8 @@
         STR_WARNING_BROWSER = 'Предупреждение браузера';
         STR_WARNING_BROWSER_SUMMARY =
             'Это приложение предназначено для использования на ТВ, поддержка других устройств ограничена. Вы можете управлять приложением с помощью мыши, но лучше использовать клавиши вверх, вниз, влево, вправо, ввод и возврат (ESC работает как возврат).';
-        STR_THUMB_OPTIONS_CLICK = 'Нажмите дважды над действием (чтобы открыть или применить), щелкните за пределами диалогового окна, чтобы выйти без применения';
+        STR_THUMB_OPTIONS_CLICK =
+            'Нажмите дважды над действием (чтобы открыть или применить), щелкните за пределами диалогового окна, чтобы выйти без применения';
         STR_CLOSE_THIS_BROWSER = 'Нажмите назад, ОК или щелкните за пределами, чтобы закрыть это';
         STR_DISABLE_EMBED = 'Включить Live и Vod Twitch плеер';
         STR_DISABLE_EMBED_SUMMARY = 'Это нужно отключить только, если вы хотите увидеть ТВ-плеер, чтобы проверить его строки и протестировать.';
@@ -7670,7 +7717,7 @@
         var streamer = !ChatLiveControls_Channel ? Play_data.data[1] : PlayExtra_data.data[1];
 
         if (ChatLive_Banned[ChatLiveControls_Channel]) {
-            Play_showWarningMidleDialog(STR_CHAT_BANNED + streamer, 1500);
+            Play_showWarningMiddleDialog(STR_CHAT_BANNED + streamer, 1500);
             return;
         }
 
@@ -7899,7 +7946,11 @@
 
                 break;
             case ChatLiveControls_Cursor_7TV_STREAMER:
-                ChatLiveControls_SetEmotesDiv(extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]], STR_CHAT_SEVENTV_STREAM, 'code');
+                ChatLiveControls_SetEmotesDiv(
+                    extraEmotesDone.seven_tv[ChatLive_selectedChannel_id[ChatLiveControls_Channel]],
+                    STR_CHAT_SEVENTV_STREAM,
+                    'code'
+                );
 
                 break;
             default:
@@ -8109,7 +8160,10 @@
                 ChatLiveControls_EmotesChangeFocus(ChatLiveControls_EmotesPos, 20);
                 break;
             case KEY_ENTER:
-                if ((ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) && ChatLiveControls_CanSend())
+                if (
+                    (ChatLiveControls_cursor === ChatLiveControls_Cursor_Twitch_Emotes || ChatLiveControls_CanSendAnyEmote()) &&
+                    ChatLiveControls_CanSend()
+                )
                     ChatLiveControls_AddToChat(ChatLiveControls_EmotesPos);
                 break;
             default:
@@ -8172,7 +8226,8 @@
     }
 
     function ChatLiveControls_UpdateTextInput(text) {
-        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !Main_endsWith(Main_ChatLiveInput.value, ' ')) Main_ChatLiveInput.value += ' ';
+        if (Main_ChatLiveInput.value !== '' && Main_ChatLiveInput.value !== null && !Main_endsWith(Main_ChatLiveInput.value, ' '))
+            Main_ChatLiveInput.value += ' ';
         Main_ChatLiveInput.value += text + ' ';
         ChatLiveControls_UpdateResultText();
     }
@@ -8351,7 +8406,11 @@
                     ChatLiveControls_PreventInput();
 
                     return false;
-                } else if (tags['followers-only'] && user_fallow.hasOwnProperty('created_at') && tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at)) {
+                } else if (
+                    tags['followers-only'] &&
+                    user_fallow.hasOwnProperty('created_at') &&
+                    tags['followers-only'] > ChatLive_GetMinutes(user_fallow.created_at)
+                ) {
                     var time = ChatLive_GetMinutes(user_fallow.created_at);
 
                     ChatLiveControls_CanSendText =
@@ -8669,7 +8728,11 @@
 
         Chat_loadBadgesGlobal();
 
-        ChatLive_SetOptions(chat_number, !chat_number ? Play_data.data[14] : PlayExtra_data.data[14], !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]);
+        ChatLive_SetOptions(
+            chat_number,
+            !chat_number ? Play_data.data[14] : PlayExtra_data.data[14],
+            !chat_number ? Play_data.data[6] : PlayExtra_data.data[6]
+        );
 
         if (!SkipClear) {
             ChatLive_PreLoadChat(chat_number, Chat_Id[chat_number]);
@@ -8828,7 +8891,8 @@
             return;
         }
 
-        var theUrl = Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] + '&user_id=' + AddUser_UsernameArray[0].id;
+        var theUrl =
+            Main_helix_api + 'subscriptions/user?broadcaster_id=' + ChatLive_selectedChannel_id[chat_number] + '&user_id=' + AddUser_UsernameArray[0].id;
 
         BaseXmlHttpGet(theUrl, ChatLive_checkSubSucess, ChatLive_checkSubFail, chat_number, id, true);
     }
@@ -8866,7 +8930,13 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet('https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display', ChatLive_loadBadgesChannelSuccess, noop_fun, chat_number, id);
+            BaseXmlHttpGet(
+                'https://badges.twitch.tv/v1/badges/channels/' + ChatLive_selectedChannel_id[chat_number] + '/display',
+                ChatLive_loadBadgesChannelSuccess,
+                noop_fun,
+                chat_number,
+                id
+            );
         } else {
             Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
         }
@@ -8875,7 +8945,11 @@
     function ChatLive_loadBadgesChannelSuccess(responseText, chat_number, id) {
         if (id !== Chat_Id[chat_number]) return;
 
-        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(JSON.parse(responseText), ChatLive_selectedChannel_id[chat_number], true);
+        extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]] = Chat_loadBadgesTransform(
+            JSON.parse(responseText),
+            ChatLive_selectedChannel_id[chat_number],
+            true
+        );
 
         Chat_tagCSS(extraEmotesDone.BadgesChannel[ChatLive_selectedChannel_id[chat_number]], Chat_div[chat_number]);
     }
@@ -8937,7 +9011,13 @@
     }
 
     function ChatLive_loadChattersLoad(chat_number, id) {
-        BaseXmlHttpGet(ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number], ChatLive_loadChattersSuccess, noop_fun, chat_number, id);
+        BaseXmlHttpGet(
+            ChatLive_Base_chat_url + 'group/user/' + ChatLive_selectedChannel[chat_number],
+            ChatLive_loadChattersSuccess,
+            noop_fun,
+            chat_number,
+            id
+        );
     }
 
     function ChatLive_loadChattersSuccess(responseText, chat_number, id) {
@@ -9100,7 +9180,10 @@
 
         if (!extraEmotesDone.cheers[ChatLive_selectedChannel_id[chat_number]]) {
             BaseXmlHttpGet(
-                'https://api.twitch.tv/v5/bits/actions?channel_id=' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) + '&client_id=' + AddCode_backup_client_id,
+                'https://api.twitch.tv/v5/bits/actions?channel_id=' +
+                encodeURIComponent(ChatLive_selectedChannel_id[chat_number]) +
+                '&client_id=' +
+                AddCode_backup_client_id,
                 ChatLive_loadCheersChannelSuccess,
                 noop_fun,
                 chat_number,
@@ -9146,7 +9229,13 @@
         if (id !== Chat_Id[chat_number]) return;
 
         if (!extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]) {
-            BaseXmlHttpGet('https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]), ChatLive_loadEmotesChannelffzSuccess, noop_fun, chat_number, id);
+            BaseXmlHttpGet(
+                'https://api.frankerfacez.com/v1/room/id/' + encodeURIComponent(ChatLive_selectedChannel_id[chat_number]),
+                ChatLive_loadEmotesChannelffzSuccess,
+                noop_fun,
+                chat_number,
+                id
+            );
         } else {
             ChatLive_updateExtraEmotes(extraEmotesDone.ffz[ChatLive_selectedChannel_id[chat_number]]);
         }
@@ -9279,7 +9368,9 @@
 
     function ChatLive_PreLoadChat(chat_number, id) {
         BaseXmlHttpGet(
-            'https://recent-messages.robotty.de/api/v2/recent-messages/' + ChatLive_selectedChannel[chat_number] + '?limit=30&hide_moderation_messages=true',
+            'https://recent-messages.robotty.de/api/v2/recent-messages/' +
+            ChatLive_selectedChannel[chat_number] +
+            '?limit=30&hide_moderation_messages=true',
             ChatLive_PreLoadChatSuccess,
             noop_fun,
             chat_number,
@@ -9314,7 +9405,9 @@
         if (!SkipStartLine) {
             ChatLive_LineAdd({
                 chat_number: chat_number,
-                message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) + STR_SPACE_HTML + STR_LIVE
+                message: ChatLive_LineAddSimple(STR_LOADING_CHAT + STR_SPACE_HTML + (!chat_number ? Play_data.data[1] : PlayExtra_data.data[1])) +
+                    STR_SPACE_HTML +
+                    STR_LIVE
             });
         }
 
@@ -9393,7 +9486,11 @@
                             ChatLive_LineAdd({
                                 chat_number: chat_number,
                                 message: ChatLive_LineAddSimple(
-                                    STR_CHAT_CONNECTED + STR_SPACE_HTML + STR_AS + STR_SPACE_HTML + (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS)
+                                    STR_CHAT_CONNECTED +
+                                    STR_SPACE_HTML +
+                                    STR_AS +
+                                    STR_SPACE_HTML +
+                                    (useToken[chat_number] ? AddUser_UsernameArray[0].display_name : STR_ANONYMOUS)
                                 )
                             });
                         }
@@ -9406,7 +9503,12 @@
 
                             ChatLive_LineAdd({
                                 chat_number: chat_number,
-                                message: ChatLive_LineAddSimple(STR_CHAT_DELAY + ' ' + Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] + stringSec)
+                                message: ChatLive_LineAddSimple(
+                                    STR_CHAT_DELAY +
+                                    ' ' +
+                                    Play_controls[Play_controlsChatDelay].values[Play_controls[Play_controlsChatDelay].defaultValue] +
+                                    stringSec
+                                )
                             });
 
                             if (Play_ChatDelayPosition === 1) OSInterface_getLatency(chat_number);
@@ -9417,7 +9519,8 @@
                         //On that device the onclose is automatic call after 60 seconds of inactivity
                         ChatLive_PingId[chat_number] = Main_setInterval(
                             function() {
-                                if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1) ChatLive_socket[chat_number].send('PONG tmi.twitch.tv');
+                                if (ChatLive_socket[chat_number] && ChatLive_socket[chat_number].readyState === 1)
+                                    ChatLive_socket[chat_number].send('PONG tmi.twitch.tv');
                             },
                             30 * 1000, //30
                             ChatLive_PingId[chat_number]
@@ -9847,7 +9950,7 @@
 
     function ChatLive_Warn(message, time) {
         ChatLiveControls_showWarningDialog('Chat: ' + message, time);
-        Play_showWarningMidleDialog('Chat: ' + message, time);
+        Play_showWarningMiddleDialog('Chat: ' + message, time);
     }
 
     function ChatLive_SendMessage(message, chat_number) {
@@ -9945,7 +10048,8 @@
                 ChatLive_User_Set &&
                 recipient &&
                 recipientId &&
-                (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') || Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))
+                (Main_A_equals_B(recipient + '', AddUser_UsernameArray[0].id + '') ||
+                    Main_A_equals_B(recipientId.toLowerCase() + '', AddUser_UsernameArray[0].name.toLowerCase() + ''))
             ) {
                 ChatLive_Warn((isAnon ? STR_ANONYMOUS : tags['display-name']) + STR_GIFT_SUB, 10000);
             }
@@ -10034,7 +10138,10 @@
             mod = true;
         } else if (ChatLive_Highlight_AtUser && ChatLive_User_Regex_Search.test(mmessage)) {
             atuser = true;
-        } else if (ChatLive_Highlight_User_send && Main_A_equals_B(tags['display-name'].toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())) {
+        } else if (
+            ChatLive_Highlight_User_send &&
+            Main_A_equals_B(tags['display-name'].toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())
+        ) {
             atuser = true;
         }
 
@@ -10193,7 +10300,10 @@
 
         if (messageObj.atstreamer) {
             classname += ' chat_atstreamer';
-            messageObj.message = messageObj.message.replace(ChatLive_Channel_Regex_Replace[messageObj.chat_number], "<span style='color: #34B5FF; font-weight: bold'>$&</span>");
+            messageObj.message = messageObj.message.replace(
+                ChatLive_Channel_Regex_Replace[messageObj.chat_number],
+                "<span style='color: #34B5FF; font-weight: bold'>$&</span>"
+            );
         } else if (messageObj.fromstreamer) {
             classname += ' chat_fromstreamer';
         } else if (messageObj.mod) {
@@ -11124,7 +11234,7 @@
         Main_selectedChannel_id: '',
         Main_gameSelected: '',
         Main_gameSelected_id: '',
-        Main_OldgameSelected: null,
+        Main_OldGameSelected: null,
         Play_isHost: false,
         Users_AddcodePosition: 0,
         Play_WasPlaying: 0,
@@ -12490,7 +12600,7 @@
         }
 
         if (Main_values.Main_Go === Main_aGame) {
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+            Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         }
 
         Main_openStream();
@@ -16461,7 +16571,7 @@
             PlayClip_SetOpenLiveData = tempData;
 
             if (!Play_HasLive && Settings_value.live_warn.defaultValue === 1) {
-                Play_showWarningMidleDialog(tempData[1] + STR_BR + Play_controls[Play_controlsOpenLive].string, 3000, true);
+                Play_showWarningMiddleDialog(tempData[1] + STR_BR + Play_controls[Play_controlsOpenLive].string, 3000, true);
             }
 
             Play_HasLive = true;
@@ -17720,8 +17830,9 @@
         BaseXmlHttpGet(theUrl, Play_UpdateGameInfoSuccess, Play_UpdateGameInfoSuccessError, PlayVodClip, null, true);
     }
 
-    function Play_UpdateGameInfoSuccess(response, PlayVodClip) {
-        response = JSON.parse(response);
+    function Play_UpdateGameInfoSuccess(responseText, PlayVodClip) {
+        var response = JSON.parse(responseText);
+
         if (response.data && response.data.length) {
             Main_values.Main_gameSelected_id = response.data[0].id;
         }
@@ -17757,10 +17868,11 @@
         //     if (AddCode_IsFollowing) AddCode_UnFollow();
         //     else AddCode_Follow();
         // } else {
-        //     Play_showWarningMidleDialog(STR_NOKEY_WARN, 2000);
+        //     Play_showWarningMiddleDialog(STR_NOKEY_WARN, 2000);
         //     Play_IsWarning = true;
         // }
-        Play_showWarningMidleDialog(STR_FOLLOW_ISSUE, 2000);
+        Play_showWarningMiddleDialog(STR_FOLLOW_ISSUE, 2000);
+        //Play_showWarningMiddleDialog
     }
 
     function Play_CheckLiveThumb(PreventResetFeed, PreventWarn) {
@@ -17811,7 +17923,7 @@
             }
         }
 
-        if (!PreventWarn) Play_showWarningMidleDialog(error, 1500);
+        if (!PreventWarn) Play_showWarningMiddleDialog(error, 1500);
 
         if (!PreventResetFeed) UserLiveFeed_ResetFeedId();
 
@@ -17856,7 +17968,7 @@
         }
 
         Main_innerHTMLWithEle(Play_BottonIcons_Pause, Play_GetPlayPauseIcon(State));
-        Play_showWarningMidleDialog(Play_GetPlayPauseIcon(!State), 500);
+        Play_showWarningMiddleDialog(Play_GetPlayPauseIcon(!State), 500);
     }
 
     function Play_GetPlayPauseIcon(not_playing) {
@@ -17914,7 +18026,7 @@
                     }
                 }
             } else if (Play_WarningDialogVisible() || Play_WarningMidleDialogVisible()) {
-                Main_clearTimeout(Play_showWarningMidleDialogId);
+                Main_clearTimeout(Play_showWarningMiddleDialogId);
                 Main_clearTimeout(Play_showWarningDialogId);
                 Play_HideWarningDialog();
                 Play_HideWarningMidleDialog();
@@ -18057,7 +18169,7 @@
             Play_audio_enable_Before = Main_Slice(Play_audio_enable);
             Play_audio_enable = [1, 1, 1, 1];
 
-            Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + STR_PLAYER_MULTI_ALL, 2000);
+            Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + STR_PLAYER_MULTI_ALL, 2000);
         } else {
             if (Play_audio_enable_Before.length) {
                 Play_audio_enable = Main_Slice(Play_audio_enable_Before);
@@ -18089,7 +18201,7 @@
                 }
             }
 
-            Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + text, 2000);
+            Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + text, 2000);
         }
 
         OSInterface_SetAudioEnabled();
@@ -18113,7 +18225,7 @@
         OSInterface_SetAudioEnabled();
         OSInterface_ApplyAudio();
 
-        Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]), 2000);
+        Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + (Play_audio_enable[0] ? Play_data.data[1] : PlayExtra_data.data[1]), 2000);
 
         Play_SetAudioIcon();
     }
@@ -18131,7 +18243,7 @@
 
             OSInterface_EnableMultiStream(Play_Multi_MainBig, 0);
 
-            Play_showWarningMidleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
+            Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
 
             Play_MultiUpdateinfoMainBig('_big');
             Main_HideElement('stream_info_multi');
@@ -18826,7 +18938,7 @@
                 if (Main_IsOn_OSInterface) {
                     OSInterface_OpenExternal(Play_ExternalUrls[Play_controls[this.position].defaultValue]);
                 } else {
-                    Play_showWarningMidleDialog(STR_NOT_SUPPORT_BROWSER, 2000);
+                    Play_showWarningMiddleDialog(STR_NOT_SUPPORT_BROWSER, 2000);
                     return;
                 }
 
@@ -19079,7 +19191,7 @@
                     }
                 }
 
-                if (Play_LowLatency) Play_showWarningMidleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
+                if (Play_LowLatency) Play_showWarningMiddleDialog(STR_LOW_LATENCY_SUMMARY, 3000);
 
                 Main_setItem('Play_LowLatency', Play_LowLatency);
                 Play_ResetLowlatency();
@@ -19159,7 +19271,7 @@
                 if (!Main_IsOn_OSInterface || Play_StayDialogVisible()) return;
 
                 if (Play_MaxInstances < 4) {
-                    Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI, 3000);
+                    Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_4_WAY_MULTI, 3000);
                     return;
                 }
 
@@ -19376,10 +19488,10 @@
             defaultValue: null,
             enterKey: function() {
                 if (Main_values.Play_ChatForceDisable) {
-                    Play_showWarningMidleDialog(STR_CHAT_DISABLE, 1500);
+                    Play_showWarningMiddleDialog(STR_CHAT_DISABLE, 1500);
                     return;
                 } else if (!AddUser_UserIsSet() || !AddUser_UsernameArray[0].access_token) {
-                    Play_showWarningMidleDialog(STR_NOKEY_CHAT_WARN, 1500);
+                    Play_showWarningMiddleDialog(STR_NOKEY_CHAT_WARN, 1500);
                     return;
                 }
 
@@ -19922,7 +20034,7 @@
                 OSInterface_ApplyAudio();
                 Play_controlsAudioUpdateicons();
 
-                Play_showWarningMidleDialog(STR_AUDIO_ALL_ENA, 2000);
+                Play_showWarningMiddleDialog(STR_AUDIO_ALL_ENA, 2000);
 
                 Play_SetAudioIcon();
             }
@@ -19951,7 +20063,7 @@
                 OSInterface_ApplyAudio();
                 Play_controlsAudioUpdateicons();
 
-                Play_showWarningMidleDialog(STR_AUDIO_ALL_100_SET, 2000);
+                Play_showWarningMiddleDialog(STR_AUDIO_ALL_100_SET, 2000);
 
                 Play_SetAudioIcon();
             }
@@ -20916,7 +21028,7 @@
 
     function Play_preventVodOnPP() {
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
-            Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 1500);
+            Play_showWarningMiddleDialog(STR_PP_VOD_ERROR, 1500);
 
             return false;
         }
@@ -21010,7 +21122,7 @@
         PlayExtra_loadDataCheckHostId = 0;
 
         if (Play_MaxInstances < 2) {
-            Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
+            Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PP_MODO, 3000);
 
             return;
         }
@@ -21155,7 +21267,7 @@
     }
 
     function PlayExtra_RestorePlayData() {
-        Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+        Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
         PlayExtra_data = JSON.parse(JSON.stringify(PlayExtra_Save_data));
         PlayExtra_Save_data = JSON.parse(JSON.stringify(Play_data_base));
@@ -21212,7 +21324,7 @@
         // Called only by JAVA
 
         if (!fail_type && Settings_value.open_host.defaultValue) {
-            Play_showWarningMidleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
+            Play_showWarningMiddleDialog(PlayExtra_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE + STR_CHECK_HOST, 2000);
 
             Main_setTimeout(
                 function() {
@@ -21236,7 +21348,7 @@
             PlayExtra_SwitchPlayer();
         }
 
-        Play_showWarningMidleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
+        Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 2500 + (fail_type ? 2500 : 0));
 
         Play_CloseSmall();
     }
@@ -21441,7 +21553,7 @@
             if (Main_IsOn_OSInterface && !Play_isFullScreen) OSInterface_mupdatesizePP(Play_isFullScreen);
             PlayExtra_UnSetPanel();
             Play_HideBufferDialog();
-            Play_showWarningMidleDialog(Reason, 2500);
+            Play_showWarningMiddleDialog(Reason, 2500);
         }
     }
 
@@ -22038,7 +22150,7 @@
 
     // To Force a warn, not used regularly so keep commented out
     //function Play_Warn(text) {
-    //    Play_showWarningMidleDialog(text);
+    //    Play_showWarningMiddleDialog(text);
     //}
 
     //When update this check PlayClip_CheckIfIsLiveResult
@@ -22132,7 +22244,7 @@
         Play_HideBufferDialog();
         Play_CheckIfIsLiveCleanEnd();
 
-        Play_showWarningMidleDialog(text, time);
+        Play_showWarningMiddleDialog(text, time);
 
         if (callbackError) callbackError();
     }
@@ -22579,7 +22691,7 @@
             Main_removeEventListener('keydown', Play_handleKeyDown);
             Main_addEventListener('keydown', Play_EndUpclearCalback);
 
-            Play_showWarningMidleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+            Play_showWarningMiddleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
 
             Play_RestorePlayDataValues();
             Main_values.Play_WasPlaying = 0;
@@ -22600,7 +22712,7 @@
 
     function Play_ForbiddenLive() {
         Play_HideBufferDialog();
-        Play_showWarningMidleDialog(STR_FORBIDDEN, 3000);
+        Play_showWarningMiddleDialog(STR_FORBIDDEN, 3000);
 
         Main_setTimeout(function() {
             if (Play_isOn) Play_CheckHostStart();
@@ -22842,14 +22954,14 @@
             OSInterface_SetQuality(-1);
             OSInterface_RestartPlayer(1, 0, 0);
             Play_qualityDisplay(Play_getQualitiesCount, 0, Play_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-            Play_showWarningMidleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
+            Play_showWarningMiddleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
         } else if (mwhocall === 2) {
             PlayVod_quality = 'Auto';
             PlayVod_qualityPlaying = PlayVod_quality;
             OSInterface_SetQuality(-1);
             OSInterface_RestartPlayer(2, OSInterface_gettime(), 0);
             Play_qualityDisplay(PlayVod_getQualitiesCount, 0, PlayVod_SetHtmlQuality, Play_controls[Play_controlsQuality]);
-            Play_showWarningMidleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
+            Play_showWarningMiddleDialog(STR_PLAYER_LAG + Play_GetErrorCode(errorCode), 2000);
         } else if (mwhocall === 3) {
             if (!navigator.onLine) Play_EndStart(false, mwhocall);
             else if (PlayClip_qualityIndex < PlayClip_getQualitiesCount() - 1) {
@@ -22857,7 +22969,7 @@
                 Play_qualityDisplay(PlayClip_getQualitiesCount, PlayClip_qualityIndex, PlayClip_SetHtmlQuality, Play_controls[Play_controlsQuality]);
                 PlayClip_qualityChanged();
 
-                Play_showWarningMidleDialog(STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode), 2000);
+                Play_showWarningMiddleDialog(STR_PLAYER_SOURCE + Play_GetErrorCode(errorCode), 2000);
             } else Play_EndStart(false, 3);
         }
     }
@@ -23052,9 +23164,9 @@
         return Main_isElementShowingWithEle(Play_dialog_warning_play);
     }
 
-    var Play_showWarningMidleDialogId;
+    var Play_showWarningMiddleDialogId;
 
-    function Play_showWarningMidleDialog(text, timeout, IsLiveWarning) {
+    function Play_showWarningMiddleDialog(text, timeout, IsLiveWarning) {
         Main_innerHTMLWithEle(Play_dialog_warning_play_middle_text, text);
         Play_dialog_warning_play_middle.style.width = '';
 
@@ -23071,19 +23183,19 @@
         Main_ShowElementWithEle(Play_dialog_warning_play_middle);
 
         if (timeout) {
-            Play_showWarningMidleDialogId = Main_setTimeout(
+            Play_showWarningMiddleDialogId = Main_setTimeout(
                 function() {
                     Play_HideWarningMidleDialog();
                 },
                 timeout,
-                Play_showWarningMidleDialogId
+                Play_showWarningMiddleDialogId
             );
-        } else Main_clearTimeout(Play_showWarningMidleDialogId);
+        } else Main_clearTimeout(Play_showWarningMiddleDialogId);
     }
 
     function Play_HideWarningMidleDialog() {
         Main_HideElementWithEle(Play_dialog_warning_play_middle);
-        Main_clearTimeout(Play_showWarningMidleDialogId);
+        Main_clearTimeout(Play_showWarningMiddleDialogId);
     }
 
     function Play_WarningMidleDialogVisible() {
@@ -23605,7 +23717,7 @@
     function Play_CloseBigAndSwich(error_410) {
         Play_HideBufferDialog();
 
-        Play_showWarningMidleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
+        Play_showWarningMiddleDialog(error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_IS_OFFLINE, 2500);
 
         if (PlayExtra_data.data.length > 0) {
             if (Main_IsOn_OSInterface) OSInterface_mSwitchPlayer();
@@ -23667,7 +23779,7 @@
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
             if (Play_MultiEnable || PlayExtra_PicturePicture) {
-                Play_showWarningMidleDialog(STR_PP_VOD_ERROR, 2500);
+                Play_showWarningMiddleDialog(STR_PP_VOD_ERROR, 2500);
                 return;
             }
 
@@ -23721,7 +23833,7 @@
     function Play_RestorePlayData(error_410, Isforbiden) {
         Play_HideBufferDialog();
 
-        Play_showWarningMidleDialog(
+        Play_showWarningMiddleDialog(
             error_410 ? STR_410_ERROR : Play_data.data[1] + ' ' + STR_LIVE + STR_BR + (Isforbiden ? STR_FORBIDDEN : STR_IS_OFFLINE),
             2000
         );
@@ -23989,7 +24101,7 @@
         if (fail_type === 1) reason = STR_PLAYER_ERROR + STR_BR + STR_PLAYER_ERROR_MULTI;
         if (fail_type === 2) reason = STR_PLAYER_LAG_ERRO + STR_BR + STR_PLAYER_ERROR_MULTI;
 
-        Play_showWarningMidleDialog(reason + Play_GetErrorCode(errorCode), 5000);
+        Play_showWarningMiddleDialog(reason + Play_GetErrorCode(errorCode), 5000);
 
         Play_MultiArray[position] = JSON.parse(JSON.stringify(Play_data_base));
         Play_MultiInfoReset(position);
@@ -24123,7 +24235,7 @@
     }
 
     function Play_MultiStartFail(pos, display_name, string_fail_reason) {
-        Play_showWarningMidleDialog(string_fail_reason ? string_fail_reason : display_name + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
+        Play_showWarningMiddleDialog(string_fail_reason ? string_fail_reason : display_name + ' ' + STR_LIVE + STR_IS_OFFLINE, 2000);
         Play_HideBufferDialog();
 
         if (Play_OlddataSet()) {
@@ -24217,7 +24329,7 @@
 
                 OSInterface_EnableMultiStream(Play_Multi_MainBig, Play_MultiEnableKeyRightLeft_Offset);
 
-                Play_showWarningMidleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
+                Play_showWarningMiddleDialog(STR_MAIN_WINDOW + STR_SPACE_HTML + Play_MultiArray[0].data[1], 2000);
                 Play_data = JSON.parse(JSON.stringify(Play_MultiArray[0]));
                 Play_SetExternalQualities(Play_extractQualities(Play_data.playlist), 0, Play_data.data[1]);
                 Play_MultiUpdateinfoMainBig('_big');
@@ -24245,7 +24357,7 @@
 
             Play_AudioReset(pos);
 
-            Play_showWarningMidleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1], 2000);
+            Play_showWarningMiddleDialog(STR_AUDIO_SOURCE + STR_SPACE_HTML + Play_MultiArray[pos].data[1], 2000);
         }
 
         Play_SetAudioIcon();
@@ -28256,7 +28368,7 @@
     function Screens_OpenSidePanel(forceFeed, key) {
         Screens_RemoveAllFocus(key);
         if (Main_values.Main_Go === Main_aGame) {
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+            Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         }
         Screens_ClearAnimation(key);
         Main_removeEventListener('keydown', ScreenObj[key].key_fun);
@@ -28505,12 +28617,12 @@
     function AGame_headerOptions(key) {
         if (!ScreenObj[key].posX) {
             Main_values.Main_Go = Main_AGameVod;
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+            Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
         } else {
             Main_values.Main_Go = Main_AGameClip;
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+            Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
             AGame_headerOptionsExit(key);
             Main_SwitchScreen();
         }
@@ -29327,11 +29439,45 @@
 
     function Screens_OpenGame() {
         Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-        if (!Screens_values_Play_data[18] || Play_data.data[3] === '') {
-            Main_showWarningDialog(STR_NO_GAME, 2000);
+        if (!Screens_values_Play_data[18] && Play_data.data[3] === '') {
+            Screens_UpdateGameInfoSuccessError();
             return;
         }
 
+        Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
+        Main_values.Main_gameSelected = Play_data.data[3];
+
+        if (!Main_values.Main_gameSelected_id) {
+            Screens_UpdateGameInfo();
+        } else {
+            Screens_OpenGameEnd();
+        }
+    }
+
+    function Screens_UpdateGameInfo(PlayVodClip) {
+        Main_showLoadDialog();
+        var theUrl = Main_helix_api + 'games?name=' + Main_values.Main_gameSelected;
+
+        BaseXmlHttpGet(theUrl, Screens_UpdateGameInfoSuccess, Screens_UpdateGameInfoSuccessError, PlayVodClip, null, true);
+    }
+
+    function Screens_UpdateGameInfoSuccess(responseText, PlayVodClip) {
+        var response = JSON.parse(responseText);
+
+        if (response.data && response.data.length) {
+            Main_values.Main_gameSelected_id = response.data[0].id;
+            Screens_OpenGameEnd(PlayVodClip);
+        } else {
+            Screens_UpdateGameInfoSuccessError();
+        }
+    }
+
+    function Screens_UpdateGameInfoSuccessError() {
+        Main_HideLoadDialog();
+        Main_showWarningDialog(STR_NO_GAME, 2000);
+    }
+
+    function Screens_OpenGameEnd() {
         if (!Main_values.Main_BeforeAgameisSet && Main_values.Main_Go !== Main_AGameVod && Main_values.Main_Go !== Main_AGameClip) {
             Main_values.Main_BeforeAgame =
                 Main_values.Main_BeforeChannelisSet &&
@@ -29345,9 +29491,6 @@
 
         Main_ExitCurrent(Main_values.Main_Go);
         Main_values.Main_Go = Main_aGame;
-
-        Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
-        Main_values.Main_gameSelected = Play_data.data[3];
 
         Main_ReStartScreens();
     }
@@ -30406,10 +30549,7 @@
                 },
                 SetPeriod: function() {
                     Main_setItem('vod_periodPos', this.periodPos);
-                    ScreensObj_SetTopLable(
-                        STR_VIDEOS,
-                        (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
-                    );
+                    ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
                 }
             },
             Base_obj
@@ -30494,7 +30634,7 @@
 
                     ScreensObj_SetTopLable(
                         Main_values.Main_selectedChannelDisplayname,
-                        (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
+                        (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
                     );
                 },
                 label_exit: function() {
@@ -30577,7 +30717,7 @@
                     if (Main_values.Main_gameSelected) {
                         ScreensObj_SetTopLable(
                             Main_values.Main_gameSelected,
-                            (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
+                            (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
                         );
                     } else {
                         ScreensObj_UpdateGameInfo(2, this.screen);
@@ -30657,7 +30797,7 @@
                 SetPeriod: function() {
                     Main_setItem('UserVod_periodPos', this.periodPos);
 
-                    ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
+                    ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
                 }
             },
             Base_obj
@@ -31775,15 +31915,15 @@
     }
 
     function ScreensObj_TopLableAgameInit(key) {
-        if (Main_values.Main_OldgameSelected === null) {
-            Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        if (Main_values.Main_OldGameSelected === null) {
+            Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         }
 
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
         Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
 
         if (
-            !Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected_id) ||
+            !Main_A_equals_B_No_Case(Main_values.Main_OldGameSelected, Main_values.Main_gameSelected_id) ||
             !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected_Id, Main_values.Main_gameSelected_id)
         ) {
             ScreenObj[key].status = false;
@@ -31794,7 +31934,7 @@
         }
 
         ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
 
         if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) {
             Sidepannel_SetUserLabels();
@@ -32045,7 +32185,7 @@
         } else if (PlayVodClip === 2) {
             ScreensObj_SetTopLable(
                 Main_values.Main_gameSelected,
-                (ScreenObj[key].highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]
+                (ScreenObj[key].highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]
             );
         } else if (PlayVodClip === 3) {
             ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]);
@@ -37658,7 +37798,7 @@
         var result = Play_MaxInstances > numberOfPlayers;
 
         if (!result && !Main_values.MaxInstancesWarn) {
-            Play_showWarningMidleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW, 7500);
+            Play_showWarningMiddleDialog(STR_4_WAY_MULTI_INSTANCES.replace('%x', Play_MaxInstances) + STR_PREVIEW, 7500);
 
             Main_values.MaxInstancesWarn = true;
         }
@@ -37815,7 +37955,7 @@
                     );
 
                     if (UserLiveFeed_PreviewOffset) {
-                        Play_showWarningMidleDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000), 2000);
+                        Play_showWarningMiddleDialog(STR_SHOW_VOD_PLAYER_WARNING + STR_SPACE_HTML + Play_timeMs(UserLiveFeed_PreviewOffset * 1000), 2000);
                     }
 
                     Main_EventPreview(
@@ -37831,7 +37971,7 @@
                     error = StreamInfo[6] + STR_SPACE_HTML + Play_CheckIfIsLiveGetError(StreamDataObj, isVod);
                 }
 
-                Play_showWarningMidleDialog(error, 0);
+                Play_showWarningMiddleDialog(error, 0);
             }
         }
     }
@@ -38112,10 +38252,10 @@
 
             if (NextPos > (userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user)) {
                 NextPos = UserLiveFeedobj_CurrentAGameEnable ? 0 : 1;
-                if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+                if (!userSet) Play_showWarningMiddleDialog(STR_NOKUSER_WARNING, 1000);
             } else if (NextPos < (UserLiveFeedobj_CurrentAGameEnable ? 0 : 1)) {
                 NextPos = userSet ? UserLiveFeedobj_MAX : UserLiveFeedobj_MAX_No_user;
-                if (!userSet) Play_showWarningMidleDialog(STR_NOKUSER_WARNING, 1000);
+                if (!userSet) Play_showWarningMiddleDialog(STR_NOKUSER_WARNING, 1000);
             }
 
             //If current game is empty, skip current game screen
@@ -38189,7 +38329,7 @@
             }
 
             if (!UserLiveFeed_ObjNotNull(pos) || Main_A_equals_B(UserLiveFeedobj_CurrentUserAGameNameEnter, '')) {
-                Play_showWarningMidleDialog(STR_NO_GAME, 1000);
+                Play_showWarningMiddleDialog(STR_NO_GAME, 1000);
                 return;
             }
 
@@ -38210,7 +38350,7 @@
             }
 
             if (!UserLiveFeed_ObjNotNull(pos)) {
-                Play_showWarningMidleDialog(STR_NO_GAME, 1000);
+                Play_showWarningMiddleDialog(STR_NO_GAME, 1000);
                 return;
             }
 
@@ -40210,7 +40350,7 @@
 
         if (Main_values.Main_Before !== Main_Users) Users_beforeUser = Main_values.Main_Before;
         Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
-        Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABLE);
+        Main_IconLoad('label_refresh', 'icon-user', STR_USER_TOP_LABEL);
         Main_innerHTML('label_last_refresh', '');
 
         Main_values.Main_Go = Main_Users;
