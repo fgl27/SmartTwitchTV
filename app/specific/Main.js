@@ -68,7 +68,7 @@ var Main_values = {
     Main_selectedChannel_id: '',
     Main_gameSelected: '',
     Main_gameSelected_id: '',
-    Main_OldgameSelected: null,
+    Main_OldGameSelected: null,
     Play_isHost: false,
     Users_AddcodePosition: 0,
     Play_WasPlaying: 0,
@@ -1426,7 +1426,7 @@ function Main_OpenLiveStream(data, id, idsArray, handleKeyDownFunction, checkHis
     }
 
     if (Main_values.Main_Go === Main_aGame) {
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
     }
 
     Main_openStream();

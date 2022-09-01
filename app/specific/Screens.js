@@ -1855,7 +1855,7 @@ function Screens_KeyLeftRight(y, x, key) {
 function Screens_OpenSidePanel(forceFeed, key) {
     Screens_RemoveAllFocus(key);
     if (Main_values.Main_Go === Main_aGame) {
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
     }
     Screens_ClearAnimation(key);
     Main_removeEventListener('keydown', ScreenObj[key].key_fun);
@@ -2104,12 +2104,12 @@ function Screens_handleKeyDown(key, event) {
 function AGame_headerOptions(key) {
     if (!ScreenObj[key].posX) {
         Main_values.Main_Go = Main_AGameVod;
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
     } else {
         Main_values.Main_Go = Main_AGameClip;
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
         AGame_headerOptionsExit(key);
         Main_SwitchScreen();
     }
@@ -2925,7 +2925,7 @@ function Screens_OpenScreen() {
 
 function Screens_OpenGame() {
     Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-    if (!Screens_values_Play_data[18] || Play_data.data[3] === '') {
+    if (!Screens_values_Play_data[18] && Play_data.data[3] === '') {
         Main_showWarningDialog(STR_NO_GAME, 2000);
         return;
     }
@@ -2946,6 +2946,8 @@ function Screens_OpenGame() {
 
     Main_values.Main_gameSelected_id = Screens_values_Play_data[18];
     Main_values.Main_gameSelected = Play_data.data[3];
+    console.log(Main_values.Main_gameSelected);
+    console.log(Main_values.Main_gameSelected_id);
 
     Main_ReStartScreens();
 }

@@ -2297,15 +2297,15 @@ function ScreensObj_CheckIsOpen(key, preventRefresh) {
 }
 
 function ScreensObj_TopLableAgameInit(key) {
-    if (Main_values.Main_OldgameSelected === null) {
-        Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+    if (Main_values.Main_OldGameSelected === null) {
+        Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
     }
 
     Main_IconLoad('label_thumb', 'icon-return', STR_GOBACK);
     Main_IconLoad('label_refresh', 'icon-refresh', STR_REFRESH + ':' + STR_GUIDE);
 
     if (
-        !Main_A_equals_B_No_Case(Main_values.Main_OldgameSelected, Main_values.Main_gameSelected_id) ||
+        !Main_A_equals_B_No_Case(Main_values.Main_OldGameSelected, Main_values.Main_gameSelected_id) ||
         !Main_A_equals_B_No_Case(ScreenObj[key].gameSelected_Id, Main_values.Main_gameSelected_id)
     ) {
         ScreenObj[key].status = false;
@@ -2316,7 +2316,7 @@ function ScreensObj_TopLableAgameInit(key) {
     }
 
     ScreenObj[key].gameSelected_Id = Main_values.Main_gameSelected_id;
-    Main_values.Main_OldgameSelected = Main_values.Main_gameSelected_id;
+    Main_values.Main_OldGameSelected = Main_values.Main_gameSelected_id;
 
     if (Main_values.Sidepannel_IsUser || Main_values.Main_BeforeAgame === Main_usergames) {
         Sidepannel_SetUserLabels();
