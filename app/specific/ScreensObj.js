@@ -909,10 +909,7 @@ function ScreensObj_InitVod() {
             },
             SetPeriod: function () {
                 Main_setItem('vod_periodPos', this.periodPos);
-                ScreensObj_SetTopLable(
-                    STR_VIDEOS,
-                    (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
-                );
+                ScreensObj_SetTopLable(STR_VIDEOS, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]);
             }
         },
         Base_obj
@@ -998,7 +995,7 @@ function ScreensObj_InitChannelVod() {
 
                 ScreensObj_SetTopLable(
                     Main_values.Main_selectedChannelDisplayname,
-                    (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
+                    (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES) //+ ',' + STR_OFFSET + ScreenObj[this.screen].extraoffset
                 );
             },
             label_exit: function () {
@@ -1082,7 +1079,7 @@ function ScreensObj_InitAGameVod() {
                 if (Main_values.Main_gameSelected) {
                     ScreensObj_SetTopLable(
                         Main_values.Main_gameSelected,
-                        (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
+                        (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[this.periodPos - 1]
                     );
                 } else {
                     ScreensObj_UpdateGameInfo(2, this.screen);
@@ -1163,7 +1160,7 @@ function ScreensObj_InitUserVod() {
             SetPeriod: function () {
                 Main_setItem('UserVod_periodPos', this.periodPos);
 
-                ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
+                ScreensObj_SetTopLable(STR_USER, (this.highlight ? STR_HIGHLIGHTS : STR_VODS) + (this.periodPos === 1 ? STR_RECENT : STR_VIWES));
             }
         },
         Base_obj
@@ -2567,7 +2564,7 @@ function ScreensObj_UpdateGameInfoSuccess(response, PlayVodClip, key) {
     } else if (PlayVodClip === 2) {
         ScreensObj_SetTopLable(
             Main_values.Main_gameSelected,
-            (ScreenObj[key].highlight ? STR_PAST_HIGHL : STR_PAST_BROA) + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]
+            (ScreenObj[key].highlight ? STR_HIGHLIGHTS : STR_VODS) + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]
         );
     } else if (PlayVodClip === 3) {
         ScreensObj_SetTopLable(Main_values.Main_gameSelected, STR_CLIPS + STR_SPACE_HTML + Main_Periods[ScreenObj[key].periodPos - 1]);

@@ -72,8 +72,8 @@ function en_USLang() {
     STR_NO = 'No';
     STR_FOR_THIS = 'for this';
     STR_PLAYER_PROBLEM = 'Connection failed, unable to load video content, exiting ...';
-    STR_PAST_BROA = 'VODs';
-    STR_PAST_HIGHL = 'Highlights';
+    STR_VODS = 'VODs';
+    STR_HIGHLIGHTS = 'Highlights';
     STR_CLIPS = 'Clips';
     STR_CONTENT = 'Content';
     STR_STREAM_ON = 'Streamed';

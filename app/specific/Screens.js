@@ -2925,7 +2925,7 @@ function Screens_OpenScreen() {
 
 function Screens_OpenGame() {
     Play_data.data[3] = Screens_values_Play_data[3] !== '' ? Screens_values_Play_data[3] : '';
-    if (!Screens_values_Play_data[18] && Play_data.data[3] === '') {
+    if (!Screens_values_Play_data[18] || Play_data.data[3] === '') {
         Main_showWarningDialog(STR_NO_GAME, 2000);
         return;
     }
