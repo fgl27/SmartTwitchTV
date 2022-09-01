@@ -303,7 +303,7 @@ function en_USLang() {
     STR_APP_LANG_SUMMARY = "The language of the app's text.";
     STR_ENTER_TO_OPEN = 'Press enter to access';
     STR_LANG_ALL = 'All';
-    STR_NO_GAME = 'No game from this';
+    STR_NO_GAME = "Can't get game from this";
     STR_EMPTY = 'Empty';
     STR_JUMP_BUFFER_WARNING = "Isn't possible to jump during buffering";
     STR_CHAT_DISABLE = "Chat is force disabled, enable it with the 'Chat force disable' option at the bottom of the player";

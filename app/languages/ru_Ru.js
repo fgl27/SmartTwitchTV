@@ -290,7 +290,6 @@ function ru_RULang() {
     STR_APP_LANG_SUMMARY = 'Язык приложения';
     STR_ENTER_TO_OPEN = 'Нажмите ОК';
     STR_LANG_ALL = 'Все';
-    STR_NO_GAME = 'Нет игры из этого';
     STR_EMPTY = 'Пусто';
     STR_JUMP_BUFFER_WARNING = 'Невозможно перейти во время буферизации';
     STR_CHAT_DISABLE = 'Чат принудительно отключен, включите его в нижних элементах управления плеера. Чат принудительно отключен.';
