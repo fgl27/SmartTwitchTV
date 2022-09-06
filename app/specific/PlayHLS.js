@@ -25,7 +25,6 @@ var Play_live_token_prop = 'streamPlaybackAccessToken';
 var Play_live_token =
     '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_base_live_links = 'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
-var Play_live_links = '%x.m3u8?token=%s&sig=%s&' + Play_base_live_links;
 
 var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 

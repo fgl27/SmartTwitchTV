@@ -783,21 +783,17 @@ function UserLiveFeed_CheckIfIsLive(obj) {
     if (!Main_IsOn_OSInterface || Main_isStopped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
         return;
 
-    var id, token, link, isLive;
+    var id, isLive;
 
     if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
         //vod
 
         id = obj[7];
-        token = Play_vod_token;
-        link = Play_vod_links;
     } else {
         //live
 
         isLive = true;
         id = obj[6];
-        token = Play_live_token;
-        link = Play_live_links;
     }
 
     PlayHLS_GetPlayListAsync(isLive, id, UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100, UserLiveFeed_FeedPosX, UserLiveFeed_CheckIfIsLiveResult);

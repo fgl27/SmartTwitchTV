@@ -1185,8 +1185,6 @@ function Screens_LoadPreviewStart(key, obj) {
 
         isLive = false;
         id = obj[7];
-        token = Play_vod_token;
-        link = Play_vod_links;
     } else {
         //live
 
@@ -1201,18 +1199,12 @@ function Screens_LoadPreviewStart(key, obj) {
                     link = Play_vod_links;
                 } else {
                     id = obj[6];
-                    token = Play_live_token;
-                    link = Play_live_links;
                 }
             } else {
                 id = obj[6];
-                token = Play_live_token;
-                link = Play_live_links;
             }
         } else {
             id = obj[6];
-            token = Play_live_token;
-            link = Play_live_links;
         }
     }
 

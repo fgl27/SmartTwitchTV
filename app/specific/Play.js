@@ -328,23 +328,17 @@ function Play_CheckIfIsLiveStart(callback) {
 
         var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
             id,
-            token,
-            link,
             isLive = false;
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
             //vod
 
             id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
         } else {
             //live
 
             isLive = true;
             id = obj[6];
-            token = Play_live_token;
-            link = Play_live_links;
         }
 
         Play_PreviewCheckId = new Date().getTime();
