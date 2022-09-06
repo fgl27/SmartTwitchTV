@@ -48,7 +48,7 @@ var proxy_fail_counter_checker = 0;
 var Play_vod_token_prop = 'videoPlaybackAccessToken';
 var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
 var Play_vod_links =
-    'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
+    'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
 
 function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess) {
     // console.log('isLive', isLive);
@@ -151,7 +151,10 @@ function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy)
             url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
         }
     } else {
-        url = Play_vod_links.replace('%x', Channel_or_VOD_Id).replace('%s', encodeURIComponent(Token)).replace('%s', Sig);
+        url = Play_vod_links.replace('%x', Channel_or_VOD_Id)
+            .replace('%t', encodeURIComponent(Token))
+            .replace('%s', Sig)
+            .replace('%d', Math.random() * 100000);
     }
 
     return {url: url, headers: headers};
