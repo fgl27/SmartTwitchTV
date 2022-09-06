@@ -685,9 +685,10 @@
 
             .stream_channel_follow_game,
             .pause_button3d {
-                text-shadow: -0.1em 0 0 #000000, 0.05em -0.05em 0 #000000, 0.05em 0.05em 0 #000000, 0 0.05em 0 #000000, -0.05em 0 0 #000000, -0.05em 0.05em 0 #000000, 0 -0.05em 0 #000000,
-                    0 0.0375em 0 #777777, 0 0.075em 0 #666666, 0 0.1125em 0 #555555, 0 0.2em 0 #000000, 0 0.2em 0 #000000, 0.1em 0.1em 0 #000000, 0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000,
-                    -0.1em 0.1em 0 #000000, -0.05em 0.15em 0 #000000, 0.05em 0.15em 0 #000000;
+                text-shadow: -0.1em 0 0 #000000, 0.05em -0.05em 0 #000000, 0.05em 0.05em 0 #000000, 0 0.05em 0 #000000, -0.05em 0 0 #000000,
+                    -0.05em 0.05em 0 #000000, 0 -0.05em 0 #000000, 0 0.0375em 0 #777777, 0 0.075em 0 #666666, 0 0.1125em 0 #555555, 0 0.2em 0 #000000,
+                    0 0.2em 0 #000000, 0.1em 0.1em 0 #000000, 0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000, -0.1em 0.1em 0 #000000,
+                    -0.05em 0.15em 0 #000000, 0.05em 0.15em 0 #000000;
             }
 
             .sidepanel_heart {
@@ -697,8 +698,9 @@
             .strokicon {
                 font-size: 90%;
                 color: #ffffff;
-                text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455, -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000,
-                    -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000, 0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
+                text-shadow: 0 0.025em 0 #000000, -0.025em 0 0 #000000, 0 0.0375em 0 #777777, 0 0.055em 0 #666666, 0 0.07em 0 #555455,
+                    -0.03em -0.03em 0 #000000, 0.03em -0.03em 0 #000000, -0.03em 0.08em 0 #000000, 0.03em 0.08em 0 #000000, -0.04em 0.03em 0 #000000,
+                    0.04em 0.03em 0 #000000, 0 0.1em 0 #000000, 0 -0.04em 0 #000000;
             }
 
             .seek_previews_holder {
@@ -2100,7 +2102,8 @@
             .chat_line {
                 padding: 0.35em;
                 color: #ffffff;
-                text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
+                text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000,
+                    -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
             }
 
             .chat_line_holder {
@@ -2141,7 +2144,8 @@
 
             .chat_loggedin {
                 color: #ffffff;
-                text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000, -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
+                text-shadow: -0.03em 0 0 #000, 0.03em 0 0 #000, 0 0.03em 0 #000, 0 -0.03em 0 #000, 0.03em -0.03em 0 #000, -0.03em -0.03em 0 #000,
+                    -0.03em 0.03em 0 #000, 0.03em 0.03em 0 #000;
                 /* font-size in relation to vh to avoid size change when chat font size is changed by the user*/
                 font-size: 2.5vh;
                 height: 2.8vh;
@@ -2747,7 +2751,12 @@
                     <div class="stream_thumbnail_live_holder" style="position: absolute; width: 24%; left: 17.33%; bottom: 0; font-size: 2.75vh">
                         <div id="color_thumb0" class="stream_thumbnail_live stream_thumbnail_focused_no_ani" style="padding-bottom: 70%">
                             <div class="stream_thumbnail_live_img">
-                                <img id="color_thumb0_img" class="stream_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                                <img
+                                    id="color_thumb0_img"
+                                    class="stream_img"
+                                    alt=""
+                                    src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                                />
                                 <div class="vod_watched" style="width: 50%"></div>
                             </div>
                             <div class="stream_thumbnail_live_text_holder" style="height: 2em">
@@ -2759,10 +2768,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="stream_thumbnail_live_holder" style="position: absolute; width: 24%; right: 17.33%; display: inline-block; bottom: 0; font-size: 2.75vh">
+                    <div
+                        class="stream_thumbnail_live_holder"
+                        style="position: absolute; width: 24%; right: 17.33%; display: inline-block; bottom: 0; font-size: 2.75vh"
+                    >
                         <div id="color_thumb1" class="stream_thumbnail_live stream_thumbnail_focused_test" style="padding-bottom: 70%">
                             <div class="stream_thumbnail_live_img">
-                                <img id="color_thumb1_img" class="stream_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                                <img
+                                    id="color_thumb1_img"
+                                    class="stream_img"
+                                    alt=""
+                                    src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                                />
                                 <div class="vod_watched_test" style="width: 50%"></div>
                             </div>
                             <div class="stream_thumbnail_live_text_holder" style="height: 2em">
@@ -3023,7 +3040,11 @@
                                 <i id="icon_side_panel_new_8" class="icon icon-history side_panel_new_icons_pad"></i>
                             </div>
                         </div>
-                        <div id="side_panel_fix_botton" class="side_panel_fix_bottom avoidclicks" style="width: 30%; background-color: #000000; pointer-events: none"></div>
+                        <div
+                            id="side_panel_fix_botton"
+                            class="side_panel_fix_bottom avoidclicks"
+                            style="width: 30%; background-color: #000000; pointer-events: none"
+                        ></div>
                     </div>
                 </div>
                 <div id="scenefeed" class="feed_screen_new">
@@ -3032,16 +3053,34 @@
                     </div>
                     <div id="side_panel_feed_thumb" class="side_panel_feed_thumb opacity_zero">
                         <div class="stream_thumbnail_side">
-                            <img id="feed_thumb_img" class="stream_img_side" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                            <img
+                                id="feed_thumb_img"
+                                class="stream_img_side"
+                                alt=""
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                            />
                         </div>
                         <div class="side_panel_feed_thumb_text_holder">
                             <div class="stream_text_holder">
                                 <div style="width: 13.5%; display: inline-block; transform: translateY(-45%); top: 50%; position: absolute">
-                                    <img id="feed_thumb_icon" class="thumb_info_icon" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                                    <img
+                                        id="feed_thumb_icon"
+                                        class="thumb_info_icon"
+                                        alt=""
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                                    />
                                 </div>
                                 <div style="width: 85.5%; display: inline-block; float: right">
-                                    <div id="feed_thumb_name" class="side_panel_feed_thumb_text multi_info_line class_bold" style="width: 75%; display: inline-block; font-size: 110%"></div>
-                                    <div id="feed_thumb_quality" class="side_panel_feed_thumb_text" style="width: 24%; float: right; text-align: right"></div>
+                                    <div
+                                        id="feed_thumb_name"
+                                        class="side_panel_feed_thumb_text multi_info_line class_bold"
+                                        style="width: 75%; display: inline-block; font-size: 110%"
+                                    ></div>
+                                    <div
+                                        id="feed_thumb_quality"
+                                        class="side_panel_feed_thumb_text"
+                                        style="width: 24%; float: right; text-align: right"
+                                    ></div>
                                     <div id="feed_thumb_title" class="side_panel_feed_thumb_title_text"></div>
                                     <div id="feed_thumb_game" class="side_panel_feed_thumb_text"></div>
                                     <div id="feed_thumb_views" class="side_panel_feed_thumb_text"></div>
@@ -3062,7 +3101,18 @@
                                     </div>
                                 </div>
                                 <div id="side_panel_row_0">
-                                    <div id="side_panel_cell0_0" style="width: 100%; display: inline-block; padding: 1%; position: absolute; top: 20%; font-size: 150%; margin-left: 3.5%">
+                                    <div
+                                        id="side_panel_cell0_0"
+                                        style="
+                                            width: 100%;
+                                            display: inline-block;
+                                            padding: 1%;
+                                            position: absolute;
+                                            top: 20%;
+                                            font-size: 150%;
+                                            margin-left: 3.5%;
+                                        "
+                                    >
                                         <div>
                                             <i class="sidepanel_heart icon icon-heart" style="color: #6441a4"></i>
                                         </div>
@@ -3101,17 +3151,29 @@
             <p>Test Text</p>
         </div>-->
             </div>
-            <div id="scene2" class="screen_size" style="opacity: 0; pointer-events: none; will-change: opacity; background-repeat: no-repeat; background-size: 100%; z-index: 1">
+            <div
+                id="scene2"
+                class="screen_size"
+                style="opacity: 0; pointer-events: none; will-change: opacity; background-repeat: no-repeat; background-size: 100%; z-index: 1"
+            >
                 <div id="scene2_click" class="screen_size hide" style="width: 55%; height: 59%; left: 16%; z-index: 9999">
                     <div id="player_embed_clicks" class="hide">
-                        <div id="twitch-embed_exit" class="exit_player exit_player_embed" style="text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em; margin-top: 0.5%"></div>
+                        <div
+                            id="twitch-embed_exit"
+                            class="exit_player exit_player_embed"
+                            style="text-shadow: #000000 0 0 0.2em, #000000 0 0 0.2em, #000000 0 0 0.15em; margin-top: 0.5%"
+                        ></div>
                         <div id="scene2_click_0" class="scene2_click_button_holder embedbutton" style="margin-left: 42%">
                             <div id="scene2_click_0_button" class="controls_button progress_bar_div_focus">
                                 <div id="scene2_click_0_button_icon_holder" style="transform: translateY(-12%)">
                                     <i id="scene2_click_0_button_icon" class="pause_button3d icon-pp"></i>
                                 </div>
                             </div>
-                            <div id="scene2_click_0_text_holder" class="embedbuttoninner controls_text_title_holder" style="transform: translateX(-25%); text-align: center; opacity: 0">
+                            <div
+                                id="scene2_click_0_text_holder"
+                                class="embedbuttoninner controls_text_title_holder"
+                                style="transform: translateX(-25%); text-align: center; opacity: 0"
+                            >
                                 <div id="scene2_click_0_text_title" class="strokedeline"></div>
                             </div>
                         </div>
@@ -3121,7 +3183,11 @@
                                     <i id="scene2_click_1_button_icon" class="pause_button3d icon-chat"></i>
                                 </div>
                             </div>
-                            <div id="scene2_click_1_text_holder" class="embedbuttoninner controls_text_title_holder" style="transform: translateX(-25%); text-align: center; opacity: 0">
+                            <div
+                                id="scene2_click_1_text_holder"
+                                class="embedbuttoninner controls_text_title_holder"
+                                style="transform: translateX(-25%); text-align: center; opacity: 0"
+                            >
                                 <div id="scene2_click_1_text_title" class="strokedeline"></div>
                             </div>
                         </div>
@@ -3131,7 +3197,11 @@
                                     <i id="scene2_click_2_button_icon" class="pause_button3d icon-side-by-side"> </i>
                                 </div>
                             </div>
-                            <div id="scene2_click_2_text_holder" class="embedbuttoninner controls_text_title_holder" style="transform: translateX(-25%); text-align: center; opacity: 0">
+                            <div
+                                id="scene2_click_2_text_holder"
+                                class="embedbuttoninner controls_text_title_holder"
+                                style="transform: translateX(-25%); text-align: center; opacity: 0"
+                            >
                                 <div id="scene2_click_2_text_title" class="strokedeline"></div>
                             </div>
                         </div>
@@ -3141,7 +3211,11 @@
                                     <i id="scene2_click_3_button_icon" class="pause_button3d icon-chat-pos"></i>
                                 </div>
                             </div>
-                            <div id="scene2_click_3_text_holder" class="embedbuttoninner controls_text_title_holder" style="transform: translateX(-25%); text-align: center; opacity: 0">
+                            <div
+                                id="scene2_click_3_text_holder"
+                                class="embedbuttoninner controls_text_title_holder"
+                                style="transform: translateX(-25%); text-align: center; opacity: 0"
+                            >
                                 <div id="scene2_click_3_text_title" class="strokedeline"></div>
                             </div>
                         </div>
@@ -3151,7 +3225,11 @@
                                     <i id="scene2_click_4_button_icon" class="pause_button3d icon-chat-size"></i>
                                 </div>
                             </div>
-                            <div id="scene2_click_4_text_holder" class="embedbuttoninner controls_text_title_holder" style="transform: translateX(-25%); text-align: center; opacity: 0">
+                            <div
+                                id="scene2_click_4_text_holder"
+                                class="embedbuttoninner controls_text_title_holder"
+                                style="transform: translateX(-25%); text-align: center; opacity: 0"
+                            >
                                 <div id="scene2_click_4_text_title" class="strokedeline"></div>
                             </div>
                         </div>
@@ -3204,10 +3282,15 @@
                         <div id="stream_clock" class="playclock"></div>
                         <div id="exit_player" class="exit_player hide"></div>
                         <div id="stream_info" class="shadow_text">
-                            <img id="stream_info_icon" class="stream_info_icon" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                            <img
+                                id="stream_info_icon"
+                                class="stream_info_icon"
+                                alt=""
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                            />
                             <div class="playmaininfo">
                                 <div style="font-size: 155%">
-                                    <div id="stream_info_name" style="display: inline-block; max-width: 88%;" class="class_bold multi_info_line"></div>
+                                    <div id="stream_info_name" style="display: inline-block; max-width: 88%" class="class_bold multi_info_line"></div>
                                     <div id="stream_info_audio" class="audio_icon"></div>
                                 </div>
                                 <div id="stream_info_title"></div>
@@ -3231,9 +3314,18 @@
                                                     </div>
                                                     <div id="stream_info_pp_title0" class="side_panel_new_game multi_info_line"></div>
                                                     <div id="stream_info_pp_game0" class="side_panel_new_game multi_info_line"></div>
-                                                    <div id="stream_info_pp_livetime0" class="side_panel_new_game multi_info_line stream_info_timers"></div>
-                                                    <div id="stream_info_pp_viewers0" class="side_panel_new_game multi_info_line stream_info_timers"></div>
-                                                    <div id="stream_info_pp_watching_time0" class="side_panel_new_game multi_info_line stream_info_timers"></div>
+                                                    <div
+                                                        id="stream_info_pp_livetime0"
+                                                        class="side_panel_new_game multi_info_line stream_info_timers"
+                                                    ></div>
+                                                    <div
+                                                        id="stream_info_pp_viewers0"
+                                                        class="side_panel_new_game multi_info_line stream_info_timers"
+                                                    ></div>
+                                                    <div
+                                                        id="stream_info_pp_watching_time0"
+                                                        class="side_panel_new_game multi_info_line stream_info_timers"
+                                                    ></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -3253,8 +3345,14 @@
                                                     </div>
                                                     <div id="stream_info_pp_title1" class="side_panel_new_game multi_info_line"></div>
                                                     <div id="stream_info_pp_game1" class="side_panel_new_game multi_info_line"></div>
-                                                    <div id="stream_info_pp_livetime1" class="side_panel_new_game multi_info_line stream_info_timers"></div>
-                                                    <div id="stream_info_pp_viewers1" class="side_panel_new_game multi_info_line stream_info_timers"></div>
+                                                    <div
+                                                        id="stream_info_pp_livetime1"
+                                                        class="side_panel_new_game multi_info_line stream_info_timers"
+                                                    ></div>
+                                                    <div
+                                                        id="stream_info_pp_viewers1"
+                                                        class="side_panel_new_game multi_info_line stream_info_timers"
+                                                    ></div>
                                                     <div id="stream_info_pp_watching_time1" class="side_panel_new_game stream_info_timers"></div>
                                                 </div>
                                             </div>
@@ -3357,7 +3455,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="stream_info_multi" class="shadow_text hide" style="padding-top: 2%; padding-left: 2%; padding-bottom: 0.75%; font-size: 120%">
+                        <div
+                            id="stream_info_multi"
+                            class="shadow_text hide"
+                            style="padding-top: 2%; padding-left: 2%; padding-bottom: 0.75%; font-size: 120%"
+                        >
                             <div>
                                 <div class="stream_info_multi_div">
                                     <div class="side_panel_feed">
@@ -3493,7 +3595,12 @@
                         <div id="pause_next_div" class="pause_next_div">
                             <div style="width: 44%; display: inline-block; text-align: right">
                                 <div id="back_button_img_holder" class="next_img_holder hide" style="margin-left: 11%">
-                                    <img id="back_button_img" class="next_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                                    <img
+                                        id="back_button_img"
+                                        class="next_img"
+                                        alt=""
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                                    />
                                 </div>
                                 <div id="back_button" class="next_button shadow_text" style="opacity: 0">
                                     <div id="back_button_text" class="next_text">
@@ -3503,7 +3610,10 @@
                                     <i id="back_button_icon" class="pause_button3d icon-back"></i>
                                 </div>
                             </div>
-                            <div id="pause_button_holder" style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch">
+                            <div
+                                id="pause_button_holder"
+                                style="width: 5%; display: inline-block; text-align: center; margin-left: 0.5ch; margin-right: 0.5ch"
+                            >
                                 <div id="pause_button" class="pause_button" style="width: 80%; padding-top: 0.375em; padding-bottom: 0.375em">
                                     <div id="pause_button_icon_holder">
                                         <i id="pause_button_icon" class="pause_button3d icon-pause"></i>
@@ -3512,7 +3622,12 @@
                             </div>
                             <div style="width: 44%; display: inline-block; text-align: left">
                                 <div id="next_button_img_holder" class="next_img_holder hide">
-                                    <img id="next_button_img" class="next_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                                    <img
+                                        id="next_button_img"
+                                        class="next_img"
+                                        alt=""
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                                    />
                                 </div>
                                 <div id="next_button" class="next_button shadow_text" style="opacity: 0">
                                     <i id="next_button_icon" class="pause_button3d icon-next"></i>
@@ -3527,7 +3642,11 @@
                 </div>
                 <div id="chat_send" class="chat_send screen_holder hide">
                     <div id="dialog_warning_chat" class="dialogs hide" style="z-index: 7; margin-top: 1%">
-                        <div id="dialog_warning_chat_text" class="strokedelinebig dialog_text" style="font-size: 3vh; background-color: rgba(0, 0, 0, 0.7)"></div>
+                        <div
+                            id="dialog_warning_chat_text"
+                            class="strokedelinebig dialog_text"
+                            style="font-size: 3vh; background-color: rgba(0, 0, 0, 0.7)"
+                        ></div>
                     </div>
                     <div class="chat_input_text_box">
                         <!-- Options-->
@@ -3763,7 +3882,12 @@
                     <!-- next-->
                     <div id="dialog_end_-1" class="dialog_end_icons hide">
                         <div id="end_next_img_holder_-1" class="end_img_holder hide">
-                            <img id="end_next_img_-1" class="end_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                            <img
+                                id="end_next_img_-1"
+                                class="end_img"
+                                alt=""
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                            />
                         </div>
                         <i id="dialog_end_icon_-1" class="icon-next strokicon icon_end"></i>
                         <div id="dialog_end_next_text_-1" class="strokedeline"></div>
@@ -3780,7 +3904,12 @@
                     <!-- open live-->
                     <div id="dialog_end_1" class="dialog_end_icons">
                         <div id="end_live_img_holder_1" class="end_img_holder hide">
-                            <img id="end_live_img_1" class="end_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                            <img
+                                id="end_live_img_1"
+                                class="end_img"
+                                alt=""
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                            />
                         </div>
                         <i id="dialog_end_icon_1" class="icon-play strokicon icon_end"></i>
                         <div id="dialog_end_live_text_1" class="strokedeline"></div>
@@ -3790,7 +3919,12 @@
                     <!-- open vod-->
                     <div id="dialog_end_2" class="dialog_end_icons">
                         <div id="end_vod_img_holder_2" class="end_img_holder hide">
-                            <img id="end_vod_img_2" class="end_img" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" />
+                            <img
+                                id="end_vod_img_2"
+                                class="end_img"
+                                alt=""
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                            />
                         </div>
                         <i id="dialog_end_icon_2" class="icon-movie-play strokicon icon_end"></i>
                         <div id="dialog_end_vod_text_2" class="strokedeline"></div>
@@ -3801,7 +3935,11 @@
                     <div id="dialog_end_3" class="dialog_end_icons">
                         <i id="dialog_end_icon_3" class="icon-filmstrip strokicon icon_end"></i>
                         <div id="dialog_end_channel_text_3" class="strokedeline"></div>
-                        <div id="end_channel_name_text_3" class="strokedeline" style="font-size: 85%; overflow: hidden; text-overflow: ellipsis"></div>
+                        <div
+                            id="end_channel_name_text_3"
+                            class="strokedeline"
+                            style="font-size: 85%; overflow: hidden; text-overflow: ellipsis"
+                        ></div>
                     </div>
                     <!-- game content-->
                     <div id="dialog_end_4" class="dialog_end_icons">
@@ -3855,7 +3993,11 @@
                     <div id="user_vod_scroll" class="user_feed_scroll hide"></div>
                     <div id="user_vod_history_scroll" class="user_feed_scroll hide"></div>
                     <div style="position: absolute; bottom: 0; width: 100%; height: 20%">
-                        <div id="icon_feed_back" class="show_pointer icon_feed_refresh opacity_zero" style="margin-top: -0.5%; margin-bottom: 0.25%"></div>
+                        <div
+                            id="icon_feed_back"
+                            class="show_pointer icon_feed_refresh opacity_zero"
+                            style="margin-top: -0.5%; margin-bottom: 0.25%"
+                        ></div>
                         <div id="feed_end" class="icon_feed_refresh strokedelinebig" style="margin-bottom: 0.25%">
                             <div id="feed_end_0" class="feed_end_name" style="margin-left: 0"></div>
                             <i id="feed_end_icon_0" class="feed_end_icon_up icon-key-down class_bold strokicon"></i>
@@ -3877,16 +4019,32 @@
                         </div>
                         <div style="line-height: 0.75em">
                             <div id="icon_feed_refresh" class="icon_feed_refresh" style="width: 78%; display: inline-block"></div>
-                            <div id="feed_last_refresh" class="icon_feed_refresh" style="width: 15%; display: inline-block; text-align: right; margin-left: 0"></div>
+                            <div
+                                id="feed_last_refresh"
+                                class="icon_feed_refresh"
+                                style="width: 15%; display: inline-block; text-align: right; margin-left: 0"
+                            ></div>
                             <div
                                 id="feed_counter"
                                 class="icon_feed_refresh strokedelinebig"
-                                style="position: absolute; text-align: right; margin-left: 0; width: 6%; display: inline-block; right: 0.5%; margin-top: 0.25em"
+                                style="
+                                    position: absolute;
+                                    text-align: right;
+                                    margin-left: 0;
+                                    width: 6%;
+                                    display: inline-block;
+                                    right: 0.5%;
+                                    margin-top: 0.25em;
+                                "
                             ></div>
                         </div>
                     </div>
 
-                    <div id="feed_refresh_button" class="hideimp controls_button progress_bar_div_focus embedbutton" style="position: absolute; right: 1vh; bottom: 3vh; z-index: 999">
+                    <div
+                        id="feed_refresh_button"
+                        class="hideimp controls_button progress_bar_div_focus embedbutton"
+                        style="position: absolute; right: 1vh; bottom: 3vh; z-index: 999"
+                    >
                         <div
                             id="feed_refresh_button_text_holder"
                             class="embedbuttoninner controls_text_title_holder"
