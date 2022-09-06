@@ -7517,7 +7517,7 @@
 
     function ChannelContent_LoadPreview() {
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             !ChannelContent_isoffline &&
             Settings_Obj_default('show_live_player') &&
             Main_isScene1DocVisible() &&
@@ -7583,7 +7583,7 @@
         //Called by Java
 
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             Main_values.Main_Go === Main_ChannelContent &&
             Main_isScene1DocVisible() &&
             !Sidepannel_isShowingUserLive() &&
@@ -13719,7 +13719,7 @@
 
     //Check if a VOD in history has ben deleted
     function Main_RunVODWorker() {
-        if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
+        if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
             i = 0,
@@ -13755,7 +13755,7 @@
 
     //Check if a Live that is now VOD in Live history has ben deleted
     function Main_RunLiveVODWorker() {
-        if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
             i = 0,
@@ -13790,7 +13790,7 @@
 
     //Check if a CLIP in history has ben deleted
     function Main_RunClipWorker() {
-        if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+        if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
         var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
@@ -13838,11 +13838,11 @@
         e.stopPropagation();
     }
 
-    var Main_isStoped = false;
+    var Main_isStopped = false;
 
     function Main_CheckStop() {
         // Called only by JAVA
-        Main_isStoped = true;
+        Main_isStopped = true;
         Main_PreventClick(true, Main_PreventClickfun);
 
         //Player related
@@ -13948,7 +13948,7 @@
     function Main_CheckResume(skipPlay) {
         // Called only by JAVA
         Main_PreventClick(false, Main_PreventClickfun);
-        Main_isStoped = false;
+        Main_isStopped = false;
 
         //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
         //but the aap is not ready for the rest of the check on this fun
@@ -21587,7 +21587,6 @@
     var Play_live_token =
         '{"query":"{streamPlaybackAccessToken(channelName:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
     var Play_base_live_links = 'reassignments_supported=true&playlist_include_framerate=true&allow_source=true&fast_bread=true&cdm=wv&p=%d';
-    var Play_live_links = '%x.m3u8?token=%s&sig=%s&' + Play_base_live_links;
 
     var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 
@@ -21613,7 +21612,7 @@
     var Play_vod_token_prop = 'videoPlaybackAccessToken';
     var Play_vod_token = '{"query":"{videoPlaybackAccessToken(id:\\"%x\\", params:{platform:\\"android\\",playerType:\\"mobile\\"}){value signature}}"}';
     var Play_vod_links =
-        'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%s&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
+        'https://usher.ttvnw.net/vod/%x.m3u8?&nauth=%t&nauthsig=%s&reassignments_supported=true&playlist_include_framerate=true&allow_source=true&cdm=wv&p=%d';
 
     function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess) {
         // console.log('isLive', isLive);
@@ -21716,7 +21715,10 @@
                 url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
             }
         } else {
-            url = Play_vod_links.replace('%x', Channel_or_VOD_Id).replace('%s', encodeURIComponent(Token)).replace('%s', Sig);
+            url = Play_vod_links.replace('%x', Channel_or_VOD_Id)
+                .replace('%t', encodeURIComponent(Token))
+                .replace('%s', Sig)
+                .replace('%d', Math.random() * 100000);
         }
 
         return {
@@ -22215,23 +22217,17 @@
 
             var obj = UserLiveFeed_GetObj(UserLiveFeed_FeedPosX),
                 id,
-                token,
-                link,
                 isLive = false;
 
             if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
                 //vod
 
                 id = obj[7];
-                token = Play_vod_token;
-                link = Play_vod_links;
             } else {
                 //live
 
                 isLive = true;
                 id = obj[6];
-                token = Play_live_token;
-                link = Play_live_links;
             }
 
             Play_PreviewCheckId = new Date().getTime();
@@ -22333,7 +22329,7 @@
     function Play_ResumeAfterOnlineMulti(pos) {
         //delay it call as some slow end device will not be able to handle all at once
         Main_setTimeout(function() {
-            if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) Play_MultiStart(pos);
+            if (Play_MultiArray[pos].data.length > 0 && !Main_isStopped && Play_isOn && Play_MultiEnable) Play_MultiStart(pos);
         }, 25 * pos);
     }
 
@@ -22355,7 +22351,7 @@
                 }
 
                 Main_setTimeout(function() {
-                    if (!Main_isStoped && Play_isOn) ChatLive_Init(0);
+                    if (!Main_isStopped && Play_isOn) ChatLive_Init(0);
                 }, 200);
             } else {
                 Play_data.watching_time = new Date().getTime();
@@ -24263,7 +24259,7 @@
         } else {
             //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
             Main_setTimeout(function() {
-                if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) {
+                if (Play_MultiArray[pos].data.length > 0 && !Main_isStopped && Play_isOn && Play_MultiEnable) {
                     OSInterface_StartMultiStream(pos, theUrl, playlist);
                 }
             }, 25);
@@ -27437,7 +27433,7 @@
                     //the screen is not refreshing
 
                     if (
-                        Main_isStoped ||
+                        Main_isStopped ||
                         (!Main_isScene1DocVisible() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                         key !== Main_values.Main_Go
                     ) {
@@ -27601,7 +27597,7 @@
 
         if (
             ScreenObj[key].PreviewEnable &&
-            !Main_isStoped &&
+            !Main_isStopped &&
             Screens_IsInUse(key) &&
             Screens_ObjNotNull(key) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
@@ -27697,8 +27693,6 @@
 
             isLive = false;
             id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
         } else {
             //live
 
@@ -27713,18 +27707,12 @@
                         link = Play_vod_links;
                     } else {
                         id = obj[6];
-                        token = Play_live_token;
-                        link = Play_live_links;
                     }
                 } else {
                     id = obj[6];
-                    token = Play_live_token;
-                    link = Play_live_links;
                 }
             } else {
                 id = obj[6];
-                token = Play_live_token;
-                link = Play_live_links;
             }
         }
 
@@ -27739,7 +27727,7 @@
 
     function Screens_LoadPreviewResult(StreamData, x, y) {
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             Screens_IsInUse(x) &&
             Screens_IsDivFocused(x) &&
             !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
@@ -28182,7 +28170,7 @@
         var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
         if (
-            Main_isStoped ||
+            Main_isStopped ||
             !Screens_IsInUse(key) ||
             !Screens_IsDivFocused(key) ||
             !ScreenObj[key].Cells[ScreenObj[key].posY] ||
@@ -36261,7 +36249,7 @@
     var Sidepannel_UpdateSinceId;
 
     function Sidepannel_UpdateSince() {
-        if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+        if (!Sidepannel_isShowingUserLive() || Main_isStopped) return;
 
         if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
             var info = Sidepannel_GetObj();
@@ -36287,7 +36275,7 @@
         if (Sidepannel_isShowingUserLive()) {
             Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
-            if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
+            if (!Main_isStopped && Settings_Obj_default('show_side_player')) {
                 if (Sidepannel_ObjNotNull()) {
                     var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
@@ -36333,7 +36321,7 @@
             return;
         }
 
-        if (!Main_isStoped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
+        if (!Main_isStopped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
             var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
             PlayHLS_GetPlayListAsync(true, channel, Sidepannel_PosFeed % 100, 0, Sidepannel_CheckIfIsLiveResult);
@@ -36346,7 +36334,7 @@
         //Called by Java
 
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             Sidepannel_isShowingUserLive() &&
             x === 0 &&
             y === Sidepannel_PosFeed % 100 &&
@@ -37475,7 +37463,7 @@
         UserLiveFeed_RefreshId[pos] = Main_setTimeout(
             function() {
                 if (
-                    Main_isStoped ||
+                    Main_isStopped ||
                     (!UserLiveFeed_loadingData[pos] &&
                         !UserLiveFeed_obj[pos].loadingMore &&
                         (!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isPreviewShowing()) &&
@@ -37810,7 +37798,7 @@
 
     function UserLiveFeed_CheckIfIsLiveStart(pos) {
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             UserLiveFeed_isPreviewShowing() &&
             pos === UserLiveFeed_FeedPosX &&
             (!Play_isEndDialogVisible() || !Play_EndFocus) &&
@@ -37848,24 +37836,20 @@
     function UserLiveFeed_CheckIfIsLive(obj) {
         Play_CheckIfIsLiveCleanEnd();
 
-        if (!Main_IsOn_OSInterface || Main_isStoped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
+        if (!Main_IsOn_OSInterface || Main_isStopped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
             return;
 
-        var id, token, link, isLive;
+        var id, isLive;
 
         if (UserLiveFeed_FeedPosX >= UserLiveFeedobj_UserVodPos) {
             //vod
 
             id = obj[7];
-            token = Play_vod_token;
-            link = Play_vod_links;
         } else {
             //live
 
             isLive = true;
             id = obj[6];
-            token = Play_live_token;
-            link = Play_live_links;
         }
 
         PlayHLS_GetPlayListAsync(isLive, id, UserLiveFeed_FeedPosY[UserLiveFeed_FeedPosX] % 100, UserLiveFeed_FeedPosX, UserLiveFeed_CheckIfIsLiveResult);
@@ -37878,7 +37862,7 @@
         //Called by Java
 
         if (
-            !Main_isStoped &&
+            !Main_isStopped &&
             UserLiveFeed_isPreviewShowing() &&
             (!Play_isEndDialogVisible() || !Play_EndFocus) &&
             UserLiveFeed_FeedPosX === x &&
