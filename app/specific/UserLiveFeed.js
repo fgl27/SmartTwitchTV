@@ -409,7 +409,7 @@ function UserLiveFeed_CheckRefresh(pos, timeout) {
     UserLiveFeed_RefreshId[pos] = Main_setTimeout(
         function () {
             if (
-                Main_isStoped ||
+                Main_isStopped ||
                 (!UserLiveFeed_loadingData[pos] &&
                     !UserLiveFeed_obj[pos].loadingMore &&
                     (!Main_isElementShowingWithEle(UserLiveFeed_obj[pos].div) || !UserLiveFeed_isPreviewShowing()) &&
@@ -742,7 +742,7 @@ function UserLiveFeed_MaxInstances() {
 var UserLiveFeed_LoadPreviewId;
 function UserLiveFeed_CheckIfIsLiveStart(pos) {
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         UserLiveFeed_isPreviewShowing() &&
         pos === UserLiveFeed_FeedPosX &&
         (!Play_isEndDialogVisible() || !Play_EndFocus) &&
@@ -780,7 +780,7 @@ function UserLiveFeed_CheckIfIsLiveStart(pos) {
 function UserLiveFeed_CheckIfIsLive(obj) {
     Play_CheckIfIsLiveCleanEnd();
 
-    if (!Main_IsOn_OSInterface || Main_isStoped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
+    if (!Main_IsOn_OSInterface || Main_isStopped || !UserLiveFeed_isPreviewShowing() || Main_isUpdateDialogVisible() || Main_isChangeDialogVisible())
         return;
 
     var id, token, link, isLive;
@@ -809,7 +809,7 @@ function UserLiveFeed_CheckIfIsLiveResult(StreamData, x, y) {
     //Called by Java
 
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         UserLiveFeed_isPreviewShowing() &&
         (!Play_isEndDialogVisible() || !Play_EndFocus) &&
         UserLiveFeed_FeedPosX === x &&

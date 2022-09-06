@@ -166,7 +166,7 @@ function Sidepannel_UpdateThumbDiv() {
 
 var Sidepannel_UpdateSinceId;
 function Sidepannel_UpdateSince() {
-    if (!Sidepannel_isShowingUserLive() || Main_isStoped) return;
+    if (!Sidepannel_isShowingUserLive() || Main_isStopped) return;
 
     if (Sidepannel_ObjNotNull() && !UserLiveFeed_loadingData[UserLiveFeedobj_UserLivePos]) {
         var info = Sidepannel_GetObj();
@@ -192,7 +192,7 @@ function Sidepannel_UpdateThumb() {
     if (Sidepannel_isShowingUserLive()) {
         Main_RemoveClassWithEle(Sidepannel_ThumbDoc, 'opacity_zero');
 
-        if (!Main_isStoped && Settings_Obj_default('show_side_player')) {
+        if (!Main_isStopped && Settings_Obj_default('show_side_player')) {
             if (Sidepannel_ObjNotNull()) {
                 var ChannelId = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][14];
 
@@ -237,7 +237,7 @@ function Sidepannel_CheckIfIsLive() {
         return;
     }
 
-    if (!Main_isStoped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
+    if (!Main_isStopped && Sidepannel_ObjNotNull() && Sidepannel_isShowingUserLive()) {
         var channel = UserLiveFeed_DataObj[UserLiveFeedobj_UserLivePos][Sidepannel_PosFeed][6];
 
         PlayHLS_GetPlayListAsync(true, channel, Sidepannel_PosFeed % 100, 0, Sidepannel_CheckIfIsLiveResult);
@@ -249,7 +249,7 @@ function Sidepannel_CheckIfIsLiveResult(StreamData, x, y) {
     //Called by Java
 
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         Sidepannel_isShowingUserLive() &&
         x === 0 &&
         y === Sidepannel_PosFeed % 100 &&

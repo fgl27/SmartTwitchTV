@@ -446,7 +446,7 @@ function Play_Resume() {
 function Play_ResumeAfterOnlineMulti(pos) {
     //delay it call as some slow end device will not be able to handle all at once
     Main_setTimeout(function () {
-        if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) Play_MultiStart(pos);
+        if (Play_MultiArray[pos].data.length > 0 && !Main_isStopped && Play_isOn && Play_MultiEnable) Play_MultiStart(pos);
     }, 25 * pos);
 }
 
@@ -468,7 +468,7 @@ function Play_ResumeAfterOnline() {
             }
 
             Main_setTimeout(function () {
-                if (!Main_isStoped && Play_isOn) ChatLive_Init(0);
+                if (!Main_isStopped && Play_isOn) ChatLive_Init(0);
             }, 200);
         } else {
             Play_data.watching_time = new Date().getTime();

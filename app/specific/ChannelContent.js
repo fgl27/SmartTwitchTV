@@ -604,7 +604,7 @@ function ChannelContent_Refresh() {
 
 function ChannelContent_LoadPreview() {
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         !ChannelContent_isoffline &&
         Settings_Obj_default('show_live_player') &&
         Main_isScene1DocVisible() &&
@@ -669,7 +669,7 @@ function ChannelContent_LoadPreviewResult(StreamData, x) {
     //Called by Java
 
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         Main_values.Main_Go === Main_ChannelContent &&
         Main_isScene1DocVisible() &&
         !Sidepannel_isShowingUserLive() &&

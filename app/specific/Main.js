@@ -2537,7 +2537,7 @@ function Main_StartHistoryworkerBradcast(obj, type, header) {
 
 //Check if a VOD in history has ben deleted
 function Main_RunVODWorker() {
-    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
+    if (ScreenObj[Main_HistoryVod].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || Boolean(!BradcastCheckerWorker)) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].vod,
         i = 0,
@@ -2573,7 +2573,7 @@ function Main_RunVODWorker() {
 
 //Check if a Live that is now VOD in Live history has ben deleted
 function Main_RunLiveVODWorker() {
-    if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryLive].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].live,
         i = 0,
@@ -2608,7 +2608,7 @@ function Main_RunLiveVODWorker() {
 
 //Check if a CLIP in history has ben deleted
 function Main_RunClipWorker() {
-    if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStoped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
+    if (ScreenObj[Main_HistoryClip].histPosX[3] || Main_isStopped || !AddUser_IsUserSet() || !BradcastCheckerWorker) return;
 
     var array = Main_values_History_data[AddUser_UsernameArray[0].id].clip;
 
@@ -2656,11 +2656,11 @@ function Main_PreventClickfun(e) {
     e.stopPropagation();
 }
 
-var Main_isStoped = false;
+var Main_isStopped = false;
 
 function Main_CheckStop() {
     // Called only by JAVA
-    Main_isStoped = true;
+    Main_isStopped = true;
     Main_PreventClick(true, Main_PreventClickfun);
 
     //Player related
@@ -2765,7 +2765,7 @@ var Main_CheckResumeVodsId;
 function Main_CheckResume(skipPlay) {
     // Called only by JAVA
     Main_PreventClick(false, Main_PreventClickfun);
-    Main_isStoped = false;
+    Main_isStopped = false;
 
     //When the app first start the dialog will show on that case if the user stop the app the dialog will be there
     //but the aap is not ready for the rest of the check on this fun

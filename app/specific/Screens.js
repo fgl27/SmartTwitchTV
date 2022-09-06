@@ -926,7 +926,7 @@ function Screens_CheckAutoRefresh(key, timeout) {
                 //the screen is not refreshing
 
                 if (
-                    Main_isStoped ||
+                    Main_isStopped ||
                     (!Main_isScene1DocVisible() && (ScreenObj[key].screenType !== 2 || (!PlayClip_isOn && !PlayClip_OpenAVod))) || //The screen is not showing and is not a clip screen and clip is not playing as clip has the featuring play next that only works if no refresh happens
                     key !== Main_values.Main_Go
                 ) {
@@ -1089,7 +1089,7 @@ function Screens_LoadPreview(key) {
 
     if (
         ScreenObj[key].PreviewEnable &&
-        !Main_isStoped &&
+        !Main_isStopped &&
         Screens_IsInUse(key) &&
         Screens_ObjNotNull(key) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
@@ -1227,7 +1227,7 @@ function Screens_LoadPreviewStart(key, obj) {
 
 function Screens_LoadPreviewResult(StreamData, x, y) {
     if (
-        !Main_isStoped &&
+        !Main_isStopped &&
         Screens_IsInUse(x) &&
         Screens_IsDivFocused(x) &&
         !Main_isElementShowingWithEle(Screens_dialog_thumb_div) &&
@@ -1669,7 +1669,7 @@ function Screens_UpdateSince(key) {
     var id = ScreenObj[key].posY + '_' + ScreenObj[key].posX;
 
     if (
-        Main_isStoped ||
+        Main_isStopped ||
         !Screens_IsInUse(key) ||
         !Screens_IsDivFocused(key) ||
         !ScreenObj[key].Cells[ScreenObj[key].posY] ||

@@ -352,7 +352,7 @@ function Play_MultiStartQualitySuccess(pos, theUrl, playlist, PreventCleanQualit
     } else {
         //delay the call to prevent multiple OSInterface call that end in java in a MainThreadHandler.post call
         Main_setTimeout(function () {
-            if (Play_MultiArray[pos].data.length > 0 && !Main_isStoped && Play_isOn && Play_MultiEnable) {
+            if (Play_MultiArray[pos].data.length > 0 && !Main_isStopped && Play_isOn && Play_MultiEnable) {
                 OSInterface_StartMultiStream(pos, theUrl, playlist);
             }
         }, 25);
