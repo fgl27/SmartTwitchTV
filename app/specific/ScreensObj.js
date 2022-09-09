@@ -638,7 +638,7 @@ function ScreensObj_StartAllVars() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         [
-                            game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize), //0
+                            game.box_art_url ? game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
                             game.name, //1
                             '', //2
                             id_cell //3
@@ -653,7 +653,7 @@ function ScreensObj_StartAllVars() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         [
-                            game.boxArtURL.replace('{width}x{height}', Main_GameSize), //0
+                            game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
                             game.displayName, //1
                             (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
                                 STR_SPACE_HTML +
@@ -672,7 +672,7 @@ function ScreensObj_StartAllVars() {
                         this.row_id + '_' + this.coloumn_id,
                         this.ids,
                         [
-                            game.box.template.replace('{width}x{height}', Main_GameSize), //0
+                            game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
                             game.name, //1
                             hasLive
                                 ? Main_addCommas(cell.channels) +
@@ -2384,7 +2384,7 @@ function ScreensObj_LiveCellArray(cell, logo, partner) {
         cell.title, //2
         cell.game_name, //3
         Main_addCommas(cell.viewer_count), //4
-        '[' + cell.language.toUpperCase() + ']', //5
+        cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
         cell.id.toString(), //7 broadcast id
         Main_is_rerun(cell.type), //8
@@ -2408,7 +2408,7 @@ function ScreensObj_VodCellArray(cell) {
         Main_videoCreatedAt(cell.created_at), //2
         null, //3
         Main_addCommas(cell.view_count), //4
-        '[' + cell.language.toUpperCase() + ']', //5
+        cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
         cell.user_login, //6
         cell.id, //7
         null, //8
@@ -2453,10 +2453,10 @@ function ScreensObj_ClipCellArray(cell, isKraken) {
         null, //5
         cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
         cell.id, //7
-        cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
+        cell.video_id ? cell.video_id : null, //8
         cell.vod !== null ? -1 : null, //9
         twemoji.parse(cell.title), //10
-        '[' + cell.language.toUpperCase() + ']', //11
+        cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //11
         cell.created_at, //12
         cell.view_count, //13
         Main_addCommas(cell.view_count), //14

@@ -1005,7 +1005,13 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
 
     div.className = 'user_feed_thumb';
 
-    var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+    var image = '';
+
+    if (force_VOD) {
+        image = Extra_vodimg + Main_randomImg;
+    } else {
+        image = data[0] ? data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg : '';
+    }
 
     div.innerHTML =
         '<div id="' +
@@ -1059,7 +1065,7 @@ function UserLiveFeedobj_CreatFeed(pos, y, id, data, Extra_when, Extra_vodimg, f
               Main_videoCreatedAtWithHM(Extra_when) +
               STR_BR +
               STR_UNTIL +
-              Play_timeMs(Extra_when - new Date(data[12]).getTime()) +
+              Play_timeMs(Extra_when - (data[12] ? new Date(data[12]).getTime() : 0)) +
               '</div>'
             : '') +
         '</div></div></div>';
@@ -1148,6 +1154,9 @@ function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
     UserLiveFeed_DataObj[pos][x] = data;
 
     div.className = 'user_feed_thumb_game';
+
+    var boxArtURL = data[3] ? data[3].replace('{width}x{height}', Main_GameSize) : '';
+
     div.innerHTML =
         '<div id="' +
         UserLiveFeed_ids[0] +
@@ -1156,7 +1165,7 @@ function UserLiveFeedobj_CreatGameFeed(pos, x, id, data) {
         UserLiveFeed_ids[1] +
         id +
         '" class="stream_img" alt="" src="' +
-        data[3].replace('{width}x{height}', Main_GameSize) +
+        boxArtURL +
         '" onerror="this.onerror=null;this.src=\'' +
         IMG_404_GAME +
         '\';"></div><div class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="' +
@@ -1600,14 +1609,16 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 if (sorting_type1) {
                     response.sort(function (a, b) {
                         //a or b stream may be null
-                        if (!a || !b || !a.stream || !b.stream) {
+                        if (!a || !b || !a.stream || !b.stream || !a.stream[sorting_type1] || b.stream[sorting_type1]) {
                             return 0;
                         }
-                        return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-                            ? -1
-                            : a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-                            ? 1
-                            : 0;
+                        if (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]) {
+                            return -1;
+                        }
+                        if (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]) {
+                            return 1;
+                        }
+                        return 0;
                     });
                 } else {
                     response.sort(function (a, b) {
@@ -1615,7 +1626,13 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                         if (!a || !b || !a.stream || !b.stream) {
                             return 0;
                         }
-                        return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
+                        if (a.stream[sorting_type2] < b.stream[sorting_type2]) {
+                            return -1;
+                        }
+                        if (a.stream[sorting_type2] > b.stream[sorting_type2]) {
+                            return 1;
+                        }
+                        return 0;
                     });
                 }
             } else {
@@ -1623,14 +1640,17 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 if (sorting_type1) {
                     response.sort(function (a, b) {
                         //a or b stream may be null
-                        if (!a || !b || !a.stream || !b.stream) {
+                        if (!a || !b || !a.stream || !b.stream || !a.stream[sorting_type1] || b.stream[sorting_type1]) {
                             return 0;
                         }
-                        return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]
-                            ? -1
-                            : a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]
-                            ? 1
-                            : 0;
+                        if (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]) {
+                            return -1;
+                        }
+                        if (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]) {
+                            return 1;
+                        }
+
+                        return 0;
                     });
                 } else {
                     response.sort(function (a, b) {
@@ -1638,7 +1658,13 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                         if (!a || !b || !a.stream || !b.stream) {
                             return 0;
                         }
-                        return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
+                        if (a.stream[sorting_type2] > b.stream[sorting_type2]) {
+                            return -1;
+                        }
+                        if (a.stream[sorting_type2] < b.stream[sorting_type2]) {
+                            return 1;
+                        }
+                        return 0;
                     });
                 }
             }
@@ -1650,7 +1676,7 @@ function UserLiveFeedobj_loadDataBaseLiveSuccessEnd(response, total, pos, itemsC
                 stream = response[i];
 
                 //stream or stream.stream may be null
-                if (!stream || !stream.stream) {
+                if (!stream || !stream.stream || !stream.stream.broadcaster) {
                     continue;
                 }
 
@@ -1795,7 +1821,13 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                 if (!a || !b) {
                     return 0;
                 }
-                return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
+                if (a.displayName < b.displayName) {
+                    return -1;
+                }
+                if (a.displayName > b.displayName) {
+                    return 1;
+                }
+                return 0;
             });
         }
 
@@ -1805,7 +1837,9 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
         for (i; i < response_items; i++) {
             cell = response[i];
             game = useHelix || isUserGames ? cell : cell.game;
-
+            if (!game) {
+                continue;
+            }
             var id_cell = useHelix || isUserGames ? game.id : game._id;
 
             if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell)) {
@@ -1819,9 +1853,6 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
                         game.box_art_url //3
                     ]);
                 } else if (isUserGames) {
-                    if (!game) {
-                        continue;
-                    }
                     UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                         game.displayName, //0
                         (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
@@ -1859,13 +1890,14 @@ function UserLiveFeedobj_loadDataGamesSuccessEnd(response, total, pos, itemsCoun
 
     UserLiveFeed_itemsCount[pos] = itemsCount;
 
-    if (UserLiveFeed_obj[pos].HasMore) {
-        if (!useHelix) {
-            UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
-            UserLiveFeed_obj[pos].MaxOffset = total;
-            if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
-        }
-    }
+    //Old for none helix
+    // if (UserLiveFeed_obj[pos].HasMore) {
+    //     if (useHelix) {
+    //         UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+    //         UserLiveFeed_obj[pos].MaxOffset = total;
+    //         if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+    //     }
+    // }
 
     if (UserLiveFeed_obj[pos].loadingMore) {
         UserLiveFeed_obj[pos].loadingMore = false;
