@@ -30263,7 +30263,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             [
-                                game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize), //0
+                                game.box_art_url ? game.box_art_url.replace(this.isSearch ? '52x72' : '{width}x{height}', Main_GameSize) : '', //0
                                 game.name, //1
                                 '', //2
                                 id_cell //3
@@ -30278,7 +30278,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             [
-                                game.boxArtURL.replace('{width}x{height}', Main_GameSize), //0
+                                game.boxArtURL ? game.boxArtURL.replace('{width}x{height}', Main_GameSize) : '', //0
                                 game.displayName, //1
                                 (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
                                 STR_SPACE_HTML +
@@ -30297,7 +30297,7 @@
                             this.row_id + '_' + this.coloumn_id,
                             this.ids,
                             [
-                                game.box.template.replace('{width}x{height}', Main_GameSize), //0
+                                game.box && game.box.template ? game.box.template.replace('{width}x{height}', Main_GameSize) : '', //0
                                 game.name, //1
                                 hasLive ?
                                 Main_addCommas(cell.channels) +
@@ -31989,7 +31989,7 @@
             cell.title, //2
             cell.game_name, //3
             Main_addCommas(cell.viewer_count), //4
-            '[' + cell.language.toUpperCase() + ']', //5
+            cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
             cell.id.toString(), //7 broadcast id
             Main_is_rerun(cell.type), //8
@@ -32013,7 +32013,7 @@
             Main_videoCreatedAt(cell.created_at), //2
             null, //3
             Main_addCommas(cell.view_count), //4
-            '[' + cell.language.toUpperCase() + ']', //5
+            cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //5
             cell.user_login, //6
             cell.id, //7
             null, //8
@@ -32058,10 +32058,10 @@
             null, //5
             cell.broadcaster_name ? cell.broadcaster_name.toLowerCase() : cell.broadcaster_name, //6
             cell.id, //7
-            cell.video_id && cell.video_id !== '' ? cell.video_id : null, //8
+            cell.video_id ? cell.video_id : null, //8
             cell.vod !== null ? -1 : null, //9
             twemoji.parse(cell.title), //10
-            '[' + cell.language.toUpperCase() + ']', //11
+            cell.language ? '[' + cell.language.toUpperCase() + ']' : '', //11
             cell.created_at, //12
             cell.view_count, //13
             Main_addCommas(cell.view_count), //14
@@ -39371,7 +39371,13 @@
 
         div.className = 'user_feed_thumb';
 
-        var image = force_VOD ? Extra_vodimg : data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+        var image = '';
+
+        if (force_VOD) {
+            image = Extra_vodimg + Main_randomImg;
+        } else {
+            image = data[0] ? data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg : '';
+        }
 
         div.innerHTML =
             '<div id="' +
@@ -39425,7 +39431,7 @@
                 Main_videoCreatedAtWithHM(Extra_when) +
                 STR_BR +
                 STR_UNTIL +
-                Play_timeMs(Extra_when - new Date(data[12]).getTime()) +
+                Play_timeMs(Extra_when - (data[12] ? new Date(data[12]).getTime() : 0)) +
                 '</div>' :
                 '') +
             '</div></div></div>';
@@ -39514,6 +39520,9 @@
         UserLiveFeed_DataObj[pos][x] = data;
 
         div.className = 'user_feed_thumb_game';
+
+        var boxArtURL = data[3] ? data[3].replace('{width}x{height}', Main_GameSize) : '';
+
         div.innerHTML =
             '<div id="' +
             UserLiveFeed_ids[0] +
@@ -39522,7 +39531,7 @@
             UserLiveFeed_ids[1] +
             id +
             '" class="stream_img" alt="" src="' +
-            data[3].replace('{width}x{height}', Main_GameSize) +
+            boxArtURL +
             '" onerror="this.onerror=null;this.src=\'' +
             IMG_404_GAME +
             '\';"></div><div class="stream_thumbnail_game_feed_text_holder"><div class="stream_text_holder"><div id="' +
@@ -39967,14 +39976,16 @@
                     if (sorting_type1) {
                         response.sort(function(a, b) {
                             //a or b stream may be null
-                            if (!a || !b || !a.stream || !b.stream) {
+                            if (!a || !b || !a.stream || !b.stream || !a.stream[sorting_type1] || b.stream[sorting_type1]) {
                                 return 0;
                             }
-                            return a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ?
-                                -1 :
-                                a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ?
-                                1 :
-                                0;
+                            if (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]) {
+                                return -1;
+                            }
+                            if (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]) {
+                                return 1;
+                            }
+                            return 0;
                         });
                     } else {
                         response.sort(function(a, b) {
@@ -39982,7 +39993,13 @@
                             if (!a || !b || !a.stream || !b.stream) {
                                 return 0;
                             }
-                            return a.stream[sorting_type2] < b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] > b.stream[sorting_type2] ? 1 : 0;
+                            if (a.stream[sorting_type2] < b.stream[sorting_type2]) {
+                                return -1;
+                            }
+                            if (a.stream[sorting_type2] > b.stream[sorting_type2]) {
+                                return 1;
+                            }
+                            return 0;
                         });
                     }
                 } else {
@@ -39990,14 +40007,17 @@
                     if (sorting_type1) {
                         response.sort(function(a, b) {
                             //a or b stream may be null
-                            if (!a || !b || !a.stream || !b.stream) {
+                            if (!a || !b || !a.stream || !b.stream || !a.stream[sorting_type1] || b.stream[sorting_type1]) {
                                 return 0;
                             }
-                            return a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2] ?
-                                -1 :
-                                a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2] ?
-                                1 :
-                                0;
+                            if (a.stream[sorting_type1][sorting_type2] > b.stream[sorting_type1][sorting_type2]) {
+                                return -1;
+                            }
+                            if (a.stream[sorting_type1][sorting_type2] < b.stream[sorting_type1][sorting_type2]) {
+                                return 1;
+                            }
+
+                            return 0;
                         });
                     } else {
                         response.sort(function(a, b) {
@@ -40005,7 +40025,13 @@
                             if (!a || !b || !a.stream || !b.stream) {
                                 return 0;
                             }
-                            return a.stream[sorting_type2] > b.stream[sorting_type2] ? -1 : a.stream[sorting_type2] < b.stream[sorting_type2] ? 1 : 0;
+                            if (a.stream[sorting_type2] > b.stream[sorting_type2]) {
+                                return -1;
+                            }
+                            if (a.stream[sorting_type2] < b.stream[sorting_type2]) {
+                                return 1;
+                            }
+                            return 0;
                         });
                     }
                 }
@@ -40017,7 +40043,7 @@
                     stream = response[i];
 
                     //stream or stream.stream may be null
-                    if (!stream || !stream.stream) {
+                    if (!stream || !stream.stream || !stream.stream.broadcaster) {
                         continue;
                     }
 
@@ -40163,7 +40189,13 @@
                     if (!a || !b) {
                         return 0;
                     }
-                    return a.displayName < b.displayName ? -1 : a.displayName > b.displayName ? 1 : 0;
+                    if (a.displayName < b.displayName) {
+                        return -1;
+                    }
+                    if (a.displayName > b.displayName) {
+                        return 1;
+                    }
+                    return 0;
                 });
             }
 
@@ -40173,7 +40205,9 @@
             for (i; i < response_items; i++) {
                 cell = response[i];
                 game = useHelix || isUserGames ? cell : cell.game;
-
+                if (!game) {
+                    continue;
+                }
                 var id_cell = useHelix || isUserGames ? game.id : game._id;
 
                 if (!UserLiveFeed_idObject[pos].hasOwnProperty(id_cell)) {
@@ -40187,9 +40221,6 @@
                             game.box_art_url //3
                         ]);
                     } else if (isUserGames) {
-                        if (!game) {
-                            continue;
-                        }
                         UserLiveFeed_cell[pos][itemsCount] = UserLiveFeedobj_CreatGameFeed(pos, itemsCount, pos + '_' + itemsCount, [
                             game.displayName, //0
                             (cell.channelsCount ? Main_addCommas(cell.channelsCount) : 0) +
@@ -40227,13 +40258,14 @@
 
         UserLiveFeed_itemsCount[pos] = itemsCount;
 
-        if (UserLiveFeed_obj[pos].HasMore) {
-            if (!useHelix) {
-                UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
-                UserLiveFeed_obj[pos].MaxOffset = total;
-                if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
-            }
-        }
+        //Old for none helix
+        // if (UserLiveFeed_obj[pos].HasMore) {
+        //     if (useHelix) {
+        //         UserLiveFeed_obj[pos].offset = UserLiveFeed_cell[pos].length;
+        //         UserLiveFeed_obj[pos].MaxOffset = total;
+        //         if (UserLiveFeed_obj[pos].offset >= total || !response_items) UserLiveFeed_obj[pos].dataEnded = true;
+        //     }
+        // }
 
         if (UserLiveFeed_obj[pos].loadingMore) {
             UserLiveFeed_obj[pos].loadingMore = false;
