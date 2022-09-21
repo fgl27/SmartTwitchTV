@@ -662,12 +662,10 @@ function ChannelContent_LoadPreviewRun(obj) {
         return;
     }
 
-    PlayHLS_GetPlayListAsync(true, obj[6], null, null, ChannelContent_LoadPreviewResult);
+    PlayHLS_GetPlayListAsync(true, obj[6], null, Main_ChannelContent, ChannelContent_LoadPreviewResult);
 }
 
 function ChannelContent_LoadPreviewResult(StreamData, x) {
-    //Called by Java
-
     if (
         !Main_isStopped &&
         Main_values.Main_Go === Main_ChannelContent &&
