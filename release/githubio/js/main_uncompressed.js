@@ -26844,7 +26844,9 @@
         ScreenObj[key].Lang = Settings_AppLang;
         ScreenObj[key].BannerCreated = false;
 
-        Main_CounterDialogRst();
+        if (key === Main_values.Main_Go) {
+            Main_CounterDialogRst();
+        }
         Screens_loadDataRequestStart(key);
     }
 
