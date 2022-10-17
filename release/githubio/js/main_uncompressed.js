@@ -37656,8 +37656,8 @@
                         Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
                     }
                 }
-            } else {
-                UserLiveFeed_UpdateSince(UserLiveFeed_FeedPosX);
+            } else if (!isGame && !isBanner) {
+                UserLiveFeed_UpdateSince(pos);
             }
         }
 
