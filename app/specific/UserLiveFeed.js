@@ -600,21 +600,8 @@ function UserLiveFeed_FeedAddFocus(skipAnimation, pos, Adder) {
                     Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
                 }
             }
-        } else if (!isGame && !isBanner) {
-            if (ObjNotNull) {
-                data = UserLiveFeed_GetObj(pos);
-
-                Main_innerHTML(
-                    UserLiveFeed_ids[4] + id,
-                    STR_SINCE +
-                        Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
-                        STR_SPACE_HTML +
-                        STR_FOR +
-                        data[4] +
-                        STR_SPACE_HTML +
-                        Main_GetViewerStrings(data[13])
-                );
-            }
+        } else {
+            UserLiveFeed_UpdateSince(UserLiveFeed_FeedPosX);
         }
     }
 
@@ -1302,4 +1289,44 @@ function UserLiveFeed_Showloading(show) {
         if (show) Main_ShowElement('dialog_loading_feed');
         else Main_HideElement('dialog_loading_feed');
     }
+}
+
+var UserLiveFeed_UpdateSinceId;
+function UserLiveFeed_UpdateSince(pos) {
+    if (
+        pos === UserLiveFeedobj_GamesPos ||
+        pos === UserLiveFeedobj_UserGamesPos ||
+        pos > UserLiveFeedobj_UserAGamesPos ||
+        Main_isStopped ||
+        !UserLiveFeed_isPreviewShowing() ||
+        pos !== UserLiveFeed_FeedPosX ||
+        !UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]] ||
+        UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
+    ) {
+        return;
+    }
+
+    if (UserLiveFeed_ObjNotNull(pos)) {
+        var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+        var data = UserLiveFeed_GetObj(pos);
+
+        Main_innerHTML(
+            UserLiveFeed_ids[4] + id,
+            STR_SINCE +
+                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
+                STR_SPACE_HTML +
+                STR_FOR +
+                data[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(data[13])
+        );
+    }
+
+    UserLiveFeed_UpdateSinceId = Main_setTimeout(
+        function () {
+            UserLiveFeed_UpdateSince(pos);
+        },
+        1000,
+        UserLiveFeed_UpdateSinceId
+    );
 }
