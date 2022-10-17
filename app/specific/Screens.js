@@ -1668,8 +1668,9 @@ function Screens_UpdateSince(key) {
         !Screens_IsDivFocused(key) ||
         !ScreenObj[key].Cells[ScreenObj[key].posY] ||
         ScreenObj[key].DataObj[id].image
-    )
+    ) {
         return;
+    }
 
     if (Screens_ObjNotNull(key)) {
         var data = Screens_GetObj(key);
