@@ -9,6 +9,16 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version October 17 2022 and Apk Version 3.0.344 and Up
+==============
+
+* General improves
+
+Web Version September 06 2022
+==============
+
+* Fix VOD playback for devices running Old Android version
+
 Web Version August 28 2022
 ==============
 
@@ -20,7 +30,7 @@ Web Version August 20 2022
 
 * Add proxy controls to player
 
-August 19 2022 and Apk Version 3.0.343 and Up
+Web Version August 19 2022 and Apk Version 3.0.343 and Up
 ==============
 
 * Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly
@@ -30,7 +40,7 @@ August 19 2022 and Apk Version 3.0.343 and Up
 * Proxy only affects live streams
 * General improves
 
-August 03 2022 and Apk Version 3.0.338 and Up
+Web Version August 03 2022 and Apk Version 3.0.338 and Up
 ==============
 
 * Fix sometimes missing streamer name on notification and home screen content

@@ -4516,11 +4516,15 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 343, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/343/SmartTV_twitch_3_0_343.apk',
-        WebVersion: 'September 06 2022',
-        WebTag: 633, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
+        WebVersion: 'October 17 2022',
+        WebTag: 634, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version October 17 2022 and Apk Version 3.0.344 and Up',
+                changes: ['General improves']
+            },
+            {
                 title: 'Web Version September 06 2022',
                 changes: ['Fix VOD playback for devices running Old Android version']
             },
@@ -4533,7 +4537,7 @@
                 changes: ['Add proxy controls to player']
             },
             {
-                title: 'August 19 2022 and Apk Version 3.0.343 and Up',
+                title: 'Web Version August 19 2022 and Apk Version 3.0.343 and Up',
                 changes: [
                     'Demanding make sure you are running the latest version of the APK 343, if not the app will not work properly',
                     'Add Proxy to setting player options (all proxy disabled by default), this are internet censorship and related proxy',
@@ -4544,7 +4548,7 @@
                 ]
             },
             {
-                title: 'August 03 2022 and Apk Version 3.0.338',
+                title: 'Web Version August 03 2022 and Apk Version 3.0.338',
                 changes: [
                     'Fix sometimes missing streamer name on notification and home screen content',
                     'Migrate Vod seek preview image to new Twitch API',
@@ -28171,8 +28175,9 @@
             !Screens_IsDivFocused(key) ||
             !ScreenObj[key].Cells[ScreenObj[key].posY] ||
             ScreenObj[key].DataObj[id].image
-        )
+        ) {
             return;
+        }
 
         if (Screens_ObjNotNull(key)) {
             var data = Screens_GetObj(key);
@@ -37651,21 +37656,8 @@
                         Main_getElementById(UserLiveFeed_ids[4] + id).style.width = Main_history_Watched_Obj[data[7]] + '%';
                     }
                 }
-            } else if (!isGame && !isBanner) {
-                if (ObjNotNull) {
-                    data = UserLiveFeed_GetObj(pos);
-
-                    Main_innerHTML(
-                        UserLiveFeed_ids[4] + id,
-                        STR_SINCE +
-                        Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
-                        STR_SPACE_HTML +
-                        STR_FOR +
-                        data[4] +
-                        STR_SPACE_HTML +
-                        Main_GetViewerStrings(data[13])
-                    );
-                }
+            } else {
+                UserLiveFeed_UpdateSince(UserLiveFeed_FeedPosX);
             }
         }
 
@@ -38355,6 +38347,47 @@
             if (show) Main_ShowElement('dialog_loading_feed');
             else Main_HideElement('dialog_loading_feed');
         }
+    }
+
+    var UserLiveFeed_UpdateSinceId;
+
+    function UserLiveFeed_UpdateSince(pos) {
+        if (
+            pos === UserLiveFeedobj_GamesPos ||
+            pos === UserLiveFeedobj_UserGamesPos ||
+            pos > UserLiveFeedobj_UserAGamesPos ||
+            Main_isStopped ||
+            !UserLiveFeed_isPreviewShowing() ||
+            pos !== UserLiveFeed_FeedPosX ||
+            !UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]] ||
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
+        ) {
+            return;
+        }
+
+        if (UserLiveFeed_ObjNotNull(pos)) {
+            var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+            var data = UserLiveFeed_GetObj(pos);
+
+            Main_innerHTML(
+                UserLiveFeed_ids[4] + id,
+                STR_SINCE +
+                Play_streamLiveAtWitDate(new Date().getTime(), data[12]) +
+                STR_SPACE_HTML +
+                STR_FOR +
+                data[4] +
+                STR_SPACE_HTML +
+                Main_GetViewerStrings(data[13])
+            );
+        }
+
+        UserLiveFeed_UpdateSinceId = Main_setTimeout(
+            function() {
+                UserLiveFeed_UpdateSince(pos);
+            },
+            1000,
+            UserLiveFeed_UpdateSinceId
+        );
     }
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
