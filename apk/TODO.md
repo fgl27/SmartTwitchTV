@@ -16,6 +16,7 @@ One observation: if a feature was added by a user request that feature will only
 -   **See if is possible to add support for closed captions** (requested via EMAIL), Channel Ezekiel_III uses an OBS plugin that sends the closed captions into Twitch's interface, verify if is possible to get that info and use in the app.
 -   **Workaround for devices without PP or Multistream capability (low number of codec instances)** (requested via EMAIL), Multiplayer settings workaround section, contain a option that allows to use HW codec for the main player and SW codec for the others, probably will only work OK if the player resolutions are low.
 -   **Add an player option to stretch 4 by 3 streams** requested via play store.
+-   **Hide channels and game from showing** (requested via EMAIL) Nee entry on tumbnails option (hold left) do set, plus one to display the list of hiden
 
 # Issues list
 
