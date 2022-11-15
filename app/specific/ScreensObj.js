@@ -2509,6 +2509,10 @@ function ScreensObj_VodGetPreview(preview, animated_preview_url) {
 }
 
 function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
+    if (!animated_preview_url) {
+        return;
+    }
+
     var animated_preview = animated_preview_url.split('/');
 
     return (
