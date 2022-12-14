@@ -22,7 +22,7 @@
 var Chat_Messages = [];
 var Chat_MessagesNext = [];
 var Chat_addlinesId;
-var Chat_next = null;
+var Chat_cursor = null;
 var Chat_loadChatId;
 var Chat_loadChatNextId;
 var Chat_offset = 0;
@@ -56,6 +56,14 @@ var Chat_Position = 0;
 var Chat_hasEnded = false;
 var Chat_CleanMax = 60;
 var Chat_JustStarted = true;
+
+var Chat_loadChatRequestPost =
+    '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","contentOffsetSeconds":%o},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
+var Chat_loadChatRequestPost_Cursor =
+    '{"operationName":"VideoCommentsByOffsetOrCursor","variables":{"videoID":"%v","cursor":"%c"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"b70a3591ff0f4e0313d126c6a1502d79a1c02baebb288227c582044aa76adf6a"}}}';
+
+var Chat_UserJPKRegex = new RegExp('[^\x00-\x7F]', 'g');
+
 //Variable initialization end
 
 function Chat_Preinit() {
@@ -307,14 +315,26 @@ function Chat_loadChat(id) {
 }
 
 function Chat_loadChatRequest(id) {
-    var theUrl =
-        'https://api.twitch.tv/v5/videos/' +
-        Main_values.ChannelVod_vodId +
-        '/comments?client_id=' +
-        AddCode_backup_client_id +
-        (Chat_offset ? '&content_offset_seconds=' + parseInt(Chat_offset) : '');
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Play_base_backup_headers_Array,
+        Chat_loadChatRequestResult,
+        noop_fun,
+        id,
+        0,
+        'POST', //Method, null for get
+        Chat_loadChatRequestPost.replace('%v', Main_values.ChannelVod_vodId).replace('%o', Chat_offset ? parseInt(Chat_offset) : 0)
+    );
+}
 
-    BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatError, id);
+function Chat_loadChatRequestResult(responseObj, id) {
+    if (Chat_hasEnded || Chat_Id[0] !== id) return;
+
+    if (responseObj.status === 200) {
+        Chat_loadChatSuccess(responseObj.responseText, id);
+    } else {
+        Chat_loadChatError(id);
+    }
 }
 
 function Chat_loadChatError(id) {
@@ -332,13 +352,13 @@ function Chat_loadChatError(id) {
     }
 }
 
-function Chat_loadChatSuccess(responseText, id) {
-    if (Chat_hasEnded || Chat_Id[0] !== id) return;
+function Chat_loadChatSuccess(responseObj, id) {
+    var responseText = JSON.parse(responseObj),
+        comments;
 
-    responseText = JSON.parse(responseText);
     var div,
         mmessage,
-        null_next = Chat_next === null,
+        null_next = Chat_cursor === null,
         nickColor,
         atstreamer,
         atuser,
@@ -346,7 +366,6 @@ function Chat_loadChatSuccess(responseText, id) {
         mod,
         hasbits,
         message_text,
-        comments,
         badges,
         fragment,
         i,
@@ -354,6 +373,13 @@ function Chat_loadChatSuccess(responseText, id) {
         j,
         len_j,
         messageObj;
+
+    if (responseText.data && responseText.data.video && responseText.data.video.comments && responseText.data.video.comments.edges) {
+        comments = responseText.data.video.comments.edges || [];
+        Chat_cursor = comments.length ? comments[0].cursor : '';
+    } else {
+        return;
+    }
 
     if (null_next) {
         Chat_MessageVector({
@@ -376,11 +402,10 @@ function Chat_loadChatSuccess(responseText, id) {
         });
     }
     Chat_offset = 0;
-    Chat_next = responseText._next;
-
-    comments = responseText.comments || [];
 
     for (i = 0, len = comments.length; i < len; i++) {
+        comments[i] = comments[i].node;
+
         atstreamer = false;
         atuser = false;
         fromstreamer = false;
@@ -390,40 +415,43 @@ function Chat_loadChatSuccess(responseText, id) {
 
         div = '';
         mmessage = comments[i].message;
+        //console.log('mmessage', mmessage);
 
-        if (
-            (!ChatLive_Highlight_Actions && mmessage.is_action) ||
-            (ChatLive_HideBots &&
-                (KnowBots[comments[i].commenter.display_name] ||
-                    (mmessage.body && mmessage.body.startsWith('!') && mmessage.body.indexOf(' ') === -1)))
-        ) {
-            continue;
-        }
+        //TODO check support for this feature
+        // if (
+        //     (!ChatLive_Highlight_Actions && mmessage.is_action) ||
+        //     (ChatLive_HideBots &&
+        //         (KnowBots[comments[i].commenter.displayName] ||
+        //             (mmessage.body && mmessage.body.startsWith('!') && mmessage.body.indexOf(' ') === -1)))
+        // ) {
+        //     continue;
+        // }
 
         if (ChatLive_Show_TimeStamp) {
-            div += Play_timeS(comments[i].content_offset_seconds) + ' ';
+            div += Play_timeS(comments[i].contentOffsetSeconds) + ' ';
         }
 
         //Add badges
-        if (mmessage.hasOwnProperty('user_badges')) {
-            for (j = 0, len_j = mmessage.user_badges.length; j < len_j; j++) {
-                badges = mmessage.user_badges[j];
+        if (mmessage.hasOwnProperty('userBadges')) {
+            for (j = 0, len_j = mmessage.userBadges.length; j < len_j; j++) {
+                badges = mmessage.userBadges[j];
 
-                div += '<span class="a' + badges._id + ChatLive_selectedChannel_id[0] + '-' + badges.version + ' tag"></span>';
+                div += '<span class="a' + badges.setID + ChatLive_selectedChannel_id[0] + '-' + badges.version + ' tag"></span>';
 
-                if (ChatLive_Highlight_Mod && Main_A_includes_B(badges._id, 'mod')) {
+                if (ChatLive_Highlight_Mod && Main_A_includes_B(badges.setID, 'mod')) {
                     mod = true;
                 }
             }
         }
 
-        hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
+        //TODO check support for this feature
+        //hasbits = mmessage.hasOwnProperty('bits_spent') && cheers.hasOwnProperty(ChatLive_selectedChannel_id[0]);
 
         if (mmessage.fragments) {
             for (j = 0, len_j = mmessage.fragments.length; j < len_j; j++) {
                 fragment = mmessage.fragments[j];
 
-                if (fragment.hasOwnProperty('emoticon')) message_text += emoteTemplate(emoteURL(fragment.emoticon.emoticon_id));
+                if (fragment.emote) message_text += emoteTemplate(emoteURL(fragment.emote.emoteID));
                 else {
                     message_text += ChatLive_extraMessageTokenize([fragment.text], 0, hasbits ? mmessage.bits_spent : 0);
 
@@ -436,11 +464,11 @@ function Chat_loadChatSuccess(responseText, id) {
             }
         }
 
-        if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(comments[i].commenter.display_name.toLowerCase(), ChatLive_selectedChannel[0])) {
+        if (ChatLive_Highlight_FromStreamer && Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), ChatLive_selectedChannel[0])) {
             fromstreamer = true;
         } else if (
             ChatLive_Highlight_User_send &&
-            Main_A_equals_B(comments[i].commenter.display_name.toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())
+            Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), AddUser_UsernameArray[0].displayName.toLowerCase())
         ) {
             atuser = true;
         }
@@ -451,10 +479,10 @@ function Chat_loadChatSuccess(responseText, id) {
         } else if (atuser) {
             nickColor = chat_Line_highlight_blue;
         } else {
-            if (!ChatLive_Custom_Nick_Color && mmessage.hasOwnProperty('user_color')) {
-                nickColor = 'style="color: ' + mmessage.user_color + ';"';
+            if (!ChatLive_Custom_Nick_Color && mmessage.userColor) {
+                nickColor = 'style="color: ' + mmessage.userColor + ';"';
             } else {
-                nickColor = 'style="color: ' + defaultColors[comments[i].commenter.display_name.charCodeAt(0) % defaultColorsLength] + ';"';
+                nickColor = 'style="color: ' + defaultColors[comments[i].commenter.displayName.charCodeAt(0) % defaultColorsLength] + ';"';
             }
         }
         div +=
@@ -462,7 +490,8 @@ function Chat_loadChatSuccess(responseText, id) {
             (mmessage.is_action ? 'class="class_bold" ' + nickColor : '') +
             nickColor +
             '>' +
-            comments[i].commenter.display_name +
+            comments[i].commenter.displayName +
+            Chat_CheckUserName(comments[i].commenter.displayName, comments[i].commenter.login) +
             '</span>' +
             (mmessage.is_action ? '' : '&#58;') +
             '&nbsp;';
@@ -472,7 +501,7 @@ function Chat_loadChatSuccess(responseText, id) {
 
         messageObj = {
             chat_number: 0,
-            time: comments[i].content_offset_seconds,
+            time: comments[i].contentOffsetSeconds,
             message: div,
             atstreamer: atstreamer,
             atuser: atuser,
@@ -482,14 +511,22 @@ function Chat_loadChatSuccess(responseText, id) {
         };
 
         if (null_next) Chat_MessageVector(messageObj);
-        else if (Chat_next !== undefined) Chat_MessageVectorNext(messageObj);
+        else if (Chat_cursor !== '') Chat_MessageVectorNext(messageObj);
     }
 
     if (null_next && Chat_Id[0] === id) {
         Chat_JustStarted = false;
         Chat_Play(id);
-        if (Chat_next !== undefined) Chat_loadChatNext(id); //if (Chat_next === undefined) chat has ended
+        if (Chat_cursor !== '') Chat_loadChatNext(id); //if (Chat_cursor === '') chat has ended
     }
+}
+
+function Chat_CheckUserName(displayName, login) {
+    if (displayName && Chat_UserJPKRegex.test(displayName)) {
+        return ' (' + login + ')';
+    }
+
+    return '';
 }
 
 function Chat_MessageVector(messageObj) {
@@ -531,7 +568,7 @@ function Chat_Clear() {
     Chat_Id[0] = 0;
     Main_emptyWithEle(Chat_div[0]);
     Main_emptyWithEle(Chat_div[1]);
-    Chat_next = null;
+    Chat_cursor = null;
     Chat_Messages = [];
     Chat_MessagesNext = [];
     Chat_Position = 0;
@@ -555,7 +592,7 @@ function Main_Addline(id) {
         }
     } else {
         Chat_Pause();
-        if (Chat_next !== undefined) {
+        if (Chat_cursor !== undefined) {
             //array.slice() may crash RangeError: Maximum call stack size exceeded
             Chat_Messages = Main_Slice(Chat_MessagesNext);
 
@@ -586,14 +623,28 @@ function Chat_loadChatNext(id) {
 }
 
 function Chat_loadChatNextRequest(id) {
-    var theUrl =
-        'https://api.twitch.tv/v5/videos/' +
-        Main_values.ChannelVod_vodId +
-        '/comments?client_id=' +
-        AddCode_backup_client_id +
-        (Chat_next !== null ? '&cursor=' + Chat_next : '');
+    if (Chat_cursor === undefined) return;
 
-    BaseXmlHttpGet(theUrl, Chat_loadChatSuccess, Chat_loadChatNextError, id);
+    FullxmlHttpGet(
+        PlayClip_BaseUrl,
+        Play_base_backup_headers_Array,
+        Chat_loadChatNextResult,
+        noop_fun,
+        id,
+        0,
+        'POST', //Method, null for get
+        Chat_loadChatRequestPost_Cursor.replace('%v', Main_values.ChannelVod_vodId).replace('%c', Chat_cursor)
+    );
+}
+
+function Chat_loadChatNextResult(responseObj, id) {
+    if (Chat_hasEnded || Chat_Id[0] !== id) return;
+
+    if (responseObj.status === 200) {
+        Chat_loadChatSuccess(responseObj.responseText, id);
+    } else {
+        Chat_loadChatNextError(id);
+    }
 }
 
 function Chat_loadChatNextError(id) {
