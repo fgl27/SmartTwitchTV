@@ -470,7 +470,7 @@ function Chat_loadChatSuccess(responseObj, id) {
             fromstreamer = true;
         } else if (
             ChatLive_Highlight_User_send &&
-            Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), AddUser_UsernameArray[0].displayName.toLowerCase())
+            Main_A_equals_B(comments[i].commenter.displayName.toLowerCase(), AddUser_UsernameArray[0].display_name.toLowerCase())
         ) {
             atuser = true;
         }
