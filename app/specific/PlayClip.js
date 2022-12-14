@@ -225,13 +225,15 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
             if (obj.data && obj.data.clip) {
                 var clip = obj.data.clip;
 
-                if (clip.videoOffsetSeconds) {
-                    ChannelVod_vodOffset = clip.videoOffsetSeconds;
-                    Chat_offset = ChannelVod_vodOffset;
+                if (ChannelVod_vodOffset === -1) {
+                    if (clip.videoOffsetSeconds) {
+                        ChannelVod_vodOffset = clip.videoOffsetSeconds;
+                        Chat_offset = ChannelVod_vodOffset;
 
-                    Chat_Init();
-                } else {
-                    Chat_NoVod();
+                        Chat_Init();
+                    } else {
+                        Chat_NoVod();
+                    }
                 }
 
                 if (clip.game && clip.game.displayName) {

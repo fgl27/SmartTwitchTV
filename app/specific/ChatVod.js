@@ -406,6 +406,9 @@ function Chat_loadChatSuccess(responseObj, id) {
     for (i = 0, len = comments.length; i < len; i++) {
         comments[i] = comments[i].node;
 
+        //some comments have no commenter I assume those have ben deleted during live chat but not fully from chat history
+        if (!comments[i].commenter) continue;
+
         atstreamer = false;
         atuser = false;
         fromstreamer = false;
@@ -415,7 +418,6 @@ function Chat_loadChatSuccess(responseObj, id) {
 
         div = '';
         mmessage = comments[i].message;
-        //console.log('mmessage', mmessage);
 
         //TODO check support for this feature
         // if (
