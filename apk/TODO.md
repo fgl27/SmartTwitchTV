@@ -17,6 +17,7 @@ One observation: if a feature was added by a user request that feature will only
 -   **Workaround for devices without PP or Multistream capability (low number of codec instances)** (requested via EMAIL), Multiplayer settings workaround section, contain a option that allows to use HW codec for the main player and SW codec for the others, probably will only work OK if the player resolutions are low.
 -   **Add an player option to stretch 4 by 3 streams** requested via play store.
 -   **Hide channels and game from showing** (requested via EMAIL) Nee entry on tumbnails option (hold left) do set, plus one to display the list of hiden, new UI to enable and disable those added
+-   **[Save individual channel volume settings](https://github.com/fgl27/SmartTwitchTV/issues/127)**... Possible, probably by only changing JS code, eg. After playback starts, if volume is saved for the current channel we can set volume by restoring the value of Play_volumes[0] and calling OSInterface_SetVolumes and OSInterface_ApplyAudio.
 
 # Issues list
 
