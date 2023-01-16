@@ -96,7 +96,6 @@ function PlayExtra_Resume(synchronous) {
         //On resume to avoid out of sync resumes we run PP synchronous
         if (synchronous) {
             var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
-            console.log(StreamData);
 
             //Do not check host on async, as both player may have endede with will cause a out of sync error
             //causing the player to stop in a black state
@@ -166,6 +165,8 @@ function PlayExtra_loadDataSuccessEnd(playlist, PreventCleanQualities) {
 
     if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
     Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], PlayExtra_data.data[0]);
+
+    Main_Log('PlayExtra_data.playlist\n' + PlayExtra_data.playlist);
 }
 
 function PlayExtra_SavePlayData() {

@@ -784,6 +784,8 @@ function Play_loadDataSuccessEnd(playlist, startChat, SkipSaveHistory) {
     UserLiveFeed_SetFeedPicText();
     Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
     if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
+
+    Main_Log('Play_data.playlist\n' + Play_data.playlist);
 }
 
 function Play_loadDataErrorFinish(error_410, Isforbiden) {

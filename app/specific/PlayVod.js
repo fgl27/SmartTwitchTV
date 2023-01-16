@@ -482,6 +482,8 @@ function PlayVod_loadDataErrorFinish() {
 function PlayVod_loadDataSuccessEnd(playlist) {
     PlayVod_playlist = playlist;
     if (PlayVod_isOn) PlayVod_onPlayer();
+
+    Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
 }
 
 function PlayVod_loadDataCheckSub() {
