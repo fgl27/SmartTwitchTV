@@ -21235,7 +21235,6 @@
             //On resume to avoid out of sync resumes we run PP synchronous
             if (synchronous) {
                 var StreamData = Play_getStreamData(PlayExtra_data.data[6]);
-                console.log(StreamData);
 
                 //Do not check host on async, as both player may have endede with will cause a out of sync error
                 //causing the player to stop in a black state
@@ -21875,7 +21874,7 @@
     function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
         var tokenObj, Token, Sig;
 
-        if (useProxy && isLive) {
+        if (useProxy && isLive && !proxy_has_token) {
             return PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, true);
         } else {
             //getToken
@@ -21928,6 +21927,7 @@
                     }
                     return obj;
                 } else {
+                    //in case we fail using proxy restart the process without using proxy
                     if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                         return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                     } else {
