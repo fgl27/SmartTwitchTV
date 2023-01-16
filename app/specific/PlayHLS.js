@@ -262,7 +262,7 @@ function PlayHLS_GetPlayListSync(isLive, Channel_or_VOD_Id) {
 function PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, useProxy) {
     var tokenObj, Token, Sig;
 
-    if (useProxy && isLive) {
+    if (useProxy && isLive && !proxy_has_token) {
         return PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, true);
     } else {
         //getToken
@@ -315,6 +315,7 @@ function PlayHLS_GetPlayListSyncUrl(isLive, Channel_or_VOD_Id, useProxy, Token, 
                 }
                 return obj;
             } else {
+                //in case we fail using proxy restart the process without using proxy
                 if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
                     return PlayHLS_GetPlayListSyncToken(isLive, Channel_or_VOD_Id, false);
                 } else {
