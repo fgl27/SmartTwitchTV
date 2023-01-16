@@ -4519,7 +4519,7 @@
         publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
         WebVersion: 'January 16 2023',
-        WebTag: 637, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 638, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version January 16 2023',
                 changes: ['Replace Purple proxy with K-Twitch-Bypass', 'General improves']
@@ -21304,6 +21304,8 @@
 
         if (!PlayExtra_data.isHost) Main_Set_history('live', PlayExtra_data.data);
         Play_updateVodInfo(PlayExtra_data.data[14], PlayExtra_data.data[7], PlayExtra_data.data[0]);
+
+        Main_Log('PlayExtra_data.playlist\n' + PlayExtra_data.playlist);
     }
 
     function PlayExtra_SavePlayData() {
@@ -22731,6 +22733,8 @@
         UserLiveFeed_SetFeedPicText();
         Play_streamInfoTimerId = Main_setInterval(Play_updateStreamInfo, 1000 * 60 * 3, Play_streamInfoTimerId);
         if (!Play_data.isHost && !SkipSaveHistory) Main_Set_history('live', Play_data.data);
+
+        Main_Log('Play_data.playlist\n' + Play_data.playlist);
     }
 
     function Play_loadDataErrorFinish(error_410, Isforbiden) {
@@ -25248,6 +25252,8 @@
     function PlayVod_loadDataSuccessEnd(playlist) {
         PlayVod_playlist = playlist;
         if (PlayVod_isOn) PlayVod_onPlayer();
+
+        Main_Log('PlayVod_playlist\n' + PlayVod_playlist);
     }
 
     function PlayVod_loadDataCheckSub() {
