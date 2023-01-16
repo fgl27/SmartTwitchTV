@@ -732,8 +732,8 @@
     var PROXY_SERVICE_OFF;
     var PROXY_SETTINGS;
     var PROXY_SETTINGS_SUMMARY;
-    var STR_PURPLE_ADBLOCK;
-    var STR_PURPLE_ADBLOCK_SUMMARY;
+    var STR_K_TWITCH;
+    var STR_K_TWITCH_SUMMARY;
     var STR_PROXY_TIMEOUT;
     var STR_PROXY_TIMEOUT_SUMMARY;
     var STR_PROXY_DONATE_SUMMARY;
@@ -1189,18 +1189,18 @@
 
         STR_NOKUSER_WARNING = STR_NOKUSER_WARN + STR_NOKEY_GENERAL_WARN;
 
-        STR_PURPLE_ADBLOCK_SUMMARY =
+        STR_K_TWITCH_SUMMARY =
             STR_PROXY_DONATE_SUMMARY +
             STR_SPACE_HTML +
             STR_SPACE_HTML +
             STR_SPAN_LINK +
-            DefaultMakeLink('https://github.com/arthurbolsoni/Purple-adblock') +
+            DefaultMakeLink('https://github.com/Kwabang/K-Twitch-Bypass') +
             '</span>';
 
         STR_TTV_LOL_SUMMARY =
             STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 
-        STR_PROXY_CONTROLS_ARRAY = [STR_PURPLE_ADBLOCK, STR_TTV_LOL, STR_DISABLED];
+        STR_PROXY_CONTROLS_ARRAY = [STR_K_TWITCH, STR_TTV_LOL, STR_DISABLED];
     }
 
     function DefaultReplaceLink(link, string, center) {
@@ -2027,7 +2027,7 @@
         STR_PROXY_DONATE_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
 
         STR_TTV_LOL = 'TTV LOL';
-        STR_PURPLE_ADBLOCK = 'Purple Adblock ';
+        STR_K_TWITCH = 'K-Twitch-Bypass ';
 
         STR_PROXY_TIMEOUT = 'Proxy timeout (time in seconds)';
         STR_PROXY_TIMEOUT_SUMMARY =
@@ -4518,9 +4518,13 @@
         VersionBase: '3.0',
         publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
-        WebVersion: 'December 14 2022',
-        WebTag: 636, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'January 16 2023',
+        WebTag: 637, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version January 16 2023',
+                changes: ['Replace Purple proxy with K-Twitch-Bypass', 'General improves']
+            },
+            {
                 title: 'Web Version December 14 2022',
                 changes: ['Update VOD/Clip chat to use new API, old one was disabled', 'General improves']
             },
@@ -21637,12 +21641,13 @@
         ['X-Donate-To', 'https://ttv.lol/donate']
     ]);
 
-    var purple_proxy = 'https://jupter.ga/hls/v2/channel/';
+    var ktwitch_proxy = 'https://api.twitch.tyo.kwabang.net/hls-raw/';
 
     var proxy_timeout = 5000;
     var proxy_url = '';
     var proxy_headers = null;
     var proxy_has_parameter = false;
+    var proxy_has_token = false;
 
     //var proxy_ping_url = 'https://api.ttv.lol/ping';
 
@@ -21665,10 +21670,10 @@
 
         //if at te end of a request the values are different we have a issues
         proxy_fail_counter_checker = proxy_fail_counter;
-        if (use_proxy && isLive) {
+        if (use_proxy && isLive && !proxy_has_token) {
             PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, null, null, true);
         } else {
-            PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name);
+            PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, use_proxy);
         }
     }
 
@@ -21682,7 +21687,7 @@
             'PlayHLS_GetTokenResult', //String callback
             CheckId_y, //long checkResult
             isLive ? '1' : '0', //String check_1
-            '0', //use proxy always false String check_2
+            use_proxy ? '1' : '0', //String check_2
             Channel_or_VOD_Id.toString(), // String check_3
             null, // reserved for token result String check_4
             CheckId_x, // String check_5
@@ -21747,12 +21752,18 @@
     function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy) {
         var url = '',
             headers;
+
         if (isLive) {
             var URL_parameters = Play_base_live_links.replace('%d', Math.random() * 100000);
 
             if (useProxy) {
                 headers = proxy_headers;
-                url = proxy_url + Channel_or_VOD_Id + (proxy_has_parameter ? '.m3u8' + encodeURIComponent('?' + URL_parameters) : '');
+
+                if (proxy_has_parameter && !proxy_has_token) {
+                    url = proxy_url + Channel_or_VOD_Id + '.m3u8' + encodeURIComponent('?' + URL_parameters);
+                } else {
+                    url = proxy_url + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
+                }
             } else {
                 url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
             }
@@ -21819,7 +21830,7 @@
 
         if (response.status !== 200) {
             if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
-                PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
+                PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess, useProxy);
                 return;
             }
 
@@ -33316,7 +33327,7 @@
             values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30],
             defaultValue: 10
         },
-        purple_adblock: {
+        k_twitch: {
             //Migrated to dialog
             values: ['no', 'yes'],
             defaultValue: 1
@@ -34447,7 +34458,7 @@
         else if (position === 'PP_workaround') Settings_PP_Workaround();
         else if (position === 'ttv_lolProxy') Settings_set_TTV_LOL();
         else if (position === 'proxy_timeout') Settings_set_proxy_timeout();
-        else if (position === 'purple_adblock') Settings_set_purple_adblock();
+        else if (position === 'k_twitch') Settings_set_k_twitch();
         else if (position === 'vod_seek_min') Settings_check_min_seek();
         else if (position === 'vod_seek_max') Settings_check_max_seek();
         else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -34470,7 +34481,7 @@
     }
 
     function Settings_get_enabled() {
-        if (Settings_Obj_default('purple_adblock') === 1) {
+        if (Settings_Obj_default('k_twitch') === 1) {
             return 0;
         }
         if (Settings_Obj_default('ttv_lolProxy') === 1) {
@@ -34480,12 +34491,12 @@
         return 2;
     }
 
-    var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
-    var proxyArrayFull = ['purple_adblock', 'ttv_lolProxy', 'disabled'];
+    var proxyArray = ['k_twitch', 'ttv_lolProxy'];
+    var proxyArrayFull = ['k_twitch', 'ttv_lolProxy', 'disabled'];
     var proxyType = 'disabled';
 
-    function Settings_set_purple_adblock() {
-        Settings_set_all_proxy('purple_adblock');
+    function Settings_set_k_twitch() {
+        Settings_set_all_proxy('k_twitch');
     }
 
     function Settings_set_TTV_LOL() {
@@ -34529,14 +34540,16 @@
     }
 
     function Settings_proxy_set_current(current) {
-        if (current === 'purple_adblock') {
-            proxy_url = purple_proxy;
+        if (current === 'k_twitch') {
+            proxy_url = ktwitch_proxy;
             proxy_headers = null;
-            proxy_has_parameter = false;
+            proxy_has_parameter = true;
+            proxy_has_token = true;
         } else {
             proxy_url = Play_live_ttv_lol_links;
             proxy_headers = ttv_lol_headers;
             proxy_has_parameter = true;
+            proxy_has_token = false;
         }
     }
 
@@ -35313,26 +35326,26 @@
     function Settings_DialogShowProxy(click) {
         var array_no_yes = [STR_NO, STR_YES];
         Settings_value.ttv_lolProxy.values = array_no_yes;
-        Settings_value.purple_adblock.values = array_no_yes;
+        Settings_value.k_twitch.values = array_no_yes;
 
         var obj = {
             proxy_timeout: {
-                defaultValue: Settings_value.purple_adblock.defaultValue,
-                values: Settings_value.purple_adblock.values,
+                defaultValue: Settings_value.k_twitch.defaultValue,
+                values: Settings_value.k_twitch.values,
                 title: STR_PROXY_TIMEOUT,
                 summary: STR_PROXY_TIMEOUT_SUMMARY
             },
-            purple_adblock: {
-                defaultValue: Settings_value.ttv_lolProxy.defaultValue,
-                values: Settings_value.ttv_lolProxy.values,
-                title: STR_PURPLE_ADBLOCK,
-                summary: STR_PURPLE_ADBLOCK_SUMMARY
-            },
             ttv_lolProxy: {
-                defaultValue: Settings_value.purple_adblock.defaultValue,
-                values: Settings_value.purple_adblock.values,
+                defaultValue: Settings_value.k_twitch.defaultValue,
+                values: Settings_value.k_twitch.values,
                 title: STR_TTV_LOL,
                 summary: STR_TTV_LOL_SUMMARY
+            },
+            k_twitch: {
+                defaultValue: Settings_value.ttv_lolProxy.defaultValue,
+                values: Settings_value.ttv_lolProxy.values,
+                title: STR_K_TWITCH,
+                summary: STR_K_TWITCH_SUMMARY
             }
         };
 

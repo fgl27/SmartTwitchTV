@@ -9,6 +9,18 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version January 16 2023
+==============
+
+* Replace Purple proxy with K-Twitch-Bypass
+* General improves
+
+Web Version December 14 2022
+==============
+
+* Update VOD/Clip chat to use new API, old one was disabled
+* General improves
+
 Web Version November 15 2022
 ==============
 

@@ -23,9 +23,13 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
-    WebVersion: 'December 14 2022',
-    WebTag: 636, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'January 16 2023',
+    WebTag: 637, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version January 16 2023',
+            changes: ['Replace Purple proxy with K-Twitch-Bypass', 'General improves']
+        },
         {
             title: 'Web Version December 14 2022',
             changes: ['Update VOD/Clip chat to use new API, old one was disabled', 'General improves']
