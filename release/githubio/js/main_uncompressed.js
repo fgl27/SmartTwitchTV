@@ -21829,8 +21829,9 @@
             response = JSON.parse(result);
 
         if (response.status !== 200) {
+            //in case we fail using proxy restart the process without using proxy
             if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
-                PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess, useProxy);
+                PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess, false);
                 return;
             }
 
