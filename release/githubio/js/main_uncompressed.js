@@ -21677,7 +21677,7 @@
         }
     }
 
-    function PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess) {
+    function PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess, useProxy) {
         OSInterface_XmlHttpGetFull(
             PlayClip_BaseUrl, //String urlString
             DefaultHttpGetTimeout, //int timeout
@@ -21687,7 +21687,7 @@
             'PlayHLS_GetTokenResult', //String callback
             CheckId_y, //long checkResult
             isLive ? '1' : '0', //String check_1
-            use_proxy ? '1' : '0', //String check_2
+            useProxy ? '1' : '0', //String check_2
             Channel_or_VOD_Id.toString(), // String check_3
             null, // reserved for token result String check_4
             CheckId_x, // String check_5
