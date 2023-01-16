@@ -112,7 +112,7 @@ var Settings_value = {
         values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30],
         defaultValue: 10
     },
-    purple_adblock: {
+    k_twitch: {
         //Migrated to dialog
         values: ['no', 'yes'],
         defaultValue: 1
@@ -1242,7 +1242,7 @@ function Settings_SetDefault(position) {
     else if (position === 'PP_workaround') Settings_PP_Workaround();
     else if (position === 'ttv_lolProxy') Settings_set_TTV_LOL();
     else if (position === 'proxy_timeout') Settings_set_proxy_timeout();
-    else if (position === 'purple_adblock') Settings_set_purple_adblock();
+    else if (position === 'k_twitch') Settings_set_k_twitch();
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -1265,7 +1265,7 @@ function Settings_set_proxy_timeout() {
 }
 
 function Settings_get_enabled() {
-    if (Settings_Obj_default('purple_adblock') === 1) {
+    if (Settings_Obj_default('k_twitch') === 1) {
         return 0;
     }
     if (Settings_Obj_default('ttv_lolProxy') === 1) {
@@ -1275,11 +1275,11 @@ function Settings_get_enabled() {
     return 2;
 }
 
-var proxyArray = ['purple_adblock', 'ttv_lolProxy'];
-var proxyArrayFull = ['purple_adblock', 'ttv_lolProxy', 'disabled'];
+var proxyArray = ['k_twitch', 'ttv_lolProxy'];
+var proxyArrayFull = ['k_twitch', 'ttv_lolProxy', 'disabled'];
 var proxyType = 'disabled';
-function Settings_set_purple_adblock() {
-    Settings_set_all_proxy('purple_adblock');
+function Settings_set_k_twitch() {
+    Settings_set_all_proxy('k_twitch');
 }
 
 function Settings_set_TTV_LOL() {
@@ -1323,14 +1323,16 @@ function Settings_proxy_set_Type() {
 }
 
 function Settings_proxy_set_current(current) {
-    if (current === 'purple_adblock') {
-        proxy_url = purple_proxy;
+    if (current === 'k_twitch') {
+        proxy_url = ktwitch_proxy;
         proxy_headers = null;
-        proxy_has_parameter = false;
+        proxy_has_parameter = true;
+        proxy_has_token = true;
     } else {
         proxy_url = Play_live_ttv_lol_links;
         proxy_headers = ttv_lol_headers;
         proxy_has_parameter = true;
+        proxy_has_token = false;
     }
 }
 
@@ -2107,26 +2109,26 @@ function Settings_DialogShowBuffer(ckick) {
 function Settings_DialogShowProxy(click) {
     var array_no_yes = [STR_NO, STR_YES];
     Settings_value.ttv_lolProxy.values = array_no_yes;
-    Settings_value.purple_adblock.values = array_no_yes;
+    Settings_value.k_twitch.values = array_no_yes;
 
     var obj = {
         proxy_timeout: {
-            defaultValue: Settings_value.purple_adblock.defaultValue,
-            values: Settings_value.purple_adblock.values,
+            defaultValue: Settings_value.k_twitch.defaultValue,
+            values: Settings_value.k_twitch.values,
             title: STR_PROXY_TIMEOUT,
             summary: STR_PROXY_TIMEOUT_SUMMARY
         },
-        purple_adblock: {
-            defaultValue: Settings_value.ttv_lolProxy.defaultValue,
-            values: Settings_value.ttv_lolProxy.values,
-            title: STR_PURPLE_ADBLOCK,
-            summary: STR_PURPLE_ADBLOCK_SUMMARY
-        },
         ttv_lolProxy: {
-            defaultValue: Settings_value.purple_adblock.defaultValue,
-            values: Settings_value.purple_adblock.values,
+            defaultValue: Settings_value.k_twitch.defaultValue,
+            values: Settings_value.k_twitch.values,
             title: STR_TTV_LOL,
             summary: STR_TTV_LOL_SUMMARY
+        },
+        k_twitch: {
+            defaultValue: Settings_value.ttv_lolProxy.defaultValue,
+            values: Settings_value.ttv_lolProxy.values,
+            title: STR_K_TWITCH,
+            summary: STR_K_TWITCH_SUMMARY
         }
     };
 

@@ -449,18 +449,18 @@ function DefaultLang() {
 
     STR_NOKUSER_WARNING = STR_NOKUSER_WARN + STR_NOKEY_GENERAL_WARN;
 
-    STR_PURPLE_ADBLOCK_SUMMARY =
+    STR_K_TWITCH_SUMMARY =
         STR_PROXY_DONATE_SUMMARY +
         STR_SPACE_HTML +
         STR_SPACE_HTML +
         STR_SPAN_LINK +
-        DefaultMakeLink('https://github.com/arthurbolsoni/Purple-adblock') +
+        DefaultMakeLink('https://github.com/Kwabang/K-Twitch-Bypass') +
         '</span>';
 
     STR_TTV_LOL_SUMMARY =
         STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 
-    STR_PROXY_CONTROLS_ARRAY = [STR_PURPLE_ADBLOCK, STR_TTV_LOL, STR_DISABLED];
+    STR_PROXY_CONTROLS_ARRAY = [STR_K_TWITCH, STR_TTV_LOL, STR_DISABLED];
 }
 
 function DefaultReplaceLink(link, string, center) {

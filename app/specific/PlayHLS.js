@@ -31,12 +31,13 @@ var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
 
-var purple_proxy = 'https://jupter.ga/hls/v2/channel/';
+var ktwitch_proxy = 'https://api.twitch.tyo.kwabang.net/hls-raw/';
 
 var proxy_timeout = 5000;
 var proxy_url = '';
 var proxy_headers = null;
 var proxy_has_parameter = false;
+var proxy_has_token = false;
 
 //var proxy_ping_url = 'https://api.ttv.lol/ping';
 
@@ -59,10 +60,10 @@ function PlayHLS_GetPlayListAsync(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_
 
     //if at te end of a request the values are different we have a issues
     proxy_fail_counter_checker = proxy_fail_counter;
-    if (use_proxy && isLive) {
+    if (use_proxy && isLive && !proxy_has_token) {
         PlayHLS_PlayListUrl(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, null, null, true);
     } else {
-        PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name);
+        PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess.name, use_proxy);
     }
 }
 
@@ -76,7 +77,7 @@ function PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callB
         'PlayHLS_GetTokenResult', //String callback
         CheckId_y, //long checkResult
         isLive ? '1' : '0', //String check_1
-        '0', //use proxy always false String check_2
+        use_proxy ? '1' : '0', //String check_2
         Channel_or_VOD_Id.toString(), // String check_3
         null, // reserved for token result String check_4
         CheckId_x, // String check_5
@@ -141,12 +142,18 @@ function PlayHLS_CheckToken(tokenString) {
 function PlayHLS_GetPlayListUrl(isLive, Channel_or_VOD_Id, Token, Sig, useProxy) {
     var url = '',
         headers;
+
     if (isLive) {
         var URL_parameters = Play_base_live_links.replace('%d', Math.random() * 100000);
 
         if (useProxy) {
             headers = proxy_headers;
-            url = proxy_url + Channel_or_VOD_Id + (proxy_has_parameter ? '.m3u8' + encodeURIComponent('?' + URL_parameters) : '');
+
+            if (proxy_has_parameter && !proxy_has_token) {
+                url = proxy_url + Channel_or_VOD_Id + '.m3u8' + encodeURIComponent('?' + URL_parameters);
+            } else {
+                url = proxy_url + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
+            }
         } else {
             url = Play_original_live_links + Channel_or_VOD_Id + '.m3u8?token=' + encodeURIComponent(Token) + '&sig=' + Sig + '&' + URL_parameters;
         }
@@ -210,7 +217,7 @@ function PlayHLS_PlayListUrlResult(result, checkResult, check_1, check_2, check_
 
     if (response.status !== 200) {
         if (isLive && useProxy && PlayHLS_CheckProxyResultFail(response.responseText)) {
-            PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess);
+            PlayHLS_GetToken(isLive, Channel_or_VOD_Id, CheckId_y, CheckId_x, callBackSuccess, useProxy);
             return;
         }
 

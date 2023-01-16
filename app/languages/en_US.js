@@ -811,7 +811,7 @@ function en_USLang() {
     STR_PROXY_DONATE_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
 
     STR_TTV_LOL = 'TTV LOL';
-    STR_PURPLE_ADBLOCK = 'Purple Adblock ';
+    STR_K_TWITCH = 'K-Twitch-Bypass ';
 
     STR_PROXY_TIMEOUT = 'Proxy timeout (time in seconds)';
     STR_PROXY_TIMEOUT_SUMMARY =
