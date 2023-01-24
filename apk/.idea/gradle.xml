@@ -31,6 +31,7 @@
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/database" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/datasource" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/decoder" />
+            <option value="$PROJECT_DIR$/../../ExoPlayer/library/effect" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/extractor" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/hls" />
             <option value="$PROJECT_DIR$/../../ExoPlayer/library/rtsp" />
