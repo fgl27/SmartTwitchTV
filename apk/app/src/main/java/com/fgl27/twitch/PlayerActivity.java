@@ -802,7 +802,7 @@ public class PlayerActivity extends Activity {
                 Log.i(TAG, "releasePlayer notnull release position " + position);
             }
             PlayerObj[position].player.setPlayWhenReady(false);
-            PlayerObj[position].player.release();
+            releasePlayerWithTry(position, true);
         }
 
         PlayerObj[position].player = null;
@@ -822,10 +822,23 @@ public class PlayerActivity extends Activity {
         }
 
         if (PlayerObj[position].player != null) {
-            PlayerObj[position].player.release();
+            releasePlayerWithTry(position, true);
             PlayerObj[position].player = null;
         }
 
+    }
+
+    //Some devices may crash trying to release the player try again... may not solve need more testing
+    private void releasePlayerWithTry(int position, boolean tryAgain) {
+        try {
+            PlayerObj[position].player.release();
+        } catch (Exception e) {
+            Tools.recordException(TAG, "releasePlayerTry Exception ", e);
+
+            if (tryAgain) {
+                releasePlayerWithTry(position, false);
+            }
+        }
     }
 
     // After a stream loses connection with the serve the stream will not end
