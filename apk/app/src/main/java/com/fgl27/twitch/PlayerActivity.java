@@ -264,6 +264,7 @@ public class PlayerActivity extends Activity {
     private final boolean[] AudioEnabled = {true, false, false, false, true};
 
     public class PlayerObj {
+
         boolean IsPlaying;
         boolean isScreenPreview;
 
@@ -527,7 +528,6 @@ public class PlayerActivity extends Activity {
 
     private void ReUsePlayer(int PlayerObjPosition) {
 
-
         if (PlayerObj[PlayerObjPosition].player != null) {
 
             PlayerObj[PlayerObjPosition].player.removeListener(PlayerObj[PlayerObjPosition].Listener);
@@ -559,7 +559,6 @@ public class PlayerActivity extends Activity {
             setEnabledQualities(PlayerObjPosition);
 
         } else {
-
 
             PlayerObj[PlayerObjPosition].trackSelector
                     .setParameters(
@@ -798,6 +797,9 @@ public class PlayerActivity extends Activity {
         PlayerObj[position].playerView.setVisibility(View.GONE);
 
         if (PlayerObj[position].player != null) {
+            //Remove the listener before release as release may crash the player and restart the playback on background
+            PlayerObj[position].player.removeListener(PlayerObj[position].Listener);
+
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "releasePlayer notnull release position " + position);
             }
@@ -821,7 +823,12 @@ public class PlayerActivity extends Activity {
             Log.i(TAG, "SimpleReleasePlayer position " + position);
         }
 
+        PlayerObj[position].CheckHandler.removeCallbacksAndMessages(null);
+
         if (PlayerObj[position].player != null) {
+            //Remove the listener before release as release may crash the player and restart the playback on background
+            PlayerObj[position].player.removeListener(PlayerObj[position].Listener);
+
             releasePlayerWithTry(position, true);
             PlayerObj[position].player = null;
         }
@@ -830,6 +837,10 @@ public class PlayerActivity extends Activity {
 
     //Some devices may crash trying to release the player try again... may not solve need more testing
     private void releasePlayerWithTry(int position, boolean tryAgain) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "releasePlayerWithTry position " + position);
+        }
+
         try {
             PlayerObj[position].player.release();
         } catch (Exception e) {
@@ -1262,7 +1273,6 @@ public class PlayerActivity extends Activity {
                         //Shift element of array by one
                         PlayerObj[j] = PlayerObj[j - 1];
                     }
-
 
                     //Last element of array will be added to the start of array.
                     PlayerObj[0] = tempPlayerObj;
@@ -2033,7 +2043,6 @@ public class PlayerActivity extends Activity {
 
             }
 
-
             void CheckURL(String url) {
 
                 if (Objects.equals(url, Constants.PageUrl)) {
@@ -2312,7 +2321,6 @@ public class PlayerActivity extends Activity {
 
         PlayerObj[position].CheckCounter++;
 
-
         if (position < 4) {
             //Main players
 
@@ -2332,7 +2340,6 @@ public class PlayerActivity extends Activity {
                     LoadUrlWebView("javascript:smartTwitchTV.Play_PlayerCheck(" + PlayerObj[position].Type + "," + errorCode + ")");
 
                 }
-
 
             } else {// CheckCounter == 3 Give up internet is probably down or something related
 
@@ -2365,7 +2372,7 @@ public class PlayerActivity extends Activity {
 
         updateResumePosition(position);
 
-        //Simple release to make sure player is reseated before start a new playback
+        //Simple release to make sure player is reset before start a new playback
         SimpleReleasePlayer(position);
         SetupPlayer(position);
     }
@@ -3912,12 +3919,10 @@ public class PlayerActivity extends Activity {
 
                                 }
 
-
                             }
                     );
 
                 }
-
 
             } catch (Exception e) {
 
