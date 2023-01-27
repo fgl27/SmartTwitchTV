@@ -34547,7 +34547,7 @@
             proxy_url = T1080_proxy;
             proxy_headers = null;
             proxy_has_parameter = true;
-            proxy_has_token = false;
+            proxy_has_token = true;
         } else if (current === 'k_twitch') {
             proxy_url = ktwitch_proxy;
             proxy_headers = null;
