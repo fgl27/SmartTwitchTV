@@ -457,10 +457,13 @@ function DefaultLang() {
         DefaultMakeLink('https://github.com/Kwabang/K-Twitch-Bypass') +
         '</span>';
 
+    STR_T1080_SUMMARY =
+        STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://github.com/onTDB/T1080') + '</span>';
+
     STR_TTV_LOL_SUMMARY =
         STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 
-    STR_PROXY_CONTROLS_ARRAY = [STR_K_TWITCH, STR_TTV_LOL, STR_DISABLED];
+    STR_PROXY_CONTROLS_ARRAY = [STR_K_TWITCH, STR_TTV_LOL, STR_T1080, STR_DISABLED];
 }
 
 function DefaultReplaceLink(link, string, center) {

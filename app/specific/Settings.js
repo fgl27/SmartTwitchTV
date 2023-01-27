@@ -112,6 +112,11 @@ var Settings_value = {
         values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30],
         defaultValue: 10
     },
+    T1080: {
+        //Migrated to dialog
+        values: ['no', 'yes'],
+        defaultValue: 1
+    },
     k_twitch: {
         //Migrated to dialog
         values: ['no', 'yes'],
@@ -1240,9 +1245,10 @@ function Settings_SetDefault(position) {
     else if (position === 'dpad_opacity') Settings_DpadOpacity();
     else if (position === 'dpad_position') Settings_DpadPOsition();
     else if (position === 'PP_workaround') Settings_PP_Workaround();
-    else if (position === 'ttv_lolProxy') Settings_set_TTV_LOL();
     else if (position === 'proxy_timeout') Settings_set_proxy_timeout();
-    else if (position === 'k_twitch') Settings_set_k_twitch();
+    else if (position === 'ttv_lolProxy') Settings_set_all_proxy('ttv_lolProxy');
+    else if (position === 'k_twitch') Settings_set_all_proxy('k_twitch');
+    else if (position === 'T1080') Settings_set_all_proxy('T1080');
     else if (position === 'vod_seek_min') Settings_check_min_seek();
     else if (position === 'vod_seek_max') Settings_check_max_seek();
     else if (position === 'auto_minimize_inactive') Settings_SetAutoMinimizeTimeout();
@@ -1260,31 +1266,9 @@ function Settings_SetDefault(position) {
     }
 }
 
-function Settings_set_proxy_timeout() {
-    proxy_timeout = Settings_Obj_values('proxy_timeout') * 1000;
-}
-
-function Settings_get_enabled() {
-    if (Settings_Obj_default('k_twitch') === 1) {
-        return 0;
-    }
-    if (Settings_Obj_default('ttv_lolProxy') === 1) {
-        return 1;
-    }
-
-    return 2;
-}
-
-var proxyArray = ['k_twitch', 'ttv_lolProxy'];
-var proxyArrayFull = ['k_twitch', 'ttv_lolProxy', 'disabled'];
+var proxyArray = ['k_twitch', 'ttv_lolProxy', 'T1080'];
+var proxyArrayFull = ['k_twitch', 'ttv_lolProxy', 'T1080', 'disabled'];
 var proxyType = 'disabled';
-function Settings_set_k_twitch() {
-    Settings_set_all_proxy('k_twitch');
-}
-
-function Settings_set_TTV_LOL() {
-    Settings_set_all_proxy('ttv_lolProxy');
-}
 
 function Settings_set_all_proxy(current) {
     var currentEnable = Settings_Obj_default(current) === 1;
@@ -1319,11 +1303,16 @@ function Settings_proxy_set_start() {
 }
 
 function Settings_proxy_set_Type() {
-    proxyType = proxyArrayFull[Settings_get_enabled()];
+    proxyType = proxyArrayFull[Settings_get_enabled_Proxy()];
 }
 
 function Settings_proxy_set_current(current) {
-    if (current === 'k_twitch') {
+    if (current === 'T1080') {
+        proxy_url = T1080_proxy;
+        proxy_headers = null;
+        proxy_has_parameter = true;
+        proxy_has_token = false;
+    } else if (current === 'k_twitch') {
         proxy_url = ktwitch_proxy;
         proxy_headers = null;
         proxy_has_parameter = true;
@@ -1334,6 +1323,24 @@ function Settings_proxy_set_current(current) {
         proxy_has_parameter = true;
         proxy_has_token = false;
     }
+}
+
+function Settings_set_proxy_timeout() {
+    proxy_timeout = Settings_Obj_values('proxy_timeout') * 1000;
+}
+
+function Settings_get_enabled_Proxy() {
+    if (Settings_Obj_default('k_twitch') === 1) {
+        return 0;
+    }
+    if (Settings_Obj_default('ttv_lolProxy') === 1) {
+        return 1;
+    }
+    if (Settings_Obj_default('T1080') === 1) {
+        return 2;
+    }
+
+    return 3;
 }
 
 function Settings_check_sidePannelFade() {
@@ -2110,6 +2117,7 @@ function Settings_DialogShowProxy(click) {
     var array_no_yes = [STR_NO, STR_YES];
     Settings_value.ttv_lolProxy.values = array_no_yes;
     Settings_value.k_twitch.values = array_no_yes;
+    Settings_value.T1080.values = array_no_yes;
 
     var obj = {
         proxy_timeout: {
@@ -2117,6 +2125,12 @@ function Settings_DialogShowProxy(click) {
             values: Settings_value.k_twitch.values,
             title: STR_PROXY_TIMEOUT,
             summary: STR_PROXY_TIMEOUT_SUMMARY
+        },
+        T1080: {
+            defaultValue: Settings_value.ttv_lolProxy.defaultValue,
+            values: Settings_value.ttv_lolProxy.values,
+            title: STR_T1080,
+            summary: STR_T1080_SUMMARY
         },
         ttv_lolProxy: {
             defaultValue: Settings_value.k_twitch.defaultValue,

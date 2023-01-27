@@ -191,7 +191,7 @@ function Play_ResetSpeed() {
 }
 
 function Play_ResetProxy() {
-    Play_A_Control(Settings_get_enabled(), Play_controlsProxy);
+    Play_A_Control(Settings_get_enabled_Proxy(), Play_controlsProxy);
 }
 
 function Play_ResetQualityControls() {
@@ -2890,13 +2890,13 @@ function Play_MakeControls() {
         offsetY: -5,
         string: PROXY_SERVICE,
         values: STR_PROXY_CONTROLS_ARRAY,
-        defaultValue: Settings_get_enabled(),
+        defaultValue: Settings_get_enabled_Proxy(),
         enterKey: function () {
-            var currentProxyEnabled = Settings_get_enabled(),
+            var currentProxyEnabled = Settings_get_enabled_Proxy(),
                 i,
                 key;
 
-            if (this.defaultValue < 2) {
+            if (this.defaultValue < this.values.length - 1) {
                 key = proxyArray[this.defaultValue];
                 Settings_value[key].defaultValue = 1;
                 Main_setItem(key, 2);
@@ -2913,7 +2913,7 @@ function Play_MakeControls() {
                 use_proxy = false;
             }
 
-            if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled()) {
+            if (Main_IsOn_OSInterface && currentProxyEnabled !== Settings_get_enabled_Proxy()) {
                 Play_showBufferDialog();
                 if (Play_MultiEnable) {
                     i = 0;

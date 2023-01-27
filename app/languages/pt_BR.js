@@ -816,7 +816,7 @@ function pt_BRLang() {
 
     PROXY_SERVICE_STATUS = 'Habilitado e funcionando';
 
-    STR_PROXY_DONATE_SUMMARY = 'Se você quiser agradecer ao mantenedor do servidor proxy, use o link:';
+    STR_PROXY_DONATE_SUMMARY = 'Se você quiser saber mais sobre ou agradecer ao mantenedor do servidor proxy, use o link:';
     PROXY_SERVICE_OFF = 'Desativado nas configurações';
     PROXY_SERVICE_FAIL = 'Não funciona, falhou %x vezes';
 

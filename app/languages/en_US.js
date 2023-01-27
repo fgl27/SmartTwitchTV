@@ -808,10 +808,11 @@ function en_USLang() {
     STR_SPECIAL_FEATURE = 'Use the keyboard for this feature';
     STR_FAIL_VOD_INFO = 'Fail to load VOD info';
 
-    STR_PROXY_DONATE_SUMMARY = 'If you wanna to thanks the proxy server maintainer use the link:';
+    STR_PROXY_DONATE_SUMMARY = 'If you wanna know more or thanks the proxy server maintainer use the link:';
 
     STR_TTV_LOL = 'TTV LOL';
-    STR_K_TWITCH = 'K-Twitch-Bypass ';
+    STR_K_TWITCH = 'K-Twitch-Bypass';
+    STR_T1080 = 'T1080';
 
     STR_PROXY_TIMEOUT = 'Proxy timeout (time in seconds)';
     STR_PROXY_TIMEOUT_SUMMARY =
