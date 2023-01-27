@@ -4525,10 +4525,10 @@
         publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
         WebVersion: 'January 27 2023',
-        WebTag: 639, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 640, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version January 27 2023',
-                changes: ['Add T1080 Proxy', 'Fix Emoji support', 'General improves']
+                changes: ['Add T1080 Proxy', 'Fix Emoji support', 'Add content language controls to player', 'General improves']
             },
             {
                 title: 'Web Version January 16 2023',
@@ -4545,18 +4545,6 @@
             {
                 title: 'Web Version October 17 2022 and Apk Version 3.0.344 and Up',
                 changes: ['General improves']
-            },
-            {
-                title: 'Web Version September 06 2022',
-                changes: ['Fix VOD playback for devices running Old Android version']
-            },
-            {
-                title: 'Web Version August 28 2022',
-                changes: ['Re enable Clip screen, temporarily as this API may stop work at any moment', 'General improves']
-            },
-            {
-                title: 'Web Version August 20 2022',
-                changes: ['Add proxy controls to player']
             }
         ]
     };
@@ -18690,6 +18678,7 @@
     var Play_controlsPreviewSize = temp_controls_pos++;
     var Play_controlsPreviewVolume = temp_controls_pos++;
     var Play_controlsPreviewMainVolume = temp_controls_pos++;
+    var Play_controlsContentLang = temp_controls_pos++;
     var Play_controlsControls = temp_controls_pos++;
 
     var Play_controlsDefault = Play_controlsChat;
@@ -20491,6 +20480,41 @@
                 }
 
                 Play_showControlsDialog(keys);
+            }
+        };
+
+        Play_controls[Play_controlsContentLang] = {
+            ShowInLive: true,
+            ShowInVod: true,
+            ShowInClip: true,
+            ShowInPP: true,
+            ShowInMulti: true,
+            ShowInChat: true,
+            ShowInAudio: false,
+            ShowInAudioPP: false,
+            ShowInAudioMulti: false,
+            ShowInPreview: false,
+            ShowInStay: true,
+            icons: 'globe',
+            offsetY: -4,
+            string: STR_CONTENT_LANG,
+            values: Settings_value.content_lang.values,
+            defaultValue: Settings_Obj_default('content_lang'),
+            updown: function(adder) {
+                this.defaultValue += adder;
+
+                if (this.defaultValue < 0) {
+                    this.defaultValue = 0;
+                } else if (this.defaultValue > this.values.length - 1) {
+                    this.defaultValue = this.values.length - 1;
+                }
+
+                Screens_SetLangValue(this.defaultValue);
+            },
+            bottomArrows: function() {
+                Play_BottomArrows(this.position, true);
+
+                Main_innerHTMLWithEle(this.doc_name, Main_ReplaceLargeFont(this.values[this.defaultValue]));
             }
         };
 
@@ -29407,8 +29431,14 @@
     }
 
     function Screens_SetLang(key) {
+        Screens_SetLangValue(Screens_ThumbOptionPosXArrays[4]);
+
+        if (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
+    }
+
+    function Screens_SetLangValue(position) {
         var setting_lang_key = 'content_lang';
-        Settings_value[setting_lang_key].defaultValue = Screens_ThumbOptionPosXArrays[4];
+        Settings_value[setting_lang_key].defaultValue = position;
         Main_setItem(setting_lang_key, Settings_Obj_default(setting_lang_key) + 1);
         Settings_SetLang();
 
@@ -29418,7 +29448,8 @@
             Settings_SetarrowsKey(setting_lang_key);
         }
 
-        if (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
+        Play_controls[Play_controlsContentLang].defaultValue = position;
+        Play_controls[Play_controlsContentLang].bottomArrows();
     }
 
     // var Screens_ThumbOption_Follow_ID = 0;
@@ -37405,6 +37436,7 @@
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
+        UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckContentLang = 1;
         UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
         if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;
@@ -38871,7 +38903,12 @@
         var key = Main_Live,
             pos = UserLiveFeedobj_LivePos;
 
-        if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+        if (
+            UserLiveFeed_obj[pos].neverLoaded &&
+            ScreenObj[key].data &&
+            UserLiveFeed_obj[pos].CheckContentLang &&
+            !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)
+        ) {
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
         } else {
             UserLiveFeedobj_BaseLoad(
@@ -38919,7 +38956,12 @@
         var key = Main_Featured,
             pos = UserLiveFeedobj_FeaturedPos;
 
-        if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+        if (
+            UserLiveFeed_obj[pos].neverLoaded &&
+            ScreenObj[key].data &&
+            UserLiveFeed_obj[pos].CheckContentLang &&
+            !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)
+        ) {
             UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
         } else {
             FullxmlHttpGet(

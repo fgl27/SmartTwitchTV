@@ -24,11 +24,11 @@ var version = {
     publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
     WebVersion: 'January 27 2023',
-    WebTag: 639, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebTag: 640, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
         {
             title: 'Web Version January 27 2023',
-            changes: ['Add T1080 Proxy', 'Fix Emoji support', 'General improves']
+            changes: ['Add T1080 Proxy', 'Fix Emoji support', 'Add content language controls to player', 'General improves']
         },
         {
             title: 'Web Version January 16 2023',
@@ -45,18 +45,6 @@ var version = {
         {
             title: 'Web Version October 17 2022 and Apk Version 3.0.344 and Up',
             changes: ['General improves']
-        },
-        {
-            title: 'Web Version September 06 2022',
-            changes: ['Fix VOD playback for devices running Old Android version']
-        },
-        {
-            title: 'Web Version August 28 2022',
-            changes: ['Re enable Clip screen, temporarily as this API may stop work at any moment', 'General improves']
-        },
-        {
-            title: 'Web Version August 20 2022',
-            changes: ['Add proxy controls to player']
         }
     ]
 };

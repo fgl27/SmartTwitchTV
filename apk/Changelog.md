@@ -14,6 +14,7 @@ Web Version January 27 2023
 
 * Add T1080 Proxy
 * Fix Emoji support
+* Add content language controls to player
 * General improves
 
 Web Version January 16 2023
