@@ -256,6 +256,7 @@ function UserLiveFeed_Prepare() {
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].StreamType = 'featured';
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].cell = UserLiveFeedobj_FeaturedCell;
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].Screen = 'preview_featured';
+    UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckContentLang = 1;
     UserLiveFeed_obj[UserLiveFeedobj_FeaturedPos].CheckSort = 1;
 
     if (!AddUser_UserIsSet()) UserLiveFeed_FeedPosX = UserLiveFeedobj_LivePos;

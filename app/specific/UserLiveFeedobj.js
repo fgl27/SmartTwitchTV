@@ -385,7 +385,12 @@ function UserLiveFeedobj_loadLive() {
     var key = Main_Live,
         pos = UserLiveFeedobj_LivePos;
 
-    if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+    if (
+        UserLiveFeed_obj[pos].neverLoaded &&
+        ScreenObj[key].data &&
+        UserLiveFeed_obj[pos].CheckContentLang &&
+        !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)
+    ) {
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
     } else {
         UserLiveFeedobj_BaseLoad(
@@ -433,7 +438,12 @@ function UserLiveFeedobj_loadFeatured() {
     var key = Main_Featured,
         pos = UserLiveFeedobj_FeaturedPos;
 
-    if (UserLiveFeed_obj[pos].neverLoaded && ScreenObj[key].data) {
+    if (
+        UserLiveFeed_obj[pos].neverLoaded &&
+        ScreenObj[key].data &&
+        UserLiveFeed_obj[pos].CheckContentLang &&
+        !Main_A_equals_B(UserLiveFeed_obj[pos].ContentLang, Main_ContentLang)
+    ) {
         UserLiveFeedobj_loadDataBaseLiveSuccessEnd(ScreenObj[key].data.slice(0, 100), null, pos, UserLiveFeed_itemsCount[pos]);
     } else {
         FullxmlHttpGet(

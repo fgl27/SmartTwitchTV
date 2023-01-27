@@ -2824,8 +2824,14 @@ function Screens_ThumbOptionDialogHide(Update, key) {
 }
 
 function Screens_SetLang(key) {
+    Screens_SetLangValue(Screens_ThumbOptionPosXArrays[4]);
+
+    if (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
+}
+
+function Screens_SetLangValue(position) {
     var setting_lang_key = 'content_lang';
-    Settings_value[setting_lang_key].defaultValue = Screens_ThumbOptionPosXArrays[4];
+    Settings_value[setting_lang_key].defaultValue = position;
     Main_setItem(setting_lang_key, Settings_Obj_default(setting_lang_key) + 1);
     Settings_SetLang();
 
@@ -2835,7 +2841,8 @@ function Screens_SetLang(key) {
         Settings_SetarrowsKey(setting_lang_key);
     }
 
-    if (ScreenObj[key].CheckContentLang && !Main_A_equals_B(ScreenObj[key].ContentLang, Main_ContentLang)) Main_ReloadScreen();
+    Play_controls[Play_controlsContentLang].defaultValue = position;
+    Play_controls[Play_controlsContentLang].bottomArrows();
 }
 
 // var Screens_ThumbOption_Follow_ID = 0;

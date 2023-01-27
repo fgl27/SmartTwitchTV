@@ -1981,6 +1981,7 @@ var Play_controlsPreviewEnable = temp_controls_pos++;
 var Play_controlsPreviewSize = temp_controls_pos++;
 var Play_controlsPreviewVolume = temp_controls_pos++;
 var Play_controlsPreviewMainVolume = temp_controls_pos++;
+var Play_controlsContentLang = temp_controls_pos++;
 var Play_controlsControls = temp_controls_pos++;
 
 var Play_controlsDefault = Play_controlsChat;
@@ -3782,6 +3783,41 @@ function Play_MakeControls() {
             }
 
             Play_showControlsDialog(keys);
+        }
+    };
+
+    Play_controls[Play_controlsContentLang] = {
+        ShowInLive: true,
+        ShowInVod: true,
+        ShowInClip: true,
+        ShowInPP: true,
+        ShowInMulti: true,
+        ShowInChat: true,
+        ShowInAudio: false,
+        ShowInAudioPP: false,
+        ShowInAudioMulti: false,
+        ShowInPreview: false,
+        ShowInStay: true,
+        icons: 'globe',
+        offsetY: -4,
+        string: STR_CONTENT_LANG,
+        values: Settings_value.content_lang.values,
+        defaultValue: Settings_Obj_default('content_lang'),
+        updown: function (adder) {
+            this.defaultValue += adder;
+
+            if (this.defaultValue < 0) {
+                this.defaultValue = 0;
+            } else if (this.defaultValue > this.values.length - 1) {
+                this.defaultValue = this.values.length - 1;
+            }
+
+            Screens_SetLangValue(this.defaultValue);
+        },
+        bottomArrows: function () {
+            Play_BottomArrows(this.position, true);
+
+            Main_innerHTMLWithEle(this.doc_name, Main_ReplaceLargeFont(this.values[this.defaultValue]));
         }
     };
 
