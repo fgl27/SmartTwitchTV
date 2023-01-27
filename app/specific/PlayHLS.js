@@ -31,7 +31,7 @@ var Play_original_live_links = 'https://usher.ttvnw.net/api/channel/hls/';
 var Play_live_ttv_lol_links = 'https://api.ttv.lol/playlist/';
 var ttv_lol_headers = JSON.stringify([['X-Donate-To', 'https://ttv.lol/donate']]);
 
-var ktwitch_proxy = 'https://api.twitch.tyo.kwabang.net/hls-raw/';
+var ktwitch_proxy = 'https://api.twitch.hkg.kwabang.net/hls-raw/';
 
 var proxy_timeout = 5000;
 var proxy_url = '';
