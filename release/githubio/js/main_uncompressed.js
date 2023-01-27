@@ -18680,6 +18680,7 @@
     var Play_controlsPreviewSize = temp_controls_pos++;
     var Play_controlsPreviewVolume = temp_controls_pos++;
     var Play_controlsPreviewMainVolume = temp_controls_pos++;
+    var Play_controlsControls = temp_controls_pos++;
 
     var Play_controlsDefault = Play_controlsChat;
     var Play_Panelcounter = Play_controlsDefault;
@@ -20452,7 +20453,7 @@
             }
         };
 
-        Play_controls[Play_controlsPreviewMainVolume] = {
+        Play_controls[Play_controlsControls] = {
             //show controls
             ShowInLive: true,
             ShowInVod: true,
