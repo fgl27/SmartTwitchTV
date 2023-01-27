@@ -175,7 +175,13 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
 
-            return iconId ? '<img class="' + (emoticon ? 'emoticon' : 'emoji') + '" alt="" src="https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png"/>' : rawText;
+            return iconId
+                ? '<img class="' +
+                      (emoticon ? 'emoticon' : 'emoji') +
+                      '" alt="" src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/' +
+                      iconId +
+                      '.png"/>'
+                : rawText;
         });
     }
 
@@ -185,7 +191,7 @@ var twemoji = (function () /*! Copyright Twitter Inc. and other contributors. Li
         return replace(str, function (rawText) {
             var iconId = grabTheRightIcon(rawText);
 
-            return iconId ? 'https://twemoji.maxcdn.com/2/72x72/' + iconId + '.png' : rawText;
+            return iconId ? 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/72x72/' + iconId + '.png' : rawText;
         });
     }
 
