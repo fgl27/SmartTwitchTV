@@ -594,7 +594,7 @@ function Main_Addline(id) {
         }
     } else {
         Chat_Pause();
-        if (Chat_cursor !== undefined) {
+        if (Chat_cursor !== '') {
             //array.slice() may crash RangeError: Maximum call stack size exceeded
             Chat_Messages = Main_Slice(Chat_MessagesNext);
 
@@ -625,7 +625,7 @@ function Chat_loadChatNext(id) {
 }
 
 function Chat_loadChatNextRequest(id) {
-    if (Chat_cursor === undefined) return;
+    if (Chat_cursor === '') return;
 
     FullxmlHttpGet(
         PlayClip_BaseUrl,
