@@ -45,6 +45,9 @@ var Play_MultiDialogElem;
 var Play_SkipStartAuto = false;
 var Play_MaxInstances = 0;
 var Play_HasLive;
+var Play_HasVod;
+var Play_VodObj;
+var Play_VodObjIndex;
 
 var Play_streamInfoTimerId = null;
 

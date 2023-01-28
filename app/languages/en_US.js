@@ -232,7 +232,8 @@ function en_USLang() {
     STR_STREAM_END_EXIT = "Press 'Return' to exit";
     STR_FEATURED = 'Featured';
     STR_CREATED_AT = 'Created';
-    STR_OPEN_BROADCAST = 'Open the Broadcast';
+    STR_OPEN_BROADCAST = 'Open the VOD';
+    STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
     STR_IS_LIVE = 'Is now live';
     STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
     STR_SHOW_ISLIVE_WARNING_SUMMARY =
@@ -244,7 +245,7 @@ function en_USLang() {
     STR_STAY_CHECKING = 'Checking if is live ...';
     STR_STAY_CHECK_LAST = 'Last result:';
     STR_STAY_IS_OFFLINE = 'The stream was offline';
-    STR_NO_BROADCAST = 'No Broadcast';
+    STR_NO_BROADCAST = 'No VOD';
     STR_NO_BROADCAST_WARNING = 'There are no VODs for this clip';
     STR_NO_CHAT = 'and because of that no chat';
     STR_IS_NOW = 'is now';

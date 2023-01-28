@@ -230,6 +230,7 @@ function pt_BRLang() {
     STR_FEATURED = 'Apresentado';
     STR_CREATED_AT = 'Criado';
     STR_OPEN_BROADCAST = 'Abra o Vídeo';
+    STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
     STR_IS_LIVE = 'Agora Ao vivo';
     STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
     STR_SHOW_ISLIVE_WARNING_SUMMARY =

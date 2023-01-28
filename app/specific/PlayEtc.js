@@ -677,12 +677,12 @@ function Play_EndTextClear() {
 }
 
 function Play_EndDialogPressed(PlayVodClip) {
-    var canhide = true;
+    var canHide = true;
     if (Play_EndCounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
     else if (!Play_EndCounter) {
         if (PlayVodClip === 2) {
             if (!PlayVod_qualities.length) {
-                canhide = false;
+                canHide = false;
                 Play_showWarningDialog(STR_CLIP_FAIL, 2000);
             } else {
                 PlayVod_replay = true;
@@ -693,7 +693,7 @@ function Play_EndDialogPressed(PlayVodClip) {
             }
         } else if (PlayVodClip === 3) {
             if (!PlayClip_qualities.length) {
-                canhide = false;
+                canHide = false;
                 Play_showWarningDialog(STR_CLIP_FAIL, 2000);
             } else {
                 PlayClip_replayOrNext = true;
@@ -705,21 +705,26 @@ function Play_EndDialogPressed(PlayVodClip) {
         if (Main_values.Play_isHost) Play_OpenHost();
         else if (PlayVodClip === 1) Play_StartStay();
         else if (PlayVodClip === 2 || PlayVodClip === 3) {
-            canhide = false;
+            canHide = false;
             Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
         }
     } else if (Play_EndCounter === 2) {
-        if (PlayVodClip === 3) {
+        if (PlayVodClip === 1) {
+            Main_values_Play_data = Play_VodObj.data;
+            Play_ClearPP();
+            PlayVod_PreshutdownStream();
+            Main_OPenAsVod(Play_VodObjIndex);
+        } else if (PlayVodClip === 3) {
             PlayClip_OpenVod();
-            if (!PlayClip_HasVOD) canhide = false;
+            if (!PlayClip_HasVOD) canHide = false;
         }
     } else if (Play_EndCounter === 3) Play_OpenChannel(PlayVodClip);
     else if (Play_EndCounter === 4) {
         Play_OpenGame(PlayVodClip);
-        if (Play_data.data[3] === '') canhide = false;
+        if (Play_data.data[3] === '') canHide = false;
     }
 
-    if (canhide) {
+    if (canHide) {
         Play_HideEndDialog();
         UserLiveFeed_Hide();
         UserLiveFeed_PreventHide = false;
@@ -746,7 +751,7 @@ function Play_EndSet(PlayVodClip) {
             Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName)
         );
     } else if (PlayVodClip === 1) {
-        // play
+        // Live
         Play_EndIconsRemoveFocus();
         Play_EndCounter = 1;
         Play_EndIconsAddFocus();
@@ -754,8 +759,25 @@ function Play_EndSet(PlayVodClip) {
         Main_getElementById('dialog_end_0').style.display = 'none';
         Main_getElementById('dialog_end_2').style.display = 'none';
         Main_getElementById('dialog_end_1').style.display = 'inline-block';
-
         Play_EndTextsReset();
+        Play_HasVod = false;
+
+        if (AddUser_IsUserSet()) {
+            var index = Main_history_Exist('live', Play_data.data[7]);
+            if (index > -1) {
+                Play_VodObj = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+                Play_VodObjIndex = index;
+
+                if (Play_VodObj.vodid) {
+                    Main_textContent('dialog_end_vod_text_2', STR_OPEN_LAST_BROADCAST);
+                    Main_getElementById('dialog_end_2').style.display = 'inline-block';
+                    Main_innerHTML('end_vod_name_text_2', Play_VodObj.data[1]);
+                    Main_textContent('end_vod_title_text_2', Play_VodObj.data[2]);
+                    Play_HasVod = true;
+                }
+            }
+        }
+
         Main_innerHTML('end_channel_name_text_3', Play_data.data[1]);
         Main_textContent('dialog_end_live_text_1', STR_STAY_OPEN);
         Main_innerHTML('end_live_title_text_1', STR_STAY_OPEN_SUMMARY);
@@ -1684,7 +1706,7 @@ function Play_handleKeyDown(e) {
                 Play_EndTextClear();
                 Play_EndIconsRemoveFocus();
                 Play_EndCounter--;
-                if (Play_EndCounter === 2) Play_EndCounter = 1;
+                if (Play_EndCounter === 2 && !Play_HasVod) Play_EndCounter = 1;
 
                 if (Play_EndCounter < 1) Play_EndCounter = 4;
                 Play_EndIconsAddFocus();
@@ -1721,7 +1743,7 @@ function Play_handleKeyDown(e) {
                 Play_EndTextClear();
                 Play_EndIconsRemoveFocus();
                 Play_EndCounter++;
-                if (Play_EndCounter === 2) Play_EndCounter = 3;
+                if (Play_EndCounter === 2 && !Play_HasVod) Play_EndCounter = 3;
                 if (Play_EndCounter > 4) Play_EndCounter = 1;
                 Play_EndIconsAddFocus();
             } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
