@@ -237,7 +237,7 @@ function PlayClip_loadVodOffsettResult(responseObj, key, id) {
                 }
 
                 if (clip.game && clip.game.displayName) {
-                    Main_innerHTML('stream_info_game', clip.game.displayName);
+                    Main_innerHTML('stream_info_game', STR_PLAYING + clip.game.displayName);
                     ChannelClip_game = clip.game.displayName;
                     Play_data.data[3] = ChannelClip_game;
                     Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
