@@ -186,6 +186,7 @@
     var STR_FEATURED;
     var STR_CREATED_AT;
     var STR_OPEN_BROADCAST;
+    var STR_OPEN_LAST_BROADCAST;
     var STR_NO_BROADCAST;
     var STR_NO_BROADCAST_WARNING;
     var STR_NO_CHAT;
@@ -1453,7 +1454,8 @@
         STR_STREAM_END_EXIT = "Press 'Return' to exit";
         STR_FEATURED = 'Featured';
         STR_CREATED_AT = 'Created';
-        STR_OPEN_BROADCAST = 'Open the Broadcast';
+        STR_OPEN_BROADCAST = 'Open the VOD';
+        STR_OPEN_LAST_BROADCAST = 'Open the Last VOD';
         STR_IS_LIVE = 'Is now live';
         STR_SHOW_ISLIVE_WARNING = "Show 'Streamer is live' warning";
         STR_SHOW_ISLIVE_WARNING_SUMMARY =
@@ -1465,7 +1467,7 @@
         STR_STAY_CHECKING = 'Checking if is live ...';
         STR_STAY_CHECK_LAST = 'Last result:';
         STR_STAY_IS_OFFLINE = 'The stream was offline';
-        STR_NO_BROADCAST = 'No Broadcast';
+        STR_NO_BROADCAST = 'No VOD';
         STR_NO_BROADCAST_WARNING = 'There are no VODs for this clip';
         STR_NO_CHAT = 'and because of that no chat';
         STR_IS_NOW = 'is now';
@@ -2838,6 +2840,7 @@
         STR_FEATURED = 'Apresentado';
         STR_CREATED_AT = 'Criado';
         STR_OPEN_BROADCAST = 'Abra o Vídeo';
+        STR_OPEN_LAST_BROADCAST = 'Abra o último Vídeo';
         STR_IS_LIVE = 'Agora Ao vivo';
         STR_SHOW_ISLIVE_WARNING = 'Mostrar aviso "Streamer Agora ao vivo"';
         STR_SHOW_ISLIVE_WARNING_SUMMARY =
@@ -4522,11 +4525,20 @@
     //Spacing for release maker not trow errors from jshint
     var version = {
         VersionBase: '3.0',
-        publishVersionCode: 344, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
-        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/344/SmartTV_twitch_3_0_344.apk',
-        WebVersion: 'January 27 2023',
-        WebTag: 640, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
+        ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
+        WebVersion: 'January 28 2023',
+        WebTag: 641, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version January 28 2022 and Apk Version 3.0.345 and Up',
+                changes: [
+                    'Update player to latest version',
+                    'Fix random unwanted background playback',
+                    'Add a option to open the VOD of current Live once the Live end',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version January 27 2023',
                 changes: ['Add T1080 Proxy', 'Fix Emoji support', 'Add content language controls to player', 'General improves']
             },
@@ -4540,10 +4552,6 @@
             },
             {
                 title: 'Web Version November 15 2022',
-                changes: ['General improves']
-            },
-            {
-                title: 'Web Version October 17 2022 and Apk Version 3.0.344 and Up',
                 changes: ['General improves']
             }
         ]
@@ -11101,7 +11109,7 @@
             }
         } else {
             Chat_Pause();
-            if (Chat_cursor !== undefined) {
+            if (Chat_cursor !== '') {
                 //array.slice() may crash RangeError: Maximum call stack size exceeded
                 Chat_Messages = Main_Slice(Chat_MessagesNext);
 
@@ -11132,7 +11140,7 @@
     }
 
     function Chat_loadChatNextRequest(id) {
-        if (Chat_cursor === undefined) return;
+        if (Chat_cursor === '') return;
 
         FullxmlHttpGet(
             PlayClip_BaseUrl,
@@ -15851,7 +15859,7 @@
                     }
 
                     if (clip.game && clip.game.displayName) {
-                        Main_innerHTML('stream_info_game', clip.game.displayName);
+                        Main_innerHTML('stream_info_game', STR_PLAYING + clip.game.displayName);
                         ChannelClip_game = clip.game.displayName;
                         Play_data.data[3] = ChannelClip_game;
                         Play_controls[Play_controlsGameCont].setLable(Play_data.data[3]);
@@ -17372,12 +17380,12 @@
     }
 
     function Play_EndDialogPressed(PlayVodClip) {
-        var canhide = true;
+        var canHide = true;
         if (Play_EndCounter === -1 && PlayClip_HasNext) PlayClip_PlayNext();
         else if (!Play_EndCounter) {
             if (PlayVodClip === 2) {
                 if (!PlayVod_qualities.length) {
-                    canhide = false;
+                    canHide = false;
                     Play_showWarningDialog(STR_CLIP_FAIL, 2000);
                 } else {
                     PlayVod_replay = true;
@@ -17388,7 +17396,7 @@
                 }
             } else if (PlayVodClip === 3) {
                 if (!PlayClip_qualities.length) {
-                    canhide = false;
+                    canHide = false;
                     Play_showWarningDialog(STR_CLIP_FAIL, 2000);
                 } else {
                     PlayClip_replayOrNext = true;
@@ -17400,21 +17408,26 @@
             if (Main_values.Play_isHost) Play_OpenHost();
             else if (PlayVodClip === 1) Play_StartStay();
             else if (PlayVodClip === 2 || PlayVodClip === 3) {
-                canhide = false;
+                canHide = false;
                 Play_ClipCheckIfIsLive(Main_values.Main_selectedChannel);
             }
         } else if (Play_EndCounter === 2) {
-            if (PlayVodClip === 3) {
+            if (PlayVodClip === 1) {
+                Main_values_Play_data = Play_VodObj.data;
+                Play_ClearPP();
+                PlayVod_PreshutdownStream();
+                Main_OPenAsVod(Play_VodObjIndex);
+            } else if (PlayVodClip === 3) {
                 PlayClip_OpenVod();
-                if (!PlayClip_HasVOD) canhide = false;
+                if (!PlayClip_HasVOD) canHide = false;
             }
         } else if (Play_EndCounter === 3) Play_OpenChannel(PlayVodClip);
         else if (Play_EndCounter === 4) {
             Play_OpenGame(PlayVodClip);
-            if (Play_data.data[3] === '') canhide = false;
+            if (Play_data.data[3] === '') canHide = false;
         }
 
-        if (canhide) {
+        if (canHide) {
             Play_HideEndDialog();
             UserLiveFeed_Hide();
             UserLiveFeed_PreventHide = false;
@@ -17441,7 +17454,7 @@
                 Main_ReplaceLargeFont(Play_data.data[1] + STR_IS_NOW + STR_USER_HOSTING + Play_TargetHost.displayName)
             );
         } else if (PlayVodClip === 1) {
-            // play
+            // Live
             Play_EndIconsRemoveFocus();
             Play_EndCounter = 1;
             Play_EndIconsAddFocus();
@@ -17449,8 +17462,25 @@
             Main_getElementById('dialog_end_0').style.display = 'none';
             Main_getElementById('dialog_end_2').style.display = 'none';
             Main_getElementById('dialog_end_1').style.display = 'inline-block';
-
             Play_EndTextsReset();
+            Play_HasVod = false;
+
+            if (AddUser_IsUserSet()) {
+                var index = Main_history_Exist('live', Play_data.data[7]);
+                if (index > -1) {
+                    Play_VodObj = Main_values_History_data[AddUser_UsernameArray[0].id].live[index];
+                    Play_VodObjIndex = index;
+
+                    if (Play_VodObj.vodid) {
+                        Main_textContent('dialog_end_vod_text_2', STR_OPEN_LAST_BROADCAST);
+                        Main_getElementById('dialog_end_2').style.display = 'inline-block';
+                        Main_innerHTML('end_vod_name_text_2', Play_VodObj.data[1]);
+                        Main_textContent('end_vod_title_text_2', Play_VodObj.data[2]);
+                        Play_HasVod = true;
+                    }
+                }
+            }
+
             Main_innerHTML('end_channel_name_text_3', Play_data.data[1]);
             Main_textContent('dialog_end_live_text_1', STR_STAY_OPEN);
             Main_innerHTML('end_live_title_text_1', STR_STAY_OPEN_SUMMARY);
@@ -18381,7 +18411,7 @@
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_EndCounter--;
-                    if (Play_EndCounter === 2) Play_EndCounter = 1;
+                    if (Play_EndCounter === 2 && !Play_HasVod) Play_EndCounter = 1;
 
                     if (Play_EndCounter < 1) Play_EndCounter = 4;
                     Play_EndIconsAddFocus();
@@ -18418,7 +18448,7 @@
                     Play_EndTextClear();
                     Play_EndIconsRemoveFocus();
                     Play_EndCounter++;
-                    if (Play_EndCounter === 2) Play_EndCounter = 3;
+                    if (Play_EndCounter === 2 && !Play_HasVod) Play_EndCounter = 3;
                     if (Play_EndCounter > 4) Play_EndCounter = 1;
                     Play_EndIconsAddFocus();
                 } else if (PlayExtra_PicturePicture && Play_isFullScreen) {
@@ -22029,6 +22059,9 @@
     var Play_SkipStartAuto = false;
     var Play_MaxInstances = 0;
     var Play_HasLive;
+    var Play_HasVod;
+    var Play_VodObj;
+    var Play_VodObjIndex;
 
     var Play_streamInfoTimerId = null;
 

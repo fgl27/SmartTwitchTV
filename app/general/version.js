@@ -28,7 +28,12 @@ var version = {
     changelog: [
         {
             title: 'Web Version January 28 2022 and Apk Version 3.0.345 and Up',
-            changes: ['Add T1080 Proxy', 'General improves']
+            changes: [
+                'Update player to latest version',
+                'Fix random unwanted background playback',
+                'Add a option to open the VOD of current Live once the Live end',
+                'General improves'
+            ]
         },
         {
             title: 'Web Version January 27 2023',
