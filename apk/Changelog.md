@@ -9,12 +9,12 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
-Web Version January 27 2023
+Web Version January 29 2022 and Apk Version 3.0.345 and Up
 ==============
 
-* Add T1080 Proxy
-* Fix Emoji support
-* Add content language controls to player
+* Update player to latest version
+* Fix random unwanted background playback
+* Add a option to open the VOD of current Live once the Live end (Only works if you have a user and Live history enabled)
 * General improves
 
 Web Version January 16 2023

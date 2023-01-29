@@ -4527,14 +4527,14 @@
         VersionBase: '3.0',
         publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
-        WebVersion: 'January 28 2023',
+        WebVersion: 'January 29 2023',
         WebTag: 641, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
-                title: 'Web Version January 28 2022 and Apk Version 3.0.345 and Up',
+                title: 'Web Version January 29 2022 and Apk Version 3.0.345 and Up',
                 changes: [
                     'Update player to latest version',
                     'Fix random unwanted background playback',
-                    'Add a option to open the VOD of current Live once the Live end',
+                    'Add a option to open the VOD of current Live once the Live end (Only works if you have a user and Live history enabled)',
                     'General improves'
                 ]
             },
