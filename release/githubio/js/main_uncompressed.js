@@ -16781,7 +16781,7 @@
     function Play_AudioReset(pos, preview) {
         Play_audio_enable[pos] = 1;
         Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * 5 : 100;
-        console.log(Play_volumes);
+
         OSInterface_SetVolumes();
         OSInterface_SetAudioEnabled();
         OSInterface_ApplyAudio();
