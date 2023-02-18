@@ -4537,7 +4537,7 @@
         publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
         WebVersion: 'February 18 2023',
-        WebTag: 642, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 643, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version February 18 2023',
                 changes: [
@@ -16780,8 +16780,8 @@
 
     function Play_AudioReset(pos, preview) {
         Play_audio_enable[pos] = 1;
-        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') : 100;
-
+        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * 5 : 100;
+        console.log(Play_volumes);
         OSInterface_SetVolumes();
         OSInterface_SetAudioEnabled();
         OSInterface_ApplyAudio();
