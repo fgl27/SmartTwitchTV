@@ -23,9 +23,18 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
-    WebVersion: 'January 29 2023',
-    WebTag: 641, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'February 18 2023',
+    WebTag: 642, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version February 18 2023',
+            changes: [
+                'Improve volume scale to use steps of 5% (this reset some volumes to default, Player Preview volume to 100% and player volume (When preview is showing) to 25%)',
+                'Improve preview related settings description to be easier to understand',
+                'Add controls over the mains screen player volume (Settings Player section -> Preview thumbnail player settings -> Screen preview volume)',
+                'General improves'
+            ]
+        },
         {
             title: 'Web Version January 29 2022 and Apk Version 3.0.345 and Up',
             changes: [
