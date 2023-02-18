@@ -59,7 +59,7 @@ function Play_AudioCheckCloseMulti() {
 
 function Play_AudioReset(pos, preview) {
     Play_audio_enable[pos] = 1;
-    Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * 5 : 100;
+    Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * Settings_VolumeScale : 100;
 
     OSInterface_SetVolumes();
     OSInterface_SetAudioEnabled();
@@ -129,7 +129,7 @@ function Play_controlsAudioEnasetLable(pos, data, obj) {
 }
 
 function Play_controlsAudioVolupdown(pos, adder, obj) {
-    Play_volumes[pos] += adder * 5;
+    Play_volumes[pos] += adder * Settings_VolumeScale;
 
     if (Play_volumes[pos] < 0) {
         Play_volumes[pos] = 0;

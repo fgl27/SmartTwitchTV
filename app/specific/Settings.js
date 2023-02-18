@@ -707,11 +707,12 @@ function Settings_GenerateClock() {
     return clock;
 }
 
+var Settings_VolumeScale = 5;
 function Settings_GetVolumes() {
     var array = [],
         i = 0;
 
-    for (i = 0; i < 101; i += 5) {
+    for (i = 0; i < 101; i += Settings_VolumeScale) {
         array.push(i + '%');
     }
 
