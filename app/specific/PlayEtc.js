@@ -129,7 +129,7 @@ function Play_controlsAudioEnasetLable(pos, data, obj) {
 }
 
 function Play_controlsAudioVolupdown(pos, adder, obj) {
-    Play_volumes[pos] += adder;
+    Play_volumes[pos] += adder * 5;
 
     if (Play_volumes[pos] < 0) {
         Play_volumes[pos] = 0;
@@ -3030,10 +3030,10 @@ function Play_MakeControls() {
             Play_controls[Play_controlsPreviewSize].defaultValue = Settings_Obj_default('preview_sizes');
             Play_controls[Play_controlsPreviewSize].bottomArrows();
 
-            Play_controls[Play_controlsPreviewVolume].defaultValue = Settings_Obj_default('preview_volume');
+            Play_controls[Play_controlsPreviewVolume].defaultValue = Settings_Obj_default('preview_volume_new');
             Play_controls[Play_controlsPreviewVolume].bottomArrows();
 
-            Play_controls[Play_controlsPreviewMainVolume].defaultValue = Settings_Obj_default('preview_others_volume');
+            Play_controls[Play_controlsPreviewMainVolume].defaultValue = Settings_Obj_default('preview_others_volume_new');
             Play_controls[Play_controlsPreviewMainVolume].bottomArrows();
 
             Play_SetControlsVisibility('ShowInPreview');
@@ -3741,10 +3741,10 @@ function Play_MakeControls() {
         offsetY: -5,
         string: STR_PREVIEW_VOLUME,
         values: Settings_GetVolumes(),
-        defaultValue: Settings_value.preview_volume.defaultValue,
+        defaultValue: Settings_value.preview_volume_new.defaultValue,
         updown: function (adder) {
-            Play_PreviewUpDown('preview_volume', this, adder);
-            OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+            Play_PreviewUpDown('preview_volume_new', this, adder);
+            OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position);
@@ -3767,10 +3767,10 @@ function Play_MakeControls() {
         offsetY: -4,
         string: STR_PREVIEW_OTHERS_VOLUME,
         values: Settings_GetVolumes(),
-        defaultValue: Settings_value.preview_others_volume.defaultValue,
+        defaultValue: Settings_value.preview_others_volume_new.defaultValue,
         updown: function (adder) {
-            Play_PreviewUpDown('preview_others_volume', this, adder);
-            OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
+            Play_PreviewUpDown('preview_others_volume_new', this, adder);
+            OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
         },
         bottomArrows: function () {
             Play_BottomArrows(this.position);

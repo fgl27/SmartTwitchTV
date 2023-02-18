@@ -164,15 +164,15 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
-    preview_others_volume: {
+    preview_others_volume_new: {
         //Migrated to dialog
         values: Settings_GetVolumes(),
-        defaultValue: 26
+        defaultValue: 6
     },
-    preview_volume: {
+    preview_volume_new: {
         //Migrated to dialog
         values: Settings_GetVolumes(),
-        defaultValue: 101
+        defaultValue: 21
     },
     preview_sizes: {
         //Migrated to dialog
@@ -706,7 +706,7 @@ function Settings_GetVolumes() {
     var array = [],
         i = 0;
 
-    for (i = 0; i < 101; i++) {
+    for (i = 0; i < 101; i += 5) {
         array.push(i + '%');
     }
 
@@ -997,8 +997,8 @@ function Settings_SetDefautls() {
     Settings_Qualities();
 
     Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
-    OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
-    OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+    OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
+    OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
     OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     Settings_SetPingWarning();
@@ -1219,8 +1219,8 @@ function Settings_SetDefault(position) {
     else if (position === 'default_quality') Play_SetQuality();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     else if (position === 'thumb_quality') Main_SetThumb();
-    else if (position === 'preview_others_volume') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
-    else if (position === 'preview_volume') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+    else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
+    else if (position === 'preview_volume_new') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
     else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
     else if (position === 'global_font_offset') {
@@ -2271,15 +2271,15 @@ function Settings_DialogShowSmallPayer(click) {
             title: STR_PREVIEW_SIZE,
             summary: STR_PREVIEW_SIZE_SUMMARY
         },
-        preview_volume: {
-            defaultValue: Settings_value.preview_volume.defaultValue,
-            values: Settings_value.preview_volume.values,
+        preview_volume_new: {
+            defaultValue: Settings_value.preview_volume_new.defaultValue,
+            values: Settings_value.preview_volume_new.values,
             title: STR_PREVIEW_VOLUME,
             summary: STR_PREVIEW_VOLUME_SUMMARY
         },
-        preview_others_volume: {
-            defaultValue: Settings_value.preview_others_volume.defaultValue,
-            values: Settings_value.preview_others_volume.values,
+        preview_others_volume_new: {
+            defaultValue: Settings_value.preview_others_volume_new.defaultValue,
+            values: Settings_value.preview_others_volume_new.values,
             title: STR_PREVIEW_OTHERS_VOLUME,
             summary: STR_PREVIEW_OTHERS_VOLUME_SUMMARY
         },
