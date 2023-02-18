@@ -4537,7 +4537,7 @@
         publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
         WebVersion: 'February 18 2023',
-        WebTag: 644, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 645, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version February 18 2023',
                 changes: [
@@ -15276,8 +15276,7 @@
     //Android specific: true
     //Allows the preview player volume
     function OSInterface_SetPreviewAudio(volume) {
-        console.log(volume * 5);
-        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * Settings_VolumeScale);
     }
 
     //public void SetPreviewAudio(int volume)
@@ -15285,8 +15284,7 @@
     //Android specific: true
     //Allows to lower others player volume when preview player is showing
     function OSInterface_SetPreviewOthersAudio(volume) {
-        console.log(volume * 5);
-        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * Settings_VolumeScale);
     }
 
     //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
@@ -16782,7 +16780,7 @@
 
     function Play_AudioReset(pos, preview) {
         Play_audio_enable[pos] = 1;
-        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * 5 : 100;
+        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * Settings_VolumeScale : 100;
 
         OSInterface_SetVolumes();
         OSInterface_SetAudioEnabled();
@@ -16852,7 +16850,7 @@
     }
 
     function Play_controlsAudioVolupdown(pos, adder, obj) {
-        Play_volumes[pos] += adder * 5;
+        Play_volumes[pos] += adder * Settings_VolumeScale;
 
         if (Play_volumes[pos] < 0) {
             Play_volumes[pos] = 0;
@@ -33355,6 +33353,7 @@
         es: 'es,es-mx',
         pt: 'pt,pt-br'
     };
+    var Settings_VolumeScale = 5;
 
     var Settings_value = {
         content_lang: {
@@ -34034,7 +34033,7 @@
         var array = [],
             i = 0;
 
-        for (i = 0; i < 101; i += 5) {
+        for (i = 0; i < 101; i += Settings_VolumeScale) {
             array.push(i + '%');
         }
 
