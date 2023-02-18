@@ -15276,8 +15276,7 @@
     //Android specific: true
     //Allows the preview player volume
     function OSInterface_SetPreviewAudio(volume) {
-        console.log(volume * 5);
-        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * Settings_VolumeScale);
     }
 
     //public void SetPreviewAudio(int volume)
@@ -15285,8 +15284,7 @@
     //Android specific: true
     //Allows to lower others player volume when preview player is showing
     function OSInterface_SetPreviewOthersAudio(volume) {
-        console.log(volume * 5);
-        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * Settings_VolumeScale);
     }
 
     //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
@@ -16782,7 +16780,7 @@
 
     function Play_AudioReset(pos, preview) {
         Play_audio_enable[pos] = 1;
-        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * 5 : 100;
+        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') * Settings_VolumeScale : 100;
 
         OSInterface_SetVolumes();
         OSInterface_SetAudioEnabled();
@@ -16852,7 +16850,7 @@
     }
 
     function Play_controlsAudioVolupdown(pos, adder, obj) {
-        Play_volumes[pos] += adder * 5;
+        Play_volumes[pos] += adder * Settings_VolumeScale;
 
         if (Play_volumes[pos] < 0) {
             Play_volumes[pos] = 0;
@@ -34030,11 +34028,13 @@
         return clock;
     }
 
+    var Settings_VolumeScale = 5;
+
     function Settings_GetVolumes() {
         var array = [],
             i = 0;
 
-        for (i = 0; i < 101; i += 5) {
+        for (i = 0; i < 101; i += Settings_VolumeScale) {
             array.push(i + '%');
         }
 
