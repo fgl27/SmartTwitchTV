@@ -910,20 +910,18 @@ function OSInterface_SetCheckSource(mCheckSource) {
 }
 
 //public void showToast(String toast)
-//position player position
-//volume the player volume
+//toast player toast
 //Android specific: true
-//Allows to control individual player volume
+//Allows to show a toast
 function OSInterface_showToast(toast) {
     //Not be used
     if (Main_IsOn_OSInterface) Android.showToast(toast);
 }
 
 //public void mCheckRefreshToast(String type)
-//position player position
-//volume the player volume
+//type player type
 //Android specific: true
-//Allows to control individual player volume
+//Call channel on home screen refresh toast
 function OSInterface_mCheckRefreshToast(type) {
     //Not be used
     if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
