@@ -590,7 +590,7 @@ function en_USLang() {
     STR_PREVIEW_SIZE_SCREEN = 'Screen preview size';
     STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Set the size of the preview player that show above the main app screens.';
     STR_PREVIEW_VOLUME_SCREEN = 'Screen preview volume';
-    STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Set the volume of the preview player that show above the main app screens.';
+    STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Set the volume of the preview player that show above the main app screens and side panel.';
     STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Thumbnail size', 'Larger'];
     STR_SIDE_PANEL_PLAYER_DELAY = 'Preview delay';
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
