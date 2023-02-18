@@ -174,6 +174,11 @@ var Settings_value = {
         values: Settings_GetVolumes(),
         defaultValue: 21
     },
+    screen_preview_volume: {
+        //Migrated to dialog
+        values: Settings_GetVolumes(),
+        defaultValue: 21
+    },
     preview_sizes: {
         //Migrated to dialog
         values: ['s', 'm', 'l', 'xl'],
@@ -964,9 +969,9 @@ function Settings_DivOptionWithSummary(key, string_title, string_summary, fontSi
     );
 }
 
-function Settings_SetDefautls() {
+function Settings_SetDefaults() {
     //Settings animation will call user live that will call play warning middle and the div need to be initiated first
-    Play_BottonIconsSet();
+    Play_BottomIconsSet();
 
     for (var key in Settings_value) {
         Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
@@ -998,6 +1003,7 @@ function Settings_SetDefautls() {
 
     Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
     OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
+    Play_AudioReset(0, true);
     OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
     OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
@@ -1221,6 +1227,7 @@ function Settings_SetDefault(position) {
     else if (position === 'thumb_quality') Main_SetThumb();
     else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
     else if (position === 'preview_volume_new') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
+    else if (position === 'screen_preview_volume') Play_AudioReset(0, true);
     else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
     else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
     else if (position === 'global_font_offset') {
@@ -2270,6 +2277,12 @@ function Settings_DialogShowSmallPayer(click) {
             values: Settings_value.preview_sizes.values,
             title: STR_PREVIEW_SIZE,
             summary: STR_PREVIEW_SIZE_SUMMARY
+        },
+        screen_preview_volume: {
+            defaultValue: Settings_value.screen_preview_volume.defaultValue,
+            values: Settings_value.screen_preview_volume.values,
+            title: STR_PREVIEW_VOLUME_SCREEN,
+            summary: STR_PREVIEW_VOLUME_SCREEN_SUMMARY
         },
         preview_volume_new: {
             defaultValue: Settings_value.preview_volume_new.defaultValue,

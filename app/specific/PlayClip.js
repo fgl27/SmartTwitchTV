@@ -51,6 +51,8 @@ function PlayClip_Start() {
     Play_showBufferDialog();
     Play_HideEndDialog();
 
+    Play_AudioReset(0);
+
     PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
     Chat_title = STR_CLIP;
     PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);

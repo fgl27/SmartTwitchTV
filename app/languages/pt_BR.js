@@ -582,17 +582,21 @@ function pt_BRLang() {
     STR_PLAYER_ERROR = 'player incapaz de reproduzir, devido ao erro do player';
     STR_PLAYER_ERROR_MULTI = ', tente diminuir o valor da taxa de bits do player nas configurações';
     STR_PREVIEW_SIZE = 'Tamanho da visualização do player';
-    STR_PREVIEW_SIZE_SUMMARY = 'Definir o tamanho da visualização do player das miniaturas de visualização';
+    STR_PREVIEW_SIZE_SUMMARY =
+        'Defina o tamanho do player de pré-visualização o pequeno reprodutor de pré-visualização exibido ao pressionar para cima quando um Live, VOD ou clipe é aberto.';
     STR_PREVIEW_SIZE_ARRAY = ['Pequeno', 'Médio', 'Grande', 'Extra grande'];
     STR_PREVIEW_SIZE_SCREEN = 'Tamanho da pré-visualização das telas';
-    STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Definir o tamanho da pré-visualização';
+    STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Defina o tamanho do player de pré-visualização exibido acima das telas principais do aplicativo.';
+    STR_PREVIEW_VOLUME_SCREEN = 'Volume do player de pré-visualização de tela';
+    STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Definir o volume do player de pré-visualização que aparece acima das telas principais do aplicativo.';
     STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Tamanho da miniatura', 'Maior'];
     STR_SIDE_PANEL_PLAYER_DELAY = 'Atraso na pré-visualização';
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
         'Defina o tempo de atraso que a pré-visualização levará para começar a carregar depois que uma miniatura for selecionada, isso ajuda com dispositivos lentos que atrasam ao rolar';
-    STR_PREVIEW_VOLUME = 'Volume de pré-visualização';
-    STR_PREVIEW_VOLUME_SUMMARY = 'Permitir definir qual será o volume de pré-visualização do feed';
-    STR_PREVIEW_OTHERS_VOLUME = 'Volume dos players principais';
+    STR_PREVIEW_VOLUME = 'Volume do player de pré-visualização';
+    STR_PREVIEW_VOLUME_SUMMARY =
+        'Defina o volume do player de pré-visualização (o pequeno player que é exibido ao pressionar para cima) quando um Live, VOD ou clipe esta aberto.';
+    STR_PREVIEW_OTHERS_VOLUME = 'Volume dos players principais (Quando o player de pré-visualização está sendo exibida)';
     STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
         'O volume do player principal (todos os players picture in picture, players multistream) pode ser menor quando o player de pré-visualização é exibido';
     STR_SIDE_PANEL_PLAYER = 'Configurações de players em miniatura';

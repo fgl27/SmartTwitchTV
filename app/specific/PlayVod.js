@@ -63,6 +63,8 @@ function PlayVod_Start() {
     PlayVod_ChaptersArray = [];
     PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
 
+    Play_AudioReset(0);
+
     Main_textContentWithEle(Play_infoLiveTime, '');
     Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
     Chat_title = ' VOD';

@@ -244,7 +244,7 @@ function Main_StartApp() {
         Main_showLoadDialog();
 
         Main_initClick();
-        Settings_SetDefautls();
+        Settings_SetDefaults();
         calculateFontSize();
         Main_RestoreValues();
         Settings_RestoreAppLang();

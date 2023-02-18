@@ -194,6 +194,8 @@ function Play_Start(offline_chat) {
         Play_UpdateMainStreamDiv();
     }
 
+    Play_AudioReset(0);
+
     Play_StartStayShowBottom();
 
     Play_SetControlsVisibility('ShowInStay');
@@ -1189,7 +1191,7 @@ function Play_exitMain() {
     //Main_Log('Play_exitMain');
 
     UserLiveFeed_PreventHide = false;
-    Play_AudioReset(0);
+    Play_AudioReset(0, true);
     Play_HideBufferDialog();
     Main_showScene1Doc();
     Main_hideScene2Doc();

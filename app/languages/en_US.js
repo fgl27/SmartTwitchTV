@@ -584,17 +584,20 @@ function en_USLang() {
     STR_PLAYER_ERROR = 'Player unable to play due to player error';
     STR_PLAYER_ERROR_MULTI = ', try to lower small player bitrate value in settings';
     STR_PREVIEW_SIZE = 'Player preview size';
-    STR_PREVIEW_SIZE_SUMMARY = 'Set the size of the player preview in the preview thumbnails.';
+    STR_PREVIEW_SIZE_SUMMARY =
+        'Set the size of the preview player the small preview player that show when pressing up when a Live, VOD or clip is open.';
     STR_PREVIEW_SIZE_ARRAY = ['Small', 'Medium', 'Large', 'Extra large'];
     STR_PREVIEW_SIZE_SCREEN = 'Screen preview size';
-    STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Set the size of the preview.';
+    STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Set the size of the preview player that show above the main app screens.';
+    STR_PREVIEW_VOLUME_SCREEN = 'Screen preview volume';
+    STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Set the volume of the preview player that show above the main app screens.';
     STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Thumbnail size', 'Larger'];
     STR_SIDE_PANEL_PLAYER_DELAY = 'Preview delay';
     STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
         'Set the delay time that the preview will take to start loading after a thumbnail is selected. This helps with slow devices which lag when scrolling.';
-    STR_PREVIEW_VOLUME = 'Preview volume';
-    STR_PREVIEW_VOLUME_SUMMARY = 'Set the feed preview volume with this option.';
-    STR_PREVIEW_OTHERS_VOLUME = 'Main player volume';
+    STR_PREVIEW_VOLUME = 'Player Preview volume';
+    STR_PREVIEW_VOLUME_SUMMARY = 'Set preview player volume, the small preview player that show when pressing up when a Live, VOD or clip is open.';
+    STR_PREVIEW_OTHERS_VOLUME = 'Main player volume (When preview is showing)';
     STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
         'The main player (all picture in picture players, multistream players) volume can be lowered when the preview player is showing.';
     STR_SIDE_PANEL_PLAYER = 'Preview thumbnail player settings';

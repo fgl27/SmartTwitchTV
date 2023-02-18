@@ -57,9 +57,9 @@ function Play_AudioCheckCloseMulti() {
     if ((!Play_audio_enable[0] && Play_audio_enable[1]) || (!Play_volumes[0] && Play_volumes[1])) Play_AudioReset(0);
 }
 
-function Play_AudioReset(pos) {
+function Play_AudioReset(pos, preview) {
     Play_audio_enable[pos] = 1;
-    Play_volumes[pos] = 100;
+    Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') : 100;
 
     OSInterface_SetVolumes();
     OSInterface_SetAudioEnabled();
@@ -4114,7 +4114,7 @@ var Play_dialog_warning_play_text;
 
 var Play_pause_next_div;
 
-function Play_BottonIconsSet() {
+function Play_BottomIconsSet() {
     Play_pause_next_div = Main_getElementById('pause_next_div');
 
     Play_dialog_warning_play_middle_text = Main_getElementById('dialog_warning_play_middle_text');
