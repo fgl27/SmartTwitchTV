@@ -741,6 +741,8 @@
     var STR_PROXY_TIMEOUT_SUMMARY;
     var STR_PROXY_DONATE_SUMMARY;
     var STR_PROXY_CONTROLS_ARRAY;
+    var STR_PREVIEW_VOLUME_SCREEN;
+    var STR_PREVIEW_VOLUME_SCREEN_SUMMARY;
     /*
      * Copyright (c) 2017-2020 Felipe de Leon <fglfgl27@gmail.com>
      *
@@ -1806,17 +1808,20 @@
         STR_PLAYER_ERROR = 'Player unable to play due to player error';
         STR_PLAYER_ERROR_MULTI = ', try to lower small player bitrate value in settings';
         STR_PREVIEW_SIZE = 'Player preview size';
-        STR_PREVIEW_SIZE_SUMMARY = 'Set the size of the player preview in the preview thumbnails.';
+        STR_PREVIEW_SIZE_SUMMARY =
+            'Set the size of the preview player the small preview player that show when pressing up when a Live, VOD or clip is open.';
         STR_PREVIEW_SIZE_ARRAY = ['Small', 'Medium', 'Large', 'Extra large'];
         STR_PREVIEW_SIZE_SCREEN = 'Screen preview size';
-        STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Set the size of the preview.';
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Set the size of the preview player that show above the main app screens.';
+        STR_PREVIEW_VOLUME_SCREEN = 'Screen preview volume';
+        STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Set the volume of the preview player that show above the main app screens and side panel.';
         STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Thumbnail size', 'Larger'];
         STR_SIDE_PANEL_PLAYER_DELAY = 'Preview delay';
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
             'Set the delay time that the preview will take to start loading after a thumbnail is selected. This helps with slow devices which lag when scrolling.';
-        STR_PREVIEW_VOLUME = 'Preview volume';
-        STR_PREVIEW_VOLUME_SUMMARY = 'Set the feed preview volume with this option.';
-        STR_PREVIEW_OTHERS_VOLUME = 'Main player volume';
+        STR_PREVIEW_VOLUME = 'Player Preview volume';
+        STR_PREVIEW_VOLUME_SUMMARY = 'Set preview player volume, the small preview player that show when pressing up when a Live, VOD or clip is open.';
+        STR_PREVIEW_OTHERS_VOLUME = 'Main player volume (When preview is showing)';
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
             'The main player (all picture in picture players, multistream players) volume can be lowered when the preview player is showing.';
         STR_SIDE_PANEL_PLAYER = 'Preview thumbnail player settings';
@@ -3192,17 +3197,21 @@
         STR_PLAYER_ERROR = 'player incapaz de reproduzir, devido ao erro do player';
         STR_PLAYER_ERROR_MULTI = ', tente diminuir o valor da taxa de bits do player nas configurações';
         STR_PREVIEW_SIZE = 'Tamanho da visualização do player';
-        STR_PREVIEW_SIZE_SUMMARY = 'Definir o tamanho da visualização do player das miniaturas de visualização';
+        STR_PREVIEW_SIZE_SUMMARY =
+            'Defina o tamanho do player de pré-visualização o pequeno reprodutor de pré-visualização exibido ao pressionar para cima quando um Live, VOD ou clipe é aberto.';
         STR_PREVIEW_SIZE_ARRAY = ['Pequeno', 'Médio', 'Grande', 'Extra grande'];
         STR_PREVIEW_SIZE_SCREEN = 'Tamanho da pré-visualização das telas';
-        STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Definir o tamanho da pré-visualização';
+        STR_PREVIEW_SIZE_SCREEN_SUMMARY = 'Defina o tamanho do player de pré-visualização exibido acima das telas principais do aplicativo.';
+        STR_PREVIEW_VOLUME_SCREEN = 'Volume do player de pré-visualização de tela';
+        STR_PREVIEW_VOLUME_SCREEN_SUMMARY = 'Definir o volume do player de pré-visualização que aparece acima das telas principais do aplicativo.';
         STR_PREVIEW_SIZE_SCREEN_ARRAY = ['Tamanho da miniatura', 'Maior'];
         STR_SIDE_PANEL_PLAYER_DELAY = 'Atraso na pré-visualização';
         STR_SIDE_PANEL_PLAYER_DELAY_SUMMARY =
             'Defina o tempo de atraso que a pré-visualização levará para começar a carregar depois que uma miniatura for selecionada, isso ajuda com dispositivos lentos que atrasam ao rolar';
-        STR_PREVIEW_VOLUME = 'Volume de pré-visualização';
-        STR_PREVIEW_VOLUME_SUMMARY = 'Permitir definir qual será o volume de pré-visualização do feed';
-        STR_PREVIEW_OTHERS_VOLUME = 'Volume dos players principais';
+        STR_PREVIEW_VOLUME = 'Volume do player de pré-visualização';
+        STR_PREVIEW_VOLUME_SUMMARY =
+            'Defina o volume do player de pré-visualização (o pequeno player que é exibido ao pressionar para cima) quando um Live, VOD ou clipe esta aberto.';
+        STR_PREVIEW_OTHERS_VOLUME = 'Volume dos players principais (Quando o player de pré-visualização está sendo exibida)';
         STR_PREVIEW_OTHERS_VOLUME_SUMMARY =
             'O volume do player principal (todos os players picture in picture, players multistream) pode ser menor quando o player de pré-visualização é exibido';
         STR_SIDE_PANEL_PLAYER = 'Configurações de players em miniatura';
@@ -4527,9 +4536,18 @@
         VersionBase: '3.0',
         publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
-        WebVersion: 'January 29 2023',
-        WebTag: 641, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebVersion: 'February 18 2023',
+        WebTag: 642, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
+                title: 'Web Version February 18 2023',
+                changes: [
+                    'Improve volume scale to use steps of 5% (this reset some volumes to default, Player Preview volume to 100% and player volume (When preview is showing) to 25%)',
+                    'Improve preview related settings description to be easier to understand',
+                    'Add controls over the mains screen player volume (Settings Player section -> Preview thumbnail player settings -> Screen preview volume)',
+                    'General improves'
+                ]
+            },
+            {
                 title: 'Web Version January 29 2022 and Apk Version 3.0.345 and Up',
                 changes: [
                     'Update player to latest version',
@@ -11460,7 +11478,7 @@
             Main_showLoadDialog();
 
             Main_initClick();
-            Settings_SetDefautls();
+            Settings_SetDefaults();
             calculateFontSize();
             Main_RestoreValues();
             Settings_RestoreAppLang();
@@ -15427,20 +15445,18 @@
     }
 
     //public void showToast(String toast)
-    //position player position
-    //volume the player volume
+    //toast player toast
     //Android specific: true
-    //Allows to control individual player volume
+    //Allows to show a toast
     function OSInterface_showToast(toast) {
         //Not be used
         if (Main_IsOn_OSInterface) Android.showToast(toast);
     }
 
     //public void mCheckRefreshToast(String type)
-    //position player position
-    //volume the player volume
+    //type player type
     //Android specific: true
-    //Allows to control individual player volume
+    //Call channel on home screen refresh toast
     function OSInterface_mCheckRefreshToast(type) {
         //Not be used
         if (Main_IsOn_OSInterface) Android.mCheckRefreshToast(type);
@@ -15670,6 +15686,8 @@
 
         Play_showBufferDialog();
         Play_HideEndDialog();
+
+        Play_AudioReset(0);
 
         PlayClip_HasVOD = Main_values.ChannelVod_vodId !== null;
         Chat_title = STR_CLIP;
@@ -16760,9 +16778,9 @@
         if ((!Play_audio_enable[0] && Play_audio_enable[1]) || (!Play_volumes[0] && Play_volumes[1])) Play_AudioReset(0);
     }
 
-    function Play_AudioReset(pos) {
+    function Play_AudioReset(pos, preview) {
         Play_audio_enable[pos] = 1;
-        Play_volumes[pos] = 100;
+        Play_volumes[pos] = preview ? Settings_Obj_default('screen_preview_volume') : 100;
 
         OSInterface_SetVolumes();
         OSInterface_SetAudioEnabled();
@@ -16832,7 +16850,7 @@
     }
 
     function Play_controlsAudioVolupdown(pos, adder, obj) {
-        Play_volumes[pos] += adder;
+        Play_volumes[pos] += adder * 5;
 
         if (Play_volumes[pos] < 0) {
             Play_volumes[pos] = 0;
@@ -19735,10 +19753,10 @@
                 Play_controls[Play_controlsPreviewSize].defaultValue = Settings_Obj_default('preview_sizes');
                 Play_controls[Play_controlsPreviewSize].bottomArrows();
 
-                Play_controls[Play_controlsPreviewVolume].defaultValue = Settings_Obj_default('preview_volume');
+                Play_controls[Play_controlsPreviewVolume].defaultValue = Settings_Obj_default('preview_volume_new');
                 Play_controls[Play_controlsPreviewVolume].bottomArrows();
 
-                Play_controls[Play_controlsPreviewMainVolume].defaultValue = Settings_Obj_default('preview_others_volume');
+                Play_controls[Play_controlsPreviewMainVolume].defaultValue = Settings_Obj_default('preview_others_volume_new');
                 Play_controls[Play_controlsPreviewMainVolume].bottomArrows();
 
                 Play_SetControlsVisibility('ShowInPreview');
@@ -20446,10 +20464,10 @@
             offsetY: -5,
             string: STR_PREVIEW_VOLUME,
             values: Settings_GetVolumes(),
-            defaultValue: Settings_value.preview_volume.defaultValue,
+            defaultValue: Settings_value.preview_volume_new.defaultValue,
             updown: function(adder) {
-                Play_PreviewUpDown('preview_volume', this, adder);
-                OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+                Play_PreviewUpDown('preview_volume_new', this, adder);
+                OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -20472,10 +20490,10 @@
             offsetY: -4,
             string: STR_PREVIEW_OTHERS_VOLUME,
             values: Settings_GetVolumes(),
-            defaultValue: Settings_value.preview_others_volume.defaultValue,
+            defaultValue: Settings_value.preview_others_volume_new.defaultValue,
             updown: function(adder) {
-                Play_PreviewUpDown('preview_others_volume', this, adder);
-                OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
+                Play_PreviewUpDown('preview_others_volume_new', this, adder);
+                OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
             },
             bottomArrows: function() {
                 Play_BottomArrows(this.position);
@@ -20819,7 +20837,7 @@
 
     var Play_pause_next_div;
 
-    function Play_BottonIconsSet() {
+    function Play_BottomIconsSet() {
         Play_pause_next_div = Main_getElementById('pause_next_div');
 
         Play_dialog_warning_play_middle_text = Main_getElementById('dialog_warning_play_middle_text');
@@ -22206,6 +22224,8 @@
             Play_UpdateMainStreamDiv();
         }
 
+        Play_AudioReset(0);
+
         Play_StartStayShowBottom();
 
         Play_SetControlsVisibility('ShowInStay');
@@ -23206,7 +23226,7 @@
         //Main_Log('Play_exitMain');
 
         UserLiveFeed_PreventHide = false;
-        Play_AudioReset(0);
+        Play_AudioReset(0, true);
         Play_HideBufferDialog();
         Main_showScene1Doc();
         Main_hideScene2Doc();
@@ -24900,6 +24920,8 @@
         PlayVod_updateChaptersId = 0;
         PlayVod_ChaptersArray = [];
         PlayVod_ProgresBarrUpdateNoAnimation(0, 1, true);
+
+        Play_AudioReset(0);
 
         Main_textContentWithEle(Play_infoLiveTime, '');
         Main_textContentWithEle(Play_BottonIcons_Progress_CurrentTime, Play_timeS(0));
@@ -33463,15 +33485,20 @@
             values: ['no', 'yes'],
             defaultValue: 2
         },
-        preview_others_volume: {
+        preview_others_volume_new: {
             //Migrated to dialog
             values: Settings_GetVolumes(),
-            defaultValue: 26
+            defaultValue: 6
         },
-        preview_volume: {
+        preview_volume_new: {
             //Migrated to dialog
             values: Settings_GetVolumes(),
-            defaultValue: 101
+            defaultValue: 21
+        },
+        screen_preview_volume: {
+            //Migrated to dialog
+            values: Settings_GetVolumes(),
+            defaultValue: 21
         },
         preview_sizes: {
             //Migrated to dialog
@@ -34005,7 +34032,7 @@
         var array = [],
             i = 0;
 
-        for (i = 0; i < 101; i++) {
+        for (i = 0; i < 101; i += 5) {
             array.push(i + '%');
         }
 
@@ -34263,9 +34290,9 @@
         );
     }
 
-    function Settings_SetDefautls() {
+    function Settings_SetDefaults() {
         //Settings animation will call user live that will call play warning middle and the div need to be initiated first
-        Play_BottonIconsSet();
+        Play_BottomIconsSet();
 
         for (var key in Settings_value) {
             Settings_value[key].defaultValue = Main_getItemInt(key, Settings_value[key].defaultValue);
@@ -34296,8 +34323,9 @@
         Settings_Qualities();
 
         Screens_KeyUptimeout = Settings_Obj_values('key_up_timeout');
-        OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
-        OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+        OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
+        Play_AudioReset(0, true);
+        OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
         OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
         OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
         Settings_SetPingWarning();
@@ -34519,8 +34547,9 @@
         else if (position === 'default_quality') Play_SetQuality();
         else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
         else if (position === 'thumb_quality') Main_SetThumb();
-        else if (position === 'preview_others_volume') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume'));
-        else if (position === 'preview_volume') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume'));
+        else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));
+        else if (position === 'preview_volume_new') OSInterface_SetPreviewAudio(Settings_Obj_default('preview_volume_new'));
+        else if (position === 'screen_preview_volume') Play_AudioReset(0, true);
         else if (position === 'preview_sizes') OSInterface_SetPreviewSize(Settings_Obj_default('preview_sizes'));
         else if (position === 'enable_embed') enable_embed = Settings_value.enable_embed.defaultValue;
         else if (position === 'global_font_offset') {
@@ -35571,15 +35600,21 @@
                 title: STR_PREVIEW_SIZE,
                 summary: STR_PREVIEW_SIZE_SUMMARY
             },
-            preview_volume: {
-                defaultValue: Settings_value.preview_volume.defaultValue,
-                values: Settings_value.preview_volume.values,
+            screen_preview_volume: {
+                defaultValue: Settings_value.screen_preview_volume.defaultValue,
+                values: Settings_value.screen_preview_volume.values,
+                title: STR_PREVIEW_VOLUME_SCREEN,
+                summary: STR_PREVIEW_VOLUME_SCREEN_SUMMARY
+            },
+            preview_volume_new: {
+                defaultValue: Settings_value.preview_volume_new.defaultValue,
+                values: Settings_value.preview_volume_new.values,
                 title: STR_PREVIEW_VOLUME,
                 summary: STR_PREVIEW_VOLUME_SUMMARY
             },
-            preview_others_volume: {
-                defaultValue: Settings_value.preview_others_volume.defaultValue,
-                values: Settings_value.preview_others_volume.values,
+            preview_others_volume_new: {
+                defaultValue: Settings_value.preview_others_volume_new.defaultValue,
+                values: Settings_value.preview_others_volume_new.values,
                 title: STR_PREVIEW_OTHERS_VOLUME,
                 summary: STR_PREVIEW_OTHERS_VOLUME_SUMMARY
             },
