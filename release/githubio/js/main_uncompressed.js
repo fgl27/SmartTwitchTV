@@ -4537,7 +4537,7 @@
         publishVersionCode: 345, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
         ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/345/SmartTV_twitch_3_0_345.apk',
         WebVersion: 'February 18 2023',
-        WebTag: 643, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+        WebTag: 644, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
         changelog: [{
                 title: 'Web Version February 18 2023',
                 changes: [
@@ -15276,7 +15276,8 @@
     //Android specific: true
     //Allows the preview player volume
     function OSInterface_SetPreviewAudio(volume) {
-        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume);
+        console.log(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * 5);
     }
 
     //public void SetPreviewAudio(int volume)
@@ -15284,7 +15285,8 @@
     //Android specific: true
     //Allows to lower others player volume when preview player is showing
     function OSInterface_SetPreviewOthersAudio(volume) {
-        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume);
+        console.log(volume * 5);
+        if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * 5);
     }
 
     //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
