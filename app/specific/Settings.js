@@ -32,6 +32,7 @@ var Languages_Extra = {
     es: 'es,es-mx',
     pt: 'pt,pt-br'
 };
+var Settings_VolumeScale = 5;
 
 var Settings_value = {
     content_lang: {
@@ -707,7 +708,6 @@ function Settings_GenerateClock() {
     return clock;
 }
 
-var Settings_VolumeScale = 5;
 function Settings_GetVolumes() {
     var array = [],
         i = 0;
