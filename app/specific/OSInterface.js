@@ -741,7 +741,8 @@ function OSInterface_SetPreviewSize(mPreviewSize) {
 //Android specific: true
 //Allows the preview player volume
 function OSInterface_SetPreviewAudio(volume) {
-    if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume);
+    console.log(volume * 5);
+    if (Main_IsOn_OSInterface) Android.SetPreviewAudio(volume * 5);
 }
 
 //public void SetPreviewAudio(int volume)
@@ -749,7 +750,8 @@ function OSInterface_SetPreviewAudio(volume) {
 //Android specific: true
 //Allows to lower others player volume when preview player is showing
 function OSInterface_SetPreviewOthersAudio(volume) {
-    if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume);
+    console.log(volume * 5);
+    if (Main_IsOn_OSInterface) Android.SetPreviewOthersAudio(volume * 5);
 }
 
 //public void StartFeedPlayer(String uri, String mainPlaylistString, int position, long resumePosition, boolean isVod)
