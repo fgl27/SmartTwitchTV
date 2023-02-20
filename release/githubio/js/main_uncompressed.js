@@ -11701,31 +11701,41 @@
                 }
             }
 
-            //Disable googles OMX.google.h264.decoder if another codec is available
-            //Check if at least one none google codec is available
+            //Disable googles OMX.google.h264.decoder and c2.android.avc.decoder if another codec is available
             if (!Main_values.Codec_is_Check) {
-                var getcodec = null;
+                var codecs = null;
                 try {
-                    if (Main_IsOn_OSInterface) getcodec = JSON.parse(OSInterface_getcodecCapabilities('avc'));
+                    if (Main_IsOn_OSInterface) codecs = JSON.parse(OSInterface_getcodecCapabilities('avc'));
                 } catch (e) {}
 
-                if (getcodec) {
+                if (codecs) {
                     Main_values.Codec_is_Check = true;
 
-                    if (getcodec.length > 1) {
-                        var codecsnames = [];
+                    if (codecs.length > 1) {
+                        var codecsNames = [];
 
                         var i = 0,
-                            len = getcodec.length;
+                            len = codecs.length;
+
                         for (i; i < len; i++) {
-                            if (Main_A_includes_B(getcodec[i].name ? getcodec[i].name.toLowerCase() : '', 'google')) codecsnames.push(getcodec[i].name);
+                            var codec = codecs[i].name ? codecs[i].name.toLowerCase() : '';
+
+                            if (Main_A_includes_B(codec, 'google') || Main_A_includes_B(codec, 'c2.android')) {
+                                codecsNames.push(codecs[i].name);
+                            }
                         }
 
-                        if (codecsnames.length === 1) {
-                            Main_setItem(codecsnames[0], 1);
-                            Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsnames));
+                        if (codecsNames.length && codecsNames.length < codecs.length) {
+                            i = 0;
+                            len = codecsNames.length;
 
-                            OSInterface_setBlackListMediaCodec(codecsnames.join());
+                            for (i; i < len; i++) {
+                                Main_setItem(codecsNames[i], 1);
+                            }
+
+                            Main_setItem('Settings_DisableCodecsNames', JSON.stringify(codecsNames));
+
+                            OSInterface_setBlackListMediaCodec(codecsNames.join());
                         }
                     }
                 }
