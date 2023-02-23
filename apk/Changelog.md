@@ -9,6 +9,21 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version February 23 2022 and Apk Version 3.0.347
+==============
+
+* Update player to latest version
+* Fix resolution cap at 720p or lower for the main player during PP mode (only affected a few devices)
+* General improves
+
+Web Version February 18 2023
+==============
+
+* Improve volume scale to use steps of 5% (this reset some volumes to default, Player Preview volume to 100% and player volume (When preview is showing) to 25%)
+* Improve preview related settings description to be easier to understand
+* Add controls over the mains screen player volume (Settings Player section -> Preview thumbnail player settings -> Screen preview volume)
+* General improves
+
 Web Version January 29 2022 and Apk Version 3.0.345 and Up
 ==============
 
@@ -34,7 +49,7 @@ Web Version November 15 2022
 
 * General improves
 
-Web Version October 17 2022 and Apk Version 3.0.344 and Up
+Web Version October 17 2022 and Apk Version 3.0.344
 ==============
 
 * General improves

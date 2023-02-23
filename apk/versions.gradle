@@ -6,7 +6,7 @@ ext.versions = [
         gradlePlugin               : '7.3.1',//update gradlew -> ./gradlew wrapper
 
         publishVersion             : '3.0.',
-        publishVersionCode         : 345,
+        publishVersionCode         : 347,
 
         tray                       : '0.12.0',
         leanback                   : '1.0.0',
