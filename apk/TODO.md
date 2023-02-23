@@ -18,6 +18,7 @@ One observation: if a feature was added by a user request that feature will only
 -   **Add an player option to stretch 4 by 3 streams** requested via play store.
 -   **Hide channels and game from showing** (requested via EMAIL) Nee entry on tumbnails option (hold left) do set, plus one to display the list of hiden, new UI to enable and disable those added
 -   **[Save individual channel volume settings](https://github.com/fgl27/SmartTwitchTV/issues/127)**... Possible, probably by only changing JS code, eg. After playback starts, if volume is saved for the current channel we can set volume by restoring the value of Play_volumes[0] and calling OSInterface_SetVolumes and OSInterface_ApplyAudio.
+-   **[Allow to control the Main player of multi stream separated]** Today the same control for resolutions and bitrate applies to all small players that includes all Multi stream players, technically it is possible to add a separated option just for the Main one when it is on Main big mode related to [Picture in Picture Quality issue ](https://github.com/fgl27/SmartTwitchTV/issues/138).
 
 # Issues list
 
