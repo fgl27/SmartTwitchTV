@@ -31,6 +31,7 @@ var version = {
             changes: [
                 'Add Carousel seek preview mode for VOD, enabled by default',
                 'Add settings options to change or disable seek preview mode',
+                'Fix VOD animated preview img, not all VOD have an animated preview',
                 'General improves'
             ]
         },

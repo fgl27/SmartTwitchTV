@@ -9,6 +9,14 @@ The App is divided in two part, **Apk** and **Web** you can check it version in 
 
 The app has a building update check function, so whenever there is a update a red text will show up bellow the main pages clock, also a short warning will pop on the screen let you know if is a **Apk** or **Web** update.
 
+Web Version February 24 2023
+==============
+
+* Add Carousel seek preview mode for VOD, enabled by default
+* Add settings options to change or disable seek preview mode
+* Fix VOD animated preview img, not all VOD have an animated preview
+* General improves
+
 Web Version February 23 2022 and Apk Version 3.0.347
 ==============
 
