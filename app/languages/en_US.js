@@ -830,4 +830,8 @@ function en_USLang() {
     PROXY_SETTINGS = 'Proxy Settings (Internet censorship and related proxy)';
     PROXY_SETTINGS_SUMMARY =
         'Only one proxy can be enable, enables proxy server to get stream links from a different server, that may allow you to see content that is forbidden on yours region and avoid ads, disable this if you have any live stream issue too many or longer buffers, freezes or slow connection that may cause the stream quality to drop.';
+    SEEK_PREVIEW = 'Seek Preview';
+    SEEK_PREVIEW_SUMMARY = "Allows to control the VOD seek preview image that shows above the seek bar, seek preview isn't available to all VODs";
+    SEEK_PREVIEW_SINGLE = 'Single preview';
+    SEEK_PREVIEW_CAROUSEL = 'Carousel';
 }

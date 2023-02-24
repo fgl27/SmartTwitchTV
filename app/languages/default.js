@@ -464,6 +464,8 @@ function DefaultLang() {
         STR_PROXY_DONATE_SUMMARY + STR_SPACE_HTML + STR_SPACE_HTML + STR_SPAN_LINK + DefaultMakeLink('https://ttv.lol/donate') + '</span>';
 
     STR_PROXY_CONTROLS_ARRAY = [STR_K_TWITCH, STR_TTV_LOL, STR_T1080, STR_DISABLED];
+
+    SEEK_PREVIEW_ARRAY = [STR_DISABLED, SEEK_PREVIEW_SINGLE, SEEK_PREVIEW_CAROUSEL];
 }
 
 function DefaultReplaceLink(link, string, center) {

@@ -132,6 +132,10 @@ var Settings_value = {
         values: ['no', 'yes'],
         defaultValue: 2
     },
+    seek_preview: {
+        values: ['Disabled', 'Single preview', 'Carousel'],
+        defaultValue: 2
+    },
     PP_workaround: {
         values: ['no', 'yes'],
         defaultValue: 1
@@ -840,6 +844,8 @@ function Settings_SetSettings() {
 
     div += Settings_Content('check_source', array_no_yes, STR_SOURCE_CHECK, STR_SOURCE_CHECK_SUMMARY);
 
+    div += Settings_Content('seek_preview', SEEK_PREVIEW_ARRAY, SEEK_PREVIEW, SEEK_PREVIEW_SUMMARY);
+
     key = 'default_quality';
     Settings_value[key].values[0] = STR_AUTO;
     Settings_value[key].values[1] = STR_SOURCE;
@@ -1023,6 +1029,8 @@ function Settings_SetDefaults() {
     }
 
     Main_setInterval(Settings_burn_in_protection, 20 * 60 * 1000);
+
+    PlayVod_SetPreviewType();
 }
 
 var Languages_Selected;
@@ -1224,6 +1232,7 @@ function Settings_SetDefault(position) {
     else if (position === 'buffer_clip') Settings_SetBuffers(3);
     else if (position === 'end_dialog_counter') Play_EndSettingsCounter = Settings_Obj_default('end_dialog_counter');
     else if (position === 'default_quality') Play_SetQuality();
+    else if (position === 'seek_preview') PlayVod_SetPreviewType();
     else if (position === 'check_source') OSInterface_SetCheckSource(Settings_Obj_default('check_source') === 1);
     else if (position === 'thumb_quality') Main_SetThumb();
     else if (position === 'preview_others_volume_new') OSInterface_SetPreviewOthersAudio(Settings_Obj_default('preview_others_volume_new'));

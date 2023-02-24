@@ -42,6 +42,7 @@ var PlayVod_ProgressBaroffset = 0;
 var PlayVod_OldTime = 0;
 var PlayVod_TimeToJump = 0;
 var PlayVod_replay = false;
+var PlayVod_PreviewType;
 
 var PlayVod_RefreshProgressBarrID;
 var PlayVod_SaveOffsetId;
@@ -1509,7 +1510,7 @@ function PlayVod_previews_success_end() {
 }
 
 function PlayVod_previews_move(position, time_to_jump_string) {
-    if (!PlayVod_previews_obj.images.length) {
+    if (!PlayVod_PreviewType || !PlayVod_previews_obj.images.length) {
         PlayVod_previews_hide();
         return;
     }
@@ -1523,11 +1524,11 @@ function PlayVod_previews_move(position, time_to_jump_string) {
         PlayVod_previews_images_pos = imagePos;
         PlayVod_previews_images_load = false;
 
-        var imgurl = PlayVod_previews_obj.images[imagePos];
+        var imgUrl = PlayVod_previews_obj.images[imagePos];
 
         Play_seek_previews_img.onload = function () {
             this.onload = null;
-            Play_seek_previews.style.backgroundImage = "url('" + imgurl + "')";
+            Play_seek_previews.style.backgroundImage = "url('" + imgUrl + "')";
             PlayVod_previews_show();
         };
 
@@ -1536,7 +1537,7 @@ function PlayVod_previews_move(position, time_to_jump_string) {
             PlayVod_previews_hide();
         };
 
-        Play_seek_previews_img.src = imgurl;
+        Play_seek_previews_img.src = imgUrl;
     }
 
     Play_seek_previews_holder.style.transform = 'translate(' + Math.max(position * 100, 1.1) + '%, -1240%)';
@@ -1730,6 +1731,10 @@ function PlayVod_UpdateGameInfoLabels(gameId, gameName) {
         Play_controls[Play_controlsGameCont].setLable(gameName);
         Main_innerHTML('stream_info_game', STR_PLAYING + gameName);
     }
+}
+
+function PlayVod_SetPreviewType() {
+    PlayVod_PreviewType = Settings_Obj_default('seek_preview');
 }
 
 // function PlayVod_ProcessChaptersFake() {
