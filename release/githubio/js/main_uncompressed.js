@@ -30395,6 +30395,9 @@
                 }
             },
             refreshThumb: function() {
+                if (!this.DataObj || !this.DataObj.length) {
+                    return;
+                }
                 var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
                 var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
 
@@ -38002,6 +38005,7 @@
                 }
             } else if (!isGame && !isBanner) {
                 UserLiveFeed_UpdateSince(pos);
+                UserLiveFeed_refreshThumb(pos);
             }
         }
 
@@ -38696,16 +38700,7 @@
     var UserLiveFeed_UpdateSinceId;
 
     function UserLiveFeed_UpdateSince(pos) {
-        if (
-            pos === UserLiveFeedobj_GamesPos ||
-            pos === UserLiveFeedobj_UserGamesPos ||
-            pos > UserLiveFeedobj_UserAGamesPos ||
-            Main_isStopped ||
-            !UserLiveFeed_isPreviewShowing() ||
-            pos !== UserLiveFeed_FeedPosX ||
-            !UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]] ||
-            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
-        ) {
+        if (UserLiveFeed_CheckIsLive(pos)) {
             return;
         }
 
@@ -38731,6 +38726,39 @@
             },
             1000,
             UserLiveFeed_UpdateSinceId
+        );
+    }
+
+    function UserLiveFeed_refreshThumb(pos) {
+        if (UserLiveFeed_CheckIsLive(pos)) {
+            return;
+        }
+
+        if (UserLiveFeed_ObjNotNull(pos)) {
+            var id = pos + '_' + UserLiveFeed_FeedPosY[pos];
+            var data = UserLiveFeed_GetObj(pos);
+
+            var url = data[0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+            var div = Main_getElementById(UserLiveFeed_ids[1] + id);
+
+            Play_seek_previews_img.onload = function() {
+                div.src = url;
+            };
+
+            Play_seek_previews_img.src = url;
+        }
+    }
+
+    function UserLiveFeed_CheckIsLive(pos) {
+        return (
+            pos === UserLiveFeedobj_GamesPos ||
+            pos === UserLiveFeedobj_UserGamesPos ||
+            pos > UserLiveFeedobj_UserAGamesPos ||
+            Main_isStopped ||
+            !UserLiveFeed_isPreviewShowing() ||
+            pos !== UserLiveFeed_FeedPosX ||
+            !UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]] ||
+            UserLiveFeed_DataObj[pos][UserLiveFeed_FeedPosY[pos]].image
         );
     }
     /*
