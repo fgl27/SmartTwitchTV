@@ -2571,26 +2571,29 @@ function ScreensObj_AnimateThumbId(screen) {
     }
 }
 
+var ScreensObj_getVodAnimatedUrlPost = '{"query":"{video(id:%x){animatedPreviewURL}}"}';
+
 function ScreensObj_getVodAnimatedUrl(screen) {
     FullxmlHttpGet(
-        Main_kraken_api + 'videos/' + screen.DataObj[screen.posY + '_' + screen.posX][7] + Main_TwitchV5Flag_I,
+        PlayClip_BaseUrl,
         Play_base_backup_headers_Array,
         ScreensObj_getVodAnimatedUrlResult,
         noop_fun,
         screen.screen,
         screen.screen,
-        null, //Method, null for get
-        null
+        'POST', //Method, null for get
+        ScreensObj_getVodAnimatedUrlPost.replace('%x', screen.DataObj[screen.posY + '_' + screen.posX][7])
     );
 }
 
 function ScreensObj_getVodAnimatedUrlResult(resultObj, key) {
     if (resultObj.status === 200) {
         var obj = JSON.parse(resultObj.responseText);
-        if (obj.animated_preview_url) {
-            ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][8] = obj.animated_preview_url;
+        if (obj.data && obj.data.video && obj.data.video.animatedPreviewURL) {
+            ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][8] = obj.data.video.animatedPreviewURL;
             var div = Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
-            div.style.cssText = 'width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + obj.animated_preview_url + ');';
+            div.style.cssText =
+                'width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + obj.data.video.animatedPreviewURL + ');';
             ScreensObj_AnimateThumbId(ScreenObj[key]);
         }
     }
