@@ -273,7 +273,7 @@ function ScreensObj_StartAllVars() {
                 this.ScreenBackup[game] = {};
             }
 
-            if (!this.data.length) {
+            if (!this.data || !this.data.length) {
                 this.ScreenBackup[game].style = null;
                 return;
             }
@@ -2531,24 +2531,53 @@ function ScreensObj_AnimateThumbId(screen) {
     if (!Settings_Obj_default('videos_animation')) return;
     var div = Main_getElementById(screen.ids[5] + screen.posY + '_' + screen.posX);
 
-    // Only load the animation if it can be loaded
-    // This prevent starting animating before it has loaded or animated a empty image
-    screen.Vod_newImg.onload = function () {
-        this.onload = null;
-        Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
-        div.style.backgroundSize = div.offsetWidth + 'px';
-        var frame = 0;
-        screen.AnimateThumbId = Main_setInterval(
-            function () {
-                // 10 = quantity of frames in the preview img
-                div.style.backgroundPosition = '0px ' + (++frame % 10) * -div.offsetHeight + 'px';
-            },
-            650,
-            screen.AnimateThumbId
-        );
-    };
+    if (!screen.DataObj[screen.posY + '_' + screen.posX][8]) {
+        ScreensObj_getVodAnimatedUrl(screen);
+    } else {
+        // Only load the animation if it can be loaded
+        // This prevent starting animating before it has loaded or animated a empty image
+        screen.Vod_newImg.onload = function () {
+            this.onload = null;
+            Main_AddClass(screen.ids[1] + screen.posY + '_' + screen.posX, 'opacity_zero');
+            div.style.backgroundSize = div.offsetWidth + 'px';
+            var frame = 0;
+            screen.AnimateThumbId = Main_setInterval(
+                function () {
+                    // 10 = quantity of frames in the preview img
+                    div.style.backgroundPosition = '0px ' + (++frame % 10) * -div.offsetHeight + 'px';
+                },
+                650,
+                screen.AnimateThumbId
+            );
+        };
 
-    screen.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+        screen.Vod_newImg.src = div.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
+    }
+}
+
+function ScreensObj_getVodAnimatedUrl(screen) {
+    FullxmlHttpGet(
+        Main_kraken_api + 'videos/' + screen.DataObj[screen.posY + '_' + screen.posX][7] + Main_TwitchV5Flag_I,
+        Play_base_backup_headers_Array,
+        ScreensObj_getVodAnimatedUrlResult,
+        noop_fun,
+        screen.screen,
+        screen.screen,
+        null, //Method, null for get
+        null
+    );
+}
+
+function ScreensObj_getVodAnimatedUrlResult(resultObj, key) {
+    if (resultObj.status === 200) {
+        var obj = JSON.parse(resultObj.responseText);
+        if (obj.animated_preview_url) {
+            ScreenObj[key].DataObj[ScreenObj[key].posY + '_' + ScreenObj[key].posX][8] = obj.animated_preview_url;
+            var div = Main_getElementById(ScreenObj[key].ids[5] + ScreenObj[key].posY + '_' + ScreenObj[key].posX);
+            div.style.cssText = 'width: 100%; padding-bottom: 56.25%; background-size: 0 0; background-image: url(' + obj.animated_preview_url + ');';
+            ScreensObj_AnimateThumbId(ScreenObj[key]);
+        }
+    }
 }
 
 function ScreensObj_UpdateGameInfo(PlayVodClip, key) {
