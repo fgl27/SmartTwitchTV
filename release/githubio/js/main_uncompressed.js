@@ -30395,7 +30395,7 @@
                 }
             },
             refreshThumb: function() {
-                if (!this.DataObj || !this.DataObj.length) {
+                if (!Screens_ObjNotNull(this.screen)) {
                     return;
                 }
                 var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
