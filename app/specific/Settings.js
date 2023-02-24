@@ -134,7 +134,7 @@ var Settings_value = {
     },
     seek_preview: {
         values: ['Disabled', 'Single preview', 'Carousel'],
-        defaultValue: 2
+        defaultValue: 3
     },
     PP_workaround: {
         values: ['no', 'yes'],
