@@ -454,7 +454,6 @@ function ScreensObj_StartAllVars() {
         ItemsReloadLimit: Main_ItemsReloadLimitVideo,
         ItemsLimit: Main_ItemsLimitVideo,
         ColoumnsCount: Main_ColoumnsCountVideo,
-        addFocus: Screens_addFocusVideo,
         rowClass: 'animate_height_transition',
         thumbclass: 'stream_thumbnail_live_holder',
         histPosXName: 'HistoryLive_histPosX',
@@ -505,6 +504,15 @@ function ScreensObj_StartAllVars() {
                 Main_RemoveClass(this.ids[1] + this.posY + '_' + this.posX, 'opacity_zero');
                 this.OpenLiveStream(false);
             }
+        },
+        refreshThumb: function () {
+            var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
+            var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
+            div.src = url;
+        },
+        addFocus: function (forceScroll, key) {
+            this.refreshThumb(this);
+            Screens_addFocusVideo(forceScroll, key);
         }
     };
 
@@ -2510,7 +2518,7 @@ function ScreensObj_VodGetPreview(preview, animated_preview_url) {
 
 function ScreensObj_VodGetPreviewFromAnimated(animated_preview_url) {
     if (!animated_preview_url) {
-        return;
+        return null;
     }
 
     var animated_preview = animated_preview_url.split('/');
