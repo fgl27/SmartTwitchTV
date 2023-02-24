@@ -30397,7 +30397,12 @@
             refreshThumb: function() {
                 var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
                 var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
-                div.src = url;
+
+                Play_seek_previews_img.onload = function() {
+                    div.src = url;
+                };
+
+                Play_seek_previews_img.src = url;
             },
             addFocus: function(forceScroll, key) {
                 this.refreshThumb(this);
