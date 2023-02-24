@@ -506,6 +506,9 @@ function ScreensObj_StartAllVars() {
             }
         },
         refreshThumb: function () {
+            if (!this.DataObj || !this.DataObj.length) {
+                return;
+            }
             var url = this.DataObj[this.posY + '_' + this.posX][0].replace('{width}x{height}', Main_VideoSize) + Main_randomImg;
             var div = Main_getElementById(this.ids[1] + this.posY + '_' + this.posX);
 
