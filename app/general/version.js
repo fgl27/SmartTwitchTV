@@ -23,9 +23,17 @@ var version = {
     VersionBase: '3.0',
     publishVersionCode: 347, //Always update (+1 to current value) Main_version_java after update publishVersionCode or a major update of the apk is released
     ApkUrl: 'https://github.com/fgl27/SmartTwitchTV/releases/download/347/SmartTV_twitch_3_0_347.apk',
-    WebVersion: 'February 23 2023',
-    WebTag: 647, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
+    WebVersion: 'February 24 2023',
+    WebTag: 648, //Always update (+1 to current value) Main_version_web after update Main_minversion or a major update of the web part of the app
     changelog: [
+        {
+            title: 'Web Version February 24 2023',
+            changes: [
+                'Add Carousel seek preview mode for VOD, enabled by default',
+                'Add settings options to change or disable seek preview mode',
+                'General improves'
+            ]
+        },
         {
             title: 'Web Version February 23 2022 and Apk Version 3.0.347',
             changes: [
@@ -51,22 +59,6 @@ var version = {
                 'Add a option to open the VOD of current Live once the Live end (Only works if you have a user and Live history enabled)',
                 'General improves'
             ]
-        },
-        {
-            title: 'Web Version January 27 2023',
-            changes: ['Add T1080 Proxy', 'Fix Emoji support', 'Add content language controls to player', 'General improves']
-        },
-        {
-            title: 'Web Version January 16 2023',
-            changes: ['Replace Purple proxy with K-Twitch-Bypass', 'General improves']
-        },
-        {
-            title: 'Web Version December 14 2022',
-            changes: ['Update VOD/Clip chat to use new API, old one was disabled', 'General improves']
-        },
-        {
-            title: 'Web Version November 15 2022',
-            changes: ['General improves']
         }
     ]
 };
